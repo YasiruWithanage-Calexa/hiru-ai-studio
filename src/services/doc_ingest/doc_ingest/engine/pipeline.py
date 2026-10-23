@@ -28,6 +28,7 @@ _logger = logging.getLogger(__name__)
 
 BUCKET = "documents"
 EMBED_BATCH = 64
+FORM_FEED = "\f"  # between PDF pages in the stored text
 AGENT = "document_reader"
 
 NO_KEY_WARNING = ("Indexed for keyword search only (no OpenAI key configured). Re-ingest after "
@@ -48,6 +49,7 @@ class StoreLike(Protocol):
     def get_document(self, document_id: UUID) -> dict[str, Any] | None: ...
     def update_document(self, document_id: UUID, fields: dict[str, Any]) -> None: ...
     def download(self, bucket: str, path: str) -> bytes: ...
+    def upload_text(self, bucket: str, path: str, text: str) -> None: ...
     def existing_embeddings(self, document_id: UUID) -> dict[str, tuple[list[float], str]]: ...
     def replace_chunks(self, document_id: UUID, rows: list[dict[str, Any]]) -> None: ...
 
@@ -57,6 +59,19 @@ def legacy_font_warning(extracted: Extracted, role: DocumentRole) -> str | None:
     if extracted.kind == "pdf" and role == DocumentRole.SCRIPT and not extracted.has_sinhala:
         return LEGACY_FONT_WARNING
     return None
+
+
+def paged_text(extracted: Extracted) -> str:
+    """The normalised text with a form feed between PDF pages: what later engines read (the
+    structure build parses scripts from it) instead of parsing the original file again."""
+    pages: list[list[str]] = []
+    page: object = object()
+    for line in extracted.lines:
+        if line.page != page or not pages:
+            pages.append([])
+            page = line.page
+        pages[-1].append(line.text)
+    return FORM_FEED.join("\n".join(p) for p in pages)
 
 
 def embed_hash(model: str, text: str) -> str:
@@ -98,6 +113,8 @@ def run(payload: DispatchPayload, store: StoreLike, llm: LLM) -> dict[str, Any]:
         return result
 
     text = extracted.text
+    text_path = f"{doc['production_id']}/{document_id}/extracted.txt"
+    store.upload_text(BUCKET, text_path, paged_text(extracted))
     guess = roles.detect(filename, text, llm.asker(tier="medium", phase="doc_ingest.role",
                                                    schema_name="document_role", schema=roles.ROLE_SCHEMA))
     role = DocumentRole(doc["confirmed_role"]) if doc.get("confirmed_role") else guess.role
@@ -161,6 +178,7 @@ def run(payload: DispatchPayload, store: StoreLike, llm: LLM) -> dict[str, Any]:
         "page_count": extracted.page_count,
         "char_count": extracted.char_count,
         "chunk_count": len(rows),
+        "text_path": text_path,
         "warnings": warnings,
         "error": None,
     })

@@ -15,7 +15,7 @@ locals {
   ]
   # Secret values are added by hand (`gcloud secrets versions add`), never through Terraform,
   # so they never enter Terraform state.
-  secrets = ["supabase-service-role-key", "api-internal-secret", "openai-api-key"]
+  secrets = ["supabase-service-role-key", "api-internal-secret", "openai-api-key", "supabase-db-url"]
 }
 
 resource "google_project_service" "apis" {

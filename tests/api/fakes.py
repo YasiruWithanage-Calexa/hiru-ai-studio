@@ -136,7 +136,7 @@ class FakeJobs:
         self.event_rows: list[Row] = []
 
     async def create(self, fields: Row) -> Row:
-        row = {"result": None, "error": None, "created_at": _now(), "updated_at": _now(), **fields}
+        row = {"result": None, "error": None, "cursor": 0, "created_at": _now(), "updated_at": _now(), **fields}
         self.rows[fields["id"]] = row
         return row
 
@@ -148,6 +148,30 @@ class FakeJobs:
 
     async def events(self, job_id: UUID, after_seq: int = 0) -> list[Row]:
         return [e for e in self.event_rows if e["job_id"] == str(job_id) and e["seq"] > after_seq]
+
+    async def latest(self, production_id: UUID, kind: str) -> Row | None:
+        rows = [r for r in self.rows.values() if r.get("production_id") == str(production_id) and r["kind"] == kind]
+        return rows[-1] if rows else None
+
+    async def advance(self, job_id: UUID, from_cursor: int, request: Row | None = None) -> bool:
+        row = self.rows.get(str(job_id))
+        if row is None or int(row.get("cursor", 0)) != from_cursor or row["status"] not in ("running", "pending"):
+            return False
+        row["cursor"] = from_cursor + 1
+        if request is not None:
+            row["request"] = request
+        return True
+
+    async def claim_resume(self, job_id: UUID) -> bool:
+        row = self.rows.get(str(job_id))
+        if row is None or row["status"] != "waiting_input":
+            return False
+        row["status"] = "running"
+        return True
+
+    def add_event(self, job_id: str, type_: str, payload: Row, agent: str | None = None) -> None:
+        self.event_rows.append({"job_id": job_id, "seq": len(self.event_rows) + 1, "type": type_,
+                                "agent": agent, "payload": payload, "created_at": _now()})
 
 
 class FakeDocuments:
@@ -217,6 +241,96 @@ class FakeUsage:
         return sum(r.get("input_tokens", 0) + r.get("output_tokens", 0) for r in self.rows)
 
 
+class _Table:
+    """A dict of rows scoped by production, enough for the structure repos."""
+
+    def __init__(self) -> None:
+        self.rows: dict[str, Row] = {}
+
+    def add(self, **fields: Any) -> Row:
+        row = {"id": str(uuid4()), "created_at": _now(), "updated_at": _now(), **fields}
+        self.rows[row["id"]] = row
+        return row
+
+    def _scoped(self, production_id: UUID) -> list[Row]:
+        return [r for r in self.rows.values() if r["production_id"] == str(production_id)]
+
+    async def get(self, production_id: UUID, row_id: UUID) -> Row | None:
+        row = self.rows.get(str(row_id))
+        return row if row and row["production_id"] == str(production_id) else None
+
+    async def update(self, row_id: UUID, fields: Row) -> Row:
+        self.rows[str(row_id)].update(fields)
+        return self.rows[str(row_id)]
+
+
+class FakeEpisodes(_Table):
+    async def list(self, production_id: UUID) -> list[Row]:
+        return sorted(self._scoped(production_id), key=lambda r: r["number"])
+
+
+class FakeScenes(_Table):
+    async def list(self, production_id: UUID, episode_id: UUID | None = None) -> list[Row]:
+        rows = [r for r in self._scoped(production_id) if episode_id is None or r["episode_id"] == str(episode_id)]
+        return sorted(rows, key=lambda r: r["number"])
+
+
+class FakeShots(_Table):
+    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
+        rows = [r for r in self._scoped(production_id) if scene_id is None or r["scene_id"] == str(scene_id)]
+        return sorted(rows, key=lambda r: r["number"])
+
+
+class FakeLines(_Table):
+    async def list(self, scene_id: UUID) -> list[Row]:  # type: ignore[override]
+        return sorted((r for r in self.rows.values() if r["scene_id"] == str(scene_id)), key=lambda r: r["ord"])
+
+    async def upsert(self, rows: list[Row]) -> None:
+        for row in rows:
+            self.rows.setdefault(row["id"], {}).update(row)
+
+
+class FakeCanon(_Table):
+    def __init__(self) -> None:
+        super().__init__()
+        self.version_rows: dict[str, Row] = {}
+
+    def _with_current(self, row: Row) -> Row:
+        return {**row, "current": self.version_rows.get(str(row.get("current_version_id")))}
+
+    async def list(self, production_id: UUID) -> list[Row]:
+        return [self._with_current(r) for r in sorted(self._scoped(production_id), key=lambda r: r["code"])]
+
+    async def get(self, production_id: UUID, entity_id: UUID) -> Row | None:
+        row = await super().get(production_id, entity_id)
+        return self._with_current(row) if row else None
+
+    async def versions(self, entity_id: UUID) -> list[Row]:
+        rows = [v for v in self.version_rows.values() if v["entity_id"] == str(entity_id)]
+        return sorted(rows, key=lambda v: -v["version"])
+
+    async def add_version(self, entity_id: UUID, version: Row) -> Row:
+        row = {"id": str(uuid4()), "created_at": _now(), "reference_assets": [], **version}
+        self.version_rows[row["id"]] = row
+        self.rows[str(entity_id)]["current_version_id"] = row["id"]
+        return row
+
+
+class FakeQuestions(_Table):
+    async def list(self, production_id: UUID, status: str | None = None) -> list[Row]:
+        return [r for r in self._scoped(production_id) if status is None or r["status"] == status]
+
+    async def answer(self, question_id: UUID, answer: Row, user_id: UUID) -> Row | None:
+        row = self.rows.get(str(question_id))
+        if row is None or row["status"] != "open":
+            return None
+        row.update(status="answered", answer=answer, answered_by=str(user_id), answered_at=_now())
+        return row
+
+    async def open_count(self, job_id: UUID) -> int:
+        return sum(1 for r in self.rows.values() if r.get("job_id") == str(job_id) and r["status"] == "open")
+
+
 def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
@@ -232,4 +346,10 @@ def build_fake_repos() -> Repos:
         storage=FakeStorage(),
         search=FakeSearch(),
         usage=FakeUsage(),
+        episodes=FakeEpisodes(),
+        scenes=FakeScenes(),
+        shots=FakeShots(),
+        lines=FakeLines(),
+        canon=FakeCanon(),
+        questions=FakeQuestions(),
     )

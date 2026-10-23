@@ -1,15 +1,29 @@
 # Implemented so far (against PLAN.md of 2026-10-23)
 
-Status on **2026-10-23**: Phases 0 and 1 are built and verified on localhost, including a real
-OpenAI run. Supabase agent skills (`supabase`, `supabase-postgres-best-practices`) are installed in
-`.claude/skills/`. **Nothing is
-deployed** (by decision: test locally first). Commits are made by hand.
+Status on **2026-10-23**: Phases 0, 1 and 2 are built and verified on localhost, each including a
+real OpenAI run. Phase 3 is in progress. Supabase agent skills (`supabase`,
+`supabase-postgres-best-practices`) are installed in `.claude/skills/`. **Nothing is deployed** (by
+decision: test locally first). Commits are made by hand.
 
 | Phase | Steps | State |
 |---|---|---|
 | 0 — Foundations | 1–6 | Done locally. Terraform and CI written and validated, not applied. |
 | 1 — Documents and RAG | 7–9 | Done locally, in keyword mode and (with an OpenAI key) hybrid mode. |
-| 2–6 | 10–22 | Not started. |
+| 2 — Structure and canon | 10–13 | Done locally, rules-only and with OpenAI. See "Phase 2" below. |
+| 3 — Director panel | 14–16 | **In progress**: migration, contracts and the `director_chat` function written; API, tests and smoke not yet. See "Phase 3 (in progress)". |
+| 4–6 | 17–22 | Not started. |
+
+## Verification at the end of Phase 2
+
+| Check | Result |
+|---|---|
+| Python tests (`pytest`) | **365 passed** (+96: shot-plan kernel, screenplay parser, canon helpers, the three new engines, build / canon / structure / courier API) |
+| SQL tests (`supabase test db`) | **69 passed** (+20 in `003_structure`: constraints, cascades, RLS on every new table, `graph` schema closed to browsers) |
+| Lint / types | ruff clean; mypy clean for `api`, `contracts` and every service (each with only its own package + `contracts` on the path) |
+| Schema lint / advisors | `supabase db lint`: no errors; `supabase db advisors --level warn`: no issues |
+| Phase 2 smoke, rules only (`scripts/smoke_phase2.py`) | **Passed, 37 checks**, real API + all five functions + local Supabase + the real Postgres checkpointer: upload 5 files → build → canon with index codes and voice pins → the build **stops on 2 questions** → a writer answers through the API → the last answer **resumes the graph** → episodes 1–5, 8 scenes, every line bound to a shot and a character, every shot 4/6/8 s → canon v2 by a producer, lock → rebuild **reuses the earlier answers**, keeps ids, keeps the locked card, no duplicates; writer 403s and cross-production 404 |
+| Phase 2 build with OpenAI (real key, fixture production) | Passed through every stage: canon (gpt-5) + dedupe (gpt-5-mini), questions + resume, architect titles (gpt-5), 8 scenes planned by the model with critic review → 24 shots, **0 kernel issues**. Took ~15 min because scenes were planned one at a time; planning is now parallel (4) and time-boxed (see below). A second full smoke run with OpenAI on the parallel code was still running when this was written. |
+| Retrieval eval | Not affected (chunking, headers and SQL unchanged; doc_ingest only also stores the extracted text) |
 
 ## Verification at the end of Phase 1
 
@@ -122,6 +136,142 @@ contract).
   failed on a local database holding dev data. Each test file now empties the tables inside its
   own transaction (rolled back at the end, so dev data is untouched).
 
+## Phase 2 — Structure and canon
+
+**Design.** A structure build is **one job that runs three functions in turn**
+(`contracts.build.BUILD_PIPELINE`): `canon_extract` → `structure_build` → `script_split`, so the 0b
+screen follows a single `job_id`. Each function emits `stage` events (read, canon, episodes,
+scenes, shots, continuity, review) and agent messages; `GET .../build` draws the stage list, the
+agent strip and the chat from those events alone.
+
+**The courier** (deferred from Phase 0, now built): `POST /internal/pipeline/advance`
+(`X-Internal-Secret`). A function that finishes a hop that is not the last hands its state to the
+API, which moves `jobs.cursor` with a compare-and-set and sends the next hop; a re-delivered
+callback does nothing. `DispatchPayload` gained `pipeline` and `cursor`; functions skip stale or
+finished deliveries. `again: true` re-sends the **same** function (inserted into the job's
+pipeline), used by `script_split` when its time budget runs out.
+
+**Step 10: `script_split` + the shot-plan kernel.**
+- `contracts/shotplan.py` (pure, shared with the API): planner proposal (block ranges) → shots on
+  the 4/6/8 ladder (or the fixed length), lines bound to shots and beats verbatim, gaps/overlaps
+  repaired, a shot that cannot hold its speech split at a line boundary into a CONTINUOUS
+  follow-on (carry last frame), sound mode decided by the lines (never a spoken mode without
+  words). Overruns, word budgets and envelope overruns are **reported, never trimmed**; scenes are
+  never padded. A person's length (`duration_locked`) is kept.
+- `src/services/script_split/` (`hiru-script-split`, port 8203, 900 s): rule planner (establishing
+  wide, shot / reverse shot, short action rides with its line) or the `high` model planner, then
+  the kernel, then the `medium` critic with **one bounded re-plan**; the better plan by kernel
+  issues wins (rules win if the model's plan breaks more). Approved scenes are never touched.
+  Continuity checks (no location, speaker not in canon). Episodes become `ready` when all their
+  scenes have shots.
+- Scenes are planned **4 at a time** and the hop stops starting new waves after 420 s, handing the
+  rest to a fresh delivery (`again`), so a long drama does not hit the function deadline.
+
+**Step 11: `structure_build`** (`hiru-structure-build`, port 8204, LangGraph):
+read → analyse → **ask** → architect → write.
+- `contracts/screenplay.py` (pure, shared): Fountain/screenplay parsing (headings with INT/EXT,
+  place, sub-place, time; upper-case cues, `@` forced cues for Sinhala names, `Name: line` for
+  known names, parentheticals and cue extensions as delivery, `SOUND:`, transitions), episode
+  numbers from headings / title page / filename, outline parsing.
+- Questions, each with a suggested answer: which episode an unnumbered script is; two scripts for
+  one episode; a heading place that only partly matches a canon location; a scene with no place;
+  a speaker close to a canon name. `ask` calls LangGraph `interrupt()`: the hop writes the
+  questions, sets the job `waiting_input` and returns; the API resumes it when the last one is
+  answered (`POST .../questions/{id}/answer`). **Answers are reused by later builds** (question
+  keys are stable). Without `SUPABASE__DB_URL` the build cannot wait: it takes the suggested
+  answers and records the questions as `defaulted`.
+- The `ultra` architect names scenes and writes missing synopses (parallel, per episode). Rebuilds
+  keep episode and scene ids, never rewrite an **approved** scene, remove scenes no longer in the
+  script, and add unknown places and speakers to the canon as drafts.
+- Checkpointer: `langgraph-checkpoint-postgres` in schema `graph` (tables created by the
+  checkpointer); thread deleted when the hop finishes; retries resume from the last node.
+
+**Step 12: `canon_extract`** (`hiru-canon-extract`, port 8205, LangGraph):
+read → extract → dedupe → critic → write.
+- Rules: canon index lines (`C01 Kamala (කමලා) — mother, 52. … Voice: …`), bible character
+  sections ("Wardrobe anchor:"), script cues and heading places; merged with the index first.
+  With a key: `high` extraction of cards, `medium` dedupe ("AMMA" is Kamala); the documents' own
+  "Voice:"/"Wardrobe" wording is kept over the model's paraphrase.
+- `contracts/canon.py`: codes (C/L/P + number), `CanonCard`, derived **voice pin** and **wardrobe
+  anchor**, reference-sheet prompt (static prefix first), `name_key` (keeps Sinhala vowel signs
+  and ZWJ).
+- Writes: new version only when the card changed; a **person's** version is only gap-filled;
+  **locked** items are never changed (reported). Critic notes core characters missing pins.
+- Places that only partly match a known location are left to `structure_build` to ask about.
+
+**Step 13: endpoints for screens 0a, 0b, 1.**
+- 0a: `ProductionSettings.build` (what AI builds: canon / scenes / shots), set with the existing
+  `PATCH /v1/productions/{id}`.
+- 0b: `POST/GET /v1/productions/{id}/build`, `GET .../questions`, `POST .../questions/{qid}/answer`.
+- 1: `GET .../episodes`, `GET .../episodes/{eid}`, `GET .../structure` (tree + canon counts),
+  `GET .../canon` (+`?kind=`), `GET/PATCH .../canon/{id}`, `POST .../canon/{id}/versions`,
+  `POST .../canon/{id}/lock|unlock`.
+- Migration `20261023103638_phase2_structure_canon.sql` (+ `Database/changes/002_structure_canon.sql`
+  for the hosted project): `canon_entities`, `canon_versions`, `episodes`, `scenes`, `shots`,
+  `dialogue_lines`, `questions`, schema `graph`, `documents.text_path`; read-only RLS on every
+  table; Realtime on episodes, scenes, shots, questions, canon.
+- doc_ingest now stores the extracted text (`<production>/<document>/extracted.txt`, pages split by
+  form feeds) and sets `text_path`; the build reads that instead of re-parsing PDFs.
+
+**Deviations from the plan**
+- Routes are nested under `/v1/productions/{id}/…` (`questions/{qid}/answer`, `canon/{id}`) instead
+  of the flat `/questions/{id}` / `/canon/{id}` in PLAN.md §10, so every route authorises against
+  the production in its path, like the documents routes.
+- The build's order is canon → structure → shots (canon first so scenes link places and speakers).
+- No litellm in the new services: OpenAI through each service's vendored `runtime/llm.py`.
+- `script_split`'s critic is a mid-tier review plus the kernel's free checks (no second
+  "taste" critic yet).
+- Added beyond the plan: answer reuse across builds; the courier's `again`; time-boxed planning.
+
+**Needs doing on the hosted project** (by hand, per `Database/README.md`): run
+`Database/changes/002_structure_canon.sql`, then re-ingest existing documents (they were read
+before the text was kept), and set `SUPABASE__DB_URL` (session pooler) and `API__INTERNAL_URL` /
+`API__INTERNAL_SECRET` for the functions.
+
+## Phase 3 (in progress) — Director panel
+
+Done so far (written, lint and types clean; **not yet tested**):
+- Migration `20261023111753_phase3_director.sql` (applied to the local stack only):
+  `director_personas` (five generic archetypes seeded, no real people, no prices),
+  `production_director_board` (one lead, advisors), `chat_threads`, `chat_messages` (Realtime),
+  `memory_items` (also indexed in `chunks` as corpus `memory`), `shots.duration_locked`, and
+  `shots (scene_id, number)` unique **deferrable** so an edit can renumber shots in one upsert
+  while keeping their ids. No `Database/changes/003` file or pgTAP tests yet.
+- `contracts/director.py`: personas, board update rules, message blocks (text, disagreement,
+  edit-note, continuity), turn request/payload, SSE event list.
+- `src/services/director_chat/` (fork of `nova_chat`, `UPSTREAM.md` lists every divergence):
+  `ScenePlanKernel` (closed op set: set, retime, split, merge, regroup, set_join, beat.set, insert,
+  remove, set_envelope; dialogue read-only; exact undo; per-op validation through the shot-plan
+  kernel), conductor (model, or rules without a key), specialists + board (ownership), read tools
+  (search_production, get_canon, get_shot_timing, list_open_questions), the turn (conduct → apply →
+  tasks → round 1 → verify → bounded round 2 → persist → streamed reply), SSE handler.
+
+Still to do for Phase 3: API (scene view with timeline, shot length edits re-timed by the kernel,
+re-split, approve, script edit, personas, director board, threads, SSE proxy to the function),
+registration in `FUNCTIONS` / deploy workflow / `start-functions.ps1`, tests (kernel, conductor
+rules, turn with fakes, API), pgTAP tests, replay harness + prompt-hygiene guards,
+`scripts/upstream_diff.py`, hosted-DB change file, smoke test.
+
+## Frontend wiring (`hiru-ai-studio-interface`)
+
+The Next.js app now reads and writes real data through this API (no more mock seam for these):
+- **Auth:** Supabase email + password sign-in (`/login`), session in cookies (`@supabase/ssr`),
+  `src/proxy.ts` refreshes it and redirects signed-out visitors. Server components call the API
+  with the session's access token (`lib/api/server.ts`); client components do the same from the
+  browser (`lib/api/browser.ts`, CORS allows the frontend origin). Roles still come from the API.
+- **Screens on real data:** productions list and cards, drama overview (title, format; episodes and
+  canon are empty until Phase 2), account/sign-out, usage meter, **Documents** tab (upload, follow
+  ingest, confirm role, re-read, delete) and **New production** (creates the production, uploads
+  the files with their chosen roles).
+- **Still mock:** build, director, production, handoff and director-board screens (Phase 2+).
+  Real productions have no episodes, so those pages are not reachable from them yet.
+- **API additions:** `GET /v1/usage` → `{percent}` (month's model tokens against
+  `USAGE__MONTHLY_TOKEN_BUDGET`, default 5,000,000; needs `token_usage_since()`, migration
+  `20261023120000_usage_total.sql`, also `Database/changes/001_usage_total.sql` for the hosted
+  project) and an optional `role` form field on document upload (used by the new-production form,
+  so a chosen role applies from the first read, with no race against a later PATCH).
+- The meter hides itself if `/v1/usage` fails, so the hosted project works before the SQL is run.
+
 ## Hosted dev database (`Database/`)
 
 The user chose to run the hosted Supabase project `dwivfkavmtjzhypqswze` as the dev database and
@@ -137,7 +287,12 @@ to manage it by hand, not with `supabase db push`.
 - Not done yet (left to the user): running it on the hosted project and pointing `.env` at it,
   which needs the project's secret key.
 
-## Not done yet from the plan (Phases 0–1 scope)
+## Not done yet from the plan (Phases 0–2 scope)
+
+- The frontend's build, drama-overview and canon screens still use mock data; the Phase 2
+  endpoints are ready for them.
+- Model tiers default to `gpt-5` (ultra/high) and `gpt-5-mini` / `gpt-5-nano`; verified available.
+  gpt-5 at medium/high effort takes 20–60 s per shot-plan call.
 
 - Reranker quality is not scored separately yet (the eval measures the retriever); add
   rerank probes once real Hiru questions exist.
@@ -157,6 +312,6 @@ to manage it by hand, not with `supabase db push`.
 
 ## Next
 
-Phase 2 (steps 10–13): `script_split` with the timing kernel, `structure_build` (LangGraph with
-questions to the crew), `canon_extract` with versions and voice pins, and the endpoints for
-screens 0a, 0b and 1.
+Finish Phase 3 (list above), then Phase 4 (shot producer, frame render, accept-frame → prompt,
+staleness), Phase 5 (prompt checks, bundle, takes, `/last-frame`, usage budget) and Phase 6
+(hardening).

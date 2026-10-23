@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
-from typing import Annotated, Any
+from typing import Annotated
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -47,6 +47,12 @@ class ProductionStatus(StrEnum):
 Title = Annotated[str, Field(min_length=1, max_length=200)]
 
 
+class BuildOptions(_Model):
+    canon: bool = True  # extract characters, locations and props
+    scenes: bool = True  # episodes → scenes from the scripts
+    shots: bool = True  # scenes → shot lists
+
+
 class ProductionSettings(_Model):
     """Per-production settings. Changing them is admin-only (Permission.MANAGE_PRODUCTION)."""
 
@@ -57,6 +63,8 @@ class ProductionSettings(_Model):
     # Market for accent casting ("a Sri Lankan (Colombo) accent").
     market: str = "LK"
     spoken_language: str = "si"
+    # What the structure build writes (screen 0a "What AI builds").
+    build: BuildOptions = Field(default_factory=BuildOptions)
 
     @field_validator("fixed_shot_seconds")
     @classmethod
@@ -119,7 +127,55 @@ class ProductionMember(_Model):
     role: ProductionRole
 
 
-# ── episode / scene / shot (used from Phase 2) ─────────────────────────────────────────────
+# ── episode / scene / shot (Phase 2) ───────────────────────────────────────────────────────
+
+
+class EpisodeStatus(StrEnum):
+    DRAFT = "draft"  # created from an outline, no scenes yet
+    BUILDING = "building"  # scenes or shots being written by the build
+    READY = "ready"  # scenes and shots exist; open in the Director panel
+    APPROVED = "approved"  # every scene approved
+
+
+class SceneStatus(StrEnum):
+    DRAFT = "draft"  # parsed from the script, not split into shots yet
+    SPLIT = "split"  # has a shot list
+    APPROVED = "approved"  # locked for production (Permission.APPROVE_SCENE); engines leave it alone
+
+
+class ShotStatus(StrEnum):
+    """How far a shot has got through the Production panel (the UI's `ShotProgress`)."""
+
+    DRAFT = "draft"
+    FRAME = "frame"  # a first frame is accepted
+    PROMPT = "prompt"  # a video prompt exists
+
+
+class Framing(StrEnum):
+    WIDE = "WIDE"
+    MS = "MS"
+    MCU = "MCU"
+    CU = "CU"
+    TWO = "TWO"  # two-shot
+    OTS = "OTS"  # over the shoulder
+    INSERT = "INSERT"
+
+
+class BlockKind(StrEnum):
+    ACTION = "action"
+    DIALOGUE = "dialogue"  # one spoken line; the text lives in `dialogue_lines`
+    SOUND = "sound"
+    BEAT = "beat"  # a pause or a turn the director marked
+    CUT = "cut"  # an explicit transition ("CUT TO:")
+
+
+class ScriptBlock(_Model):
+    """One block of a scene's script, in order. Dialogue blocks point at their line by id, so
+    a line's text is stored once (`dialogue_lines`) and shot binding never copies it."""
+
+    kind: BlockKind
+    text: str = ""
+    line_id: UUID | None = None
 
 
 class Beat(_Model):
@@ -132,22 +188,37 @@ class Beat(_Model):
 
 class DialogueLine(_Model):
     id: UUID
-    character_id: UUID
-    text: str  # the spoken line, as approved in the script (Sinhala)
+    scene_id: UUID
+    ord: int = Field(ge=0)
+    speaker: str  # as written in the script
+    character_id: UUID | None = None  # the canon character, when matched
+    text: str  # the spoken line as approved in the script (Sinhala); engines never rewrite it
     delivery: str = ""
+    words: int = 0
     shot_id: UUID | None = None
     beat_index: int | None = None
+    start_s: float | None = None  # from the start of the scene, set by the split kernel
+    overrun_s: float = 0.0  # how far it runs past its shot's last cut (reported, never trimmed)
 
 
 class Shot(_Model):
     id: UUID
     scene_id: UUID
     number: int = Field(ge=1)
+    title: str = ""
+    framing: Framing = Framing.MS
     duration_s: int = DEFAULT_SHOT_SECONDS
+    start_s: int = 0
     sound_mode: SoundMode = SoundMode.AMBIENT
     camera_link: CameraLink = CameraLink.CUT
     frame_strategy: FrameStrategy = FrameStrategy.GENERATE
+    speaker_id: UUID | None = None  # the one visible speaker, when there is one
     beats: list[Beat] = Field(default_factory=list)
+    block_start: int = 0  # the script blocks this shot covers: [block_start, block_end)
+    block_end: int = 0
+    word_target: int = 0
+    words: int = 0
+    status: ShotStatus = ShotStatus.DRAFT
     version: int = 1
 
     @field_validator("duration_s")
@@ -157,14 +228,24 @@ class Shot(_Model):
             raise ValueError(f"duration_s must be one of {VEO_DURATIONS}")
         return v
 
+    @property
+    def code(self) -> str:
+        return f"S{self.number:02d}"
+
 
 class Scene(_Model):
     id: UUID
     episode_id: UUID
     number: int = Field(ge=1)
     heading: str
+    title: str = ""
+    location_id: UUID | None = None
+    time_of_day: str = ""
     envelope_s: int = Field(ge=4)
-    script: list[dict[str, Any]] = Field(default_factory=list)
+    script: list[ScriptBlock] = Field(default_factory=list)
+    script_version: int = 1
+    status: SceneStatus = SceneStatus.DRAFT
+    note: str = ""
 
 
 class Episode(_Model):
@@ -173,3 +254,4 @@ class Episode(_Model):
     number: int = Field(ge=1)
     title: str = ""
     synopsis: str = ""
+    status: EpisodeStatus = EpisodeStatus.DRAFT

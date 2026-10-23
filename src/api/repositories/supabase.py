@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any, cast
 from uuid import UUID
 
@@ -219,6 +219,23 @@ class SupabaseJobs(_Base):
         return _rows(res.data)
 
 
+    async def latest(self, production_id: UUID, kind: str) -> Row | None:
+        res = (await self.db.table("jobs").select("*").eq("production_id", str(production_id))
+               .eq("kind", kind).order("created_at", desc=True).limit(1).execute())
+        return _first(res.data)
+
+    async def advance(self, job_id: UUID, from_cursor: int, request: Row | None = None) -> bool:
+        fields: Row = {"cursor": from_cursor + 1, **({"request": request} if request is not None else {})}
+        res = (await self.db.table("jobs").update(fields).eq("id", str(job_id))
+               .eq("cursor", from_cursor).in_("status", ["running", "pending"]).execute())
+        return bool(res.data)
+
+    async def claim_resume(self, job_id: UUID) -> bool:
+        res = (await self.db.table("jobs").update({"status": "running"}).eq("id", str(job_id))
+               .eq("status", "waiting_input").execute())
+        return bool(res.data)
+
+
 class SupabaseDocuments(_Base):
     async def create(self, fields: Row) -> Row:
         res = await self.db.table("documents").insert(fields).execute()
@@ -295,6 +312,126 @@ class SupabaseUsage(_Base):
         return int(cast(int, res.data or 0))
 
 
+class SupabaseEpisodes(_Base):
+    async def list(self, production_id: UUID) -> list[Row]:
+        res = (await self.db.table("episodes").select("*").eq("production_id", str(production_id))
+               .order("number").execute())
+        return _rows(res.data)
+
+    async def get(self, production_id: UUID, episode_id: UUID) -> Row | None:
+        res = (await self.db.table("episodes").select("*").eq("id", str(episode_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def update(self, episode_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("episodes").update(fields).eq("id", str(episode_id)).execute()
+        return _one(res.data)
+
+
+class SupabaseScenes(_Base):
+    async def list(self, production_id: UUID, episode_id: UUID | None = None) -> list[Row]:
+        q = self.db.table("scenes").select("*").eq("production_id", str(production_id))
+        if episode_id is not None:
+            q = q.eq("episode_id", str(episode_id))
+        res = await q.order("number").execute()
+        return _rows(res.data)
+
+    async def get(self, production_id: UUID, scene_id: UUID) -> Row | None:
+        res = (await self.db.table("scenes").select("*").eq("id", str(scene_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def update(self, scene_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("scenes").update(fields).eq("id", str(scene_id)).execute()
+        return _one(res.data)
+
+
+class SupabaseShots(_Base):
+    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
+        q = self.db.table("shots").select("*").eq("production_id", str(production_id))
+        if scene_id is not None:
+            q = q.eq("scene_id", str(scene_id))
+        res = await q.order("number").execute()
+        return _rows(res.data)
+
+    async def get(self, production_id: UUID, shot_id: UUID) -> Row | None:
+        res = (await self.db.table("shots").select("*").eq("id", str(shot_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def update(self, shot_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("shots").update(fields).eq("id", str(shot_id)).execute()
+        return _one(res.data)
+
+
+class SupabaseLines(_Base):
+    async def upsert(self, rows: list[Row]) -> None:
+        if rows:
+            await self.db.table("dialogue_lines").upsert(rows, on_conflict="id").execute()
+
+    async def list(self, scene_id: UUID) -> list[Row]:
+        res = await self.db.table("dialogue_lines").select("*").eq("scene_id", str(scene_id)).order("ord").execute()
+        return _rows(res.data)
+
+
+_CANON = ("*, current:canon_versions!canon_entities_current_version_fkey"
+          "(id, entity_id, version, card, wardrobe_anchor, voice_pin, reference_prompt, source, created_by,"
+          " created_at)")
+
+
+class SupabaseCanon(_Base):
+    async def get(self, production_id: UUID, entity_id: UUID) -> Row | None:
+        res = (await self.db.table("canon_entities").select(_CANON).eq("id", str(entity_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def versions(self, entity_id: UUID) -> list[Row]:
+        res = (await self.db.table("canon_versions").select("*").eq("entity_id", str(entity_id))
+               .order("version", desc=True).execute())
+        return _rows(res.data)
+
+    async def update(self, entity_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("canon_entities").update(fields).eq("id", str(entity_id)).execute()
+        return _one(res.data)
+
+    async def add_version(self, entity_id: UUID, version: Row) -> Row:
+        res = await self.db.table("canon_versions").insert(version).execute()
+        row = _one(res.data)
+        await self.db.table("canon_entities").update({"current_version_id": row["id"]}).eq(
+            "id", str(entity_id)).execute()
+        return row
+
+    async def list(self, production_id: UUID) -> list[Row]:
+        res = await self.db.table("canon_entities").select(_CANON).eq("production_id", str(production_id)).order(
+            "code").execute()
+        return _rows(res.data)
+
+
+class SupabaseQuestions(_Base):
+    async def list(self, production_id: UUID, status: str | None = None) -> list[Row]:
+        q = self.db.table("questions").select("*").eq("production_id", str(production_id))
+        if status:
+            q = q.eq("status", status)
+        res = await q.order("created_at").execute()
+        return _rows(res.data)
+
+    async def get(self, production_id: UUID, question_id: UUID) -> Row | None:
+        res = (await self.db.table("questions").select("*").eq("id", str(question_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def answer(self, question_id: UUID, answer: Row, user_id: UUID) -> Row | None:
+        res = (await self.db.table("questions").update({
+            "status": "answered", "answer": answer, "answered_by": str(user_id),
+            "answered_at": datetime.now(UTC).isoformat()}).eq("id", str(question_id)).eq("status", "open").execute())
+        return _first(res.data)
+
+    async def open_count(self, job_id: UUID) -> int:
+        res = (await self.db.table("questions").select("id", count="exact")  # type: ignore[arg-type]
+               .eq("job_id", str(job_id)).eq("status", "open").execute())
+        return res.count or 0
+
+
 async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
     db = await acreate_client(url, service_role_key)
     return Repos(
@@ -309,4 +446,10 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         storage=SupabaseStorage(db),
         search=SupabaseSearch(db),
         usage=SupabaseUsage(db),
+        episodes=SupabaseEpisodes(db),
+        scenes=SupabaseScenes(db),
+        shots=SupabaseShots(db),
+        lines=SupabaseLines(db),
+        canon=SupabaseCanon(db),
+        questions=SupabaseQuestions(db),
     )

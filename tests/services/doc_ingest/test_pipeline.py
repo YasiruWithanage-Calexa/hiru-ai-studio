@@ -23,6 +23,7 @@ class FakeStore:
         self.data = data
         self.chunks: list[dict[str, Any]] = []
         self.events: list[tuple[str, dict[str, Any]]] = []
+        self.texts: dict[str, str] = {}
 
     def get_job(self, job_id: UUID) -> dict[str, Any] | None:
         return self.job
@@ -42,6 +43,9 @@ class FakeStore:
 
     def download(self, bucket: str, path: str) -> bytes:
         return self.data
+
+    def upload_text(self, bucket: str, path: str, text: str) -> None:
+        self.texts[path] = text
 
     def existing_embeddings(self, document_id: UUID) -> dict[str, tuple[list[float], str]]:
         return {r["content_hash"]: (r["embedding"], r["embedding_model"])

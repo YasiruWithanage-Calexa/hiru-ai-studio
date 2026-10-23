@@ -49,6 +49,13 @@ class Store:
         r.raise_for_status()
         return r.content
 
+    def upload_text(self, bucket: str, path: str, text: str) -> None:
+        """Write (or overwrite, on re-ingest) a UTF-8 text object."""
+        headers = {**self._headers, "Content-Type": "text/plain; charset=utf-8", "x-upsert": "true"}
+        r = self._client.post(f"{self._storage}/object/{bucket}/{path}", headers=headers,
+                              content=text.encode("utf-8"))
+        r.raise_for_status()
+
     # ── chunks ───────────────────────────────────────────────────────────────────────────
     def existing_embeddings(self, document_id: UUID) -> dict[str, tuple[list[float], str]]:
         """content_hash → (embedding, model) for this document's current chunks, to reuse."""

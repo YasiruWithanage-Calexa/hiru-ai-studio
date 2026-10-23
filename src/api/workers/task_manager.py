@@ -1,4 +1,4 @@
-"""Dispatch long-running work to a Cloud Run function.
+"""Dispatch long-running work to Cloud Run functions, one hop at a time.
 
 Pattern from PromptMotion `api/workers/task_manager.py` (commit 1d748dc):
 
@@ -6,8 +6,10 @@ Pattern from PromptMotion `api/workers/task_manager.py` (commit 1d748dc):
   always exists. If enqueueing fails, the row is marked failed rather than left pending forever.
 * Production: Cloud Tasks with an OIDC token (functions are internal-only and require it).
   Development (`LOCAL_FUNCTIONS=true`): an HTTP POST to the local functions-framework port.
-* Functions never enqueue each other. Multi-hop pipelines will advance through the API
-  (the "courier"), added when the first one exists (Phase 2).
+* Functions never enqueue each other. A multi-hop job (the structure build) keeps its hop list
+  in `jobs.request.pipeline`; a function that finished a hop calls `/internal/pipeline/advance`
+  (the courier), which moves `jobs.cursor` on with a compare-and-set and sends the next hop.
+* A hop that stopped on questions is re-sent by `resume()` once they are all answered.
 """
 from __future__ import annotations
 
@@ -21,7 +23,7 @@ from uuid import UUID, uuid4
 import httpx
 
 from api.config import Settings, get_settings
-from api.repositories import Repos
+from api.repositories import Repos, Row
 from contracts.jobs import DispatchPayload, JobKind, JobStatus
 
 _logger = logging.getLogger(__name__)
@@ -37,6 +39,9 @@ class FunctionSpec:
 FUNCTIONS: dict[JobKind, FunctionSpec] = {
     JobKind.ECHO: FunctionSpec("hiru-echo", 8201, 60),
     JobKind.DOC_INGEST: FunctionSpec("hiru-doc-ingest", 8202, 540),
+    JobKind.SCRIPT_SPLIT: FunctionSpec("hiru-script-split", 8203, 900),
+    JobKind.STRUCTURE_BUILD: FunctionSpec("hiru-structure-build", 8204, 900),
+    JobKind.CANON_EXTRACT: FunctionSpec("hiru-canon-extract", 8205, 600),
     # Added as each engine lands (PLAN.md §13).
 }
 
@@ -60,30 +65,81 @@ async def dispatch(
     production_id: UUID | None = None,
     request: dict[str, Any] | None = None,
     state: dict[str, Any] | None = None,
+    pipeline: list[JobKind] | None = None,
 ) -> UUID:
-    """Create the job row and hand the job to its function. Returns the job id."""
-    spec = FUNCTIONS.get(kind)
-    if spec is None:
-        raise ValueError(f"no function registered for job kind {kind}")
-    settings = get_settings()
+    """Create the job row and send its first hop. `kind` names the job; `pipeline` lists the
+    functions it runs through (default: just `kind`). Returns the job id."""
+    hops = pipeline or [kind]
+    for hop in hops:
+        if hop not in FUNCTIONS:
+            raise ValueError(f"no function registered for job kind {hop}")
     job_id = uuid4()
     await repos.jobs.create({
         "id": str(job_id), "kind": kind.value, "status": JobStatus.PENDING.value,
         "production_id": str(production_id) if production_id else None,
-        "requested_by": str(actor_user_id), "request": request or {},
+        "requested_by": str(actor_user_id),
+        "request": {**(request or {}), "pipeline": [h.value for h in hops]},
     })
-    payload = DispatchPayload(job_id=job_id, kind=kind, actor_user_id=actor_user_id,
-                              production_id=production_id, state=state or {})
+    payload = DispatchPayload(job_id=job_id, kind=hops[0], actor_user_id=actor_user_id,
+                              production_id=production_id, pipeline=hops, cursor=0, state=state or {})
+    await _send_or_fail(payload, repos)
+    return job_id
+
+
+def _pipeline_of(job: Row) -> list[JobKind]:
+    hops = (job.get("request") or {}).get("pipeline") or [job["kind"]]
+    return [JobKind(h) for h in hops]
+
+
+async def advance(repos: Repos, job: Row, from_cursor: int, state: dict[str, Any], *,
+                  again: bool = False) -> bool:
+    """The courier: hop `from_cursor` is finished; send the next. False when this hand-off was
+    already made (a re-delivered callback) or the job is no longer running.
+
+    `again`: the hop ran out of time with work left. The same function is inserted after it in
+    the job's pipeline and sent, so every delivery still has its own cursor and the same
+    compare-and-set keeps a duplicate callback from sending it twice."""
+    hops = _pipeline_of(job)
+    request = None
+    if again:
+        hops = [*hops[: from_cursor + 1], hops[from_cursor], *hops[from_cursor + 1:]]
+        request = {**(job.get("request") or {}), "pipeline": [h.value for h in hops]}
+    if from_cursor + 1 >= len(hops):
+        return False
+    if not await repos.jobs.advance(UUID(str(job["id"])), from_cursor, request):
+        return False
+    payload = DispatchPayload(job_id=job["id"], kind=hops[from_cursor + 1], actor_user_id=job["requested_by"],
+                              production_id=job.get("production_id"), pipeline=hops, cursor=from_cursor + 1,
+                              state=state)
+    await _send_or_fail(payload, repos)
+    return True
+
+
+async def resume(repos: Repos, job: Row, state: dict[str, Any] | None = None) -> bool:
+    """Re-send the hop that is waiting for answers. False when another request already did."""
+    if not await repos.jobs.claim_resume(UUID(str(job["id"]))):
+        return False
+    hops = _pipeline_of(job)
+    cursor = int(job.get("cursor") or 0)
+    payload = DispatchPayload(job_id=job["id"], kind=hops[cursor], actor_user_id=job["requested_by"],
+                              production_id=job.get("production_id"), pipeline=hops, cursor=cursor,
+                              state={**(state or {}), "resume": True})
+    await _send_or_fail(payload, repos)
+    return True
+
+
+async def _send_or_fail(payload: DispatchPayload, repos: Repos) -> None:
+    settings = get_settings()
+    spec = FUNCTIONS[payload.kind]
     try:
         if settings.local_functions:
             _fire_local(function_url(spec, settings), payload)
         else:
             await asyncio.to_thread(_enqueue_cloud_task, spec, payload, settings)
     except Exception as exc:
-        _logger.exception("dispatch failed kind=%s job=%s", kind, job_id)
-        await repos.jobs.mark_failed(job_id, "The job could not be started.")
+        _logger.exception("dispatch failed kind=%s job=%s", payload.kind, payload.job_id)
+        await repos.jobs.mark_failed(payload.job_id, "The job could not be started.")
         raise RuntimeError("dispatch failed") from exc
-    return job_id
 
 
 _background: set[asyncio.Task[None]] = set()
@@ -94,7 +150,7 @@ def _fire_local(url: str, payload: DispatchPayload) -> None:
 
     async def call() -> None:
         try:
-            async with httpx.AsyncClient(timeout=600.0) as client:
+            async with httpx.AsyncClient(timeout=900.0) as client:
                 await client.post(url, json=payload.model_dump(mode="json"))
         except httpx.HTTPError:
             _logger.exception("local function call failed url=%s", url)

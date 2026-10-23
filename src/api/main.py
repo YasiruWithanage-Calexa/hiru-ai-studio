@@ -11,7 +11,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.config import get_settings
 from api.logging_config import configure_logging
 from api.repositories import Repos
-from api.routers import documents, files, jobs, me, members, productions, search, usage
+from api.routers import (
+    build,
+    canon,
+    documents,
+    files,
+    internal,
+    jobs,
+    me,
+    members,
+    productions,
+    search,
+    structure,
+    usage,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -55,7 +68,8 @@ def create_app(repos: Repos | None = None) -> FastAPI:
     async def healthz() -> dict[str, str]:
         return {"status": "ok"}
 
-    for module in (me, members, productions, documents, search, jobs, usage, files):
+    for module in (me, members, productions, documents, search, build, structure, canon, jobs, usage, files,
+                   internal):
         app.include_router(module.router)
     return app
 

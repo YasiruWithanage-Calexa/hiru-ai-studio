@@ -7,7 +7,10 @@ $python = Join-Path $root ".venv\Scripts\python.exe"
 
 $functions = @(
     @{ Name = "hiru-echo"; Source = "src\services\echo"; Port = 8201 },
-    @{ Name = "hiru-doc-ingest"; Source = "src\services\doc_ingest"; Port = 8202 }
+    @{ Name = "hiru-doc-ingest"; Source = "src\services\doc_ingest"; Port = 8202 },
+    @{ Name = "hiru-script-split"; Source = "src\services\script_split"; Port = 8203 },
+    @{ Name = "hiru-structure-build"; Source = "src\services\structure_build"; Port = 8204 },
+    @{ Name = "hiru-canon-extract"; Source = "src\services\canon_extract"; Port = 8205 }
 )
 
 # Functions read SUPABASE__* from the environment; load them from .env.

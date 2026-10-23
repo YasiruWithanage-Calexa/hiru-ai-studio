@@ -41,7 +41,10 @@ jobs:
           # name | source folder | memory | timeout(s)  — timeout must equal task_manager.FunctionSpec.deadline_s
           ALL='[
             {"name":"hiru-echo","src":"src/services/echo","memory":"256Mi","timeout":60},
-            {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":540}
+            {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":540},
+            {"name":"hiru-script-split","src":"src/services/script_split","memory":"512Mi","timeout":900},
+            {"name":"hiru-structure-build","src":"src/services/structure_build","memory":"1Gi","timeout":900},
+            {"name":"hiru-canon-extract","src":"src/services/canon_extract","memory":"1Gi","timeout":600}
           ]'
           before="${{ github.event.before }}"
           if [[ "${{ inputs.all }}" == "true" || -z "$before" || "$before" =~ ^0+$ ]] \
@@ -89,6 +92,6 @@ jobs:
             --no-allow-unauthenticated --ingress-settings internal-only \
             --service-account "${{ vars.GCP_FUNCTIONS_SA }}" \
             --memory "${{ matrix.fn.memory }}" --timeout "${{ matrix.fn.timeout }}s" \
-            --set-env-vars "SUPABASE__URL=${{ vars.SUPABASE_URL }}" \
-            --set-secrets "SUPABASE__SERVICE_ROLE_KEY=${{ vars.SECRET_PREFIX }}-supabase-service-role-key:latest,OPENAI__API_KEY=${{ vars.SECRET_PREFIX }}-openai-api-key:latest" \
+            --set-env-vars "SUPABASE__URL=${{ vars.SUPABASE_URL }},API__INTERNAL_URL=${{ vars.API_URL }}" \
+            --set-secrets "SUPABASE__SERVICE_ROLE_KEY=${{ vars.SECRET_PREFIX }}-supabase-service-role-key:latest,OPENAI__API_KEY=${{ vars.SECRET_PREFIX }}-openai-api-key:latest,API__INTERNAL_SECRET=${{ vars.SECRET_PREFIX }}-api-internal-secret:latest,SUPABASE__DB_URL=${{ vars.SECRET_PREFIX }}-supabase-db-url:latest" \
             --quiet

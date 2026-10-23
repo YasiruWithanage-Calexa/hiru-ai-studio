@@ -210,6 +210,8 @@ async def delete_document(production_id: UUID, document_id: UUID, access: CanMan
     await repos.documents.delete(document_id)  # chunks go with it (on delete cascade)
     try:
         await repos.storage.remove(BUCKET, row["storage_path"])
+        if row.get("text_path"):
+            await repos.storage.remove(BUCKET, row["text_path"])
     except Exception:
         _logger.exception("storage cleanup failed document=%s", document_id)
     await repos.audit.record(action="document.delete", entity="document", entity_id=str(document_id),
