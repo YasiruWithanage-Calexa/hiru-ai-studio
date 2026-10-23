@@ -70,8 +70,6 @@ async def verify_token(token: str, settings: Settings) -> dict[str, Any]:
     except jwt.PyJWTError:
         raise _UNAUTHORIZED from None
     alg = header.get("alg", "")
-    options = {"require": ["exp", "sub"]}
-
     if alg == "HS256":
         secret = settings.supabase.jwt_secret.get_secret_value()
         if not secret:
@@ -94,7 +92,8 @@ async def verify_token(token: str, settings: Settings) -> dict[str, Any]:
         raise _UNAUTHORIZED
 
     try:
-        return jwt.decode(token, key, algorithms=[alg], audience="authenticated", options=options)
+        return jwt.decode(token, key, algorithms=[alg], audience="authenticated",
+                          options={"require": ["exp", "sub"]})
     except jwt.PyJWTError:
         raise _UNAUTHORIZED from None
 

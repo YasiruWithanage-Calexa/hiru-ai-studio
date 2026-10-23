@@ -3,6 +3,12 @@
 begin;
 select plan(27);
 
+-- Start from empty tables INSIDE this transaction, so the counts below are exact even on a
+-- local database full of dev data. The final rollback restores everything.
+delete from public.chunks; delete from public.craft_techniques; delete from public.token_usage;
+delete from public.jobs; delete from public.documents; delete from public.invitations;
+delete from public.audit_log; delete from public.productions; delete from auth.users;
+
 -- ── fixtures ─────────────────────────────────────────────────────────────────────────────
 insert into public.productions (id, title, orientation) values
   ('00000000-0000-0000-0000-0000000000a1', 'Production One', 'horizontal'),
@@ -92,8 +98,8 @@ select is((select app_role::text from public.profiles where id = '00000000-0000-
 -- ── writer (two productions, two roles) ──────────────────────────────────────────────────
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000c');
 select is((select count(*)::int from public.productions), 2, 'writer sees both productions they are on');
-select is(public.production_role('00000000-0000-0000-0000-0000000000a2')::text, 'reviewer',
-          'production_role() returns the role on that production');
+select is(public.my_production_role('00000000-0000-0000-0000-0000000000a2')::text, 'reviewer',
+          'my_production_role() returns the role on that production');
 
 -- ── outsider (no memberships) ────────────────────────────────────────────────────────────
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000d');

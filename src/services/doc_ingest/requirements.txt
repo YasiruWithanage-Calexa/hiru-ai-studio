@@ -1,0 +1,5 @@
+functions-framework==3.10.2
+httpx>=0.27,<1
+pydantic>=2.9,<3
+openai>=1.60,<3
+pypdf==6.19.0  # <6.19 has RAM-exhaustion advisories on crafted PDFs

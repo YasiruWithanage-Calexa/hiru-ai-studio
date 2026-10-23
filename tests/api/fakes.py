@@ -150,6 +150,73 @@ class FakeJobs:
         return [e for e in self.event_rows if e["job_id"] == str(job_id) and e["seq"] > after_seq]
 
 
+class FakeDocuments:
+    def __init__(self) -> None:
+        self.rows: dict[str, Row] = {}
+
+    async def create(self, fields: Row) -> Row:
+        row = {"detected_role": None, "role_confidence": None, "role_reason": "", "confirmed_role": None,
+               "page_count": None, "char_count": None, "chunk_count": 0, "warnings": [], "error": None,
+               "created_at": _now(), "updated_at": _now(), **fields}
+        self.rows[fields["id"]] = row
+        return row
+
+    async def get(self, production_id: UUID, document_id: UUID) -> Row | None:
+        row = self.rows.get(str(document_id))
+        return row if row and row["production_id"] == str(production_id) else None
+
+    async def find_by_hash(self, production_id: UUID, sha256: str) -> Row | None:
+        return next((r for r in self.rows.values()
+                     if r["production_id"] == str(production_id) and r["sha256"] == sha256), None)
+
+    async def list(self, production_id: UUID) -> list[Row]:
+        return [r for r in self.rows.values() if r["production_id"] == str(production_id)]
+
+    async def update(self, document_id: UUID, fields: Row) -> Row:
+        self.rows[str(document_id)].update(fields)
+        return self.rows[str(document_id)]
+
+    async def delete(self, document_id: UUID) -> None:
+        self.rows.pop(str(document_id), None)
+
+
+class FakeStorage:
+    def __init__(self) -> None:
+        self.objects: dict[tuple[str, str], bytes] = {}
+
+    async def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None:
+        self.objects[(bucket, path)] = data
+
+    async def remove(self, bucket: str, path: str) -> None:
+        self.objects.pop((bucket, path), None)
+
+
+class FakeSearch:
+    def __init__(self) -> None:
+        self.calls: list[Row] = []
+        self.chunk_rows: list[Row] = []
+        self.technique_rows: list[Row] = []
+
+    async def match_chunks(self, **kwargs: Any) -> list[Row]:
+        self.calls.append(kwargs)
+        return self.chunk_rows[: kwargs["match_count"]]
+
+    async def match_techniques(self, **kwargs: Any) -> list[Row]:
+        self.calls.append(kwargs)
+        return self.technique_rows
+
+
+class FakeUsage:
+    def __init__(self) -> None:
+        self.rows: list[Row] = []
+
+    async def record(self, row: Row) -> None:
+        self.rows.append(row)
+
+    async def tokens_since(self, since: datetime) -> int:
+        return sum(r.get("input_tokens", 0) + r.get("output_tokens", 0) for r in self.rows)
+
+
 def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
@@ -161,4 +228,8 @@ def build_fake_repos() -> Repos:
         auth_admin=FakeAuthAdmin(),
         audit=FakeAudit(),
         jobs=FakeJobs(),
+        documents=FakeDocuments(),
+        storage=FakeStorage(),
+        search=FakeSearch(),
+        usage=FakeUsage(),
     )

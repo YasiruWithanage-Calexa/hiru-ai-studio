@@ -7,11 +7,10 @@ environment variable bound from Secret Manager by Cloud Run; there is no `.env` 
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, SecretStr, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
-from typing_extensions import Annotated
 
 
 class SupabaseSettings(BaseModel):
@@ -45,6 +44,27 @@ class GcpSettings(BaseModel):
     functions_base_url: str = ""
 
 
+class OpenAISettings(BaseModel):
+    """OpenAI is the only LLM provider (PLAN.md §5). Empty key = AI features off: search runs
+    keyword-only and nothing is reranked, so the app is fully testable without a key."""
+
+    api_key: SecretStr = SecretStr("")
+    model_medium: str = "gpt-5-mini"  # reranking
+    effort_medium: str = "low"
+    embedding_model: str = "text-embedding-3-large"
+    embedding_dimensions: int = 1536  # must match chunks.embedding vector(1536)
+
+    @property
+    def enabled(self) -> bool:
+        return bool(self.api_key.get_secret_value())
+
+
+class UsageSettings(BaseModel):
+    """The top-bar usage meter: model tokens used this month as a share of this budget."""
+
+    monthly_token_budget: int = 5_000_000
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", env_nested_delimiter="__", extra="ignore", case_sensitive=False
@@ -55,6 +75,8 @@ class Settings(BaseSettings):
     supabase: SupabaseSettings = SupabaseSettings()
     api: ApiSettings = ApiSettings()
     gcp: GcpSettings = GcpSettings()
+    openai: OpenAISettings = OpenAISettings()
+    usage: UsageSettings = UsageSettings()
 
 
 @lru_cache

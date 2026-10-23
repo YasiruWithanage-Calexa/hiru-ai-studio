@@ -1,0 +1,12 @@
+.venv
+.git
+**/__pycache__
+**/*.pyc
+.env
+.env.*
+tests
+scripts
+supabase
+infra
+src/services
+*.md

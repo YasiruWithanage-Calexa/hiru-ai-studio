@@ -28,7 +28,8 @@ def test_echo_dispatch_creates_job_then_fires(world: World, fired: list[dict]):
 
 
 def test_echo_is_admin_only(world: World, fired: list[dict]):
-    assert world.client.post("/v1/jobs/echo", json={}, headers=world.headers(world.producer)).status_code == 403
+    r = world.client.post("/v1/jobs/echo", json={}, headers=world.headers(world.producer))
+    assert r.status_code == 403
     assert fired == []
 
 

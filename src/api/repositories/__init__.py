@@ -10,6 +10,7 @@ tables; routers turn them into `contracts` models.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Protocol
 from uuid import UUID
 
@@ -70,6 +71,48 @@ class JobsRepo(Protocol):
     async def events(self, job_id: UUID, after_seq: int = 0) -> list[Row]: ...
 
 
+class DocumentsRepo(Protocol):
+    async def create(self, fields: Row) -> Row: ...
+    async def get(self, production_id: UUID, document_id: UUID) -> Row | None: ...
+    async def find_by_hash(self, production_id: UUID, sha256: str) -> Row | None: ...
+    async def list(self, production_id: UUID) -> list[Row]: ...
+    async def update(self, document_id: UUID, fields: Row) -> Row: ...
+    async def delete(self, document_id: UUID) -> None: ...
+
+
+class StorageRepo(Protocol):
+    async def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None: ...
+    async def remove(self, bucket: str, path: str) -> None: ...
+
+
+class SearchRepo(Protocol):
+    async def match_chunks(
+        self,
+        *,
+        query_text: str,
+        query_embedding: list[float] | None,
+        production_id: UUID | None,
+        corpora: list[str],
+        document_ids: list[UUID] | None,
+        match_count: int,
+    ) -> list[Row]: ...
+
+    async def match_techniques(
+        self,
+        *,
+        query_text: str,
+        query_embedding: list[float] | None,
+        domain: str,
+        categories: list[str] | None,
+        match_count: int,
+    ) -> list[Row]: ...
+
+
+class UsageRepo(Protocol):
+    async def record(self, row: Row) -> None: ...
+    async def tokens_since(self, since: datetime) -> int: ...
+
+
 @dataclass
 class Repos:
     profiles: ProfilesRepo
@@ -79,3 +122,7 @@ class Repos:
     auth_admin: AuthAdmin
     audit: AuditRepo
     jobs: JobsRepo
+    documents: DocumentsRepo
+    storage: StorageRepo
+    search: SearchRepo
+    usage: UsageRepo

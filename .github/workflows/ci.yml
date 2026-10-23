@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Lint, types, tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: ruff check src tests scripts
+      - run: mypy
+      - name: mypy (each service, with only its own package + contracts on the path)
+        run: |
+          for svc in src/services/*/; do
+            pkg=$(find "$svc" -mindepth 1 -maxdepth 1 -type d ! -name '__pycache__' | head -1)
+            MYPYPATH="src/libs:$svc" mypy "$pkg" --ignore-missing-imports --explicit-package-bases
+          done
+      - run: pytest -q
+
+  database:
+    name: Migrations + RLS tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.121.0
+      # Applies every migration to a fresh database, then runs supabase/tests (pgTAP).
+      - run: supabase start -x edge-runtime,logflare,vector,imgproxy,supavisor,studio,mailpit
+      - run: supabase test db
+      - run: supabase db lint --level error
+      # Supabase's security + performance linter; any WARN (e.g. auth.uid() re-evaluated per row
+      # in a policy, a SECURITY DEFINER function exposed) fails the build.
+      - run: supabase db advisors --local --level warn --fail-on warn
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      # Keyword mode (no OpenAI key in CI): ingests the fixture corpus through the real
+      # doc_ingest pipeline and fails on a drop below tests/eval/thresholds.json.
+      - name: Retrieval eval (keyword mode)
+        run: |
+          eval "$(supabase status -o env | sed 's/^/export SB_/')"
+          export ENVIRONMENT=local SUPABASE__URL="$SB_API_URL" SUPABASE__SERVICE_ROLE_KEY="$SB_SERVICE_ROLE_KEY"
+          python scripts/create_admin.py ci@hirutv.lk --password ci-only-password
+          python scripts/ingest_knowledge.py
+          python scripts/eval_retrieval.py
+
+  terraform:
+    name: Terraform validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+      - run: terraform fmt -check -recursive
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate

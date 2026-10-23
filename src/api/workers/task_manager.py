@@ -36,8 +36,8 @@ class FunctionSpec:
 
 FUNCTIONS: dict[JobKind, FunctionSpec] = {
     JobKind.ECHO: FunctionSpec("hiru-echo", 8201, 60),
-    # Added as each engine lands (PLAN.md §13):
-    # JobKind.DOC_INGEST: FunctionSpec("hiru-doc-ingest", 8202),
+    JobKind.DOC_INGEST: FunctionSpec("hiru-doc-ingest", 8202, 540),
+    # Added as each engine lands (PLAN.md §13).
 }
 
 
@@ -47,7 +47,9 @@ def function_url(spec: FunctionSpec, settings: Settings) -> str:
     base = settings.gcp.functions_base_url
     if not base:
         raise RuntimeError("GCP__FUNCTIONS_BASE_URL is not set")
-    return base.format(function_name=spec.name) if "{function_name}" in base else f"{base.rstrip('/')}/{spec.name}"
+    if "{function_name}" in base:
+        return base.format(function_name=spec.name)
+    return f"{base.rstrip('/')}/{spec.name}"
 
 
 async def dispatch(
@@ -118,4 +120,4 @@ def _enqueue_cloud_task(spec: FunctionSpec, payload: DispatchPayload, settings: 
         },
         "dispatch_deadline": {"seconds": spec.deadline_s},
     }
-    client.create_task(parent=parent, task=task)
+    client.create_task(request={"parent": parent, "task": task})

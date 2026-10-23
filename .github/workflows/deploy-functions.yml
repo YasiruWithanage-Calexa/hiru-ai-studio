@@ -1,0 +1,94 @@
+name: Deploy functions
+
+# One Cloud Run function (gen2) per folder in src/services/. A function deploys when its own
+# folder or the shared `contracts` package changed (pattern from PromptMotion's workflow).
+# Each zip holds ONLY the service folder + `contracts`: that is the isolation rule made physical.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/services/**"
+      - "src/libs/contracts/**"
+      - ".github/workflows/deploy-functions.yml"
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options: [staging, prod]
+        default: staging
+      all:
+        description: Deploy every function, changed or not
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.pick.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: pick
+        name: Pick changed functions
+        run: |
+          set -euo pipefail
+          # name | source folder | memory | timeout(s)  — timeout must equal task_manager.FunctionSpec.deadline_s
+          ALL='[
+            {"name":"hiru-echo","src":"src/services/echo","memory":"256Mi","timeout":60},
+            {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":540}
+          ]'
+          before="${{ github.event.before }}"
+          if [[ "${{ inputs.all }}" == "true" || -z "$before" || "$before" =~ ^0+$ ]] \
+             || ! git cat-file -e "${before}^{commit}" 2>/dev/null; then
+            echo "matrix=$(jq -c . <<<"$ALL")" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          changed=$(git diff --name-only "$before" "${{ github.sha }}")
+          if grep -qE '^(src/libs/contracts/|\.github/workflows/deploy-functions\.yml)' <<<"$changed"; then
+            echo "matrix=$(jq -c . <<<"$ALL")" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          pick=$(jq -c --arg c "$changed" '[.[] | select(. as $f | ($c | split("\n") | any(startswith($f.src + "/"))))]' <<<"$ALL")
+          echo "matrix=$pick" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: plan
+    if: needs.plan.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'staging' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        fn: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SA }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Bundle (service + contracts only)
+        run: |
+          mkdir -p build
+          cp -r "${{ matrix.fn.src }}/." build/
+          cp -r src/libs/contracts build/contracts
+          find build -name '__pycache__' -prune -exec rm -rf {} +
+
+      - name: Deploy
+        run: |
+          gcloud functions deploy "${{ matrix.fn.name }}" \
+            --gen2 --runtime python312 --region "${{ vars.GCP_REGION }}" \
+            --source build --entry-point handle --trigger-http \
+            --no-allow-unauthenticated --ingress-settings internal-only \
+            --service-account "${{ vars.GCP_FUNCTIONS_SA }}" \
+            --memory "${{ matrix.fn.memory }}" --timeout "${{ matrix.fn.timeout }}s" \
+            --set-env-vars "SUPABASE__URL=${{ vars.SUPABASE_URL }}" \
+            --set-secrets "SUPABASE__SERVICE_ROLE_KEY=${{ vars.SECRET_PREFIX }}-supabase-service-role-key:latest,OPENAI__API_KEY=${{ vars.SECRET_PREFIX }}-openai-api-key:latest" \
+            --quiet

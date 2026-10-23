@@ -12,6 +12,7 @@ Ported from PromptMotion `api/routers/files.py` (commit 1d748dc). What is load-b
 from __future__ import annotations
 
 import logging
+from collections.abc import AsyncIterator
 from typing import Annotated
 
 import httpx
@@ -70,7 +71,7 @@ async def serve(
     out["Content-Disposition"] = f'attachment; filename="{_safe_name(dl)}"' if dl else "inline"
     out["X-Content-Type-Options"] = "nosniff"
 
-    async def body():  # type: ignore[no-untyped-def]
+    async def body() -> AsyncIterator[bytes]:
         try:
             async for chunk in resp.aiter_bytes(_CHUNK):
                 yield chunk

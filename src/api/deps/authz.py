@@ -64,7 +64,8 @@ def require_permission(
     ) -> ProductionAccess:
         access = await resolve_access(user, production_id, repos)
         if permission not in access.permissions:
-            raise HTTPException(status.HTTP_403_FORBIDDEN, "Your role on this production does not allow this.")
+            raise HTTPException(status.HTTP_403_FORBIDDEN,
+                                "Your role on this production does not allow this.")
         return access
 
     dependency.__name__ = f"require_{permission.value}"

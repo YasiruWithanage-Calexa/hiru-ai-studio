@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 from typing import Any, cast
 from uuid import UUID
 
@@ -12,8 +13,18 @@ from api.repositories import Repos, Row
 _logger = logging.getLogger(__name__)
 
 
+def _rows(data: Any) -> list[Row]:
+    """supabase-py types `.data` as any JSON value; every query here returns a list of rows."""
+    return cast(list[Row], data or [])
+
+
+def _first(data: Any) -> Row | None:
+    rows = _rows(data)
+    return rows[0] if rows else None
+
+
 def _one(data: Any) -> Row:
-    rows = cast(list[Row], data or [])
+    rows = _rows(data)
     if not rows:
         raise LookupError("no row returned")
     return rows[0]
@@ -27,15 +38,15 @@ class _Base:
 class SupabaseProfiles(_Base):
     async def get(self, user_id: UUID) -> Row | None:
         res = await self.db.table("profiles").select("*").eq("id", str(user_id)).limit(1).execute()
-        return res.data[0] if res.data else None
+        return _first(res.data)
 
     async def get_by_email(self, email: str) -> Row | None:
         res = await self.db.table("profiles").select("*").eq("email", email.lower()).limit(1).execute()
-        return res.data[0] if res.data else None
+        return _first(res.data)
 
     async def list(self) -> list[Row]:
         res = await self.db.table("profiles").select("*").order("display_name").execute()
-        return cast(list[Row], res.data)
+        return _rows(res.data)
 
     async def update(self, user_id: UUID, fields: Row) -> Row:
         res = await self.db.table("profiles").update(fields).eq("id", str(user_id)).execute()
@@ -55,7 +66,7 @@ class SupabaseProfiles(_Base):
 class SupabaseProductions(_Base):
     async def list_all(self) -> list[Row]:
         res = await self.db.table("productions").select("*").order("updated_at", desc=True).execute()
-        return cast(list[Row], res.data)
+        return _rows(res.data)
 
     async def list_for_member(self, user_id: UUID) -> list[tuple[Row, str]]:
         res = (
@@ -64,12 +75,12 @@ class SupabaseProductions(_Base):
             .eq("user_id", str(user_id))
             .execute()
         )
-        pairs = [(r["productions"], r["role"]) for r in res.data or [] if r.get("productions")]
+        pairs = [(r["productions"], r["role"]) for r in _rows(res.data) if r.get("productions")]
         return sorted(pairs, key=lambda p: p[0]["updated_at"], reverse=True)
 
     async def get(self, production_id: UUID) -> Row | None:
         res = await self.db.table("productions").select("*").eq("id", str(production_id)).limit(1).execute()
-        return res.data[0] if res.data else None
+        return _first(res.data)
 
     async def create(self, fields: Row) -> Row:
         res = await self.db.table("productions").insert(fields).execute()
@@ -90,7 +101,8 @@ class SupabaseMembers(_Base):
             .limit(1)
             .execute()
         )
-        return res.data[0]["role"] if res.data else None
+        row = _first(res.data)
+        return row["role"] if row else None
 
     async def list(self, production_id: UUID) -> list[Row]:
         res = (
@@ -100,7 +112,7 @@ class SupabaseMembers(_Base):
             .execute()
         )
         out = []
-        for r in res.data or []:
+        for r in _rows(res.data):
             p = r.get("profiles") or {}
             out.append({"user_id": r["user_id"], "role": r["role"],
                         "display_name": p.get("display_name", ""), "email": p.get("email", ""),
@@ -146,7 +158,7 @@ class SupabaseInvitations(_Base):
             .order("created_at", desc=True)
             .execute()
         )
-        return cast(list[Row], res.data)
+        return _rows(res.data)
 
 
 class SupabaseAuthAdmin(_Base):
@@ -188,7 +200,7 @@ class SupabaseJobs(_Base):
 
     async def get(self, job_id: UUID) -> Row | None:
         res = await self.db.table("jobs").select("*").eq("id", str(job_id)).limit(1).execute()
-        return res.data[0] if res.data else None
+        return _first(res.data)
 
     async def mark_failed(self, job_id: UUID, error: str) -> None:
         await self.db.table("jobs").update({"status": "failed", "error": error}).eq(
@@ -204,7 +216,83 @@ class SupabaseJobs(_Base):
             .order("seq")
             .execute()
         )
-        return cast(list[Row], res.data)
+        return _rows(res.data)
+
+
+class SupabaseDocuments(_Base):
+    async def create(self, fields: Row) -> Row:
+        res = await self.db.table("documents").insert(fields).execute()
+        return _one(res.data)
+
+    async def get(self, production_id: UUID, document_id: UUID) -> Row | None:
+        res = (await self.db.table("documents").select("*").eq("id", str(document_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def find_by_hash(self, production_id: UUID, sha256: str) -> Row | None:
+        res = (await self.db.table("documents").select("*").eq("production_id", str(production_id))
+               .eq("sha256", sha256).limit(1).execute())
+        return _first(res.data)
+
+    async def list(self, production_id: UUID) -> list[Row]:
+        res = (await self.db.table("documents").select("*").eq("production_id", str(production_id))
+               .order("created_at", desc=True).execute())
+        return _rows(res.data)
+
+    async def update(self, document_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("documents").update(fields).eq("id", str(document_id)).execute()
+        return _one(res.data)
+
+    async def delete(self, document_id: UUID) -> None:
+        await self.db.table("documents").delete().eq("id", str(document_id)).execute()
+
+
+class SupabaseStorage(_Base):
+    async def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None:
+        await self.db.storage.from_(bucket).upload(path, data, {"content-type": content_type})
+
+    async def remove(self, bucket: str, path: str) -> None:
+        await self.db.storage.from_(bucket).remove([path])
+
+
+def _vector(values: list[float] | None) -> str | None:
+    """pgvector's text form; PostgREST passes it straight to the vector parameter."""
+    return None if values is None else "[" + ",".join(f"{v:.7g}" for v in values) + "]"
+
+
+class SupabaseSearch(_Base):
+    async def match_chunks(self, *, query_text: str, query_embedding: list[float] | None,
+                           production_id: UUID | None, corpora: list[str],
+                           document_ids: list[UUID] | None, match_count: int) -> list[Row]:
+        res = await self.db.rpc("match_chunks", {
+            "query_text": query_text,
+            "query_embedding": _vector(query_embedding),
+            "p_production_id": str(production_id) if production_id else None,
+            "p_corpora": corpora,
+            "p_document_ids": [str(d) for d in document_ids] if document_ids is not None else None,
+            "match_count": match_count,
+        }).execute()
+        return _rows(res.data)
+
+    async def match_techniques(self, *, query_text: str, query_embedding: list[float] | None,
+                               domain: str, categories: list[str] | None, match_count: int) -> list[Row]:
+        res = await self.db.rpc("match_craft_techniques", {
+            "query_text": query_text, "query_embedding": _vector(query_embedding),
+            "match_domain": domain, "match_categories": categories, "match_count": match_count,
+        }).execute()
+        return _rows(res.data)
+
+
+class SupabaseUsage(_Base):
+    async def record(self, row: Row) -> None:
+        try:
+            await self.db.table("token_usage").insert(row).execute()
+        except Exception:
+            _logger.exception("token usage write failed phase=%s", row.get("phase"))
+
+    async def tokens_since(self, since: datetime) -> int:
+        res = await self.db.rpc("token_usage_since", {"since": since.isoformat()}).execute()
+        return int(cast(int, res.data or 0))
 
 
 async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
@@ -217,4 +305,8 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         auth_admin=SupabaseAuthAdmin(db),
         audit=SupabaseAudit(db),
         jobs=SupabaseJobs(db),
+        documents=SupabaseDocuments(db),
+        storage=SupabaseStorage(db),
+        search=SupabaseSearch(db),
+        usage=SupabaseUsage(db),
     )

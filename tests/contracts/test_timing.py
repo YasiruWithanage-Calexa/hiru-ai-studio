@@ -1,5 +1,7 @@
 """Timing rules. The first block mirrors the frontend's `src/lib/veo/timing.test.ts` case for
 case, so the Director panel and the server can never disagree about where a line overruns."""
+import itertools
+
 import pytest
 
 from contracts.timing import (
@@ -61,7 +63,7 @@ def test_default_beats_cover_shot(duration):
     beats = default_beats(duration)
     assert beats[0][0] == 0
     assert beats[-1][1] == duration
-    for prev, cur in zip(beats, beats[1:], strict=False):
+    for prev, cur in itertools.pairwise(beats):
         assert cur[0] == prev[1]
 
 

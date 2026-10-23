@@ -348,7 +348,7 @@ Two layers:
 **Enforcement**
 1. **API**: one permission table in `contracts/roles.py`; routes declare
    `require_permission(Permission.EDIT_SCRIPT)` or `require_admin`. Tested as a full matrix.
-2. **Postgres RLS**: SQL helpers `is_admin()`, `production_role(production_id)`,
+2. **Postgres RLS**: SQL helpers `is_admin()`, `my_production_role(production_id)`,
    `can_view_production(production_id)` (SECURITY DEFINER, stable). Reads: a user sees a
    production's rows only if they are an admin or a member of it (this protects Realtime and
    direct supabase-js reads). Writes: **the browser writes nothing directly**; every write goes
@@ -420,7 +420,8 @@ All under `/v1`. Long work returns `{job_id}`; progress through Realtime on `job
 
 Each step is a separate PR that you review before the next one starts.
 
-**Phase 0 — Foundations**
+**Phase 0 — Foundations** — *built and verified locally 2026-10-23; not yet deployed (needs the
+GCP + Supabase projects, README "First deploy").*
 1. Repo scaffold, lint/type/test tooling, `CLAUDE.md`, `.env.example`.
 2. `libs/contracts` v1: production hierarchy, roles, jobs, Veo/timing rules (ported + tested).
 3. Supabase migrations: profiles (workspace role), invitations, productions, production
@@ -430,7 +431,8 @@ Each step is a separate PR that you review before the next one starts.
 5. Task dispatch (`task_manager`, local + Cloud Tasks), `jobs` + `job_events` + Realtime.
 6. Terraform for the GCP project, CI, staging deploy of the API.
 
-**Phase 1 — Documents and RAG**
+**Phase 1 — Documents and RAG** — *built and verified locally 2026-10-23 (keyword mode; the
+hybrid mode needs an OpenAI key to measure). See IMPLEMENTED.md.*
 7. Storage buckets + upload endpoint; `doc_ingest` (extract, role detection, chunk, header, embed).
 8. `chunks` table, `match_chunks` hybrid RPC, reranker, citations.
 9. Craft corpus + `craft_techniques` ingest; `eval_retrieval.py` with Hiru probes; set thresholds.

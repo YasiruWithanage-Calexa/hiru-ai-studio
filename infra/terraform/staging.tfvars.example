@@ -1,0 +1,11 @@
+# Copy to staging.tfvars (gitignored) and fill in:
+#   terraform init -backend-config="bucket=<project_id>-tfstate"
+#   terraform workspace new staging   # one workspace per environment
+#   terraform apply -var-file=staging.tfvars
+project_id          = "hiru-ai-studio"
+environment         = "staging"
+region              = "asia-south1"
+github_repository   = "withanageyasiru/hiru-ai-studio"
+supabase_url        = "https://<ref>.supabase.co"
+cors_origins        = "https://staging.studio.example"
+invite_redirect_url = "https://staging.studio.example/auth/accept"

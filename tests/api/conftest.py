@@ -22,6 +22,9 @@ def _settings(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     monkeypatch.setenv("SUPABASE__JWT_SECRET", JWT_SECRET)
     monkeypatch.setenv("SUPABASE__SERVICE_ROLE_KEY", "service-role-key-for-tests")
     monkeypatch.setenv("LOCAL_FUNCTIONS", "true")
+    # Tests never call OpenAI: an empty key here overrides a real one in .env. Tests that need
+    # the AI path install a fake client (tests/api/test_search.py::with_ai).
+    monkeypatch.setenv("OPENAI__API_KEY", "")
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()

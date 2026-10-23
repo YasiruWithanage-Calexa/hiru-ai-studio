@@ -154,7 +154,7 @@ as $$
   select exists (select 1 from public.profiles p where p.id = auth.uid() and p.active);
 $$;
 
-create or replace function public.production_role(target uuid)
+create or replace function public.my_production_role(target uuid)
 returns public.production_role
 language sql stable security definer
 set search_path = ''
@@ -170,16 +170,16 @@ returns boolean
 language sql stable security definer
 set search_path = ''
 as $$
-  select public.is_admin() or public.production_role(target) is not null;
+  select public.is_admin() or public.my_production_role(target) is not null;
 $$;
 
 revoke all on function public.is_admin() from public, anon;
 revoke all on function public.is_active_user() from public, anon;
-revoke all on function public.production_role(uuid) from public, anon;
+revoke all on function public.my_production_role(uuid) from public, anon;
 revoke all on function public.can_view_production(uuid) from public, anon;
 grant execute on function public.is_admin() to authenticated;
 grant execute on function public.is_active_user() to authenticated;
-grant execute on function public.production_role(uuid) to authenticated;
+grant execute on function public.my_production_role(uuid) to authenticated;
 grant execute on function public.can_view_production(uuid) to authenticated;
 
 -- ── new user → profile + invitations ─────────────────────────────────────────────────────
