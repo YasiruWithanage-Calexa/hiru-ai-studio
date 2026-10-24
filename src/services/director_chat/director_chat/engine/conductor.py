@@ -71,9 +71,14 @@ lane:
 
 Operations (unused fields null): set {shot, field: framing|sound_mode|title, value};
 retime {shot, seconds: 4|6|8}; split {shot, at_block, framing?, title?}; merge {shot} (with the
-next); regroup {shot, end_block} (move the cut after it); set_join {shot, link: cut|continuous|match};
+next); regroup {shot, end_block} (move the cut after it); set_join {shot, link: cut|continuous|match}
+(how THIS shot joins the shot before it: "shot 4 carries on from shot 3" is set_join on shot 4);
 beat.set {shot, beat: 0-2, field: camera|director_line|action, value}; insert {after_shot (0 = first),
 description, framing?, title?} for a reaction or insert shot; remove {shot}; set_envelope {seconds}.
+Values are codes, never descriptions: framing WIDE|MS|MCU|CU|TWO|OTS|INSERT; sound_mode
+dialogue|voiceover|sung|ambient|music_only|silent (radio, room tone or birds with no score is
+ambient). A shot with spoken lines keeps a spoken sound mode. One operation per change asked for:
+"a close-up and six seconds" is two operations.
 
 Dialogue is the approved script and cannot be changed here; a request to change words is chat
 (tell them to use the script editor).

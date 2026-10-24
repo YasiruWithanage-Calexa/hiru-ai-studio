@@ -45,6 +45,9 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
     # Added as each engine lands (PLAN.md §13).
 }
 
+# Synchronous functions: called directly by the API (not through Cloud Tasks) and streamed.
+DIRECTOR_CHAT = FunctionSpec("hiru-director-chat", 8206, 300)
+
 
 def function_url(spec: FunctionSpec, settings: Settings) -> str:
     if settings.local_functions:

@@ -65,12 +65,19 @@ in a new `plan/<date>/` folder.
 
 ## Conventions
 - Settings via `get_settings()` only (`lru_cache`); nested env vars use `__`.
-- **Hosted dev DB** (`dwivfkavmtjzhypqswze`) is managed by hand from [Database/](Database/README.md):
-  `schema_v1.sql` is the full schema, run in the SQL Editor; the user edits data there directly.
-  A structural change goes in two places in the same step: a new `Database/changes/NNN_<what>.sql`
-  (the user runs it) and a migration (local stack + tests). Keep the two equivalent; fold the changes
-  into the next `schema_vN.sql` when they pile up. Never run SQL against the hosted project myself
-  unless the user asks.
+- **The hosted project `dwivfkavmtjzhypqswze` is the ONE dev database** (the user's decision,
+  2026-10-24): the API, functions, frontend and scripts point at it. The local Supabase stack is
+  only a throwaway database for `supabase test db`, schema verification and CI; never treat it as
+  where dev data lives, and stop it after use. Smoke scripts write test data to the hosted
+  project, so ask before running them.
+- **Hosted dev DB** is managed by hand from [Database/](Database/README.md):
+  each `schema_vN.sql` is the WHOLE schema at version N (the user runs it on an empty project), and
+  `upgrade_v(N-1)_to_vN.sql` moves an existing project up one version. No per-change files
+  (the user's rule). A structural change is a migration (local stack + tests) AND goes into the
+  next version's pair, in final form (policies and indexes next to their tables); while that
+  version is unreleased, fold further changes into the same pair. Verify by dumping
+  `public,storage` from the migration-built DB, from vN loaded into an empty DB, and from v(N-1) +
+  upgrade: all three must match. Never run SQL against the hosted project myself unless the user asks.
 - Migrations: new timestamped file in `supabase/migrations/`; never edit one that has been
   applied to staging or prod (none has been yet).
 - Before finishing a step: `ruff check src tests scripts`, `mypy` (and per service, as in CI),

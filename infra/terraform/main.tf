@@ -127,6 +127,14 @@ resource "google_project_iam_member" "tasks_invoke_run" {
   member  = "serviceAccount:${google_service_account.tasks_invoker.email}"
 }
 
+# The director chat is synchronous and streamed: the API calls that function itself (not through
+# Cloud Tasks) with an ID token minted for its own identity.
+resource "google_project_iam_member" "api_invokes_functions" {
+  project = var.project_id
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.api.email}"
+}
+
 resource "google_project_iam_member" "observability" {
   for_each = toset([
     "serviceAccount:${google_service_account.api.email}",

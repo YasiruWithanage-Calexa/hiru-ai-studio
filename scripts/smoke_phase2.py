@@ -100,8 +100,8 @@ def main(admin_email: str, admin_password: str) -> None:
           stages["read"] == "done" and stages["canon"] == "done" and stages["episodes"] == "active", stages)
     canon = writer.get(f"{base}/canon").json()
     codes = {c["code"]: c for c in canon}
-    check("canon extracted with the index codes", {"C01", "C02", "C03", "C04", "L01", "L02", "L03", "P01"} <= set(codes),
-          sorted(codes))
+    check("canon extracted with the index codes",
+          {"C01", "C02", "C03", "C04", "L01", "L02", "L03", "P01"} <= set(codes), sorted(codes))
     check("voice pin from the index", codes["C01"]["current"]["voice_pin"].startswith("low, clipped female voice"),
           codes["C01"]["current"])
     questions = writer.get(f"{base}/questions?status=open").json()
@@ -126,7 +126,8 @@ def main(admin_email: str, admin_password: str) -> None:
 
     eps = writer.get(f"{base}/episodes").json()
     by_no = {e["number"]: e for e in eps}
-    check("episodes 1-4 from the outline and 5 from the answered script", sorted(by_no) == [1, 2, 3, 4, 5], sorted(by_no))
+    check("episodes 1-4 from the outline and 5 from the answered script", sorted(by_no) == [1, 2, 3, 4, 5],
+          sorted(by_no))
     check("episode 1 has 6 scenes with shots", by_no[1]["scenes"] == 6 and by_no[1]["shots"] >= 12
           and by_no[1]["openable"], by_no[1])
     check("episode 1 title from the script", by_no[1]["title"] == "The Return", by_no[1])
@@ -150,8 +151,9 @@ def main(admin_email: str, admin_password: str) -> None:
 
     r = producer.post(f"{base}/build")
     check("rebuild starts", r.status_code == 202, r.text)
-    view = wait_for(writer, f"{base}/build", lambda v: v["job_id"] != job_id and v["status"] in ("done", "failed",
-                                                                                                "waiting_input"), seconds=1500)
+    view = wait_for(writer, f"{base}/build",
+                    lambda v: v["job_id"] != job_id and v["status"] in ("done", "failed", "waiting_input"),
+                    seconds=1500)
     check("rebuild finishes without new questions", view["status"] == "done", view)
     c01_after = writer.get(f"{base}/canon/{c01['id']}").json()
     check("the locked item kept the person's version", c01_after["current_version"] == 2

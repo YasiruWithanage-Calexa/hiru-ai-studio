@@ -49,7 +49,8 @@ class Store:
                                                      "select": "id,name,initials,specialty,style_note,charter"})
 
     def messages(self, thread_id: UUID, limit: int = 12) -> list[Row]:
-        rows = self.rest.select("chat_messages", {"thread_id": f"eq.{thread_id}", "select": "kind,speaker,text,blocks",
+        rows = self.rest.select("chat_messages", {"thread_id": f"eq.{thread_id}",
+                                                  "select": "id,kind,speaker,text,blocks",
                                                   "order": "created_at.desc", "limit": str(limit)})
         return rows[::-1]
 

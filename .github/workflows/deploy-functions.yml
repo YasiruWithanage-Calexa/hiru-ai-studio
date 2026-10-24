@@ -44,7 +44,8 @@ jobs:
             {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":540},
             {"name":"hiru-script-split","src":"src/services/script_split","memory":"512Mi","timeout":900},
             {"name":"hiru-structure-build","src":"src/services/structure_build","memory":"1Gi","timeout":900},
-            {"name":"hiru-canon-extract","src":"src/services/canon_extract","memory":"1Gi","timeout":600}
+            {"name":"hiru-canon-extract","src":"src/services/canon_extract","memory":"1Gi","timeout":600},
+            {"name":"hiru-director-chat","src":"src/services/director_chat","memory":"512Mi","timeout":300}
           ]'
           before="${{ github.event.before }}"
           if [[ "${{ inputs.all }}" == "true" || -z "$before" || "$before" =~ ^0+$ ]] \

@@ -1,5 +1,5 @@
 # Start every Cloud Run function locally with functions-framework, one window each.
-# Ports must match api/workers/task_manager.FUNCTIONS. Run from the repo root:
+# Ports must match api/workers/task_manager (FUNCTIONS, and DIRECTOR_CHAT for the streamed chat). Run from the repo root:
 #   powershell -File scripts\start-functions.ps1
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
@@ -10,7 +10,8 @@ $functions = @(
     @{ Name = "hiru-doc-ingest"; Source = "src\services\doc_ingest"; Port = 8202 },
     @{ Name = "hiru-script-split"; Source = "src\services\script_split"; Port = 8203 },
     @{ Name = "hiru-structure-build"; Source = "src\services\structure_build"; Port = 8204 },
-    @{ Name = "hiru-canon-extract"; Source = "src\services\canon_extract"; Port = 8205 }
+    @{ Name = "hiru-canon-extract"; Source = "src\services\canon_extract"; Port = 8205 },
+    @{ Name = "hiru-director-chat"; Source = "src\services\director_chat"; Port = 8206 }
 )
 
 # Functions read SUPABASE__* from the environment; load them from .env.

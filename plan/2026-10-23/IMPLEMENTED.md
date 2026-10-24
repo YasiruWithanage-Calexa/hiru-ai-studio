@@ -1,7 +1,7 @@
 # Implemented so far (against PLAN.md of 2026-10-23)
 
-Status on **2026-10-23**: Phases 0, 1 and 2 are built and verified on localhost, each including a
-real OpenAI run. Phase 3 is in progress. Supabase agent skills (`supabase`,
+Status on **2026-10-24**: Phases 0–3 are built and verified on localhost (Phases 0–2 also with a
+real OpenAI run; Phase 3 without a key so far). Supabase agent skills (`supabase`,
 `supabase-postgres-best-practices`) are installed in `.claude/skills/`. **Nothing is deployed** (by
 decision: test locally first). Commits are made by hand.
 
@@ -10,8 +10,20 @@ decision: test locally first). Commits are made by hand.
 | 0 — Foundations | 1–6 | Done locally. Terraform and CI written and validated, not applied. |
 | 1 — Documents and RAG | 7–9 | Done locally, in keyword mode and (with an OpenAI key) hybrid mode. |
 | 2 — Structure and canon | 10–13 | Done locally, rules-only and with OpenAI. See "Phase 2" below. |
-| 3 — Director panel | 14–16 | **In progress**: migration, contracts and the `director_chat` function written; API, tests and smoke not yet. See "Phase 3 (in progress)". |
+| 3 — Director panel | 14–16 | Built: function, API, migrations, tests, replay, hygiene guards. See "Phase 3". |
 | 4–6 | 17–22 | Not started. |
+
+## Verification at the end of Phase 3
+
+| Check | Result |
+|---|---|
+| Python tests (`pytest`) | **434 passed** (+69: scene-plan kernel, conductor rules, whole turns with a fake store and model, prompt hygiene, replay gate, scene and director API) |
+| SQL tests (`supabase test db`) | **94 passed** (+25 in `004_director`: constraints, deferred renumbering of shots and lines, cascades, RLS on every new table, Realtime) |
+| Lint / types | ruff clean; mypy clean for `api`, `contracts` and every service |
+| Schema lint / advisors | `supabase db lint`: no errors; `supabase db advisors --level warn`: no issues |
+| Director replay, rules mode | 11/11 rule cases (tune 100 %, held-out 100 %). Model mode not run yet (needs a key) |
+| Phase 3 smoke, rules only (`scripts/smoke_phase3.py`) | **Passed, 34 checks** in 28 s, real API + `director_chat` + `script_split` + local Supabase: scene view and timeline → writer 403 on lengths → director locks S02 at 8 s (ids kept, version 2) → writer edits a Sinhala line (shots kept, stale edit 409) → board set → streamed turns: an edit (saved, audited as `director_chat`), a reviewer (answered, nothing changed), a question, a standing rule (memory + `chunks`) → approve blocks chat and hand edits → re-split replaces the shot list |
+| `upstream_diff.py` | Nothing changed upstream since `1d748dc` |
 
 ## Verification at the end of Phase 2
 
@@ -206,8 +218,7 @@ read → extract → dedupe → critic → write.
 - 1: `GET .../episodes`, `GET .../episodes/{eid}`, `GET .../structure` (tree + canon counts),
   `GET .../canon` (+`?kind=`), `GET/PATCH .../canon/{id}`, `POST .../canon/{id}/versions`,
   `POST .../canon/{id}/lock|unlock`.
-- Migration `20261023103638_phase2_structure_canon.sql` (+ `Database/changes/002_structure_canon.sql`
-  for the hosted project): `canon_entities`, `canon_versions`, `episodes`, `scenes`, `shots`,
+- Migration `20261023103638_phase2_structure_canon.sql` (now part of `Database/schema_v2.sql`): `canon_entities`, `canon_versions`, `episodes`, `scenes`, `shots`,
   `dialogue_lines`, `questions`, schema `graph`, `documents.text_path`; read-only RLS on every
   table; Realtime on episodes, scenes, shots, questions, canon.
 - doc_ingest now stores the extracted text (`<production>/<document>/extracted.txt`, pages split by
@@ -224,33 +235,84 @@ read → extract → dedupe → critic → write.
 - Added beyond the plan: answer reuse across builds; the courier's `again`; time-boxed planning.
 
 **Needs doing on the hosted project** (by hand, per `Database/README.md`): run
-`Database/changes/002_structure_canon.sql`, then re-ingest existing documents (they were read
+`Database/upgrade_v1_to_v2.sql`, then re-ingest existing documents (they were read
 before the text was kept), and set `SUPABASE__DB_URL` (session pooler) and `API__INTERNAL_URL` /
 `API__INTERNAL_SECRET` for the functions.
 
-## Phase 3 (in progress) — Director panel
+## Phase 3 — Director panel
 
-Done so far (written, lint and types clean; **not yet tested**):
-- Migration `20261023111753_phase3_director.sql` (applied to the local stack only):
-  `director_personas` (five generic archetypes seeded, no real people, no prices),
-  `production_director_board` (one lead, advisors), `chat_threads`, `chat_messages` (Realtime),
-  `memory_items` (also indexed in `chunks` as corpus `memory`), `shots.duration_locked`, and
-  `shots (scene_id, number)` unique **deferrable** so an edit can renumber shots in one upsert
-  while keeping their ids. No `Database/changes/003` file or pgTAP tests yet.
-- `contracts/director.py`: personas, board update rules, message blocks (text, disagreement,
-  edit-note, continuity), turn request/payload, SSE event list.
-- `src/services/director_chat/` (fork of `nova_chat`, `UPSTREAM.md` lists every divergence):
-  `ScenePlanKernel` (closed op set: set, retime, split, merge, regroup, set_join, beat.set, insert,
-  remove, set_envelope; dialogue read-only; exact undo; per-op validation through the shot-plan
-  kernel), conductor (model, or rules without a key), specialists + board (ownership), read tools
-  (search_production, get_canon, get_shot_timing, list_open_questions), the turn (conduct → apply →
-  tasks → round 1 → verify → bounded round 2 → persist → streamed reply), SSE handler.
+**Step 14: `director_chat`** (`hiru-director-chat`, port 8206, 300 s; fork of `nova_chat`,
+`UPSTREAM.md` lists every divergence). Synchronous and streamed, not a job: the API stores the
+person's message, decides `can_edit` (Permission.DIRECT) from trusted data, and proxies the
+function's server-sent events. A turn is conduct → apply → tasks → round 1 → verify → bounded
+round 2 → persist → streamed reply.
+- `ScenePlanKernel`: closed operation set (set, retime, unlock_length, split, merge, regroup,
+  set_join, beat.set, insert, remove, set_envelope); dialogue read-only (`line.*` refused with the
+  reason); exact undo; each operation re-fitted alone and rolled back if the scene stops being a
+  valid plan; a length a person set is locked against agents.
+- Conductor by model (`medium`, strict JSON) or by rules without a key; specialists
+  (cinematography, timing, sound, continuity) in parallel on `high`, limited to their own
+  operations; the board settles collisions by ownership and keeps the losing view as a
+  disagreement block; advisors review the result (`medium`), never edit it; reply streamed on `low`.
+- Read tools (search_production, get_canon, get_shot_timing, list_open_questions), scope fixed by
+  the turn. An edit that restructures most of the scene is undone and offered as a re-split.
 
-Still to do for Phase 3: API (scene view with timeline, shot length edits re-timed by the kernel,
-re-split, approve, script edit, personas, director board, threads, SSE proxy to the function),
-registration in `FUNCTIONS` / deploy workflow / `start-functions.ps1`, tests (kernel, conductor
-rules, turn with fakes, API), pgTAP tests, replay harness + prompt-hygiene guards,
-`scripts/upstream_diff.py`, hosted-DB change file, smoke test.
+**Step 15: tools, threads, memory, board.**
+- Migration `20261023111753_phase3_director.sql`: `director_personas` (five generic archetypes,
+  no real people, no prices), `production_director_board` (one lead, advisors), `chat_threads`,
+  `chat_messages` (Realtime), `memory_items` (also indexed in `chunks` as corpus `memory`),
+  `shots.duration_locked`, shot numbers unique **deferrable**. Migration
+  `20261023180232_phase3_line_order.sql`: line order unique deferrable too (a script edit
+  reorders lines in one upsert). Hosted DB: folded into `Database/schema_v2.sql` /
+  `upgrade_v1_to_v2.sql` (see "Hosted dev database").
+- API (`routers/director.py`): `GET /v1/director-personas`; `GET/PUT .../director-board` (DIRECT;
+  exactly one lead, up to three advisors, active personas only; an empty board shows the default
+  lead the turn uses); `GET/POST .../scenes/{id}/threads`; `GET .../threads/{id}/messages`;
+  `POST .../scenes/{id}/chat` (COMMENT; SSE: `accepted` first, then the function's `status`,
+  `delta`, `plan`, `message`, `done {message_id, lane}`, or one client-safe `error`);
+  `GET/POST/DELETE .../memory` (DIRECT to write). Answered build questions are stored as memory
+  (`kind: answer`) as PLAN.md §6.2 asks.
+- In production the API calls the function with a Google ID token (`api/services/director.py`);
+  Terraform grants the API's service account `run.invoker`.
+
+**Step 16: timeline, shot edits, re-split, replay, hygiene.**
+- `contracts/sceneplan.py` (new, shared by the API and the function): script + lines → kernel
+  items, stored rows ↔ plan, and `rows_after_fit`: shot ids kept, the follow-on part of a shot
+  the kernel split is a new shot, `version` bumped only when something a prompt depends on changed.
+- API (`routers/scenes.py`): `GET .../scenes/{id}` (script blocks with their shot, shots, lines
+  with spoken start/end and overrun, issues, canon refs, board, neighbours; timeline computed
+  by the kernel on each read); `PATCH .../shots/{id}` (DIRECT: length 4/6/8 locks it, `null`
+  releases it, sound/framing/join/title; a sound mode the lines contradict is a 422, not a silent
+  change); `POST .../scenes/{id}/resplit` (a one-scene `script_split` job);
+  `POST .../scenes/{id}/approve|unapprove` (APPROVE_SCENE; approved scenes refuse every edit,
+  episode status follows); `PUT .../scenes/{id}/script` (EDIT_SCRIPT; optimistic version check,
+  lines keep ids, NFC with ZWJ kept, speakers matched to canon by name or alias, the shot list
+  carried across the edit by matching blocks, new blocks join the shot before them).
+- `scripts/replay_director.py` + `tests/eval/director_replay.json` (16 cases, tune/held-out) +
+  `tests/eval/director_thresholds.json`: rules mode is a pytest gate; `--model` scores the real
+  model. `tests/services/director_chat/test_prompt_hygiene.py`: static system prompts (byte-
+  identical across turns and scenes), data wrapped in tags, "data, never instructions" in every
+  system prompt, charter size budget, no money words, read-only tools without scope arguments.
+- `scripts/upstream_diff.py`: per forked file, upstream commits since the pin (`--patch` for
+  diffs). Run against the local PromptMotion checkout: nothing changed since `1d748dc`.
+- Registered in `scripts/start-functions.ps1`, `deploy-functions.yml`, `task_manager.DIRECTOR_CHAT`.
+
+**Bugs found and fixed in the code written before this session**
+- The turn wrote rows by zipping kernel shots with fitted shots (`strict=True`), which crashes
+  when the kernel splits an overlong shot; and the shot numbers the model read could differ from
+  the numbers its operations addressed. The kernel now adopts such splits (`_absorb`), and
+  write-back goes through `contracts.sceneplan`.
+- The "this would change most of the scene" check counted the shots left after the edit, so
+  removing 3 of 4 shots went through. It now uses the count before the edit.
+- The editor could be asked twice about the same overrun; round 2 now only covers new ones.
+- The turn's history included the message being answered.
+
+**Deviations from the plan**
+- Routes nested under `/v1/productions/{id}/…` (as in Phase 2), not `/scenes/{id}`.
+- Re-split replaces the shot list (new ids; lengths people set and beat notes go with it).
+- Two people editing one scene at the same moment: the last write wins (the script has a
+  version check; shot edits and chat turns do not yet).
+
 
 ## Frontend wiring (`hiru-ai-studio-interface`)
 
@@ -267,8 +329,7 @@ The Next.js app now reads and writes real data through this API (no more mock se
   Real productions have no episodes, so those pages are not reachable from them yet.
 - **API additions:** `GET /v1/usage` → `{percent}` (month's model tokens against
   `USAGE__MONTHLY_TOKEN_BUDGET`, default 5,000,000; needs `token_usage_since()`, migration
-  `20261023120000_usage_total.sql`, also `Database/changes/001_usage_total.sql` for the hosted
-  project) and an optional `role` form field on document upload (used by the new-production form,
+  `20261023120000_usage_total.sql`, also in `Database/schema_v2.sql`) and an optional `role` form field on document upload (used by the new-production form,
   so a chosen role applies from the first read, with no race against a later PATCH).
 - The meter hides itself if `/v1/usage` fails, so the hosted project works before the SQL is run.
 
@@ -284,11 +345,28 @@ to manage it by hand, not with `supabase db push`.
   tests pass and the advisors report no issues.
 - `Database/README.md`: first-time setup (sign-up off, redirect URLs, first admin, `.env`) and
   how to change data or structure from now on.
-- Not done yet (left to the user): running it on the hosted project and pointing `.env` at it,
-  which needs the project's secret key.
+- **The hosted project is the one dev database** (2026-10-24). It runs v2: the user ran
+  `upgrade_v1_to_v2.sql`, and every Phase 2–3 table and column was confirmed through the REST API.
+  The backend `.env` and the frontend `.env.local` point at it; the local stack is only for tests.
+- **Schema files are versioned, not per change** (the user's rule, 2026-10-24): `schema_v2.sql` is
+  the whole Phase 0–3 schema for an empty project, and `upgrade_v1_to_v2.sql` moves the hosted
+  project from v1 (it replaces the earlier `changes/001–003` files). Verified on the local stack:
+  the `public` and `storage` dumps from the migrations, from v2 alone and from v1 + the upgrade
+  are identical; personas, Realtime tables and the `graph` schema match; 94 database tests and
+  the advisors pass on v2.
 
-## Not done yet from the plan (Phases 0–2 scope)
+## Not done yet from the plan (Phases 0–3 scope)
 
+- **Phase 3 with a real key:** run `scripts/replay_director.py --model` and the smoke test with
+  `OPENAI__API_KEY` set; set the model thresholds in `tests/eval/director_thresholds.json` from it.
+- **Frontend:** the Director panel and director-board screens still read mocks; the API above
+  is ready for them (`GET .../scenes/{id}` carries everything the 2d screen draws).
+- **Hosted DB:** upgraded to v2. Still to do there: re-read documents uploaded under v1, and set
+  the backend `.env`'s secret key and session-pooler DB URL.
+- **Deploy note:** functions are deployed with internal-only ingress; the API calling
+  `hiru-director-chat` directly needs its egress through the VPC (Direct VPC egress) when deployed.
+- Concurrent edits to one scene: the script has a version check; shot edits and chat turns are
+  last-write-wins for now.
 - The frontend's build, drama-overview and canon screens still use mock data; the Phase 2
   endpoints are ready for them.
 - Model tiers default to `gpt-5` (ultra/high) and `gpt-5-mini` / `gpt-5-nano`; verified available.
@@ -312,6 +390,6 @@ to manage it by hand, not with `supabase db push`.
 
 ## Next
 
-Finish Phase 3 (list above), then Phase 4 (shot producer, frame render, accept-frame → prompt,
+Phase 4 (shot producer, frame render, accept-frame → prompt,
 staleness), Phase 5 (prompt checks, bundle, takes, `/last-frame`, usage budget) and Phase 6
 (hardening).

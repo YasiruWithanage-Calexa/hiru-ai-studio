@@ -14,6 +14,7 @@ from api.repositories import Repos
 from api.routers import (
     build,
     canon,
+    director,
     documents,
     files,
     internal,
@@ -21,6 +22,7 @@ from api.routers import (
     me,
     members,
     productions,
+    scenes,
     search,
     structure,
     usage,
@@ -68,8 +70,8 @@ def create_app(repos: Repos | None = None) -> FastAPI:
     async def healthz() -> dict[str, str]:
         return {"status": "ok"}
 
-    for module in (me, members, productions, documents, search, build, structure, canon, jobs, usage, files,
-                   internal):
+    for module in (me, members, productions, documents, search, build, structure, canon, scenes, director, jobs,
+                   usage, files, internal):
         app.include_router(module.router)
     return app
 

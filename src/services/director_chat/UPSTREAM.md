@@ -8,7 +8,7 @@ since that commit in the files below.
 |---|---|---|
 | `engine/kernel.py` | `nova_chat/studio/ops.py` (PlanKernel) | Closed operation set; numbers resolved to handles once per batch; snapshot undo; each operation validated alone and rolled back on failure; `Change` records |
 | `engine/conductor.py` | `nova_chat/studio/engine.py` (CONDUCT step) | One cheap strict-JSON call picks the lane and transcribes the user's explicit edits as operations; tasks scoped to shots |
-| `engine/agents.py` | `nova_chat/studio/agents.py`, `studio/board.py` | Parallel specialists on scoped slices; `op_key` / `owner_of`; owner wins a collision and the rival is kept as a note |
+| `engine/agents.py` | `nova_chat/studio/agents.py`, `nova_chat/studio/board.py` | Parallel specialists on scoped slices; `op_key` / `owner_of`; owner wins a collision and the rival is kept as a note |
 | `engine/turn.py` | `nova_chat/studio/engine.py` (StudioTurnEngine) | conduct → apply → tasks → round 1 → verify → bounded round 2 → reply; reshape offered, never taken |
 | `app/handler.py` | `nova_chat/app/handler.py` | Synchronous streamed turn (SSE), API proxies frames; client-safe error text |
 
@@ -37,3 +37,13 @@ since that commit in the files below.
    (tiers from config). No credit pricing (the UI shows no costs); usage goes to `token_usage`.
 9. **Absent-safe.** Without a key the conductor reads explicit edits by rules and the reply is a
    template; the plan is still edited and re-timed by code.
+10. **The kernel adopts the timing kernel's splits.** A shot whose speech cannot fit the longest
+    rung is split by `contracts.shotplan` into a continuous follow-on; `ScenePlanKernel._absorb`
+    takes that split in after loading and after every operation, so the shot numbers a model
+    reads are the numbers its operations address. Upstream's plan has no such kernel.
+11. **Write-back is shared with the API.** Fitted shots go back to rows through
+    `contracts.sceneplan.rows_after_fit` (ids kept, the follow-on part of a split is a new shot,
+    `version` bumped only when something a prompt depends on changed), the same code the API
+    uses when a person edits a shot or the script.
+12. **The `done` event carries the lane** (`chat | edit | craft | reshape`), used by the replay
+    harness (`scripts/replay_director.py`) to score turns.

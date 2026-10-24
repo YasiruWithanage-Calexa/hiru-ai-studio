@@ -1,6 +1,7 @@
 """Supabase-backed repositories (supabase-py async client, service role)."""
 from __future__ import annotations
 
+import hashlib
 import logging
 from datetime import UTC, datetime
 from typing import Any, cast
@@ -347,13 +348,6 @@ class SupabaseScenes(_Base):
 
 
 class SupabaseShots(_Base):
-    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
-        q = self.db.table("shots").select("*").eq("production_id", str(production_id))
-        if scene_id is not None:
-            q = q.eq("scene_id", str(scene_id))
-        res = await q.order("number").execute()
-        return _rows(res.data)
-
     async def get(self, production_id: UUID, shot_id: UUID) -> Row | None:
         res = (await self.db.table("shots").select("*").eq("id", str(shot_id))
                .eq("production_id", str(production_id)).limit(1).execute())
@@ -363,14 +357,126 @@ class SupabaseShots(_Base):
         res = await self.db.table("shots").update(fields).eq("id", str(shot_id)).execute()
         return _one(res.data)
 
+    async def save_plan(self, shots: list[Row], removed: list[str]) -> None:
+        if removed:
+            await self.db.table("shots").delete().in_("id", removed).execute()
+        if shots:
+            await self.db.table("shots").upsert(shots, on_conflict="id").execute()
+
+    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
+        q = self.db.table("shots").select("*").eq("production_id", str(production_id))
+        if scene_id is not None:
+            q = q.eq("scene_id", str(scene_id))
+        res = await q.order("number").execute()
+        return _rows(res.data)
+
 
 class SupabaseLines(_Base):
     async def upsert(self, rows: list[Row]) -> None:
         if rows:
             await self.db.table("dialogue_lines").upsert(rows, on_conflict="id").execute()
 
+    async def delete(self, line_ids: list[str]) -> None:
+        if line_ids:
+            await self.db.table("dialogue_lines").delete().in_("id", line_ids).execute()
+
     async def list(self, scene_id: UUID) -> list[Row]:
         res = await self.db.table("dialogue_lines").select("*").eq("scene_id", str(scene_id)).order("ord").execute()
+        return _rows(res.data)
+
+
+_PERSONA = "id, slug, name, initials, color, specialty, traits, style_note, charter, active"
+
+
+class SupabasePersonas(_Base):
+    async def get_many(self, persona_ids: list[UUID]) -> list[Row]:
+        if not persona_ids:
+            return []
+        res = await self.db.table("director_personas").select(_PERSONA).in_(
+            "id", [str(p) for p in persona_ids]).execute()
+        return _rows(res.data)
+
+    async def list(self) -> list[Row]:
+        res = await self.db.table("director_personas").select(_PERSONA).eq("active", True).order("name").execute()
+        return _rows(res.data)
+
+
+class SupabaseBoard(_Base):
+    async def replace(self, production_id: UUID, seats: list[Row], added_by: UUID) -> None:
+        # Two statements: a reader in between sees an empty board for a moment, never a board
+        # with two leads (the partial unique index forbids it).
+        await self.db.table("production_director_board").delete().eq("production_id", str(production_id)).execute()
+        await self.db.table("production_director_board").insert([
+            {"production_id": str(production_id), "persona_id": str(s["persona_id"]), "seat": s["seat"],
+             "added_by": str(added_by)} for s in seats]).execute()
+
+    async def list(self, production_id: UUID) -> list[Row]:
+        res = (await self.db.table("production_director_board")
+               .select(f"seat, persona_id, created_at, persona:director_personas({_PERSONA})")
+               .eq("production_id", str(production_id)).order("created_at").execute())
+        return _rows(res.data)
+
+
+class SupabaseThreads(_Base):
+    async def get(self, production_id: UUID, thread_id: UUID) -> Row | None:
+        res = (await self.db.table("chat_threads").select("*").eq("id", str(thread_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def create(self, fields: Row) -> Row:
+        res = await self.db.table("chat_threads").insert(fields).execute()
+        return _one(res.data)
+
+    async def touch(self, thread_id: UUID) -> None:
+        await self.db.table("chat_threads").update({"updated_at": datetime.now(UTC).isoformat()}).eq(
+            "id", str(thread_id)).execute()
+
+    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
+        q = self.db.table("chat_threads").select("*").eq("production_id", str(production_id))
+        if scene_id is not None:
+            q = q.eq("scene_id", str(scene_id))
+        res = await q.order("created_at").execute()
+        return _rows(res.data)
+
+
+class SupabaseMessages(_Base):
+    async def create(self, fields: Row) -> Row:
+        res = await self.db.table("chat_messages").insert(fields).execute()
+        return _one(res.data)
+
+    async def list(self, thread_id: UUID, limit: int = 100) -> list[Row]:
+        res = (await self.db.table("chat_messages").select("*").eq("thread_id", str(thread_id))
+               .order("created_at", desc=True).limit(limit).execute())
+        return _rows(res.data)[::-1]
+
+
+class SupabaseMemory(_Base):
+    async def get(self, production_id: UUID, item_id: UUID) -> Row | None:
+        res = (await self.db.table("memory_items").select("*").eq("id", str(item_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def add(self, item: Row, embedding: list[float] | None, embedding_model: str) -> Row:
+        res = await self.db.table("memory_items").insert(item).execute()
+        row = _one(res.data)
+        text = str(row["text"])
+        await self.db.table("chunks").insert({
+            "corpus": "memory", "production_id": row["production_id"], "source": f"memory:{row['id']}",
+            "heading": str(row["kind"]).capitalize(), "context_header": "Production memory", "content": text,
+            "content_hash": hashlib.sha256(text.encode()).hexdigest(), "embedding": _vector(embedding),
+            "embedding_model": embedding_model if embedding else "", "meta": row.get("source_ref") or {},
+        }).execute()
+        return row
+
+    async def delete(self, item_id: UUID) -> None:
+        await self.db.table("chunks").delete().eq("corpus", "memory").eq("source", f"memory:{item_id}").execute()
+        await self.db.table("memory_items").delete().eq("id", str(item_id)).execute()
+
+    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
+        q = self.db.table("memory_items").select("*").eq("production_id", str(production_id))
+        if scene_id is not None:
+            q = q.eq("scene_id", str(scene_id))
+        res = await q.order("created_at", desc=True).execute()
         return _rows(res.data)
 
 
@@ -452,4 +558,9 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         lines=SupabaseLines(db),
         canon=SupabaseCanon(db),
         questions=SupabaseQuestions(db),
+        personas=SupabasePersonas(db),
+        board=SupabaseBoard(db),
+        threads=SupabaseThreads(db),
+        messages=SupabaseMessages(db),
+        memory=SupabaseMemory(db),
     )

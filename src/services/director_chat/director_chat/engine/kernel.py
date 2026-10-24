@@ -76,6 +76,39 @@ def _text(value: Any, name: str) -> str:
     return " ".join(str(value).split())[:_MAX_TEXT]
 
 
+_FRAMING_WORDS = {
+    "WIDE": "WIDE", "WIDE SHOT": "WIDE", "WS": "WIDE", "LONG SHOT": "WIDE", "LS": "WIDE", "ESTABLISHING": "WIDE",
+    "MS": "MS", "MEDIUM": "MS", "MEDIUM SHOT": "MS", "MID SHOT": "MS",
+    "MCU": "MCU", "MEDIUM CLOSE UP": "MCU", "MEDIUM CLOSEUP": "MCU",
+    "CU": "CU", "CLOSE UP": "CU", "CLOSEUP": "CU", "CLOSE": "CU", "ECU": "CU", "EXTREME CLOSE UP": "CU",
+    "TWO": "TWO", "TWO SHOT": "TWO", "2 SHOT": "TWO",
+    "OTS": "OTS", "OVER THE SHOULDER": "OTS", "OVER SHOULDER": "OTS",
+    "INSERT": "INSERT", "INSERT SHOT": "INSERT", "CUTAWAY": "INSERT",
+}
+_SOUND_WORDS = {
+    "dialogue": "dialogue", "voiceover": "voiceover", "voice over": "voiceover", "vo": "voiceover",
+    "sung": "sung", "song": "sung", "ambient": "ambient", "ambience": "ambient", "natural sound": "ambient",
+    "music_only": "music_only", "music only": "music_only", "music": "music_only", "score": "music_only",
+    "silent": "silent", "silence": "silent", "no sound": "silent",
+}
+
+
+def _framing(value: Any) -> str:
+    """A model writes "Close-up" or "CU " as often as "CU"; the kernel takes the common names."""
+    key = " ".join(str(value or "").upper().replace("-", " ").replace("_", " ").split())
+    if key not in _FRAMING_WORDS:
+        raise OpError(f"framing must be one of {', '.join(f.value for f in Framing)}")
+    return _FRAMING_WORDS[key]
+
+
+def _sound(value: Any) -> str:
+    key = " ".join(str(value or "").lower().replace("-", " ").split())
+    found = _SOUND_WORDS.get(key) or _SOUND_WORDS.get(key.replace(" ", "_"))
+    if found is None:
+        raise OpError(f"sound_mode must be one of {', '.join(m.value for m in SoundMode)}")
+    return found
+
+
 def _int(value: Any, name: str) -> int:
     try:
         return int(value)
@@ -99,6 +132,25 @@ class ScenePlanKernel:
         self.envelope_s = envelope_s
         self.fixed = fixed_seconds
         self._new = 0
+        self._absorb(self.fit())
+
+    def _absorb(self, r: FitResult) -> None:
+        """Make the kernel's shots the FITTED ones. A shot whose speech cannot fit the longest
+        rung is split by `contracts.shotplan` into a continuous follow-on; taking that split in
+        here keeps the numbers a model reads (S03) the numbers its operations address."""
+        if not self.shots or len(r.shots) == len(self.shots):
+            return  # no plan yet (Re-split makes one), or nothing was split
+        by_start = {s["start"]: s for s in self.shots}
+        out: list[dict[str, Any]] = []
+        for f in r.shots:
+            shot = by_start.get(f.start)
+            if shot is None:
+                shot = {"_h": self._new_handle(), "id": None, "start": f.start, "end": f.end, "framing": f.framing,
+                        "title": f.title, "sound_mode": None, "duration": None, "duration_locked": False,
+                        "camera_link": f.camera_link.value, "beat_notes": []}
+            shot["end"] = f.end
+            out.append(shot)
+        self.shots = out
 
     # ── reading ──────────────────────────────────────────────────────────────────────────
 
@@ -132,17 +184,19 @@ class ScenePlanKernel:
     def describe(self) -> str:
         """The plan as a model reads it: numbered shots, their blocks, lengths and words."""
         r = self.fit()
+        by_start = {s["start"]: s for s in self.shots}
         rows = []
-        for s, f in zip(self.shots, r.shots, strict=False):
+        for f in r.shots:
+            s = by_start.get(f.start, {})
             blocks = []
-            for b in self.items[s["start"]:s["end"]]:
+            for b in self.items[f.start:f.end]:
                 if b["kind"] == "dialogue":
                     blocks.append(f"{b.get('speaker', '')}: \"{b.get('text', '')}\"")
                 else:
                     blocks.append(f"{b['kind'].upper()}: {b.get('text', '')}")
             lock = " (length set by a person)" if s.get("duration_locked") else ""
             rows.append(f"S{f.number:02d} {f.framing} {f.duration_s}s{lock} {f.sound_mode.value} "
-                        f"{f.camera_link.value} \"{s.get('title', '')}\" blocks {s['start']}-{s['end'] - 1}\n    "
+                        f"{f.camera_link.value} \"{s.get('title', '')}\" blocks {f.start}-{f.end - 1}\n    "
                         + "\n    ".join(blocks))
         return "\n".join(rows)
 
@@ -163,6 +217,7 @@ class ScenePlanKernel:
                 if any(i.code == "repaired" for i in check.issues):
                     self._restore(snap)
                     raise OpError("the result would not cover the script exactly once")
+                self._absorb(check)
                 for c in changes:
                     c.by = by
                 result.undo.append(snap)
@@ -222,13 +277,9 @@ class ScenePlanKernel:
         shot = self.shots[self.index_of(handle)]
         key = str(op.get("field") or "")
         if key == "framing":
-            value = str(op.get("value") or "").strip().upper()
-            if value not in {f.value for f in Framing}:
-                raise OpError(f"framing must be one of {', '.join(f.value for f in Framing)}")
+            value = _framing(op.get("value"))
         elif key == "sound_mode":
-            value = str(op.get("value") or "").strip().lower()
-            if value not in {m.value for m in SoundMode}:
-                raise OpError(f"sound_mode must be one of {', '.join(m.value for m in SoundMode)}")
+            value = _sound(op.get("value"))
         elif key in SHOT_TEXT_FIELDS:
             value = _text(op.get("value"), key)
         elif key in ("duration_s", "duration"):
@@ -273,10 +324,7 @@ class ScenePlanKernel:
                   "duration": None, "duration_locked": False, "beat_notes": [],
                   "title": _text(op.get("title"), "title") if op.get("title") else shot.get("title", "")}
         if op.get("framing"):
-            framing = str(op["framing"]).upper()
-            if framing not in {f.value for f in Framing}:
-                raise OpError("unknown framing")
-            second["framing"] = framing
+            second["framing"] = _framing(op["framing"])
         shot["end"] = at
         shot["duration"] = None if not shot.get("duration_locked") else shot.get("duration")
         self.shots.insert(i + 1, second)
@@ -355,9 +403,7 @@ class ScenePlanKernel:
                 s["start"] += 1
             if s["end"] > pos:
                 s["end"] += 1
-        framing = str(op.get("framing") or Framing.CU.value).upper()
-        if framing not in {f.value for f in Framing}:
-            raise OpError("unknown framing")
+        framing = _framing(op.get("framing") or Framing.CU.value)
         new: dict[str, Any] = {"_h": self._new_handle(), "id": None, "start": pos, "end": pos + 1, "framing": framing,
                "title": _text(op.get("title") or description[:40], "title"), "sound_mode": None,
                "duration": None, "duration_locked": False, "camera_link": CameraLink.CUT.value, "beat_notes": []}

@@ -280,6 +280,14 @@ class FakeShots(_Table):
         rows = [r for r in self._scoped(production_id) if scene_id is None or r["scene_id"] == str(scene_id)]
         return sorted(rows, key=lambda r: r["number"])
 
+    async def save_plan(self, shots: list[Row], removed: list[str]) -> None:
+        for sid in removed:
+            self.rows.pop(sid, None)
+        for row in shots:
+            self.rows.setdefault(row["id"], {"created_at": _now()}).update(row)
+        numbers = [(r["scene_id"], r["number"]) for r in self.rows.values()]
+        assert len(numbers) == len(set(numbers)), "shot numbers must be unique per scene"
+
 
 class FakeLines(_Table):
     async def list(self, scene_id: UUID) -> list[Row]:  # type: ignore[override]
@@ -288,6 +296,90 @@ class FakeLines(_Table):
     async def upsert(self, rows: list[Row]) -> None:
         for row in rows:
             self.rows.setdefault(row["id"], {}).update(row)
+        ords = [(r["scene_id"], r["ord"]) for r in self.rows.values()]
+        assert len(ords) == len(set(ords)), "line order must be unique per scene"
+
+    async def delete(self, line_ids: list[str]) -> None:
+        for lid in line_ids:
+            self.rows.pop(lid, None)
+
+
+class FakePersonas:
+    def __init__(self) -> None:
+        self.rows: dict[str, Row] = {}
+        for slug, name in (("grounded-realist", "Grounded Realist"), ("classic-teledrama", "Classic Teledrama"),
+                           ("tension-builder", "Tension Builder"), ("short-form", "Short-Form Storyteller"),
+                           ("lyrical-eye", "Lyrical Eye")):
+            pid = str(uuid4())
+            self.rows[pid] = {"id": pid, "slug": slug, "name": name, "initials": name[:2].upper(), "color": "#2F3A45",
+                              "specialty": "", "traits": [{"label": "Realism", "value": 50}], "style_note": "",
+                              "charter": f"{name} charter", "active": True}
+
+    def by_slug(self, slug: str) -> Row:
+        return next(r for r in self.rows.values() if r["slug"] == slug)
+
+    async def list(self) -> list[Row]:
+        return sorted((r for r in self.rows.values() if r["active"]), key=lambda r: r["name"])
+
+    async def get_many(self, persona_ids: list[UUID]) -> list[Row]:
+        return [self.rows[str(p)] for p in persona_ids if str(p) in self.rows]
+
+
+class FakeBoard:
+    def __init__(self, personas: FakePersonas) -> None:
+        self.seats: dict[str, list[Row]] = {}
+        self.personas = personas
+
+    async def list(self, production_id: UUID) -> list[Row]:
+        return [{**s, "persona": self.personas.rows[s["persona_id"]]} for s in self.seats.get(str(production_id), [])]
+
+    async def replace(self, production_id: UUID, seats: list[Row], added_by: UUID) -> None:
+        self.seats[str(production_id)] = [{"persona_id": str(s["persona_id"]), "seat": s["seat"]} for s in seats]
+
+
+class FakeThreads(_Table):
+    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
+        rows = [r for r in self._scoped(production_id) if scene_id is None or r["scene_id"] == str(scene_id)]
+        return sorted(rows, key=lambda r: r["created_at"])
+
+    async def create(self, fields: Row) -> Row:
+        return self.add(**{"title": "", **fields})
+
+    async def touch(self, thread_id: UUID) -> None:
+        self.rows[str(thread_id)]["updated_at"] = _now()
+
+
+class FakeMessages(_Table):
+    async def list(self, thread_id: UUID, limit: int = 100) -> list[Row]:  # type: ignore[override]
+        rows = [r for r in self.rows.values() if r["thread_id"] == str(thread_id)]
+        return rows[-limit:]
+
+    async def create(self, fields: Row) -> Row:
+        return self.add(**{"blocks": [], "ops": [], "citations": [], "text": "", "speaker": "", "tone": None,
+                           "persona_id": None, "author_user_id": None, **fields})
+
+
+class FakeMemory(_Table):
+    def __init__(self) -> None:
+        super().__init__()
+        self.chunks: dict[str, Row] = {}  # source → chunk
+
+    async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
+        rows = [r for r in self._scoped(production_id) if scene_id is None or r.get("scene_id") == str(scene_id)]
+        return sorted(rows, key=lambda r: r["created_at"], reverse=True)
+
+    async def add(self, item: Row, embedding: list[float] | None, embedding_model: str) -> Row:  # type: ignore[override]
+        row = self.add_row(item)
+        self.chunks[f"memory:{row['id']}"] = {"corpus": "memory", "production_id": row["production_id"],
+                                              "content": row["text"], "embedding": embedding}
+        return row
+
+    def add_row(self, item: Row) -> Row:
+        return super().add(**{"source_ref": {}, "scene_id": None, "created_by": None, **item})
+
+    async def delete(self, item_id: UUID) -> None:
+        self.rows.pop(str(item_id), None)
+        self.chunks.pop(f"memory:{item_id}", None)
 
 
 class FakeCanon(_Table):
@@ -334,6 +426,7 @@ class FakeQuestions(_Table):
 def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
+    personas = FakePersonas()
     return Repos(
         profiles=profiles,
         productions=FakeProductions(members),
@@ -352,4 +445,9 @@ def build_fake_repos() -> Repos:
         lines=FakeLines(),
         canon=FakeCanon(),
         questions=FakeQuestions(),
+        personas=personas,
+        board=FakeBoard(personas),
+        threads=FakeThreads(),
+        messages=FakeMessages(),
+        memory=FakeMemory(),
     )

@@ -6,16 +6,18 @@ from, drawn entirely from the job's events, so both views agree.
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime
 from typing import Annotated, Any
-from uuid import UUID
+from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
+from api.services.ai import UsageContext, get_ai
 from api.workers import task_manager
 from contracts.build import (
     AGENT_LABEL,
@@ -31,6 +33,7 @@ from contracts.documents import DocumentRole, DocumentStatus
 from contracts.jobs import JobEventType, JobKind, JobStatus
 from contracts.roles import Permission
 
+_logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["build"])
 ReposDep = Annotated[Repos, Depends(get_repos)]
 CanView = Annotated[ProductionAccess, Depends(require_permission(Permission.VIEW))]
@@ -183,9 +186,27 @@ async def list_questions(production_id: UUID, _: CanView, repos: ReposDep,
     return [Question.model_validate(r) for r in rows]
 
 
+async def _remember(repos: Repos, production_id: UUID, question: Row, body: AnswerRequest,
+                    access: ProductionAccess, request: Request) -> None:
+    """An answered question becomes production memory (PLAN.md §6.2), so the director knows in
+    Episode 7 what was settled during the build. Never fails the answer it records."""
+    labels = {o["value"]: o.get("label") or o["value"] for o in question.get("options") or []}
+    answer = labels.get(body.value or "", body.value or "") if body.value else (body.text or "")
+    text = f"{question.get('scope') or 'Build'}: {question['body']} Answer: {answer}"[:2000]
+    try:
+        ai = get_ai(request)
+        embedding = await ai.embed_query(text, UsageContext(repos, access.user.id, production_id))
+        source = {"question_id": str(question["id"]), "key": question["key"]}
+        await repos.memory.add({"id": str(uuid4()), "production_id": str(production_id), "kind": "answer",
+                                "text": text, "source_ref": source, "created_by": str(access.user.id)},
+                               embedding, ai.settings.embedding_model)
+    except Exception:
+        _logger.exception("could not store the answer in production memory question=%s", question["id"])
+
+
 @router.post("/questions/{question_id}/answer", response_model=AnswerResult)
 async def answer_question(production_id: UUID, question_id: UUID, body: AnswerRequest, access: CanAnswer,
-                          repos: ReposDep) -> AnswerResult:
+                          repos: ReposDep, request: Request) -> AnswerResult:
     row = await repos.questions.get(production_id, question_id)
     if row is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Question not found.")
@@ -202,6 +223,7 @@ async def answer_question(production_id: UUID, question_id: UUID, body: AnswerRe
     await repos.audit.record(action="question.answer", entity="question", entity_id=str(question_id),
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={"key": row["key"], "answer": body.model_dump()})
+    await _remember(repos, production_id, row, body, access, request)
     resumed = False
     if row.get("job_id"):
         job = await repos.jobs.get(UUID(str(row["job_id"])))
