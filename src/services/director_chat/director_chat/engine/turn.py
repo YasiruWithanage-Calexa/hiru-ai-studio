@@ -255,6 +255,9 @@ def run(req: TurnPayload, store: StoreLike, llm: LLMLike) -> Iterator[Event]:
         yield "plan", {"shots": shots_out, "total_s": after.total_s,
                        "issues": [i.message for i in after.issues]}
 
+    # A rule the production already holds is not stored again (the model may echo one from the history).
+    known = {_norm(m) for m in memory}
+    st.memory = [t for t in dict.fromkeys(st.memory) if _norm(t) not in known]
     if req.can_edit and st.memory:
         for text in st.memory:
             item = {"id": str(uuid.uuid4()), "production_id": str(pid), "scene_id": str(sid), "kind": "decision",
@@ -300,6 +303,10 @@ def run(req: TurnPayload, store: StoreLike, llm: LLMLike) -> Iterator[Event]:
     store.add_message(message)
     yield "message", message
     yield "done", {"message_id": message["id"], "lane": "reshape" if st.reshape else st.lane}
+
+
+def _norm(text: str) -> str:
+    return " ".join(str(text).lower().strip(" .!").split())
 
 
 def _blocks_text(m: dict[str, Any]) -> str:

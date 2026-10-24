@@ -47,3 +47,7 @@ since that commit in the files below.
     uses when a person edits a shot or the script.
 12. **The `done` event carries the lane** (`chat | edit | craft | reshape`), used by the replay
     harness (`scripts/replay_director.py`) to score turns.
+13. **Guards from the first real-model replay (2026-10-24):** framing and sound names are
+    normalised in the kernel; specialists are held to their task's shots and at most 6 operations;
+    the reply runs on `medium` and is told explicitly when nothing changed; a standing rule the
+    production already holds is not stored again.

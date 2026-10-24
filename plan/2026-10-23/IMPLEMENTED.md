@@ -1,7 +1,7 @@
 # Implemented so far (against PLAN.md of 2026-10-23)
 
-Status on **2026-10-24**: Phases 0–3 are built and verified on localhost (Phases 0–2 also with a
-real OpenAI run; Phase 3 without a key so far). Supabase agent skills (`supabase`,
+Status on **2026-10-24**: Phases 0–3 are built and verified on localhost, each including a real
+OpenAI run; Phase 3's was against the hosted dev database. Supabase agent skills (`supabase`,
 `supabase-postgres-best-practices`) are installed in `.claude/skills/`. **Nothing is deployed** (by
 decision: test locally first). Commits are made by hand.
 
@@ -17,11 +17,13 @@ decision: test locally first). Commits are made by hand.
 
 | Check | Result |
 |---|---|
-| Python tests (`pytest`) | **434 passed** (+69: scene-plan kernel, conductor rules, whole turns with a fake store and model, prompt hygiene, replay gate, scene and director API) |
+| Python tests (`pytest`) | **438 passed** (+73: scene-plan kernel, conductor rules, whole turns with a fake store and model, prompt hygiene, replay gate, scene and director API) |
 | SQL tests (`supabase test db`) | **94 passed** (+25 in `004_director`: constraints, deferred renumbering of shots and lines, cascades, RLS on every new table, Realtime) |
 | Lint / types | ruff clean; mypy clean for `api`, `contracts` and every service |
 | Schema lint / advisors | `supabase db lint`: no errors; `supabase db advisors --level warn`: no issues |
-| Director replay, rules mode | 11/11 rule cases (tune 100 %, held-out 100 %). Model mode not run yet (needs a key) |
+| Director replay, rules mode | 11/11 rule cases (tune 100 %, held-out 100 %) |
+| Director replay, **model mode** (real OpenAI) | First run: tune 78 %, held-out 71 %, and the reply described changes that were not made. After the fixes below: **tune 100 %, held-out 100 %, twice in a row** (~33k input / 49k output tokens per run of 16 cases, ~6 min) |
+| Phase 3 smoke **with OpenAI, on the hosted dev DB** | **Passed, 34 checks** in 210 s: conductor on gpt-5-mini, answers on gpt-5, re-split planned by the model (0 kernel issues), memory embedded (`text-embedding-3-large`); it found the duplicate-memory bug below |
 | Phase 3 smoke, rules only (`scripts/smoke_phase3.py`) | **Passed, 34 checks** in 28 s, real API + `director_chat` + `script_split` + local Supabase: scene view and timeline → writer 403 on lengths → director locks S02 at 8 s (ids kept, version 2) → writer edits a Sinhala line (shots kept, stale edit 409) → board set → streamed turns: an edit (saved, audited as `director_chat`), a reviewer (answered, nothing changed), a question, a standing rule (memory + `chunks`) → approve blocks chat and hand edits → re-split replaces the shot list |
 | `upstream_diff.py` | Nothing changed upstream since `1d748dc` |
 
@@ -307,6 +309,21 @@ round 2 → persist → streamed reply.
 - The editor could be asked twice about the same overrun; round 2 now only covers new ones.
 - The turn's history included the message being answered.
 
+**Found by the real-model run and fixed (2026-10-24)**
+- The reply (on `low`, gpt-5-nano) described changes that were not made and misnumbered shots.
+  It now runs on `medium`, is told the shot list is the plan after the turn, and gets an explicit
+  "Applied: nothing" when nothing changed.
+- The model wrote free text or names as values ("Close-up", "the radio only") and put a join on
+  the wrong shot. The prompts now list the value codes and say a join belongs to the later shot;
+  the kernel accepts common names for framings and sound modes.
+- A specialist made 16 changes for a one-shot request. Specialists are now held to their task's
+  shots in code (others dropped, at most 6 operations per task).
+- A standing rule was stored again when the model echoed it from the history on an unrelated
+  message. The prompt says "only rules THIS message states", and the turn skips rules the
+  production already holds.
+- Prompt caching shows 0 cached tokens: the static prompts are under OpenAI's 1,024-token cache
+  minimum, so there is nothing to cache yet (cost is small either way).
+
 **Deviations from the plan**
 - Routes nested under `/v1/productions/{id}/…` (as in Phase 2), not `/scenes/{id}`.
 - Re-split replaces the shot list (new ids; lengths people set and beat notes go with it).
@@ -357,12 +374,13 @@ to manage it by hand, not with `supabase db push`.
 
 ## Not done yet from the plan (Phases 0–3 scope)
 
-- **Phase 3 with a real key:** run `scripts/replay_director.py --model` and the smoke test with
-  `OPENAI__API_KEY` set; set the model thresholds in `tests/eval/director_thresholds.json` from it.
+- **Test data on the hosted dev DB** from the Phase 3 smoke run: a production "Phase 3 smoke …"
+  and users `smoke-admin@`, `director-…@`, `writer-…@`, `reviewer-…@hirutv.lk`.
 - **Frontend:** the Director panel and director-board screens still read mocks; the API above
   is ready for them (`GET .../scenes/{id}` carries everything the 2d screen draws).
-- **Hosted DB:** upgraded to v2. Still to do there: re-read documents uploaded under v1, and set
-  the backend `.env`'s secret key and session-pooler DB URL.
+- **Hosted DB:** upgraded to v2 and fully configured (secret key and DB URL in the backend `.env`;
+  no v1 documents to re-read). For Cloud Run, switch `SUPABASE__DB_URL` to the session pooler (the
+  direct host is IPv6-only).
 - **Deploy note:** functions are deployed with internal-only ingress; the API calling
   `hiru-director-chat` directly needs its egress through the VPC (Direct VPC egress) when deployed.
 - Concurrent edits to one scene: the script has a version check; shot edits and chat turns are

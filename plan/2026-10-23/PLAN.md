@@ -443,7 +443,7 @@ hybrid mode needs an OpenAI key to measure). See IMPLEMENTED.md.*
 12. `canon_extract` + canon versions, locks, voice pins, reference-sheet prompts.
 13. Endpoints for screens 0a, 0b, 1.
 
-**Phase 3 — Director panel** — *built and verified locally 2026-10-24 (rules mode; see IMPLEMENTED.md).*
+**Phase 3 — Director panel** — *built and verified 2026-10-24, with OpenAI, against the hosted dev DB (see IMPLEMENTED.md).*
 14. Fork `nova_chat` → `director_chat`; swap the kernel's document to Hiru scenes/shots; OpenAI tiers.
 15. Read tools, server-side threads, production memory, director board personas.
 16. Timeline data endpoint, shot length edits, re-split; replay harness + hygiene guards.

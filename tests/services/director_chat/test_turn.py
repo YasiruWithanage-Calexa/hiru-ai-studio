@@ -258,3 +258,12 @@ def test_the_reply_is_told_when_nothing_changed():
     run(store, "make shot 9 six seconds", llm)
     reply_prompt = llm.streamed[-1][1]["content"]
     assert "Applied: nothing" in reply_prompt and "there is no shot 9" in reply_prompt
+
+
+def test_a_rule_the_production_already_holds_is_not_stored_again():
+    store = store0()
+    store.memory_rows.append({"kind": "decision", "text": "Kamala never cries on screen."})
+    echo = {"turn_plan": lambda s, u: plan_answer("edit", ops=[{"op": "retime", "shot": 4, "seconds": 8}],
+                                                  memory=["Kamala never cries on screen", "Rain scenes are at dusk."])}
+    run(store, "make shot 4 eight seconds", DirectorLLM(echo))
+    assert [m["text"] for m in store.memory_rows] == ["Kamala never cries on screen.", "Rain scenes are at dusk."]
