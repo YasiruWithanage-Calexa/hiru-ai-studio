@@ -23,7 +23,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -e ".[dev]"
-      - run: ruff check src tests scripts
+      - run: ruff check src tests scripts infra/assemble
       - run: mypy
       - name: mypy (each service, with only its own package + contracts on the path)
         run: |

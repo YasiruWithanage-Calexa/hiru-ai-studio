@@ -9,18 +9,25 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.config import get_settings
+from api.deps.auth import warm_jwks
 from api.logging_config import configure_logging
+from api.observability import RequestLogMiddleware
 from api.repositories import Repos
 from api.routers import (
+    activity,
+    ask,
     build,
     canon,
     director,
     documents,
     files,
+    handoff,
     internal,
     jobs,
     me,
     members,
+    overview,
+    production,
     productions,
     scenes,
     search,
@@ -47,6 +54,7 @@ def create_app(repos: Repos | None = None) -> FastAPI:
             if not key:
                 raise RuntimeError("SUPABASE__SERVICE_ROLE_KEY is not set")
             app.state.repos = await build_supabase_repos(settings.supabase.url, key)
+            await warm_jwks(settings)
         _logger.info("api started environment=%s", settings.environment)
         yield
 
@@ -62,16 +70,18 @@ def create_app(repos: Repos | None = None) -> FastAPI:
         allow_origins=settings.api.cors_origins,
         allow_credentials=False,  # bearer tokens, not cookies
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-        allow_headers=["Authorization", "Content-Type", "Range"],
-        expose_headers=["Content-Range", "Accept-Ranges", "Content-Length"],
+        allow_headers=["Authorization", "Content-Type", "Range", "X-Request-ID"],
+        expose_headers=["Content-Range", "Accept-Ranges", "Content-Length", "Content-Disposition",
+                        "Server-Timing", "X-Request-ID"],
     )
+    app.add_middleware(RequestLogMiddleware)
 
     @app.get("/healthz", tags=["health"])
     async def healthz() -> dict[str, str]:
         return {"status": "ok"}
 
-    for module in (me, members, productions, documents, search, build, structure, canon, scenes, director, jobs,
-                   usage, files, internal):
+    for module in (me, members, productions, overview, documents, search, build, structure, canon, scenes, production,
+                   handoff, director, activity, ask, jobs, usage, files, internal):
         app.include_router(module.router)
     return app
 

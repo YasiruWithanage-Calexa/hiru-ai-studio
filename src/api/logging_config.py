@@ -28,3 +28,6 @@ def configure_logging(*, json_output: bool, level: int = logging.INFO) -> None:
     root = logging.getLogger()
     root.handlers[:] = [handler]
     root.setLevel(level)
+    # One line per Supabase call drowns the request log; `api.request` reports the count instead.
+    for noisy in ("httpx", "httpcore", "hpack"):
+        logging.getLogger(noisy).setLevel(logging.WARNING)

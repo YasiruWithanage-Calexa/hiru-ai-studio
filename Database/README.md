@@ -2,13 +2,17 @@
 
 The hosted Supabase project `dwivfkavmtjzhypqswze` is **the one dev database**: the API, the
 functions, the frontend and the scripts all use it. It is managed by hand through the
-dashboard's SQL Editor and Table Editor, using the files in this folder. It runs **schema v2**
-(upgraded from v1 on 2026-10-24). The local Supabase stack is only a throwaway database for the
+dashboard's SQL Editor and Table Editor, using the files in this folder. It runs **schema v3**
+(v1 → v2 and v2 → v3 both on 2026-10-24); `upgrade_v3_to_v4.sql` (Phase 5) is ready and not run yet. The local Supabase stack is only a throwaway database for the
 automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v2.sql` | **The current schema** (Phases 0–3), whole. Run it once on an empty project. |
+| `schema_v4.sql` | **The newest schema** (Phases 0–5), whole. Run it once on an empty project. |
+| `upgrade_v3_to_v4.sql` | Moves a project on v3 to v4 (takes, usage budget, `takes` bucket). Run once, only on such a project. |
+| `schema_v3.sql` | The Phase 0–4 schema, kept for reference. |
+| `upgrade_v2_to_v3.sql` | Moves a project on v2 to v3 (the Production panel). Run once, only on such a project. |
+| `schema_v2.sql` | The Phase 0–3 schema, kept for reference. |
 | `upgrade_v1_to_v2.sql` | Moves a project that already has v1 to v2. Run once, only on such a project. |
 | `schema_v1.sql` | The Phase 0–1 schema, kept for projects still on it. |
 
@@ -18,6 +22,26 @@ empty database and comparing the dump with the one the migrations build (identic
 running the 94 database tests and Supabase's advisor check on it (all pass). v1 plus
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
+
+## Moving a project from v3 to v4
+
+1. **SQL Editor:** paste `upgrade_v3_to_v4.sql` and run it, once. It runs as one transaction.
+2. Check: `select id from storage.buckets order by id;` now also lists `takes`.
+3. Optional: set the monthly budget with `PUT /v1/usage/budget` (admin); until then the API uses
+   `USAGE__MONTHLY_TOKEN_BUDGET`.
+
+v4 was checked like v3: identical dumps from the migrations, from v4 alone and from v3 + this
+upgrade, and the 126 database tests pass on each.
+
+## Moving a project from v2 to v3
+
+1. **SQL Editor:** paste `upgrade_v2_to_v3.sql` and run it, once. It runs as one transaction.
+2. Check: `select id from storage.buckets order by id;` lists `documents`, `frames`, `references`.
+3. Nothing to re-run: existing shots start with no design and the recommended camera.
+
+v3 was checked like v2: the dump of a database built from the migrations, of v3 loaded into an
+empty one, and of v2 + this upgrade are identical (buckets, Realtime tables, personas and the
+`graph` schema too), and the 113 database tests and the advisors pass on each.
 
 ## Moving a project from v1 to v2
 
@@ -31,7 +55,7 @@ still builds from `supabase/migrations/`, and the tests run there.
 
 ## First-time setup (hosted project)
 
-1. **SQL Editor:** paste `schema_v2.sql` and run it. It runs as one transaction, so if
+1. **SQL Editor:** paste `schema_v4.sql` and run it. It runs as one transaction, so if
    anything fails, nothing is created.
 2. **Authentication → Sign In / Providers:** turn **off** "Allow new users to sign up". Keep
    the Email provider **on**, or nobody can log in.

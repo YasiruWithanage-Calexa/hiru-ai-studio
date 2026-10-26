@@ -6,6 +6,7 @@ from, drawn entirely from the job's events, so both views agree.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 from datetime import datetime
 from typing import Annotated, Any
@@ -143,9 +144,9 @@ def view(job: Row | None, events: list[Row], open_questions: int, summary: Summa
 
 
 async def _summary(repos: Repos, production_id: UUID) -> Summary:
-    return Summary(episodes=len(await repos.episodes.list(production_id)),
-                   scenes=len(await repos.scenes.list(production_id)),
-                   shots=len(await repos.shots.list(production_id)))
+    episodes, scenes, shots = await asyncio.gather(
+        repos.episodes.list(production_id), repos.scenes.list(production_id), repos.shots.list(production_id))
+    return Summary(episodes=len(episodes), scenes=len(scenes), shots=len(shots))
 
 
 @router.post("/build", response_model=BuildStarted, status_code=status.HTTP_202_ACCEPTED)
@@ -173,17 +174,21 @@ async def start_build(production_id: UUID, access: CanBuild, repos: ReposDep) ->
 
 @router.get("/build", response_model=BuildView)
 async def get_build(production_id: UUID, _: CanView, repos: ReposDep) -> BuildView:
-    job = await repos.jobs.latest(production_id, JobKind.STRUCTURE_BUILD.value)
+    job, open_q, summary = await asyncio.gather(
+        repos.jobs.latest(production_id, JobKind.STRUCTURE_BUILD.value),
+        repos.questions.list(production_id, QuestionStatus.OPEN.value), _summary(repos, production_id))
     events = await repos.jobs.events(UUID(str(job["id"]))) if job else []
-    open_q = len(await repos.questions.list(production_id, QuestionStatus.OPEN.value))
-    return view(job, events, open_q, await _summary(repos, production_id))
+    return view(job, events, len(open_q), summary)
 
 
 @router.get("/questions", response_model=list[Question])
 async def list_questions(production_id: UUID, _: CanView, repos: ReposDep,
                          status_: Annotated[QuestionStatus | None, Query(alias="status")] = None) -> list[Question]:
     rows = await repos.questions.list(production_id, status_.value if status_ else None)
-    return [Question.model_validate(r) for r in rows]
+    names = ({str(p["id"]): str(p.get("display_name") or "") for p in await repos.profiles.list()}
+             if any(r.get("answered_by") for r in rows) else {})
+    return [Question.model_validate({**r, "answered_by_name": names.get(str(r.get("answered_by")), "")})
+            for r in rows]
 
 
 async def _remember(repos: Repos, production_id: UUID, question: Row, body: AnswerRequest,

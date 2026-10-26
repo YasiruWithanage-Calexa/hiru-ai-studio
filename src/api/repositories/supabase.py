@@ -9,6 +9,8 @@ from uuid import UUID
 
 from supabase import AsyncClient, acreate_client
 
+from api.cache import AsyncTTLCache
+from api.observability import count_db_call
 from api.repositories import Repos, Row
 
 _logger = logging.getLogger(__name__)
@@ -36,8 +38,20 @@ class _Base:
         self.db = db
 
 
+# Every authenticated request reads the caller's profile; a page fires several requests at once.
+PROFILE_TTL_S = 30.0
+
+
 class SupabaseProfiles(_Base):
+    def __init__(self, db: AsyncClient) -> None:
+        super().__init__(db)
+        self._cache: AsyncTTLCache[Row] = AsyncTTLCache(PROFILE_TTL_S)
+
     async def get(self, user_id: UUID) -> Row | None:
+        row = await self._cache.get(str(user_id), lambda: self._get(user_id))
+        return dict(row) if row else None
+
+    async def _get(self, user_id: UUID) -> Row | None:
         res = await self.db.table("profiles").select("*").eq("id", str(user_id)).limit(1).execute()
         return _first(res.data)
 
@@ -50,7 +64,9 @@ class SupabaseProfiles(_Base):
         return _rows(res.data)
 
     async def update(self, user_id: UUID, fields: Row) -> Row:
+        self._cache.invalidate(str(user_id))
         res = await self.db.table("profiles").update(fields).eq("id", str(user_id)).execute()
+        self._cache.invalidate(str(user_id))
         return _one(res.data)
 
     async def count_active_admins(self) -> int:
@@ -82,6 +98,22 @@ class SupabaseProductions(_Base):
     async def get(self, production_id: UUID) -> Row | None:
         res = await self.db.table("productions").select("*").eq("id", str(production_id)).limit(1).execute()
         return _first(res.data)
+
+    async def get_with_role(self, production_id: UUID, user_id: UUID) -> tuple[Row, str | None] | None:
+        # One round trip: the production with the caller's membership embedded (filtered to them).
+        res = (
+            await self.db.table("productions")
+            .select("*, production_members(role)")
+            .eq("id", str(production_id))
+            .eq("production_members.user_id", str(user_id))
+            .limit(1)
+            .execute()
+        )
+        row = _first(res.data)
+        if row is None:
+            return None
+        members = row.pop("production_members", None) or []
+        return row, (members[0]["role"] if members else None)
 
     async def create(self, fields: Row) -> Row:
         res = await self.db.table("productions").insert(fields).execute()
@@ -193,6 +225,11 @@ class SupabaseAudit(_Base):
             # The audit trail must never be the reason a user's change fails after it was made.
             _logger.exception("audit write failed action=%s entity_id=%s", action, entity_id)
 
+    async def list(self, production_id: UUID, limit: int = 100) -> list[Row]:
+        res = (await self.db.table("audit_log").select("*").eq("production_id", str(production_id))
+               .order("created_at", desc=True).order("id", desc=True).limit(limit).execute())
+        return _rows(res.data)
+
 
 class SupabaseJobs(_Base):
     async def create(self, fields: Row) -> Row:
@@ -272,6 +309,9 @@ class SupabaseStorage(_Base):
     async def remove(self, bucket: str, path: str) -> None:
         await self.db.storage.from_(bucket).remove([path])
 
+    async def download(self, bucket: str, path: str) -> bytes:
+        return bytes(await self.db.storage.from_(bucket).download(path))
+
 
 def _vector(values: list[float] | None) -> str | None:
     """pgvector's text form; PostgREST passes it straight to the vector parameter."""
@@ -311,6 +351,19 @@ class SupabaseUsage(_Base):
     async def tokens_since(self, since: datetime) -> int:
         res = await self.db.rpc("token_usage_since", {"since": since.isoformat()}).execute()
         return int(cast(int, res.data or 0))
+
+    async def budget(self, month: str) -> int | None:
+        try:
+            res = await self.db.table("usage_budget").select("budget_tokens").eq("month", month).limit(1).execute()
+        except Exception:  # the table arrives with schema v4; before that the setting applies
+            _logger.warning("usage_budget unavailable", exc_info=True)
+            return None
+        row = _first(res.data)
+        return int(row["budget_tokens"]) if row else None
+
+    async def set_budget(self, month: str, tokens: int, user_id: UUID) -> None:
+        await self.db.table("usage_budget").upsert({"month": month, "budget_tokens": tokens,
+                                                    "set_by": str(user_id)}, on_conflict="month").execute()
 
 
 class SupabaseEpisodes(_Base):
@@ -380,6 +433,11 @@ class SupabaseLines(_Base):
         if line_ids:
             await self.db.table("dialogue_lines").delete().in_("id", line_ids).execute()
 
+    async def list_for_production(self, production_id: UUID) -> list[Row]:
+        res = (await self.db.table("dialogue_lines").select("id,scene_id,shot_id,character_id")
+               .eq("production_id", str(production_id)).execute())
+        return _rows(res.data)
+
     async def list(self, scene_id: UUID) -> list[Row]:
         res = await self.db.table("dialogue_lines").select("*").eq("scene_id", str(scene_id)).order("ord").execute()
         return _rows(res.data)
@@ -444,6 +502,15 @@ class SupabaseMessages(_Base):
         res = await self.db.table("chat_messages").insert(fields).execute()
         return _one(res.data)
 
+    async def get(self, production_id: UUID, message_id: UUID) -> Row | None:
+        res = (await self.db.table("chat_messages").select("*").eq("id", str(message_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def update(self, message_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("chat_messages").update(fields).eq("id", str(message_id)).execute()
+        return _one(res.data)
+
     async def list(self, thread_id: UUID, limit: int = 100) -> list[Row]:
         res = (await self.db.table("chat_messages").select("*").eq("thread_id", str(thread_id))
                .order("created_at", desc=True).limit(limit).execute())
@@ -481,11 +548,15 @@ class SupabaseMemory(_Base):
 
 
 _CANON = ("*, current:canon_versions!canon_entities_current_version_fkey"
-          "(id, entity_id, version, card, wardrobe_anchor, voice_pin, reference_prompt, source, created_by,"
-          " created_at)")
+          "(id, entity_id, version, card, wardrobe_anchor, voice_pin, reference_prompt, reference_assets, source,"
+          " created_by, created_at)")
 
 
 class SupabaseCanon(_Base):
+    async def create(self, fields: Row) -> Row:
+        res = await self.db.table("canon_entities").insert(fields).execute()
+        return _one(res.data)
+
     async def get(self, production_id: UUID, entity_id: UUID) -> Row | None:
         res = (await self.db.table("canon_entities").select(_CANON).eq("id", str(entity_id))
                .eq("production_id", str(production_id)).limit(1).execute())
@@ -538,8 +609,99 @@ class SupabaseQuestions(_Base):
         return res.count or 0
 
 
+class SupabaseFrames(_Base):
+    async def create_many(self, rows: list[Row]) -> None:
+        if rows:
+            await self.db.table("first_frames").insert(rows).execute()
+
+    async def get(self, production_id: UUID, frame_id: UUID) -> Row | None:
+        res = (await self.db.table("first_frames").select("*").eq("id", str(frame_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def list_for_shots(self, shot_ids: list[str]) -> list[Row]:
+        if not shot_ids:
+            return []
+        res = await self.db.table("first_frames").select("*").in_("shot_id", shot_ids).order("created_at").execute()
+        return _rows(res.data)
+
+    async def update_many(self, frame_ids: list[str], fields: Row) -> None:
+        if frame_ids:
+            await self.db.table("first_frames").update(fields).in_("id", frame_ids).execute()
+
+    async def accept(self, shot_id: UUID, frame_id: UUID, user_id: UUID) -> bool:
+        # Clear the old choice first: one accepted frame per shot is a unique index.
+        await (self.db.table("first_frames").update({"accepted_at": None, "accepted_by": None})
+               .eq("shot_id", str(shot_id)).neq("id", str(frame_id)).not_.is_("accepted_at", "null").execute())
+        try:
+            res = await (self.db.table("first_frames").update({"accepted_at": datetime.now(UTC).isoformat(),
+                                                               "accepted_by": str(user_id)})
+                         .eq("id", str(frame_id)).eq("status", "done").execute())
+        except Exception:  # a concurrent accept of another frame took the slot
+            _logger.warning("accept raced shot=%s frame=%s", shot_id, frame_id, exc_info=True)
+            return False
+        return bool(_rows(res.data))
+
+    async def unaccept(self, frame_id: UUID) -> None:
+        await self.db.table("first_frames").update({"accepted_at": None, "accepted_by": None}).eq(
+            "id", str(frame_id)).execute()
+
+
+class SupabasePrompts(_Base):
+    async def latest_for_shots(self, shot_ids: list[str]) -> dict[str, Row]:
+        if not shot_ids:
+            return {}
+        res = (await self.db.table("video_prompts").select("*").in_("shot_id", shot_ids)
+               .order("version", desc=True).execute())
+        out: dict[str, Row] = {}
+        for row in _rows(res.data):
+            out.setdefault(str(row["shot_id"]), row)
+        return out
+
+    async def list(self, shot_id: UUID) -> list[Row]:
+        res = (await self.db.table("video_prompts").select("*").eq("shot_id", str(shot_id))
+               .order("version", desc=True).execute())
+        return _rows(res.data)
+
+
+class SupabaseTakes(_Base):
+    async def create(self, row: Row) -> Row:
+        res = await self.db.table("takes").insert(row).execute()
+        return _one(res.data)
+
+    async def get(self, production_id: UUID, take_id: UUID) -> Row | None:
+        res = (await self.db.table("takes").select("*").eq("id", str(take_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def list_for_shots(self, shot_ids: list[str]) -> list[Row]:
+        if not shot_ids:
+            return []
+        res = await self.db.table("takes").select("*").in_("shot_id", shot_ids).order("created_at").execute()
+        return _rows(res.data)
+
+    async def update(self, take_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("takes").update(fields).eq("id", str(take_id)).execute()
+        return _one(res.data)
+
+    async def accept(self, shot_id: UUID, take_id: UUID, user_id: UUID) -> bool:
+        # Release the old choice first: one accepted take per shot is a unique index.
+        await (self.db.table("takes").update({"status": "uploaded", "accepted_at": None, "accepted_by": None})
+               .eq("shot_id", str(shot_id)).eq("status", "accepted").neq("id", str(take_id)).execute())
+        try:
+            res = await (self.db.table("takes").update({
+                "status": "accepted", "accepted_at": datetime.now(UTC).isoformat(), "accepted_by": str(user_id),
+                "reason": None}).eq("id", str(take_id)).execute())
+        except Exception:
+            _logger.warning("take accept raced shot=%s take=%s", shot_id, take_id, exc_info=True)
+            return False
+        return bool(_rows(res.data))
+
+
 async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
     db = await acreate_client(url, service_role_key)
+    # Count REST calls per API request (see api/observability.py).
+    db.postgrest.session.event_hooks.setdefault("request", []).append(count_db_call)
     return Repos(
         profiles=SupabaseProfiles(db),
         productions=SupabaseProductions(db),
@@ -563,4 +725,7 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         threads=SupabaseThreads(db),
         messages=SupabaseMessages(db),
         memory=SupabaseMemory(db),
+        frames=SupabaseFrames(db),
+        prompts=SupabasePrompts(db),
+        takes=SupabaseTakes(db),
     )

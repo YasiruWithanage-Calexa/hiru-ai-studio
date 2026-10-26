@@ -1,7 +1,12 @@
 # Implemented so far (against PLAN.md of 2026-10-23)
 
 Status on **2026-10-24**: Phases 0–3 are built and verified on localhost, each including a real
-OpenAI run; Phase 3's was against the hosted dev database. Supabase agent skills (`supabase`,
+OpenAI run; Phase 3's was against the hosted dev database. Phase 4 is built and verified the
+same way: the hosted project runs schema v3 (2026-10-24) and the Phase 4 smoke test passed on it
+in rules mode and with OpenAI. The frontend's overview, episode, Director and Production screens
+now read the real API (see "Frontend wiring"). Phase 5 (handoff) is built and tested locally;
+it needs schema v4 on the hosted DB (`Database/upgrade_v3_to_v4.sql`, not run yet). Every
+frontend screen now reads and writes the real API: no screen reads mock data. Supabase agent skills (`supabase`,
 `supabase-postgres-best-practices`) are installed in `.claude/skills/`. **Nothing is deployed** (by
 decision: test locally first). Commits are made by hand.
 
@@ -11,7 +16,53 @@ decision: test locally first). Commits are made by hand.
 | 1 — Documents and RAG | 7–9 | Done locally, in keyword mode and (with an OpenAI key) hybrid mode. |
 | 2 — Structure and canon | 10–13 | Done locally, rules-only and with OpenAI. See "Phase 2" below. |
 | 3 — Director panel | 14–16 | Built: function, API, migrations, tests, replay, hygiene guards. See "Phase 3". |
-| 4–6 | 17–22 | Not started. |
+| 4 — Production panel | 17–19 | Done: two forked functions, API, migration, schema v3 on the hosted DB, smoke with OpenAI, frontend panel wired. See "Phase 4". |
+| 5 — Handoff | 20–21 | Built and tested locally; hosted DB needs `upgrade_v3_to_v4.sql`. See "Phase 5". |
+| 6 | 22 | Not started. |
+
+## Verification at the end of Phase 5 (2026-10-24)
+
+- Backend: `pytest` 501 passed (incl. `tests/contracts/test_handoff.py`, `tests/api/test_handoff.py`,
+  `tests/infra/test_assemble.py` with real ffmpeg, `tests/api/test_studio_screens.py`); ruff and
+  mypy clean. Terraform `validate` passes with the new `assemble` service.
+- Database: 126 pgTAP tests pass on the migrations, on `schema_v4.sql` alone and on v3 +
+  `upgrade_v3_to_v4.sql`; the three dumps are identical.
+- Frontend: `npm run check` (lint, types, 43 tests) passes; `next build` passes. A browser tour
+  against the local stack on the hosted DB (still v3) loads build, canon, canon entity,
+  questions, activity, director library, Director and Production with no console errors. The
+  handoff page fails there only because the `takes` table is not on the hosted DB yet.
+- Not yet clicked through in a browser: takes upload/accept with a carried last frame and the
+  bundle download (they need v4 on the hosted DB). The API tests cover them.
+
+## Verification at the end of Phase 4
+
+| Check | Result |
+|---|---|
+| Python tests (`pytest`) | **482 passed** (+44: `contracts.producer`, shot_producer design/prompts/hygiene/wording, frame_render, Production panel API incl. frame upload) |
+| SQL tests (`supabase test db`) | **113 passed** (+19 in `005_production`: one accepted frame per shot, only finished frames accepted, prompt versions unique, cascades, private buckets, RLS, Realtime) |
+| Lint / types | ruff clean; mypy clean for `api`, `contracts` and all eight functions |
+| Schema lint / advisors | `supabase db lint`: no errors; `supabase db advisors --level warn`: no issues |
+| Schema v3 | Dumps of the migration build, of `schema_v3.sql` alone and of `schema_v2.sql` + `upgrade_v2_to_v3.sql` are identical (buckets, Realtime, personas, `graph` too); 113 tests and advisors pass on the upgraded one |
+| `upstream_diff.py` | Both new forks read; nothing changed upstream since `1d748dc` |
+| Phase 4 smoke, rules only, **hosted DB** | **Passed, 23 checks** in 53 s: panel locked until approval, writer 403, design by rules, a person's lens, frames report "not set up" without a key, accept → prompt with Nimal's line byte for byte, stale after a longer S02 and a new card for Kamala, prompt v1 kept |
+| Phase 4 smoke **with OpenAI, hosted DB** | **Passed, 25 checks** in 323 s: scene designed by gpt-5, two frames painted (`gpt-image-2`), the person's 85mm in the frame prompt, prompt v1, a reference sheet for Kamala. A follow-up frame for S04 attached her sheet (`images.edit`) and kept her look from the new card |
+| Frontend (`hiru-ai-studio-interface`) | `npm run check`: lint, types, **43 tests** pass (+4 for the scene mapping); Prettier clean on every changed file. Driven in a browser (Playwright, signed in as the smoke admin): overview, episode, Director, Production (three shots) and handoff all render real data; accept → prompt (Sinhala shown as `lang="si"`), a lens change flags the prompt out of date and putting it back clears it, an uploaded frame appears and can be accepted; no page errors or failed API calls |
+
+Found by the real runs and fixed:
+- `gpt-image-1` is listed on the account but refused ("does not exist"); the image tier now
+  defaults to **`gpt-image-2`** (`gpt-image-1.5` also works; the `gpt-image-2.5-*` models carry
+  preview code names and were not used).
+- Prompt wording: a lowercase move after a full stop, doubled full stops where the model's text
+  already ended with one, a stop before " — ", and "(the person)" for a character whose card
+  has no gender or wardrobe (now no tag at all). Regression test added.
+
+Tooling notes: the machine's global Supabase CLI (2.107) rejects `supabase/config.toml`; use the
+CI version, `npx -y supabase@2.121.0 ...`. `.env` has Windows line endings: a shell loader must
+strip them (`tr -d '\015'`) or every value ends in `\r`. The Phase 4 smoke data on the hosted DB:
+productions "Phase 4 smoke …", admin `smoke-p4-admin@hirutv.lk`, users `director-/crew-/writer-…@hirutv.lk`.
+
+Tooling note: the machine's global Supabase CLI (2.107) rejects `supabase/config.toml`; use the
+CI version, `npx -y supabase@2.121.0 ...`.
 
 ## Verification at the end of Phase 3
 
@@ -197,6 +248,15 @@ read → analyse → **ask** → architect → write.
 - The `ultra` architect names scenes and writes missing synopses (parallel, per episode). Rebuilds
   keep episode and scene ids, never rewrite an **approved** scene, remove scenes no longer in the
   script, and add unknown places and speakers to the canon as drafts.
+- **Prose episodes** (`engine/prose.py`, 2026-10-25): a file that tells its episodes as story
+  prose (`EPISODE 1 — TITLE`, `Name:` above each spoken line, no `INT.`/`EXT.` headings, often with
+  the cast bible in front, so its detected role is `bible`) used to build 0 episodes. `read` now
+  runs every `script`/`outline`/`bible`/`other` document without scene headings through
+  `prose.convert`: the `high` model cuts each episode into scenes (canon place and character
+  names reused, scene lengths adding up to the episode's stated "Approx. Duration"); the result is
+  rendered as Fountain and goes through `analyse` unchanged. The model's cut is accepted only if
+  every spoken line is kept word for word, otherwise (or without a key) rules make one scene per
+  episode and a warning says so. Documents with real scene headings are untouched.
 - Checkpointer: `langgraph-checkpoint-postgres` in schema `graph` (tables created by the
   checkpointer); thread deleted when the hop finishes; retries resume from the last node.
 
@@ -331,7 +391,137 @@ round 2 → persist → streamed reply.
   version check; shot edits and chat turns do not yet).
 
 
+## Phase 4 — Production panel
+
+**Design.** Per shot, three things in order, each gated by the one before: a DESIGN (the DP's IR
+and a camera recommendation), FIRST FRAMES (pick one; accepting unlocks the prompt), and VIDEO
+PROMPT versions. Production work needs the scene APPROVED in the Director panel. Nothing upstream
+is redone: designs, frames and prompts record `Pins` (shot version, a hash of the shot's script,
+place and time, and the canon card versions of the people and place in it); the API compares
+them on every read and reports what is out of date and why (`contracts/producer.py`,
+`api/services/production.py`).
+
+**Step 17: `shot_producer`** (`hiru-shot-producer`, port 8207, 900 s; fork of `nova_producer`,
+`UPSTREAM.md` lists 11 divergences).
+- One strict-JSON call designs a whole scene (`high` tier); answers matched by shot number,
+  missing shots asked once more, the rest by rules. System prompt byte-identical everywhere; the
+  production block (cast with codes, wardrobe anchors, the lead persona's style and charter, a
+  technique palette from `match_craft_techniques`, retrieved once per job) opens every request.
+- After the call, in code: codes → names in prose, invented people anonymous, people not in the
+  shot dropped, any Sinhala the model echoed removed, beats mapped onto the kernel's windows with
+  the director's beat notes on top, the director's shot size always wins.
+- Prompt mode: Veo prose serialized in code as titled SECTIONS (`contracts.producer.PromptSection`)
+  with each Sinhala line its own segment, byte-exact; voice casting from canon voice pins;
+  identity anchors from wardrobe anchors; silence stated for wordless shots; joins for
+  continuous / matched shots; the camera section rebuilt when a person changed the camera.
+  Each prompt is a new version with checks (one speaker, lines verbatim, voice pins, words over
+  target, camera changed). Without a key the design is made by rules.
+- `contracts/producer.py`: the camera vocabulary (mirrors the frontend's `camera-options.ts`,
+  which gained "Over-the-shoulder" and three lighting presets), defaults by shot size and scene
+  heading, camera checks (axis, wardrobe anchors, voice pins), pins and stale reasons, the
+  first-frame prompt, prompt sections and their plain text.
+
+**Step 18: `frame_render`** (`hiru-frame-render`, port 8208, 600 s; fork of `video_render`,
+provider replaced by OpenAI's image model, `OPENAI__MODEL_IMAGE` default `gpt-image-2`, quality
+`medium`).
+- The API inserts frame rows `queued`; the function CLAIMS each (conditional update, so a
+  re-delivery never pays twice), composes the prompt from the IR and the camera as it stands,
+  attaches the reference sheets of the characters and the location in the shot (in order, named
+  by position; an unreadable sheet is left out and not named), paints (`images.edit` with
+  references, `images.generate` without), stores to the private `frames` bucket, records the
+  prompt, references and pins. Four in parallel. Refusals are reported, never retried; provider
+  text never reaches a person. A `token_usage` row per picture.
+- Reference-sheet mode: paints the current card's sheet (`contracts.canon.reference_sheet_prompt`)
+  into the private `references` bucket and records it on `canon_versions.reference_assets`.
+
+**Step 19: accept → prompt unlock, staleness** (`routers/production.py`, all under
+`/v1/productions/{id}`): `GET scenes/{id}/production`, `GET shots/{id}`, `POST scenes/{id}/design`,
+`PATCH shots/{id}/camera` (null or the recommended value clears a person's change),
+`POST shots/{id}/frames` and `POST scenes/{id}/frames` (one job: a `shot_producer` design hop
+first when a design is missing or out of date, then `frame_render`, through the courier),
+`POST frames/{id}/accept|reject` (picking is free; a stale frame cannot be accepted),
+`POST shots/{id}/prompt` and `POST scenes/{id}/prompts` (only unlocked shots),
+`GET shots/{id}/prompt|prompts`, `POST shots/{id}/frames/upload` (a person's own PNG/JPEG/WebP,
+checked by content, pinned like a painted frame), and `POST canon/{id}/reference-sheet`
+(EDIT_CANON); canon
+entities carry `reference_sheet_url`. Frames and sheets reach browsers only through
+`/files/{ticket}`.
+- Prompt lock: scene approved; a shot that opens on a generated frame needs an accepted, current
+  frame; a shot that carries on from the previous take (`carry_last_frame`) needs none and cannot
+  have frames of its own (409 with the reason).
+- Migration `20261024103506_phase4_production.sql`: `shots.design`, `shots.camera_overrides`,
+  `first_frames` (one accepted per shot, only `done` can be accepted), `video_prompts` (versions
+  unique per shot), read-only RLS, Realtime, private `frames` and `references` buckets.
+  Hosted DB: `Database/schema_v3.sql` and `upgrade_v2_to_v3.sql`.
+- Registered in `task_manager.FUNCTIONS`, `deploy-functions.yml`, `start-functions.ps1`;
+  `.env.example` has the image settings; PyYAML added to dev dependencies (the clip schema).
+
+**Deviations from the plan**
+- `video_prompts.stale` is not a stored flag: staleness is computed on read from pins, so no
+  write path (API, director chat, canon extraction, script edits) can forget to set it.
+- The Veo serializer stays in `shot_producer` (the fork); the first-frame prompt moved to
+  `contracts` so `frame_render` composes it from the camera as it stands at paint time.
+- Routes nested under `/v1/productions/{id}/…` as in Phases 2–3; `GET .../scenes/{id}/production`
+  and the scene-level prompts request are additions.
+- Reference sheets (mentioned in `contracts/canon.py` for Phase 4) are included, though not listed
+  in PLAN.md §10.
+- The video prompt does not cite reference sheets: Veo gets the accepted first frame, which
+  already carries identity. No storyboard shots, no `last_frame`.
+- Re-split still replaces the shot list with new ids, which deletes that scene's frames and
+  prompts (they cascade with their shots).
+
+## Phase 5 — Handoff
+
+- `contracts/handoff.py`: `check_prompt` (overrun against the Veo length, missing first frame,
+  stale prompt, voice pin and wardrobe anchor present, banned terms from
+  `ProductionSettings.banned_terms` plus defaults), takes status, 30 MB take limit.
+- Migration `20261024162733_phase5_handoff.sql`: `takes` (one accepted take per shot, unique
+  index), `usage_budget`, RLS read-only for members, Realtime, private `takes` bucket. pgTAP
+  `006_handoff.test.sql`.
+- `infra/assemble/`: small ffmpeg service (`/health`, `/probe`, `/last-frame`, shared-secret
+  header). The API calls it through `services/assemble.py` (`ASSEMBLE__URL`, `ASSEMBLE__SECRET`);
+  Terraform `assemble.tf` and `deploy-assemble.yml` are written, not applied.
+- API `routers/handoff.py`: `GET .../shots/{id}/handoff`, `POST .../shots/{id}/takes`,
+  `POST .../takes/{id}/accept` (with `carry_last_frame`: the take's last frame becomes the next
+  shot's accepted first frame) and `/reject`, `GET .../scenes/{id}/bundle` (zip: README, shots.json,
+  each shot's prompt and first frame). `routers/usage.py`: budget from `usage_budget` (admin
+  `PUT /v1/usage/budget`), else the env setting.
+- Also added for the remaining screens: `GET .../activity`, `POST .../ask` (canon matches + search,
+  answered with numbered citations, or the sources alone without a key), canon create / draft from
+  documents / usage, and `answered_by_name` on questions.
+
 ## Frontend wiring (`hiru-ai-studio-interface`)
+
+**Phase 5 and the rest (2026-10-24).** No screen reads mock data now (`scene-3.mock` and
+`directors.mock` stay only for unit tests):
+- Director panel: streamed chat turns (`browserStream`), approve / unapprove, re-split, per-shot
+  length (auto / 4 / 6 / 8), script editing, director board (add, remove, make lead).
+- Prompt & Handoff: real checks, prompt regenerate, takes upload / accept (carry last frame) /
+  reject, scene bundle download.
+- Build (0b), canon library and entity (create, draft from documents, edit card as a new version,
+  lock, reference sheet), questions (answer), activity feed, and "Ask the production".
+- `lib/api/server.ts` calls `connection()` and each drama section has its own `loading.tsx`; this
+  removed the dev-mode "`Date.now()` while prerendering" error noted under Phase 4.
+
+
+**Phase 4 (2026-10-24).** Real data from the overview down to a shot:
+- `features/drama/api.ts`: episodes, the "Open episode" target and the canon card from
+  `GET .../structure` and `GET .../canon`. Episode rows link to their episode page.
+- `features/episodes/api.ts` + `lib/map-episode.ts`: the sidebar list and the episode page (stage
+  bars from scene statuses and shot counts; `shots_prompted` added to the API's episode summary).
+  The episode mock is removed.
+- `features/scenes/api.ts` + `lib/map-scene.ts`: a scene from `GET .../scenes/{id}` (script,
+  lines, timeline, board, canon) and `GET .../scenes/{id}/production` (camera, frames, prompt,
+  staleness), mapped onto the existing screen types (`Shot.production` added; frames carry their
+  `/files/{ticket}` URL, status and stale reasons). The scene mock stays only for a unit test.
+- `features/production/client.ts`: design, camera, frames (generate / upload / accept / reject),
+  prompts, scene-wide batch actions, and `waitForJob` (polls `GET /v1/jobs/{id}`, then the page is
+  read again). The Production panel shows real frame images (plain `<img>` on the ticket URL),
+  painting / failed / out-of-date states, the prompt lock reason, a design banner with
+  "Recommend settings", stale-prompt reasons, and keeps refreshing while frames paint. The three
+  header buttons run the scene-wide jobs. `camera-options.ts` mirrors `contracts/producer.py`.
+
+**Earlier phases:**
 
 The Next.js app now reads and writes real data through this API (no more mock seam for these):
 - **Auth:** Supabase email + password sign-in (`/login`), session in cookies (`@supabase/ssr`),
@@ -406,8 +596,14 @@ to manage it by hand, not with `supabase db push`.
 - Real sample documents (especially Sinhala script PDFs) to test extraction and the legacy-font
   warning on actual files.
 
+## Phase 4: still open
+
+- Done since: the Director panel buttons, Prompt & Handoff, and the activity feed are wired (see
+  "Frontend wiring"), and the dev-mode `Date.now()` error is fixed.
+- Build page: there is no Pause / Stop yet (the API has no endpoint for them).
+
 ## Next
 
-Phase 4 (shot producer, frame render, accept-frame → prompt,
-staleness), Phase 5 (prompt checks, bundle, takes, `/last-frame`, usage budget) and Phase 6
-(hardening).
+1. Run `Database/upgrade_v3_to_v4.sql` on the hosted project, then click through takes and the
+   bundle in the browser (needs the `assemble` service running locally, port 8209).
+2. Phase 6 (hardening).

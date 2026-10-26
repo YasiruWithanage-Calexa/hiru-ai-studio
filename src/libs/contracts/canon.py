@@ -100,6 +100,8 @@ class CanonEntity(BaseModel):
     locked: bool = False
     current_version: int | None = None
     current: CanonVersion | None = None
+    # The current card's reference sheet, through /files/{ticket} ("" when there is none).
+    reference_sheet_url: str = ""
     created_at: datetime
     updated_at: datetime
 

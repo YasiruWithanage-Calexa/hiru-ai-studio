@@ -65,6 +65,10 @@ class ProductionSettings(_Model):
     spoken_language: str = "si"
     # What the structure build writes (screen 0a "What AI builds").
     build: BuildOptions = Field(default_factory=BuildOptions)
+    # Names a prompt must not carry, on top of `contracts.handoff.DEFAULT_BANNED_TERMS`: local
+    # brands, and the public figures this production must not depict.
+    banned_terms: list[Annotated[str, Field(min_length=1, max_length=80)]] = Field(default_factory=list,
+                                                                                    max_length=200)
 
     @field_validator("fixed_shot_seconds")
     @classmethod

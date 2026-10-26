@@ -62,6 +62,10 @@ in a new `plan/<date>/` folder.
 - `contracts/veo.py` and `contracts/timing.py` mirror the frontend's `src/lib/veo/timing.ts`;
   change both in the same PR and keep `tests/contracts/test_timing.py` in parity with its tests.
 - Overruns are reported, never auto-trimmed. 10 s shots stay off until verified (PLAN.md Q4).
+- `contracts/producer.py` `CAMERA_OPTIONS` mirrors the frontend's
+  `src/features/production/lib/camera-options.ts`; change both together.
+- Designs, frames and prompts are never redone when something upstream changes: they record
+  `Pins` and the API reports them out of date (`api/services/production.py`).
 
 ## Conventions
 - Settings via `get_settings()` only (`lru_cache`); nested env vars use `__`.

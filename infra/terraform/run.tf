@@ -86,6 +86,19 @@ resource "google_cloud_run_v2_service" "api" {
         }
       }
       env {
+        name  = "ASSEMBLE__URL"
+        value = google_cloud_run_v2_service.assemble.uri
+      }
+      env {
+        name = "ASSEMBLE__SECRET"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.secrets["assemble-secret"].secret_id
+            version = "latest"
+          }
+        }
+      }
+      env {
         name = "API__INTERNAL_SECRET"
         value_source {
           secret_key_ref {

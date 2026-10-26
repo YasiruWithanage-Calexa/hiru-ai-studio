@@ -5,11 +5,15 @@ against the project's published JWKS, cached and refreshed once on an unknown `k
 rotation). A legacy HS256 project is checked against `SUPABASE__JWT_SECRET`. There is no
 network fallback: a token we cannot verify is rejected.
 
-The profile is read on EVERY request (not cached in the token), so deactivating a person or
-changing their role takes effect on their next call, not when their token expires.
+The profile is read from the database (not trusted from the token), so deactivating a person or
+changing their role does not wait for their token to expire. The Supabase profiles repo caches
+it for a few seconds (`PROFILE_TTL_S` in `repositories/supabase.py`), cleared when this process
+writes it: a change made here applies on the next call, one made elsewhere within that TTL.
 """
 from __future__ import annotations
 
+import asyncio
+import logging
 import time
 from dataclasses import dataclass
 from typing import Annotated, Any
@@ -27,8 +31,21 @@ from contracts.roles import AppRole
 
 _bearer = HTTPBearer(auto_error=False)
 
+_logger = logging.getLogger(__name__)
+
 _JWKS_TTL = 600.0
 _jwks: dict[str, Any] = {"keys": [], "fetched_at": 0.0}
+_jwks_locks: dict[asyncio.AbstractEventLoop, asyncio.Lock] = {}
+
+
+def _jwks_lock() -> asyncio.Lock:
+    """One lock per event loop (tests and `--reload` run more than one loop per process)."""
+    loop = asyncio.get_running_loop()
+    lock = _jwks_locks.get(loop)
+    if lock is None:
+        _jwks_locks.clear()
+        lock = _jwks_locks[loop] = asyncio.Lock()
+    return lock
 
 _UNAUTHORIZED = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -50,17 +67,33 @@ class CurrentUser:
         return self.app_role is AppRole.ADMIN
 
 
+def _fresh() -> bool:
+    return bool(_jwks["keys"]) and time.monotonic() - _jwks["fetched_at"] < _JWKS_TTL
+
+
 async def _fetch_jwks(settings: Settings, *, force: bool = False) -> list[dict[str, Any]]:
-    now = time.monotonic()
-    if not force and _jwks["keys"] and now - _jwks["fetched_at"] < _JWKS_TTL:
+    if not force and _fresh():
         return _jwks["keys"]
-    url = f"{settings.supabase.url.rstrip('/')}/auth/v1/.well-known/jwks.json"
-    async with httpx.AsyncClient(timeout=5.0) as client:
-        resp = await client.get(url)
-        resp.raise_for_status()
-    _jwks["keys"] = resp.json().get("keys", [])
-    _jwks["fetched_at"] = now
+    # One refresh at a time: requests that arrive together wait for it instead of each fetching.
+    started = time.monotonic()
+    async with _jwks_lock():
+        if _jwks["fetched_at"] >= started or (not force and _fresh()):
+            return _jwks["keys"]  # someone refreshed while we waited
+        url = f"{settings.supabase.url.rstrip('/')}/auth/v1/.well-known/jwks.json"
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            resp = await client.get(url)
+            resp.raise_for_status()
+        _jwks["keys"] = resp.json().get("keys", [])
+        _jwks["fetched_at"] = time.monotonic()
     return _jwks["keys"]
+
+
+async def warm_jwks(settings: Settings) -> None:
+    """Load the signing keys at startup so the first requests do not wait on them."""
+    try:
+        await _fetch_jwks(settings)
+    except httpx.HTTPError:
+        _logger.warning("could not preload JWKS; will retry on the first request", exc_info=True)
 
 
 async def verify_token(token: str, settings: Settings) -> dict[str, Any]:

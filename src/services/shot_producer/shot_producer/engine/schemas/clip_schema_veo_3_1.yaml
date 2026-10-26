@@ -1,0 +1,94 @@
+# Hiru clip schema — Veo 3.1 target. Forked from PromptMotion
+# src/services/nova_producer/nova_producer/engine/schemas/clip_schema_veo_3_1.yaml (1d748dc).
+#
+# Single source of truth for how a Hiru shot becomes a Veo prompt: the constant rules the
+# video model must obey (fixed_values + render_rules) AND the IR the director-of-photography
+# model fills (required_structure, turned into a strict JSON schema by schema.py).
+#
+# Divergences from upstream (see UPSTREAM.md): no storyboard block and no last_frame (Hiru
+# shots are single takes, handed off with one first frame); dialogue syntax also has a sung and
+# a voiceover form that NAME the speaker (Hiru's voiceover is a character, not a narrator);
+# Sinhala language and Sri Lankan market lines are rules here, not per-piece settings.
+
+fixed_values:
+  physics: >-
+    Solid objects — furniture, walls, props — are impenetrable: people move around them, never
+    through them, and every contact carries natural weight. Objects stay put unless someone
+    deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+  frame_hygiene: "Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay."
+  medium_style: "Photorealistic live-action television drama footage, real optics and natural imperfections."
+  language_line: >-
+    All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not
+    translated, not accented English.
+  market_line: "The setting, casting and everyday details are Sri Lankan."
+
+render_rules:
+  join_continuous: "This clip is a CONTINUATION of the previous one - the same unbroken take,
+    not a new shot. It begins on the previous clip's final frame, in that exact framing, and
+    the camera move carries on from where it stopped. There is no cut, no re-establishing and
+    no re-framing at the start. Cut these two clips together with no transition of any kind."
+  join_match: "This clip is a MATCHED RE-ANGLE of the previous one: the same moment and the
+    same action from a NEW camera position. The subject, the light and the action continue
+    unbroken across the cut; only the camera has moved."
+  opening_frame: "The clip opens on the supplied first frame and stays true to it: the same
+    faces, hair, wardrobe, place and light."
+  opening_carried: "The clip opens on the last frame of {previous}'s take, which is supplied as
+    its first frame."
+
+  lip_lock:        "Every person on screen who isn't the named speaker keeps their lips closed and still."
+  lettering_clean: "Surfaces and signage stay free of lettering."
+  anatomy: >-
+    Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs
+    that hold their proportions through the move.
+  no_extra_people: "No people enter frame beyond what is described."
+  # Veo dialogue SYNTAX — identity anchor + lip tag (the anti-swap pattern). `{line}` is where
+  # the Sinhala words go; the serializer keeps them as their own segment.
+  dialogue_line:   '{speaker} says{delivery}, "{line}" — only {name}''s lips move.'
+  sung_line:       '{speaker} sings{delivery}, "{line}" — only {name}''s lips move.'
+  voiceover_line:  'From off-screen, {speaker}''s voice says{delivery}, "{line}" — no one on screen mouths these words.'
+  # VOICE CASTING — the audio twin of the wardrobe anchor: the same words for a character in
+  # every shot of the production (the canon card's voice pin), so Veo samples the same voice.
+  voice_cast:      'Voice casting — fixed for the whole production, identical in every shot: {voices}'
+  voice_speaker:   '{who}: {voice}.'
+
+# ── top-level IR keys the DP must fill with something ──
+required_keys:
+  - cinematography
+  - lighting
+  - beats
+
+coerce_to_list:
+  - subjects
+  - beats
+
+# ── the IR the DP model fills (values are field descriptions; _item = array element shape) ──
+required_structure:
+  setting: "Where we are, one line, as the camera sees it."
+  cinematography:
+    camera:         "Rig + lens + aperture, e.g. 'handheld, 35mm, f/2.8' | 'dolly, 50mm, f/2.0' | 'locked-off sticks, 85mm, f/1.8'. Name the rig: it carries a whole motion signature the render can reproduce."
+    angle:          "Camera height/angle, e.g. 'slightly above eye level' | 'low angle'."
+    framing:        "Shot size + how much the subject fills the frame. The size is fixed by the director."
+    movement:       "ONE CONTINUOUS camera path for the whole shot, in filmmaker terms, motivated by the moment: 'slow push in from a medium to a tight single, then settle' | 'locked-off on sticks' | 'handheld drift'. One path, however far it travels; never several unrelated moves stacked."
+    white_balance:  "Colour temperature intent, e.g. 'warm 3200K lamp light'."
+    color_tone:     "Grade/palette in ONE line, e.g. 'naturalistic, slightly desaturated warm, film-like'."
+    depth_of_field: "Shallow | Medium | Deep + a bokeh note."
+    lens_artifacts: "Optional optical effects, e.g. 'subtle window flare', or 'none'."
+  lighting: "Key light direction and quality, contrast, shadow character — ONE sentence."
+  subjects:
+    _item:
+      id:          "The person's canon code (C01) from the cast list, or '' for an anonymous person."
+      description: "What we see of them."
+      action:      "What they do across the shot."
+  beats:
+    _item:
+      time:          "The beat window exactly as given, e.g. '0-3s'."
+      camera:        "This beat's shot size + focus point (favour the speaker) and how the camera arrived here from the previous beat if it moved. 'unchanged' only if the framing genuinely holds."
+      director_line: "ONE cinematic sentence describing this moment."
+      action:        "The literal physical action. Never the spoken words."
+  audio: "What the shot sounds like apart from speech — room tone, ambient bed, effects."
+  first_frame:
+    composition: "How the opening frame is composed."
+    subjects:
+      _item: "Who or what is in the opening frame and how they look."
+    setting:     "The place as seen in this frame."
+    lighting:    "The light in this frame."

@@ -62,17 +62,14 @@ async def create_production(body: ProductionCreate, admin: Admin, repos: ReposDe
 
 @router.get("/{production_id}", response_model=Production)
 async def get_production(production_id: UUID, access: CanView, repos: ReposDep) -> Production:
-    row = await repos.productions.get(production_id)
-    assert row is not None  # resolve_access already 404s a missing production
-    return _production(row, access.role)
+    return _production(access.production, access.role)
 
 
 @router.patch("/{production_id}", response_model=Production)
 async def update_production(production_id: UUID, body: ProductionUpdate, access: CanManage,
                             repos: ReposDep) -> Production:
     fields = body.model_dump(mode="json", exclude_unset=True)
-    before = await repos.productions.get(production_id)
-    assert before is not None
+    before = access.production
     row = await repos.productions.update(production_id, fields) if fields else before
     if fields:
         await repos.audit.record(action="production.update", entity="production",

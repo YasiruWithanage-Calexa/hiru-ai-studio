@@ -12,7 +12,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from collections.abc import AsyncIterator, Callable
+from collections.abc import AsyncIterator, Awaitable, Callable
 from typing import Any
 
 import httpx
@@ -20,7 +20,7 @@ import httpx
 from api.config import get_settings
 from api.repositories import Repos, Row
 from api.workers import task_manager
-from contracts.director import BoardMember, Persona, Seat, TurnPayload
+from contracts.director import BoardMember, ChoicePayload, ChoiceResult, Persona, Seat, TurnPayload
 
 _logger = logging.getLogger(__name__)
 DEFAULT_LEAD = "classic-teledrama"  # the lead a production has before anyone picks one
@@ -83,3 +83,33 @@ async def stream_turn(payload: TurnPayload) -> AsyncIterator[bytes]:
 def get_turn_streamer() -> TurnStreamer:
     """A dependency, so tests can stand in for the function."""
     return stream_turn
+
+
+ChoiceApplier = Callable[[ChoicePayload], Awaitable[ChoiceResult]]
+
+
+class DirectorUnavailable(RuntimeError):
+    """The function could not be reached or failed; the person is told to try again."""
+
+
+async def apply_choice(payload: ChoicePayload) -> ChoiceResult:
+    """Ask the `director_chat` function to apply a chosen side's edit (plain JSON, no stream)."""
+    settings = get_settings()
+    spec = task_manager.DIRECTOR_CHAT
+    url = task_manager.function_url(spec, settings)
+    headers = {"Content-Type": "application/json"}
+    try:
+        if not settings.local_functions:
+            headers["Authorization"] = f"Bearer {await asyncio.to_thread(_id_token, url)}"
+        async with httpx.AsyncClient(timeout=httpx.Timeout(60.0, connect=10.0)) as client:
+            resp = await client.post(url, json=payload.model_dump(mode="json"), headers=headers)
+        resp.raise_for_status()
+        return ChoiceResult.model_validate(resp.json())
+    except Exception as exc:
+        _logger.exception("director choice failed scene=%s", payload.scene_id)
+        raise DirectorUnavailable(UNAVAILABLE) from exc
+
+
+def get_choice_applier() -> ChoiceApplier:
+    """A dependency, so tests can stand in for the function."""
+    return apply_choice

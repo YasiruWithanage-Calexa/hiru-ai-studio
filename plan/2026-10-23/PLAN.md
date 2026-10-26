@@ -180,7 +180,7 @@ output, retries, token ledger, prompt-cache-friendly ordering.
 | `medium` | Conductor / classifier, file-role detection, reranking | mini model |
 | `low` | Reply wording, summaries, chunk context headers | nano/mini model |
 | `embed` | RAG | `text-embedding-3-large` at 1536 dims (fits pgvector HNSW) |
-| `image` | First frames, reference sheets | OpenAI image model, high quality |
+| `image` | First frames, reference sheets | OpenAI image model, medium quality |
 
 **Features we use on purpose**
 - **Structured outputs** (JSON schema) on every node that returns data. Never on a node with
@@ -448,12 +448,12 @@ hybrid mode needs an OpenAI key to measure). See IMPLEMENTED.md.*
 15. Read tools, server-side threads, production memory, director board personas.
 16. Timeline data endpoint, shot length edits, re-split; replay harness + hygiene guards.
 
-**Phase 4 — Production panel**
+**Phase 4 — Production panel** — *built and verified 2026-10-24, with OpenAI, on the hosted dev DB; frontend panel wired (see IMPLEMENTED.md).*
 17. Fork `nova_producer` → `shot_producer` (camera recommendation, frame strategy, Veo prose).
 18. Fork `video_render` → `frame_render` with the OpenAI image provider; single + batch.
 19. Accept-frame → prompt unlock; staleness when canon or shots change upstream.
 
-**Phase 5 — Handoff**
+**Phase 5 — Handoff** — *built and tested locally 2026-10-24; hosted DB needs schema v4 (see IMPLEMENTED.md).*
 20. `prompt_check`, bundle download, takes upload, `assemble` `/last-frame` for carried frames.
 21. Usage % (token ledger → budget view).
 

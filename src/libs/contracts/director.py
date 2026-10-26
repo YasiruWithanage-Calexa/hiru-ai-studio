@@ -10,7 +10,7 @@ re-times the scene with `contracts.shotplan`, stores the result and the messages
     delta    {"text"}                      reply text as it is written
     plan     {"shots": [...], "issues"}    the scene's shots after this turn's edits
     message  ChatMessage                   the stored director message
-    done     {"message_id", "lane"}       lane: chat | edit | craft | reshape (offered, not applied)
+    done     {"message_id", "lane"}       lane: chat | edit | craft | reshape (offered, not applied) | options
     error    {"message"}                   a sentence for the user, never an exception's text
 
 No prices anywhere: personas are a library, not a shop (CLAUDE.md: the UI shows no costs).
@@ -91,17 +91,48 @@ class TextBlock(BaseModel):
 
 
 class Position(BaseModel):
+    """One side of a disagreement. `ops` is the edit this side would make, its shots named by id
+    (`shot_id`, `after_shot_id`) so it still finds them after later turns renumber the scene; an
+    empty list is a view to hear, not an edit to apply (an advisor's)."""
+
     who: str
     text: str
+    change: str = ""  # the edit in words ("S02 framing → CU")
+    ops: list[dict[str, Any]] = Field(default_factory=list)
+    applied: bool = False  # the plan holds this side's edit
 
 
 class DisagreementBlock(BaseModel):
-    """Two board members disagree; the lead's view landed, the other is shown, not lost."""
+    """Two board members disagree. The owner's edit lands (or neither, when neither owns it); the
+    other side keeps its edit here, so a director can still choose it (`DisagreementChoice`)."""
 
     kind: Literal["disagreement"] = "disagreement"
     title: str
     positions: list[Position]
-    actions: list[str] = Field(default_factory=list)
+    actions: list[str] = Field(default_factory=list)  # messages from before choices; no longer offered
+    chosen: str | None = None  # the `who` a director picked
+    outcome: str = ""  # what that choice changed
+
+
+class ChatOption(BaseModel):
+    """One way to answer the person, offered as a card. `ops` is its edit, tried on a copy of the
+    scene before it was offered and pinned to shot ids (as `Position.ops`); an option with no
+    edit carries `prompt`, the message choosing it sends to the board."""
+
+    label: str
+    detail: str = ""
+    change: str = ""  # the edit in words ("S02 framing → CU")
+    impact: str = ""  # what the edit does to the scene ("Scene 52 s → 56 s")
+    ops: list[dict[str, Any]] = Field(default_factory=list)
+    prompt: str = ""
+
+
+class OptionsBlock(BaseModel):
+    kind: Literal["options"] = "options"
+    question: str = ""
+    options: list[ChatOption]
+    chosen: int | None = None  # the option a person picked
+    outcome: str = ""  # what that choice changed
 
 
 class EditNoteBlock(BaseModel):
@@ -115,7 +146,7 @@ class ContinuityBlock(BaseModel):
     text: str
 
 
-DirectorBlock = Annotated[TextBlock | DisagreementBlock | EditNoteBlock | ContinuityBlock,
+DirectorBlock = Annotated[TextBlock | DisagreementBlock | OptionsBlock | EditNoteBlock | ContinuityBlock,
                           Field(discriminator="kind")]
 
 
@@ -266,3 +297,53 @@ class TurnPayload(BaseModel):
     can_edit: bool  # Permission.DIRECT: without it the director answers and proposes, never applies
     message: str
     user_message_id: UUID
+
+
+# ── choosing a side in a disagreement ─────────────────────────────────────────────────────
+
+
+class DisagreementChoice(BaseModel):
+    """Browser → API: block `block` of a director message, the side `who` (Permission.DIRECT)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    block: int = Field(ge=0)
+    who: str = Field(min_length=1, max_length=120)
+
+
+class OptionChoice(BaseModel):
+    """Browser → API: option `option` of block `block` (an options block)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    block: int = Field(ge=0)
+    option: int = Field(ge=0)
+
+
+class ChoicePayload(BaseModel):
+    """API → director_chat: apply the chosen side's stored edit to the scene. The ops come from
+    the stored message, never from the browser."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    kind: Literal["choice"] = "choice"
+    production_id: UUID
+    scene_id: UUID
+    actor_user_id: UUID
+    ops: list[dict[str, Any]] = Field(min_length=1)
+
+
+class ChoiceResult(BaseModel):
+    """director_chat → API. `summary` is a sentence for the person: what changed, or why not."""
+
+    applied: list[dict[str, Any]] = Field(default_factory=list)
+    summary: str = ""
+
+
+class ChoiceResponse(BaseModel):
+    """API → browser: the message with the choice recorded; `changed` → re-read the scene.
+    `prompt`: an option with no edit; the browser sends it to the board as the next turn."""
+
+    message: ChatMessage
+    changed: bool
+    prompt: str = ""

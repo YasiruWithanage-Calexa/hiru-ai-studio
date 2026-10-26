@@ -15,7 +15,8 @@ locals {
   ]
   # Secret values are added by hand (`gcloud secrets versions add`), never through Terraform,
   # so they never enter Terraform state.
-  secrets = ["supabase-service-role-key", "api-internal-secret", "openai-api-key", "supabase-db-url"]
+  secrets = ["supabase-service-role-key", "api-internal-secret", "openai-api-key", "supabase-db-url",
+  "assemble-secret"]
 }
 
 resource "google_project_service" "apis" {
@@ -72,7 +73,7 @@ resource "google_secret_manager_secret" "secrets" {
 }
 
 resource "google_secret_manager_secret_iam_member" "api_reads" {
-  for_each  = toset(["supabase-service-role-key", "api-internal-secret"])
+  for_each  = toset(["supabase-service-role-key", "api-internal-secret", "assemble-secret"])
   secret_id = google_secret_manager_secret.secrets[each.value].id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.api.email}"

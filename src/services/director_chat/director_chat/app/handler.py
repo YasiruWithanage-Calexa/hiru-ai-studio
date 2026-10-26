@@ -16,8 +16,8 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from contracts.director import TurnPayload
-from director_chat.engine import turn
+from contracts.director import ChoicePayload, TurnPayload
+from director_chat.engine import choice, turn
 from director_chat.runtime.config import get_config
 from director_chat.runtime.llm import LLM
 from director_chat.runtime.rest import Rest
@@ -29,6 +29,21 @@ CLIENT_ERROR = "Something went wrong on our side. Please try again in a moment."
 
 def sse(event: str, data: dict[str, Any]) -> str:
     return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False, default=str)}\n\n"
+
+
+def handle_choice(body: dict[str, Any]) -> Any:
+    """A director chose a side in a disagreement: plain JSON in and out, no model call."""
+    try:
+        req = ChoicePayload.model_validate(body)
+    except ValidationError:
+        return {"error": "bad payload"}, 400
+    config = get_config()
+    try:
+        result = choice.apply_choice(req, Store(Rest(config.supabase_url, config.service_role_key)))
+    except Exception:
+        _logger.exception("director choice failed scene=%s", req.scene_id)
+        return {"error": CLIENT_ERROR}, 500
+    return result.model_dump(mode="json"), 200
 
 
 def stream(req: TurnPayload, store: Store, llm: LLM) -> Iterator[str]:
@@ -43,8 +58,11 @@ def stream(req: TurnPayload, store: Store, llm: LLM) -> Iterator[str]:
 def handle(request: Any) -> Any:
     from flask import Response, stream_with_context
 
+    body = request.get_json(silent=True) or {}
+    if isinstance(body, dict) and body.get("kind") == "choice":
+        return handle_choice(body)
     try:
-        req = TurnPayload.model_validate(request.get_json(silent=True) or {})
+        req = TurnPayload.model_validate(body)
     except ValidationError:
         return {"error": "bad payload"}, 400
     config = get_config()

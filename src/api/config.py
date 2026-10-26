@@ -59,6 +59,14 @@ class OpenAISettings(BaseModel):
         return bool(self.api_key.get_secret_value())
 
 
+class AssembleSettings(BaseModel):
+    """The ffmpeg service (infra/assemble): a take's last frame and its probe. Empty URL: takes
+    are still accepted, and the carried frame is reported as not made."""
+
+    url: str = ""
+    secret: SecretStr = SecretStr("")
+
+
 class UsageSettings(BaseModel):
     """The top-bar usage meter: model tokens used this month as a share of this budget."""
 
@@ -77,6 +85,7 @@ class Settings(BaseSettings):
     gcp: GcpSettings = GcpSettings()
     openai: OpenAISettings = OpenAISettings()
     usage: UsageSettings = UsageSettings()
+    assemble: AssembleSettings = AssembleSettings()
 
 
 @lru_cache

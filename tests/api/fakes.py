@@ -56,6 +56,10 @@ class FakeProductions:
     async def get(self, production_id: UUID) -> Row | None:
         return self.rows.get(str(production_id))
 
+    async def get_with_role(self, production_id: UUID, user_id: UUID) -> tuple[Row, str | None] | None:
+        row = self.rows.get(str(production_id))
+        return (row, self.members.roles.get((str(production_id), str(user_id)))) if row else None
+
     async def create(self, fields: Row) -> Row:
         pid = str(uuid4())
         row = {"id": pid, "status": "draft", "summary": "", "settings": {}, "kind": "drama_series",
@@ -127,7 +131,14 @@ class FakeAudit:
         self.entries: list[Row] = []
 
     async def record(self, **kwargs: Any) -> None:
-        self.entries.append(kwargs)
+        self.entries.append({"id": len(self.entries) + 1, "created_at": _now(), **kwargs})
+
+    async def list(self, production_id: UUID, limit: int = 100) -> list[Row]:
+        rows = [{**e, "actor_user_id": str(e["actor_user_id"]) if e.get("actor_user_id") else None,
+                 "production_id": str(e["production_id"]) if e.get("production_id") else None,
+                 "diff": e.get("diff") or {}, "actor_agent": e.get("actor_agent")}
+                for e in self.entries if str(e.get("production_id")) == str(production_id)]
+        return list(reversed(rows))[:limit]
 
 
 class FakeJobs:
@@ -214,6 +225,9 @@ class FakeStorage:
     async def remove(self, bucket: str, path: str) -> None:
         self.objects.pop((bucket, path), None)
 
+    async def download(self, bucket: str, path: str) -> bytes:
+        return self.objects[(bucket, path)]
+
 
 class FakeSearch:
     def __init__(self) -> None:
@@ -233,12 +247,19 @@ class FakeSearch:
 class FakeUsage:
     def __init__(self) -> None:
         self.rows: list[Row] = []
+        self.budgets: dict[str, int] = {}
 
     async def record(self, row: Row) -> None:
         self.rows.append(row)
 
     async def tokens_since(self, since: datetime) -> int:
         return sum(r.get("input_tokens", 0) + r.get("output_tokens", 0) for r in self.rows)
+
+    async def budget(self, month: str) -> int | None:
+        return self.budgets.get(month)
+
+    async def set_budget(self, month: str, tokens: int, user_id: UUID) -> None:
+        self.budgets[month] = tokens
 
 
 class _Table:
@@ -292,6 +313,9 @@ class FakeShots(_Table):
 class FakeLines(_Table):
     async def list(self, scene_id: UUID) -> list[Row]:  # type: ignore[override]
         return sorted((r for r in self.rows.values() if r["scene_id"] == str(scene_id)), key=lambda r: r["ord"])
+
+    async def list_for_production(self, production_id: UUID) -> list[Row]:
+        return [r for r in self.rows.values() if r.get("production_id") == str(production_id)]
 
     async def upsert(self, rows: list[Row]) -> None:
         for row in rows:
@@ -387,6 +411,9 @@ class FakeCanon(_Table):
         super().__init__()
         self.version_rows: dict[str, Row] = {}
 
+    async def create(self, fields: Row) -> Row:
+        return self.add(**{"locked": False, "core": False, "aliases": [], "current_version_id": None, **fields})
+
     def _with_current(self, row: Row) -> Row:
         return {**row, "current": self.version_rows.get(str(row.get("current_version_id")))}
 
@@ -423,6 +450,64 @@ class FakeQuestions(_Table):
         return sum(1 for r in self.rows.values() if r.get("job_id") == str(job_id) and r["status"] == "open")
 
 
+class FakeFrames(_Table):
+    async def create_many(self, rows: list[Row]) -> None:
+        for row in rows:
+            self.rows[row["id"]] = {"created_at": _now(), "accepted_at": None, "accepted_by": None, "pins": {},
+                                    "storage_path": None, "error": None, "rejected_reason": None, "prompt": "",
+                                    "reference_ids": [], **row}
+
+    async def list_for_shots(self, shot_ids: list[str]) -> list[Row]:
+        return sorted((r for r in self.rows.values() if r["shot_id"] in shot_ids), key=lambda r: r["created_at"])
+
+    async def update_many(self, frame_ids: list[str], fields: Row) -> None:
+        for fid in frame_ids:
+            self.rows[fid].update(fields)
+
+    async def accept(self, shot_id: UUID, frame_id: UUID, user_id: UUID) -> bool:
+        row = self.rows[str(frame_id)]
+        if row["status"] != "done":
+            return False
+        for other in self.rows.values():
+            if other["shot_id"] == str(shot_id):
+                other.update(accepted_at=None, accepted_by=None)
+        row.update(accepted_at=_now(), accepted_by=str(user_id))
+        return True
+
+    async def unaccept(self, frame_id: UUID) -> None:
+        self.rows[str(frame_id)].update(accepted_at=None, accepted_by=None)
+
+
+class FakePrompts(_Table):
+    async def latest_for_shots(self, shot_ids: list[str]) -> dict[str, Row]:
+        out: dict[str, Row] = {}
+        for row in sorted(self.rows.values(), key=lambda r: -r["version"]):
+            if row["shot_id"] in shot_ids:
+                out.setdefault(row["shot_id"], row)
+        return out
+
+    async def list(self, shot_id: UUID) -> list[Row]:  # type: ignore[override]
+        return sorted((r for r in self.rows.values() if r["shot_id"] == str(shot_id)), key=lambda r: -r["version"])
+
+
+class FakeTakes(_Table):
+    async def create(self, row: Row) -> Row:
+        full = {"created_at": _now(), "status": "uploaded", "reason": None, "duration_s": None,
+                "last_frame_path": None, "accepted_at": None, "accepted_by": None, **row}
+        self.rows[full["id"]] = full
+        return full
+
+    async def list_for_shots(self, shot_ids: list[str]) -> list[Row]:
+        return sorted((r for r in self.rows.values() if r["shot_id"] in shot_ids), key=lambda r: r["created_at"])
+
+    async def accept(self, shot_id: UUID, take_id: UUID, user_id: UUID) -> bool:
+        for other in self.rows.values():
+            if other["shot_id"] == str(shot_id) and other["status"] == "accepted":
+                other.update(status="uploaded", accepted_at=None, accepted_by=None)
+        self.rows[str(take_id)].update(status="accepted", accepted_at=_now(), accepted_by=str(user_id), reason=None)
+        return True
+
+
 def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
@@ -450,4 +535,7 @@ def build_fake_repos() -> Repos:
         threads=FakeThreads(),
         messages=FakeMessages(),
         memory=FakeMemory(),
+        frames=FakeFrames(),
+        prompts=FakePrompts(),
+        takes=FakeTakes(),
     )

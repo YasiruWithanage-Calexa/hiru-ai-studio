@@ -35,6 +35,8 @@ dev = [
     "langgraph==1.2.16",
     "langgraph-checkpoint-postgres==3.2.0",
     "psycopg[binary]==3.3.6",
+    # shot_producer
+    "PyYAML>=6.0,<7",
 ]
 
 [tool.setuptools.packages.find]

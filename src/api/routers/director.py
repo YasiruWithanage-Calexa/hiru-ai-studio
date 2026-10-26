@@ -9,7 +9,7 @@ turn that fails still leaves the question in the thread.
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from typing import Annotated
+from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
@@ -27,9 +27,15 @@ from contracts.director import (
     BoardUpdate,
     ChatMessage,
     ChatThread,
+    ChoicePayload,
+    ChoiceResponse,
+    DisagreementBlock,
+    DisagreementChoice,
     MemoryCreate,
     MemoryItem,
     MessageKind,
+    OptionChoice,
+    OptionsBlock,
     Persona,
     TurnPayload,
     TurnRequest,
@@ -42,6 +48,7 @@ CanView = Annotated[ProductionAccess, Depends(require_permission(Permission.VIEW
 CanComment = Annotated[ProductionAccess, Depends(require_permission(Permission.COMMENT))]
 CanDirect = Annotated[ProductionAccess, Depends(require_permission(Permission.DIRECT))]
 Streamer = Annotated[director_service.TurnStreamer, Depends(director_service.get_turn_streamer)]
+Applier = Annotated[director_service.ChoiceApplier, Depends(director_service.get_choice_applier)]
 P = "/v1/productions/{production_id}"
 
 
@@ -149,6 +156,95 @@ async def chat(production_id: UUID, scene_id: UUID, body: TurnRequest, access: C
 
     return StreamingResponse(frames(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+async def _choice_target(repos: Repos, production_id: UUID, message_id: UUID, block: int) -> tuple[ChatMessage, Any]:
+    row = await repos.messages.get(production_id, message_id)
+    if row is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Message not found.")
+    message = ChatMessage.model_validate(row)
+    return message, (message.blocks[block] if block < len(message.blocks) else None)
+
+
+async def _apply_stored(repos: Repos, applier: director_service.ChoiceApplier, access: ProductionAccess,
+                        production_id: UUID, message: ChatMessage, ops: list[dict[str, Any]]) -> str:
+    """Have the function apply an edit stored in `message` to its scene → what changed."""
+    thread = await repos.threads.get(production_id, message.thread_id)
+    if thread is None or not thread.get("scene_id"):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
+    try:
+        result = await applier(ChoicePayload(production_id=production_id, scene_id=UUID(str(thread["scene_id"])),
+                                             actor_user_id=access.user.id, ops=ops))
+    except director_service.DirectorUnavailable as exc:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
+    if not result.applied:
+        raise HTTPException(status.HTTP_409_CONFLICT, result.summary)
+    return result.summary
+
+
+async def _record(repos: Repos, access: ProductionAccess, production_id: UUID, message: ChatMessage, index: int,
+                  block: dict[str, Any], diff: dict[str, Any]) -> ChatMessage:
+    blocks = [b.model_dump(mode="json") for b in message.blocks]
+    blocks[index] = block
+    updated = await repos.messages.update(message.id, {"blocks": blocks})
+    await repos.audit.record(action="director.choice", entity="chat_message", entity_id=str(message.id),
+                             actor_user_id=access.user.id, production_id=production_id, diff=diff)
+    return ChatMessage.model_validate(updated)
+
+
+@router.post(P + "/messages/{message_id}/choice", response_model=ChoiceResponse)
+async def choose(production_id: UUID, message_id: UUID, body: DisagreementChoice, access: CanDirect,
+                 repos: ReposDep, applier: Applier) -> ChoiceResponse:
+    """A director picks a side in a disagreement. The side the plan already holds is recorded;
+    another side's stored edit is applied to the scene first (by the `director_chat` function).
+    The edit comes from the stored message, never from the browser."""
+    message, block = await _choice_target(repos, production_id, message_id, body.block)
+    if not isinstance(block, DisagreementBlock):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Disagreement not found.")
+    if block.chosen is not None:
+        raise HTTPException(status.HTTP_409_CONFLICT, f"{block.chosen}'s version was already chosen.")
+    side = next((p for p in block.positions if p.who == body.who), None)
+    if side is None or not (side.applied or side.ops):
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "That view is not an edit that can be chosen.")
+
+    changed = not side.applied
+    outcome = (await _apply_stored(repos, applier, access, production_id, message, side.ops) if changed
+               else "Kept: the plan already has this version.")
+    dumped = block.model_dump(mode="json")
+    dumped |= {"chosen": side.who, "outcome": outcome,
+               "positions": [{**p, "applied": p["who"] == side.who if changed else p["applied"]}
+                             for p in dumped["positions"]]}
+    updated = await _record(repos, access, production_id, message, body.block, dumped,
+                            {"title": block.title, "chosen": side.who, "changed": changed})
+    return ChoiceResponse(message=updated, changed=changed)
+
+
+@router.post(P + "/messages/{message_id}/option", response_model=ChoiceResponse)
+async def choose_option(production_id: UUID, message_id: UUID, body: OptionChoice, access: CanComment,
+                        repos: ReposDep, applier: Applier) -> ChoiceResponse:
+    """A person picks one of the options the lead offered. An option with an edit is applied to
+    the scene (Permission.DIRECT; the edit comes from the stored message); one without carries a
+    prompt, which the browser sends to the board as the next turn."""
+    message, block = await _choice_target(repos, production_id, message_id, body.block)
+    if not isinstance(block, OptionsBlock):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Options not found.")
+    if block.chosen is not None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "An option was already chosen.")
+    if body.option >= len(block.options):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Option not found.")
+    option = block.options[body.option]
+    changed = bool(option.ops)
+    if changed:
+        if Permission.DIRECT not in access.permissions:
+            raise HTTPException(status.HTTP_403_FORBIDDEN,
+                                "Your role can comment but not change the shot list; a director or producer can.")
+        outcome = await _apply_stored(repos, applier, access, production_id, message, option.ops)
+    else:
+        outcome = "Asked the board."
+    dumped = block.model_dump(mode="json") | {"chosen": body.option, "outcome": outcome}
+    updated = await _record(repos, access, production_id, message, body.block, dumped,
+                            {"question": block.question, "chosen": option.label, "changed": changed})
+    return ChoiceResponse(message=updated, changed=changed, prompt="" if changed else option.prompt)
 
 
 # ── production memory ──────────────────────────────────────────────────────────────────────

@@ -4,6 +4,7 @@ Read-only here; scenes and shots are edited from the Director panel (Phase 3).
 """
 from __future__ import annotations
 
+import asyncio
 from typing import Annotated
 from uuid import UUID
 
@@ -43,6 +44,7 @@ class EpisodeSummary(BaseModel):
     scenes: int
     shots: int
     shots_ready: int  # shots with an accepted frame or a prompt
+    shots_prompted: int = 0  # shots with a video prompt
     runtime_s: int
     openable: bool  # has scenes with shots: the Director panel can open it
 
@@ -84,14 +86,30 @@ def _episode(ep: Row, scenes: list[SceneSummary], shots: list[Row]) -> EpisodeDe
     return EpisodeDetail(
         id=ep["id"], number=ep["number"], title=ep["title"], synopsis=ep["synopsis"], status=ep["status"],
         scenes=len(scenes), shots=len(mine), shots_ready=sum(1 for s in mine if s["status"] != "draft"),
+        shots_prompted=sum(1 for s in mine if s["status"] == "prompt"),
         runtime_s=sum(int(s["duration_s"]) for s in mine), openable=any(s.shots for s in scenes),
         scene_list=scenes)
 
 
+def episodes_of(episodes: list[Row], scenes: list[Row], shots: list[Row]) -> list[EpisodeDetail]:
+    by_episode = _scenes(scenes, shots)
+    return [_episode(ep, by_episode.get(str(ep["id"]), []), shots) for ep in episodes]
+
+
+def structure_of(episodes: list[Row], scenes: list[Row], shots: list[Row], canon: list[Row]) -> Structure:
+    """The structure from rows already read (the overview endpoint shares them with its canon list)."""
+    chars = [c for c in canon if c["kind"] == CanonKind.CHARACTER]
+    return Structure(episodes=episodes_of(episodes, scenes, shots), canon=CanonCounts(
+        characters=len(chars), core_characters=sum(1 for c in chars if c.get("core")),
+        locations=sum(1 for c in canon if c["kind"] == CanonKind.LOCATION),
+        props=sum(1 for c in canon if c["kind"] == CanonKind.PROP),
+        locked=sum(1 for c in canon if c.get("locked"))))
+
+
 async def _structure(repos: Repos, production_id: UUID) -> list[EpisodeDetail]:
-    shots = await repos.shots.list(production_id)
-    by_episode = _scenes(await repos.scenes.list(production_id), shots)
-    return [_episode(ep, by_episode.get(str(ep["id"]), []), shots) for ep in await repos.episodes.list(production_id)]
+    shots, scenes, episodes = await asyncio.gather(
+        repos.shots.list(production_id), repos.scenes.list(production_id), repos.episodes.list(production_id))
+    return episodes_of(episodes, scenes, shots)
 
 
 @router.get("/episodes", response_model=list[EpisodeSummary])
@@ -102,21 +120,19 @@ async def list_episodes(production_id: UUID, _: CanView, repos: ReposDep) -> lis
 
 @router.get("/episodes/{episode_id}", response_model=EpisodeDetail)
 async def get_episode(production_id: UUID, episode_id: UUID, _: CanView, repos: ReposDep) -> EpisodeDetail:
-    ep = await repos.episodes.get(production_id, episode_id)
+    ep, shots, scene_rows = await asyncio.gather(
+        repos.episodes.get(production_id, episode_id), repos.shots.list(production_id),
+        repos.scenes.list(production_id, episode_id))
     if ep is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Episode not found.")
-    shots = await repos.shots.list(production_id)
-    scenes = _scenes(await repos.scenes.list(production_id, episode_id), shots).get(str(episode_id), [])
+    scenes = _scenes(scene_rows, shots).get(str(episode_id), [])
     return _episode(ep, scenes, shots)
 
 
 @router.get("/structure", response_model=Structure)
 async def get_structure(production_id: UUID, _: CanView, repos: ReposDep) -> Structure:
     """Everything the 0b tree and the screen 1 sidebar draw, in one read."""
-    canon = await repos.canon.list(production_id)
-    chars = [c for c in canon if c["kind"] == CanonKind.CHARACTER]
-    return Structure(episodes=await _structure(repos, production_id), canon=CanonCounts(
-        characters=len(chars), core_characters=sum(1 for c in chars if c.get("core")),
-        locations=sum(1 for c in canon if c["kind"] == CanonKind.LOCATION),
-        props=sum(1 for c in canon if c["kind"] == CanonKind.PROP),
-        locked=sum(1 for c in canon if c.get("locked"))))
+    episodes, scenes, shots, canon = await asyncio.gather(
+        repos.episodes.list(production_id), repos.scenes.list(production_id), repos.shots.list(production_id),
+        repos.canon.list(production_id))
+    return structure_of(episodes, scenes, shots, canon)

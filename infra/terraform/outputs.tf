@@ -19,6 +19,7 @@ output "github_variables" {
     GCP_DEPLOYER_SA  = google_service_account.deployer.email
     GCP_FUNCTIONS_SA = google_service_account.functions.email
     API_SERVICE      = google_cloud_run_v2_service.api.name
+    ASSEMBLE_SERVICE = google_cloud_run_v2_service.assemble.name
     SECRET_PREFIX    = local.name
   }
 }

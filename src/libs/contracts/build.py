@@ -92,6 +92,7 @@ class Question(BaseModel):
     answer: dict[str, Any] | None = None
     answered_by: UUID | None = None
     answered_at: datetime | None = None
+    answered_by_name: str = ""  # filled by the API for the questions screen
     created_at: datetime
 
 

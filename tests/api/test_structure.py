@@ -50,3 +50,18 @@ def test_episode_detail_and_404(world: World):
     assert other.status_code == 404
     assert world.client.get(f"/v1/productions/{world.production}/structure",
                             headers=world.headers(world.outsider)).status_code == 404
+
+
+def test_overview_is_one_read_of_production_structure_canon_and_open_questions(world: World):
+    seed(world)
+    pid = str(world.production)
+    world.repos.questions.add(production_id=pid, status="open", created_at="2026-10-24T00:00:00Z")  # type: ignore[attr-defined]
+    world.repos.questions.add(production_id=pid, status="answered", created_at="2026-10-24T00:00:00Z")  # type: ignore[attr-defined]
+    h = world.headers(world.reviewer)
+    body = world.client.get(f"/v1/productions/{pid}/overview", headers=h).json()
+    assert body["production"]["id"] == pid and body["production"]["my_role"] == "reviewer"
+    assert body["structure"] == world.client.get(f"/v1/productions/{pid}/structure", headers=h).json()
+    assert body["canon"] == world.client.get(f"/v1/productions/{pid}/canon", headers=h).json()
+    assert body["open_questions"] == 1
+    assert world.client.get(f"/v1/productions/{pid}/overview",
+                            headers=world.headers(world.outsider)).status_code == 404

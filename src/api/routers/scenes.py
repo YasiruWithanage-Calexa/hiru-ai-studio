@@ -12,6 +12,7 @@ person makes by hand (PLAN.md §10). Chat edits go through `routers/director.py`
 """
 from __future__ import annotations
 
+import asyncio
 import difflib
 import unicodedata
 from datetime import UTC, datetime
@@ -188,13 +189,14 @@ class Loaded:
                    envelope_s=int(self.scene["envelope_s"]) if envelope_s is None else envelope_s)
 
 
-async def load(repos: Repos, production_id: UUID, scene_id: UUID) -> Loaded:
-    scene = await repos.scenes.get(production_id, scene_id)
+async def load(repos: Repos, access: ProductionAccess, scene_id: UUID) -> Loaded:
+    production_id = access.production_id
+    scene, shots, lines = await asyncio.gather(
+        repos.scenes.get(production_id, scene_id), repos.shots.list(production_id, scene_id),
+        repos.lines.list(scene_id))
     if scene is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
-    production = await repos.productions.get(production_id)
-    assert production is not None  # authz already found it
-    return Loaded(production, scene, await repos.shots.list(production_id, scene_id), await repos.lines.list(scene_id))
+    return Loaded(access.production, scene, shots, lines)
 
 
 def _editable(scene: Row) -> None:
@@ -212,14 +214,16 @@ async def _save_fit(repos: Repos, ld: Loaded, plan: list[Row], result: FitResult
         "status": SceneStatus.SPLIT.value, "fit_report": sceneplan.fit_report(result, planner)})
 
 
-async def view(repos: Repos, production_id: UUID, scene_id: UUID) -> SceneView:
-    ld = await load(repos, production_id, scene_id)
+async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneView:
+    production_id = access.production_id
+    ld, canon_rows = await asyncio.gather(load(repos, access, scene_id), repos.canon.list(production_id))
     scene = ld.scene
-    episode = await repos.episodes.get(production_id, UUID(str(scene["episode_id"])))
+    episode_id = UUID(str(scene["episode_id"]))
+    episode, siblings = await asyncio.gather(repos.episodes.get(production_id, episode_id),
+                                             repos.scenes.list(production_id, episode_id))
     assert episode is not None
-    siblings = await repos.scenes.list(production_id, UUID(str(scene["episode_id"])))
     at = next(i for i, s in enumerate(siblings) if str(s["id"]) == str(scene_id))
-    canon = {str(c["id"]): c for c in await repos.canon.list(production_id)}
+    canon = {str(c["id"]): c for c in canon_rows}
 
     plan = sceneplan.plan_from_rows(ld.shots)
     result = ld.fit(plan) if plan else None
@@ -307,8 +311,8 @@ def _pad(beats: list[Row], n: int) -> list[Row]:
 
 
 @router.get("/scenes/{scene_id}", response_model=SceneView)
-async def get_scene(production_id: UUID, scene_id: UUID, _: CanView, repos: ReposDep) -> SceneView:
-    return await view(repos, production_id, scene_id)
+async def get_scene(production_id: UUID, scene_id: UUID, access: CanView, repos: ReposDep) -> SceneView:
+    return await view(repos, access, scene_id)
 
 
 @router.patch("/shots/{shot_id}", response_model=SceneView)
@@ -317,11 +321,11 @@ async def update_shot(production_id: UUID, shot_id: UUID, body: ShotUpdate, acce
     shot = await repos.shots.get(production_id, shot_id)
     if shot is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Shot not found.")
-    ld = await load(repos, production_id, UUID(str(shot["scene_id"])))
+    ld = await load(repos, access, UUID(str(shot["scene_id"])))
     _editable(ld.scene)
     fields = body.model_dump(exclude_unset=True)
     if not fields:
-        return await view(repos, production_id, UUID(str(shot["scene_id"])))
+        return await view(repos, access, UUID(str(shot["scene_id"])))
     plan = sceneplan.plan_from_rows(ld.shots)
     target = next(p for p in plan if p["id"] == str(shot_id))
     if "duration_s" in fields:
@@ -350,14 +354,14 @@ async def update_shot(production_id: UUID, shot_id: UUID, body: ShotUpdate, acce
     await repos.audit.record(action="shot.update", entity="shot", entity_id=str(shot_id),
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={k: getattr(v, "value", v) for k, v in fields.items()})
-    return await view(repos, production_id, UUID(str(shot["scene_id"])))
+    return await view(repos, access, UUID(str(shot["scene_id"])))
 
 
 @router.post("/scenes/{scene_id}/resplit", response_model=ResplitStarted, status_code=status.HTTP_202_ACCEPTED)
 async def resplit_scene(production_id: UUID, scene_id: UUID, access: CanDirect, repos: ReposDep) -> ResplitStarted:
     """Plan the scene's shots again from its script (`script_split`). Replaces the shot list:
     lengths people set and the director's beat notes go with it."""
-    ld = await load(repos, production_id, scene_id)
+    ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     if not ld.scene.get("script"):
         raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no script to plan shots from.")
@@ -379,7 +383,7 @@ async def _episode_status(repos: Repos, production_id: UUID, episode_id: UUID) -
 
 @router.post("/scenes/{scene_id}/approve", response_model=SceneView)
 async def approve_scene(production_id: UUID, scene_id: UUID, access: CanApprove, repos: ReposDep) -> SceneView:
-    ld = await load(repos, production_id, scene_id)
+    ld = await load(repos, access, scene_id)
     if ld.scene["status"] != SceneStatus.APPROVED:
         if not ld.shots:
             raise HTTPException(status.HTTP_409_CONFLICT, "A scene needs shots before it can be approved.")
@@ -388,18 +392,18 @@ async def approve_scene(production_id: UUID, scene_id: UUID, access: CanApprove,
         await _episode_status(repos, production_id, UUID(str(ld.scene["episode_id"])))
         await repos.audit.record(action="scene.approve", entity="scene", entity_id=str(scene_id),
                                  actor_user_id=access.user.id, production_id=production_id)
-    return await view(repos, production_id, scene_id)
+    return await view(repos, access, scene_id)
 
 
 @router.post("/scenes/{scene_id}/unapprove", response_model=SceneView)
 async def unapprove_scene(production_id: UUID, scene_id: UUID, access: CanApprove, repos: ReposDep) -> SceneView:
-    ld = await load(repos, production_id, scene_id)
+    ld = await load(repos, access, scene_id)
     if ld.scene["status"] == SceneStatus.APPROVED:
         await repos.scenes.update(scene_id, {"status": SceneStatus.SPLIT.value, "locked_by": None, "locked_at": None})
         await _episode_status(repos, production_id, UUID(str(ld.scene["episode_id"])))
         await repos.audit.record(action="scene.unapprove", entity="scene", entity_id=str(scene_id),
                                  actor_user_id=access.user.id, production_id=production_id)
-    return await view(repos, production_id, scene_id)
+    return await view(repos, access, scene_id)
 
 
 # ── the script ─────────────────────────────────────────────────────────────────────────────
@@ -442,7 +446,7 @@ def remap_plan(old_items: list[tuple[str, str]], new_items: list[tuple[str, str]
 @router.put("/scenes/{scene_id}/script", response_model=SceneView)
 async def update_script(production_id: UUID, scene_id: UUID, body: ScriptUpdate, access: CanWrite,
                         repos: ReposDep) -> SceneView:
-    ld = await load(repos, production_id, scene_id)
+    ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     version = int(ld.scene.get("script_version") or 1)
     if body.script_version != version:
@@ -499,7 +503,7 @@ async def update_script(production_id: UUID, scene_id: UUID, body: ScriptUpdate,
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={"script_version": version + 1, "lines": len(lines),
                                    "lines_removed": len(removed_lines), "blocks": len(script)})
-    return await view(repos, production_id, scene_id)
+    return await view(repos, access, scene_id)
 
 
 def _as_block(item: Any) -> Row:

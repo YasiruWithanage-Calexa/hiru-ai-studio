@@ -18,7 +18,7 @@ from fastapi import Depends, HTTPException, status
 
 from api.deps.auth import CurrentUser, User
 from api.deps.db import get_repos
-from api.repositories import Repos
+from api.repositories import Repos, Row
 from contracts.roles import Permission, ProductionRole, permissions_for
 
 NOT_FOUND = HTTPException(status.HTTP_404_NOT_FOUND, "Production not found.")
@@ -39,17 +39,20 @@ class ProductionAccess:
     production_id: UUID
     role: ProductionRole | None  # None for an admin who is not a member
     permissions: frozenset[Permission]
+    # The production row as read at the start of this request. Use it instead of reading again.
+    production: Row
 
 
 async def resolve_access(user: CurrentUser, production_id: UUID, repos: Repos) -> ProductionAccess:
     """The caller's role and permissions on one production, or 404 if they cannot see it."""
-    role_name = await repos.members.role_of(production_id, user.id)
+    found = await repos.productions.get_with_role(production_id, user.id)
+    if found is None:
+        raise NOT_FOUND
+    production, role_name = found
     role = ProductionRole(role_name) if role_name else None
     if role is None and not user.is_admin:
         raise NOT_FOUND
-    if await repos.productions.get(production_id) is None:
-        raise NOT_FOUND
-    return ProductionAccess(user, production_id, role, permissions_for(user.app_role, role))
+    return ProductionAccess(user, production_id, role, permissions_for(user.app_role, role), production)
 
 
 def require_permission(

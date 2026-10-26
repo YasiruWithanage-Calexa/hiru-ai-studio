@@ -24,10 +24,13 @@ from contracts.build import Agent, QuestionStatus, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
-from structure_build.engine import analyse, architect, write
+from structure_build.engine import analyse, architect, prose, write
 
 _logger = logging.getLogger(__name__)
 AGENT = Agent.ARCHITECT.value
+# Roles whose text can hold episodes. Only script and outline are read as such unless the text
+# turns out to be prose episodes (a bible that carries its own scripts).
+PROSE_ROLES = ("script", "outline", "bible", "other")
 QUESTION_NS = uuid.UUID("6f1c2b0e-3d7a-4c55-9a51-8f6f0e2a7b10")
 
 
@@ -64,7 +67,7 @@ class LLMLike(Protocol):
 
 
 class State(TypedDict, total=False):
-    documents: list[dict[str, str]]
+    documents: list[dict[str, Any]]
     canon: list[dict[str, Any]]
     plan: dict[str, Any]
     answers: dict[str, dict[str, Any]]
@@ -91,17 +94,43 @@ def build_graph(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm:
     assert production_id is not None
 
     def read(state: State) -> State:
+        canon = store.canon(production_id)
+        ask_model = None
+        if llm.enabled:
+            def ask_model(system: str, user: str) -> dict[str, Any]:
+                return llm.json(tier="high", phase="structure_build.prose", system=system, user=user,
+                                schema_name="prose_scenes", schema=prose.SCHEMA)
+
         docs = []
         for d in store.documents(production_id):
             role = d.get("confirmed_role") or d.get("detected_role") or "other"
-            if role in ("script", "outline") and d.get("text_path"):
-                docs.append({"id": str(d["id"]), "filename": d["filename"], "role": role,
-                             "text": store.text(d["text_path"])})
+            if role in PROSE_ROLES and d.get("text_path"):
+                item = {"id": str(d["id"]), "filename": d["filename"], "role": role,
+                        "text": store.text(d["text_path"])}
+                # A story written as prose (a bible with its episodes in it, a treatment) has no
+                # scene headings for the parser; it becomes screenplay text first, whatever its role.
+                converted = prose.convert(item["text"], ask_model, canon)
+                if converted:
+                    docs.append({**item, "role": "script", "text": converted.text,
+                                 "scene_seconds": converted.scene_seconds})
+                    how = "by the model" if converted.by_model else "by rules"
+                    jobs.event(job_id, JobEventType.AGENT_STEP,
+                               {"text": f"{d['filename']} tells its episodes as prose. Cut episodes "
+                                        f"{', '.join(map(str, converted.episodes))} into scenes {how}."},
+                               agent=AGENT)
+                    if converted.fallbacks:
+                        jobs.event(job_id, JobEventType.WARNING,
+                                   {"text": "The model's scenes for episode "
+                                            f"{', '.join(map(str, converted.fallbacks))} did not keep every spoken "
+                                            "line word for word, so they were cut by rules: one scene each, no "
+                                            "places. Check them."}, agent=AGENT)
+                elif role in ("script", "outline"):
+                    docs.append(item)
             elif role in ("script", "outline"):
                 jobs.event(job_id, JobEventType.WARNING,
                            {"text": f"{d['filename']} was read before this build step existed; re-ingest it "
                                     "to include it."}, agent=AGENT)
-        return {"documents": docs, "canon": store.canon(production_id)}
+        return {"documents": docs, "canon": canon}
 
     def analyse_node(state: State) -> State:
         jobs.stage(job_id, Stage.EPISODES.value, "active")

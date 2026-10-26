@@ -126,7 +126,8 @@ def plan(structure: dict[str, Any], *, production_id: str, canon: list[Row], exi
                 "id": scene_id, "production_id": production_id, "episode_id": episode_id,
                 "number": scene["number"], "heading": heading["raw"][:300], "title": scene["title"][:120],
                 "location_id": location_id, "time_of_day": heading["time_of_day"].lower(),
-                "envelope_s": int(old["envelope_s"]) if old else envelope_s, "script": blocks,
+                "envelope_s": int(old["envelope_s"]) if old else int(scene.get("envelope_s") or envelope_s),
+                "script": blocks,
                 "script_version": int(old["script_version"]) + 1 if old else 1, "status": "draft",
                 "fit_report": {},
             }, lines))

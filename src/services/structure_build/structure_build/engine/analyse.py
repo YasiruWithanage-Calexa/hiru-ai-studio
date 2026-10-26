@@ -83,7 +83,7 @@ def _scene_title(heading: dict[str, Any]) -> str:
     return ", ".join(parts)[:120]
 
 
-def analyse(documents: list[dict[str, str]], canon: list[dict[str, Any]]) -> Plan:
+def analyse(documents: list[dict[str, Any]], canon: list[dict[str, Any]]) -> Plan:
     """documents: [{id, filename, role, text}] oldest first; canon: [{id, kind, code, name, aliases}]."""
     characters = [c for c in canon if c["kind"] == CanonKind.CHARACTER]
     locations = [c for c in canon if c["kind"] == CanonKind.LOCATION]
@@ -95,7 +95,7 @@ def analyse(documents: list[dict[str, str]], canon: list[dict[str, Any]]) -> Pla
             for e in parse_outline(d["text"]):
                 outline.setdefault(e.number, {"title": e.title, "synopsis": e.synopsis})
 
-    parsed: list[tuple[dict[str, str], ParsedDocument]] = [
+    parsed: list[tuple[dict[str, Any], ParsedDocument]] = [
         (d, parse_document(d["text"], d["filename"], known)) for d in documents if d["role"] == "script"]
 
     questions: list[Question] = []
@@ -106,9 +106,14 @@ def analyse(documents: list[dict[str, str]], canon: list[dict[str, Any]]) -> Pla
             if not ep.scenes:
                 continue
             uid = f"{d['id']}:{i}"
+            scenes = [_scene(s, n) for n, s in enumerate(ep.scenes, start=1)]
+            # Lengths the episode's own text stated (prose episodes), one per scene.
+            seconds = (d.get("scene_seconds") or {}).get(str(ep.number)) or []
+            if len(seconds) == len(scenes):
+                for scene, length in zip(scenes, seconds, strict=True):
+                    scene["envelope_s"] = int(length)
             units[uid] = {"uid": uid, "doc_id": d["id"], "filename": d["filename"], "number": ep.number,
-                          "title": ep.title,
-                          "scenes": [_scene(s, n) for n, s in enumerate(ep.scenes, start=1)]}
+                          "title": ep.title, "scenes": scenes}
             if ep.number is not None:
                 claims.setdefault(ep.number, []).append(uid)
 

@@ -88,6 +88,7 @@ descriptive header per passage, and reranking. After adding a key, re-ingest doc
 .venv\Scripts\python -m ruff check src tests scripts
 .venv\Scripts\python -m mypy
 .venv\Scripts\python -m pytest -q
+# Use `npx -y supabase@2.121.0` if an older global CLI rejects supabase/config.toml.
 npx supabase start; npx supabase test db   # SQL tests on a throwaway local database (Docker), then
 npx supabase stop                          # stop it again; the dev database is the hosted one
 npx supabase db lint --level error

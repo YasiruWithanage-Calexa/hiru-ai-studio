@@ -10,7 +10,7 @@ import httpx
 import pytest
 
 from api.services import director as director_service
-from contracts.director import TurnPayload
+from contracts.director import ChoicePayload, ChoiceResult, TurnPayload
 from tests.api.conftest import World
 from tests.api.test_scenes import seed_scene, url
 
@@ -160,6 +160,169 @@ def test_an_unreachable_director_is_one_error_frame(world: World, monkeypatch: p
     got = frames(r.text)
     assert [e for e, _ in got] == ["accepted", "error"]
     assert got[1][1]["message"] == director_service.UNAVAILABLE
+
+
+# ── choosing a side in a disagreement ──────────────────────────────────────────────────────
+
+
+class Applier:
+    def __init__(self, result: ChoiceResult | None = None, down: bool = False) -> None:
+        self.payloads: list[ChoicePayload] = []
+        self.result = result or ChoiceResult(applied=[{"op": "set"}], summary="Applied: S01 sound mode → music_only.")
+        self.down = down
+
+    async def __call__(self, payload: ChoicePayload) -> ChoiceResult:
+        self.payloads.append(payload)
+        if self.down:
+            raise director_service.DirectorUnavailable(director_service.UNAVAILABLE)
+        return self.result
+
+
+def use(world: World, applier: Applier) -> Applier:
+    world.client.app.dependency_overrides[director_service.get_choice_applier] = lambda: applier  # type: ignore[attr-defined]
+    return applier
+
+
+SHOT_ID = str(uuid4())
+
+
+def seed_disagreement(world: World) -> tuple[dict, dict]:
+    """→ (scene, director message): text, then Sound (applied) vs Cinematography, then an advisor."""
+    s = seed_scene(world)
+    thread = world.repos.threads.add(production_id=str(world.production), scene_id=s["scene"]["id"],  # type: ignore[attr-defined]
+                                     title="Director", created_by=str(world.director))
+    cine_op = {"op": "set", "field": "sound_mode", "value": "music_only", "shot_id": SHOT_ID}
+    message = world.repos.messages.add(  # type: ignore[attr-defined]
+        production_id=str(world.production), thread_id=thread["id"], kind="director", speaker="Classic Teledrama",
+        tone="lead", text="", ops=[], citations=[], author_user_id=None, persona_id=None, blocks=[
+            {"kind": "text", "text": "Done."},
+            {"kind": "disagreement", "title": "Two views on S01 sound mode", "positions": [
+                {"who": "Sound", "text": "Silent.", "applied": True,
+                 "ops": [{**cine_op, "value": "silent"}]},
+                {"who": "Cinematography", "text": "Music.", "ops": [cine_op]}]},
+            {"kind": "disagreement", "title": "Lyrical Eye sees it differently", "positions": [
+                {"who": "Classic Teledrama", "text": "S01 silent", "applied": True},
+                {"who": "Lyrical Eye", "text": "Hold the wide."}]}])
+    return s["scene"], message
+
+
+def choice_url(world: World, message: dict) -> str:
+    return url(world, f"/messages/{message['id']}/choice")
+
+
+def test_choosing_the_other_side_applies_its_stored_edit(world: World):
+    scene, message = seed_disagreement(world)
+    applier = use(world, Applier())
+    r = world.client.post(choice_url(world, message), json={"block": 1, "who": "Cinematography"},
+                          headers=world.headers(world.director))
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["changed"] is True
+    block = body["message"]["blocks"][1]
+    assert block["chosen"] == "Cinematography" and block["outcome"] == "Applied: S01 sound mode → music_only."
+    assert [p["applied"] for p in block["positions"]] == [False, True]
+    p = applier.payloads[0]
+    assert str(p.scene_id) == scene["id"] and p.actor_user_id == world.director
+    assert p.ops == [{"op": "set", "field": "sound_mode", "value": "music_only", "shot_id": SHOT_ID}]  # from the store
+    stored = world.repos.messages.rows[message["id"]]  # type: ignore[attr-defined]
+    assert stored["blocks"][1]["chosen"] == "Cinematography"
+    assert world.repos.audit.entries[-1]["action"] == "director.choice"  # type: ignore[attr-defined]
+    # decided once
+    again = world.client.post(choice_url(world, message), json={"block": 1, "who": "Sound"},
+                              headers=world.headers(world.director))
+    assert again.status_code == 409
+
+
+def test_keeping_the_version_the_plan_has_changes_nothing(world: World):
+    _, message = seed_disagreement(world)
+    applier = use(world, Applier())
+    r = world.client.post(choice_url(world, message), json={"block": 2, "who": "Classic Teledrama"},
+                          headers=world.headers(world.director))
+    assert r.status_code == 200, r.text
+    assert r.json()["changed"] is False and r.json()["message"]["blocks"][2]["chosen"] == "Classic Teledrama"
+    assert not applier.payloads
+
+
+def test_a_choice_needs_a_real_side_a_director_and_a_reachable_function(world: World):
+    _, message = seed_disagreement(world)
+    use(world, Applier())
+    h = world.headers(world.director)
+    assert world.client.post(choice_url(world, message), json={"block": 2, "who": "Lyrical Eye"},
+                             headers=h).status_code == 422  # a view, not an edit
+    assert world.client.post(choice_url(world, message), json={"block": 0, "who": "Sound"},
+                             headers=h).status_code == 404  # not a disagreement
+    assert world.client.post(choice_url(world, message), json={"block": 9, "who": "Sound"},
+                             headers=h).status_code == 404
+    for user in (world.writer, world.reviewer):
+        assert world.client.post(choice_url(world, message), json={"block": 1, "who": "Cinematography"},
+                                 headers=world.headers(user)).status_code == 403
+    assert world.client.post(choice_url(world, message), json={"block": 1, "who": "Cinematography"},
+                             headers=world.headers(world.outsider)).status_code == 404
+    use(world, Applier(ChoiceResult(summary="That shot has changed.")))
+    r = world.client.post(choice_url(world, message), json={"block": 1, "who": "Cinematography"}, headers=h)
+    assert r.status_code == 409 and r.json()["detail"] == "That shot has changed."
+    use(world, Applier(down=True))
+    r = world.client.post(choice_url(world, message), json={"block": 1, "who": "Cinematography"}, headers=h)
+    assert r.status_code == 503
+    assert world.repos.messages.rows[message["id"]]["blocks"][1].get("chosen") is None  # type: ignore[attr-defined]
+
+
+def seed_options(world: World) -> dict:
+    """A director message with options: one with an edit, one that is a message to the board."""
+    s = seed_scene(world)
+    thread = world.repos.threads.add(production_id=str(world.production), scene_id=s["scene"]["id"],  # type: ignore[attr-defined]
+                                     title="Director", created_by=str(world.director))
+    return world.repos.messages.add(  # type: ignore[attr-defined]
+        production_id=str(world.production), thread_id=thread["id"], kind="director", speaker="Classic Teledrama",
+        tone="lead", text="", ops=[], citations=[], author_user_id=None, persona_id=None, blocks=[
+            {"kind": "text", "text": "Two ways."},
+            {"kind": "options", "question": "How should S02 play?", "options": [
+                {"label": "Push in", "change": "S02 framing → CU",
+                 "ops": [{"op": "set", "field": "framing", "value": "CU", "shot_id": SHOT_ID}]},
+                {"label": "Warmer", "prompt": "Make S02 warmer in tone."}]}])
+
+
+def option_url(world: World, message: dict) -> str:
+    return url(world, f"/messages/{message['id']}/option")
+
+
+def test_an_option_with_an_edit_is_applied_and_recorded(world: World):
+    message = seed_options(world)
+    applier = use(world, Applier())
+    for user in (world.writer, world.reviewer):  # they may ask the board, not change the plan
+        assert world.client.post(option_url(world, message), json={"block": 1, "option": 0},
+                                 headers=world.headers(user)).status_code == 403
+    r = world.client.post(option_url(world, message), json={"block": 1, "option": 0},
+                          headers=world.headers(world.director))
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["changed"] is True and body["prompt"] == ""
+    assert body["message"]["blocks"][1]["chosen"] == 0
+    assert applier.payloads[0].ops == [{"op": "set", "field": "framing", "value": "CU", "shot_id": SHOT_ID}]
+    assert world.client.post(option_url(world, message), json={"block": 1, "option": 1},
+                             headers=world.headers(world.director)).status_code == 409  # decided once
+
+
+def test_an_option_without_an_edit_hands_back_its_prompt(world: World):
+    message = seed_options(world)
+    applier = use(world, Applier())
+    r = world.client.post(option_url(world, message), json={"block": 1, "option": 1},
+                          headers=world.headers(world.writer))
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["changed"] is False and body["prompt"] == "Make S02 warmer in tone."
+    assert body["message"]["blocks"][1]["outcome"] == "Asked the board." and not applier.payloads
+
+
+def test_an_option_must_exist(world: World):
+    message = seed_options(world)
+    use(world, Applier())
+    h = world.headers(world.director)
+    assert world.client.post(option_url(world, message), json={"block": 1, "option": 5}, headers=h).status_code == 404
+    assert world.client.post(option_url(world, message), json={"block": 0, "option": 0}, headers=h).status_code == 404
+    use(world, Applier(ChoiceResult(summary="That shot has changed.")))
+    r = world.client.post(option_url(world, message), json={"block": 1, "option": 0}, headers=h)
+    assert r.status_code == 409 and world.repos.messages.rows[message["id"]]["blocks"][1].get("chosen") is None  # type: ignore[attr-defined]
 
 
 # ── memory ─────────────────────────────────────────────────────────────────────────────────

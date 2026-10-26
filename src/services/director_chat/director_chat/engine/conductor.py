@@ -5,6 +5,8 @@
                      OPERATIONS, applied by the kernel even over locks (they are the person's)
             craft    "make this scene tenser": specialists are TASKED, scoped to shots
             reshape  a change to most of the scene: offered as a re-split, never applied
+            options  "give me options", or too open to act on: 2-4 choices offered as cards
+                     (`engine/options.py`), each tried on a copy of the scene; nothing applied
     memory  decisions the person wants kept ("from now on, flashbacks are separate scenes")
 
 Two implementations behind one shape. `by_rules` (no key, or the model failed) understands the
@@ -21,7 +23,7 @@ from typing import Any
 from contracts.production import Framing
 from contracts.veo import CameraLink
 
-LANES = ("chat", "edit", "craft", "reshape")
+LANES = ("chat", "edit", "craft", "reshape", "options")
 AGENTS = ("cinematography", "timing", "sound", "continuity")
 
 _NULLABLE_INT = {"type": ["integer", "null"]}
@@ -68,6 +70,9 @@ lane:
   per beat, reaction/insert shots), timing (lengths, splits, merges, where cuts fall), sound
   (sound mode per shot), continuity (actions and positions per beat).
 - reshape: the request would change most of the scene. Do nothing; it will be offered as a re-split.
+- options: the person asks for options, alternatives, ideas or "ways to" do something, or the
+  request is too open to act on without a choice ("make S02 better"). Write no operations and no
+  tasks; the choices are offered separately.
 
 Operations (unused fields null): set {shot, field: framing|sound_mode|title, value};
 retime {shot, seconds: 4|6|8}; split {shot, at_block, framing?, title?}; merge {shot} (with the

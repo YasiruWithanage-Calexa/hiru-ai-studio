@@ -16,6 +16,9 @@ document is one Hiru scene and the turn persists its own result:
   6. PERSIST   shots (ids kept), lines re-bound, audit entries (agent + person), memory.
   7. REPLY     streamed, written from the diff and the notes; advisors add their view.
 
+The `options` lane skips 2-6: the lead offers choices (`engine/options.py`), each tried on a copy
+of the scene, and the person applies one later (`engine/choice.py`).
+
 Nothing here can change dialogue, another scene, or another production. Without
 `can_edit` (Permission.DIRECT) the turn proposes and applies nothing.
 """
@@ -32,7 +35,7 @@ from contracts import sceneplan
 from contracts.director import TurnPayload
 from contracts.production import ProductionSettings
 from contracts.shotplan import FitResult
-from director_chat.engine import agents, conductor
+from director_chat.engine import agents, conductor, options
 from director_chat.engine.kernel import ApplyResult, ScenePlanKernel
 from director_chat.engine.tools import DEFINITIONS, Tools
 
@@ -160,6 +163,7 @@ class TurnState:
     reshape: bool = False
     blocked: str = ""  # why edits could not be applied (approved scene, role, no shots)
     changed: set[str] = field(default_factory=set)  # kernel handles this turn touched
+    options: dict[str, Any] | None = None  # an options block (the `options` lane)
 
 
 def template_reply(st: TurnState, fit_text: str) -> str:
@@ -240,18 +244,20 @@ def run(req: TurnPayload, store: StoreLike, llm: LLMLike) -> Iterator[Event]:
     elif wants_change:
         yield "status", {"text": "Applying your changes"}
         st = _edit(kernel, plan, st, llm, ask, lead, before)
+    elif plan.lane == "options" and llm.enabled:
+        yield "status", {"text": "Weighing the options"}
+        st.options = options.propose(ask("high", "director.options", "chat_options", options.SCHEMA), kernel=kernel,
+                                     message=req.message, history=history_text,
+                                     lead_charter=lead.get("charter", ""), memory=memory)
+        if st.options is None:
+            st.lane = "chat"  # nothing worth offering: answer it as a question
 
     after = kernel.fit()
     if st.applied:
         new_issues = [i.message for i in after.issues if i.message not in {b.message for b in before.issues}]
         st.continuity += new_issues
-        shots_out, lines_out, removed = rows(kernel, scene, after, shot_rows, lines)
-        store.save_plan(sid, shots_out, removed, lines_out, {
-            "envelope_s": kernel.envelope_s, "status": "split",
-            "fit_report": sceneplan.fit_report(after, "director")})
-        store.audit({"production_id": str(pid), "actor_user_id": str(req.actor_user_id), "actor_agent": "director_chat",
-                     "action": "scene.director_edit", "entity": "scene", "entity_id": str(sid),
-                     "diff": {"ops": st.applied}})
+        shots_out, _ = persist(store, kernel, scene, shot_rows, lines, production_id=pid,
+                               actor_user_id=req.actor_user_id, action="scene.director_edit", applied=st.applied)
         yield "plan", {"shots": shots_out, "total_s": after.total_s,
                        "issues": [i.message for i in after.issues]}
 
@@ -278,8 +284,10 @@ def run(req: TurnPayload, store: StoreLike, llm: LLMLike) -> Iterator[Event]:
                                          advisor_name=adv["name"], advisor_charter=adv.get("charter", ""),
                                          scene_text=kernel.describe(), summary=summary)
             if view:
+                # The lead's side is what the plan now holds; the advisor's is a view, not an edit.
                 st.disagreements.append({"title": f"{adv['name']} sees it differently",
-                                         "positions": [{"who": lead.get("name", "Lead"), "text": summary}, view]})
+                                         "positions": [{"who": lead.get("name", "Lead"), "text": summary,
+                                                        "applied": True}, view]})
 
     # 7. reply
     yield "status", {"text": "Writing the reply"}
@@ -289,12 +297,13 @@ def run(req: TurnPayload, store: StoreLike, llm: LLMLike) -> Iterator[Event]:
         reply += delta
         yield "delta", {"text": delta}
     blocks: list[dict[str, Any]] = [{"kind": "text", "text": reply.strip()}]
+    if st.options:
+        blocks.append(st.options)
     if st.applied:
         blocks.append({"kind": "edit-note", "count": len(st.applied),
                        "text": "; ".join(describe_op(o) for o in st.applied)})
     for d in st.disagreements:
-        blocks.append({"kind": "disagreement", "title": d["title"], "positions": d["positions"],
-                       "actions": ["Keep the lead's version"]})
+        blocks.append({"kind": "disagreement", "title": d["title"], "positions": d["positions"]})
     for c in st.continuity[:3]:
         blocks.append({"kind": "continuity", "text": c})
     message = {"id": str(uuid.uuid4()), "production_id": str(pid), "thread_id": str(req.thread_id),
@@ -361,12 +370,74 @@ def _edit(kernel: ScenePlanKernel, plan: conductor.Plan, st: TurnState, llm: LLM
         outputs = agents.run_specialists(lambda agent: ask("high", f"director.{agent}", f"{agent}_ops", agents.SCHEMA),
                                          tasks, scene_text=kernel.describe(), lead_charter=lead.get("charter", ""))
         settled = agents.settle(outputs)
+        handles = kernel.handles()  # the numbers this round's operations name
+        landed: set[int] = set()
         for agent, op in settled.ops:
-            _apply(kernel, st, kernel.apply([op], by=agent, respect_locks=True, allowed_ops=agents.ALLOWED[agent]))
+            result = kernel.apply([op], by=agent, respect_locks=True, allowed_ops=agents.ALLOWED[agent])
+            if result.applied:
+                landed.add(id(op))
+            _apply(kernel, st, result)
+        for d in settled.disagreements:
+            for p in d["positions"]:
+                p["applied"] = any(id(o) in landed for o in p["ops"])
+                p["change"] = "; ".join(_describe(o) for o in p["ops"])
+                p["ops"] = [x for x in (pin(o, handles) for o in p["ops"]) if x]
         st.disagreements += settled.disagreements
         st.notes += [f"{o.agent}: {o.note}" for o in outputs if o.note]
         tasks = _with_overrun_task(kernel, [], before, asked) if round_no == 1 else []
     return st
+
+
+def _describe(op: dict[str, Any]) -> str:
+    try:
+        return describe_op(op)
+    except (KeyError, TypeError, ValueError):
+        return str(op.get("op", ""))
+
+
+def pin(op: dict[str, Any], handles: list[str]) -> dict[str, Any]:
+    """A stored operation names its shot by id, not number: numbers move as the scene changes.
+    A shot made this turn has no id yet (its handle is `new…`); its operation cannot be chosen
+    later and is stored without a pin."""
+    out = {k: v for k, v in op.items() if k not in ("shot", "after_shot", "by")}
+    for key in ("shot", "after_shot"):
+        if op.get(key) is None:
+            continue
+        try:
+            handle = handles[int(op[key]) - 1]
+        except (TypeError, ValueError, IndexError):
+            return {}
+        if handle.startswith("new"):
+            return {}
+        out[f"{key}_id"] = handle
+    return out
+
+
+def unpin(op: dict[str, Any], handles: list[str]) -> dict[str, Any] | None:
+    """A stored operation, addressed to the scene as it is now; None when its shot is gone."""
+    out = {k: v for k, v in op.items() if k not in ("shot_id", "after_shot_id")}
+    for key in ("shot", "after_shot"):
+        handle = op.get(f"{key}_id")
+        if handle is None:
+            continue
+        if handle not in handles:
+            return None
+        out[key] = handles.index(handle) + 1
+    return out
+
+
+def persist(store: StoreLike, kernel: ScenePlanKernel, scene: dict[str, Any], shot_rows: list[dict[str, Any]],
+            lines: list[dict[str, Any]], *, production_id: UUID, actor_user_id: UUID, action: str,
+            applied: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], FitResult]:
+    """Save the kernel's plan (shot ids kept, lines re-bound) and audit it → (shots, fit)."""
+    after = kernel.fit()
+    shots_out, lines_out, removed = rows(kernel, scene, after, shot_rows, lines)
+    store.save_plan(UUID(str(scene["id"])), shots_out, removed, lines_out, {
+        "envelope_s": kernel.envelope_s, "status": "split", "fit_report": sceneplan.fit_report(after, "director")})
+    store.audit({"production_id": str(production_id), "actor_user_id": str(actor_user_id),
+                 "actor_agent": "director_chat", "action": action, "entity": "scene", "entity_id": str(scene["id"]),
+                 "diff": {"ops": applied}})
+    return shots_out, after
 
 
 def _with_overrun_task(kernel: ScenePlanKernel, tasks: list[dict[str, Any]], before: FitResult,
@@ -400,6 +471,10 @@ def _reply(req: TurnPayload, st: TurnState, kernel: ScenePlanKernel, lead: dict[
         facts.append("Specialist notes: " + " | ".join(st.notes))
     if st.memory:
         facts.append("Stored as a production rule: " + " ".join(st.memory))
+    if st.options:
+        facts.append("Options are shown as cards under your reply; the person applies one with a click: "
+                     + "; ".join(o["label"] for o in st.options["options"])
+                     + ". Introduce them in one or two sentences. Do not list, number or describe them again.")
     persona = (f"You are {lead.get('name', 'the lead director')}: {lead.get('style_note', '')}"
                if lead else "")
     messages: list[dict[str, Any]] = [
