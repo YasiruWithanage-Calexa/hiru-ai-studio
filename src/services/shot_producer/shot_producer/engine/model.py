@@ -13,6 +13,7 @@ from contracts import sceneplan
 from contracts.producer import (
     CameraSettings,
     CastMember,
+    PersonEdits,
     Pins,
     cast_in,
     default_camera,
@@ -61,6 +62,11 @@ class ShotInput:
     @property
     def code(self) -> str:
         return f"S{self.number:02d}"
+
+    @property
+    def dop_note(self) -> str:
+        """The note a person wrote for the DoP on this shot ("" when there is none)."""
+        return PersonEdits.of(self.row).dop_note
 
     @property
     def speaker_ids(self) -> list[str]:
@@ -143,7 +149,8 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
                      location=location, location_look=look)
     for s in shots:
         own = shot_items(items, int(s["block_start"]), int(s["block_end"]))
-        cast_ids = cast_in(own, characters)
+        edits = PersonEdits.of(s)
+        cast_ids = cast_in(own, characters, edits)
         shot_lines = [Line(id=i.line_id or "", speaker=i.speaker, character_id=i.speaker_id, text=i.text,
                            delivery=i.delivery,
                            beat_index=(by_line.get(i.line_id or "") or {}).get("beat_index"))
@@ -159,7 +166,7 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
             words=int(s.get("words") or 0), word_target=int(s.get("word_target") or 0),
             version=int(s.get("version") or 1), row=s,
             pins=pins_for(shot_version=int(s.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
-                          versions=versions)))
+                          versions=versions, edits=edits)))
     return out
 
 

@@ -49,6 +49,20 @@
      "expect": {"lane": "craft"}},
     {"id": "one-long-take", "split": "heldout", "rules": false, "scene": 0,
      "message": "Re-plan this entire scene from scratch as a single long take",
-     "expect": {"lane": ["reshape", "edit"], "no_ops": true}}
+     "expect": {"lane": ["reshape", "edit"], "no_ops": true}},
+    {"id": "followup-without-advice", "split": "tune", "rules": true, "scene": 0,
+     "message": "update S02 with that",
+     "expect": {"lane": "chat", "no_ops": true, "card": false, "clean_reply": true}},
+    {"id": "staging-is-not-reachable-yet", "split": "heldout", "rules": true, "scene": 0,
+     "message": "In S02 Anudi should stand on the pavement, not on the three-wheeler",
+     "expect": {"no_ops": true, "card": false, "clean_reply": true}},
+    {"id": "followup-after-advice", "split": "tune", "rules": false, "scene": 0,
+     "history": [{"kind": "director", "text": "Open S02 on a wide so the road gap reads, and let Kamala step out of the family car."}],
+     "message": "update S02 with that",
+     "expect": {"lane": "options", "no_ops": true, "card": true, "clean_reply": true}},
+    {"id": "yes-after-advice", "split": "heldout", "rules": false, "scene": 0,
+     "history": [{"kind": "director", "text": "A close-up on Nimal when he says he is back would land the moment harder."}],
+     "message": "yes do that",
+     "expect": {"lane": ["options", "edit"], "card": true, "clean_reply": true}}
   ]
 }

@@ -15,7 +15,7 @@ Pure standard library (the `contracts` rule), so both sides share one implementa
 """
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping, Sequence
 from typing import Any
 from uuid import uuid4
 
@@ -48,13 +48,33 @@ def items_for(script: list[Row], lines: list[Row]) -> list[Item]:
     return items
 
 
+def script_rows(items: Sequence[Mapping[str, Any]]) -> list[Row]:
+    """Script blocks as the kernel holds them → what `scenes.script` stores (a dialogue block
+    points at its line; the words live in `dialogue_lines`)."""
+    return [{"kind": "dialogue", "text": "", "line_id": str(i["line_id"])} if i["kind"] == "dialogue"
+            else {"kind": str(i["kind"]), "text": str(i.get("text") or ""), "line_id": None} for i in items]
+
+
+def lines_from_items(scene: Row, items: Sequence[Mapping[str, Any]]) -> list[Row]:
+    """The scene's `dialogue_lines` rows (the fields `rows_after_fit` keeps) for the kernel's
+    items: one per dialogue block, in script order."""
+    out: list[Row] = []
+    for i in items:
+        if i["kind"] == "dialogue":
+            out.append({"id": str(i["line_id"]), "production_id": str(scene["production_id"]),
+                        "scene_id": str(scene["id"]), "ord": len(out), "speaker": str(i.get("speaker") or ""),
+                        "character_id": i.get("speaker_id"), "text": str(i.get("text") or ""),
+                        "delivery": str(i.get("delivery") or "")})
+    return out
+
+
 def plan_from_rows(shots: list[Row]) -> list[Row]:
     """Stored shot rows → the plan form the kernel and `rows_after_fit` work on."""
     return [{"id": str(s["id"]), "start": int(s["block_start"]), "end": int(s["block_end"]),
              "title": s.get("title", ""), "framing": s.get("framing", "MS"), "sound_mode": s.get("sound_mode"),
              "duration": int(s["duration_s"]), "duration_locked": bool(s.get("duration_locked")),
              "camera_link": s.get("camera_link", "cut"), "status": s.get("status", "draft"),
-             "version": int(s.get("version") or 1),
+             "version": int(s.get("version") or 1), "person_edits": s.get("person_edits") or {},
              "beat_notes": [{k: str(b.get(k, "")) for k in BEAT_TEXT} for b in s.get("beats") or []]}
             for s in sorted(shots, key=lambda r: int(r["number"]))]
 
@@ -99,6 +119,8 @@ def rows_after_fit(scene: Row, plan: list[Row], result: FitResult, lines: list[R
             "block_start": f.start, "block_end": f.end, "word_target": f.word_target, "words": f.words,
             "duration_locked": bool(src and src.get("duration_locked")),
             "status": (src or {}).get("status", "draft"), "version": int((src or {}).get("version") or 1),
+            # A person's own marks (cast, ignored checks, the DoP note) travel with the shot's id.
+            "person_edits": (src or {}).get("person_edits") or {},
         }
         old = before.get(shot_id)
         if old is not None and any(_norm(old.get(k)) != _norm(row[k]) for k in MATERIAL):

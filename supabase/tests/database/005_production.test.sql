@@ -1,7 +1,7 @@
 -- Phase 4: the Production panel. Frames and prompts hang off shots, one accepted frame per
 -- shot, prompt versions unique per shot, private buckets, read-only for browsers.
 begin;
-select plan(19);
+select plan(21);
 
 delete from public.video_prompts; delete from public.first_frames;
 delete from public.memory_items; delete from public.chat_messages; delete from public.chat_threads;
@@ -47,6 +47,7 @@ insert into public.video_prompts (production_id, shot_id, version, prose) values
 -- ── shots carry a design and a person's camera ───────────────────────────────────────────
 select col_default_is('public', 'shots', 'design', '{}', 'a shot starts undesigned');
 select col_default_is('public', 'shots', 'camera_overrides', '{}', 'and with the recommended camera');
+select col_default_is('public', 'shots', 'person_edits', '{}', 'and with none of a person''s own marks');
 
 -- ── constraints ──────────────────────────────────────────────────────────────────────────
 select lives_ok($$ update public.first_frames set accepted_at = now()
@@ -89,6 +90,7 @@ select throws_ok($$ insert into public.first_frames (production_id, shot_id)
                  '42501', null, 'browsers write nothing: frames go through the API');
 select is_empty($$ update public.first_frames set accepted_at = now() returning 1 $$, 'nor acceptances');
 select is_empty($$ update public.shots set camera_overrides = '{"lens":"85mm"}' returning 1 $$, 'nor camera changes');
+select is_empty($$ update public.shots set person_edits = '{"dop_note":"warm"}' returning 1 $$, 'nor a person''s marks');
 
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000d');
 select is((select count(*)::int from public.first_frames) + (select count(*)::int from public.video_prompts), 0,

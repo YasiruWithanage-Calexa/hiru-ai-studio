@@ -5,7 +5,7 @@ import json
 from uuid import UUID, uuid4
 
 from director_chat.app.handler import CLIENT_ERROR, stream
-from director_chat.engine import turn
+from director_chat.engine import conductor, turn
 
 from contracts.director import TurnPayload
 from tests.services.director_chat.conftest import PID, DirectorLLM, FakeStore, fixture_scene, tool_call
@@ -13,9 +13,12 @@ from tests.services.director_chat.conftest import PID, DirectorLLM, FakeStore, f
 ACTOR = uuid4()
 
 
-def payload(store: FakeStore, message: str, *, can_edit: bool = True) -> TurnPayload:
+def payload(store: FakeStore, message: str, *, can_edit: bool = True,
+            can_edit_script: bool | None = None) -> TurnPayload:
+    """`can_edit_script` follows `can_edit` unless a test says otherwise (a writer has only the script)."""
     return TurnPayload(production_id=PID, scene_id=UUID(store.scene_row["id"]), thread_id=uuid4(),
-                       actor_user_id=ACTOR, actor_name="Dee Director", can_edit=can_edit, message=message,
+                       actor_user_id=ACTOR, actor_name="Dee Director", can_edit=can_edit,
+                       can_edit_script=can_edit if can_edit_script is None else can_edit_script, message=message,
                        user_message_id=uuid4())
 
 
@@ -125,9 +128,7 @@ def test_history_leaves_out_the_message_being_answered():
 
 
 def plan_answer(lane: str, ops=(), tasks=(), memory=()) -> dict:
-    return {"lane": lane, "ops": [{**{k: None for k in ("shot", "field", "value", "seconds", "at_block", "end_block",
-                                                         "link", "beat", "after_shot", "description", "framing",
-                                                         "title")}, **o} for o in ops],
+    return {"lane": lane, "ops": [{**{k: None for k in conductor.OP_FIELDS}, **o} for o in ops],
             "tasks": list(tasks), "memory": list(memory)}
 
 
@@ -257,7 +258,7 @@ def test_the_reply_is_told_when_nothing_changed():
     llm = DirectorLLM({"turn_plan": lambda s, u: plan_answer("edit", ops=[{"op": "retime", "shot": 9, "seconds": 6}])})
     run(store, "make shot 9 six seconds", llm)
     reply_prompt = llm.streamed[-1][1]["content"]
-    assert "Applied: nothing" in reply_prompt and "there is no shot 9" in reply_prompt
+    assert "Applied this turn: nothing" in reply_prompt and "there is no shot 9" in reply_prompt
 
 
 def test_a_rule_the_production_already_holds_is_not_stored_again():

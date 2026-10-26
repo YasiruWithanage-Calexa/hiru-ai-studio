@@ -76,9 +76,12 @@ class Store:
 
     # ── writing ──────────────────────────────────────────────────────────────────────────
     def save_plan(self, scene_id: UUID, shots: list[Row], removed: list[str], lines: list[Row],
-                  scene_fields: Row) -> None:
+                  scene_fields: Row, removed_lines: list[str] | None = None) -> None:
         """Shots keep their ids (frames and prompts hang off them); numbering is checked at the
-        end of the statement (deferred unique), so one upsert can renumber them."""
+        end of the statement (deferred unique), so one upsert can renumber them. Lines a script
+        change removed go first, and the scene's script last, once every line it names exists."""
+        if removed_lines:
+            self.rest.delete("dialogue_lines", {"id": f"in.({','.join(removed_lines)})"})
         if removed:
             self.rest.delete("shots", {"id": f"in.({','.join(removed)})"})
         if shots:

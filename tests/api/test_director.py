@@ -162,6 +162,17 @@ def test_an_unreachable_director_is_one_error_frame(world: World, monkeypatch: p
     assert got[1][1]["message"] == director_service.UNAVAILABLE
 
 
+def test_the_function_is_told_who_may_change_the_scripts_words(world: World, recorder: Recorder):
+    """A writer changes words but not the shot list; a director and a producer do both; no one else either."""
+    s = seed_scene(world)
+    want = ((world.reviewer, False, False), (world.crew, False, False), (world.writer, False, True),
+            (world.director, True, True), (world.producer, True, True), (world.admin, True, True))
+    for user, can_edit, can_edit_script in want:
+        world.client.post(url(world, f"/scenes/{s['scene']['id']}/chat"), json={"message": "hi"},
+                          headers=world.headers(user))
+        assert (recorder.payloads[-1].can_edit, recorder.payloads[-1].can_edit_script) == (can_edit, can_edit_script)
+
+
 # ── choosing a side in a disagreement ──────────────────────────────────────────────────────
 
 
@@ -301,6 +312,57 @@ def test_an_option_with_an_edit_is_applied_and_recorded(world: World):
     assert applier.payloads[0].ops == [{"op": "set", "field": "framing", "value": "CU", "shot_id": SHOT_ID}]
     assert world.client.post(option_url(world, message), json={"block": 1, "option": 1},
                              headers=world.headers(world.director)).status_code == 409  # decided once
+
+
+def seed_staged_line(world: World, *, with_fix: bool = False) -> dict:
+    """What the director offers for a spoken line: apply it (and maybe a beat fix), or keep it as it is."""
+    s = seed_scene(world)
+    thread = world.repos.threads.add(production_id=str(world.production), scene_id=s["scene"]["id"],  # type: ignore[attr-defined]
+                                     title="Director", created_by=str(world.director))
+    line = {"op": "block.set", "field": "text", "value": "One day I will open my own restaurant",
+            "line_id": s["lines"][0]["id"], "was": s["lines"][0]["text"]}
+    fix = {"op": "beat.set", "beat": 0, "field": "action", "value": "Kamala listens", "shot_id": SHOT_ID}
+    return world.repos.messages.add(  # type: ignore[attr-defined]
+        production_id=str(world.production), thread_id=thread["id"], kind="director", speaker="Classic Teledrama",
+        tone="lead", text="", ops=[], citations=[], author_user_id=None, persona_id=None, blocks=[
+            {"kind": "text", "text": "I have not changed the script yet."},
+            {"kind": "options", "question": "Change S02?", "options": [
+                {"label": "Apply this change", "change": "S02 line", "ops": [line, fix] if with_fix else [line]},
+                {"label": "Keep it as it is", "ops": []}]}])
+
+
+def test_a_writer_may_apply_a_change_to_the_words_and_the_function_is_told_so(world: World):
+    message = seed_staged_line(world)
+    applier = use(world, Applier(ChoiceResult(applied=[{"op": "block.set"}], summary="Applied: S02 line.")))
+    assert world.client.post(option_url(world, message), json={"block": 1, "option": 0},
+                             headers=world.headers(world.reviewer)).status_code == 403
+    r = world.client.post(option_url(world, message), json={"block": 1, "option": 0},
+                          headers=world.headers(world.writer))
+    assert r.status_code == 200, r.text
+    assert r.json()["changed"] is True and applier.payloads[0].can_edit_script is True
+    assert applier.payloads[0].ops[0]["line_id"] and applier.payloads[0].ops[0]["op"] == "block.set"
+
+
+def test_a_change_that_also_edits_a_shot_needs_both_permissions(world: World):
+    message = seed_staged_line(world, with_fix=True)
+    applier = use(world, Applier())
+    assert world.client.post(option_url(world, message), json={"block": 1, "option": 0},
+                             headers=world.headers(world.writer)).status_code == 403  # the beat fix is a director's
+    assert not applier.payloads
+    r = world.client.post(option_url(world, message), json={"block": 1, "option": 0},
+                          headers=world.headers(world.director))
+    assert r.status_code == 200 and len(applier.payloads[0].ops) == 2
+
+
+def test_keeping_a_staged_line_as_it_is_changes_nothing(world: World):
+    message = seed_staged_line(world)
+    applier = use(world, Applier())
+    r = world.client.post(option_url(world, message), json={"block": 1, "option": 1},
+                          headers=world.headers(world.reviewer))
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["changed"] is False and body["prompt"] == "" and not applier.payloads
+    assert body["message"]["blocks"][1]["outcome"] == "Kept as it is."
 
 
 def test_an_option_without_an_edit_hands_back_its_prompt(world: World):

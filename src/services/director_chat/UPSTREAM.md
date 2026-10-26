@@ -51,3 +51,29 @@ since that commit in the files below.
     normalised in the kernel; specialists are held to their task's shots and at most 6 operations;
     the reply runs on `medium` and is told explicitly when nothing changed; a standing rule the
     production already holds is not stored again.
+14. **The chat changes the Script column (2026-10-26).** Upstream's plan has no script a person
+    edits. Hiru's kernel now has `block.set | block.insert | block.remove` (script blocks, named by
+    their number at the START of a batch, like shots), `canon.add | canon.remove`,
+    `check.waive | check.restore` and `dop_note.set` (a shot's `person_edits`). All are
+    PERSON-ONLY (`by="you"`): a specialist, the conductor's tasks and an options card cannot use
+    them. Dialogue words must be copied from what the person wrote (here or earlier), are staged
+    as an options card (Apply / Keep) and applied only by `engine/choice.py`, with
+    `Permission.EDIT_SCRIPT` (`TurnPayload.can_edit_script`); shot-list edits keep
+    `Permission.DIRECT`. `persist` saves the script, its lines and a new `script_version` (and
+    refuses a script someone saved meanwhile). This also fixes `insert`, which used to shift
+    block numbers without saving the script block it added.
+15. **`engine/ripple.py` is new.** After a script edit it names the impact set (touched shots,
+    their neighbours, shots joined by a continuous or matched cut) and notes what it found in
+    code; the continuity specialist is tasked on that set (beats and joins only; it cannot touch
+    dialogue). For a staged change the specialist's fixes ride in the card's operations.
+16. **`describe()` numbers blocks** (`[n]`) and shows who is in each shot and what a person set
+    on it; the conductor prompt grew from 2.4k to 2.9k characters (the hygiene budget is 3000).
+
+17. **Director Chat v2, Phase 0 (2026-10-26, plan/2026-10-26).** `engine/refusals.py` filters every
+    refusal the kernel records, so a validation message ("text takes text") or an operation name
+    never reaches a reply or a card. `engine/proposals.py` resolves "do that / yes / update S02
+    with that" from the stored thread (an open options card, or the last piece of advice, which
+    becomes one Apply / Keep card), and removes any sentence in a reply that points at a card the
+    message does not carry. A model answer that is an edit or craft with no operations and no tasks
+    is asked once more (Nova W6, `conductor.AGAIN`, appended after the message so the system prompt
+    stays cacheable). The reply model reads the turn ledger after the message (Nova W2).

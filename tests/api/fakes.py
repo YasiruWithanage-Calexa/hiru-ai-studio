@@ -378,6 +378,9 @@ class FakeMessages(_Table):
         rows = [r for r in self.rows.values() if r["thread_id"] == str(thread_id)]
         return rows[-limit:]
 
+    async def clear(self, thread_id: UUID) -> None:
+        self.rows = {k: r for k, r in self.rows.items() if r["thread_id"] != str(thread_id)}
+
     async def create(self, fields: Row) -> Row:
         return self.add(**{"blocks": [], "ops": [], "citations": [], "text": "", "speaker": "", "tone": None,
                            "persona_id": None, "author_user_id": None, **fields})

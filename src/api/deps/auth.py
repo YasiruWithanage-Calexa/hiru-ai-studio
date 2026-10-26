@@ -5,6 +5,11 @@ against the project's published JWKS, cached and refreshed once on an unknown `k
 rotation). A legacy HS256 project is checked against `SUPABASE__JWT_SECRET`. There is no
 network fallback: a token we cannot verify is rejected.
 
+A refresh that fails (a network blip in the middle of a request) is retried with a short backoff
+and, when it still fails, the last good keys keep serving: signing keys change rarely, so an old
+copy verifies almost every token. Only a token signed by a key we have never seen needs the
+network, and that one answers 503 (try again), not 401 (sign in again).
+
 The profile is read from the database (not trusted from the token), so deactivating a person or
 changing their role does not wait for their token to expire. The Supabase profiles repo caches
 it for a few seconds (`PROFILE_TTL_S` in `repositories/supabase.py`), cleared when this process
@@ -34,6 +39,8 @@ _bearer = HTTPBearer(auto_error=False)
 _logger = logging.getLogger(__name__)
 
 _JWKS_TTL = 600.0
+_JWKS_BACKOFF = (0.2, 0.6)  # waits between the attempts of one refresh, in seconds
+_JWKS_RETRY_AFTER = 30.0  # after a failed refresh the old keys serve this long before the next try
 _jwks: dict[str, Any] = {"keys": [], "fetched_at": 0.0}
 _jwks_locks: dict[asyncio.AbstractEventLoop, asyncio.Lock] = {}
 
@@ -71,7 +78,28 @@ def _fresh() -> bool:
     return bool(_jwks["keys"]) and time.monotonic() - _jwks["fetched_at"] < _JWKS_TTL
 
 
-async def _fetch_jwks(settings: Settings, *, force: bool = False) -> list[dict[str, Any]]:
+async def _download_jwks(settings: Settings) -> list[dict[str, Any]]:
+    """The published keys, trying again after a short wait when the call fails."""
+    url = f"{settings.supabase.url.rstrip('/')}/auth/v1/.well-known/jwks.json"
+    waits = (0.0, *_JWKS_BACKOFF)
+    for attempt, wait in enumerate(waits, start=1):
+        if wait:
+            await asyncio.sleep(wait)
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                resp = await client.get(url)
+                resp.raise_for_status()
+            return list(resp.json().get("keys", []))
+        except httpx.HTTPError:
+            if attempt == len(waits):
+                raise
+    raise AssertionError("unreachable")  # pragma: no cover
+
+
+async def _fetch_jwks(settings: Settings, *, force: bool = False, stale_ok: bool = True) -> list[dict[str, Any]]:
+    """The signing keys. `force` skips the cache (a key id we do not know); `stale_ok` lets the
+    last good copy answer when the refresh fails, which the caller of a forced refresh cannot
+    accept (the old copy is the one that lacked the key)."""
     if not force and _fresh():
         return _jwks["keys"]
     # One refresh at a time: requests that arrive together wait for it instead of each fetching.
@@ -79,11 +107,16 @@ async def _fetch_jwks(settings: Settings, *, force: bool = False) -> list[dict[s
     async with _jwks_lock():
         if _jwks["fetched_at"] >= started or (not force and _fresh()):
             return _jwks["keys"]  # someone refreshed while we waited
-        url = f"{settings.supabase.url.rstrip('/')}/auth/v1/.well-known/jwks.json"
-        async with httpx.AsyncClient(timeout=5.0) as client:
-            resp = await client.get(url)
-            resp.raise_for_status()
-        _jwks["keys"] = resp.json().get("keys", [])
+        try:
+            keys = await _download_jwks(settings)
+        except httpx.HTTPError:
+            if not (stale_ok and _jwks["keys"]):
+                raise
+            _logger.warning("could not refresh the signing keys; using the last good copy", exc_info=True)
+            # Count the old copy as fresh for a while, so each request does not wait out the retries.
+            _jwks["fetched_at"] = time.monotonic() - _JWKS_TTL + _JWKS_RETRY_AFTER
+            return _jwks["keys"]
+        _jwks["keys"] = keys
         _jwks["fetched_at"] = time.monotonic()
     return _jwks["keys"]
 
@@ -114,7 +147,7 @@ async def verify_token(token: str, settings: Settings) -> dict[str, Any]:
             keys = await _fetch_jwks(settings)
             jwk = next((k for k in keys if k.get("kid") == kid), None)
             if jwk is None:
-                keys = await _fetch_jwks(settings, force=True)
+                keys = await _fetch_jwks(settings, force=True, stale_ok=False)
                 jwk = next((k for k in keys if k.get("kid") == kid), None)
         except httpx.HTTPError:
             raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Sign-in is unavailable.") from None

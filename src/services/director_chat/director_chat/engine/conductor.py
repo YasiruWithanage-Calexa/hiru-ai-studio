@@ -29,15 +29,18 @@ AGENTS = ("cinematography", "timing", "sound", "continuity")
 _NULLABLE_INT = {"type": ["integer", "null"]}
 _NULLABLE_STR = {"type": ["string", "null"]}
 OP_FIELDS = ("shot", "field", "value", "seconds", "at_block", "end_block", "link", "beat", "after_shot",
-             "description", "framing", "title")
+             "description", "framing", "title", "block", "kind", "speaker", "delivery")
 OP_SCHEMA: dict[str, Any] = {
     "type": "object", "additionalProperties": False,
     "properties": {
-        "op": {"type": "string", "enum": ["set", "retime", "split", "merge", "regroup", "set_join", "beat.set",
-                                          "insert", "remove", "set_envelope"]},
+        "op": {"type": "string", "enum": ["set", "retime", "unlock_length", "split", "merge", "regroup", "set_join",
+                                          "beat.set", "insert", "remove", "set_envelope", "block.set",
+                                          "block.insert", "block.remove", "canon.add", "canon.remove",
+                                          "check.waive", "check.restore", "dop_note.set"]},
         "shot": _NULLABLE_INT, "field": _NULLABLE_STR, "value": _NULLABLE_STR, "seconds": _NULLABLE_INT,
         "at_block": _NULLABLE_INT, "end_block": _NULLABLE_INT, "link": _NULLABLE_STR, "beat": _NULLABLE_INT,
         "after_shot": _NULLABLE_INT, "description": _NULLABLE_STR, "framing": _NULLABLE_STR, "title": _NULLABLE_STR,
+        "block": _NULLABLE_INT, "kind": _NULLABLE_STR, "speaker": _NULLABLE_STR, "delivery": _NULLABLE_STR,
     },
     "required": ["op", *OP_FIELDS],
 }
@@ -64,7 +67,7 @@ with Veo 3.1. You read one message from a person working on ONE scene and decide
 lane:
 - chat: a question or comment. Change nothing.
 - edit: the person names changes explicitly. Transcribe EXACTLY those changes as operations, no
-  more. Shots are numbered as in the shot list (S01 = 1). Blocks are numbered as in the shot list.
+  more. Shots are numbered as in the shot list (S01 = 1); blocks by the [n] in front of them.
 - craft: the person asks for a quality ("tenser", "more intimate"). Do not write operations; give
   tasks to specialists, scoped to the shots that need them: cinematography (framing, joins, camera
   per beat, reaction/insert shots), timing (lengths, splits, merges, where cuts fall), sound
@@ -75,18 +78,24 @@ lane:
   tasks; the choices are offered separately.
 
 Operations (unused fields null): set {shot, field: framing|sound_mode|title, value};
-retime {shot, seconds: 4|6|8}; split {shot, at_block, framing?, title?}; merge {shot} (with the
-next); regroup {shot, end_block} (move the cut after it); set_join {shot, link: cut|continuous|match}
-(how THIS shot joins the shot before it: "shot 4 carries on from shot 3" is set_join on shot 4);
-beat.set {shot, beat: 0-2, field: camera|director_line|action, value}; insert {after_shot (0 = first),
-description, framing?, title?} for a reaction or insert shot; remove {shot}; set_envelope {seconds}.
-Values are codes, never descriptions: framing WIDE|MS|MCU|CU|TWO|OTS|INSERT; sound_mode
-dialogue|voiceover|sung|ambient|music_only|silent (radio, room tone or birds with no score is
-ambient). A shot with spoken lines keeps a spoken sound mode. One operation per change asked for:
-"a close-up and six seconds" is two operations.
-
-Dialogue is the approved script and cannot be changed here; a request to change words is chat
-(tell them to use the script editor).
+retime {shot, seconds: 4|6|8}; unlock_length {shot}; split {shot, at_block, framing?, title?}; merge
+{shot} (with the next); regroup {shot, end_block} (move the cut after it); set_join {shot, link:
+cut|continuous|match} (how THIS shot joins the one before it); beat.set {shot, beat: 0-2, field:
+camera|director_line|action, value}; insert {after_shot (0 = first), description, framing?, title?}
+for a reaction or insert shot; remove {shot}; set_envelope {seconds}.
+Script: block.set {block, field: text|speaker|delivery, value}; block.insert {block: where it goes,
+kind: action|dialogue|sound|beat|cut, value: its text, speaker, delivery}; block.remove {block}.
+Marks on a shot: canon.add|canon.remove {shot, value: a canon name or code}; check.waive|
+check.restore {shot, value: axis|speaker size|wardrobe|voice pin|all} (ignore or show an
+advisory); dop_note.set {shot, value: the DoP's note, empty clears it}.
+Values are codes: framing WIDE|MS|MCU|CU|TWO|OTS|INSERT; sound_mode
+dialogue|voiceover|sung|ambient|music_only|silent. A shot with spoken lines keeps a spoken sound
+mode. One operation per change asked for: "a close-up and six seconds" is two operations.
+Time is a shot's length (retime); Words are a line's text. Put the person's EXACT words in a line's
+value, copied from their message, never corrected, translated or improved. A change they refer to
+("do that change") uses the words in <person_messages>, their own earlier messages. If they never
+gave words, lane chat: ask for them. Earlier replies that call dialogue locked are out of date: a
+person's own words change a line now. To fit more words, retime or split; never cut a line unprompted.
 memory: standing rules for the production that THIS message states ("always", "from now on",
 "remember"), one sentence each. Never repeat rules from the history or production memory. Usually
 empty.
@@ -108,10 +117,19 @@ def clean_op(op: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in op.items() if v is not None}
 
 
-def by_model(ask: Ask, *, plan_text: str, message: str, history: str, memory: list[str]) -> Plan:
+# Added after the message when the first answer would have changed nothing (Nova W6): the system
+# prompt stays byte-identical, so the provider's prompt cache still serves it.
+AGAIN = ("\n<again>\nYour last answer for this message wrote no operations and no tasks, so nothing would "
+         "change. Write the operations or tasks it asks for, or answer lane chat or options and say what is "
+         "missing.\n</again>")
+
+
+def by_model(ask: Ask, *, plan_text: str, message: str, history: str, memory: list[str], said: str = "",
+             again: bool = False) -> Plan:
     context = "\n".join(f"- {m}" for m in memory) or "(none)"
     user = (f"<production_memory>\n{context}\n</production_memory>\n<recent_chat>\n{history}\n</recent_chat>\n"
-            f"<shot_list>\n{plan_text}\n</shot_list>\n<message>\n{message}\n</message>")
+            f"<person_messages>\n{said or '(none)'}\n</person_messages>\n"
+            f"<shot_list>\n{plan_text}\n</shot_list>\n<message>\n{message}\n</message>" + (AGAIN if again else ""))
     answer = ask(SYSTEM, user)
     lane = str(answer.get("lane")) if answer.get("lane") in LANES else "chat"
     return Plan(lane, [clean_op(o) for o in answer.get("ops", [])],
@@ -142,12 +160,21 @@ _REACTION = re.compile(r"\badd\s+(?:a\s+)?(reaction|insert|cutaway)(?:\s+shot)?\
                        r"after\s+" + _SHOT, re.I)
 _ENVELOPE = re.compile(r"\benvelope\b[^.?!]{0,20}?(\d{1,4})\s*(?:s\b|sec|second)", re.I)
 _JOIN = re.compile(_SHOT + r"\b[^.?!]{0,30}?\b(continuous|continue|carry on|match cut|hard cut)\b", re.I)
+_LINE = re.compile(_SHOT + r"\b[^.?!\"“]{0,40}?\b(?:line|dialogue|dialog|words)\b[^\"“]{0,30}?"
+                   r"(?:to|as|:)\s*[\"“](.+?)[\"”]", re.I | re.S)
+_LINE_OF = re.compile(r"\b(?:line|dialogue|dialog|words)\s+(?:of|in|for|on)\s+" + _SHOT
+                      + r"\b[^\"“]{0,30}?(?:to|as|:)\s*[\"“](.+?)[\"”]", re.I | re.S)
 _MEMORY = re.compile(r"^\s*(?:remember|note|from now on|always)\b[:,]?\s*(.+)$", re.I | re.S)
 
 
-def by_rules(message: str, *, split_points: dict[int, int]) -> Plan:
-    """`split_points`: shot number → the block a plain "split shot N" cuts at."""
+def by_rules(message: str, *, split_points: dict[int, int], line_blocks: dict[int, list[int]] | None = None) -> Plan:
+    """`split_points`: shot number → the block a plain "split shot N" cuts at. `line_blocks`: shot
+    number → the blocks of its spoken lines (a quoted new line is only unambiguous for one)."""
     ops: list[dict[str, Any]] = []
+    for m in [*_LINE.finditer(message), *_LINE_OF.finditer(message)]:
+        blocks = (line_blocks or {}).get(int(m.group(1)), [])
+        if len(blocks) == 1:
+            ops.append({"op": "block.set", "block": blocks[0], "field": "text", "value": m.group(2).strip()})
     for m in _RETIME.finditer(message):
         ops.append({"op": "retime", "shot": int(m.group(1)), "seconds": _NUM[m.group(2).lower()]})
     for m in _SPLIT.finditer(message):

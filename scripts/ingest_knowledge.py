@@ -1,9 +1,11 @@
-"""Index the craft knowledge base: prose notes → `chunks` (corpus 'craft'), technique tables →
-`craft_techniques`. Derived state: the files in src/knowledge_base are the source of truth;
+"""Index the craft knowledge base: prose notes → `chunks` (corpus 'craft'), technique tables
+(the cinematography terms database + camera_shots.csv, merged by `cine_terms.py`) → `craft_techniques`.
+Derived state: the files in src/knowledge_base are the source of truth;
 each run replaces the rows of every listed source and removes rows of sources no longer listed.
 
     python scripts/ingest_knowledge.py            # embeds when OPENAI__API_KEY is set
     python scripts/ingest_knowledge.py --dry-run  # show what would be indexed
+    python scripts/ingest_knowledge.py --include-short-form  # also ad / social / video-format terms
 
 Adapted from PromptMotion `scripts/vega_ingest_knowledge.py` + `ingest_craft_techniques.py`
 (commit 1d748dc): same corpus choices and the effect-first technique text, OpenAI embeddings
@@ -12,11 +14,12 @@ at 1536 dimensions, and the doc_ingest chunker instead of a second one.
 from __future__ import annotations
 
 import argparse
-import csv
 import hashlib
 import os
+from collections import Counter
 
 from _common import ROOT, Rest, load_env, vector
+from cine_terms import LEGACY_SOURCE, load_terms
 
 load_env()
 
@@ -32,6 +35,7 @@ KB = ROOT / "src" / "knowledge_base"
 PROSE: list[tuple[str, str]] = [
     *[(f"craft/{n}.md", n) for n in ("audience", "character", "cinematography", "dialogue",
                                      "directing", "editing", "producing", "sound")],
+    ("craft/hiru-house-style.md", "house-style"),
     ("guides/veo-3-1-prompting-guide.md", "cinematography"),
     ("rules/camera_kinetics.md", "cinematography"),
     ("rules/physical_plausibility.md", "cinematography"),
@@ -39,8 +43,9 @@ PROSE: list[tuple[str, str]] = [
     ("rules/sceen_flow.md", "editing"),
     ("rules/pipeline_orchestration.md", "cinematography"),
 ]
-# (csv under src/knowledge_base, domain). Not chunked: one row per technique, columns verbatim.
-TECHNIQUES: list[tuple[str, str]] = [("techniques/camera_shots.csv", "camera")]
+# Technique tables are not chunked: one row per technique, columns verbatim (see cine_terms.py).
+TERMS_DIR = KB / "cinematography"
+LEGACY_CAMERA_CSV = KB / "techniques" / "camera_shots.csv"
 
 EMBED_BATCH = 64
 
@@ -59,14 +64,6 @@ def strip_frontmatter(text: str) -> tuple[dict[str, str], str]:
     return meta, text[end + 4:]
 
 
-def effect_text(row: dict[str, str]) -> str:
-    """Effect first, mechanics second, label last: queries arrive as feelings, not camera terms."""
-    use_case = (row.get("use_case") or "").strip().rstrip(".")
-    definition = (row.get("definition") or "").strip().rstrip(".")
-    name, category = (row.get("shot_name") or "").strip(), (row.get("category") or "").strip()
-    return ". ".join(p for p in (use_case, definition) if p) + f". ({name}, {category})"
-
-
 def embed_all(llm: LLM, texts: list[str]) -> list[list[float] | None]:
     if not llm.enabled:
         return [None] * len(texts)
@@ -79,6 +76,8 @@ def embed_all(llm: LLM, texts: list[str]) -> list[list[float] | None]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--include-short-form", action="store_true",
+                        help="index the ad / social / video-format terms too (left out for Hiru's drama)")
     args = parser.parse_args()
     config = get_config()
     llm = LLM(config)
@@ -100,23 +99,9 @@ def main() -> None:
                          "meta": {"specialty": specialty, "title": title}, "_text": text})
         print(f"  {source}: {sum(1 for r in rows if r['source'] == source)} chunks ({specialty})")
 
-    techniques: list[dict] = []
-    for rel, domain in TECHNIQUES:
-        with (KB / rel).open(encoding="utf-8", newline="") as fh:
-            for row in csv.DictReader(fh):
-                if not (row.get("shot_name") or "").strip():
-                    continue
-                fields = ("category", "shot_name", "abbreviation", "definition", "use_case", "example_film")
-                canonical = "|".join((row.get(k) or "").strip() for k in fields)
-                techniques.append({
-                    "domain": domain, "category": row["category"].strip(), "name": row["shot_name"].strip(),
-                    "abbreviation": (row.get("abbreviation") or "").strip(),
-                    "definition": (row.get("definition") or "").strip(),
-                    "use_case": (row.get("use_case") or "").strip(),
-                    "example_film": (row.get("example_film") or "").strip(),
-                    "effect_text": effect_text(row), "source": f"knowledge_base/{rel}",
-                    "row_hash": hashlib.sha256(canonical.encode()).hexdigest()})
-        print(f"  knowledge_base/{rel}: {len(techniques)} techniques ({domain})")
+    techniques = load_terms(TERMS_DIR, LEGACY_CAMERA_CSV, include_short_form=args.include_short_form)
+    print(f"  {len(techniques)} techniques ({sum(t['source'] == LEGACY_SOURCE for t in techniques)} only in "
+          f"camera_shots.csv); by domain: {dict(sorted(Counter(t['domain'] for t in techniques).items()))}")
 
     if args.dry_run:
         return
@@ -140,7 +125,8 @@ def main() -> None:
     for t, vec in zip(techniques, embed_all(llm, [t["effect_text"] for t in techniques]), strict=True):
         t["embedding"], t["embedding_model"] = vector(vec), model if vec else ""
     db.delete("craft_techniques", id="gte.0")
-    db.insert("craft_techniques", techniques)
+    for i in range(0, len(techniques), 100):
+        db.insert("craft_techniques", techniques[i: i + 100])
     embedded_now = sum(1 for v in fresh if v is not None)
     print(f"indexed {len(rows)} craft chunks ({embedded_now} embedded now, "
           f"{len(rows) - len(todo)} reused) and {len(techniques)} techniques")

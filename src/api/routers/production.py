@@ -33,6 +33,7 @@ from api.services.production import NOT_APPROVED, ShotState, camera_checks, scen
 from api.workers import task_manager
 from contracts.jobs import JobKind
 from contracts.producer import (
+    CameraCheck,
     CameraField,
     CameraSettings,
     CameraUpdate,
@@ -59,7 +60,8 @@ class DesignView(BaseModel):
     state: str  # missing | current | stale
     stale_reasons: list[str]
     planner: str  # model | rules
-    rationale: str
+    rationale: str  # the DoP's note: a person's own when `note_by_person`, else the DP's reason
+    note_by_person: bool = False
     designed_at: str | None
 
 
@@ -131,7 +133,7 @@ class ShotProductionView(BaseModel):
     canon_refs: list[str]  # "C01 v2", "L01 v1": the cards this shot is pinned to now
     design: DesignView
     camera: CameraView
-    checks: list[Check]
+    checks: list[CameraCheck]
     frame_prompt: str  # what the next frame will be asked for ("" until designed)
     frames: list[FrameView]
     accepted_frame_id: UUID | None
@@ -222,7 +224,7 @@ def _prompt_view(row: Row, reasons: list[str]) -> PromptView:
                       stale_reasons=reasons)
 
 
-def shot_view(ld: Loaded, st: ShotState, checks: list[Check]) -> ShotProductionView:
+def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProductionView:
     row, design = st.row, st.row.get("design") or {}
     by_line = {str(ln["id"]): ln for ln in ld.lines}
     lines = []
@@ -251,8 +253,9 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[Check]) -> ShotProductionV
         status=ShotStatus(row.get("status") or "draft"), version=int(row.get("version") or 1), lines=lines,
         canon_refs=st.canon_refs,
         design=DesignView(state=state, stale_reasons=[] if state == "missing" else st.design_reasons,
-                          planner=str(design.get("planner") or ""), rationale=str(design.get("rationale") or ""),
-                          designed_at=design.get("designed_at")),
+                          planner=str(design.get("planner") or ""),
+                          rationale=st.edits.dop_note or str(design.get("rationale") or ""),
+                          note_by_person=bool(st.edits.dop_note), designed_at=design.get("designed_at")),
         camera=CameraView(recommended=st.recommended, current=st.camera, changed=changed,
                           storyboard_note=storyboard_note(st.camera)),
         checks=checks,

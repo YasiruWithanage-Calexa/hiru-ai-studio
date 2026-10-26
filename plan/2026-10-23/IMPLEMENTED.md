@@ -18,6 +18,7 @@ decision: test locally first). Commits are made by hand.
 | 3 — Director panel | 14–16 | Built: function, API, migrations, tests, replay, hygiene guards. See "Phase 3". |
 | 4 — Production panel | 17–19 | Done: two forked functions, API, migration, schema v3 on the hosted DB, smoke with OpenAI, frontend panel wired. See "Phase 4". |
 | 5 — Handoff | 20–21 | Built and tested locally; hosted DB needs `upgrade_v3_to_v4.sql`. See "Phase 5". |
+| After 5 | — | The director chat edits the Script column (2026-10-26). See "After Phase 5". Needs `Database/upgrade_v4_to_v5.sql` on the hosted DB. |
 | 6 | 22 | Not started. |
 
 ## Verification at the end of Phase 5 (2026-10-24)
@@ -596,6 +597,68 @@ to manage it by hand, not with `supabase db push`.
 - Real sample documents (especially Sinhala script PDFs) to test extraction and the legacy-font
   warning on actual files.
 
+## After Phase 5 — the director chat edits the Script column (2026-10-26)
+
+**Deviation from PLAN.md §6.2 / §10** ("script lines are read-only input: dialogue comes from the
+approved script"). The user asked that everything the Script column shows can be changed by chat,
+and that each change is checked against the shots around it. What changed, and what did not:
+
+- **Script blocks** (action, sound, beat, cut, and spoken lines: text, speaker, delivery):
+  `block.set | block.insert | block.remove` in the kernel. **Dialogue is still never written by an
+  agent.** The words must be ones the person typed (this message or an earlier one of theirs,
+  compared in NFC, any case, plain quotes), they are **staged** as an options card (Apply / Keep it
+  as it is) with their checks, and `engine/choice.py` applies them on the person's click. Needs
+  `Permission.EDIT_SCRIPT` (a writer can change words but not the shot list; a director or
+  producer both). The chat saves the script, its lines and `script_version + 1`, refuses a script
+  someone saved meanwhile, and the shots, frames and prompts for the changed words go out of
+  date through `script_hash` as they do for a hand edit. Non-dialogue blocks apply at once.
+- **Canon chips, ignored checks, the DoP note** are a shot's `person_edits` (new jsonb column,
+  `contracts.producer.PersonEdits`): who is in the shot (add or take out any canon entry; the
+  scene's place too), advisories to ignore by topic (`axis | speaker size | wardrobe | voice pin`;
+  only advisories; they stay listed, marked), and a note that replaces the DP's rationale and is
+  given to the next design as "DIRECTOR'S NOTE FOR THE DoP". `cast_in`, `pins_for`
+  (`shot_canon_ids`) and the frame references read it in the API, `shot_producer` and
+  `frame_render` alike, so a chip change marks the shot's design, frames and prompts out of date
+  and a prop a person added has its sheet attached.
+- **Time and Words** are not stored: Time is a shot's length (`retime`, as before) and Words is a
+  line's text against what fits (`block.set`, with "words 7 → 9 (room for 13)" on the card).
+  A request to "fit" more words retimes or splits; a line is never cut unprompted.
+- **Checks against the shots around it** (`engine/ripple.py`): the impact set, notes in code (sound
+  follows the words, who is in a shot changed, speaker not in the canon, a joined shot's opening,
+  a word the edit took out that another shot still says, the same speaker elsewhere) and the
+  continuity specialist on that set. Other scenes are not read or edited.
+- Options cards cannot carry any of these operations; the specialists cannot either.
+- Tests: `test_kernel_script.py`, `test_turn_script.py`, API (`test_director.py`,
+  `test_production.py`), shot_producer, frame_render. **Not run here:** `supabase test db` and
+  the three-way schema dump comparison (no Docker); the new column has a migration
+  (`20261026032147_chat_person_edits.sql`), pgTAP checks in `005_production.test.sql` and is in
+  `Database/schema_v5.sql` and `upgrade_v4_to_v5.sql` (v4 was already on the hosted DB, so it is a new version, not folded into v4).
+- Camera and lighting are unchanged: not editable from chat.
+
+## Cinematography knowledge base (2026-10-26)
+
+The craft RAG from PromptMotion already existed (Step 9: 89 chunks, 61 camera techniques); this
+adds the 629-term cinematography database the user supplied (`files.zip`) and a Hiru-owned note.
+
+- `src/knowledge_base/cinematography/*.csv` (provenance in `UPSTREAM.md`) is loaded by
+  `scripts/cine_terms.py` and indexed by `scripts/ingest_knowledge.py` into `craft_techniques`.
+  Dry run: **576 techniques** (550 terms + 26 `camera_shots.csv` rows with no counterpart; the 35
+  that did overlap are merged, keeping their legacy feeling-first text). Domains: camera 223,
+  story 121, post 88, light 73, animation 44, format 27. **79 short-form terms** (ads, social,
+  video formats) are not indexed (`--include-short-form` adds them): Hiru makes television.
+- `craft_techniques` gained `slug, subcategory, effect, example_scene, prompt_phrase, aliases,
+  complexity, ai_supported, tags, related`; `match_craft_techniques()` returns them. Migration
+  `20261026062153_cinematography_terms.sql`, in `schema_v6.sql` and
+  `upgrade_v5_to_v6.sql` (v5 was already on the hosted project, so this is v6). Existing rows and callers are unaffected.
+- `craft/hiru-house-style.md`: shot lengths, Sinhala dialogue, line-fits-shot, one sound mode per
+  shot, canon. Written only from rules already in code; **television pacing and broadcast
+  conventions are not in it yet** (needs Hiru's own material).
+- Tests: `tests/knowledge/test_cine_terms.py` (7). pgTAP checks added to `002_rag.test.sql`.
+- **Not verified:** no Docker here, so `supabase test db`, the advisors and the three-way dump
+  comparison have NOT been run on the SQL; `eval_retrieval.py` has not been re-run (the new technique rows need v6). The shot palette
+  (`shot_producer/engine/techniques.py`) still formats only name / use case / definition; the new
+  `prompt_phrase`, `effect`, `ai_supported` and `related` are returned but not yet used there.
+
 ## Phase 4: still open
 
 - Done since: the Director panel buttons, Prompt & Handoff, and the activity feed are wired (see
@@ -604,6 +667,6 @@ to manage it by hand, not with `supabase db push`.
 
 ## Next
 
-1. Run `Database/upgrade_v3_to_v4.sql` on the hosted project, then click through takes and the
+1. Run `Database/upgrade_v5_to_v6.sql` on the hosted project (the cinematography columns on `craft_techniques`; v5 is already on it), then `python scripts/ingest_knowledge.py` and `python scripts/eval_retrieval.py --runs 3`. Then click through takes and the
    bundle in the browser (needs the `assemble` service running locally, port 8209).
 2. Phase 6 (hardening).

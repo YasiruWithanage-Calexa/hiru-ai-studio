@@ -23,6 +23,7 @@ from api.repositories import Repos
 from api.services import director as director_service
 from api.services.ai import UsageContext, get_ai
 from contracts.director import (
+    SCRIPT_OPS,
     BoardMember,
     BoardUpdate,
     ChatMessage,
@@ -119,6 +120,16 @@ async def list_messages(production_id: UUID, thread_id: UUID, _: CanView, repos:
     return [ChatMessage.model_validate(m) for m in await repos.messages.list(thread_id)]
 
 
+@router.delete(P + "/threads/{thread_id}/messages", status_code=status.HTTP_204_NO_CONTENT)
+async def clear_thread(production_id: UUID, thread_id: UUID, access: CanDirect, repos: ReposDep) -> None:
+    """Empty the conversation (the thread stays, so the next message goes to the same one)."""
+    if await repos.threads.get(production_id, thread_id) is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Thread not found.")
+    await repos.messages.clear(thread_id)
+    await repos.audit.record(action="director.clear_thread", entity="chat_thread", entity_id=str(thread_id),
+                             actor_user_id=access.user.id, production_id=production_id)
+
+
 # ── the turn ───────────────────────────────────────────────────────────────────────────────
 
 
@@ -145,7 +156,8 @@ async def chat(production_id: UUID, scene_id: UUID, body: TurnRequest, access: C
     await repos.threads.touch(thread_id)
     payload = TurnPayload(production_id=production_id, scene_id=scene_id, thread_id=thread_id,
                           actor_user_id=access.user.id, actor_name=access.user.display_name,
-                          can_edit=Permission.DIRECT in access.permissions, message=body.message.strip(),
+                          can_edit=Permission.DIRECT in access.permissions,
+                          can_edit_script=Permission.EDIT_SCRIPT in access.permissions, message=body.message.strip(),
                           user_message_id=UUID(str(message["id"])))
     accepted = ChatMessage.model_validate(message).model_dump(mode="json")
 
@@ -174,7 +186,8 @@ async def _apply_stored(repos: Repos, applier: director_service.ChoiceApplier, a
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
     try:
         result = await applier(ChoicePayload(production_id=production_id, scene_id=UUID(str(thread["scene_id"])),
-                                             actor_user_id=access.user.id, ops=ops))
+                                             actor_user_id=access.user.id, ops=ops,
+                                             can_edit_script=Permission.EDIT_SCRIPT in access.permissions))
     except director_service.DirectorUnavailable as exc:
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
     if not result.applied:
@@ -235,12 +248,14 @@ async def choose_option(production_id: UUID, message_id: UUID, body: OptionChoic
     option = block.options[body.option]
     changed = bool(option.ops)
     if changed:
-        if Permission.DIRECT not in access.permissions:
+        # The script's words need EDIT_SCRIPT, anything else in the edit needs DIRECT.
+        if any((Permission.EDIT_SCRIPT if op.get("op") in SCRIPT_OPS else Permission.DIRECT)
+               not in access.permissions for op in option.ops):
             raise HTTPException(status.HTTP_403_FORBIDDEN,
-                                "Your role can comment but not change the shot list; a director or producer can.")
+                                "Your role can comment but not make this change; a director, producer or writer can.")
         outcome = await _apply_stored(repos, applier, access, production_id, message, option.ops)
     else:
-        outcome = "Asked the board."
+        outcome = "Asked the board." if option.prompt else "Kept as it is."
     dumped = block.model_dump(mode="json") | {"chosen": body.option, "outcome": outcome}
     updated = await _record(repos, access, production_id, message, body.block, dumped,
                             {"question": block.question, "chosen": option.label, "changed": changed})

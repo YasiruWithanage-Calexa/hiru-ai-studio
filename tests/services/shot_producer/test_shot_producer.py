@@ -13,7 +13,9 @@ from contracts.producer import Pins, PromptSection, prompt_text
 from tests.services.fakes import FakeJobs
 from tests.services.shot_producer.conftest import (
     CANON,
+    HOUSE,
     KAMALA,
+    NIMAL,
     PID,
     FakeStore,
     ProducerLLM,
@@ -251,3 +253,35 @@ def test_prompt_wording_has_no_doubled_stops_or_empty_identity_tags(scene0):
     assert ".." not in prose and ". —" not in prose
     assert "(the person)" not in prose and "Nimal says (quietly)" in prose
     assert "shallow depth of field. Slow dolly in" in prose
+
+
+def test_a_persons_cast_edits_change_who_is_in_the_shot_and_what_it_is_pinned_to(scene0):
+    from shot_producer.engine.model import production_input, scene_input
+
+    scene, lines, rows = scene0
+    store = FakeStore(scene, lines, rows)
+    prod = production_input(store.production(PID), store.canon_rows, None)
+    base = scene_input(scene, store.shots(scene["id"]), lines, store.canon_rows, prod).shots
+    assert [c.name for c in base[0].cast] == ["Kamala", "Nimal"] and set(base[0].pins.canon) >= {KAMALA, HOUSE}
+
+    rows[0]["person_edits"] = {"cast": {"add": [], "remove": [KAMALA, HOUSE]}}
+    edited = scene_input(scene, store.shots(scene["id"]), lines, store.canon_rows, prod).shots[0]
+    assert [c.name for c in edited.cast] == ["Nimal"] and KAMALA not in edited.pins.canon
+    assert HOUSE not in edited.pins.canon  # the scene's place is taken out of this one shot
+    assert edited.pins.script_hash == base[0].pins.script_hash  # the words did not change
+
+    rows[2]["person_edits"] = {"cast": {"add": [NIMAL], "remove": []}}  # S03's action names only Kamala
+    third = scene_input(scene, store.shots(scene["id"]), lines, store.canon_rows, prod).shots[2]
+    assert [c.name for c in third.cast] == ["Kamala", "Nimal"] and NIMAL in third.pins.canon
+
+
+def test_a_persons_dop_note_is_given_to_the_next_design_and_survives_it(scene0):
+    scene, lines, rows = scene0
+    store = FakeStore(scene, lines, rows)
+    rows[1]["person_edits"] = {"dop_note": "Hold on Nimal's face; keep the light warm."}
+    llm = ProducerLLM({"scene_design": lambda s, u: dp_answer(4)})
+    run(store, llm, scene_ids=[scene["id"]])
+    prompts = [c["user"] for c in llm.calls if c["schema"] == "scene_design"]
+    assert prompts and prompts[0].count("DIRECTOR'S NOTE FOR THE DoP") == 1
+    assert "Hold on Nimal's face; keep the light warm." in prompts[0]
+    assert store.shot_rows[rows[1]["id"]]["person_edits"] == {"dop_note": "Hold on Nimal's face; keep the light warm."}

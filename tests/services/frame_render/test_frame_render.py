@@ -134,3 +134,20 @@ def test_the_openai_painter_uses_edit_with_references_and_records_usage():
     except image.RefusedError:
         pass
     assert painter(Config("u", "k", "", "m", "high", "", ""), payload(), store) is None  # type: ignore[arg-type]
+
+
+def test_a_persons_cast_edits_choose_which_sheets_are_attached_and_the_pins():
+    store = FakeStore()
+    prop = {"id": str(uuid4()), "kind": "prop", "code": "P01", "name": "Brass pan", "aliases": [], "locked": False,
+            "current": {"version": 1, "id": str(uuid4()), "card": {}, "wardrobe_anchor": "", "voice_pin": "",
+                        "reference_assets": [{"path": "p/pan.png"}]}}
+    store.canon_rows = [*store.canon_rows, prop]
+    s1 = shots(store)[0]
+    s1["person_edits"] = {"cast": {"add": [prop["id"]], "remove": [KAMALA]}}
+    paint = FakePainter()
+    pipeline.run(payload(frame_ids=[store.add_frame(s1["id"])]), store, FakeJobs(), paint)
+    # no Kamala (taken out), the house plate, then the pan a person added, named by what it is
+    assert paint.calls[0]["references"] == ["the location plate for Kamala's house",
+                                            "the reference sheet for Brass pan"]
+    pins = store.frame_rows[next(iter(store.frame_rows))]["pins"]["canon"]
+    assert prop["id"] in pins and KAMALA not in pins

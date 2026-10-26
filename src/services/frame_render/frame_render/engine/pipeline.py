@@ -32,10 +32,12 @@ from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import (
     CameraSettings,
     CastMember,
+    PersonEdits,
     cast_in,
     default_camera,
     frame_prompt,
     pins_for,
+    shot_canon_ids,
     shot_items,
 )
 from contracts.veo import ASPECT_RATIO, Orientation
@@ -116,18 +118,19 @@ class FrameJob:
         scene, lines = self.scene(str(shot["scene_id"]))
         items = sceneplan.items_for(scene.get("script") or [], lines)
         own = shot_items(items, int(shot["block_start"]), int(shot["block_end"]))
-        return scene, own, cast_in(own, [c for c in self.canon if c["kind"] == "character"])
+        return scene, own, cast_in(own, [c for c in self.canon if c["kind"] == "character"], PersonEdits.of(shot))
 
     def references(self, shot: Row) -> list[tuple[str, Reference]]:
         """The sheets of the people, then the place, in the shot that exist and can be read, in
         the order they are attached. One that cannot be read is left out, not guessed at."""
         scene, _, cast_ids = self._own(shot)
         out: list[tuple[str, Reference]] = []
-        for cid in [*cast_ids, *([str(scene["location_id"])] if scene.get("location_id") else [])]:
+        for cid in shot_canon_ids(scene, cast_ids, PersonEdits.of(shot)):
             row = self.by_id.get(cid)
             if not row or not _sheet_path(row) or len(out) >= MAX_REFERENCES:
                 continue
-            what = "the location plate for" if row["kind"] == "location" else "the character sheet for"
+            what = {"location": "the location plate for", "prop": "the reference sheet for"}.get(
+                row["kind"], "the character sheet for")
             try:
                 out.append((cid, Reference(label=f"{what} {row['name']}",
                                            data=self.store.download_reference(_sheet_path(row)))))
@@ -139,7 +142,7 @@ class FrameJob:
         """→ (the frame prompt naming exactly `labels` as its attached images, the pins)."""
         scene, own, cast_ids = self._own(shot)
         pins = pins_for(shot_version=int(shot.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
-                        versions={k: m.version for k, m in self.members.items()})
+                        versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot))
         default = default_camera(str(shot.get("framing") or "MS"), heading=str(scene.get("heading") or ""),
                                  time_of_day=str(scene.get("time_of_day") or ""))
         try:

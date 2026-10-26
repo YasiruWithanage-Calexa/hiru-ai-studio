@@ -15,10 +15,12 @@ from typing import Any
 
 from contracts import sceneplan
 from contracts.producer import (
+    CameraCheck,
     CameraSettings,
     CastMember,
-    Check,
+    PersonEdits,
     Pins,
+    apply_waivers,
     cast_in,
     default_camera,
     pins_for,
@@ -60,6 +62,7 @@ class ShotState:
     prompt_reasons: list[str] = field(default_factory=list)
     lock: str = ""  # why a prompt cannot be made now; "" = unlocked
     canon_refs: list[str] = field(default_factory=list)  # "C01 v2", "L01 v1": the cards pinned now
+    edits: PersonEdits = field(default_factory=PersonEdits)  # what a person set on the shot by hand
 
     @property
     def id(self) -> str:
@@ -84,9 +87,11 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
     out: list[ShotState] = []
     for shot in sorted(shots, key=lambda s: int(s["number"])):
         own = shot_items(items, int(shot["block_start"]), int(shot["block_end"]))
-        cast_ids = cast_in(own, characters)
+        edits = PersonEdits.of(shot)
+        cast_ids = cast_in(own, characters, edits)
         version = int(shot.get("version") or 1)
-        pins = pins_for(shot_version=version, scene=scene, items=own, cast_ids=cast_ids, versions=versions)
+        pins = pins_for(shot_version=version, scene=scene, items=own, cast_ids=cast_ids, versions=versions,
+                        edits=edits)
         design = shot.get("design") or {}
         default = default_camera(str(shot.get("framing") or "MS"), heading=str(scene.get("heading") or ""),
                                  time_of_day=str(scene.get("time_of_day") or ""))
@@ -95,7 +100,7 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
         except ValueError:
             recommended = default
         st = ShotState(row=shot, items=own, cast=[members[c] for c in cast_ids], pins=pins, recommended=recommended,
-                       camera=recommended.with_overrides(shot.get("camera_overrides") or {}))
+                       camera=recommended.with_overrides(shot.get("camera_overrides") or {}), edits=edits)
 
         def reasons(made: Any, st: ShotState = st, version: int = version) -> list[str]:
             if not made:
@@ -135,17 +140,18 @@ def _lock(st: ShotState, approved: bool) -> str:
     return ""
 
 
-def camera_checks(states: list[ShotState]) -> dict[str, list[Check]]:
+def camera_checks(states: list[ShotState]) -> dict[str, list[CameraCheck]]:
     """The camera card's free checks, from the camera as it stands across the whole scene."""
     from contracts.producer import camera_checks as checks_for
 
     cameras = [s.camera for s in states]
-    out: dict[str, list[Check]] = {}
+    out: dict[str, list[CameraCheck]] = {}
     for i, st in enumerate(states):
-        out[st.id] = checks_for(index=i, cameras=cameras, framing=str(st.row.get("framing") or "MS"),
-                                sound_mode=str(st.row.get("sound_mode") or "ambient"), cast=st.cast,
-                                speaker_ids=list(dict.fromkeys(x.speaker_id for x in st.items
-                                                               if x.is_line and x.speaker_id)),
-                                frame_strategy=str(st.row.get("frame_strategy") or "generate"),
-                                first_code=states[0].code, previous_code=states[i - 1].code if i else "")
+        checks = checks_for(index=i, cameras=cameras, framing=str(st.row.get("framing") or "MS"),
+                            sound_mode=str(st.row.get("sound_mode") or "ambient"), cast=st.cast,
+                            speaker_ids=list(dict.fromkeys(x.speaker_id for x in st.items
+                                                           if x.is_line and x.speaker_id)),
+                            frame_strategy=str(st.row.get("frame_strategy") or "generate"),
+                            first_code=states[0].code, previous_code=states[i - 1].code if i else "")
+        out[st.id] = apply_waivers(checks, st.edits.waived_checks)  # advisories a person chose to ignore
     return out

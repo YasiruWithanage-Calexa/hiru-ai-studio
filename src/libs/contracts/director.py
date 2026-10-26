@@ -34,6 +34,8 @@ class Seat(StrEnum):
 
 
 MAX_ADVISORS = 3
+# The operations that change the script's words (Permission.EDIT_SCRIPT); the rest of the shot list is DIRECT's.
+SCRIPT_OPS = ("block.set", "block.insert", "block.remove")
 
 
 class PersonaTrait(BaseModel):
@@ -142,8 +144,11 @@ class EditNoteBlock(BaseModel):
 
 
 class ContinuityBlock(BaseModel):
+    """A note on how an edit sits with the shots around it (or a timing problem it made)."""
+
     kind: Literal["continuity"] = "continuity"
     text: str
+    shots: list[str] = Field(default_factory=list)  # the shots it is about, "S02"
 
 
 DirectorBlock = Annotated[TextBlock | DisagreementBlock | OptionsBlock | EditNoteBlock | ContinuityBlock,
@@ -295,6 +300,7 @@ class TurnPayload(BaseModel):
     actor_user_id: UUID
     actor_name: str
     can_edit: bool  # Permission.DIRECT: without it the director answers and proposes, never applies
+    can_edit_script: bool = False  # Permission.EDIT_SCRIPT: the script's words are changed only with it
     message: str
     user_message_id: UUID
 
@@ -330,6 +336,7 @@ class ChoicePayload(BaseModel):
     production_id: UUID
     scene_id: UUID
     actor_user_id: UUID
+    can_edit_script: bool = False  # Permission.EDIT_SCRIPT, decided by the API like `TurnPayload`'s
     ops: list[dict[str, Any]] = Field(min_length=1)
 
 

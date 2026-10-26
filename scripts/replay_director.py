@@ -28,7 +28,7 @@ from _common import ROOT, load_env
 
 sys.path.insert(0, str(ROOT / "src" / "services" / "director_chat"))
 
-from director_chat.engine import turn
+from director_chat.engine import proposals, refusals, turn
 
 from contracts import sceneplan
 from contracts.director import TurnPayload
@@ -80,6 +80,7 @@ class ReplayStore:
     saved: int = 0
     message_rows: list[dict[str, Any]] = field(default_factory=list)
     memory_rows: list[dict[str, Any]] = field(default_factory=list)
+    history: list[dict[str, Any]] = field(default_factory=list)  # the thread before this message
 
     def production(self, production_id: Any) -> dict[str, Any]:
         return {"id": str(production_id), "title": "Harbour Lights", "orientation": "horizontal", "settings": {},
@@ -106,7 +107,7 @@ class ReplayStore:
                 "charter": "Cover every speaker clearly: establish, then singles in shot / reverse shot."}
 
     def messages(self, thread_id: Any, limit: int = 12) -> list[dict[str, Any]]:
-        return []
+        return self.history[-limit:]
 
     def memory(self, production_id: Any, limit: int = 20) -> list[dict[str, Any]]:
         return []
@@ -151,15 +152,20 @@ class NoModel:
 
 def run_case(case: dict[str, Any], llm: Any) -> dict[str, Any]:
     store = ReplayStore(*fixture_scene(int(case.get("scene", 0))))
+    # A case may carry the thread so far: the director's messages, as stored ({kind, text} or {kind, blocks}).
+    store.history = [{"id": f"h{n}", "speaker": "Director", "blocks": [{"kind": "text", "text": m.get("text", "")}],
+                      **{k: v for k, v in m.items() if k != "text"}} for n, m in enumerate(case.get("history", []))]
     req = TurnPayload(production_id=PRODUCTION, scene_id=uuid.UUID(store.scene_row["id"]), thread_id=uuid.uuid4(),
-                      actor_user_id=uuid.uuid4(), actor_name="Replay", can_edit=True, message=case["message"],
+                      actor_user_id=uuid.uuid4(), actor_name="Replay", can_edit=True, can_edit_script=True,
+                      message=case["message"],
                       user_message_id=uuid.uuid4())
     events = list(turn.run(req, store, llm))
     done = next((d for e, d in events if e == "done"), {})
     message = store.message_rows[-1] if store.message_rows else {}
     reply = next((b["text"] for b in message.get("blocks", []) if b["kind"] == "text"), "")
     return {"lane": done.get("lane", "error"), "ops": message.get("ops", []), "memory": bool(store.memory_rows),
-            "saved": store.saved > 0, "reply": reply}
+            "saved": store.saved > 0, "reply": reply,
+            "card": any(b["kind"] in ("options", "disagreement") for b in message.get("blocks", []))}
 
 
 def failures(case: dict[str, Any], got: dict[str, Any]) -> list[str]:
@@ -175,6 +181,13 @@ def failures(case: dict[str, Any], got: dict[str, Any]) -> list[str]:
         out.append(f"changed the plan: {got['ops']}")
     if exp.get("memory") and not got["memory"]:
         out.append("stored no production rule")
+    if "card" in exp and exp["card"] != got["card"]:
+        out.append("offered no card" if exp["card"] else "offered a card")
+    if exp.get("clean_reply"):
+        if refusals.INTERNAL.search(got["reply"]):
+            out.append(f"reply has internal wording: {got['reply'][:80]!r}")
+        if not got["card"] and proposals.guard_reply(got["reply"], has_card=False) != got["reply"]:
+            out.append("reply points at a card the message does not carry")
     return out
 
 

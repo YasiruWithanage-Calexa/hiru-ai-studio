@@ -167,6 +167,7 @@ class MessagesRepo(Protocol):
     async def get(self, production_id: UUID, message_id: UUID) -> Row | None: ...
     async def update(self, message_id: UUID, fields: Row) -> Row: ...
     async def list(self, thread_id: UUID, limit: int = 100) -> list[Row]: ...  # oldest first
+    async def clear(self, thread_id: UUID) -> None: ...  # every message of the thread
 
 
 class MemoryRepo(Protocol):

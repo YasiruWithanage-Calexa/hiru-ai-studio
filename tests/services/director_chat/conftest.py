@@ -19,7 +19,7 @@ from tests.services.doc_ingest.conftest import CORPUS  # noqa: E402
 from tests.services.fakes import FakeLLM  # noqa: E402
 
 PID = uuid4()
-NIMAL, KAMALA = str(uuid4()), str(uuid4())
+NIMAL, KAMALA, PAN = str(uuid4()), str(uuid4()), str(uuid4())
 
 
 def fixture_scene(n: int = 0, *, envelope_s: int = 60, per_block: bool = True) -> tuple[dict, list[dict], list[dict]]:
@@ -83,6 +83,10 @@ class FakeStore:
                  "locked": True, "current": {"card": {"age": 52}, "wardrobe_anchor": "faded blue cotton saree",
                                              "voice_pin": "low, clipped female voice"}},
                 {"id": NIMAL, "kind": "character", "code": "C02", "name": "Nimal", "aliases": [], "locked": False,
+                 "current": None},
+                {"id": self.scene_row["location_id"], "kind": "location", "code": "L01", "name": "Harbour kitchen",
+                 "aliases": [], "locked": True, "current": None},
+                {"id": PAN, "kind": "prop", "code": "P01", "name": "Brass pan", "aliases": [], "locked": False,
                  "current": None}]
 
     def board(self, production_id: UUID) -> list[dict]:
@@ -110,8 +114,9 @@ class FakeStore:
         return [{"id": str(uuid4()), "document_id": "d1", "heading": "Kamala", "content": "Kamala is 52."}]
 
     def save_plan(self, scene_id: UUID, shots: list[dict], removed: list[str], lines: list[dict],
-                  scene_fields: dict) -> None:
-        self.saved.append({"shots": shots, "removed": removed, "lines": lines, "scene": scene_fields})
+                  scene_fields: dict, removed_lines: list[str] | None = None) -> None:
+        self.saved.append({"shots": shots, "removed": removed, "lines": lines, "scene": scene_fields,
+                           "removed_lines": removed_lines or []})
         keep = {s["id"] for s in shots}
         self.shot_rows = [s for s in self.shot_rows if s["id"] not in removed and s["id"] not in keep] + shots
         self.line_rows = lines

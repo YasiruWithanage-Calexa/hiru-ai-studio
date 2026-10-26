@@ -43,13 +43,16 @@ def test_lengths_are_veo_lengths():
     assert all(s.duration_s == 8 for s in fixed.fit().shots)
 
 
-def test_dialogue_is_read_only():
+def test_dialogue_is_changed_only_by_a_person_through_block_set():
     k = kernel()
     r = k.apply([{"op": "line.edit", "line": 1, "text": "x"}, {"op": "set", "shot": 2, "field": "duration_s",
                                                                 "value": "8"}])
     reasons = [x["reason"] for x in r.rejected]
-    assert "script editor" in reasons[0] and "retime" in reasons[1]
+    assert "name the line" in reasons[0] and "retime" in reasons[1]
     assert not r.applied
+    first = next(i for i, b in enumerate(k.items) if b["kind"] == "dialogue")
+    agent = k.apply([{"op": "block.set", "block": first, "field": "text", "value": "x"}], by="timing")
+    assert "only a person's own words" in agent.rejected[0]["reason"]  # the full set is in test_kernel_script.py
 
 
 def test_split_merge_regroup_keep_every_block_once():

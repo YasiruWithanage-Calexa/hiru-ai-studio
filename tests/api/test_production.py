@@ -79,8 +79,9 @@ def test_the_panel_before_anything_is_made(world: World):
     assert shot["camera"]["recommended"]["lighting"] == "Dawn, soft ambient"
     assert shot["prompt_lock"] == {"locked": True, "reason": NOT_APPROVED}
     assert shot["lines"][0]["speaker"] == "Nimal" and shot["frames"] == [] and shot["prompt"] is None
-    assert v["shots"][0]["checks"][0] == {"label": "Establishes axis · Side A", "tone": "pass"}
-    assert {"label": "Axis matches S01", "tone": "pass"} in v["shots"][1]["checks"]
+    assert v["shots"][0]["checks"][0] == {"label": "Establishes axis · Side A", "tone": "pass", "code": "axis",
+                                          "waived": False}
+    assert {"label": "Axis matches S01", "tone": "pass", "code": "axis", "waived": False} in v["shots"][1]["checks"]
     assert world.client.get(f"/v1/productions/{world.other_production}/shots/{s['shots'][0]['id']}",
                             headers=world.headers(world.admin)).status_code == 404
     assert world.client.get(shot_url(world, s, 0), headers=world.headers(world.outsider)).status_code == 404
@@ -295,3 +296,83 @@ def test_a_person_uploads_their_own_frame(world: World, fired: list[dict]):
     assert r.status_code == 422, "the content decides, not the name"
     assert world.client.post(shot_url(world, s, 1, "/frames/upload"), files={"file": ("x.png", png, "image/png")},
                              headers=world.headers(world.writer)).status_code == 403
+
+
+# ── what a person set on a shot (the director chat writes `person_edits`) ───────────────────
+
+
+def marks(world: World, s: dict, n: int, **edits) -> None:
+    world.repos.shots.rows[s["shots"][n]["id"]]["person_edits"] = edits  # type: ignore[attr-defined]
+
+
+def panel(world: World, s: dict) -> list[dict]:
+    r = world.client.get(url(world, f"/scenes/{s['scene']['id']}/production"), headers=world.headers(world.reviewer))
+    assert r.status_code == 200, r.text
+    return r.json()["shots"]
+
+
+def test_canon_chips_follow_what_a_person_added_or_took_out(world: World):
+    s = seed_scene(world)
+    house = str(s["house"]["id"])
+    nimal = next(c["id"] for c in world.repos.canon.rows.values() if c["code"] == "C02")  # type: ignore[attr-defined]
+    base = panel(world, s)
+    assert base[1]["canon_refs"][0].startswith("C02") and any(ref.startswith("L01") for ref in base[1]["canon_refs"])
+    marks(world, s, 1, cast={"add": [], "remove": [house, str(nimal)]})
+    taken = panel(world, s)[1]
+    assert taken["canon_refs"] == [] and panel(world, s)[0]["canon_refs"] == base[0]["canon_refs"]  # only that shot
+    kamala = str(s["kamala"]["id"])
+    marks(world, s, 0, cast={"add": [kamala], "remove": []})
+    added = panel(world, s)[0]["canon_refs"]
+    assert any(ref.startswith("C01") for ref in added) and any(ref.startswith("L01") for ref in added)
+    names = [c.name for c in states(world, s)[0].cast]
+    assert "Kamala" in names  # a person added Kamala, so her wardrobe check applies to the shot
+
+
+def test_a_shot_made_before_a_chip_changed_is_out_of_date(world: World):
+    s = approved_scene(world)
+    design(world, s)
+    assert panel(world, s)[1]["design"]["state"] == "current"
+    marks(world, s, 1, cast={"add": [], "remove": [str(s["house"]["id"])]})
+    shot = panel(world, s)[1]
+    assert shot["design"]["state"] == "stale"
+    assert "Different people or place in the shot." in shot["design"]["stale_reasons"]
+
+
+def test_an_ignored_advisory_stays_in_the_list_marked_and_a_pass_cannot_be_ignored(world: World):
+    s = seed_scene(world)
+    wide = world.repos.shots.rows[s["shots"][1]["id"]]  # type: ignore[attr-defined]
+    wide.update(framing="WIDE", sound_mode="dialogue")
+    hard = next(c for c in panel(world, s)[1]["checks"] if c["code"] == "speaker_size")
+    assert hard["tone"] == "advisory" and hard["waived"] is False
+    marks(world, s, 1, waived_checks=["speaker_size", "axis"])
+    shown = {c["code"]: c for c in panel(world, s)[1]["checks"] if c["code"] in ("speaker_size", "axis")}
+    assert shown["speaker_size"]["waived"] is True and shown["speaker_size"]["label"] == hard["label"]
+    assert shown["axis"]["tone"] == "pass" and shown["axis"]["waived"] is False  # nothing to ignore
+    assert panel(world, s)[0]["checks"][0]["waived"] is False  # only that shot
+
+
+def test_the_dop_note_replaces_the_dps_reason_and_clearing_it_brings_it_back(world: World):
+    s = approved_scene(world)
+    design(world, s)
+    v = panel(world, s)[1]["design"]
+    assert v["rationale"] == "A slow push builds it." and v["note_by_person"] is False
+    marks(world, s, 1, dop_note="Hold on the pan; keep the light warm.")
+    v = panel(world, s)[1]["design"]
+    assert v["rationale"] == "Hold on the pan; keep the light warm." and v["note_by_person"] is True
+    assert v["state"] == "current"  # a note is not a change to what the shot is made against
+    marks(world, s, 1)
+    assert panel(world, s)[1]["design"]["rationale"] == "A slow push builds it."
+
+
+def test_a_note_shows_even_before_any_design(world: World):
+    s = seed_scene(world)
+    marks(world, s, 0, dop_note="Open on the radio.")
+    first = panel(world, s)[0]
+    assert first["design"]["state"] == "missing" and first["design"]["rationale"] == "Open on the radio."
+    assert first["design"]["note_by_person"] is True
+
+
+def test_damaged_person_edits_read_as_none(world: World):
+    s = seed_scene(world)
+    world.repos.shots.rows[s["shots"][0]["id"]]["person_edits"] = {"cast": "nonsense", "dop_note": 5}  # type: ignore[attr-defined]
+    assert panel(world, s)[0]["design"]["note_by_person"] is False

@@ -516,6 +516,9 @@ class SupabaseMessages(_Base):
                .order("created_at", desc=True).limit(limit).execute())
         return _rows(res.data)[::-1]
 
+    async def clear(self, thread_id: UUID) -> None:
+        await self.db.table("chat_messages").delete().eq("thread_id", str(thread_id)).execute()
+
 
 class SupabaseMemory(_Base):
     async def get(self, production_id: UUID, item_id: UUID) -> Row | None:

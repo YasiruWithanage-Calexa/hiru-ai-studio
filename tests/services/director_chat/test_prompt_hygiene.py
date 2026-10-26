@@ -28,7 +28,8 @@ STATIC = {
     **{f"specialist:{a}": f"{agents.PRIMER}\n\n{agents.CHARTER[a]}" for a in agents.CHARTER},
 }
 MONEY = re.compile(r"\$|\bUSD\b|\bLKR\b|\bRs\.?\s|\bprice|\bcredit|\bcost|\bbilled|\bpremium", re.I)
-BUDGET_CHARS = 2600
+# Raised from 2600 when the conductor learned the script, a shot's cast, checks and DoP note (now 3.2k chars).
+BUDGET_CHARS = 3300
 
 
 @pytest.mark.parametrize("name", sorted(STATIC))

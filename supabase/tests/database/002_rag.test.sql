@@ -1,6 +1,6 @@
 -- RAG store: hybrid search, scoping, craft techniques, and RLS on documents and chunks.
 begin;
-select plan(22);
+select plan(25);
 
 -- Start from empty tables INSIDE this transaction, so the counts below are exact even on a
 -- local database full of dev data. The final rollback restores everything.
@@ -93,6 +93,20 @@ select is((select name from public.match_craft_techniques('powerless', null, 'ca
 select is((select count(*)::int from public.match_craft_techniques('powerless location', null, 'camera', array['Shot Size'])),
           1, 'a known category narrows the search');
 
+-- the cinematography terms database adds columns; the search returns them
+insert into public.craft_techniques (domain, category, name, definition, use_case, effect_text, source, row_hash,
+                                     slug, effect, prompt_phrase, complexity, ai_supported, tags, related) values
+  ('light', 'Lighting Mood & Quality', 'Chiaroscuro', 'Strong light and deep shadow', 'Menace in a quiet room',
+   'Menace in a quiet room. Strong contrast. (Chiaroscuro, Lighting Mood & Quality)', 's2', '3',
+   'chiaroscuro', 'Menace, moral ambiguity', 'chiaroscuro lighting', 'advanced', false, array['ominous'],
+   '[{"type": "pairs_well_with", "name": "Low Angle"}]'::jsonb);
+select is((select prompt_phrase from public.match_craft_techniques('menacing shadows', null, 'light') limit 1),
+          'chiaroscuro lighting', 'a technique carries its prompt phrase');
+select is((select related -> 0 ->> 'name' from public.match_craft_techniques('menacing shadows', null, 'light') limit 1),
+          'Low Angle', 'and the techniques it pairs with');
+select throws_ok($$ update public.craft_techniques set complexity = 'expert' where row_hash = '3' $$,
+                 '23514', null, 'complexity is basic, intermediate or advanced');
+
 -- ── RLS ──────────────────────────────────────────────────────────────────────────────────
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000b');
 select is((select count(*)::int from public.documents), 1, 'producer sees only their production''s documents');
@@ -103,7 +117,7 @@ select is((select count(*)::int from public.token_usage), 0, 'token usage is adm
 
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000d');
 select is((select count(*)::int from public.chunks), 1, 'a user on no production still reads craft');
-select is((select count(*)::int from public.craft_techniques), 2, 'and craft techniques');
+select is((select count(*)::int from public.craft_techniques), 3, 'and craft techniques');
 
 select * from finish();
 rollback;

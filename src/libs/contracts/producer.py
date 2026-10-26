@@ -174,12 +174,85 @@ def camera_sentence(camera: CameraSettings) -> str:
 
 Tone = Literal["pass", "advisory", "fail"]
 
+# What a person can ignore on a shot, by topic. A check's `code` is stable where its label is not
+# ("Crosses the axis · Side B (unlike S01)"), so an ignored topic stays ignored as the wording moves.
+CHECK_TOPICS: dict[str, tuple[str, ...]] = {
+    "axis": ("axis", "180", "cross"),
+    "speaker_size": ("speaker", "hard to see", "size", "framing"),
+    "wardrobe": ("wardrobe", "costume", "clothes", "outfit"),
+    "voice_pin": ("voice",),
+}
+
+
+def check_code(text: str) -> str | None:
+    """A topic a person named ("the axis warning") → its check code; None when it names none."""
+    key = " ".join(str(text or "").lower().replace("_", " ").split())
+    if key.replace(" ", "_") in CHECK_TOPICS:
+        return key.replace(" ", "_")
+    return next((code for code, words in CHECK_TOPICS.items() if any(w in key for w in words)), None)
+
 
 class Check(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     label: str
     tone: Tone
+
+
+class CameraCheck(Check):
+    """A check on the camera card: it has a topic a person can ignore for one shot."""
+
+    code: str = ""  # the topic (`CHECK_TOPICS`), "" for a check a person cannot ignore
+    waived: bool = False  # a person chose to ignore this advisory on this shot
+
+
+def apply_waivers(checks: Iterable[CameraCheck], waived: Iterable[str]) -> list[CameraCheck]:
+    """The checks with the topics a person ignored marked. Only advisories can be ignored: a
+    passing check has nothing to ignore and a failing one blocks."""
+    ignored = set(waived)
+    return [c.model_copy(update={"waived": True}) if c.tone == "advisory" and c.code in ignored else c
+            for c in checks]
+
+
+# ── what a person set on a shot ────────────────────────────────────────────────────────────
+
+
+class CastEdits(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    add: list[str] = Field(default_factory=list)  # canon entity ids put in the shot by hand
+    remove: list[str] = Field(default_factory=list)  # canon entity ids taken out of it by hand
+
+
+class PersonEdits(BaseModel):
+    """A shot's own marks by a PERSON (`shots.person_edits`): who is in it, which advisories to
+    ignore, the DoP's note. Written by the API and the director chat for a person's own words,
+    never by an agent, so a re-design or a re-split of the script never undoes them silently."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    cast: CastEdits = Field(default_factory=CastEdits)
+    waived_checks: list[str] = Field(default_factory=list)  # `Check.code`s
+    dop_note: str = Field(default="", max_length=600)  # replaces the DP's own rationale when set
+
+    @classmethod
+    def of(cls, shot: Mapping[str, Any] | None) -> PersonEdits:
+        """From a stored shot row; damaged or missing JSON reads as no edits."""
+        try:
+            return cls.model_validate((shot or {}).get("person_edits") or {})
+        except ValueError:
+            return cls()
+
+    def dump(self) -> dict[str, Any]:
+        """The stored form: only what is set, so an untouched shot stores {}."""
+        out: dict[str, Any] = {}
+        if self.cast.add or self.cast.remove:
+            out["cast"] = {"add": self.cast.add, "remove": self.cast.remove}
+        if self.waived_checks:
+            out["waived_checks"] = self.waived_checks
+        if self.dop_note:
+            out["dop_note"] = self.dop_note
+        return out
 
 
 class CastMember(BaseModel):
@@ -200,30 +273,31 @@ class CastMember(BaseModel):
 
 def camera_checks(*, index: int, cameras: list[CameraSettings], framing: str, sound_mode: str,
                   cast: list[CastMember], speaker_ids: list[str], frame_strategy: str,
-                  first_code: str = "S01", previous_code: str = "") -> list[Check]:
+                  first_code: str = "S01", previous_code: str = "") -> list[CameraCheck]:
     """Free checks for the camera card, from the camera as it stands now across the scene."""
     camera = cameras[index]
-    checks: list[Check] = []
+    checks: list[CameraCheck] = []
     side = camera.axis.split(" ·")[0]
     if index == 0:
-        checks.append(Check(label=f"Establishes axis · {side}", tone="pass"))
+        checks.append(CameraCheck(label=f"Establishes axis · {side}", tone="pass", code="axis"))
     elif camera.axis == cameras[0].axis:
-        checks.append(Check(label=f"Axis matches {first_code}", tone="pass"))
+        checks.append(CameraCheck(label=f"Axis matches {first_code}", tone="pass", code="axis"))
     else:
-        checks.append(Check(label=f"Crosses the axis · {side} (unlike {first_code})", tone="advisory"))
+        checks.append(CameraCheck(label=f"Crosses the axis · {side} (unlike {first_code})", tone="advisory",
+                                  code="axis"))
     if frame_strategy == "carry_last_frame" and previous_code:
-        checks.append(Check(label=f"Opens on {previous_code}'s last frame", tone="pass"))
+        checks.append(CameraCheck(label=f"Opens on {previous_code}'s last frame", tone="pass"))
     if sound_mode == "dialogue" and framing in ("WIDE", "INSERT"):
-        checks.append(Check(label="Speaker is hard to see in this size", tone="advisory"))
+        checks.append(CameraCheck(label="Speaker is hard to see in this size", tone="advisory", code="speaker_size"))
     by_id = {c.id: c for c in cast}
     for c in cast:
         if c.kind == "character":
-            checks.append(Check(label=f"Wardrobe · {c.name}" if c.wardrobe_anchor else f"No wardrobe anchor · {c.name}",
-                                tone="pass" if c.wardrobe_anchor else "advisory"))
+            label = f"Wardrobe · {c.name}" if c.wardrobe_anchor else f"No wardrobe anchor · {c.name}"
+            checks.append(CameraCheck(label=label, tone="pass" if c.wardrobe_anchor else "advisory", code="wardrobe"))
     for sid in speaker_ids:
         speaker = by_id.get(sid)
         if speaker is not None and not speaker.voice_pin:
-            checks.append(Check(label=f"No voice pin · {speaker.name}", tone="advisory"))
+            checks.append(CameraCheck(label=f"No voice pin · {speaker.name}", tone="advisory", code="voice_pin"))
     return checks
 
 
@@ -259,24 +333,38 @@ def _mentions(text_key: str, names: Iterable[str]) -> bool:
     return any(k and f" {k} " in padded for k in (name_key(n) for n in names))
 
 
-def cast_in(items: Iterable[Item], characters: Sequence[Mapping[str, Any]]) -> list[str]:
+def cast_in(items: Iterable[Item], characters: Sequence[Mapping[str, Any]],
+            edits: PersonEdits | None = None) -> list[str]:
     """The canon characters in a shot: who speaks in it, then who its action names (by name or
-    alias), in canon order. Shared, so the producer pins and the API checks the same people."""
+    alias), in canon order, then what a person added or took out by hand (`edits`). Shared, so
+    the producer pins and the API checks the same people."""
     items = list(items)
     ids = {i.speaker_id for i in items if i.is_line and i.speaker_id}
     action = name_key(" ".join(i.text for i in items if not i.is_line))
     for c in characters:
         if str(c["id"]) not in ids and _mentions(action, [str(c["name"]), *(c.get("aliases") or [])]):
             ids.add(str(c["id"]))
+    if edits is not None:
+        ids = (ids | set(edits.cast.add)) - set(edits.cast.remove)
     return [str(c["id"]) for c in characters if str(c["id"]) in ids]
 
 
-def pins_for(*, shot_version: int, scene: Mapping[str, Any], items: Iterable[Item], cast_ids: Iterable[str],
-             versions: Mapping[str, int | None]) -> Pins:
-    """`versions`: canon entity id → current card version. The scene's location is pinned too."""
+def shot_canon_ids(scene: Mapping[str, Any], cast_ids: Iterable[str], edits: PersonEdits | None = None) -> list[str]:
+    """Every canon entity a shot is made against, in order: its people, the scene's place, then
+    what a person added by hand; what they took out is left out (the place too)."""
     ids = [*cast_ids, *([str(scene["location_id"])] if scene.get("location_id") else [])]
+    if edits is not None:
+        ids = [i for i in [*ids, *edits.cast.add] if i not in set(edits.cast.remove)]
+    return list(dict.fromkeys(ids))
+
+
+def pins_for(*, shot_version: int, scene: Mapping[str, Any], items: Iterable[Item], cast_ids: Iterable[str],
+             versions: Mapping[str, int | None], edits: PersonEdits | None = None) -> Pins:
+    """`versions`: canon entity id → current card version. The scene's location is pinned too.
+    `edits`: a person's additions (any canon entity, a prop or a place as well as a person) and
+    removals (the scene's place too) for this shot."""
     return Pins(shot_version=shot_version, script_hash=script_hash(scene, items),
-                canon={i: int(versions[i] or 0) for i in dict.fromkeys(ids) if i in versions})
+                canon={i: int(versions[i] or 0) for i in shot_canon_ids(scene, cast_ids, edits) if i in versions})
 
 
 def stale_reasons(pins: Pins | Mapping[str, Any] | None, *, shot_version: int, script_hash: str,

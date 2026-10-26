@@ -8,7 +8,11 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v4.sql` | **The newest schema** (Phases 0–5), whole. Run it once on an empty project. |
+| `schema_v6.sql` | **The newest schema** (Phases 0–5, `shots.person_edits` and the cinematography columns on `craft_techniques`), whole. Run it once on an empty project. |
+| `upgrade_v5_to_v6.sql` | Moves a project on v5 to v6 (the technique library takes the 629-term cinematography database). Run once, only on such a project. |
+| `schema_v5.sql` | The Phase 0–5 schema with `shots.person_edits`, kept for reference. |
+| `upgrade_v4_to_v5.sql` | Moves a project on v4 to v5 (`shots.person_edits`: the marks a person sets on a shot in the director chat). Run once, only on such a project. |
+| `schema_v4.sql` | The Phase 0–5 schema, kept for reference. |
 | `upgrade_v3_to_v4.sql` | Moves a project on v3 to v4 (takes, usage budget, `takes` bucket). Run once, only on such a project. |
 | `schema_v3.sql` | The Phase 0–4 schema, kept for reference. |
 | `upgrade_v2_to_v3.sql` | Moves a project on v2 to v3 (the Production panel). Run once, only on such a project. |
@@ -22,6 +26,23 @@ empty database and comparing the dump with the one the migrations build (identic
 running the 94 database tests and Supabase's advisor check on it (all pass). v1 plus
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
+
+## Moving a project from v5 to v6
+
+1. **SQL Editor:** paste `upgrade_v5_to_v6.sql` and run it, once. It runs as one transaction.
+2. Check: `select slug, prompt_phrase, ai_supported from public.craft_techniques limit 1;` runs.
+3. Load the 576 techniques: `python scripts/ingest_knowledge.py` (needs `OPENAI__API_KEY` for
+   embeddings; without it, search is keyword-only), then `python scripts/eval_retrieval.py --runs 3`.
+4. Restart the API and the `shot_producer` function (they read the technique search).
+
+v6 was **not** verified with a dump comparison or the database tests (no Docker).
+
+## Moving a project from v4 to v5
+
+1. **SQL Editor:** paste `upgrade_v4_to_v5.sql` and run it, once. It runs as one transaction.
+2. Check: `select person_edits from public.shots limit 1;` returns `{}`.
+3. Restart the API and the `director_chat`, `shot_producer` and `frame_render` functions: they
+   write and read the new column. v5 was **not** verified with a dump comparison (no Docker).
 
 ## Moving a project from v3 to v4
 
@@ -55,7 +76,7 @@ empty one, and of v2 + this upgrade are identical (buckets, Realtime tables, per
 
 ## First-time setup (hosted project)
 
-1. **SQL Editor:** paste `schema_v4.sql` and run it. It runs as one transaction, so if
+1. **SQL Editor:** paste `schema_v6.sql` and run it. It runs as one transaction, so if
    anything fails, nothing is created.
 2. **Authentication → Sign In / Providers:** turn **off** "Allow new users to sign up". Keep
    the Email provider **on**, or nobody can log in.

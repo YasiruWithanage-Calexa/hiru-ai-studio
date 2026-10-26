@@ -174,6 +174,7 @@ def shot_block(shot: ShotInput, total: int, prev: ShotInput | None, *, same_call
              "WHAT HAPPENS (the approved script, in order; the lines are attached by code, never write them):\n"
              + "\n".join(_script_lines(shot)),
              f"IN THIS SHOT: {roster}",
+             f"DIRECTOR'S NOTE FOR THE DoP (a person's own words; follow it): {shot.dop_note}" if shot.dop_note else "",
              _sound_line(shot),
              ("FIRST FRAME: this shot carries on from the previous take; describe the frame it opens on."
               if shot.frame_strategy == "carry_last_frame" else "FIRST FRAME: describe the frame this shot opens on.")]
