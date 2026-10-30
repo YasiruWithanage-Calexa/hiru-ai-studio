@@ -10,7 +10,10 @@ Each frame is claim → paint → store → record, the shape of upstream's take
           back means another delivery has it, so nothing is paid for twice.
   paint   the frame prompt is composed HERE, from the shot's IR and the camera as it stands now
           (`contracts.producer.frame_prompt`), with the canon reference sheets of the people and
-          the place in the shot attached in order. A refusal is a result, not a retry.
+          the place in the shot attached in order. A person who wears a look in the scene (the
+          scene's pick, else the episode rule: `contracts.canon.looks_in_force`) gets the look
+          sheet and its wardrobe instead of the base sheet and the card's. A refusal is a result,
+          not a retry.
   store   the private `frames` bucket, at a path derived from the frame id (a retry overwrites).
   record  the row: the exact prompt, the references used and the PINS, so the API can say when
           the frame no longer matches its shot.
@@ -20,14 +23,25 @@ Frames of one job are painted in parallel (one action, many pictures; the job is
 from __future__ import annotations
 
 import logging
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from typing import Any, Protocol
 from uuid import UUID
 
 from contracts import sceneplan
-from contracts.canon import CanonCard, CanonKind, reference_sheet_prompt
+from contracts.canon import (
+    SHEET_ASPECT,
+    CanonCard,
+    CanonKind,
+    LookFields,
+    look_sheet_path,
+    look_sheet_prompt,
+    look_wardrobe,
+    looks_in_force,
+    reference_sheet_aspect,
+    reference_sheet_prompt,
+)
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import (
     CameraSettings,
@@ -61,11 +75,16 @@ class StoreLike(Protocol):
     def scene(self, scene_id: str) -> Row | None: ...
     def lines(self, scene_id: str) -> list[Row]: ...
     def canon(self, production_id: UUID) -> list[Row]: ...
+    def look(self, look_id: str) -> Row | None: ...
+    def looks(self, production_id: UUID) -> list[Row]: ...
+    def scene_looks(self, scene_id: str) -> list[Row]: ...
+    def episode_number(self, episode_id: str) -> int | None: ...
     def download_reference(self, path: str) -> bytes: ...
     def claim_frame(self, frame_id: str) -> bool: ...
     def finish_frame(self, frame_id: str, fields: Row) -> None: ...
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None: ...
     def add_reference_asset(self, version_id: str, assets: list[Any]) -> None: ...
+    def finish_look_sheet(self, look_id: str, assets: list[Any]) -> None: ...
     def audit(self, row: Row) -> None: ...
 
 
@@ -107,12 +126,27 @@ class FrameJob:
         self.by_id = {str(c["id"]): c for c in self.canon}
         self.members = {str(c["id"]): cast_member(c) for c in self.canon}
         self._scenes: dict[str, tuple[Row, list[Row]]] = {}
+        self._all_looks: list[Row] | None = None
+        self._looks: dict[str, dict[str, Mapping[str, Any]]] = {}
 
     def scene(self, scene_id: str) -> tuple[Row, list[Row]]:
         if scene_id not in self._scenes:
             scene = self.store.scene(scene_id) or {}
             self._scenes[scene_id] = (scene, self.store.lines(scene_id))
         return self._scenes[scene_id]
+
+    def looks(self, scene_id: str) -> dict[str, Mapping[str, Any]]:
+        """character id → the look the scene uses (`contracts.canon.looks_in_force`)."""
+        if scene_id not in self._looks:
+            if self._all_looks is None:
+                self._all_looks = self.store.looks(self.production_id)
+            scene, _ = self.scene(scene_id)
+            looks: dict[str, Mapping[str, Any]] = {}
+            if self._all_looks:
+                episode = self.store.episode_number(str(scene["episode_id"])) if scene.get("episode_id") else None
+                looks = dict(looks_in_force(self._all_looks, self.store.scene_looks(scene_id), episode))
+            self._looks[scene_id] = looks
+        return self._looks[scene_id]
 
     def _own(self, shot: Row) -> tuple[Row, list[Any], list[str]]:
         scene, lines = self.scene(str(shot["scene_id"]))
@@ -122,27 +156,43 @@ class FrameJob:
 
     def references(self, shot: Row) -> list[tuple[str, Reference]]:
         """The sheets of the people, then the place, in the shot that exist and can be read, in
-        the order they are attached. One that cannot be read is left out, not guessed at."""
+        the order they are attached. A person wearing a look gets the look sheet; when that
+        cannot be read, the base sheet. One that cannot be read is left out, not guessed at."""
         scene, _, cast_ids = self._own(shot)
+        looks = self.looks(str(shot["scene_id"]))
         out: list[tuple[str, Reference]] = []
         for cid in shot_canon_ids(scene, cast_ids, PersonEdits.of(shot)):
             row = self.by_id.get(cid)
-            if not row or not _sheet_path(row) or len(out) >= MAX_REFERENCES:
+            if not row or len(out) >= MAX_REFERENCES:
                 continue
             what = {"location": "the location plate for", "prop": "the reference sheet for"}.get(
                 row["kind"], "the character sheet for")
-            try:
-                out.append((cid, Reference(label=f"{what} {row['name']}",
-                                           data=self.store.download_reference(_sheet_path(row)))))
-            except Exception:
-                _logger.warning("reference sheet for %s could not be read; painting without it", cid, exc_info=True)
+            choices = [(f"{what} {row['name']}", _sheet_path(row))]
+            look = looks.get(cid) if row["kind"] == "character" else None
+            if look is not None:
+                choices.insert(0, (f"the look sheet for {row['name']}", look_sheet_path(look)))
+            for label, path in choices:
+                if not path:
+                    continue
+                try:
+                    out.append((cid, Reference(label=label, data=self.store.download_reference(path))))
+                    break
+                except Exception:
+                    _logger.warning("%s could not be read", label, exc_info=True)
         return out
+
+    def cast(self, shot: Row, cast_ids: list[str]) -> list[CastMember]:
+        """The people in the shot, each dressed in the look the scene uses, if any."""
+        looks = self.looks(str(shot["scene_id"]))
+        return [self.members[c].model_copy(update={"look": look_wardrobe(looks[c])}) if c in looks
+                else self.members[c] for c in cast_ids if c in self.members]
 
     def compose(self, shot: Row, labels: list[str]) -> tuple[str, Row]:
         """→ (the frame prompt naming exactly `labels` as its attached images, the pins)."""
         scene, own, cast_ids = self._own(shot)
         pins = pins_for(shot_version=int(shot.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
-                        versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot))
+                        versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot),
+                        looks=self.looks(str(shot["scene_id"])))
         default = default_camera(str(shot.get("framing") or "MS"), heading=str(scene.get("heading") or ""),
                                  time_of_day=str(scene.get("time_of_day") or ""))
         try:
@@ -152,7 +202,7 @@ class FrameJob:
             recommended = default
         camera = recommended.with_overrides(shot.get("camera_overrides") or {})
         prompt = frame_prompt(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
-                              cast=[self.members[c] for c in cast_ids if c in self.members],
+                              cast=self.cast(shot, cast_ids),
                               references=labels, recommended_framing=recommended.framing)
         return prompt, pins.model_dump()
 
@@ -201,10 +251,12 @@ def render_reference(store: StoreLike, production: Row, entity_id: str, paint: P
         return {"status": "failed", "error": "This canon entry has no card yet."}
     if paint is None:
         return {"status": "failed", "error": NOT_CONFIGURED}
-    aspect = ASPECT_RATIO[Orientation(production.get("orientation") or "horizontal")]
-    prompt = str(current.get("reference_prompt") or "") or reference_sheet_prompt(
-        CanonKind(row["kind"]), str(row["name"]), CanonCard.model_validate(current.get("card") or {}),
-        aspect_ratio=aspect)
+    kind = CanonKind(row["kind"])
+    aspect = reference_sheet_aspect(kind, ASPECT_RATIO[Orientation(production.get("orientation") or "horizontal")])
+    # Built again from the card each time, not read from the version's stored `reference_prompt`:
+    # that was written when the version was made, so it would keep an older sheet layout alive.
+    prompt = reference_sheet_prompt(kind, str(row["name"]), CanonCard.model_validate(current.get("card") or {}),
+                                    aspect_ratio=aspect)
     try:
         picture = paint(prompt, aspect, [])
     except RefusedError as exc:
@@ -218,6 +270,44 @@ def render_reference(store: StoreLike, production: Row, entity_id: str, paint: P
                "created_at": _now()}, *(current.get("reference_assets") or [])]
     store.add_reference_asset(str(current["id"]), assets[:5])
     return {"status": "done", "entity_id": entity_id, "version": current.get("version")}
+
+
+def render_look(store: StoreLike, production: Row, look_id: str, paint: Painter | None, job_id: str) -> Row:
+    """A look sheet for a character: the base sheet goes in as image 1 and the look's words say what
+    changes. The sheet lands in the `references` bucket, newest first on the look's `sheet_assets`."""
+    look = store.look(look_id)
+    if not look:
+        return {"status": "failed", "error": "This look no longer exists."}
+    canon = {str(c["id"]): c for c in store.canon(UUID(str(production["id"])))}
+    row = canon.get(str(look["entity_id"]))
+    base = _sheet_path(row) if row else ""
+    if not row or not base:
+        return {"status": "failed", "error": "Paint the base sheet first."}
+    if paint is None:
+        return {"status": "failed", "error": NOT_CONFIGURED}
+    try:
+        base_sheet = store.download_reference(base)
+    except Exception:
+        _logger.warning("base sheet for look %s could not be read", look_id, exc_info=True)
+        return {"status": "failed", "error": FAILED}
+    fields = LookFields.model_validate({k: look.get(k) or ([] if k == "ranges" else "")
+                                       for k in ("name", "ranges", "outfit", "hair", "makeup", "accessories")})
+    prompt = look_sheet_prompt(str(row["name"]), fields)
+    try:
+        picture = paint(prompt, SHEET_ASPECT,
+                        [Reference(label=f"the base character sheet for {row['name']}", data=base_sheet)])
+    except RefusedError as exc:
+        return {"status": "refused", "error": str(exc)}
+    except Exception:
+        _logger.warning("look sheet %s failed", look_id, exc_info=True)
+        return {"status": "failed", "error": FAILED}
+    current = row.get("current") or {}
+    path = f"{production['id']}/{row['id']}/looks/{look_id}-{job_id[:8]}.png"
+    store.upload("references", path, picture.data, picture.mime)
+    assets = [{"path": path, "kind": "look", "base_version": current.get("version"), "job_id": job_id,
+               "created_at": _now()}, *(look.get("sheet_assets") or [])]
+    store.finish_look_sheet(look_id, assets[:5])
+    return {"status": "done", "look_id": look_id}
 
 
 def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, paint: Painter | None) -> Row:
@@ -241,6 +331,18 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, paint: Paint
         if result["status"] == "done":
             store.audit({"production_id": str(production_id), "actor_user_id": actor, "actor_agent": AGENT,
                          "action": "canon.reference_sheet", "entity": "canon", "entity_id": str(entity_id),
+                         "diff": {"job_id": str(job_id)}})
+        jobs.finish(payload, result)
+        return result
+
+    look_id = payload.state.get("look_id")
+    if look_id:
+        result = render_look(store, production, str(look_id), paint, str(job_id))
+        jobs.event(job_id, JobEventType.PROGRESS if result["status"] == "done" else JobEventType.WARNING,
+                   {"text": "Look sheet ready" if result["status"] == "done" else result["error"]}, agent=AGENT)
+        if result["status"] == "done":
+            store.audit({"production_id": str(production_id), "actor_user_id": actor, "actor_agent": AGENT,
+                         "action": "canon.look_sheet_made", "entity": "canon_look", "entity_id": str(look_id),
                          "diff": {"job_id": str(job_id)}})
         jobs.finish(payload, result)
         return result

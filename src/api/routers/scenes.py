@@ -31,6 +31,7 @@ from contracts import sceneplan
 from contracts.canon import CanonKind, name_key
 from contracts.director import BoardMember, ScriptUpdate, ShotUpdate
 from contracts.jobs import JobKind
+from contracts.producer import PersonEdits, cast_in, shot_items
 from contracts.production import BlockKind, Framing, ProductionSettings, SceneStatus, ShotStatus
 from contracts.roles import Permission
 from contracts.shotplan import FitResult, allowed_durations, fit
@@ -214,6 +215,33 @@ async def _save_fit(repos: Repos, ld: Loaded, plan: list[Row], result: FitResult
         "status": SceneStatus.SPLIT.value, "fit_report": sceneplan.fit_report(result, planner)})
 
 
+def natural_cast(ld: Loaded, canon_rows: list[Row]) -> dict[str, set[str]]:
+    """Shot id → who and what the script puts in it: its speakers, who its action names, the place.
+    What a person added or took out by hand (`PersonEdits.cast`) is not in it."""
+    characters = [c for c in canon_rows if c["kind"] == CanonKind.CHARACTER.value]
+    items = sceneplan.items_for(ld.scene.get("script") or [], ld.lines)
+    place = {str(ld.scene["location_id"])} if ld.scene.get("location_id") else set()
+    return {str(s["id"]): set(cast_in(shot_items(items, int(s["block_start"]), int(s["block_end"])), characters))
+            | place for s in ld.shots}
+
+
+def scene_canon_ids(ld: Loaded, canon_rows: list[Row]) -> list[str]:
+    """The canon the scene uses, in order: its place, then who speaks in it, then what a person added
+    to any of its shots. Whoever is in none of its shots any more (taken out by hand) is left out."""
+    base = [str(ld.scene["location_id"])] if ld.scene.get("location_id") else []
+    base += [str(ln["character_id"]) for ln in ld.lines if ln.get("character_id")]
+    if not ld.shots:
+        return list(dict.fromkeys(base))
+    natural = natural_cast(ld, canon_rows)
+    present: set[str] = set()
+    added: list[str] = []
+    for shot in ld.shots:
+        edits = PersonEdits.of(shot)
+        present |= (natural[str(shot["id"])] | set(edits.cast.add)) - set(edits.cast.remove)
+        added += edits.cast.add
+    return [cid for cid in dict.fromkeys([*base, *added]) if cid in present]
+
+
 async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneView:
     production_id = access.production_id
     ld, canon_rows = await asyncio.gather(load(repos, access, scene_id), repos.canon.list(production_id))
@@ -273,10 +301,8 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             speaker=said["speaker"] if said else "", delivery=(said.get("delivery") or "") if said else "",
             shot_id=shot_of_block.get(i)))
 
-    refs = [str(scene["location_id"])] if scene.get("location_id") else []
-    refs += [str(ln["character_id"]) for ln in ld.lines if ln.get("character_id")]
     canon_refs = []
-    for cid in dict.fromkeys(refs):
+    for cid in scene_canon_ids(ld, canon_rows):
         c = canon.get(cid)
         if c:
             current = c.get("current") or {}

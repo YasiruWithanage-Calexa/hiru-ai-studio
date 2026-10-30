@@ -17,6 +17,7 @@ from contracts.producer import (
     default_camera,
     frame_prompt,
     lighting_for,
+    look_pins,
     pins_for,
     prompt_text,
     script_hash,
@@ -102,6 +103,7 @@ def test_the_frame_prompt_names_references_by_position_and_honours_a_persons_fra
                         references=["the character sheet for Kamala", "the location plate for the house"],
                         recommended_framing="Wide shot")
     assert "image 1 is the character sheet for Kamala; image 2 is the location plate" in text
+    assert "take clothes from the People line, never from the sheet" in text
     assert "Close-up, eye level, 85mm lens at f/4" in text and "Compose it as a close-up." in text
     assert "Kamala: 52, grey hair in a bun; wearing a faded blue saree" in text
     assert text.endswith("no collage, no split panels.") and "9:16 vertical framing" in text
@@ -128,3 +130,35 @@ def test_prompt_text_matches_the_frontends_prompt_to_text():
     assert sections[0].segments[1].model_dump() == {"sinhala": "අම්මේ"}
     with pytest.raises(ValidationError):
         PromptSegment(text="x", sinhala="y")
+
+
+def test_a_frame_is_stale_when_its_people_wear_another_look_or_their_look_changed():
+    heiress = {"id": "L1", "name": "Heiress", "outfit": "maroon saree", "sheet_assets": [{"path": "a.png"}]}
+    pins = pins_for(shot_version=2, scene=SCENE, items=items(), cast_ids=["k", "n"], versions={"k": 2, "n": 1},
+                    looks={"k": heiress})
+    assert set(pins.looks) == {"k"} and pins.looks["k"].id == "L1"
+    canon = {"k": KAMALA, "n": NIMAL}
+    now = dict(shot_version=2, script_hash=pins.script_hash, canon=canon)
+    worn = look_pins(["k", "n"], {"k": heiress})
+    assert stale_reasons(pins, **now, looks=worn) == []
+    assert stale_reasons(pins, **now) == [], "designs and prompts are not compared on looks"
+    renamed = look_pins(["k"], {"k": {**heiress, "name": "Heiress II", "ranges": [{"from": 1, "to": 9}]}})
+    assert stale_reasons(pins, **now, looks=renamed) == []
+    restyled = look_pins(["k"], {"k": {**heiress, "outfit": "a green saree"}})
+    assert stale_reasons(pins, **now, looks=restyled) == ["C01 Kamala's look “Heiress” changed."]
+    other = look_pins(["k"], {"k": {"id": "L2", "name": "Hospital"}})
+    assert stale_reasons(pins, **now, looks=other) == ["C01 Kamala wears the look “Hospital” now."]
+    assert stale_reasons(pins, **now, looks={}) == ["C01 Kamala no longer wears the look “Heiress”."]
+    before = pins.model_copy(update={"looks": {}})  # painted before the look existed
+    assert stale_reasons(before, **now, looks=worn) == ["C01 Kamala wears the look “Heiress” now."]
+
+
+def test_a_look_sheet_dresses_the_person_and_a_base_sheet_does_not():
+    camera = default_camera("WS")
+    dressed = KAMALA.model_copy(update={"look": "outfit maroon saree; hair a bun"})
+    text = frame_prompt(ir={}, camera=camera, aspect_ratio="16:9", cast=[dressed, NIMAL],
+                        references=["the look sheet for Kamala", "the character sheet for Nimal"])
+    assert "A look sheet shows what that person wears in this shot" in text
+    assert "plain reference outfit" in text, "Nimal's base sheet still says take clothes from the card"
+    assert "Kamala: 52, grey hair in a bun; as in their look sheet: outfit maroon saree; hair a bun" in text
+    assert "faded blue saree" not in text

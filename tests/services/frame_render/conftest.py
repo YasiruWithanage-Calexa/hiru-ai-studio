@@ -44,6 +44,10 @@ class FakeStore:
         self.audits: list[dict] = []
         self.unreadable: set[str] = set()
         self.asset_writes: list[tuple[str, list]] = []
+        self.look_rows: dict[str, dict] = {}
+        self.look_writes: list[tuple[str, list]] = []
+        self.scene_look_rows: list[dict] = []  # entity_id, look_id: the scene's picks
+        self.episode = 1
 
     def add_frame(self, shot_id: str, status: str = "queued") -> str:
         fid = str(uuid4())
@@ -68,6 +72,18 @@ class FakeStore:
     def canon(self, production_id: UUID) -> list[dict]:
         return self.canon_rows
 
+    def look(self, look_id: str) -> dict | None:
+        return self.look_rows.get(look_id)
+
+    def looks(self, production_id: UUID) -> list[dict]:
+        return list(self.look_rows.values())
+
+    def scene_looks(self, scene_id: str) -> list[dict]:
+        return self.scene_look_rows
+
+    def episode_number(self, episode_id: str) -> int | None:
+        return self.episode
+
     def download_reference(self, path: str) -> bytes:
         if path in self.unreadable:
             raise OSError("gone")
@@ -89,6 +105,10 @@ class FakeStore:
     def add_reference_asset(self, version_id: str, assets: list[Any]) -> None:
         self.asset_writes.append((version_id, assets))
 
+    def finish_look_sheet(self, look_id: str, assets: list[Any]) -> None:
+        self.look_writes.append((look_id, assets))
+        self.look_rows[look_id].update(sheet_assets=assets, status="draft")
+
     def audit(self, row: dict) -> None:
         self.audits.append(row)
 
@@ -99,7 +119,8 @@ class FakePainter:
         self.refuse, self.fail = refuse, fail
 
     def __call__(self, prompt: str, aspect: str, references: list[Reference]) -> Picture:
-        self.calls.append({"prompt": prompt, "aspect": aspect, "references": [r.label for r in references]})
+        self.calls.append({"prompt": prompt, "aspect": aspect, "references": [r.label for r in references],
+                           "pictures": [r.data for r in references]})
         if self.refuse:
             raise RefusedError("The image model declined to make this frame.")
         if self.fail:

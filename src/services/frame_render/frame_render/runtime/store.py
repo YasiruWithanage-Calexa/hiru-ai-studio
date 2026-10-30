@@ -43,6 +43,20 @@ class Store:
         return self.rest.select("canon_entities", {"production_id": f"eq.{production_id}", "order": "code",
                                                    "select": _CANON})
 
+    def look(self, look_id: str) -> Row | None:
+        return self.rest.first("canon_looks", {"id": f"eq.{look_id}", "select": "*"})
+
+    def looks(self, production_id: UUID) -> list[Row]:
+        return self.rest.select("canon_looks", {"production_id": f"eq.{production_id}", "select": "*",
+                                                "order": "created_at"})
+
+    def scene_looks(self, scene_id: str) -> list[Row]:
+        return self.rest.select("scene_looks", {"scene_id": f"eq.{scene_id}", "select": "entity_id,look_id"})
+
+    def episode_number(self, episode_id: str) -> int | None:
+        row = self.rest.first("episodes", {"id": f"eq.{episode_id}", "select": "number"})
+        return int(row["number"]) if row else None
+
     def download_reference(self, path: str) -> bytes:
         return self.rest.download(REFERENCES_BUCKET, path)
 
@@ -61,6 +75,10 @@ class Store:
 
     def add_reference_asset(self, version_id: str, assets: list[Any]) -> None:
         self.rest.patch("canon_versions", {"id": f"eq.{version_id}"}, {"reference_assets": assets})
+
+    def finish_look_sheet(self, look_id: str, assets: list[Any]) -> None:
+        """A new sheet is not the one a person approved: the look goes back to draft."""
+        self.rest.patch("canon_looks", {"id": f"eq.{look_id}"}, {"sheet_assets": assets, "status": "draft"})
 
     def audit(self, row: Row) -> None:
         try:

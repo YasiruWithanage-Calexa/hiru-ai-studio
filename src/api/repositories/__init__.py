@@ -187,6 +187,22 @@ class CanonRepo(Protocol):
     async def list(self, production_id: UUID) -> list[Row]: ...
 
 
+class LooksRepo(Protocol):
+    async def list_for_production(self, production_id: UUID) -> list[Row]: ...  # every character's, oldest first
+    async def list(self, entity_id: UUID) -> list[Row]: ...  # oldest first
+    async def get(self, entity_id: UUID, look_id: UUID) -> Row | None: ...
+    async def create(self, fields: Row) -> Row: ...
+    async def update(self, look_id: UUID, fields: Row) -> Row: ...
+    async def delete(self, look_id: UUID) -> None: ...
+
+
+class SceneLooksRepo(Protocol):
+    async def list(self, scene_id: UUID) -> list[Row]: ...  # entity_id, look_id
+    # One look per character per scene: a second pick replaces the first.
+    async def choose(self, fields: Row) -> Row: ...
+    async def clear(self, scene_id: UUID, entity_id: UUID) -> None: ...
+
+
 class QuestionsRepo(Protocol):
     async def list(self, production_id: UUID, status: str | None = None) -> list[Row]: ...
     async def get(self, production_id: UUID, question_id: UUID) -> Row | None: ...
@@ -243,6 +259,8 @@ class Repos:
     shots: ShotsRepo
     lines: LinesRepo
     canon: CanonRepo
+    looks: LooksRepo
+    scene_looks: SceneLooksRepo
     questions: QuestionsRepo
     personas: PersonasRepo
     board: BoardRepo

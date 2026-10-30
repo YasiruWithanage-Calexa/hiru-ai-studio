@@ -30,7 +30,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_serializer, model_validator
 
-from contracts.canon import name_key
+from contracts.canon import look_stamp, name_key
 from contracts.shotplan import Item
 
 # ── camera ─────────────────────────────────────────────────────────────────────────────────
@@ -269,6 +269,9 @@ class CastMember(BaseModel):
     voice_pin: str = ""
     appearance: str = ""
     gender: str = ""
+    # The wardrobe of the look this person wears in the shot (`contracts.canon.look_wardrobe`);
+    # "" = no look, the card's wardrobe anchor applies.
+    look: str = ""
 
 
 def camera_checks(*, index: int, cameras: list[CameraSettings], framing: str, sound_mode: str,
@@ -304,6 +307,20 @@ def camera_checks(*, index: int, cameras: list[CameraSettings], framing: str, so
 # ── what a shot was made against ───────────────────────────────────────────────────────────
 
 
+class LookPin(BaseModel):
+    """The look a frame was painted with: which one, and its wardrobe and sheet at the time."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    id: str
+    stamp: str  # contracts.canon.look_stamp
+    name: str = ""  # for messages only; renaming a look does not make a frame stale
+
+    @classmethod
+    def of(cls, look: Mapping[str, Any]) -> LookPin:
+        return cls(id=str(look["id"]), stamp=look_stamp(look), name=str(look.get("name") or ""))
+
+
 class Pins(BaseModel):
     """What a design, a frame or a prompt was made against. Compared on read; never redone."""
 
@@ -312,6 +329,7 @@ class Pins(BaseModel):
     shot_version: int = Field(ge=1)
     script_hash: str
     canon: dict[str, int] = Field(default_factory=dict)  # canon entity id → card version
+    looks: dict[str, LookPin] = Field(default_factory=dict)  # character id → look (frames only)
 
 
 def shot_items(items: list[Item], start: int, end: int) -> list[Item]:
@@ -359,18 +377,27 @@ def shot_canon_ids(scene: Mapping[str, Any], cast_ids: Iterable[str], edits: Per
 
 
 def pins_for(*, shot_version: int, scene: Mapping[str, Any], items: Iterable[Item], cast_ids: Iterable[str],
-             versions: Mapping[str, int | None], edits: PersonEdits | None = None) -> Pins:
+             versions: Mapping[str, int | None], edits: PersonEdits | None = None,
+             looks: Mapping[str, Mapping[str, Any]] | None = None) -> Pins:
     """`versions`: canon entity id → current card version. The scene's location is pinned too.
     `edits`: a person's additions (any canon entity, a prop or a place as well as a person) and
-    removals (the scene's place too) for this shot."""
+    removals (the scene's place too) for this shot. `looks`: character id → the look in force
+    (`contracts.canon.looks_in_force`), pinned for those in the shot."""
+    ids = shot_canon_ids(scene, cast_ids, edits)
     return Pins(shot_version=shot_version, script_hash=script_hash(scene, items),
-                canon={i: int(versions[i] or 0) for i in shot_canon_ids(scene, cast_ids, edits) if i in versions})
+                canon={i: int(versions[i] or 0) for i in ids if i in versions},
+                looks=look_pins(ids, looks or {}))
+
+
+def look_pins(ids: Iterable[str], looks: Mapping[str, Mapping[str, Any]]) -> dict[str, LookPin]:
+    return {i: LookPin.of(looks[i]) for i in ids if i in looks}
 
 
 def stale_reasons(pins: Pins | Mapping[str, Any] | None, *, shot_version: int, script_hash: str,
-                  canon: Mapping[str, CastMember]) -> list[str]:
+                  canon: Mapping[str, CastMember], looks: Mapping[str, LookPin] | None = None) -> list[str]:
     """Why something made against `pins` is out of date now ([] when it is current).
-    `canon`: the production's entities by id, with their current version."""
+    `canon`: the production's entities by id, with their current version. `looks`: the looks the
+    shot's people wear now (`look_pins`); given for frames only, which are painted with them."""
     if not pins:
         return []
     p = pins if isinstance(pins, Pins) else Pins.model_validate(pins)
@@ -385,6 +412,16 @@ def stale_reasons(pins: Pins | Mapping[str, Any] | None, *, shot_version: int, s
             reasons.append("Someone in this shot was removed from the canon.")
         elif int(c.version or 0) != version:
             reasons.append(f"{c.code} {c.name} has a new card (v{c.version}; this used v{version}).")
+    if looks is not None:
+        for entity_id in dict.fromkeys([*p.looks, *looks]):
+            was, now, c = p.looks.get(entity_id), looks.get(entity_id), canon.get(entity_id)
+            who = f"{c.code} {c.name}" if c else "Someone in this shot"
+            if now is None and was is not None:
+                reasons.append(f"{who} no longer wears the look “{was.name}”.")
+            elif now is not None and (was is None or was.id != now.id):
+                reasons.append(f"{who} wears the look “{now.name}” now.")
+            elif now is not None and was is not None and was.stamp != now.stamp:
+                reasons.append(f"{who}'s look “{now.name}” changed.")
     return reasons
 
 
@@ -392,9 +429,13 @@ def stale_reasons(pins: Pins | Mapping[str, Any] | None, *, shot_version: int, s
 
 
 def identity_line(c: CastMember) -> str:
-    """How one person must look in every frame: appearance, then the wardrobe anchor."""
-    bits = [b for b in (c.appearance.strip(" ."), f"wearing {c.wardrobe_anchor.strip(' .')}"
-                        if c.wardrobe_anchor else "") if b]
+    """How one person must look in every frame: appearance, then their look's wardrobe, or the
+    card's wardrobe anchor when they wear no look."""
+    if c.look:
+        dress = f"as in their look sheet: {c.look.strip(' .')}"
+    else:
+        dress = f"wearing {c.wardrobe_anchor.strip(' .')}" if c.wardrobe_anchor else ""
+    bits = [b for b in (c.appearance.strip(" ."), dress) if b]
     return f"{c.name}: {'; '.join(bits)}" if bits else c.name
 
 
@@ -416,8 +457,17 @@ def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio:
              "real optics and natural imperfections."]
     if references:
         named = "; ".join(f"image {n} is {label}" for n, label in enumerate(references, start=1))
-        parts.append(f"Reference images, in order: {named}. Match them exactly: the same faces, hair, build "
-                     "and wardrobe, the same place. Do not redesign anyone.")
+        parts.append(f"Reference images, in order: {named}. Match them exactly: the same faces, hair, skin "
+                     "tone and build, the same place. Do not redesign anyone.")
+        if any(label.startswith("the look sheet") for label in references):
+            # A look sheet IS the costume of this shot: clothes, hair, makeup and accessories.
+            parts.append("A look sheet shows what that person wears in this shot: dress them exactly as their "
+                         "look sheet shows, the same clothes, hair, makeup and accessories.")
+        if any(label.startswith("the character sheet") for label in references):
+            # A sheet shows a plain reference outfit; the clothes of this shot come from the card.
+            parts.append("A character sheet shows a plain reference outfit: take clothes from the People "
+                         "line, never from the sheet, and if it names none dress them in plain everyday "
+                         "clothes.")
     parts.append(f"Camera: {camera_sentence(camera)}")
     if recommended_framing and camera.framing != recommended_framing:
         parts.append(f"Compose it as a {camera.framing.lower()}.")

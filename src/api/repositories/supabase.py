@@ -587,6 +587,48 @@ class SupabaseCanon(_Base):
         return _rows(res.data)
 
 
+class SupabaseLooks(_Base):
+    async def list_for_production(self, production_id: UUID) -> list[Row]:
+        res = await self.db.table("canon_looks").select("*").eq("production_id", str(production_id)).order(
+            "created_at").execute()
+        return _rows(res.data)
+
+    async def list(self, entity_id: UUID) -> list[Row]:
+        res = await self.db.table("canon_looks").select("*").eq("entity_id", str(entity_id)).order(
+            "created_at").execute()
+        return _rows(res.data)
+
+    async def get(self, entity_id: UUID, look_id: UUID) -> Row | None:
+        res = (await self.db.table("canon_looks").select("*").eq("id", str(look_id))
+               .eq("entity_id", str(entity_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def create(self, fields: Row) -> Row:
+        res = await self.db.table("canon_looks").insert(fields).execute()
+        return _one(res.data)
+
+    async def update(self, look_id: UUID, fields: Row) -> Row:
+        res = await self.db.table("canon_looks").update(fields).eq("id", str(look_id)).execute()
+        return _one(res.data)
+
+    async def delete(self, look_id: UUID) -> None:
+        await self.db.table("canon_looks").delete().eq("id", str(look_id)).execute()
+
+
+class SupabaseSceneLooks(_Base):
+    async def list(self, scene_id: UUID) -> list[Row]:
+        res = await self.db.table("scene_looks").select("*").eq("scene_id", str(scene_id)).execute()
+        return _rows(res.data)
+
+    async def choose(self, fields: Row) -> Row:
+        res = await self.db.table("scene_looks").upsert(fields, on_conflict="scene_id,entity_id").execute()
+        return _one(res.data)
+
+    async def clear(self, scene_id: UUID, entity_id: UUID) -> None:
+        await self.db.table("scene_looks").delete().eq("scene_id", str(scene_id)).eq(
+            "entity_id", str(entity_id)).execute()
+
+
 class SupabaseQuestions(_Base):
     async def list(self, production_id: UUID, status: str | None = None) -> list[Row]:
         q = self.db.table("questions").select("*").eq("production_id", str(production_id))
@@ -722,6 +764,8 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         shots=SupabaseShots(db),
         lines=SupabaseLines(db),
         canon=SupabaseCanon(db),
+        looks=SupabaseLooks(db),
+        scene_looks=SupabaseSceneLooks(db),
         questions=SupabaseQuestions(db),
         personas=SupabasePersonas(db),
         board=SupabaseBoard(db),

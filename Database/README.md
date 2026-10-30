@@ -8,7 +8,11 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v6.sql` | **The newest schema** (Phases 0–5, `shots.person_edits` and the cinematography columns on `craft_techniques`), whole. Run it once on an empty project. |
+| `schema_v8.sql` | **The newest schema** (everything in v7 plus `scene_looks`: the look of a character a scene uses), whole. Run it once on an empty project. |
+| `upgrade_v7_to_v8.sql` | Moves a project on v7 to v8 (the `scene_looks` table). Run once, only on such a project. |
+| `schema_v7.sql` | Everything in v6 plus `canon_looks` (what a character wears per stretch of episodes), kept for reference. |
+| `upgrade_v6_to_v7.sql` | Moves a project on v6 to v7 (the `canon_looks` table). Run once, only on such a project. |
+| `schema_v6.sql` | The Phase 0–5 schema with `shots.person_edits` and the cinematography columns on `craft_techniques`, kept for reference. |
 | `upgrade_v5_to_v6.sql` | Moves a project on v5 to v6 (the technique library takes the 629-term cinematography database). Run once, only on such a project. |
 | `schema_v5.sql` | The Phase 0–5 schema with `shots.person_edits`, kept for reference. |
 | `upgrade_v4_to_v5.sql` | Moves a project on v4 to v5 (`shots.person_edits`: the marks a person sets on a shot in the director chat). Run once, only on such a project. |
@@ -26,6 +30,23 @@ empty database and comparing the dump with the one the migrations build (identic
 running the 94 database tests and Supabase's advisor check on it (all pass). v1 plus
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
+
+## Moving a project from v7 to v8
+
+1. **SQL Editor:** paste `upgrade_v7_to_v8.sql` and run it, once. It runs as one transaction.
+2. Check: `select count(*) from public.scene_looks;` returns 0.
+3. Restart the API (it reads and writes the table).
+
+v8 was **not** verified with a dump comparison or the database tests (no Docker).
+
+## Moving a project from v6 to v7
+
+1. **SQL Editor:** paste `upgrade_v6_to_v7.sql` and run it, once. It runs as one transaction.
+2. Check: `select count(*) from public.canon_looks;` returns 0.
+3. Restart the API and the `frame_render` function (they read and write the table).
+
+v7 was **not** verified with a dump comparison or the database tests (no Docker). The tests are in
+`supabase/tests/database/007_looks.test.sql`; run them with `npx supabase test db` where Docker is available.
 
 ## Moving a project from v5 to v6
 
@@ -76,7 +97,7 @@ empty one, and of v2 + this upgrade are identical (buckets, Realtime tables, per
 
 ## First-time setup (hosted project)
 
-1. **SQL Editor:** paste `schema_v6.sql` and run it. It runs as one transaction, so if
+1. **SQL Editor:** paste `schema_v7.sql` and run it. It runs as one transaction, so if
    anything fails, nothing is created.
 2. **Authentication → Sign In / Providers:** turn **off** "Allow new users to sign up". Keep
    the Email provider **on**, or nobody can log in.

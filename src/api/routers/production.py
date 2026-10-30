@@ -31,6 +31,7 @@ from api.repositories import Repos, Row
 from api.services import media_links
 from api.services.production import NOT_APPROVED, ShotState, camera_checks, scene_states
 from api.workers import task_manager
+from contracts.canon import looks_in_force
 from contracts.jobs import JobKind
 from contracts.producer import (
     CameraCheck,
@@ -202,8 +203,12 @@ async def load(repos: Repos, access: ProductionAccess, scene_id: UUID) -> Loaded
     if scene is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
     ids = [str(s["id"]) for s in shots]
-    frames, prompts = await asyncio.gather(repos.frames.list_for_shots(ids), repos.prompts.latest_for_shots(ids))
-    states = scene_states(scene, shots, lines, canon, frames, prompts)
+    frames, prompts, episode, all_looks, picks = await asyncio.gather(
+        repos.frames.list_for_shots(ids), repos.prompts.latest_for_shots(ids),
+        repos.episodes.get(production_id, UUID(str(scene["episode_id"]))),
+        repos.looks.list_for_production(production_id), repos.scene_looks.list(scene_id))
+    looks = looks_in_force(all_looks, picks, int(episode["number"]) if episode else None)
+    states = scene_states(scene, shots, lines, canon, frames, prompts, looks)
     return Loaded(access.production, scene, states, lines)
 
 

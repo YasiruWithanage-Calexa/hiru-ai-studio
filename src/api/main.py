@@ -24,11 +24,14 @@ from api.routers import (
     handoff,
     internal,
     jobs,
+    looks,
     me,
     members,
     overview,
     production,
     productions,
+    scene_canon,
+    scene_looks,
     scenes,
     search,
     structure,
@@ -80,8 +83,8 @@ def create_app(repos: Repos | None = None) -> FastAPI:
     async def healthz() -> dict[str, str]:
         return {"status": "ok"}
 
-    for module in (me, members, productions, overview, documents, search, build, structure, canon, scenes, production,
-                   handoff, director, activity, ask, jobs, usage, files, internal):
+    for module in (me, members, productions, overview, documents, search, build, structure, canon, looks, scene_looks,
+                   scene_canon, scenes, production, handoff, director, activity, ask, jobs, usage, files, internal):
         app.include_router(module.router)
     return app
 

@@ -438,6 +438,43 @@ class FakeCanon(_Table):
         return row
 
 
+class FakeLooks(_Table):
+    async def list(self, entity_id: UUID) -> list[Row]:
+        return sorted((r for r in self.rows.values() if r["entity_id"] == str(entity_id)),
+                      key=lambda r: r["created_at"])
+
+    async def list_for_production(self, production_id: UUID) -> list[Row]:
+        return sorted(self._scoped(production_id), key=lambda r: r["created_at"])
+
+    async def get(self, entity_id: UUID, look_id: UUID) -> Row | None:  # type: ignore[override]
+        row = self.rows.get(str(look_id))
+        return row if row and row["entity_id"] == str(entity_id) else None
+
+    async def create(self, fields: Row) -> Row:
+        names = {r["name"].lower() for r in self.rows.values() if r["entity_id"] == fields["entity_id"]}
+        assert fields["name"].lower() not in names, "one look of a name per character"
+        return self.add(**{"status": "draft", "sheet_assets": [], "outfit": "", "hair": "", "makeup": "",
+                           "accessories": "", **fields})
+
+    async def delete(self, look_id: UUID) -> None:
+        self.rows.pop(str(look_id), None)
+
+
+class FakeSceneLooks:
+    def __init__(self) -> None:
+        self.rows: dict[tuple[str, str], Row] = {}
+
+    async def list(self, scene_id: UUID) -> list[Row]:
+        return [r for r in self.rows.values() if r["scene_id"] == str(scene_id)]
+
+    async def choose(self, fields: Row) -> Row:
+        self.rows[(fields["scene_id"], fields["entity_id"])] = row = {**fields, "updated_at": _now()}
+        return row
+
+    async def clear(self, scene_id: UUID, entity_id: UUID) -> None:
+        self.rows.pop((str(scene_id), str(entity_id)), None)
+
+
 class FakeQuestions(_Table):
     async def list(self, production_id: UUID, status: str | None = None) -> list[Row]:
         return [r for r in self._scoped(production_id) if status is None or r["status"] == status]
@@ -532,6 +569,8 @@ def build_fake_repos() -> Repos:
         shots=FakeShots(),
         lines=FakeLines(),
         canon=FakeCanon(),
+        looks=FakeLooks(),
+        scene_looks=FakeSceneLooks(),
         questions=FakeQuestions(),
         personas=personas,
         board=FakeBoard(personas),

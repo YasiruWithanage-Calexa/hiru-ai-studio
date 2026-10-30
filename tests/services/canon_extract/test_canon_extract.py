@@ -86,7 +86,7 @@ def test_rules_build_the_fixture_canon_with_the_index_codes():
     v = kamala["current"]
     assert v["voice_pin"] == "low, clipped female voice (52), a Sri Lankan (southern) accent"
     assert v["wardrobe_anchor"].startswith("Faded blue cotton saree")
-    assert "Wardrobe:" in v["reference_prompt"] and v["source"] == "extract"
+    assert "Outfit in every panel:" in v["reference_prompt"] and v["source"] == "extract"
     harbour = store.by_code("L02")
     assert "Kalugala Harbour" in harbour["aliases"]  # the heading joined the index entry
     assert {e["code"] for e in store.entity_rows.values()} >= {"P01", "P04", "L03", "C04"}

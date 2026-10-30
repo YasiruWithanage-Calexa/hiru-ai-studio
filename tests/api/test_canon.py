@@ -48,7 +48,8 @@ def test_a_new_version_derives_the_pins_from_the_card(world: World):
     assert v["version"] == 2 and v["source"] == "user"
     assert v["voice_pin"] == "low, clipped female voice (52), a Sri Lankan (Colombo) accent"
     assert v["wardrobe_anchor"] == "faded blue saree"
-    assert "Wardrobe: faded blue saree" in v["reference_prompt"] and "16:9" in v["reference_prompt"]
+    assert "Outfit in every panel: a plain solid-color fitted sports bra and fitted gym shorts" in v["reference_prompt"]
+    assert "saree" not in v["reference_prompt"] and "16:9" in v["reference_prompt"]
     detail = world.client.get(url(world, eid), headers=world.headers(world.director)).json()
     assert detail["current_version"] == 2
 

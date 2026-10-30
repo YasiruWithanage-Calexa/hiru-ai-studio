@@ -10,6 +10,7 @@
 """
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -23,7 +24,9 @@ from contracts.producer import (
     apply_waivers,
     cast_in,
     default_camera,
+    look_pins,
     pins_for,
+    shot_canon_ids,
     shot_items,
     stale_reasons,
 )
@@ -78,7 +81,9 @@ class ShotState:
 
 
 def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row], frames: list[Row],
-                 prompts: dict[str, Row]) -> list[ShotState]:
+                 prompts: dict[str, Row], looks: Mapping[str, Mapping[str, Any]] | None = None) -> list[ShotState]:
+    """`looks`: character id → the look the scene uses now (`contracts.canon.looks_in_force`). A
+    frame painted with another look, or before its look changed, is out of date."""
     items = sceneplan.items_for(scene.get("script") or [], lines)
     characters = [c for c in canon if c["kind"] == "character"]
     members = {str(c["id"]): cast_member(c) for c in canon}
@@ -102,10 +107,14 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
         st = ShotState(row=shot, items=own, cast=[members[c] for c in cast_ids], pins=pins, recommended=recommended,
                        camera=recommended.with_overrides(shot.get("camera_overrides") or {}), edits=edits)
 
-        def reasons(made: Any, st: ShotState = st, version: int = version) -> list[str]:
+        worn = look_pins(shot_canon_ids(scene, cast_ids, edits), looks or {})
+
+        def reasons(made: Any, st: ShotState = st, version: int = version, frame: bool = False,
+                    worn: Any = worn) -> list[str]:
             if not made:
                 return []
-            out_ = stale_reasons(made, shot_version=version, script_hash=st.pins.script_hash, canon=members)
+            out_ = stale_reasons(made, shot_version=version, script_hash=st.pins.script_hash, canon=members,
+                                 looks=worn if frame else None)
             if set(Pins.model_validate(made).canon) != set(st.pins.canon) and not out_:
                 out_.append("Different people or place in the shot.")
             return out_
@@ -113,7 +122,7 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
         st.canon_refs = [f"{members[c].code} v{v}" for c, v in pins.canon.items() if c in members]
         st.design_reasons = reasons(design.get("pins")) if st.has_design else ["no design"]
         st.frames = [f for f in frames if str(f["shot_id"]) == st.id]
-        st.frame_reasons = {str(f["id"]): reasons(f.get("pins")) for f in st.frames}
+        st.frame_reasons = {str(f["id"]): reasons(f.get("pins"), frame=True) for f in st.frames}
         st.accepted = next((f for f in st.frames if f.get("accepted_at")), None)
         st.prompt = prompts.get(st.id)
         if st.prompt:
