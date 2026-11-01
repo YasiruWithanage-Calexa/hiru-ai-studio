@@ -22,16 +22,17 @@ from contracts.producer import (
     PersonEdits,
     Pins,
     apply_waivers,
-    cast_in,
     default_camera,
     look_pins,
     pins_for,
+    script_hash,
     shot_canon_ids,
     shot_items,
     stale_reasons,
 )
 from contracts.production import SceneStatus
 from contracts.shotplan import Item
+from contracts.staging import ShotIntent, Staging, coverage_checks, intent_basis, shot_cast, staging, staging_checks
 from contracts.veo import FrameStrategy
 
 Row = dict[str, Any]
@@ -66,6 +67,13 @@ class ShotState:
     lock: str = ""  # why a prompt cannot be made now; "" = unlocked
     canon_refs: list[str] = field(default_factory=list)  # "C01 v2", "L01 v1": the cards pinned now
     edits: PersonEdits = field(default_factory=PersonEdits)  # what a person set on the shot by hand
+    staged: Staging = field(default_factory=Staging)  # who the camera sees, who is only heard
+    intent: ShotIntent | None = None
+    intent_stale: bool = False  # written against other material (a person's intent is kept anyway)
+
+    @property
+    def seen(self) -> list[CastMember]:
+        return [c for c in self.cast if c.id in self.staged.on_screen]
 
     @property
     def id(self) -> str:
@@ -84,7 +92,7 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
                  prompts: dict[str, Row], looks: Mapping[str, Mapping[str, Any]] | None = None) -> list[ShotState]:
     """`looks`: character id → the look the scene uses now (`contracts.canon.looks_in_force`). A
     frame painted with another look, or before its look changed, is out of date."""
-    items = sceneplan.items_for(scene.get("script") or [], lines)
+    items = sceneplan.scene_items(scene, lines)
     characters = [c for c in canon if c["kind"] == "character"]
     members = {str(c["id"]): cast_member(c) for c in canon}
     versions = {k: m.version for k, m in members.items()}
@@ -93,7 +101,7 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
     for shot in sorted(shots, key=lambda s: int(s["number"])):
         own = shot_items(items, int(shot["block_start"]), int(shot["block_end"]))
         edits = PersonEdits.of(shot)
-        cast_ids = cast_in(own, characters, edits)
+        cast_ids = shot_cast(own, characters, shot)
         version = int(shot.get("version") or 1)
         pins = pins_for(shot_version=version, scene=scene, items=own, cast_ids=cast_ids, versions=versions,
                         edits=edits)
@@ -105,7 +113,10 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
         except ValueError:
             recommended = default
         st = ShotState(row=shot, items=own, cast=[members[c] for c in cast_ids], pins=pins, recommended=recommended,
-                       camera=recommended.with_overrides(shot.get("camera_overrides") or {}), edits=edits)
+                       camera=recommended.with_overrides(shot.get("camera_overrides") or {}), edits=edits,
+                       staged=staging(own, characters, shot, cast_ids=cast_ids), intent=ShotIntent.of(shot))
+        if st.intent is not None:
+            st.intent_stale = st.intent.stale(intent_basis(version, script_hash(scene, own)))
 
         worn = look_pins(shot_canon_ids(scene, cast_ids, edits), looks or {})
 
@@ -121,6 +132,9 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
 
         st.canon_refs = [f"{members[c].code} v{v}" for c, v in pins.canon.items() if c in members]
         st.design_reasons = reasons(design.get("pins")) if st.has_design else ["no design"]
+        if st.has_design and st.intent is not None and design.get("intent") \
+                and design["intent"] != st.intent.stamp():
+            st.design_reasons.append("What the shot is for changed.")
         st.frames = [f for f in frames if str(f["shot_id"]) == st.id]
         st.frame_reasons = {str(f["id"]): reasons(f.get("pins"), frame=True) for f in st.frames}
         st.accepted = next((f for f in st.frames if f.get("accepted_at")), None)
@@ -150,17 +164,29 @@ def _lock(st: ShotState, approved: bool) -> str:
 
 
 def camera_checks(states: list[ShotState]) -> dict[str, list[CameraCheck]]:
-    """The camera card's free checks, from the camera as it stands across the whole scene."""
+    """The camera card's free checks, from the camera as it stands across the whole scene: the
+    camera's own, who is seen or heard (`contracts.staging`), and the scene's variety of setups."""
     from contracts.producer import camera_checks as checks_for
 
     cameras = [s.camera for s in states]
+    coverage = coverage_checks([str(s.row.get("framing") or "MS") for s in states], cameras,
+                               [s.code for s in states])
     out: dict[str, list[CameraCheck]] = {}
     for i, st in enumerate(states):
+        sound_mode = str(st.row.get("sound_mode") or "ambient")
+        speakers = list(dict.fromkeys(x.speaker_id for x in st.items if x.is_line and x.speaker_id))
+        raw_on = (st.row.get("design") or {}).get("on_screen")
+        staged = staging_checks(staged=st.staged, names={c.id: c.name for c in st.cast}, sound_mode=sound_mode,
+                                speaker_ids=speakers, ir=st.row.get("ir") or {},
+                                design_on_screen=[str(x) for x in raw_on] if isinstance(raw_on, list) else None,
+                                intent=st.intent, items=st.items,
+                                framing=str(st.row.get("framing") or "MS")) if st.has_design else []
         checks = checks_for(index=i, cameras=cameras, framing=str(st.row.get("framing") or "MS"),
-                            sound_mode=str(st.row.get("sound_mode") or "ambient"), cast=st.cast,
+                            sound_mode=sound_mode, cast=st.seen,
                             speaker_ids=list(dict.fromkeys(x.speaker_id for x in st.items
                                                            if x.is_line and x.speaker_id)),
                             frame_strategy=str(st.row.get("frame_strategy") or "generate"),
                             first_code=states[0].code, previous_code=states[i - 1].code if i else "")
+        checks = [*checks, *staged, *coverage[i]]
         out[st.id] = apply_waivers(checks, st.edits.waived_checks)  # advisories a person chose to ignore
     return out

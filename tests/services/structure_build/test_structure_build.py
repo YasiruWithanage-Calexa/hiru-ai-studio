@@ -123,6 +123,7 @@ class FakeStore:
         self.scene_rows: dict[str, dict[str, Any]] = {}
         self.line_rows: dict[str, list[dict[str, Any]]] = {}
         self.question_rows: dict[str, dict[str, Any]] = {}
+        self.look_rows: list[dict[str, Any]] = []
 
     def production(self, production_id: UUID) -> dict[str, Any] | None:
         return {"id": str(production_id), "orientation": "vertical", "settings": {"default_scene_envelope_s": 45}}
@@ -139,6 +140,12 @@ class FakeStore:
 
     def create_entity(self, entity: dict[str, Any], version: dict[str, Any]) -> None:
         self.canon_rows.append(entity)
+
+    def entities_with_looks(self, production_id: UUID) -> set[str]:
+        return {str(r["entity_id"]) for r in self.look_rows}
+
+    def create_looks(self, rows: list[dict[str, Any]]) -> None:
+        self.look_rows += rows
 
     def episodes(self, production_id: UUID) -> list[dict[str, Any]]:
         return list(self.episode_rows.values())

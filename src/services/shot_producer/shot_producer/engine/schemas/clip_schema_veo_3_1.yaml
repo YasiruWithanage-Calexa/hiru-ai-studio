@@ -46,6 +46,10 @@ render_rules:
   dialogue_line:   '{speaker} says{delivery}, "{line}" — only {name}''s lips move.'
   sung_line:       '{speaker} sings{delivery}, "{line}" — only {name}''s lips move.'
   voiceover_line:  'From off-screen, {speaker}''s voice says{delivery}, "{line}" — no one on screen mouths these words.'
+  # A voice heard but NOT in the place (contracts.staging): named, never described — a wardrobe
+  # tag invites the video model to put that person in the frame — and placed at its source.
+  offscreen_line:  '{name}''s voice comes {source}{delivery}, "{line}" — {name} is not in the frame and no one on screen mouths these words.'
+  heard_source:    '{names} is heard {source} and is never seen.'
   # VOICE CASTING — the audio twin of the wardrobe anchor: the same words for a character in
   # every shot of the production (the canon card's voice pin), so Veo samples the same voice.
   voice_cast:      'Voice casting — fixed for the whole production, identical in every shot: {voices}'

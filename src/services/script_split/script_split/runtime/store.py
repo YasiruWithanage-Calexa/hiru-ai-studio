@@ -25,14 +25,23 @@ class Store:
 
     def episodes(self, production_id: UUID) -> list[Row]:
         return self.rest.select("episodes", {"production_id": f"eq.{production_id}",
-                                             "select": "id,number,status", "order": "number"})
+                                             "select": "id,number,title,synopsis,status",
+                                             "order": "number"})
+
+    def neighbours(self, production_id: UUID) -> list[Row]:
+        """Every scene's heading and title, for the scenes either side of the one being read."""
+        return self.rest.select("scenes", {"production_id": f"eq.{production_id}",
+                                           "select": "id,episode_id,number,heading,title",
+                                           "order": "episode_id,number"})
 
     def lines(self, scene_id: UUID) -> list[Row]:
         return self.rest.select("dialogue_lines", {"scene_id": f"eq.{scene_id}", "select": "*", "order": "ord"})
 
     def characters(self, production_id: UUID) -> list[Row]:
         return self.rest.select("canon_entities", {"production_id": f"eq.{production_id}", "kind": "eq.character",
-                                                   "select": "id,code,name", "order": "code"})
+                                                   "select": "id,code,name,"
+                                                             "current:canon_versions!canon_entities_current_version_fkey(card)",
+                                                   "order": "code"})
 
     def scene_status(self, production_id: UUID) -> list[Row]:
         return self.rest.select("scenes", {"production_id": f"eq.{production_id}", "select": "episode_id,status"})

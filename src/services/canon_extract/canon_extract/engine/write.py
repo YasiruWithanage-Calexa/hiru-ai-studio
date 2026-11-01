@@ -17,6 +17,7 @@ from uuid import uuid4
 from canon_extract.engine import rules
 from canon_extract.engine.rules import Candidate
 from contracts.canon import (
+    CODE_PATTERN,
     CanonCard,
     CanonKind,
     name_key,
@@ -78,7 +79,9 @@ def plan(cands: list[Candidate], existing: list[Row], *, production_id: str, asp
                     and rules.same(_existing_as_candidate(r), cand)), None)
         card = clean_card(cand["card"])
         if row is None:
-            code = cand["code"] if cand["code"] and cand["code"] not in taken else next_code(kind, taken)
+            # The table rejects a code of any other shape, so one from a model gets the next free code.
+            usable = bool(CODE_PATTERN.match(cand["code"])) and cand["code"] not in taken
+            code = cand["code"] if usable else next_code(kind, taken)
             taken.add(code)
             entity_id = str(uuid4())
             entity = {"id": entity_id, "production_id": production_id, "kind": kind.value, "code": code,

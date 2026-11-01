@@ -51,6 +51,9 @@ in a new `plan/<date>/` folder.
   data, never from model output. `match_chunks` ordering must stay total (deterministic).
 - Retrieval changes (chunking, headers, SQL, corpus, embeddings) run `scripts/eval_retrieval.py`;
   a drop below `tests/eval/thresholds.json` fails CI. Do not edit probes to make a change pass.
+- Dialogue stays in the language the script was written in. Only when a person asks for another language does
+  the translator agent (`director_chat/engine/translate.py`) write it, always staged as a card the person
+  accepts, with the original kept in `dialogue_lines.source_text` (plan/2026-11-01c). No other agent writes a line.
 - Sinhala: keep ZWJ/ZWNJ (conjuncts), normalise to NFC; full text search uses the `english`
   config (verified to keep Sinhala words whole).
 
@@ -62,6 +65,16 @@ in a new `plan/<date>/` folder.
 - `contracts/veo.py` and `contracts/timing.py` mirror the frontend's `src/lib/veo/timing.ts`;
   change both in the same PR and keep `tests/contracts/test_timing.py` in parity with its tests.
 - Overruns are reported, never auto-trimmed. 10 s shots stay off until verified (PLAN.md Q4).
+- A shot's length is PICTURES AND SPEECH on one clock (`contracts/shotplan.py` `shot_clock`):
+  `contracts.timing.SCREEN_SECONDS` / `action_seconds` (also mirrored in the frontend's `timing.ts`,
+  same parity tests) say what an action takes to show. A shot that holds more than it can show is
+  `crowded` (locked or fixed length) or is cut at a block boundary (unlocked); a scene that needs more
+  than its envelope is reported, never squeezed (plan/2026-11-01b). Implied steps
+  (`contracts/bridges.py`) are rules-only, closed-list, removable and remembered on the phone line.
+- A scene's READING (`contracts/reading.py`, `scenes.reading`, plan/2026-11-01d) gives feeling time on that clock: a
+  breath is a hold on an existing block (`Item.hold_s`), a turn makes the answer wait `TURN_GAP_S`. Read a scene's items
+  with `sceneplan.scene_items(scene, lines)` wherever timing matters. Priority-1 breath is never dropped by code, a
+  person's reading is never replaced, and model critics write notes while the kernel score in code picks the plan.
 - `contracts/producer.py` `CAMERA_OPTIONS` mirrors the frontend's
   `src/features/production/lib/camera-options.ts`; change both together.
 - Designs, frames and prompts are never redone when something upstream changes: they record

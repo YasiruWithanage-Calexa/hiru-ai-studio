@@ -43,9 +43,11 @@ def fixture_scene(n: int = 0, *, envelope_s: int = 60, per_block: bool = True) -
              "location_id": str(uuid4())}
     items = sceneplan.items_for(blocks, lines)
     proposal = ([ProposedShot(i, i + 1, "MS") for i in range(len(items))] if per_block
-                else [ProposedShot(0, len(items), "WIDE")])
+                # one shot as a person kept it (locked at 8 s): left to the kernel it would be cut (2026-11-01b)
+                else [ProposedShot(0, len(items), "WIDE", duration=8, duration_locked=True)])
     result = fit(items, proposal, envelope_s=envelope_s)
-    shots, line_rows, _ = sceneplan.rows_after_fit(scene, [{"start": p.start} for p in proposal], result, lines)
+    shots, line_rows, _ = sceneplan.rows_after_fit(
+        scene, [{"start": p.start, "duration_locked": p.duration_locked} for p in proposal], result, lines)
     return scene, line_rows, shots
 
 
@@ -63,6 +65,7 @@ class FakeStore:
         self.memory_rows: list[dict[str, Any]] = []
         self.searches: list[dict[str, Any]] = []
         self.history: list[dict[str, Any]] = []
+        self.pending_rows: list[dict[str, Any]] = []
 
     def production(self, production_id: UUID) -> dict | None:
         return {"id": str(production_id), "title": "Harbour Lights", "orientation": "horizontal",
@@ -98,6 +101,25 @@ class FakeStore:
 
     def messages(self, thread_id: UUID, limit: int = 12) -> list[dict]:
         return self.history[-limit:]
+
+    def message(self, message_id: UUID | str) -> dict | None:
+        return next((m for m in [*self.history, *self.message_rows] if str(m.get("id")) == str(message_id)), None)
+
+    def open_pending(self, thread_id: UUID | str) -> dict | None:
+        return next((p for p in self.pending_rows
+                     if p["status"] == "open" and str(p["thread_id"]) == str(thread_id)), None)
+
+    def add_pending(self, row: dict) -> None:
+        self.pending_rows.append(dict(row))
+
+    def close_pending(self, thread_id: UUID | str, status: str) -> None:
+        for p in self.pending_rows:
+            if p["status"] == "open" and str(p["thread_id"]) == str(thread_id):
+                p["status"] = status
+
+    def set_blocks(self, message_id: UUID | str, blocks: list[dict]) -> None:
+        if (m := self.message(message_id)) is not None:
+            m["blocks"] = blocks
 
     def memory(self, production_id: UUID, limit: int = 20) -> list[dict]:
         return [{"kind": m["kind"], "text": m["text"]} for m in self.memory_rows][:limit]

@@ -65,8 +65,11 @@ class ClipSchema:
         base = _to_json_schema(self.required_structure)
         rec = {"type": "object", "additionalProperties": False, "required": [f.value for f in RECOMMENDED_FIELDS],
                "properties": {f.value: {"type": "string", "enum": list(CAMERA_OPTIONS[f])} for f in RECOMMENDED_FIELDS}}
+        on_screen = {"type": "array", "items": {"type": "string"},
+                     "description": "Cast codes (C01) of everyone visible at any moment of the shot. Never a "
+                                    "HEARD ONLY person."}
         props = {"number": {"type": "integer", "description": "The shot number this IR is for."},
-                 **base["properties"], "recommendation": rec,
+                 **base["properties"], "on_screen": on_screen, "recommendation": rec,
                  "rationale": {"type": "string",
                                "description": "One or two sentences: why this lens, move and light serve the moment."}}
         return {"type": "object", "additionalProperties": False, "required": list(props), "properties": props}

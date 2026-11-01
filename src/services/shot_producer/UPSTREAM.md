@@ -46,3 +46,24 @@ since that commit in the files below.
 11. **Pins and versions.** Every design and prompt records what it was made against
     (`contracts.producer.Pins`); designs are redone only when missing, out of date or forced, and
     every prompt is a new version.
+12. **Staging, intent, review (plan/2026-11-01).** Brought back in a Hiru shape what item 1
+    dropped. Before the design, an INTENT agent (`engine/intent.py`, after upstream's producer:
+    `purpose`, `visual_intent`, `emotional_beat`, `ScenePlan`) writes per shot what it is for, what
+    the camera sees and who is only HEARD, and the scene's coverage plan; it reads the approved
+    script and never adds an event. The DoP gets the intent, the plan, the scene's title, note,
+    episode synopsis and neighbouring scenes, and answers `on_screen`. One REVIEW
+    (`engine/critique.py`, after upstream's `_critique` → revise → keep only if the gate still
+    passes) with at most one revision, kept per shot when the free staging checks find no more
+    problems. CRAFT PROBLEMS are named first and lead the technique queries (after upstream's
+    `doctrine.articulate`; no authored-doctrine layer). Who is seen is `contracts.staging`, shared
+    with frame_render and the API. An off-screen voice is named, placed at its source and never
+    given a wardrobe tag (`offscreen_line`, `heard_source` in the clip schema).
+13. **Pictures on a clock (plan/2026-11-01b).** The intent and the DoP prompts carry each shot's
+    TIMELINE from the timing kernel (`contracts.shotplan.timeline_text`: what each block takes to
+    show and when each line is spoken); an information block is named "THE VIEWER LEARNS" and a
+    thought "STORY NOTE (not filmed)". The intent may advise where a shot should be cut
+    (`split_after`, `split_reason`); two free checks read the intent against the timeline
+    (`skips_beat`, `size_vs_intent`, in `contracts.staging`). `fit_beats` matches the DoP's beats to
+    the kernel's windows by TIME, not by position, and a heard line's beat in the video prompt says
+    what the picture does first ("Anudi answers the phone; then the voice: ..."). The rules intent
+    leaves out what is not filmed and frames a heard voice on the person the last actions are about.

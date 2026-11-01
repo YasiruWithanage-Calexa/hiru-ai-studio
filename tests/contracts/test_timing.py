@@ -110,3 +110,28 @@ def test_reachable_totals_are_even_on_ladder():
     assert nearest_reachable_total(25, 3) == 24
     assert nearest_reachable_total(25, 4) == 24  # tie 24/26 → shorter
     assert nearest_reachable_total(10, 0) == 0
+
+
+# ── picture time (plan/2026-11-01b); mirrors timing.test.ts ────────────────────────────────
+
+
+def test_picture_seconds_per_screen_kind():
+    from contracts.timing import SCREEN_SECONDS, action_seconds
+
+    assert SCREEN_SECONDS == {"move": 2.5, "act": 1.5, "with_line": 0.5, "info": 0.0, "inner": 0.0}
+    assert [action_seconds(k) for k in ("move", "act", "with_line", "info", "inner")] == [2.5, 1.5, 0.5, 0, 0]
+
+
+def test_picture_seconds_scale_with_events_and_default_to_an_act():
+    from contracts.timing import action_seconds
+
+    assert action_seconds("act", 2) == 3.0 and action_seconds("move", 3) == 7.5
+    assert action_seconds("act", 0) == 1.5  # at least one event
+    assert action_seconds("who-knows") == 1.5 and action_seconds(None) == 1.5 and action_seconds() == 1.5
+
+
+def test_feelings_time_constants_match_the_interface():
+    # mirrored in the interface's src/lib/veo/timing.ts ("feeling's time" in timing.test.ts)
+    from contracts.timing import BREATH_BAND, HOLD_RANGE_S, TURN_GAP_S
+
+    assert list(HOLD_RANGE_S) == [1, 3] and TURN_GAP_S == 1 and list(BREATH_BAND) == [0.15, 0.3]

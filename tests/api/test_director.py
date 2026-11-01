@@ -419,3 +419,23 @@ def test_an_answered_build_question_becomes_memory(world: World):
     items = list(world.repos.memory.rows.values())  # type: ignore[attr-defined]
     assert items[0]["kind"] == "answer" and items[0]["source_ref"]["question_id"] == q["id"]
     assert items[0]["text"] == "Ep 01 Scene 2: Is 'the pier' the breakwater (L02)? Answer: Yes, L02"
+
+
+def test_the_goal_of_the_chosen_option_reaches_the_function_and_a_replys_fields_survive_the_choice(world: World):
+    """plan/2026-11-01c: the card's `intent` is checked on the saved scene, and a refusal's `advice` / `route`
+    on a text block are not dropped when the choice rewrites the message."""
+    message = seed_staged_line(world)
+    world.repos.messages.rows[str(message["id"])]["blocks"] = [  # type: ignore[attr-defined]
+        {"kind": "text", "text": "No.", "advice": False, "route": "Use Script → Edit."},
+        {"kind": "options", "question": "Change S02?", "options": [
+            {"label": "Apply this change", "intent": "dialogue.si", "ops": [{"op": "block.set", "field": "text",
+                                                                              "value": "x", "line_id": str(uuid4())}]},
+            {"label": "Keep it as it is", "ops": []}]}]
+    applier = use(world, Applier(ChoiceResult(applied=[{"op": "block.set"}], summary="Applied: S02 line.")))
+    r = world.client.post(option_url(world, message), json={"block": 1, "option": 0},
+                          headers=world.headers(world.writer))
+    assert r.status_code == 200, r.text
+    assert applier.payloads[0].intent == "dialogue.si"
+    blocks = r.json()["message"]["blocks"]
+    assert blocks[0]["advice"] is False and blocks[0]["route"] == "Use Script → Edit."
+    assert blocks[1]["chosen"] == 0 and blocks[1]["options"][0]["intent"] == "dialogue.si"

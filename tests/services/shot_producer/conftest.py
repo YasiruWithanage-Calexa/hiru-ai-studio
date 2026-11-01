@@ -27,6 +27,8 @@ class FakeStore:
         self.prompts: list[dict] = []
         self.audits: list[dict] = []
         self.technique_queries: list[str] = []
+        self.neighbour_rows: tuple[dict | None, dict | None] = (None, None)
+        self.intents: dict[str, dict] = {}
 
     def production(self, production_id: UUID) -> dict | None:
         return {"id": str(production_id), "title": "Harbour Lights", "orientation": self.orientation,
@@ -34,6 +36,9 @@ class FakeStore:
 
     def scenes(self, production_id: UUID, scene_ids: list[str]) -> list[dict]:
         return [self.scene_row] if self.scene_row["id"] in scene_ids else []
+
+    def neighbours(self, scene: dict) -> tuple[dict | None, dict | None]:
+        return self.neighbour_rows
 
     def shots(self, scene_id: str) -> list[dict]:
         return sorted((dict(s) for s in self.shot_rows.values()), key=lambda s: s["number"])
@@ -64,6 +69,13 @@ class FakeStore:
 
     def save_design(self, shot_id: str, ir: dict, design: dict) -> None:
         self.shot_rows[shot_id] = {**self.shot_rows[shot_id], "ir": ir, "design": design}
+
+    def save_intent(self, shot_id: str, intent: dict) -> None:
+        self.intents[shot_id] = intent
+        self.shot_rows[shot_id] = {**self.shot_rows[shot_id], "intent": intent}
+
+    def save_coverage(self, scene_id: str, coverage: dict) -> None:
+        self.scene_row = {**self.scene_row, "coverage": coverage}
 
     def add_prompt(self, row: dict) -> None:
         self.prompts.append(row)

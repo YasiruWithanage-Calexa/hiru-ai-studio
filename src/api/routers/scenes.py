@@ -20,21 +20,22 @@ from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.services.director import board
 from api.workers import task_manager
-from contracts import sceneplan
+from contracts import bridges, sceneplan
+from contracts import reading as scene_reading
 from contracts.canon import CanonKind, name_key
 from contracts.director import BoardMember, ScriptUpdate, ShotUpdate
 from contracts.jobs import JobKind
 from contracts.producer import PersonEdits, cast_in, shot_items
 from contracts.production import BlockKind, Framing, ProductionSettings, SceneStatus, ShotStatus
 from contracts.roles import Permission
-from contracts.shotplan import FitResult, allowed_durations, fit
+from contracts.shotplan import FitResult, allowed_durations, fit, shot_clock
 from contracts.veo import CameraLink, FrameStrategy, SoundMode
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["scenes"])
@@ -54,6 +55,14 @@ class BeatView(BaseModel):
     camera: str = ""
     director_line: str = ""
     action: str = ""
+
+
+class HoldView(BaseModel):
+    """A moment the scene's reading holds after block `block` (plan/2026-11-01d), inside the shot that has the block."""
+
+    block: int
+    seconds: float
+    kind: str  # reaction | transition | atmosphere | button
 
 
 class ShotView(BaseModel):
@@ -79,6 +88,11 @@ class ShotView(BaseModel):
     line_ids: list[UUID]
     status: ShotStatus
     version: int
+    picture_s: float = 0.0  # seconds its actions take to show
+    need_s: float = 0.0  # seconds it needs to show them and say its lines
+    crowded: bool = False  # it holds more than its length can show
+    timeline: list[TimelineSlot] = []
+    holds: list[HoldView] = []  # time the scene's reading gave it: a reaction, a look held, a last image
 
 
 class LineView(BaseModel):
@@ -93,6 +107,9 @@ class LineView(BaseModel):
     words: int
     shot_id: UUID | None
     beat_index: int | None
+    # A translated line keeps the words it was written in (plan/2026-11-01c): shown on hover, restored on request.
+    source_text: str | None = None
+    source_lang: str | None = None
     start_s: float | None  # from the start of the scene
     end_s: float | None
     overrun_s: float  # how far it runs past its shot's cut (reported, never trimmed)
@@ -106,10 +123,27 @@ class ScriptBlockView(BaseModel):
     speaker: str = ""
     delivery: str = ""
     shot_id: UUID | None = None  # the shot this block plays in
+    # How an action reads as a picture (plan/2026-11-01b): move | act | with_line | info | inner, how many
+    # visible events it holds, the seconds it takes on screen, and whether the system added it as an
+    # implied step ("Anudi answers the phone") that a person can remove.
+    screen: str = ""
+    events: int = 1
+    picture_s: float = 0.0
+    implied: bool = False
+    bridge: str = ""
+
+
+class TimelineSlot(BaseModel):
+    """One block on a shot's own clock (seconds from the shot's start): a picture or a spoken line."""
+
+    block: int
+    kind: str  # "picture" | "line"
+    start_s: float
+    end_s: float
 
 
 class IssueView(BaseModel):
-    code: str  # line_overrun | word_budget | envelope | long_line | repaired
+    code: str  # line_overrun | word_budget | envelope | long_line | repaired | multi_speaker | crowded | split
     message: str
     shot_id: UUID | None = None
     line_id: UUID | None = None
@@ -117,9 +151,13 @@ class IssueView(BaseModel):
 
 class Timeline(BaseModel):
     total_s: int
+    need_s: int = 0  # what the scene needs on screen to show and say everything in it
+    crowded: list[int] = []  # numbers of the shots that hold more than they can show
     envelope_s: int
     over_envelope_s: int
     issues: list[IssueView]
+    breath_s: float = 0.0  # seconds the scene gives to breath the reading asked for
+    core_need_s: int | None = None  # what the scene needs without its optional breath (only when some was given up)
 
 
 class CanonRef(BaseModel):
@@ -162,6 +200,8 @@ class SceneView(BaseModel):
     board: list[BoardMember]
     previous_scene_id: UUID | None
     next_scene_id: UUID | None
+    reading: scene_reading.SceneReading | None = None  # what the scene is about (plan/2026-11-01d); a person's wins
+    reading_stale: bool = False  # the script changed since it was written
 
 
 class ResplitStarted(BaseModel):
@@ -184,8 +224,7 @@ class Loaded:
 
     def fit(self, plan: list[Row], script: list[Row] | None = None, lines: list[Row] | None = None,
             envelope_s: int | None = None) -> FitResult:
-        items = sceneplan.items_for(self.scene.get("script") or [] if script is None else script,
-                                    self.lines if lines is None else lines)
+        items = sceneplan.scene_items(self.scene, self.lines if lines is None else lines, script)
         return fit(items, sceneplan.proposal_for(plan), fixed_seconds=self.fixed,
                    envelope_s=int(self.scene["envelope_s"]) if envelope_s is None else envelope_s)
 
@@ -255,6 +294,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
 
     plan = sceneplan.plan_from_rows(ld.shots)
     result = ld.fit(plan) if plan else None
+    kernel_items = sceneplan.scene_items(scene, ld.lines)
     by_start = {int(s["block_start"]): s for s in ld.shots}
     shot_of_number: dict[int, UUID | None] = {}
     shots: list[ShotView] = []
@@ -270,11 +310,15 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             end_s=f.start_s + f.duration_s, sound_mode=f.sound_mode, camera_link=f.camera_link,
             frame_strategy=f.frame_strategy, speaker_id=UUID(f.speaker_id) if f.speaker_id else None,
             speaker=speaker["name"] if speaker else "",
+            holds=[HoldView(block=b, seconds=sec, kind=kind) for b, sec, kind in f.holds],
             beats=[BeatView(start_s=b0, end_s=b1, **{k: str(n.get(k, "")) for k in sceneplan.BEAT_TEXT})
                    for (b0, b1), n in zip(f.beats, _pad(row.get("beats") or [], len(f.beats)), strict=True)],
             block_start=f.start, block_end=f.end, word_target=f.word_target, words=f.words,
             line_ids=[UUID(x) for x in f.line_ids], status=ShotStatus(row.get("status") or "draft"),
-            version=int(row.get("version") or 1)))
+            version=int(row.get("version") or 1), picture_s=f.picture_s, need_s=f.need_s,
+            crowded=f.number in result.crowded if result else False,
+            timeline=[TimelineSlot(block=s.index, kind="line" if s.is_line else "picture", start_s=round(s.start_s, 2),
+                                   end_s=round(s.end_s, 2)) for s in shot_clock(kernel_items[f.start:f.end])[0]]))
 
     timed = {fl.line_id: fl for fl in result.lines} if result else {}
     lines = []
@@ -284,6 +328,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             id=ln["id"], ord=ln["ord"], speaker=ln["speaker"], character_id=ln.get("character_id"), text=ln["text"],
             delivery=ln.get("delivery") or "", words=fl.words if fl else int(ln.get("words") or 0),
             shot_id=shot_of_number.get(fl.shot_number) if fl else None, beat_index=fl.beat_index if fl else None,
+            source_text=ln.get("source_text"), source_lang=ln.get("source_lang"),
             start_s=fl.start_s if fl else None, end_s=fl.end_s if fl else None,
             overrun_s=fl.overrun_s if fl else 0.0))
 
@@ -296,10 +341,14 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
         if kind is BlockKind.DIALOGUE and said is None:
             continue  # same rule as the kernel: a dangling line reference is not a block
         i = len(script)
+        item = kernel_items[i] if i < len(kernel_items) else None
+        picture = item is not None and item.kind == "action"
         script.append(ScriptBlockView(
             index=i, kind=kind, text="" if said else str(block.get("text", "")), line_id=said["id"] if said else None,
             speaker=said["speaker"] if said else "", delivery=(said.get("delivery") or "") if said else "",
-            shot_id=shot_of_block.get(i)))
+            shot_id=shot_of_block.get(i), screen=item.screen if picture and item else "",
+            events=item.events if picture and item else 1, picture_s=item.picture_s if item else 0.0,
+            implied=bool(item and item.implied), bridge=item.bridge if item else ""))
 
     canon_refs = []
     for cid in scene_canon_ids(ld, canon_rows):
@@ -313,6 +362,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
                         shot_id=shot_of_number.get(i.shot_number) if i.shot_number else None)
               for i in (result.issues if result else [])]
     report = scene.get("fit_report") or {}
+    stored_reading = scene_reading.SceneReading.of(scene)
     members, _ = await board(repos, production_id)
     return SceneView(
         id=scene["id"], production_id=production_id, production_title=ld.production["title"],
@@ -322,11 +372,16 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
         envelope_s=scene["envelope_s"], status=scene["status"], script_version=int(scene.get("script_version") or 1),
         locked_at=scene.get("locked_at"), planner=str(report.get("planner") or ""),
         critic_notes=[str(n) for n in report.get("critic_notes") or []], script=script, shots=shots, lines=lines,
-        timeline=Timeline(total_s=result.total_s if result else 0, envelope_s=int(scene["envelope_s"]),
-                          over_envelope_s=result.over_envelope_s if result else 0, issues=issues),
+        timeline=Timeline(total_s=result.total_s if result else 0, need_s=result.need_s if result else 0,
+                          crowded=result.crowded if result else [], envelope_s=int(scene["envelope_s"]),
+                          over_envelope_s=result.over_envelope_s if result else 0, issues=issues,
+                          breath_s=round(result.breath_s, 2) if result else 0.0,
+                          core_need_s=(report.get("breath") or {}).get("core_need_s")),
         canon=canon_refs, board=members,
         previous_scene_id=siblings[at - 1]["id"] if at > 0 else None,
-        next_scene_id=siblings[at + 1]["id"] if at + 1 < len(siblings) else None)
+        next_scene_id=siblings[at + 1]["id"] if at + 1 < len(siblings) else None,
+        reading=stored_reading, reading_stale=bool(stored_reading and stored_reading.stale(
+            sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))))
 
 
 def _pad(beats: list[Row], n: int) -> list[Row]:
@@ -432,6 +487,90 @@ async def unapprove_scene(production_id: UUID, scene_id: UUID, access: CanApprov
     return await view(repos, access, scene_id)
 
 
+# ── the reading ────────────────────────────────────────────────────────────────────────────
+
+
+class ReadingUpdate(BaseModel):
+    """A person's reading of the scene (PUT). It replaces the stored one whole and is checked in code: an entry that
+    points at a block that is not there, a person who is not in the scene, or a breath nothing earns is dropped."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    about: str = Field(default="", max_length=400)
+    value: scene_reading.Value = Field(default_factory=scene_reading.Value)
+    tone: str = Field(default="", max_length=80)
+    units: list[scene_reading.Unit] = []
+    subtext: list[scene_reading.Subtext] = []
+    breath: list[scene_reading.Breath] = []
+    ending: str = Field(default="", max_length=400)
+
+
+class ReadingView(BaseModel):
+    reading: scene_reading.SceneReading | None
+    stale: bool = False
+    dropped: int = 0  # entries of the body that were checked away (PUT only)
+
+
+async def _cast_names(repos: Repos, production_id: UUID) -> list[str]:
+    return [str(c["name"]) for c in await repos.canon.list(production_id) if c["kind"] == CanonKind.CHARACTER]
+
+
+async def _retime(repos: Repos, access: ProductionAccess, scene_id: UUID) -> None:
+    """The reading changed: the stored shot list is timed again with the new holds. Lengths a person set stay; the
+    others are sized again from what the shot now holds (a length the planner once asked for is not kept, or taking
+    the reading away would leave every shot as long as the breath had made it)."""
+    ld = await load(repos, access, scene_id)
+    plan = [{**p, "duration": p["duration"] if p["duration_locked"] else None}
+            for p in sceneplan.plan_from_rows(ld.shots)]
+    if plan:
+        planner = str((ld.scene.get("fit_report") or {}).get("planner") or "person")
+        await _save_fit(repos, ld, plan, ld.fit(plan), planner)
+
+
+@router.get("/scenes/{scene_id}/reading", response_model=ReadingView)
+async def get_reading(production_id: UUID, scene_id: UUID, access: CanView, repos: ReposDep) -> ReadingView:
+    ld = await load(repos, access, scene_id)
+    stored = scene_reading.SceneReading.of(ld.scene)
+    items = sceneplan.items_for(ld.scene.get("script") or [], ld.lines)
+    version = int(ld.scene.get("script_version") or 1)
+    return ReadingView(reading=stored, stale=bool(stored and stored.stale(items, version)))
+
+
+@router.put("/scenes/{scene_id}/reading", response_model=ReadingView)
+async def put_reading(production_id: UUID, scene_id: UUID, body: ReadingUpdate, access: CanDirect,
+                      repos: ReposDep) -> ReadingView:
+    """A person's reading. It is never replaced by the system after this (a script edit only marks it out of date)
+    and it times the scene: its holds and turns are on the picture clock from now on."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    items = sceneplan.items_for(ld.scene.get("script") or [], ld.lines)
+    version = int(ld.scene.get("script_version") or 1)
+    raw = body.model_dump()
+    made = scene_reading.validate(raw, items, await _cast_names(repos, production_id), version=version, by="person")
+    made = made.model_copy(update={"written_at": datetime.now(UTC).isoformat(timespec="seconds")})
+    asked = len(body.units) + len(body.subtext) + len(body.breath)
+    said = {t.block for t in body.subtext}
+    kept = len(made.units) + len([t for t in made.subtext if t.block in said]) + len(made.breath)
+    await repos.scenes.update(scene_id, {"reading": made.model_dump(mode="json")})
+    await _retime(repos, access, scene_id)
+    await repos.audit.record(action="scene.reading", entity="scene", entity_id=str(scene_id),
+                             actor_user_id=access.user.id, production_id=production_id,
+                             diff={"units": len(made.units), "breath": len(made.breath)})
+    return ReadingView(reading=made, stale=False, dropped=max(0, asked - kept))
+
+
+@router.delete("/scenes/{scene_id}/reading", response_model=ReadingView)
+async def reset_reading(production_id: UUID, scene_id: UUID, access: CanDirect, repos: ReposDep) -> ReadingView:
+    """Hand the reading back to the system: the scene is timed without it until the next split writes a new one."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    await repos.scenes.update(scene_id, {"reading": {}})
+    await _retime(repos, access, scene_id)
+    await repos.audit.record(action="scene.reading.reset", entity="scene", entity_id=str(scene_id),
+                             actor_user_id=access.user.id, production_id=production_id)
+    return ReadingView(reading=None)
+
+
 # ── the script ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -500,12 +639,25 @@ async def update_script(production_id: UUID, scene_id: UUID, body: ScriptUpdate,
             speaker = _clean(b.speaker)
             lines.append({"id": line_id, "production_id": str(production_id), "scene_id": str(scene_id),
                           "ord": len(lines), "speaker": speaker, "character_id": character_for(speaker, old),
-                          "text": _clean(b.text), "delivery": _clean(b.delivery)})
+                          "text": _clean(b.text), "delivery": _clean(b.delivery),
+                          # a translated line keeps the words it was written in, whoever edits it next
+                          **{k: old[k] for k in sceneplan.LINE_SOURCE if old and old.get(k)}})
             script.append({"kind": BlockKind.DIALOGUE.value, "text": "", "line_id": line_id})
         else:
             script.append({"kind": b.kind.value, "text": _clean(b.text), "line_id": None})
 
-    removed_lines = [lid for lid in old_lines if lid not in {ln["id"] for ln in lines}]
+    script = bridges.carry(ld.scene.get("script") or [], script)  # readings and implied steps survive an edit
+    await _replace_script(repos, access, ld, script, lines, version, [lid for lid in old_lines
+                                                                       if lid not in {ln["id"] for ln in lines}])
+    return await view(repos, access, scene_id)
+
+
+async def _replace_script(repos: Repos, access: ProductionAccess, ld: Loaded, script: list[Row], lines: list[Row],
+                          version: int, removed_lines: list[str]) -> None:
+    """Store a changed script: carry the shot list across it and re-time it, or drop the shot list
+    when none of the old script survives (Re-split plans it again)."""
+    scene_id = UUID(str(ld.scene["id"]))
+    production_id = access.production_id
     old_keys = [_block_key(_as_block(i)) for i in sceneplan.items_for(ld.scene.get("script") or [], ld.lines)]
     new_keys = [_block_key(_as_block(i)) for i in sceneplan.items_for(script, lines)]
     plan = remap_plan(old_keys, new_keys, sceneplan.plan_from_rows(ld.shots)) if ld.shots else []
@@ -529,6 +681,25 @@ async def update_script(production_id: UUID, scene_id: UUID, body: ScriptUpdate,
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={"script_version": version + 1, "lines": len(lines),
                                    "lines_removed": len(removed_lines), "blocks": len(script)})
+
+
+@router.delete("/scenes/{scene_id}/script/{index}", response_model=SceneView)
+async def remove_implied_step(production_id: UUID, scene_id: UUID, index: int, access: CanWrite,
+                              repos: ReposDep) -> SceneView:
+    """Take out a step the system added to the script (an "Implied" block, `contracts.bridges`). The
+    phone line it belonged to remembers, so a re-split never brings it back. Only an implied step can
+    be removed here; anything else is changed through the script."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    blocks = [b for b in (ld.scene.get("script") or [])
+              if not (b.get("kind") == BlockKind.DIALOGUE and str(b.get("line_id")) not in {
+                  str(ln["id"]) for ln in ld.lines})]  # the positions the view numbers
+    if not 0 <= index < len(blocks) or not blocks[index].get("implied"):
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "That block is not an implied step.")
+    stored = ld.scene.get("script") or []
+    position = next(p for p, b in enumerate(stored) if b is blocks[index])
+    script = bridges.skip_bridge(stored, position)
+    await _replace_script(repos, access, ld, script, ld.lines, int(ld.scene.get("script_version") or 1), [])
     return await view(repos, access, scene_id)
 
 

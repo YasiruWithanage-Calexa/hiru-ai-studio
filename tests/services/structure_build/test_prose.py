@@ -105,6 +105,20 @@ def test_the_model_cuts_scenes_and_lengths_add_up_to_the_episode():
     assert [q["key"] for q in plan["questions"]] == ["spk:father"]
 
 
+def test_a_phone_voice_keeps_its_delivery_through_trust_render_and_analyse():
+    section = prose.sections(DRAMA)[0]
+    scenes = good_cut("", "Episode 1 <episode> Target length: 60 s")["scenes"]
+    father = next(b for b in scenes[1]["blocks"] if b["speaker"] == "Anudi's Father")
+    father["delivery"] = "on the phone"
+    assert prose.trusted(section, scenes)  # a direction is not a spoken word, so it never fails the check
+    text = prose.render(scenes)
+    assert "@Anudi's Father\n(on the phone)\nAnudi, where are you?" in text
+    plan = analyse.analyse([{**doc("pack.pdf", "script", text)}], [])
+    blocks = next(iter(plan["units"].values()))["scenes"][1]["blocks"]
+    assert [b.get("delivery") for b in blocks if b.get("speaker") == "Anudi's Father"] == ["on the phone"]
+    assert "voice comes through a phone" in prose.SYSTEM and "not physically in the scene" in prose.SYSTEM
+
+
 def test_a_model_that_rewords_a_line_is_rejected():
     def reworded(system: str, user: str) -> dict[str, Any]:
         scenes = good_cut(system, user)["scenes"] or good_cut(system, "Episode 1 " + user)["scenes"]
@@ -144,3 +158,19 @@ def test_without_a_key_the_build_still_makes_scenes():
                           durable=False)
     assert result["episodes"] == 3 and result["scenes"] == 3
     assert not jobs.texts("warning") or all("did not keep" not in t for t in jobs.texts("warning"))
+
+
+def test_rules_split_an_action_paragraph_into_one_event_per_block():
+    """plan/2026-11-01b: "Anudi smiled back. Suddenly, her phone rang. It was her father." is three blocks."""
+    scenes = prose.by_rules(prose.sections(DRAMA)[0])
+    actions = [b["text"] for s in scenes for b in s["blocks"] if b["kind"] == "action"]
+    assert actions[actions.index("Anudi smiled back."):][:3] == [
+        "Anudi smiled back.", "Suddenly, her phone rang.", "It was her father."]
+    spoken = [b["text"] for s in scenes for b in s["blocks"] if b["kind"] == "dialogue"]
+    assert "Started with Rs. 5,000. I'm trying to make it bigger." in spoken  # a line is never split
+    assert not any("Rs." in a and a.endswith("Rs.") for a in actions)
+
+
+def test_the_prose_prompt_asks_for_one_event_per_block_and_seen_seconds():
+    assert "One visible event per action block" in prose.SYSTEM
+    assert "what is SEEN as well as what is said" in prose.SYSTEM

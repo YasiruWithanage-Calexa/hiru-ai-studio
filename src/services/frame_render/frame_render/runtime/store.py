@@ -1,6 +1,7 @@
 """Supabase access for frame_render: frames and reference sheets, their shots and canon."""
 from __future__ import annotations
 
+import logging
 from typing import Any
 from uuid import UUID
 
@@ -8,6 +9,7 @@ import httpx
 
 from frame_render.runtime.rest import Rest, Row
 
+_logger = logging.getLogger(__name__)
 FRAMES_BUCKET = "frames"
 REFERENCES_BUCKET = "references"
 _CANON = ("id,kind,code,name,aliases,"
@@ -68,7 +70,16 @@ class Store:
                                     {"status": "running"}))
 
     def finish_frame(self, frame_id: str, fields: Row) -> None:
-        self.rest.patch("first_frames", {"id": f"eq.{frame_id}"}, fields)
+        try:
+            self.rest.patch("first_frames", {"id": f"eq.{frame_id}"}, fields)
+        except httpx.HTTPStatusError as exc:
+            # A database still on schema v8 has no `checks` column: the frame matters more than
+            # its checks, so it is recorded without them (Database/README.md, v8 → v9).
+            if "checks" not in fields or exc.response.status_code != 400:
+                raise
+            _logger.warning("first_frames.checks missing (schema v8?); frame %s saved without checks", frame_id)
+            rest = {k: v for k, v in fields.items() if k != "checks"}
+            self.rest.patch("first_frames", {"id": f"eq.{frame_id}"}, rest)
 
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
         self.rest.upload(bucket, path, data, mime)

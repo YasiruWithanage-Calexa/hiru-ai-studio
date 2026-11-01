@@ -9,14 +9,16 @@ Each frame is claim → paint → store → record, the shape of upstream's take
   claim   the API inserted the row `queued`; a conditional update makes it `running`. Zero rows
           back means another delivery has it, so nothing is paid for twice.
   paint   the frame prompt is composed HERE, from the shot's IR and the camera as it stands now
-          (`contracts.producer.frame_prompt`), with the canon reference sheets of the people and
-          the place in the shot attached in order. A person who wears a look in the scene (the
-          scene's pick, else the episode rule: `contracts.canon.looks_in_force`) gets the look
-          sheet and its wardrobe instead of the base sheet and the card's. A refusal is a result,
-          not a retry.
+          (`contracts.producer.frame_prompt`), with the canon reference sheets of the people the
+          camera SEES and the place attached in order. Someone only heard (a voice on a phone) is
+          never attached and never named on the People line (`contracts.staging`). A person who
+          wears a look in the scene (the scene's pick, else the episode rule:
+          `contracts.canon.looks_in_force`) gets the look sheet and its wardrobe instead of the
+          base sheet and the card's. A refusal is a result, not a retry.
   store   the private `frames` bucket, at a path derived from the frame id (a retry overwrites).
   record  the row: the exact prompt, the references used and the PINS, so the API can say when
-          the frame no longer matches its shot.
+          the frame no longer matches its shot; and its CHECKS: an on-screen person painted without
+          a sheet, and what a vision model sees in the picture against what the shot expects.
 
 Frames of one job are painted in parallel (one action, many pictures; the job is the run).
 """
@@ -47,15 +49,17 @@ from contracts.producer import (
     CameraSettings,
     CastMember,
     PersonEdits,
-    cast_in,
     default_camera,
     frame_prompt,
+    identity_line,
     pins_for,
     shot_canon_ids,
     shot_items,
 )
+from contracts.staging import Staging, shot_cast, source_phrase, staging, unseen_sentence
 from contracts.veo import ASPECT_RATIO, Orientation
 from frame_render.engine.image import Picture, ProviderError, Reference, RefusedError
+from frame_render.engine.inspect import Expected, Inspector, sheet_checks, vision_checks
 
 _logger = logging.getLogger(__name__)
 AGENT = "frame_render"
@@ -148,20 +152,27 @@ class FrameJob:
             self._looks[scene_id] = looks
         return self._looks[scene_id]
 
-    def _own(self, shot: Row) -> tuple[Row, list[Any], list[str]]:
+    def _own(self, shot: Row) -> tuple[Row, list[Any], list[str], Staging]:
+        """(scene, the shot's blocks, everyone in it seen or heard, who is seen)."""
         scene, lines = self.scene(str(shot["scene_id"]))
-        items = sceneplan.items_for(scene.get("script") or [], lines)
+        items = sceneplan.scene_items(scene, lines)
         own = shot_items(items, int(shot["block_start"]), int(shot["block_end"]))
-        return scene, own, cast_in(own, [c for c in self.canon if c["kind"] == "character"], PersonEdits.of(shot))
+        characters = [c for c in self.canon if c["kind"] == "character"]
+        cast_ids = shot_cast(own, characters, shot)
+        return scene, own, cast_ids, staging(own, characters, shot, cast_ids=cast_ids)
+
+    def staged(self, shot: Row) -> Staging:
+        return self._own(shot)[3]
 
     def references(self, shot: Row) -> list[tuple[str, Reference]]:
-        """The sheets of the people, then the place, in the shot that exist and can be read, in
-        the order they are attached. A person wearing a look gets the look sheet; when that
-        cannot be read, the base sheet. One that cannot be read is left out, not guessed at."""
-        scene, _, cast_ids = self._own(shot)
+        """The sheets of the people the camera SEES, then the place, that exist and can be read,
+        in the order they are attached. A person wearing a look gets the look sheet; when that
+        cannot be read, the base sheet. One that cannot be read is left out, not guessed at.
+        Someone only heard is never attached: their sheet would put their face in the frame."""
+        scene, _, _, staged = self._own(shot)
         looks = self.looks(str(shot["scene_id"]))
         out: list[tuple[str, Reference]] = []
-        for cid in shot_canon_ids(scene, cast_ids, PersonEdits.of(shot)):
+        for cid in shot_canon_ids(scene, staged.on_screen, PersonEdits.of(shot)):
             row = self.by_id.get(cid)
             if not row or len(out) >= MAX_REFERENCES:
                 continue
@@ -188,8 +199,10 @@ class FrameJob:
                 else self.members[c] for c in cast_ids if c in self.members]
 
     def compose(self, shot: Row, labels: list[str]) -> tuple[str, Row]:
-        """→ (the frame prompt naming exactly `labels` as its attached images, the pins)."""
-        scene, own, cast_ids = self._own(shot)
+        """→ (the frame prompt naming exactly `labels` as its attached images, the pins). The
+        pins cover everyone in the shot, heard too (a voice's card is still part of the shot);
+        the People line names only who is seen."""
+        scene, own, cast_ids, staged = self._own(shot)
         pins = pins_for(shot_version=int(shot.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
                         versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot),
                         looks=self.looks(str(shot["scene_id"])))
@@ -202,12 +215,26 @@ class FrameJob:
             recommended = default
         camera = recommended.with_overrides(shot.get("camera_overrides") or {})
         prompt = frame_prompt(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
-                              cast=self.cast(shot, cast_ids),
-                              references=labels, recommended_framing=recommended.framing)
+                              cast=self.cast(shot, staged.on_screen), references=labels,
+                              recommended_framing=recommended.framing,
+                              unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}))
         return prompt, pins.model_dump()
 
+    def expected(self, shot: Row) -> Expected:
+        """What the vision check compares the picture with."""
+        _, _, _, staged = self._own(shot)
+        raw = (shot.get("ir") or {}).get("first_frame")
+        frame: Mapping[str, Any] = raw if isinstance(raw, Mapping) else {}
+        listed = frame.get("subjects")
+        subjects: list[Any] = listed if isinstance(listed, list) else []
+        text = " ".join([str(frame.get("composition") or ""), *[str(x) for x in subjects]]).strip()
+        return Expected(seen=[identity_line(m) for m in self.cast(shot, staged.on_screen)],
+                        unseen=[f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"
+                                for c in staged.heard_only if c in self.members],
+                        frame=text)
 
-def render_frame(job: FrameJob, frame: Row, paint: Painter | None) -> str:
+
+def render_frame(job: FrameJob, frame: Row, paint: Painter | None, inspect: Inspector | None = None) -> str:
     """One frame, claim to record. → its final status."""
     fid = str(frame["id"])
     if not job.store.claim_frame(fid):
@@ -235,8 +262,12 @@ def render_frame(job: FrameJob, frame: Row, paint: Painter | None) -> str:
         return "failed"
     path = f"{job.production_id}/{shot['id']}/{fid}.png"
     job.store.upload("frames", path, picture.data, picture.mime)
+    staged = job.staged(shot)
+    seen = {c: job.members[c].name for c in staged.on_screen if c in job.members}
+    checks = sheet_checks(seen, {cid for cid, _ in refs}) + vision_checks(inspect, picture.data, picture.mime,
+                                                                          job.expected(shot))
     job.store.finish_frame(fid, {"status": "done", "storage_path": path, "prompt": prompt, "pins": pins,
-                                 "reference_ids": [cid for cid, _ in refs], "error": None})
+                                 "reference_ids": [cid for cid, _ in refs], "error": None, "checks": checks})
     return "done"
 
 
@@ -310,7 +341,8 @@ def render_look(store: StoreLike, production: Row, look_id: str, paint: Painter 
     return {"status": "done", "look_id": look_id}
 
 
-def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, paint: Painter | None) -> Row:
+def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, paint: Painter | None,
+        inspect: Inspector | None = None) -> Row:
     skip = jobs.check(payload)
     if skip:
         return {"skipped": skip}
@@ -353,7 +385,7 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, paint: Paint
 
     def one(frame: Row) -> tuple[Row, str]:
         try:
-            return frame, render_frame(job, frame, paint)
+            return frame, render_frame(job, frame, paint, inspect)
         except Exception:
             _logger.exception("frame %s crashed", frame.get("id"))
             store.finish_frame(str(frame["id"]), {"status": "failed", "error": FAILED})

@@ -1,5 +1,5 @@
 {
-  "about": "Director-chat replay cases (PLAN.md §6.1 'Prompt hygiene + replay'). Each case is one message to the director on a fixture scene: Harbour Lights Ep 1 scene `scene` (0-based), one shot per script block. Scene 0 is S01 action (wide, kitchen), S02 Nimal's line, S03 action, S04 Kamala's line. `expect.lane` may be a list of acceptable lanes; `expect.ops` must each be contained in some applied operation; `expect.no_ops` means nothing may change; `expect.memory` means a production rule was stored. `rules: true` cases must pass without a model (checked in CI by tests/services/director_chat/test_replay.py); every case is scored with --model. `split` keeps tuning cases apart from held-out ones: change prompts against `tune`, report `heldout`. Do not edit cases to make a change pass.",
+  "about": "Director-chat replay cases (PLAN.md §6.1 'Prompt hygiene + replay'). Each case is one message to the director on a fixture scene: Harbour Lights Ep 1 scene `scene` (0-based), one shot per script block. Scene 0 is S01 action (wide, kitchen), S02 Nimal's line, S03 action, S04 Kamala's line. `expect.lane` may be a list of acceptable lanes; `expect.ops` must each be contained in some applied operation; `expect.no_ops` means nothing may change; `expect.memory` means a production rule was stored. `rules: true` cases must pass without a model (checked in CI by tests/services/director_chat/test_replay.py); every case is scored with --model. `split` keeps tuning cases apart from held-out ones: change prompts against `tune`, report `heldout`. Do not edit cases to make a change pass. `dialogue` replaces the scene's lines in order (the fixture script is Sinhala). A case may be a conversation: `turns` is a list of {person, model, expect} (the person's message, the real model's recorded answers for that turn by schema name plus `reply`, and what must hold) or {choose: {block, option}} (the person clicks a card). `sinhala-switch-loop` is the Scene 2 thread of 2026-11-01 (plan/2026-11-01c): the model answers are the ones it gave, so it runs without a key. Since Phase 4 the translator answers it: `dialogue_translation` is the translator's recorded answer (a `line_id` of #2 means the scene's third line). The Sinhala and Tamil in these cases are TEST FIXTURES written for the harness, not reviewed by a Sinhala or Tamil speaker; the 20-line review the plan asks for happens before the translator is turned on for real scenes. A case may carry `role` ({can_edit, can_edit_script}). The ten multi-turn cases of Phase 6 are from the Scene 2 thread and the failures around it (language switch, card then 'did you apply it?', confirm without a card, a request repeated, a role without rights).",
   "cases": [
     {"id": "retime-explicit", "split": "tune", "rules": true, "scene": 0,
      "message": "make shot 2 eight seconds",
@@ -63,6 +63,81 @@
     {"id": "yes-after-advice", "split": "heldout", "rules": false, "scene": 0,
      "history": [{"kind": "director", "text": "A close-up on Nimal when he says he is back would land the moment harder."}],
      "message": "yes do that",
-     "expect": {"lane": ["options", "edit"], "card": true, "clean_reply": true}}
+     "expect": {"lane": ["options", "edit"], "card": true, "clean_reply": true}},
+    {"id": "sinhala-switch-loop", "split": "heldout", "rules": true, "scene": 0,
+     "dialogue": ["Mother, I am back.", "Sit down and eat."],
+     "turns": [
+       {"person": "i need all dialogues in Sinhala language", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "අම්මේ, මම ආපහු ආවා."}, {"line_id": "#1", "text": "වාඩි වෙලා කන්න."}]}, "reply": "If you want Sinhala, confirm and we'll switch all the dialogue."}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true, "reply_has": ["not changed the script yet", "Sinhala"], "claims_match_state": true}},
+       {"person": "keep all other settings the same, only change the dialogue to Sinhala, i confirm it", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "reply": "Ready to apply when you are."}, "expect": {"outcome": "applied", "ops": [{"op": "block.set"}], "end_state": {"dialogue_script": "si"}, "reply_has": ["Goal reached"], "claims_match_state": true}},
+       {"person": "do it", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "reply": "Your earlier Sinhala switch is already applied."}, "expect": {"outcome": "chat", "no_ops": true, "card": false, "reply_has": ["nothing waiting"], "no_unbacked_promise": true}},
+       {"choose": {"block": 1, "option": 0}},
+       {"person": "do it right now", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "reply": "Your earlier Sinhala switch is already applied."}, "expect": {"no_ops": true, "card": false, "claims_match_state": true, "reply_has": ["nothing waiting"]}},
+       {"person": "no still dialogues are in english", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "reply": "Say the word and I'll apply it."}, "expect": {"no_ops": true, "card": false, "end_state": {"dialogue_script": "si"}, "reply_has": ["already in Sinhala"], "no_unbacked_promise": true, "claims_match_state": true}},
+       {"person": "apply it", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}}, "expect": {"no_ops": true, "card": false, "reply_has": ["nothing waiting"], "no_unbacked_promise": true}}
+     ]},
+    {"id": "language-card-then-apply", "split": "tune", "rules": true, "scene": 0,
+     "dialogue": ["Mother, I am back.", "Sit down and eat."],
+     "turns": [
+       {"person": "put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "අම්මේ, මම ආපහු ආවා."}, {"line_id": "#1", "text": "වාඩි වෙලා කන්න."}]}}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true, "reply_has": ["2 spoken lines", "Sinhala"]}},
+       {"choose": {"block": 1, "option": 0}},
+       {"person": "did you apply it?", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "reply": "Yes, it was applied: the dialogue is now in Sinhala."}, "expect": {"no_ops": true, "end_state": {"dialogue_script": "si"}, "claims_match_state": true}}
+     ]},
+    {"id": "language-keep-then-ask-again", "split": "tune", "rules": true, "scene": 0,
+     "dialogue": ["Mother, I am back.", "Sit down and eat."],
+     "turns": [
+       {"person": "put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "අම්මේ, මම ආපහු ආවා."}, {"line_id": "#1", "text": "වාඩි වෙලා කන්න."}]}}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true}},
+       {"choose": {"block": 1, "option": 1}},
+       {"person": "put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "අම්මේ, මම ආපහු ආවා."}, {"line_id": "#1", "text": "වාඩි වෙලා කන්න."}]}}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true, "reply_has": ["not changed the script yet"]}}
+     ]},
+    {"id": "language-ask-twice", "split": "heldout", "rules": true, "scene": 0,
+     "dialogue": ["Mother, I am back.", "Sit down and eat."],
+     "turns": [
+       {"person": "put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "අම්මේ, මම ආපහු ආවා."}, {"line_id": "#1", "text": "වාඩි වෙලා කන්න."}]}}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true}},
+       {"person": "put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}}, "expect": {"card": false, "no_ops": true, "reply_has": ["waiting on the card above"]}},
+       {"person": "i said put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}}, "expect": {"card": false, "no_ops": true, "reply_has": ["waiting on the card above"]}}
+     ]},
+    {"id": "confirm-without-card", "split": "tune", "rules": true, "scene": 0,
+     "turns": [
+       {"person": "i confirm it", "expect": {"outcome": "chat", "no_ops": true, "card": false, "reply_has": ["nothing waiting"], "no_unbacked_promise": true, "claims_match_state": true}}
+     ]},
+    {"id": "translate-one-shot-tamil", "split": "tune", "rules": true, "scene": 0,
+     "turns": [
+       {"person": "translate S02 to Tamil, colloquial", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Tamil", "code": "ta", "style": "colloquial", "shots": [2]}}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "அம்மா, நான் திரும்பி வந்துட்டேன்."}]}}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true, "reply_has": ["1 spoken line", "Tamil"]}},
+       {"choose": {"block": 1, "option": 0}},
+       {"person": "translate S02 to Tamil, colloquial", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Tamil", "code": "ta", "style": "colloquial", "shots": [2]}}}, "expect": {"no_ops": true, "card": false, "reply_has": ["already in Tamil"]}}
+     ]},
+    {"id": "back-to-source", "split": "heldout", "rules": true, "scene": 0,
+     "dialogue": ["Mother, I am back.", "Sit down and eat."],
+     "turns": [
+       {"person": "put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "අම්මේ, මම ආපහු ආවා."}, {"line_id": "#1", "text": "වාඩි වෙලා කන්න."}]}}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true}},
+       {"choose": {"block": 1, "option": 0}},
+       {"person": "put the dialogue back to English", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "English", "code": "en", "style": "", "shots": []}}}, "expect": {"outcome": "card", "card": true, "no_ops": true, "no_unbacked_promise": true, "card_label_true": true, "reply_has": ["English"]}},
+       {"choose": {"block": 1, "option": 0}},
+       {"person": "is it in English now?", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "reply": "Yes, both lines are in English again."}, "expect": {"no_ops": true, "end_state": {"dialogue_script": "en"}}}
+     ]},
+    {"id": "options-then-did-you-apply", "split": "tune", "rules": true, "scene": 0,
+     "turns": [
+       {"person": "give me options for S02", "model": {"turn_plan": {"lane": "options", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "chat_options": {"question": "How should S02 play?", "options": [{"label": "Open on a wide", "detail": "The road gap reads.", "prompt": "", "intent": "", "ops": [{"op": "set", "shot": 2, "field": "framing", "value": "WIDE"}]}, {"label": "Push in to a CU", "detail": "Tight on Nimal.", "prompt": "", "intent": "", "ops": [{"op": "set", "shot": 2, "field": "framing", "value": "CU"}]}]}, "reply": "Two ways to play it."}, "expect": {"card": true, "no_ops": true}},
+       {"person": "did you apply it?", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "reply": "No, nothing has been applied; S02 is unchanged."}, "expect": {"no_ops": true, "card": false, "claims_match_state": true, "no_unbacked_promise": true}}
+     ]},
+    {"id": "cannot-asked-three-times", "split": "heldout", "rules": true, "scene": 0,
+     "turns": [
+       {"person": "make Kamala look ten years older", "model": {"turn_plan": {"lane": "cannot", "ops": [], "tasks": [], "memory": [], "cannot": {"request": "make Kamala look ten years older", "reason": "Characters are kept in the Canon, not in this scene.", "route": "Open Canon, change the character there, then ask me to look at the shots again."}, "translate": null}, "reply": "Characters are kept in the Canon, not in this scene. Open Canon and change her there."}, "expect": {"outcome": "cannot", "no_ops": true, "reply_has": ["Canon"]}},
+       {"person": "make Kamala look ten years older", "model": {"turn_plan": {"lane": "cannot", "ops": [], "tasks": [], "memory": [], "cannot": {"request": "make Kamala look ten years older", "reason": "Characters are kept in the Canon, not in this scene.", "route": "Open Canon, change the character there, then ask me to look at the shots again."}, "translate": null}}, "expect": {"outcome": "cannot", "no_ops": true, "reply_has": ["Asking again will not change that", "Open Canon"]}},
+       {"person": "make Kamala look ten years older", "model": {"turn_plan": {"lane": "cannot", "ops": [], "tasks": [], "memory": [], "cannot": {"request": "make Kamala look ten years older", "reason": "Characters are kept in the Canon, not in this scene.", "route": "Open Canon, change the character there, then ask me to look at the shots again."}, "translate": null}}, "expect": {"outcome": "cannot", "no_ops": true, "reply_has": ["Asking again will not change that"]}}
+     ]},
+    {"id": "role-without-script-rights", "split": "heldout", "rules": true, "scene": 0,
+     "dialogue": ["Mother, I am back.", "Sit down and eat."],
+     "role": {"can_edit": true, "can_edit_script": false},
+     "turns": [
+       {"person": "put all the dialogue in Sinhala", "model": {"turn_plan": {"lane": "translate", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": {"language": "Sinhala", "code": "si", "style": "", "shots": []}}, "dialogue_translation": {"lines": [{"line_id": "#0", "text": "අම්මේ, මම ආපහු ආවා."}, {"line_id": "#1", "text": "වාඩි වෙලා කන්න."}]}}, "expect": {"no_ops": true, "card": false, "reply_has": ["Your role can change shots but not the script"]}}
+     ]},
+    {"id": "three-do-its-after-advice", "split": "tune", "rules": true, "scene": 0,
+     "history": [{"kind": "director", "text": "Open S02 on a wide so the road gap reads, and let Kamala step out of the car."}],
+     "turns": [
+       {"person": "do it", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}, "chat_options": {"question": "Open S02 wide?", "options": [{"label": "Open S02 on a wide", "detail": "The road gap reads.", "prompt": "", "intent": "", "ops": [{"op": "set", "shot": 2, "field": "framing", "value": "WIDE"}]}]}, "reply": "Here is that as a change."}, "expect": {"card": true, "no_ops": true}},
+       {"person": "do it", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}}, "expect": {"outcome": "applied", "ops": [{"op": "set", "field": "framing", "value": "WIDE"}]}},
+       {"person": "do it", "model": {"turn_plan": {"lane": "chat", "ops": [], "tasks": [], "memory": [], "cannot": null, "translate": null}}, "expect": {"no_ops": true, "card": false, "reply_has": ["nothing waiting"]}}
+     ]}
   ]
 }

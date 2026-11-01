@@ -24,7 +24,7 @@ from contracts.build import Agent, QuestionStatus, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
-from structure_build.engine import analyse, architect, prose, write
+from structure_build.engine import analyse, architect, looks, prose, write
 
 _logger = logging.getLogger(__name__)
 AGENT = Agent.ARCHITECT.value
@@ -40,6 +40,8 @@ class StoreLike(Protocol):
     def text(self, path: str) -> str: ...
     def canon(self, production_id: UUID) -> list[dict[str, Any]]: ...
     def create_entity(self, entity: dict[str, Any], version: dict[str, Any]) -> None: ...
+    def entities_with_looks(self, production_id: UUID) -> set[str]: ...
+    def create_looks(self, rows: list[dict[str, Any]]) -> None: ...
     def episodes(self, production_id: UUID) -> list[dict[str, Any]]: ...
     def upsert_episodes(self, rows: list[dict[str, Any]]) -> None: ...
     def scenes(self, production_id: UUID) -> list[dict[str, Any]]: ...
@@ -88,7 +90,7 @@ def question_rows(job_id: UUID, production_id: UUID, questions: list[dict[str, A
 
 
 def build_graph(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike, *,
-                durable: bool, envelope_s: int, aspect_ratio: str) -> StateGraph[State]:
+                durable: bool, envelope_s: int, aspect_ratio: str, draft_looks: bool = True) -> StateGraph[State]:
     job_id = payload.job_id
     production_id = payload.production_id
     assert production_id is not None
@@ -208,16 +210,47 @@ def build_graph(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm:
                            "kept_approved": p.kept_approved, "new_characters": len(p.new_characters),
                            "deleted_scenes": len(p.delete_scene_ids)}}
 
+    def looks_node(state: State) -> State:
+        """Draft looks from the cards' wardrobes, now that the episodes are known. An extra: a
+        failure here is a warning, never a failed build."""
+        report = dict(state.get("report") or {})
+        if not draft_looks:
+            return {}
+        try:
+            ask_model = None
+            if llm.enabled:
+                def ask_model(system: str, user: str) -> dict[str, Any]:
+                    return llm.json(tier="medium", phase="structure_build.looks", system=system, user=user,
+                                    schema_name="canon_looks", schema=looks.SCHEMA)
+
+            episodes = max((int(e["number"]) for e in store.episodes(production_id)), default=1)
+            rows, names = looks.plan(store.canon(production_id), store.entities_with_looks(production_id), episodes,
+                                     production_id=str(production_id), actor=str(payload.actor_user_id),
+                                     ask=ask_model)
+            store.create_looks(rows)
+        except Exception:
+            _logger.warning("drafting looks failed", exc_info=True)
+            jobs.event(job_id, JobEventType.WARNING,
+                       {"text": "Looks could not be drafted from the wardrobes. Add them on each character's page."},
+                       agent=Agent.CANON.value)
+            return {}
+        if rows:
+            jobs.event(job_id, JobEventType.AGENT_STEP,
+                       {"text": f"Drafted {len(rows)} looks for {len(names)} characters from their wardrobes "
+                                "(drafts: make each sheet, then mark it ready)."}, agent=Agent.CANON.value)
+        return {"report": {**report, "looks": len(rows)}}
+
     g: StateGraph[State] = StateGraph(State)
     for name, fn in (("read", read), ("analyse", analyse_node), ("ask", ask), ("architect", architect_node),
-                     ("write", write_node)):
+                     ("write", write_node), ("looks", looks_node)):
         g.add_node(name, fn)
     g.add_edge(START, "read")
     g.add_edge("read", "analyse")
     g.add_edge("analyse", "ask")
     g.add_edge("ask", "architect")
     g.add_edge("architect", "write")
-    g.add_edge("write", END)
+    g.add_edge("write", "looks")
+    g.add_edge("looks", END)
     return g
 
 
@@ -247,7 +280,8 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
         return result
 
     app = build_graph(payload, store, jobs, llm, durable=durable, envelope_s=settings.default_scene_envelope_s,
-                      aspect_ratio=ASPECT_RATIO[Orientation(production["orientation"])]).compile(
+                      aspect_ratio=ASPECT_RATIO[Orientation(production["orientation"])],
+                      draft_looks=not carry["build"] or settings.build.canon).compile(
         checkpointer=checkpointer)
     config: Any = {"configurable": {"thread_id": f"{job_id}:structure"}}
     started = bool(app.get_state(config).next)

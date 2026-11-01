@@ -86,6 +86,7 @@ def create_app(repos: Repos | None = None) -> FastAPI:
     for module in (me, members, productions, overview, documents, search, build, structure, canon, looks, scene_looks,
                    scene_canon, scenes, production, handoff, director, activity, ask, jobs, usage, files, internal):
         app.include_router(module.router)
+    app.include_router(looks.drafts)  # production-wide: /productions/{id}/looks/draft
     return app
 
 

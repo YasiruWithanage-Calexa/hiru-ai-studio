@@ -30,3 +30,9 @@ that commit in the files below.
    percentage). No resume of provider tasks: an image call is one request with nothing to poll.
 6. **Progress** goes to `job_events` (Supabase Realtime), not Redis; the job is closed by the one
    invocation that ran the pictures, so there is no last-take race.
+7. **Only who is seen (plan/2026-11-01).** References and the People line come from the people
+   the camera SEES (`contracts.staging`), not from everyone who speaks: a voice on a phone is never
+   attached and the prompt says they are not in the place. Pins still cover everyone in the shot.
+8. **Checks on the frame.** `first_frames.checks`: an on-screen person painted without a sheet,
+   and a vision model's look at the picture against the shot (`engine/inspect.py`,
+   `OPENAI__MODEL_VISION`, "" = off). Advisory only; a failed look never fails the frame.

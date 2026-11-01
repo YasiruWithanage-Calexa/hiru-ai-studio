@@ -64,8 +64,12 @@ def test_split_merge_regroup_keep_every_block_once():
     assert k.apply([{"op": "regroup", "shot": 1, "end_block": 3}]).applied
     assert [(s["start"], s["end"]) for s in k.shots] == [(0, 3), (3, 4)]
     assert k.apply([{"op": "regroup", "shot": 1, "end_block": 4}]).rejected  # would empty shot 2
-    assert k.apply([{"op": "merge", "shot": 1}]).applied and len(k.shots) == 1
-    assert k.apply([{"op": "merge", "shot": 1}]).rejected  # nothing after it
+    # The merge is applied, but the whole scene holds more than one shot can show: the kernel cuts it again
+    # and says what it would have needed (plan/2026-11-01b), so every block is still in exactly one shot.
+    assert k.apply([{"op": "merge", "shot": 1}]).applied
+    assert len(k.shots) == 2 and any("would need" in n for n in k.notes)
+    assert k.shots[0]["start"] == 0 and k.shots[-1]["end"] == len(k.items)
+    assert kernel(per_block=False).apply([{"op": "merge", "shot": 1}]).rejected  # nothing after it
 
 
 def test_numbers_in_one_batch_refer_to_the_plan_before_the_batch():
@@ -132,7 +136,9 @@ def test_a_shot_the_kernel_must_split_is_taken_in_so_numbers_match():
     fitted = k.fit()
     assert len(k.shots) == len(fitted.shots) >= 2
     assert k.shots[0]["id"] == shots[0]["id"] and k.shots[1]["id"] is None
-    assert k.shots[1]["camera_link"] == "continuous"
+    # a follow-on that starts on a line carries the take on; one that starts on an action is a new picture
+    assert k.shots[1]["camera_link"] == ("continuous" if k.items[k.shots[1]["start"]]["kind"] == "dialogue"
+                                         else "cut")
     for n, f in enumerate(fitted.shots, start=1):
         assert f"S{n:02d}" in k.describe() and (k.shots[n - 1]["start"], k.shots[n - 1]["end"]) == (f.start, f.end)
 

@@ -25,6 +25,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment, camera_sentence
+from contracts.staging import source_phrase
 from shot_producer.engine.model import Line, ShotInput
 from shot_producer.engine.schema import get_schema
 
@@ -112,13 +113,22 @@ def _spoken(template: str, *, speaker: str, delivery: str, name: str, line: str)
     return [_seg(head), PromptSegment(sinhala=line), _seg(tail)]
 
 
+def _holder(shot: ShotInput) -> str:
+    return shot.seen[0].name if shot.seen and shot.staged.voice_source == "phone" else ""
+
+
 def _line_segments(ln: Line, shot: ShotInput) -> list[PromptSegment]:
     rules = get_schema()
     who = next((c for c in shot.cast if c.id == ln.character_id), None)
     name = who.name if who else (ln.speaker.title() or "the speaker")
+    delivery = f" ({_clean(ln.delivery)})" if _clean(ln.delivery) else ""
+    if who is not None and who.id in shot.staged.heard_only and rules.render_rules.get("offscreen_line"):
+        # Heard, not seen: the name only, and where the voice comes from (contracts.staging).
+        source = source_phrase(shot.staged.voice_source, _holder(shot))
+        return _spoken(rules.render_rules["offscreen_line"].replace("{source}", source), speaker=name,
+                       delivery=delivery, name=name, line=ln.text)
     anchor = who_clause(who)
     speaker = f"{name} ({anchor})" if anchor else name
-    delivery = f" ({_clean(ln.delivery)})" if _clean(ln.delivery) else ""
     key = {"voiceover": "voiceover_line", "sung": "sung_line"}.get(shot.sound_mode, "dialogue_line")
     return _spoken(rules.render_rules[key], speaker=speaker, delivery=delivery, name=name, line=ln.text)
 
@@ -158,7 +168,7 @@ def _voice_text(shot: ShotInput) -> str:
         c = next((x for x in shot.cast if x.id == cid), None)
         if c is None or not c.voice_pin:
             continue
-        anchor = who_clause(c)
+        anchor = who_clause(c) if c.id not in shot.staged.heard_only else ""
         said.append(rules.render_rules["voice_speaker"].format(who=f"{c.name} ({anchor})" if anchor else c.name,
                                                                voice=_clean(c.voice_pin).rstrip(".")))
     return rules.render_rules["voice_cast"].format(voices=" ".join(said)) if said else ""
@@ -180,12 +190,29 @@ def _audio_text(shot: ShotInput, ir: Row) -> str:
     elif mode == "voiceover":
         bits.append("The spoken words are a voice off screen, exactly as written in the beats above."
                     + (f" Under it: {room}." if room else ""))
+    if shot.heard and mode != "voiceover" and mode not in ("music_only", "silent", "ambient"):
+        bits.append("Off-screen voices are heard, never seen.")
     elif mode == "sung":
         bits.append("Sung performance — the vocal is performed in frame and carries the shot.")
     elif mode == "dialogue":
         bits.append("Spoken dialogue only, exactly as written in the beats above and only from the named speakers. "
                     "No narration, no voiceover." + (f" Room sound: {room}." if room else ""))
     return " ".join(bits)
+
+
+def _before_voice(ln: Line, shot: ShotInput) -> str:
+    """What the picture does just before a HEARD line ("Anudi answers the phone"): the voice has a
+    source on screen only after it, so the beat says so. "" for a line spoken on camera, or one with
+    nothing shown before it in the shot."""
+    if not ln.character_id or ln.character_id not in shot.staged.heard_only:
+        return ""
+    at = next((n for n, i in enumerate(shot.items) if i.line_id == ln.id), None)
+    if at is None:
+        return ""
+    for i in reversed(shot.items[:at]):
+        if i.kind == "action" and i.picture_s > 0 and _bare(i.text):
+            return _bare(i.text)
+    return ""
 
 
 def _beats_section(shot: ShotInput, ir: Row, ctx: Context) -> PromptSection | None:
@@ -213,6 +240,9 @@ def _beats_section(shot: ShotInput, ir: Row, ctx: Context) -> PromptSection | No
         segments.append(_seg(line))
         for ln in by_beat.get(n, []):
             segments.append(_seg(" "))
+            first = _before_voice(ln, shot)
+            if first:
+                segments.append(_seg(f"{first}; then the voice: "))
             segments.extend(_line_segments(ln, shot))
     return PromptSection(id="action", title="Action & dialogue", segments=_merge(segments))
 
@@ -230,10 +260,18 @@ def _merge(segments: list[PromptSegment]) -> list[PromptSegment]:
 def _guard(shot: ShotInput) -> str:
     rules = get_schema()
     bits = [rules.rule("frame_hygiene"), rules.rule("lettering_clean"), rules.rule("anatomy")]
-    if not shot.cast:
+    if not shot.seen:
         bits.append(rules.rule("no_extra_people"))
     bits.append(rules.rule("physics"))
     return "Rendering constraints: " + " ".join(b for b in bits if b)
+
+
+def _heard_text(shot: ShotInput) -> str:
+    template = get_schema().render_rules.get("heard_source", "")
+    if not shot.heard or not template:
+        return ""
+    names = " and ".join(c.name for c in shot.heard)
+    return template.format(names=names, source=source_phrase(shot.staged.voice_source, _holder(shot)))
 
 
 def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection]:
@@ -242,7 +280,9 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
     opening = (rules.rule("opening_carried").format(previous=ctx.previous_code or "the previous shot")
                if shot.frame_strategy == "carry_last_frame" else rules.rule("opening_frame") if ctx.has_frame else "")
     setting = _clean(ir.get("setting"))
-    subjects = [s for s in ir.get("subjects") or [] if isinstance(s, dict) and _clean(s.get("description"))]
+    heard_codes = {c.code for c in shot.heard}
+    subjects = [s for s in ir.get("subjects") or [] if isinstance(s, dict) and _clean(s.get("description"))
+                and str(s.get("id") or "") not in heard_codes]  # a voice is not a subject on screen
     described = "; ".join(_bare(s.get("description")) + (f" — {_bare(s.get('action'))}" if s.get("action") else "")
                           for s in subjects)
     join = "" if shot.camera_link == "cut" else rules.rule(
@@ -255,7 +295,7 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
         _section("style", "Style", rules.rule("medium_style"), _clean(ctx.style_note)),
         _section("setting", "Setting", f"{setting.rstrip('.')}." if setting else "",
                  f"Carried over: {ctx.carried}." if ctx.carried and shot.camera_link != "cut" else ""),
-        _section("subjects", "Subjects", f"{described}." if described else ""),
+        _section("subjects", "Subjects", f"{described}." if described else "", _heard_text(shot)),
         _section("join", "Join", join),
         _section("camera", "Camera", _camera_text(ir, ctx)),
         _section("lighting", "Lighting", f"{light.rstrip('.')}." if light else ""),
@@ -263,7 +303,7 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
         _beats_section(shot, ir, ctx),
         _section("sound", "Sound", _audio_text(shot, ir)),
         _section("constraints", "Style lock & constraints",
-                 rules.rule("lip_lock") if shot.cast else "", rules.rule("language_line") if spoken else "",
+                 rules.rule("lip_lock") if shot.seen else "", rules.rule("language_line") if spoken else "",
                  rules.rule("market_line"), _guard(shot)),
         _section("format", "Format", f"Aspect ratio {ctx.aspect_ratio}. Duration {shot.duration_s} seconds. "
                                      f"Ends on a cut."),
@@ -276,10 +316,15 @@ def prompt_checks(shot: ShotInput, sections: list[PromptSection], ctx: Context) 
     checks: list[Check] = []
     sinhala = [seg.sinhala for s in sections for seg in s.segments if seg.sinhala is not None]
     if shot.lines:
-        speakers = {ln.character_id or ln.speaker for ln in shot.lines}
-        one = len(speakers) == 1
-        checks.append(Check(label="One visible speaker" if one else f"{len(speakers)} speakers in one shot",
-                            tone="pass" if one else "advisory"))
+        heard = set(shot.staged.heard_only)
+        speakers = {ln.character_id or ln.speaker for ln in shot.lines if ln.character_id not in heard}
+        one = len(speakers) <= 1
+        checks.append(Check(label="One visible speaker" if len(speakers) == 1 else (
+            "No speaker on screen" if not speakers else f"{len(speakers)} speakers in one shot"),
+            tone="pass" if one else "advisory"))
+        for c in shot.heard:
+            where = shot.staged.voice_source.replace("_", " ") or "off screen"
+            checks.append(Check(label=f"Heard only · {c.name} ({where})", tone="pass"))
         verbatim = sinhala == [ln.text for ln in shot.lines]
         checks.append(Check(label="Lines verbatim from the script" if verbatim else "A line differs from the script",
                             tone="pass" if verbatim else "fail"))

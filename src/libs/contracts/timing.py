@@ -20,6 +20,22 @@ SHOT_OVERRUN_FACTOR = 1.35  # a shot is flagged above this multiple of its targe
 SLOT_OVERRUN_FACTOR = 1.6  # a beat or storyboard slot: looser, the overrun bleeds not cuts
 SLOT_MIN_EXCESS_WORDS = 2  # ... and only when at least this many words over
 
+# Picture time (PLAN 2026-11-01b §4 Phase 1): what an action block adds to a shot's clock before the next
+# thing can start. First guesses, tuned by `scripts/eval_staging.py`. A move through space needs room to be
+# seen; an action that plays under the line that follows it (a smile, a look) costs only a beat; information
+# the camera must carry some other way (an insert, a line) and a thought take no picture time of their own.
+SCREEN_SECONDS: dict[str, float] = {"move": 2.5, "act": 1.5, "with_line": 0.5, "info": 0.0, "inner": 0.0}
+SCREEN_KINDS: tuple[str, ...] = tuple(SCREEN_SECONDS)
+
+# Feeling needs time (PLAN 2026-11-01d §5 Phases 2-3). A scene's reading (`contracts.reading`) can hold a moment
+# for `HOLD_RANGE_S` seconds (a smile fading, a look held); the pause before a line that answers a turn in feeling
+# is `TURN_GAP_S` instead of `LINE_GAP_S`; and reading-backed breath should fill `BREATH_BAND` of a scene's seconds.
+# A turn in feeling that is a small action (`with_line`) takes an `act`'s time, not half a second. First guesses,
+# tuned with the A/B in Phase 8.
+HOLD_RANGE_S: tuple[float, float] = (1.0, 3.0)
+TURN_GAP_S = 1.0
+BREATH_BAND: tuple[float, float] = (0.15, 0.30)
+
 SLOW_CUES: tuple[str, ...] = ("whisper", "slow", "halting", "breaking", "hesitant", "trembling")
 
 # Stage directions are not speech: nobody says "(whispering, barely audible)".
@@ -41,6 +57,13 @@ def speech_seconds(words: int, delivery: str | None = None) -> float:
     """Seconds a line of `words` words takes to say."""
     rate = SLOW_WORDS_PER_SECOND if is_slow_delivery(delivery) else WORDS_PER_SECOND
     return words / rate
+
+
+def action_seconds(screen: str | None = "act", events: int = 1) -> float:
+    """Seconds an action block takes on screen. An unknown screen kind counts as `act`; each extra
+    visible event in the block adds its own time (a block that holds two events needs two)."""
+    base = SCREEN_SECONDS.get(screen or "act", SCREEN_SECONDS["act"])
+    return base * max(1, int(events or 1))
 
 
 def shot_word_target(seconds: float) -> int:

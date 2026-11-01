@@ -28,12 +28,22 @@ class Store:
 
     def canon(self, production_id: UUID) -> list[Row]:
         return self.rest.select("canon_entities", {"production_id": f"eq.{production_id}",
-                                                   "select": "id,kind,code,name,aliases", "order": "code"})
+                                                   "select": "id,kind,code,name,aliases,"
+                                                             "current:canon_versions!canon_entities_current_version_fkey(card)",
+                                                   "order": "code"})
 
     def create_entity(self, entity: Row, version: Row) -> None:
         self.rest.insert("canon_entities", [entity])
         self.rest.insert("canon_versions", [version])
         self.rest.patch("canon_entities", {"id": f"eq.{entity['id']}"}, {"current_version_id": version["id"]})
+
+    def entities_with_looks(self, production_id: UUID) -> set[str]:
+        rows = self.rest.select("canon_looks", {"production_id": f"eq.{production_id}", "select": "entity_id"})
+        return {str(r["entity_id"]) for r in rows}
+
+    def create_looks(self, rows: list[Row]) -> None:
+        if rows:
+            self.rest.insert("canon_looks", rows)
 
     def episodes(self, production_id: UUID) -> list[Row]:
         return self.rest.select("episodes", {"production_id": f"eq.{production_id}", "select": "id,number,status"})

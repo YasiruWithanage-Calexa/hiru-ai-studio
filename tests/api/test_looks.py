@@ -127,3 +127,32 @@ def test_a_look_can_be_deleted(world: World):
     assert world.client.delete(url(world, eid, f"/{look['id']}"), headers=h).status_code == 204
     assert world.client.get(url(world, eid), headers=h).json()["looks"] == []
     assert world.client.delete(url(world, eid, f"/{look['id']}"), headers=h).status_code == 404
+
+
+def give_wardrobe(world: World, entity_id: str, wardrobe: str) -> None:
+    canon = world.repos.canon  # type: ignore[attr-defined]
+    canon.version_rows[canon.rows[entity_id]["current_version_id"]]["card"]["wardrobe"] = wardrobe
+
+
+def test_looks_are_drafted_from_the_wardrobes_for_characters_without_any(world: World):
+    kamala = add_entity(world)
+    nimal = add_entity(world, "C02", "Nimal")
+    add_entity(world, "C03", "Sunil")  # no wardrobe on the card → no look
+    add_entity(world, "L01", "Harbour", "location")
+    for number in (1, 2, 3, 4):
+        world.repos.episodes.add(production_id=str(world.production), number=number)  # type: ignore[attr-defined]
+    give_wardrobe(world, kamala, "A cream sari; Gold earrings. Later, a widow's white sari")
+    give_wardrobe(world, nimal, "Fisherman's sarong")
+    make_look(world, nimal, name="Mine")  # a person's looks are never touched
+    draft = f"/v1/productions/{world.production}/looks/draft"
+    assert world.client.post(draft, headers=world.headers(world.crew)).status_code == 403
+    r = world.client.post(draft, headers=world.headers(world.director))
+    assert r.status_code == 200 and r.json() == {"characters": 1, "looks": 2}
+    made = world.client.get(url(world, kamala), headers=world.headers(world.director)).json()["looks"]
+    assert [(x["name"], x["ranges"], x["status"]) for x in made] == [
+        ("Everyday", [{"from": 1, "to": 2}], "draft"), ("Later", [{"from": 3, "to": 4}], "draft")]
+    assert made[0]["accessories"] == "Gold earrings"
+    again = world.client.post(draft, headers=world.headers(world.director))
+    assert again.json() == {"characters": 0, "looks": 0}, "a second run adds nothing"
+    own = world.client.get(url(world, nimal), headers=world.headers(world.director)).json()["looks"]
+    assert [x["name"] for x in own] == ["Mine"]

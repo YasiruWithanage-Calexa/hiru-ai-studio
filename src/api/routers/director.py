@@ -179,14 +179,14 @@ async def _choice_target(repos: Repos, production_id: UUID, message_id: UUID, bl
 
 
 async def _apply_stored(repos: Repos, applier: director_service.ChoiceApplier, access: ProductionAccess,
-                        production_id: UUID, message: ChatMessage, ops: list[dict[str, Any]]) -> str:
+                        production_id: UUID, message: ChatMessage, ops: list[dict[str, Any]], intent: str = "") -> str:
     """Have the function apply an edit stored in `message` to its scene → what changed."""
     thread = await repos.threads.get(production_id, message.thread_id)
     if thread is None or not thread.get("scene_id"):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
     try:
         result = await applier(ChoicePayload(production_id=production_id, scene_id=UUID(str(thread["scene_id"])),
-                                             actor_user_id=access.user.id, ops=ops,
+                                             actor_user_id=access.user.id, ops=ops, intent=intent,
                                              can_edit_script=Permission.EDIT_SCRIPT in access.permissions))
     except director_service.DirectorUnavailable as exc:
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
@@ -253,7 +253,7 @@ async def choose_option(production_id: UUID, message_id: UUID, body: OptionChoic
                not in access.permissions for op in option.ops):
             raise HTTPException(status.HTTP_403_FORBIDDEN,
                                 "Your role can comment but not make this change; a director, producer or writer can.")
-        outcome = await _apply_stored(repos, applier, access, production_id, message, option.ops)
+        outcome = await _apply_stored(repos, applier, access, production_id, message, option.ops, option.intent)
     else:
         outcome = "Asked the board." if option.prompt else "Kept as it is."
     dumped = block.model_dump(mode="json") | {"chosen": body.option, "outcome": outcome}

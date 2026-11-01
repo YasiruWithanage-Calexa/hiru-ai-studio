@@ -19,6 +19,8 @@ Hiru's rules on top:
     words (the conductor transcribing them) may change it.
   * A reaction or insert shot with no script under it is a director's BEAT block added to the
     script (`insert`), so the kernel's rule "every block in exactly one shot" still holds.
+  * One exception: the TRANSLATOR (`by="translator"`) may write a line's words as a translation the person was
+    asked to accept (`is_translation`). The turn only ever tries it on a copy; the person's choice applies it.
   * A shot's own marks by a person (who is in it, which advisories to ignore, the DoP's note) are
     `person_edits`, changed by `canon.*`, `check.*` and `dop_note.set`; also person-only.
 """
@@ -30,6 +32,8 @@ from dataclasses import dataclass, field
 from typing import Any
 from uuid import uuid4
 
+from contracts import beats, bridges, sceneplan
+from contracts import director_capabilities as caps
 from contracts.canon import name_key
 from contracts.director import SCRIPT_OPS
 from contracts.producer import CHECK_TOPICS, PersonEdits, cast_in, check_code
@@ -43,6 +47,15 @@ PERSON_ONLY = SCRIPT_OPS + MARK_OPS  # a person's own words only: `by="you"`
 MODEL_OPS = ("set", "retime", "unlock_length", "split", "merge", "regroup", "set_join", "beat.set",
              "insert", "remove", "set_envelope", *PERSON_ONLY)
 STRUCTURAL_OPS = ("split", "merge", "regroup", "insert", "remove")
+TRANSLATOR = "translator"  # the one agent that may write a spoken line: only a translation, only ever staged
+
+
+def is_translation(op: dict[str, Any]) -> bool:
+    """A line's words put into another language (plan/2026-11-01c, Phase 4): `block.set` of the text, marked
+    with the language it goes into. It is the translator's, never applied in a turn (the turn stages it as a
+    card the person accepts), and it keeps the line's original words as its source."""
+    return op.get("op") == "block.set" and str(op.get("field") or "text").lower() == "text" \
+        and bool(op.get("translated_to"))
 SCRIPT_LIMITS = {"text": 2000, "speaker": 120, "delivery": 200}  # as `contracts.director.ScriptBlockEdit`
 DOP_NOTE_CHARS = 600
 SHOT_TEXT_FIELDS = ("title",)
@@ -149,6 +162,7 @@ class ScenePlanKernel:
                  location_id: str | None = None) -> None:
         self.items = copy.deepcopy(items)  # {kind, text, line_id, speaker, speaker_id, delivery}
         self.original_items = copy.deepcopy(items)  # what was stored: `script_changed` compares to it
+        self.notes: list[str] = []  # what an edit would have crowded: "S05 would need 10.9 s ..." (plan 2026-11-01b)
         self.shots: list[dict[str, Any]] = []
         for s in shots:
             shot = copy.deepcopy(s)
@@ -193,8 +207,7 @@ class ScenePlanKernel:
     # ── reading ──────────────────────────────────────────────────────────────────────────
 
     def kernel_items(self) -> list[Item]:
-        return [Item(i, b["kind"], b.get("text", ""), b.get("speaker", ""), b.get("speaker_id"),
-                     b.get("delivery", ""), b.get("line_id")) for i, b in enumerate(self.items)]
+        return [sceneplan.item_of(i, b) for i, b in enumerate(self.items)]
 
     def proposal(self) -> list[ProposedShot]:
         return [ProposedShot(s["start"], s["end"], s.get("framing", "MS"), s.get("title", ""),
@@ -262,7 +275,7 @@ class ScenePlanKernel:
                 op = self._normalize(raw)
                 if allowed_ops is not None and op["op"] not in allowed_ops:
                     raise OpError(f"{by} may not use {op['op']}")
-                if op["op"] in PERSON_ONLY and by != "you":
+                if op["op"] in PERSON_ONLY and by != "you" and not (by == TRANSLATOR and is_translation(op)):
                     raise OpError("only a person's own words can change the script, a shot's cast, checks or note")
                 snap = self._snapshot()
                 normalized, changes = self._dispatch(op, addr, by, respect_locks)
@@ -270,6 +283,8 @@ class ScenePlanKernel:
                 if any(i.code == "repaired" for i in check.issues):
                     self._restore(snap)
                     raise OpError("the result would not cover the script exactly once")
+                # a shot that holds more than one shot can show is cut again; say so ("S05 would need 10.9 s")
+                self.notes += [i.message for i in check.issues if i.code == "split" and i.message not in self.notes]
                 self._absorb(check)
                 for c in changes:
                     c.by = by
@@ -565,10 +580,38 @@ class ScenePlanKernel:
         item[key] = value
         if key == "speaker":
             item["speaker_id"] = self.character_id(value)
+        translated: dict[str, Any] = {}
+        if is_translation(op) and item["kind"] == BlockKind.DIALOGUE.value:
+            # The words the script was written in stay as the line's source, whatever it is translated into next.
+            item["source_text"] = item.get("source_text") or was
+            item["source_lang"] = item.get("source_lang") or str(op.get("translated_from") or caps.script_of(was))
+            translated = {"translated_to": str(op["translated_to"])}
+        if item["kind"] == BlockKind.ACTION.value:
+            self._reread(b)
         i = self._shot_of_block(b)
         who = {"speaker": item.get("speaker", "")} if item["kind"] == BlockKind.DIALOGUE.value else {}
         return ({"op": "block.set", "block": want, "shot": i + 1, "kind": item["kind"], "field": key, "value": value,
-                 "was": was, **who}, [Change("script", (self.shots[i]["_h"],), key)])
+                 "was": was, **who, **translated}, [Change("script", (self.shots[i]["_h"],), key)])
+
+    def _reread(self, at: int) -> None:
+        """A block whose words changed is read again by the free rules now (so the clock is right),
+        and by the model at the next split: its stored reading is dropped."""
+        item = self.items[at]
+        for key in ("for_version", "by"):
+            item.pop(key, None)
+        nxt = self.items[at + 1] if at + 1 < len(self.items) else None
+        reading = beats.read_block(str(item.get("text") or ""), sceneplan.item_of(at + 1, nxt) if nxt else None)
+        item["screen"], item["events"] = reading.screen, reading.events
+
+    def _remember_removal(self, at: int, removed: dict[str, Any]) -> None:
+        """A person took an implied step out: the phone line it belongs to remembers, so a re-split
+        never brings it back (`contracts.bridges`)."""
+        kind = str(removed["bridge"])
+        pool = range(at, len(self.items)) if kind == bridges.ANSWER_PHONE else range(at - 1, -1, -1)
+        for p in pool:
+            if self.items[p]["kind"] == BlockKind.DIALOGUE.value:
+                self.items[p]["skip_bridges"] = sorted({*self.items[p].get("skip_bridges", []), kind})
+                break
 
     def _op_block_insert(self, op: Op, addr: Addr, locks: bool) -> OpResult:
         want = _int(op.get("block"), "block")
@@ -594,6 +637,8 @@ class ScenePlanKernel:
         i = self._shot_of_block(pos - 1) if pos > 0 else 0
         self.items.insert(pos, item)
         self._tokens.insert(pos, None)
+        if kind == BlockKind.ACTION.value:
+            self._reread(pos)
         self.shots[i]["end"] += 1
         for later in self.shots[i + 1:]:
             later["start"] += 1
@@ -611,6 +656,8 @@ class ScenePlanKernel:
         shot = self.shots[i]
         handle, removed = shot["_h"], self.items.pop(b)
         self._tokens.pop(b)
+        if removed.get("implied") and removed.get("bridge"):
+            self._remember_removal(b, removed)
         shot["end"] -= 1
         for later in self.shots[i + 1:]:
             later["start"] -= 1

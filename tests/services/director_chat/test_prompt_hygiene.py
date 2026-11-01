@@ -15,8 +15,9 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
-from director_chat.engine import agents, conductor, turn
+from director_chat.engine import agents, conductor, options, turn
 
+from contracts import director_capabilities as caps
 from tests.services.director_chat.conftest import DirectorLLM, FakeStore, fixture_scene, tool_call
 from tests.services.director_chat.test_turn import payload, plan_answer
 
@@ -25,11 +26,15 @@ STATIC = {
     "conductor": conductor.SYSTEM,
     "advisor": agents.ADVISOR_SYSTEM,
     "reply": turn.REPLY_SYSTEM,
+    "options": options.SYSTEM,
     **{f"specialist:{a}": f"{agents.PRIMER}\n\n{agents.CHARTER[a]}" for a in agents.CHARTER},
 }
 MONEY = re.compile(r"\$|\bUSD\b|\bLKR\b|\bRs\.?\s|\bprice|\bcredit|\bcost|\bbilled|\bpremium", re.I)
-# Raised from 2600 when the conductor learned the script, a shot's cast, checks and DoP note (now 3.2k chars).
-BUDGET_CHARS = 3300
+# Raised from 2600 when the conductor learned the script, a shot's cast, checks and DoP note, and from 3300
+# when the capability registry (the operations plus what this chat cannot do) moved into the prompts
+# (plan/2026-11-01c): the registry is one list, rendered three times, instead of three hand-written ones. Raised
+# again to 5000 for the translate lane (Phase 4): one more lane and its fields.
+BUDGET_CHARS = 5000
 
 
 @pytest.mark.parametrize("name", sorted(STATIC))
@@ -98,3 +103,23 @@ def test_tools_are_read_only():
     for d in DEFINITIONS:
         props = d["function"]["parameters"]["properties"]
         assert not {"production_id", "scene_id", "production", "scene"} & set(props)
+
+
+def test_the_rendered_registry_is_byte_identical_and_sits_in_every_prompt_that_needs_it():
+    for scope in ("conductor", "options", "reply"):
+        assert caps.render_for_prompt(scope) == caps.render_for_prompt(scope)  # cached system prompts need this
+    assert caps.render_for_prompt("conductor") in conductor.SYSTEM
+    assert caps.render_for_prompt("options") in options.SYSTEM
+    assert caps.render_for_prompt("reply") in turn.REPLY_SYSTEM
+    assert "<<REGISTRY>>" not in conductor.SYSTEM + options.SYSTEM + turn.REPLY_SYSTEM
+
+
+def test_the_registry_text_names_every_operation_and_every_impossible_request():
+    conducting = caps.render_for_prompt("conductor")
+    for c in caps.CAPABILITIES:
+        assert all(op in conducting for op in c.ops), c.id
+    for n in caps.NOT_HERE:
+        assert n.id in conducting and n.route in caps.render_for_prompt("reply")
+    options_text = caps.render_for_prompt("options")
+    # a person's own operations (the script, marks) never appear in what an option may carry
+    assert not any(op in options_text for c in caps.CAPABILITIES if c.person_only for op in c.ops)

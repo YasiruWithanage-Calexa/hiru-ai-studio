@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v8.sql` | **The newest schema** (everything in v7 plus `scene_looks`: the look of a character a scene uses), whole. Run it once on an empty project. |
+| `schema_v9.sql` | **The newest schema** (everything in v8 plus `shots.intent`, `scenes.coverage`, `scenes.reading` (plan/2026-11-01d), `first_frames.checks`, the `pending_actions` table and `dialogue_lines.source_text` / `source_lang`: plan/2026-11-01 and 2026-11-01c), whole. Run it once on an empty project. |
+| `upgrade_v8_to_v9.sql` | Moves a project on v8 to v9 (four JSON columns, the `pending_actions` table and the two source columns on `dialogue_lines`). Run once, only on such a project. |
+| `schema_v8.sql` | Everything in v7 plus `scene_looks` (the look of a character a scene uses), kept for reference. |
 | `upgrade_v7_to_v8.sql` | Moves a project on v7 to v8 (the `scene_looks` table). Run once, only on such a project. |
 | `schema_v7.sql` | Everything in v6 plus `canon_looks` (what a character wears per stretch of episodes), kept for reference. |
 | `upgrade_v6_to_v7.sql` | Moves a project on v6 to v7 (the `canon_looks` table). Run once, only on such a project. |
@@ -30,6 +32,17 @@ empty database and comparing the dump with the one the migrations build (identic
 running the 94 database tests and Supabase's advisor check on it (all pass). v1 plus
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
+
+## Moving a project from v8 to v9
+
+1. **SQL Editor:** paste `upgrade_v8_to_v9.sql` and run it, once. It runs as one transaction.
+2. Check: `select intent from public.shots limit 1;` returns `{}` (or no rows), and `select count(*) from public.pending_actions;` returns 0. (If v9 was already run before 2026-11-01c, run only the `pending_actions` part of `upgrade_v8_to_v9.sql`; until then the director chat answers every "i confirm" with "There is nothing waiting to apply." Likewise for the two `source_*` columns on `dialogue_lines`: run only that `alter table`; until then a translation can be shown but not applied, because saving the line fails on the unknown column.)
+3. Restart the API and the `shot_producer` and `frame_render` functions (they read and write the
+   new columns). Until it is applied, writing an intent or a frame's checks fails.
+
+If v9 was already run before plan/2026-11-01d, run only `alter table public.scenes add column if not exists reading jsonb not null default '{}'::jsonb;` from `upgrade_v8_to_v9.sql`; until then the split cannot write a scene's reading (the scene's shots are not written either, because the same update carries it) and the reading endpoints fail on the unknown column. Restart the API and the `script_split`, `director_chat`, `shot_producer` and `frame_render` functions.
+
+v9 was **not** verified with a dump comparison or the database tests (no Docker).
 
 ## Moving a project from v7 to v8
 

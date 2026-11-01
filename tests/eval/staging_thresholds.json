@@ -1,0 +1,16 @@
+{
+  "_about": "Floors for scripts/eval_staging.py. `rules` is checked offline by tests/services/shot_producer/test_eval_staging.py. `model` is empty until a run with OPENAI__API_KEY records it (--update-thresholds). The two rules-mode misses are the unmarked calls: only the intent agent can catch them. `ceilings` are counts that must stay at or under the number given, in every mode (plan/2026-11-01b): shots that hold more than they can show, a voice heard before its source is shown, a thought that reaches the camera. info_carried is a floor like the rest.",
+  "rules": {
+    "heard_kept_out": 0.818,
+    "seen_shown": 1.0,
+    "speaker_framed": 1.0,
+    "size_variety": 1.0,
+    "info_carried": 0.8
+  },
+  "model": {},
+  "ceilings": {
+    "crowded_shots": 0,
+    "voice_before_source": 0,
+    "inner_filmed": 0
+  }
+}

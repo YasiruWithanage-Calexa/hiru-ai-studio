@@ -1,5 +1,11 @@
 """One shot_producer job: design the shots that need it, and (mode `prompt`) write their prompts.
 
+Per scene, in order (plan/2026-11-01): the INTENT agent says what each shot is for and who is
+seen or only heard, and writes the scene's coverage plan; the DoP designs the scene in one call;
+a REVIEW reads the drafts against the intent and the free staging checks, and at most ONE
+revision is kept where it fixes more than it breaks. The job opens by naming the scenes' CRAFT
+PROBLEMS, which steer the technique lookup.
+
     state.mode        "design" (default) | "prompt"
     state.scene_ids   scenes to work on, or
     state.shot_ids    shots to work on (their scenes are read whole: a scene is designed as one)
@@ -21,8 +27,8 @@ from typing import Any, Protocol
 from uuid import UUID
 
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
-from contracts.producer import prompt_text
-from shot_producer.engine import serialize, shots, techniques
+from contracts.producer import CameraSettings, prompt_text
+from shot_producer.engine import critique, intent, serialize, shots, techniques
 from shot_producer.engine.continuity import ContinuityLedger, carried_state
 from shot_producer.engine.model import (
     ProductionInput,
@@ -30,11 +36,14 @@ from shot_producer.engine.model import (
     ShotInput,
     design_stale,
     production_input,
+    restage,
     scene_input,
 )
 
 _logger = logging.getLogger(__name__)
 AGENT_DP = "director_of_photography"
+AGENT_INTENT = "first_assistant_director"
+AGENT_REVIEW = "design_review"
 AGENT_PROMPT = "prompt_writer"
 VIDEO_MODEL = "Veo 3.1"
 Row = dict[str, Any]
@@ -43,6 +52,7 @@ Row = dict[str, Any]
 class StoreLike(Protocol):
     def production(self, production_id: UUID) -> Row | None: ...
     def scenes(self, production_id: UUID, scene_ids: list[str]) -> list[Row]: ...
+    def neighbours(self, scene: Row) -> tuple[Row | None, Row | None]: ...
     def shots(self, scene_id: str) -> list[Row]: ...
     def shot_scenes(self, production_id: UUID, shot_ids: list[str]) -> list[str]: ...
     def lines(self, scene_id: str) -> list[Row]: ...
@@ -52,6 +62,8 @@ class StoreLike(Protocol):
     def last_prompt_version(self, shot_id: str) -> int: ...
     def techniques(self, query: str, embedding: list[float] | None, k: int = 4) -> list[Row]: ...
     def save_design(self, shot_id: str, ir: Row, design: Row) -> None: ...
+    def save_intent(self, shot_id: str, intent: Row) -> None: ...
+    def save_coverage(self, scene_id: str, coverage: Row) -> None: ...
     def add_prompt(self, row: Row) -> None: ...
     def audit(self, row: Row) -> None: ...
 
@@ -72,25 +84,116 @@ def _now() -> str:
     return datetime.now(UTC).isoformat()
 
 
+def _scene_text(scene: SceneInput) -> str:
+    actions = [i.text.strip() for s in scene.shots for i in s.items if i.kind == "action" and i.text.strip()]
+    heard = sorted({c.name for s in scene.shots for c in s.heard})
+    return (f"SCENE {scene.number}: {scene.title or scene.heading}\n" + " / ".join(actions[:8])
+            + (f"\nHeard but not seen: {', '.join(heard)}" if heard else ""))
+
+
 def _palette(store: StoreLike, llm: LLMLike, scenes: list[SceneInput], targets: set[str] | None) -> str:
-    intents = [s.title for sc in scenes for s in sc.shots if s.title and (targets is None or s.id in targets)]
+    """Craft problems first (they are the sharpest queries), then shot titles and headings."""
+    ask = (lambda system, user: llm.json(tier="medium", phase="shot_producer.craft", system=system, user=user,
+                                         schema_name="craft_problems", schema=techniques.ARTICULATE_SCHEMA)
+           ) if llm.enabled else None
+    problems = techniques.articulate(ask, [_scene_text(sc) for sc in scenes])
+    titles = [s.title for sc in scenes for s in sc.shots if s.title and (targets is None or s.id in targets)]
+    intents = [*problems, *titles]
     intents += [sc.heading for sc in scenes]
-    return techniques.palette(intents, "Sri Lankan television drama", store.techniques,
-                              (lambda q: llm.embed(q, phase="shot_producer.techniques")) if llm.enabled else None)
+    palette = techniques.palette(intents, "Sri Lankan television drama", store.techniques,
+                                 (lambda q: llm.embed(q, phase="shot_producer.techniques")) if llm.enabled else None)
+    return "\n\n".join(b for b in (techniques.problems_block(problems), palette) if b)
+
+
+def _drop_agent_intent(shot: ShotInput) -> None:
+    """An intent about to be rewritten must not steer who the rules think is seen."""
+    row_intent = shot.row.get("intent") or {}
+    if row_intent and row_intent.get("by") != "person":
+        shot.row = {**shot.row, "intent": {}}
+
+
+def write_intents(store: StoreLike, llm: LLMLike, scene: SceneInput, wanted: list[ShotInput], prod: ProductionInput,
+                  canon: list[Row], *, force: bool) -> int:
+    """Intents for the wanted shots that need one, and the scene's coverage plan when it needs one.
+    A person's intent or plan is never replaced. → how many intents were written."""
+    def agent_owned(shot: ShotInput) -> bool:
+        current = shot.intent
+        return current is None or current.by != "person"
+
+    need = [s for s in wanted if agent_owned(s) and (force or s.intent_needed())]
+    current_plan = scene.plan
+    plan_needed = scene.plan_needed() or (force and (current_plan is None or current_plan.by != "person"))
+    if not need and not plan_needed:
+        return 0
+    for s in need:
+        _drop_agent_intent(s)
+        restage(s, scene, canon, prod)
+    # The plan is about the whole scene, so the model reads every shot when it writes one.
+    asked = scene.shots if plan_needed else need
+    written, plan = intent.write(llm, scene, asked, prod, plan=plan_needed)
+    for s in need:
+        it = written[s.number]
+        store.save_intent(s.id, it.model_dump())
+        s.row = {**s.row, "intent": it.model_dump()}
+        restage(s, scene, canon, prod)
+    if plan is not None:
+        store.save_coverage(scene.id, plan.model_dump())
+        scene.row = {**scene.row, "coverage": plan.model_dump()}
+    return len(need)
+
+
+def _design_row(shot: ShotInput, ir: Row, rec: CameraSettings, why: str, planner: str, on_screen: list[str],
+                job_id: str) -> Row:
+    it = shot.intent
+    return {"recommended": rec.model_dump(), "rationale": why, "planner": planner,
+            "pins": shot.pins.model_dump(), "designed_at": _now(), "job_id": job_id,
+            "missing": shots.get_schema().missing_keys(ir), "on_screen": on_screen,
+            "intent": it.stamp() if it is not None else ""}
 
 
 def design_scene(scene: SceneInput, group: list[ShotInput], prod: ProductionInput, llm: LLMLike,
-                 ledger: ContinuityLedger, prefix: str, job_id: str) -> list[tuple[ShotInput, Row, Row]]:
-    """→ [(shot, ir, design)] for every shot in `group`, by model where it answered, else by rules."""
+                 ledger: ContinuityLedger, prefix: str, job_id: str,
+                 canon: list[Row] | None = None) -> list[tuple[ShotInput, Row, Row]]:
+    """→ [(shot, ir, design)] for every shot in `group`, by model where it answered, else by rules.
+    A model design is reviewed once; a shot's revision is kept only when the free checks find no
+    more problems in it than in the first draft."""
+    characters = [c for c in canon or [] if c.get("kind") == "character"]
     answered = shots.design_by_model(llm, prefix, scene, group, ledger) if llm.enabled else {}
-    out = []
+    drafts: dict[int, tuple[Row, CameraSettings, str, str, list[str]]] = {}
     for shot in group:
         entry = answered.get(shot.number)
-        planner = "model" if entry else "rules"
-        ir, rec, why = shots.finish(entry or shots.design_by_rules(scene, shot), shot, scene, prod)
-        design = {"recommended": rec.model_dump(), "rationale": why, "planner": planner,
-                  "pins": shot.pins.model_dump(), "designed_at": _now(), "job_id": job_id,
-                  "missing": shots.get_schema().missing_keys(ir)}
+        raw = entry or shots.design_by_rules(scene, shot)
+        ir, rec, why = shots.finish(raw, shot, scene, prod)
+        drafts[shot.number] = (ir, rec, why, "model" if entry else "rules", shots.on_screen_ids(raw, shot))
+
+    review: Row = {}
+    modelled = [s for s in group if s.number in answered]
+    if modelled:
+        free = [f"{s.code}: {p}" for s in modelled
+                for p in critique.free_problems(s, drafts[s.number][0], drafts[s.number][4], characters)]
+        free += critique.scene_coverage_problems(scene, {
+            **{s.number: s.camera(scene) for s in scene.shots}, **{n: d[1] for n, d in drafts.items()}})
+        notes = critique.review(llm, scene, [(s, drafts[s.number][0], drafts[s.number][4]) for s in modelled], free)
+        if notes:
+            review = {"notes": notes, "revised": []}
+            again = shots.design_by_model(llm, prefix, scene, modelled, ledger, notes=notes)
+            for s in modelled:
+                entry = again.get(s.number)
+                if not entry:
+                    continue
+                ir, rec, why = shots.finish(entry, s, scene, prod)
+                on = shots.on_screen_ids(entry, s)
+                before = len(critique.free_problems(s, drafts[s.number][0], drafts[s.number][4], characters))
+                after = len(critique.free_problems(s, ir, on, characters))
+                if after <= before:
+                    drafts[s.number] = (ir, rec, why, "model", on)
+                    review["revised"].append(s.code)
+    out = []
+    for shot in group:
+        ir, rec, why, planner, on = drafts[shot.number]
+        design = _design_row(shot, ir, rec, why, planner, on, job_id)
+        if review:
+            design["review"] = review
         out.append((shot, ir, design))
     return out
 
@@ -138,24 +241,41 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
     scenes = []
     for row in store.scenes(production_id, scene_ids):
         sid = str(row["id"])
-        scenes.append((row, scene_input(row, store.shots(sid), store.lines(sid), canon, prod)))
+        scenes.append((row, scene_input(row, store.shots(sid), store.lines(sid), canon, prod,
+                                        store.neighbours(row))))
 
     ledger = ContinuityLedger(prod.cast)
     prefix: str | None = None
-    designed = prompts = 0
+    designed = prompts = intents = 0
     skipped: list[str] = []
     for row, scene in scenes:
         label = f"Scene {scene.number}"
-        group = [s for s in scene.shots if (targets is None or s.id in targets) and (force or design_stale(s, prod))]
+        wanted_design = [s for s in scene.shots if (targets is None or s.id in targets)]
+        if any(force or design_stale(s, prod) for s in wanted_design):
+            written = write_intents(store, llm, scene, wanted_design, prod, canon, force=force)
+            if written:
+                intents += written
+                jobs.event(job_id, JobEventType.PROGRESS,
+                           {"text": f"{label}: what each shot is for, for {written} shots", "scene_id": scene.id},
+                           agent=AGENT_INTENT)
+        group = [s for s in wanted_design if force or design_stale(s, prod)]
         if group:
             if prefix is None and llm.enabled:
                 prod.techniques = _palette(store, llm, [sc for _, sc in scenes], targets)
                 prefix = shots.production_block(prod)
             jobs.event(job_id, JobEventType.PROGRESS, {"text": f"{label}: designing {len(group)} shots",
                                                        "scene_id": scene.id}, agent=AGENT_DP)
-            for shot, ir, design in design_scene(scene, group, prod, llm, ledger, prefix or "", str(job_id)):
+            results = design_scene(scene, group, prod, llm, ledger, prefix or "", str(job_id), canon)
+            review = next((d.get("review") for _, _, d in results if d.get("review")), None)
+            if review:
+                jobs.event(job_id, JobEventType.PROGRESS,
+                           {"text": f"{label}: review notes: " + " · ".join(review["notes"])
+                                    + (f" (revised {', '.join(review['revised'])})" if review["revised"] else ""),
+                            "scene_id": scene.id}, agent=AGENT_REVIEW)
+            for shot, ir, design in results:
                 store.save_design(shot.id, ir, design)
                 shot.row = {**shot.row, "ir": ir, "design": design}
+                restage(shot, scene, canon, prod)
                 designed += 1
                 jobs.event(job_id, JobEventType.PROGRESS,
                            {"text": f"{shot.code}: {design['recommended']['lens']} · "
@@ -186,6 +306,8 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
         jobs.event(job_id, JobEventType.WARNING, {"text": note}, agent=AGENT_PROMPT)
 
     result: Row = {"designed": designed, "prompts": prompts, "skipped": len(skipped)}
+    if intents:
+        result["intents"] = intents
     if designed or prompts:
         store.audit({"production_id": str(production_id), "actor_user_id": str(payload.actor_user_id),
                      "actor_agent": "shot_producer", "action": f"shots.{mode}", "entity": "job",

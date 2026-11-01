@@ -1,12 +1,14 @@
 """Supabase access for shot_producer: scenes and shots in, designs and prompt versions out."""
 from __future__ import annotations
 
+import logging
 from uuid import UUID
 
 import httpx
 
 from shot_producer.runtime.rest import Rest, Row
 
+_logger = logging.getLogger(__name__)
 _CANON = ("id,kind,code,name,aliases,locked,"
           "current:canon_versions!canon_entities_current_version_fkey(version,card,wardrobe_anchor,voice_pin)")
 _PERSONA = "id,name,specialty,style_note,charter"
@@ -30,7 +32,17 @@ class Store:
             return []
         return self.rest.select("scenes", {"production_id": f"eq.{production_id}",
                                            "id": f"in.({','.join(scene_ids)})",
-                                           "select": "*,episode:episodes(number)", "order": "number"})
+                                           "select": "*,episode:episodes(number,title,synopsis)",
+                                           "order": "number"})
+
+    def neighbours(self, scene: Row) -> tuple[Row | None, Row | None]:
+        """The scenes either side of this one in its episode, for the story context."""
+        number = int(scene.get("number") or 0)
+        rows = self.rest.select("scenes", {"episode_id": f"eq.{scene.get('episode_id')}",
+                                           "number": f"in.({number - 1},{number + 1})",
+                                           "select": "number,title,heading,script"})
+        by_number = {int(r["number"]): r for r in rows}
+        return by_number.get(number - 1), by_number.get(number + 1)
 
     def shots(self, scene_id: str) -> list[Row]:
         return self.rest.select("shots", {"scene_id": f"eq.{scene_id}", "select": "*", "order": "number"})
@@ -83,6 +95,22 @@ class Store:
     # ── writing ──────────────────────────────────────────────────────────────────────────
     def save_design(self, shot_id: str, ir: Row, design: Row) -> None:
         self.rest.patch("shots", {"id": f"eq.{shot_id}"}, {"ir": ir, "design": design})
+
+    def save_intent(self, shot_id: str, intent: Row) -> None:
+        self._save_optional("shots", shot_id, {"intent": intent})
+
+    def save_coverage(self, scene_id: str, coverage: Row) -> None:
+        self._save_optional("scenes", scene_id, {"coverage": coverage})
+
+    def _save_optional(self, table: str, row_id: str, fields: Row) -> None:
+        """A database still on schema v8 has no `intent` / `coverage` column. The design still runs
+        on what this job wrote in memory; it is just not kept (Database/README.md, v8 → v9)."""
+        try:
+            self.rest.patch(table, {"id": f"eq.{row_id}"}, fields)
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code != 400:
+                raise
+            _logger.warning("%s.%s could not be saved (schema v8?)", table, ",".join(fields))
 
     def add_prompt(self, row: Row) -> None:
         """A new prompt version; the shot moves to `prompt`. A version number taken meanwhile by

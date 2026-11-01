@@ -3,6 +3,8 @@ a crash marks the job failed and answers 200 (a re-delivery would pay for the pi
 500 only for a transient network error before any picture was asked for."""
 from __future__ import annotations
 
+import base64
+import json
 import logging
 from typing import Any
 
@@ -11,6 +13,7 @@ from pydantic import ValidationError
 
 from contracts.jobs import DispatchPayload
 from frame_render.engine import image, pipeline
+from frame_render.engine.inspect import Inspector
 from frame_render.runtime.config import Config, get_config
 from frame_render.runtime.jobs import Jobs
 from frame_render.runtime.rest import Rest
@@ -40,6 +43,37 @@ def painter(config: Config, payload: DispatchPayload, store: Store, client: Any 
     return paint
 
 
+def inspector(config: Config, payload: DispatchPayload, store: Store, client: Any = None) -> Inspector | None:
+    """The vision tier as a function (strict JSON), with a `token_usage` row per look. None without
+    a key or when switched off (`OPENAI__MODEL_VISION=""`)."""
+    if not config.vision_model:
+        return None
+    if client is None:
+        if not config.images_enabled:
+            return None
+        from openai import OpenAI
+
+        client = OpenAI(api_key=config.openai_api_key, timeout=120.0, max_retries=1)
+
+    def look(data: bytes, mime: str, system: str, user: str, schema: dict[str, Any]) -> dict[str, Any]:
+        url = f"data:{mime};base64,{base64.b64encode(data).decode()}"
+        resp = client.chat.completions.create(
+            model=config.vision_model,
+            messages=[{"role": "system", "content": system},
+                      {"role": "user", "content": [{"type": "text", "text": user},
+                                                   {"type": "image_url", "image_url": {"url": url, "detail": "low"}}]}],
+            response_format={"type": "json_schema",
+                             "json_schema": {"name": "frame_check", "schema": schema, "strict": True}})
+        usage = resp.usage
+        store.record_usage({"job_id": str(payload.job_id), "production_id": str(payload.production_id),
+                            "actor_user_id": str(payload.actor_user_id), "phase": "frame_render.vision",
+                            "model": config.vision_model, "input_tokens": usage.prompt_tokens if usage else 0,
+                            "cached_input_tokens": 0, "output_tokens": usage.completion_tokens if usage else 0})
+        return dict(json.loads(resp.choices[0].message.content or "{}"))
+
+    return look
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         payload = DispatchPayload.model_validate(request.get_json(silent=True) or {})
@@ -53,7 +87,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
     store = Store(rest)
     jobs = Jobs(rest, config.api_internal_url, config.internal_secret)
     try:
-        return pipeline.run(payload, store, jobs, painter(config, payload, store)), 200
+        return pipeline.run(payload, store, jobs, painter(config, payload, store),
+                            inspector(config, payload, store)), 200
     except httpx.TransportError:
         _logger.warning("transient network error job=%s", payload.job_id, exc_info=True)
         return {"error": "retry"}, 500

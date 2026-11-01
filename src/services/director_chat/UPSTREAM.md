@@ -77,3 +77,40 @@ since that commit in the files below.
     message does not carry. A model answer that is an edit or craft with no operations and no tasks
     is asked once more (Nova W6, `conductor.AGAIN`, appended after the message so the system prompt
     stays cacheable). The reply model reads the turn ledger after the message (Nova W2).
+
+18. **Director chat does what it says (2026-11-01, plan/2026-11-01c, Phases 0 to 3).**
+    `contracts/director_capabilities.py` is one registry of what the chat can do (operations,
+    permission, staged or not) and cannot (`NOT_HERE`, each with a route), rendered into the static
+    part of the conductor, options and reply prompts instead of three hand-written lists. The
+    conductor has a lane `cannot` {request, reason, route}; a plain `chat` answer to a request the
+    registry names (dialogue in another language) is turned into `cannot` in code (`conductor.backstop`).
+    `engine/pending.py` + the `pending_actions` table: a card that offers one edit leaves a pending
+    action, and "i confirm / do it / apply it" applies it through `choice.apply_choice` or says
+    "There is nothing waiting to apply." plus the last route; no model decides it. A reply message's
+    text block carries `advice: false` and `route` so a refusal is never "advice" for a later "do it".
+    `proposals.guard_reply` also drops offers to do something later when no card or pending action
+    waits, and replaces a sentence that says a change was made when no receipt, chosen-card effect or
+    scene state shows it. `options.propose` drops an option whose label claims a goal its operations do
+    not reach (`dialogue.si`, `shot.framing`) and relabels one that lost operations; `choice` writes the
+    card's EFFECT as its outcome ("Changed director notes on 5 shots. Dialogue words unchanged.") and
+    whether the goal was reached. The conductor prompt grew to 3.7k characters (budget 4.2k).
+
+19. **The translator, the loop breaker and the evals (2026-11-01, plan/2026-11-01c, Phases 4 to 6; decision D1
+    accepted).** The script stays in the language it was written in. Only when the person asks for the
+    dialogue in another language (any language: the request names it, `conductor.asks_for_language` /
+    `target_language` read it without a key, the model's `translate {language, code, style, shots}` reads
+    it with one) is the conductor's lane `translate`. `engine/translate.py` is the translator agent: one
+    `high`-tier strict-JSON call per 30 lines, `{line_id, text}` out, with the speaker, delivery, style and
+    the production's rules in the prompt. Code decides the rest: lines already in the language are left
+    alone, lines that have a stored source in that language go back to it with no model call, and a line
+    that did not come back in the language's script (`contracts.director_capabilities.LANGUAGES`) is left
+    out. Its output is `block.set` operations marked `translated_to`, tried on a copy of the scene
+    (`turn._stage(by="translator")`; `kernel.is_translation` is the only script write an agent may make,
+    and only there), shown as a card with every line before and after (`ChatOption.lines`), and applied
+    only by a person with EDIT_SCRIPT (button, or "i confirm it" through the pending action). Applying keeps
+    each line's first original in `dialogue_lines.source_text` / `source_lang`. `engine/loop.py`: every
+    reply records its `goal` and `met` (`TextBlock`); the same unmet goal twice in a row is answered in code
+    ("the card above is waiting", or the refusal and its route, "Asking again will not change that.").
+    `proposals.guard_reply` no longer treats a negated sentence ("nothing has been applied") as a claim.
+    `scripts/replay_director.py` gained `--k` (pass@1 and pass^k), an honesty score and ten more
+    conversations. The conductor prompt is 4.4k characters (budget 5k).

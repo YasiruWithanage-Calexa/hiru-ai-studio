@@ -1,0 +1,951 @@
+{
+ "_about": "Scenes that break naive staging (plan/2026-11-01 fix 12). Each: a cast, a script (kind, text, speaker code, delivery) and what must hold in EVERY shot: `heard` people are never on screen, `seen` people are on screen in at least one shot. scripts/eval_staging.py runs them through the shot list and the shot producer. Do not edit a case to make a change pass. From 2026-11-01b: five scenes that hold more than their words (a call that breaks a moment, a drop-pickup-run, an exit watched, a caller named only in prose, a closing thought); they are scored on crowded_shots, voice_before_source, inner_filmed and info_carried as well.",
+ "cases": [
+  {
+   "id": "phone_call_marked",
+   "heading": "EXT. KASUN'S FOOD THREE-WHEELER - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kasun",
+     "male"
+    ],
+    [
+     "C02",
+     "Anudi",
+     "female"
+    ],
+    [
+     "C03",
+     "Anudi's Father",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Kasun smiles.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Started with Rs. 5,000.",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Anudi smiles back. Suddenly, her phone rings. It is her father.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Anudi, where are you? Come home. We need to talk about your marriage.",
+     "C03",
+     "on the phone"
+    ],
+    [
+     "action",
+     "Her smile disappears.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Maybe I'll see you again.",
+     "C02",
+     ""
+    ]
+   ],
+   "heard": [
+    "C03"
+   ],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  },
+  {
+   "id": "phone_call_unmarked",
+   "heading": "EXT. KASUN'S FOOD THREE-WHEELER - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kasun",
+     "male"
+    ],
+    [
+     "C02",
+     "Anudi",
+     "female"
+    ],
+    [
+     "C03",
+     "Anudi's Father",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Anudi smiles at Kasun. Her phone rings. It is her father.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Anudi, where are you? Come home now.",
+     "C03",
+     ""
+    ],
+    [
+     "action",
+     "Her smile disappears.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C03"
+   ],
+   "seen": [
+    "C02"
+   ]
+  },
+  {
+   "id": "voice_from_kitchen",
+   "heading": "INT. KAMALA'S HOUSE - FRONT ROOM - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Kamala",
+     "female"
+    ],
+    [
+     "C02",
+     "Nimal",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Nimal sits alone at the table, a cold cup of tea in front of him.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Are you eating or not?",
+     "C01",
+     "off screen"
+    ],
+    [
+     "action",
+     "Nimal does not answer. He pushes the cup away.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C01"
+   ],
+   "seen": [
+    "C02"
+   ]
+  },
+  {
+   "id": "radio_news",
+   "heading": "INT. BUS - DAY",
+   "cast": [
+    [
+     "C01",
+     "Newsreader",
+     "male"
+    ],
+    [
+     "C02",
+     "Sunil",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Sunil dozes against the bus window.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Heavy rain is expected across the Western Province tonight.",
+     "C01",
+     "on the radio"
+    ],
+    [
+     "action",
+     "Sunil opens his eyes and looks out at the darkening sky.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C01"
+   ],
+   "seen": [
+    "C02"
+   ]
+  },
+  {
+   "id": "tv_voice",
+   "heading": "INT. PERERA HOUSE - LIVING ROOM - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Teledrama Hero",
+     "male"
+    ],
+    [
+     "C02",
+     "Mrs Perera",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Mrs Perera knits in front of the television.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "I will never leave this village.",
+     "C01",
+     "on tv"
+    ],
+    [
+     "action",
+     "She looks up, then back to her knitting, smiling.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C01"
+   ],
+   "seen": [
+    "C02"
+   ]
+  },
+  {
+   "id": "narrator",
+   "heading": "EXT. PADDY FIELD - DAWN",
+   "cast": [
+    [
+     "C01",
+     "Narrator",
+     "female"
+    ],
+    [
+     "C02",
+     "Kamal",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Mist over the paddy field. Kamal walks the bund with a hoe on his shoulder.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Every morning he walked the same path his father had walked.",
+     "C01",
+     "v.o."
+    ]
+   ],
+   "heard": [
+    "C01"
+   ],
+   "seen": [
+    "C02"
+   ]
+  },
+  {
+   "id": "flashback_voice",
+   "heading": "INT. TEMPLE - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kamala",
+     "female"
+    ],
+    [
+     "C02",
+     "Kamala's Mother",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Kamala lights an oil lamp and closes her eyes.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Never let anyone tell you who you are.",
+     "C02",
+     "voice over"
+    ],
+    [
+     "action",
+     "A tear runs down Kamala's cheek.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C02"
+   ],
+   "seen": [
+    "C01"
+   ]
+  },
+  {
+   "id": "intercom",
+   "heading": "INT. OFFICE - DAY",
+   "cast": [
+    [
+     "C01",
+     "Mr Silva",
+     "male"
+    ],
+    [
+     "C02",
+     "Receptionist",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Mr Silva signs a stack of papers at his desk.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Sir, your daughter is here to see you.",
+     "C02",
+     "intercom"
+    ],
+    [
+     "action",
+     "Mr Silva puts down his pen.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Send her in.",
+     "C01",
+     ""
+    ]
+   ],
+   "heard": [
+    "C02"
+   ],
+   "seen": [
+    "C01"
+   ]
+  },
+  {
+   "id": "letter_read_aloud",
+   "heading": "INT. NIMAL'S ROOM - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Nimal",
+     "male"
+    ],
+    [
+     "C02",
+     "Sandya",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Nimal unfolds a letter under the lamp.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "By the time you read this, I will be in Dubai.",
+     "C02",
+     "v.o."
+    ],
+    [
+     "action",
+     "Nimal crushes the letter in his fist.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C02"
+   ],
+   "seen": [
+    "C01"
+   ]
+  },
+  {
+   "id": "shout_from_outside",
+   "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kamala",
+     "female"
+    ],
+    [
+     "C02",
+     "Postman",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Kamala fries sprats. A voice shouts from outside the gate.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Letter for Kamala!",
+     "C02",
+     ""
+    ],
+    [
+     "action",
+     "Kamala wipes her hands and hurries to the door.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C02"
+   ],
+   "seen": [
+    "C01"
+   ]
+  },
+  {
+   "id": "sleeping_listener",
+   "heading": "INT. HOSPITAL WARD - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Amma",
+     "female"
+    ],
+    [
+     "C02",
+     "Nimal",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Amma sleeps in the hospital bed. Nimal sits beside her and holds her hand.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "I'm here, Amma. I'm not going anywhere.",
+     "C02",
+     "whispering"
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  },
+  {
+   "id": "two_hander",
+   "heading": "EXT. HARBOUR - DUSK",
+   "cast": [
+    [
+     "C01",
+     "Kamala",
+     "female"
+    ],
+    [
+     "C02",
+     "Nimal",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Kamala waits on the jetty. Nimal walks towards her.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "You came back.",
+     "C01",
+     ""
+    ],
+    [
+     "dialogue",
+     "I said I would.",
+     "C02",
+     ""
+    ],
+    [
+     "dialogue",
+     "You said that ten years ago.",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Nimal looks away at the boats.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  },
+  {
+   "id": "object_insert",
+   "heading": "INT. POST OFFICE - DAY",
+   "cast": [
+    [
+     "C01",
+     "Clerk",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "An envelope with a foreign stamp lies on the counter.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "The Clerk stamps it twice and drops it in a sack.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01"
+   ]
+  },
+  {
+   "id": "mirror",
+   "heading": "INT. ANUDI'S BEDROOM - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Anudi",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Anudi looks at herself in the mirror, still in her wedding saree.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Is this really what you want?",
+     "C01",
+     "to herself"
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01"
+   ]
+  },
+  {
+   "id": "call_both_sides",
+   "heading": "EXT. BUS STAND - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Anudi",
+     "female"
+    ],
+    [
+     "C02",
+     "Anudi's Father",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Anudi stands at the empty bus stand, phone at her ear.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Where are you? It is past ten.",
+     "C02",
+     "over the phone"
+    ],
+    [
+     "dialogue",
+     "I'm coming, Thaththa. The bus is late.",
+     "C01",
+     ""
+    ],
+    [
+     "dialogue",
+     "I am sending the driver.",
+     "C02",
+     "over the phone"
+    ]
+   ],
+   "heard": [
+    "C02"
+   ],
+   "seen": [
+    "C01"
+   ]
+  },
+  {
+   "id": "call_breaks_a_moment",
+   "heading": "EXT. KASUN'S FOOD THREE-WHEELER - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kasun",
+     "male"
+    ],
+    [
+     "C02",
+     "Anudi",
+     "female"
+    ],
+    [
+     "C03",
+     "Anudi's Father",
+     "male"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Kasun stirs a pot of rice. Anudi walks up to the stall.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Is this the place everyone talks about?",
+     "C02",
+     ""
+    ],
+    [
+     "dialogue",
+     "Only if the rice is hot.",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Kasun slides a plate across the counter.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Started with five thousand rupees. I am trying to make it bigger.",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Anudi smiled back. Suddenly, her phone rang. It is her father (voice only).",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Anudi, where are you? Come home. We need to talk about your marriage.",
+     "C03",
+     "on the phone"
+    ],
+    [
+     "action",
+     "Her smile disappeared. She looked at Kasun one more time.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "I have to go.",
+     "C02",
+     ""
+    ],
+    [
+     "action",
+     "She walked away. Kasun watched her go.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "He has no idea that this meeting is about to change his life.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C03"
+   ],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  },
+  {
+   "id": "drop_pickup_run",
+   "heading": "EXT. STREET - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kasun",
+     "male"
+    ],
+    [
+     "C02",
+     "Anudi",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Anudi hurries past the stall and drops her phone.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "Kasun picks it up and runs after her.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Miss! Your phone!",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Anudi turns and smiles.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Thank you.",
+     "C02",
+     ""
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  },
+  {
+   "id": "exit_watched",
+   "heading": "INT. KASUN'S KITCHEN - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Kasun",
+     "male"
+    ],
+    [
+     "C02",
+     "Anudi",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "dialogue",
+     "Do not wait up for me.",
+     "C02",
+     ""
+    ],
+    [
+     "action",
+     "She walks out of the house and crosses the yard to the gate.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "Kasun watches her from the window.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "The gate closes.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  },
+  {
+   "id": "caller_named_in_prose",
+   "heading": "INT. HOSPITAL CORRIDOR - NIGHT",
+   "cast": [
+    [
+     "C01",
+     "Nimal",
+     "male"
+    ],
+    [
+     "C02",
+     "Kamala",
+     "female"
+    ],
+    [
+     "C03",
+     "Dilini",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Nimal paces the corridor. His phone buzzes. It is Dilini, his sister.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Is she awake yet?",
+     "C03",
+     "on the phone"
+    ],
+    [
+     "action",
+     "Nimal lowers his voice and turns to the door of the ward.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Not yet.",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Kamala sleeps in the bed beyond the glass.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [
+    "C03"
+   ],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  },
+  {
+   "id": "closing_thought",
+   "heading": "EXT. HARBOUR - DUSK",
+   "cast": [
+    [
+     "C01",
+     "Nimal",
+     "male"
+    ],
+    [
+     "C02",
+     "Kamala",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "dialogue",
+     "The boats go out at first light.",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Kamala nods and folds the net.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "She knew then that nothing would be the same.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "Nimal thought about the years they had waited.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01",
+    "C02"
+   ]
+  }
+ ]
+}

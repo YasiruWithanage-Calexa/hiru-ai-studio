@@ -15,14 +15,15 @@ from contracts.producer import (
     CastMember,
     PersonEdits,
     Pins,
-    cast_in,
     default_camera,
     pins_for,
+    script_hash,
     shot_items,
     stale_reasons,
 )
 from contracts.production import ProductionSettings
 from contracts.shotplan import Item
+from contracts.staging import ScenePlan, ShotIntent, Staging, intent_basis, shot_cast, staging
 from contracts.veo import ASPECT_RATIO, Orientation
 
 Row = dict[str, Any]
@@ -52,16 +53,38 @@ class ShotInput:
     beat_notes: list[Row]  # the director's notes per beat (camera, director_line, action)
     items: list[Item]  # the script blocks this shot plays
     lines: list[Line]
-    cast: list[CastMember]  # characters in the shot, canon order
+    cast: list[CastMember]  # characters in the shot, seen or heard, canon order
     words: int
     word_target: int
     version: int
     row: Row  # the stored shot (design, ir, camera_overrides ...)
     pins: Pins
+    staged: Staging = field(default_factory=Staging)  # who is seen, who is only heard
+    basis: str = ""  # contracts.staging.intent_basis: what an intent must be written against
 
     @property
     def code(self) -> str:
         return f"S{self.number:02d}"
+
+    @property
+    def intent(self) -> ShotIntent | None:
+        return ShotIntent.of(self.row)
+
+    @property
+    def seen(self) -> list[CastMember]:
+        return [c for c in self.cast if c.id in self.staged.on_screen]
+
+    @property
+    def heard(self) -> list[CastMember]:
+        return [c for c in self.cast if c.id in self.staged.heard_only]
+
+    def intent_needed(self) -> bool:
+        """No intent yet, or an agent's intent written against other material. A person's own
+        intent is never replaced by an agent."""
+        intent = self.intent
+        if intent is None:
+            return True
+        return intent.by != "person" and intent.stale(self.basis)
 
     @property
     def dop_note(self) -> str:
@@ -99,6 +122,22 @@ class SceneInput:
     location: CastMember | None
     location_look: str
     shots: list[ShotInput] = field(default_factory=list)
+    title: str = ""
+    note: str = ""
+    script_version: int = 1
+    episode_title: str = ""
+    synopsis: str = ""  # the episode's
+    before: str = ""  # the scene before this one, in a line
+    after: str = ""  # the scene after it
+    row: Row = field(default_factory=dict)
+
+    @property
+    def plan(self) -> ScenePlan | None:
+        return ScenePlan.of(self.row)
+
+    def plan_needed(self) -> bool:
+        plan = self.plan
+        return plan is None or (plan.by != "person" and plan.made_for != self.script_version)
 
 
 @dataclass
@@ -134,23 +173,39 @@ def production_input(row: Row, canon: list[Row], persona: Row | None) -> Product
                            charter=str((persona or {}).get("charter") or ""))
 
 
-def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row], prod: ProductionInput) -> SceneInput:
+def scene_line(row: Row | None) -> str:
+    """A neighbouring scene in one line: number, title or heading, and its first action."""
+    if not row:
+        return ""
+    first = next((str(b.get("text") or "").strip() for b in row.get("script") or []
+                  if b.get("kind") == "action" and str(b.get("text") or "").strip()), "")
+    head = str(row.get("title") or row.get("heading") or "").strip()
+    return " ".join(f"Scene {row.get('number')}: {head}. {first}".split())[:300]
+
+
+def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row], prod: ProductionInput,
+                neighbours: tuple[Row | None, Row | None] = (None, None)) -> SceneInput:
     """The scene with each shot's own blocks, lines, cast and current pins."""
-    items = sceneplan.items_for(scene.get("script") or [], lines)
+    items = sceneplan.scene_items(scene, lines)
     characters = [c for c in canon if c["kind"] == "character"]
     versions = {m.id: m.version for m in prod.by_id.values()}
     by_line = {str(ln["id"]): ln for ln in lines}
     location = prod.by_id.get(str(scene.get("location_id"))) if scene.get("location_id") else None
     loc_row = next((c for c in canon if location and str(c["id"]) == location.id), None)
     look = str(((loc_row or {}).get("current") or {}).get("card", {}).get("look") or "") if loc_row else ""
+    episode = scene.get("episode") or {}
     out = SceneInput(id=str(scene["id"]), number=int(scene["number"]),
-                     episode_number=int((scene.get("episode") or {}).get("number") or 0),
+                     episode_number=int(episode.get("number") or 0),
                      heading=str(scene.get("heading") or ""), time_of_day=str(scene.get("time_of_day") or ""),
-                     location=location, location_look=look)
+                     location=location, location_look=look, title=str(scene.get("title") or ""),
+                     note=str(scene.get("note") or ""), script_version=int(scene.get("script_version") or 1),
+                     episode_title=str(episode.get("title") or ""),
+                     synopsis=" ".join(str(episode.get("synopsis") or "").split())[:900],
+                     before=scene_line(neighbours[0]), after=scene_line(neighbours[1]), row=scene)
     for s in shots:
         own = shot_items(items, int(s["block_start"]), int(s["block_end"]))
         edits = PersonEdits.of(s)
-        cast_ids = cast_in(own, characters, edits)
+        cast_ids = shot_cast(own, characters, s)
         shot_lines = [Line(id=i.line_id or "", speaker=i.speaker, character_id=i.speaker_id, text=i.text,
                            delivery=i.delivery,
                            beat_index=(by_line.get(i.line_id or "") or {}).get("beat_index"))
@@ -166,8 +221,21 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
             words=int(s.get("words") or 0), word_target=int(s.get("word_target") or 0),
             version=int(s.get("version") or 1), row=s,
             pins=pins_for(shot_version=int(s.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
-                          versions=versions, edits=edits)))
+                          versions=versions, edits=edits),
+            staged=staging(own, characters, s, cast_ids=cast_ids),
+            basis=intent_basis(int(s.get("version") or 1), script_hash(scene, own))))
     return out
+
+
+def restage(shot: ShotInput, scene: SceneInput, canon: list[Row], prod: ProductionInput) -> None:
+    """After the shot's row changed (a new intent or design): who is in it, who is seen, and the
+    pins (an intent can put a person in the shot that the script only implies)."""
+    characters = [c for c in canon if c["kind"] == "character"]
+    ids = shot_cast(shot.items, characters, shot.row)
+    shot.cast = [prod.by_id[c] for c in ids if c in prod.by_id]
+    shot.staged = staging(shot.items, characters, shot.row, cast_ids=ids)
+    shot.pins = pins_for(shot_version=shot.version, scene=scene.row, items=shot.items, cast_ids=ids,
+                         versions={m.id: m.version for m in prod.by_id.values()}, edits=PersonEdits.of(shot.row))
 
 
 def design_stale(shot: ShotInput, prod: ProductionInput) -> list[str]:
@@ -179,4 +247,7 @@ def design_stale(shot: ShotInput, prod: ProductionInput) -> list[str]:
                             canon=prod.by_id)
     if set(Pins.model_validate(design["pins"]).canon) != set(shot.pins.canon):
         reasons.append("Different people or place in the shot.")
+    intent = shot.intent
+    if intent is not None and design.get("intent") and design["intent"] != intent.stamp():
+        reasons.append("What the shot is for changed.")
     return reasons

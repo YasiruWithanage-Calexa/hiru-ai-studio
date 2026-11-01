@@ -16,6 +16,8 @@ class Config:
     image_quality: str
     api_internal_url: str
     internal_secret: str
+    # The frame check (plan/2026-11-01 fix 8): a vision model looks at each painted frame. "" = off.
+    vision_model: str = ""
 
     @property
     def images_enabled(self) -> bool:
@@ -33,4 +35,5 @@ def get_config() -> Config:
         image_quality=env("OPENAI__IMAGE_QUALITY", "medium"),
         api_internal_url=env("API__INTERNAL_URL", "http://localhost:8000"),
         internal_secret=env("API__INTERNAL_SECRET", ""),
+        vision_model=env("OPENAI__MODEL_VISION", "gpt-5-mini"),
     )

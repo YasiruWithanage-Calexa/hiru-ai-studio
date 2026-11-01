@@ -187,6 +187,15 @@ def test_model_failure_keeps_the_rules_canon():
     assert result["created"] == 11
 
 
+def test_a_code_the_table_would_reject_gets_the_next_free_code():
+    bad = ["C4", "C-04", "C1000", "C04x", "c05"]  # model-written codes keep only their first letter's check
+    cands = [rules.candidate(CanonKind.CHARACTER, f"Person {i}", code=code) for i, code in enumerate(bad)]
+    cands.append(rules.candidate(CanonKind.CHARACTER, "Good", code="C07"))
+    p = write.plan(cands, [], production_id=str(PID), aspect_ratio="9:16", actor=None)
+    codes = [e["code"] for e, _ in p.creates]
+    assert codes == ["C01", "C02", "C03", "C04", "C05", "C07"]
+
+
 def test_critic_names_core_characters_missing_pins():
     cands = rules.merge(rules.from_index("- C09 Ravi — a fisherman, 40.", "idx"))
     assert write.critic(cands) == ["C09: no wardrobe anchor or voice in the documents yet."]

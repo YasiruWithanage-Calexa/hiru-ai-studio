@@ -11,6 +11,8 @@ re-times the scene with `contracts.shotplan`, stores the result and the messages
     plan     {"shots": [...], "issues"}    the scene's shots after this turn's edits
     message  ChatMessage                   the stored director message
     done     {"message_id", "lane"}       lane: chat | edit | craft | reshape (offered, not applied) | options
+                                          | cannot (not possible in this chat; the reply says why and where)
+                                          | translate (the dialogue in another language, offered as a card)
     error    {"message"}                   a sentence for the user, never an exception's text
 
 No prices anywhere: personas are a library, not a shop (CLAUDE.md: the UI shows no costs).
@@ -88,8 +90,18 @@ class BoardMember(BaseModel):
 
 
 class TextBlock(BaseModel):
+    """`advice` is False for a reply that offers nothing to follow up (a refusal, "nothing is waiting"): a
+    later "do it" does not turn it into a card. `route` is where the person CAN get an unmet request done;
+    a later confirmation with nothing waiting repeats it (plan/2026-11-01c)."""
+
     kind: Literal["text"] = "text"
     text: str
+    advice: bool = True
+    route: str = ""
+    # plan/2026-11-01c, Phase 5: what the person asked for this turn (an id: `dialogue.si`, `cannot:<route>`) and
+    # whether it was met. The same unmet goal on the next turn is answered "no change", not tried again.
+    goal: str = ""
+    met: bool | None = None
 
 
 class Position(BaseModel):
@@ -116,6 +128,16 @@ class DisagreementBlock(BaseModel):
     outcome: str = ""  # what that choice changed
 
 
+class OptionLine(BaseModel):
+    """One spoken line a card changes, as it was and as it would be (a translation shows every one)."""
+
+    line_id: str | None = None
+    shot: int = 0
+    speaker: str = ""
+    was: str
+    now: str
+
+
 class ChatOption(BaseModel):
     """One way to answer the person, offered as a card. `ops` is its edit, tried on a copy of the
     scene before it was offered and pinned to shot ids (as `Position.ops`); an option with no
@@ -127,6 +149,8 @@ class ChatOption(BaseModel):
     impact: str = ""  # what the edit does to the scene ("Scene 52 s → 56 s")
     ops: list[dict[str, Any]] = Field(default_factory=list)
     prompt: str = ""
+    intent: str = ""  # the goal the label claims (`contracts.director_capabilities.INTENTS`), checked before offering
+    lines: list[OptionLine] = Field(default_factory=list)  # spoken lines it changes, before and after (a translation)
 
 
 class OptionsBlock(BaseModel):
@@ -338,6 +362,7 @@ class ChoicePayload(BaseModel):
     actor_user_id: UUID
     can_edit_script: bool = False  # Permission.EDIT_SCRIPT, decided by the API like `TurnPayload`'s
     ops: list[dict[str, Any]] = Field(min_length=1)
+    intent: str = ""  # the chosen option's goal: checked on the saved scene, and said in the outcome
 
 
 class ChoiceResult(BaseModel):

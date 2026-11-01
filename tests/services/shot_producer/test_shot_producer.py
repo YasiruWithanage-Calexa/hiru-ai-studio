@@ -36,6 +36,11 @@ def run(store: FakeStore, llm: ProducerLLM | None = None, **state):
     return result, jobs
 
 
+def design_calls(llm: ProducerLLM) -> list[dict]:
+    """The DoP's calls (the intent, craft and review calls are other agents)."""
+    return [c for c in llm.calls if c["schema"] == "scene_design"]
+
+
 def designed(store: FakeStore) -> list[dict]:
     return sorted(store.shot_rows.values(), key=lambda s: s["number"])
 
@@ -47,7 +52,7 @@ def test_rules_design_every_shot_once(scene0):
     scene, lines, rows = scene0
     store = FakeStore(scene, lines, rows)
     result, jobs = run(store, scene_ids=[scene["id"]])
-    assert result == {"designed": 4, "prompts": 0, "skipped": 0} and jobs.status == "done"
+    assert result == {"designed": 4, "prompts": 0, "skipped": 0, "intents": 4} and jobs.status == "done"
     shots_ = designed(store)
     # The director's size wins; the rest suits it; light comes from the heading (dawn, interior).
     assert [s["design"]["recommended"]["framing"] for s in shots_] == ["Wide shot", "Medium close-up"] * 2
@@ -70,7 +75,8 @@ def test_model_designs_the_scene_in_one_call(scene0):
     llm = ProducerLLM({"scene_design": lambda s, u: dp_answer([1, 2, 3, 4])})
     result, _ = run(store, llm, scene_ids=[scene["id"]])
     assert result["designed"] == 4
-    assert [c["schema"] for c in llm.calls] == ["scene_design"], "one call for the whole scene"
+    assert len(design_calls(llm)) == 1, "one DoP call for the whole scene"
+    assert [c["schema"] for c in llm.calls] == ["shot_intent", "craft_problems", "scene_design", "design_review"]
     s2 = designed(store)[1]
     assert s2["design"]["planner"] == "model"
     rec = s2["design"]["recommended"]
@@ -81,7 +87,7 @@ def test_model_designs_the_scene_in_one_call(scene0):
     assert [x["id"] for x in ir["subjects"]] == [""], "Kamala is not in S02; the invented C09 is anonymous"
     assert not re.search(r"[඀-෿]", json.dumps(ir, ensure_ascii=False)), "no Sinhala in the IR"
     assert [b["time"] for b in ir["beats"]] == ["0-2s", "2-4s"]
-    assert "technique" in llm.calls[0]["user"].lower() and store.technique_queries
+    assert "technique" in design_calls(llm)[0]["user"].lower() and store.technique_queries
 
 
 def test_missing_shots_are_asked_for_again_then_fall_back(scene0):
@@ -90,8 +96,8 @@ def test_missing_shots_are_asked_for_again_then_fall_back(scene0):
     answers = [dp_answer([4, 1]), dp_answer([3, 99])]  # never S02
     llm = ProducerLLM({"scene_design": lambda s, u: answers.pop(0)})
     result, _ = run(store, llm, scene_ids=[scene["id"]])
-    assert result["designed"] == 4 and len(llm.calls) == 2
-    assert "numbered 2, 3" in llm.calls[1]["user"], "the second call asks only for what is missing"
+    assert result["designed"] == 4 and len(design_calls(llm)) == 2
+    assert "numbered 2, 3" in design_calls(llm)[1]["user"], "the second call asks only for what is missing"
     planners = [s["design"]["planner"] for s in designed(store)]
     assert planners == ["model", "rules", "model", "model"]
 
@@ -143,7 +149,7 @@ def test_prompts_need_an_accepted_frame_and_bind_the_lines_verbatim(scene0):
     store = FakeStore(scene, lines, rows)
     fid = _accept(store, rows[1]["id"])
     result, jobs = run(store, mode="prompt", shot_ids=[rows[0]["id"], rows[1]["id"]])
-    assert result == {"designed": 2, "prompts": 1, "skipped": 1}
+    assert result == {"designed": 2, "prompts": 1, "skipped": 1, "intents": 2}
     assert "S01: no accepted first frame" in jobs.texts("warning")
     p = store.prompts[0]
     assert p["version"] == 1 and p["frame_id"] == fid and p["shot_id"] == rows[1]["id"]
@@ -226,7 +232,7 @@ def test_prompt_hygiene_static_system_and_frozen_production_block():
     for scene, lines, rows in ((a, la, ra), (b, lb, rb)):
         llm = ProducerLLM({"scene_design": lambda s, u: {"shots": []}})
         run(FakeStore(scene, lines, rows), llm, scene_ids=[scene["id"]])
-        calls.append(llm.calls[0])
+        calls.append(design_calls(llm)[0])
     assert calls[0]["system"] == calls[1]["system"] == shots.SYSTEM, "byte-identical system prompt"
     head = [c["user"].split("<scene>")[0] for c in calls]
     assert head[0] == head[1] and head[0].startswith("<production>"), "frozen production block first"

@@ -23,9 +23,11 @@ from api.services import media_links
 from api.workers import task_manager
 from contracts.canon import CanonKind, CanonLook, EpisodeRange, LookCreate, LooksView, LookUpdate, name_key
 from contracts.jobs import JobKind
+from contracts.lookdraft import by_rules, look_row
 from contracts.roles import Permission
 
 router = APIRouter(prefix="/v1/productions/{production_id}/canon/{entity_id}/looks", tags=["looks"])
+drafts = APIRouter(prefix="/v1/productions/{production_id}/looks", tags=["looks"])
 ReposDep = Annotated[Repos, Depends(get_repos)]
 CanView = Annotated[ProductionAccess, Depends(require_permission(Permission.VIEW))]
 CanEdit = Annotated[ProductionAccess, Depends(require_permission(Permission.EDIT_CANON))]
@@ -35,6 +37,11 @@ _WARDROBE = ("outfit", "hair", "makeup", "accessories")
 
 class SheetStarted(BaseModel):
     job_id: UUID
+
+
+class LooksDrafted(BaseModel):
+    characters: int  # characters that got looks
+    looks: int
 
 
 def _asset_path(assets: object) -> str:
@@ -73,6 +80,29 @@ async def _unique_name(repos: Repos, entity_id: UUID, name: str, own_id: str | N
              if str(r["id"]) != own_id and name_key(r["name"]) == name_key(name)]
     if clash:
         raise HTTPException(status.HTTP_409_CONFLICT, "This character already has a look with this name.")
+
+
+@drafts.post("/draft", response_model=LooksDrafted)
+async def draft_looks(production_id: UUID, access: CanEdit, repos: ReposDep) -> LooksDrafted:
+    """Draft looks from the wardrobes on the character cards, for every character that has no look
+    yet: for a production built before the build did this. Rules only (the build asks the model);
+    drafts never reach a frame until a person has seen the sheet and marked the look ready."""
+    episodes = max((int(e["number"]) for e in await repos.episodes.list(production_id)), default=1)
+    have = {str(r["entity_id"]) for r in await repos.looks.list_for_production(production_id)}
+    made = characters = 0
+    for entity in await repos.canon.list(production_id):
+        if entity["kind"] != CanonKind.CHARACTER.value or str(entity["id"]) in have:
+            continue
+        found = by_rules((entity.get("current") or {}).get("card") or {}, episodes)
+        for look in found:
+            await repos.looks.create(look_row(str(entity["id"]), str(production_id), look, str(access.user.id)))
+        if found:
+            characters += 1
+            made += len(found)
+            await repos.audit.record(action="canon.looks_draft", entity="canon_entity", entity_id=str(entity["id"]),
+                                     actor_user_id=access.user.id, production_id=production_id,
+                                     diff={"looks": [look.name for look in found]})
+    return LooksDrafted(characters=characters, looks=made)
 
 
 @router.get("", response_model=LooksView)

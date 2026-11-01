@@ -181,6 +181,9 @@ CHECK_TOPICS: dict[str, tuple[str, ...]] = {
     "speaker_size": ("speaker", "hard to see", "size", "framing"),
     "wardrobe": ("wardrobe", "costume", "clothes", "outfit"),
     "voice_pin": ("voice",),
+    # contracts.staging: who is seen vs heard, and a scene's variety of setups
+    "staging": ("staging", "on screen", "heard", "seen", "visible"),
+    "coverage": ("coverage", "same setup", "every shot", "variety"),
 }
 
 
@@ -351,14 +354,22 @@ def _mentions(text_key: str, names: Iterable[str]) -> bool:
     return any(k and f" {k} " in padded for k in (name_key(n) for n in names))
 
 
+def pictured_text(items: Iterable[Item]) -> str:
+    """The words of a shot's blocks that the camera shows. Information ("It is her father") and a
+    thought ("He had no idea ...") name people who are not necessarily there, so they do not count
+    (plan/2026-11-01b)."""
+    return " ".join(i.text for i in items
+                    if not i.is_line and not (i.kind == "action" and i.screen in ("info", "inner")))
+
+
 def cast_in(items: Iterable[Item], characters: Sequence[Mapping[str, Any]],
             edits: PersonEdits | None = None) -> list[str]:
-    """The canon characters in a shot: who speaks in it, then who its action names (by name or
+    """The canon characters in a shot: who speaks in it, then who its action shows (by name or
     alias), in canon order, then what a person added or took out by hand (`edits`). Shared, so
     the producer pins and the API checks the same people."""
     items = list(items)
     ids = {i.speaker_id for i in items if i.is_line and i.speaker_id}
-    action = name_key(" ".join(i.text for i in items if not i.is_line))
+    action = name_key(pictured_text(items))
     for c in characters:
         if str(c["id"]) not in ids and _mentions(action, [str(c["name"]), *(c.get("aliases") or [])]):
             ids.add(str(c["id"]))
@@ -444,12 +455,13 @@ def _clean(text: Any) -> str:
 
 
 def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: str, cast: list[CastMember],
-                 references: list[str] | None = None, recommended_framing: str = "") -> str:
+                 references: list[str] | None = None, recommended_framing: str = "", unseen: str = "") -> str:
     """The image prompt for a shot's first frame, from the DP's IR and the camera as it stands.
 
     `references` label the images attached to the call, IN ORDER ("Kamala's character sheet"),
     so the prompt can say which image is which. The framing a person chose wins over the IR's
-    own composition note. Static wording first, the shot's facts after it."""
+    own composition note. Static wording first, the shot's facts after it. `cast` is who the
+    camera SEES; `unseen` says who is only heard (`contracts.staging.unseen_sentence`)."""
     frame = ir.get("first_frame") if isinstance(ir.get("first_frame"), Mapping) else {}
     subjects = frame.get("subjects") if isinstance(frame, Mapping) else None
     subject_text = "; ".join(_clean(s) for s in subjects) if isinstance(subjects, list) else _clean(subjects)
@@ -482,6 +494,8 @@ def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio:
         parts.append(f"Setting: {setting.rstrip('.')}.")
     light = (_clean(frame.get("lighting")) if isinstance(frame, Mapping) else "") or _clean(ir.get("lighting"))
     parts.append(f"Lighting: {(light or camera.lighting).rstrip('.')}.")
+    if unseen:
+        parts.append(unseen)
     parts.append("The people, place and everyday details are Sri Lankan.")
     parts.append("9:16 vertical framing." if aspect_ratio == "9:16" else f"{aspect_ratio} framing.")
     parts.append("A single still frame: no text, no watermark, no captions, no collage, no split panels.")

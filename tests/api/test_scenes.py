@@ -66,7 +66,9 @@ def test_scene_view_carries_script_shots_lines_and_timeline(world: World):
     assert [x["code"] for x in v["shots"]] == ["S01", "S02", "S03", "S04"]
     assert [x["id"] for x in v["shots"]] == [x["id"] for x in s["shots"]]
     assert [(x["start_s"], x["end_s"]) for x in v["shots"]] == [(0, 6), (6, 10), (10, 14), (14, 18)]
-    assert v["timeline"] == {"total_s": 18, "envelope_s": 60, "over_envelope_s": 0, "issues": []}
+    assert v["timeline"] == {"total_s": 18, "need_s": 18, "crowded": [], "envelope_s": 60, "over_envelope_s": 0,
+                             "issues": [], "breath_s": 0.0, "core_need_s": None}
+    assert v["reading"] is None and v["reading_stale"] is False and all(x["holds"] == [] for x in v["shots"])
     assert [b["kind"] for b in v["script"]] == ["action", "dialogue", "action", "dialogue"]
     assert v["script"][1]["speaker"] == "Nimal" and v["script"][1]["shot_id"] == v["shots"][1]["id"]
     line = v["lines"][1]
@@ -235,6 +237,26 @@ def test_a_writer_edits_a_line_and_its_shot_follows(world: World):
                             headers=world.headers(world.writer)).status_code == 409
 
 
+def test_a_translated_line_keeps_its_source_through_a_manual_edit_and_the_view_shows_it(world: World):
+    """plan/2026-11-01c, Phase 4: the director chat's translator stores the words a line was written in; a
+    person editing the script afterwards neither loses them nor needs to send them."""
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    line_id = s["lines"][1]["id"]
+    row = world.repos.lines.rows[line_id]  # type: ignore[attr-defined]
+    row |= {"source_text": "Sit down and eat, son.", "source_lang": "en"}
+    view = world.client.get(url(world, f"/scenes/{sid}"), headers=world.headers(world.writer)).json()
+    shown = next(ln for ln in view["lines"] if ln["id"] == line_id)
+    assert (shown["source_text"], shown["source_lang"]) == ("Sit down and eat, son.", "en")
+    assert all(ln["source_text"] is None for ln in view["lines"] if ln["id"] != line_id)
+    body = edit_body(view)
+    body["blocks"][3]["text"] = "වාඩි වෙලා කන්න, පුතේ."
+    v = world.client.put(url(world, f"/scenes/{sid}/script"), json=body, headers=world.headers(world.writer)).json()
+    kept = next(ln for ln in v["lines"] if ln["id"] == line_id)
+    assert kept["text"] == "වාඩි වෙලා කන්න, පුතේ." and kept["source_text"] == "Sit down and eat, son."
+    assert world.repos.lines.rows[line_id]["source_lang"] == "en"  # type: ignore[attr-defined]
+
+
 def test_new_lines_join_the_shot_before_and_deleted_ones_go(world: World):
     s = seed_scene(world)
     sid = s["scene"]["id"]
@@ -273,3 +295,170 @@ def test_clearing_the_script_drops_the_shot_list(world: World):
     v = world.client.put(url(world, f"/scenes/{sid}/script"), json={"blocks": [], "script_version": 1},
                          headers=world.headers(world.writer)).json()
     assert v["status"] == "draft" and v["shots"] == [] and v["lines"] == []
+
+
+# ── pictures (plan/2026-11-01b) ────────────────────────────────────────────────────────────
+
+
+def test_the_scene_view_says_what_each_shot_holds_and_what_the_scene_needs(world: World):
+    s = seed_scene(world)
+    v = world.client.get(url(world, f"/scenes/{s['scene']['id']}"), headers=world.headers(world.reviewer)).json()
+    action = next(b for b in v["script"] if b["kind"] == "action")
+    assert action["screen"] in ("move", "act", "with_line", "info", "inner") and action["picture_s"] >= 0
+    assert [b["implied"] for b in v["script"]] == [False] * len(v["script"])
+    pictured = next(x for x in v["shots"] if x["picture_s"] > 0)
+    assert pictured["need_s"] > 0 and pictured["crowded"] is False
+    assert pictured["timeline"][0]["kind"] == "picture" and pictured["timeline"][0]["start_s"] == 0
+    spoken = next(x for x in v["shots"] if x["line_ids"])
+    assert any(slot["kind"] == "line" for slot in spoken["timeline"])
+    assert v["timeline"]["need_s"] >= v["timeline"]["total_s"] and v["timeline"]["crowded"] == []
+
+
+def test_a_locked_length_that_cannot_show_its_pictures_is_crowded_in_the_view(world: World):
+    s = seed_scene(world)
+    shot = s["shots"][3]  # Kamala's line
+    v = world.client.patch(url(world, f"/shots/{shot['id']}"), json={"duration_s": 4},
+                           headers=world.headers(world.producer)).json()
+    row = next(x for x in v["shots"] if x["id"] == shot["id"])
+    if row["need_s"] > 4:
+        assert row["crowded"] and v["timeline"]["crowded"] == [row["number"]]
+        assert any(i["code"] == "crowded" and i["shot_id"] == shot["id"] for i in v["timeline"]["issues"])
+        stored = world.repos.scenes.rows[s["scene"]["id"]]["fit_report"]  # type: ignore[attr-defined]
+        assert stored["crowded"] == [row["number"]] and stored["need_s"] >= 4
+
+
+def test_an_edit_keeps_readings_and_remembers_a_dropped_implied_step(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    scene = world.repos.scenes.rows[sid]  # type: ignore[attr-defined]
+    ring = {"kind": "action", "text": "Her phone rings.", "line_id": None, "screen": "act", "events": 1,
+            "by": "model", "for_version": 1}
+    bridge = {"kind": "action", "text": "Kamala answers the phone.", "line_id": None, "screen": "act",
+              "events": 1, "by": "rules", "for_version": 1, "implied": True, "bridge": "answer_phone"}
+    scene["script"] = [ring, bridge, *scene["script"][1:]]
+    view = world.client.get(url(world, f"/scenes/{sid}"), headers=world.headers(world.writer)).json()
+    assert [b["implied"] for b in view["script"][:2]] == [False, True]
+    body = edit_body(view)
+    kept = world.client.put(url(world, f"/scenes/{sid}/script"), json=body, headers=world.headers(world.writer))
+    stored = world.repos.scenes.rows[sid]["script"]  # type: ignore[attr-defined]
+    assert stored[0]["screen"] == "act" and stored[0]["by"] == "model" and stored[1]["implied"] is True
+    assert kept.status_code == 200
+    # the writer removes the implied step: the phone line remembers, so a re-split cannot bring it back
+    body = edit_body(world.client.get(url(world, f"/scenes/{sid}"), headers=world.headers(world.writer)).json())
+    body["blocks"] = [b for b in body["blocks"] if b["text"] != "Kamala answers the phone."]
+    done = world.client.put(url(world, f"/scenes/{sid}/script"), json=body, headers=world.headers(world.writer))
+    assert done.status_code == 200, done.text
+    after = world.repos.scenes.rows[sid]["script"]  # type: ignore[attr-defined]
+    assert not [b for b in after if b.get("implied")]
+    assert any(b.get("skip_bridges") == ["answer_phone"] for b in after if b["kind"] == "dialogue")
+
+
+def test_a_writer_removes_an_implied_step_in_one_call_and_it_is_remembered(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    scene = world.repos.scenes.rows[sid]  # type: ignore[attr-defined]
+    bridge = {"kind": "action", "text": "Kamala answers the phone.", "line_id": None, "screen": "act", "events": 1,
+              "by": "rules", "for_version": 1, "implied": True, "bridge": "answer_phone"}
+    scene["script"] = [*scene["script"][:1], bridge, *scene["script"][1:]]
+    h = world.headers(world.writer)
+    view = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    at = next(b["index"] for b in view["script"] if b["implied"])
+    assert world.client.delete(url(world, f"/scenes/{sid}/script/0"), headers=h).status_code == 422  # not implied
+    assert world.client.delete(url(world, f"/scenes/{sid}/script/99"), headers=h).status_code == 422
+    done = world.client.delete(url(world, f"/scenes/{sid}/script/{at}"), headers=h)
+    assert done.status_code == 200, done.text
+    v = done.json()
+    assert not [b for b in v["script"] if b["implied"]] and v["script_version"] == view["script_version"] + 1
+    assert v["shots"][0]["block_start"] == 0 and v["shots"][-1]["block_end"] == len(v["script"])  # every block, once
+    stored = world.repos.scenes.rows[sid]["script"]  # type: ignore[attr-defined]
+    assert any(b.get("skip_bridges") == ["answer_phone"] for b in stored if b["kind"] == "dialogue")
+    assert world.client.delete(url(world, f"/scenes/{sid}/script/{at}"), headers=world.headers(world.reviewer)
+                               ).status_code == 403  # a viewer cannot edit the script
+
+
+# ── the reading (plan/2026-11-01d, Phase 1) ─────────────────────────────────────────────────
+
+
+def reading_body(**extra) -> dict:
+    """A reading for the fixture scene: 0 Kamala's action, 1 Nimal's line, 2 Kamala's line, 3 the closing action."""
+    return {"about": "A son comes home to a mother who has waited.", "value": {"start": "calm", "end": "tender"},
+            "tone": "quiet, warm",
+            "units": [{"from_block": 0, "to_block": 3, "wants": {"Kamala": "to welcome", "Nimal": "to be forgiven"},
+                       "turn_block": 1}],
+            "subtext": [],
+            "breath": [{"after_block": 1, "kind": "reaction", "who": "Kamala", "seconds": 2, "priority": 1,
+                        "why": "his words land"},
+                       {"after_block": 3, "kind": "button", "who": "Nimal", "seconds": 2, "priority": 1,
+                        "why": "the last image"}],
+            "ending": "Kamala, hands still in the flour.", **extra}
+
+
+def test_a_director_writes_the_reading_and_the_scene_is_timed_with_it(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    h = world.headers(world.director)
+    assert world.client.get(url(world, f"/scenes/{sid}/reading"), headers=h).json() == {
+        "reading": None, "stale": False, "dropped": 0}
+    before = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    body = reading_body()
+    body["breath"].append({"after_block": 2, "kind": "reaction", "who": "Ghost", "seconds": 2, "priority": 1,
+                           "why": "someone who is not there"})
+    r = world.client.put(url(world, f"/scenes/{sid}/reading"), json=body, headers=h)
+    assert r.status_code == 200, r.text
+    got = r.json()
+    assert got["dropped"] == 1 and got["stale"] is False
+    read = got["reading"]
+    assert read["by"] == "person" and read["for_version"] == 1 and read["value"] == {"start": "calm", "end": "tender"}
+    assert [(b["after_block"], b["kind"]) for b in read["breath"]] == [(1, "reaction"), (3, "button")]
+    assert read["units"][0]["wants"] == {"Kamala": "to welcome", "Nimal": "to be forgiven"}
+    # the stored shots were timed again with the holds, and the view says so
+    v = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    holds = [(x["code"], hd["block"], hd["seconds"], hd["kind"]) for x in v["shots"] for hd in x["holds"]]
+    assert holds == [("S02", 1, 2.0, "reaction"), ("S04", 3, 2.0, "button")]
+    assert v["timeline"]["breath_s"] == 4.0 and v["timeline"]["total_s"] >= before["timeline"]["total_s"]
+    assert v["reading"]["about"].startswith("A son comes home") and v["reading_stale"] is False
+    assert world.repos.scenes.rows[sid]["fit_report"]["breath"]["kept_s"] == 4.0  # type: ignore[attr-defined]
+    assert world.repos.audit.entries[-1]["action"] == "scene.reading"  # type: ignore[attr-defined]
+
+
+def test_a_script_edit_marks_the_persons_reading_stale_but_never_replaces_it(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    h = world.headers(world.director)
+    world.client.put(url(world, f"/scenes/{sid}/reading"), json=reading_body(), headers=h)
+    view = world.client.get(url(world, f"/scenes/{sid}"), headers=world.headers(world.writer)).json()
+    body = edit_body(view)
+    body["blocks"][3]["text"] = "Come and eat, son."
+    assert world.client.put(url(world, f"/scenes/{sid}/script"), json=body,
+                            headers=world.headers(world.writer)).status_code == 200
+    got = world.client.get(url(world, f"/scenes/{sid}/reading"), headers=h).json()
+    assert got["stale"] is True and got["reading"]["by"] == "person"
+    assert [b["after_block"] for b in got["reading"]["breath"]] == [1, 3]
+
+
+def test_handing_the_reading_back_times_the_scene_without_it(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    h = world.headers(world.director)
+    plain = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()["timeline"]["total_s"]
+    world.client.put(url(world, f"/scenes/{sid}/reading"), json=reading_body(), headers=h)
+    r = world.client.delete(url(world, f"/scenes/{sid}/reading"), headers=h)
+    assert r.status_code == 200 and r.json()["reading"] is None
+    v = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    assert v["reading"] is None and v["timeline"]["total_s"] == plain and v["timeline"]["breath_s"] == 0
+    assert all(x["holds"] == [] for x in v["shots"])
+
+
+def test_who_may_write_the_reading_and_an_approved_scene_is_locked(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    for user in (world.writer, world.crew, world.reviewer):
+        assert world.client.put(url(world, f"/scenes/{sid}/reading"), json=reading_body(),
+                                headers=world.headers(user)).status_code == 403
+        assert world.client.get(url(world, f"/scenes/{sid}/reading"), headers=world.headers(user)).status_code == 200
+    h = world.headers(world.director)
+    assert world.client.put(url(world, f"/scenes/{sid}/reading"), json={**reading_body(), "surprise": 1},
+                            headers=h).status_code == 422
+    world.client.post(url(world, f"/scenes/{sid}/approve"), headers=h)
+    assert world.client.put(url(world, f"/scenes/{sid}/reading"), json=reading_body(), headers=h).status_code == 409
+    assert world.client.delete(url(world, f"/scenes/{sid}/reading"), headers=h).status_code == 409

@@ -5,6 +5,8 @@ prompt (PLAN.md §10, §13 Phase 4). Rules in `api/services/production.py`.
     GET   .../shots/{id}                  one shot
     POST  .../scenes/{id}/design          camera recommendations for the scene (job)
     PATCH .../shots/{id}/camera           a person's camera (null = back to the recommendation)
+    PATCH .../shots/{id}/intent           a person's intent: what the shot is for, who is seen
+    PATCH .../scenes/{id}/coverage        a person's coverage plan for the scene
     POST  .../shots/{id}/frames           first frames for one shot (job)
     POST  .../scenes/{id}/frames          first frames for every shot that needs one (job)
     POST  .../shots/{id}/frames/upload    a frame a person made elsewhere
@@ -45,6 +47,7 @@ from contracts.producer import (
 )
 from contracts.production import Framing, SceneStatus, ShotStatus
 from contracts.roles import Permission
+from contracts.staging import CoverageUpdate, IntentUpdate, ScenePlan, ShotIntent, unseen_sentence
 from contracts.veo import ASPECT_RATIO, CameraLink, FrameStrategy, Orientation, SoundMode
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["production"])
@@ -64,6 +67,40 @@ class DesignView(BaseModel):
     rationale: str  # the DoP's note: a person's own when `note_by_person`, else the DP's reason
     note_by_person: bool = False
     designed_at: str | None
+    review: ReviewView | None = None  # the design review's notes on the first draft, when it had any
+
+
+class IntentView(BaseModel):
+    """What the shot is for and who the camera sees (`contracts.staging.ShotIntent`)."""
+
+    purpose: str
+    what_we_see: str
+    emotional_beat: str
+    on_screen: list[UUID]
+    heard_only: list[UUID]
+    voice_source: str
+    by: str  # model | rules | person
+    stale: bool  # written before the script or the shot changed
+
+
+class PersonView(BaseModel):
+    id: UUID
+    code: str
+    name: str
+    seen: bool
+
+
+class CoverageView(BaseModel):
+    axis: str
+    motif: str
+    progression: str
+    by: str
+    stale: bool
+
+
+class ReviewView(BaseModel):
+    notes: list[str]
+    revised: list[str]
 
 
 class CameraView(BaseModel):
@@ -84,6 +121,7 @@ class FrameView(BaseModel):
     stale: bool
     stale_reasons: list[str]
     created_at: str
+    checks: list[Check] = Field(default_factory=list)  # a missing sheet; what a vision model saw
 
 
 class PromptView(BaseModel):
@@ -132,6 +170,8 @@ class ShotProductionView(BaseModel):
     version: int
     lines: list[ShotLine]
     canon_refs: list[str]  # "C01 v2", "L01 v1": the cards this shot is pinned to now
+    people: list[PersonView]  # everyone in the shot; `seen` false = only heard
+    intent: IntentView | None
     design: DesignView
     camera: CameraView
     checks: list[CameraCheck]
@@ -152,6 +192,7 @@ class SceneProductionView(BaseModel):
     status: SceneStatus
     approved: bool
     aspect_ratio: str
+    coverage: CoverageView | None
     shots: list[ShotProductionView]
 
 
@@ -229,6 +270,42 @@ def _prompt_view(row: Row, reasons: list[str]) -> PromptView:
                       stale_reasons=reasons)
 
 
+def _checks(raw: Any) -> list[Check]:
+    out = []
+    for c in raw if isinstance(raw, list) else []:
+        try:
+            out.append(Check.model_validate(c))
+        except ValueError:
+            continue
+    return out
+
+
+def _intent_view(st: ShotState) -> IntentView | None:
+    it = st.intent
+    if it is None:
+        return None
+    return IntentView(purpose=it.purpose, what_we_see=it.what_we_see, emotional_beat=it.emotional_beat,
+                      on_screen=[UUID(c) for c in st.staged.on_screen],
+                      heard_only=[UUID(c) for c in st.staged.heard_only],
+                      voice_source=st.staged.voice_source, by=it.by, stale=st.intent_stale)
+
+
+def _review_view(design: Row) -> ReviewView | None:
+    raw = design.get("review")
+    if not isinstance(raw, dict) or not raw.get("notes"):
+        return None
+    return ReviewView(notes=[str(n) for n in raw.get("notes") or []],
+                      revised=[str(r) for r in raw.get("revised") or []])
+
+
+def coverage_view(scene: Row) -> CoverageView | None:
+    plan = ScenePlan.of(scene)
+    if plan is None:
+        return None
+    return CoverageView(axis=plan.axis, motif=plan.motif, progression=plan.progression, by=plan.by,
+                        stale=plan.by != "person" and plan.made_for != int(scene.get("script_version") or 1))
+
+
 def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProductionView:
     row, design = st.row, st.row.get("design") or {}
     by_line = {str(ln["id"]): ln for ln in ld.lines}
@@ -246,7 +323,8 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
             id=f["id"], label=f"First frame {n}", status=str(f["status"]),
             url=media_links.url("frames", str(f["storage_path"])) if f.get("storage_path") else None,
             error=f.get("error"), rejected_reason=f.get("rejected_reason"), accepted=bool(f.get("accepted_at")),
-            stale=bool(reasons), stale_reasons=reasons, created_at=str(f["created_at"])))
+            stale=bool(reasons), stale_reasons=reasons, created_at=str(f["created_at"]),
+            checks=_checks(f.get("checks"))))
     state = "missing" if st.design_reasons == ["no design"] else ("stale" if st.design_reasons else "current")
     changed = [CameraField(k) for k, v in st.camera.model_dump().items() if v != getattr(st.recommended, k)]
     return ShotProductionView(
@@ -257,15 +335,20 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
         frame_strategy=FrameStrategy(row.get("frame_strategy") or "generate"),
         status=ShotStatus(row.get("status") or "draft"), version=int(row.get("version") or 1), lines=lines,
         canon_refs=st.canon_refs,
+        people=[PersonView(id=UUID(c.id), code=c.code, name=c.name, seen=st.staged.visible(c.id)) for c in st.cast],
+        intent=_intent_view(st),
         design=DesignView(state=state, stale_reasons=[] if state == "missing" else st.design_reasons,
                           planner=str(design.get("planner") or ""),
                           rationale=st.edits.dop_note or str(design.get("rationale") or ""),
-                          note_by_person=bool(st.edits.dop_note), designed_at=design.get("designed_at")),
+                          note_by_person=bool(st.edits.dop_note), designed_at=design.get("designed_at"),
+                          review=_review_view(design)),
         camera=CameraView(recommended=st.recommended, current=st.camera, changed=changed,
                           storyboard_note=storyboard_note(st.camera)),
         checks=checks,
-        frame_prompt=frame_prompt(ir=row.get("ir") or {}, camera=st.camera, aspect_ratio=ld.aspect, cast=st.cast,
-                                  recommended_framing=st.recommended.framing) if st.has_design else "",
+        frame_prompt=frame_prompt(ir=row.get("ir") or {}, camera=st.camera, aspect_ratio=ld.aspect, cast=st.seen,
+                                  recommended_framing=st.recommended.framing,
+                                  unseen=unseen_sentence(st.staged, {c.id: c.name for c in st.cast}))
+        if st.has_design else "",
         frames=frames, accepted_frame_id=st.accepted["id"] if st.accepted else None,
         prompt_lock=LockView(locked=bool(st.lock), reason=st.lock),
         prompt=_prompt_view(st.prompt, st.prompt_reasons) if st.prompt else None)
@@ -277,6 +360,7 @@ def scene_view(ld: Loaded) -> SceneProductionView:
     return SceneProductionView(id=s["id"], production_id=s["production_id"], episode_id=s["episode_id"],
                                number=int(s["number"]), heading=s.get("heading") or "", title=s.get("title") or "",
                                status=SceneStatus(s["status"]), approved=ld.approved, aspect_ratio=ld.aspect,
+                               coverage=coverage_view(s),
                                shots=[shot_view(ld, st, checks[st.id]) for st in ld.states])
 
 
@@ -357,6 +441,70 @@ async def update_camera(production_id: UUID, shot_id: UUID, body: CameraUpdate, 
                  {k: getattr(body, k) for k in body.model_fields_set})
     ld, st = await load_shot(repos, access, shot_id)
     return shot_view(ld, st, camera_checks(ld.states)[st.id])
+
+
+def _now() -> str:
+    from datetime import UTC, datetime
+
+    return datetime.now(UTC).isoformat()
+
+
+@router.patch("/shots/{shot_id}/intent", response_model=ShotProductionView)
+async def update_intent(production_id: UUID, shot_id: UUID, body: IntentUpdate, access: CanGenerate,
+                        repos: ReposDep) -> ShotProductionView:
+    """A person's intent: only the fields sent change and the whole intent becomes theirs (an
+    agent never replaces it). `reset` hands the shot back to the intent agent. Who is seen must be
+    people already in the shot; the next design and frames follow it."""
+    ld, st = await load_shot(repos, access, shot_id)
+    _require_approved(ld)
+    if body.reset:
+        fields: dict[str, Any] = {}
+    else:
+        base = (st.intent or ShotIntent(on_screen=list(st.staged.on_screen), heard_only=list(st.staged.heard_only),
+                                        voice_source=st.staged.voice_source)).model_dump()  # type: ignore[arg-type]
+        for key in ("purpose", "what_we_see", "emotional_beat", "voice_source"):
+            value = getattr(body, key)
+            if value is not None:
+                base[key] = " ".join(str(value).split())
+        if body.on_screen is not None:
+            in_shot = {c.id for c in st.cast}
+            unknown = [c for c in body.on_screen if c not in in_shot]
+            if unknown:
+                raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
+                                    "Only people already in the shot can be on screen. Add them to the shot first.")
+            base["on_screen"] = list(dict.fromkeys(body.on_screen))
+            base["heard_only"] = [c for c in base.get("heard_only") or [] if c not in base["on_screen"]] or [
+                c.id for c in st.cast if c.id not in base["on_screen"] and any(
+                    x.speaker_id == c.id for x in st.items if x.is_line)]
+        base.update(by="person", written_at=_now())
+        fields = ShotIntent.model_validate(base).model_dump()
+    await repos.shots.update(shot_id, {"intent": fields})
+    await _audit(repos, access, "shot.intent", "shot", str(shot_id),
+                 {"reset": True} if body.reset else body.model_dump(exclude_none=True, exclude={"reset"}))
+    ld, st = await load_shot(repos, access, shot_id)
+    return shot_view(ld, st, camera_checks(ld.states)[st.id])
+
+
+@router.patch("/scenes/{scene_id}/coverage", response_model=SceneProductionView)
+async def update_coverage(production_id: UUID, scene_id: UUID, body: CoverageUpdate, access: CanGenerate,
+                          repos: ReposDep) -> SceneProductionView:
+    """A person's coverage plan. `reset` hands it back to the intent agent."""
+    ld = await load(repos, access, scene_id)
+    _require_approved(ld)
+    if body.reset:
+        fields: dict[str, Any] = {}
+    else:
+        base = (ScenePlan.of(ld.scene) or ScenePlan()).model_dump()
+        for key in ("axis", "motif", "progression"):
+            value = getattr(body, key)
+            if value is not None:
+                base[key] = " ".join(str(value).split())
+        base.update(by="person", made_for=int(ld.scene.get("script_version") or 1), written_at=_now())
+        fields = ScenePlan.model_validate(base).model_dump()
+    await repos.scenes.update(scene_id, {"coverage": fields})
+    await _audit(repos, access, "scene.coverage", "scene", str(scene_id),
+                 {"reset": True} if body.reset else body.model_dump(exclude_none=True, exclude={"reset"}))
+    return scene_view(await load(repos, access, scene_id))
 
 
 # ── frames ─────────────────────────────────────────────────────────────────────────────────

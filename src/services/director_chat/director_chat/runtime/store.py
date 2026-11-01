@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import UTC, datetime
 from uuid import UUID
 
 import httpx
@@ -12,6 +13,14 @@ from director_chat.runtime.rest import Rest, Row
 
 def vector(values: list[float] | None) -> str | None:
     return None if values is None else "[" + ",".join(f"{v:.7g}" for v in values) + "]"
+
+
+def same_keys(rows: list[Row]) -> list[Row]:
+    """PostgREST takes one set of keys per bulk write. A translated line carries `source_text` / `source_lang` and an
+    untranslated one does not (plan/2026-11-01c), so a key some rows lack is written as null on the others: a line
+    without the key has no source (every line row is read with `select=*` or built from those)."""
+    keys = list(dict.fromkeys(k for row in rows for k in row))
+    return [{k: row.get(k) for k in keys} for row in rows]
 
 
 class Store:
@@ -54,6 +63,14 @@ class Store:
                                                   "order": "created_at.desc", "limit": str(limit)})
         return rows[::-1]
 
+    def message(self, message_id: UUID | str) -> Row | None:
+        return self.rest.first("chat_messages", {"id": f"eq.{message_id}", "select": "id,kind,speaker,text,blocks"})
+
+    def open_pending(self, thread_id: UUID | str) -> Row | None:
+        """The thread's open pending action (`engine/pending.py`); at most one is open."""
+        return self.rest.first("pending_actions", {"thread_id": f"eq.{thread_id}", "status": "eq.open",
+                                                   "order": "created_at.desc", "select": "*"})
+
     def memory(self, production_id: UUID, limit: int = 20) -> list[Row]:
         return self.rest.select("memory_items", {"production_id": f"eq.{production_id}", "select": "kind,text",
                                                  "order": "created_at.desc", "limit": str(limit)})
@@ -87,11 +104,21 @@ class Store:
         if shots:
             self.rest.upsert("shots", shots)
         if lines:
-            self.rest.upsert("dialogue_lines", lines)
+            self.rest.upsert("dialogue_lines", same_keys(lines))
         self.rest.patch("scenes", {"id": f"eq.{scene_id}"}, scene_fields)
 
     def add_message(self, row: Row) -> None:
         self.rest.insert("chat_messages", [row])
+
+    def add_pending(self, row: Row) -> None:
+        self.rest.insert("pending_actions", [row])
+
+    def close_pending(self, thread_id: UUID | str, status: str) -> None:
+        self.rest.patch("pending_actions", {"thread_id": f"eq.{thread_id}", "status": "eq.open"},
+                        {"status": status, "closed_at": datetime.now(UTC).isoformat()})
+
+    def set_blocks(self, message_id: UUID | str, blocks: list[Row]) -> None:
+        self.rest.patch("chat_messages", {"id": f"eq.{message_id}"}, {"blocks": blocks})
 
     def audit(self, row: Row) -> None:
         try:
