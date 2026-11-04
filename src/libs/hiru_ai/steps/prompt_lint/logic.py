@@ -7,6 +7,14 @@ Everything here is read from the prompt row and the shot; nothing is regenerated
   line_changed     a spoken line of the shot is not in the prompt word for word (dialogue is never reworded)
   too_long         the prompt is longer than the video model reads (about 1,024 tokens)
   failed_check     a check stored with the prompt came out `fail`
+
+A shot with a director's card (`shots.card`, Shot Planner Adam, plan/2026-11-04b Phase 7) is also held to what the card
+decided:
+
+  silence_unstated      the card asks for silence and the prompt does not say so (Veo then invents speech or music)
+  voice_not_off_screen  the card plays a line over a listener's face and the prompt does not say the voice is off screen
+  performance_dropped   a beat's performance (what the face and body do) is not in the prompt
+  sound_cue_missing     the card's effects are not in the prompt
 """
 from __future__ import annotations
 
@@ -20,6 +28,8 @@ REQUIRED = ("style", "camera", "action", "constraints", "format")
 SPOKEN = ("dialogue", "voiceover", "sung")
 MAX_TOKENS = 1024  # the Veo prompt limit
 DURATION = re.compile(r"Duration\s+(\d+)\s+seconds", re.IGNORECASE)
+OFF_SCREEN = re.compile(r"off[- ]?screen|heard,? (?:but )?not seen|never in frame|not shown speaking", re.IGNORECASE)
+SHARE = 0.6  # a performance or a cue is "in" the prompt when this share of its words are
 
 
 def _flat(text: str) -> str:
@@ -28,6 +38,38 @@ def _flat(text: str) -> str:
 
 def _finding(kind: str, message: str) -> dict[str, str]:
     return {"code": kind, "message": message}
+
+
+def _words(text: str) -> list[str]:
+    return [w for w in re.findall(r"[^\W_]+", _flat(text).lower()) if len(w) > 3]
+
+
+def _in_prompt(text: str, prose: str) -> bool:
+    """The text, or most of its words, is in the prose: the writer may reorder or inflect, never drop."""
+    if _flat(text).lower() in prose:
+        return True
+    words = _words(text)
+    return not words or sum(w in prose for w in words) / len(words) >= SHARE
+
+
+def card_findings(prompt: dict[str, Any], card: dict[str, Any]) -> list[dict[str, str]]:
+    prose = _flat(prompt.get("prose") or "").lower()
+    sound: dict[str, Any] = card["sound"] if isinstance(card.get("sound"), dict) else {}
+    out: list[dict[str, str]] = []
+    if sound.get("silence") and "silen" not in prose:
+        out.append(_finding("silence_unstated", "the card asks for silence but the prompt never says so"))
+    voiced_over = any(isinstance(ln, dict) and ln.get("on_speaker") is False for ln in card.get("lines") or [])
+    if voiced_over and not OFF_SCREEN.search(prose):
+        out.append(_finding("voice_not_off_screen", "the card plays a line over a listener but the prompt does not "
+                                                    "say the voice is off screen"))
+    for n, beat in enumerate(card.get("beats") or [], start=1):
+        performance = beat.get("performance") if isinstance(beat, dict) else ""
+        if performance and not _in_prompt(str(performance), prose):
+            out.append(_finding("performance_dropped", f"beat {n}'s performance is not in the prompt: {performance!r}"))
+    effects = str(sound.get("effects") or "")
+    if effects and not _in_prompt(effects, prose):
+        out.append(_finding("sound_cue_missing", f"the card's sound effects are not in the prompt: {effects!r}"))
+    return out
 
 
 def lint(prompt: dict[str, Any], shot: dict[str, Any], lines: list[dict[str, Any]]) -> list[dict[str, str]]:
@@ -61,4 +103,7 @@ def lint(prompt: dict[str, Any], shot: dict[str, Any], lines: list[dict[str, Any
 
     out += [_finding("failed_check", str(c.get("label", ""))) for c in prompt.get("checks") or []
             if c.get("tone") == "fail"]
+    card = shot.get("card")
+    if isinstance(card, dict) and card.get("size"):
+        out += card_findings(prompt, card)
     return out

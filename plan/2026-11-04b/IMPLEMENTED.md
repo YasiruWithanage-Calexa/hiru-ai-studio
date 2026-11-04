@@ -1,7 +1,9 @@
 # Shot Planner Adam: what is built
 
-Plan: [PLAN.md](PLAN.md). Written 2026-11-04. Phases 0 to 4 are built; Phases 5 to 10 are not. Nothing is deployed,
-no migration is written, and no model was called: everything below runs offline on localhost, with scripted answers.
+Plan: [PLAN.md](PLAN.md). Written 2026-11-04. Phases 0 to 10 are built **as far as code can take them without a person**.
+Nothing is deployed and nothing was applied to the hosted database (the migration is written, not run). Apart from the one
+live try below, no model was called: everything runs offline on localhost, with scripted answers. What only a person can
+do (live runs, a Hiru director's judgement, the A/B, the decision on the default) is listed at the end and is NOT done.
 
 ## Where things stand
 
@@ -12,7 +14,12 @@ no migration is written, and no model was called: everything below runs offline 
 | 2. Knowledge | **Built, not ingested** | `hiru-ai ingest adam_film_grammar` writes to the hosted dev database, so it waits for a person. The "10 probe questions" were run **offline against a keyword proxy**, not against `match_chunks`. The house drama notes are a **first draft by Claude**, not written with the person. |
 | 3. The thinking (analyse, conceive, imagine) | **Built; never run on a real model** | The exit needs a **live run and a Hiru director**: "a person judges >= 4 of 5 treatments a real director's idea" is not done. That the three treatments of a scene differ is a code check (`adam_distinct`), passing on the gold scenes. The two alternate treatments per gold scene are **drafts by Claude**. |
 | 4. The cards (stage, design, sound) | **Built; never run on a real model** | "The test scene's cards read like section 9 **to the person**" and "0 unreported overruns on the gold set" **for a model's cards** need a live run. Shown offline: the wiring rebuilds every master, and the masters pass every code rule. |
-| 5 to 10 | Not started | |
+| 5. Screening | **Built; never run on a real model** | The exit "the revised plan wins on score in >= 60% of gold scenes" needs `scripts/adam_live.py --yes` (model calls). |
+| 6. System, storage, switch | **Built offline; migration not run** | No Docker here: `supabase db reset`, `supabase test db` and the dump comparison are not done. Nothing deployed. "A production set to Adam builds end to end on localhost" is shown with fakes, not against the stack. |
+| 7. After the plan | **Built, both engines** | "The 13 prompts render (live) and a person judges them against section 9" is not done. |
+| 8. Interface | **Built; tests and typecheck pass** | Not looked at in a browser against a running backend. |
+| 9. Editorial layer | **Built and tested with real ffmpeg; off by setting** | No endpoint or storage for a scene's finished cut (a person's decision). |
+| 10. A/B and default | **Tools only** | Everything that is judgement: 10 gold scenes unwritten, no A/B judged, weights untuned, no decision on the default. |
 
 ## Phase 0: the folders
 
@@ -161,6 +168,107 @@ retry that one stage with the reasons (the agents take no notes yet); fetch the 
 moment ids with `MomentsWire.bind`; drop what `adam_fidelity` says to drop; and fail clearly, naming the classic planner,
 when the model is unavailable.
 
+## Phase 5: screening
+
+- **`adam_screening`** (panel, `critics_judge`): four critics in parallel (`adam_critic_audience`, `_editor`, `_opportunity`,
+  `_fidelity`, medium), each with one lens, at most four notes (a card number, a severity, what and why) and a 1 to 5 score on
+  its own lens. The fidelity critic alone is given the code's report (`adam_notes.report`: fidelity, the Veo clock, continuity,
+  what Veo renders badly, the craft score). A critic that fails is left out; if all fail the first plan stands.
+- **`adam_reviser`** (high) answers with OPERATIONS on the plan: `replace_card`, `insert_card`, `remove_card`, `add_moment`,
+  `remove_moment` (`contracts/adam/screening.py` `RevisionWire.apply`). Numbers always mean the cards as the critics saw them;
+  an operation that cannot apply is skipped and the panel records why; a script moment is never removed.
+- **`adam_notes`** (step, new; not in the plan's list): merges the notes (most severe first, repeats on a card dropped, at most
+  eight) and keeps the lens scores apart for a person; writes the code report.
+- **Selection is code.** A revision is made once, `adam_fidelity` drops any added moment that invents story, and `adam_score`
+  (a fidelity break or an overrun loses first) keeps the better; a tie keeps the first plan. The critics' scores decide nothing.
+- **Shown offline** (`tests/adam/test_screening.py`, 28 tests): a revision that restores unmotivated cuts wins; one that
+  invents a person is dropped and cannot win; one that makes the plan worse or breaks the script loses; failed critics and a
+  failed reviser leave the first plan. **Not shown:** that a model writes good notes (the exit "the revised plan wins on score
+  in >= 60% of gold scenes" needs `scripts/adam_live.py --yes`, which costs model calls).
+
+## Phase 6: the system, storage and the switch
+
+- **`adam_shot_planner`** (system; the plan calls it `shot_planner_adam`, but the group rule makes an id inside the group start
+  `adam_`, so the system is `adam_shot_planner` and the function, folder and job kind keep the plan's names). `scene.py` runs a
+  scene (analyse, three treatments and `adam_distinct`, the moments, stage, design, sound, screening); `graph.py` is the job:
+  waves of four scenes, a time budget with a fresh delivery for the rest, an approved scene never touched, a scene Adam cannot
+  plan left as it was and named in the job's warnings, no rules fallback (no model: the job fails and says "use the classic
+  planner"). A script fault or an overrun is sent back ONCE with its reasons (the moment writer and shot designer take
+  `notes`); overruns that remain are reported, never trimmed.
+- **Treatment choice:** a person's stance if given, else the quick score `adam_distinct.choose` (fit to the analysis,
+  distinctness, not over-directed); the other two are kept on the scene (`StoredPlan.alternates`). Switching re-plans only the
+  cards from the stored analysis.
+- **Edits:** `{"remove_moment": id}` takes an added moment out with no model call; the same addition (kind and blocks) is never
+  added back by a later plan (`Removed`).
+- **`adam_write`, `adam_passages`** (steps): rows, bound lines, the fit report in the classic shape, the stored plan; and the
+  film-grammar and device passages picked by a keyword ranker over the base's own files, so a scene is planned the same before
+  and after the (waiting) ingest.
+- **The function** `services/shot_planner_adam` (echo template, port 8209, `FUNCTIONS`, `deploy-functions.yml`,
+  `start-functions.ps1`, import-linter lists). **The build branch:** `contracts.build.build_pipeline(settings.shot_planner)`,
+  used by `POST /build`. **API:** `GET …/scenes/{id}/adam`, `POST …/adam/plan` (also switches treatment),
+  `POST …/adam/moments/{id}/remove`; `ShotView.planner`. The router reads the stored plan as plain JSON, so nothing outside the
+  group imports from it.
+- **Schema v11** (`supabase/migrations/20261104100326_adam.sql`, `Database/schema_v11.sql`, `upgrade_v10_to_v11.sql`,
+  `supabase/tests/database/011_adam.test.sql`): `shots.card`, `shots.planner`, `scenes.adam`. **Not verified:** no Docker on this
+  machine, so the migration, the dump comparison and the pgTAP file were not run, and nothing was applied to the hosted
+  database.
+- **Shown offline:** the gold scene planned end to end with scripted answers (13 shots, 66 s, 100%), lines bound, a re-plan
+  replaces the shots and keeps the classic list for comparing, an approved scene skipped, a script fault sent back and then
+  planned, planned twice and failed, an overrun reported not trimmed, a removal that never comes back, a treatment switch that
+  skips the dramaturg and director (`tests/adam/test_system.py`, `test_api.py`, `test_service.py`).
+
+## Phase 7: after the plan (the shot producer)
+
+- `adam_write` stores, with each shot, an intent `by = "adam"` made from its card (purpose, what we see, who is in frame, who
+  is only heard and from where) and the scene's coverage plan `by = "adam"`. `contracts.staging.AUTHORED = ("person", "adam")`:
+  no agent replaces either, so **the intent agent is skipped, even when forced**.
+- The DoP is told the card's camera as fixed (`DIRECTOR'S CAMERA, FROM THE SHOT CARD`), the recommendation takes the card's
+  angle, lens, movement and aperture where the panel has an exact word (never the size), the card's performance per beat is
+  kept like a person's beat note, the card's sound design replaces the generic room tone and a card that asks for silence has
+  silence stated. A line played over a listener is a heard-only voice (the existing off-screen machinery) and the shot is a
+  voice-over, so the speaker is never shown talking.
+- `prompt_lint` checks a card shot: `silence_unstated`, `voice_not_off_screen`, `performance_dropped`, `sound_cue_missing`.
+- All of it is in the part (`steps/serialize`, `systems/shot_producer`) **and** the legacy engine, a copy of `card.py` each; the
+  parity tests agree on a scene with a card shot (`tests/adam/test_producer.py`). The shared code reads `shots.card` as plain
+  JSON (`card.py`), so it imports nothing from the group.
+- **Not shown:** the plan's exit "the test scene's 13 prompts render (live) and a person judges them against section 9".
+
+## Phase 8: the interface (`hiru-ai-studio-interface/src/features/adam/`)
+
+`api.ts` / `client.ts` (the seams), `types.ts`, `lib/` (map, cards, treatment, compare: pure, 22 tests) and `components/`
+(`AdamPanel`, `TreatmentCard`, `ShotCardView`, `CompareDialog`; 8 tests). Mounted as an "Adam" tab of the Director's shot-list
+panel through a `adamSlot` prop composed by the page, so the director feature imports nothing from `adam`. It shows the
+treatment (three options, switching re-plans the cards), the cards in a breakdown format (the line rendered with `spoken()`),
+chips per moment ("Script", "Implied", "Added by director", the last removable), "Plan with Adam" / "Plan again", the runtime
+the treatment needs against the envelope ("Needs 66.0 s · envelope 40.0 s · 26.0 s over"), and **Compare**: the scene's earlier
+shot list against Adam's, unlabelled and in a seeded order, scored on the rubric; the key appears only when every lens is
+scored, and the record can be copied or downloaded in the `ab_form.json` shape. No credits or costs anywhere.
+`npm run lint`, `typecheck` and `test` pass (150 tests); the new files are prettier-clean (the repository already has 61 files
+that are not). **Not done:** a look in a browser against a running backend.
+
+## Phase 9: the editorial layer
+
+- `ShotCard.in_s`; `adam_fit` checks the kept part fits its take and **never cuts into words** (`trim_cuts_speech`).
+  `contracts/adam/editorial.py` plans the cuts (`plan_cuts`: where each picture starts, how early a pre-lap sound arrives and
+  how long a carried one runs, each only as far as the take can spare) and proposes trims by rule (`propose_trims` /
+  `adam_trim`: a quiet card trimmed to where its last beat ends, never the last shot, never the one break, never a take with
+  words, at least a second saved, at least 2 s kept; a pre-lap card starts its kept part a second in).
+- `infra/assemble` `/cut` trims each take to its kept part, joins the pictures and mixes the sounds at their start (picture
+  start minus lead), clamped to the footage the take has; a take with no sound is silent there. `HttpAssembler.cut` is the API's
+  client. **Tested with real ffmpeg** (`tests/adam/test_editorial.py`): a 2 s reaction cut from a 4 s take; a pre-lap whose tone
+  is measured (Goertzel) arriving a second before its picture; a silent take; a kept part longer than the take refused.
+- Off unless `settings.final_cut_trim` (default false): then every take plays whole and `trim_not_ready` is the only note.
+- **Not built:** an API endpoint that gathers a scene's accepted takes and stores the cut, and a place to store it (a new bucket
+  or a path in `takes`): that is a decision for a person, and the take-acceptance flow belongs to the handoff feature.
+
+## Phase 10: the A/B and the default
+
+`scripts/adam_live.py` (every gold scene with the real model, saving `tests/eval/adam/live/<scene>.json` and printing the
+numbers the Phase 3 to 5 exits ask for; refuses without `--yes`) and `scripts/adam_ab.py` (counts the blind A/B records against
+the plan's targets, and `--tune` suggests weights that agree with a person's picks). **Nothing of Phase 10's judgement is
+done:** 10 of the 15 gold scenes are unwritten, no A/B was judged, the weights are still equal, and whether Adam becomes the
+default for new productions is a person's decision (D5 keeps `classic` as the default).
+
 ## Other changes outside the `adam` folders
 
 - `core/registry.py`, `core/manifest.py`, `cli/main.py`, `cli/scaffold.py`, `cli/tools.py`: group support (above).
@@ -175,12 +283,32 @@ when the model is unavailable.
 
 ## Checks run
 
-`ruff check src tests scripts`, `mypy` (593 files), `python scripts/lint_imports.py` (25 contracts kept),
-`hiru-ai validate` (109 parts, 0 errors), `hiru-ai catalog`, and `pytest`: 2943 passed. **6 tests fail and were failing
+After Phases 3 and 4: `ruff check src tests scripts`, `mypy` (628 files), `python scripts/lint_imports.py` (25 contracts
+kept), `hiru-ai validate` (116 parts, 0 errors), `hiru-ai catalog --check`, `hiru-ai eval` (the six new agents 4/4 each), and
+`pytest`: 3096 passed, 6 failed (the six below).
+
+After Phases 0 to 2 (for the record): `mypy` (593 files), `hiru-ai validate` (109 parts), `pytest`: 2943 passed. **6 tests fail and were failing
 before this work**: `tests/api/test_handoff.py` (2), `test_looks.py` (1), `test_production.py` (3) expect the media URL on
 port 8000 and this machine's `.env` sets 8001. Not touched.
 
 Not run: `npx supabase test db` (no schema change was made), any live model call, `hiru-ai ingest`.
+
+## First live try (2026-11-04, stages 1 to 6 on `phone_call`, outside the pipelines)
+
+A scratch runner chained the six agents on the test scene with the real model (high and medium tiers), fed the
+film-grammar files from disk (the base is not ingested), and ran every step on the result. No database, no service.
+
+- **Run 1** found two bugs the scripted tests could not: the moment writer wrote kinds like `"baseline Anudi"` (the wire's
+  `kind` was free text), so fidelity dropped 6 moments; and `adam_continuity` said a bag "goes to nobody" when its holder
+  walked out (a holder with no mark at the next moment lost what they held). Both fixed, each with a test
+  (`tests/adam/test_stages.py`, `adam_continuity` tests). Run 1's plan: 10 cards, 44 s, almost all CUs of Anudi.
+- **Two prompt lines added** after run 1: the moment writer gives the face of the person who does not know (the analysis's
+  `audience_knows`) a moment of its own and shows each subtext as behaviour; the director's size arc opens on the people
+  together and moves away from the face after the break (Block's contrast).
+- **Run 2:** fidelity, fit, continuity and feasibility all pass; 0 overruns; score 98.8% (master 100%, hand baseline
+  44.2%). 10 cards, 44 s, sizes MS → MCU → CU → MS → INSERT → MS; Dasun's unknowing face gets a card; the rhythm break is
+  on the turn. Still short of section 9: no early stake for Dasun, no "it's Dad" look, no mask smile on "See you", and
+  the ending is an insert of the phone rather than Dasun beside the empty space. A person's judgement, not a code check.
 
 ## What a person does next
 
@@ -196,4 +324,14 @@ Not run: `npx supabase test db` (no schema change was made), any live model call
    judgement.**
 7. Decide the thresholds of `adam_distinct` after seeing real treatments.
 
-Next phase: 5 (the `adam_screening` panel, `adam_reviser`, selection by `adam_score`).
+Then, for Phases 5 to 10:
+
+8. `scripts/adam_live.py --yes` (model calls) for the screening exit and for the Phase 3 and 4 plans a person reads.
+9. Run the migration where Docker is available (`npx supabase db reset`, `npx supabase test db`), compare the dumps, then
+   `Database/upgrade_v10_to_v11.sql` on the hosted project when you say so; restart the API and the functions.
+10. Deploy `hiru-shot-planner-adam` when you say so; set a production's `settings.shot_planner` to `adam`, or use "Plan with
+    Adam" on one scene.
+11. Judge blind A/B pairs in the interface (Compare) on the 15 gold scenes (10 are still to be written), save the records in
+    `tests/eval/adam/ab_results/`, run `scripts/adam_ab.py`, then decide on the weights (`--tune`) and on the default.
+12. Decide where a scene's finished cut is stored, then an endpoint can call `HttpAssembler.cut` with `contracts.adam.editorial`;
+    switch on `settings.final_cut_trim` when it is proven.

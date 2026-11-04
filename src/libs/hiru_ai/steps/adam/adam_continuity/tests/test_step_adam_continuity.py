@@ -82,6 +82,17 @@ def test_a_prop_that_changes_hands_must_be_seen_changing():
     assert "bag" in unseen["issues"][0]["message"]
 
 
+def test_a_person_who_leaves_holding_a_prop_keeps_it():
+    """A live run (2026-11-04): Anudi walks out with her bag, the next moment marks only Dasun, and the bag was said to
+    go from Anudi to nobody. A holder with no mark at a moment still has what they held."""
+    gone = run(staging={"marks": [{"moment": "m1", "who": "Anudi", "zone": "off", "holding": ["bag"]},
+                                  {"moment": "m3", "who": "Dasun", "zone": "bench"}]})
+    assert gone["ok"], gone
+    dropped = run(staging={"marks": [{"moment": "m1", "who": "Anudi", "zone": "bench", "holding": ["bag"]},
+                                     {"moment": "m3", "who": "Anudi", "zone": "bench"}]})
+    assert codes(dropped) == ["prop_unseen"]  # still marked, no longer holding it, and no moment shows the bag
+
+
 def test_a_mark_on_a_moment_the_plan_does_not_have_is_named():
     out = run(staging={"marks": [{"moment": "m9", "who": "Anudi", "zone": "bench"}]})
     assert codes(out) == ["unknown_moment"]

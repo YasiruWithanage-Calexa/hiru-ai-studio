@@ -1,0 +1,8 @@
+id: adam_write
+kind: step
+version: 1
+summary: "Writes a plan as rows: the cards as shots (with their card), the scene's lines bound to them, the fit report in the classic shape and the stored plan; keeps removed elaborations out; refuses an approved scene."
+status: active
+owner: director
+entry: step:run
+uses: []

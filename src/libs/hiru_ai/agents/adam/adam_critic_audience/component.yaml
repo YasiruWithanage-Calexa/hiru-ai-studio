@@ -1,0 +1,16 @@
+id: adam_critic_audience
+kind: agent
+version: 1
+summary: "Reads the plan from the viewer's seat: would they feel they are in the scene? The mute test, where attention drifts, where a feeling does not land."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: adam.screen
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

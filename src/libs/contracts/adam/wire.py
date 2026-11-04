@@ -189,7 +189,10 @@ class TreatmentsWire(_Wire):
 class MomentW(_Wire):
     id: str  # "m1", "m2" ... in the order they play
     tier: Literal["script", "implied", "elaboration"]
-    kind: str  # an elaboration's kind (or an implied moment's); empty for a script moment
+    # an elaboration's kind (or an implied moment's), from the closed list in `tiers.ELABORATION_KINDS`; empty for a
+    # script moment. An enum, not free text: a live model otherwise writes "baseline Anudi" and fidelity drops it.
+    kind: Literal["", "baseline", "reaction", "listener", "insert_detail", "hands", "pov", "atmosphere", "hold",
+                  "plant", "transition", "empty_frame", "implied_action", "move"]
     serves: list[str]
     who: list[str]
     seen: str
@@ -373,7 +376,7 @@ class CardW(_Wire):
                    for ln in self.lines],
             sound=self.sound.card_sound(), cut_in=p.CutIn(link=self.cut_in.link, motive=self.cut_in.motive),
             purpose=self.purpose, emotional_beat=self.emotional_beat, rhythm_break=self.rhythm_break,
-            veo_notes=self.veo_notes, take_s=self.take_s, use_s=None)
+            veo_notes=self.veo_notes, take_s=self.take_s, use_s=None, in_s=0.0)
 
 
 class CardsWire(_Wire):

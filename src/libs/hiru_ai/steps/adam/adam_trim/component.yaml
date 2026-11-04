@@ -1,0 +1,8 @@
+id: adam_trim
+kind: step
+version: 1
+summary: "Proposes where an editor would cut a take (the part kept and where it starts), by rule: never into a word, never the last shot, never the one deliberate break; a pre-lapped sound gets lead to arrive early with."
+status: active
+owner: director
+entry: step:run
+uses: []

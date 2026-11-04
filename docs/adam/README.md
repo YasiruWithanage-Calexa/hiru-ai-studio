@@ -53,9 +53,23 @@ dramaturg → director ×3 → adam_distinct → [choose] → moment writer → 
           → sound designer → adam_score
 ```
 
-Not built yet (Phases 5 to 10): the reviser and the screening panel, the system and function (which choose a treatment,
-retry a stage that fails a code step, and fetch the passages), storage, the shot-producer changes, the interface, the
-editorial layer and the A/B.
+## Phases 5 to 10 (built, none run on a real model)
+
+| Part | What it does |
+|---|---|
+| `adam_critic_audience`, `_editor`, `_opportunity`, `_fidelity` (agents, medium) | Four lenses, each at most four notes and a 1 to 5 score. The fidelity critic alone reads the code's report. |
+| `adam_reviser` (agent, high) | One revision as OPERATIONS (replace, insert, remove a card; add, remove a moment), never a fresh plan. |
+| `adam_screening` (panel) | The four critics in parallel, `adam_notes` merges, the reviser revises once, `adam_fidelity` drops an added moment that invents story, `adam_score` keeps the better version. The critics' scores are stored for a person; they decide nothing. |
+| `adam_notes`, `adam_passages`, `adam_write`, `adam_trim` (steps) | Merge the notes and write the code report; pick the film-grammar and device passages from the base's own files; write the rows (shot + card + intent, the lines bound, the fit report in the classic shape, the stored plan); propose where an editor would cut a take. |
+| `adam_distinct.choose` | The quick score on the three treatments alone, for when no person picks. |
+| `adam_shot_planner` (system) | The whole pipeline for each scene (`scene.py`), waves of four scenes, a time budget, a send-back-once on a script fault or an overrun, no rules fallback: with no model the job fails and names the classic planner. Edits: `{"remove_moment"}` (no model) and `{"treatment"}` (plans the cards again from the stored analysis). |
+| `services/shot_planner_adam` | The Cloud Run function (job kind `plan_scene_adam`, port 8209). |
+| Storage | `shots.card`, `shots.planner`, `scenes.adam` (one migration, `Database/schema_v11.sql`); the production's choice is `settings.shot_planner`. |
+| After the plan | A shot with a card stores an intent `by = "adam"`, so the intent agent is skipped; the DoP is told the card's camera as fixed; performance, sound and silence reach the Veo prompt; `prompt_lint` checks them. |
+| Editorial | `contracts/adam/editorial.py` plans cuts; `infra/assemble` `/cut` trims takes and lays sound across cuts (pre-lap, carry). Off unless `settings.final_cut_trim`. |
+| Phase 10 tools | `scripts/adam_live.py` (live runs; refuses without `--yes`), `scripts/adam_ab.py` (counts the blind A/B against the targets; suggests weights). |
+
+The interface side is `hiru-ai-studio-interface/src/features/adam/`.
 
 ## The rules that keep it apart
 

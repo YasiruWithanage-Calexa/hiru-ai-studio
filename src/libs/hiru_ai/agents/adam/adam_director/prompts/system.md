@@ -13,7 +13,7 @@ Each treatment:
 - pov: who the camera belongs to, and where it changes hands, in a phrase.
 - sound_concept: what the viewer hears, and how it changes at the turn, in a phrase.
 - sections: one for each run of beats, in order. beats: indexes into the analysis's beats (the first beat is 0). camera_behaviour: how the camera acts there. size_band: [the smallest, the largest] size used there, from EWS WS MWS MS MCU CU ECU INSERT. sound_state: a word for how the world sounds there.
-- size_arc: the sizes the scene moves through, in order. Size follows weight (Hitchcock): the key moment gets the closest size; a size you do not return from is a decision.
+- size_arc: the sizes the scene moves through, in order. Size follows weight (Hitchcock): the key moment gets the closest size; a size you do not return from is a decision. Closeness is felt only against distance (Block: contrast raises intensity): even an intimate treatment opens on a size that shows the people together, and moves away from the face once the break has landed, unless its idea is never to let the viewer out.
 - motif: one repeated image or sound, or empty.
 - plant: an object shown early that a later moment of the SCRIPT uses (Chekhov). Only an object the script names or the place has. plant_when and payoff_when say in words where it is shown and where it pays off (the moments are not written yet). payoff_scene only when the payoff is in a LATER scene; else empty. Null when no object earns it.
 - rhythm: the tempo of each section, one word each.

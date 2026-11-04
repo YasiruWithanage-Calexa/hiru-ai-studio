@@ -44,6 +44,7 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
     JobKind.CANON_EXTRACT: FunctionSpec("hiru-canon-extract", 8205, 600),
     JobKind.SHOT_PRODUCE: FunctionSpec("hiru-shot-producer", 8207, 900),
     JobKind.FRAME_RENDER: FunctionSpec("hiru-frame-render", 8208, 600),
+    JobKind.PLAN_SCENE_ADAM: FunctionSpec("hiru-shot-planner-adam", 8209, 900),
     # Added as each engine lands (PLAN.md §13).
 }
 

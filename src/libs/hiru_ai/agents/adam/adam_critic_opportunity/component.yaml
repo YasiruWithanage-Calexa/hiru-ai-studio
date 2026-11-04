@@ -1,0 +1,16 @@
+id: adam_critic_opportunity
+kind: agent
+version: 1
+summary: "Asks what a master director would add or remove: a missed picture, a device that is not earning its place. It may propose only the allowed kinds of addition."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: adam.screen
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

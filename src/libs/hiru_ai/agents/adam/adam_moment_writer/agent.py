@@ -14,7 +14,8 @@ from hiru_ai.agents.adam.adam_moment_writer.schema import Input, Output
 def user_message(inp: Input) -> str:
     return (f"<script>\n{inp.scene.listing()}\n</script>\n\n"
             f"<analysis>\n{compact(inp.analysis)}\n</analysis>\n\n"
-            f"<treatment>\n{compact(inp.treatment)}\n</treatment>")
+            f"<treatment>\n{compact(inp.treatment)}\n</treatment>"
+            + (f"\n\n<notes>\n{inp.notes}\n</notes>" if inp.notes else ""))
 
 
 def finish(inp: Input, out: Output) -> Output:

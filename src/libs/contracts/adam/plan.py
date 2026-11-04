@@ -352,6 +352,7 @@ class ShotCard(_Model):
     veo_notes: str = ""  # how the designer has handled what Veo renders badly
     take_s: int = Field(ge=1)  # 4, 6 or 8 for Veo; `adam_fit` reports any other length
     use_s: float | None = Field(None, gt=0)  # the part kept in the final cut (§5.6); None = the whole take
+    in_s: float = Field(0.0, ge=0)  # where in the take the kept part starts (§5.6); 0 = the start of the take
 
 
 # ── the sound map ────────────────────────────────────────────────────────────────────────────────

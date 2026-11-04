@@ -42,6 +42,9 @@ from contracts.producer import (
 from contracts.shotplan import timeline_text
 from contracts.staging import source_phrase
 from hiru_ai.core import parts
+from hiru_ai.steps.serialize.card import camera as card_camera
+from hiru_ai.steps.serialize.card import decisions_text as card_decisions
+from hiru_ai.steps.serialize.card import of as card_of
 from hiru_ai.steps.serialize.continuity import ContinuityLedger
 from hiru_ai.steps.serialize.intent import block_label, block_text, context_block
 from hiru_ai.steps.serialize.model import ProductionInput, SceneInput, ShotInput
@@ -144,7 +147,7 @@ def _timeline_line(shot: ShotInput) -> str:
 
 def shot_block(shot: ShotInput, total: int, prev: ShotInput | None, *, same_call: bool) -> str:
     windows = ", ".join(f"{a}-{b}s" for a, b in shot.beats)
-    kinds = ("camera", "director_line", "action")
+    kinds = ("camera", "director_line", "action", "performance")
     notes = [f"  [{a}-{b}s] " + "; ".join(f"{k.replace('_', ' ')}: {n[k]}" for k in kinds
                                           if n.get(k))
              for (a, b), n in zip(shot.beats, shot.beat_notes, strict=False) if any(n.values())]
@@ -158,6 +161,7 @@ def shot_block(shot: ShotInput, total: int, prev: ShotInput | None, *, same_call
              f"EMOTIONAL BEAT: {intent.emotional_beat}" if intent and intent.emotional_beat else "",
              f"BEAT WINDOWS: {windows}",
              "DIRECTOR'S BEAT NOTES (keep):\n" + "\n".join(notes) if notes else "",
+             card_decisions(card_of(shot.row)),
              _join_line(shot, prev, same_call),
              _timeline_line(shot),
              shot.feeling.performance_text(shot.beats),
@@ -377,7 +381,7 @@ def fit_beats(ir: Row, shot: ShotInput) -> Row:
         note = shot.beat_notes[n] if n < len(shot.beat_notes) else {}
         beats.append({"time": f"{a}-{b}s", **{k: str(note.get(k) or src.get(k) or "")
                                                 for k in ("camera", "director_line", "action")},
-                      "performance": str(src.get("performance") or "")})
+                      "performance": str(note.get("performance") or src.get("performance") or "")})
     return {**ir, "beats": beats}
 
 
@@ -386,7 +390,9 @@ def recommendation(entry: Row, shot: ShotInput, scene: SceneInput) -> CameraSett
     base = default_camera(shot.framing, heading=scene.heading, time_of_day=scene.time_of_day)
     raw = entry.get("recommendation")
     rec: Row = raw if isinstance(raw, dict) else {}
-    cam = base.with_overrides({k: v for k, v in rec.items() if k != CameraField.FRAMING.value})
+    # The card's camera (Shot Planner Adam) is the director's: it wins over the DoP, never over the shot's size.
+    cam = base.with_overrides({**{k: v for k, v in rec.items() if k != CameraField.FRAMING.value},
+                               **card_camera(card_of(shot.row))})
     if cam.movement == "Static" and cam.speed != "None":
         cam = cam.with_overrides({"speed": "None"})
     elif cam.movement != "Static" and cam.speed == "None":

@@ -28,6 +28,7 @@ from uuid import UUID
 
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import CameraSettings, prompt_text
+from contracts.staging import AUTHORED
 from shot_producer.engine import critique, intent, serialize, shots, techniques
 from shot_producer.engine.continuity import ContinuityLedger, carried_state
 from shot_producer.engine.feeling import positions_text
@@ -109,7 +110,7 @@ def _palette(store: StoreLike, llm: LLMLike, scenes: list[SceneInput], targets: 
 def _drop_agent_intent(shot: ShotInput) -> None:
     """An intent about to be rewritten must not steer who the rules think is seen."""
     row_intent = shot.row.get("intent") or {}
-    if row_intent and row_intent.get("by") != "person":
+    if row_intent and row_intent.get("by") not in AUTHORED:
         shot.row = {**shot.row, "intent": {}}
 
 
@@ -119,11 +120,11 @@ def write_intents(store: StoreLike, llm: LLMLike, scene: SceneInput, wanted: lis
     A person's intent or plan is never replaced. → how many intents were written."""
     def agent_owned(shot: ShotInput) -> bool:
         current = shot.intent
-        return current is None or current.by != "person"
+        return current is None or current.by not in AUTHORED
 
     need = [s for s in wanted if agent_owned(s) and (force or s.intent_needed())]
     current_plan = scene.plan
-    plan_needed = scene.plan_needed() or (force and (current_plan is None or current_plan.by != "person"))
+    plan_needed = scene.plan_needed() or (force and (current_plan is None or current_plan.by not in AUTHORED))
     if not need and not plan_needed:
         return 0
     for s in need:

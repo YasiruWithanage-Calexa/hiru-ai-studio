@@ -31,6 +31,7 @@ from langgraph.graph.state import CompiledStateGraph
 
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import CameraSettings
+from contracts.staging import AUTHORED
 from hiru_ai.core import agents, llm, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
@@ -104,11 +105,11 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         intent or plan is never replaced. -> how many intents were written."""
         def agent_owned(shot: Any) -> bool:
             current = shot.intent
-            return current is None or current.by != "person"
+            return current is None or current.by not in AUTHORED
 
         need = [s for s in wanted if agent_owned(s) and (force or s.intent_needed())]
         current_plan = scene.plan
-        plan_needed = scene.plan_needed() or (force and (current_plan is None or current_plan.by != "person"))
+        plan_needed = scene.plan_needed() or (force and (current_plan is None or current_plan.by not in AUTHORED))
         if not need and not plan_needed:
             return 0
         for s in need:

@@ -2,6 +2,8 @@
 kept apart by `validate`, scaffolded and removed as a set, and switched off as a set."""
 from __future__ import annotations
 
+import sys
+from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
@@ -14,6 +16,20 @@ from hiru_ai.core.errors import HiruAIError, ManifestError, UnknownComponent
 from hiru_ai.core.registry import PACKAGE_ROOT, Registry
 
 LAYERS = ("agents", "steps", "tools", "panels", "systems", "knowledge_bases")
+
+
+@pytest.fixture(autouse=True)
+def _no_leaked_modules() -> Iterator[None]:
+    """A registry over a throw-away folder loads a part's modules under their real dotted names
+    (`Registry.module`). Put back what was loaded before and drop what the test added, so a later test never imports a
+    scaffolded stand-in for `hiru_ai.agents.adam.adam_dramaturg`."""
+    before = dict(sys.modules)
+    yield
+    for name in [n for n in sys.modules if n.startswith("hiru_ai.") and sys.modules[n] is not before.get(n)]:
+        if name in before:
+            sys.modules[name] = before[name]
+        else:
+            del sys.modules[name]
 
 
 @pytest.fixture

@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v10.sql` | **The newest schema** (everything in v9 plus the per-component columns of `token_usage`: `component`, `component_version`, `prompt_hash`, `tool_calls`, `tool_result_tokens`; plan/2026-11-04), whole. Run it once on an empty project. |
+| `schema_v11.sql` | **The newest schema** (everything in v10 plus `shots.card`, `shots.planner` and `scenes.adam`: Shot Planner Adam, plan/2026-11-04b), whole. Run it once on an empty project. |
+| `upgrade_v10_to_v11.sql` | Moves a project on v10 to v11 (two columns on `shots`, one on `scenes`). Run once, only on such a project. |
+| `schema_v10.sql` | Kept for reference (everything in v9 plus the per-component columns of `token_usage`: `component`, `component_version`, `prompt_hash`, `tool_calls`, `tool_result_tokens`; plan/2026-11-04), whole. Run it once on an empty project. |
 | `upgrade_v9_to_v10.sql` | Moves a project on v9 to v10 (five columns and one index on `token_usage`). Run once, only on such a project. |
 | `schema_v9.sql` | Everything in v8 plus `shots.intent`, `scenes.coverage`, `scenes.reading` and `scenes.staging` (plan/2026-11-01d), `first_frames.checks`, the `pending_actions` table and `dialogue_lines.source_text` / `source_lang`: plan/2026-11-01 and 2026-11-01c), whole. Run it once on an empty project. |
 | `upgrade_v8_to_v9.sql` | Moves a project on v8 to v9 (four JSON columns, the `pending_actions` table and the two source columns on `dialogue_lines`). Run once, only on such a project. |
@@ -34,6 +36,17 @@ empty database and comparing the dump with the one the migrations build (identic
 running the 94 database tests and Supabase's advisor check on it (all pass). v1 plus
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
+
+## Moving a project from v10 to v11
+
+1. **SQL Editor:** paste `upgrade_v10_to_v11.sql` and run it, once. It runs as one transaction and can be re-run.
+2. Check: `select card, planner from public.shots limit 1;` runs (old rows show `{}` and `classic`), and
+   `select adam from public.scenes limit 1;` shows `{}`.
+3. Restart the API and the functions. Until it is applied, a production set to Adam (`settings.shot_planner`) cannot write
+   its shots; the classic planner does not touch the new columns, so nothing else changes.
+
+v11 was **not** verified with a dump comparison or the database tests (no Docker on the machine it was written on):
+run `npx supabase db reset` and `npx supabase test db` (`011_adam.test.sql`) where Docker is available.
 
 ## Moving a project from v9 to v10
 

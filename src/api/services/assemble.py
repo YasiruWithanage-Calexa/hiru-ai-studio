@@ -70,6 +70,16 @@ class HttpAssembler:
         return str(data.get("path") or "") if data and not data.get("error") else ""
 
 
+    async def cut(self, clips: list[dict[str, Any]], out_bucket: str, out_path: str) -> tuple[str, float]:
+        """One scene's cut (plan/2026-11-04b Phase 9): each take trimmed to the part its card keeps, its sound laid
+        across the cuts. -> (the stored path, its length), or ("", 0) when it could not be made. Not on the
+        `Assembler` protocol: only the final cut asks for it."""
+        data = await self._post("/cut", {"clips": clips, "out_bucket": out_bucket, "out_path": out_path})
+        if not data or data.get("error"):
+            return "", 0.0
+        return str(data.get("path") or ""), float(data.get("duration_s") or 0)
+
+
 def get_assembler() -> Assembler:
     """A dependency, so tests can stand in for ffmpeg."""
     return HttpAssembler()

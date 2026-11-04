@@ -22,16 +22,17 @@ from api.services.ai import UsageContext, get_ai
 from api.workers import task_manager
 from contracts.build import (
     AGENT_LABEL,
-    BUILD_PIPELINE,
     STAGE_LABEL,
     Agent,
     AnswerRequest,
     Question,
     QuestionStatus,
     Stage,
+    build_pipeline,
 )
 from contracts.documents import DocumentRole, DocumentStatus
 from contracts.jobs import JobEventType, JobKind, JobStatus
+from contracts.production import ProductionSettings
 from contracts.roles import Permission
 
 _logger = logging.getLogger(__name__)
@@ -164,8 +165,10 @@ async def start_build(production_id: UUID, access: CanBuild, repos: ReposDep) ->
     needs = [d["filename"] for d in ready if not d.get("text_path")
              and (d.get("confirmed_role") or d.get("detected_role")) in
              (DocumentRole.SCRIPT, DocumentRole.OUTLINE, DocumentRole.BIBLE, DocumentRole.CANON_INDEX)]
+    # The one place the build chooses a planner (plan/2026-11-04b D5): the production's `shot_planner` setting.
+    planner = ProductionSettings.model_validate(access.production.get("settings") or {}).shot_planner
     job_id = await task_manager.dispatch(JobKind.STRUCTURE_BUILD, repos, actor_user_id=access.user.id,
-                                         production_id=production_id, pipeline=list(BUILD_PIPELINE),
+                                         production_id=production_id, pipeline=list(build_pipeline(planner)),
                                          state={"build": True})
     await repos.audit.record(action="build.start", entity="job", entity_id=str(job_id),
                              actor_user_id=access.user.id, production_id=production_id)

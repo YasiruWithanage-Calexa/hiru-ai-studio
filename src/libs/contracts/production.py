@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import StrEnum
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -69,6 +69,12 @@ class ProductionSettings(_Model):
     # brands, and the public figures this production must not depict.
     banned_terms: list[Annotated[str, Field(min_length=1, max_length=80)]] = Field(default_factory=list,
                                                                                     max_length=200)
+    # Which planner makes the shot lists (plan/2026-11-04b D5): the classic `script_split`, or Shot Planner Adam.
+    # A scene can also be planned with Adam on its own ("Plan with Adam"), whatever this says.
+    shot_planner: Literal["classic", "adam"] = "classic"
+    # Whether the final cut trims a take to the part its card keeps and lays sound across cuts (pre-lap, carry): plan
+    # 2026-11-04b Phase 9. Off until it is proven; then every take plays whole.
+    final_cut_trim: bool = False
 
     @field_validator("fixed_shot_seconds")
     @classmethod

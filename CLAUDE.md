@@ -40,8 +40,10 @@ Ids start `adam_`; `hiru-ai new <kind> adam_x --group adam`; a grouped part name
 core, the rag and `contracts` aside); `hiru-ai remove --group adam` lists everything that goes. **Never invent story;
 always elaborate the picture**: `adam_fidelity` refuses a new person, line, event or object (a line is named by id, its
 words are the script's). Read `docs/adam/README.md` and `plan/2026-11-04b/IMPLEMENTED.md` first (what is built, what waits
-for a person). Phases 0 to 4 are built (the six thinking and design agents take a wire shape from `contracts/adam/wire.py`
-and have no fallback); the gold masters are drafts until a Hiru director approves them.
+for a person). Phases 0 to 10 are built offline: the agents take a wire shape from `contracts/adam/wire.py` and have no
+fallback; the system is `adam_shot_planner` (job `plan_scene_adam`, function `shot_planner_adam`); a production chooses it with
+`settings.shot_planner`. The live runs (`scripts/adam_live.py --yes`), the A/B and the default are a person's; the gold masters
+are drafts until a Hiru director approves them.
 
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.

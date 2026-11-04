@@ -3,6 +3,7 @@
     "."
   ],
   "graphs": {
+    "adam_shot_planner": "./src/libs/hiru_ai/systems/adam/adam_shot_planner/graph.py:blank",
     "canon_extract": "./src/libs/hiru_ai/systems/canon_extract/graph.py:blank",
     "director_chat": "./src/libs/hiru_ai/systems/director_chat/graph.py:blank",
     "doc_ingest": "./src/libs/hiru_ai/systems/doc_ingest/graph.py:blank",
@@ -11,6 +12,7 @@
     "script_split": "./src/libs/hiru_ai/systems/script_split/graph.py:blank",
     "shot_producer": "./src/libs/hiru_ai/systems/shot_producer/graph.py:blank",
     "structure_build": "./src/libs/hiru_ai/systems/structure_build/graph.py:blank",
+    "adam_screening": "./src/libs/hiru_ai/panels/adam/adam_screening/graph.py:blank",
     "director_board": "./src/libs/hiru_ai/panels/director_board/graph.py:blank",
     "plan_review": "./src/libs/hiru_ai/panels/plan_review/graph.py:blank",
     "shot_review": "./src/libs/hiru_ai/panels/shot_review/graph.py:blank",

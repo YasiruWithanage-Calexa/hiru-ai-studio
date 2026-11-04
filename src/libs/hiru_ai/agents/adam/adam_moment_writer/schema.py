@@ -17,6 +17,7 @@ class Input(BaseModel):
     scene: SceneScript
     analysis: SceneAnalysis
     treatment: Treatment  # the chosen one; its moment ids are still empty
+    notes: str = ""  # what code refused in the last attempt (the system retries once); empty on the first try
 
 
 class Output(MomentsWire):

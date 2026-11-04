@@ -18,6 +18,7 @@ class Input(BaseModel):
     moments: list[Moment]  # the moments that passed fidelity, in order
     staging: Staging = Staging()
     devices: str = ""  # passages of the device library the system retrieved (the agent cannot search)
+    notes: str = ""  # what code refused in the last attempt (the system retries once); empty on the first try
 
 
 class Output(CardsWire):

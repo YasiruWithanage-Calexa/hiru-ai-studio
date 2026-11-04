@@ -109,14 +109,18 @@ def check(scene: SceneScript, moments: list[Moment], cards: list[ShotCard], *,
             issues.append(Issue("crowded", OVERRUN, f"it needs {need:.1f} s but the take is {take} s; a "
                                                     f"{suggest} s take would hold it", card.number))
         use = card.use_s if card.use_s is not None else float(take)
-        if use > take:
-            issues.append(Issue("use_over_take", OVERRUN, f"use_s {use:g} is longer than the {take} s take",
+        if card.in_s + use > take + 1e-9:
+            issues.append(Issue("use_over_take", OVERRUN, f"the kept part ({card.in_s:g} s in, {use:g} s long) runs "
+                                                          f"past the end of the {take} s take",
                                 card.number))
         elif use < MIN_USE_S:
             issues.append(Issue("use_too_short", WARNING, f"use_s {use:g} is under {MIN_USE_S:g} s: too short to read",
                                 card.number))
-        if not editorial and use != take:
-            issues.append(Issue("trim_not_ready", WARNING, "the final cut cannot trim a take yet (Phase 9): the whole "
+        if clock["spoken"] and (card.in_s > 0 or card.in_s + use + 1e-9 < float(clock["speech_end_s"])):
+            issues.append(Issue("trim_cuts_speech", OVERRUN, "the kept part cuts into the words said in this take: a "
+                                                             "line is never trimmed", card.number))
+        if not editorial and (use != take or card.in_s):
+            issues.append(Issue("trim_not_ready", WARNING, "the final cut is not set to trim takes: the whole "
                                                            f"{take} s plays", card.number))
         rows.append({"number": card.number, "take_s": take, "use_s": use, "need_s": clock["need_s"],
                      "picture_s": clock["picture_s"], "words": clock["words"], "word_target": target,

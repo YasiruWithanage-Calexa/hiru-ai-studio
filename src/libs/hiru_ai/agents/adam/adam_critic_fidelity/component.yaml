@@ -1,0 +1,16 @@
+id: adam_critic_fidelity
+kind: agent
+version: 1
+summary: "Checks that no card drifts from the script, the treatment or what Veo can render; reads the code's reports and says what to fix."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: adam.screen
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

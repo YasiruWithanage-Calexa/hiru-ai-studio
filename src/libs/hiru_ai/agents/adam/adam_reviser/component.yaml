@@ -1,0 +1,16 @@
+id: adam_reviser
+kind: agent
+version: 1
+summary: "Revises a plan once from the screening notes, as operations on the plan (replace, insert or remove a card; add or remove a moment), never as a fresh plan."
+status: active
+owner: director
+model: high
+shape: structured
+phase: adam.revise
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

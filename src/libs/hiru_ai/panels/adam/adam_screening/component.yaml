@@ -1,0 +1,15 @@
+id: adam_screening
+kind: panel
+version: 1
+summary: "Four critics read a scene's shot cards through different lenses and write notes; ONE revision is made from them; the craft score in code keeps the better version."
+status: active
+owner: director
+pattern: critics_judge
+# name = the lens. The critics never pick a plan: model critics did not agree with experts, and code can be checked.
+members:
+  - { agent: adam_critic_audience, name: audience }
+  - { agent: adam_critic_editor, name: editor }
+  - { agent: adam_critic_opportunity, name: opportunity }
+  - { agent: adam_critic_fidelity, name: fidelity }
+judge: step:adam_score
+reviser: agent:adam_reviser

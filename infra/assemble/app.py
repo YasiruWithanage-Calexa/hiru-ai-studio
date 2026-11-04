@@ -2,6 +2,7 @@
 
     POST /last-frame   the last frame of a take → the frames bucket (opens a shot that carries on)
     POST /probe        a take's duration, size and whether it has audio
+    POST /cut          takes → one cut: each trimmed to the part its card keeps, its sound laid across the cuts
     GET  /health       whether ffmpeg is on the PATH
 
 Forked from PromptMotion `infra/assemble/app.py` (1d748dc; see UPSTREAM.md). A Cloud Run
@@ -62,6 +63,29 @@ class ProbeResult(BaseModel):
     error: str = ""
 
 
+class Clip(BaseModel):
+    """One take in a cut (contracts.adam.editorial.Clip): the part kept, and how its sound reaches across the cuts."""
+
+    bucket: str = "takes"
+    path: str = ""
+    in_s: float = 0.0  # where the kept part starts in the take
+    use_s: float = 0.0  # how long it plays
+    lead_s: float = 0.0  # its sound starts this much before its picture (a J cut); needs lead_s <= in_s
+    tail_s: float = 0.0  # its sound runs this much past its picture (an L cut)
+
+
+class CutRequest(BaseModel):
+    clips: list[Clip]
+    out_bucket: str = "takes"
+    out_path: str = ""
+
+
+class CutResult(BaseModel):
+    path: str = ""
+    duration_s: float = 0.0
+    error: str = ""
+
+
 def _storage() -> tuple[str, dict[str, str]]:
     base = os.environ.get("SUPABASE__URL", "http://127.0.0.1:54321").rstrip("/")
     key = os.environ.get("SUPABASE__SERVICE_ROLE_KEY", "")
@@ -119,6 +143,71 @@ def probe_file(path: Path) -> ProbeResult:
     if out.returncode != 0:
         info.error = "could not read the take"
     return info
+
+
+def cut_command(sources: list[Path], clips: list[Clip], has_audio: list[bool], out: Path) -> list[str]:
+    """The ffmpeg call for a cut. Pictures are trimmed and joined end to end; each clip's sound is trimmed to the part
+    kept plus its lead and tail, delayed to where it starts on the timeline (its picture's start minus its lead), and
+    mixed with the others at full level. A take with no sound adds none: the cut is silent there."""
+    args = ["ffmpeg", "-nostdin", "-y"]
+    for src in sources:
+        args += ["-i", str(src)]
+    parts: list[str] = []
+    audio: list[str] = []
+    at = 0.0
+    for i, clip in enumerate(clips):
+        end = clip.in_s + clip.use_s
+        parts.append(f"[{i}:v]trim=start={clip.in_s}:end={end},setpts=PTS-STARTPTS,fps=25,format=yuv420p[v{i}]")
+        if has_audio[i]:
+            lead = min(clip.lead_s, clip.in_s, at)  # nothing can arrive before the cut begins
+            delay = round((at - lead) * 1000)
+            parts.append(f"[{i}:a]atrim=start={clip.in_s - lead}:end={end + clip.tail_s},asetpts=PTS-STARTPTS,"
+                         f"aresample=48000,aformat=channel_layouts=mono,adelay={delay}:all=1[a{i}]")
+            audio.append(f"[a{i}]")
+        at += clip.use_s
+    joined = "".join(f"[v{i}]" for i in range(len(clips)))
+    parts.append(f"{joined}concat=n={len(clips)}:v=1:a=0[v]")
+    maps = ["-map", "[v]"]
+    if audio:
+        parts.append(f"{''.join(audio)}amix=inputs={len(audio)}:normalize=0:duration=longest,atrim=end={at}[a]")
+        maps += ["-map", "[a]", "-c:a", "aac"]
+    return [*args, "-filter_complex", ";".join(parts), *maps, "-c:v", "libx264", "-pix_fmt", "yuv420p", str(out)]
+
+
+@app.post("/cut", response_model=CutResult)
+def cut(body: CutRequest, x_assemble_secret: str | None = Header(default=None)) -> CutResult:
+    """One scene's cut (plan/2026-11-04b Phase 9). Each clip keeps `use_s` from `in_s`; a pre-lap or a carry reaches
+    into its neighbour's picture. A lead the take cannot give (no footage before `in_s`) is dropped, never invented."""
+    _authorize(x_assemble_secret)
+    if not body.clips or not body.out_path or any(not c.path or c.use_s <= 0 for c in body.clips):
+        raise HTTPException(status_code=400, detail="clips (with a path and a length) and out_path are required")
+    with tempfile.TemporaryDirectory() as tmp:
+        sources, has_audio = [], []
+        for i, clip in enumerate(body.clips):
+            src = Path(tmp) / f"in{i}"
+            try:
+                src.write_bytes(_download(clip.bucket, clip.path))
+            except httpx.HTTPError as exc:
+                _logger.warning("download failed: %s", exc)
+                return CutResult(error="could not read a take")
+            info = probe_file(src)
+            if info.error or clip.in_s + clip.use_s > info.duration_s + 0.1:
+                return CutResult(error=f"take {i + 1} is shorter than the part the card keeps")
+            sources.append(src)
+            has_audio.append(info.has_audio)
+        out = Path(tmp) / "cut.mp4"
+        try:
+            _run(cut_command(sources, body.clips, has_audio, out), timeout=600)
+        except Exception as exc:
+            _logger.warning("cut failed: %s", exc)
+            return CutResult(error="could not make the cut")
+        done = probe_file(out)
+        try:
+            _upload(body.out_bucket, body.out_path, out.read_bytes(), "video/mp4")
+        except httpx.HTTPError as exc:
+            _logger.warning("upload failed: %s", exc)
+            return CutResult(error="could not store the cut")
+    return CutResult(path=body.out_path, duration_s=done.duration_s)
 
 
 @app.get("/health")

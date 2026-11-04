@@ -1,0 +1,16 @@
+id: adam_critic_editor
+kind: agent
+version: 1
+summary: "Reads the plan as an editor (Murch's order): is every cut motivated, the rhythm, juxtaposition, the in and out points, the one rhythm break."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: adam.screen
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

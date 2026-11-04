@@ -119,6 +119,7 @@ class ShotView(BaseModel):
     timeline: list[TimelineSlot] = []
     holds: list[HoldView] = []  # time the scene's reading gave it: a reaction, a look held, a last image
     places: list[PlaceView] = []  # where the people it shows are when it starts (empty without a staging map)
+    planner: str = "classic"  # which planner made the shot: classic | adam (plan/2026-11-04b)
 
 
 class LineView(BaseModel):
@@ -216,7 +217,7 @@ class SceneView(BaseModel):
     status: SceneStatus
     script_version: int
     locked_at: datetime | None
-    planner: str  # who planned the shots: rules | model | director | person
+    planner: str  # who planned the shots: rules | model | director | person | adam
     critic_notes: list[str]
     script: list[ScriptBlockView]
     shots: list[ShotView]
@@ -235,6 +236,25 @@ class SceneView(BaseModel):
 
 class ResplitStarted(BaseModel):
     job_id: UUID
+
+
+class AdamView(BaseModel):
+    """What Shot Planner Adam keeps for a scene (plan/2026-11-04b): `plan` is None for a scene it never planned."""
+
+    scene_id: UUID
+    planner: str  # classic | adam: who made the shots on the scene now
+    # The plan as Adam stored it (`scenes.adam`), passed on as it is: this router knows nothing of its parts, so
+    # removing Adam removes nothing here but these endpoints.
+    plan: dict[str, Any] | None = None
+
+
+class AdamPlanRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    # "restrained" | "intimate" | "heightened": plan the cards under that treatment (a switch keeps the analysis and the
+    # treatments). Empty: Adam chooses, by the quick score on the treatments.
+    treatment: str = Field(default="", pattern=r"^(|restrained|intimate|heightened)$")
+    screening: bool = True  # the four critics and one revision; off is faster and cheaper
 
 
 # ── loading and re-fitting ─────────────────────────────────────────────────────────────────
@@ -350,6 +370,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
                    for (b0, b1), n in zip(f.beats, _pad(row.get("beats") or [], len(f.beats)), strict=True)],
             block_start=f.start, block_end=f.end, word_target=f.word_target, words=f.words,
             line_ids=[UUID(x) for x in f.line_ids], status=ShotStatus(row.get("status") or "draft"),
+            planner=str(row.get("planner") or "classic"),
             version=int(row.get("version") or 1), picture_s=f.picture_s, need_s=f.need_s,
             crowded=f.number in result.crowded if result else False,
             timeline=[TimelineSlot(block=s.index, kind="line" if s.is_line else "picture", start_s=round(s.start_s, 2),
@@ -503,6 +524,70 @@ async def resplit_scene(production_id: UUID, scene_id: UUID, access: CanDirect, 
     await repos.audit.record(action="scene.resplit", entity="scene", entity_id=str(scene_id),
                              actor_user_id=access.user.id, production_id=production_id, diff={"job_id": str(job_id)})
     return ResplitStarted(job_id=job_id)
+
+
+# ── Shot Planner Adam (plan/2026-11-04b) ────────────────────────────────────────────────────
+
+
+@router.get("/scenes/{scene_id}/adam", response_model=AdamView, response_model_by_alias=True)
+async def get_adam(production_id: UUID, scene_id: UUID, access: CanView, repos: ReposDep) -> AdamView:
+    """The scene's Adam plan: the analysis, the treatment in use and the two others, the moments (script, implied,
+    added by the director), the cards, the sound map, what code and the critics said, and what the scene had before."""
+    ld = await load(repos, access, scene_id)
+    stored = _adam_plan(ld.scene)
+    made_by_adam = any(s.get("planner") == "adam" for s in ld.shots)
+    return AdamView(scene_id=scene_id, planner="adam" if made_by_adam else "classic",
+                    plan=stored if made_by_adam else None)
+
+
+def _adam_plan(scene: Row) -> dict[str, Any] | None:
+    """The scene's stored Adam plan, or None when Adam never planned it."""
+    raw = scene.get("adam")
+    return raw if isinstance(raw, dict) and raw.get("planner") == "adam" else None
+
+
+async def _adam_job(repos: Repos, access: ProductionAccess, scene_id: UUID, state: dict[str, Any],
+                    action: str) -> ResplitStarted:
+    job_id = await task_manager.dispatch(JobKind.PLAN_SCENE_ADAM, repos, actor_user_id=access.user.id,
+                                         production_id=access.production_id, request={"scene_id": str(scene_id)},
+                                         state={"scene_ids": [str(scene_id)], **state})
+    await repos.audit.record(action=action, entity="scene", entity_id=str(scene_id), actor_user_id=access.user.id,
+                             production_id=access.production_id, diff={"job_id": str(job_id)})
+    return ResplitStarted(job_id=job_id)
+
+
+@router.post("/scenes/{scene_id}/adam/plan", response_model=ResplitStarted, status_code=status.HTTP_202_ACCEPTED)
+async def plan_with_adam(production_id: UUID, scene_id: UUID, body: AdamPlanRequest, access: CanDirect,
+                         repos: ReposDep) -> ResplitStarted:
+    """Plan the scene's shots with Shot Planner Adam ("Plan with Adam"), or, with a treatment, plan its cards again
+    under another one. Replaces the shot list; an approved scene is refused."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    if not ld.scene.get("script"):
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no script to plan shots from.")
+    return await _adam_job(repos, access, scene_id, {"edit": {"treatment": body.treatment} if body.treatment else {},
+                                                     "screening": body.screening}, "scene.adam_plan")
+
+
+@router.post("/scenes/{scene_id}/adam/moments/{moment_id}/remove", response_model=ResplitStarted,
+             status_code=status.HTTP_202_ACCEPTED)
+async def remove_adam_moment(production_id: UUID, scene_id: UUID, moment_id: str, access: CanDirect,
+                             repos: ReposDep) -> ResplitStarted:
+    """Take out something the director added ("Added by director"). The moment and any card left with nothing go, and
+    the same addition is never added back when the scene is planned again. A moment that presents the script cannot be
+    removed. No model is called."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    stored = _adam_plan(ld.scene)
+    if stored is None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene was not planned by Shot Planner Adam.")
+    found = next((m for m in stored.get("moments") or [] if m.get("id") == moment_id), None)
+    if found is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "The plan has no such moment.")
+    if found.get("tier") == "script":
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT,
+                            "A moment that presents the script cannot be removed.")
+    return await _adam_job(repos, access, scene_id, {"edit": {"remove_moment": moment_id}}, "scene.adam_remove_moment")
 
 
 async def _episode_status(repos: Repos, production_id: UUID, episode_id: UUID) -> None:

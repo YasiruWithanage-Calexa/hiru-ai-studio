@@ -22,7 +22,8 @@ def graph_module(comp: Component):  # type: ignore[no-untyped-def]
 
 
 def test_the_plan_lists_these_panels():
-    assert {i for i in REGISTRY.ids("panel")} == {"director_board", "plan_review", "shot_review", "structure_draft"}
+    ungrouped = {i for i in REGISTRY.ids("panel") if not REGISTRY.get("panel", i).group}  # a group's are its own
+    assert ungrouped == {"director_board", "plan_review", "shot_review", "structure_draft"}
 
 
 def test_the_manifests_pattern_names_are_the_library():

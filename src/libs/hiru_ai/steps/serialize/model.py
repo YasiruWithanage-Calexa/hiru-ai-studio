@@ -25,7 +25,7 @@ from contracts.producer import (
 )
 from contracts.production import ProductionSettings
 from contracts.shotplan import Item
-from contracts.staging import ScenePlan, ShotIntent, Staging, intent_basis, shot_cast, staging
+from contracts.staging import AUTHORED, ScenePlan, ShotIntent, Staging, intent_basis, shot_cast, staging
 from contracts.veo import ASPECT_RATIO, Orientation
 from hiru_ai.core import parts
 
@@ -56,7 +56,7 @@ class ShotInput:
     camera_link: str
     frame_strategy: str
     beats: list[tuple[int, int]]
-    beat_notes: list[Row]  # the director's notes per beat (camera, director_line, action)
+    beat_notes: list[Row]  # the director's notes per beat (camera, director_line, action; performance from a shot card)
     items: list[Item]  # the script blocks this shot plays
     lines: list[Line]
     cast: list[CastMember]  # characters in the shot, seen or heard, canon order
@@ -91,7 +91,7 @@ class ShotInput:
         intent = self.intent
         if intent is None:
             return True
-        return intent.by != "person" and intent.stale(self.basis)
+        return intent.by not in AUTHORED and intent.stale(self.basis)
 
     @property
     def dop_note(self) -> str:
@@ -147,7 +147,7 @@ class SceneInput:
 
     def plan_needed(self) -> bool:
         plan = self.plan
-        return plan is None or (plan.by != "person" and plan.made_for != self.script_version)
+        return plan is None or (plan.by not in AUTHORED and plan.made_for != self.script_version)
 
 
 @dataclass
@@ -229,7 +229,8 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
             sound_mode=str(s.get("sound_mode") or "ambient"), camera_link=str(s.get("camera_link") or "cut"),
             frame_strategy=str(s.get("frame_strategy") or "generate"),
             beats=[(int(b["start_s"]), int(b["end_s"])) for b in s.get("beats") or []],
-            beat_notes=[{k: str(b.get(k) or "") for k in sceneplan.BEAT_TEXT} for b in s.get("beats") or []],
+            beat_notes=[{**{k: str(b.get(k) or "") for k in sceneplan.BEAT_TEXT},
+                         "performance": str(b.get("performance") or "")} for b in s.get("beats") or []],
             items=own, lines=shot_lines, cast=[prod.by_id[c] for c in cast_ids if c in prod.by_id],
             words=int(s.get("words") or 0), word_target=int(s.get("word_target") or 0),
             version=int(s.get("version") or 1), row=s,

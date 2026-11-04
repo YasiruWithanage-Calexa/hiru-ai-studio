@@ -109,12 +109,15 @@ def check_props(staging: Staging, moments: list[Moment]) -> list[Issue]:
     out = []
     for obj, by_moment in sorted(holders.items()):
         points = sorted(by_moment)
+        held = {points[0]: by_moment[points[0]]} if points else {}
         for before, now in itertools.pairwise(points):
-            if by_moment[before] == by_moment[now]:
+            # a holder with no mark at `now` (gone off, or simply not staged then) still has the object
+            held[now] = by_moment[now] | {h for h in held[before] if h not in people.get(now, set())}
+            if held[before] == held[now]:
                 continue
             if not any(before < k <= now for k in seen_at.get(obj, [])):
                 out.append(Issue("prop_unseen", f"the {obj}, {moments[before].id} to {moments[now].id}",
-                                 f"the {obj} changes hands ({_who(by_moment[before])} to {_who(by_moment[now])}) "
+                                 f"the {obj} changes hands ({_who(held[before])} to {_who(held[now])}) "
                                  "and no "
                                  "moment between shows it: show the hand-over, or keep it in one place"))
     return out

@@ -37,7 +37,8 @@ def user_message(inp: Input) -> str:
             + f"<treatment>\n{compact(inp.treatment)}\n</treatment>\n\n"
             + f"<moments>\n{moments_text(inp.moments)}\n</moments>\n\n"
             + f"<staging>\n{compact(inp.staging)}\n</staging>\n\n"
-            + f"<clock>\n{clock_text(inp.scene, inp.moments)}\n</clock>")
+            + f"<clock>\n{clock_text(inp.scene, inp.moments)}\n</clock>"
+            + (f"\n\n<notes>\n{inp.notes}\n</notes>" if inp.notes else ""))
 
 
 def finish(inp: Input, out: Output) -> Output:

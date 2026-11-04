@@ -98,6 +98,8 @@ def test_nothing_outside_an_adam_folder_imports_one():
         for path in sorted(base.rglob("*.py")):
             if any(o in path.parents for o in own) or ".venv" in path.parts:
                 continue
+            if path.parent == ROOT / "scripts" and path.name.startswith("adam_"):
+                continue  # Adam's own tools for the live runs and the A/B (scripts/adam_*.py)
             checked += 1
             bad = reaches_into_a_group(path.read_text(encoding="utf-8"))
             assert not bad, f"{path.relative_to(ROOT)} imports {bad}: nothing outside the adam folders may"

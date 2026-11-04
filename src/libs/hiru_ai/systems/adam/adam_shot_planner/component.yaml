@@ -1,0 +1,11 @@
+id: adam_shot_planner
+kind: system
+version: 1
+summary: "Shot Planner Adam: plans each scene by imagining first and cutting second (analyse, three treatments, moments, staging, cards, sound), has four critics screen it, keeps the better version by a craft score in code, and writes the shots."
+status: active
+owner: director
+job_kind: plan_scene_adam
+panels: [adam_screening]
+agents: [adam_dramaturg, adam_director, adam_moment_writer, adam_blocker, adam_shot_designer, adam_sound_designer]
+steps: [adam_fidelity, adam_fit, adam_continuity, adam_feasibility, adam_distinct, adam_passages, adam_write]
+tools: []

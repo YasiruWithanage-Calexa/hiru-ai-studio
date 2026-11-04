@@ -15,7 +15,8 @@ $functions = @(
     @{ Name = "hiru-canon-extract"; Source = "src\services\canon_extract"; Port = 8205 },
     @{ Name = "hiru-director-chat"; Source = "src\services\director_chat"; Port = 8206 },
     @{ Name = "hiru-shot-producer"; Source = "src\services\shot_producer"; Port = 8207 },
-    @{ Name = "hiru-frame-render"; Source = "src\services\frame_render"; Port = 8208 }
+    @{ Name = "hiru-frame-render"; Source = "src\services\frame_render"; Port = 8208 },
+    @{ Name = "hiru-shot-planner-adam"; Source = "src\services\shot_planner_adam"; Port = 8209 }
 )
 
 # AI_ENGINE=legacy (default) | graph picks the engine of a function whose system is migrated (hiru_ai, plan/2026-11-03

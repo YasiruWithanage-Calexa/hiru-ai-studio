@@ -28,6 +28,8 @@ from typing import Any
 from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment, camera_sentence
 from contracts.staging import source_phrase
 from hiru_ai.core import parts
+from hiru_ai.steps.serialize.card import of as card_of
+from hiru_ai.steps.serialize.card import sound_text as card_sound
 from hiru_ai.steps.serialize.model import Line, ShotInput
 from hiru_ai.steps.serialize.schema import get_schema
 
@@ -182,8 +184,8 @@ def _voice_text(shot: ShotInput) -> str:
 
 def _audio_text(shot: ShotInput, ir: Row) -> str:
     """What the soundtrack is, stated for every mode. Silence has to be ASKED for."""
-    room = "; ".join(_bare(i.text) for i in shot.items if i.kind == "sound" and i.text.strip()) \
-        or _bare(ir.get("audio"))
+    room = card_sound(card_of(shot.row)) or "; ".join(_bare(i.text) for i in shot.items
+                                                      if i.kind == "sound" and i.text.strip()) or _bare(ir.get("audio"))
     mode, bits = shot.sound_mode, []
     if mode in ("music_only", "silent", "ambient"):
         bits.append("No dialogue. No voiceover. Nobody speaks on camera.")

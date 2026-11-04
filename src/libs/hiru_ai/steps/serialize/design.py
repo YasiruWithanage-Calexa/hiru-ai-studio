@@ -8,6 +8,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from contracts.producer import CameraSettings, prompt_text
+from contracts.staging import AUTHORED
 from hiru_ai.core import parts
 from hiru_ai.steps.serialize import logic as serialize
 from hiru_ai.steps.serialize import shots
@@ -33,7 +34,7 @@ def scene_text(scene: SceneInput) -> str:
 def drop_agent_intent(shot: ShotInput) -> None:
     """An intent about to be rewritten must not steer who the rules think is seen."""
     row_intent = shot.row.get("intent") or {}
-    if row_intent and row_intent.get("by") != "person":
+    if row_intent and row_intent.get("by") not in AUTHORED:
         shot.row = {**shot.row, "intent": {}}
 
 

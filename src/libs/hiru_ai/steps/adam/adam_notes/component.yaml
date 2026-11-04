@@ -1,0 +1,8 @@
+id: adam_notes
+kind: step
+version: 1
+summary: "Merges the screening critics' notes (most severe first, no repeats, a cap) and keeps their lens scores for a person; writes the code's findings as the text the fidelity critic and the reviser read."
+status: active
+owner: director
+entry: step:run
+uses: []

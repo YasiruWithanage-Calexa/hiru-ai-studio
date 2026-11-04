@@ -36,6 +36,7 @@ class JobKind(StrEnum):
     SCRIPT_SPLIT = "script_split"
     SHOT_PRODUCE = "shot_produce"
     FRAME_RENDER = "frame_render"
+    PLAN_SCENE_ADAM = "plan_scene_adam"  # Shot Planner Adam: one scene, a few, or the last hop of the build
 
 
 class JobStatus(StrEnum):

@@ -11,7 +11,7 @@ real director's idea", "the test scene's cards read like section 9 to the person
 """
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, get_args
 
 import pytest
 import yaml
@@ -19,6 +19,7 @@ from tests.adam import gold, stages
 
 from contracts.adam import wire as w
 from contracts.adam.plan import AdamPlan, Treatment
+from contracts.adam.tiers import ELABORATION_KINDS
 from hiru_ai.core import agents, llm, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.testing import ScriptedChatModel
@@ -153,6 +154,15 @@ def test_a_wire_shape_has_no_defaulted_field_and_refuses_an_extra_one():
             assert all(f.is_required() for f in cls.model_fields.values()), cls.__name__
     with pytest.raises(ValueError):
         w.PovW.model_validate({"start": "a", "end": "b", "why": "c", "extra": 1})
+
+
+def test_a_moments_kind_is_the_closed_list_so_a_model_cannot_write_a_kind_with_a_name_in_it():
+    """A live run (2026-11-04) wrote "baseline Anudi" and "pov Dasun" while `kind` was free text; fidelity dropped six
+    moments. The wire's enum is the list in `tiers` plus the empty kind of a script moment."""
+    assert get_args(w.MomentW.model_fields["kind"].annotation) == ("", *ELABORATION_KINDS)
+    one = stages.moments_wire(stages.master_with_stance("phone_call")).moments[0].model_dump()
+    with pytest.raises(ValueError):
+        w.MomentW.model_validate({**one, "kind": "baseline Anudi"})
 
 
 # ── the prompts' worked examples and the eval cases are generated, never hand-copied ─────────────

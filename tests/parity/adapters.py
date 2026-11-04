@@ -449,6 +449,8 @@ def shot_producer(inp: dict[str, Any], model: dict[str, Any], engine: str) -> di
     from tests.services.shot_producer.conftest import FakeStore, ProducerLLM, dp_answer, fixture_scene
 
     scene, lines, rows = fixture_scene(int(inp.get("scene", 0)))
+    for number, fields in (inp.get("rows") or {}).items():  # columns to set on a shot's stored row, by shot number
+        next(r for r in rows if r["number"] == int(number)).update(fields)
     store = FakeStore(scene, lines, rows)
     for number in inp.get("accepted_frames", []):  # shot numbers with an accepted first frame
         shot = next(r for r in rows if r["number"] == number)
