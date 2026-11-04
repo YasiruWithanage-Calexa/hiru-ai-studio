@@ -1,0 +1,14 @@
+- name: one shot, one reaction
+  input:
+    production: "<production>\nPRODUCTION: Harbour Lights\nCAST:\n- C01 Kamala (female)\n</production>"
+    scene: "<scene>\nSCENE 1: INT. KITCHEN - DAWN\n\nSHOT S01 — number 1, 6 s, MCU, sound dialogue\n</scene>\n\nReturn one entry per shot, numbered 1, and the scene's coverage."
+  reply:
+    shots: [ { number: 1, purpose: "Kamala learns the news", what_we_see: "Her face as she listens", emotional_beat: unease, on_screen: [ C01 ], heard_only: [], voice_source: "", split_after: 0, split_reason: "" } ]
+    coverage: { axis: "Kamala left of frame", motif: "the stove light", progression: "wide to close" }
+  expect: { shots: [ { number: 1, on_screen: [ C01 ] } ], coverage: { axis: "Kamala left of frame" } }
+- name: a heard-only voice
+  input: { production: "<production>\nPRODUCTION: X\n</production>", scene: "<scene>\nSCENE 2\n</scene>" }
+  reply:
+    shots: [ { number: 2, purpose: "The call", what_we_see: "Anudi holds the phone", emotional_beat: dread, on_screen: [ C03 ], heard_only: [ C04 ], voice_source: phone, split_after: 0, split_reason: "" } ]
+    coverage: { axis: "", motif: "", progression: "" }
+  expect: { shots: [ { voice_source: phone, heard_only: [ C04 ] } ] }

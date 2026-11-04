@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v9.sql` | **The newest schema** (everything in v8 plus `shots.intent`, `scenes.coverage`, `scenes.reading` (plan/2026-11-01d), `first_frames.checks`, the `pending_actions` table and `dialogue_lines.source_text` / `source_lang`: plan/2026-11-01 and 2026-11-01c), whole. Run it once on an empty project. |
+| `schema_v10.sql` | **The newest schema** (everything in v9 plus the per-component columns of `token_usage`: `component`, `component_version`, `prompt_hash`, `tool_calls`, `tool_result_tokens`; plan/2026-11-04), whole. Run it once on an empty project. |
+| `upgrade_v9_to_v10.sql` | Moves a project on v9 to v10 (five columns and one index on `token_usage`). Run once, only on such a project. |
+| `schema_v9.sql` | Everything in v8 plus `shots.intent`, `scenes.coverage`, `scenes.reading` and `scenes.staging` (plan/2026-11-01d), `first_frames.checks`, the `pending_actions` table and `dialogue_lines.source_text` / `source_lang`: plan/2026-11-01 and 2026-11-01c), whole. Run it once on an empty project. |
 | `upgrade_v8_to_v9.sql` | Moves a project on v8 to v9 (four JSON columns, the `pending_actions` table and the two source columns on `dialogue_lines`). Run once, only on such a project. |
 | `schema_v8.sql` | Everything in v7 plus `scene_looks` (the look of a character a scene uses), kept for reference. |
 | `upgrade_v7_to_v8.sql` | Moves a project on v7 to v8 (the `scene_looks` table). Run once, only on such a project. |
@@ -33,6 +35,15 @@ running the 94 database tests and Supabase's advisor check on it (all pass). v1 
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
 
+## Moving a project from v9 to v10
+
+1. **SQL Editor:** paste `upgrade_v9_to_v10.sql` and run it, once. It runs as one transaction and can be re-run.
+2. Check: `select component, tool_calls from public.token_usage limit 1;` runs (the columns exist; old rows show `''` and `0`).
+3. Set `USAGE_DETAIL=true` where the API and the functions run, and restart them. Until then a model call's row is written
+   without the new columns, so nothing breaks if the upgrade comes later than the code.
+
+v10 was **not** verified with a dump comparison (see the test list in `plan/2026-11-04/IMPLEMENTED.md`).
+
 ## Moving a project from v8 to v9
 
 1. **SQL Editor:** paste `upgrade_v8_to_v9.sql` and run it, once. It runs as one transaction.
@@ -41,6 +52,8 @@ still builds from `supabase/migrations/`, and the tests run there.
    new columns). Until it is applied, writing an intent or a frame's checks fails.
 
 If v9 was already run before plan/2026-11-01d, run only `alter table public.scenes add column if not exists reading jsonb not null default '{}'::jsonb;` from `upgrade_v8_to_v9.sql`; until then the split cannot write a scene's reading (the scene's shots are not written either, because the same update carries it) and the reading endpoints fail on the unknown column. Restart the API and the `script_split`, `director_chat`, `shot_producer` and `frame_render` functions.
+
+If v9 was already run before the staging map (plan/2026-11-01d, Phase 4), run only `alter table public.scenes add column if not exists staging jsonb not null default '{}'::jsonb;` from `upgrade_v8_to_v9.sql`; until then the split's scene update fails on the unknown column. Restart the API and the `script_split` function.
 
 v9 was **not** verified with a dump comparison or the database tests (no Docker).
 
@@ -65,7 +78,7 @@ v7 was **not** verified with a dump comparison or the database tests (no Docker)
 
 1. **SQL Editor:** paste `upgrade_v5_to_v6.sql` and run it, once. It runs as one transaction.
 2. Check: `select slug, prompt_phrase, ai_supported from public.craft_techniques limit 1;` runs.
-3. Load the 576 techniques: `python scripts/ingest_knowledge.py` (needs `OPENAI__API_KEY` for
+3. Load the 576 techniques: `hiru-ai ingest --all` (needs `OPENAI__API_KEY` for
    embeddings; without it, search is keyword-only), then `python scripts/eval_retrieval.py --runs 3`.
 4. Restart the API and the `shot_producer` function (they read the technique search).
 
@@ -124,7 +137,7 @@ empty one, and of v2 + this upgrade are identical (buckets, Realtime tables, per
 5. **Point the backend at it:** in `.env`, set `SUPABASE__URL=https://dwivfkavmtjzhypqswze.supabase.co`
    and `SUPABASE__SERVICE_ROLE_KEY=<the secret key from Settings → API Keys>`. Leave
    `SUPABASE__JWT_SECRET` empty: hosted sign-in tokens are checked against the project's
-   published keys. Then run `python scripts/ingest_knowledge.py` to load the craft knowledge.
+   published keys. Then run `hiru-ai ingest --all` to load the craft knowledge.
 
 ## Changing things
 

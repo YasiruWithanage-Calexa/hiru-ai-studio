@@ -1,0 +1,7 @@
+id: stage_check
+kind: step
+version: 1
+summary: "Finds staging problems in a shot plan: people who teleport, crossed lines, broken eyelines."
+status: active
+owner: script_split
+entry: step:run

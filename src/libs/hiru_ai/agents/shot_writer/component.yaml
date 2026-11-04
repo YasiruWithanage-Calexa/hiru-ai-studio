@@ -1,0 +1,16 @@
+id: shot_writer
+kind: agent
+version: 1
+summary: "The director of photography: lenses, lights and moves each shot of a scene and describes what the camera sees."
+status: active
+owner: shot_producer
+model: high
+shape: structured
+phase: shot_producer.scene
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

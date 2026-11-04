@@ -1,0 +1,24 @@
+id: chat_answerer
+kind: agent
+version: 1
+summary: "Answers a question about the production, reading it through the read tools when it needs facts; the answer comes back whole."
+status: active
+owner: director
+model: high
+shape: text
+phase: director.answer
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage]
+writes_dialogue: false
+# The same agent as a tool loop (plan/2026-11-04 §8, row 1): switched on by AGENT_TOOLS after a live A/B (`hiru-ai eval
+# chat_answerer --ab base,tools --live`); the whole shot list leaves its prompt, a one-line summary stays.
+with_tools:
+  tools: [canon_read, memory_search, questions_read, scene_read, search_kb, shot_read, timing_check]
+  knowledge: [production_docs]
+  middleware: [static_first, usage, absent_safe, limits, clear_old_results, tool_retry]
+  max_tool_calls: 6
+  max_model_calls: 4

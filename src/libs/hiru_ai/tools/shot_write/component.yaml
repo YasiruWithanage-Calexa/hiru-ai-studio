@@ -1,0 +1,12 @@
+id: shot_write
+kind: tool
+version: 1
+summary: "Saves a shot plan, a shot design or a new prompt version for a scene of the production."
+status: active
+owner: shot_producer
+entry: tool:run
+ports: [scenes]
+effect: write
+guide: |
+  Saves a shot plan, a shot design or a new prompt version for a scene of the production. Only a system calls this, in code, after a person approved the change. It is never given to a model (a model changes data only by staging a card with change_propose or memory_propose).
+  Do not use it to read a shot (use shot_read).

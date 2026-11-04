@@ -1,0 +1,11 @@
+- name: a cut with no reason
+  input:
+    listing: "[0] ACTION (act, 1.5 s): Kasun smiles.\n[1] ACTION (act, 1.5 s): Anudi looks away."
+    shot_list: "S01 MCU 4s ambient blocks [0]\nS02 MCU 4s ambient blocks [1]"
+    staging: "Kasun: gate, facing right"
+  reply: { acceptable: false, notes: [ { note: "S01 to S02: the cut has no motivation", severity: 3 } ] }
+  expect: { notes: [ { severity: 3 } ] }
+- name: the lens cannot answer
+  input: { listing: "[0] ACTION (act, 1.5 s): It rains.", shot_list: "S01 WIDE 4s ambient blocks [0]" }
+  model: unavailable
+  expect: { acceptable: true, notes: [] }

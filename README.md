@@ -27,7 +27,7 @@ copy .env.example .env               # then fill the hosted project's secret key
 
 # The first admin (sign-up is invite-only). --password creates a confirmed local user.
 .venv\Scripts\python scripts\create_admin.py you@hirutv.lk --password <pw> --name "Your Name"
-.venv\Scripts\python scripts\ingest_knowledge.py   # craft knowledge + camera techniques
+.venv\Scripts\hiru-ai ingest --all   # craft knowledge + camera techniques
 
 .venv\Scripts\python -m uvicorn api.main:app --app-dir src --reload --env-file .env   # API on :8000, docs at /docs
 powershell -File scripts\start-functions.ps1        # echo :8201, doc_ingest :8202, script_split :8203,
@@ -48,7 +48,7 @@ Everything runs without `OPENAI__API_KEY`: documents are indexed for keyword sea
 come from rules, and search is not reranked (responses say `"mode": "text"`). With a key, the
 same code adds embeddings (hybrid search), model role detection for unclear files, a
 descriptive header per passage, and reranking. After adding a key, re-ingest documents
-(`POST .../documents/{id}/reingest`) and re-run `scripts/ingest_knowledge.py`.
+(`POST .../documents/{id}/reingest`) and re-run `hiru-ai ingest --all`.
 
 ## Documents and search (Phase 1)
 
@@ -106,10 +106,10 @@ CI runs all of these (plus mypy per service and `terraform validate`), see `.git
 | `src/api/` | FastAPI app: `deps/` (auth, authz), `routers/`, `repositories/` (all DB access), `services/` (AI, retrieval, file tickets), `workers/task_manager.py` (dispatch) |
 | `src/libs/contracts/` | Shared wire contracts (pydantic only): roles, production model, Veo rules, timing, jobs, documents |
 | `src/services/<name>/` | One Cloud Run function each; imports only itself + `contracts`. `echo` (template), `doc_ingest`, `script_split`, `structure_build`, `canon_extract`, `director_chat` (fork, `UPSTREAM.md`) |
-| `src/knowledge_base/` | Craft corpus copied from PromptMotion (`UPSTREAM.md`) |
+| `src/libs/hiru_ai/knowledge_bases/` | The knowledge bases (craft corpus copied from PromptMotion, `UPSTREAM.md`), one folder each |
 | `supabase/` | `config.toml`, `migrations/`, `tests/` (pgTAP) |
 | `infra/terraform/` | GCP project: Cloud Run, Cloud Tasks, IAM, Secret Manager, Workload Identity |
-| `scripts/` | `create_admin`, `ingest_knowledge`, `eval_retrieval`, `replay_director`, `upstream_diff`, `smoke_local`, `smoke_phase1`–`3`, `start-functions.ps1` |
+| `scripts/` | `create_admin`, `eval_retrieval`, `replay_director`, `upstream_diff`, `smoke_local`, `smoke_phase1`–`3`, `start-functions.ps1` |
 | `tests/fixtures/corpus/` | "Harbour Lights", an invented sample production for tests and evals |
 | `plan/` | Plans, one folder per planning date |
 
@@ -137,4 +137,4 @@ and writes only through the API.
 5. Run **Migrate database**, then push to `main` (or run **Deploy API** / **Deploy functions**).
 6. Set `api_public_url` in tfvars to the deployed URL and apply again; run
    `scripts/create_admin.py` against the environment to invite the first admin; run
-   `scripts/ingest_knowledge.py` against it.
+   `hiru-ai ingest --all` against it.

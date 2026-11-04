@@ -1,0 +1,16 @@
+- name: a change is reported from the facts
+  input:
+    persona: "You are Classic Teledrama: Clear coverage."
+    history: "Dee Director: make shot 2 eight seconds"
+    shot_list: "S01 WIDE 4s\nS02 CU 8s"
+    message: make shot 2 eight seconds
+    turn: ["The scene runs 12 s in 2 shots (envelope 60 s).", "Applied: S02 is now 8 s (by you)"]
+  reply: "Done. S02 now holds for eight seconds."
+  expect: { text: "Done. S02 now holds for eight seconds." }
+- name: nothing changed
+  input:
+    shot_list: "S01 WIDE 4s"
+    message: how long is this scene?
+    turn: ["The scene runs 4 s in 1 shots (envelope 60 s).", "Applied this turn: nothing (this message changed neither the shot list nor the script)."]
+  reply: "It runs four seconds."
+  expect: { text: "It runs four seconds." }

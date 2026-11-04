@@ -1,0 +1,16 @@
+id: episode_read
+kind: tool
+version: 1
+summary: "Reads an episode (title, synopsis, status, its scenes) and the scenes either side of a scene."
+status: active
+owner: structure_build
+entry: tool:run
+ports: [structure]
+effect: read
+guide: |
+  Returns the episode's number, title, synopsis and status, and one line per scene (E1S2, heading, title). With
+  `around_scene` it also returns the scene before and the scene after it, which may be in another episode. With neither
+  `episode` nor `around_scene` it reads the episode of the scene this run is about.
+  Example: {"episode": 2} or {"around_scene": "E1S2"}.
+  Do not use it for what happens inside a scene (use scene_read), for its feeling (use scene_reading_read) or for the
+  bible (use search_kb).

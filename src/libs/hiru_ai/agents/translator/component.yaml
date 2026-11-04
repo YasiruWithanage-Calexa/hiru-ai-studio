@@ -1,0 +1,23 @@
+id: translator
+kind: agent
+version: 1
+summary: "Writes a scene's spoken lines in the language a person asked for; always staged as a card the person accepts."
+status: active
+owner: director
+model: high
+shape: structured
+phase: director.translate
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: true
+# The same agent as a tool loop (plan/2026-11-04 §8, row 3): switched on by AGENT_TOOLS after a live A/B. Nothing leaves its
+# message; it gains consistency (a name spelt the same in every line, the lines around the ones it was sent).
+with_tools:
+  tools: [dialogue_read, glossary_read, veo_fit]
+  middleware: [static_first, usage, absent_safe, limits, clear_old_results, tool_retry]
+  max_tool_calls: 4
+  max_model_calls: 4

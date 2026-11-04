@@ -1,0 +1,11 @@
+id: cinematography
+kind: knowledge_base
+version: 1
+summary: "The cinematography terms database (629 terms) merged with the feeling-first camera shot table, as one technique per row."
+status: active
+owner: rag
+corpus: techniques
+store: techniques          # craft_techniques, one row per technique; not chunked
+ingest: tables
+sources: sources           # the terms CSVs and camera_shots.csv
+embed: embed

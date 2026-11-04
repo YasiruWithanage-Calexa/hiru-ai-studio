@@ -1,0 +1,24 @@
+id: shot_critic
+kind: agent
+version: 1
+summary: "A second look at a scene's camera design before any frame is painted; names at most four problems."
+status: active
+owner: shot_producer
+model: high
+shape: structured
+phase: shot_producer.critique
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false
+# The same agent as a tool loop (plan/2026-11-04 §8, row 4): switched on by AGENT_TOOLS after a live A/B. Nothing leaves its
+# message; the checks that code can make are made by tools, so fewer problems are missed. The system hands it the drafts
+# under review as the shots the tools read (systems/shot_producer).
+with_tools:
+  tools: [continuity_check, prompt_check, shot_read, staging_check]
+  middleware: [static_first, usage, absent_safe, limits, clear_old_results, tool_retry]
+  max_tool_calls: 6
+  max_model_calls: 4

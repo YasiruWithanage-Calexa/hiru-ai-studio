@@ -1,0 +1,1 @@
+"""The dialogue check tool."""

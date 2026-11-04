@@ -1,0 +1,1 @@
+"""The prompt check tool."""

@@ -1,0 +1,12 @@
+- name: one line into Sinhala
+  input:
+    language: Sinhala
+    code: si
+    style: colloquial
+    lines: [ { line_id: l1, speaker: Kasun, delivery: quietly, text: "Started with five thousand rupees." } ]
+  reply: { lines: [ { line_id: l1, text: "රුපියල් පන්දහසකින් පටන් ගත්තේ." } ] }
+  expect: { lines: [ { line_id: l1, text: "රුපියල් පන්දහසකින් පටන් ගත්තේ." } ] }
+- name: no style and no production
+  input: { language: Tamil, lines: [ { line_id: l9, text: "Come in." } ] }
+  reply: { lines: [ { line_id: l9, text: "உள்ளே வாருங்கள்." } ] }
+  expect: { lines: [ { line_id: l9 } ] }

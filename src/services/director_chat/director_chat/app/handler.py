@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from collections.abc import Iterator
 from typing import Any
 
@@ -39,16 +40,36 @@ def handle_choice(body: dict[str, Any]) -> Any:
         return {"error": "bad payload"}, 400
     config = get_config()
     try:
-        result = choice.apply_choice(req, Store(Rest(config.supabase_url, config.service_role_key)))
+        if os.environ.get("AI_ENGINE", "legacy") == "graph":
+            result = run_graph_choice(req)
+        else:
+            result = choice.apply_choice(req, Store(Rest(config.supabase_url, config.service_role_key)))
     except Exception:
         _logger.exception("director choice failed scene=%s", req.scene_id)
         return {"error": CLIENT_ERROR}, 500
     return result.model_dump(mode="json"), 200
 
 
+def run_graph_choice(req: ChoicePayload) -> Any:
+    """A director's choice through the `hiru_ai` director_chat system (AI_ENGINE=graph): no model call, no job."""
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.director_chat import graph
+
+    return graph.choose(req, supabase_rest.build_context(req, jobs=None))
+
+
+def run_graph_turn(req: TurnPayload) -> Iterator[tuple[str, dict[str, Any]]]:
+    """The same turn through the `hiru_ai` director_chat system: the same events, in the same order."""
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.director_chat import graph
+
+    return graph.run(req, supabase_rest.build_context(req, jobs=None))
+
+
 def stream(req: TurnPayload, store: Store, llm: LLM) -> Iterator[str]:
     try:
-        for event, data in turn.run(req, store, llm):
+        events = run_graph_turn(req) if os.environ.get("AI_ENGINE", "legacy") == "graph" else turn.run(req, store, llm)
+        for event, data in events:
             yield sse(event, data)
     except Exception:
         _logger.exception("director turn failed scene=%s", req.scene_id)

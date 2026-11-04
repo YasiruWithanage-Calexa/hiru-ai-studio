@@ -1,0 +1,735 @@
+{
+ "case": "prompts",
+ "description": "Prompts need an accepted first frame and bind the lines verbatim; a rerun is a new version",
+ "expected": {
+  "audits": [
+   {
+    "action": "shots.prompt",
+    "actor_agent": "shot_producer",
+    "actor_user_id": "<id:12>",
+    "diff": {
+     "designed": 2,
+     "intents": 2,
+     "prompts": 1,
+     "skipped": 1
+    },
+    "entity": "job",
+    "entity_id": "<id:8>",
+    "production_id": "<id:4>"
+   }
+  ],
+  "intents": {
+   "<id:2>": {
+    "by": "rules",
+    "emotional_beat": "",
+    "heard_only": [],
+    "made_for": "v1:<digest:3>",
+    "on_screen": [
+     "<id:5>",
+     "<id:6>"
+    ],
+    "purpose": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers",
+    "split_after": null,
+    "split_reason": "",
+    "voice_source": "",
+    "what_we_see": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+    "written_at": "<ts>"
+   },
+   "<id:3>": {
+    "by": "rules",
+    "emotional_beat": "",
+    "heard_only": [],
+    "made_for": "v1:<digest:6>",
+    "on_screen": [
+     "<id:6>"
+    ],
+    "purpose": "",
+    "split_after": null,
+    "split_reason": "",
+    "voice_source": "",
+    "what_we_see": "",
+    "written_at": "<ts>"
+   }
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "agent": "first_assistant_director",
+     "scene_id": "<id:1>",
+     "text": "Scene 1: what each shot is for, for 2 shots",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "scene_id": "<id:1>",
+     "text": "Scene 1: designing 2 shots",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "planner": "rules",
+     "shot_id": "<id:2>",
+     "text": "S01: 28mm · static",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "planner": "rules",
+     "shot_id": "<id:3>",
+     "text": "S02: 50mm · static",
+     "type": "progress"
+    },
+    {
+     "agent": "prompt_writer",
+     "shot_id": "<id:3>",
+     "text": "S02: prompt v1 written",
+     "type": "progress"
+    },
+    {
+     "agent": "prompt_writer",
+     "text": "S01: no accepted first frame",
+     "type": "warning"
+    }
+   ],
+   "fields": {
+    "result": {
+     "designed": 2,
+     "intents": 2,
+     "prompts": 1,
+     "skipped": 1
+    }
+   },
+   "status": "done"
+  },
+  "llm": [],
+  "prompts": [
+   {
+    "camera": {
+     "angle": "Eye level",
+     "aperture": "f/2.8",
+     "axis": "Side A · left to right",
+     "framing": "Medium close-up",
+     "lens": "50mm",
+     "lighting": "Dawn, soft ambient",
+     "movement": "Static",
+     "speed": "None"
+    },
+    "checks": [
+     {
+      "label": "One visible speaker",
+      "tone": "pass"
+     },
+     {
+      "label": "Lines verbatim from the script",
+      "tone": "pass"
+     },
+     {
+      "label": "No voice pin · Nimal",
+      "tone": "advisory"
+     },
+     {
+      "label": "Opens on the accepted first frame",
+      "tone": "pass"
+     }
+    ],
+    "created_by": "<id:12>",
+    "frame_id": "<id:11>",
+    "ir": {
+     "audio": "natural sound of the location",
+     "beats": [
+      {
+       "action": "Nimal speak",
+       "camera": "medium close-up",
+       "director_line": "Nimal speak",
+       "performance": "",
+       "time": "0-2s"
+      },
+      {
+       "action": "Nimal speak",
+       "camera": "unchanged",
+       "director_line": "Nimal speak",
+       "performance": "",
+       "time": "2-4s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "color_tone": "naturalistic, gently warm, film-like",
+      "depth_of_field": "Shallow, soft background",
+      "framing": "medium close-up on Nimal",
+      "lens_artifacts": "none",
+      "movement": "locked-off, no camera movement",
+      "white_balance": "cool 6000K dawn warming"
+     },
+     "first_frame": {
+      "composition": "Medium close-up at eye level on Nimal",
+      "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+      "setting": "Kamala's house, dawn",
+      "subjects": [
+       "Nimal: wearing a creased white shirt"
+      ]
+     },
+     "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+     "setting": "Kamala's house, dawn",
+     "subjects": [
+      {
+       "action": "",
+       "description": "wearing a creased white shirt",
+       "id": "C02",
+       "position": ""
+      }
+     ]
+    },
+    "job_id": "<id:8>",
+    "model": "Veo 3.1 · 4 s · 16:9",
+    "pins": {
+     "canon": {
+      "<id:6>": 1,
+      "<id:7>": 1
+     },
+     "looks": {},
+     "script_hash": "<digest:4>",
+     "shot_version": 1
+    },
+    "production_id": "<id:4>",
+    "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Available light, held frames.\n\nSETTING\nKamala's house, dawn.\n\nSUBJECTS\nwearing a creased white shirt.\n\nCAMERA\nCamera: locked-off sticks, 50mm, f/2.8; eye level; medium close-up on Nimal; locked-off, no camera movement; Shallow, soft background. Grade: cool 6000K dawn warming, naturalistic, gently warm, film-like.\n\nLIGHTING\nPale early light, low and soft, cool shadows warming at the edges.\n\nACTION & DIALOGUE\nOver 4 seconds:\n0-2s: medium close-up. Nimal speak. Nimal (the man in a creased white shirt) says (quietly), \"අම්මේ, මම ආපහු ආවා.\" — only Nimal's lips move.\n2-4s: Nimal speak.\n\nSOUND\nSpoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: natural sound of the location.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Surfaces and signage stay free of lettering. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 16:9. Duration 4 seconds. Ends on a cut.",
+    "sections": [
+     {
+      "id": "opening",
+      "segments": [
+       {
+        "text": "The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light."
+       }
+      ],
+      "title": "First frame"
+     },
+     {
+      "id": "style",
+      "segments": [
+       {
+        "text": "Photorealistic live-action television drama footage, real optics and natural imperfections. Available light, held frames."
+       }
+      ],
+      "title": "Style"
+     },
+     {
+      "id": "setting",
+      "segments": [
+       {
+        "text": "Kamala's house, dawn."
+       }
+      ],
+      "title": "Setting"
+     },
+     {
+      "id": "subjects",
+      "segments": [
+       {
+        "text": "wearing a creased white shirt."
+       }
+      ],
+      "title": "Subjects"
+     },
+     {
+      "id": "camera",
+      "segments": [
+       {
+        "text": "Camera: locked-off sticks, 50mm, f/2.8; eye level; medium close-up on Nimal; locked-off, no camera movement; Shallow, soft background. Grade: cool 6000K dawn warming, naturalistic, gently warm, film-like."
+       }
+      ],
+      "title": "Camera"
+     },
+     {
+      "id": "lighting",
+      "segments": [
+       {
+        "text": "Pale early light, low and soft, cool shadows warming at the edges."
+       }
+      ],
+      "title": "Lighting"
+     },
+     {
+      "id": "action",
+      "segments": [
+       {
+        "text": "Over 4 seconds:\n0-2s: medium close-up. Nimal speak. Nimal (the man in a creased white shirt) says (quietly), \""
+       },
+       {
+        "sinhala": "අම්මේ, මම ආපහු ආවා."
+       },
+       {
+        "text": "\" — only Nimal's lips move.\n2-4s: Nimal speak."
+       }
+      ],
+      "title": "Action & dialogue"
+     },
+     {
+      "id": "sound",
+      "segments": [
+       {
+        "text": "Spoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: natural sound of the location."
+       }
+      ],
+      "title": "Sound"
+     },
+     {
+      "id": "constraints",
+      "segments": [
+       {
+        "text": "Every person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Surfaces and signage stay free of lettering. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular."
+       }
+      ],
+      "title": "Style lock & constraints"
+     },
+     {
+      "id": "format",
+      "segments": [
+       {
+        "text": "Aspect ratio 16:9. Duration 4 seconds. Ends on a cut."
+       }
+      ],
+      "title": "Format"
+     }
+    ],
+    "shot_id": "<id:3>",
+    "version": 1
+   }
+  ],
+  "results": [
+   {
+    "designed": 2,
+    "intents": 2,
+    "prompts": 1,
+    "skipped": 1
+   },
+   {
+    "skipped": "done"
+   }
+  ],
+  "scene_row": {
+   "coverage": {
+    "axis": "",
+    "by": "rules",
+    "made_for": 1,
+    "motif": "",
+    "progression": "wide shot → medium close-up → wide shot → medium close-up",
+    "written_at": "<ts>"
+   },
+   "envelope_s": 60,
+   "episode": {
+    "number": 1
+   },
+   "episode_id": "<id:13>",
+   "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+   "id": "<id:1>",
+   "location_id": "<id:7>",
+   "number": 1,
+   "production_id": "<id:4>",
+   "script": [
+    {
+     "kind": "action",
+     "line_id": null,
+     "text": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers."
+    },
+    {
+     "kind": "dialogue",
+     "line_id": "<id:14>",
+     "text": ""
+    },
+    {
+     "kind": "action",
+     "line_id": null,
+     "text": "Kamala does not turn around. She keeps stirring the pan."
+    },
+    {
+     "kind": "dialogue",
+     "line_id": "<id:15>",
+     "text": ""
+    }
+   ],
+   "status": "approved",
+   "time_of_day": "DAWN"
+  },
+  "shot_rows": {
+   "<id:10>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 4,
+    "block_start": 3,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {},
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "MCU",
+    "id": "<id:10>",
+    "ir": {},
+    "number": 4,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "dialogue",
+    "speaker_id": "<id:5>",
+    "start_s": 14,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 8,
+    "words": 4
+   },
+   "<id:2>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 3,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 6,
+      "start_s": 3
+     }
+    ],
+    "block_end": 1,
+    "block_start": 0,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {
+     "designed_at": "<ts>",
+     "intent": "<digest:2>",
+     "job_id": "<id:8>",
+     "missing": [],
+     "on_screen": [
+      "<id:5>",
+      "<id:6>"
+     ],
+     "pins": {
+      "canon": {
+       "<id:5>": 2,
+       "<id:6>": 1,
+       "<id:7>": 1
+      },
+      "looks": {},
+      "script_hash": "<digest:1>",
+      "shot_version": 1
+     },
+     "planner": "rules",
+     "rationale": "28mm at f/4 suits a wide shot; a locked-off camera at eye level keeps the geography clear.",
+     "recommended": {
+      "angle": "Eye level",
+      "aperture": "f/4",
+      "axis": "Side A · left to right",
+      "framing": "Wide shot",
+      "lens": "28mm",
+      "lighting": "Dawn, soft ambient",
+      "movement": "Static",
+      "speed": "None"
+     }
+    },
+    "duration_locked": false,
+    "duration_s": 6,
+    "frame_strategy": "generate",
+    "framing": "WIDE",
+    "id": "<id:2>",
+    "intent": {
+     "by": "rules",
+     "emotional_beat": "",
+     "heard_only": [],
+     "made_for": "v1:<digest:3>",
+     "on_screen": [
+      "<id:5>",
+      "<id:6>"
+     ],
+     "purpose": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers",
+     "split_after": null,
+     "split_reason": "",
+     "voice_source": "",
+     "what_we_see": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+     "written_at": "<ts>"
+    },
+    "ir": {
+     "audio": "natural sound of the location",
+     "beats": [
+      {
+       "action": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+       "camera": "wide shot",
+       "director_line": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+       "performance": "",
+       "time": "0-3s"
+      },
+      {
+       "action": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+       "camera": "unchanged",
+       "director_line": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+       "performance": "",
+       "time": "3-6s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "locked-off sticks, 28mm, f/4",
+      "color_tone": "naturalistic, gently warm, film-like",
+      "depth_of_field": "Deep, the room readable",
+      "framing": "wide shot on Kamala, Nimal",
+      "lens_artifacts": "none",
+      "movement": "locked-off, no camera movement",
+      "white_balance": "cool 6000K dawn warming"
+     },
+     "first_frame": {
+      "composition": "Wide shot at eye level on Kamala, Nimal",
+      "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+      "setting": "Kamala's house, dawn",
+      "subjects": [
+       "Kamala: 52, grey-streaked hair in a bun; wearing a faded blue cotton saree",
+       "Nimal: wearing a creased white shirt"
+      ]
+     },
+     "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+     "setting": "Kamala's house, dawn",
+     "subjects": [
+      {
+       "action": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+       "description": "52, grey-streaked hair in a bun; wearing a faded blue cotton saree",
+       "id": "C01",
+       "position": ""
+      },
+      {
+       "action": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+       "description": "wearing a creased white shirt",
+       "id": "C02",
+       "position": ""
+      }
+     ]
+    },
+    "number": 1,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "ambient",
+    "speaker_id": null,
+    "start_s": 0,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 0,
+    "words": 0
+   },
+   "<id:3>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 2,
+    "block_start": 1,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {
+     "designed_at": "<ts>",
+     "intent": "<digest:5>",
+     "job_id": "<id:8>",
+     "missing": [],
+     "on_screen": [
+      "<id:6>"
+     ],
+     "pins": {
+      "canon": {
+       "<id:6>": 1,
+       "<id:7>": 1
+      },
+      "looks": {},
+      "script_hash": "<digest:4>",
+      "shot_version": 1
+     },
+     "planner": "rules",
+     "rationale": "50mm at f/2.8 suits a medium close-up; a locked-off camera at eye level keeps the geography clear.",
+     "recommended": {
+      "angle": "Eye level",
+      "aperture": "f/2.8",
+      "axis": "Side A · left to right",
+      "framing": "Medium close-up",
+      "lens": "50mm",
+      "lighting": "Dawn, soft ambient",
+      "movement": "Static",
+      "speed": "None"
+     }
+    },
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "MCU",
+    "id": "<id:3>",
+    "intent": {
+     "by": "rules",
+     "emotional_beat": "",
+     "heard_only": [],
+     "made_for": "v1:<digest:6>",
+     "on_screen": [
+      "<id:6>"
+     ],
+     "purpose": "",
+     "split_after": null,
+     "split_reason": "",
+     "voice_source": "",
+     "what_we_see": "",
+     "written_at": "<ts>"
+    },
+    "ir": {
+     "audio": "natural sound of the location",
+     "beats": [
+      {
+       "action": "Nimal speak",
+       "camera": "medium close-up",
+       "director_line": "Nimal speak",
+       "performance": "",
+       "time": "0-2s"
+      },
+      {
+       "action": "Nimal speak",
+       "camera": "unchanged",
+       "director_line": "Nimal speak",
+       "performance": "",
+       "time": "2-4s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "color_tone": "naturalistic, gently warm, film-like",
+      "depth_of_field": "Shallow, soft background",
+      "framing": "medium close-up on Nimal",
+      "lens_artifacts": "none",
+      "movement": "locked-off, no camera movement",
+      "white_balance": "cool 6000K dawn warming"
+     },
+     "first_frame": {
+      "composition": "Medium close-up at eye level on Nimal",
+      "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+      "setting": "Kamala's house, dawn",
+      "subjects": [
+       "Nimal: wearing a creased white shirt"
+      ]
+     },
+     "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+     "setting": "Kamala's house, dawn",
+     "subjects": [
+      {
+       "action": "",
+       "description": "wearing a creased white shirt",
+       "id": "C02",
+       "position": ""
+      }
+     ]
+    },
+    "number": 2,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "dialogue",
+    "speaker_id": "<id:6>",
+    "start_s": 6,
+    "status": "prompt",
+    "title": "",
+    "version": 1,
+    "word_target": 8,
+    "words": 4
+   },
+   "<id:9>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 3,
+    "block_start": 2,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {},
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "WIDE",
+    "id": "<id:9>",
+    "ir": {},
+    "number": 3,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "ambient",
+    "speaker_id": null,
+    "start_s": 10,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 0,
+    "words": 0
+   }
+  },
+  "technique_queries": []
+ },
+ "input": {
+  "accepted_frames": [
+   2
+  ],
+  "runs": [
+   {
+    "mode": "prompt",
+    "shots": [
+     1,
+     2
+    ]
+   },
+   {
+    "mode": "prompt",
+    "shots": [
+     2
+    ]
+   }
+  ]
+ },
+ "model": {},
+ "service": "shot_producer"
+}

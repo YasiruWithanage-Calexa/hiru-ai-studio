@@ -1,0 +1,13 @@
+- name: one wardrobe that changes later
+  input:
+    episodes: 10
+    characters: [ { name: Nimal, card: { wardrobe: "Simple shirt; later, as his business grows, smart-casual" } } ]
+  reply:
+    looks:
+      - { character: Nimal, name: Everyday, from: 1, to: 5, outfit: "simple shirt", hair: "", makeup: "", accessories: "" }
+      - { character: Nimal, name: Smart casual, from: 6, to: 10, outfit: "smart-casual", hair: "", makeup: "", accessories: "" }
+  expect: { looks: [ { character: Nimal, name: Everyday, from_: 1, to: 5 }, { name: Smart casual, from_: 6, to: 10 } ] }
+- name: a single look
+  input: { episodes: 3, characters: [ { name: Kamala, card: { wardrobe: "faded cotton sari" } } ] }
+  reply: { looks: [ { character: Kamala, name: Everyday, from: 1, to: 3, outfit: "faded cotton sari", hair: "", makeup: "", accessories: "" } ] }
+  expect: { looks: [ { character: Kamala, to: 3 } ] }

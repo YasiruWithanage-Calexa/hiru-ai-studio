@@ -1,0 +1,9 @@
+id: scene_kernel
+kind: step
+version: 1
+summary: "Applies a closed set of shot-list operations to one scene, re-fits the timing, and rolls back any that break the plan."
+status: active
+owner: director
+entry: step:run
+uses: [refusal_screen]
+tools: [canon_read, memory_search, questions_read, search_kb]

@@ -1,0 +1,19 @@
+id: change_propose
+kind: tool
+version: 1
+summary: "Stages a change to the scene's shot list as a card a person accepts, after the kernel confirms every operation would land."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes, staging]
+uses: [scene_kernel, ripple]
+effect: stage
+guide: |
+  The only way a model asks for the plan to change. It tries your operations on a copy of the scene exactly as plan_try does;
+  if every one would land, it leaves a card for the person (what changes, why, what it touches) and nothing else happens
+  until they accept it. If any would be refused nothing is staged and the reasons come back so you can fix the call.
+  `summary` is one sentence for the card: what the change does and why. Operations on the script, the cast or the checks are
+  never staged: only a person makes those.
+  Example: {"summary": "Open on a close-up so the smile reads.", "ops": [{"op": "set", "shot": 1, "field": "framing",
+  "value": "CU"}]}.
+  Do not use it to test an idea (use plan_try first), to remember a rule (use memory_propose), or to change a spoken line.

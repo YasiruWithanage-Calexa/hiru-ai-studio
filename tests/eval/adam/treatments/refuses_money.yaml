@@ -1,0 +1,46 @@
+# The other two treatments for refuses_money (draft by Claude, for a Hiru director to correct). The master's own
+# treatment ("the envelope") is the restrained one.
+scene: refuses_money
+status: draft
+master_stance: restrained
+alternates:
+  - stance: intimate
+    name: his hands
+    concept: we make the viewer feel the temptation in his hands, by staying at the desk with them
+    pov: Kasun's hands and eyes
+    sound_concept: the room narrows to his breath and the paper
+    sections:
+      - { beats: [0, 1], camera_behaviour: "close, still", size_band: [MCU, CU], sound_state: "hush" }
+      - { beats: [2], camera_behaviour: "slow push-in on the envelope", size_band: [INSERT, ECU], sound_state: "narrowed" }
+      - { beats: [3], camera_behaviour: "still", size_band: [CU, CU], sound_state: "narrowed" }
+    size_arc: [MCU, INSERT, ECU, CU, INSERT]
+    motif: his hands
+    plant: { object: envelope, plant_when: "the envelope arrives in the foreground", payoff_when: "his fingertips send it back", payoff_scene: "" }
+    rhythm: [measured, held, steady, still]
+    rhythm_break: { when: "the long look at the envelope", kind: silence }
+    entry: as the envelope slides
+    exit: on his hands
+    ending_image: his empty hands on the desk
+    transition_in: cut on a hard sound from the previous scene
+    transition_out: cut on his breath
+    off_speaker: true
+  - stance: heightened
+    name: the price
+    concept: we make the viewer feel the offer as a weight on him, by making the father and the desk large
+    pov: the father's side of the desk, then Kasun's
+    sound_concept: a low drone under the offer that stops when he speaks
+    sections:
+      - { beats: [0, 1], camera_behaviour: "low angle on the father", size_band: [MS, MCU], sound_state: "drone" }
+      - { beats: [2], camera_behaviour: "slow push-in", size_band: [CU, ECU], sound_state: "drone" }
+      - { beats: [3], camera_behaviour: "static", size_band: [MCU, MCU], sound_state: "silence" }
+    size_arc: [MS, MCU, ECU, WS]
+    motif: the desk between them
+    plant: { object: envelope, plant_when: "the opening shot, the envelope large in the foreground", payoff_when: "the final shot of the envelope untouched", payoff_scene: "" }
+    rhythm: [heavy, heavy, held, still]
+    rhythm_break: { when: "the drone stops as he begins to speak", kind: silence }
+    entry: as the envelope crosses the desk
+    exit: the father, silenced
+    ending_image: the father small behind a wide desk
+    transition_in: cut from the previous scene on the sound of paper
+    transition_out: hold, then cut
+    off_speaker: false

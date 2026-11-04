@@ -6,6 +6,7 @@ from __future__ import annotations
 import base64
 import json
 import logging
+import os
 from typing import Any
 
 import httpx
@@ -74,6 +75,15 @@ def inspector(config: Config, payload: DispatchPayload, store: Store, client: An
     return look
 
 
+def run_graph(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
+    """The same job through the `hiru_ai` frame_render system (AI_ENGINE=graph): the thin handler builds the run's
+    context with real adapters, the painter among them, and hands over. The vision check is an agent of the system."""
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.frame_render import graph
+
+    return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs, images=True))
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         payload = DispatchPayload.model_validate(request.get_json(silent=True) or {})
@@ -87,6 +97,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
     store = Store(rest)
     jobs = Jobs(rest, config.api_internal_url, config.internal_secret)
     try:
+        if os.environ.get("AI_ENGINE", "legacy") == "graph":
+            return run_graph(payload, jobs), 200
         return pipeline.run(payload, store, jobs, painter(config, payload, store),
                             inspector(config, payload, store)), 200
     except httpx.TransportError:

@@ -1,0 +1,14 @@
+id: canon_write
+kind: tool
+version: 1
+summary: "Writes canon candidates as entities and versions: locked items untouched, a person's wording never overwritten."
+status: active
+owner: canon_extract
+entry: tool:run
+ports: [canon]
+uses: [canon_rules]
+effect: write
+guide: |
+  Writes canon candidates (characters, places, props) as entities and versions. Locked items are left alone and a
+  person's own wording is never overwritten. Only a system calls this, in code, after a person approved the change. It is never given to a model (a model changes data only by staging a card with change_propose or memory_propose).
+  Do not use it to look something up (use canon_read) or to propose a change (use change_propose).

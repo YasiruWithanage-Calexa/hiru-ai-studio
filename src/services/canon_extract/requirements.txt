@@ -5,3 +5,10 @@ openai>=1.60,<3
 langgraph==1.2.16
 langgraph-checkpoint-postgres==3.2.0
 psycopg[binary]==3.3.6
+
+# hiru_ai (plan/2026-11-03 Phase 6): the pins of requirements/hiru_ai_openai.in
+langchain==1.4.4
+langchain-core==1.7.0
+langchain-openai==1.7.2
+pydantic-settings>=2.6,<3
+PyYAML>=6.0,<7

@@ -1,0 +1,16 @@
+- name: a dialogue shot that does not frame its speaker
+  input:
+    scene_number: 3
+    heading: "INT. KITCHEN - DAWN"
+    drafts: [ "S01 — MCU, 6 s, sound dialogue\n  WHAT WE SEE: Kamala at the fire" ]
+    free: [ "S01 does not frame its speaker" ]
+  reply: { acceptable: false, notes: [ "S01:   frame Nimal, who speaks", "S02: nothing" ] }
+  expect: { acceptable: false, notes: [ "S01: frame Nimal, who speaks", "S02: nothing" ] }
+- name: a content reviewer with nothing from code leaves no notes
+  input: { scene_number: 1, heading: "EXT. ROAD - DAY", drafts: [ "S01 — WIDE, 4 s" ] }
+  reply: { acceptable: true, notes: [ "S01: could be wider" ] }
+  expect: { acceptable: true, notes: [] }
+- name: the model is unavailable
+  input: { scene_number: 1, heading: "EXT. ROAD - DAY", drafts: [ "S01 — WIDE, 4 s" ], free: [ "x" ] }
+  model: unavailable
+  expect: { acceptable: true, notes: [] }

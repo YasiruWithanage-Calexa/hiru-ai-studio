@@ -1,0 +1,13 @@
+id: image_generate
+kind: tool
+version: 1
+summary: "Paints one frame or reference sheet from a prompt and labelled reference images and stores it; a refusal is reported, not retried."
+status: active
+owner: frame_render
+entry: tool:run
+ports: [images, files]
+effect: write
+guide: |
+  Paints one frame or reference sheet from a prompt and labelled reference images, and stores it. A refusal by the image
+  model is reported, not retried. Only a system calls this, in code, after a person approved the change. It is never given to a model (a model changes data only by staging a card with change_propose or memory_propose).
+  Do not use it to look at a picture that exists (use frame_read).

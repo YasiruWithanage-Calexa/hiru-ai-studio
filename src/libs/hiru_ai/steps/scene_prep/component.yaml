@@ -1,0 +1,7 @@
+id: scene_prep
+kind: step
+version: 1
+summary: "Before shots are planned: read each action block as a picture, keep or make the scene's reading and staging map, walk anyone who would teleport."
+status: active
+owner: script_split
+entry: step:run

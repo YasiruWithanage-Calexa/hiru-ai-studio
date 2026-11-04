@@ -1,0 +1,14 @@
+- name: a script cue for the mother
+  input:
+    candidates:
+      - { kind: character, name: Kamala, code: C01, aliases: [], summary: "The mother" }
+      - { kind: character, name: AMMA, code: "", aliases: [], summary: "" }
+  reply: { groups: [ { kind: character, keep: Kamala, same_as_keep: [ AMMA ] } ] }
+  expect: { groups: [ { kind: character, keep: Kamala, same_as_keep: [ AMMA ] } ] }
+- name: nothing duplicated
+  input:
+    candidates:
+      - { kind: location, name: Harbour, code: L01, aliases: [], summary: "" }
+      - { kind: prop, name: Ledger, code: P01, aliases: [ "the book" ], summary: "" }
+  reply: { groups: [] }
+  expect: { groups: [] }

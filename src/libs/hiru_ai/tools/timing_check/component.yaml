@@ -1,0 +1,17 @@
+id: timing_check
+kind: tool
+version: 2
+summary: "Fits a scene's shots to the 4, 6 and 8 second clock and reports overruns, crowding and silence, with when each line starts; never trims."
+status: active
+owner: script_split
+entry: tool:run
+ports: [scenes]
+effect: read
+max_result_tokens: 1500
+guide: |
+  Returns the scene's total against its envelope, each shot's start and length, when each spoken line starts and by how
+  much it overruns, and the issues the clock found. With no `shots` it checks the plan as stored; with `shots` (block
+  ranges and hints) it checks a plan you are thinking about, before anything is saved. It reports; it never trims a line.
+  Example: {"shots": [{"start": 0, "end": 3, "framing": "WIDE"}, {"start": 3, "end": 6}]}.
+  Do not use it to try an edit with the kernel's own rules and see its ripple (use plan_try), to score two plans against
+  each other (use plan_score), or to measure one line (use veo_fit).

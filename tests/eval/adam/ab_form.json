@@ -1,0 +1,13 @@
+{
+  "_about": "The blind A/B record (plan/2026-11-04b §8.4). Copy this file per judgement into tests/eval/adam/ab_results/<scene>-<judge>-<date>.json. 'A' and 'B' are assigned at random and hidden from the judge; 'key' says which plan was which and is filled in by whoever ran the comparison, after the scores are in.",
+  "scene": "phone_call",
+  "judge": "",
+  "date": "",
+  "key": { "A": "classic | adam | master", "B": "classic | adam | master" },
+  "scores": {
+    "A": { "emotion": null, "story": null, "rhythm": null, "eye_and_space": null, "sound": null, "felt_there": null, "mute_test": null },
+    "B": { "emotion": null, "story": null, "rhythm": null, "eye_and_space": null, "sound": null, "felt_there": null, "mute_test": null }
+  },
+  "proud_of": "A | B | neither",
+  "notes": ""
+}

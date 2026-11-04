@@ -1,0 +1,9 @@
+# BASELINE for father_refuses: a hand estimate of script_split's plan (live run pending; see baselines/phone_call.yaml).
+scene: father_refuses
+source: hand estimate from script_split's rules (live run pending)
+shots:
+  - { number: 1, framing: WIDE, title: "The father arrives", duration_s: 6, block_start: 0, block_end: 2 }
+  - { number: 2, framing: MCU, title: "Kasun answers", duration_s: 4, block_start: 2, block_end: 4 }
+  - { number: 3, framing: MS, title: "The father speaks", duration_s: 6, block_start: 4, block_end: 6 }
+  - { number: 4, framing: MCU, title: "Kasun replies", duration_s: 6, block_start: 6, block_end: 7 }
+  - { number: 5, framing: WIDE, title: "The father leaves", duration_s: 6, block_start: 7, block_end: 8 }

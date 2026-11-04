@@ -1,0 +1,16 @@
+id: adam_director
+kind: agent
+version: 1
+summary: "Conceives three treatments of one scene that differ on purpose (restrained, intimate, heightened): concept, size arc, point of view, sound concept, plant and payoff, the one rhythm break, entry, exit and ending image."
+status: active
+owner: director
+model: high
+shape: structured
+phase: adam.conceive
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

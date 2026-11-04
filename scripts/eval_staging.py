@@ -16,10 +16,19 @@ Scores, per mode, against tests/eval/staging_thresholds.json (a drop fails):
   size_variety    share of scenes with more than three shots that use at least two sizes
   info_carried    share of "it is her father" style information blocks that ride with a line that says
                   it, sit in an INSERT, or come right before the voice shot (plan 2026-11-01b)
+  button_present  share of scenes whose reading asks for a last image that end on it (plan 2026-11-01d)
+  breath_band     share of scenes whose reading asks for breath that hold 15-30% of the scene as breath
+  inner_as_behaviour  share of STORY NOTEs (a thought nobody can film) the reading turned into behaviour (model mode)
 and counts that must stay at or under the `ceilings` of the thresholds file, in every mode:
   crowded_shots        shots that hold more than they can show (or that the kernel had to cut)
   voice_before_source  a heard voice that starts before the picture shows its source ring
   inner_filmed         a thought ("he had no idea ...") that reaches a shot's intent
+  turn_unseen          priority-1 reactions played while the face that reacts is not in frame (plan 2026-11-01d)
+  teleport             people who change spot with nothing to show the way, after the implied steps are added
+  line_crossed         cuts that swap two people's sides of the frame, and shot / reverse shots that look one way
+
+A case may carry "staging": the map a model would answer (each mark names its block by a piece of its text), so the
+steps the staging adds and the checks on it run offline too. Without a model, a case with no "staging" has no map.
 """
 from __future__ import annotations
 
@@ -36,16 +45,24 @@ for p in (ROOT / "src", ROOT / "src" / "libs", ROOT / "src" / "services" / "shot
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from script_split.engine.pipeline import plan_scene, prepare  # noqa: E402
+from script_split.engine import critic  # noqa: E402
+from script_split.engine import reading as reading_engine  # noqa: E402
+from script_split.engine.pipeline import plan_scene, prepare, stage  # noqa: E402
 from shot_producer.engine import pipeline  # noqa: E402
 
-from contracts import sceneplan  # noqa: E402
+from contracts import (  # noqa: E402
+    bridges,
+    sceneplan,
+    stagemap,
+)
+from contracts import reading as scene_reading  # noqa: E402
 from contracts.beats import sentences  # noqa: E402
 from contracts.bridges import _RING  # noqa: E402
 from contracts.jobs import DispatchPayload, JobKind  # noqa: E402
 from contracts.producer import shot_canon_ids, shot_items  # noqa: E402
 from contracts.shotplan import shot_clock  # noqa: E402
 from contracts.staging import _keys, shot_cast, staging  # noqa: E402
+from contracts.timing import BREATH_BAND  # noqa: E402
 
 CASES = ROOT / "tests" / "eval" / "staging_scenes.json"
 THRESHOLDS = ROOT / "tests" / "eval" / "staging_thresholds.json"
@@ -137,6 +154,27 @@ class NoModel:
         raise RuntimeError("no model")
 
 
+class FixtureStaging:
+    """Answers the staging call with the case's own map, as a model would, and nothing else."""
+
+    enabled = True
+
+    def __init__(self, case: Row, items: list[Any]) -> None:
+        self.case, self.items = case, items
+
+    def json(self, *, schema_name: str, **kw: Any) -> Row:
+        if schema_name != "scene_staging":
+            raise RuntimeError("no model")
+        raw = self.case["staging"]
+        marks = []
+        for m in raw["marks"]:
+            at = next((i.index for i in self.items if m["at"].lower() in i.text.lower()), None)
+            if at is not None:
+                rest = {k: v for k, v in m.items() if k != "at"}
+                marks.append({"facing": "", "frame_side": "", "holding": "", **rest, "block": at})
+        return {"zones": raw["zones"], "marks": marks}
+
+
 def build(case: Row) -> tuple[Row, list[Row], list[Row]]:
     """The case as stored rows: canon, the scene and its lines (no shots yet)."""
     cid = case["id"]
@@ -196,13 +234,47 @@ def picture_counts(result: Any, items: list[Any], intents: list[str]) -> Row:
             "info_carried": carried}
 
 
+def feeling_counts(result: Any, items: list[Any], reading: scene_reading.SceneReading,
+                   staging: stagemap.SceneStaging | None, cast: list[str]) -> Row:
+    """What the reading and the map say about feeling and places, for one scene (plan 2026-11-01d)."""
+    wants_button = any(b.kind == "button" and not b.off for b in reading.breath)
+    wants_breath = any(not b.off for b in reading.breath) and result.total_s > 0
+    low, high = BREATH_BAND
+    notes = scene_reading.story_notes(items)
+    behaved = sum(1 for t in reading.subtext if not t.narration_only and t.block in notes)
+    share = result.breath_s / result.total_s if result.total_s else 0.0
+    return {"turn_unseen": critic.turn_unseen(result, reading, items, staging, cast),
+            "teleport": len(stagemap.teleports(staging, items, cast)),
+            "line_crossed": len(stagemap.line_crossed(staging, items, result, cast))
+            + len(stagemap.eyeline(staging, items, result)),
+            "button_total": int(wants_button),
+            "button_ok": int(wants_button and not critic.no_button(result, reading, items)),
+            "breath_total": int(wants_breath), "breath_ok": int(wants_breath and low <= share <= high),
+            "notes_total": len(notes), "notes_behaved": behaved,
+            "moves_added": sum(1 for i in items if bridges.is_move_block(i.bridge))}
+
+
 def run_case(case: Row, llm: Any) -> Row:
     scene, lines, canon = build(case)
     speaker_names = {_id(case["id"], code): name for code, name, _ in case["cast"]}
     # The split reads the script as pictures and adds the steps it implies, as the real build does.
-    scene["script"], items = prepare(scene, lines, llm, [name for _, name, _ in case["cast"]])
-    result, planner, _ = plan_scene(items, heading=scene["heading"], envelope_s=scene["envelope_s"], fixed=None,
-                                    llm=llm, speaker_names=speaker_names)
+    names = [name for _, name, _ in case["cast"]]
+    scene["script"], items = prepare(scene, lines, llm, names)
+    ask = None
+    if llm.enabled:
+        def ask(system: str, user: str) -> Row:
+            return llm.json(tier="high", phase="eval.reading", system=system, user=user, schema_name="scene_reading",
+                            schema=reading_engine.READING_SCHEMA)
+    reading, _ = reading_engine.reading_for(scene, items, ask, names, speaker_names=speaker_names)
+    staging_llm = llm if llm.enabled else (FixtureStaging(case, items) if case.get("staging") else llm)
+    scene["script"], items, reading, stage_map = stage(scene, lines, scene["script"], items, reading, staging_llm,
+                                                     speaker_names)
+    timed = scene_reading.apply(items, scene_reading.clear_envelope(reading))
+    result, planner, _ = plan_scene(timed, heading=scene["heading"], envelope_s=scene["envelope_s"], fixed=None,
+                                    llm=llm, speaker_names=speaker_names, reading=reading, staging=stage_map)
+    scene["reading"] = scene_reading.mark_off(reading, timed, result.breath_dropped).model_dump(mode="json")
+    if stage_map is not None:
+        scene["staging"] = stage_map.model_dump(mode="json")
     shots, line_rows, _ = sceneplan.rows_after_fit(scene, [{"start": s.start} for s in result.shots], result, lines)
     for s in shots:
         s.update(ir={}, design={}, camera_overrides={}, intent={}, person_edits={})
@@ -225,7 +297,8 @@ def run_case(case: Row, llm: Any) -> Row:
                                                  and row["sound_mode"] in ("dialogue", "sung")],
                           "intent": (row.get("intent") or {}).get("what_we_see", "")})
     counts = picture_counts(result, items, [s["intent"] for s in out_shots])
-    return {"id": case["id"], "planner": planner, "shots": out_shots, "pictures": counts,
+    feeling = feeling_counts(result, timed, reading, stage_map, [name for _, name, _ in case["cast"]])
+    return {"id": case["id"], "planner": planner, "shots": out_shots, "pictures": counts, "feeling": feeling,
             "heard": [_id(case["id"], c) for c in case["heard"]], "seen": [_id(case["id"], c) for c in case["seen"]],
             "names": {_id(case["id"], code): name for code, name, _ in case["cast"]}}
 
@@ -252,12 +325,18 @@ def score(results: list[Row]) -> dict[str, float]:
         return round(a / b, 3) if b else 1.0
 
     pic = [r["pictures"] for r in results]
+    feel = [r["feeling"] for r in results]
     return {"heard_kept_out": ratio(heard_ok, heard_total), "seen_shown": ratio(seen_ok, seen_total),
             "speaker_framed": ratio(lines_ok, lines_total), "size_variety": ratio(varied, big),
             "info_carried": ratio(sum(p["info_carried"] for p in pic), sum(p["info_total"] for p in pic)),
             "crowded_shots": sum(p["crowded"] for p in pic),
             "voice_before_source": sum(p["voice_early"] for p in pic),
-            "inner_filmed": sum(p["inner_filmed"] for p in pic)}
+            "inner_filmed": sum(p["inner_filmed"] for p in pic),
+            "button_present": ratio(sum(f["button_ok"] for f in feel), sum(f["button_total"] for f in feel)),
+            "breath_band": ratio(sum(f["breath_ok"] for f in feel), sum(f["breath_total"] for f in feel)),
+            "inner_as_behaviour": ratio(sum(f["notes_behaved"] for f in feel), sum(f["notes_total"] for f in feel)),
+            "turn_unseen": sum(f["turn_unseen"] for f in feel), "teleport": sum(f["teleport"] for f in feel),
+            "line_crossed": sum(f["line_crossed"] for f in feel)}
 
 
 def evaluate(llm: Any) -> tuple[dict[str, float], list[Row]]:

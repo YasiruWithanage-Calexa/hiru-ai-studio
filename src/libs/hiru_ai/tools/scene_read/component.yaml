@@ -1,0 +1,19 @@
+id: scene_read
+kind: tool
+version: 2
+summary: "Reads one scene of the production, only the parts asked for: its script, spoken lines, shots, canon codes, reading, staging."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+effect: read
+max_result_tokens: 1800
+guide: |
+  Returns the scene named by `scene` (like "E1S2"; with none, the scene this run is about) and only the parts listed in
+  `include`: `script` (the blocks in order, dialogue word for word), `lines` (each spoken line with its shot and start),
+  `shots` (the plan: size, length, sound, words), `canon` (codes and names of the people and place), `reading` (what the
+  scene is about), `staging` (where people are), `coverage`. The default is script and shots. `shots` narrows the shot
+  list to one shot or a range, like "S02-S04".
+  Example: {"include": ["script", "lines"], "scene": "E1S2"}.
+  Do not use it to read one shot in depth (use shot_read), to read the reading or the staging map block by block (use
+  scene_reading_read), or to read a canon card (use canon_read).

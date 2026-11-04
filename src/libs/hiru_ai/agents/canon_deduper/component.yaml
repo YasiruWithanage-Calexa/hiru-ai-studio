@@ -1,0 +1,16 @@
+id: canon_deduper
+kind: agent
+version: 1
+summary: "Finds two names for one character, location or prop in the canon list; code applies the merges."
+status: active
+owner: canon_extract
+model: medium
+shape: structured
+phase: canon_extract.dedupe
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

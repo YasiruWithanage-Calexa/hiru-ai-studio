@@ -1,0 +1,17 @@
+id: canon_read
+kind: tool
+version: 1
+summary: "Reads one character, place or prop of the canon by name, nickname or code; with an episode, the look worn then."
+status: active
+owner: director
+entry: tool:run
+ports: [canon]
+effect: read
+max_result_tokens: 1200
+guide: |
+  Returns the canon card: code, kind, name, whether it is locked, what the card says, the wardrobe anchor and the voice
+  pin. With `episode`, also the look the character wears in that episode (outfit, hair, makeup, accessories).
+  Use it when an answer or a proposal depends on who or what someone or something is.
+  Example: {"name_or_code": "C02", "episode": 3}. A name that is not found answers with the 3 closest names.
+  Do not use it to list the canon or to find a name you do not know (use canon_find), or to read a scene's script
+  (use scene_read).

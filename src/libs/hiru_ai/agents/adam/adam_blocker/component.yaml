@@ -1,0 +1,16 @@
+id: adam_blocker
+kind: agent
+version: 1
+summary: "Places the people of one scene moment by moment, and says why a move happens (power, avoidance, approach), so no card can put someone somewhere without showing how they got there."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: adam.stage
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

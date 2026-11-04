@@ -1,0 +1,40 @@
+{
+ "outputs": [
+  {
+   "agent": "cinematography",
+   "ops": [
+    {
+     "op": "set",
+     "shot": 2,
+     "field": "framing",
+     "value": "CU"
+    }
+   ],
+   "note": "tighter"
+  },
+  {
+   "agent": "sound",
+   "ops": [
+    {
+     "op": "set",
+     "shot": 1,
+     "field": "sound_mode",
+     "value": "silent"
+    }
+   ],
+   "note": "quiet"
+  },
+  {
+   "agent": "cinematography",
+   "ops": [
+    {
+     "op": "set",
+     "shot": 1,
+     "field": "sound_mode",
+     "value": "ambient"
+    }
+   ],
+   "note": "keep the street"
+  }
+ ]
+}

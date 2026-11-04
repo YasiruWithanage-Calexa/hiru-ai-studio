@@ -1,0 +1,486 @@
+{
+ "case": "rerun_unchanged",
+ "description": "A second run changes nothing",
+ "expected": {
+  "entity_rows": {
+   "<id:10>": {
+    "aliases": [],
+    "code": "L01",
+    "core": false,
+    "current_version_id": "<id:11>",
+    "id": "<id:10>",
+    "kind": "location",
+    "locked": false,
+    "name": "Kamala's house",
+    "production_id": "<id:2>"
+   },
+   "<id:12>": {
+    "aliases": [
+     "Kalugala Harbour"
+    ],
+    "code": "L02",
+    "core": false,
+    "current_version_id": "<id:13>",
+    "id": "<id:12>",
+    "kind": "location",
+    "locked": false,
+    "name": "Kalugala harbour breakwater",
+    "production_id": "<id:2>"
+   },
+   "<id:14>": {
+    "aliases": [],
+    "code": "L03",
+    "core": false,
+    "current_version_id": "<id:15>",
+    "id": "<id:14>",
+    "kind": "location",
+    "locked": false,
+    "name": "Auction shed",
+    "production_id": "<id:2>"
+   },
+   "<id:16>": {
+    "aliases": [],
+    "code": "P01",
+    "core": false,
+    "current_version_id": "<id:17>",
+    "id": "<id:16>",
+    "kind": "prop",
+    "locked": false,
+    "name": "The SEETHA",
+    "production_id": "<id:2>"
+   },
+   "<id:18>": {
+    "aliases": [],
+    "code": "P02",
+    "core": false,
+    "current_version_id": "<id:19>",
+    "id": "<id:18>",
+    "kind": "prop",
+    "locked": false,
+    "name": "Sunil's tide notebook",
+    "production_id": "<id:2>"
+   },
+   "<id:1>": {
+    "aliases": [
+     "කමලා"
+    ],
+    "code": "C01",
+    "core": true,
+    "current_version_id": "<id:3>",
+    "id": "<id:1>",
+    "kind": "character",
+    "locked": false,
+    "name": "Kamala",
+    "production_id": "<id:2>"
+   },
+   "<id:20>": {
+    "aliases": [],
+    "code": "P03",
+    "core": false,
+    "current_version_id": "<id:21>",
+    "id": "<id:20>",
+    "kind": "prop",
+    "locked": false,
+    "name": "The fishing licence",
+    "production_id": "<id:2>"
+   },
+   "<id:22>": {
+    "aliases": [],
+    "code": "P04",
+    "core": false,
+    "current_version_id": "<id:23>",
+    "id": "<id:22>",
+    "kind": "prop",
+    "locked": false,
+    "name": "Guesthouse plan",
+    "production_id": "<id:2>"
+   },
+   "<id:4>": {
+    "aliases": [
+     "නිමල්"
+    ],
+    "code": "C02",
+    "core": true,
+    "current_version_id": "<id:5>",
+    "id": "<id:4>",
+    "kind": "character",
+    "locked": false,
+    "name": "Nimal",
+    "production_id": "<id:2>"
+   },
+   "<id:6>": {
+    "aliases": [
+     "සුනිල්"
+    ],
+    "code": "C03",
+    "core": true,
+    "current_version_id": "<id:7>",
+    "id": "<id:6>",
+    "kind": "character",
+    "locked": false,
+    "name": "Sunil",
+    "production_id": "<id:2>"
+   },
+   "<id:8>": {
+    "aliases": [],
+    "code": "C04",
+    "core": true,
+    "current_version_id": "<id:9>",
+    "id": "<id:8>",
+    "kind": "character",
+    "locked": false,
+    "name": "Mrs. Perera",
+    "production_id": "<id:2>"
+   }
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "stage": "read",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "ingestion",
+     "text": "Read 3 files (bible, canon_index, script).",
+     "type": "agent_step"
+    },
+    {
+     "stage": "read",
+     "state": "done",
+     "text": "3 files",
+     "type": "stage"
+    },
+    {
+     "stage": "canon",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "canon_extractor",
+     "chips": [
+      "4 core characters",
+      "3 locations",
+      "4 props"
+     ],
+     "text": "Canon drafted from the documents. All items are drafts until you approve them.",
+     "type": "agent_step"
+    },
+    {
+     "agent": "canon_extractor",
+     "text": "C04: no voice in the documents yet.",
+     "type": "warning"
+    },
+    {
+     "stage": "canon",
+     "state": "done",
+     "text": "11 items",
+     "type": "stage"
+    }
+   ],
+   "fields": {
+    "result": {
+     "created": 11,
+     "locked": [],
+     "notes": [
+      "C04: no voice in the documents yet."
+     ],
+     "unchanged": 0,
+     "updated": 0,
+     "versioned": 0
+    }
+   },
+   "status": "done"
+  },
+  "llm": [],
+  "results": [
+   {
+    "created": 11,
+    "locked": [],
+    "notes": [
+     "C04: no voice in the documents yet."
+    ],
+    "unchanged": 0,
+    "updated": 0,
+    "versioned": 0
+   },
+   {
+    "skipped": "done"
+   }
+  ],
+  "version_rows": {
+   "<id:11>": {
+    "card": {
+     "accent": "",
+     "age": "",
+     "appearance": "",
+     "details": "",
+     "gender": "",
+     "look": "kitchen with a wood fire, front yard with a jak tree.",
+     "notes": "",
+     "summary": "kitchen with a wood fire, front yard with a jak tree.",
+     "voice": "",
+     "wardrobe": ""
+    },
+    "card_hash": "74df9e55e0d9cbff0840e1966c02ab8ba70943d58d091b607dd8eff3eebbfdfc",
+    "created_by": "<id:24>",
+    "entity_id": "<id:10>",
+    "id": "<id:11>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Kamala's house\nLook: kitchen with a wood fire, front yard with a jak tree",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "",
+    "wardrobe_anchor": ""
+   },
+   "<id:13>": {
+    "card": {
+     "accent": "",
+     "age": "",
+     "appearance": "",
+     "details": "",
+     "gender": "",
+     "look": "concrete breakwater, the blue-and-white lighthouse.",
+     "notes": "",
+     "summary": "concrete breakwater, the blue-and-white lighthouse.",
+     "voice": "",
+     "wardrobe": ""
+    },
+    "card_hash": "0760f7e586217db5fe245cd076104a501f3c0c4f5204151f1cc5a3e558d0f271",
+    "created_by": "<id:24>",
+    "entity_id": "<id:12>",
+    "id": "<id:13>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Kalugala harbour breakwater\nLook: concrete breakwater, the blue-and-white lighthouse",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "",
+    "wardrobe_anchor": ""
+   },
+   "<id:15>": {
+    "card": {
+     "accent": "",
+     "age": "",
+     "appearance": "",
+     "details": "",
+     "gender": "",
+     "look": "wet concrete floor, debt ledger pinned to the wall, tea kiosk at the gate.",
+     "notes": "",
+     "summary": "wet concrete floor, debt ledger pinned to the wall, tea kiosk at the gate.",
+     "voice": "",
+     "wardrobe": ""
+    },
+    "card_hash": "c04c77ff2a05c0087e860e3dd12bcfbdf8338763928a3a78454147f71b82e20a",
+    "created_by": "<id:24>",
+    "entity_id": "<id:14>",
+    "id": "<id:15>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Auction shed\nLook: wet concrete floor, debt ledger pinned to the wall, tea kiosk at the gate",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "",
+    "wardrobe_anchor": ""
+   },
+   "<id:17>": {
+    "card": {
+     "accent": "",
+     "age": "",
+     "appearance": "",
+     "details": "the family's blue fishing boat with the name painted in white.",
+     "gender": "",
+     "look": "",
+     "notes": "",
+     "summary": "the family's blue fishing boat with the name painted in white.",
+     "voice": "",
+     "wardrobe": ""
+    },
+    "card_hash": "e7d44ce2fecb4878f67a4159c3bbcc3d98e2603dfe7ad2bdc6141ea1a2caa119",
+    "created_by": "<id:24>",
+    "entity_id": "<id:16>",
+    "id": "<id:17>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: The SEETHA\nDetails: the family's blue fishing boat with the name painted in white",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "",
+    "wardrobe_anchor": ""
+   },
+   "<id:19>": {
+    "card": {
+     "accent": "",
+     "age": "",
+     "appearance": "",
+     "details": "small, water-stained, pencil tied with string.",
+     "gender": "",
+     "look": "",
+     "notes": "",
+     "summary": "small, water-stained, pencil tied with string.",
+     "voice": "",
+     "wardrobe": ""
+    },
+    "card_hash": "271fe8b1496b9da82fc9ef1b304439370c1b315537fe04333f765d3757d2ce56",
+    "created_by": "<id:24>",
+    "entity_id": "<id:18>",
+    "id": "<id:19>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: Sunil's tide notebook\nDetails: small, water-stained, pencil tied with string",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "",
+    "wardrobe_anchor": ""
+   },
+   "<id:21>": {
+    "card": {
+     "accent": "",
+     "age": "",
+     "appearance": "",
+     "details": "laminated card kept in a tin trunk.",
+     "gender": "",
+     "look": "",
+     "notes": "",
+     "summary": "laminated card kept in a tin trunk.",
+     "voice": "",
+     "wardrobe": ""
+    },
+    "card_hash": "424dd4b958d27e43ca30f17d3c9a8ba07c842b56cc20b98ec009abcb726a7ff2",
+    "created_by": "<id:24>",
+    "entity_id": "<id:20>",
+    "id": "<id:21>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: The fishing licence\nDetails: laminated card kept in a tin trunk",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "",
+    "wardrobe_anchor": ""
+   },
+   "<id:23>": {
+    "card": {
+     "accent": "",
+     "age": "",
+     "appearance": "",
+     "details": "a printed floor plan on A3 paper.",
+     "gender": "",
+     "look": "",
+     "notes": "",
+     "summary": "a printed floor plan on A3 paper.",
+     "voice": "",
+     "wardrobe": ""
+    },
+    "card_hash": "48249a7cfc9cd2e333909518f5844a2575c903df6416a1fbde547aed05e505aa",
+    "created_by": "<id:24>",
+    "entity_id": "<id:22>",
+    "id": "<id:23>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: Guesthouse plan\nDetails: a printed floor plan on A3 paper",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "",
+    "wardrobe_anchor": ""
+   },
+   "<id:3>": {
+    "card": {
+     "accent": "a Sri Lankan (southern) accent",
+     "age": "52",
+     "appearance": "She has not cried since the funeral",
+     "details": "",
+     "gender": "female",
+     "look": "",
+     "notes": "",
+     "summary": "mother, 52",
+     "voice": "low, clipped",
+     "wardrobe": "Faded blue cotton saree, white cardigan in the mornings"
+    },
+    "card_hash": "803a59ab000900122945a0f51b4ba85cc1b8714b56163632e7d6907168aebee7",
+    "created_by": "<id:24>",
+    "entity_id": "<id:1>",
+    "id": "<id:3>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Kamala\nSubject: one adult woman\nAge: 52\nAppearance: She has not cried since the funeral\nOutfit in every panel: a plain solid-color fitted sports bra and fitted gym shorts, navy",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "low, clipped female voice (52), a Sri Lankan (southern) accent",
+    "wardrobe_anchor": "Faded blue cotton saree, white cardigan in the mornings"
+   },
+   "<id:5>": {
+    "card": {
+     "accent": "",
+     "age": "30",
+     "appearance": "Patient with customers, impatient with his mother",
+     "details": "",
+     "gender": "male",
+     "look": "",
+     "notes": "",
+     "summary": "elder son, 30",
+     "voice": "soft, measured",
+     "wardrobe": "Grey linen shirt, rolled sleeves, cheap digital watch"
+    },
+    "card_hash": "3f770f1d113d55a1e873681c20a907906436797b57cbbec397c4b12631003487",
+    "created_by": "<id:24>",
+    "entity_id": "<id:4>",
+    "id": "<id:5>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Nimal\nSubject: one adult man\nAge: 30\nAppearance: Patient with customers, impatient with his mother\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "soft, measured male voice (30), a Sri Lankan (Colombo) accent",
+    "wardrobe_anchor": "Grey linen shirt, rolled sleeves, cheap digital watch"
+   },
+   "<id:7>": {
+    "card": {
+     "accent": "",
+     "age": "19",
+     "appearance": "Quiet, keeps a notebook of tides",
+     "details": "",
+     "gender": "male",
+     "look": "",
+     "notes": "",
+     "summary": "younger son, 19",
+     "voice": "quiet, hesitant",
+     "wardrobe": "Faded red T-shirt, sarong when on the boat"
+    },
+    "card_hash": "22cca3d10e75875af8658e4d928b78cb0e2931e24b55345d738caa1822eeb544",
+    "created_by": "<id:24>",
+    "entity_id": "<id:6>",
+    "id": "<id:7>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Sunil\nSubject: one adult man\nAge: 19\nAppearance: Quiet, keeps a notebook of tides\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "quiet, hesitant male voice (19), a Sri Lankan (Colombo) accent",
+    "wardrobe_anchor": "Faded red T-shirt, sarong when on the boat"
+   },
+   "<id:9>": {
+    "card": {
+     "accent": "",
+     "age": "60s",
+     "appearance": "",
+     "details": "",
+     "gender": "",
+     "look": "",
+     "notes": "",
+     "summary": "neighbour, 60s",
+     "voice": "",
+     "wardrobe": "Floral housecoat, reading glasses on a cord"
+    },
+    "card_hash": "8d096810bfee3c550301c78c8bdb87f1eee6aa101ceee508ab325ad1bd898c81",
+    "created_by": "<id:24>",
+    "entity_id": "<id:8>",
+    "id": "<id:9>",
+    "production_id": "<id:2>",
+    "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Mrs. Perera\nSubject: one person\nAge: 60s\nOutfit in every panel: a plain fitted grey t-shirt and fitted grey trousers, hair tied back if long",
+    "source": "extract",
+    "version": 1,
+    "voice_pin": "voice (60s), a Sri Lankan (Colombo) accent",
+    "wardrobe_anchor": "Floral housecoat, reading glasses on a cord"
+   }
+  }
+ },
+ "input": {
+  "runs": 2
+ },
+ "model": {},
+ "service": "canon_extract"
+}

@@ -1,0 +1,16 @@
+id: chunk_contextualiser
+kind: agent
+version: 1
+summary: "Writes a one-line retrieval header for each passage of a document, so a chunk is findable on its own."
+status: active
+owner: doc_ingest
+model: low
+shape: structured
+phase: doc_ingest.headers
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

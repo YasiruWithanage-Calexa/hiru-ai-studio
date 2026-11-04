@@ -1,0 +1,16 @@
+id: role_classifier
+kind: agent
+version: 1
+summary: "Says what an uploaded document is (bible, script, canon index, outline, notes) when the rules are unsure."
+status: active
+owner: doc_ingest
+model: medium
+shape: structured
+phase: doc_ingest.role
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

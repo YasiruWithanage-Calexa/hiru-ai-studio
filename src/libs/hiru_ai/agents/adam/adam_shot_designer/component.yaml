@@ -1,0 +1,16 @@
+id: adam_shot_designer
+kind: agent
+version: 1
+summary: "Groups the moments of one scene into Veo-length takes and designs each as a shot card: size, angle, movement, focus, composition, performance, line placement, cut and purpose."
+status: active
+owner: director
+model: high
+shape: structured
+phase: adam.design
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

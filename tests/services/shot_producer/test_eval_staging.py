@@ -38,7 +38,7 @@ def test_the_picture_metrics_hold_their_ceilings_on_the_hard_scenes():
     assert scores["crowded_shots"] == 0 and scores["voice_before_source"] == 0 and scores["inner_filmed"] == 0
     assert scores["info_carried"] >= 0.8
     assert ev.failures({**scores, "crowded_shots": 2}, "rules") == ["crowded_shots: 2 > 0"]
-    assert ev.failures({**scores, "inner_filmed": 1, "voice_before_source": 1}, "model") == [
+    assert ev.failures({**scores, "inner_as_behaviour": 1.0, "inner_filmed": 1, "voice_before_source": 1}, "model") == [
         "voice_before_source: 1 > 0", "inner_filmed: 1 > 0"]
 
 
@@ -53,3 +53,25 @@ def test_the_call_that_breaks_a_moment_is_shown_in_order():
     assert voice["on_screen"] == [anudi]  # the voice is framed on the person who holds the phone
     assert "answers the phone" in " ".join(s["intent"] for s in case["shots"])
     assert "no idea" not in " ".join(s["intent"] for s in case["shots"])  # a thought is never filmed
+
+
+def test_the_feeling_and_place_metrics_hold_their_floors_and_ceilings_offline():
+    ev = load()
+    scores, _ = ev.evaluate(ev.NoModel())
+    assert scores["turn_unseen"] == 0 and scores["teleport"] == 0 and scores["line_crossed"] == 0
+    assert scores["button_present"] == 1.0 and scores["breath_band"] >= 0.6
+    assert ev.failures({**scores, "teleport": 1}, "rules") == ["teleport: 1 > 0"]
+    assert ev.failures({**scores, "button_present": 0.5}, "rules") == ["button_present: 0.5 < 1.0"]
+    # the free rules leave a story note as narration; only a model run is held to turning it into behaviour
+    assert scores["inner_as_behaviour"] == 0.0 and "inner_as_behaviour" not in ev.failures(scores, "rules")
+    assert ev.failures({**scores, "inner_as_behaviour": 0.5}, "model") == ["inner_as_behaviour: 0.5 < 0.8"]
+
+
+def test_a_person_who_crosses_a_yard_the_script_never_writes_is_walked_there():
+    ev = load()
+    _, results = ev.evaluate(ev.NoModel())
+    case = next(r for r in results if r["id"] == "yard_unwritten")
+    assert case["feeling"]["moves_added"] == 1 and case["feeling"]["teleport"] == 0
+    assert "Anudi crosses to the stove" in " ".join(s["intent"] for s in case["shots"])
+    arrival = next(r for r in results if r["id"] == "silent_arrival")
+    assert arrival["feeling"]["moves_added"] == 0 and arrival["feeling"]["teleport"] == 0  # an entrance is no teleport

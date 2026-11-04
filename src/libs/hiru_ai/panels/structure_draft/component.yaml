@@ -1,0 +1,13 @@
+id: structure_draft
+kind: panel
+version: 1
+summary: "The drafting agents of a structure build (prose cutter, architect, look drafter) run their jobs side by side; code checks every answer."
+status: active
+owner: structure_build
+pattern: fanout
+# name = what a task calls the member. The panel is called once per stage of the build (prose, then names, then looks),
+# each time with that stage's jobs; the jobs of one stage are independent, so they run at once.
+members:
+  - { agent: prose_writer, name: prose }
+  - { agent: architect, name: architect }
+  - { agent: look_drafter, name: looks }

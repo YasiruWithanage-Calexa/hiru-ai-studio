@@ -1,0 +1,18 @@
+id: prompt_check
+kind: tool
+version: 1
+summary: "Lints a shot's stored video prompt: missing sections, length, wrong duration, dialogue not word for word, failed checks."
+status: active
+owner: shot_producer
+entry: tool:run
+ports: [scenes]
+uses: [prompt_lint]
+effect: read
+guide: |
+  Reads the latest stored prompt of a shot and returns what code finds wrong with it against the clip schema and the Veo
+  guide: a section the schema always writes is missing, the Format section states another length than the shot's, a spoken
+  line is not in the prompt word for word, the prompt is longer than the video model reads, or a stored check failed. It
+  does not rewrite anything. A shot with no prompt yet has nothing to check.
+  Example: {"shot": "S01", "scene": "E1S2"}.
+  Do not use it to learn whether the prompt is out of date (use shot_read), to look up how to show a feeling (use
+  technique_lookup), or to change the prompt: prompts are written by the shot producer.

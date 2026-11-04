@@ -1,0 +1,10 @@
+- name: consecutive shots disagree on a prop
+  input: { scene_text: "S01 holds the ledger\nS02 no ledger", shots: [ 2 ], instruction: "Keep the ledger in S02." }
+  reply:
+    ops: [ { op: beat.set, shot: 2, field: action, value: "Kasun still holds the ledger", seconds: null, at_block: null, end_block: null, link: null, beat: 0, after_shot: null, description: null, framing: null, title: null, block: null, kind: null, speaker: null, delivery: null } ]
+    note: "The ledger stays in his hand."
+  expect: { ops: [ { op: beat.set, shot: 2, beat: 0 } ] }
+- name: the specialist fails
+  input: { scene_text: "S01 MCU 6s" }
+  model: unavailable
+  expect: { ops: [] }

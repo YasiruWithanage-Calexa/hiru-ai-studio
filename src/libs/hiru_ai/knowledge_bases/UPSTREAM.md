@@ -1,28 +1,30 @@
 # Upstream: PromptMotion knowledge base
 
 Copied from PromptMotion at commit `1d748dc` (2026-10-19). Indexed by
-`scripts/ingest_knowledge.py` (corpus `craft` in `chunks`, and `craft_techniques`).
+`hiru-ai ingest --all` (corpus `craft` in `chunks`, and `craft_techniques`). Each base keeps its files under
+`knowledge_bases/<id>/sources/` (moved there from `src/knowledge_base/` in plan/2026-11-03 Phase 3; the
+`chunks.source` paths still read `knowledge_base/<id>/...`).
 
 Two sources are NOT from PromptMotion: `cinematography/` and `craft/hiru-house-style.md` (below).
 
 | Here | PromptMotion source |
 |---|---|
-| `craft/*.md` | `src/knowledge_base/vega/*.md` |
-| `rules/*.md` | `src/knowledge_base/rules/sceen_rules/*.md` (the `.json` twins were not copied) |
-| `guides/veo-3-1-prompting-guide.md` | `docs/engines/veo-3-1-prompting-guide.md` |
-| `techniques/camera_shots.csv` | `docs/knowledge-base/camera_shots.csv` |
+| `craft/sources/*.md` | `src/knowledge_base/vega/*.md` |
+| `rules/sources/*.md` | `src/knowledge_base/rules/sceen_rules/*.md` (the `.json` twins were not copied) |
+| `guides/sources/veo-3-1-prompting-guide.md` | `docs/engines/veo-3-1-prompting-guide.md` |
+| `cinematography/sources/camera_shots.csv` | `docs/knowledge-base/camera_shots.csv` |
 
 ## Cinematography terms database (not PromptMotion)
 
-`cinematography/*.csv` is the 629-term reference database supplied by the user as `files.zip`
+`cinematography/sources/*.csv` is the 629-term reference database supplied by the user as `files.zip`
 (2026-10-26): 28 categories, 21 subcategories, 41 tags, 1,511 term-tag links, 107 relations. Each
 term has a description, its emotional `effect`, a `use_case`, an `example_scene`, a `prompt_phrase`
 for AI video tools, aliases, `complexity` and `is_ai_supported`. The zip's `schema.sql` (MySQL DDL)
 was not copied: the data lives in `craft_techniques` (migration `*_cinematography_terms.sql`).
 
-`scripts/cine_terms.py` loads it, and `scripts/ingest_knowledge.py` indexes it:
+`cinematography/terms.py` loads it, and `hiru-ai ingest cinematography` indexes it:
 
-- **Merged with `techniques/camera_shots.csv`**, one row per technique. Where both name the same
+- **Merged with `cinematography/sources/camera_shots.csv`**, one row per technique. Where both name the same
   shot (35 of the 61) the row keeps the legacy `definition`, `use_case`, `abbreviation` and
   `example_film` (hand-written feeling-first, and the eval thresholds were calibrated on them)
   and gains the terms database's fields. The other 26 legacy rows stay as they were.

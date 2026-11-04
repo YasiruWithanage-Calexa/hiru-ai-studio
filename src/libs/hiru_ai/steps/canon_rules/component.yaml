@@ -1,0 +1,7 @@
+id: canon_rules
+kind: step
+version: 1
+summary: "Finds canon candidates (characters, places, props) in documents by rules alone, no model."
+status: active
+owner: canon_extract
+entry: step:run

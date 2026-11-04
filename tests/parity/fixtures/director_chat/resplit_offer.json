@@ -1,0 +1,92 @@
+{
+ "case": "resplit_offer",
+ "description": "An edit that restructures most of the scene is offered as a re-split",
+ "expected": {
+  "audits": [],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Applying your changes"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Writing the reply"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "That would change most of this scene, so I have not applied it. Use Re-split to plan the scene again from the script."
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "blocks": [
+      {
+       "kind": "text",
+       "text": "That would change most of this scene, so I have not applied it. Use Re-split to plan the scene again from the script."
+      }
+     ],
+     "citations": [],
+     "id": "<id:1>",
+     "kind": "director",
+     "ops": [],
+     "persona_id": "<id:4>",
+     "production_id": "<id:2>",
+     "speaker": "Classic Teledrama",
+     "text": "",
+     "thread_id": "<id:3>",
+     "tone": "lead"
+    },
+    "event": "message"
+   },
+   {
+    "data": {
+     "lane": "reshape",
+     "message_id": "<id:1>"
+    },
+    "event": "done"
+   }
+  ],
+  "llm": [],
+  "memory_rows": [],
+  "message_rows": [
+   {
+    "blocks": [
+     {
+      "kind": "text",
+      "text": "That would change most of this scene, so I have not applied it. Use Re-split to plan the scene again from the script."
+     }
+    ],
+    "citations": [],
+    "id": "<id:1>",
+    "kind": "director",
+    "ops": [],
+    "persona_id": "<id:4>",
+    "production_id": "<id:2>",
+    "speaker": "Classic Teledrama",
+    "text": "",
+    "thread_id": "<id:3>",
+    "tone": "lead"
+   }
+  ],
+  "pending_rows": [],
+  "saved": []
+ },
+ "input": {
+  "messages": [
+   "remove shot 1, remove shot 2, remove shot 3"
+  ]
+ },
+ "model": {},
+ "service": "director_chat"
+}

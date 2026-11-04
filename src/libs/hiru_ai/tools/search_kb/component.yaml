@@ -1,0 +1,16 @@
+id: search_kb
+kind: tool
+version: 2
+summary: "Searches the knowledge bases and documents in scope for this run and returns the passages with their sources."
+status: active
+owner: rag
+entry: tool:run
+ports: [search]
+effect: read
+max_result_tokens: 1800
+guide: |
+  Returns the passages that best match the question, each with a source label and a citation id (`cite`) to quote. Only
+  the knowledge bases and documents this run may read are searched; `corpus` narrows to one of them.
+  Example: {"query": "how is a phone call framed", "corpus": "craft", "k": 4}.
+  Do not use it for what people decided (use memory_search), to read a canon card (use canon_read), or for the
+  techniques that deliver a feeling (use technique_lookup).

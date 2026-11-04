@@ -1,0 +1,23 @@
+id: options_writer
+kind: agent
+version: 1
+summary: "The lead director offers two to four genuinely different options for one scene, each a few operations or a message."
+status: active
+owner: director
+model: high
+shape: structured
+phase: director.options
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false
+# The same agent as a tool loop (plan/2026-11-04 §8, row 2): switched on by AGENT_TOOLS after a live A/B. The memory list
+# leaves its message; `plan_try` lets it try an option before offering it, so fewer options are refused afterwards.
+with_tools:
+  tools: [canon_read, memory_search, plan_try, timing_check]
+  middleware: [static_first, usage, absent_safe, limits, clear_old_results, tool_retry]
+  max_tool_calls: 6
+  max_model_calls: 4

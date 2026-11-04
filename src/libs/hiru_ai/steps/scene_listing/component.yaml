@@ -1,0 +1,7 @@
+id: scene_listing
+kind: step
+version: 1
+summary: "Writes a scene's numbered blocks as the planner, reader, stager and critics read them: kind, seconds on screen, holds."
+status: active
+owner: script_split
+entry: step:run

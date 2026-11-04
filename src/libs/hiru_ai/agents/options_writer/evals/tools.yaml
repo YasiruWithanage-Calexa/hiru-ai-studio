@@ -1,0 +1,31 @@
+# The `with_tools` form (plan/2026-11-04 §8).
+- name: an option is tried before it is offered
+  variant: tools
+  example: plan_try
+  input: { shot_list: "S01 MCU 6s | S02 WIDE 6s | S03 CU 4s", message: "how could S01 open?", lead_charter: "Patient, warm." }
+  tool_calls:
+    - { name: plan_try, args: { scene: E1S2, ops: [ { op: set, shot: 1, field: framing, value: CU } ] }, expect: { applied: 1, refused: 0 } }
+  reply:
+    question: "How should S01 open?"
+    options:
+      - label: "Open on a close-up"
+        detail: "Hold her face while the smile fades."
+        ops: [ { op: set, shot: 1, field: framing, value: CU, seconds: null, at_block: null, end_block: null, link: null, beat: null, after_shot: null, description: null, framing: null, title: null, block: null, kind: null, speaker: null, delivery: null } ]
+        prompt: ""
+        intent: shot.framing
+      - { label: "Hold it wide", detail: "Let the road do the work.", ops: [], prompt: "make S01 a wide shot", intent: "" }
+  expect: { question: "How should S01 open?", options: [ { label: "Open on a close-up", intent: shot.framing }, { prompt: "make S01 a wide shot" } ] }
+- name: a rule the team set is looked up before an option leans on it
+  variant: tools
+  example: memory_search
+  input: { shot_list: "S01 WIDE 4s", message: "give me one idea for S01" }
+  tool_calls:
+    - { name: memory_search, args: { query: "how S01's people are shot" }, expect: { found: 0 } }
+  reply: { question: "How should S01 play?", options: [ { label: "Slow push", detail: "A gentle move in.", ops: [], prompt: "push in on S01", intent: "" } ] }
+  expect: { options: [ { label: "Slow push" } ] }
+- name: a plain question about the scene needs no tool
+  variant: tools
+  input: { shot_list: "S01 WIDE 4s", message: "give me one idea for S01" }
+  reply: { question: "How should S01 play?", options: [ { label: "Slow push", detail: "A gentle move in.", ops: [], prompt: "push in on S01", intent: "" } ] }
+  expect_no_tools: true
+  expect: { options: [ { label: "Slow push" } ] }

@@ -18,6 +18,9 @@ $functions = @(
     @{ Name = "hiru-frame-render"; Source = "src\services\frame_render"; Port = 8208 }
 )
 
+# AI_ENGINE=legacy (default) | graph picks the engine of a function whose system is migrated (hiru_ai, plan/2026-11-03
+# Phase 6). Set it in .env, or per window before starting. `hiru_ai` comes from the editable install (pip install -e .),
+# as `contracts` does; in the cloud the deploy workflow bundles it into the zips flagged "ai".
 # Functions read SUPABASE__* from the environment; load them from .env.
 Get-Content (Join-Path $root ".env") | Where-Object { $_ -match '^\s*[A-Z_]+=' } | ForEach-Object {
     $k, $v = $_ -split '=', 2

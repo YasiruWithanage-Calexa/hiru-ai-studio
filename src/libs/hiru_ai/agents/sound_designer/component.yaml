@@ -1,0 +1,16 @@
+id: sound_designer
+kind: agent
+version: 1
+summary: "Chooses each shot's sound mode on the director's board."
+status: active
+owner: director
+model: high
+shape: structured
+phase: director.sound
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

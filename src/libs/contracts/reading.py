@@ -186,6 +186,28 @@ def _resolve(index: int | None, anchor: str, written_for: str, items: Sequence[I
     return next((i.index for i in items if block_key(i) == anchor), None)
 
 
+def resolve(index: int | None, anchor: str, written_for: str, items: Sequence[Item]) -> int | None:
+    """`_resolve` for the other modules that store block references (the staging map)."""
+    return _resolve(index, anchor, written_for, items)
+
+
+def remap(reading: SceneReading, items: Sequence[Item], where: Sequence[int]) -> SceneReading:
+    """The reading carried across blocks that were INSERTED (implied moves): `where[old index]` is the new index of
+    that block in `items`. Words, authors and anchors do not change; only block numbers and the basis do."""
+
+    def go(block: int) -> int:
+        return where[block] if 0 <= block < len(where) else block
+
+    units = [u.model_copy(update={"from_block": go(u.from_block), "to_block": go(u.to_block),
+                                  "turn_block": None if u.turn_block is None else go(u.turn_block)})
+             for u in reading.units]
+    return reading.model_copy(update={
+        "units": units,
+        "subtext": [t.model_copy(update={"block": go(t.block)}) for t in reading.subtext],
+        "breath": [b.model_copy(update={"after_block": go(b.after_block)}) for b in reading.breath],
+        "basis": basis(items)})
+
+
 # ── who is in the scene ────────────────────────────────────────────────────────────────────
 
 

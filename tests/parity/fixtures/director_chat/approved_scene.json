@@ -1,0 +1,93 @@
+{
+ "case": "approved_scene",
+ "description": "An approved scene is left alone",
+ "expected": {
+  "audits": [],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Writing the reply"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "This scene is approved and locked. Unlock it before changing it."
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "blocks": [
+      {
+       "advice": false,
+       "kind": "text",
+       "route": "",
+       "text": "This scene is approved and locked. Unlock it before changing it."
+      }
+     ],
+     "citations": [],
+     "id": "<id:1>",
+     "kind": "director",
+     "ops": [],
+     "persona_id": "<id:4>",
+     "production_id": "<id:2>",
+     "speaker": "Classic Teledrama",
+     "text": "",
+     "thread_id": "<id:3>",
+     "tone": "lead"
+    },
+    "event": "message"
+   },
+   {
+    "data": {
+     "lane": "edit",
+     "message_id": "<id:1>"
+    },
+    "event": "done"
+   }
+  ],
+  "llm": [],
+  "memory_rows": [],
+  "message_rows": [
+   {
+    "blocks": [
+     {
+      "advice": false,
+      "kind": "text",
+      "route": "",
+      "text": "This scene is approved and locked. Unlock it before changing it."
+     }
+    ],
+    "citations": [],
+    "id": "<id:1>",
+    "kind": "director",
+    "ops": [],
+    "persona_id": "<id:4>",
+    "production_id": "<id:2>",
+    "speaker": "Classic Teledrama",
+    "text": "",
+    "thread_id": "<id:3>",
+    "tone": "lead"
+   }
+  ],
+  "pending_rows": [],
+  "saved": []
+ },
+ "input": {
+  "messages": [
+   "make shot 2 eight seconds"
+  ],
+  "scene_fields": {
+   "status": "approved"
+  }
+ },
+ "model": {},
+ "service": "director_chat"
+}

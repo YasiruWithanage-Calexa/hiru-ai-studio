@@ -1,0 +1,14 @@
+- name: an episode with one scene
+  input:
+    number: 1
+    title: Home
+    scenes:
+      - number: 1
+        heading: "INT. KITCHEN - DAWN"
+        blocks: [ { kind: action, text: "Kamala lights the fire." }, { kind: dialogue, speaker: Nimal, text: "Amma." } ]
+  reply: { synopsis: "Nimal comes home at dawn.", scenes: [ { number: 1, title: "Nimal comes home" } ] }
+  expect: { synopsis: "Nimal comes home at dawn.", scenes: [ { number: 1, title: "Nimal comes home" } ] }
+- name: an untitled episode
+  input: { number: 2, scenes: [ { number: 1, heading: "EXT. ROAD - DAY", blocks: [] } ] }
+  reply: { synopsis: "", scenes: [ { number: 1, title: "On the road" } ] }
+  expect: { scenes: [ { number: 1, title: "On the road" } ] }

@@ -1,0 +1,7 @@
+id: prompt_lint
+kind: step
+version: 1
+summary: "Lints a stored video prompt in code: missing sections, wrong length or duration, dialogue that is not verbatim, failed checks."
+status: active
+owner: shot_producer
+entry: step:run

@@ -1,0 +1,1 @@
+"""The extract text step."""

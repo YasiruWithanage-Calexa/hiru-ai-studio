@@ -1,0 +1,34 @@
+{
+ "case": "scene_gone",
+ "description": "A scene that is gone answers an error",
+ "expected": {
+  "audits": [],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "message": "This scene is no longer available."
+    },
+    "event": "error"
+   }
+  ],
+  "llm": [],
+  "memory_rows": [],
+  "message_rows": [],
+  "pending_rows": [],
+  "saved": []
+ },
+ "input": {
+  "gone": true,
+  "messages": [
+   "hi"
+  ]
+ },
+ "model": {},
+ "service": "director_chat"
+}

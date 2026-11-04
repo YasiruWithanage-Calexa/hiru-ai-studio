@@ -1,0 +1,8 @@
+id: ripple
+kind: step
+version: 1
+summary: "Says which shots an edit touched or put in doubt (sound, cast, joins, words still used elsewhere), from the plan before and after."
+status: active
+owner: director
+entry: step:run
+uses: [scene_kernel]

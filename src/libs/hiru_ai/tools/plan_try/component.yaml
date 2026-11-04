@@ -1,0 +1,21 @@
+id: plan_try
+kind: tool
+version: 1
+summary: "Tries shot-list operations on a copy of the scene with the kernel's own rules and says what would land, what is refused and what it touches; nothing is saved."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+uses: [scene_kernel, ripple]
+effect: read
+max_result_tokens: 1500
+guide: |
+  Applies up to 8 operations (set, retime, split, merge, regroup, set_join, beat.set, insert, remove, set_envelope) to a copy
+  of the scene, exactly as the director's kernel would, and returns for each: applied or refused, with the reason a person
+  can read; the new timing (total against the envelope, new problems); and the ripple: which shots the edit touched and
+  which are now in doubt. Nothing is saved or staged. A change to the script, the cast or a check is never applied: only a
+  person makes those.
+  Use it to test a proposal before you offer it. Example:
+  {"ops": [{"op": "set", "shot": 2, "field": "framing", "value": "CU"}]}.
+  Do not use it to ask for the change to be made (use change_propose, which tries it again and stages a card), to check a
+  plan that is not an edit of the stored one (use timing_check or plan_score), or to check dialogue (use dialogue_check).

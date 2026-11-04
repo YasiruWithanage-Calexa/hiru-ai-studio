@@ -61,8 +61,9 @@ READING_SCHEMA: dict[str, Any] = {
     "required": ["about", "value", "tone", "units", "subtext", "breath", "ending"],
 }
 
-# The studio's own craft rules, kept word for word from src/knowledge_base/craft/directing.md and editing.md (a
-# service imports nothing outside itself; tests/services/script_split/test_reading.py checks they have not drifted).
+# The studio's own craft rules, kept word for word from hiru_ai's knowledge_bases/craft/sources/directing.md and
+# editing.md (a service imports nothing outside itself; tests/services/script_split/test_reading.py checks they have
+# not drifted).
 CRAFT = (
     "Viewers remember how a video made them feel, not what happened in it.",
     "If two adjacent beats produce the same feeling, one of them is redundant.",

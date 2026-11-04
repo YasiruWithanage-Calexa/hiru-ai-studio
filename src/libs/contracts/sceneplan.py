@@ -59,6 +59,7 @@ def items_for(script: list[Row], lines: list[Row]) -> list[Item]:
             items.append(Item(len(items), kind, str(block.get("text", "")), screen=str(block.get("screen") or "act"),
                               events=max(1, int(block.get("events") or 1)), implied=bool(block.get("implied")),
                               by=str(block.get("by") or ""), for_version=int(block.get("for_version") or 0),
+                              skip=tuple(str(k) for k in block.get("skip_bridges") or ()),
                               bridge=str(block.get("bridge") or "")))
     return _read_unread(items)
 
@@ -90,7 +91,7 @@ def item_row(item: Item) -> Row:
                 "hold_who": item.hold_who}
     if item.turn:
         row["turn"] = True
-    if item.kind == "dialogue" and item.skip:
+    if item.skip:  # a removed step is remembered on the block it belonged to (a line, or the block after a move)
         row["skip_bridges"] = list(item.skip)
     if item.kind == "action":
         if item.screen != "act" or item.events != 1 or item.for_version:
@@ -128,6 +129,8 @@ def script_rows(items: Sequence[Mapping[str, Any]]) -> list[Row]:
             row = {"kind": str(i["kind"]), "text": str(i.get("text") or ""), "line_id": None}
             if i.get("for_version") or i.get("implied"):
                 row |= {k: i[k] for k in BLOCK_EXTRA if k in i}
+            if i.get("skip_bridges"):
+                row["skip_bridges"] = list(i["skip_bridges"])
         out.append(row)
     return out
 

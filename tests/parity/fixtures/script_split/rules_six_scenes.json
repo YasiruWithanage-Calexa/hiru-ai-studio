@@ -1,0 +1,1280 @@
+{
+ "case": "rules_six_scenes",
+ "description": "No key: every scene is split by rules and lines are bound",
+ "expected": {
+  "episode_status": {
+   "<id:35>": "ready"
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "stage": "shots",
+     "state": "active",
+     "text": "Planning shots for 6 scenes",
+     "type": "stage"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:1>",
+     "shots": 3,
+     "text": "Ep 01 Scene 1: 3 shots, 16 s",
+     "total_s": 16,
+     "type": "progress"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:2>",
+     "shots": 4,
+     "text": "Ep 01 Scene 2: 4 shots, 20 s",
+     "total_s": 20,
+     "type": "progress"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:3>",
+     "shots": 3,
+     "text": "Ep 01 Scene 3: 3 shots, 16 s",
+     "total_s": 16,
+     "type": "progress"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:4>",
+     "shots": 3,
+     "text": "Ep 01 Scene 4: 3 shots, 18 s",
+     "total_s": 18,
+     "type": "progress"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:5>",
+     "shots": 3,
+     "text": "Ep 01 Scene 5: 3 shots, 18 s",
+     "total_s": 18,
+     "type": "progress"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:6>",
+     "shots": 1,
+     "text": "Ep 01 Scene 6: 1 shots, 6 s",
+     "total_s": 6,
+     "type": "progress"
+    },
+    {
+     "stage": "shots",
+     "state": "done",
+     "text": "17 shots in 6 scenes",
+     "type": "stage"
+    }
+   ],
+   "fields": {
+    "result": {
+     "issues": 3,
+     "scenes": 6,
+     "shots": 17,
+     "skipped": 0
+    }
+   },
+   "status": "done"
+  },
+  "line_rows": {
+   "<id:1>": [
+    {
+     "beat_index": 0,
+     "character_id": "<id:10>",
+     "delivery": "quietly",
+     "id": "<id:27>",
+     "ord": 0,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:1>",
+     "shot_id": "<id:9>",
+     "speaker": "Nimal",
+     "start_s": 6.5,
+     "text": "අම්මේ, මම ආපහු ආවා.",
+     "words": 4
+    },
+    {
+     "beat_index": 1,
+     "character_id": "<id:12>",
+     "delivery": "",
+     "id": "<id:28>",
+     "ord": 1,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:1>",
+     "shot_id": "<id:11>",
+     "speaker": "Kamala",
+     "start_s": 13.0,
+     "text": "කෑම කන්න වාඩි වෙන්න.",
+     "words": 4
+    }
+   ],
+   "<id:2>": [
+    {
+     "beat_index": 0,
+     "character_id": null,
+     "delivery": "",
+     "id": "<id:29>",
+     "ord": 0,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "shot_id": "<id:14>",
+     "speaker": "Sunil",
+     "start_s": 8.5,
+     "text": "මුහුද අද හරිම නපුරුයි.",
+     "words": 4
+    },
+    {
+     "beat_index": 0,
+     "character_id": "<id:10>",
+     "delivery": "",
+     "id": "<id:30>",
+     "ord": 1,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "shot_id": "<id:15>",
+     "speaker": "Nimal",
+     "start_s": 12.5,
+     "text": "බෝට්ටුවට කොච්චර ගණනක් ලැබෙයිද?",
+     "words": 4
+    }
+   ],
+   "<id:3>": [
+    {
+     "beat_index": 0,
+     "character_id": null,
+     "delivery": "",
+     "id": "<id:31>",
+     "ord": 0,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:3>",
+     "shot_id": "<id:18>",
+     "speaker": "Mrs. Perera",
+     "start_s": 6.5,
+     "text": "ඔයා කොහෙද හිටියේ මෙච්චර කාලයක්?",
+     "words": 5
+    }
+   ],
+   "<id:4>": [
+    {
+     "beat_index": 1,
+     "character_id": "<id:10>",
+     "delivery": "",
+     "id": "<id:32>",
+     "ord": 0,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:4>",
+     "shot_id": "<id:20>",
+     "speaker": "Nimal",
+     "start_s": 3.0,
+     "text": "බෝට්ටුව විකුණුවොත් අපිට අලුත් දෙයක් පටන් ගන්න පුළුවන්.",
+     "words": 8
+    },
+    {
+     "beat_index": 0,
+     "character_id": "<id:12>",
+     "delivery": "trembling, barely audible",
+     "id": "<id:33>",
+     "ord": 1,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:4>",
+     "shot_id": "<id:21>",
+     "speaker": "Kamala",
+     "start_s": 8.5,
+     "text": "බෝට්ටුව විකුණන්න එපා.",
+     "words": 3
+    }
+   ],
+   "<id:5>": [
+    {
+     "beat_index": 0,
+     "character_id": null,
+     "delivery": "",
+     "id": "<id:34>",
+     "ord": 0,
+     "overrun_s": 0.0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:5>",
+     "shot_id": "<id:24>",
+     "speaker": "Sunil",
+     "start_s": 8.5,
+     "text": "මට තව එක අවුරුද්දක් දෙන්න.",
+     "words": 5
+    }
+   ],
+   "<id:6>": []
+  },
+  "llm": [],
+  "result": {
+   "issues": 3,
+   "scenes": 6,
+   "shots": 17,
+   "skipped": 0
+  },
+  "scene_rows": {
+   "<id:1>": {
+    "envelope_s": 60,
+    "episode_id": "<id:35>",
+    "fit_report": {
+     "critic_notes": [],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 16,
+     "planner": "rules",
+     "silent_s": 6,
+     "silent_share": 0.38,
+     "total_s": 16,
+     "voiceover": []
+    },
+    "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+    "id": "<id:1>",
+    "location_id": "<id:36>",
+    "number": 1,
+    "production_id": "<id:8>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:1>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:27>",
+      "text": ""
+     },
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Kamala does not turn around. She keeps stirring the pan."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:28>",
+      "text": ""
+     }
+    ],
+    "status": "split"
+   },
+   "<id:2>": {
+    "envelope_s": 60,
+    "episode_id": "<id:35>",
+    "fit_report": {
+     "critic_notes": [],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 20,
+     "planner": "rules",
+     "silent_s": 12,
+     "silent_share": 0.6,
+     "total_s": 20,
+     "voiceover": []
+    },
+    "heading": "EXT. KALUGALA HARBOUR - BREAKWATER - MORNING",
+    "id": "<id:2>",
+    "location_id": "<id:37>",
+    "number": 2,
+    "production_id": "<id:8>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:2>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 3,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "move",
+      "text": "Sunil checks the nets on the family boat, the SEETHA. Waves slap the hull. Nimal walks down the breakwater, shading his eyes against the sun."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:29>",
+      "text": ""
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:30>",
+      "text": ""
+     },
+     {
+      "by": "rules",
+      "events": 1,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Sunil stops working and stares at his brother."
+     }
+    ],
+    "status": "split"
+   },
+   "<id:3>": {
+    "envelope_s": 60,
+    "episode_id": "<id:35>",
+    "fit_report": {
+     "critic_notes": [],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 16,
+     "planner": "rules",
+     "silent_s": 12,
+     "silent_share": 0.75,
+     "total_s": 16,
+     "voiceover": []
+    },
+    "heading": "INT. AUCTION SHED - DAY",
+    "id": "<id:3>",
+    "location_id": "<id:38>",
+    "number": 3,
+    "production_id": "<id:8>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:3>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 3,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Fish are laid out on wet concrete. Mrs. Perera pours tea from a kettle into glasses and hands one to Nimal, watching him closely. Buyers shout prices in the background."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:31>",
+      "text": ""
+     },
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Nimal smiles and does not answer. He looks at the ledger of debts pinned to the wall."
+     }
+    ],
+    "status": "split"
+   },
+   "<id:4>": {
+    "envelope_s": 60,
+    "episode_id": "<id:35>",
+    "fit_report": {
+     "critic_notes": [],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 18,
+     "planner": "rules",
+     "silent_s": 6,
+     "silent_share": 0.33,
+     "total_s": 18,
+     "voiceover": []
+    },
+    "heading": "EXT. KAMALA'S HOUSE - FRONT YARD - EVENING",
+    "id": "<id:4>",
+    "location_id": "<id:39>",
+    "number": 4,
+    "production_id": "<id:8>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:4>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Under the jak tree, Nimal spreads a guesthouse plan on a plastic table. Kamala sweeps leaves and refuses to look at it."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:32>",
+      "text": ""
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:33>",
+      "text": ""
+     },
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "move",
+      "text": "She drops the broom and walks inside. The plan flutters off the table."
+     }
+    ],
+    "status": "split"
+   },
+   "<id:5>": {
+    "envelope_s": 60,
+    "episode_id": "<id:35>",
+    "fit_report": {
+     "critic_notes": [],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 18,
+     "planner": "rules",
+     "silent_s": 14,
+     "silent_share": 0.78,
+     "total_s": 18,
+     "voiceover": []
+    },
+    "heading": "EXT. KALUGALA HARBOUR - NIGHT",
+    "id": "<id:5>",
+    "location_id": "<id:40>",
+    "number": 5,
+    "production_id": "<id:8>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:5>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 3,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "move",
+      "text": "The lighthouse beam sweeps across the water. Sunil sits alone on the bow of the SEETHA, writing tide times in his notebook by lantern light. Nimal approaches with two cups of tea."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:34>",
+      "text": ""
+     },
+     {
+      "by": "rules",
+      "events": 3,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Nimal sits beside him. They watch the beam pass. Neither speaks."
+     }
+    ],
+    "status": "split"
+   },
+   "<id:6>": {
+    "envelope_s": 60,
+    "episode_id": "<id:35>",
+    "fit_report": {
+     "critic_notes": [],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 6,
+     "planner": "rules",
+     "silent_s": 6,
+     "silent_share": 1.0,
+     "total_s": 6,
+     "voiceover": []
+    },
+    "heading": "INT. KAMALA'S HOUSE - BEDROOM - NIGHT",
+    "id": "<id:6>",
+    "location_id": "<id:41>",
+    "number": 6,
+    "production_id": "<id:8>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:6>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 3,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Kamala opens a tin trunk and takes out her husband's fishing licence. She holds it to the window light. For the first time, her face breaks."
+     },
+     {
+      "kind": "cut",
+      "line_id": null,
+      "text": "FADE OUT."
+     }
+    ],
+    "status": "split"
+   }
+  },
+  "shots": {
+   "<id:1>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 1,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:7>",
+     "number": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:1>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 0,
+     "status": "draft",
+     "title": "Kamala fries sprats over a wood…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 2,
+     "block_start": 1,
+     "camera_link": "cut",
+     "duration_s": 4,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:9>",
+     "number": 2,
+     "production_id": "<id:8>",
+     "scene_id": "<id:1>",
+     "sound_mode": "dialogue",
+     "speaker_id": "<id:10>",
+     "start_s": 6,
+     "status": "draft",
+     "title": "Nimal speaks",
+     "version": 1,
+     "word_target": 8,
+     "words": 4
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 4,
+     "block_start": 2,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:11>",
+     "number": 3,
+     "production_id": "<id:8>",
+     "scene_id": "<id:1>",
+     "sound_mode": "dialogue",
+     "speaker_id": "<id:12>",
+     "start_s": 10,
+     "status": "draft",
+     "title": "Kamala does not turn around",
+     "version": 1,
+     "word_target": 13,
+     "words": 4
+    }
+   ],
+   "<id:2>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 8,
+       "start_s": 6
+      }
+     ],
+     "block_end": 1,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 8,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:13>",
+     "number": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 0,
+     "status": "draft",
+     "title": "Sunil checks the nets on the…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 2,
+     "block_start": 1,
+     "camera_link": "continuous",
+     "duration_s": 4,
+     "frame_strategy": "carry_last_frame",
+     "framing": "MCU",
+     "id": "<id:14>",
+     "number": 2,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "sound_mode": "dialogue",
+     "speaker_id": null,
+     "start_s": 8,
+     "status": "draft",
+     "title": "Sunil speaks",
+     "version": 1,
+     "word_target": 8,
+     "words": 4
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 3,
+     "block_start": 2,
+     "camera_link": "cut",
+     "duration_s": 4,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:15>",
+     "number": 3,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "sound_mode": "dialogue",
+     "speaker_id": "<id:10>",
+     "start_s": 12,
+     "status": "draft",
+     "title": "Nimal speaks",
+     "version": 1,
+     "word_target": 8,
+     "words": 4
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 4,
+     "block_start": 3,
+     "camera_link": "cut",
+     "duration_s": 4,
+     "frame_strategy": "generate",
+     "framing": "MS",
+     "id": "<id:16>",
+     "number": 4,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 16,
+     "status": "draft",
+     "title": "Sunil stops working and stares at…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    }
+   ],
+   "<id:3>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 1,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:17>",
+     "number": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:3>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 0,
+     "status": "draft",
+     "title": "Fish are laid out on wet…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 2,
+     "block_start": 1,
+     "camera_link": "cut",
+     "duration_s": 4,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:18>",
+     "number": 2,
+     "production_id": "<id:8>",
+     "scene_id": "<id:3>",
+     "sound_mode": "dialogue",
+     "speaker_id": null,
+     "start_s": 6,
+     "status": "draft",
+     "title": "Mrs. Perera speaks",
+     "version": 1,
+     "word_target": 8,
+     "words": 5
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 3,
+     "block_start": 2,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "MS",
+     "id": "<id:19>",
+     "number": 3,
+     "production_id": "<id:8>",
+     "scene_id": "<id:3>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 10,
+     "status": "draft",
+     "title": "Nimal smiles and does not answer",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    }
+   ],
+   "<id:4>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 8,
+       "start_s": 6
+      }
+     ],
+     "block_end": 2,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 8,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:20>",
+     "number": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:4>",
+     "sound_mode": "dialogue",
+     "speaker_id": "<id:10>",
+     "start_s": 0,
+     "status": "draft",
+     "title": "Under the jak tree, Nimal spreads…",
+     "version": 1,
+     "word_target": 17,
+     "words": 8
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 3,
+     "block_start": 2,
+     "camera_link": "cut",
+     "duration_s": 4,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:21>",
+     "number": 2,
+     "production_id": "<id:8>",
+     "scene_id": "<id:4>",
+     "sound_mode": "dialogue",
+     "speaker_id": "<id:12>",
+     "start_s": 8,
+     "status": "draft",
+     "title": "Kamala speaks",
+     "version": 1,
+     "word_target": 6,
+     "words": 3
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 4,
+     "block_start": 3,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:22>",
+     "number": 3,
+     "production_id": "<id:8>",
+     "scene_id": "<id:4>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 12,
+     "status": "draft",
+     "title": "She drops the broom and walks…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    }
+   ],
+   "<id:5>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 8,
+       "start_s": 6
+      }
+     ],
+     "block_end": 1,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 8,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:23>",
+     "number": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:5>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 0,
+     "status": "draft",
+     "title": "The lighthouse beam sweeps across the…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 2,
+     "block_start": 1,
+     "camera_link": "cut",
+     "duration_s": 4,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:24>",
+     "number": 2,
+     "production_id": "<id:8>",
+     "scene_id": "<id:5>",
+     "sound_mode": "dialogue",
+     "speaker_id": null,
+     "start_s": 8,
+     "status": "draft",
+     "title": "Sunil speaks",
+     "version": 1,
+     "word_target": 8,
+     "words": 5
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 3,
+     "block_start": 2,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "MS",
+     "id": "<id:25>",
+     "number": 3,
+     "production_id": "<id:8>",
+     "scene_id": "<id:5>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 12,
+     "status": "draft",
+     "title": "Nimal sits beside him",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    }
+   ],
+   "<id:6>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 2,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:26>",
+     "number": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:6>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 0,
+     "status": "draft",
+     "title": "Kamala opens a tin trunk and…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    }
+   ]
+  }
+ },
+ "input": {
+  "scenes": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5
+  ]
+ },
+ "model": {},
+ "service": "script_split"
+}

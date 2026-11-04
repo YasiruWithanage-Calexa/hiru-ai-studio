@@ -1,0 +1,24 @@
+id: craft
+kind: knowledge_base
+version: 1
+summary: "Craft notes: audience, character, cinematography, dialogue, directing, editing, producing, sound and the Hiru house style."
+status: active
+owner: rag
+corpus: craft              # the chunks corpus; craft, guides and rules share it
+store: chunks
+ingest: files
+sources: sources
+source_prefix: knowledge_base/craft/   # chunks.source starts with this; rows under it are replaced as a set
+chunking: { script_like: false }    # Markdown headings, not scene headings
+embed: embed
+uses: [extract_text, chunk]
+files:
+  - { path: audience.md, meta: { specialty: audience } }
+  - { path: character.md, meta: { specialty: character } }
+  - { path: cinematography.md, meta: { specialty: cinematography } }
+  - { path: dialogue.md, meta: { specialty: dialogue } }
+  - { path: directing.md, meta: { specialty: directing } }
+  - { path: editing.md, meta: { specialty: editing } }
+  - { path: producing.md, meta: { specialty: producing } }
+  - { path: sound.md, meta: { specialty: sound } }
+  - { path: hiru-house-style.md, meta: { specialty: house-style } }

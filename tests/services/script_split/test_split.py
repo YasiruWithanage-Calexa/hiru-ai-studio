@@ -131,8 +131,8 @@ def test_fixed_eight_second_production():
 
 
 def plan_calls(llm: Any) -> list[dict[str, Any]]:
-    """The model calls that plan and review (the beat and scene readings before them have their own tests)."""
-    return [c for c in llm.calls if c["schema"] not in ("beat_screen", "scene_reading")]
+    """The model calls that plan and review (the readings and the staging before them have their own tests)."""
+    return [c for c in llm.calls if c["schema"] not in ("beat_screen", "scene_reading", "scene_staging")]
 
 
 def model_plan(system: str, user: str) -> dict[str, Any]:
@@ -150,7 +150,8 @@ def test_model_plan_is_used_and_fitted_and_the_critic_can_pass_it():
     shots = next(iter(store.shots.values()))
     assert [(s["framing"], s["title"]) for s in shots] == [
         ("WIDE", "Nimal at the door"), ("CU", "Kamala keeps cooking")]
-    assert [c["schema"] for c in plan_calls(llm)] == ["shot_plan", "shot_review"]
+    assert [c["schema"] for c in plan_calls(llm)] == [
+        "shot_plan", *["shot_review"] * 3]  # the panel: coverage, emotion, editor
     assert plan_calls(llm)[0]["tier"] == "high" and "<script>" in plan_calls(llm)[0]["user"]
     assert next(iter(store.scene_rows.values()))["fit_report"]["planner"] == "model"
 
@@ -160,8 +161,9 @@ def test_critic_notes_drive_one_replan():
     llm = FakeLLM({"shot_plan": model_plan,
                    "shot_review": lambda s, u: {"acceptable": False, "notes": ["S02 needs Kamala's reaction"]}})
     pipeline.run(payload(), store, FakeJobs(), llm)
-    assert [c["schema"] for c in plan_calls(llm)] == ["shot_plan", "shot_review", "shot_plan"]
-    assert "S02 needs Kamala's reaction" in plan_calls(llm)[2]["user"]
+    assert [c["schema"] for c in plan_calls(llm)] == [
+        "shot_plan", *["shot_review"] * 3, "shot_plan"]
+    assert "S02 needs Kamala's reaction" in plan_calls(llm)[-1]["user"]
     assert next(iter(store.scene_rows.values()))["fit_report"]["critic_notes"] == ["S02 needs Kamala's reaction"]
 
 
@@ -292,7 +294,8 @@ def test_the_critic_reads_the_envelope_and_an_extra_shot_it_asks_for_is_rejected
     review = next(c for c in llm.calls if c["schema"] == "shot_review")
     assert "Shot list:\nEnvelope: 12 s. Plan runs 12 s. Silent: 0 s." in review["user"]
     assert "Timing is checked by code" not in review["system"] and "do not ask for another shot" in review["system"]
-    assert [c["schema"] for c in plan_calls(llm)] == ["shot_plan", "shot_review", "shot_plan"]  # re-planned once
+    assert [c["schema"] for c in plan_calls(llm)] == [
+        "shot_plan", *["shot_review"] * 3, "shot_plan"]  # re-planned once
     assert result.total_s == 12  # and the over-envelope re-plan was dropped by the score
 
 

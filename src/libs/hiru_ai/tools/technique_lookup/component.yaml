@@ -1,0 +1,15 @@
+id: technique_lookup
+kind: tool
+version: 2
+summary: "Finds cinematography techniques that deliver a described intent, from the craft library."
+status: active
+owner: shot_producer
+entry: tool:run
+ports: [search]
+effect: read
+guide: |
+  Returns the techniques that best deliver an intent ("dread that creeps in", "a phone call that isolates her"): the
+  technique's name, what it does and the phrase that puts it in a prompt. Use it when a shot needs a way of showing a
+  feeling, not when you already know the technique. Example: {"intent": "a smile that slips", "k": 4}.
+  Do not use it for what this production decided (use memory_search), for the bible or scripts (use search_kb), or to
+  check that a prompt is written well (use prompt_check).

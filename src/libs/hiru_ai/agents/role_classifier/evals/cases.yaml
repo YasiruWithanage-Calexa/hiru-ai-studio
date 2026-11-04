@@ -1,0 +1,8 @@
+- name: a screenplay with no headings the rules could read
+  input: { filename: pages.txt, text: "KASUN: Started with five thousand.\nANUDI: It is a start." }
+  reply: { role: script, confidence: 0.9, reason: "speaker cues and short exchanges" }
+  expect: { role: script, confidence: 0.9 }
+- name: a very sure model is held to 0.95 and a long reason is cut
+  input: { filename: notes.md, text: "Please make the harbour scene warmer." }
+  reply: { role: notes, confidence: 1.0, reason: "a director's request" }
+  expect: { role: notes, confidence: 0.95 }

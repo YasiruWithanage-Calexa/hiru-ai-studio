@@ -1,0 +1,7 @@
+id: prose_cut
+kind: step
+version: 1
+summary: "Cuts story prose into scenes by rules, checks a model's cut kept every spoken line word for word, renders Fountain text."
+status: active
+owner: structure_build
+entry: step:run

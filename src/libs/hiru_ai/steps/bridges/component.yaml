@@ -1,0 +1,7 @@
+id: bridges
+kind: step
+version: 1
+summary: "Adds the implied steps a script needs (answers the phone, lowers it), removable and remembered when removed."
+status: active
+owner: script_split
+entry: step:run

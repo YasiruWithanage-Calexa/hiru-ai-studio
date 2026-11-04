@@ -1,0 +1,304 @@
+{
+ "case": "build_hop",
+ "description": "A build hop reports continuity and finishes the job",
+ "expected": {
+  "episode_status": {
+   "<id:7>": "ready"
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "stage": "shots",
+     "state": "active",
+     "text": "Planning shots for 1 scenes",
+     "type": "stage"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:1>",
+     "shots": 3,
+     "text": "Ep 01 Scene 3: 3 shots, 16 s",
+     "total_s": 16,
+     "type": "progress"
+    },
+    {
+     "stage": "shots",
+     "state": "done",
+     "text": "3 shots in 1 scenes",
+     "type": "stage"
+    },
+    {
+     "agent": "shot_planner",
+     "text": "Episode 1: 16 s, 4 s spoken",
+     "type": "agent_step"
+    },
+    {
+     "stage": "continuity",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "continuity_checker",
+     "text": "Ep 01 Scene 3 has no location; frames cannot be matched to a set.",
+     "type": "warning"
+    },
+    {
+     "agent": "continuity_checker",
+     "text": "Ep 01 Scene 3: Mrs. Perera not linked to a canon character, so no voice pin.",
+     "type": "warning"
+    },
+    {
+     "stage": "continuity",
+     "state": "done",
+     "text": "2 things to check",
+     "type": "stage"
+    },
+    {
+     "stage": "review",
+     "state": "active",
+     "text": "Ready for your review",
+     "type": "stage"
+    }
+   ],
+   "fields": {
+    "result": {
+     "issues": 1,
+     "scenes": 1,
+     "shots": 3,
+     "skipped": 0
+    }
+   },
+   "status": "done"
+  },
+  "line_rows": {
+   "<id:1>": [
+    {
+     "beat_index": 0,
+     "character_id": null,
+     "delivery": "",
+     "id": "<id:6>",
+     "ord": 0,
+     "overrun_s": 0.0,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "shot_id": "<id:4>",
+     "speaker": "Mrs. Perera",
+     "start_s": 6.5,
+     "text": "ඔයා කොහෙද හිටියේ මෙච්චර කාලයක්?",
+     "words": 5
+    }
+   ]
+  },
+  "llm": [],
+  "result": {
+   "issues": 1,
+   "scenes": 1,
+   "shots": 3,
+   "skipped": 0
+  },
+  "scene_rows": {
+   "<id:1>": {
+    "envelope_s": 60,
+    "episode_id": "<id:7>",
+    "fit_report": {
+     "critic_notes": [],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 16,
+     "planner": "rules",
+     "silent_s": 12,
+     "silent_share": 0.75,
+     "total_s": 16,
+     "voiceover": []
+    },
+    "heading": "INT. AUCTION SHED - DAY",
+    "id": "<id:1>",
+    "location_id": null,
+    "number": 3,
+    "production_id": "<id:3>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:1>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 3,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Fish are laid out on wet concrete. Mrs. Perera pours tea from a kettle into glasses and hands one to Nimal, watching him closely. Buyers shout prices in the background."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:6>",
+      "text": ""
+     },
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Nimal smiles and does not answer. He looks at the ledger of debts pinned to the wall."
+     }
+    ],
+    "status": "split"
+   }
+  },
+  "shots": {
+   "<id:1>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 1,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:2>",
+     "number": 1,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 0,
+     "status": "draft",
+     "title": "Fish are laid out on wet…",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 2,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 4,
+       "start_s": 2
+      }
+     ],
+     "block_end": 2,
+     "block_start": 1,
+     "camera_link": "cut",
+     "duration_s": 4,
+     "frame_strategy": "generate",
+     "framing": "MCU",
+     "id": "<id:4>",
+     "number": 2,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "sound_mode": "dialogue",
+     "speaker_id": null,
+     "start_s": 6,
+     "status": "draft",
+     "title": "Mrs. Perera speaks",
+     "version": 1,
+     "word_target": 8,
+     "words": 5
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 3,
+     "block_start": 2,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "MS",
+     "id": "<id:5>",
+     "number": 3,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "sound_mode": "ambient",
+     "speaker_id": null,
+     "start_s": 10,
+     "status": "draft",
+     "title": "Nimal smiles and does not answer",
+     "version": 1,
+     "word_target": 0,
+     "words": 0
+    }
+   ]
+  }
+ },
+ "input": {
+  "cursor": 2,
+  "job_status": "running",
+  "pipeline": [
+   "canon_extract",
+   "structure_build",
+   "script_split"
+  ],
+  "scene_fields": {
+   "0": {
+    "location_id": null
+   }
+  },
+  "scenes": [
+   2
+  ],
+  "state": {
+   "build": true,
+   "scene_ids": "all"
+  }
+ },
+ "model": {},
+ "service": "script_split"
+}

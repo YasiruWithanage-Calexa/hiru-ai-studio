@@ -1,0 +1,13 @@
+id: structure_write
+kind: tool
+version: 1
+summary: "Writes a resolved script structure as episodes, scenes and lines, adding unknown speakers and places to canon as drafts."
+status: active
+owner: structure_build
+entry: tool:run
+ports: [canon, structure]
+effect: write
+guide: |
+  Writes a resolved script structure as episodes, scenes and lines, adding unknown speakers and places to canon as
+  drafts. Only a system calls this, in code, after a person approved the change. It is never given to a model (a model changes data only by staging a card with change_propose or memory_propose).
+  Do not use it to read the structure (use episode_read or questions_read).

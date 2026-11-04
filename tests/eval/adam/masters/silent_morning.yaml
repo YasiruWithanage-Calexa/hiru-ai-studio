@@ -1,0 +1,79 @@
+# MASTER (draft) for silent_morning. Written by Claude for the person and a Hiru director to correct (plan §12 D6).
+scene: silent_morning
+status: draft
+author: claude (draft for the person and a Hiru director)
+director_note: >
+  With no words, the camera has to say what a man starting from nothing feels. It does it through his hands: each
+  small ritual is a vote of confidence in a day that has not started. The empty road at dawn is held longer than
+  comfort at the end, because the wait is the scene. The last image is the road, empty, with a man small at its edge.
+plan:
+  analysis:
+    about: "A man starting from nothing, one careful ritual at a time."
+    dramatic_question: "Will anyone come?"
+    value: { start: doubt, end: hope }
+    tone: "quiet, ritual"
+    beats:
+      - { blocks: [0], action: "he brings the stall to the road", reaction: "the day begins" }
+      - { blocks: [1], action: "he lights the stove", reaction: "warmth starts" }
+      - { blocks: [2], action: "he lines up the cups", reaction: "care becomes hope" }
+      - { blocks: [3], action: "he waits", reaction: "the road is empty" }
+    wants: { Kasun: "to begin" }
+    obstacles: ["the empty road"]
+    pov_owner: { start: Kasun, end: Kasun, why: "the whole scene is his" }
+    audience_knows: []
+    baseline: { blocks: [], state: "" }
+    break: {}
+    aftermath: { state: "waiting" }
+    key_moment: { block: 3, why: "the wait" }
+  treatment:
+    name: "hands, then the road"
+    concept: "we make the viewer feel hope as a habit by following his hands, then leave them waiting with him"
+    pov: "Kasun's"
+    sound_concept: "dawn birds and the soft work of hands, then the road's silence"
+    sections:
+      - { beats: [0], camera_behaviour: "wide, then a detail", size_band: [EWS, WS], sound_state: "dawn" }
+      - { beats: [1], camera_behaviour: "close on the flame", size_band: [CU, CU], sound_state: "work" }
+      - { beats: [2], camera_behaviour: "close on the cups", size_band: [CU, CU], sound_state: "work" }
+      - { beats: [3], camera_behaviour: "wide, locked off", size_band: [WS, WS], sound_state: "silence" }
+    size_arc: [EWS, CU, WS]
+    motif: "his hands"
+    rhythm: ["slow", "steady", "careful", "held"]
+    rhythm_break: { moment: m9, kind: long_hold }
+    entry: "as the wheels come into frame"
+    exit: "on the empty road"
+    ending_image: "the empty road with a man small at its edge"
+    ending_moment: m9
+    off_speaker: false
+  moments:
+    - { id: m1, tier: script, serves: [b0], who: [Kasun], objects: [three-wheeler], seen: "Kasun wheels his three-wheeler to the roadside in the first light", heard: "birds, the creak of the wheels", feeling: "the day begins", seconds_need: 4.0 }
+    - { id: m2, tier: elaboration, kind: atmosphere, serves: [b0], seen: "the empty road in first light, a thin mist", heard: "distant birds", feeling: "stillness", seconds_need: 0 }
+    - { id: m3, tier: elaboration, kind: hands, serves: [b0], who: [Kasun], objects: [cloth, counter], seen: "his hand wiping the counter in slow circles", feeling: "care", seconds_need: 3.0 }
+    - { id: m4, tier: script, serves: [b1], who: [Kasun], objects: [stove, kettle], seen: "he lights the small stove and sets the kettle on it", feeling: "warmth starts", seconds_need: 3.0 }
+    - { id: m5, tier: elaboration, kind: insert_detail, serves: [b1], objects: [kettle, steam], seen: "steam beginning to rise from the kettle", feeling: "the first sign of life", seconds_need: 2.5 }
+    - { id: m6, tier: script, serves: [b2], who: [Kasun], objects: [cups], seen: "he arranges the cups in a careful row, straightening each one", feeling: "care becomes hope", seconds_need: 3.0 }
+    - { id: m7, tier: elaboration, kind: reaction, serves: [b2], who: [Kasun], seen: "a small satisfied breath as the row is straight", feeling: "quiet pride", seconds_need: 2.5 }
+    - { id: m8, tier: script, serves: [b3], who: [Kasun], seen: "he looks at the empty road and waits", feeling: "will anyone come", seconds_need: 4.0 }
+    - { id: m9, tier: elaboration, kind: hold, serves: [b3], who: [Kasun], seen: "the empty road held, Kasun small at its edge", heard: "the road's silence", feeling: "the wait", seconds_need: 3.0 }
+  staging:
+    marks:
+      - { moment: m1, who: Kasun, zone: roadside }
+      - { moment: m4, who: Kasun, zone: stall }
+      - { moment: m8, who: Kasun, zone: stall }
+    moves:
+      - { moment: m4, who: Kasun, from_zone: roadside, to_zone: stall, why: need }
+  cards:
+    - { number: 1, moments: [m1, m2], title: "The day begins", size: EWS, arrangement: single, subject: Kasun, angle: eye, lens_feel: wide, movement: static, focus: { kind: deep }, composition: { negative_space: "the empty road", frame_side: right }, axis: A, beats: [{ window: [0, 6], action: "he wheels the stall into frame", camera: "locked off" }], sound: { ambience: "dawn birds" }, cut_in: { link: cut }, purpose: "A small man, a big day", emotional_beat: "quiet", take_s: 6 }
+    - { number: 2, moments: [m3], title: "Slow circles", size: INSERT, arrangement: single, subject: Kasun, angle: high, lens_feel: normal, movement: static, focus: { kind: shallow }, beats: [{ window: [0, 4], action: "a hand wipes the counter", performance: "unhurried" }], sound: { effects: "cloth on metal" }, cut_in: { link: cut, motive: action }, purpose: "Care", emotional_beat: "care", take_s: 4 }
+    - { number: 3, moments: [m4, m5], title: "The flame", size: INSERT, arrangement: single, subject: Kasun, angle: eye, lens_feel: normal, movement: static, focus: { kind: shallow }, beats: [{ window: [0, 3], action: "he lights the stove", performance: "a match, cupped" }, { window: [3, 6], action: "steam begins to rise" }], sound: { effects: "the flame catching" }, cut_in: { link: cut, motive: action }, purpose: "Warmth starts", emotional_beat: "warmth", take_s: 6 }
+    - { number: 4, moments: [m6], title: "A careful row", size: CU, arrangement: single, subject: Kasun, angle: eye, lens_feel: long, movement: static, focus: { kind: shallow }, composition: { frame_side: left }, axis: A, beats: [{ window: [0, 4], action: "he straightens each cup", performance: "a finger-width at a time" }], cut_in: { link: cut, motive: action }, purpose: "Care becomes hope", emotional_beat: "hope", take_s: 4 }
+    - { number: 5, moments: [m7], title: "Quiet pride", size: CU, arrangement: single, subject: Kasun, angle: low, lens_feel: long, movement: static, focus: { kind: shallow }, composition: { frame_side: right }, eyeline: left, axis: A, beats: [{ window: [0, 4], action: "he looks at the row", performance: "a small breath out" }], cut_in: { link: cut, motive: look }, purpose: "He lets himself hope", emotional_beat: "pride", take_s: 4 }
+    - { number: 6, moments: [m8, m9], title: "The wait", size: WS, arrangement: single, subject: Kasun, angle: eye, lens_feel: wide, movement: static, focus: { kind: deep }, composition: { negative_space: "the empty road", frame_side: left }, axis: A, beats: [{ window: [0, 4], action: "he looks down the road", camera: "locked off" }, { window: [4, 8], action: "the road stays empty", performance: "he does not move" }], sound: { silence: true }, cut_in: { link: cut, motive: look }, rhythm_break: true, purpose: "The wait", emotional_beat: "hope against doubt", take_s: 8 }
+  sound_map:
+    sections:
+      - { blocks: [0], ambience: "dawn birds", state: "dawn" }
+      - { blocks: [1, 2], ambience: "the soft work of hands", state: "work" }
+      - { blocks: [3], ambience: "silence", state: "silence" }
+    subjective: []
+    silences: [m9]
+    pre_laps: []
+    music: []

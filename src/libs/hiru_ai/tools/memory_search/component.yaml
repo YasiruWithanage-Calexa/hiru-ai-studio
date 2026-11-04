@@ -1,0 +1,14 @@
+id: memory_search
+kind: tool
+version: 1
+summary: "Searches what this production has decided and remembered (rules and decisions people approved)."
+status: active
+owner: director
+entry: tool:run
+ports: [search]
+effect: read
+guide: |
+  Returns the remembered decisions that best match the question, each with a citation id (`cite`) to quote. Memory is what
+  people approved before: "never show the father's face", "Anudi's anger shows in her hands". Use it before proposing a
+  change a person may already have ruled on. Example: {"query": "how does Anudi show anger", "k": 4}.
+  Do not use it for the bible, the scripts or other documents (use search_kb), or to read a card (use canon_read).

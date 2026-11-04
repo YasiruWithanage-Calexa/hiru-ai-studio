@@ -1,0 +1,11 @@
+id: script_split
+kind: system
+version: 1
+summary: "Splits each scene into shots: reads it, places its people, plans with a model or the rules, has three critics write notes, and lets code pick the plan."
+status: active
+owner: script_split
+job_kind: script_split
+panels: [plan_review]
+agents: [beat_finder, scene_reader, stager, scene_planner]
+steps: [scene_prep, rules_plan, split_write, scene_listing, kernel_score]
+tools: []

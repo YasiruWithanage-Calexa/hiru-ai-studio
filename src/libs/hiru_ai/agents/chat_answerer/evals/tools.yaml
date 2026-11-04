@@ -1,0 +1,33 @@
+# The `with_tools` form (plan/2026-11-04 §8): cases that need a lookup, and cases that must not make one.
+- name: a question about a shot reads the shot
+  variant: tools
+  example: shot_read
+  input:
+    persona: "You are Classic Teledrama: Clear coverage."
+    shot_list: "2 shots, 16 s in a 16 s envelope. Read the shots with scene_read or shot_read."
+    message: why is S01 a close-up?
+    turn: ["The scene runs 16 s in 2 shots (envelope 16 s).", "Applied this turn: nothing (this message changed neither the shot list nor the script)."]
+  tool_calls:
+    - { name: shot_read, args: { shot: S01 }, expect: { shot: S01 } }
+  reply: { text: "S01 holds the smile before the call breaks it, so it stays tight." }
+  expect: { text: "S01 holds the smile before the call breaks it, so it stays tight." }
+- name: a person in the story is read from the canon
+  variant: tools
+  example: canon_read
+  input:
+    shot_list: "2 shots, 16 s in a 16 s envelope. Read the shots with scene_read or shot_read."
+    message: who is Anudi?
+    turn: ["The scene runs 16 s in 2 shots (envelope 16 s).", "Applied this turn: nothing (this message changed neither the shot list nor the script)."]
+  tool_calls:
+    - { name: canon_read, args: { name_or_code: Anudi }, expect: { name: Anudi } }
+  reply: { text: "Anudi is the young woman at the food stall." }
+  expect: { text: "Anudi is the young woman at the food stall." }
+- name: what the turn's facts already say needs no lookup
+  variant: tools
+  input:
+    shot_list: "1 shot, 4 s in a 60 s envelope. Read the shots with scene_read or shot_read."
+    message: did that change anything?
+    turn: ["The scene runs 4 s in 1 shots (envelope 60 s).", "Applied this turn: nothing (this message changed neither the shot list nor the script)."]
+  reply: { text: "No, nothing changed." }
+  expect_no_tools: true
+  expect: { text: "No, nothing changed." }

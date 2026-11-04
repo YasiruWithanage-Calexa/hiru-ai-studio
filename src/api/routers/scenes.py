@@ -27,7 +27,7 @@ from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.services.director import board
 from api.workers import task_manager
-from contracts import bridges, sceneplan
+from contracts import bridges, sceneplan, stagemap
 from contracts import reading as scene_reading
 from contracts.canon import CanonKind, name_key
 from contracts.director import BoardMember, ScriptUpdate, ShotUpdate
@@ -63,6 +63,31 @@ class HoldView(BaseModel):
     block: int
     seconds: float
     kind: str  # reaction | transition | atmosphere | button
+    priority: int = 0  # 1 is never dropped by code; 2 and 3 go first when the scene is over its envelope
+    who: str = ""  # whose face the hold is for
+
+
+class PlaceView(BaseModel):
+    """Where one person is while a shot starts (the staging map, plan/2026-11-01d Phase 4)."""
+
+    who: str
+    zone: str
+    facing: str = ""
+    frame_side: str = ""
+    holding: str = ""
+
+
+class StagingFindingView(BaseModel):
+    """A staging problem to look at: `teleport` (a person is somewhere else with nothing to show the way),
+    `line_crossed` (a cut swaps two people's sides of the frame) or `eyeline` (a shot and reverse shot look the same
+    way)."""
+
+    code: str
+    message: str
+    block: int | None = None
+    shot_id: UUID | None = None
+    who: list[str] = []
+    zone: str = ""
 
 
 class ShotView(BaseModel):
@@ -93,6 +118,7 @@ class ShotView(BaseModel):
     crowded: bool = False  # it holds more than its length can show
     timeline: list[TimelineSlot] = []
     holds: list[HoldView] = []  # time the scene's reading gave it: a reaction, a look held, a last image
+    places: list[PlaceView] = []  # where the people it shows are when it starts (empty without a staging map)
 
 
 class LineView(BaseModel):
@@ -202,6 +228,9 @@ class SceneView(BaseModel):
     next_scene_id: UUID | None
     reading: scene_reading.SceneReading | None = None  # what the scene is about (plan/2026-11-01d); a person's wins
     reading_stale: bool = False  # the script changed since it was written
+    staging: stagemap.SceneStaging | None = None  # where everyone is (plan/2026-11-01d, Phase 4)
+    staging_stale: bool = False
+    staging_findings: list[StagingFindingView] = []  # teleports, crossed lines, eyelines found in code
 
 
 class ResplitStarted(BaseModel):
@@ -295,6 +324,8 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
     plan = sceneplan.plan_from_rows(ld.shots)
     result = ld.fit(plan) if plan else None
     kernel_items = sceneplan.scene_items(scene, ld.lines)
+    cast_names = [str(c["name"]) for c in canon_rows if c["kind"] == CanonKind.CHARACTER]
+    staging = stagemap.SceneStaging.of(scene)
     by_start = {int(s["block_start"]): s for s in ld.shots}
     shot_of_number: dict[int, UUID | None] = {}
     shots: list[ShotView] = []
@@ -310,7 +341,11 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             end_s=f.start_s + f.duration_s, sound_mode=f.sound_mode, camera_link=f.camera_link,
             frame_strategy=f.frame_strategy, speaker_id=UUID(f.speaker_id) if f.speaker_id else None,
             speaker=speaker["name"] if speaker else "",
-            holds=[HoldView(block=b, seconds=sec, kind=kind) for b, sec, kind in f.holds],
+            holds=[HoldView(block=b, seconds=sec, kind=kind, priority=kernel_items[b].hold_priority,
+                            who=kernel_items[b].hold_who) for b, sec, kind in f.holds],
+            places=[PlaceView(who=m.who, zone=m.zone, facing=m.facing, frame_side=m.frame_side, holding=m.holding)
+                    for w in stagemap.people_in(kernel_items[f.start:f.end], cast_names)
+                    if staging and (m := staging.mark_at(kernel_items, w, f.start)) is not None],
             beats=[BeatView(start_s=b0, end_s=b1, **{k: str(n.get(k, "")) for k in sceneplan.BEAT_TEXT})
                    for (b0, b1), n in zip(f.beats, _pad(row.get("beats") or [], len(f.beats)), strict=True)],
             block_start=f.start, block_end=f.end, word_target=f.word_target, words=f.words,
@@ -381,7 +416,23 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
         previous_scene_id=siblings[at - 1]["id"] if at > 0 else None,
         next_scene_id=siblings[at + 1]["id"] if at + 1 < len(siblings) else None,
         reading=stored_reading, reading_stale=bool(stored_reading and stored_reading.stale(
-            sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))))
+            sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))),
+        staging=staging, staging_stale=bool(staging and staging.stale(
+            sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))),
+        staging_findings=staging_findings(staging, kernel_items, result, cast_names, shot_of_number))
+
+
+def staging_findings(staging: stagemap.SceneStaging | None, items: list[Any], result: FitResult | None,
+                     cast: list[str], shot_of_number: dict[int, UUID | None]) -> list[StagingFindingView]:
+    """What the staging map's free checks find in this scene's plan, for the warning chips."""
+    if staging is None:
+        return []
+    found = stagemap.teleports(staging, items, cast)
+    if result is not None:
+        found += stagemap.line_crossed(staging, items, result, cast) + stagemap.eyeline(staging, items, result)
+    return [StagingFindingView(code=f.code, message=f.message, block=f.block,
+                               shot_id=shot_of_number.get(f.shot) if f.shot else None, who=list(f.who), zone=f.zone)
+            for f in found]
 
 
 def _pad(beats: list[Row], n: int) -> list[Row]:
@@ -569,6 +620,34 @@ async def reset_reading(production_id: UUID, scene_id: UUID, access: CanDirect, 
     await repos.audit.record(action="scene.reading.reset", entity="scene", entity_id=str(scene_id),
                              actor_user_id=access.user.id, production_id=production_id)
     return ReadingView(reading=None)
+
+
+# ── the staging map ────────────────────────────────────────────────────────────────────────
+
+
+class StagingView(BaseModel):
+    staging: stagemap.SceneStaging | None
+    stale: bool = False
+    findings: list[StagingFindingView] = []
+
+
+@router.get("/scenes/{scene_id}/staging", response_model=StagingView)
+async def get_staging(production_id: UUID, scene_id: UUID, access: CanView, repos: ReposDep) -> StagingView:
+    """Where everyone is in the scene, and the teleports, crossed lines and eyelines code finds against its shots."""
+    view_ = await view(repos, access, scene_id)
+    return StagingView(staging=view_.staging, stale=view_.staging_stale, findings=view_.staging_findings)
+
+
+@router.delete("/scenes/{scene_id}/staging", response_model=StagingView)
+async def reset_staging(production_id: UUID, scene_id: UUID, access: CanDirect, repos: ReposDep) -> StagingView:
+    """Hand the map back to the system: the next split writes a new one. Steps it added to the script stay (remove
+    one with `DELETE .../script/{index}`, and it is never added again)."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    await repos.scenes.update(scene_id, {"staging": {}})
+    await repos.audit.record(action="scene.staging.reset", entity="scene", entity_id=str(scene_id),
+                             actor_user_id=access.user.id, production_id=production_id)
+    return StagingView(staging=None)
 
 
 # ── the script ─────────────────────────────────────────────────────────────────────────────

@@ -1,0 +1,11 @@
+id: canon_extract
+kind: system
+version: 1
+summary: "Reads the ready documents and drafts the canon: characters, locations and props, by rules first and a model second."
+status: active
+owner: canon_extract
+job_kind: canon_extract
+panels: []
+agents: [canon_extractor, canon_deduper]
+steps: [canon_rules, canon_merge]
+tools: [canon_write]

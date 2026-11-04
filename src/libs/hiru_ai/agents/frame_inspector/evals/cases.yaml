@@ -1,0 +1,12 @@
+- name: two people where one was expected
+  input:
+    image_b64: "iVBORw0KGgo="
+    seen: [ "Anudi: long dark hair" ]
+    unseen: [ "Anudi's Father (heard on the phone)" ]
+    frame: "Anudi at the window"
+  reply: { main_people: 2, unexpected_person: true, matches: false, problems: [ "a second person at the door" ] }
+  expect: { main_people: 2, unexpected_person: true, matches: false }
+- name: nobody identified
+  input: { image_b64: "iVBORw0KGgo=", seen: [] }
+  reply: { main_people: 0, unexpected_person: false, matches: true, problems: [] }
+  expect: { matches: true }

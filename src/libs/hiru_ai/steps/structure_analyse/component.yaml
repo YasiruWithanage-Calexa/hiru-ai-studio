@@ -1,0 +1,7 @@
+id: structure_analyse
+kind: step
+version: 1
+summary: "Reads the scripts and outline into episodes and scenes, finds what is unclear and asks it as questions; applies the answers."
+status: active
+owner: structure_build
+entry: step:run

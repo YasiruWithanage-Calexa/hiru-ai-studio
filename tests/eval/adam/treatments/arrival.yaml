@@ -1,0 +1,45 @@
+# The other two treatments for arrival (draft by Claude, for a Hiru director to correct). The master's own treatment
+# ("waiting to be seen") is the intimate one.
+scene: arrival
+status: draft
+master_stance: intimate
+alternates:
+  - stance: restrained
+    name: the room that waits
+    concept: we make the viewer feel the verdict as the room's, by watching from the far end of it
+    pov: nobody's; the empty room looking at the door
+    sound_concept: the hum of the room, a car outside, then the room holding its breath
+    sections:
+      - { beats: [0, 1], camera_behaviour: "locked-off wide from inside", size_band: [WS, MWS], sound_state: "hum" }
+      - { beats: [2, 3], camera_behaviour: "still", size_band: [MWS, MS], sound_state: "hum" }
+    size_arc: [WS, MWS, MS, WS]
+    motif: the door
+    plant: { object: sign, plant_when: "the sign seen through the window", payoff_when: "the father looks up at the sign", payoff_scene: "" }
+    rhythm: [slow, measured, held]
+    rhythm_break: { when: "the room holds still after the father's nod", kind: long_hold }
+    entry: as Kasun adjusts his shirt
+    exit: the door, open
+    ending_image: Kasun and the father in the lamp-lit room
+    transition_in: cut from the previous scene on a car
+    transition_out: hold, then cut
+    off_speaker: false
+  - stance: heightened
+    name: the threshold
+    concept: we make the viewer feel the arrival as a judgement, by making the door and the sign large
+    pov: the father's, from the car to the door
+    sound_concept: a low pulse that rises as he crosses the threshold and stops at his nod
+    sections:
+      - { beats: [0], camera_behaviour: "handheld on Kasun", size_band: [MS, CU], sound_state: "pulse" }
+      - { beats: [1, 2], camera_behaviour: "low angle on the sign and the father", size_band: [WS, MCU], sound_state: "pulse rising" }
+      - { beats: [3], camera_behaviour: "static", size_band: [CU, ECU], sound_state: "silence" }
+    size_arc: [MS, WS, MCU, CU, ECU]
+    motif: the sign
+    plant: { object: sign, plant_when: "the sign lit in the window behind Kasun", payoff_when: "the father looks up at the sign", payoff_scene: "" }
+    rhythm: [nervous, measured, hard, held]
+    rhythm_break: { when: "the pulse stops on the father's nod", kind: silence }
+    entry: on Kasun already nervous
+    exit: Kasun exhaling
+    ending_image: Kasun letting out his breath in a close
+    transition_in: smash cut from the previous scene
+    transition_out: cut on the exhale
+    off_speaker: true

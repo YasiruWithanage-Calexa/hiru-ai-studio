@@ -1,0 +1,7 @@
+id: note_merge
+kind: step
+version: 1
+summary: "Merges the notes of several critics into the few that drive one revision: most severe first, each lens in turn on a tie."
+status: active
+owner: script_split
+entry: step:run

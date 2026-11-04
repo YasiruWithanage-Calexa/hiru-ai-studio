@@ -1,0 +1,17 @@
+id: staging_check
+kind: tool
+version: 1
+summary: "Finds staging problems in a shot plan: people who teleport, crossed lines, broken eyelines, and who is not placed yet."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+uses: [stage_check]
+effect: read
+guide: |
+  Checks the stored plan (or the `shots` you give) against the scene's staging map and returns what code finds: a person who
+  is somewhere else with nothing to move them (teleport), a cut that crosses the line, a broken eyeline, the move that would
+  fix each teleport, and who has no mark yet. A scene with no staging map has no findings.
+  Example: {"scene": "E1S2"}.
+  Do not use it to read the staging map itself (use scene_reading_read), to check two shots across one cut (use
+  continuity_check) or to score a plan (use plan_score).

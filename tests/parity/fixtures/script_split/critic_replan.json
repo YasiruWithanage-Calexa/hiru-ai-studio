@@ -1,0 +1,367 @@
+{
+ "case": "critic_replan",
+ "description": "Critic notes drive one replan",
+ "expected": {
+  "episode_status": {
+   "<id:9>": "ready"
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "stage": "shots",
+     "state": "active",
+     "text": "Planning shots for 1 scenes",
+     "type": "stage"
+    },
+    {
+     "agent": "shot_planner",
+     "issues": 0,
+     "scene_id": "<id:1>",
+     "shots": 2,
+     "text": "Ep 01 Scene 1: 2 shots, 14 s",
+     "total_s": 14,
+     "type": "progress"
+    },
+    {
+     "stage": "shots",
+     "state": "done",
+     "text": "2 shots in 1 scenes",
+     "type": "stage"
+    }
+   ],
+   "fields": {
+    "result": {
+     "issues": 0,
+     "scenes": 1,
+     "shots": 2,
+     "skipped": 0
+    }
+   },
+   "status": "done"
+  },
+  "line_rows": {
+   "<id:1>": [
+    {
+     "beat_index": 1,
+     "character_id": "<id:4>",
+     "delivery": "quietly",
+     "id": "<id:7>",
+     "ord": 0,
+     "overrun_s": 0.0,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "shot_id": "<id:2>",
+     "speaker": "Nimal",
+     "start_s": 3.0,
+     "text": "අම්මේ, මම ආපහු ආවා.",
+     "words": 4
+    },
+    {
+     "beat_index": 1,
+     "character_id": "<id:6>",
+     "delivery": "",
+     "id": "<id:8>",
+     "ord": 1,
+     "overrun_s": 0.0,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "shot_id": "<id:5>",
+     "speaker": "Kamala",
+     "start_s": 11.0,
+     "text": "කෑම කන්න වාඩි වෙන්න.",
+     "words": 4
+    }
+   ]
+  },
+  "llm": [
+   {
+    "phase": "script_split.beats",
+    "schema": "beat_screen",
+    "system": "sha:e1236f8df914",
+    "tier": "medium"
+   },
+   {
+    "phase": "script_split.reading",
+    "schema": "scene_reading",
+    "system": "sha:1bf3dc6f4ccc",
+    "tier": "high"
+   },
+   {
+    "phase": "script_split.staging",
+    "schema": "scene_staging",
+    "system": "sha:2a5882873090",
+    "tier": "medium"
+   },
+   {
+    "phase": "script_split.plan",
+    "schema": "shot_plan",
+    "system": "sha:649ef4206ff2",
+    "tier": "high"
+   },
+   {
+    "phase": "script_split.critic.coverage",
+    "schema": "shot_review",
+    "system": "sha:28fd139b44d1",
+    "tier": "high"
+   },
+   {
+    "phase": "script_split.critic.editor",
+    "schema": "shot_review",
+    "system": "sha:478ef6a551ce",
+    "tier": "medium"
+   },
+   {
+    "phase": "script_split.critic.emotion",
+    "schema": "shot_review",
+    "system": "sha:cdf38c05eb33",
+    "tier": "medium"
+   },
+   {
+    "phase": "script_split.plan",
+    "schema": "shot_plan",
+    "system": "sha:649ef4206ff2",
+    "tier": "high"
+   }
+  ],
+  "result": {
+   "issues": 0,
+   "scenes": 1,
+   "shots": 2,
+   "skipped": 0
+  },
+  "scene_rows": {
+   "<id:1>": {
+    "envelope_s": 60,
+    "episode_id": "<id:9>",
+    "fit_report": {
+     "critic_notes": [
+      "S02 needs Kamala's reaction"
+     ],
+     "crowded": [],
+     "envelope_s": 60,
+     "issues": [],
+     "multi_speaker": [],
+     "need_s": 14,
+     "planner": "model",
+     "silent_s": 0,
+     "silent_share": 0.0,
+     "total_s": 14,
+     "voiceover": []
+    },
+    "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+    "id": "<id:1>",
+    "location_id": "<id:10>",
+    "number": 1,
+    "production_id": "<id:3>",
+    "reading": {
+     "about": "",
+     "basis": "<digest:1>",
+     "breath": [],
+     "by": "rules",
+     "ending": "",
+     "for_version": 1,
+     "subtext": [],
+     "tone": "",
+     "units": [],
+     "value": {
+      "end": "",
+      "start": ""
+     },
+     "written_at": "<ts>"
+    },
+    "script": [
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:7>",
+      "text": ""
+     },
+     {
+      "by": "rules",
+      "events": 2,
+      "for_version": 1,
+      "kind": "action",
+      "line_id": null,
+      "screen": "act",
+      "text": "Kamala does not turn around. She keeps stirring the pan."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:8>",
+      "text": ""
+     }
+    ],
+    "status": "split"
+   }
+  },
+  "shots": {
+   "<id:1>": [
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 8,
+       "start_s": 6
+      }
+     ],
+     "block_end": 2,
+     "block_start": 0,
+     "camera_link": "cut",
+     "duration_s": 8,
+     "frame_strategy": "generate",
+     "framing": "WIDE",
+     "id": "<id:2>",
+     "number": 1,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "sound_mode": "dialogue",
+     "speaker_id": "<id:4>",
+     "start_s": 0,
+     "status": "draft",
+     "title": "Nimal at the door",
+     "version": 1,
+     "word_target": 17,
+     "words": 4
+    },
+    {
+     "beats": [
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 3,
+       "start_s": 0
+      },
+      {
+       "action": "",
+       "camera": "",
+       "director_line": "",
+       "end_s": 6,
+       "start_s": 3
+      }
+     ],
+     "block_end": 4,
+     "block_start": 2,
+     "camera_link": "cut",
+     "duration_s": 6,
+     "frame_strategy": "generate",
+     "framing": "CU",
+     "id": "<id:5>",
+     "number": 2,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "sound_mode": "dialogue",
+     "speaker_id": "<id:6>",
+     "start_s": 8,
+     "status": "draft",
+     "title": "Kamala keeps cooking",
+     "version": 1,
+     "word_target": 13,
+     "words": 4
+    }
+   ]
+  }
+ },
+ "input": {
+  "scenes": [
+   0
+  ]
+ },
+ "model": {
+  "enabled": true,
+  "replies": {
+   "shot_plan": [
+    {
+     "shots": [
+      {
+       "camera_link": "cut",
+       "duration": 8,
+       "end": 2,
+       "framing": "WIDE",
+       "sound_mode": "dialogue",
+       "start": 0,
+       "title": "Nimal at the door"
+      },
+      {
+       "camera_link": "cut",
+       "duration": 6,
+       "end": 4,
+       "framing": "CU",
+       "sound_mode": "dialogue",
+       "start": 2,
+       "title": "Kamala keeps cooking"
+      }
+     ]
+    },
+    {
+     "shots": [
+      {
+       "camera_link": "cut",
+       "duration": 8,
+       "end": 2,
+       "framing": "WIDE",
+       "sound_mode": "dialogue",
+       "start": 0,
+       "title": "Nimal waits"
+      },
+      {
+       "camera_link": "cut",
+       "duration": 6,
+       "end": 4,
+       "framing": "CU",
+       "sound_mode": "dialogue",
+       "start": 2,
+       "title": "Kamala keeps cooking"
+      }
+     ]
+    }
+   ],
+   "shot_review": [
+    {
+     "acceptable": false,
+     "notes": [
+      "S02 needs Kamala's reaction"
+     ]
+    },
+    {
+     "acceptable": false,
+     "notes": [
+      "S02 needs Kamala's reaction"
+     ]
+    },
+    {
+     "acceptable": false,
+     "notes": [
+      "S02 needs Kamala's reaction"
+     ]
+    }
+   ]
+  }
+ },
+ "service": "script_split"
+}

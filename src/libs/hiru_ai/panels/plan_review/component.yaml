@@ -1,0 +1,14 @@
+id: plan_review
+kind: panel
+version: 1
+summary: "Three critics review a scene's shot plan and write notes; one revision is made; the kernel score in code picks the plan."
+status: active
+owner: script_split
+pattern: critics_judge
+# name = the lens. The critics never pick a plan: model critics did not agree with experts, and code can be checked.
+members:
+  - { agent: coverage_critic, name: coverage }
+  - { agent: emotion_critic, name: emotion }
+  - { agent: editor_critic, name: editor }
+judge: step:kernel_score
+reviser: agent:scene_planner

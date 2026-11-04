@@ -1,0 +1,328 @@
+{
+ "case": "script_with_key",
+ "description": "A script with a key: model headers and embeddings, rerun reuses them",
+ "expected": {
+  "chunks": [
+   {
+    "content": "Title: Harbour Lights — Episode 1 \"The Return\"\nDraft: 2",
+    "content_hash": "da8880c24d82c75de8009c30d1c45d4e93f4feec6aa3fda46e67fb428362443e",
+    "context_header": "harbour-lights-ep01-script.fountain — script — model header 0",
+    "corpus": "production_docs",
+    "document_id": "<id:2>",
+    "embedding": [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    "embedding_model": "embed-model",
+    "heading": "",
+    "meta": {
+     "kind": "passage",
+     "page_end": null,
+     "page_start": null
+    },
+    "ord": 0,
+    "production_id": "<id:3>"
+   },
+   {
+    "content": "INT. KAMALA'S HOUSE - KITCHEN - DAWN\n\nKamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens:\nNimal stands there with a rolling suitcase, thinner than she remembers.\n\nNIMAL\n(quietly)\nඅම්මේ, මම ආපහු ආවා.\n\nKamala does not turn around. She keeps stirring the pan.\n\nKAMALA\nකෑම කන්න වාඩි වෙන්න.",
+    "content_hash": "43378483fec098a3025a5e511ca740b9ac97aa1e27be71c0edc58aa25bd12a58",
+    "context_header": "harbour-lights-ep01-script.fountain — script — INT. KAMALA'S HOUSE - KITCHEN - DAWN — model header 1",
+    "corpus": "production_docs",
+    "document_id": "<id:2>",
+    "embedding": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "embedding_model": "embed-model",
+    "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+    "meta": {
+     "kind": "scene",
+     "page_end": null,
+     "page_start": null
+    },
+    "ord": 1,
+    "production_id": "<id:3>"
+   },
+   {
+    "content": "EXT. KALUGALA HARBOUR - BREAKWATER - MORNING\n\nSunil checks the nets on the family boat, the SEETHA. Waves slap the hull. Nimal walks down the\nbreakwater, shading his eyes against the sun.\n\nSUNIL\nමුහුද අද හරිම නපුරුයි.\n\nNIMAL\nබෝට්ටුවට කොච්චර ගණනක් ලැබෙයිද?\n\nSunil stops working and stares at his brother.",
+    "content_hash": "b8aa8bc03ab97f11d0281d8d3333d1c330b1af5fc65313900c6a713702579adf",
+    "context_header": "harbour-lights-ep01-script.fountain — script — EXT. KALUGALA HARBOUR - BREAKWATER - MORNING — model header 2",
+    "corpus": "production_docs",
+    "document_id": "<id:2>",
+    "embedding": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "embedding_model": "embed-model",
+    "heading": "EXT. KALUGALA HARBOUR - BREAKWATER - MORNING",
+    "meta": {
+     "kind": "scene",
+     "page_end": null,
+     "page_start": null
+    },
+    "ord": 2,
+    "production_id": "<id:3>"
+   },
+   {
+    "content": "INT. AUCTION SHED - DAY\n\nFish are laid out on wet concrete. Mrs. Perera pours tea from a kettle into glasses and hands\none to Nimal, watching him closely. Buyers shout prices in the background.\n\nMRS. PERERA\nඔයා කොහෙද හිටියේ මෙච්චර කාලයක්?\n\nNimal smiles and does not answer. He looks at the ledger of debts pinned to the wall.",
+    "content_hash": "cb557502973cf0ed174d36452f804d408c7d6f824630f91bb1ae50f3d09c3360",
+    "context_header": "harbour-lights-ep01-script.fountain — script — INT. AUCTION SHED - DAY — model header 3",
+    "corpus": "production_docs",
+    "document_id": "<id:2>",
+    "embedding": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "embedding_model": "embed-model",
+    "heading": "INT. AUCTION SHED - DAY",
+    "meta": {
+     "kind": "scene",
+     "page_end": null,
+     "page_start": null
+    },
+    "ord": 3,
+    "production_id": "<id:3>"
+   },
+   {
+    "content": "EXT. KAMALA'S HOUSE - FRONT YARD - EVENING\n\nUnder the jak tree, Nimal spreads a guesthouse plan on a plastic table. Kamala sweeps leaves and\nrefuses to look at it.\n\nNIMAL\nබෝට්ටුව විකුණුවොත් අපිට අලුත් දෙයක් පටන් ගන්න පුළුවන්.\n\nKAMALA\n(trembling, barely audible)\nබෝට්ටුව විකුණන්න එපා.\n\nShe drops the broom and walks inside. The plan flutters off the table.",
+    "content_hash": "62592d1916e7184f59f48b0b9d4f7291e05edf5fbd43ab9462dffaa52cf62869",
+    "context_header": "harbour-lights-ep01-script.fountain — script — EXT. KAMALA'S HOUSE - FRONT YARD - EVENING — model header 4",
+    "corpus": "production_docs",
+    "document_id": "<id:2>",
+    "embedding": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "embedding_model": "embed-model",
+    "heading": "EXT. KAMALA'S HOUSE - FRONT YARD - EVENING",
+    "meta": {
+     "kind": "scene",
+     "page_end": null,
+     "page_start": null
+    },
+    "ord": 4,
+    "production_id": "<id:3>"
+   },
+   {
+    "content": "EXT. KALUGALA HARBOUR - NIGHT\n\nThe lighthouse beam sweeps across the water. Sunil sits alone on the bow of the SEETHA,\nwriting tide times in his notebook by lantern light. Nimal approaches with two cups of tea.\n\nSUNIL\nමට තව එක අවුරුද්දක් දෙන්න.\n\nNimal sits beside him. They watch the beam pass. Neither speaks.",
+    "content_hash": "bc7f3ea1b9b0485b6fc1f4e1ef7719310f1083719a28c1f9cf4b7451b6c7154d",
+    "context_header": "harbour-lights-ep01-script.fountain — script — EXT. KALUGALA HARBOUR - NIGHT — model header 5",
+    "corpus": "production_docs",
+    "document_id": "<id:2>",
+    "embedding": [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    "embedding_model": "embed-model",
+    "heading": "EXT. KALUGALA HARBOUR - NIGHT",
+    "meta": {
+     "kind": "scene",
+     "page_end": null,
+     "page_start": null
+    },
+    "ord": 5,
+    "production_id": "<id:3>"
+   },
+   {
+    "content": "INT. KAMALA'S HOUSE - BEDROOM - NIGHT\n\nKamala opens a tin trunk and takes out her husband's fishing licence. She holds it to the\nwindow light. For the first time, her face breaks.\n\nFADE OUT.",
+    "content_hash": "06bc828206d81a2403648412cd28ed41951899eb0bed039aca7cda6d07be5bda",
+    "context_header": "harbour-lights-ep01-script.fountain — script — INT. KAMALA'S HOUSE - BEDROOM - NIGHT — model header 6",
+    "corpus": "production_docs",
+    "document_id": "<id:2>",
+    "embedding": [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    "embedding_model": "embed-model",
+    "heading": "INT. KAMALA'S HOUSE - BEDROOM - NIGHT",
+    "meta": {
+     "kind": "scene",
+     "page_end": null,
+     "page_start": null
+    },
+    "ord": 6,
+    "production_id": "<id:3>"
+   }
+  ],
+  "document": {
+   "char_count": 1807,
+   "chunk_count": 7,
+   "confirmed_role": null,
+   "detected_role": "script",
+   "error": null,
+   "filename": "harbour-lights-ep01-script.fountain",
+   "id": "d",
+   "mime_type": "text/plain",
+   "page_count": null,
+   "production_id": "<id:3>",
+   "role_confidence": 0.95,
+   "role_reason": "6 scene headings; file name (rules)",
+   "status": "ready",
+   "storage_path": "p/d/file",
+   "text_path": "<id:3>/<id:2>/extracted.txt",
+   "warnings": []
+  },
+  "embed_batches": [
+   7
+  ],
+  "events": [
+   [
+    "progress",
+    {
+     "document_id": "<id:1>",
+     "text": "Reading harbour-lights-ep01-script.fountain"
+    }
+   ],
+   [
+    "progress",
+    {
+     "confidence": 0.95,
+     "document_id": "<id:1>",
+     "role": "script",
+     "text": "harbour-lights-ep01-script.fountain looks like a script"
+    }
+   ],
+   [
+    "progress",
+    {
+     "document_id": "<id:1>",
+     "text": "Split into 7 passages"
+    }
+   ],
+   [
+    "progress",
+    {
+     "document_id": "<id:1>",
+     "text": "Embedded 7 passages (0 reused)"
+    }
+   ],
+   [
+    "progress",
+    {
+     "document_id": "<id:2>",
+     "text": "Reading harbour-lights-ep01-script.fountain"
+    }
+   ],
+   [
+    "progress",
+    {
+     "confidence": 0.95,
+     "document_id": "<id:2>",
+     "role": "script",
+     "text": "harbour-lights-ep01-script.fountain looks like a script"
+    }
+   ],
+   [
+    "progress",
+    {
+     "document_id": "<id:2>",
+     "text": "Split into 7 passages"
+    }
+   ],
+   [
+    "progress",
+    {
+     "document_id": "<id:2>",
+     "text": "Embedded 0 passages (7 reused)"
+    }
+   ]
+  ],
+  "job": {
+   "status": "pending"
+  },
+  "results": [
+   {
+    "chunks": 7,
+    "document_id": "<id:1>",
+    "embedded": 7,
+    "role": "script",
+    "status": "ready"
+   },
+   {
+    "chunks": 7,
+    "document_id": "<id:2>",
+    "embedded": 7,
+    "role": "script",
+    "status": "ready"
+   }
+  ],
+  "texts": {
+   "<id:3>/<id:1>/extracted.txt": "Title: Harbour Lights — Episode 1 \"The Return\"\nDraft: 2\n\nINT. KAMALA'S HOUSE - KITCHEN - DAWN\n\nKamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens:\nNimal stands there with a rolling suitcase, thinner than she remembers.\n\nNIMAL\n(quietly)\nඅම්මේ, මම ආපහු ආවා.\n\nKamala does not turn around. She keeps stirring the pan.\n\nKAMALA\nකෑම කන්න වාඩි වෙන්න.\n\nEXT. KALUGALA HARBOUR - BREAKWATER - MORNING\n\nSunil checks the nets on the family boat, the SEETHA. Waves slap the hull. Nimal walks down the\nbreakwater, shading his eyes against the sun.\n\nSUNIL\nමුහුද අද හරිම නපුරුයි.\n\nNIMAL\nබෝට්ටුවට කොච්චර ගණනක් ලැබෙයිද?\n\nSunil stops working and stares at his brother.\n\nINT. AUCTION SHED - DAY\n\nFish are laid out on wet concrete. Mrs. Perera pours tea from a kettle into glasses and hands\none to Nimal, watching him closely. Buyers shout prices in the background.\n\nMRS. PERERA\nඔයා කොහෙද හිටියේ මෙච්චර කාලයක්?\n\nNimal smiles and does not answer. He looks at the ledger of debts pinned to the wall.\n\nEXT. KAMALA'S HOUSE - FRONT YARD - EVENING\n\nUnder the jak tree, Nimal spreads a guesthouse plan on a plastic table. Kamala sweeps leaves and\nrefuses to look at it.\n\nNIMAL\nබෝට්ටුව විකුණුවොත් අපිට අලුත් දෙයක් පටන් ගන්න පුළුවන්.\n\nKAMALA\n(trembling, barely audible)\nබෝට්ටුව විකුණන්න එපා.\n\nShe drops the broom and walks inside. The plan flutters off the table.\n\nEXT. KALUGALA HARBOUR - NIGHT\n\nThe lighthouse beam sweeps across the water. Sunil sits alone on the bow of the SEETHA,\nwriting tide times in his notebook by lantern light. Nimal approaches with two cups of tea.\n\nSUNIL\nමට තව එක අවුරුද්දක් දෙන්න.\n\nNimal sits beside him. They watch the beam pass. Neither speaks.\n\nINT. KAMALA'S HOUSE - BEDROOM - NIGHT\n\nKamala opens a tin trunk and takes out her husband's fishing licence. She holds it to the\nwindow light. For the first time, her face breaks.\n\nFADE OUT.\n",
+   "<id:3>/<id:2>/extracted.txt": "Title: Harbour Lights — Episode 1 \"The Return\"\nDraft: 2\n\nINT. KAMALA'S HOUSE - KITCHEN - DAWN\n\nKamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens:\nNimal stands there with a rolling suitcase, thinner than she remembers.\n\nNIMAL\n(quietly)\nඅම්මේ, මම ආපහු ආවා.\n\nKamala does not turn around. She keeps stirring the pan.\n\nKAMALA\nකෑම කන්න වාඩි වෙන්න.\n\nEXT. KALUGALA HARBOUR - BREAKWATER - MORNING\n\nSunil checks the nets on the family boat, the SEETHA. Waves slap the hull. Nimal walks down the\nbreakwater, shading his eyes against the sun.\n\nSUNIL\nමුහුද අද හරිම නපුරුයි.\n\nNIMAL\nබෝට්ටුවට කොච්චර ගණනක් ලැබෙයිද?\n\nSunil stops working and stares at his brother.\n\nINT. AUCTION SHED - DAY\n\nFish are laid out on wet concrete. Mrs. Perera pours tea from a kettle into glasses and hands\none to Nimal, watching him closely. Buyers shout prices in the background.\n\nMRS. PERERA\nඔයා කොහෙද හිටියේ මෙච්චර කාලයක්?\n\nNimal smiles and does not answer. He looks at the ledger of debts pinned to the wall.\n\nEXT. KAMALA'S HOUSE - FRONT YARD - EVENING\n\nUnder the jak tree, Nimal spreads a guesthouse plan on a plastic table. Kamala sweeps leaves and\nrefuses to look at it.\n\nNIMAL\nබෝට්ටුව විකුණුවොත් අපිට අලුත් දෙයක් පටන් ගන්න පුළුවන්.\n\nKAMALA\n(trembling, barely audible)\nබෝට්ටුව විකුණන්න එපා.\n\nShe drops the broom and walks inside. The plan flutters off the table.\n\nEXT. KALUGALA HARBOUR - NIGHT\n\nThe lighthouse beam sweeps across the water. Sunil sits alone on the bow of the SEETHA,\nwriting tide times in his notebook by lantern light. Nimal approaches with two cups of tea.\n\nSUNIL\nමට තව එක අවුරුද්දක් දෙන්න.\n\nNimal sits beside him. They watch the beam pass. Neither speaks.\n\nINT. KAMALA'S HOUSE - BEDROOM - NIGHT\n\nKamala opens a tin trunk and takes out her husband's fishing licence. She holds it to the\nwindow light. For the first time, her face breaks.\n\nFADE OUT.\n"
+  },
+  "usage": [
+   {
+    "cached_input_tokens": 0,
+    "input_tokens": 100,
+    "model": "m-low",
+    "output_tokens": 20,
+    "phase": "doc_ingest.headers"
+   },
+   {
+    "cached_input_tokens": 0,
+    "input_tokens": 70,
+    "model": "embed-model",
+    "output_tokens": 0,
+    "phase": "doc_ingest.embed"
+   },
+   {
+    "cached_input_tokens": 0,
+    "input_tokens": 100,
+    "model": "m-low",
+    "output_tokens": 20,
+    "phase": "doc_ingest.headers"
+   }
+  ]
+ },
+ "input": {
+  "corpus": "harbour-lights-ep01-script.fountain",
+  "deliveries": 2,
+  "filename": "harbour-lights-ep01-script.fountain"
+ },
+ "model": {
+  "client": true
+ },
+ "service": "doc_ingest"
+}

@@ -1,0 +1,16 @@
+id: adam_dramaturg
+kind: agent
+version: 1
+summary: "Works out what one scene is about for Shot Planner Adam: the value that turns, the beats, who wants what, whose scene it is, what the audience knows, the baseline, the break and the key moment."
+status: active
+owner: director
+model: high
+shape: structured
+phase: adam.analyse
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

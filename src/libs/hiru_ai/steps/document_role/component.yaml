@@ -1,0 +1,7 @@
+id: document_role
+kind: step
+version: 1
+summary: "Guesses what an uploaded document is (bible, script, canon index, outline, notes) from its name and shape."
+status: active
+owner: doc_ingest
+entry: step:run

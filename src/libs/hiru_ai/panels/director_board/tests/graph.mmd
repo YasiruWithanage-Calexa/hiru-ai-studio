@@ -1,0 +1,28 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	settle(settle)
+	review(review)
+	review\2ework(review.work)
+	review\2egather(review.gather)
+	specialists(specialists)
+	specialists\2ework(specialists.work)
+	specialists\2egather(specialists.gather)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> specialists;
+	review -.-> review\2egather;
+	review -.-> review\2ework;
+	review\2ework --> review\2egather;
+	settle --> review;
+	specialists -.-> specialists\2egather;
+	specialists -.-> specialists\2ework;
+	specialists\2egather --> settle;
+	specialists\2ework --> specialists\2egather;
+	review\2egather --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

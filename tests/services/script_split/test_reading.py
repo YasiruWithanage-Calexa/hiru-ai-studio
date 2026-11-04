@@ -64,7 +64,8 @@ def test_the_static_prompt_does_not_depend_on_the_scene_and_the_craft_notes_are_
     system = engine.READING_SYSTEM
     assert "{" not in system and "Anudi" not in system and "STORY NOTE" in system and "Weston" in system
     craft = " ".join(" ".join(
-        (ROOT / "src" / "knowledge_base" / "craft" / f).read_text(encoding="utf-8").split())
+        (ROOT / "src" / "libs" / "hiru_ai" / "knowledge_bases" / "craft" / "sources" / f)
+        .read_text(encoding="utf-8").split())
         for f in ("directing.md", "editing.md"))
     for passage in engine.CRAFT:
         assert " ".join(passage.split()) in craft, passage  # a copy that has drifted from the studio's notes
@@ -347,7 +348,7 @@ def test_silence_a_hold_earns_is_not_a_problem_but_silence_nobody_asked_for_stil
 def test_the_kernel_score_keeps_its_order_issues_then_two_speakers_then_the_rest():
     items, made = timed_items()
     score = critic.kernel_score(fit(items, planner.plan_by_rules(items), envelope_s=60), made, items)
-    assert len(score) == 6 and score[0] == 0 and score[1] == 0 and score[2] == 0
+    assert len(score) == 10 and score[:6] == (0, 0, 0, 0, 0, 0)
 
 
 def test_the_critic_is_told_about_the_breath_a_plan_holds():

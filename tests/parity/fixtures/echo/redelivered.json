@@ -1,0 +1,18 @@
+{
+ "case": "redelivered",
+ "description": "A finished job redelivered is a no-op",
+ "expected": {
+  "error": null,
+  "events": [],
+  "result": {
+   "skipped": "done"
+  },
+  "status": "done"
+ },
+ "input": {
+  "message": "hi",
+  "status": "done"
+ },
+ "model": {},
+ "service": "echo"
+}

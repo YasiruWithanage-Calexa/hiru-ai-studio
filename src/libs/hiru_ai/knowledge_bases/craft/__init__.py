@@ -1,0 +1,1 @@
+"""The craft knowledge base."""

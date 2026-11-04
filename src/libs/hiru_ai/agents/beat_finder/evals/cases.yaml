@@ -1,0 +1,11 @@
+- name: a phone rings under a smile
+  input:
+    items:
+      - { index: 0, kind: action, text: "Anudi smiled back. Suddenly, her phone rang." }
+      - { index: 1, kind: dialogue, text: "Hello?", speaker: Anudi, line_id: l1 }
+  reply: { blocks: [ { block: 0, screen: act, events: 2 } ] }
+  expect: { blocks: [ { block: 0, screen: act, events: 2 } ] }
+- name: a thought nobody can see
+  input: { items: [ { index: 0, kind: action, text: "He had no idea this would change his life." } ] }
+  reply: { blocks: [ { block: 0, screen: inner, events: 1 } ] }
+  expect: { blocks: [ { block: 0, screen: inner } ] }

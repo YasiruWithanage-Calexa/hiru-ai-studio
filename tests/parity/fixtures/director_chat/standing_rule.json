@@ -1,0 +1,99 @@
+{
+ "case": "standing_rule",
+ "description": "A standing rule goes to production memory",
+ "expected": {
+  "audits": [],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Writing the reply"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Noted for the whole production: Kamala never cries on screen."
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "blocks": [
+      {
+       "kind": "text",
+       "text": "Noted for the whole production: Kamala never cries on screen."
+      }
+     ],
+     "citations": [],
+     "id": "<id:1>",
+     "kind": "director",
+     "ops": [],
+     "persona_id": "<id:4>",
+     "production_id": "<id:2>",
+     "speaker": "Classic Teledrama",
+     "text": "",
+     "thread_id": "<id:3>",
+     "tone": "lead"
+    },
+    "event": "message"
+   },
+   {
+    "data": {
+     "lane": "chat",
+     "message_id": "<id:1>"
+    },
+    "event": "done"
+   }
+  ],
+  "llm": [],
+  "memory_rows": [
+   {
+    "created_by": "<id:8>",
+    "embedding": null,
+    "id": "<id:5>",
+    "kind": "decision",
+    "production_id": "<id:2>",
+    "scene_id": "<id:6>",
+    "source_ref": {
+     "user_message_id": "<id:7>"
+    },
+    "text": "Kamala never cries on screen."
+   }
+  ],
+  "message_rows": [
+   {
+    "blocks": [
+     {
+      "kind": "text",
+      "text": "Noted for the whole production: Kamala never cries on screen."
+     }
+    ],
+    "citations": [],
+    "id": "<id:1>",
+    "kind": "director",
+    "ops": [],
+    "persona_id": "<id:4>",
+    "production_id": "<id:2>",
+    "speaker": "Classic Teledrama",
+    "text": "",
+    "thread_id": "<id:3>",
+    "tone": "lead"
+   }
+  ],
+  "pending_rows": [],
+  "saved": []
+ },
+ "input": {
+  "messages": [
+   "Remember: Kamala never cries on screen."
+  ]
+ },
+ "model": {},
+ "service": "director_chat"
+}

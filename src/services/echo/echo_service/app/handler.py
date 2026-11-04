@@ -11,6 +11,7 @@ retry a job that failed for a reason a retry will not fix. Errors worth retrying
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any
 
 from pydantic import ValidationError
@@ -41,6 +42,16 @@ def run(payload: DispatchPayload, store: JobStore) -> dict[str, Any]:
     return result
 
 
+def run_graph(payload: DispatchPayload, store: JobStore) -> dict[str, Any]:
+    """The same job through the `hiru_ai` echo system (AI_ENGINE=graph)."""
+    from echo_service.runtime.jobs import JobsPort
+    from hiru_ai.core.context import Ports, RunContext
+    from hiru_ai.systems.echo import graph
+
+    return graph.run(payload, RunContext(job_id=payload.job_id, actor_user_id=payload.actor_user_id,
+                                         ports=Ports(jobs=JobsPort(store))))
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     """functions-framework HTTP entry point (a Flask request)."""
     try:
@@ -50,7 +61,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
 
     store = JobStore.from_env()
     try:
-        return run(payload, store), 200
+        engine = run_graph if os.environ.get("AI_ENGINE", "legacy") == "graph" else run
+        return engine(payload, store), 200
     except Retryable:
         return {"error": "retry"}, 500
     except Exception:

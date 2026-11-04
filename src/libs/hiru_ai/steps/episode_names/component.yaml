@@ -1,0 +1,7 @@
+id: episode_names
+kind: step
+version: 1
+summary: "Writes the architect's synopsis and scene titles into an episode: the synopsis only when the outline had none."
+status: active
+owner: structure_build
+entry: step:run

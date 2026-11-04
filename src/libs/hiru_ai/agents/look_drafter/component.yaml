@@ -1,0 +1,16 @@
+id: look_drafter
+kind: agent
+version: 1
+summary: "Turns each character's wardrobe into looks: what they wear for a stretch of episodes. Drafts only."
+status: active
+owner: structure_build
+model: medium
+shape: structured
+phase: structure_build.looks
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

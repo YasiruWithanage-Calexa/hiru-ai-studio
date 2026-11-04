@@ -1,0 +1,10 @@
+- name: deliberate silence
+  input: { scene_text: "S03 INSERT 4s ambient", shots: [ 3 ], instruction: "Make S03 deliberate silence." }
+  reply:
+    ops: [ { op: set, shot: 3, field: sound_mode, value: silent, seconds: null, at_block: null, end_block: null, link: null, beat: null, after_shot: null, description: null, framing: null, title: null, block: null, kind: null, speaker: null, delivery: null } ]
+    note: "Silence lands the moment."
+  expect: { ops: [ { op: set, field: sound_mode, value: silent } ] }
+- name: the specialist fails
+  input: { scene_text: "S01 MCU 6s" }
+  model: unavailable
+  expect: { ops: [] }

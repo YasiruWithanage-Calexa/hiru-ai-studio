@@ -1,0 +1,16 @@
+id: cinematographer
+kind: agent
+version: 1
+summary: "Chooses framing, joins, beat cameras and inserts on the director's board."
+status: active
+owner: director
+model: high
+shape: structured
+phase: director.cinematography
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

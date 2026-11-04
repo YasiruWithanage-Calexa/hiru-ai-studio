@@ -1,0 +1,10 @@
+- name: a shot whose speech overruns
+  input: { scene_text: "S02 MCU 4s, 14 words", shots: [ 2 ], instruction: "S02 overruns: split it." }
+  reply:
+    ops: [ { op: split, shot: 2, field: null, value: null, seconds: null, at_block: 3, end_block: null, link: null, beat: null, after_shot: null, description: null, framing: null, title: null, block: null, kind: null, speaker: null, delivery: null } ]
+    note: "Split S02 at the breath."
+  expect: { ops: [ { op: split, shot: 2, at_block: 3 } ] }
+- name: the specialist fails
+  input: { scene_text: "S01 MCU 6s" }
+  model: unavailable
+  expect: { ops: [] }

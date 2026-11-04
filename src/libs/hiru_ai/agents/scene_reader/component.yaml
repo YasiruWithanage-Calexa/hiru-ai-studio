@@ -1,0 +1,16 @@
+id: scene_reader
+kind: agent
+version: 1
+summary: "Reads one scene as a director: what it is about, where the feeling turns, which moments must be held."
+status: active
+owner: script_split
+model: high
+shape: structured
+phase: script_split.reading
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

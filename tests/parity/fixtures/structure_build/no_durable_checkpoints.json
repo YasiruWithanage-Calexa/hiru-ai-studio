@@ -1,0 +1,270 @@
+{
+ "case": "no_durable_checkpoints",
+ "description": "Without durable checkpoints the suggested answers are taken and recorded",
+ "expected": {
+  "canon_rows": [
+   {
+    "aliases": [
+     "කමලා"
+    ],
+    "code": "C01",
+    "id": "<id:13>",
+    "kind": "character",
+    "name": "Kamala"
+   },
+   {
+    "aliases": [],
+    "code": "C02",
+    "id": "<id:9>",
+    "kind": "character",
+    "name": "Nimal"
+   },
+   {
+    "aliases": [],
+    "code": "C03",
+    "id": "<id:14>",
+    "kind": "character",
+    "name": "Sunil"
+   },
+   {
+    "aliases": [],
+    "code": "C04",
+    "id": "<id:15>",
+    "kind": "character",
+    "name": "Mrs. Perera"
+   },
+   {
+    "aliases": [],
+    "code": "L01",
+    "id": "<id:6>",
+    "kind": "location",
+    "name": "Kamala's house"
+   },
+   {
+    "aliases": [],
+    "code": "L02",
+    "id": "<id:8>",
+    "kind": "location",
+    "name": "Kalugala harbour breakwater"
+   },
+   {
+    "aliases": [],
+    "code": "L03",
+    "id": "<id:16>",
+    "kind": "location",
+    "name": "Auction shed"
+   }
+  ],
+  "deliveries": [
+   {
+    "deleted_scenes": 0,
+    "episodes": 1,
+    "kept_approved": 0,
+    "looks": 0,
+    "new_characters": 0,
+    "scenes": 2
+   }
+  ],
+  "episode_rows": {
+   "<id:3>": {
+    "id": "<id:3>",
+    "number": 1,
+    "production_id": "<id:4>",
+    "source_document_ids": [
+     "<id:5>"
+    ],
+    "status": "building",
+    "synopsis": "",
+    "title": ""
+   }
+  },
+  "jobs": {
+   "advanced": [
+    {
+     "again": false,
+     "cursor": 1,
+     "state": {
+      "build": true,
+      "previous": {
+       "deleted_scenes": 0,
+       "episodes": 1,
+       "kept_approved": 0,
+       "looks": 0,
+       "new_characters": 0,
+       "scenes": 2
+      },
+      "scene_ids": [
+       "<id:1>",
+       "<id:2>"
+      ]
+     }
+    }
+   ],
+   "events": [
+    {
+     "stage": "episodes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "stage": "episodes",
+     "state": "done",
+     "text": "1 episodes",
+     "type": "stage"
+    },
+    {
+     "stage": "scenes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "script_architect",
+     "text": "1 episodes and 2 scenes from the scripts.",
+     "type": "agent_step"
+    },
+    {
+     "stage": "scenes",
+     "state": "done",
+     "text": "2 scenes",
+     "type": "stage"
+    }
+   ],
+   "fields": {},
+   "status": "running"
+  },
+  "line_rows": {
+   "<id:1>": [
+    {
+     "character_id": "<id:9>",
+     "delivery": "",
+     "id": "<id:7>",
+     "ord": 0,
+     "production_id": "<id:4>",
+     "scene_id": "<id:1>",
+     "speaker": "Nimal",
+     "text": "හරි.",
+     "words": 1
+    }
+   ],
+   "<id:2>": []
+  },
+  "llm": [],
+  "look_rows": [],
+  "question_rows": {
+   "<id:10>": {
+    "agent": "script_architect",
+    "allow_text": true,
+    "answer": {
+     "text": null,
+     "value": "1"
+    },
+    "body": "untitled.txt does not say which episode it is.",
+    "id": "<id:10>",
+    "job_id": "<id:11>",
+    "key": "episode:<id:5>:0",
+    "options": [
+     {
+      "label": "Episode 1",
+      "value": "1"
+     },
+     {
+      "label": "Episode 2",
+      "value": "2"
+     },
+     {
+      "label": "Episode 3",
+      "value": "3"
+     }
+    ],
+    "production_id": "<id:4>",
+    "scope": "untitled.txt",
+    "status": "defaulted",
+    "title": "Question · which episode?"
+   },
+   "<id:12>": {
+    "agent": "script_architect",
+    "allow_text": true,
+    "answer": {
+     "text": null,
+     "value": "L02"
+    },
+    "body": "The script's place \"KALUGALA BEACH\" is close to L02 Kalugala harbour breakwater. Is it the same place?",
+    "id": "<id:12>",
+    "job_id": "<id:11>",
+    "key": "loc:kalugala beach",
+    "options": [
+     {
+      "label": "Use L02",
+      "value": "L02"
+     },
+     {
+      "label": "A new location",
+      "value": "new"
+     }
+    ],
+    "production_id": "<id:4>",
+    "scope": "untitled.txt Scene 2",
+    "status": "defaulted",
+    "title": "Question · untitled.txt Scene 2"
+   }
+  },
+  "scene_rows": {
+   "<id:1>": {
+    "envelope_s": 45,
+    "episode_id": "<id:3>",
+    "fit_report": {},
+    "heading": "INT. KAMALA'S HOUSE - NIGHT",
+    "id": "<id:1>",
+    "location_id": "<id:6>",
+    "number": 1,
+    "production_id": "<id:4>",
+    "script": [
+     {
+      "kind": "dialogue",
+      "line_id": "<id:7>",
+      "text": ""
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "night",
+    "title": "Kamala'S House, night"
+   },
+   "<id:2>": {
+    "envelope_s": 45,
+    "episode_id": "<id:3>",
+    "fit_report": {},
+    "heading": "EXT. KALUGALA BEACH - DAY",
+    "id": "<id:2>",
+    "location_id": "<id:8>",
+    "number": 2,
+    "production_id": "<id:4>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Waves."
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "day",
+    "title": "Kalugala Beach, day"
+   }
+  }
+ },
+ "input": {
+  "docs": [
+   {
+    "filename": "untitled.txt",
+    "role": "script",
+    "text": "INT. KAMALA'S HOUSE - NIGHT\n\nNIMAL\nහරි.\n\nEXT. KALUGALA BEACH - DAY\n\nWaves.\n"
+   }
+  ],
+  "durable": false
+ },
+ "model": {},
+ "service": "structure_build"
+}

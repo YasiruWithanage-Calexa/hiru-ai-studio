@@ -1,0 +1,518 @@
+{
+ "case": "explicit_retime",
+ "description": "An explicit edit is applied, saved and reported",
+ "expected": {
+  "audits": [
+   {
+    "action": "scene.director_edit",
+    "actor_agent": "director_chat",
+    "actor_user_id": "<id:14>",
+    "diff": {
+     "ops": [
+      {
+       "by": "you",
+       "op": "retime",
+       "seconds": 8,
+       "shot": 2
+      }
+     ]
+    },
+    "entity": "scene",
+    "entity_id": "<id:3>",
+    "production_id": "<id:2>"
+   }
+  ],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Applying your changes"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "issues": [],
+     "shots": [
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 3,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 6,
+         "start_s": 3
+        }
+       ],
+       "block_end": 1,
+       "block_start": 0,
+       "camera_link": "cut",
+       "duration_locked": false,
+       "duration_s": 6,
+       "frame_strategy": "generate",
+       "framing": "MS",
+       "id": "<id:1>",
+       "number": 1,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "ambient",
+       "speaker_id": null,
+       "start_s": 0,
+       "status": "draft",
+       "title": "",
+       "version": 1,
+       "word_target": 0,
+       "words": 0
+      },
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 3,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 6,
+         "start_s": 3
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 8,
+         "start_s": 6
+        }
+       ],
+       "block_end": 2,
+       "block_start": 1,
+       "camera_link": "cut",
+       "duration_locked": true,
+       "duration_s": 8,
+       "frame_strategy": "generate",
+       "framing": "MS",
+       "id": "<id:4>",
+       "number": 2,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "dialogue",
+       "speaker_id": "<id:5>",
+       "start_s": 6,
+       "status": "draft",
+       "title": "",
+       "version": 2,
+       "word_target": 17,
+       "words": 4
+      },
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 2,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 4,
+         "start_s": 2
+        }
+       ],
+       "block_end": 3,
+       "block_start": 2,
+       "camera_link": "cut",
+       "duration_locked": false,
+       "duration_s": 4,
+       "frame_strategy": "generate",
+       "framing": "MS",
+       "id": "<id:6>",
+       "number": 3,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "ambient",
+       "speaker_id": null,
+       "start_s": 14,
+       "status": "draft",
+       "title": "",
+       "version": 1,
+       "word_target": 0,
+       "words": 0
+      },
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 2,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 4,
+         "start_s": 2
+        }
+       ],
+       "block_end": 4,
+       "block_start": 3,
+       "camera_link": "cut",
+       "duration_locked": false,
+       "duration_s": 4,
+       "frame_strategy": "generate",
+       "framing": "MS",
+       "id": "<id:7>",
+       "number": 4,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "dialogue",
+       "speaker_id": "<id:8>",
+       "start_s": 18,
+       "status": "draft",
+       "title": "",
+       "version": 1,
+       "word_target": 8,
+       "words": 4
+      }
+     ],
+     "total_s": 22
+    },
+    "event": "plan"
+   },
+   {
+    "data": {
+     "text": "Writing the reply"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Done: S02 is now 8 s."
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "blocks": [
+      {
+       "kind": "text",
+       "text": "Done: S02 is now 8 s."
+      },
+      {
+       "count": 1,
+       "kind": "edit-note",
+       "text": "S02 is now 8 s"
+      }
+     ],
+     "citations": [],
+     "id": "<id:9>",
+     "kind": "director",
+     "ops": [
+      {
+       "by": "you",
+       "op": "retime",
+       "seconds": 8,
+       "shot": 2
+      }
+     ],
+     "persona_id": "<id:11>",
+     "production_id": "<id:2>",
+     "speaker": "Classic Teledrama",
+     "text": "",
+     "thread_id": "<id:10>",
+     "tone": "lead"
+    },
+    "event": "message"
+   },
+   {
+    "data": {
+     "lane": "edit",
+     "message_id": "<id:9>"
+    },
+    "event": "done"
+   }
+  ],
+  "llm": [],
+  "memory_rows": [],
+  "message_rows": [
+   {
+    "blocks": [
+     {
+      "kind": "text",
+      "text": "Done: S02 is now 8 s."
+     },
+     {
+      "count": 1,
+      "kind": "edit-note",
+      "text": "S02 is now 8 s"
+     }
+    ],
+    "citations": [],
+    "id": "<id:9>",
+    "kind": "director",
+    "ops": [
+     {
+      "by": "you",
+      "op": "retime",
+      "seconds": 8,
+      "shot": 2
+     }
+    ],
+    "persona_id": "<id:11>",
+    "production_id": "<id:2>",
+    "speaker": "Classic Teledrama",
+    "text": "",
+    "thread_id": "<id:10>",
+    "tone": "lead"
+   }
+  ],
+  "pending_rows": [],
+  "saved": [
+   {
+    "lines": [
+     {
+      "beat_index": 0,
+      "character_id": "<id:5>",
+      "delivery": "quietly",
+      "id": "<id:12>",
+      "ord": 0,
+      "overrun_s": 0.0,
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "shot_id": "<id:4>",
+      "speaker": "Nimal",
+      "start_s": 6.5,
+      "text": "අම්මේ, මම ආපහු ආවා.",
+      "words": 4
+     },
+     {
+      "beat_index": 0,
+      "character_id": "<id:8>",
+      "delivery": "",
+      "id": "<id:13>",
+      "ord": 1,
+      "overrun_s": 0.0,
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "shot_id": "<id:7>",
+      "speaker": "Kamala",
+      "start_s": 18.5,
+      "text": "කෑම කන්න වාඩි වෙන්න.",
+      "words": 4
+     }
+    ],
+    "removed": [],
+    "removed_lines": [],
+    "scene": {
+     "envelope_s": 60,
+     "fit_report": {
+      "critic_notes": [],
+      "crowded": [],
+      "envelope_s": 60,
+      "issues": [],
+      "multi_speaker": [],
+      "need_s": 22,
+      "planner": "director",
+      "silent_s": 10,
+      "silent_share": 0.45,
+      "total_s": 22,
+      "voiceover": []
+     },
+     "status": "split"
+    },
+    "shots": [
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 3,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 6,
+        "start_s": 3
+       }
+      ],
+      "block_end": 1,
+      "block_start": 0,
+      "camera_link": "cut",
+      "duration_locked": false,
+      "duration_s": 6,
+      "frame_strategy": "generate",
+      "framing": "MS",
+      "id": "<id:1>",
+      "number": 1,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "ambient",
+      "speaker_id": null,
+      "start_s": 0,
+      "status": "draft",
+      "title": "",
+      "version": 1,
+      "word_target": 0,
+      "words": 0
+     },
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 3,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 6,
+        "start_s": 3
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 8,
+        "start_s": 6
+       }
+      ],
+      "block_end": 2,
+      "block_start": 1,
+      "camera_link": "cut",
+      "duration_locked": true,
+      "duration_s": 8,
+      "frame_strategy": "generate",
+      "framing": "MS",
+      "id": "<id:4>",
+      "number": 2,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "dialogue",
+      "speaker_id": "<id:5>",
+      "start_s": 6,
+      "status": "draft",
+      "title": "",
+      "version": 2,
+      "word_target": 17,
+      "words": 4
+     },
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 2,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 4,
+        "start_s": 2
+       }
+      ],
+      "block_end": 3,
+      "block_start": 2,
+      "camera_link": "cut",
+      "duration_locked": false,
+      "duration_s": 4,
+      "frame_strategy": "generate",
+      "framing": "MS",
+      "id": "<id:6>",
+      "number": 3,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "ambient",
+      "speaker_id": null,
+      "start_s": 14,
+      "status": "draft",
+      "title": "",
+      "version": 1,
+      "word_target": 0,
+      "words": 0
+     },
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 2,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 4,
+        "start_s": 2
+       }
+      ],
+      "block_end": 4,
+      "block_start": 3,
+      "camera_link": "cut",
+      "duration_locked": false,
+      "duration_s": 4,
+      "frame_strategy": "generate",
+      "framing": "MS",
+      "id": "<id:7>",
+      "number": 4,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "dialogue",
+      "speaker_id": "<id:8>",
+      "start_s": 18,
+      "status": "draft",
+      "title": "",
+      "version": 1,
+      "word_target": 8,
+      "words": 4
+     }
+    ]
+   }
+  ]
+ },
+ "input": {
+  "messages": [
+   "make shot 2 eight seconds"
+  ]
+ },
+ "model": {},
+ "service": "director_chat"
+}

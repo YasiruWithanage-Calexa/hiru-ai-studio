@@ -1,0 +1,482 @@
+{
+ "case": "architect_names",
+ "description": "The architect names scenes with the model; a scene it skips keeps the rule label",
+ "expected": {
+  "canon_rows": [
+   {
+    "aliases": [
+     "කමලා"
+    ],
+    "code": "C01",
+    "id": "<id:22>",
+    "kind": "character",
+    "name": "Kamala"
+   },
+   {
+    "aliases": [],
+    "code": "C02",
+    "id": "<id:21>",
+    "kind": "character",
+    "name": "Nimal"
+   },
+   {
+    "aliases": [],
+    "code": "C03",
+    "id": "<id:23>",
+    "kind": "character",
+    "name": "Sunil"
+   },
+   {
+    "aliases": [],
+    "code": "C04",
+    "id": "<id:24>",
+    "kind": "character",
+    "name": "Mrs. Perera"
+   },
+   {
+    "aliases": [],
+    "code": "L01",
+    "id": "<id:10>",
+    "kind": "location",
+    "name": "Kamala's house"
+   },
+   {
+    "aliases": [],
+    "code": "L02",
+    "id": "<id:13>",
+    "kind": "location",
+    "name": "Kalugala harbour breakwater"
+   },
+   {
+    "aliases": [],
+    "code": "L03",
+    "id": "<id:16>",
+    "kind": "location",
+    "name": "Auction shed"
+   }
+  ],
+  "deliveries": [
+   {
+    "deleted_scenes": 0,
+    "episodes": 1,
+    "kept_approved": 0,
+    "looks": 0,
+    "new_characters": 0,
+    "scenes": 6
+   }
+  ],
+  "episode_rows": {
+   "<id:7>": {
+    "id": "<id:7>",
+    "number": 1,
+    "production_id": "<id:8>",
+    "source_document_ids": [
+     "<id:9>"
+    ],
+    "status": "building",
+    "synopsis": "Nimal returns.",
+    "title": "The Return"
+   }
+  },
+  "jobs": {
+   "advanced": [
+    {
+     "again": false,
+     "cursor": 1,
+     "state": {
+      "build": true,
+      "previous": {
+       "deleted_scenes": 0,
+       "episodes": 1,
+       "kept_approved": 0,
+       "looks": 0,
+       "new_characters": 0,
+       "scenes": 6
+      },
+      "scene_ids": [
+       "<id:1>",
+       "<id:2>",
+       "<id:3>",
+       "<id:4>",
+       "<id:5>",
+       "<id:6>"
+      ]
+     }
+    }
+   ],
+   "events": [
+    {
+     "stage": "episodes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "stage": "episodes",
+     "state": "done",
+     "text": "1 episodes",
+     "type": "stage"
+    },
+    {
+     "stage": "scenes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "script_architect",
+     "text": "Episode 01: 6 scenes named",
+     "type": "progress"
+    },
+    {
+     "agent": "script_architect",
+     "text": "1 episodes and 6 scenes from the scripts.",
+     "type": "agent_step"
+    },
+    {
+     "stage": "scenes",
+     "state": "done",
+     "text": "6 scenes",
+     "type": "stage"
+    }
+   ],
+   "fields": {},
+   "status": "running"
+  },
+  "line_rows": {
+   "<id:1>": [
+    {
+     "character_id": "<id:21>",
+     "delivery": "quietly",
+     "id": "<id:11>",
+     "ord": 0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:1>",
+     "speaker": "Nimal",
+     "text": "අම්මේ, මම ආපහු ආවා.",
+     "words": 4
+    },
+    {
+     "character_id": "<id:22>",
+     "delivery": "",
+     "id": "<id:12>",
+     "ord": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:1>",
+     "speaker": "Kamala",
+     "text": "කෑම කන්න වාඩි වෙන්න.",
+     "words": 4
+    }
+   ],
+   "<id:2>": [
+    {
+     "character_id": "<id:23>",
+     "delivery": "",
+     "id": "<id:14>",
+     "ord": 0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "speaker": "Sunil",
+     "text": "මුහුද අද හරිම නපුරුයි.",
+     "words": 4
+    },
+    {
+     "character_id": "<id:21>",
+     "delivery": "",
+     "id": "<id:15>",
+     "ord": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:2>",
+     "speaker": "Nimal",
+     "text": "බෝට්ටුවට කොච්චර ගණනක් ලැබෙයිද?",
+     "words": 4
+    }
+   ],
+   "<id:3>": [
+    {
+     "character_id": "<id:24>",
+     "delivery": "",
+     "id": "<id:17>",
+     "ord": 0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:3>",
+     "speaker": "Mrs. Perera",
+     "text": "ඔයා කොහෙද හිටියේ මෙච්චර කාලයක්?",
+     "words": 5
+    }
+   ],
+   "<id:4>": [
+    {
+     "character_id": "<id:21>",
+     "delivery": "",
+     "id": "<id:18>",
+     "ord": 0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:4>",
+     "speaker": "Nimal",
+     "text": "බෝට්ටුව විකුණුවොත් අපිට අලුත් දෙයක් පටන් ගන්න පුළුවන්.",
+     "words": 8
+    },
+    {
+     "character_id": "<id:22>",
+     "delivery": "trembling, barely audible",
+     "id": "<id:19>",
+     "ord": 1,
+     "production_id": "<id:8>",
+     "scene_id": "<id:4>",
+     "speaker": "Kamala",
+     "text": "බෝට්ටුව විකුණන්න එපා.",
+     "words": 3
+    }
+   ],
+   "<id:5>": [
+    {
+     "character_id": "<id:23>",
+     "delivery": "",
+     "id": "<id:20>",
+     "ord": 0,
+     "production_id": "<id:8>",
+     "scene_id": "<id:5>",
+     "speaker": "Sunil",
+     "text": "මට තව එක අවුරුද්දක් දෙන්න.",
+     "words": 5
+    }
+   ],
+   "<id:6>": []
+  },
+  "llm": [
+   {
+    "phase": "structure_build.architect",
+    "schema": "episode_names",
+    "system": "sha:da1bb65ab0bc",
+    "tier": "ultra"
+   }
+  ],
+  "look_rows": [],
+  "question_rows": {},
+  "scene_rows": {
+   "<id:1>": {
+    "envelope_s": 45,
+    "episode_id": "<id:7>",
+    "fit_report": {},
+    "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+    "id": "<id:1>",
+    "location_id": "<id:10>",
+    "number": 1,
+    "production_id": "<id:8>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:11>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kamala does not turn around. She keeps stirring the pan."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:12>",
+      "text": ""
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "dawn",
+    "title": "Nimal comes home"
+   },
+   "<id:2>": {
+    "envelope_s": 45,
+    "episode_id": "<id:7>",
+    "fit_report": {},
+    "heading": "EXT. KALUGALA HARBOUR - BREAKWATER - MORNING",
+    "id": "<id:2>",
+    "location_id": "<id:13>",
+    "number": 2,
+    "production_id": "<id:8>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Sunil checks the nets on the family boat, the SEETHA. Waves slap the hull. Nimal walks down the breakwater, shading his eyes against the sun."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:14>",
+      "text": ""
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:15>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Sunil stops working and stares at his brother."
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "morning",
+    "title": "Kalugala Harbour, breakwater, morning"
+   },
+   "<id:3>": {
+    "envelope_s": 45,
+    "episode_id": "<id:7>",
+    "fit_report": {},
+    "heading": "INT. AUCTION SHED - DAY",
+    "id": "<id:3>",
+    "location_id": "<id:16>",
+    "number": 3,
+    "production_id": "<id:8>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Fish are laid out on wet concrete. Mrs. Perera pours tea from a kettle into glasses and hands one to Nimal, watching him closely. Buyers shout prices in the background."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:17>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Nimal smiles and does not answer. He looks at the ledger of debts pinned to the wall."
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "day",
+    "title": "Auction Shed, day"
+   },
+   "<id:4>": {
+    "envelope_s": 45,
+    "episode_id": "<id:7>",
+    "fit_report": {},
+    "heading": "EXT. KAMALA'S HOUSE - FRONT YARD - EVENING",
+    "id": "<id:4>",
+    "location_id": "<id:10>",
+    "number": 4,
+    "production_id": "<id:8>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Under the jak tree, Nimal spreads a guesthouse plan on a plastic table. Kamala sweeps leaves and refuses to look at it."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:18>",
+      "text": ""
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:19>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "She drops the broom and walks inside. The plan flutters off the table."
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "evening",
+    "title": "Kamala'S House, front yard, evening"
+   },
+   "<id:5>": {
+    "envelope_s": 45,
+    "episode_id": "<id:7>",
+    "fit_report": {},
+    "heading": "EXT. KALUGALA HARBOUR - NIGHT",
+    "id": "<id:5>",
+    "location_id": "<id:13>",
+    "number": 5,
+    "production_id": "<id:8>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "The lighthouse beam sweeps across the water. Sunil sits alone on the bow of the SEETHA, writing tide times in his notebook by lantern light. Nimal approaches with two cups of tea."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:20>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Nimal sits beside him. They watch the beam pass. Neither speaks."
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "night",
+    "title": "Kalugala Harbour, night"
+   },
+   "<id:6>": {
+    "envelope_s": 45,
+    "episode_id": "<id:7>",
+    "fit_report": {},
+    "heading": "INT. KAMALA'S HOUSE - BEDROOM - NIGHT",
+    "id": "<id:6>",
+    "location_id": "<id:10>",
+    "number": 6,
+    "production_id": "<id:8>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kamala opens a tin trunk and takes out her husband's fishing licence. She holds it to the window light. For the first time, her face breaks."
+     },
+     {
+      "kind": "cut",
+      "line_id": null,
+      "text": "FADE OUT."
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "night",
+    "title": "Kamala'S House, bedroom, night"
+   }
+  }
+ },
+ "input": {
+  "docs": [
+   {
+    "corpus": "harbour-lights-ep01-script.fountain",
+    "filename": "ep01.fountain",
+    "role": "script"
+   }
+  ]
+ },
+ "model": {
+  "enabled": true,
+  "replies": {
+   "episode_names": [
+    {
+     "scenes": [
+      {
+       "number": 1,
+       "title": "Nimal comes home"
+      }
+     ],
+     "synopsis": "Nimal returns."
+    }
+   ]
+  }
+ },
+ "service": "structure_build"
+}

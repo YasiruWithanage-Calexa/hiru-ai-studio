@@ -1,0 +1,18 @@
+id: dialogue_check
+kind: tool
+version: 1
+summary: "Checks which of some operations would put words in a line that the person did not write."
+status: active
+owner: director
+entry: tool:run
+ports: []
+uses: [scene_kernel, verbatim_check]
+effect: read
+guide: |
+  For each operation that changes a spoken line (block.set, block.insert, block.remove) says whether every word is one the
+  person wrote in this conversation, and lists the words that are not theirs. The person's words come from the run: you do
+  not pass them and you cannot widen them. Removing a line carries no words and always passes. Operations that do not touch
+  a line are listed as not dialogue.
+  Example: {"ops": [{"op": "block.set", "block": 1, "kind": "dialogue", "value": "Come home now."}]}.
+  Do not use it to try the operation (use plan_try; a line change is refused there unless a person makes it), to translate
+  a line (a translator agent does that, as a card), or to read a line (use dialogue_read).

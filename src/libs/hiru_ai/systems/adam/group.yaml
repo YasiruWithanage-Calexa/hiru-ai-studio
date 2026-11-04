@@ -1,0 +1,17 @@
+id: adam
+version: 1
+summary: "Shot Planner Adam: a director's shot planner built beside script_split (plan/2026-11-04b)."
+owner: director
+status: active            # disabled switches off every Adam part in this layer
+# The removal list (`hiru-ai remove --group adam`): repo folders that go with the group, beside its folder in each
+# hiru_ai layer. A folder that does not exist yet is skipped. Keep this in step with plan/2026-11-04b §5.0 rule 6.
+folders:
+  - src/libs/contracts/adam
+  - src/services/shot_planner_adam
+  - tests/adam
+  - tests/eval/adam
+  - docs/adam
+outside:
+  - "hiru-ai-studio-interface: src/features/adam/ and its mount points (a tab or button) in the scene and director features"
+  - "the structure build hop (the one branch on productions.settings.shot_planner) and the registration of the function in task_manager.FUNCTIONS, deploy-functions.yml and scripts/start-functions.ps1"
+  - "the migration that adds shots.card, shots.planner, scenes.adam and the production setting (left in place: the columns stay unused)"

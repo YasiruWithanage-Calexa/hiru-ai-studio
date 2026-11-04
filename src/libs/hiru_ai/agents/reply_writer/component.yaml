@@ -1,0 +1,16 @@
+id: reply_writer
+kind: agent
+version: 1
+summary: "Writes the director's reply to the person, streamed as it is written, from the facts of the turn."
+status: active
+owner: director
+model: medium
+shape: text
+phase: director.reply
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage]
+writes_dialogue: false

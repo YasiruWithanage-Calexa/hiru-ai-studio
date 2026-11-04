@@ -1,0 +1,16 @@
+id: conductor
+kind: agent
+version: 1
+summary: "Reads one message from the person and decides its lane (chat, edit, craft, reshape, options, cannot, translate)."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: director.conduct
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

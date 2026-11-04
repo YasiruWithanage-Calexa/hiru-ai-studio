@@ -1,0 +1,24 @@
+- name: a two-line episode
+  input:
+    number: 1
+    title: The Harbour
+    duration_s: 60
+    body: "Nimal waits by the boat.\nKamala: \"You came.\""
+    canon: [ { kind: character, name: Kamala }, { kind: prop, name: Ledger } ]
+  reply:
+    scenes:
+      - int_ext: EXT
+        location: Harbour
+        sub_location: ""
+        time_of_day: NIGHT
+        seconds: 60
+        blocks:
+          - { kind: action, speaker: "", delivery: "", text: "Nimal waits by the boat." }
+          - { kind: dialogue, speaker: Kamala, delivery: "", text: "You came." }
+  expect: { scenes: [ { int_ext: EXT, location: Harbour, seconds: 60 } ] }
+- name: no canon and no stated length
+  input: { number: 2, title: "", body: "It rains." }
+  reply:
+    scenes:
+      - { int_ext: "", location: "", sub_location: "", time_of_day: "", seconds: 4, blocks: [ { kind: action, speaker: "", delivery: "", text: "It rains." } ] }
+  expect: { scenes: [ { seconds: 4 } ] }

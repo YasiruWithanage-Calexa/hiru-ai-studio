@@ -1,0 +1,16 @@
+id: editor
+kind: agent
+version: 1
+summary: "Decides where cuts fall: splits, merges and regroups on the director's board."
+status: active
+owner: director
+model: high
+shape: structured
+phase: director.timing
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

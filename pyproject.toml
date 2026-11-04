@@ -29,26 +29,38 @@ dev = [
     "pytest-asyncio>=0.24",
     "ruff>=0.8",
     "mypy>=1.13",
+    "import-linter==2.15",
     "functions-framework==3.10.2",
     "pypdf==6.19.0",
     # structure_build / canon_extract (each service pins its own in requirements.txt)
     "langgraph==1.2.16",
     "langgraph-checkpoint-postgres==3.2.0",
     "psycopg[binary]==3.3.6",
+    # hiru_ai (plan/2026-11-03): the exact set is requirements/hiru_ai_openai.txt (hashes)
+    "langchain==1.4.4",
+    "langchain-core==1.7.0",
+    "langchain-openai==1.7.2",
     # shot_producer
     "PyYAML>=6.0,<7",
 ]
 
+[project.scripts]
+hiru-ai = "hiru_ai.cli:main"
+
 [tool.setuptools.packages.find]
-# "src" holds `api`; "src/libs" exposes the shared `contracts` package at top level.
+# "src" holds `api`; "src/libs" exposes the shared `contracts` and `hiru_ai` packages at top level.
 # Services under src/services/* are NOT installed: each runs from its own folder
 # (functions-framework --source locally, the zip root in production) and bundles `contracts`.
 where = ["src", "src/libs"]
-include = ["api*", "contracts*"]
+include = ["api*", "contracts*", "hiru_ai*"]
+
+[tool.setuptools.package-data]
+hiru_ai = ["**/*.yaml", "**/*.md", "**/*.tmpl", "**/*.csv"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = ["tests"]
+# src/libs/hiru_ai holds the tests that live with each part (ADR 0006)
+testpaths = ["tests", "src/libs/hiru_ai"]
 pythonpath = ["src", "src/libs"]
 
 [tool.ruff]
@@ -69,6 +81,212 @@ ignore = [
 [tool.mypy]
 python_version = "3.12"
 mypy_path = ["src", "src/libs"]
-packages = ["api", "contracts"]
+packages = ["api", "contracts", "hiru_ai"]
 ignore_missing_imports = true
 warn_unused_ignores = true
+# A part keeps its tests in its own folder (ADR 0006); like tests/, they are run, not type-checked.
+exclude = ["^src/libs/hiru_ai/[a-z_]+/([a-z_]+/)?[a-z_]+/tests/"]
+
+# Import boundaries as architecture fitness functions (plan/2026-11-03 Phase 0 §4). Run with
+# `python scripts/lint_imports.py` (it puts each service folder on the path, as Cloud Run does).
+# tests/test_isolation.py stays as the allow-list check until Phase 8 retires it.
+[tool.importlinter]
+root_packages = [
+    "api", "contracts", "hiru_ai", "openai", "langchain_openai",
+    "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
+    "director_chat", "shot_producer", "frame_render",
+]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "contracts is a leaf: no api, no service, no infrastructure library"
+type = "forbidden"
+source_modules = ["contracts"]
+forbidden_modules = [
+    "api", "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
+    "director_chat", "shot_producer", "frame_render", "hiru_ai",
+    "fastapi", "starlette", "httpx", "openai", "supabase", "langgraph", "psycopg",
+]
+
+[[tool.importlinter.contracts]]
+name = "services never import the api"
+type = "forbidden"
+source_modules = [
+    "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
+    "director_chat", "shot_producer", "frame_render",
+]
+forbidden_modules = ["api"]
+
+[[tool.importlinter.contracts]]
+name = "the api never imports a service"
+type = "forbidden"
+source_modules = ["api"]
+forbidden_modules = [
+    "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
+    "director_chat", "shot_producer", "frame_render",
+]
+
+[[tool.importlinter.contracts]]
+name = "services are independent of each other"
+type = "independence"
+modules = [
+    "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
+    "director_chat", "shot_producer", "frame_render",
+]
+
+# ── hiru_ai (plan/2026-11-03 Phase 1, §5.8) ──
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai layers: each layer imports only the layers below it"
+type = "layers"
+layers = [
+    "hiru_ai.systems",
+    "hiru_ai.panels",
+    "hiru_ai.agents",
+    "hiru_ai.tools | hiru_ai.steps",
+    "hiru_ai.knowledge_bases",
+    "hiru_ai.rag",
+    "hiru_ai.core",
+]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai parts never import each other (found by id through the registry)"
+type = "independence"
+modules = ["hiru_ai.agents.*"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai tools never import each other"
+type = "independence"
+modules = ["hiru_ai.tools.*"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai steps never import each other"
+type = "independence"
+modules = ["hiru_ai.steps.*"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai panels never import each other"
+type = "independence"
+modules = ["hiru_ai.panels.*"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai systems never import each other"
+type = "independence"
+modules = ["hiru_ai.systems.*"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai knowledge bases never import each other"
+type = "independence"
+modules = ["hiru_ai.knowledge_bases.*"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai reaches the model only through core.llm"
+type = "forbidden"
+source_modules = ["hiru_ai"]
+forbidden_modules = ["openai", "langchain_openai"]
+ignore_imports = ["hiru_ai.core.llm -> openai", "hiru_ai.core.llm -> langchain_openai"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai never imports the api or a service"
+type = "forbidden"
+source_modules = ["hiru_ai"]
+forbidden_modules = [
+    "api", "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
+    "director_chat", "shot_producer", "frame_render",
+]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai adapters import only core and contracts (plan/2026-11-03 Phase 2)"
+type = "forbidden"
+source_modules = ["hiru_ai.adapters"]
+forbidden_modules = [
+    "hiru_ai.rag", "hiru_ai.knowledge_bases", "hiru_ai.tools", "hiru_ai.steps", "hiru_ai.agents", "hiru_ai.panels",
+    "hiru_ai.systems", "hiru_ai.cli", "api", "echo_service", "doc_ingest", "script_split", "structure_build",
+    "canon_extract", "director_chat", "shot_producer", "frame_render",
+]
+
+[[tool.importlinter.contracts]]
+name = "only a composition root imports an adapter (a part asks the run for its port)"
+type = "forbidden"
+source_modules = [
+    "hiru_ai.core", "hiru_ai.rag", "hiru_ai.knowledge_bases", "hiru_ai.tools", "hiru_ai.steps", "hiru_ai.agents",
+    "hiru_ai.panels", "hiru_ai.systems",
+]
+forbidden_modules = ["hiru_ai.adapters"]
+
+[[tool.importlinter.contracts]]
+name = "hiru_ai parts reach the database and storage only through ports"
+type = "forbidden"
+source_modules = [
+    "hiru_ai.rag", "hiru_ai.knowledge_bases", "hiru_ai.tools", "hiru_ai.steps", "hiru_ai.agents", "hiru_ai.panels",
+    "hiru_ai.systems",
+]
+forbidden_modules = ["httpx", "supabase", "psycopg"]
+allow_indirect_imports = true  # the model door (core.llm) uses httpx through openai, by design
+
+# A migrated function reaches the AI only through its system (and the run context and adapters that build its ports):
+# never an agent, step, tool, panel or knowledge base directly. Add a service here when its system lands.
+[[tool.importlinter.contracts]]
+name = "a migrated function reaches hiru_ai only through its system, the core and the adapters"
+type = "forbidden"
+source_modules = ["echo_service", "doc_ingest", "canon_extract", "structure_build", "frame_render", "script_split",
+                  "shot_producer", "director_chat"]
+forbidden_modules = [
+    "hiru_ai.agents", "hiru_ai.steps", "hiru_ai.tools", "hiru_ai.panels", "hiru_ai.knowledge_bases", "hiru_ai.rag",
+    "hiru_ai.cli",
+]
+allow_indirect_imports = true  # its system may use them; the function itself may not
+
+# Phase 3: the API shares the pure half of retrieval with the retrievers (rag.ranking, rag.scope, rag.hits) and nothing
+# else, so the API image needs no LangChain. Its model calls move onto get_llm with the rest of ai.py (Phase 6, step 9).
+[[tool.importlinter.contracts]]
+name = "the api reaches hiru_ai only through the pure rag modules"
+type = "forbidden"
+source_modules = ["api"]
+forbidden_modules = [
+    "hiru_ai.core", "hiru_ai.agents", "hiru_ai.tools", "hiru_ai.steps", "hiru_ai.panels", "hiru_ai.systems",
+    "hiru_ai.knowledge_bases", "hiru_ai.adapters", "hiru_ai.cli", "hiru_ai.rag.retrievers", "hiru_ai.rag.rerankers",
+    "hiru_ai.rag.embeddings", "hiru_ai.rag.knowledge",
+]
+
+# Phase 5: a panel reaches its members by id through the kit (core.panels), never by importing an agent, tool or step.
+[[tool.importlinter.contracts]]
+name = "hiru_ai panels reach agents, steps and tools only by id"
+type = "forbidden"
+source_modules = ["hiru_ai.panels"]
+forbidden_modules = ["hiru_ai.agents", "hiru_ai.steps", "hiru_ai.tools"]
+
+# plan/2026-11-04b §5.0: Adam's parts live in an `adam` folder inside each layer. The contracts above already cover
+# them (the layers contract spans hiru_ai.<layer>.adam; the `hiru_ai.<layer>.*` independence contracts keep each `adam`
+# folder independent of every existing part of its layer). These keep Adam's parts independent of each other.
+# tests/adam/test_isolation.py says what import-linter cannot: an Adam module imports only its own group, a lower
+# layer's, the core, the rag and `contracts`; and nothing outside the group imports into it.
+[[tool.importlinter.contracts]]
+name = "adam agents never import each other"
+type = "independence"
+modules = ["hiru_ai.agents.adam.*"]
+
+[[tool.importlinter.contracts]]
+name = "adam steps never import each other"
+type = "independence"
+modules = ["hiru_ai.steps.adam.*"]
+
+[[tool.importlinter.contracts]]
+name = "adam panels never import each other"
+type = "independence"
+modules = ["hiru_ai.panels.adam.*"]
+
+[[tool.importlinter.contracts]]
+name = "adam tools never import each other"
+type = "independence"
+modules = ["hiru_ai.tools.adam.*"]
+
+[[tool.importlinter.contracts]]
+name = "adam systems never import each other"
+type = "independence"
+modules = ["hiru_ai.systems.adam.*"]
+
+[[tool.importlinter.contracts]]
+name = "adam knowledge bases never import each other"
+type = "independence"
+modules = ["hiru_ai.knowledge_bases.adam.*"]

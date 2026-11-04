@@ -1,0 +1,88 @@
+# MASTER (draft) for father_refuses. Written by Claude for the person and a Hiru director to correct (plan §12 D6).
+scene: father_refuses
+status: draft
+author: claude (draft for the person and a Hiru director)
+director_note: >
+  The father never raises his voice; the argument is in what he looks at. So the camera looks where he looks (the
+  cups, the kettle, the worn stool) and lets us feel the size of the judgement, and it stays with Kasun, whose pride
+  is the thing at stake. His pause with the kettle is the one break in rhythm: he is deciding not to be small. The
+  last image is Kasun, still standing at his stall, with the road empty where the car was.
+plan:
+  analysis:
+    about: A father measures a man by his stall, and the man refuses to be measured.
+    dramatic_question: Will Kasun let the judgement stand?
+    value: { start: hope, end: resolve }
+    tone: quiet, held
+    beats:
+      - { blocks: [0, 1], action: "the father arrives and asks the question", reaction: "Kasun feels measured" }
+      - { blocks: [2, 3], action: "Kasun answers; the father looks over the stall", reaction: "the stall looks small" }
+      - { blocks: [4, 5], action: "the father says what he thinks", reaction: "Kasun puts the kettle down and holds", turn: true, reactor: Kasun }
+      - { blocks: [6, 7], action: "Kasun answers; the father leaves", reaction: "he stays standing" }
+    wants: { Kasun: "to be seen as worthy", Father: "to protect his daughter" }
+    obstacles: ["the stall is small", "pride on both sides"]
+    pov_owner: { start: Kasun, end: Kasun, why: "the judgement lands on him" }
+    audience_knows: []
+    baseline: { blocks: [], state: "the scene opens mid-evening, already at work" }
+    break: { block: 4 }
+    aftermath: { state: "alone, unbowed" }
+    key_moment: { block: 5, why: "the kettle goes down and he does not answer at once" }
+  treatment:
+    name: "held, then straight"
+    concept: "we make the viewer feel the weight of being measured, then the quiet of standing up"
+    pov: "Kasun's"
+    sound_concept: "traffic and steam, thinning to the clink of the kettle, then the car pulling away"
+    sections:
+      - { beats: [0], camera_behaviour: "wide, still", size_band: [WS, MS], sound_state: "busy road" }
+      - { beats: [1], camera_behaviour: "the camera follows the father's eyes", size_band: [MCU, INSERT], sound_state: "busy road" }
+      - { beats: [2], camera_behaviour: "close, still", size_band: [MS, CU], sound_state: "thin" }
+      - { beats: [3], camera_behaviour: "steady, then wide", size_band: [MCU, WS], sound_state: "car pulling away" }
+    size_arc: [WS, MCU, CU, WS]
+    motif: "the kettle"
+    plant: { object: kettle, plant_moment: m2, payoff_moment: m8 }
+    rhythm: ["steady", "watching", "held", "settling"]
+    rhythm_break: { moment: m7, kind: long_hold }
+    entry: "as he pours"
+    exit: "the car leaves"
+    ending_image: "Kasun at his stall, the road empty"
+    ending_moment: m11
+    off_speaker: false
+  moments:
+    - { id: m1, tier: script, serves: [b0], who: [Kasun, Father], seen: "Kasun pours tea at his three-wheeler; the father arrives and stands looking over the stall", heard: "traffic, steam", feeling: "an ordinary evening, interrupted", seconds_need: 4.0 }
+    - { id: m2, tier: elaboration, kind: plant, serves: [b5], objects: [kettle], seen: "the kettle steaming on the counter", feeling: "nothing yet", seconds_need: 0 }
+    - { id: m3, tier: script, serves: [b1], who: [Father], lines: [L1], seen: "the father looking over the stall as he asks", feeling: "measuring", seconds_need: 2.5 }
+    - { id: m4, tier: script, serves: [b2], who: [Kasun], lines: [L2], seen: "Kasun answers, holding his cup", feeling: "guarded pride", seconds_need: 2.5 }
+    - { id: m5, tier: script, serves: [b3], who: [Father], objects: [cups, kettle, stool], seen: "his eyes pass over the cups, the kettle, the worn stool", feeling: "the stall looks small", seconds_need: 3.0 }
+    - { id: m6, tier: script, serves: [b4], who: [Father, Kasun], lines: [L4], seen: "the father speaks; Kasun takes it in", feeling: "judgement", seconds_need: 3.0 }
+    - { id: m7, tier: elaboration, kind: hold, serves: [b5], who: [Kasun], seen: "Kasun's hand on the kettle, held; he does not answer at once", feeling: "deciding not to be small", seconds_need: 3.0 }
+    - { id: m8, tier: script, serves: [b5], who: [Kasun], objects: [kettle], seen: "Kasun sets down the kettle", feeling: "resolve", seconds_need: 2.0 }
+    - { id: m9, tier: script, serves: [b6], who: [Kasun], lines: [L6], seen: "Kasun looks the father in the eye as he says it", feeling: "steady", seconds_need: 3.5 }
+    - { id: m10, tier: script, serves: [b7], who: [Father, Kasun], seen: "the father looks at him a long moment, then turns and walks to his car", feeling: "unreadable", seconds_need: 6.0 }
+    - { id: m11, tier: elaboration, kind: empty_frame, serves: [b7], who: [Kasun], seen: "Kasun still standing at his stall, the road empty where the car was", feeling: "unbowed", seconds_need: 2.0 }
+  staging:
+    marks:
+      - { moment: m1, who: Kasun, zone: stall, facing: father }
+      - { moment: m1, who: Father, zone: road_side, facing: stall }
+      - { moment: m10, who: Father, zone: car, facing: away }
+      - { moment: m10, who: Kasun, zone: stall, facing: father }
+    moves:
+      - { moment: m10, who: Father, from_zone: road_side, to_zone: car, why: exit }
+  cards:
+    - { number: 1, moments: [m1, m2], title: "The father arrives", size: WS, arrangement: group, angle: eye, lens_feel: wide, movement: static, focus: { kind: deep }, composition: { frame_side: center }, axis: A, beats: [{ window: [0, 6], action: "the father arrives at the stall", camera: "still wide" }], sound: { ambience: "traffic and steam" }, cut_in: { link: cut }, purpose: "The world as it is", emotional_beat: "ordinary", take_s: 6 }
+    - { number: 2, moments: [m3], title: "How much do you earn", size: MCU, arrangement: single, subject: Father, angle: eye, lens_feel: normal, movement: static, focus: { kind: shallow }, composition: { frame_side: right }, eyeline: left, axis: A, beats: [{ window: [0, 4], action: "he asks", performance: "his eyes on the stall, not on Kasun" }], lines: [{ line_id: L1, on_speaker: true }], cut_in: { link: cut, motive: line }, purpose: "The question", emotional_beat: "measuring", take_s: 4 }
+    - { number: 3, moments: [m4], title: "Enough to live", size: MCU, arrangement: single, subject: Kasun, angle: eye, lens_feel: normal, movement: static, focus: { kind: shallow }, composition: { frame_side: left }, eyeline: right, axis: A, beats: [{ window: [0, 4], action: "he answers", performance: "his grip tightens on the cup" }], lines: [{ line_id: L2, on_speaker: true }], cut_in: { link: cut, motive: line }, purpose: "Guarded pride", emotional_beat: "guarded", take_s: 4 }
+    - { number: 4, moments: [m5], title: "What he sees", size: INSERT, arrangement: single, angle: high, lens_feel: normal, movement: pan, focus: { kind: shallow }, beats: [{ window: [0, 4], action: "the cups, the kettle, the worn stool", camera: "a slow pan with his gaze" }], cut_in: { link: cut, motive: look }, purpose: "The stall looks small", emotional_beat: "smallness", take_s: 4 }
+    - { number: 5, moments: [m6], title: "Not what my daughter is used to", size: MS, arrangement: ots, subject: Father, angle: low, lens_feel: normal, movement: static, focus: { kind: shallow }, composition: { foreground: "Kasun's shoulder", frame_side: right }, eyeline: left, axis: A, beats: [{ window: [0, 4], action: "he says it", performance: "calm, final" }], lines: [{ line_id: L4, on_speaker: true }], cut_in: { link: cut, motive: line }, purpose: "The judgement", emotional_beat: "judgement", take_s: 4 }
+    - { number: 6, moments: [m7, m8], title: "He does not answer at once", size: CU, arrangement: single, subject: Kasun, angle: eye, lens_feel: long, movement: push_in, focus: { kind: shallow }, composition: { frame_side: left }, eyeline: down, axis: A, beats: [{ window: [0, 4], action: "his hand on the kettle, held", performance: "a breath held", camera: "slow push-in" }, { window: [4, 6], action: "he sets the kettle down", performance: "deliberate" }], sound: { silence: true }, cut_in: { link: cut, motive: look }, rhythm_break: true, purpose: "Deciding not to be small", emotional_beat: "resolve", take_s: 6 }
+    - { number: 7, moments: [m9], title: "I will change it", size: MCU, arrangement: single, subject: Kasun, angle: eye, lens_feel: normal, movement: static, focus: { kind: shallow }, composition: { frame_side: left }, eyeline: right, axis: A, beats: [{ window: [0, 6], action: "he looks the father in the eye and says it", performance: "steady" }], lines: [{ line_id: L6, on_speaker: true }], cut_in: { link: cut, motive: line }, purpose: "The answer", emotional_beat: "steady", take_s: 6 }
+    - { number: 8, moments: [m10, m11], title: "Left standing", size: WS, arrangement: single, subject: Kasun, angle: eye, lens_feel: wide, movement: static, focus: { kind: deep }, composition: { negative_space: "the empty road", frame_side: left }, axis: A, beats: [{ window: [0, 4], action: "the father turns and walks to his car", camera: "locked off" }, { window: [4, 8], action: "Kasun stands at his stall; the road is empty", performance: "unbowed" }], sound: { ambience: "the car pulling away, the road carrying on", carries_over: "into the next scene" }, cut_in: { link: cut, motive: action }, purpose: "Left standing", emotional_beat: "unbowed", take_s: 8 }
+  sound_map:
+    sections:
+      - { blocks: [0, 1], ambience: "traffic and steam", state: "busy road" }
+      - { blocks: [2, 3], ambience: "traffic and steam", state: "busy road" }
+      - { blocks: [4, 5], ambience: "traffic thinning to the clink of the kettle", state: "thin" }
+      - { blocks: [6, 7], ambience: "the car pulling away", state: "car pulling away" }
+    subjective:
+      - { moment: m7, kind: narrowing, description: "the traffic thins to the sound of the kettle" }
+    silences: []
+    pre_laps: []
+    music: []

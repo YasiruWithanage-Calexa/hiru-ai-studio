@@ -1,0 +1,19 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	draft(draft)
+	draft\2ework(draft.work)
+	draft\2egather(draft.gather)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> draft;
+	draft -.-> draft\2egather;
+	draft -.-> draft\2ework;
+	draft\2ework --> draft\2egather;
+	draft\2egather --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

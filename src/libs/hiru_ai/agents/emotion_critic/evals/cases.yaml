@@ -1,0 +1,11 @@
+- name: a turn whose reaction is not seen
+  input:
+    listing: "[0] ACTION (act, 1.5 s): Her phone rings. [FEELING TURNS HERE]"
+    shot_list: "S01 WIDE 4s ambient blocks [0]"
+    reading: "about: a warm moment broken by a call"
+  reply: { acceptable: false, notes: [ { note: "S01: the face that receives the turn is not in frame", severity: 1 } ] }
+  expect: { acceptable: false, notes: [ { severity: 1 } ] }
+- name: the lens cannot answer
+  input: { listing: "[0] ACTION (act, 1.5 s): It rains.", shot_list: "S01 WIDE 4s ambient blocks [0]" }
+  model: unavailable
+  expect: { acceptable: true, notes: [] }

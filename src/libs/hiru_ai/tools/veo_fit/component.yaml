@@ -1,0 +1,13 @@
+id: veo_fit
+kind: tool
+version: 1
+summary: "Says which Veo length (4, 6 or 8 s) a number of words or seconds needs, and by how much it overruns; never trims."
+status: active
+owner: shot_producer
+entry: tool:run
+ports: []
+effect: read
+guide: |
+  Says which Veo length (4, 6 or 8 seconds) a number of words or seconds needs, and by how much it overruns. It reports;
+  it never trims a line. Use it for a single line or a single shot. Example: {"words": 19}.
+  Do not use it to check a whole scene (use timing_check) or to change a line.

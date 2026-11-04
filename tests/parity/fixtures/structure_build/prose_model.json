@@ -1,0 +1,562 @@
+{
+ "case": "prose_model",
+ "description": "A model's cut that keeps every spoken line is used",
+ "expected": {
+  "canon_rows": [
+   {
+    "aliases": [
+     "කමලා"
+    ],
+    "code": "C01",
+    "id": "<id:14>",
+    "kind": "character",
+    "name": "Kamala"
+   },
+   {
+    "aliases": [],
+    "code": "C02",
+    "id": "<id:15>",
+    "kind": "character",
+    "name": "Nimal"
+   },
+   {
+    "aliases": [],
+    "code": "C03",
+    "id": "<id:16>",
+    "kind": "character",
+    "name": "Sunil"
+   },
+   {
+    "aliases": [],
+    "code": "C04",
+    "id": "<id:17>",
+    "kind": "character",
+    "name": "Mrs. Perera"
+   },
+   {
+    "aliases": [],
+    "code": "L01",
+    "id": "<id:18>",
+    "kind": "location",
+    "name": "Kamala's house"
+   },
+   {
+    "aliases": [],
+    "code": "L02",
+    "id": "<id:19>",
+    "kind": "location",
+    "name": "Kalugala harbour breakwater"
+   },
+   {
+    "aliases": [],
+    "code": "L03",
+    "id": "<id:20>",
+    "kind": "location",
+    "name": "Auction shed"
+   },
+   {
+    "aliases": [],
+    "code": "C05",
+    "core": false,
+    "id": "<id:11>",
+    "kind": "character",
+    "name": "Kasun",
+    "production_id": "<id:3>"
+   },
+   {
+    "aliases": [],
+    "code": "C06",
+    "core": false,
+    "id": "<id:12>",
+    "kind": "character",
+    "name": "Anudi",
+    "production_id": "<id:3>"
+   },
+   {
+    "aliases": [],
+    "code": "C07",
+    "core": false,
+    "id": "<id:13>",
+    "kind": "character",
+    "name": "Father",
+    "production_id": "<id:3>"
+   }
+  ],
+  "deliveries": [
+   {
+    "deleted_scenes": 0,
+    "episodes": 1,
+    "kept_approved": 0,
+    "looks": 0,
+    "new_characters": 3,
+    "scenes": 1
+   }
+  ],
+  "episode_rows": {
+   "<id:2>": {
+    "id": "<id:2>",
+    "number": 1,
+    "production_id": "<id:3>",
+    "source_document_ids": [
+     "<id:4>"
+    ],
+    "status": "building",
+    "synopsis": "",
+    "title": "The First Meeting"
+   }
+  },
+  "jobs": {
+   "advanced": [
+    {
+     "again": false,
+     "cursor": 1,
+     "state": {
+      "build": true,
+      "previous": {
+       "deleted_scenes": 0,
+       "episodes": 1,
+       "kept_approved": 0,
+       "looks": 0,
+       "new_characters": 3,
+       "scenes": 1
+      },
+      "scene_ids": [
+       "<id:1>"
+      ]
+     }
+    }
+   ],
+   "events": [
+    {
+     "agent": "script_architect",
+     "text": "drama.txt tells its episodes as prose. Cut episodes 1 into scenes by the model.",
+     "type": "agent_step"
+    },
+    {
+     "stage": "episodes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "stage": "episodes",
+     "state": "done",
+     "text": "1 episodes",
+     "type": "stage"
+    },
+    {
+     "stage": "scenes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "script_architect",
+     "text": "1 episodes and 1 scenes from the scripts.",
+     "type": "agent_step"
+    },
+    {
+     "agent": "script_architect",
+     "text": "Added to the canon as drafts: Kasun, Anudi, Father",
+     "type": "warning"
+    },
+    {
+     "stage": "scenes",
+     "state": "done",
+     "text": "1 scenes",
+     "type": "stage"
+    }
+   ],
+   "fields": {},
+   "status": "running"
+  },
+  "line_rows": {
+   "<id:1>": [
+    {
+     "character_id": "<id:11>",
+     "delivery": "",
+     "id": "<id:5>",
+     "ord": 0,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Kasun",
+     "text": "Miss! Your phone!",
+     "words": 3
+    },
+    {
+     "character_id": "<id:12>",
+     "delivery": "",
+     "id": "<id:6>",
+     "ord": 1,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Anudi",
+     "text": "Oh… thank you.",
+     "words": 3
+    },
+    {
+     "character_id": "<id:12>",
+     "delivery": "",
+     "id": "<id:7>",
+     "ord": 2,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Anudi",
+     "text": "You made all this yourself?",
+     "words": 5
+    },
+    {
+     "character_id": "<id:11>",
+     "delivery": "",
+     "id": "<id:8>",
+     "ord": 3,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Kasun",
+     "text": "Started with Rs. 5,000. I'm trying to make it bigger.",
+     "words": 10
+    },
+    {
+     "character_id": "<id:13>",
+     "delivery": "",
+     "id": "<id:9>",
+     "ord": 4,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Father",
+     "text": "Anudi, where are you? Come home. We need to talk about your marriage.",
+     "words": 13
+    },
+    {
+     "character_id": "<id:12>",
+     "delivery": "",
+     "id": "<id:10>",
+     "ord": 5,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Anudi",
+     "text": "Maybe… I'll see you again.",
+     "words": 5
+    }
+   ]
+  },
+  "llm": [
+   {
+    "phase": "structure_build.prose",
+    "schema": "prose_scenes",
+    "system": "sha:7563f9d2fdf7",
+    "tier": "high"
+   },
+   {
+    "phase": "structure_build.architect",
+    "schema": "episode_names",
+    "system": "sha:da1bb65ab0bc",
+    "tier": "ultra"
+   }
+  ],
+  "look_rows": [],
+  "question_rows": {},
+  "scene_rows": {
+   "<id:1>": {
+    "envelope_s": 60,
+    "episode_id": "<id:2>",
+    "fit_report": {},
+    "heading": "SCENE 1",
+    "id": "<id:1>",
+    "location_id": null,
+    "number": 1,
+    "production_id": "<id:3>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "It was raining heavily in Colombo."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kasun stood beside his small three-wheeler, selling homemade short eats and tea to office workers."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "His clothes were simple, but his eyes were full of ambition. “One day… I'll have my own restaurant,” he told himself."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Across the road, Anudi stepped out of a comfortable family car, dressed elegantly and holding an umbrella."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "She accidentally dropped her phone near Kasun's three-wheeler."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kasun picked it up and ran after her."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:5>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Anudi turned around."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:6>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "She looked at his little business."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:7>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kasun smiled."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:8>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Anudi smiled back."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Suddenly, her phone rang."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "It was her father."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:9>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Her smile disappeared."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "She looked at Kasun one more time."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:10>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "She walked away."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kasun watched her leave."
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "He had no idea that this meeting was about to change his life."
+     }
+    ],
+    "script_version": 1,
+    "status": "draft",
+    "time_of_day": "",
+    "title": ""
+   }
+  }
+ },
+ "input": {
+  "docs": [
+   {
+    "episode": 1,
+    "filename": "drama.txt",
+    "prose": "three-episode-drama.txt",
+    "role": "bible"
+   }
+  ]
+ },
+ "model": {
+  "enabled": true,
+  "replies": {
+   "prose_scenes": [
+    {
+     "scenes": [
+      {
+       "blocks": [
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "It was raining heavily in Colombo."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Kasun stood beside his small three-wheeler, selling homemade short eats and tea to office workers."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "His clothes were simple, but his eyes were full of ambition. “One day… I'll have my own restaurant,” he told himself."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Across the road, Anudi stepped out of a comfortable family car, dressed elegantly and holding an umbrella."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "She accidentally dropped her phone near Kasun's three-wheeler."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Kasun picked it up and ran after her."
+        },
+        {
+         "delivery": "",
+         "kind": "dialogue",
+         "speaker": "Kasun",
+         "text": "Miss! Your phone!"
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Anudi turned around."
+        },
+        {
+         "delivery": "",
+         "kind": "dialogue",
+         "speaker": "Anudi",
+         "text": "Oh… thank you."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "She looked at his little business."
+        },
+        {
+         "delivery": "",
+         "kind": "dialogue",
+         "speaker": "Anudi",
+         "text": "You made all this yourself?"
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Kasun smiled."
+        },
+        {
+         "delivery": "",
+         "kind": "dialogue",
+         "speaker": "Kasun",
+         "text": "Started with Rs. 5,000. I'm trying to make it bigger."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Anudi smiled back."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Suddenly, her phone rang."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "It was her father."
+        },
+        {
+         "delivery": "",
+         "kind": "dialogue",
+         "speaker": "Father",
+         "text": "Anudi, where are you? Come home. We need to talk about your marriage."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Her smile disappeared."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "She looked at Kasun one more time."
+        },
+        {
+         "delivery": "",
+         "kind": "dialogue",
+         "speaker": "Anudi",
+         "text": "Maybe… I'll see you again."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "She walked away."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "Kasun watched her leave."
+        },
+        {
+         "delivery": "",
+         "kind": "action",
+         "speaker": "",
+         "text": "He had no idea that this meeting was about to change his life."
+        }
+       ],
+       "int_ext": "",
+       "location": "",
+       "seconds": 60,
+       "sub_location": "",
+       "time_of_day": ""
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "service": "structure_build"
+}

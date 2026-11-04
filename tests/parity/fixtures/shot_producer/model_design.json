@@ -1,0 +1,769 @@
+{
+ "case": "model_design",
+ "description": "The model designs the scene in one call",
+ "expected": {
+  "audits": [
+   {
+    "action": "shots.design",
+    "actor_agent": "shot_producer",
+    "actor_user_id": "<id:11>",
+    "diff": {
+     "designed": 4,
+     "intents": 4,
+     "prompts": 0,
+     "skipped": 0
+    },
+    "entity": "job",
+    "entity_id": "<id:10>",
+    "production_id": "<id:6>"
+   }
+  ],
+  "intents": {
+   "<id:2>": {
+    "by": "rules",
+    "emotional_beat": "",
+    "heard_only": [],
+    "made_for": "v1:<digest:3>",
+    "on_screen": [
+     "<id:7>",
+     "<id:8>"
+    ],
+    "purpose": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers",
+    "split_after": null,
+    "split_reason": "",
+    "voice_source": "",
+    "what_we_see": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+    "written_at": "<ts>"
+   },
+   "<id:3>": {
+    "by": "rules",
+    "emotional_beat": "",
+    "heard_only": [],
+    "made_for": "v1:<digest:6>",
+    "on_screen": [
+     "<id:8>"
+    ],
+    "purpose": "",
+    "split_after": null,
+    "split_reason": "",
+    "voice_source": "",
+    "what_we_see": "",
+    "written_at": "<ts>"
+   },
+   "<id:4>": {
+    "by": "rules",
+    "emotional_beat": "",
+    "heard_only": [],
+    "made_for": "v1:<digest:9>",
+    "on_screen": [
+     "<id:7>"
+    ],
+    "purpose": "Kamala does not turn around. She keeps stirring the pan",
+    "split_after": null,
+    "split_reason": "",
+    "voice_source": "",
+    "what_we_see": "Kamala does not turn around. She keeps stirring the pan.",
+    "written_at": "<ts>"
+   },
+   "<id:5>": {
+    "by": "rules",
+    "emotional_beat": "",
+    "heard_only": [],
+    "made_for": "v1:<digest:12>",
+    "on_screen": [
+     "<id:7>"
+    ],
+    "purpose": "",
+    "split_after": null,
+    "split_reason": "",
+    "voice_source": "",
+    "what_we_see": "",
+    "written_at": "<ts>"
+   }
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "agent": "first_assistant_director",
+     "scene_id": "<id:1>",
+     "text": "Scene 1: what each shot is for, for 4 shots",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "scene_id": "<id:1>",
+     "text": "Scene 1: designing 4 shots",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "planner": "model",
+     "shot_id": "<id:2>",
+     "text": "S01: 50mm · dolly in",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "planner": "model",
+     "shot_id": "<id:3>",
+     "text": "S02: 50mm · dolly in",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "planner": "model",
+     "shot_id": "<id:4>",
+     "text": "S03: 50mm · dolly in",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "planner": "model",
+     "shot_id": "<id:5>",
+     "text": "S04: 50mm · dolly in",
+     "type": "progress"
+    }
+   ],
+   "fields": {
+    "result": {
+     "designed": 4,
+     "intents": 4,
+     "prompts": 0,
+     "skipped": 0
+    }
+   },
+   "status": "done"
+  },
+  "llm": [
+   {
+    "phase": "shot_producer.intent",
+    "schema": "shot_intent",
+    "system": "sha:a825348ec514",
+    "tier": "high"
+   },
+   {
+    "phase": "shot_producer.craft",
+    "schema": "craft_problems",
+    "system": "sha:02c4dca2d6bd",
+    "tier": "medium"
+   },
+   {
+    "phase": "shot_producer.scene",
+    "schema": "scene_design",
+    "system": "sha:0ab70d805058",
+    "tier": "high"
+   },
+   {
+    "phase": "shot_producer.critique",
+    "schema": "design_review",
+    "system": "sha:966e74582280",
+    "tier": "high"
+   }
+  ],
+  "prompts": [],
+  "results": [
+   {
+    "designed": 4,
+    "intents": 4,
+    "prompts": 0,
+    "skipped": 0
+   }
+  ],
+  "scene_row": {
+   "coverage": {
+    "axis": "",
+    "by": "rules",
+    "made_for": 1,
+    "motif": "",
+    "progression": "wide shot → medium close-up → wide shot → medium close-up",
+    "written_at": "<ts>"
+   },
+   "envelope_s": 60,
+   "episode": {
+    "number": 1
+   },
+   "episode_id": "<id:12>",
+   "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+   "id": "<id:1>",
+   "location_id": "<id:9>",
+   "number": 1,
+   "production_id": "<id:6>",
+   "script": [
+    {
+     "kind": "action",
+     "line_id": null,
+     "text": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers."
+    },
+    {
+     "kind": "dialogue",
+     "line_id": "<id:13>",
+     "text": ""
+    },
+    {
+     "kind": "action",
+     "line_id": null,
+     "text": "Kamala does not turn around. She keeps stirring the pan."
+    },
+    {
+     "kind": "dialogue",
+     "line_id": "<id:14>",
+     "text": ""
+    }
+   ],
+   "status": "approved",
+   "time_of_day": "DAWN"
+  },
+  "shot_rows": {
+   "<id:2>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 3,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 6,
+      "start_s": 3
+     }
+    ],
+    "block_end": 1,
+    "block_start": 0,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {
+     "designed_at": "<ts>",
+     "intent": "<digest:2>",
+     "job_id": "<id:10>",
+     "missing": [],
+     "on_screen": [],
+     "pins": {
+      "canon": {
+       "<id:7>": 2,
+       "<id:8>": 1,
+       "<id:9>": 1
+      },
+      "looks": {},
+      "script_hash": "<digest:1>",
+      "shot_version": 1
+     },
+     "planner": "model",
+     "rationale": "A slow push builds the hesitation.",
+     "recommended": {
+      "angle": "Eye level",
+      "aperture": "f/2.8",
+      "axis": "Side A · left to right",
+      "framing": "Wide shot",
+      "lens": "50mm",
+      "lighting": "Night, lamp key",
+      "movement": "Dolly in",
+      "speed": "Slow"
+     }
+    },
+    "duration_locked": false,
+    "duration_s": 6,
+    "frame_strategy": "generate",
+    "framing": "WIDE",
+    "id": "<id:2>",
+    "intent": {
+     "by": "rules",
+     "emotional_beat": "",
+     "heard_only": [],
+     "made_for": "v1:<digest:3>",
+     "on_screen": [
+      "<id:7>",
+      "<id:8>"
+     ],
+     "purpose": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers",
+     "split_after": null,
+     "split_reason": "",
+     "voice_source": "",
+     "what_we_see": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers.",
+     "written_at": "<ts>"
+    },
+    "ir": {
+     "audio": "fire crackle, radio news",
+     "beats": [
+      {
+       "action": "He says softly",
+       "camera": "medium",
+       "director_line": "Nimal waits in the doorway.",
+       "performance": "",
+       "time": "0-3s"
+      },
+      {
+       "action": "stirs",
+       "camera": "push arrives",
+       "director_line": "She keeps stirring.",
+       "performance": "",
+       "time": "3-6s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "dolly, 50mm, f/2.8",
+      "color_tone": "warm, film-like",
+      "depth_of_field": "Shallow",
+      "framing": "a tight single on Nimal",
+      "lens_artifacts": "none",
+      "movement": "slow push in",
+      "white_balance": "warm 3200K"
+     },
+     "first_frame": {
+      "composition": "Kamala at the stove, back to the door",
+      "lighting": "firelight",
+      "setting": "kitchen",
+      "subjects": [
+       "Kamala"
+      ]
+     },
+     "lighting": "Firelight from the left, deep shadows.",
+     "setting": "A smoky dawn kitchen in Kamala's house",
+     "subjects": [
+      {
+       "action": "stirs the pan",
+       "description": "Kamala at the stove",
+       "id": "C01"
+      },
+      {
+       "action": "passes the window",
+       "description": "a neighbour",
+       "id": ""
+      }
+     ]
+    },
+    "number": 1,
+    "person_edits": {},
+    "production_id": "<id:6>",
+    "scene_id": "<id:1>",
+    "sound_mode": "ambient",
+    "speaker_id": null,
+    "start_s": 0,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 0,
+    "words": 0
+   },
+   "<id:3>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 2,
+    "block_start": 1,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {
+     "designed_at": "<ts>",
+     "intent": "<digest:5>",
+     "job_id": "<id:10>",
+     "missing": [],
+     "on_screen": [],
+     "pins": {
+      "canon": {
+       "<id:8>": 1,
+       "<id:9>": 1
+      },
+      "looks": {},
+      "script_hash": "<digest:4>",
+      "shot_version": 1
+     },
+     "planner": "model",
+     "rationale": "A slow push builds the hesitation.",
+     "recommended": {
+      "angle": "Eye level",
+      "aperture": "f/2.8",
+      "axis": "Side A · left to right",
+      "framing": "Medium close-up",
+      "lens": "50mm",
+      "lighting": "Night, lamp key",
+      "movement": "Dolly in",
+      "speed": "Slow"
+     }
+    },
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "MCU",
+    "id": "<id:3>",
+    "intent": {
+     "by": "rules",
+     "emotional_beat": "",
+     "heard_only": [],
+     "made_for": "v1:<digest:6>",
+     "on_screen": [
+      "<id:8>"
+     ],
+     "purpose": "",
+     "split_after": null,
+     "split_reason": "",
+     "voice_source": "",
+     "what_we_see": "",
+     "written_at": "<ts>"
+    },
+    "ir": {
+     "audio": "fire crackle, radio news",
+     "beats": [
+      {
+       "action": "He says softly",
+       "camera": "medium",
+       "director_line": "Nimal waits in the doorway.",
+       "performance": "",
+       "time": "0-2s"
+      },
+      {
+       "action": "He says softly",
+       "camera": "medium",
+       "director_line": "Nimal waits in the doorway.",
+       "performance": "",
+       "time": "2-4s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "dolly, 50mm, f/2.8",
+      "color_tone": "warm, film-like",
+      "depth_of_field": "Shallow",
+      "framing": "a tight single on Nimal",
+      "lens_artifacts": "none",
+      "movement": "slow push in",
+      "white_balance": "warm 3200K"
+     },
+     "first_frame": {
+      "composition": "Kamala at the stove, back to the door",
+      "lighting": "firelight",
+      "setting": "kitchen",
+      "subjects": [
+       "Kamala"
+      ]
+     },
+     "lighting": "Firelight from the left, deep shadows.",
+     "setting": "A smoky dawn kitchen in Kamala's house",
+     "subjects": [
+      {
+       "action": "passes the window",
+       "description": "a neighbour",
+       "id": ""
+      }
+     ]
+    },
+    "number": 2,
+    "person_edits": {},
+    "production_id": "<id:6>",
+    "scene_id": "<id:1>",
+    "sound_mode": "dialogue",
+    "speaker_id": "<id:8>",
+    "start_s": 6,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 8,
+    "words": 4
+   },
+   "<id:4>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 3,
+    "block_start": 2,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {
+     "designed_at": "<ts>",
+     "intent": "<digest:8>",
+     "job_id": "<id:10>",
+     "missing": [],
+     "on_screen": [],
+     "pins": {
+      "canon": {
+       "<id:7>": 2,
+       "<id:9>": 1
+      },
+      "looks": {},
+      "script_hash": "<digest:7>",
+      "shot_version": 1
+     },
+     "planner": "model",
+     "rationale": "A slow push builds the hesitation.",
+     "recommended": {
+      "angle": "Eye level",
+      "aperture": "f/2.8",
+      "axis": "Side A · left to right",
+      "framing": "Wide shot",
+      "lens": "50mm",
+      "lighting": "Night, lamp key",
+      "movement": "Dolly in",
+      "speed": "Slow"
+     }
+    },
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "WIDE",
+    "id": "<id:4>",
+    "intent": {
+     "by": "rules",
+     "emotional_beat": "",
+     "heard_only": [],
+     "made_for": "v1:<digest:9>",
+     "on_screen": [
+      "<id:7>"
+     ],
+     "purpose": "Kamala does not turn around. She keeps stirring the pan",
+     "split_after": null,
+     "split_reason": "",
+     "voice_source": "",
+     "what_we_see": "Kamala does not turn around. She keeps stirring the pan.",
+     "written_at": "<ts>"
+    },
+    "ir": {
+     "audio": "fire crackle, radio news",
+     "beats": [
+      {
+       "action": "He says softly",
+       "camera": "medium",
+       "director_line": "Nimal waits in the doorway.",
+       "performance": "",
+       "time": "0-2s"
+      },
+      {
+       "action": "He says softly",
+       "camera": "medium",
+       "director_line": "Nimal waits in the doorway.",
+       "performance": "",
+       "time": "2-4s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "dolly, 50mm, f/2.8",
+      "color_tone": "warm, film-like",
+      "depth_of_field": "Shallow",
+      "framing": "a tight single on Nimal",
+      "lens_artifacts": "none",
+      "movement": "slow push in",
+      "white_balance": "warm 3200K"
+     },
+     "first_frame": {
+      "composition": "Kamala at the stove, back to the door",
+      "lighting": "firelight",
+      "setting": "kitchen",
+      "subjects": [
+       "Kamala"
+      ]
+     },
+     "lighting": "Firelight from the left, deep shadows.",
+     "setting": "A smoky dawn kitchen in Kamala's house",
+     "subjects": [
+      {
+       "action": "stirs the pan",
+       "description": "Kamala at the stove",
+       "id": "C01"
+      },
+      {
+       "action": "passes the window",
+       "description": "a neighbour",
+       "id": ""
+      }
+     ]
+    },
+    "number": 3,
+    "person_edits": {},
+    "production_id": "<id:6>",
+    "scene_id": "<id:1>",
+    "sound_mode": "ambient",
+    "speaker_id": null,
+    "start_s": 10,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 0,
+    "words": 0
+   },
+   "<id:5>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 4,
+    "block_start": 3,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {
+     "designed_at": "<ts>",
+     "intent": "<digest:11>",
+     "job_id": "<id:10>",
+     "missing": [],
+     "on_screen": [],
+     "pins": {
+      "canon": {
+       "<id:7>": 2,
+       "<id:9>": 1
+      },
+      "looks": {},
+      "script_hash": "<digest:10>",
+      "shot_version": 1
+     },
+     "planner": "model",
+     "rationale": "A slow push builds the hesitation.",
+     "recommended": {
+      "angle": "Eye level",
+      "aperture": "f/2.8",
+      "axis": "Side A · left to right",
+      "framing": "Medium close-up",
+      "lens": "50mm",
+      "lighting": "Night, lamp key",
+      "movement": "Dolly in",
+      "speed": "Slow"
+     }
+    },
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "MCU",
+    "id": "<id:5>",
+    "intent": {
+     "by": "rules",
+     "emotional_beat": "",
+     "heard_only": [],
+     "made_for": "v1:<digest:12>",
+     "on_screen": [
+      "<id:7>"
+     ],
+     "purpose": "",
+     "split_after": null,
+     "split_reason": "",
+     "voice_source": "",
+     "what_we_see": "",
+     "written_at": "<ts>"
+    },
+    "ir": {
+     "audio": "fire crackle, radio news",
+     "beats": [
+      {
+       "action": "He says softly",
+       "camera": "medium",
+       "director_line": "Nimal waits in the doorway.",
+       "performance": "",
+       "time": "0-2s"
+      },
+      {
+       "action": "He says softly",
+       "camera": "medium",
+       "director_line": "Nimal waits in the doorway.",
+       "performance": "",
+       "time": "2-4s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "dolly, 50mm, f/2.8",
+      "color_tone": "warm, film-like",
+      "depth_of_field": "Shallow",
+      "framing": "a tight single on Nimal",
+      "lens_artifacts": "none",
+      "movement": "slow push in",
+      "white_balance": "warm 3200K"
+     },
+     "first_frame": {
+      "composition": "Kamala at the stove, back to the door",
+      "lighting": "firelight",
+      "setting": "kitchen",
+      "subjects": [
+       "Kamala"
+      ]
+     },
+     "lighting": "Firelight from the left, deep shadows.",
+     "setting": "A smoky dawn kitchen in Kamala's house",
+     "subjects": [
+      {
+       "action": "stirs the pan",
+       "description": "Kamala at the stove",
+       "id": "C01"
+      },
+      {
+       "action": "passes the window",
+       "description": "a neighbour",
+       "id": ""
+      }
+     ]
+    },
+    "number": 4,
+    "person_edits": {},
+    "production_id": "<id:6>",
+    "scene_id": "<id:1>",
+    "sound_mode": "dialogue",
+    "speaker_id": "<id:7>",
+    "start_s": 14,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 8,
+    "words": 4
+   }
+  },
+  "technique_queries": [
+   "INT. KAMALA'S HOUSE - KITCHEN - DAWN. Sri Lankan television drama"
+  ]
+ },
+ "input": {
+  "runs": [
+   {}
+  ]
+ },
+ "model": {
+  "dp_answer": {
+   "scene_design": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "enabled": true
+ },
+ "service": "shot_producer"
+}

@@ -1,0 +1,11 @@
+id: frame_render
+kind: system
+version: 1
+summary: "Paints first frames for shots, or a reference sheet for a canon entity or a look, with the sheets of the people the camera sees attached."
+status: active
+owner: frame_render
+job_kind: frame_render
+panels: []
+agents: [frame_inspector]
+steps: [frame_compose]
+tools: []

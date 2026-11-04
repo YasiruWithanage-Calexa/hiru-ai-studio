@@ -9,6 +9,7 @@ on:
     paths:
       - "src/services/**"
       - "src/libs/contracts/**"
+      - "src/libs/hiru_ai/**"
       - ".github/workflows/deploy-functions.yml"
   workflow_dispatch:
     inputs:
@@ -39,15 +40,16 @@ jobs:
         run: |
           set -euo pipefail
           # name | source folder | memory | timeout(s)  — timeout must equal task_manager.FunctionSpec.deadline_s
+          # "ai":true = the zip also holds hiru_ai (AI_ENGINE=graph); set it when the function's system is migrated
           ALL='[
-            {"name":"hiru-echo","src":"src/services/echo","memory":"256Mi","timeout":60},
-            {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":540},
-            {"name":"hiru-script-split","src":"src/services/script_split","memory":"512Mi","timeout":900},
-            {"name":"hiru-structure-build","src":"src/services/structure_build","memory":"1Gi","timeout":900},
-            {"name":"hiru-canon-extract","src":"src/services/canon_extract","memory":"1Gi","timeout":600},
-            {"name":"hiru-director-chat","src":"src/services/director_chat","memory":"512Mi","timeout":300},
-            {"name":"hiru-shot-producer","src":"src/services/shot_producer","memory":"512Mi","timeout":900},
-            {"name":"hiru-frame-render","src":"src/services/frame_render","memory":"1Gi","timeout":600}
+            {"name":"hiru-echo","src":"src/services/echo","memory":"256Mi","timeout":60,"ai":true},
+            {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":540,"ai":true},
+            {"name":"hiru-script-split","src":"src/services/script_split","memory":"512Mi","timeout":900,"ai":true},
+            {"name":"hiru-structure-build","src":"src/services/structure_build","memory":"1Gi","timeout":900,"ai":true},
+            {"name":"hiru-canon-extract","src":"src/services/canon_extract","memory":"1Gi","timeout":600,"ai":true},
+            {"name":"hiru-director-chat","src":"src/services/director_chat","memory":"512Mi","timeout":300,"ai":true},
+            {"name":"hiru-shot-producer","src":"src/services/shot_producer","memory":"512Mi","timeout":900,"ai":true},
+            {"name":"hiru-frame-render","src":"src/services/frame_render","memory":"1Gi","timeout":600,"ai":true}
           ]'
           before="${{ github.event.before }}"
           if [[ "${{ inputs.all }}" == "true" || -z "$before" || "$before" =~ ^0+$ ]] \
@@ -58,7 +60,8 @@ jobs:
           if grep -qE '^(src/libs/contracts/|\.github/workflows/deploy-functions\.yml)' <<<"$changed"; then
             echo "matrix=$(jq -c . <<<"$ALL")" >> "$GITHUB_OUTPUT"; exit 0
           fi
-          pick=$(jq -c --arg c "$changed" '[.[] | select(. as $f | ($c | split("\n") | any(startswith($f.src + "/"))))]' <<<"$ALL")
+          ai=$(grep -qE '^src/libs/hiru_ai/' <<<"$changed" && echo true || echo false)
+          pick=$(jq -c --arg c "$changed" --argjson ai "$ai" '[.[] | select(. as $f | (($c | split("\n") | any(startswith($f.src + "/"))) or ($ai and ($f.ai // false))))]' <<<"$ALL")
           echo "matrix=$pick" >> "$GITHUB_OUTPUT"
 
   deploy:
@@ -80,11 +83,17 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@v2
 
-      - name: Bundle (service + contracts only)
+      - name: Bundle (service + contracts, and hiru_ai for an AI function)
         run: |
           mkdir -p build
           cp -r "${{ matrix.fn.src }}/." build/
           cp -r src/libs/contracts build/contracts
+          if [[ "${{ matrix.fn.ai }}" == "true" ]]; then
+            # the AI package without what only developers use: each part's tests, examples and evals, and the knowledge
+            # bases' source files (they are ingested by `hiru-ai ingest`, never read by a function)
+            rsync -a --exclude 'tests/' --exclude 'examples/' --exclude 'evals/' --exclude 'sources/' \
+              --exclude 'conftest.py' --exclude '__pycache__/' src/libs/hiru_ai/ build/hiru_ai/
+          fi
           find build -name '__pycache__' -prune -exec rm -rf {} +
 
       - name: Deploy

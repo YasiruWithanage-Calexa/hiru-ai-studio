@@ -1,0 +1,7 @@
+id: extract_text
+kind: step
+version: 1
+summary: "Reads an uploaded file (PDF, text, Markdown) into numbered lines, refusing scans and oversize files."
+status: active
+owner: doc_ingest
+entry: step:run

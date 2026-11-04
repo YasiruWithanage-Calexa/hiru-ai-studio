@@ -1,0 +1,7 @@
+id: look_plan
+kind: step
+version: 1
+summary: "Picks the characters whose wardrobe becomes looks and builds the look rows: the model's when they hold up, else by rules."
+status: active
+owner: structure_build
+entry: step:run

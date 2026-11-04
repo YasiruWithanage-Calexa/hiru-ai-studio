@@ -1,0 +1,19 @@
+- name: a scene that turns on a phone call
+  input:
+    items:
+      - { index: 0, kind: action, text: "Anudi smiles back.", screen: act }
+      - { index: 1, kind: action, text: "Her phone rings.", screen: act }
+    context: { heading: "EXT. THREE-WHEELER - DAY", characters: [ { name: Anudi, summary: "A student" } ] }
+  reply:
+    about: "A warm moment is broken by a call."
+    value: { start: joy, end: unease }
+    tone: "warm, uneasy"
+    units: [ { from_block: 0, to_block: 1, wants: [ { character: Anudi, verb: "to hide her worry" } ], turn_block: 1 } ]
+    subtext: []
+    breath: [ { after_block: 1, kind: reaction, who: Anudi, seconds: 1.5, priority: 1, why: "the call turns the scene" } ]
+    ending: "Her face as the phone keeps ringing."
+  expect: { about: "A warm moment is broken by a call.", units: [ { turn_block: 1 } ], breath: [ { kind: reaction, priority: 1 } ] }
+- name: no context at all
+  input: { items: [ { index: 0, kind: action, text: "A bus passes.", screen: act } ] }
+  reply: { about: "A bus passes.", value: { start: calm, end: calm }, tone: "plain, quiet", units: [], subtext: [], breath: [], ending: "The empty road." }
+  expect: { units: [], breath: [] }

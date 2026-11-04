@@ -1,0 +1,16 @@
+id: memory_propose
+kind: tool
+version: 1
+summary: "Stages 'remember this rule' as a card a person accepts; accepted, it becomes a remembered decision of the production."
+status: active
+owner: director
+entry: tool:run
+ports: [staging]
+effect: stage
+guide: |
+  Leaves a card asking the person to remember a rule about this production or this scene ("Anudi never raises her voice at
+  her father"). Nothing is remembered until they accept it. Use it when the person states a preference or a rule you should
+  keep, not for facts about the story. `scope` is "scene" for a rule that holds here only, "production" for one that holds
+  everywhere. Example: {"rule": "Anudi's anger shows in her hands, never in her voice.", "scope": "production"}.
+  Do not use it to change the plan (use change_propose), to look up what is already remembered (use memory_search), or to
+  record a fact from the script.

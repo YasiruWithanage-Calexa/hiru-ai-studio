@@ -30,6 +30,7 @@ from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import CameraSettings, prompt_text
 from shot_producer.engine import critique, intent, serialize, shots, techniques
 from shot_producer.engine.continuity import ContinuityLedger, carried_state
+from shot_producer.engine.feeling import positions_text
 from shot_producer.engine.model import (
     ProductionInput,
     SceneInput,
@@ -170,7 +171,7 @@ def design_scene(scene: SceneInput, group: list[ShotInput], prod: ProductionInpu
     modelled = [s for s in group if s.number in answered]
     if modelled:
         free = [f"{s.code}: {p}" for s in modelled
-                for p in critique.free_problems(s, drafts[s.number][0], drafts[s.number][4], characters)]
+                for p in critique.free_problems(s, drafts[s.number][0], drafts[s.number][4], characters, scene)]
         free += critique.scene_coverage_problems(scene, {
             **{s.number: s.camera(scene) for s in scene.shots}, **{n: d[1] for n, d in drafts.items()}})
         notes = critique.review(llm, scene, [(s, drafts[s.number][0], drafts[s.number][4]) for s in modelled], free)
@@ -183,8 +184,8 @@ def design_scene(scene: SceneInput, group: list[ShotInput], prod: ProductionInpu
                     continue
                 ir, rec, why = shots.finish(entry, s, scene, prod)
                 on = shots.on_screen_ids(entry, s)
-                before = len(critique.free_problems(s, drafts[s.number][0], drafts[s.number][4], characters))
-                after = len(critique.free_problems(s, ir, on, characters))
+                before = len(critique.free_problems(s, drafts[s.number][0], drafts[s.number][4], characters, scene))
+                after = len(critique.free_problems(s, ir, on, characters, scene))
                 if after <= before:
                     drafts[s.number] = (ir, rec, why, "model", on)
                     review["revised"].append(s.code)
@@ -205,7 +206,8 @@ def write_prompt(shot: ShotInput, scene: SceneInput, prod: ProductionInput, fram
     ctx = serialize.Context(aspect_ratio=prod.aspect_ratio, camera=shot.camera(scene),
                             recommended=shot.recommended(scene), style_note=prod.style_note,
                             previous_code=previous.code if previous else "",
-                            carried=carried_state(previous.code, previous.row.get("ir")) if previous else "",
+                            carried=carried_state(previous.code, previous.row.get("ir"),
+                                                  positions_text(previous.feeling.end)) if previous else "",
                             has_frame=frame is not None)
     ir = dict(shot.row.get("ir") or {})
     sections = serialize.build_sections(shot, ir, ctx)
@@ -213,7 +215,7 @@ def write_prompt(shot: ShotInput, scene: SceneInput, prod: ProductionInput, fram
             "sections": [s.model_dump(exclude_none=True) for s in sections], "prose": prompt_text(sections),
             "model": f"{VIDEO_MODEL} · {shot.duration_s} s · {prod.aspect_ratio}", "ir": ir,
             "camera": ctx.camera.model_dump(),
-            "checks": [c.model_dump() for c in serialize.prompt_checks(shot, sections, ctx)],
+            "checks": [c.model_dump() for c in serialize.prompt_checks(shot, sections, ctx, ir)],
             "frame_id": str(frame["id"]) if frame else None, "pins": shot.pins.model_dump(), "job_id": job_id,
             "created_by": actor}
 

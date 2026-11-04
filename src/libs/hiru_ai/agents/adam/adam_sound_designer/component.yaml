@@ -1,0 +1,16 @@
+id: adam_sound_designer
+kind: agent
+version: 1
+summary: "Writes the scene's sound map (layers, subjective sound, silences, pre-laps, music) and the sound of each shot card."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: adam.sound
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

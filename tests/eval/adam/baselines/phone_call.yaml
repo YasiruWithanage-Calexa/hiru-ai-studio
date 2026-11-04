@@ -1,0 +1,14 @@
+# BASELINE for phone_call: what `script_split` does today, as `shots` rows (plan/2026-11-04b §1: "5-6 shots, legible and
+# continuous: each line framed on its speaker, a hold at the turn").
+# source: a HAND ESTIMATE from script_split's rules, NOT a live run. The live baseline (script_split run on the gold
+# scenes by a person, plans stored here) is still to do (plan Phase 0, step 2). Replace this file with the stored plan
+# when it exists; the tests that use it only read `shots`.
+scene: phone_call
+source: hand estimate from script_split's rules (live run pending)
+shots:
+  - { number: 1, framing: TWO, title: On the bench, duration_s: 4, block_start: 0, block_end: 1 }
+  - { number: 2, framing: MS, title: Dasun tells his story, duration_s: 4, block_start: 1, block_end: 2 }
+  - { number: 3, framing: MCU, title: The call comes, duration_s: 6, block_start: 2, block_end: 4 }
+  - { number: 4, framing: CU, title: Her father's news, duration_s: 8, block_start: 4, block_end: 6 }
+  - { number: 5, framing: MCU, title: She agrees, duration_s: 6, block_start: 6, block_end: 8 }
+  - { number: 6, framing: MCU, title: See you, duration_s: 6, block_start: 8, block_end: 10 }

@@ -1,0 +1,7 @@
+id: chunk_headers
+kind: step
+version: 1
+summary: "Builds each passage's retrieval header: the deterministic base (file, role, section, pages) plus the model's line when it answered."
+status: active
+owner: doc_ingest
+entry: step:run

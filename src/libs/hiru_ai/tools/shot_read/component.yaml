@@ -1,0 +1,17 @@
+id: shot_read
+kind: tool
+version: 1
+summary: "Reads one shot: what it is for, its length and sound, its design and latest prompt, and whether they are out of date."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+effect: read
+max_result_tokens: 1500
+guide: |
+  Returns one shot of a scene: size, length, start, sound, words against what fits, who is in it, what it is for (intent),
+  whether it has a design and a prompt, and, for each, whether it is out of date and why (the script, the canon or the shot
+  changed since it was made). Detailed adds the beats, the pins and the design's setting and subjects.
+  Use it to answer "why is S03 like this" or "is S02's prompt still good". Example: {"shot": "S03", "scene": "E1S2"}.
+  Do not use it for the whole plan (use scene_read), for whether the shots fit the clock (use timing_check), for a frame
+  or a reference sheet (use frame_read), or to check a prompt's wording (use prompt_check).

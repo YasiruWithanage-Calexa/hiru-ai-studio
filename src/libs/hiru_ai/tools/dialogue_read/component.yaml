@@ -1,0 +1,16 @@
+id: dialogue_read
+kind: tool
+version: 2
+summary: "Reads a scene's spoken lines exactly as written: speaker, words, delivery."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+effect: read
+guide: |
+  Returns the scene's spoken lines exactly as stored: speaker, words, delivery, and (only for a line a person had
+  translated) the original text and its language. Nothing is normalised, trimmed or translated.
+  The scene is the one this run is about unless you name another ("E1S2").
+  Use it when the exact words of a line matter. Example: {} or {"scene_id": "E1S2"}.
+  Do not use it to learn what a shot is about or how long it runs (use shot_read or timing_check), or to find a
+  character's details (use canon_read).

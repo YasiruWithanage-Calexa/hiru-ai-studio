@@ -3,15 +3,11 @@ from __future__ import annotations
 
 import re
 import shutil
-import sys
 from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "scripts"))
-
-from cine_terms import (  # noqa: E402
+from hiru_ai.knowledge_bases.cinematography.terms import (
     LEGACY_SOURCE,
     SHORT_FORM_CATEGORIES,
     TERMS_SOURCE,
@@ -20,8 +16,9 @@ from cine_terms import (  # noqa: E402
     norm,
 )
 
-KB = ROOT / "src" / "knowledge_base"
-TERMS, LEGACY = KB / "cinematography", KB / "techniques" / "camera_shots.csv"
+ROOT = Path(__file__).resolve().parents[6]
+SOURCES = Path(__file__).resolve().parents[1] / "sources"
+TERMS, LEGACY = SOURCES, SOURCES / "camera_shots.csv"
 TOTAL_TERMS = 629
 
 

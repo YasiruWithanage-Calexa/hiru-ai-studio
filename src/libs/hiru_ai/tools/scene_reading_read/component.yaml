@@ -1,0 +1,17 @@
+id: scene_reading_read
+kind: tool
+version: 1
+summary: "Reads a scene's reading (what it is about, where the feeling turns, the holds) and its staging map for some blocks."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+effect: read
+guide: |
+  Returns the scene's reading: what it is about, how the feeling moves, what each person wants in each stretch, the turns
+  and the holds (breaths the plan keeps), and the staging map: where each person stands and faces from a block on. With
+  `from_block` and `to_block` only the units, holds and marks in that stretch come back.
+  Use it before judging whether a shot gives the feeling room or puts a person in the wrong place.
+  Example: {"scene": "E1S2", "from_block": 2, "to_block": 5}.
+  Do not use it for the script's words (use scene_read), for the shot plan or its timing (use scene_read or timing_check),
+  or to find staging problems (use staging_check).

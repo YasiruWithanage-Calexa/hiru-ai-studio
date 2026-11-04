@@ -1,0 +1,8 @@
+- name: a phone call that turns cold
+  input: { scenes: [ "SCENE 1: Anudi takes the call\nHer phone rings. / Her smile fades." ] }
+  reply: { problems: [ "show a phone call turn a warm moment cold with the caller never seen", "  show a phone call turn a warm moment cold with the caller never seen" ] }
+  expect: { problems: [ "show a phone call turn a warm moment cold with the caller never seen" ] }
+- name: no model
+  input: { scenes: [ "SCENE 1: A walk" ] }
+  model: unavailable
+  expect: { problems: [] }

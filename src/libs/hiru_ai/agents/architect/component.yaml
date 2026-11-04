@@ -1,0 +1,16 @@
+id: architect
+kind: agent
+version: 1
+summary: "Names what the rules can only label: an episode synopsis and a short title for each scene."
+status: active
+owner: structure_build
+model: ultra
+shape: structured
+phase: structure_build.architect
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

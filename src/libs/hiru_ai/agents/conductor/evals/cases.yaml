@@ -1,0 +1,20 @@
+- name: a plain request to change a size
+  input: { plan_text: "S01 MCU 6s\nS02 WIDE 4s", message: "make S02 a close-up" }
+  reply:
+    lane: edit
+    ops: [ { op: set, shot: 2, field: framing, value: CU, seconds: null, at_block: null, end_block: null, link: null, beat: null, after_shot: null, description: null, framing: null, title: null, block: null, kind: null, speaker: null, delivery: null } ]
+    tasks: []
+    memory: []
+    cannot: null
+    translate: null
+  expect: { lane: edit, ops: [ { op: set, shot: 2, value: CU } ], cannot: null }
+- name: a request for another language
+  input: { plan_text: "S01 MCU 6s", message: "all dialogue in Sinhala, colloquial", memory: [ "Kasun is a driver" ], again: true }
+  reply:
+    lane: translate
+    ops: []
+    tasks: []
+    memory: []
+    cannot: null
+    translate: { language: Sinhala, code: si, style: colloquial, shots: [] }
+  expect: { lane: translate, translate: { language: Sinhala, code: si } }

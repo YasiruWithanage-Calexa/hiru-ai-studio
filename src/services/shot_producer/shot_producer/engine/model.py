@@ -9,7 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from contracts import sceneplan
+from contracts import reading as scene_reading
+from contracts import sceneplan, stagemap
 from contracts.producer import (
     CameraSettings,
     CastMember,
@@ -25,6 +26,7 @@ from contracts.production import ProductionSettings
 from contracts.shotplan import Item
 from contracts.staging import ScenePlan, ShotIntent, Staging, intent_basis, shot_cast, staging
 from contracts.veo import ASPECT_RATIO, Orientation
+from shot_producer.engine.feeling import Feeling, feeling_for
 
 Row = dict[str, Any]
 
@@ -61,6 +63,7 @@ class ShotInput:
     pins: Pins
     staged: Staging = field(default_factory=Staging)  # who is seen, who is only heard
     basis: str = ""  # contracts.staging.intent_basis: what an intent must be written against
+    feeling: Feeling = field(default_factory=Feeling)  # what the scene's reading and map ask of this shot (Phase 6)
 
     @property
     def code(self) -> str:
@@ -130,6 +133,9 @@ class SceneInput:
     before: str = ""  # the scene before this one, in a line
     after: str = ""  # the scene after it
     row: Row = field(default_factory=dict)
+    reading: scene_reading.SceneReading | None = None  # what the scene is about (plan/2026-11-01d)
+    staging: stagemap.SceneStaging | None = None  # where everyone is
+    items: list[Item] = field(default_factory=list)  # every block of the scene, with the reading's time on it
 
     @property
     def plan(self) -> ScenePlan | None:
@@ -201,7 +207,10 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
                      note=str(scene.get("note") or ""), script_version=int(scene.get("script_version") or 1),
                      episode_title=str(episode.get("title") or ""),
                      synopsis=" ".join(str(episode.get("synopsis") or "").split())[:900],
-                     before=scene_line(neighbours[0]), after=scene_line(neighbours[1]), row=scene)
+                     before=scene_line(neighbours[0]), after=scene_line(neighbours[1]), row=scene,
+                     reading=scene_reading.SceneReading.of(scene), staging=stagemap.SceneStaging.of(scene),
+                     items=items)
+    cast_names = [c.name for c in prod.cast]
     for s in shots:
         own = shot_items(items, int(s["block_start"]), int(s["block_end"]))
         edits = PersonEdits.of(s)
@@ -223,7 +232,9 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
             pins=pins_for(shot_version=int(s.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
                           versions=versions, edits=edits),
             staged=staging(own, characters, s, cast_ids=cast_ids),
-            basis=intent_basis(int(s.get("version") or 1), script_hash(scene, own))))
+            basis=intent_basis(int(s.get("version") or 1), script_hash(scene, own)),
+            feeling=feeling_for(out.reading, out.staging, items, own,
+                                [(int(b["start_s"]), int(b["end_s"])) for b in s.get("beats") or []], cast_names)))
     return out
 
 

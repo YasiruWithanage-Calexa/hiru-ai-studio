@@ -1,0 +1,57 @@
+{
+ "case": "not_configured",
+ "description": "No painter configured is reported",
+ "expected": {
+  "asset_writes": [],
+  "audits": [],
+  "frame_rows": {
+   "<id:1>": {
+    "error": "Image generation is not set up on this server.",
+    "id": "<id:1>",
+    "production_id": "<id:3>",
+    "shot_id": "<id:2>",
+    "status": "failed"
+   }
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "agent": "frame_render",
+     "frame_id": "<id:1>",
+     "shot_id": "<id:2>",
+     "status": "failed",
+     "text": "Frame failed",
+     "type": "warning"
+    }
+   ],
+   "fields": {
+    "result": {
+     "done": 0,
+     "failed": 1,
+     "refused": 0,
+     "skipped": 0
+    }
+   },
+   "status": "done"
+  },
+  "painted": [],
+  "results": [
+   {
+    "done": 0,
+    "failed": 1,
+    "refused": 0,
+    "skipped": 0
+   }
+  ],
+  "uploads": {}
+ },
+ "input": {
+  "frames": [
+   0
+  ],
+  "painter": null
+ },
+ "model": {},
+ "service": "frame_render"
+}

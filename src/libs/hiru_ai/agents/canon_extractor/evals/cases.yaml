@@ -1,0 +1,20 @@
+- name: a bible and what the scripts show
+  input:
+    documents: [ { filename: bible.md, role: bible, text: "Kamala, 52, the mother. Wears a faded cotton sari." } ]
+    speakers: [ { name: AMMA, count: 14 }, { name: Nimal, count: 30 } ]
+    places: [ { name: Harbour, count: 4 } ]
+  reply:
+    entities:
+      - kind: character
+        name: Kamala
+        code: C01
+        aliases: [ AMMA ]
+        core: true
+        card: { summary: "The mother", age: "52", gender: female, appearance: "", wardrobe: "a faded cotton sari", voice: "", accent: "", look: "", details: "", notes: "" }
+  expect: { entities: [ { kind: character, name: Kamala, code: C01, core: true } ] }
+- name: scripts only, nothing described
+  input:
+    documents: [ { filename: ep1.pdf, role: script, text: "INT. KITCHEN - DAY" } ]
+    speakers: [ { name: Nimal, count: 3 } ]
+  reply: { entities: [] }
+  expect: { entities: [] }

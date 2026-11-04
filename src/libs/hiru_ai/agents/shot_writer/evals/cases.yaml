@@ -1,0 +1,22 @@
+- name: one shot designed
+  input:
+    production: "<production>\nPRODUCTION: Harbour Lights\n</production>"
+    scene: "<scene>\nSCENE 1: INT. KITCHEN - DAWN\n\nSHOT S01\n</scene>\n\nReturn one entry per shot — 1 in total, numbered 1, each carrying its own `number`."
+  reply:
+    shots:
+      - number: 1
+        setting: "A smoky kitchen at dawn"
+        cinematography: { camera: "handheld, 35mm, f/2.8", angle: "eye level", framing: "MCU", movement: "locked-off", white_balance: "warm 3200K", color_tone: "naturalistic", depth_of_field: "Shallow", lens_artifacts: "none" }
+        lighting: "Soft window key from the left."
+        subjects: [ { id: C01, description: "Kamala at the stove", action: "stirs", position: "left of frame" } ]
+        beats: [ { time: "0-3s", camera: "MCU on Kamala", director_line: "She stirs the pot.", action: "stirs", performance: "" } ]
+        audio: "Room tone, a spoon on iron."
+        first_frame: { composition: "Kamala at the stove", subjects: [ "Kamala" ], setting: "kitchen", lighting: "dawn" }
+        on_screen: [ C01 ]
+        recommendation: { angle: Eye level, lens: 35mm, aperture: f/2.8, movement: Static, speed: None, axis: "Side A — left to right", lighting: "Dawn, soft ambient" }
+        rationale: "A steady frame lets the routine read."
+  expect: { shots: [ { number: 1, on_screen: [ C01 ] } ] }
+- name: an empty answer is still an answer
+  input: { production: "<production>\nPRODUCTION: X\n</production>", scene: "<scene>\nSCENE 2\n</scene>" }
+  reply: { shots: [] }
+  expect: { shots: [] }

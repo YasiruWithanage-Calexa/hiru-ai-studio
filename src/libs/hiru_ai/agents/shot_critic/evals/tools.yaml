@@ -1,0 +1,31 @@
+# The `with_tools` form (plan/2026-11-04 §8): the checks code can make are made by tools.
+- name: a doubtful join between two shots is checked in code
+  variant: tools
+  example: continuity_check
+  input:
+    scene_number: 2
+    heading: "EXT. FOOD THREE-WHEELER - DAY"
+    drafts: [ "S01 - MCU, 6 s, sound dialogue\n  WHAT WE SEE: Kasun smiles", "S02 - MCU, 6 s, sound dialogue\n  WHAT WE SEE: Anudi smiles back" ]
+    free: [ "S02: Position jump: Anudi stood left of frame" ]
+  tool_calls:
+    - { name: continuity_check, args: { shot: S01 }, expect: { shot: S01 } }
+  reply: { acceptable: false, notes: [ "S02: start Anudi where she ended S01" ] }
+  expect: { acceptable: false, notes: [ "S02: start Anudi where she ended S01" ] }
+- name: the staging of the whole scene is checked in one call
+  variant: tools
+  example: staging_check
+  input:
+    scene_number: 2
+    heading: "EXT. FOOD THREE-WHEELER - DAY"
+    drafts: [ "S01 - MCU, 6 s, sound dialogue" ]
+    free: [ "S01 does not frame its speaker" ]
+  tool_calls:
+    - { name: staging_check, args: {} }
+  reply: { acceptable: false, notes: [ "S01: frame Kasun, who speaks" ] }
+  expect: { acceptable: false, notes: [ "S01: frame Kasun, who speaks" ] }
+- name: a scene with nothing for code to find is not checked
+  variant: tools
+  input: { scene_number: 1, heading: "EXT. ROAD - DAY", drafts: [ "S01 - WIDE, 4 s" ] }
+  reply: { acceptable: true, notes: [] }
+  expect_no_tools: true
+  expect: { acceptable: true, notes: [] }

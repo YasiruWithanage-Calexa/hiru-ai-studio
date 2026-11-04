@@ -1,0 +1,16 @@
+id: prose_writer
+kind: agent
+version: 1
+summary: "Cuts an episode written as story prose into scenes, copying every spoken line word for word."
+status: active
+owner: structure_build
+model: high
+shape: structured
+phase: structure_build.prose
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

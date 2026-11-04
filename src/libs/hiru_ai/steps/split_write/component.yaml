@@ -1,0 +1,7 @@
+id: split_write
+kind: step
+version: 1
+summary: "Turns a fitted scene into shot rows, bound lines, the fit report and the build-log lines; the free continuity checks."
+status: active
+owner: script_split
+entry: step:run

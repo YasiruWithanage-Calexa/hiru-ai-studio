@@ -1,0 +1,45 @@
+{
+ "production_id": "f78571d7-ad69-4d6d-adc6-c3d4e13f8def",
+ "fixtures": {},
+ "args": {
+  "envelope_s": 30,
+  "structure": {
+   "episodes": [
+    {
+     "number": 1,
+     "title": "The Meeting",
+     "synopsis": "A boat.",
+     "doc_ids": [],
+     "scenes": [
+      {
+       "number": 1,
+       "title": "Kitchen",
+       "heading": {
+        "raw": "INT. KITCHEN - DAWN",
+        "time_of_day": "DAWN"
+       },
+       "location": {
+        "new": "Kitchen"
+       },
+       "blocks": [
+        {
+         "kind": "action",
+         "text": "Kamala stirs the tea."
+        },
+        {
+         "kind": "dialogue",
+         "speaker": "KAMALA",
+         "character": {
+          "new": "Kamala"
+         },
+         "text": "Come and eat.",
+         "delivery": ""
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

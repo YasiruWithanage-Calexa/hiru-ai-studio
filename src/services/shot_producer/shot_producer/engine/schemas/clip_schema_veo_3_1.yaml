@@ -5,6 +5,9 @@
 # video model must obey (fixed_values + render_rules) AND the IR the director-of-photography
 # model fills (required_structure, turned into a strict JSON schema by schema.py).
 #
+# plan/2026-11-01d (Phase 6): each beat carries a `performance` (expression + playable intention, Weston) and each
+# subject a `position` (spot, side of frame, facing, what is held), so feeling and continuity reach the prompt.
+#
 # Divergences from upstream (see UPSTREAM.md): no storyboard block and no last_frame (Hiru
 # shots are single takes, handed off with one first frame); dialogue syntax also has a sung and
 # a voiceover form that NAME the speaker (Hiru's voiceover is a character, not a narrator);
@@ -83,12 +86,14 @@ required_structure:
       id:          "The person's canon code (C01) from the cast list, or '' for an anonymous person."
       description: "What we see of them."
       action:      "What they do across the shot."
+      position:    "Where they are when the shot opens, from the POSITIONS given: the spot in the place, which side of the frame, which way they face, what is in their hands. '' when none are given."
   beats:
     _item:
       time:          "The beat window exactly as given, e.g. '0-3s'."
       camera:        "This beat's shot size + focus point (favour the speaker) and how the camera arrived here from the previous beat if it moved. 'unchanged' only if the framing genuinely holds."
       director_line: "ONE cinematic sentence describing this moment."
       action:        "The literal physical action. Never the spoken words."
+      performance:   "The visible expression and the playable intention in ONE sentence of behaviour ('Anudi keeps smiling a moment too long, then her eyes drop to the phone'). Never words, never an inner thought, never an adjective for a mood. Required where the feeling turns; '' only for a beat with no person on screen."
   audio: "What the shot sounds like apart from speech — room tone, ambient bed, effects."
   first_frame:
     composition: "How the opening frame is composed."

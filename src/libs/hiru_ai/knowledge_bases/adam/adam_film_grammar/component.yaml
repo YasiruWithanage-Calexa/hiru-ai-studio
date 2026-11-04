@@ -1,0 +1,78 @@
+id: adam_film_grammar
+kind: knowledge_base
+version: 1
+summary: "Drama grammar for Shot Planner Adam: 16 principles, a library of 40 devices, Hiru house drama notes (draft) and Veo feasibility notes."
+status: active
+owner: director
+# `chunks.corpus` only allows craft, production_docs, canon and memory (a database check), and a corpus without a
+# production must be `craft`. Adam's rows are kept apart by their source prefix, not their corpus: a re-ingest replaces
+# exactly the rows under knowledge_base/adam_film_grammar/, and no other base writes there. The Phase 6 migration may
+# add an `adam` corpus; then this one line changes and the base is re-ingested (plan/2026-11-04b IMPLEMENTED.md).
+corpus: craft
+store: chunks
+ingest: files
+sources: sources
+source_prefix: knowledge_base/adam_film_grammar/   # chunks.source starts with this; rows under it are replaced as a set
+chunking: { script_like: false }    # Markdown headings: one device or principle per chunk
+embed: embed
+# No `uses:`: the shared KnowledgeBase base (hiru_ai.rag.knowledge) reaches the text extractor and the chunker by id, and a
+# part of the adam group names only parts of the group (plan/2026-11-04b §5.0 rule 3).
+files:
+  - { path: principles/murch-rule-of-six.md, meta: { specialty: principle } }
+  - { path: principles/mckee-story-values.md, meta: { specialty: principle } }
+  - { path: principles/weston-playable-verbs.md, meta: { specialty: principle } }
+  - { path: principles/katz-shot-by-shot.md, meta: { specialty: principle } }
+  - { path: principles/proferes-blocking-as-power.md, meta: { specialty: principle } }
+  - { path: principles/mackendrick-show-dont-tell.md, meta: { specialty: principle } }
+  - { path: principles/hitchcock-truffaut-size-and-suspense.md, meta: { specialty: principle } }
+  - { path: principles/kuleshov-juxtaposition.md, meta: { specialty: principle } }
+  - { path: principles/lumet-progression.md, meta: { specialty: principle } }
+  - { path: principles/block-visual-structure.md, meta: { specialty: principle } }
+  - { path: principles/mascelli-five-cs.md, meta: { specialty: principle } }
+  - { path: principles/arijon-grammar.md, meta: { specialty: principle } }
+  - { path: principles/chion-audio-vision.md, meta: { specialty: principle } }
+  - { path: principles/dmytryk-cut-on-the-reaction.md, meta: { specialty: principle } }
+  - { path: principles/chekhov-goldman-plant-and-in-out.md, meta: { specialty: principle } }
+  - { path: principles/ozu-pillow-shots.md, meta: { specialty: principle } }
+  - { path: devices/01-baseline-before-the-break.md, meta: { specialty: device, veo: good } }
+  - { path: devices/02-smile-that-outlives-the-eyes.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/03-line-over-the-listener.md, meta: { specialty: device, veo: good } }
+  - { path: devices/04-reaction-before-the-cause.md, meta: { specialty: device, veo: good } }
+  - { path: devices/05-plant-and-payoff.md, meta: { specialty: device, veo: good } }
+  - { path: devices/06-object-as-emotion.md, meta: { specialty: device, veo: good } }
+  - { path: devices/07-hands-tell-the-truth.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/08-subjective-sound-drop.md, meta: { specialty: device, veo: good } }
+  - { path: devices/09-silence-before-the-key-line.md, meta: { specialty: device, veo: good } }
+  - { path: devices/10-pre-lap-into-the-next-scene.md, meta: { specialty: device, veo: post-only } }
+  - { path: devices/11-sound-before-picture.md, meta: { specialty: device, veo: good } }
+  - { path: devices/12-rack-focus-to-separate.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/13-push-in-on-realisation.md, meta: { specialty: device, veo: good } }
+  - { path: devices/14-pull-out-to-isolate.md, meta: { specialty: device, veo: good } }
+  - { path: devices/15-high-angle-to-make-small.md, meta: { specialty: device, veo: good } }
+  - { path: devices/16-low-angle-for-authority.md, meta: { specialty: device, veo: good } }
+  - { path: devices/17-foreground-frame.md, meta: { specialty: device, veo: good } }
+  - { path: devices/18-negative-space-for-absence.md, meta: { specialty: device, veo: good } }
+  - { path: devices/19-empty-frame-after-an-exit.md, meta: { specialty: device, veo: good } }
+  - { path: devices/20-pov-insert.md, meta: { specialty: device, veo: good } }
+  - { path: devices/21-reveal-by-camera-move.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/22-held-wide-intimate.md, meta: { specialty: device, veo: good } }
+  - { path: devices/23-match-cut.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/24-mirror-composition.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/25-weather-or-light-echo.md, meta: { specialty: device, veo: good } }
+  - { path: devices/26-walk-and-talk.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/27-turning-ones-back.md, meta: { specialty: device, veo: good } }
+  - { path: devices/28-standing-and-sitting-as-power.md, meta: { specialty: device, veo: good } }
+  - { path: devices/29-the-unanswered-look.md, meta: { specialty: device, veo: good } }
+  - { path: devices/30-interrupted-gesture.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/31-delayed-reaction.md, meta: { specialty: device, veo: good } }
+  - { path: devices/32-cut-on-the-look.md, meta: { specialty: device, veo: good } }
+  - { path: devices/33-enter-late.md, meta: { specialty: device, veo: good } }
+  - { path: devices/34-leave-early.md, meta: { specialty: device, veo: good } }
+  - { path: devices/35-the-button.md, meta: { specialty: device, veo: good } }
+  - { path: devices/36-callback-framing.md, meta: { specialty: device, veo: risky } }
+  - { path: devices/37-long-take-on-the-actor.md, meta: { specialty: device, veo: good } }
+  - { path: devices/38-intercut-phone-call.md, meta: { specialty: device, veo: good } }
+  - { path: devices/39-contrast-cut.md, meta: { specialty: device, veo: good } }
+  - { path: devices/40-pillow-shot.md, meta: { specialty: device, veo: good } }
+  - { path: house-drama-notes.md, meta: { specialty: house-style } }
+  - { path: veo-feasibility.md, meta: { specialty: veo } }

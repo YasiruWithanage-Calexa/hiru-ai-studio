@@ -12,19 +12,12 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from api.repositories import Repos, Row
+from api.repositories import Repos
 from api.services.ai import AI, UsageContext
-from contracts.documents import (
-    Citation,
-    Corpus,
-    DocumentRole,
-    DocumentStatus,
-    SearchHit,
-    SearchRequest,
-    SearchResponse,
-)
-
-CANDIDATES = 30  # what the reranker reads; without a reranker we fetch exactly k
+from contracts.documents import Corpus, SearchRequest, SearchResponse
+from hiru_ai.rag.hits import passages, to_hit
+from hiru_ai.rag.ranking import apply_order, candidates_for, mode_of
+from hiru_ai.rag.scope import Row, ready_documents
 
 
 async def search(repos: Repos, ai: AI, *, production_id: UUID, actor_user_id: UUID,
@@ -35,14 +28,7 @@ async def search(repos: Repos, ai: AI, *, production_id: UUID, actor_user_id: UU
     documents: dict[str, Row] = {}
     document_ids: list[UUID] | None = None
     if Corpus.PRODUCTION_DOCS in req.corpora:
-        wanted = set(req.roles) if req.roles else None
-        for doc in await repos.documents.list(production_id):
-            role = doc.get("confirmed_role") or doc.get("detected_role")
-            if doc["status"] != DocumentStatus.READY:
-                continue
-            if wanted and (role is None or DocumentRole(role) not in wanted):
-                continue
-            documents[str(doc["id"])] = doc
+        documents = ready_documents(await repos.documents.list(production_id), req.roles)
         document_ids = [UUID(d) for d in documents]
 
     embedding = await ai.embed_query(req.query, usage)
@@ -50,31 +36,13 @@ async def search(repos: Repos, ai: AI, *, production_id: UUID, actor_user_id: UU
     rows = await repos.search.match_chunks(
         query_text=req.query, query_embedding=embedding, production_id=production_id,
         corpora=corpora, document_ids=document_ids,
-        match_count=CANDIDATES if rerank else req.k)
+        match_count=candidates_for(req.k, rerank))
 
     reranked = False
     if rerank and len(rows) > 1:
-        order = await ai.rerank(req.query, [f"{r['context_header']}\n{r['content']}" for r in rows], usage)
+        order = await ai.rerank(req.query, passages(rows), usage)
         if order is not None:
-            rows, reranked = [rows[i] for i in order], True
+            rows, reranked = apply_order(rows, order), True
 
-    hits = [_hit(r, documents, reranked) for r in rows[: req.k]]
-    return SearchResponse(hits=hits, mode="hybrid" if embedding is not None else "text", reranked=reranked)
-
-
-def _hit(row: Row, documents: dict[str, Row], reranked: bool) -> SearchHit:
-    meta = row.get("meta") or {}
-    doc = documents.get(str(row.get("document_id"))) if row.get("document_id") else None
-    matched = [name for name, key in (("vector", "vector_rank"), ("text", "text_rank")) if row.get(key)]
-    if reranked:
-        matched.append("rerank")
-    return SearchHit(
-        chunk_id=row["id"], corpus=row["corpus"], heading=row["heading"],
-        context_header=row["context_header"], content=row["content"], score=float(row["score"]),
-        matched_by=matched,
-        citation=Citation(
-            document_id=row.get("document_id"), filename=doc["filename"] if doc else "",
-            source=row.get("source") or "", heading=row["heading"],
-            page_start=meta.get("page_start"), page_end=meta.get("page_end")),
-        meta=meta,
-    )
+    hits = [to_hit(r, documents, reranked) for r in rows[: req.k]]
+    return SearchResponse(hits=hits, mode=mode_of(embedding), reranked=reranked)

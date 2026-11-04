@@ -1,0 +1,16 @@
+id: guides
+kind: knowledge_base
+version: 1
+summary: "Guides that teach a craft step by step (the Veo 3.1 prompting guide)."
+status: active
+owner: rag
+corpus: craft              # the chunks corpus; craft, guides and rules share it
+store: chunks
+ingest: files
+sources: sources
+source_prefix: knowledge_base/guides/   # chunks.source starts with this; rows under it are replaced as a set
+chunking: { script_like: false }    # Markdown headings, not scene headings
+embed: embed
+uses: [extract_text, chunk]
+files:
+  - { path: veo-3-1-prompting-guide.md, meta: { specialty: cinematography } }

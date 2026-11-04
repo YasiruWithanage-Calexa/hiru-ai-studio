@@ -1,0 +1,1 @@
+"""The shot read tool."""

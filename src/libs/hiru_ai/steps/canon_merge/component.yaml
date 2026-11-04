@@ -1,0 +1,8 @@
+id: canon_merge
+kind: step
+version: 1
+summary: "Turns the canon models' answers into candidates and merges them with the rules' canon; code applies every merge."
+status: active
+owner: canon_extract
+entry: step:run
+uses: [canon_rules]

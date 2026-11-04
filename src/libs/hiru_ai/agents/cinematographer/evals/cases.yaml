@@ -1,0 +1,10 @@
+- name: a reaction shot is needed
+  input: { lead_charter: "Warm, patient.", scene_text: "S01 MCU 6s", shots: [ 1 ], instruction: "Add a reaction after S01." }
+  reply:
+    ops: [ { op: insert, shot: null, field: null, value: null, seconds: null, at_block: null, end_block: null, link: null, beat: null, after_shot: 1, description: "Anudi listens", framing: CU, title: null, block: null, kind: null, speaker: null, delivery: null } ]
+    note: "A reaction lets the call land."
+  expect: { ops: [ { op: insert, after_shot: 1, framing: CU } ], note: "A reaction lets the call land." }
+- name: the specialist fails
+  input: { scene_text: "S01 MCU 6s" }
+  model: unavailable
+  expect: { ops: [], note: "" }

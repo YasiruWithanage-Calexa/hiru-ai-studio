@@ -1,0 +1,216 @@
+{
+ "prompt": {
+  "id": "77777777-7777-4777-8777-777777777777",
+  "production_id": "2c6a4840-f43a-456e-be85-a14b89b300a1",
+  "shot_id": "19b0bbc8-c207-4628-84ea-e124eb98fc7b",
+  "version": 2,
+  "sections": [
+   {
+    "id": "style",
+    "title": "Style",
+    "segments": [
+     {
+      "text": "Photorealistic live-action television drama."
+     }
+    ]
+   },
+   {
+    "id": "camera",
+    "title": "Camera",
+    "segments": [
+     {
+      "text": "Slider, 85mm, a slow lateral slide."
+     }
+    ]
+   },
+   {
+    "id": "action",
+    "title": "Action & dialogue",
+    "segments": [
+     {
+      "text": "0-3s: Kasun smiles."
+     },
+     {
+      "sinhala": "Started with five thousand rupees."
+     }
+    ]
+   },
+   {
+    "id": "format",
+    "title": "Format",
+    "segments": [
+     {
+      "text": "Aspect ratio 16:9. Duration 8 seconds."
+     }
+    ]
+   }
+  ],
+  "prose": "Photorealistic live-action television drama. Slider, 85mm. 0-3s: Kasun smiles. Aspect ratio 16:9. Duration 8 seconds.",
+  "checks": [
+   {
+    "label": "A line differs from the script",
+    "tone": "fail"
+   }
+  ],
+  "pins": {
+   "shot_version": 1,
+   "script_hash": "an-older-script",
+   "canon": {}
+  },
+  "frame_id": null
+ },
+ "shot": {
+  "id": "19b0bbc8-c207-4628-84ea-e124eb98fc7b",
+  "production_id": "2c6a4840-f43a-456e-be85-a14b89b300a1",
+  "scene_id": "68a7f400-8c84-47b0-9329-369675a6248c",
+  "number": 1,
+  "title": "Kasun's start",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 0,
+  "sound_mode": "dialogue",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": "aa950ff4-7850-4977-b2b4-6332efd8b10c",
+  "beats": [
+   {
+    "start_s": 0,
+    "end_s": 3,
+    "camera": "",
+    "director_line": "",
+    "action": ""
+   },
+   {
+    "start_s": 3,
+    "end_s": 6,
+    "camera": "",
+    "director_line": "",
+    "action": ""
+   }
+  ],
+  "block_start": 0,
+  "block_end": 2,
+  "word_target": 13,
+  "words": 10,
+  "duration_locked": false,
+  "status": "draft",
+  "version": 1,
+  "person_edits": {},
+  "ir": {
+   "setting": "Kasun's food three-wheeler on a Colombo roadside",
+   "cinematography": {
+    "camera": "slider, 85mm, f/2.8",
+    "angle": "eye level",
+    "framing": "medium close-up",
+    "movement": "slow lateral slide",
+    "white_balance": "5600K",
+    "color_tone": "warm",
+    "depth_of_field": "Medium",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Open shade under the umbrella.",
+   "subjects": [
+    {
+     "id": "C02",
+     "description": "Anudi, chest-up",
+     "action": "smiles, then answers the phone"
+    },
+    {
+     "id": "C03",
+     "description": "only a voice through the phone",
+     "action": "speaks"
+    }
+   ],
+   "beats": [
+    {
+     "time": "0-3s",
+     "camera": "MCU",
+     "director_line": "She smiles.",
+     "action": "smiles",
+     "performance": "her smile holds, then slips"
+    },
+    {
+     "time": "3-6s",
+     "camera": "holds",
+     "director_line": "The phone rings.",
+     "action": "answers"
+    },
+    {
+     "time": "6-8s",
+     "camera": "settles",
+     "director_line": "She listens.",
+     "action": "listens"
+    }
+   ],
+   "audio": "street bed, a ringtone",
+   "first_frame": {
+    "composition": "Anudi at the stall, smiling",
+    "subjects": [
+     "Anudi smiling"
+    ],
+    "setting": "the stall",
+    "lighting": "open shade"
+   },
+   "on_screen": [
+    "C02"
+   ]
+  },
+  "design": {
+   "pins": {
+    "shot_version": 1,
+    "script_hash": "9a01fbb81afbd1df",
+    "canon": {
+     "aa950ff4-7850-4977-b2b4-6332efd8b10c": 1,
+     "f9644128-aee4-4ee2-9bb3-4d9a1cabed52": 1
+    },
+    "looks": {}
+   },
+   "recommended": {}
+  },
+  "camera_overrides": {},
+  "intent": {
+   "purpose": "Kasun shows who he is before the call",
+   "what_we_see": "Kasun at his stall, proud",
+   "emotional_beat": "pride",
+   "on_screen": [
+    "aa950ff4-7850-4977-b2b4-6332efd8b10c"
+   ],
+   "heard_only": [],
+   "voice_source": "",
+   "by": "model",
+   "made_for": "v1:x"
+  }
+ },
+ "lines": [
+  {
+   "id": "b7ffda8b-42cb-4a7d-b390-8b60ecb0928a",
+   "production_id": "2c6a4840-f43a-456e-be85-a14b89b300a1",
+   "scene_id": "68a7f400-8c84-47b0-9329-369675a6248c",
+   "ord": 0,
+   "speaker": "Kasun",
+   "character_id": "aa950ff4-7850-4977-b2b4-6332efd8b10c",
+   "text": "Started with Rs. 5,000. I'm trying to make it bigger.",
+   "delivery": "",
+   "words": 10,
+   "shot_id": "19b0bbc8-c207-4628-84ea-e124eb98fc7b",
+   "beat_index": 0,
+   "start_s": 0.5,
+   "overrun_s": 0.0
+  },
+  {
+   "id": "abc1be42-9fc3-4aaa-82ef-506bec70d687",
+   "production_id": "2c6a4840-f43a-456e-be85-a14b89b300a1",
+   "scene_id": "68a7f400-8c84-47b0-9329-369675a6248c",
+   "ord": 1,
+   "speaker": "Anudi's Father",
+   "character_id": "f6cad3a3-549b-4279-8c05-8ad8b6d1fd0c",
+   "text": "Anudi, where are you? Come home. We need to talk about your marriage.",
+   "delivery": "on the phone",
+   "words": 13,
+   "shot_id": "c43a13d7-ed84-4a9e-a088-df2d34c60eaf",
+   "beat_index": 1,
+   "start_s": 9.0,
+   "overrun_s": 0.91
+  }
+ ]
+}

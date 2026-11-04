@@ -1,0 +1,8 @@
+- name: an advisor who would cut earlier
+  input: { charter: "You cut early and trust the silence.", summary: "S02 became a CU.", scene_text: "S01 WIDE 4s\nS02 CU 6s" }
+  reply: { agrees: false, view: "I would cut S02 a second sooner and keep the silence." }
+  expect: { agrees: false }
+- name: the advisor cannot answer
+  input: { charter: "Warm.", summary: "none", scene_text: "S01 WIDE 4s" }
+  model: unavailable
+  expect: { agrees: true, view: "" }

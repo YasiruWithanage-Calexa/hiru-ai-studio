@@ -1,0 +1,11 @@
+id: shot_review
+kind: panel
+version: 1
+summary: "The director of photography designs a scene; a reviewer reads it against the intent and the free checks; one bounded revision."
+status: active
+owner: shot_producer
+pattern: generate_critique
+writer: agent:shot_writer
+critic: agent:shot_critic
+# ONE review, at most ONE revision. An open-ended "make it better" loop drifts from the script and costs without a ceiling.
+max_rounds: 1

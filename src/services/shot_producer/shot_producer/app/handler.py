@@ -4,6 +4,7 @@ transient network error, which a Cloud Tasks retry can fix."""
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any
 
 import httpx
@@ -33,6 +34,15 @@ def build(payload: DispatchPayload) -> tuple[Store, Jobs, LLM]:
     return store, Jobs(rest, config.api_internal_url, config.internal_secret), LLM(config, on_usage)
 
 
+def run_graph(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
+    """The same job through the `hiru_ai` shot_producer system (AI_ENGINE=graph): the thin handler builds the run's
+    context with real adapters and hands over."""
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.shot_producer import graph
+
+    return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs))
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         payload = DispatchPayload.model_validate(request.get_json(silent=True) or {})
@@ -43,6 +53,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
 
     store, jobs, llm = build(payload)
     try:
+        if os.environ.get("AI_ENGINE", "legacy") == "graph":
+            return run_graph(payload, jobs), 200
         return pipeline.run(payload, store, jobs, llm), 200
     except httpx.TransportError:
         _logger.warning("transient network error job=%s", payload.job_id, exc_info=True)

@@ -1,0 +1,18 @@
+- name: two passages of a script
+  input:
+    filename: ep1.pdf
+    role: script
+    overview: "EP 1. EXT. HARBOUR - NIGHT. Nimal and Kamala meet."
+    passages:
+      - { ord: 0, heading: "EXT. HARBOUR - NIGHT", content: "Nimal waits by the boat." }
+      - { ord: 1, heading: "INT. KITCHEN - DAWN", content: "Kamala lights the fire." }
+  reply: { headers: [ { ord: 0, header: "Episode 1 harbour scene where Nimal waits for Kamala" }, { ord: 1, header: "Kamala at dawn" } ] }
+  expect: { headers: [ { ord: 0, header: "Episode 1 harbour scene where Nimal waits for Kamala" }, { ord: 1, header: "Kamala at dawn" } ] }
+- name: a bible section
+  input:
+    filename: bible.md
+    role: bible
+    overview: "Premise: a family business on the south coast."
+    passages: [ { ord: 3, heading: "Tone", content: "Warm, a little wry." } ]
+  reply: { headers: [ { ord: 3, header: "Series bible tone section" } ] }
+  expect: { headers: [ { ord: 3, header: "Series bible tone section" } ] }

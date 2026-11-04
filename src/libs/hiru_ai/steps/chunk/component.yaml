@@ -1,0 +1,7 @@
+id: chunk
+kind: step
+version: 1
+summary: "Splits extracted lines into retrieval chunks along scene and heading structure, with page ranges."
+status: active
+owner: doc_ingest
+entry: step:run

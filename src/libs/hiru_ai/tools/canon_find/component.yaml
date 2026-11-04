@@ -1,0 +1,14 @@
+id: canon_find
+kind: tool
+version: 1
+summary: "Lists the canon (characters, places, props) by kind or by a word in the name: code, kind, name."
+status: active
+owner: director
+entry: tool:run
+ports: [canon]
+effect: read
+guide: |
+  Returns one line per canon item: code, kind and name (detailed adds aliases, locked and the card version), a page at a
+  time with `total` and `next_page`. Use it to find a name or a code you do not have, or to see who is in the production.
+  Example: {"kind": "character"} or {"query": "father"}.
+  Do not use it to read a card (use canon_read) or to look something up in the documents (use search_kb).

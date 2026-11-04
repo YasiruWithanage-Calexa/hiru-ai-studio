@@ -1,0 +1,91 @@
+{
+ "case": "cannot_edit",
+ "description": "A role without direct is answered but nothing changes",
+ "expected": {
+  "audits": [],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Writing the reply"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Your role on this production can comment but not change the shot list; a director or producer can apply this."
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "blocks": [
+      {
+       "advice": false,
+       "kind": "text",
+       "route": "",
+       "text": "Your role on this production can comment but not change the shot list; a director or producer can apply this."
+      }
+     ],
+     "citations": [],
+     "id": "<id:1>",
+     "kind": "director",
+     "ops": [],
+     "persona_id": "<id:4>",
+     "production_id": "<id:2>",
+     "speaker": "Classic Teledrama",
+     "text": "",
+     "thread_id": "<id:3>",
+     "tone": "lead"
+    },
+    "event": "message"
+   },
+   {
+    "data": {
+     "lane": "edit",
+     "message_id": "<id:1>"
+    },
+    "event": "done"
+   }
+  ],
+  "llm": [],
+  "memory_rows": [],
+  "message_rows": [
+   {
+    "blocks": [
+     {
+      "advice": false,
+      "kind": "text",
+      "route": "",
+      "text": "Your role on this production can comment but not change the shot list; a director or producer can apply this."
+     }
+    ],
+    "citations": [],
+    "id": "<id:1>",
+    "kind": "director",
+    "ops": [],
+    "persona_id": "<id:4>",
+    "production_id": "<id:2>",
+    "speaker": "Classic Teledrama",
+    "text": "",
+    "thread_id": "<id:3>",
+    "tone": "lead"
+   }
+  ],
+  "pending_rows": [],
+  "saved": []
+ },
+ "input": {
+  "can_edit": false,
+  "messages": [
+   "make shot 2 eight seconds"
+  ]
+ },
+ "model": {},
+ "service": "director_chat"
+}

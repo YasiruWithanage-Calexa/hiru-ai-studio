@@ -1,0 +1,18 @@
+- name: a line and an action
+  input:
+    items:
+      - { index: 0, kind: action, text: "Kasun waits.", screen: act }
+      - { index: 1, kind: dialogue, text: "You came.", speaker: Kasun, line_id: l1 }
+    heading: "EXT. GATE - DAY"
+    envelope_s: 12
+  reply: { shots: [ { start: 0, end: 2, framing: MCU, title: "Kasun at the gate", sound_mode: dialogue, duration: 6, camera_link: cut } ] }
+  expect: { shots: [ { start: 0, end: 2, framing: MCU, duration: 6 } ] }
+- name: a re-plan after a review
+  input:
+    items: [ { index: 0, kind: action, text: "A bus passes.", screen: move } ]
+    heading: "EXT. ROAD - DAY"
+    envelope_s: 8
+    allowed: [ 4, 8 ]
+    notes: [ "S01 needs a WIDE" ]
+  reply: { shots: [ { start: 0, end: 1, framing: WIDE, title: "The bus passes", sound_mode: ambient, duration: 4, camera_link: cut } ] }
+  expect: { shots: [ { framing: WIDE } ] }

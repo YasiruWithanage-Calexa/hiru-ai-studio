@@ -1,0 +1,16 @@
+id: glossary_read
+kind: tool
+version: 1
+summary: "Gives the fixed spellings of the people and places for a language: the canon's names and how accepted translations wrote them."
+status: active
+owner: director
+entry: tool:run
+ports: [canon, scenes]
+effect: read
+guide: |
+  Returns each person and place with the spelling the canon fixes (name and aliases) and, for the scene this run is about,
+  the spellings that lines already translated into `language` used. A translator keeps these spellings and does not
+  invent new ones. `names` narrows it to some of them.
+  Example: {"language": "en", "names": ["Anudi", "Kasun"]}.
+  Do not use it to read a card (use canon_read), to read the lines themselves (use dialogue_read), or to translate
+  anything: it only lists spellings.

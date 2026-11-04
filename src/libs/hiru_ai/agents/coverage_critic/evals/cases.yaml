@@ -1,0 +1,11 @@
+- name: a reaction is missing
+  input:
+    listing: "[0] ACTION (act, 1.5 s): Her phone rings.\n[1] DIALOGUE (Anudi, 1 words, 0.5 s): Hello?"
+    shot_list: "Envelope: 12 s. Plan runs 6 s. Silent: 1 s.\nS01 MCU 6s dialogue \"Anudi takes the call\" blocks [0, 1]"
+    found: [ "S01 holds more than it can show" ]
+  reply: { acceptable: false, notes: [ { note: "S01: the listener's reaction is not seen", severity: 2 } ] }
+  expect: { acceptable: false, notes: [ { severity: 2 } ] }
+- name: the lens cannot answer
+  input: { listing: "[0] ACTION (act, 1.5 s): It rains.", shot_list: "S01 WIDE 4s ambient blocks [0]" }
+  model: unavailable
+  expect: { acceptable: true, notes: [] }

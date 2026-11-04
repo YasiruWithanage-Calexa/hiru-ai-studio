@@ -1,0 +1,12 @@
+id: director_chat
+kind: system
+version: 1
+summary: "One streamed director turn: read the message, conduct it, apply or stage the change, let the board work, answer."
+status: active
+owner: director
+# A turn is a synchronous stream (server-sent events), not a job: it serves no JobKind.
+job_kind: ""
+panels: [director_board]
+agents: [conductor, options_writer, translator, advisor, reply_writer, chat_answerer]
+steps: [scene_kernel, ripple, board_settle, verbatim_check]
+tools: []

@@ -1,0 +1,16 @@
+id: emotion_critic
+kind: agent
+version: 1
+summary: "Reviews a shot list as the emotion editor (Murch): is every turn in feeling seen? Writes notes."
+status: active
+owner: script_split
+model: medium
+shape: structured
+phase: script_split.critic.emotion
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

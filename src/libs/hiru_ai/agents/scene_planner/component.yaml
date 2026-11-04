@@ -1,0 +1,16 @@
+id: scene_planner
+kind: agent
+version: 1
+summary: "Groups a scene's numbered blocks into shots; code fits the proposal to the clock and binds the lines."
+status: active
+owner: script_split
+model: high
+shape: structured
+phase: script_split.plan
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

@@ -1,0 +1,49 @@
+{
+ "case": "scanned_pdf",
+ "description": "A scanned PDF is rejected and the job finishes",
+ "expected": {
+  "chunks": [],
+  "document": {
+   "chunk_count": 0,
+   "confirmed_role": null,
+   "error": "This PDF has no readable text layer (it looks scanned). Upload a PDF exported from the original document, or a Markdown or plain text file.",
+   "filename": "scan.pdf",
+   "id": "d",
+   "mime_type": "application/pdf",
+   "production_id": "<id:2>",
+   "status": "rejected",
+   "storage_path": "p/d/file"
+  },
+  "embed_batches": null,
+  "events": [
+   [
+    "progress",
+    {
+     "document_id": "<id:1>",
+     "text": "Reading scan.pdf"
+    }
+   ]
+  ],
+  "job": {
+   "status": "pending"
+  },
+  "results": [
+   {
+    "document_id": "<id:1>",
+    "reason": "This PDF has no readable text layer (it looks scanned). Upload a PDF exported from the original document, or a Markdown or plain text file.",
+    "status": "rejected"
+   }
+  ],
+  "texts": {},
+  "usage": []
+ },
+ "input": {
+  "filename": "scan.pdf",
+  "pdf_pages": [
+   "",
+   ""
+  ]
+ },
+ "model": {},
+ "service": "doc_ingest"
+}

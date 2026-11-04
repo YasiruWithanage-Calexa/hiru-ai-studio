@@ -1,0 +1,16 @@
+id: shot_intent
+kind: agent
+version: 1
+summary: "Writes each shot's purpose, what we see and emotional beat, and the scene's coverage plan, before the camera is designed."
+status: active
+owner: shot_producer
+model: high
+shape: structured
+phase: shot_producer.intent
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

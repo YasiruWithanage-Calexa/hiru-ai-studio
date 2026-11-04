@@ -1,0 +1,18 @@
+id: continuity_check
+kind: tool
+version: 1
+summary: "Compares how one shot ends with how the next begins: positions, props, side of frame, the join and the canon cards."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+uses: [shot_joins]
+effect: read
+guide: |
+  Takes the shot that comes first and compares its end with the start of the shot after it. Returns what code finds: a person
+  who ends in one place and opens in another, who is on the other side of the frame, something held in one shot and not the
+  next, a continuing shot cut in a different size, and two shots designed on different cards of the same person. The last
+  shot of a scene has nothing after it.
+  Example: {"shot": "S02", "scene": "E1S2"}.
+  Do not use it for the whole scene's staging (use staging_check), for one shot alone (use shot_read) or to check a prompt
+  (use prompt_check).

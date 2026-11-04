@@ -1,0 +1,407 @@
+{
+ "case": "chain",
+ "description": "Shot ids limit the work and the state is handed on to frame_render",
+ "expected": {
+  "audits": [
+   {
+    "action": "shots.design",
+    "actor_agent": "shot_producer",
+    "actor_user_id": "<id:11>",
+    "diff": {
+     "designed": 1,
+     "intents": 1,
+     "prompts": 0,
+     "skipped": 0
+    },
+    "entity": "job",
+    "entity_id": "<id:7>",
+    "production_id": "<id:4>"
+   }
+  ],
+  "intents": {
+   "<id:2>": {
+    "by": "rules",
+    "emotional_beat": "",
+    "heard_only": [],
+    "made_for": "v1:<digest:3>",
+    "on_screen": [
+     "<id:5>"
+    ],
+    "purpose": "",
+    "split_after": null,
+    "split_reason": "",
+    "voice_source": "",
+    "what_we_see": "",
+    "written_at": "<ts>"
+   }
+  },
+  "jobs": {
+   "advanced": [
+    {
+     "again": false,
+     "cursor": 0,
+     "state": {
+      "previous": {
+       "designed": 1,
+       "intents": 1,
+       "prompts": 0,
+       "skipped": 0
+      },
+      "scene_ids": [
+       "<id:1>"
+      ],
+      "shot_ids": [
+       "<id:2>"
+      ]
+     }
+    }
+   ],
+   "events": [
+    {
+     "agent": "first_assistant_director",
+     "scene_id": "<id:1>",
+     "text": "Scene 1: what each shot is for, for 1 shots",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "scene_id": "<id:1>",
+     "text": "Scene 1: designing 1 shots",
+     "type": "progress"
+    },
+    {
+     "agent": "director_of_photography",
+     "planner": "rules",
+     "shot_id": "<id:2>",
+     "text": "S02: 50mm · static",
+     "type": "progress"
+    }
+   ],
+   "fields": {},
+   "status": "running"
+  },
+  "llm": [],
+  "prompts": [],
+  "results": [
+   {
+    "designed": 1,
+    "intents": 1,
+    "prompts": 0,
+    "skipped": 0
+   }
+  ],
+  "scene_row": {
+   "coverage": {
+    "axis": "",
+    "by": "rules",
+    "made_for": 1,
+    "motif": "",
+    "progression": "wide shot → medium close-up → wide shot → medium close-up",
+    "written_at": "<ts>"
+   },
+   "envelope_s": 60,
+   "episode": {
+    "number": 1
+   },
+   "episode_id": "<id:12>",
+   "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+   "id": "<id:1>",
+   "location_id": "<id:6>",
+   "number": 1,
+   "production_id": "<id:4>",
+   "script": [
+    {
+     "kind": "action",
+     "line_id": null,
+     "text": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers."
+    },
+    {
+     "kind": "dialogue",
+     "line_id": "<id:13>",
+     "text": ""
+    },
+    {
+     "kind": "action",
+     "line_id": null,
+     "text": "Kamala does not turn around. She keeps stirring the pan."
+    },
+    {
+     "kind": "dialogue",
+     "line_id": "<id:14>",
+     "text": ""
+    }
+   ],
+   "status": "approved",
+   "time_of_day": "DAWN"
+  },
+  "shot_rows": {
+   "<id:2>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 2,
+    "block_start": 1,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {
+     "designed_at": "<ts>",
+     "intent": "<digest:2>",
+     "job_id": "<id:7>",
+     "missing": [],
+     "on_screen": [
+      "<id:5>"
+     ],
+     "pins": {
+      "canon": {
+       "<id:5>": 1,
+       "<id:6>": 1
+      },
+      "looks": {},
+      "script_hash": "<digest:1>",
+      "shot_version": 1
+     },
+     "planner": "rules",
+     "rationale": "50mm at f/2.8 suits a medium close-up; a locked-off camera at eye level keeps the geography clear.",
+     "recommended": {
+      "angle": "Eye level",
+      "aperture": "f/2.8",
+      "axis": "Side A · left to right",
+      "framing": "Medium close-up",
+      "lens": "50mm",
+      "lighting": "Dawn, soft ambient",
+      "movement": "Static",
+      "speed": "None"
+     }
+    },
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "MCU",
+    "id": "<id:2>",
+    "intent": {
+     "by": "rules",
+     "emotional_beat": "",
+     "heard_only": [],
+     "made_for": "v1:<digest:3>",
+     "on_screen": [
+      "<id:5>"
+     ],
+     "purpose": "",
+     "split_after": null,
+     "split_reason": "",
+     "voice_source": "",
+     "what_we_see": "",
+     "written_at": "<ts>"
+    },
+    "ir": {
+     "audio": "natural sound of the location",
+     "beats": [
+      {
+       "action": "Nimal speak",
+       "camera": "medium close-up",
+       "director_line": "Nimal speak",
+       "performance": "",
+       "time": "0-2s"
+      },
+      {
+       "action": "Nimal speak",
+       "camera": "unchanged",
+       "director_line": "Nimal speak",
+       "performance": "",
+       "time": "2-4s"
+      }
+     ],
+     "cinematography": {
+      "angle": "eye level",
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "color_tone": "naturalistic, gently warm, film-like",
+      "depth_of_field": "Shallow, soft background",
+      "framing": "medium close-up on Nimal",
+      "lens_artifacts": "none",
+      "movement": "locked-off, no camera movement",
+      "white_balance": "cool 6000K dawn warming"
+     },
+     "first_frame": {
+      "composition": "Medium close-up at eye level on Nimal",
+      "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+      "setting": "Kamala's house, dawn",
+      "subjects": [
+       "Nimal: wearing a creased white shirt"
+      ]
+     },
+     "lighting": "Pale early light, low and soft, cool shadows warming at the edges.",
+     "setting": "Kamala's house, dawn",
+     "subjects": [
+      {
+       "action": "",
+       "description": "wearing a creased white shirt",
+       "id": "C02",
+       "position": ""
+      }
+     ]
+    },
+    "number": 2,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "dialogue",
+    "speaker_id": "<id:5>",
+    "start_s": 6,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 8,
+    "words": 4
+   },
+   "<id:3>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 3,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 6,
+      "start_s": 3
+     }
+    ],
+    "block_end": 1,
+    "block_start": 0,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {},
+    "duration_locked": false,
+    "duration_s": 6,
+    "frame_strategy": "generate",
+    "framing": "WIDE",
+    "id": "<id:3>",
+    "ir": {},
+    "number": 1,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "ambient",
+    "speaker_id": null,
+    "start_s": 0,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 0,
+    "words": 0
+   },
+   "<id:8>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 3,
+    "block_start": 2,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {},
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "WIDE",
+    "id": "<id:8>",
+    "ir": {},
+    "number": 3,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "ambient",
+    "speaker_id": null,
+    "start_s": 10,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 0,
+    "words": 0
+   },
+   "<id:9>": {
+    "beats": [
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 2,
+      "start_s": 0
+     },
+     {
+      "action": "",
+      "camera": "",
+      "director_line": "",
+      "end_s": 4,
+      "start_s": 2
+     }
+    ],
+    "block_end": 4,
+    "block_start": 3,
+    "camera_link": "cut",
+    "camera_overrides": {},
+    "design": {},
+    "duration_locked": false,
+    "duration_s": 4,
+    "frame_strategy": "generate",
+    "framing": "MCU",
+    "id": "<id:9>",
+    "ir": {},
+    "number": 4,
+    "person_edits": {},
+    "production_id": "<id:4>",
+    "scene_id": "<id:1>",
+    "sound_mode": "dialogue",
+    "speaker_id": "<id:10>",
+    "start_s": 14,
+    "status": "draft",
+    "title": "",
+    "version": 1,
+    "word_target": 8,
+    "words": 4
+   }
+  },
+  "technique_queries": []
+ },
+ "input": {
+  "runs": [
+   {
+    "chain": true,
+    "shots": [
+     2
+    ]
+   }
+  ]
+ },
+ "model": {},
+ "service": "shot_producer"
+}

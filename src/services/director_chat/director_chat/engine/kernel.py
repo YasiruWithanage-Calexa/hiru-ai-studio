@@ -607,6 +607,10 @@ class ScenePlanKernel:
         """A person took an implied step out: the phone line it belongs to remembers, so a re-split
         never brings it back (`contracts.bridges`)."""
         kind = str(removed["bridge"])
+        if kind.startswith(f"{bridges.MOVE}:"):  # a move is remembered on the block that came after it
+            if at < len(self.items):
+                self.items[at]["skip_bridges"] = sorted({*self.items[at].get("skip_bridges", []), kind})
+            return
         pool = range(at, len(self.items)) if kind == bridges.ANSWER_PHONE else range(at - 1, -1, -1)
         for p in pool:
             if self.items[p]["kind"] == BlockKind.DIALOGUE.value:

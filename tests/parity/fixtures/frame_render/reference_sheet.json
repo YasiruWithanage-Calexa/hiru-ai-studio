@@ -1,0 +1,79 @@
+{
+ "case": "reference_sheet",
+ "description": "A character reference sheet for the current card",
+ "expected": {
+  "asset_writes": [
+   [
+    "<id:3>",
+    [
+     {
+      "created_at": "<ts>",
+      "job_id": "<id:5>",
+      "kind": "sheet",
+      "path": "<id:2>/<id:1>/<id:3>-3cc98366.png",
+      "version": 2
+     },
+     {
+      "path": "p/kamala.png"
+     }
+    ]
+   ]
+  ],
+  "audits": [
+   {
+    "action": "canon.reference_sheet",
+    "actor_agent": "frame_render",
+    "actor_user_id": "<id:4>",
+    "diff": {
+     "job_id": "<id:5>"
+    },
+    "entity": "canon",
+    "entity_id": "<id:1>",
+    "production_id": "<id:2>"
+   }
+  ],
+  "frame_rows": {},
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "agent": "frame_render",
+     "text": "Reference sheet ready",
+     "type": "progress"
+    }
+   ],
+   "fields": {
+    "result": {
+     "entity_id": "<id:1>",
+     "status": "done",
+     "version": 2
+    }
+   },
+   "status": "done"
+  },
+  "painted": [
+   {
+    "aspect": "16:9",
+    "pictures": [],
+    "prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Kamala\nSubject: one person\nAppearance: 52, grey-streaked hair in a bun\nOutfit in every panel: a plain fitted grey t-shirt and fitted grey trousers, hair tied back if long",
+    "references": []
+   }
+  ],
+  "results": [
+   {
+    "entity_id": "<id:1>",
+    "status": "done",
+    "version": 2
+   }
+  ],
+  "uploads": {
+   "references/<id:2>/<id:1>/<id:3>-3cc98366.png": "<bytes:9:075f8e3f>"
+  }
+ },
+ "input": {
+  "painter": {},
+  "reference_entity": 0
+ },
+ "model": {},
+ "service": "frame_render"
+}

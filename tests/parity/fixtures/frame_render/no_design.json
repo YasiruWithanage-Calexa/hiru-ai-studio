@@ -1,0 +1,58 @@
+{
+ "case": "no_design",
+ "description": "A shot with no design is reported",
+ "expected": {
+  "asset_writes": [],
+  "audits": [],
+  "frame_rows": {
+   "<id:1>": {
+    "error": "This shot has no camera design yet. Design the scene first.",
+    "id": "<id:1>",
+    "production_id": "<id:3>",
+    "shot_id": "<id:2>",
+    "status": "failed"
+   }
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "agent": "frame_render",
+     "frame_id": "<id:1>",
+     "shot_id": "<id:2>",
+     "status": "failed",
+     "text": "Frame failed",
+     "type": "warning"
+    }
+   ],
+   "fields": {
+    "result": {
+     "done": 0,
+     "failed": 1,
+     "refused": 0,
+     "skipped": 0
+    }
+   },
+   "status": "done"
+  },
+  "painted": [],
+  "results": [
+   {
+    "done": 0,
+    "failed": 1,
+    "refused": 0,
+    "skipped": 0
+   }
+  ],
+  "uploads": {}
+ },
+ "input": {
+  "design": false,
+  "frames": [
+   0
+  ],
+  "painter": {}
+ },
+ "model": {},
+ "service": "frame_render"
+}

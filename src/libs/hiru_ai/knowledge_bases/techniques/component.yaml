@@ -1,0 +1,10 @@
+id: techniques
+kind: knowledge_base
+version: 1
+summary: "The craft_techniques table as agents search it (technique_lookup): an intent in, the techniques that deliver it out."
+status: active
+owner: rag
+corpus: techniques
+store: techniques
+ingest: none               # filled by `hiru-ai ingest cinematography`
+fed_by: cinematography

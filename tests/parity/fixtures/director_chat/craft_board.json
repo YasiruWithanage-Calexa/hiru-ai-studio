@@ -1,0 +1,740 @@
+{
+ "case": "craft_board",
+ "description": "A craft request tasks the specialists; the owner wins a collision; the advisor disagrees",
+ "expected": {
+  "audits": [
+   {
+    "action": "scene.director_edit",
+    "actor_agent": "director_chat",
+    "actor_user_id": "<id:14>",
+    "diff": {
+     "ops": [
+      {
+       "by": "cinematography",
+       "field": "framing",
+       "op": "set",
+       "shot": 2,
+       "value": "CU"
+      },
+      {
+       "by": "sound",
+       "field": "sound_mode",
+       "op": "set",
+       "shot": 1,
+       "value": "silent"
+      }
+     ]
+    },
+    "entity": "scene",
+    "entity_id": "<id:3>",
+    "production_id": "<id:2>"
+   }
+  ],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Applying your changes"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "issues": [],
+     "shots": [
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 3,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 6,
+         "start_s": 3
+        }
+       ],
+       "block_end": 1,
+       "block_start": 0,
+       "camera_link": "cut",
+       "duration_locked": false,
+       "duration_s": 6,
+       "frame_strategy": "generate",
+       "framing": "MS",
+       "id": "<id:1>",
+       "number": 1,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "silent",
+       "speaker_id": null,
+       "start_s": 0,
+       "status": "draft",
+       "title": "",
+       "version": 2,
+       "word_target": 0,
+       "words": 0
+      },
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 2,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 4,
+         "start_s": 2
+        }
+       ],
+       "block_end": 2,
+       "block_start": 1,
+       "camera_link": "cut",
+       "duration_locked": false,
+       "duration_s": 4,
+       "frame_strategy": "generate",
+       "framing": "CU",
+       "id": "<id:4>",
+       "number": 2,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "dialogue",
+       "speaker_id": "<id:5>",
+       "start_s": 6,
+       "status": "draft",
+       "title": "",
+       "version": 2,
+       "word_target": 8,
+       "words": 4
+      },
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 2,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 4,
+         "start_s": 2
+        }
+       ],
+       "block_end": 3,
+       "block_start": 2,
+       "camera_link": "cut",
+       "duration_locked": false,
+       "duration_s": 4,
+       "frame_strategy": "generate",
+       "framing": "MS",
+       "id": "<id:6>",
+       "number": 3,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "ambient",
+       "speaker_id": null,
+       "start_s": 10,
+       "status": "draft",
+       "title": "",
+       "version": 1,
+       "word_target": 0,
+       "words": 0
+      },
+      {
+       "beats": [
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 2,
+         "start_s": 0
+        },
+        {
+         "action": "",
+         "camera": "",
+         "director_line": "",
+         "end_s": 4,
+         "start_s": 2
+        }
+       ],
+       "block_end": 4,
+       "block_start": 3,
+       "camera_link": "cut",
+       "duration_locked": false,
+       "duration_s": 4,
+       "frame_strategy": "generate",
+       "framing": "MS",
+       "id": "<id:7>",
+       "number": 4,
+       "person_edits": {},
+       "production_id": "<id:2>",
+       "scene_id": "<id:3>",
+       "sound_mode": "dialogue",
+       "speaker_id": "<id:8>",
+       "start_s": 14,
+       "status": "draft",
+       "title": "",
+       "version": 1,
+       "word_target": 8,
+       "words": 4
+      }
+     ],
+     "total_s": 18
+    },
+    "event": "plan"
+   },
+   {
+    "data": {
+     "text": "Writing the reply"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Done. S02 "
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "text": "now holds on Nimal."
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "blocks": [
+      {
+       "kind": "text",
+       "text": "Done. S02 now holds on Nimal."
+      },
+      {
+       "count": 2,
+       "kind": "edit-note",
+       "text": "S02 framing → CU; S01 sound mode → silent"
+      },
+      {
+       "kind": "disagreement",
+       "positions": [
+        {
+         "applied": true,
+         "change": "S01 sound mode → silent",
+         "ops": [
+          {
+           "field": "sound_mode",
+           "op": "set",
+           "shot_id": "<id:1>",
+           "value": "silent"
+          }
+         ],
+         "text": "Let the dawn be silent.",
+         "who": "Sound"
+        },
+        {
+         "applied": false,
+         "change": "S01 sound mode → music_only",
+         "ops": [
+          {
+           "field": "sound_mode",
+           "op": "set",
+           "shot_id": "<id:1>",
+           "value": "music_only"
+          }
+         ],
+         "text": "Closer on both.",
+         "who": "Cinematography"
+        }
+       ],
+       "title": "Two views on S01 sound mode"
+      },
+      {
+       "kind": "disagreement",
+       "positions": [
+        {
+         "applied": true,
+         "text": "S02 framing → CU; S01 sound mode → silent",
+         "who": "Classic Teledrama"
+        },
+        {
+         "text": "I would hold the wide longer.",
+         "who": "Lyrical Eye"
+        }
+       ],
+       "title": "Lyrical Eye sees it differently"
+      }
+     ],
+     "citations": [],
+     "id": "<id:9>",
+     "kind": "director",
+     "ops": [
+      {
+       "by": "cinematography",
+       "field": "framing",
+       "op": "set",
+       "shot": 2,
+       "value": "CU"
+      },
+      {
+       "by": "sound",
+       "field": "sound_mode",
+       "op": "set",
+       "shot": 1,
+       "value": "silent"
+      }
+     ],
+     "persona_id": "<id:11>",
+     "production_id": "<id:2>",
+     "speaker": "Classic Teledrama",
+     "text": "",
+     "thread_id": "<id:10>",
+     "tone": "lead"
+    },
+    "event": "message"
+   },
+   {
+    "data": {
+     "lane": "craft",
+     "message_id": "<id:9>"
+    },
+    "event": "done"
+   }
+  ],
+  "llm": [
+   {
+    "phase": "director.conduct",
+    "schema": "turn_plan",
+    "system": "sha:ce3e65dd27e8",
+    "tier": "medium"
+   },
+   {
+    "phase": "director.cinematography",
+    "schema": "cinematography_ops",
+    "system": "sha:c9b46a542ce2",
+    "tier": "high"
+   },
+   {
+    "phase": "director.sound",
+    "schema": "sound_ops",
+    "system": "sha:fdeca14d307e",
+    "tier": "high"
+   },
+   {
+    "phase": "director.advisor",
+    "schema": "advisor_view",
+    "system": "sha:6e3f5ab1a7e8",
+    "tier": "medium"
+   },
+   {
+    "phase": "director.reply",
+    "schema": "stream",
+    "system": "sha:d4d14c4cc8a5",
+    "tier": "medium"
+   }
+  ],
+  "memory_rows": [],
+  "message_rows": [
+   {
+    "blocks": [
+     {
+      "kind": "text",
+      "text": "Done. S02 now holds on Nimal."
+     },
+     {
+      "count": 2,
+      "kind": "edit-note",
+      "text": "S02 framing → CU; S01 sound mode → silent"
+     },
+     {
+      "kind": "disagreement",
+      "positions": [
+       {
+        "applied": true,
+        "change": "S01 sound mode → silent",
+        "ops": [
+         {
+          "field": "sound_mode",
+          "op": "set",
+          "shot_id": "<id:1>",
+          "value": "silent"
+         }
+        ],
+        "text": "Let the dawn be silent.",
+        "who": "Sound"
+       },
+       {
+        "applied": false,
+        "change": "S01 sound mode → music_only",
+        "ops": [
+         {
+          "field": "sound_mode",
+          "op": "set",
+          "shot_id": "<id:1>",
+          "value": "music_only"
+         }
+        ],
+        "text": "Closer on both.",
+        "who": "Cinematography"
+       }
+      ],
+      "title": "Two views on S01 sound mode"
+     },
+     {
+      "kind": "disagreement",
+      "positions": [
+       {
+        "applied": true,
+        "text": "S02 framing → CU; S01 sound mode → silent",
+        "who": "Classic Teledrama"
+       },
+       {
+        "text": "I would hold the wide longer.",
+        "who": "Lyrical Eye"
+       }
+      ],
+      "title": "Lyrical Eye sees it differently"
+     }
+    ],
+    "citations": [],
+    "id": "<id:9>",
+    "kind": "director",
+    "ops": [
+     {
+      "by": "cinematography",
+      "field": "framing",
+      "op": "set",
+      "shot": 2,
+      "value": "CU"
+     },
+     {
+      "by": "sound",
+      "field": "sound_mode",
+      "op": "set",
+      "shot": 1,
+      "value": "silent"
+     }
+    ],
+    "persona_id": "<id:11>",
+    "production_id": "<id:2>",
+    "speaker": "Classic Teledrama",
+    "text": "",
+    "thread_id": "<id:10>",
+    "tone": "lead"
+   }
+  ],
+  "pending_rows": [],
+  "saved": [
+   {
+    "lines": [
+     {
+      "beat_index": 0,
+      "character_id": "<id:5>",
+      "delivery": "quietly",
+      "id": "<id:12>",
+      "ord": 0,
+      "overrun_s": 0.0,
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "shot_id": "<id:4>",
+      "speaker": "Nimal",
+      "start_s": 6.5,
+      "text": "අම්මේ, මම ආපහු ආවා.",
+      "words": 4
+     },
+     {
+      "beat_index": 0,
+      "character_id": "<id:8>",
+      "delivery": "",
+      "id": "<id:13>",
+      "ord": 1,
+      "overrun_s": 0.0,
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "shot_id": "<id:7>",
+      "speaker": "Kamala",
+      "start_s": 14.5,
+      "text": "කෑම කන්න වාඩි වෙන්න.",
+      "words": 4
+     }
+    ],
+    "removed": [],
+    "removed_lines": [],
+    "scene": {
+     "envelope_s": 60,
+     "fit_report": {
+      "critic_notes": [],
+      "crowded": [],
+      "envelope_s": 60,
+      "issues": [],
+      "multi_speaker": [],
+      "need_s": 18,
+      "planner": "director",
+      "silent_s": 10,
+      "silent_share": 0.56,
+      "total_s": 18,
+      "voiceover": []
+     },
+     "status": "split"
+    },
+    "shots": [
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 3,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 6,
+        "start_s": 3
+       }
+      ],
+      "block_end": 1,
+      "block_start": 0,
+      "camera_link": "cut",
+      "duration_locked": false,
+      "duration_s": 6,
+      "frame_strategy": "generate",
+      "framing": "MS",
+      "id": "<id:1>",
+      "number": 1,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "silent",
+      "speaker_id": null,
+      "start_s": 0,
+      "status": "draft",
+      "title": "",
+      "version": 2,
+      "word_target": 0,
+      "words": 0
+     },
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 2,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 4,
+        "start_s": 2
+       }
+      ],
+      "block_end": 2,
+      "block_start": 1,
+      "camera_link": "cut",
+      "duration_locked": false,
+      "duration_s": 4,
+      "frame_strategy": "generate",
+      "framing": "CU",
+      "id": "<id:4>",
+      "number": 2,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "dialogue",
+      "speaker_id": "<id:5>",
+      "start_s": 6,
+      "status": "draft",
+      "title": "",
+      "version": 2,
+      "word_target": 8,
+      "words": 4
+     },
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 2,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 4,
+        "start_s": 2
+       }
+      ],
+      "block_end": 3,
+      "block_start": 2,
+      "camera_link": "cut",
+      "duration_locked": false,
+      "duration_s": 4,
+      "frame_strategy": "generate",
+      "framing": "MS",
+      "id": "<id:6>",
+      "number": 3,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "ambient",
+      "speaker_id": null,
+      "start_s": 10,
+      "status": "draft",
+      "title": "",
+      "version": 1,
+      "word_target": 0,
+      "words": 0
+     },
+     {
+      "beats": [
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 2,
+        "start_s": 0
+       },
+       {
+        "action": "",
+        "camera": "",
+        "director_line": "",
+        "end_s": 4,
+        "start_s": 2
+       }
+      ],
+      "block_end": 4,
+      "block_start": 3,
+      "camera_link": "cut",
+      "duration_locked": false,
+      "duration_s": 4,
+      "frame_strategy": "generate",
+      "framing": "MS",
+      "id": "<id:7>",
+      "number": 4,
+      "person_edits": {},
+      "production_id": "<id:2>",
+      "scene_id": "<id:3>",
+      "sound_mode": "dialogue",
+      "speaker_id": "<id:8>",
+      "start_s": 14,
+      "status": "draft",
+      "title": "",
+      "version": 1,
+      "word_target": 8,
+      "words": 4
+     }
+    ]
+   }
+  ]
+ },
+ "input": {
+  "board": [
+   {
+    "persona": {
+     "charter": "Let place carry emotion.",
+     "name": "Lyrical Eye"
+    },
+    "seat": "advisor"
+   }
+  ],
+  "messages": [
+   "Make this scene more intimate"
+  ]
+ },
+ "model": {
+  "enabled": true,
+  "replies": {
+   "advisor_view": [
+    {
+     "agrees": false,
+     "view": "I would hold the wide longer."
+    }
+   ],
+   "cinematography_ops": [
+    {
+     "note": "Closer on both.",
+     "ops": [
+      {
+       "field": "framing",
+       "op": "set",
+       "shot": 2,
+       "value": "CU"
+      },
+      {
+       "field": "sound_mode",
+       "op": "set",
+       "shot": 1,
+       "value": "music_only"
+      }
+     ]
+    }
+   ],
+   "sound_ops": [
+    {
+     "note": "Let the dawn be silent.",
+     "ops": [
+      {
+       "field": "sound_mode",
+       "op": "set",
+       "shot": 1,
+       "value": "silent"
+      }
+     ]
+    }
+   ],
+   "turn_plan": [
+    {
+     "lane": "craft",
+     "memory": [],
+     "ops": [],
+     "tasks": [
+      {
+       "agent": "cinematography",
+       "instruction": "more intimate",
+       "shots": [
+        1,
+        2,
+        4
+       ]
+      },
+      {
+       "agent": "sound",
+       "instruction": "quieter dawn",
+       "shots": [
+        1
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "reply": "Done. S02 now holds on Nimal."
+ },
+ "service": "director_chat"
+}

@@ -1,0 +1,1 @@
+"""The glossary read tool."""

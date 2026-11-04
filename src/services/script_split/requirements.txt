@@ -2,3 +2,12 @@ functions-framework==3.10.2
 httpx>=0.27,<1
 pydantic>=2.9,<3
 openai>=1.60,<3
+
+# hiru_ai (plan/2026-11-03 Phase 6): needed only by AI_ENGINE=graph, installed always so a switch needs no redeploy.
+# The same pins as requirements/hiru_ai_openai.in; the hashed lock replaces this once it is re-resolved.
+langchain==1.4.4
+langchain-core==1.7.0
+langchain-openai==1.7.2
+langgraph==1.2.16
+pydantic-settings>=2.6,<3
+PyYAML>=6.0,<7

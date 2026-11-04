@@ -1,0 +1,120 @@
+{
+ "case": "camera_and_unreadable_sheet",
+ "description": "A person's camera reaches the frame; an unreadable sheet is not named (vertical)",
+ "expected": {
+  "asset_writes": [],
+  "audits": [
+   {
+    "action": "frames.render",
+    "actor_agent": "frame_render",
+    "actor_user_id": "<id:7>",
+    "diff": {
+     "done": 1,
+     "failed": 0,
+     "refused": 0,
+     "skipped": 0
+    },
+    "entity": "job",
+    "entity_id": "<id:8>",
+    "production_id": "<id:3>"
+   }
+  ],
+  "frame_rows": {
+   "<id:1>": {
+    "checks": [
+     {
+      "label": "No reference sheet · Kamala",
+      "tone": "advisory"
+     },
+     {
+      "label": "No reference sheet · Nimal",
+      "tone": "advisory"
+     }
+    ],
+    "error": null,
+    "id": "<id:1>",
+    "pins": {
+     "canon": {
+      "<id:4>": 2,
+      "<id:5>": 1,
+      "<id:6>": 1
+     },
+     "looks": {},
+     "script_hash": "<digest:1>",
+     "shot_version": 1
+    },
+    "production_id": "<id:3>",
+    "prompt": "Photorealistic still frame from a Sri Lankan television drama, shot on a cinema camera with real optics and natural imperfections. Reference images, in order: image 1 is the location plate for Kamala's house. Match them exactly: the same faces, hair, skin tone and build, the same place. Do not redesign anyone. Camera: Close-up, eye level, 85mm lens at f/4, deep focus. Locked-off, no camera movement. Compose it as a close-up. Kamala at the stove, back to the door. Kamala. People: Kamala: 52, grey-streaked hair in a bun; wearing a faded blue cotton saree | Nimal: wearing a creased white shirt. Setting: the kitchen. Lighting: firelight. The people, place and everyday details are Sri Lankan. 9:16 vertical framing. A single still frame: no text, no watermark, no captions, no collage, no split panels.",
+    "reference_ids": [
+     "<id:6>"
+    ],
+    "shot_id": "<id:2>",
+    "status": "done",
+    "storage_path": "<id:3>/<id:2>/<id:1>.png"
+   }
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "agent": "frame_render",
+     "frame_id": "<id:1>",
+     "shot_id": "<id:2>",
+     "status": "done",
+     "text": "Frame ready",
+     "type": "progress"
+    }
+   ],
+   "fields": {
+    "result": {
+     "done": 1,
+     "failed": 0,
+     "refused": 0,
+     "skipped": 0
+    }
+   },
+   "status": "done"
+  },
+  "painted": [
+   {
+    "aspect": "9:16",
+    "pictures": [
+     "<bytes:17:2cbc0368>"
+    ],
+    "prompt": "Photorealistic still frame from a Sri Lankan television drama, shot on a cinema camera with real optics and natural imperfections. Reference images, in order: image 1 is the location plate for Kamala's house. Match them exactly: the same faces, hair, skin tone and build, the same place. Do not redesign anyone. Camera: Close-up, eye level, 85mm lens at f/4, deep focus. Locked-off, no camera movement. Compose it as a close-up. Kamala at the stove, back to the door. Kamala. People: Kamala: 52, grey-streaked hair in a bun; wearing a faded blue cotton saree | Nimal: wearing a creased white shirt. Setting: the kitchen. Lighting: firelight. The people, place and everyday details are Sri Lankan. 9:16 vertical framing. A single still frame: no text, no watermark, no captions, no collage, no split panels.",
+    "references": [
+     "the location plate for Kamala's house"
+    ]
+   }
+  ],
+  "results": [
+   {
+    "done": 1,
+    "failed": 0,
+    "refused": 0,
+    "skipped": 0
+   }
+  ],
+  "uploads": {
+   "frames/<id:3>/<id:2>/<id:1>.png": "<bytes:9:075f8e3f>"
+  }
+ },
+ "input": {
+  "camera_overrides": {
+   "0": {
+    "framing": "Close-up",
+    "lens": "85mm"
+   }
+  },
+  "frames": [
+   0
+  ],
+  "orientation": "vertical",
+  "painter": {},
+  "unreadable": [
+   "p/kamala.png"
+  ]
+ },
+ "model": {},
+ "service": "frame_render"
+}

@@ -25,6 +25,10 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: ruff check src tests scripts infra/assemble
       - run: mypy
+      - name: Import boundaries (import-linter)
+        run: python scripts/lint_imports.py
+      - name: AI catalog is current
+        run: hiru-ai catalog --check
       - name: mypy (each service, with only its own package + contracts on the path)
         run: |
           for svc in src/services/*/; do
@@ -60,7 +64,7 @@ jobs:
           eval "$(supabase status -o env | sed 's/^/export SB_/')"
           export ENVIRONMENT=local SUPABASE__URL="$SB_API_URL" SUPABASE__SERVICE_ROLE_KEY="$SB_SERVICE_ROLE_KEY"
           python scripts/create_admin.py ci@hirutv.lk --password ci-only-password
-          python scripts/ingest_knowledge.py
+          hiru-ai ingest --all
           python scripts/eval_retrieval.py
 
   terraform:

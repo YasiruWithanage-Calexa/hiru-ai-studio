@@ -462,3 +462,72 @@ def test_who_may_write_the_reading_and_an_approved_scene_is_locked(world: World)
     world.client.post(url(world, f"/scenes/{sid}/approve"), headers=h)
     assert world.client.put(url(world, f"/scenes/{sid}/reading"), json=reading_body(), headers=h).status_code == 409
     assert world.client.delete(url(world, f"/scenes/{sid}/reading"), headers=h).status_code == 409
+
+
+# ── the staging map (plan/2026-11-01d, Phase 4) ─────────────────────────────────────────────
+
+
+def put_staging(world: World, s: dict, marks: list[dict]) -> None:
+    """Store a map as a split would: Kamala at the stove, then (block 3) at the door."""
+    from contracts import reading as scene_reading
+    from contracts import stagemap
+
+    row = world.repos.scenes.rows[s["scene"]["id"]]  # type: ignore[attr-defined]
+    lines = [ln for ln in world.repos.lines.rows.values() if ln["scene_id"] == s["scene"]["id"]]  # type: ignore[attr-defined]
+    items = sceneplan.items_for(row["script"], lines)
+    made = stagemap.validate({"zones": ["stove", "door"], "marks": marks}, items, ["Kamala", "Nimal"], version=1,
+                             by="model")
+    assert made.basis == scene_reading.basis(items)
+    row["staging"] = made.model_dump(mode="json")
+
+
+def stage_mark(block: int, who: str, zone: str, **extra) -> dict:
+    return {"block": block, "who": who, "zone": zone, "facing": "", "frame_side": "", "holding": "", **extra}
+
+
+def test_the_view_and_the_staging_endpoint_show_the_map_and_the_teleport(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    h = world.headers(world.reviewer)
+    assert world.client.get(url(world, f"/scenes/{sid}/staging"), headers=h).json() == {
+        "staging": None, "stale": False, "findings": []}
+    put_staging(world, s, [stage_mark(0, "Kamala", "stove", frame_side="left"), stage_mark(1, "Nimal", "door"),
+                           stage_mark(3, "Kamala", "door")])
+    got = world.client.get(url(world, f"/scenes/{sid}/staging"), headers=h).json()
+    assert got["stale"] is False and got["staging"]["zones"] == ["stove", "door"]
+    assert [(f["code"], f["block"], f["who"], f["zone"]) for f in got["findings"]] == [
+        ("teleport", 3, ["Kamala"], "door")]
+    v = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    assert v["staging"]["by"] == "model" and v["staging_findings"] == got["findings"]
+    first = v["shots"][0]["places"]
+    assert first == [{"who": "Kamala", "zone": "stove", "facing": "", "frame_side": "left", "holding": ""}]
+    assert v["shots"][1]["places"][0]["who"] == "Nimal"
+
+
+def test_who_may_hand_the_map_back_and_it_is_the_directors_alone(world: World):
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    put_staging(world, s, [stage_mark(0, "Kamala", "stove")])
+    for user in (world.writer, world.crew, world.reviewer):
+        assert world.client.delete(url(world, f"/scenes/{sid}/staging"), headers=world.headers(user)).status_code == 403
+    r = world.client.delete(url(world, f"/scenes/{sid}/staging"), headers=world.headers(world.director))
+    assert r.status_code == 200 and r.json()["staging"] is None
+    assert world.client.get(url(world, f"/scenes/{sid}"), headers=world.headers(world.director)).json()[
+        "staging"] is None
+
+
+def test_a_removed_move_step_is_remembered_on_the_block_after_it(world: World):
+    from contracts import bridges
+
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    row = world.repos.scenes.rows[sid]  # type: ignore[attr-defined]
+    lines = [ln for ln in world.repos.lines.rows.values() if ln["scene_id"] == sid]  # type: ignore[attr-defined]
+    row["script"], _ = bridges.insert_moves(row["script"], lines, [(3, "Kamala", "door")], 1)
+    h = world.headers(world.writer)
+    v = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    assert [(b["index"], b["implied"], b["bridge"]) for b in v["script"] if b["implied"]] == [(3, True, "move:kamala")]
+    r = world.client.delete(url(world, f"/scenes/{sid}/script/3"), headers=h)
+    assert r.status_code == 200, r.text
+    assert not [b for b in r.json()["script"] if b["implied"]]
+    assert world.repos.scenes.rows[sid]["script"][3]["skip_bridges"] == ["move:kamala"]  # type: ignore[attr-defined]

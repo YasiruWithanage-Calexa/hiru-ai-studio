@@ -1,0 +1,48 @@
+# The other two treatments for phone_call (draft by Claude, for a Hiru director to correct; plan/2026-11-04b §4 step 2).
+# The master's own treatment ("intimate, then distant") is the third. Each is in the director's WIRE shape
+# (contracts.adam.wire.TreatmentW): the moment ids are not known yet, so the plant, the break and the ending are words.
+scene: phone_call
+status: draft
+master_stance: intimate
+alternates:
+  - stance: restrained
+    name: the bench that does not notice
+    concept: we make the viewer feel the call as something the world does not notice, by never leaving the bench
+    pov: nobody's; an even eye that watches both of them from the same distance
+    sound_concept: the lake carries on, unchanged, over everything that is said
+    sections:
+      - { beats: [0, 1], camera_behaviour: "locked-off wide of the pair", size_band: [WS, MWS], sound_state: "lake" }
+      - { beats: [2, 3], camera_behaviour: "still", size_band: [MWS, MS], sound_state: "lake" }
+      - { beats: [4], camera_behaviour: "still", size_band: [MS, MS], sound_state: "lake" }
+    size_arc: [WS, MWS, MS, MWS, WS]
+    motif: the lake
+    plant: { object: phone, plant_when: "the opening wide, the phone face-down on the bench", payoff_when: "she turns it face-down again after the call", payoff_scene: "" }
+    rhythm: [easy, easy, held, easy, easy]
+    rhythm_break: { when: "a long hold on the pair after the word marriage", kind: long_hold }
+    entry: as she laughs
+    exit: the bench with Dasun on it
+    ending_image: the bench, Dasun, the lake, and the place where she sat
+    transition_in: cut from the previous scene on a laugh
+    transition_out: hold, then cut
+    off_speaker: false
+  - stance: heightened
+    name: the voice that owns the camera
+    concept: we make the viewer feel the call as a verdict falling on her, by letting the father's voice take the picture
+    pov: the phone; the father's voice owns the camera until she ends the call
+    sound_concept: music enters on the word marriage and stays under her until she walks away
+    sections:
+      - { beats: [0, 1], camera_behaviour: "handheld, close", size_band: [MS, CU], sound_state: "bright" }
+      - { beats: [2, 3], camera_behaviour: "push-in on the phone", size_band: [CU, ECU], sound_state: "tense" }
+      - { beats: [4], camera_behaviour: "slow push-in then a sudden cut", size_band: [ECU, ECU], sound_state: "music" }
+      - { beats: [0], camera_behaviour: "pull-out", size_band: [MS, WS], sound_state: "music fading" }
+    size_arc: [MS, CU, ECU, ECU, MS, WS]
+    motif: the phone
+    plant: { object: phone, plant_when: "the opening shot, the phone face-down in the foreground", payoff_when: "her thumb ends the call and the phone goes face-down", payoff_scene: "" }
+    rhythm: [bright, quickening, hard, held, falling]
+    rhythm_break: { when: "a sudden cut to silence on the word marriage", kind: sudden_cut }
+    entry: on the laugh, already close
+    exit: she is gone and the music with her
+    ending_image: Dasun alone in a wide, the music gone
+    transition_in: smash cut from the previous scene
+    transition_out: music tail into the next scene
+    off_speaker: true

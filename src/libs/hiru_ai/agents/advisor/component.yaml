@@ -1,0 +1,16 @@
+id: advisor
+kind: agent
+version: 1
+summary: "Says in a sentence or two how an advisor would have done the lead's changes differently, in their own style."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: director.advisor
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

@@ -1,0 +1,17 @@
+id: director_board
+kind: panel
+version: 1
+summary: "The director's board: four crafts work on a scene in parallel, code settles who wins a collision, advisors are heard after."
+status: active
+owner: director
+pattern: board
+# name = what the conductor's tasks call the craft. owns = the operations the kernel lets it write.
+# wins = the paths it wins when two crafts write the same one (most specific entry first, "*" = everything else).
+members:
+  - { agent: cinematographer, name: cinematography, owns: [set, set_join, beat.set, insert, split],
+      wins: [set, beat.set.camera, set_join, "*"] }
+  - { agent: editor, name: timing, owns: [split, merge, regroup], wins: [split, merge, regroup] }
+  - { agent: sound_designer, name: sound, owns: [set], wins: [set.sound_mode] }
+  - { agent: continuity, name: continuity, owns: [beat.set, set_join], wins: [beat.set] }
+settle: step:board_settle
+review: [agent:advisor]

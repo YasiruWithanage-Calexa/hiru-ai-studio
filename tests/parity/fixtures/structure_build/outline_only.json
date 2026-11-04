@@ -1,0 +1,181 @@
+{
+ "case": "outline_only",
+ "description": "An outline-only production gets episodes and a warning",
+ "expected": {
+  "canon_rows": [
+   {
+    "aliases": [
+     "කමලා"
+    ],
+    "code": "C01",
+    "id": "<id:6>",
+    "kind": "character",
+    "name": "Kamala"
+   },
+   {
+    "aliases": [],
+    "code": "C02",
+    "id": "<id:7>",
+    "kind": "character",
+    "name": "Nimal"
+   },
+   {
+    "aliases": [],
+    "code": "C03",
+    "id": "<id:8>",
+    "kind": "character",
+    "name": "Sunil"
+   },
+   {
+    "aliases": [],
+    "code": "C04",
+    "id": "<id:9>",
+    "kind": "character",
+    "name": "Mrs. Perera"
+   },
+   {
+    "aliases": [],
+    "code": "L01",
+    "id": "<id:10>",
+    "kind": "location",
+    "name": "Kamala's house"
+   },
+   {
+    "aliases": [],
+    "code": "L02",
+    "id": "<id:11>",
+    "kind": "location",
+    "name": "Kalugala harbour breakwater"
+   },
+   {
+    "aliases": [],
+    "code": "L03",
+    "id": "<id:12>",
+    "kind": "location",
+    "name": "Auction shed"
+   }
+  ],
+  "deliveries": [
+   {
+    "deleted_scenes": 0,
+    "episodes": 4,
+    "kept_approved": 0,
+    "looks": 0,
+    "new_characters": 0,
+    "scenes": 0
+   }
+  ],
+  "episode_rows": {
+   "<id:1>": {
+    "id": "<id:1>",
+    "number": 1,
+    "production_id": "<id:2>",
+    "source_document_ids": [],
+    "status": "draft",
+    "synopsis": "Nimal comes home from Dubai and asks what the boat would sell for. Kamala refuses to discuss it. Sunil asks for one more year at sea.",
+    "title": "The Return"
+   },
+   "<id:3>": {
+    "id": "<id:3>",
+    "number": 2,
+    "production_id": "<id:2>",
+    "source_document_ids": [],
+    "status": "draft",
+    "synopsis": "A hotel agent from Galle offers cash for the boat. Mrs. Perera spreads the news before lunch. Kamala sells fish twice as early to prove the family does not need the money.",
+    "title": "The Buyer"
+   },
+   "<id:4>": {
+    "id": "<id:4>",
+    "number": 3,
+    "production_id": "<id:2>",
+    "source_document_ids": [],
+    "status": "draft",
+    "synopsis": "A storm keeps the boats in harbour for a week. The debts in the auction shed ledger grow. Sunil goes out alone against everyone's advice and does not come back by nightfall.",
+    "title": "Storm Season"
+   },
+   "<id:5>": {
+    "id": "<id:5>",
+    "number": 4,
+    "production_id": "<id:2>",
+    "source_document_ids": [],
+    "status": "draft",
+    "synopsis": "The town searches the coast through the night. Nimal and Kamala wait together on the breakwater, and for the first time talk about the father who drowned.",
+    "title": "The Search"
+   }
+  },
+  "jobs": {
+   "advanced": [
+    {
+     "again": false,
+     "cursor": 1,
+     "state": {
+      "build": true,
+      "previous": {
+       "deleted_scenes": 0,
+       "episodes": 4,
+       "kept_approved": 0,
+       "looks": 0,
+       "new_characters": 0,
+       "scenes": 0
+      },
+      "scene_ids": []
+     }
+    }
+   ],
+   "events": [
+    {
+     "stage": "episodes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "script_architect",
+     "text": "No scripts were found, so episodes come from the outline only. Upload scripts to build scenes.",
+     "type": "warning"
+    },
+    {
+     "stage": "episodes",
+     "state": "done",
+     "text": "4 episodes",
+     "type": "stage"
+    },
+    {
+     "stage": "scenes",
+     "state": "active",
+     "text": "",
+     "type": "stage"
+    },
+    {
+     "agent": "script_architect",
+     "text": "4 episodes and 0 scenes from the scripts.",
+     "type": "agent_step"
+    },
+    {
+     "stage": "scenes",
+     "state": "done",
+     "text": "0 scenes",
+     "type": "stage"
+    }
+   ],
+   "fields": {},
+   "status": "running"
+  },
+  "line_rows": {},
+  "llm": [],
+  "look_rows": [],
+  "question_rows": {},
+  "scene_rows": {}
+ },
+ "input": {
+  "docs": [
+   {
+    "corpus": "harbour-lights-outline.txt",
+    "filename": "outline.txt",
+    "role": "outline"
+   }
+  ]
+ },
+ "model": {},
+ "service": "structure_build"
+}

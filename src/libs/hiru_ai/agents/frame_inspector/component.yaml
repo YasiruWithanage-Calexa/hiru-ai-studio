@@ -1,0 +1,16 @@
+id: frame_inspector
+kind: agent
+version: 1
+summary: "Looks at a painted frame against what the shot expects and counts the main people. Advisory only."
+status: active
+owner: frame_render
+model: vision
+shape: structured
+phase: frame_render.vision
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

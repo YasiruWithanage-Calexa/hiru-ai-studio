@@ -46,6 +46,9 @@ FOR EACH SHOT
   Follow the shot's TIMELINE in order: every picture on it appears, none is dropped, nothing is added.
   A STORY NOTE is never filmed. THE VIEWER LEARNS is shown another way (an insert, a line, a look).
 - emotional_beat: a few words for how the feeling moves ("warmth to dread").
+  When the scene has a READING (what it is about, the feeling start to end, what each person wants, where the
+  feeling turns, the held moments), purpose and emotional_beat COME FROM IT: name the unit and the turn the shot
+  serves instead of inventing a reason after the fact. A shot with a turn says what turns.
 - on_screen: cast codes of the people PHYSICALLY VISIBLE at any moment of the shot.
 - heard_only: cast codes of people whose voice is heard but who are NOT in the place: the other
   end of a phone call, a voice from another room, a radio, a narrator. Never on screen.
@@ -167,8 +170,12 @@ def scene_prompt(scene: SceneInput, shots: list[ShotInput]) -> str:
                       + f"\nSCRIPT (block numbers in brackets):\n{_listing(s)}"
                       + (f"\nTIMELINE (seconds from the start of the shot): {_timeline(s)}" if _timeline(s) else ""))
     place = scene.location.name if scene.location else ""
+    reading = scene.reading.text() if scene.reading else ""
     head = [f"SCENE {scene.number}: {scene.heading}", f"PLACE: {place}" if place else "",
-            f"TIME: {scene.time_of_day}" if scene.time_of_day else "", context_block(scene)]
+            f"TIME: {scene.time_of_day}" if scene.time_of_day else "", context_block(scene),
+            "READING OF THE SCENE (decided before the shots):\n" + reading if reading else "",
+            "WHERE EVERYONE IS (the staging map):\n" + scene.staging.text()
+            if scene.staging and scene.staging.marks else ""]
     numbers = ", ".join(str(s.number) for s in shots)
     return ("<scene>\n" + "\n".join(h for h in head if h) + "\n\n" + "\n\n".join(blocks) + "\n</scene>\n\n"
             f"Return one entry per shot, numbered {numbers}, and the scene's coverage.")
@@ -247,6 +254,19 @@ def listener(scene: SceneInput, shot: ShotInput) -> list[str]:
     return speaking(nearest)[:1] if nearest else []
 
 
+def _from_reading(scene: SceneInput | None, shot: ShotInput) -> tuple[str, str]:
+    """→ (what the shot serves, how the feeling moves), straight from the scene's reading, for the rules' intent:
+    what each person in the shot wants, and the turn when the shot holds one. ("", "") without a reading."""
+    reading = scene.reading if scene is not None else None
+    if reading is None:
+        return "", ""
+    wants = "; ".join(f"{who} {verb}" for who, verb in shot.feeling.person_wants.items())
+    turns = bool(shot.feeling.turn_beats)
+    purpose = ("where the feeling turns" if turns else "") + (f" ({wants})" if wants and turns else wants)
+    moves = f"{reading.value.start} to {reading.value.end}" if reading.value.start and reading.value.end else ""
+    return purpose.strip(), (moves if turns and moves else reading.tone)
+
+
 def by_rules(shot: ShotInput, scene: SceneInput | None = None) -> ShotIntent:
     """A plainer intent from the script itself: its actions, who is only heard, and (when a voice
     plays over nobody) the person nearest in the scene who is there to hear it."""
@@ -261,12 +281,14 @@ def by_rules(shot: ShotInput, scene: SceneInput | None = None) -> ShotIntent:
         seen = [by_id[c] for c in added if c in by_id]
     holder = seen[0].name if seen and shot.staged.voice_source == "phone" else ""
     picture = ". ".join(actions[:3])
+    purpose, beat = _from_reading(scene, shot)
     if heard:
         picture += (". " if picture else "") + (
             f"{' and '.join(c.name for c in heard)} is heard {source_phrase(shot.staged.voice_source, holder)}"
             " and is not in the place")
-    return ShotIntent(purpose=_clean(shot.title or (actions[0] if actions else ""), 400),
-                      what_we_see=_clean(picture + ("." if picture else ""), 700),
+    why = shot.title or (actions[0] if actions else "")
+    return ShotIntent(purpose=_clean(" — ".join(p for p in (why, purpose) if p), 400),
+                      what_we_see=_clean(picture + ("." if picture else ""), 700), emotional_beat=_clean(beat, 200),
                       on_screen=list(dict.fromkeys([*shot.staged.on_screen, *added])),
                       heard_only=list(shot.staged.heard_only),
                       voice_source=shot.staged.voice_source if heard else "",

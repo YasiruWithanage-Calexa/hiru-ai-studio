@@ -15,7 +15,7 @@ from typing import Any, Protocol
 from uuid import UUID, uuid4
 
 from contracts import beats as screen_beats
-from contracts import bridges, sceneplan
+from contracts import bridges, sceneplan, stagemap
 from contracts import reading as scene_reading
 from contracts.build import Agent, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
@@ -25,6 +25,7 @@ from contracts.shotplan import FitResult, Item, ProposedShot, allowed_durations,
 from contracts.veo import SoundMode
 from script_split.engine import beats, critic, planner
 from script_split.engine import reading as reading_engine
+from script_split.engine import staging as staging_engine
 from script_split.engine.reading import SceneContext
 
 _logger = logging.getLogger(__name__)
@@ -108,6 +109,42 @@ def scene_context(scene: dict[str, Any], episodes: dict[str, dict[str, Any]], ne
                         before=gist(before), after=gist(after), characters=tuple(cards))
 
 
+def stage(scene: dict[str, Any], lines: list[dict[str, Any]], script: list[dict[str, Any]], items: list[Item],
+          reading: scene_reading.SceneReading, llm: LLMLike, names: dict[str, str], place: str = ""
+          ) -> tuple[list[dict[str, Any]], list[Item], scene_reading.SceneReading, stagemap.SceneStaging | None]:
+    """Place the scene's people, then walk anyone who would teleport (plan/2026-11-01d, Phase 4).
+
+    -> (the script with its implied moves in, its items, the reading and the map carried across those blocks, the
+    map or None). The map comes from one `medium` call (a person's, or one made for these blocks, is kept); CODE finds
+    each person who changes zone with nothing to show the way and adds one removable step for each, unless a person
+    removed it before. Without a key or without marks there is no map and nothing about places is checked."""
+    ask = None
+    if llm.enabled:
+        def ask(system: str, user: str) -> dict[str, Any]:
+            return llm.json(tier="medium", phase="script_split.staging", system=system, user=user,
+                            schema_name="scene_staging", schema=staging_engine.STAGING_SCHEMA)
+    cast = list(names.values())
+    staging, _ = staging_engine.staging_for(scene, items, ask, cast, reading=reading, place=place,
+                                            speaker_names=names)
+    moves = stagemap.plan_moves(staging, items, cast)
+    if staging is None or not moves:
+        return script, items, reading, staging
+    script, where = bridges.insert_moves(script, lines, moves, int(scene.get("script_version") or 1))
+    placed = sceneplan.items_for(script, lines)
+    if reading.basis == scene_reading.basis(items):  # a person's out-of-date reading keeps the numbers it had
+        reading = scene_reading.remap(reading, placed, where)
+    return script, placed, reading, stagemap.remap(staging, placed, where)
+
+
+def location_notes(store: Any, production_id: UUID) -> dict[str, str]:
+    """location id → "Name: what the place is", for the staging map's spots. A store with no locations gives none."""
+    rows = getattr(store, "locations", None)
+    if rows is None:
+        return {}
+    return {str(r["id"]): " — ".join(p for p in (str(r.get("name") or ""), str(
+        ((r.get("current") or {}).get("card") or {}).get("summary") or "")) if p) for r in rows(production_id)}
+
+
 def continuity_notes(label: str, scene: dict[str, Any], lines: list[dict[str, Any]]) -> list[str]:
     """Free checks a person should see before directing: a scene with no place, a line nobody
     in the canon speaks, a scene with no script."""
@@ -124,12 +161,14 @@ def continuity_notes(label: str, scene: dict[str, Any], lines: list[dict[str, An
 
 def plan_scene(items: list[Item], *, heading: str, envelope_s: int, fixed: int | None, llm: LLMLike,
                speaker_names: dict[str, str], reading: scene_reading.SceneReading | None = None,
-               context: SceneContext | None = None) -> tuple[FitResult, str, list[str]]:
+               context: SceneContext | None = None, staging: stagemap.SceneStaging | None = None
+               ) -> tuple[FitResult, str, list[str]]:
     """-> (fitted plan, which planner, critic notes acted on).
 
     `items` carry the reading's time (`contracts.reading.apply`). Over the envelope, optional breath is given up
     first (`planner.fold_breath`); the plan, the rules' and the model's, is fitted and scored with what is left, and
-    the result says what was given up. The model critics write notes; the kernel score in code picks the plan."""
+    the result says what was given up. Three model critics (coverage, emotion, editor) write notes; the kernel score
+    in code, which also weighs the staging map's checks, picks the plan."""
     base = list(items)
     items, rules_shots = planner.rules_plan(base, envelope_s=envelope_s, fixed_seconds=fixed)
     rules = fit(items, rules_shots, envelope_s=envelope_s, fixed_seconds=fixed)
@@ -143,16 +182,19 @@ def plan_scene(items: list[Item], *, heading: str, envelope_s: int, fixed: int |
     context_text = context.text() if context else ""
     reading_text = reading.text() if reading else ""
 
+    cast = list(speaker_names.values())
+
     def score(result: FitResult) -> critic.Score:
-        return critic.kernel_score(result, reading, items)
+        return critic.kernel_score(result, reading, items, staging, cast)
 
     def ask_plan(system: str, user: str) -> dict[str, Any]:
         return llm.json(tier="high", phase="script_split.plan", system=system, user=user,
                         schema_name="shot_plan", schema=planner.PLAN_SCHEMA)
 
-    def ask_critic(system: str, user: str) -> dict[str, Any]:
+    def ask_critic(lens: str, system: str, user: str) -> dict[str, Any]:
         # The high tier (plan/2026-11-01 fix 11): every later hop inherits this shot list.
-        return llm.json(tier="high", phase="script_split.critic", system=system, user=user,
+        tier = "high" if lens == "coverage" else "medium"  # the two new lenses cost less (plan/2026-11-01d §6)
+        return llm.json(tier=tier, phase=f"script_split.critic.{lens}", system=system, user=user,
                         schema_name="shot_review", schema=critic.CRITIC_SCHEMA)
 
     def plan(notes: list[str] | None = None) -> FitResult:
@@ -168,7 +210,9 @@ def plan_scene(items: list[Item], *, heading: str, envelope_s: int, fixed: int |
         return finish(rules, "rules", [])
     notes: list[str] = []
     try:
-        notes = critic.review(ask_critic, planner.scene_listing(items, speaker_names), best, items)
+        found = [f.message for f in stagemap.checks(staging, items, best, cast)]
+        notes = critic.review(ask_critic, planner.scene_listing(items, speaker_names), best, items,
+                              reading=reading_text, staging=staging.text() if staging else "", found=found)
         if notes:
             revised = plan(notes)
             if score(revised) < score(best):  # a full tie keeps the first plan
@@ -232,6 +276,18 @@ def report(result: FitResult, planner_name: str, notes: list[str]) -> dict[str, 
     return fit_report(result, planner_name, notes)
 
 
+def staging_report(staging: stagemap.SceneStaging, items: list[Item], found: list[stagemap.Finding],
+                   cast: list[str]) -> dict[str, Any]:
+    """What `fit_report.staging` says: the spots, the problems left (a removed move is one), and the steps added."""
+    def rows(code: str) -> list[dict[str, Any]]:
+        return [{"message": f.message, "block": f.block, "shot": f.shot, "who": list(f.who), "zone": f.zone}
+                for f in found if f.code == code]
+
+    return {"zones": staging.zones, "teleports": rows("teleport"), "line_crossed": rows("line_crossed"),
+            "eyeline": rows("eyeline"), "unplaced": stagemap.unplaced(staging, items, cast),
+            "moves": [{"block": i.index, "text": i.text} for i in items if bridges.is_move_block(i.bridge)]}
+
+
 def episode_stats(result: FitResult, scene: dict[str, Any]) -> dict[str, int]:
     """What one scene adds to its episode's line in the build log."""
     off_screen = sum(len(s.line_ids) for s in result.shots if s.sound_mode is SoundMode.VOICEOVER)
@@ -288,6 +344,9 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
     todo: list[tuple[str, dict[str, Any], list[dict[str, Any]], list[Item]]] = []
     scripts: dict[str, list[dict[str, Any]]] = {}  # scene id → its script with implied steps and readings
     readings: dict[str, scene_reading.SceneReading] = {}  # scene id → its reading (plan/2026-11-01d)
+    stagings: dict[str, stagemap.SceneStaging] = {}  # scene id → its staging map (Phase 4)
+    staging_reports: dict[str, dict[str, Any]] = {}  # scene id → what the map's checks found
+    places = location_notes(store, production_id)
     for scene in scenes:
         label = f"Ep {episode_no.get(str(scene['episode_id']), 0):02d} Scene {scene['number']}"
         if scene["status"] == "approved":
@@ -311,11 +370,19 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
         context = scene_context(scene, episode_rows, neighbours, cards)
         reading, _ = reading_engine.reading_for(scene, items, ask, list(names.values()), context=context,
                                                 speaker_names=names)
+        script, items, reading, staging = stage(scene, lines, scripts[str(scene["id"])], items, reading, llm, names,
+                                                places.get(str(scene.get("location_id")), ""))
+        scripts[str(scene["id"])] = script
         reading = scene_reading.clear_envelope(reading)
         timed = scene_reading.apply(items, reading)
         result, used, notes = plan_scene(timed, heading=scene["heading"], envelope_s=int(scene["envelope_s"]),
-                                         fixed=fixed, llm=llm, speaker_names=names, reading=reading, context=context)
+                                         fixed=fixed, llm=llm, speaker_names=names, reading=reading, context=context,
+                                         staging=staging)
         readings[str(scene["id"])] = scene_reading.mark_off(reading, timed, result.breath_dropped)
+        if staging is not None:
+            stagings[str(scene["id"])] = staging
+            found = stagemap.checks(staging, timed, result, list(names.values()))
+            staging_reports[str(scene["id"])] = staging_report(staging, timed, found, list(names.values()))
         return result, used, notes
 
     # Scenes are planned in parallel waves (model calls dominate) and written here, one at a time.
@@ -332,9 +399,13 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
             for (label, scene, lines, _), (result, used, notes) in zip(wave, pool.map(plan_one, wave), strict=True):
                 shots, line_rows = rows_for(scene, result, lines)
                 fields: dict[str, Any] = {"status": "split", "fit_report": report(result, used, notes)}
+                if str(scene["id"]) in staging_reports:
+                    fields["fit_report"]["staging"] = staging_reports[str(scene["id"])]
                 if scripts[str(scene["id"])] != (scene.get("script") or []):
                     fields["script"] = scripts[str(scene["id"])]  # implied steps and readings, with the shots
                 fields["reading"] = readings[str(scene["id"])].model_dump(mode="json")
+                if str(scene["id"]) in stagings:  # no map (no key) leaves a stored one as it is
+                    fields["staging"] = stagings[str(scene["id"])].model_dump(mode="json")
                 store.replace_shots(UUID(str(scene["id"])), shots, line_rows, fields)
                 continuity.extend(continuity_notes(label, scene, lines))
                 written += 1

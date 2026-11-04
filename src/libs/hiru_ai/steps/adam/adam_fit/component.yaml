@@ -1,0 +1,8 @@
+id: adam_fit
+kind: step
+version: 1
+summary: "Puts moments and cards on the Veo clock (4 / 6 / 8 s, 2.2 words/s): reports overruns and the scene's runtime against its envelope; never trims a line."
+status: active
+owner: director
+entry: step:run
+uses: []

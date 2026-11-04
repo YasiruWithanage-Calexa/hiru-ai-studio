@@ -1,0 +1,13 @@
+- name: two people at a gate
+  input:
+    items:
+      - { index: 0, kind: action, text: "Kasun waits at the gate.", screen: act }
+      - { index: 1, kind: dialogue, text: "You came.", speaker: Kasun, speaker_id: s1, line_id: l1 }
+    speaker_names: { s1: Kasun }
+    place: "A gate, a tea stall, a bench"
+  reply: { zones: [ gate, bench ], marks: [ { block: 0, who: Kasun, zone: gate, facing: camera, frame_side: left, holding: "" } ] }
+  expect: { zones: [ gate, bench ], marks: [ { block: 0, who: Kasun, zone: gate, facing: camera } ] }
+- name: nothing placed
+  input: { items: [ { index: 0, kind: action, text: "It rains.", screen: act } ] }
+  reply: { zones: [ yard, road ], marks: [] }
+  expect: { marks: [] }

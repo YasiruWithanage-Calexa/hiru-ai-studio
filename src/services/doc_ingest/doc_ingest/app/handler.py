@@ -5,6 +5,7 @@ network errors, which a retry can fix."""
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any
 from uuid import UUID
 
@@ -33,6 +34,16 @@ def build(payload: DispatchPayload) -> tuple[Store, LLM]:
     return store, LLM(config, on_usage)
 
 
+def run_graph(payload: DispatchPayload, store: Store) -> dict[str, Any]:
+    """The same job through the `hiru_ai` doc_ingest system (AI_ENGINE=graph): the thin handler builds the run's
+    context with real adapters and hands over."""
+    from doc_ingest.runtime.jobs import JobsPort
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.doc_ingest import graph
+
+    return graph.run(payload, supabase_rest.build_context(payload, jobs=JobsPort(store)))
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         payload = DispatchPayload.model_validate(request.get_json(silent=True) or {})
@@ -42,6 +53,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
 
     store, llm = build(payload)
     try:
+        if os.environ.get("AI_ENGINE", "legacy") == "graph":
+            return run_graph(payload, store), 200
         return pipeline.run(payload, store, llm), 200
     except httpx.TransportError:
         _logger.warning("transient network error job=%s", payload.job_id, exc_info=True)

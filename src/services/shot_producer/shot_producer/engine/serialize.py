@@ -26,6 +26,7 @@ from typing import Any
 
 from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment, camera_sentence
 from contracts.staging import source_phrase
+from shot_producer.engine.feeling import performance_missing
 from shot_producer.engine.model import Line, ShotInput
 from shot_producer.engine.schema import get_schema
 
@@ -121,7 +122,10 @@ def _line_segments(ln: Line, shot: ShotInput) -> list[PromptSegment]:
     rules = get_schema()
     who = next((c for c in shot.cast if c.id == ln.character_id), None)
     name = who.name if who else (ln.speaker.title() or "the speaker")
-    delivery = f" ({_clean(ln.delivery)})" if _clean(ln.delivery) else ""
+    # The voice carries the delivery the script gives and what the speaker wants in this stretch of the scene
+    # ("softly, wanting to hide it"): Veo's guide names tone of voice directly.
+    tone = ", ".join(x for x in (_clean(ln.delivery), shot.feeling.wants.get(ln.id, "")) if x)
+    delivery = f" ({tone})" if tone else ""
     if who is not None and who.id in shot.staged.heard_only and rules.render_rules.get("offscreen_line"):
         # Heard, not seen: the name only, and where the voice comes from (contracts.staging).
         source = source_phrase(shot.staged.voice_source, _holder(shot))
@@ -231,6 +235,9 @@ def _beats_section(shot: ShotInput, ir: Row, ctx: Context) -> PromptSection | No
         detail = _bare(beat.get("action"))
         if body and detail and body != detail:
             body = f"{body}. {detail}"
+        performance = _bare(beat.get("performance"))
+        if performance:  # the face and body at this moment: expression and a playable intention
+            body = f"{body}. {performance}" if body else performance
         cam = _bare(beat.get("camera"))
         if cam and not drop_camera and cam.lower() not in ("unchanged", "as above", "same", "none"):
             body = f"{cam}. {body}" if body else cam
@@ -311,8 +318,10 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
     return [s for s in sections if s is not None]
 
 
-def prompt_checks(shot: ShotInput, sections: list[PromptSection], ctx: Context) -> list[Check]:
+def prompt_checks(shot: ShotInput, sections: list[PromptSection], ctx: Context,
+                  ir: Row | None = None) -> list[Check]:
     """Free checks the prompt carries (PLAN.md §6.2 guardrails; Phase 5 adds `prompt_check`)."""
+    ctx_beats = list((ir or {}).get("beats") or [])
     checks: list[Check] = []
     sinhala = [seg.sinhala for s in sections for seg in s.segments if seg.sinhala is not None]
     if shot.lines:
@@ -342,4 +351,8 @@ def prompt_checks(shot: ShotInput, sections: list[PromptSection], ctx: Context) 
         checks.append(Check(label="Opens on the accepted first frame", tone="pass"))
     if changed_fields(ctx):
         checks.append(Check(label="Camera changed from the recommendation", tone="advisory"))
+    if shot.feeling.turn_beats:
+        missing = performance_missing(shot.feeling, [b for b in ctx_beats if isinstance(b, dict)], shot.beats)
+        checks.append(Check(label=f"No performance where the feeling turns · {', '.join(missing)}" if missing
+                            else "Performance written where the feeling turns", tone="advisory" if missing else "pass"))
     return checks

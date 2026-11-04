@@ -1,0 +1,7 @@
+id: verbatim_check
+kind: step
+version: 1
+summary: "Checks that a person's dialogue operation uses only words they wrote (a typo away counts)."
+status: active
+owner: director
+entry: step:run

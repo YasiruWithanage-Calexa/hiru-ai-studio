@@ -1,0 +1,8 @@
+id: serialize
+kind: step
+version: 1
+summary: "Writes a shot's Veo prompt sections and free checks from its stored design, in code, dialogue verbatim."
+status: active
+owner: shot_producer
+entry: step:run
+uses: [feeling]

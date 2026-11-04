@@ -1,0 +1,7 @@
+id: frame_compose
+kind: step
+version: 1
+summary: "What a frame is made of: which sheets are attached, the prompt that names them, the pins, what the vision check expects."
+status: active
+owner: frame_render
+entry: step:run

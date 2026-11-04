@@ -1,0 +1,19 @@
+id: plan_score
+kind: tool
+version: 1
+summary: "Scores a shot plan with the kernel's own score, in parts (lower is better), so two plans can be compared."
+status: active
+owner: script_split
+entry: tool:run
+ports: [scenes]
+uses: [kernel_score]
+effect: read
+guide: |
+  Fits the shots you give (block ranges and hints) to the clock and returns the kernel's score as named parts, compared
+  left to right, lower is better: problems, shots with two speakers, breath the plan misses, turns whose reaction is not in
+  frame, people who teleport, crossed lines and broken eyelines, a missing last image, seconds of breath outside the band,
+  seconds over the envelope, seconds of silence nobody earned. To choose between two plans, score both and compare the
+  parts from the first one down.
+  Example: {"shots": [{"start": 0, "end": 3}, {"start": 3, "end": 6}]}.
+  Do not use it to learn whether the plan fits in seconds (use timing_check), to try an edit of the stored plan (use
+  plan_try) or to find the staging problems in words (use staging_check).

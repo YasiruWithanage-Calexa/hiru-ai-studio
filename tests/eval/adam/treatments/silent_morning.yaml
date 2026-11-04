@@ -1,0 +1,45 @@
+# The other two treatments for silent_morning (draft by Claude, for a Hiru director to correct). The master's own
+# treatment ("hands, then the road") is the intimate one.
+scene: silent_morning
+status: draft
+master_stance: intimate
+alternates:
+  - stance: restrained
+    name: the road at dawn
+    concept: we make the viewer feel how small one man's hope is, by never leaving the wide road
+    pov: nobody's; the road's long view of him
+    sound_concept: dawn birds and a far engine, never louder than the work he does
+    sections:
+      - { beats: [0, 1], camera_behaviour: "locked-off wide", size_band: [EWS, WS], sound_state: "birds" }
+      - { beats: [2], camera_behaviour: "locked-off", size_band: [WS, MS], sound_state: "birds" }
+    size_arc: [EWS, WS, MS, WS, EWS]
+    motif: the road
+    plant: { object: kettle, plant_when: "the kettle set on the stove", payoff_when: "steam rises as he waits", payoff_scene: "" }
+    rhythm: [slow, slow, still]
+    rhythm_break: { when: "a long hold on the empty road", kind: long_hold }
+    entry: as he wheels the three-wheeler in
+    exit: the empty road
+    ending_image: the empty road with a man small at its edge
+    transition_in: fade up on dawn light
+    transition_out: hold on the road
+    off_speaker: false
+  - stance: heightened
+    name: the ritual
+    concept: we make the viewer feel a ritual as courage, by cutting each careful act close and hard
+    pov: Kasun's, a step ahead of his hands
+    sound_concept: each cup, each match, each wipe sounds large against a quiet street
+    sections:
+      - { beats: [0, 1], camera_behaviour: "handheld, close", size_band: [MS, CU], sound_state: "close sound" }
+      - { beats: [2], camera_behaviour: "push-in on the cups", size_band: [CU, ECU], sound_state: "close sound" }
+      - { beats: [3], camera_behaviour: "pull-out to the road", size_band: [MS, EWS], sound_state: "street silence" }
+    size_arc: [MS, CU, ECU, CU, EWS]
+    motif: the cups
+    plant: { object: cups, plant_when: "the cups stacked at the edge of the counter", payoff_when: "the cups in a careful row", payoff_scene: "" }
+    rhythm: [quickening, quickening, held]
+    rhythm_break: { when: "the sound drops as he looks at the empty road", kind: silence }
+    entry: on the first wipe of the counter
+    exit: the road
+    ending_image: the row of cups and the road beyond
+    transition_in: cut from black on a wiping sound
+    transition_out: cut on the sound of the kettle
+    off_speaker: false

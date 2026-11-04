@@ -1,0 +1,16 @@
+id: adam_moment_writer
+kind: agent
+version: 1
+summary: "Writes the viewer's experience of one scene as an ordered list of moments, each labelled script, implied or elaboration, and names which moment carries the plant, the break, the ending and the point-of-view handover."
+status: active
+owner: director
+model: high
+shape: structured
+phase: adam.imagine
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

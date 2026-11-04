@@ -34,6 +34,12 @@ alter table public.scenes add column if not exists reading jsonb not null defaul
 comment on column public.scenes.reading is
   'contracts.reading.SceneReading: what the scene is about, where the feeling turns, what to hold. by = model | rules | person; a person''s reading is never replaced by the system, a script edit only marks it stale.';
 
+-- plan/2026-11-01d (Phase 4): a scene's staging map. The scene's spots and where each person is, block by block, so a
+-- person who changes spot with nothing to show the way is found. JSON, optional (`{}` = none); no new policy.
+alter table public.scenes add column if not exists staging jsonb not null default '{}'::jsonb;
+comment on column public.scenes.staging is
+  'contracts.stagemap.SceneStaging: the scene''s spots and where each person is, block by block. Checked in code for teleports, crossed lines and eyelines. by = model | person; a person''s map is never replaced.';
+
 -- plan/2026-11-01c (Phase 4): a translated line keeps the words it was written in. The script stays in its
 -- own language by default; when a person asks for the dialogue in another language the director chat's
 -- translator writes `text` and these hold the first original. Both null for a line nobody translated.

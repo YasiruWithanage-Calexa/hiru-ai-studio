@@ -1,0 +1,16 @@
+id: craft_articulator
+kind: agent
+version: 1
+summary: "Names what is genuinely hard to film well in a job's scenes; the phrases become technique queries."
+status: active
+owner: shot_producer
+model: medium
+shape: structured
+phase: shot_producer.craft
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

@@ -1,0 +1,92 @@
+{
+ "case": "refused_op",
+ "description": "A refused operation is explained",
+ "expected": {
+  "audits": [],
+  "events": [
+   {
+    "data": {
+     "text": "Reading the scene"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Applying your changes"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Writing the reply"
+    },
+    "event": "status"
+   },
+   {
+    "data": {
+     "text": "Not applied: there is no shot 9."
+    },
+    "event": "delta"
+   },
+   {
+    "data": {
+     "blocks": [
+      {
+       "kind": "text",
+       "text": "Not applied: there is no shot 9."
+      }
+     ],
+     "citations": [],
+     "id": "<id:1>",
+     "kind": "director",
+     "ops": [],
+     "persona_id": "<id:4>",
+     "production_id": "<id:2>",
+     "speaker": "Classic Teledrama",
+     "text": "",
+     "thread_id": "<id:3>",
+     "tone": "lead"
+    },
+    "event": "message"
+   },
+   {
+    "data": {
+     "lane": "edit",
+     "message_id": "<id:1>"
+    },
+    "event": "done"
+   }
+  ],
+  "llm": [],
+  "memory_rows": [],
+  "message_rows": [
+   {
+    "blocks": [
+     {
+      "kind": "text",
+      "text": "Not applied: there is no shot 9."
+     }
+    ],
+    "citations": [],
+    "id": "<id:1>",
+    "kind": "director",
+    "ops": [],
+    "persona_id": "<id:4>",
+    "production_id": "<id:2>",
+    "speaker": "Classic Teledrama",
+    "text": "",
+    "thread_id": "<id:3>",
+    "tone": "lead"
+   }
+  ],
+  "pending_rows": [],
+  "saved": []
+ },
+ "input": {
+  "messages": [
+   "make shot 9 six seconds"
+  ]
+ },
+ "model": {},
+ "service": "director_chat"
+}

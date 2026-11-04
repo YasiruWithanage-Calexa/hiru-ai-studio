@@ -1,0 +1,12 @@
+id: production_docs
+kind: knowledge_base
+version: 1
+summary: "The documents a production uploads (scripts, bibles, outlines), searched per production and only once ready."
+status: active
+owner: doc_ingest
+corpus: production_docs
+store: chunks
+ingest: upload             # filled by the doc_ingest job, never by `hiru-ai ingest`
+chunking: { script_like: by_role }   # a script is split at scene headings, every other role at Markdown headings
+embed: embed
+uses: [extract_text, chunk]

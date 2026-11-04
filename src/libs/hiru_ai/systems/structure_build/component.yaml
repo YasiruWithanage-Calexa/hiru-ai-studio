@@ -1,0 +1,11 @@
+id: structure_build
+kind: system
+version: 1
+summary: "Turns the scripts and outline into episodes, scenes and lines; asks a person what is unclear; drafts looks from the wardrobes."
+status: active
+owner: structure_build
+job_kind: structure_build
+panels: [structure_draft]
+agents: [prose_writer, architect, look_drafter]
+steps: [structure_analyse, prose_cut, episode_names, look_plan]
+tools: [structure_write]

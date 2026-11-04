@@ -1,0 +1,15 @@
+id: questions_read
+kind: tool
+version: 1
+summary: "Lists the questions from the structure build that are still waiting for a person's answer."
+status: active
+owner: structure_build
+entry: tool:run
+ports: [structure]
+effect: read
+guide: |
+  Returns the open questions of this production (scope, title and, in detailed, the full question), a page at a time.
+  Use it when an answer depends on something nobody has settled yet, or when a person asks what is still open.
+  Example: {"status": "open"}.
+  Do not use it to find what people already decided (use memory_search) or to answer a question yourself: answering
+  is a person's job.

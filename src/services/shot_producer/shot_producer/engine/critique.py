@@ -20,6 +20,7 @@ from typing import Any, Protocol
 
 from contracts.producer import FRAMING_LABEL, CameraSettings
 from contracts.staging import ShotIntent, coverage_checks, staging, staging_checks
+from shot_producer.engine.feeling import performance_missing, position_jump
 from shot_producer.engine.intent import context_block
 from shot_producer.engine.model import SceneInput, ShotInput
 
@@ -47,7 +48,10 @@ Look for:
 - a first frame that contradicts the shot's first beat;
 - coverage with no variety: consecutive shots with the same size, angle and move, or a move that
   repeats without a new angle; a shot that crosses the scene's axis without a reason;
-- an action the script names that no beat shows.
+- an action the script names that no beat shows;
+- a beat where the feeling turns (FREE CHECKS names it) with no performance, or a performance that is words, a
+  thought or a mood adjective instead of what a face and body do;
+- a first frame set in a different spot from where the people stood (a position jump).
 FREE CHECKS lists what code already found; include the real ones.
 
 Give at most four short, concrete notes, each naming its shot code (S01, S02 ...) and what to
@@ -60,14 +64,29 @@ SCHEMA: dict[str, Any] = {
 }
 
 
-def free_problems(shot: ShotInput, ir: Mapping[str, Any], on_screen: list[str], characters: list[Row]) -> list[str]:
-    """The staging advisories a draft would get, as labels (the panel's checks, run on a draft)."""
+def free_problems(shot: ShotInput, ir: Mapping[str, Any], on_screen: list[str], characters: list[Row],
+                  scene: SceneInput | None = None) -> list[str]:
+    """The staging advisories a draft would get, as labels (the panel's checks, run on a draft), and (plan/2026-11-01d)
+    `performance_missing` (a beat where the feeling turns has none written) and `position_jump` (the first frame is
+    set where the people did not stand)."""
     row = {**shot.row, "ir": dict(ir), "design": {**(shot.row.get("design") or {}), "on_screen": on_screen}}
     staged = staging(shot.items, characters, row, cast_ids=[c.id for c in shot.cast])
     checks = staging_checks(staged=staged, names={c.id: c.name for c in shot.cast}, sound_mode=shot.sound_mode,
                             speaker_ids=shot.speaker_ids, ir=ir, design_on_screen=on_screen,
                             intent=ShotIntent.of(row), items=shot.items, framing=shot.framing)
-    return [c.label for c in checks if c.tone != "pass"]
+    out = [c.label for c in checks if c.tone != "pass"]
+    beats = [b for b in ir.get("beats") or [] if isinstance(b, Mapping)]
+    missing = performance_missing(shot.feeling, beats, shot.beats)
+    if missing:
+        out.append(f"No performance in the beat at {', '.join(missing)}, where the feeling turns")
+    if scene is not None and scene.staging is not None:
+        previous = next((s for s in scene.shots if s.number == shot.number - 1), None)
+        names = {p.who.casefold() for p in shot.feeling.start}
+        carried = [p for p in (previous.feeling.end if previous else []) if p.who.casefold() in names]
+        jump = position_jump(scene.staging.zones, carried or shot.feeling.start, ir)
+        if jump:
+            out.append(f"Position jump: {jump}")
+    return out
 
 
 def scene_coverage_problems(scene: SceneInput, cameras: dict[int, CameraSettings]) -> list[str]:
@@ -94,7 +113,9 @@ def _draft(shot: ShotInput, ir: Mapping[str, Any], on_screen: list[str]) -> str:
              f"{(cine or {}).get('movement', '')}",
              f"  FIRST FRAME: {(frame or {}).get('composition', '')} | "
              + "; ".join(str(x) for x in (frame or {}).get("subjects") or []),
-             "  BEATS: " + " / ".join(f"{b.get('time', '')} {b.get('action', '')}" for b in beats)]
+             "  BEATS: " + " / ".join(f"{b.get('time', '')} {b.get('action', '')}"
+                                  + (f" [performance: {b['performance']}]" if b.get("performance") else "")
+                                  for b in beats)]
     return "\n".join(x for x in lines if x)
 
 

@@ -1,0 +1,16 @@
+id: canon_extractor
+kind: agent
+version: 1
+summary: "Reads the bible and canon index and lists every character, location and prop with a card."
+status: active
+owner: canon_extract
+model: high
+shape: structured
+phase: canon_extract.extract
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

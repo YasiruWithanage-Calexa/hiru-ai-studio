@@ -1,0 +1,20 @@
+id: rules
+kind: knowledge_base
+version: 1
+summary: "Rules the pipeline keeps: camera kinetics, character consistency, physical plausibility, scene flow, orchestration."
+status: active
+owner: rag
+corpus: craft              # the chunks corpus; craft, guides and rules share it
+store: chunks
+ingest: files
+sources: sources
+source_prefix: knowledge_base/rules/   # chunks.source starts with this; rows under it are replaced as a set
+chunking: { script_like: false }    # Markdown headings, not scene headings
+embed: embed
+uses: [extract_text, chunk]
+files:
+  - { path: camera_kinetics.md, meta: { specialty: cinematography } }
+  - { path: physical_plausibility.md, meta: { specialty: cinematography } }
+  - { path: character_consistency.md, meta: { specialty: character } }
+  - { path: sceen_flow.md, meta: { specialty: editing } }
+  - { path: pipeline_orchestration.md, meta: { specialty: cinematography } }

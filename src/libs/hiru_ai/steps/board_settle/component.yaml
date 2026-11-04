@@ -1,0 +1,7 @@
+id: board_settle
+kind: step
+version: 1
+summary: "Settles two crafts writing the same path: the owner's operation lands, the other is kept as a disagreement."
+status: active
+owner: director
+entry: step:run

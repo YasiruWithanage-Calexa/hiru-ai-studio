@@ -61,3 +61,31 @@ class JobStore:
             self.event(job_id, JobEventType.STATUS, {"status": JobStatus.FAILED.value})
         except httpx.HTTPError:
             pass  # nothing more we can do; Cloud Logging has the original exception
+
+
+class JobsPort:
+    """The job contract `hiru_ai` systems use (`hiru_ai.core.ports.Jobs`), over this function's store.
+
+    Echo is a single-hop job, so `finish` always writes the result and marks the job done."""
+
+    def __init__(self, store: JobStore) -> None:
+        self.store = store
+
+    def check(self, payload: Any) -> str | None:
+        job = self.store.get(payload.job_id)
+        if job is None:
+            return "missing"
+        return str(job["status"]) if job["status"] in ("done", "failed", "cancelled") else None
+
+    def set(self, job_id: UUID, status: JobStatus, **fields: Any) -> None:
+        self.store.set_status(job_id, status)
+
+    def event(self, job_id: UUID, type_: JobEventType, payload: dict[str, Any], agent: str | None = None) -> None:
+        self.store.event(job_id, type_, payload, agent)
+
+    def stage(self, job_id: UUID, stage: str, state: str, text: str = "") -> None:
+        self.store.event(job_id, JobEventType.STAGE, {"stage": stage, "state": state, "text": text})
+
+    def finish(self, payload: Any, result: dict[str, Any], next_state: dict[str, Any] | None = None, *,
+               again: bool = False) -> None:
+        self.store.finish(payload.job_id, result)

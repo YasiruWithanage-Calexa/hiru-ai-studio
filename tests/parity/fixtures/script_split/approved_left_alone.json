@@ -1,0 +1,118 @@
+{
+ "case": "approved_left_alone",
+ "description": "An approved scene is left alone",
+ "expected": {
+  "episode_status": {
+   "<id:7>": "approved"
+  },
+  "jobs": {
+   "advanced": [],
+   "events": [
+    {
+     "stage": "shots",
+     "state": "active",
+     "text": "Planning shots for 1 scenes",
+     "type": "stage"
+    },
+    {
+     "agent": "shot_planner",
+     "text": "Ep 01 Scene 1 is approved; left as it is",
+     "type": "progress"
+    },
+    {
+     "stage": "shots",
+     "state": "done",
+     "text": "0 shots in 0 scenes",
+     "type": "stage"
+    }
+   ],
+   "fields": {
+    "result": {
+     "issues": 0,
+     "scenes": 0,
+     "shots": 0,
+     "skipped": 1
+    }
+   },
+   "status": "done"
+  },
+  "line_rows": {
+   "<id:1>": [
+    {
+     "character_id": "<id:4>",
+     "delivery": "quietly",
+     "id": "<id:2>",
+     "ord": 0,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Nimal",
+     "text": "අම්මේ, මම ආපහු ආවා."
+    },
+    {
+     "character_id": "<id:6>",
+     "delivery": "",
+     "id": "<id:5>",
+     "ord": 1,
+     "production_id": "<id:3>",
+     "scene_id": "<id:1>",
+     "speaker": "Kamala",
+     "text": "කෑම කන්න වාඩි වෙන්න."
+    }
+   ]
+  },
+  "llm": [],
+  "result": {
+   "issues": 0,
+   "scenes": 0,
+   "shots": 0,
+   "skipped": 1
+  },
+  "scene_rows": {
+   "<id:1>": {
+    "envelope_s": 60,
+    "episode_id": "<id:7>",
+    "heading": "INT. KAMALA'S HOUSE - KITCHEN - DAWN",
+    "id": "<id:1>",
+    "location_id": "<id:8>",
+    "number": 1,
+    "production_id": "<id:3>",
+    "script": [
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kamala fries sprats over a wood fire. A radio plays the morning news softly. The door opens: Nimal stands there with a rolling suitcase, thinner than she remembers."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:2>",
+      "text": ""
+     },
+     {
+      "kind": "action",
+      "line_id": null,
+      "text": "Kamala does not turn around. She keeps stirring the pan."
+     },
+     {
+      "kind": "dialogue",
+      "line_id": "<id:5>",
+      "text": ""
+     }
+    ],
+    "status": "approved"
+   }
+  },
+  "shots": {}
+ },
+ "input": {
+  "scene_fields": {
+   "0": {
+    "status": "approved"
+   }
+  },
+  "scenes": [
+   0
+  ]
+ },
+ "model": {},
+ "service": "script_split"
+}

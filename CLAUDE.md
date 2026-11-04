@@ -14,6 +14,35 @@ in a new `plan/<date>/` folder.
 - The UI shows **no credits or costs**; `/v1/usage` returns a percentage only.
 - Nothing is deployed until the user says so; everything is tested on localhost first.
 
+## The AI package (`src/libs/hiru_ai`, plan/2026-11-03)
+All eight functions have a second engine built from independent parts: agents, steps, tools, panels and systems are folders
+with a `component.yaml`, found by id through the registry (`docs/AI_ARCHITECTURE.md`, `docs/AI_CATALOG.md`). A function runs it
+when `AI_ENGINE=graph` (default `legacy`: the code under `src/services/*/engine` below is still the one that runs until the
+plan's Phase 8 removal, which waits for a live run). `hiru-ai validate | list | new | run | graph | catalog | remove | eval`.
+A change to a service's engine must be made in its part too (`tests/parity` fails when they drift). Parts never import each
+other (import-linter), take models from `core.llm`, and reach the database only through ports.
+
+A tool is a part with a contract (plan/2026-11-04, `docs/AI_ARCHITECTURE.md`): an `effect` (`read`, `stage` or `write`), a `guide`
+that says when NOT to use it, small results (`response_format`, paging, a token budget), and errors that teach (`how_to_fix`,
+`example`). **No agent may list a `write` tool**: a model changes data only by staging a card a person accepts
+(`change_propose`, `memory_propose`). Scope (production, scene in scope, the person's own words) comes from `RunContext`,
+never from a model's arguments. New tool: `hiru-ai new tool <id> --effect read --wraps <step>`.
+An agent that answers in one call today can carry a `with_tools:` block in its manifest (its `react` form: tools, its own
+prompt `prompts/system.tools.md`, loop caps). It runs only when `AGENT_TOOLS` names it, and an agent is named only after a
+live `hiru-ai eval <agent> --ab base,tools --live` shows it at least as good. `hiru-ai mcp` serves the read and stage tools
+over MCP; `hiru-ai review <log>` is the monthly look at tool errors and cut answers.
+
+## Shot Planner Adam (`adam/` folders, plan/2026-11-04b)
+
+A second shot planner built beside `script_split`, which it does not change. Its parts live in an `adam/` GROUP folder in
+each layer (`agents/adam/`, `steps/adam/`, ...), plus `contracts/adam/`, `tests/adam/`, `tests/eval/adam/`, `docs/adam/`.
+Ids start `adam_`; `hiru-ai new <kind> adam_x --group adam`; a grouped part names and imports only its own group (the
+core, the rag and `contracts` aside); `hiru-ai remove --group adam` lists everything that goes. **Never invent story;
+always elaborate the picture**: `adam_fidelity` refuses a new person, line, event or object (a line is named by id, its
+words are the script's). Read `docs/adam/README.md` and `plan/2026-11-04b/IMPLEMENTED.md` first (what is built, what waits
+for a person). Phases 0 to 4 are built (the six thinking and design agents take a wire shape from `contracts/adam/wire.py`
+and have no fallback); the gold masters are drafts until a Hiru director approves them.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
 - A function under `src/services/<name>/` imports only its own package and `contracts`.
@@ -75,6 +104,12 @@ in a new `plan/<date>/` folder.
   breath is a hold on an existing block (`Item.hold_s`), a turn makes the answer wait `TURN_GAP_S`. Read a scene's items
   with `sceneplan.scene_items(scene, lines)` wherever timing matters. Priority-1 breath is never dropped by code, a
   person's reading is never replaced, and model critics write notes while the kernel score in code picks the plan.
+- A scene's STAGING MAP (`contracts/stagemap.py`, `scenes.staging`, plan/2026-11-01d Phase 4) says where each person is
+  from a block on. Code finds teleports, crossed lines and broken eyelines; the only thing it writes is one removable
+  "crosses to the gate" step per teleport (`bridges.move_block`, `bridge: "move:<who>"`), remembered when removed as
+  `skip_bridges` on the block after it. Model critics (coverage, emotion, editor) write notes; `critic.kernel_score` picks.
+  The shot producer reads the reading and the map through `shot_producer/engine/feeling.py` (`beats[].performance`,
+  `subjects[].position`).
 - `contracts/producer.py` `CAMERA_OPTIONS` mirrors the frontend's
   `src/features/production/lib/camera-options.ts`; change both together.
 - Designs, frames and prompts are never redone when something upstream changes: they record

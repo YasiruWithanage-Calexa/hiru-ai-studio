@@ -1,0 +1,7 @@
+id: kernel_score
+kind: step
+version: 1
+summary: "Scores a shot plan in code (lower is better); model critics write notes, this picks the plan."
+status: active
+owner: script_split
+entry: step:run

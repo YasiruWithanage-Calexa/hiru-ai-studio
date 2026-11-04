@@ -1,0 +1,16 @@
+id: frame_read
+kind: tool
+version: 1
+summary: "Reads the first frames of a shot and the reference sheets of a canon item: status, accepted, out of date; never a file."
+status: active
+owner: frame_render
+entry: tool:run
+ports: [scenes, frames]
+effect: read
+guide: |
+  With `shot`, returns that shot's first frames: whether each is done, queued or failed, which one a person accepted, and
+  whether it is out of date and why. With `code` (C02), returns the character's, place's or prop's reference sheets and the
+  looks painted for them. It reports what exists and its state; it never returns a file or a link.
+  Example: {"shot": "S01"} or {"code": "C02"}.
+  Do not use it to judge what a frame looks like (the frame check does that), to read a shot's design or prompt (use
+  shot_read), or to ask for a picture to be painted (use job_start, when it exists).

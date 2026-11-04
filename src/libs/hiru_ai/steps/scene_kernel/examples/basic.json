@@ -1,0 +1,345 @@
+{
+ "scene": {
+  "id": "44054e1f-7644-4757-98cb-48d7c4007a81",
+  "production_id": "f78571d7-ad69-4d6d-adc6-c3d4e13f8def",
+  "episode_id": "74ae840f-3f3f-4668-abf9-564f80581fc8",
+  "number": 2,
+  "heading": "EXT. KASUN'S FOOD THREE-WHEELER - DAY",
+  "title": "Anudi And Kasun Exchange Smiles",
+  "note": "",
+  "time_of_day": "DAY",
+  "envelope_s": 16,
+  "status": "approved",
+  "script_version": 1,
+  "script": [
+   {
+    "kind": "action",
+    "text": "Kasun smiles.",
+    "line_id": null
+   },
+   {
+    "kind": "dialogue",
+    "text": "",
+    "line_id": "8de5a413-46d6-4223-847e-d263cbf593ca"
+   },
+   {
+    "kind": "action",
+    "text": "Anudi smiles back.",
+    "line_id": null
+   },
+   {
+    "kind": "action",
+    "text": "Suddenly, her phone rings.",
+    "line_id": null
+   },
+   {
+    "kind": "action",
+    "text": "It is her father.",
+    "line_id": null
+   },
+   {
+    "kind": "dialogue",
+    "text": "",
+    "line_id": "755f87fa-61e3-4d8f-8c17-9622cedf9537"
+   }
+  ],
+  "location_id": "0623e048-8c2c-475f-be85-378feea7e8cc",
+  "episode": {
+   "number": 1,
+   "title": "The Meeting",
+   "synopsis": "Anudi meets Kasun at his food stall; her father is arranging her marriage."
+  },
+  "reading": {
+   "about": "A smile is cut short by a call.",
+   "value": {
+    "start": "joy",
+    "end": "dread"
+   },
+   "tone": "warm, uneasy",
+   "units": [
+    {
+     "from_block": 0,
+     "to_block": 1,
+     "wants": {
+      "Kasun": "to impress"
+     },
+     "turn_block": null,
+     "turn_anchor": ""
+    },
+    {
+     "from_block": 2,
+     "to_block": 5,
+     "wants": {
+      "Anudi": "to hide it"
+     },
+     "turn_block": 5,
+     "turn_anchor": "e344e84a2f"
+    }
+   ],
+   "subtext": [],
+   "breath": [
+    {
+     "after_block": 5,
+     "anchor": "e344e84a2f",
+     "kind": "reaction",
+     "who": "Anudi",
+     "seconds": 1.5,
+     "priority": 1,
+     "why": "the call breaks her joy",
+     "off": false,
+     "off_by": ""
+    }
+   ],
+   "ending": "Anudi's face, the smile gone.",
+   "by": "model",
+   "for_version": 1,
+   "basis": "9a34ac94c7984471",
+   "written_at": null
+  },
+  "staging": {
+   "zones": [
+    "stall",
+    "street"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "anchor": "f980004b6f",
+     "who": "Kasun",
+     "zone": "stall",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 2,
+     "anchor": "82cce641ad",
+     "who": "Anudi",
+     "zone": "street",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": "her phone"
+    }
+   ],
+   "by": "model",
+   "for_version": 1,
+   "basis": "9a34ac94c7984471",
+   "written_at": null
+  }
+ },
+ "lines": [
+  {
+   "id": "8de5a413-46d6-4223-847e-d263cbf593ca",
+   "production_id": "f78571d7-ad69-4d6d-adc6-c3d4e13f8def",
+   "scene_id": "44054e1f-7644-4757-98cb-48d7c4007a81",
+   "ord": 0,
+   "speaker": "Kasun",
+   "character_id": "7344c391-50a3-478f-956d-c1451e075e5c",
+   "text": "Started with Rs. 5,000. I'm trying to make it bigger.",
+   "delivery": "",
+   "words": 10,
+   "shot_id": "104f3478-157f-46c4-98e8-394001053510",
+   "beat_index": 0,
+   "start_s": 0.5,
+   "overrun_s": 0.0
+  },
+  {
+   "id": "755f87fa-61e3-4d8f-8c17-9622cedf9537",
+   "production_id": "f78571d7-ad69-4d6d-adc6-c3d4e13f8def",
+   "scene_id": "44054e1f-7644-4757-98cb-48d7c4007a81",
+   "ord": 1,
+   "speaker": "Anudi's Father",
+   "character_id": "e9578f8d-2b95-4d3e-8a42-04c435903228",
+   "text": "Anudi, where are you? Come home. We need to talk about your marriage.",
+   "delivery": "on the phone",
+   "words": 13,
+   "shot_id": "3fbb72c5-5dc3-4353-8c29-ef911295d3be",
+   "beat_index": 1,
+   "start_s": 9.0,
+   "overrun_s": 0.91
+  }
+ ],
+ "shots": [
+  {
+   "id": "104f3478-157f-46c4-98e8-394001053510",
+   "production_id": "f78571d7-ad69-4d6d-adc6-c3d4e13f8def",
+   "scene_id": "44054e1f-7644-4757-98cb-48d7c4007a81",
+   "number": 1,
+   "title": "Kasun's start",
+   "framing": "MCU",
+   "duration_s": 6,
+   "start_s": 0,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "7344c391-50a3-478f-956d-c1451e075e5c",
+   "beats": [
+    {
+     "start_s": 0,
+     "end_s": 3,
+     "camera": "",
+     "director_line": "",
+     "action": ""
+    },
+    {
+     "start_s": 3,
+     "end_s": 6,
+     "camera": "",
+     "director_line": "",
+     "action": ""
+    }
+   ],
+   "block_start": 0,
+   "block_end": 2,
+   "word_target": 13,
+   "words": 10,
+   "duration_locked": false,
+   "status": "draft",
+   "version": 1,
+   "person_edits": {},
+   "ir": {},
+   "design": {},
+   "camera_overrides": {},
+   "intent": {}
+  },
+  {
+   "id": "3fbb72c5-5dc3-4353-8c29-ef911295d3be",
+   "production_id": "f78571d7-ad69-4d6d-adc6-c3d4e13f8def",
+   "scene_id": "44054e1f-7644-4757-98cb-48d7c4007a81",
+   "number": 2,
+   "title": "Anudi takes the call",
+   "framing": "MCU",
+   "duration_s": 8,
+   "start_s": 6,
+   "sound_mode": "voiceover",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "e9578f8d-2b95-4d3e-8a42-04c435903228",
+   "beats": [
+    {
+     "start_s": 0,
+     "end_s": 3,
+     "camera": "",
+     "director_line": "",
+     "action": ""
+    },
+    {
+     "start_s": 3,
+     "end_s": 6,
+     "camera": "",
+     "director_line": "",
+     "action": ""
+    },
+    {
+     "start_s": 6,
+     "end_s": 8,
+     "camera": "",
+     "director_line": "",
+     "action": ""
+    }
+   ],
+   "block_start": 2,
+   "block_end": 6,
+   "word_target": 17,
+   "words": 13,
+   "duration_locked": false,
+   "status": "draft",
+   "version": 1,
+   "person_edits": {},
+   "ir": {},
+   "design": {},
+   "camera_overrides": {},
+   "intent": {}
+  }
+ ],
+ "canon": [
+  {
+   "id": "7344c391-50a3-478f-956d-c1451e075e5c",
+   "kind": "character",
+   "code": "C01",
+   "name": "Kasun",
+   "aliases": [],
+   "locked": false,
+   "current": {
+    "version": 1,
+    "card": {
+     "gender": "male",
+     "appearance": "late 20s, lean"
+    },
+    "wardrobe_anchor": "a faded orange apron over a white T-shirt",
+    "voice_pin": "warm young male voice"
+   }
+  },
+  {
+   "id": "99d5bf43-de9e-4fc6-8586-cfcda74cf816",
+   "kind": "character",
+   "code": "C02",
+   "name": "Anudi",
+   "aliases": [],
+   "locked": false,
+   "current": {
+    "version": 1,
+    "card": {
+     "gender": "female",
+     "appearance": "mid 20s, long dark hair"
+    },
+    "wardrobe_anchor": "a light olive blouse and off-white trousers",
+    "voice_pin": "soft female voice"
+   }
+  },
+  {
+   "id": "e9578f8d-2b95-4d3e-8a42-04c435903228",
+   "kind": "character",
+   "code": "C03",
+   "name": "Anudi's Father",
+   "aliases": [
+    "Father"
+   ],
+   "locked": false,
+   "current": {
+    "version": 1,
+    "card": {
+     "gender": "male",
+     "appearance": "a well-groomed businessman in his 50s"
+    },
+    "wardrobe_anchor": "a navy polo shirt and formal trousers",
+    "voice_pin": "firm older male voice"
+   }
+  },
+  {
+   "id": "0623e048-8c2c-475f-be85-378feea7e8cc",
+   "kind": "location",
+   "code": "L01",
+   "name": "Kasun's Food Three-Wheeler",
+   "aliases": [],
+   "locked": false,
+   "current": {
+    "version": 1,
+    "card": {
+     "look": "a food three-wheeler under an umbrella"
+    },
+    "wardrobe_anchor": "",
+    "voice_pin": ""
+   }
+  }
+ ],
+ "cast": [
+  "Kasun",
+  "Anudi",
+  "Anudi's Father"
+ ],
+ "ops": [
+  {
+   "op": "set",
+   "shot": 2,
+   "field": "framing",
+   "value": "CU"
+  },
+  {
+   "op": "retime",
+   "shot": 1,
+   "seconds": 8
+  }
+ ],
+ "by": "you"
+}

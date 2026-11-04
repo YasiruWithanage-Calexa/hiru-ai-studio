@@ -1,0 +1,13 @@
+id: scene_write
+kind: tool
+version: 1
+summary: "Saves an edited scene plan (shots, lines, scene fields); a line changes only by a person or an accepted translation."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+effect: write
+guide: |
+  Saves an edited scene plan (shots, lines, scene fields). A spoken line changes only by a person or an accepted
+  translation. Only a system calls this, in code, after a person approved the change. It is never given to a model (a model changes data only by staging a card with change_propose or memory_propose).
+  Do not use it to try an edit (use plan_try) or to ask for one (use change_propose).

@@ -946,6 +946,162 @@
     "C01",
     "C02"
    ]
+  },
+  {
+   "id": "silent_arrival",
+   "heading": "EXT. KASUN'S FOOD THREE-WHEELER - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kasun",
+     "male"
+    ],
+    [
+     "C02",
+     "Anudi",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Kasun wipes the counter of his food three-wheeler.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "Anudi appears at the end of the lane.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "She stops and looks at the stall.",
+     "",
+     ""
+    ],
+    [
+     "action",
+     "Kasun looks up and sees her.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01",
+    "C02"
+   ],
+   "staging": {
+    "zones": [
+     "stall",
+     "lane"
+    ],
+    "marks": [
+     {
+      "at": "wipes the counter",
+      "who": "Kasun",
+      "zone": "stall",
+      "facing": "right",
+      "frame_side": "left"
+     },
+     {
+      "at": "wipes the counter",
+      "who": "Anudi",
+      "zone": "off"
+     },
+     {
+      "at": "appears at the end",
+      "who": "Anudi",
+      "zone": "lane",
+      "facing": "left",
+      "frame_side": "right"
+     }
+    ]
+   }
+  },
+  {
+   "id": "yard_unwritten",
+   "heading": "EXT. KASUN'S YARD - DAY",
+   "cast": [
+    [
+     "C01",
+     "Kasun",
+     "male"
+    ],
+    [
+     "C02",
+     "Anudi",
+     "female"
+    ]
+   ],
+   "script": [
+    [
+     "action",
+     "Anudi sits on the step at the far side of the yard.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Bring me the pan.",
+     "C01",
+     ""
+    ],
+    [
+     "action",
+     "Anudi nods.",
+     "",
+     ""
+    ],
+    [
+     "dialogue",
+     "Here it is.",
+     "C02",
+     ""
+    ],
+    [
+     "action",
+     "Kasun tastes the rice from the pan.",
+     "",
+     ""
+    ]
+   ],
+   "heard": [],
+   "seen": [
+    "C01",
+    "C02"
+   ],
+   "staging": {
+    "zones": [
+     "step",
+     "stove"
+    ],
+    "marks": [
+     {
+      "at": "sits on the step",
+      "who": "Anudi",
+      "zone": "step",
+      "facing": "left",
+      "frame_side": "right"
+     },
+     {
+      "at": "sits on the step",
+      "who": "Kasun",
+      "zone": "stove",
+      "facing": "right",
+      "frame_side": "left"
+     },
+     {
+      "at": "Here it is",
+      "who": "Anudi",
+      "zone": "stove",
+      "facing": "left",
+      "frame_side": "right"
+     }
+    ]
+   }
   }
  ]
 }

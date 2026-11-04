@@ -1,0 +1,111 @@
+{
+ "case": "scenes_off",
+ "description": "Scenes can be left out of the build",
+ "expected": {
+  "canon_rows": [
+   {
+    "aliases": [
+     "කමලා"
+    ],
+    "code": "C01",
+    "id": "<id:1>",
+    "kind": "character",
+    "name": "Kamala"
+   },
+   {
+    "aliases": [],
+    "code": "C02",
+    "id": "<id:2>",
+    "kind": "character",
+    "name": "Nimal"
+   },
+   {
+    "aliases": [],
+    "code": "C03",
+    "id": "<id:3>",
+    "kind": "character",
+    "name": "Sunil"
+   },
+   {
+    "aliases": [],
+    "code": "C04",
+    "id": "<id:4>",
+    "kind": "character",
+    "name": "Mrs. Perera"
+   },
+   {
+    "aliases": [],
+    "code": "L01",
+    "id": "<id:5>",
+    "kind": "location",
+    "name": "Kamala's house"
+   },
+   {
+    "aliases": [],
+    "code": "L02",
+    "id": "<id:6>",
+    "kind": "location",
+    "name": "Kalugala harbour breakwater"
+   },
+   {
+    "aliases": [],
+    "code": "L03",
+    "id": "<id:7>",
+    "kind": "location",
+    "name": "Auction shed"
+   }
+  ],
+  "deliveries": [
+   {
+    "skipped": "scenes not requested"
+   }
+  ],
+  "episode_rows": {},
+  "jobs": {
+   "advanced": [
+    {
+     "again": false,
+     "cursor": 1,
+     "state": {
+      "build": true,
+      "previous": {
+       "skipped": "scenes not requested"
+      },
+      "scene_ids": []
+     }
+    }
+   ],
+   "events": [
+    {
+     "stage": "scenes",
+     "state": "done",
+     "text": "Skipped: scenes are not part of this build",
+     "type": "stage"
+    }
+   ],
+   "fields": {},
+   "status": "running"
+  },
+  "line_rows": {},
+  "llm": [],
+  "look_rows": [],
+  "question_rows": {},
+  "scene_rows": {}
+ },
+ "input": {
+  "docs": [
+   {
+    "corpus": "harbour-lights-ep01-script.fountain",
+    "filename": "ep01.fountain",
+    "role": "script"
+   }
+  ],
+  "settings": {
+   "build": {
+    "scenes": false
+   }
+  }
+ },
+ "model": {},
+ "service": "structure_build"
+}

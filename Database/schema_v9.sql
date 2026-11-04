@@ -397,7 +397,8 @@ create table public.scenes (
   updated_at     timestamptz not null default now(),
   unique (episode_id, number),
   coverage       jsonb not null default '{}'::jsonb,         -- contracts.staging.ScenePlan (plan 2026-11-01)
-  reading        jsonb not null default '{}'::jsonb          -- contracts.reading.SceneReading (plan 2026-11-01d)
+  reading        jsonb not null default '{}'::jsonb,         -- contracts.reading.SceneReading (plan 2026-11-01d)
+  staging        jsonb not null default '{}'::jsonb          -- contracts.stagemap.SceneStaging (plan 2026-11-01d)
 );
 create index scenes_production_idx on public.scenes (production_id);
 create index scenes_location_idx on public.scenes (location_id);
@@ -1157,5 +1158,8 @@ comment on column public.first_frames.checks is
   '[contracts.producer.Check]: advisories on a painted frame (a missing reference sheet; a vision model''s look at it).';
 comment on column public.scenes.reading is
   'contracts.reading.SceneReading: what the scene is about, where the feeling turns, what to hold. by = model | rules | person; a person''s reading is never replaced by the system, a script edit only marks it stale.';
+
+comment on column public.scenes.staging is
+  'contracts.stagemap.SceneStaging: the scene''s spots and where each person is, block by block. Checked in code for teleports, crossed lines and eyelines. by = model | person; a person''s map is never replaced.';
 
 commit;

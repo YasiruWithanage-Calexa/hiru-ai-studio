@@ -1,0 +1,26 @@
+{
+  "_doc": "Retrieval probes for the adam_film_grammar knowledge base (plan/2026-11-04b Phase 2 exit: 'search_kb finds the right device for 10 probe questions'). A probe passes at k if any of its top-k hits is under one 'expect' source. Written the way a director asks, not in the devices' own words. tests/adam/test_knowledge.py runs them offline with a small keyword ranker (a PROXY for the database's full-text half); the real check is the same queries through match_chunks after `hiru-ai ingest adam_film_grammar` (the hosted dev database: ask first).",
+  "k": 3,
+  "probes": [
+    {"id": "hiding-hurt", "query": "How do I show a woman pretending to be fine when she is really hurt?",
+     "expect": ["devices/02-smile-that-outlives-the-eyes.md"]},
+    {"id": "parent-authority", "query": "Which camera angle makes a father look commanding?",
+     "expect": ["devices/16-low-angle-for-authority.md"]},
+    {"id": "feel-the-loss", "query": "How can the audience feel what a character is about to lose before the bad news arrives?",
+     "expect": ["devices/01-baseline-before-the-break.md"]},
+    {"id": "small-prop-pays-off", "query": "How do I set up a small object so it means something at the end of the scene?",
+     "expect": ["devices/05-plant-and-payoff.md", "devices/36-callback-framing.md"]},
+    {"id": "after-the-exit", "query": "What should the camera show after a character walks out of the room?",
+     "expect": ["devices/19-empty-frame-after-an-exit.md", "devices/35-the-button.md"]},
+    {"id": "inside-the-head", "query": "How do I put the viewer inside a character's head when a shock lands?",
+     "expect": ["devices/08-subjective-sound-drop.md"]},
+    {"id": "not-always-the-speaker", "query": "Do I have to keep the camera on whoever is speaking, or can I stay on the one listening?",
+     "expect": ["devices/03-line-over-the-listener.md"]},
+    {"id": "sound-links-scenes", "query": "How can sound join two scenes so the next one starts before we see it?",
+     "expect": ["devices/10-pre-lap-into-the-next-scene.md"]},
+    {"id": "focus-between-faces", "query": "How do I move the sharp focus from one face to another without cutting?",
+     "expect": ["devices/12-rack-focus-to-separate.md"]},
+    {"id": "veo-phone-screens", "query": "What does Veo get wrong with phone screens and readable names?",
+     "expect": ["veo-feasibility.md", "devices/20-pov-insert.md"]}
+  ]
+}

@@ -1,0 +1,15 @@
+# Gold scene: Kasun opens his stall at dawn. A silent scene (no dialogue). DRAFT, for a Hiru director to correct.
+id: silent_morning
+title: Opening the Stall
+covers: a silent scene
+status: draft
+scene:
+  cast: [Kasun]
+  place:
+    name: A Colombo roadside at dawn
+    objects: [three-wheeler, counter, cloth, stove, kettle, cups, road, steam]
+  blocks:
+    - { index: 0, kind: action, text: "Dawn. KASUN wheels his three-wheeler to the roadside and wipes down the counter." }
+    - { index: 1, kind: action, text: "He lights the small stove and sets the kettle on it." }
+    - { index: 2, kind: action, text: "He arranges the cups in a careful row, straightening each one." }
+    - { index: 3, kind: action, text: "He looks at the empty road and waits." }

@@ -1,0 +1,30 @@
+# The `with_tools` form (plan/2026-11-04 §8): consistency with the scene around the lines, and a fixed spelling for a name.
+- name: the scene is read when a line leans on what was said before it
+  variant: tools
+  example: dialogue_read
+  scene_id: 44054e1f-7644-4757-98cb-48d7c4007a81
+  input:
+    language: Sinhala
+    code: si
+    lines: [ { line_id: l1, speaker: Kasun, delivery: quietly, text: "Started with five thousand rupees." } ]
+  tool_calls:
+    - { name: dialogue_read, args: {} }
+  reply: { lines: [ { line_id: l1, text: "රුපියල් පන්දහසකින් පටන් ගත්තේ." } ] }
+  expect: { lines: [ { line_id: l1, text: "රුපියල් පන්දහසකින් පටන් ගත්තේ." } ] }
+- name: a name is written the way the production fixed it
+  variant: tools
+  example: glossary_read
+  input:
+    language: Sinhala
+    code: si
+    lines: [ { line_id: l1, speaker: Kasun, text: "Anudi, come in." } ]
+  tool_calls:
+    - { name: glossary_read, args: { language: si } }
+  reply: { lines: [ { line_id: l1, text: "අනුඩි, ඇතුළට එන්න." } ] }
+  expect: { lines: [ { line_id: l1 } ] }
+- name: a short line in a plain language needs no lookup
+  variant: tools
+  input: { language: Tamil, lines: [ { line_id: l9, text: "Come in." } ] }
+  reply: { lines: [ { line_id: l9, text: "உள்ளே வாருங்கள்." } ] }
+  expect_no_tools: true
+  expect: { lines: [ { line_id: l9 } ] }

@@ -1,0 +1,20 @@
+# Model tiers (plan/2026-11-03 §5.9, ADR 0003). A tier says WHICH settings it reads (`model`, `effort` are field
+# names of OpenAISettings, so ids stay in the environment) and how a call behaves. Agents name a tier, never a model.
+#
+# The tier names are the ones the engines use today (their parity fixtures record them), not the plan's
+# fast/smart. `fallbacks` is empty everywhere to keep today's behaviour; a tier listed there is tried, in order,
+# after this one fails.
+tiers:
+  ultra:  { model: model_ultra,  effort: effort_ultra,  timeout_s: 180, retries: 2, fallbacks: [] }
+  high:   { model: model_high,   effort: effort_high,   timeout_s: 180, retries: 2, fallbacks: [] }
+  medium: { model: model_medium, effort: effort_medium, timeout_s: 120, retries: 2, fallbacks: [] }
+  low:    { model: model_low,    effort: effort_low,    timeout_s: 60,  retries: 2, fallbacks: [] }
+  vision: { model: model_vision,                        timeout_s: 120, retries: 1, fallbacks: [] }  # the frame check
+embed:
+  model: embedding_model
+  dimensions: embedding_dimensions
+  timeout_s: 60
+  retries: 2
+image:
+  model: model_image
+  quality: image_quality

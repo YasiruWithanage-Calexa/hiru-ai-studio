@@ -4,6 +4,7 @@ error, which a Cloud Tasks retry can fix (and, with durable checkpoints, resumes
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any
 
 import httpx
@@ -20,6 +21,14 @@ from structure_build.runtime.rest import Rest
 from structure_build.runtime.store import Store
 
 _logger = logging.getLogger(__name__)
+
+
+def run_graph(payload: DispatchPayload, jobs: Jobs, checkpointer: Any, durable: bool) -> dict[str, Any]:
+    """The same job through the `hiru_ai` structure_build system (AI_ENGINE=graph)."""
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.structure_build import graph
+
+    return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs), checkpointer, durable=durable)
 
 
 def handle(request: Any) -> tuple[dict[str, Any], int]:
@@ -41,6 +50,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
 
     try:
         with saver(config.db_url) as (checkpointer, durable):
+            if os.environ.get("AI_ENGINE", "legacy") == "graph":
+                return run_graph(payload, jobs, checkpointer, durable), 200
             return pipeline.run(payload, store, jobs, LLM(config, on_usage), checkpointer, durable=durable), 200
     except (httpx.TransportError, psycopg.OperationalError):
         _logger.warning("transient network error job=%s", payload.job_id, exc_info=True)

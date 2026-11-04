@@ -1,0 +1,16 @@
+- name: two ways to play a scene
+  input: { shot_list: "S02 MCU 6s", message: "how could S02 play?", lead_charter: "Patient, warm." }
+  reply:
+    question: "How should S02 play?"
+    options:
+      - label: "Push in to a tight CU"
+        detail: "The camera creeps closer as she realises."
+        ops: [ { op: set, shot: 2, field: framing, value: CU, seconds: null, at_block: null, end_block: null, link: null, beat: null, after_shot: null, description: null, framing: null, title: null, block: null, kind: null, speaker: null, delivery: null } ]
+        prompt: ""
+        intent: shot.framing
+      - { label: "Hold it wide", detail: "Let the room do the work.", ops: [], prompt: "make S02 a wide shot", intent: "" }
+  expect: { question: "How should S02 play?", options: [ { label: "Push in to a tight CU", intent: shot.framing }, { prompt: "make S02 a wide shot" } ] }
+- name: one option asked for
+  input: { shot_list: "S01 WIDE 4s", message: "give me one idea for S01", memory: [ "No hand-held in the kitchen" ] }
+  reply: { question: "How should S01 play?", options: [ { label: "Slow push", detail: "A gentle move in.", ops: [], prompt: "push in on S01", intent: "" } ] }
+  expect: { options: [ { label: "Slow push" } ] }

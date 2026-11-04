@@ -1,0 +1,46 @@
+# The other two treatments for father_refuses (draft by Claude, for a Hiru director to correct). The master's own
+# treatment ("held, then straight") is the restrained one.
+scene: father_refuses
+status: draft
+master_stance: restrained
+alternates:
+  - stance: intimate
+    name: the kettle
+    concept: we make the viewer feel being measured, by staying close on Kasun's hands and face while the father looks
+    pov: Kasun's, close
+    sound_concept: street noise falling away until only steam and the kettle are left
+    sections:
+      - { beats: [0, 1], camera_behaviour: "close on his hands", size_band: [MCU, INSERT], sound_state: "street" }
+      - { beats: [2], camera_behaviour: "slow push-in", size_band: [CU, CU], sound_state: "narrowing" }
+      - { beats: [3], camera_behaviour: "still", size_band: [CU, ECU], sound_state: "kettle" }
+    size_arc: [MCU, INSERT, CU, ECU, MCU]
+    motif: the kettle
+    plant: { object: kettle, plant_when: "his hand on the kettle as the father arrives", payoff_when: "he sets the kettle down before he answers", payoff_scene: "" }
+    rhythm: [measured, held, still, steady]
+    rhythm_break: { when: "the street noise drops as he sets the kettle down", kind: silence }
+    entry: as he pours
+    exit: on his hands
+    ending_image: Kasun's hand on the kettle, the car gone
+    transition_in: cut from the previous scene on a pour
+    transition_out: cut on the sound of the car leaving
+    off_speaker: true
+  - stance: heightened
+    name: the road between them
+    concept: we make the viewer feel the gap between them, by putting the road and the car in the frame as a verdict
+    pov: the father's eye, then Kasun's
+    sound_concept: traffic swelling with each question, then falling away on Kasun's reply
+    sections:
+      - { beats: [0, 1], camera_behaviour: "low angle on the father", size_band: [WS, MS], sound_state: "traffic" }
+      - { beats: [2], camera_behaviour: "static", size_band: [MS, MCU], sound_state: "traffic swelling" }
+      - { beats: [3], camera_behaviour: "pull-out to the road", size_band: [MCU, EWS], sound_state: "falling away" }
+    size_arc: [WS, MS, MCU, EWS]
+    motif: the car
+    plant: { object: car, plant_when: "the car at the kerb behind the father", payoff_when: "the father walks to it", payoff_scene: "" }
+    rhythm: [measured, quickening, held, still]
+    rhythm_break: { when: "traffic cuts out as Kasun begins to speak", kind: sudden_cut }
+    entry: as the father arrives
+    exit: the road, empty
+    ending_image: Kasun small at his stall at the edge of a wide road
+    transition_in: cut from the previous scene on traffic
+    transition_out: hold on the empty road
+    off_speaker: false

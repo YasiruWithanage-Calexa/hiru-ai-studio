@@ -43,6 +43,13 @@ class Store:
                                                              "current:canon_versions!canon_entities_current_version_fkey(card)",
                                                    "order": "code"})
 
+    def locations(self, production_id: UUID) -> list[Row]:
+        """The production's places, for the staging map's spots."""
+        return self.rest.select("canon_entities", {"production_id": f"eq.{production_id}", "kind": "eq.location",
+                                                   "select": "id,name,"
+                                                             "current:canon_versions!canon_entities_current_version_fkey(card)",
+                                                   "order": "code"})
+
     def scene_status(self, production_id: UUID) -> list[Row]:
         return self.rest.select("scenes", {"production_id": f"eq.{production_id}", "select": "episode_id,status"})
 
