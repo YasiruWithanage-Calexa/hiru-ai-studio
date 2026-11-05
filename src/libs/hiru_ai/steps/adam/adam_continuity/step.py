@@ -1,12 +1,14 @@
-"""adam_continuity: `{"moments", "cards", "staging"? | "plan"}` → `{"ok", "issues", "count"}`: the 180° line, eyelines
-and screen direction, a person in two places without a move, props that change hands unseen. No model."""
+"""adam_continuity: `{"moments", "cards", "staging"? | "plan", "scene"?}` → `{"ok", "issues", "count", "questions"}`:
+the 180° line, eyelines and screen direction, a person in two places without a move, props that change hands unseen.
+Given the scene it also asks what the script leaves open about a prop (`questions`, for a person; never an issue).
+No model."""
 from __future__ import annotations
 
 from typing import Any
 
 from pydantic import ValidationError
 
-from contracts.adam.plan import Staging, cards_of, errors_of, moments_of, part_of
+from contracts.adam.plan import SceneScript, Staging, cards_of, errors_of, moments_of, part_of
 from hiru_ai.steps.adam.adam_continuity import logic
 
 
@@ -17,4 +19,7 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
     except ValidationError as exc:
         issue = {"code": "malformed", "where": "the plan", "message": errors_of(exc)}
         return {"ok": False, "count": 1, "issues": [issue]}
-    return logic.check(cards, moments, staging)
+    found = logic.check(cards, moments, staging)
+    scene = payload.get("scene")
+    found["questions"] = logic.check_questions(SceneScript.model_validate(scene)) if scene else []
+    return found

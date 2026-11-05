@@ -1,9 +1,10 @@
 """adam_score: the craft score, by code (plan/2026-11-04b §6.2).
 
-    {"scene": SceneScript, "plan": AdamPlan, "weights"?: {...}, "fidelity"?, "fit"?, "feasibility"?}
+    {"scene": SceneScript, "plan": AdamPlan, "weights"?: {...}, "fidelity"?, "fit"?, "feasibility"?, "coverage"?}
         → {"loss", "loss_reasons", "score", "max", "percent", "signals": [{signal, points, checks: [{card, ok, why}]}]}
-    {"scene": ..., "plans": [AdamPlan, ...]}      → the same for each, and `chosen`: the best by (fewer fidelity breaks,
-        fewer overruns, more craft); a tie keeps the EARLIER plan, so a revision has to be better to replace the first.
+    {"scene": ..., "plans": [AdamPlan, ...]}      → the same for each, and `chosen`: the best by (fewer fidelity breaks
+        and required cells lost to another plan, fewer overruns, more craft); a tie keeps the EARLIER plan, so a
+        revision has to be better to replace the first.
 
 The code reports are asked of the other Adam steps by id (`core.parts`) unless the caller already has them.
 """
@@ -28,7 +29,8 @@ def score_one(scene_raw: Any, plan_raw: Any, payload: dict[str, Any]) -> dict[st
     fidelity = payload.get("fidelity") or _report("adam_fidelity", base)
     fit = payload.get("fit") or _report("adam_fit", base)
     feasible = payload.get("feasibility") or _report("adam_feasibility", base)
-    return logic.score(scene, plan, fidelity, fit, feasible, payload.get("weights"))
+    covered = payload.get("coverage") or _report("adam_coverage", base)
+    return logic.score(scene, plan, fidelity, fit, feasible, payload.get("weights"), covered)
 
 
 def run(payload: dict[str, Any]) -> dict[str, Any]:
@@ -38,7 +40,8 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
                        for p in payload["plans"]]
             if not results:
                 return {"results": [], "chosen": None}
-            chosen = min(range(len(results)), key=lambda i: (logic.rank(results[i]), i))
+            lost = logic.lost_cells(results)
+            chosen = min(range(len(results)), key=lambda i: (logic.rank(results[i], lost[i]), i))
             return {"results": results, "chosen": chosen}
         return score_one(payload.get("scene"), payload.get("plan"), payload)
     except ValidationError as exc:

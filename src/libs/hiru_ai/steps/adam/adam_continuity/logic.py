@@ -8,14 +8,20 @@
   moment between shows it.
 
 Nothing is repaired. Each issue names where it is and why, so the designer can fix it or a person can see it.
+
+It also raises QUESTIONS for a person (plan/2026-11-04c F7), which are not issues and never change `ok`: a prop that is
+put down and never moved again before someone leaves ("is the phone left on the bench, or does it go with her?").
+It reads the script's action lines for English verbs, so it asks only where it can see the put-down and the exit; the
+dramaturg's own questions cover the rest. A model never answers them.
 """
 from __future__ import annotations
 
 import itertools
+import re
 from dataclasses import asdict, dataclass
 from typing import Any
 
-from contracts.adam.plan import Moment, ShotCard, Staging, norm, subject_of
+from contracts.adam.plan import Moment, SceneScript, ShotCard, Staging, norm, subject_of
 
 NEUTRAL_SIZES = ("INSERT", "EWS")  # a shot that does not take a side of the line
 TALKING = ("single", "ots")  # arrangements that split two people into two frames
@@ -125,6 +131,37 @@ def check_props(staging: Staging, moments: list[Moment]) -> list[Issue]:
 
 def _who(holders: set[str]) -> str:
     return " and ".join(sorted(holders)) or "nobody"
+
+
+PUT_DOWN = ("puts", "put", "sets", "set", "places", "lays", "leaves", "drops", "slides")
+PICK_UP = ("picks up", "takes", "grabs", "pockets", "collects", "carries", "lifts", "holds", "pulls out")
+EXITS = ("walks out", "leaves", "exits", "goes out", "steps out", "storms out", "runs out", "walks away", "departs")
+_DETERMINER = r"(?:the|her|his|their|a|an|my|your)\s+"
+
+
+def _says(text: str, verbs: tuple[str, ...], thing: str) -> bool:
+    """Does this action line do one of `verbs` TO `thing`: the verb, an optional "the" or "her", then the thing. A
+    thing that only shares the sentence ("puts the phone on the bench") is not the thing the verb is about."""
+    pattern = rf"\b(?:{'|'.join(re.escape(v) for v in verbs)})\s+(?:{_DETERMINER})?{re.escape(thing)}\b"
+    return re.search(pattern, text.lower()) is not None
+
+
+def check_questions(scene: SceneScript) -> list[dict[str, Any]]:
+    """Props put down and never picked up before someone leaves: -> [{question, blocks, object, source}]."""
+    out = []
+    actions = [(b.index, b.text) for b in scene.blocks if not b.is_line]
+    for thing in (norm(o) for o in scene.place.objects):
+        put = next(((i, t) for i, t in actions if _says(t, PUT_DOWN, thing)), None)
+        if put is None:
+            continue
+        later = [(i, t) for i, t in actions if i >= put[0]]
+        leaves = next((i for i, t in later if any(w in t.lower() for w in EXITS)), None)
+        taken = any(_says(t, PICK_UP, thing) for _, t in later)
+        if leaves is not None and not taken:
+            out.append({"question": f"The {thing} is put down in block {put[0]} and is not moved again before someone "
+                                    f"leaves in block {leaves}: does it stay, or go with them?",
+                        "blocks": [put[0], leaves], "object": thing, "source": "continuity"})
+    return out
 
 
 def check(cards: list[ShotCard], moments: list[Moment], staging: Staging) -> dict[str, Any]:

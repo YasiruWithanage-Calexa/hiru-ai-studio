@@ -58,6 +58,7 @@
     break_block: 4
     aftermath: respected
     key_moment: {block: 4, why: the father nods once}
+    questions: []
   expect: {break_block: 4}
 - name: father_refuses
   input:
@@ -115,6 +116,7 @@
     break_block: 4
     aftermath: alone, unbowed
     key_moment: {block: 5, why: the kettle goes down and he does not answer at once}
+    questions: []
   expect: {break_block: 4}
 - name: phone_call
   input:
@@ -180,6 +182,9 @@
     break_block: 4
     aftermath: left behind
     key_moment: {block: 5, why: 'the silence after marriage, where her smile and her eyes disagree'}
+    questions:
+    - question: Does Anudi take her phone when she leaves?
+      blocks: [7, 9]
   expect: {break_block: 4}
 - name: silent_morning
   input:
@@ -232,4 +237,5 @@
     break_block: null
     aftermath: waiting
     key_moment: {block: 3, why: the wait}
+    questions: []
   expect: {break_block: null}

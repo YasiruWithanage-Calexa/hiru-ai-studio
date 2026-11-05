@@ -1,8 +1,8 @@
 id: adam_score
 kind: step
 version: 1
-summary: "The craft score of a plan, by code: twelve signals that reward what a director would be proud of; a fidelity break or an overrun is a loss first."
+summary: "The craft score of a plan, by code: fourteen signals that reward what a director would be proud of, among them the faces the analysis says must be seen; a fidelity break, an overrun or a required face lost to another plan is a loss first."
 status: active
 owner: director
 entry: step:run
-uses: [adam_fidelity, adam_fit, adam_feasibility]
+uses: [adam_fidelity, adam_fit, adam_feasibility, adam_coverage]

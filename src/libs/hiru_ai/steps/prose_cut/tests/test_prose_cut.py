@@ -53,13 +53,10 @@ def test_a_document_with_real_scene_headings_is_left_to_the_parser():
     assert logic.to_cut("INT. KITCHEN - DAY\n\nKAMALA\nCome.\n\nEXT. HARBOUR - DAY\n\nSUNIL\nNets.\n") is None
 
 
-def test_a_text_without_any_episode_line_is_not_an_error_though_the_legacy_engine_raised():
-    """A plain bible or notes file (role bible/other) has no `Episode n` line. The legacy `sections` raised ValueError
-    (zip strict) and failed the whole build; the step returns no episodes and the document is left alone."""
-    import pytest
-
-    with pytest.raises(ValueError):
-        legacy.sections("no episodes here")
+def test_a_text_without_any_episode_line_is_not_an_error():
+    """A plain bible or notes file (role bible/other) has no `Episode n` line. `sections` used to raise ValueError
+    (zip strict) and failed the whole build; both engines now return no episodes and the document is left alone."""
+    assert legacy.sections("no episodes here") == [] and legacy.convert("no episodes here", None, []) is None
     assert logic.sections("no episodes here") == [] and logic.to_cut("no episodes here") is None
     assert step.run({"op": "to_cut", "text": "no episodes here"}) == {"sections": []}
 

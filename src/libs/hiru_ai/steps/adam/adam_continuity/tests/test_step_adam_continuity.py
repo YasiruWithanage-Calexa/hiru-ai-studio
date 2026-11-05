@@ -98,6 +98,35 @@ def test_a_mark_on_a_moment_the_plan_does_not_have_is_named():
     assert codes(out) == ["unknown_moment"]
 
 
+def scripted(*blocks: str) -> dict[str, Any]:
+    return {"cast": ["Anudi"], "place": {"objects": ["bench", "phone", "bag"]},
+            "blocks": [{"index": i, "kind": "action", "text": text} for i, text in enumerate(blocks)]}
+
+
+def questions(*blocks: str) -> list[dict[str, Any]]:
+    return list(step.run({"scene": scripted(*blocks), "moments": [], "cards": []})["questions"])
+
+
+def test_a_prop_put_down_and_left_where_a_person_exits_raises_a_question_for_a_person():
+    """Plan 2026-11-04c F7: does Anudi take her phone when she leaves? The script does not say."""
+    asked = questions("She ends the call and puts the phone face-down on the bench.",
+                      "She picks up her bag and walks out.")
+    assert [(q["object"], q["blocks"], q["source"]) for q in asked] == [("phone", [0, 1], "continuity")]
+    assert "does it stay, or go with them" in asked[0]["question"]
+
+
+def test_no_question_when_the_script_says_she_takes_it_and_a_question_is_never_an_issue():
+    assert questions("She puts the phone face-down on the bench.",
+                     "She picks up her phone and her bag and walks out.") == []
+    assert questions("She puts the phone on the bench.", "She sits and waits.") == []  # nobody leaves
+    out = step.run({"scene": scripted("She puts the phone down.", "She walks out."), "moments": [], "cards": []})
+    assert out["ok"] and out["issues"] == [] and len(out["questions"]) == 1  # a question is for a person, not a fault
+
+
+def test_a_thing_that_only_shares_the_sentence_is_not_the_thing_put_down():
+    assert [q["object"] for q in questions("She puts the phone face-down on the bench.", "She leaves.")] == ["phone"]
+
+
 def test_a_malformed_plan_is_reported_not_raised():
     out = step.run({"moments": [{"id": "m1"}], "cards": []})
     assert not out["ok"] and out["issues"][0]["code"] == "malformed"

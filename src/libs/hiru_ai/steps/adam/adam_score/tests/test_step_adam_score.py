@@ -40,6 +40,8 @@ def make_plan() -> dict[str, Any]:
              "seconds_need": 2.0},
             {"id": "m4", "tier": "elaboration", "kind": "hold", "serves": ["b2"], "who": ["Anudi"],
              "seconds_need": 2.0},
+            {"id": "m6", "tier": "elaboration", "kind": "reaction", "serves": ["b2"], "who": ["Dasun"],
+             "seconds_need": 2.0},
             {"id": "m5", "tier": "script", "serves": ["b2"], "who": ["Anudi"], "objects": ["phone"],
              "seconds_need": 2.5}],
         "cards": [
@@ -50,7 +52,9 @@ def make_plan() -> dict[str, Any]:
              "cut_in": {"link": "cut", "motive": "line"}},
             {"number": 3, "moments": ["m4"], "size": "ECU", "take_s": 4, "rhythm_break": True,
              "cut_in": {"link": "cut", "motive": "look"}},
-            {"number": 4, "moments": ["m5"], "size": "CU", "arrangement": "single", "take_s": 4,
+            {"number": 4, "moments": ["m6"], "size": "CU", "subject": "Dasun", "take_s": 4,
+             "cut_in": {"link": "cut", "motive": "look"}},
+            {"number": 5, "moments": ["m5"], "size": "CU", "arrangement": "single", "take_s": 4,
              "cut_in": {"link": "cut", "motive": "action"}}],
         "sound_map": {"silences": ["m4"]},
     }
@@ -75,7 +79,7 @@ def test_a_well_made_plan_earns_every_point_and_each_point_names_its_card():
     bad = [(s["signal"], c["why"]) for s in out["signals"] for c in s["checks"] if not c["ok"]]
     assert out["score"] == out["max"] and bad == []
     ended = signal(out, "ending")["checks"][0]
-    assert ended["card"] == 4 and ended["points"] == 1.0 and "ending image" in ended["why"]
+    assert ended["card"] == 5 and ended["points"] == 1.0 and "ending image" in ended["why"]
 
 
 def test_points_add_up_from_the_checks():
@@ -87,7 +91,7 @@ def test_a_flat_plan_scores_less_and_says_what_it_lacks():
     plan = make_plan()
     plan["cards"][2]["rhythm_break"] = False
     plan["treatment"]["plant"]["payoff_moment"] = ""
-    plan["cards"][3]["cut_in"]["motive"] = ""
+    plan["cards"][4]["cut_in"]["motive"] = ""
     plan["sound_map"] = {}
     flat = run(plan)
     assert flat["score"] < run()["score"] and not flat["loss"]
@@ -128,13 +132,21 @@ def test_a_line_over_its_own_speakers_mouth_is_penalised():
     plan = make_plan()
     plan["cards"][1]["lines"][0]["over_whom"] = "Dasun"  # off the speaker, but the speaker is in frame
     out = run(plan)
-    assert [c["ok"] for c in signal(out, "line_placement")["checks"]] == [True, False]
+    assert [c["ok"] for c in signal(out, "line_placement")["checks"]] == [False, False]
+    assert "the speaker's own face" in signal(out, "line_placement")["checks"][1]["why"]
+
+
+def test_a_line_over_no_one_or_an_object_is_penalised():
+    plan = make_plan()
+    plan["cards"][1]["lines"][0]["over_whom"] = ""  # over an insert of her hands, over the phone: no listener
+    out = run(plan)
+    assert [c["ok"] for c in signal(out, "line_placement")["checks"]] == [False, False]
+    assert "no one" in signal(out, "line_placement")["checks"][1]["why"]
 
 
 def test_adjacent_cards_that_repeat_each_other_lose_variety():
     plan = make_plan()
-    plan["cards"][3].update({"size": "ECU"})  # card 3 is ECU too, same angle, arrangement and person
-    plan["cards"][3]["subject"] = ""
+    plan["cards"][3].update({"size": "ECU", "subject": "Anudi"})  # card 3 is ECU on Anudi too
     out = run(plan)
     assert not all(c["ok"] for c in signal(out, "variety")["checks"])
 

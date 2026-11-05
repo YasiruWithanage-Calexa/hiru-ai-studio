@@ -1,0 +1,3266 @@
+{
+  "version": 1,
+  "planner": "adam",
+  "job_id": "",
+  "chosen": "intimate",
+  "chosen_by": "score",
+  "analysis": {
+    "about": "A daughter's ease ends with her father's call.",
+    "dramatic_question": "Will she keep their moment or go home to obey?",
+    "value": {
+      "start": "ease",
+      "end": "obedience"
+    },
+    "tone": "gentle, sinking, restrained",
+    "beats": [
+      {
+        "blocks": [
+          0,
+          1
+        ],
+        "action": "light talk and laughter on the bench",
+        "reaction": "open, easy faces",
+        "turn": false,
+        "reactor": ""
+      },
+      {
+        "blocks": [
+          2
+        ],
+        "action": "the phone buzzes; caller ID shows Father",
+        "reaction": "a held smile, eyes alert to the intrusion",
+        "turn": false,
+        "reactor": ""
+      },
+      {
+        "blocks": [
+          3,
+          4
+        ],
+        "action": "she answers; her father declares her marriage decided",
+        "reaction": "her face takes the blow, steadies, and closes",
+        "turn": true,
+        "reactor": "Anudi"
+      },
+      {
+        "blocks": [
+          5,
+          6
+        ],
+        "action": "her smile fades; she agrees softly to come",
+        "reaction": "the mask settles over the hurt",
+        "turn": false,
+        "reactor": ""
+      },
+      {
+        "blocks": [
+          7,
+          8,
+          9
+        ],
+        "action": "she ends the call, flips the phone face-down, offers a restrained farewell and leaves; he watches",
+        "reaction": "distance fixes between them",
+        "turn": false,
+        "reactor": ""
+      }
+    ],
+    "wants": {
+      "Anudi": "to enjoy, then to comply, then to leave",
+      "Dasun": "to amuse, then to keep her near"
+    },
+    "obstacles": [
+      "the father's authority on the phone",
+      "the need to hide the truth",
+      "time closing their moment"
+    ],
+    "subtext": [
+      {
+        "block": 6,
+        "who": "Anudi",
+        "behaviour": "a compliant line given without protest",
+        "object": "",
+        "sound": ""
+      },
+      {
+        "block": 7,
+        "who": "Anudi",
+        "behaviour": "",
+        "object": "phone placed face-down to shut the news away",
+        "sound": ""
+      },
+      {
+        "block": 8,
+        "who": "Anudi",
+        "behaviour": "a neutral farewell that conceals the rupture",
+        "object": "",
+        "sound": ""
+      },
+      {
+        "block": 9,
+        "who": "Dasun",
+        "behaviour": "held stillness as she goes, no call to stop her",
+        "object": "",
+        "sound": ""
+      }
+    ],
+    "pov_owner": {
+      "start": "Anudi",
+      "end": "Anudi",
+      "why": "she receives the call, takes the hit, and chooses how to leave while masking it",
+      "handover": ""
+    },
+    "audience_knows": [
+      {
+        "fact": "Her father has decided her marriage.",
+        "who_doesnt": "Dasun",
+        "from_block": 4
+      }
+    ],
+    "baseline": {
+      "blocks": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "state": "unguarded warmth by the lake"
+    },
+    "break": {
+      "block": 4
+    },
+    "aftermath": {
+      "state": "quiet duty replaces shared ease; she withdraws and departs"
+    },
+    "key_moment": {
+      "block": 5,
+      "why": "the fading smile shows the cost; the scene lives on her face after the news"
+    },
+    "questions": [
+      {
+        "question": "Does Dasun hear the father's line?",
+        "blocks": [
+          4
+        ],
+        "source": "dramaturg"
+      },
+      {
+        "question": "Does she take the phone when she leaves?",
+        "blocks": [
+          7,
+          9
+        ],
+        "source": "dramaturg"
+      }
+    ]
+  },
+  "treatment": {
+    "name": "Her Hands Decide",
+    "stance": "intimate",
+    "concept": "we make the viewer feel the private cost by staying with her face and hands",
+    "pov": "Anudi’s throughout; it never leaves her",
+    "sound_concept": "the world narrows to her breath and the small speaker; at the turn everything outside drops away",
+    "sections": [
+      {
+        "beats": [
+          0
+        ],
+        "camera_behaviour": "close two-shot weighted to her; share warmth by the bench edge",
+        "size_band": [
+          "MS",
+          "MCU"
+        ],
+        "sound_state": "warm"
+      },
+      {
+        "beats": [
+          1
+        ],
+        "camera_behaviour": "closer to the phone between them; light on her fingers",
+        "size_band": [
+          "INSERT",
+          "INSERT"
+        ],
+        "sound_state": "narrowed"
+      },
+      {
+        "beats": [
+          2
+        ],
+        "camera_behaviour": "stay on her face as the voice arrives; background soft",
+        "size_band": [
+          "MCU",
+          "CU"
+        ],
+        "sound_state": "muffled"
+      },
+      {
+        "beats": [
+          3
+        ],
+        "camera_behaviour": "tighten to eyes and mouth; time seems to pause",
+        "size_band": [
+          "CU",
+          "ECU"
+        ],
+        "sound_state": "silence"
+      },
+      {
+        "beats": [
+          4
+        ],
+        "camera_behaviour": "her thumb ends the call and turns the phone face-down; a last close farewell passes small",
+        "size_band": [
+          "INSERT",
+          "CU"
+        ],
+        "sound_state": "bare"
+      }
+    ],
+    "size_arc": [
+      "MS",
+      "MCU",
+      "INSERT",
+      "CU",
+      "ECU",
+      "INSERT",
+      "CU"
+    ],
+    "motif": "her thumb resting, pressing, and covering the phone",
+    "plant": {
+      "object": "phone",
+      "plant_moment": "m2",
+      "payoff_moment": "m12",
+      "payoff_scene": "",
+      "plant_when": "lying face-down between them at the start",
+      "payoff_when": "turned face-down again after the call"
+    },
+    "rhythm": [
+      "gentle",
+      "pricked",
+      "held",
+      "held",
+      "clipped"
+    ],
+    "rhythm_break": {
+      "moment": "m10",
+      "kind": "silence",
+      "when": "the instant her smile fades in the eyes"
+    },
+    "entry": "their closeness at the bench edge, the phone between them",
+    "exit": "her hand leaves frame with the bag",
+    "ending_image": "the phone face-down in close, her absence just off-edge",
+    "ending_moment": "m15",
+    "transition_in": "cut on a close laugh",
+    "transition_out": "cut on the soft tap of the phone meeting wood",
+    "off_speaker": true
+  },
+  "alternates": [
+    {
+      "name": "A Gap Opens",
+      "stance": "restrained",
+      "concept": "we make the viewer feel an ease giving way to duty by holding back and letting space and light do the work",
+      "pov": "the lake’s, a neutral witness that never takes a side",
+      "sound_concept": "late-afternoon lake, voices and breeze; at the turn the world hushes and the birds fall away",
+      "sections": [
+        {
+          "beats": [
+            0
+          ],
+          "camera_behaviour": "wide and still; the lake holds them as laughter sits in the air",
+          "size_band": [
+            "WS",
+            "MS"
+          ],
+          "sound_state": "open"
+        },
+        {
+          "beats": [
+            1
+          ],
+          "camera_behaviour": "hold the same frame; the buzz shows in-frame but is not chased",
+          "size_band": [
+            "WS",
+            "WS"
+          ],
+          "sound_state": "open"
+        },
+        {
+          "beats": [
+            2
+          ],
+          "camera_behaviour": "remain composed; no reframing as the call begins, distance kept",
+          "size_band": [
+            "WS",
+            "MS"
+          ],
+          "sound_state": "thinned"
+        },
+        {
+          "beats": [
+            3
+          ],
+          "camera_behaviour": "an almost imperceptible ease-in toward her side; stillness lengthens",
+          "size_band": [
+            "MS",
+            "MCU"
+          ],
+          "sound_state": "hush"
+        },
+        {
+          "beats": [
+            4
+          ],
+          "camera_behaviour": "let the frame breathe back so the whole bench and shore return to view",
+          "size_band": [
+            "MS",
+            "WS"
+          ],
+          "sound_state": "world"
+        }
+      ],
+      "size_arc": [
+        "WS",
+        "MS",
+        "MS",
+        "MCU",
+        "WS"
+      ],
+      "motif": "late light on small ripples that flatten as the call lands",
+      "plant": {
+        "object": "phone",
+        "plant_moment": "",
+        "payoff_moment": "",
+        "payoff_scene": "",
+        "plant_when": "face-down on the bench in the first wide",
+        "payoff_when": "turned face-down again after the call"
+      },
+      "rhythm": [
+        "loose",
+        "easy",
+        "held",
+        "still",
+        "empty"
+      ],
+      "rhythm_break": {
+        "moment": "",
+        "kind": "long_hold",
+        "when": "as her smile loses its shine while she listens"
+      },
+      "entry": "mid-laugh on the bench, the phone face-down between them",
+      "exit": "as she clears the frame and a gap opens on the bench",
+      "ending_image": "the bench with the phone face-down and the lake dulled in the late light",
+      "ending_moment": "",
+      "transition_in": "cut in on a laugh from the previous scene",
+      "transition_out": "hold a beat on the gap, then cut",
+      "off_speaker": true
+    },
+    {
+      "name": "The Call Takes the Shore",
+      "stance": "heightened",
+      "concept": "we make the viewer feel the world turning against their moment by bold pushes and a drone that cuts at the hit",
+      "pov": "starts under Dasun’s easy side, then snaps to Anudi on the buzz and stays there",
+      "sound_concept": "a low drone rises from the buzz and under the voice; on the first slip of her smile it cuts to vacuum, then returns as a high, thin note as distance fixes",
+      "sections": [
+        {
+          "beats": [
+            0
+          ],
+          "camera_behaviour": "open to the lake in a composed frame that breathes, then tighten the balance",
+          "size_band": [
+            "WS",
+            "MS"
+          ],
+          "sound_state": "bright"
+        },
+        {
+          "beats": [
+            1
+          ],
+          "camera_behaviour": "emphasise the lit phone between them; its presence takes the frame’s weight",
+          "size_band": [
+            "INSERT",
+            "INSERT"
+          ],
+          "sound_state": "buzz"
+        },
+        {
+          "beats": [
+            2
+          ],
+          "camera_behaviour": "assertive push toward her as the words land; the other side falls soft",
+          "size_band": [
+            "MCU",
+            "CU"
+          ],
+          "sound_state": "drone"
+        },
+        {
+          "beats": [
+            3
+          ],
+          "camera_behaviour": "a decisive cut into extreme closeness that refuses escape",
+          "size_band": [
+            "ECU",
+            "ECU"
+          ],
+          "sound_state": "silence"
+        },
+        {
+          "beats": [
+            4
+          ],
+          "camera_behaviour": "pull wide so the shore takes over and they are made small as she goes",
+          "size_band": [
+            "WS",
+            "EWS"
+          ],
+          "sound_state": "thin"
+        }
+      ],
+      "size_arc": [
+        "WS",
+        "MS",
+        "INSERT",
+        "CU",
+        "ECU",
+        "EWS"
+      ],
+      "motif": "late light on the lake that goes flat at the turn",
+      "plant": {
+        "object": "phone",
+        "plant_moment": "",
+        "payoff_moment": "",
+        "payoff_scene": "",
+        "plant_when": "face-down in the opening lake-wide",
+        "payoff_when": "turned face-down again after the call"
+      },
+      "rhythm": [
+        "buoyant",
+        "tight",
+        "pressured",
+        "held",
+        "hollow"
+      ],
+      "rhythm_break": {
+        "moment": "",
+        "kind": "sudden_cut",
+        "when": "the moment her smile breaks"
+      },
+      "entry": "their bench in open water light",
+      "exit": "as she steps into the wide and the lake takes over",
+      "ending_image": "the bench small against the water, the phone face-down",
+      "ending_moment": "",
+      "transition_in": "cut from movement to still water",
+      "transition_out": "cut on the thin high note fading into the next scene",
+      "off_speaker": true
+    }
+  ],
+  "moments": [
+    {
+      "id": "m1",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b0"
+      ],
+      "who": [
+        "Anudi",
+        "Dasun"
+      ],
+      "seen": "Late afternoon by the lake bench; Anudi laughs with Dasun, the phone lies face-down between them",
+      "heard": "soft laughter, water moving",
+      "feeling": "warmth",
+      "seconds_need": 3.0,
+      "lines": [],
+      "objects": [
+        "bench",
+        "phone",
+        "lake",
+        "trees",
+        "water"
+      ]
+    },
+    {
+      "id": "m2",
+      "tier": "elaboration",
+      "kind": "plant",
+      "serves": [
+        "b7"
+      ],
+      "who": [],
+      "seen": "The phone lying face-down between them at the start",
+      "heard": "",
+      "feeling": "ease with a seed",
+      "seconds_need": 0.0,
+      "lines": [],
+      "objects": [
+        "phone",
+        "bench"
+      ]
+    },
+    {
+      "id": "m3",
+      "tier": "elaboration",
+      "kind": "baseline",
+      "serves": [
+        "b0",
+        "b1",
+        "b2",
+        "b3"
+      ],
+      "who": [
+        "Anudi"
+      ],
+      "seen": "Open with him on the bench: her shoulders loose, an easy lean toward him",
+      "heard": "their soft laughter and the lake",
+      "feeling": "unguarded",
+      "seconds_need": 1.5,
+      "lines": [],
+      "objects": [
+        "bench",
+        "lake"
+      ]
+    },
+    {
+      "id": "m4",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b1"
+      ],
+      "who": [
+        "Anudi",
+        "Dasun"
+      ],
+      "seen": "Dasun talks; she listens, still smiling toward him",
+      "heard": "",
+      "feeling": "playful",
+      "seconds_need": 2.5,
+      "lines": [
+        "L1"
+      ],
+      "objects": []
+    },
+    {
+      "id": "m5",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b2"
+      ],
+      "who": [
+        "Anudi",
+        "Dasun"
+      ],
+      "seen": "The phone buzzes on the bench; the screen lights with her father's name",
+      "heard": "a short buzz",
+      "feeling": "intrusion",
+      "seconds_need": 2.0,
+      "lines": [],
+      "objects": [
+        "phone",
+        "bench"
+      ]
+    },
+    {
+      "id": "m6",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b3"
+      ],
+      "who": [
+        "Anudi"
+      ],
+      "seen": "She glances at the lit screen, smile held, and answers",
+      "heard": "her breath close to the phone",
+      "feeling": "held calm",
+      "seconds_need": 2.0,
+      "lines": [],
+      "objects": [
+        "phone"
+      ]
+    },
+    {
+      "id": "m7",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b4"
+      ],
+      "who": [
+        "Anudi"
+      ],
+      "seen": "Her face takes the voice in; the world outside softens",
+      "heard": "",
+      "feeling": "the blow lands",
+      "seconds_need": 2.5,
+      "lines": [
+        "L4"
+      ],
+      "objects": []
+    },
+    {
+      "id": "m8",
+      "tier": "elaboration",
+      "kind": "reaction",
+      "serves": [
+        "b4"
+      ],
+      "who": [
+        "Dasun"
+      ],
+      "seen": "Dasun, easy and unalarmed, watches her; no sign he catches the words",
+      "heard": "the small phone voice, distant",
+      "feeling": "irony",
+      "seconds_need": 1.5,
+      "lines": [],
+      "objects": []
+    },
+    {
+      "id": "m9",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b5"
+      ],
+      "who": [
+        "Anudi"
+      ],
+      "seen": "The smile in her mouth and eyes starts to recede",
+      "heard": "outside drops away",
+      "feeling": "sinking",
+      "seconds_need": 1.5,
+      "lines": [],
+      "objects": []
+    },
+    {
+      "id": "m10",
+      "tier": "elaboration",
+      "kind": "hold",
+      "serves": [
+        "b5"
+      ],
+      "who": [
+        "Anudi"
+      ],
+      "seen": "Her face held still a long beat, the fade finished in the eyes",
+      "heard": "silence",
+      "feeling": "cost",
+      "seconds_need": 2.5,
+      "lines": [],
+      "objects": []
+    },
+    {
+      "id": "m11",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b6"
+      ],
+      "who": [
+        "Anudi"
+      ],
+      "seen": "She gives a small, compliant answer without protest",
+      "heard": "",
+      "feeling": "obedience",
+      "seconds_need": 2.0,
+      "lines": [
+        "L6"
+      ],
+      "objects": []
+    },
+    {
+      "id": "m12",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b7"
+      ],
+      "who": [
+        "Anudi"
+      ],
+      "seen": "Her thumb ends the call; she turns the phone face-down on the bench",
+      "heard": "a soft tap of phone on wood",
+      "feeling": "closing down",
+      "seconds_need": 2.0,
+      "lines": [],
+      "objects": [
+        "phone",
+        "bench"
+      ]
+    },
+    {
+      "id": "m13",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b8"
+      ],
+      "who": [
+        "Anudi",
+        "Dasun"
+      ],
+      "seen": "She offers him a neutral farewell, composed",
+      "heard": "",
+      "feeling": "distance",
+      "seconds_need": 2.0,
+      "lines": [
+        "L8"
+      ],
+      "objects": []
+    },
+    {
+      "id": "m14",
+      "tier": "script",
+      "kind": "",
+      "serves": [
+        "b9"
+      ],
+      "who": [
+        "Anudi",
+        "Dasun"
+      ],
+      "seen": "She lifts her bag and walks away; Dasun holds still and only watches, saying nothing",
+      "heard": "her steps and the water",
+      "feeling": "parting",
+      "seconds_need": 3.0,
+      "lines": [],
+      "objects": [
+        "bag"
+      ]
+    },
+    {
+      "id": "m15",
+      "tier": "elaboration",
+      "kind": "insert_detail",
+      "serves": [
+        "b9"
+      ],
+      "who": [],
+      "seen": "The phone face-down on the bench in close; her place empty just off-edge",
+      "heard": "lake hush",
+      "feeling": "after",
+      "seconds_need": 2.5,
+      "lines": [],
+      "objects": [
+        "phone",
+        "bench"
+      ]
+    }
+  ],
+  "staging": {
+    "marks": [
+      {
+        "moment": "m1",
+        "who": "Anudi",
+        "zone": "bench_right",
+        "facing": "Dasun",
+        "holding": []
+      },
+      {
+        "moment": "m1",
+        "who": "Dasun",
+        "zone": "bench_left",
+        "facing": "Anudi",
+        "holding": []
+      },
+      {
+        "moment": "m6",
+        "who": "Anudi",
+        "zone": "bench_right",
+        "facing": "phone",
+        "holding": [
+          "phone"
+        ]
+      },
+      {
+        "moment": "m12",
+        "who": "Anudi",
+        "zone": "bench_right",
+        "facing": "Dasun",
+        "holding": []
+      },
+      {
+        "moment": "m1",
+        "who": "Dasun",
+        "zone": "bench_left",
+        "facing": "Anudi",
+        "holding": []
+      },
+      {
+        "moment": "m14",
+        "who": "Anudi",
+        "zone": "off",
+        "facing": "away",
+        "holding": [
+          "bag"
+        ]
+      },
+      {
+        "moment": "m14",
+        "who": "Dasun",
+        "zone": "bench_left",
+        "facing": "away",
+        "holding": []
+      }
+    ],
+    "moves": [
+      {
+        "moment": "m14",
+        "who": "Anudi",
+        "from_zone": "bench_right",
+        "to_zone": "off",
+        "why": "exit"
+      }
+    ]
+  },
+  "cards": [
+    {
+      "number": 1,
+      "moments": [
+        "m1",
+        "m2"
+      ],
+      "title": "Bench warmth, the phone planted",
+      "size": "MS",
+      "arrangement": "two",
+      "subject": "",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "deep",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "the face-down phone soft on the bench edge",
+        "negative_space": "lake and trees beyond",
+        "frame_side": "center"
+      },
+      "eyeline": "",
+      "axis": "A",
+      "blocking_in_shot": "Dasun seated bench_left facing right; Anudi seated bench_right facing left; phone between them on bench",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "they share an easy laugh by the lake; phone lies face-down between them",
+          "performance": "relaxed shoulders, light lean toward each other",
+          "camera": "locked off"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "late afternoon lake hush, small birds, soft laughter",
+        "effects": "",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "sound"
+      },
+      "purpose": "Set closeness and plant the phone without calling it out",
+      "emotional_beat": "warmth",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 2,
+      "moments": [
+        "m3"
+      ],
+      "title": "Baseline: her ease",
+      "size": "MCU",
+      "arrangement": "single",
+      "subject": "Anudi",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "",
+        "negative_space": "soft lake",
+        "frame_side": "right"
+      },
+      "eyeline": "left",
+      "axis": "A",
+      "blocking_in_shot": "Anudi seated bench_right, angled to Dasun just off-frame left",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "hold on her relaxed posture",
+          "performance": "shoulders loose; an easy lean toward him",
+          "camera": "still"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "lake water and distant birds; bench-edge closeness to her shoulder",
+        "effects": "",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "look"
+      },
+      "purpose": "Give the unguarded state its own beat before the turn",
+      "emotional_beat": "unguarded",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 3,
+      "moments": [
+        "m4"
+      ],
+      "title": "Dasun’s tease",
+      "size": "MCU",
+      "arrangement": "single",
+      "subject": "Dasun",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "",
+        "negative_space": "lake soft",
+        "frame_side": "left"
+      },
+      "eyeline": "right",
+      "axis": "A",
+      "blocking_in_shot": "Dasun seated bench_left, turned toward her",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "he speaks, still playful",
+          "performance": "a light grin; minimal hand movement",
+          "camera": "locked off"
+        }
+      ],
+      "lines": [
+        {
+          "line_id": "L1",
+          "on_speaker": true,
+          "over_whom": ""
+        }
+      ],
+      "sound": {
+        "ambience": "lake hush under their talk; the bench is warm and open",
+        "effects": "",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "line"
+      },
+      "purpose": "Give him his own card before the break and let the ease play",
+      "emotional_beat": "playful ease",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 4,
+      "moments": [
+        "m5"
+      ],
+      "title": "The buzz",
+      "size": "INSERT",
+      "arrangement": "single",
+      "subject": "",
+      "angle": "high",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "bench wood close",
+        "negative_space": "",
+        "frame_side": ""
+      },
+      "eyeline": "",
+      "axis": "",
+      "blocking_in_shot": "Phone on bench between them",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "the phone vibrates; screen wakes",
+          "performance": "small tremor on wood",
+          "camera": "locked off"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "lake hush narrows; attention toward the bench",
+        "effects": "short phone buzz, screen light faint mechanical click",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "sound"
+      },
+      "purpose": "The intrusion arrives",
+      "emotional_beat": "pricked attention",
+      "rhythm_break": false,
+      "veo_notes": "Avoid readable on-screen text; the caller name 'THATHTHA' to be added in post if needed",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 5,
+      "moments": [
+        "m6"
+      ],
+      "title": "She answers",
+      "size": "MCU",
+      "arrangement": "single",
+      "subject": "Anudi",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "edge of phone hand",
+        "negative_space": "soft lake",
+        "frame_side": "right"
+      },
+      "eyeline": "down",
+      "axis": "A",
+      "blocking_in_shot": "Anudi seated bench_right, phone in hand near chin",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "she glances to the lit screen and accepts the call",
+          "performance": "smile held small; thumb slides to answer",
+          "camera": "still"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "outside softens under her breath near the phone; surrounding birds pull back",
+        "effects": "thumb slide to answer (very soft contact)",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "action"
+      },
+      "purpose": "Keep POV on her as she lets the voice in",
+      "emotional_beat": "held calm",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 6,
+      "moments": [
+        "m7"
+      ],
+      "title": "The voice lands",
+      "size": "CU",
+      "arrangement": "single",
+      "subject": "Anudi",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "long",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "",
+        "negative_space": "soft lake and Dasun blurred",
+        "frame_side": "center"
+      },
+      "eyeline": "down",
+      "axis": "A",
+      "blocking_in_shot": "Anudi close, phone just off-bottom of frame",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "hold on her listening face as the words arrive",
+          "performance": "breath smaller, eyes fixed",
+          "camera": "locked off"
+        }
+      ],
+      "lines": [
+        {
+          "line_id": "L4",
+          "on_speaker": false,
+          "over_whom": "Anudi"
+        }
+      ],
+      "sound": {
+        "ambience": "the world mutes further; a close, intimate bed around her breath and the tiny speaker",
+        "effects": "small speaker voice, distant and focused into the phone",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "line"
+      },
+      "purpose": "Show the turn on her face while the father stays a voice",
+      "emotional_beat": "impact",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 6,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 7,
+      "moments": [
+        "m8"
+      ],
+      "title": "He doesn’t hear it",
+      "size": "MS",
+      "arrangement": "single",
+      "subject": "Dasun",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "",
+        "negative_space": "lake",
+        "frame_side": "left"
+      },
+      "eyeline": "right",
+      "axis": "A",
+      "blocking_in_shot": "Dasun seated bench_left, looking toward her",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            2.0
+          ],
+          "action": "he watches her, unalarmed",
+          "performance": "easy face; no sign he catches the words",
+          "camera": "still"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "lake hush faint; phone voice audible but dim to the environment",
+        "effects": "phone voice low in the mix (father on the line) placed near the device",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "look"
+      },
+      "purpose": "Show his ignorance just after the turn",
+      "emotional_beat": "dramatic irony",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": 2.0,
+      "in_s": 0.0
+    },
+    {
+      "number": 8,
+      "moments": [
+        "m9",
+        "m10"
+      ],
+      "title": "The smile drains",
+      "size": "CU",
+      "arrangement": "single",
+      "subject": "Anudi",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "long",
+      "movement": "push_in",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "",
+        "negative_space": "",
+        "frame_side": "center"
+      },
+      "eyeline": "down",
+      "axis": "A",
+      "blocking_in_shot": "Anudi close, background lost",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            1.5
+          ],
+          "action": "the word lands; time seems to thicken",
+          "performance": "her mouth still smiles while her eyes change first",
+          "camera": "begin a very slow push-in"
+        },
+        {
+          "window": [
+            1.5,
+            4.0
+          ],
+          "action": "hold the end of the fade in her eyes",
+          "performance": "the smile stays a beat after her eyes change, then settles",
+          "camera": "continue slow push-in"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "the immediate air grows bare; sounds withdraw to the edge",
+        "effects": "",
+        "music": "",
+        "silence": true,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "look"
+      },
+      "purpose": "Let the cost show, quietly, in her face",
+      "emotional_beat": "sinking",
+      "rhythm_break": true,
+      "veo_notes": "Keep to one face and one slow change for reliable rendering",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 9,
+      "moments": [
+        "m11"
+      ],
+      "title": "I will come, Thaththe",
+      "size": "MCU",
+      "arrangement": "single",
+      "subject": "Anudi",
+      "angle": "high",
+      "height": "slightly high, just above her eye line",
+      "lens_feel": "long",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "",
+        "negative_space": "soft lake beyond",
+        "frame_side": "right"
+      },
+      "eyeline": "down",
+      "axis": "A",
+      "blocking_in_shot": "Anudi seated bench_right, phone near mouth",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "she gives the compliant answer",
+          "performance": "voice small; no protest; head dips a touch",
+          "camera": "still"
+        }
+      ],
+      "lines": [
+        {
+          "line_id": "L6",
+          "on_speaker": true,
+          "over_whom": ""
+        }
+      ],
+      "sound": {
+        "ambience": "the world narrowed to breath and the small speaker — outside drops away",
+        "effects": "",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "line"
+      },
+      "purpose": "Show obedience without protest",
+      "emotional_beat": "submission",
+      "rhythm_break": false,
+      "veo_notes": "Slight high angle to make small, paired with eyeline down",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 10,
+      "moments": [
+        "m12"
+      ],
+      "title": "Face-down",
+      "size": "INSERT",
+      "arrangement": "single",
+      "subject": "",
+      "angle": "high",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "her hand and phone",
+        "negative_space": "bench slats",
+        "frame_side": ""
+      },
+      "eyeline": "",
+      "axis": "",
+      "blocking_in_shot": "Her hand over the phone on the bench",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "thumb ends the call and turns the phone face-down",
+          "performance": "one slow, decisive motion; a soft tap",
+          "camera": "locked off"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "lake hush, very close and thin",
+        "effects": "soft tap of phone on wood as thumb turns it face-down",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": "the tap carries into the next shot (subtle wood contact)"
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "action"
+      },
+      "purpose": "Pay off the plant: she shuts the news away",
+      "emotional_beat": "closing down",
+      "rhythm_break": false,
+      "veo_notes": "One hand, one object, slow for Veo",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 11,
+      "moments": [
+        "m13"
+      ],
+      "title": "Neutral farewell",
+      "size": "CU",
+      "arrangement": "single",
+      "subject": "Anudi",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "long",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "",
+        "negative_space": "soft lake and a hint of Dasun blurred",
+        "frame_side": "right"
+      },
+      "eyeline": "left",
+      "axis": "A",
+      "blocking_in_shot": "Anudi still seated bench_right, looking to him",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "she offers the restrained goodbye",
+          "performance": "face composed; no extra smile",
+          "camera": "still"
+        }
+      ],
+      "lines": [
+        {
+          "line_id": "L8",
+          "on_speaker": true,
+          "over_whom": ""
+        }
+      ],
+      "sound": {
+        "ambience": "bare, close air; lake faint behind her",
+        "effects": "",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "line"
+      },
+      "purpose": "Hide the rupture under a small, neutral line",
+      "emotional_beat": "distance",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 12,
+      "moments": [
+        "m14"
+      ],
+      "title": "He lets her go",
+      "size": "MS",
+      "arrangement": "single",
+      "subject": "Dasun",
+      "angle": "eye",
+      "height": "",
+      "lens_feel": "long",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "her shoulder and bag pass soft at frame right, then leave",
+        "negative_space": "lake beyond him",
+        "frame_side": "left"
+      },
+      "eyeline": "away",
+      "axis": "A",
+      "blocking_in_shot": "Dasun seated bench_left; Anudi rises and exits frame right toward off",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "she leaves; he stays seated and only watches",
+          "performance": "held stillness; no move to stop her",
+          "camera": "locked off"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "her soft steps recede; water moves under the space between them",
+        "effects": "soft footfalls on the path fading away",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "action"
+      },
+      "purpose": "Show the distance fixed between them",
+      "emotional_beat": "resigned watch",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    },
+    {
+      "number": 13,
+      "moments": [
+        "m15"
+      ],
+      "title": "After: phone alone",
+      "size": "INSERT",
+      "arrangement": "single",
+      "subject": "",
+      "angle": "high",
+      "height": "",
+      "lens_feel": "normal",
+      "movement": "static",
+      "focus": {
+        "kind": "shallow",
+        "from": "",
+        "to": ""
+      },
+      "composition": {
+        "foreground": "face-down phone",
+        "negative_space": "empty bench slat where she sat, lake soft beyond",
+        "frame_side": ""
+      },
+      "eyeline": "",
+      "axis": "",
+      "blocking_in_shot": "Bench surface in close, her absence just off-edge",
+      "beats": [
+        {
+          "window": [
+            0.0,
+            4.0
+          ],
+          "action": "hold on the face-down phone on the empty bench",
+          "performance": "",
+          "camera": "locked off"
+        }
+      ],
+      "lines": [],
+      "sound": {
+        "ambience": "lake hush, late light soft; the bench now thin with her absence",
+        "effects": "",
+        "music": "",
+        "silence": false,
+        "pre_lap": "",
+        "carries_over": ""
+      },
+      "cut_in": {
+        "link": "cut",
+        "motive": "look"
+      },
+      "purpose": "End on the object and her absence",
+      "emotional_beat": "after",
+      "rhythm_break": false,
+      "veo_notes": "",
+      "take_s": 4,
+      "use_s": null,
+      "in_s": 0.0
+    }
+  ],
+  "sound_map": {
+    "sections": [
+      {
+        "blocks": [
+          1,
+          2
+        ],
+        "ambience": "late afternoon lake hush, small birds, soft laughter",
+        "music": "",
+        "state": "warm"
+      },
+      {
+        "blocks": [
+          3,
+          4
+        ],
+        "ambience": "lake water and distant birds, narrowing toward the bench",
+        "music": "",
+        "state": "narrowed to the phone"
+      },
+      {
+        "blocks": [
+          5,
+          6,
+          7
+        ],
+        "ambience": "outside softens; the world muffles around the small phone speaker",
+        "music": "",
+        "state": "muffled"
+      },
+      {
+        "blocks": [
+          8,
+          9
+        ],
+        "ambience": "the immediate air grows bare; sounds fall away",
+        "music": "",
+        "state": "silence"
+      },
+      {
+        "blocks": [
+          10,
+          11,
+          12,
+          13
+        ],
+        "ambience": "lake hush returns but feels thin and close; footsteps and distant water undercut",
+        "music": "",
+        "state": "bare"
+      }
+    ],
+    "subjective": [
+      {
+        "moment": "m9",
+        "kind": "drop",
+        "description": "the outside world drops away in her ears — birds and laughter recede and only the small phone voice and her breath remain"
+      },
+      {
+        "moment": "m12",
+        "kind": "ring/finish",
+        "description": "the soft tap of thumb on the phone registers as a closing click inside her head, sealing the call"
+      }
+    ],
+    "silences": [
+      "m10"
+    ],
+    "pre_laps": [],
+    "music": []
+  },
+  "removed": [],
+  "line_ids": {
+    "L1": "L1",
+    "L4": "L4",
+    "L6": "L6",
+    "L8": "L8"
+  },
+  "report": {
+    "passages": {
+      "grammar": [
+        "principles/chekhov-goldman-plant-and-in-out.md",
+        "principles/kuleshov-juxtaposition.md",
+        "principles/arijon-grammar.md",
+        "principles/dmytryk-cut-on-the-reaction.md",
+        "principles/mackendrick-show-dont-tell.md",
+        "house-drama-notes.md"
+      ],
+      "devices": [
+        "devices/25-weather-or-light-echo.md",
+        "devices/38-intercut-phone-call.md",
+        "devices/01-baseline-before-the-break.md",
+        "devices/02-smile-that-outlives-the-eyes.md",
+        "devices/05-plant-and-payoff.md",
+        "devices/27-turning-ones-back.md",
+        "devices/07-hands-tell-the-truth.md",
+        "devices/15-high-angle-to-make-small.md"
+      ]
+    },
+    "treatments": {
+      "distinct": {
+        "ok": true,
+        "issues": []
+      },
+      "scores": [
+        {
+          "index": 0,
+          "stance": "restrained",
+          "fit": 4,
+          "distinct": 1.0,
+          "sane": true,
+          "total": 2.8,
+          "why": [
+            "does not: names the point-of-view owner"
+          ]
+        },
+        {
+          "index": 1,
+          "stance": "intimate",
+          "fit": 5,
+          "distinct": 1.0,
+          "sane": true,
+          "total": 3.0,
+          "why": []
+        },
+        {
+          "index": 2,
+          "stance": "heightened",
+          "fit": 5,
+          "distinct": 1.0,
+          "sane": true,
+          "total": 3.0,
+          "why": []
+        }
+      ]
+    },
+    "moments": {
+      "dropped": [],
+      "removed_by_a_person": []
+    },
+    "editorial": {
+      "saved_s": 2.0,
+      "notes": [
+        "card 7: keep 2 s from 0 s of the 4 s take"
+      ]
+    },
+    "screening": {
+      "ran": true,
+      "scores": {
+        "audience": 3,
+        "editor": 4,
+        "opportunity": 4,
+        "fidelity": 4
+      },
+      "notes": [
+        "n1 [audience, high, add -> other:Dasun] card 6: At the moment the father's line lands (card 6) the audience needs a clear visual of the other person’s ignorance: add a tight reaction shot of Dasun (watching, uncomprehending) simultaneous with or immediately after the line so the viewer can see who does and doesn't know without hearing the words.",
+        "n2 [opportunity, high, add -> stake:dasun:after] card 6: You need a clear listener shot of Dasun the instant L4 is spoken — a cut to his face (MS/MCU) showing that he remains unaware of the content. This preserves the dramatic irony and orients the audience to who knows what at the break.",
+        "n3 [fidelity, high, add -> other:2:dasun] card 12: Card 12 lacks the required moment showing Dasun's held stillness as she watches her leave; add a short MS of him on the bench, unmoving and not reaching, to explicitly show 'no call to stop her' (coverage referenced by the report).",
+        "n4 [audience, medium, change] card 8: Cards 6–9 hold long, similar close-ups on Anudi; insert a quick cut to her hands/phone during the hold (a subtle thumbnail tremor or gripping the bench) to break visual monotony and give a concrete physical baseline for the emotional turn.",
+        "n5 [audience, medium, add -> stake:Dasun:after] card 9: When she complies on the call (card 9), we never see Dasun's face as the decision/break is confirmed; add a brief shot of him immediately after her line so the scene tells both sides of the break (speaker and listener) before she leaves.",
+        "n6 [editor, medium, remove] card 3: Card 3 (Dasun’s tease) repeats the same size/angle and warm coverage already established in Card 1 and Card 2 and doesn't add a distinct motive — it reads like coverage padding. Either replace it with a distinct reaction (a smaller, asymmetric detail of his face/hands) or remove it so the cut moves more economically from the shared MS/MCU into the phone buzz.",
+        "n7 [editor, medium, change] card 7: Card 7 (He doesn’t hear it) sits after a long CU on Anudi and risks breaking eye-trace: the spectator is locked on her down-eyeline, so the MS of Dasun needs a clearer visual reason to cut — give him an explicit, readable posture (looking slightly away or turning toward the lake) or shorten this to a quick insert that confirms his obliviousness without diluting the intimate POV on Anudi.",
+        "n8 [opportunity, medium, change] card 8: The slow push-in and another long CU stack on top of the previous close; remove the push-in and hold the CU instead so the change in her eyes reads without competing camera motion."
+      ],
+      "revised": true,
+      "kept": "first",
+      "error": "",
+      "revision": {
+        "operations": 4,
+        "skipped": [],
+        "dropped": [],
+        "ops": [
+          {
+            "n": 1,
+            "op": "add_moment",
+            "why": "Add explicit subtext face of Dasun’s held stillness as she lets go (report + n3)",
+            "target": "m16",
+            "applied": true,
+            "note_id": "n3"
+          },
+          {
+            "n": 2,
+            "op": "replace_card",
+            "why": "Place the new subtext moment on-screen during her exit per n3",
+            "target": 12,
+            "applied": true,
+            "note_id": "n3"
+          },
+          {
+            "n": 3,
+            "op": "replace_card",
+            "why": "Clarify motive for the cut to Dasun so it reads as a confirming glance away (n7)",
+            "target": 7,
+            "applied": true,
+            "note_id": "n7"
+          },
+          {
+            "n": 4,
+            "op": "replace_card",
+            "why": "Hold a still CU rather than a push so the rhythm break sits cleanly on her face (n8)",
+            "target": 8,
+            "applied": true,
+            "note_id": "n8"
+          }
+        ],
+        "ledger": [
+          {
+            "id": "n1",
+            "lens": "audience",
+            "severity": "high",
+            "kind": "add",
+            "card": 6,
+            "cell": "other:Dasun",
+            "note": "At the moment the father's line lands (card 6) the audience needs a clear visual of the other person’s ignorance: add a tight reaction shot of Dasun (watching, uncomprehending) simultaneous with or immediately after the line so the viewer can see who does and doesn't know without hearing the words.",
+            "done": [],
+            "declined": "Already covered: card 7 is an immediate cut after L4 that shows Dasun watching, uncomprehending; adding another reaction would be redundant and risks diluting Anudi-focused POV.",
+            "answered": true
+          },
+          {
+            "id": "n2",
+            "lens": "opportunity",
+            "severity": "high",
+            "kind": "add",
+            "card": 6,
+            "cell": "stake:dasun:after",
+            "note": "You need a clear listener shot of Dasun the instant L4 is spoken — a cut to his face (MS/MCU) showing that he remains unaware of the content. This preserves the dramatic irony and orients the audience to who knows what at the break.",
+            "done": [],
+            "declined": "A clear listener shot right after L4 already exists (card 7) and holds for 2 seconds; adding more coverage would not improve orientation and would pull us further from Anudi’s POV.",
+            "answered": true
+          },
+          {
+            "id": "n3",
+            "lens": "fidelity",
+            "severity": "high",
+            "kind": "add",
+            "card": 12,
+            "cell": "other:2:dasun",
+            "note": "Card 12 lacks the required moment showing Dasun's held stillness as she watches her leave; add a short MS of him on the bench, unmoving and not reaching, to explicitly show 'no call to stop her' (coverage referenced by the report).",
+            "done": [
+              1,
+              2
+            ],
+            "declined": "",
+            "answered": true
+          },
+          {
+            "id": "n4",
+            "lens": "audience",
+            "severity": "medium",
+            "kind": "change",
+            "card": 8,
+            "cell": "",
+            "note": "Cards 6–9 hold long, similar close-ups on Anudi; insert a quick cut to her hands/phone during the hold (a subtle thumbnail tremor or gripping the bench) to break visual monotony and give a concrete physical baseline for the emotional turn.",
+            "done": [],
+            "declined": "Inserting a hand/phone cut inside the hold would add another device during the scene’s single rhythm break and compete with the face-centric treatment; the phone detail is already paid off in card 10.",
+            "answered": true
+          },
+          {
+            "id": "n5",
+            "lens": "audience",
+            "severity": "medium",
+            "kind": "add",
+            "card": 9,
+            "cell": "stake:Dasun:after",
+            "note": "When she complies on the call (card 9), we never see Dasun's face as the decision/break is confirmed; add a brief shot of him immediately after her line so the scene tells both sides of the break (speaker and listener) before she leaves.",
+            "done": [],
+            "declined": "Cutting to Dasun immediately after L6 would step away from Anudi’s POV during the call; his side of the break is already stated in card 7 (ignorance) and card 12 (held stillness).",
+            "answered": true
+          },
+          {
+            "id": "n6",
+            "lens": "editor",
+            "severity": "medium",
+            "kind": "remove",
+            "card": 3,
+            "cell": "",
+            "note": "Card 3 (Dasun’s tease) repeats the same size/angle and warm coverage already established in Card 1 and Card 2 and doesn't add a distinct motive — it reads like coverage padding. Either replace it with a distinct reaction (a smaller, asymmetric detail of his face/hands) or remove it so the cut moves more economically from the shared MS/MCU into the phone buzz.",
+            "done": [],
+            "declined": "Card 3 cannot be removed as it carries script line L1; altering it for a detail would cost clarity more than it gains and is not required for pacing.",
+            "answered": true
+          },
+          {
+            "id": "n7",
+            "lens": "editor",
+            "severity": "medium",
+            "kind": "change",
+            "card": 7,
+            "cell": "",
+            "note": "Card 7 (He doesn’t hear it) sits after a long CU on Anudi and risks breaking eye-trace: the spectator is locked on her down-eyeline, so the MS of Dasun needs a clearer visual reason to cut — give him an explicit, readable posture (looking slightly away or turning toward the lake) or shorten this to a quick insert that confirms his obliviousness without diluting the intimate POV on Anudi.",
+            "done": [
+              3
+            ],
+            "declined": "",
+            "answered": true
+          },
+          {
+            "id": "n8",
+            "lens": "opportunity",
+            "severity": "medium",
+            "kind": "change",
+            "card": 8,
+            "cell": "",
+            "note": "The slow push-in and another long CU stack on top of the previous close; remove the push-in and hold the CU instead so the change in her eyes reads without competing camera motion.",
+            "done": [
+              4
+            ],
+            "declined": "",
+            "answered": true
+          }
+        ],
+        "splits": [],
+        "unsplit": [],
+        "invalid": []
+      }
+    },
+    "ledger": {
+      "ok": true,
+      "buckets": {
+        "kept": [
+          "m1",
+          "m2",
+          "m3",
+          "m4",
+          "m5",
+          "m6",
+          "m7",
+          "m8",
+          "m9",
+          "m10",
+          "m11",
+          "m12",
+          "m13",
+          "m14",
+          "m15"
+        ],
+        "dropped_fidelity": [],
+        "removed_by_person": [],
+        "removed_by_operation": []
+      },
+      "unaccounted": [],
+      "doubled": [],
+      "added": [],
+      "problems": [],
+      "created": 15,
+      "kept": 15,
+      "inputs": {
+        "created": [
+          "m1",
+          "m2",
+          "m3",
+          "m4",
+          "m5",
+          "m6",
+          "m7",
+          "m8",
+          "m9",
+          "m10",
+          "m11",
+          "m12",
+          "m13",
+          "m14",
+          "m15"
+        ],
+        "final": [
+          "m1",
+          "m2",
+          "m3",
+          "m4",
+          "m5",
+          "m6",
+          "m7",
+          "m8",
+          "m9",
+          "m10",
+          "m11",
+          "m12",
+          "m13",
+          "m14",
+          "m15"
+        ],
+        "dropped_fidelity": [],
+        "removed_by_person": [],
+        "removed_by_operation": []
+      }
+    },
+    "questions": [
+      {
+        "question": "Does Dasun hear the father's line?",
+        "blocks": [
+          4
+        ],
+        "source": "dramaturg"
+      },
+      {
+        "question": "Does she take the phone when she leaves?",
+        "blocks": [
+          7,
+          9
+        ],
+        "source": "dramaturg"
+      }
+    ],
+    "coverage": {
+      "required": 15,
+      "filled": 14,
+      "coverage": 0.9333,
+      "holes": [
+        {
+          "cell": "subtext:3",
+          "kind": "subtext",
+          "who": "Dasun",
+          "blocks": [
+            9
+          ],
+          "why": "block 9's subtext is shown: held stillness as she goes, no call to stop her",
+          "card": 12,
+          "suggest": "a moment on block 9 that shows: held stillness as she goes, no call to stop her"
+        }
+      ],
+      "grid": {
+        "people": [
+          "Anudi",
+          "Dasun"
+        ],
+        "beats": [
+          {
+            "beat": 0,
+            "blocks": [
+              0,
+              1
+            ],
+            "turn": false,
+            "faces": {
+              "Anudi": [
+                1,
+                2
+              ],
+              "Dasun": [
+                1,
+                3
+              ]
+            }
+          },
+          {
+            "beat": 1,
+            "blocks": [
+              2
+            ],
+            "turn": false,
+            "faces": {
+              "Anudi": [
+                2
+              ],
+              "Dasun": []
+            }
+          },
+          {
+            "beat": 2,
+            "blocks": [
+              3,
+              4
+            ],
+            "turn": true,
+            "faces": {
+              "Anudi": [
+                2,
+                5,
+                6
+              ],
+              "Dasun": [
+                7
+              ]
+            }
+          },
+          {
+            "beat": 3,
+            "blocks": [
+              5,
+              6
+            ],
+            "turn": false,
+            "faces": {
+              "Anudi": [
+                8,
+                9
+              ],
+              "Dasun": []
+            }
+          },
+          {
+            "beat": 4,
+            "blocks": [
+              7,
+              8,
+              9
+            ],
+            "turn": false,
+            "faces": {
+              "Anudi": [
+                11
+              ],
+              "Dasun": [
+                12
+              ]
+            }
+          }
+        ]
+      },
+      "cells": [
+        {
+          "id": "turn:2",
+          "kind": "turn",
+          "who": "Anudi",
+          "blocks": [
+            3,
+            4
+          ],
+          "why": "Anudi's face is seen while the turn at block 3-4 lands",
+          "ok": true,
+          "card": 2
+        },
+        {
+          "id": "other:2:dasun",
+          "kind": "other",
+          "who": "Dasun",
+          "blocks": [
+            3,
+            4
+          ],
+          "why": "Dasun's face is seen at the turn (block 3-4) or just after",
+          "ok": true,
+          "card": 7
+        },
+        {
+          "id": "irony:0",
+          "kind": "irony",
+          "who": "Dasun",
+          "blocks": [
+            4
+          ],
+          "why": "Dasun's face is seen from block 4, while the audience knows what Dasun does not (Her father has decided her marriage.)",
+          "ok": true,
+          "card": 7
+        },
+        {
+          "id": "subtext:0",
+          "kind": "subtext",
+          "who": "Anudi",
+          "blocks": [
+            6
+          ],
+          "why": "block 6's subtext is shown: a compliant line given without protest",
+          "ok": true,
+          "card": 9
+        },
+        {
+          "id": "subtext:1",
+          "kind": "subtext",
+          "who": "Anudi",
+          "blocks": [
+            7
+          ],
+          "why": "block 7's subtext is shown: phone placed face-down to shut the news away",
+          "ok": true,
+          "card": 1
+        },
+        {
+          "id": "subtext:2",
+          "kind": "subtext",
+          "who": "Anudi",
+          "blocks": [
+            8
+          ],
+          "why": "block 8's subtext is shown: a neutral farewell that conceals the rupture",
+          "ok": true,
+          "card": 11
+        },
+        {
+          "id": "subtext:3",
+          "kind": "subtext",
+          "who": "Dasun",
+          "blocks": [
+            9
+          ],
+          "why": "block 9's subtext is shown: held stillness as she goes, no call to stop her",
+          "ok": false,
+          "card": 12
+        },
+        {
+          "id": "stake:anudi:before",
+          "kind": "stake",
+          "who": "Anudi",
+          "blocks": [
+            0,
+            3
+          ],
+          "why": "Anudi has a card of their own before the break (block 4)",
+          "ok": true,
+          "card": 1
+        },
+        {
+          "id": "stake:anudi:after",
+          "kind": "stake",
+          "who": "Anudi",
+          "blocks": [
+            6,
+            8
+          ],
+          "why": "Anudi has a card of their own from the break (block 4) on",
+          "ok": true,
+          "card": 6
+        },
+        {
+          "id": "stake:dasun:before",
+          "kind": "stake",
+          "who": "Dasun",
+          "blocks": [
+            0,
+            1
+          ],
+          "why": "Dasun has a card of their own before the break (block 4)",
+          "ok": true,
+          "card": 3
+        },
+        {
+          "id": "stake:dasun:after",
+          "kind": "stake",
+          "who": "Dasun",
+          "blocks": [
+            9
+          ],
+          "why": "Dasun has a card of their own from the break (block 4) on",
+          "ok": true,
+          "card": 7
+        },
+        {
+          "id": "baseline",
+          "kind": "baseline",
+          "who": "",
+          "blocks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "why": "the state before the break has a moment of its own",
+          "ok": true,
+          "card": 2
+        },
+        {
+          "id": "key",
+          "kind": "key",
+          "who": "",
+          "blocks": [
+            5
+          ],
+          "why": "the key moment (block 5) is the card marked as the break",
+          "ok": true,
+          "card": 8
+        },
+        {
+          "id": "plant",
+          "kind": "plant",
+          "who": "",
+          "blocks": [],
+          "why": "the phone is planted and pays off",
+          "ok": true,
+          "card": 1
+        },
+        {
+          "id": "ending",
+          "kind": "ending",
+          "who": "",
+          "blocks": [],
+          "why": "the last card is the treatment's ending image",
+          "ok": true,
+          "card": 13
+        }
+      ]
+    },
+    "history": {
+      "first": {
+        "cards": [
+          {
+            "number": 1,
+            "moments": [
+              "m1",
+              "m2"
+            ],
+            "size": "MS",
+            "arrangement": "two",
+            "subject": "",
+            "take_s": 4
+          },
+          {
+            "number": 2,
+            "moments": [
+              "m3"
+            ],
+            "size": "MCU",
+            "arrangement": "single",
+            "subject": "Anudi",
+            "take_s": 4
+          },
+          {
+            "number": 3,
+            "moments": [
+              "m4"
+            ],
+            "size": "MCU",
+            "arrangement": "single",
+            "subject": "Dasun",
+            "take_s": 4
+          },
+          {
+            "number": 4,
+            "moments": [
+              "m5"
+            ],
+            "size": "INSERT",
+            "arrangement": "single",
+            "subject": "",
+            "take_s": 4
+          },
+          {
+            "number": 5,
+            "moments": [
+              "m6"
+            ],
+            "size": "MCU",
+            "arrangement": "single",
+            "subject": "Anudi",
+            "take_s": 4
+          },
+          {
+            "number": 6,
+            "moments": [
+              "m7"
+            ],
+            "size": "CU",
+            "arrangement": "single",
+            "subject": "Anudi",
+            "take_s": 6
+          },
+          {
+            "number": 7,
+            "moments": [
+              "m8"
+            ],
+            "size": "MS",
+            "arrangement": "single",
+            "subject": "Dasun",
+            "take_s": 4
+          },
+          {
+            "number": 8,
+            "moments": [
+              "m9",
+              "m10"
+            ],
+            "size": "CU",
+            "arrangement": "single",
+            "subject": "Anudi",
+            "take_s": 4
+          },
+          {
+            "number": 9,
+            "moments": [
+              "m11"
+            ],
+            "size": "MCU",
+            "arrangement": "single",
+            "subject": "Anudi",
+            "take_s": 4
+          },
+          {
+            "number": 10,
+            "moments": [
+              "m12"
+            ],
+            "size": "INSERT",
+            "arrangement": "single",
+            "subject": "",
+            "take_s": 4
+          },
+          {
+            "number": 11,
+            "moments": [
+              "m13"
+            ],
+            "size": "CU",
+            "arrangement": "single",
+            "subject": "Anudi",
+            "take_s": 4
+          },
+          {
+            "number": 12,
+            "moments": [
+              "m14"
+            ],
+            "size": "MS",
+            "arrangement": "single",
+            "subject": "Dasun",
+            "take_s": 4
+          },
+          {
+            "number": 13,
+            "moments": [
+              "m15"
+            ],
+            "size": "INSERT",
+            "arrangement": "single",
+            "subject": "",
+            "take_s": 4
+          }
+        ],
+        "moments": [
+          "m1",
+          "m2",
+          "m3",
+          "m4",
+          "m5",
+          "m6",
+          "m7",
+          "m8",
+          "m9",
+          "m10",
+          "m11",
+          "m12",
+          "m13",
+          "m14",
+          "m15"
+        ]
+      },
+      "events": [
+        {
+          "stage": "design",
+          "kind": "split",
+          "splits": [
+            {
+              "card": 6,
+              "into": [
+                6
+              ],
+              "at": [],
+              "takes": [
+                6
+              ],
+              "how": "lengthened"
+            }
+          ],
+          "cards": [
+            {
+              "number": 1,
+              "moments": [
+                "m1",
+                "m2"
+              ],
+              "size": "MS",
+              "arrangement": "two",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 2,
+              "moments": [
+                "m3"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 3,
+              "moments": [
+                "m4"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 4,
+              "moments": [
+                "m5"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 5,
+              "moments": [
+                "m6"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 6,
+              "moments": [
+                "m7"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 6
+            },
+            {
+              "number": 7,
+              "moments": [
+                "m8"
+              ],
+              "size": "MS",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 8,
+              "moments": [
+                "m9",
+                "m10"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 9,
+              "moments": [
+                "m11"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 10,
+              "moments": [
+                "m12"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 11,
+              "moments": [
+                "m13"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 12,
+              "moments": [
+                "m14"
+              ],
+              "size": "MS",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 13,
+              "moments": [
+                "m15"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            }
+          ]
+        },
+        {
+          "stage": "design",
+          "kind": "sent_back",
+          "why": [
+            "[coverage] block 9's subtext is shown: held stillness as she goes, no call to stop her: give it a card (a moment on block 9 that shows: held stillness as she goes, no call to stop her)"
+          ],
+          "cards": [
+            {
+              "number": 1,
+              "moments": [
+                "m1",
+                "m2"
+              ],
+              "size": "MS",
+              "arrangement": "two",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 2,
+              "moments": [
+                "m3"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 3,
+              "moments": [
+                "m4"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 4,
+              "moments": [
+                "m5"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 5,
+              "moments": [
+                "m6"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 6,
+              "moments": [
+                "m7"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 6
+            },
+            {
+              "number": 7,
+              "moments": [
+                "m8"
+              ],
+              "size": "MS",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 8,
+              "moments": [
+                "m9",
+                "m10"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 9,
+              "moments": [
+                "m11"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 10,
+              "moments": [
+                "m12"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 11,
+              "moments": [
+                "m13"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 12,
+              "moments": [
+                "m14"
+              ],
+              "size": "MS",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 13,
+              "moments": [
+                "m15"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            }
+          ]
+        },
+        {
+          "stage": "design",
+          "kind": "sent_back",
+          "why": [
+            "[coverage] block 9's subtext is shown: held stillness as she goes, no call to stop her: give it a card (a moment on block 9 that shows: held stillness as she goes, no call to stop her)"
+          ],
+          "cards": [
+            {
+              "number": 1,
+              "moments": [
+                "m1",
+                "m2"
+              ],
+              "size": "MS",
+              "arrangement": "two",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 2,
+              "moments": [
+                "m3"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 3,
+              "moments": [
+                "m4"
+              ],
+              "size": "MCU",
+              "arrangement": "ots",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 4,
+              "moments": [
+                "m5"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 5,
+              "moments": [
+                "m6",
+                "m7"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 8
+            },
+            {
+              "number": 6,
+              "moments": [
+                "m8"
+              ],
+              "size": "MS",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 7,
+              "moments": [
+                "m9",
+                "m10"
+              ],
+              "size": "CU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 8,
+              "moments": [
+                "m11"
+              ],
+              "size": "MCU",
+              "arrangement": "single",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 9,
+              "moments": [
+                "m12"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            },
+            {
+              "number": 10,
+              "moments": [
+                "m13"
+              ],
+              "size": "CU",
+              "arrangement": "ots",
+              "subject": "Anudi",
+              "take_s": 4
+            },
+            {
+              "number": 11,
+              "moments": [
+                "m14"
+              ],
+              "size": "MS",
+              "arrangement": "single",
+              "subject": "Dasun",
+              "take_s": 4
+            },
+            {
+              "number": 12,
+              "moments": [
+                "m15"
+              ],
+              "size": "INSERT",
+              "arrangement": "single",
+              "subject": "",
+              "take_s": 4
+            }
+          ]
+        },
+        {
+          "stage": "screening",
+          "kind": "notes",
+          "notes": [
+            {
+              "id": "n1",
+              "lens": "audience",
+              "card": 6,
+              "severity": "high",
+              "kind": "add",
+              "cell": "other:Dasun",
+              "note": "At the moment the father's line lands (card 6) the audience needs a clear visual of the other person’s ignorance: add a tight reaction shot of Dasun (watching, uncomprehending) simultaneous with or immediately after the line so the viewer can see who does and doesn't know without hearing the words."
+            },
+            {
+              "id": "n2",
+              "lens": "opportunity",
+              "card": 6,
+              "severity": "high",
+              "kind": "add",
+              "cell": "stake:dasun:after",
+              "note": "You need a clear listener shot of Dasun the instant L4 is spoken — a cut to his face (MS/MCU) showing that he remains unaware of the content. This preserves the dramatic irony and orients the audience to who knows what at the break."
+            },
+            {
+              "id": "n3",
+              "lens": "fidelity",
+              "card": 12,
+              "severity": "high",
+              "kind": "add",
+              "cell": "other:2:dasun",
+              "note": "Card 12 lacks the required moment showing Dasun's held stillness as she watches her leave; add a short MS of him on the bench, unmoving and not reaching, to explicitly show 'no call to stop her' (coverage referenced by the report)."
+            },
+            {
+              "id": "n4",
+              "lens": "audience",
+              "card": 8,
+              "severity": "medium",
+              "kind": "change",
+              "cell": "",
+              "note": "Cards 6–9 hold long, similar close-ups on Anudi; insert a quick cut to her hands/phone during the hold (a subtle thumbnail tremor or gripping the bench) to break visual monotony and give a concrete physical baseline for the emotional turn."
+            },
+            {
+              "id": "n5",
+              "lens": "audience",
+              "card": 9,
+              "severity": "medium",
+              "kind": "add",
+              "cell": "stake:Dasun:after",
+              "note": "When she complies on the call (card 9), we never see Dasun's face as the decision/break is confirmed; add a brief shot of him immediately after her line so the scene tells both sides of the break (speaker and listener) before she leaves."
+            },
+            {
+              "id": "n6",
+              "lens": "editor",
+              "card": 3,
+              "severity": "medium",
+              "kind": "remove",
+              "cell": "",
+              "note": "Card 3 (Dasun’s tease) repeats the same size/angle and warm coverage already established in Card 1 and Card 2 and doesn't add a distinct motive — it reads like coverage padding. Either replace it with a distinct reaction (a smaller, asymmetric detail of his face/hands) or remove it so the cut moves more economically from the shared MS/MCU into the phone buzz."
+            },
+            {
+              "id": "n7",
+              "lens": "editor",
+              "card": 7,
+              "severity": "medium",
+              "kind": "change",
+              "cell": "",
+              "note": "Card 7 (He doesn’t hear it) sits after a long CU on Anudi and risks breaking eye-trace: the spectator is locked on her down-eyeline, so the MS of Dasun needs a clearer visual reason to cut — give him an explicit, readable posture (looking slightly away or turning toward the lake) or shorten this to a quick insert that confirms his obliviousness without diluting the intimate POV on Anudi."
+            },
+            {
+              "id": "n8",
+              "lens": "opportunity",
+              "card": 8,
+              "severity": "medium",
+              "kind": "change",
+              "cell": "",
+              "note": "The slow push-in and another long CU stack on top of the previous close; remove the push-in and hold the CU instead so the change in her eyes reads without competing camera motion."
+            }
+          ]
+        },
+        {
+          "stage": "screening",
+          "kind": "revision",
+          "ops": [
+            {
+              "n": 1,
+              "op": "add_moment",
+              "why": "Add explicit subtext face of Dasun’s held stillness as she lets go (report + n3)",
+              "target": "m16",
+              "applied": true,
+              "note_id": "n3"
+            },
+            {
+              "n": 2,
+              "op": "replace_card",
+              "why": "Place the new subtext moment on-screen during her exit per n3",
+              "target": 12,
+              "applied": true,
+              "note_id": "n3"
+            },
+            {
+              "n": 3,
+              "op": "replace_card",
+              "why": "Clarify motive for the cut to Dasun so it reads as a confirming glance away (n7)",
+              "target": 7,
+              "applied": true,
+              "note_id": "n7"
+            },
+            {
+              "n": 4,
+              "op": "replace_card",
+              "why": "Hold a still CU rather than a push so the rhythm break sits cleanly on her face (n8)",
+              "target": 8,
+              "applied": true,
+              "note_id": "n8"
+            }
+          ],
+          "ledger": [
+            {
+              "id": "n1",
+              "lens": "audience",
+              "severity": "high",
+              "kind": "add",
+              "card": 6,
+              "cell": "other:Dasun",
+              "note": "At the moment the father's line lands (card 6) the audience needs a clear visual of the other person’s ignorance: add a tight reaction shot of Dasun (watching, uncomprehending) simultaneous with or immediately after the line so the viewer can see who does and doesn't know without hearing the words.",
+              "done": [],
+              "declined": "Already covered: card 7 is an immediate cut after L4 that shows Dasun watching, uncomprehending; adding another reaction would be redundant and risks diluting Anudi-focused POV.",
+              "answered": true
+            },
+            {
+              "id": "n2",
+              "lens": "opportunity",
+              "severity": "high",
+              "kind": "add",
+              "card": 6,
+              "cell": "stake:dasun:after",
+              "note": "You need a clear listener shot of Dasun the instant L4 is spoken — a cut to his face (MS/MCU) showing that he remains unaware of the content. This preserves the dramatic irony and orients the audience to who knows what at the break.",
+              "done": [],
+              "declined": "A clear listener shot right after L4 already exists (card 7) and holds for 2 seconds; adding more coverage would not improve orientation and would pull us further from Anudi’s POV.",
+              "answered": true
+            },
+            {
+              "id": "n3",
+              "lens": "fidelity",
+              "severity": "high",
+              "kind": "add",
+              "card": 12,
+              "cell": "other:2:dasun",
+              "note": "Card 12 lacks the required moment showing Dasun's held stillness as she watches her leave; add a short MS of him on the bench, unmoving and not reaching, to explicitly show 'no call to stop her' (coverage referenced by the report).",
+              "done": [
+                1,
+                2
+              ],
+              "declined": "",
+              "answered": true
+            },
+            {
+              "id": "n4",
+              "lens": "audience",
+              "severity": "medium",
+              "kind": "change",
+              "card": 8,
+              "cell": "",
+              "note": "Cards 6–9 hold long, similar close-ups on Anudi; insert a quick cut to her hands/phone during the hold (a subtle thumbnail tremor or gripping the bench) to break visual monotony and give a concrete physical baseline for the emotional turn.",
+              "done": [],
+              "declined": "Inserting a hand/phone cut inside the hold would add another device during the scene’s single rhythm break and compete with the face-centric treatment; the phone detail is already paid off in card 10.",
+              "answered": true
+            },
+            {
+              "id": "n5",
+              "lens": "audience",
+              "severity": "medium",
+              "kind": "add",
+              "card": 9,
+              "cell": "stake:Dasun:after",
+              "note": "When she complies on the call (card 9), we never see Dasun's face as the decision/break is confirmed; add a brief shot of him immediately after her line so the scene tells both sides of the break (speaker and listener) before she leaves.",
+              "done": [],
+              "declined": "Cutting to Dasun immediately after L6 would step away from Anudi’s POV during the call; his side of the break is already stated in card 7 (ignorance) and card 12 (held stillness).",
+              "answered": true
+            },
+            {
+              "id": "n6",
+              "lens": "editor",
+              "severity": "medium",
+              "kind": "remove",
+              "card": 3,
+              "cell": "",
+              "note": "Card 3 (Dasun’s tease) repeats the same size/angle and warm coverage already established in Card 1 and Card 2 and doesn't add a distinct motive — it reads like coverage padding. Either replace it with a distinct reaction (a smaller, asymmetric detail of his face/hands) or remove it so the cut moves more economically from the shared MS/MCU into the phone buzz.",
+              "done": [],
+              "declined": "Card 3 cannot be removed as it carries script line L1; altering it for a detail would cost clarity more than it gains and is not required for pacing.",
+              "answered": true
+            },
+            {
+              "id": "n7",
+              "lens": "editor",
+              "severity": "medium",
+              "kind": "change",
+              "card": 7,
+              "cell": "",
+              "note": "Card 7 (He doesn’t hear it) sits after a long CU on Anudi and risks breaking eye-trace: the spectator is locked on her down-eyeline, so the MS of Dasun needs a clearer visual reason to cut — give him an explicit, readable posture (looking slightly away or turning toward the lake) or shorten this to a quick insert that confirms his obliviousness without diluting the intimate POV on Anudi.",
+              "done": [
+                3
+              ],
+              "declined": "",
+              "answered": true
+            },
+            {
+              "id": "n8",
+              "lens": "opportunity",
+              "severity": "medium",
+              "kind": "change",
+              "card": 8,
+              "cell": "",
+              "note": "The slow push-in and another long CU stack on top of the previous close; remove the push-in and hold the CU instead so the change in her eyes reads without competing camera motion.",
+              "done": [
+                4
+              ],
+              "declined": "",
+              "answered": true
+            }
+          ],
+          "invalid": [],
+          "splits": [],
+          "unsplit": [],
+          "dropped": [],
+          "skipped": []
+        },
+        {
+          "stage": "screening",
+          "kind": "kept",
+          "which": "first",
+          "candidates": [
+            {
+              "which": "first",
+              "rank": [
+                0,
+                1,
+                0,
+                -15.8
+              ],
+              "percent": 92.2,
+              "coverage": 0.9333,
+              "cards": 13,
+              "moments": 15,
+              "lost_cells": 1
+            },
+            {
+              "which": "revision",
+              "rank": [
+                1,
+                0,
+                0,
+                -16.0
+              ],
+              "percent": 100.0,
+              "coverage": 1.0,
+              "cards": 13,
+              "moments": 16,
+              "lost_cells": 0
+            }
+          ]
+        }
+      ]
+    },
+    "fidelity": {
+      "ok": true,
+      "counts": {
+        "moments": 15,
+        "script": 10,
+        "implied": 0,
+        "elaboration": 5,
+        "dropped": 0,
+        "breaks": 0
+      },
+      "breaks": []
+    },
+    "fit": {
+      "runtime_s": 52.0,
+      "envelope_s": null,
+      "over_envelope_s": 0.0,
+      "overruns": 0,
+      "issues": []
+    },
+    "continuity": {
+      "count": 0,
+      "issues": []
+    },
+    "feasibility": {
+      "unaddressed": 0,
+      "flags": []
+    },
+    "score": {
+      "percent": 92.2,
+      "score": 15.8,
+      "max": 16.0,
+      "craft_percent": 98.8,
+      "coverage": 0.9333,
+      "loss": false,
+      "loss_reasons": [],
+      "signals": [
+        {
+          "signal": "turn_seen",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "baseline_shown",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "pov_kept",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "size_arc_kept",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "one_rhythm_break",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "plant_paid_off",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "line_placement",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "variety",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "motivated_cuts",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "ending",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "sound",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "feasibility",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        },
+        {
+          "signal": "coverage",
+          "applicable": true,
+          "weight": 3.0,
+          "points": 2.8
+        },
+        {
+          "signal": "one_job_per_card",
+          "applicable": true,
+          "weight": 1.0,
+          "points": 1.0
+        }
+      ]
+    },
+    "log": [
+      "a crowded card was repaired in code: card 6 lengthened (6 s)",
+      "the cards were sent back once: [coverage] block 9's subtext is shown: held stillness as she goes, no call to stop her: give it a card (a moment on block 9 that shows: held stillness as she goes, no call to stop her)",
+      "the cards were sent back once: [coverage] block 9's subtext is shown: held stillness as she goes, no call to stop her: give it a card (a moment on block 9 that shows: held stillness as she goes, no call to stop her)",
+      "1 required face(s) are still not seen: reported, screening is asked to mend it",
+      "card 7: keep 2 s from 0 s of the 4 s take"
+    ],
+    "density": {
+      "cards": 13,
+      "moments": 15,
+      "moments_per_card": 1.15,
+      "used_shot_length_s": 4.0
+    }
+  },
+  "previous": {}
+}

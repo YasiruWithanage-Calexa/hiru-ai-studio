@@ -81,6 +81,11 @@ class KeyMomentW(_Wire):
     why: str
 
 
+class QuestionW(_Wire):
+    question: str  # what the script leaves open that changes what is filmed
+    blocks: list[int]  # the blocks it concerns
+
+
 class AnalysisWire(_Wire):
     about: str
     dramatic_question: str
@@ -96,6 +101,7 @@ class AnalysisWire(_Wire):
     break_block: int | None  # the block where the value breaks; null when the scene has no break
     aftermath: str
     key_moment: KeyMomentW
+    questions: list[QuestionW]  # open questions for a person; empty when the script leaves nothing open
 
     def analysis(self) -> p.SceneAnalysis:
         """The plan's form. The POV handover (a moment id) is bound later, by the moment writer."""
@@ -113,6 +119,8 @@ class AnalysisWire(_Wire):
             baseline=p.Baseline(blocks=self.baseline.blocks, state=self.baseline.state),
             aftermath=p.Aftermath(state=self.aftermath),
             key_moment=p.KeyMoment(block=self.key_moment.block, why=self.key_moment.why),
+            questions=[p.Question(question=q.question.strip(), blocks=q.blocks) for q in self.questions
+                       if q.question.strip()],
             **{"break": p.BreakAt(block=self.break_block)})
 
 

@@ -1,0 +1,723 @@
+{
+ "scene": {
+  "cast": [
+   "Kasun",
+   "Father"
+  ],
+  "place": {
+   "name": "Kasun's new restaurant, opening evening",
+   "objects": [
+    "door",
+    "sign",
+    "car",
+    "tables",
+    "lamps",
+    "counter",
+    "window"
+   ]
+  },
+  "blocks": [
+   {
+    "index": 0,
+    "kind": "action",
+    "text": "The new restaurant on opening evening. KASUN stands by the door, adjusting his shirt, nervous."
+   },
+   {
+    "index": 1,
+    "kind": "action",
+    "text": "A car stops outside. ANUDI'S FATHER steps out and looks up at the sign."
+   },
+   {
+    "index": 2,
+    "kind": "dialogue",
+    "speaker": "Father",
+    "line_id": "L2",
+    "text": "මේක ඔයාගේද?"
+   },
+   {
+    "index": 3,
+    "kind": "dialogue",
+    "speaker": "Kasun",
+    "line_id": "L3",
+    "text": "ඔව් සර්. මම ඔයා එනකල් බලා හිටියා."
+   },
+   {
+    "index": 4,
+    "kind": "action",
+    "text": "The father looks around the room, then at Kasun. He nods, once."
+   }
+  ]
+ },
+ "plan": {
+  "analysis": {
+   "about": "A man waits to be judged by the one person whose opinion he needs.",
+   "dramatic_question": "Will the father see what he has built?",
+   "value": {
+    "start": "nerves",
+    "end": "respect"
+   },
+   "tone": "hopeful, taut",
+   "beats": [
+    {
+     "blocks": [
+      0
+     ],
+     "action": "Kasun waits at the door",
+     "reaction": "he is nervous"
+    },
+    {
+     "blocks": [
+      1
+     ],
+     "action": "the father arrives and looks up at the sign",
+     "reaction": "the verdict begins"
+    },
+    {
+     "blocks": [
+      2,
+      3
+     ],
+     "action": "the father asks and Kasun answers",
+     "reaction": "Kasun stands his ground"
+    },
+    {
+     "blocks": [
+      4
+     ],
+     "action": "the father looks around and nods",
+     "reaction": "Kasun is seen at last",
+     "turn": true,
+     "reactor": "Kasun"
+    }
+   ],
+   "wants": {
+    "Kasun": "to be respected",
+    "Father": "to see for himself"
+   },
+   "obstacles": [
+    "the father's past judgement"
+   ],
+   "pov_owner": {
+    "start": "Kasun",
+    "end": "Kasun",
+    "why": "it is his night"
+   },
+   "audience_knows": [],
+   "baseline": {
+    "blocks": [
+     0
+    ],
+    "state": "nervous readiness"
+   },
+   "break": {
+    "block": 4
+   },
+   "aftermath": {
+    "state": "respected"
+   },
+   "key_moment": {
+    "block": 4,
+    "why": "the father nods once"
+   }
+  },
+  "treatment": {
+   "name": "waiting to be seen",
+   "concept": "we make the viewer wait with Kasun and feel the verdict as a breath let out",
+   "pov": "Kasun's",
+   "sound_concept": "the empty room's hum, a car outside, then the room holding its breath",
+   "sections": [
+    {
+     "beats": [
+      0
+     ],
+     "camera_behaviour": "wide, then close",
+     "size_band": [
+      "WS",
+      "CU"
+     ],
+     "sound_state": "hum"
+    },
+    {
+     "beats": [
+      1
+     ],
+     "camera_behaviour": "outside looking in",
+     "size_band": [
+      "MWS",
+      "MWS"
+     ],
+     "sound_state": "car outside"
+    },
+    {
+     "beats": [
+      2
+     ],
+     "camera_behaviour": "close",
+     "size_band": [
+      "MCU",
+      "CU"
+     ],
+     "sound_state": "held breath"
+    },
+    {
+     "beats": [
+      3
+     ],
+     "camera_behaviour": "still",
+     "size_band": [
+      "MS",
+      "CU"
+     ],
+     "sound_state": "exhale"
+    }
+   ],
+   "size_arc": [
+    "WS",
+    "CU",
+    "MWS",
+    "CU"
+   ],
+   "motif": "the sign",
+   "plant": {
+    "object": "sign",
+    "plant_moment": "m3",
+    "payoff_moment": "m5"
+   },
+   "rhythm": [
+    "waiting",
+    "arrival",
+    "pressure",
+    "release"
+   ],
+   "rhythm_break": {
+    "moment": "m9",
+    "kind": "silence"
+   },
+   "entry": "as he straightens his shirt",
+   "exit": "on his breath",
+   "ending_image": "Kasun letting out his breath",
+   "ending_moment": "m9",
+   "off_speaker": true
+  },
+  "moments": [
+   {
+    "id": "m1",
+    "tier": "script",
+    "serves": [
+     "b0"
+    ],
+    "who": [
+     "Kasun"
+    ],
+    "seen": "the new restaurant on opening evening; Kasun by the door",
+    "heard": "the quiet of an empty room",
+    "feeling": "nervous readiness",
+    "seconds_need": 4.0
+   },
+   {
+    "id": "m2",
+    "tier": "elaboration",
+    "kind": "baseline",
+    "serves": [
+     "b0"
+    ],
+    "who": [
+     "Kasun"
+    ],
+    "seen": "Kasun adjusting his shirt, nervous",
+    "feeling": "nerves",
+    "seconds_need": 0
+   },
+   {
+    "id": "m3",
+    "tier": "elaboration",
+    "kind": "plant",
+    "serves": [
+     "b1"
+    ],
+    "objects": [
+     "sign"
+    ],
+    "seen": "the restaurant's sign glowing in the window behind him",
+    "feeling": "pride, unspoken",
+    "seconds_need": 0
+   },
+   {
+    "id": "m4",
+    "tier": "script",
+    "serves": [
+     "b1"
+    ],
+    "who": [
+     "Father"
+    ],
+    "objects": [
+     "car",
+     "sign"
+    ],
+    "seen": "a car stops outside; the father steps out and looks up at the sign",
+    "heard": "a car door",
+    "feeling": "the verdict begins",
+    "seconds_need": 4.5
+   },
+   {
+    "id": "m5",
+    "tier": "elaboration",
+    "kind": "pov",
+    "serves": [
+     "b1"
+    ],
+    "who": [
+     "Father"
+    ],
+    "objects": [
+     "sign"
+    ],
+    "seen": "the sign as the father sees it, glowing above the door",
+    "feeling": "what Kasun built",
+    "seconds_need": 2.5
+   },
+   {
+    "id": "m6",
+    "tier": "script",
+    "serves": [
+     "b2"
+    ],
+    "who": [
+     "Kasun",
+     "Father"
+    ],
+    "lines": [
+     "L2"
+    ],
+    "seen": "Kasun hearing the father's question",
+    "feeling": "pressure",
+    "seconds_need": 2.5
+   },
+   {
+    "id": "m7",
+    "tier": "script",
+    "serves": [
+     "b3"
+    ],
+    "who": [
+     "Kasun"
+    ],
+    "lines": [
+     "L3"
+    ],
+    "seen": "Kasun answers, standing straight",
+    "feeling": "standing his ground",
+    "seconds_need": 3.5
+   },
+   {
+    "id": "m8",
+    "tier": "script",
+    "serves": [
+     "b4"
+    ],
+    "who": [
+     "Father"
+    ],
+    "seen": "the father looks around the room, then at Kasun, and nods once",
+    "feeling": "the verdict",
+    "seconds_need": 4.5
+   },
+   {
+    "id": "m9",
+    "tier": "elaboration",
+    "kind": "hold",
+    "serves": [
+     "b4"
+    ],
+    "who": [
+     "Kasun"
+    ],
+    "seen": "Kasun lets out his breath; the smallest smile",
+    "heard": "the room exhales",
+    "feeling": "seen at last",
+    "seconds_need": 3.0
+   }
+  ],
+  "staging": {
+   "marks": [
+    {
+     "moment": "m1",
+     "who": "Kasun",
+     "zone": "by_the_door",
+     "facing": "window"
+    },
+    {
+     "moment": "m4",
+     "who": "Father",
+     "zone": "outside",
+     "facing": "sign"
+    },
+    {
+     "moment": "m6",
+     "who": "Father",
+     "zone": "doorway",
+     "facing": "Kasun"
+    },
+    {
+     "moment": "m6",
+     "who": "Kasun",
+     "zone": "by_the_door",
+     "facing": "Father"
+    }
+   ],
+   "moves": [
+    {
+     "moment": "m6",
+     "who": "Father",
+     "from_zone": "outside",
+     "to_zone": "doorway",
+     "why": "enter"
+    }
+   ]
+  },
+  "cards": [
+   {
+    "number": 1,
+    "moments": [
+     "m1",
+     "m2"
+    ],
+    "title": "Waiting",
+    "size": "WS",
+    "arrangement": "single",
+    "subject": "Kasun",
+    "angle": "eye",
+    "lens_feel": "wide",
+    "movement": "static",
+    "focus": {
+     "kind": "deep"
+    },
+    "composition": {
+     "negative_space": "the empty tables",
+     "frame_side": "left"
+    },
+    "axis": "A",
+    "beats": [
+     {
+      "window": [
+       0,
+       6
+      ],
+      "action": "he straightens his shirt by the door",
+      "performance": "nervous, still"
+     }
+    ],
+    "sound": {
+     "ambience": "the empty room's hum"
+    },
+    "cut_in": {
+     "link": "cut"
+    },
+    "purpose": "Everything he built, waiting to be judged",
+    "emotional_beat": "nerves",
+    "take_s": 6
+   },
+   {
+    "number": 2,
+    "moments": [
+     "m3",
+     "m4"
+    ],
+    "title": "The car stops",
+    "size": "MWS",
+    "arrangement": "single",
+    "subject": "Father",
+    "angle": "eye",
+    "lens_feel": "normal",
+    "movement": "static",
+    "focus": {
+     "kind": "shallow"
+    },
+    "composition": {
+     "foreground": "the window glass",
+     "frame_side": "right"
+    },
+    "eyeline": "left",
+    "axis": "A",
+    "beats": [
+     {
+      "window": [
+       0,
+       6
+      ],
+      "action": "a car stops; the father steps out and looks up",
+      "camera": "through the window, from inside"
+     }
+    ],
+    "sound": {
+     "effects": "a car door"
+    },
+    "cut_in": {
+     "link": "cut",
+     "motive": "sound"
+    },
+    "purpose": "The verdict begins",
+    "emotional_beat": "arrival",
+    "take_s": 6
+   },
+   {
+    "number": 3,
+    "moments": [
+     "m5"
+    ],
+    "title": "What he sees",
+    "size": "INSERT",
+    "arrangement": "pov",
+    "subject": "Father",
+    "angle": "low",
+    "lens_feel": "normal",
+    "movement": "static",
+    "focus": {
+     "kind": "shallow"
+    },
+    "beats": [
+     {
+      "window": [
+       0,
+       4
+      ],
+      "action": "the sign glows above the door",
+      "camera": "the father's view"
+     }
+    ],
+    "veo_notes": "the sign is a glowing shape with no readable name; the name can be added in post",
+    "cut_in": {
+     "link": "cut",
+     "motive": "look"
+    },
+    "purpose": "Pays off the sign",
+    "emotional_beat": "what he built",
+    "take_s": 4
+   },
+   {
+    "number": 4,
+    "moments": [
+     "m6"
+    ],
+    "title": "Is this yours",
+    "size": "MCU",
+    "arrangement": "single",
+    "subject": "Kasun",
+    "angle": "eye",
+    "lens_feel": "normal",
+    "movement": "static",
+    "focus": {
+     "kind": "shallow"
+    },
+    "composition": {
+     "frame_side": "left"
+    },
+    "eyeline": "right",
+    "axis": "A",
+    "beats": [
+     {
+      "window": [
+       0,
+       4
+      ],
+      "action": "he hears the question",
+      "performance": "his jaw sets"
+     }
+    ],
+    "lines": [
+     {
+      "line_id": "L2",
+      "on_speaker": false,
+      "over_whom": "Kasun"
+     }
+    ],
+    "cut_in": {
+     "link": "cut",
+     "motive": "line"
+    },
+    "purpose": "The question lands on Kasun",
+    "emotional_beat": "pressure",
+    "take_s": 4
+   },
+   {
+    "number": 5,
+    "moments": [
+     "m7"
+    ],
+    "title": "I was waiting",
+    "size": "CU",
+    "arrangement": "single",
+    "subject": "Kasun",
+    "angle": "eye",
+    "lens_feel": "long",
+    "movement": "static",
+    "focus": {
+     "kind": "shallow"
+    },
+    "composition": {
+     "frame_side": "left"
+    },
+    "eyeline": "right",
+    "axis": "A",
+    "beats": [
+     {
+      "window": [
+       0,
+       6
+      ],
+      "action": "he answers",
+      "performance": "steady, standing straight"
+     }
+    ],
+    "lines": [
+     {
+      "line_id": "L3",
+      "on_speaker": true
+     }
+    ],
+    "cut_in": {
+     "link": "cut",
+     "motive": "line"
+    },
+    "purpose": "Standing his ground",
+    "emotional_beat": "resolve",
+    "take_s": 6
+   },
+   {
+    "number": 6,
+    "moments": [
+     "m8"
+    ],
+    "title": "The nod",
+    "size": "MS",
+    "arrangement": "ots",
+    "subject": "Father",
+    "angle": "eye",
+    "lens_feel": "normal",
+    "movement": "static",
+    "focus": {
+     "kind": "shallow"
+    },
+    "composition": {
+     "foreground": "Kasun's shoulder",
+     "frame_side": "right"
+    },
+    "eyeline": "left",
+    "axis": "A",
+    "beats": [
+     {
+      "window": [
+       0,
+       4
+      ],
+      "action": "he looks around the room",
+      "performance": "unhurried"
+     },
+     {
+      "window": [
+       4,
+       6
+      ],
+      "action": "he looks at Kasun and nods once"
+     }
+    ],
+    "cut_in": {
+     "link": "cut",
+     "motive": "look"
+    },
+    "purpose": "The verdict",
+    "emotional_beat": "respect",
+    "take_s": 6
+   },
+   {
+    "number": 7,
+    "moments": [
+     "m9"
+    ],
+    "title": "Seen at last",
+    "size": "CU",
+    "arrangement": "single",
+    "subject": "Kasun",
+    "angle": "eye",
+    "lens_feel": "long",
+    "movement": "static",
+    "focus": {
+     "kind": "shallow"
+    },
+    "composition": {
+     "frame_side": "left"
+    },
+    "eyeline": "right",
+    "axis": "A",
+    "beats": [
+     {
+      "window": [
+       0,
+       4
+      ],
+      "action": "he lets out his breath",
+      "performance": "the smallest smile"
+     }
+    ],
+    "sound": {
+     "silence": true,
+     "ambience": "the room exhales"
+    },
+    "cut_in": {
+     "link": "cut",
+     "motive": "look"
+    },
+    "rhythm_break": true,
+    "purpose": "The release",
+    "emotional_beat": "relief",
+    "take_s": 4
+   }
+  ],
+  "sound_map": {
+   "sections": [
+    {
+     "blocks": [
+      0
+     ],
+     "ambience": "the empty room's hum",
+     "state": "hum"
+    },
+    {
+     "blocks": [
+      1
+     ],
+     "ambience": "a car outside",
+     "state": "car outside"
+    },
+    {
+     "blocks": [
+      2,
+      3
+     ],
+     "ambience": "the room holding its breath",
+     "state": "held breath"
+    },
+    {
+     "blocks": [
+      4
+     ],
+     "ambience": "the room exhales",
+     "state": "exhale"
+    }
+   ],
+   "subjective": [
+    {
+     "moment": "m8",
+     "kind": "narrowing",
+     "description": "the room holds its breath until the nod"
+    }
+   ],
+   "silences": [
+    "m9"
+   ],
+   "pre_laps": [],
+   "music": []
+  }
+ }
+}

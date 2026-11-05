@@ -171,6 +171,15 @@ class KeyMoment(_Model):
     why: str = ""
 
 
+class Question(_Model):
+    """Something the script leaves open that changes what is filmed ("Does Anudi take her phone when she leaves?").
+    Shown to a person, never answered by a model: an answer becomes a director's note the next plan reads."""
+
+    question: str
+    blocks: list[int] = []  # the blocks it concerns
+    source: Literal["dramaturg", "continuity"] = "dramaturg"
+
+
 class SceneAnalysis(_Model):
     about: str
     dramatic_question: str = ""
@@ -186,6 +195,7 @@ class SceneAnalysis(_Model):
     break_: BreakAt = Field(BreakAt(), alias="break")
     aftermath: Aftermath = Aftermath()
     key_moment: KeyMoment
+    questions: list[Question] = []  # what the script leaves open (plan/2026-11-04c F7)
 
 
 # ── ② the treatment ──────────────────────────────────────────────────────────────────────────────

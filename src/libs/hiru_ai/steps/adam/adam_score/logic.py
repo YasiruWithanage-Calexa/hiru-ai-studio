@@ -1,11 +1,16 @@
 """The craft score (plan/2026-11-04b §6.2): code rewards craft, so a dull plan with no defects cannot beat a vivid one.
 
-`script_split`'s kernel score counts problems. This one counts what a director would be proud of: twelve signals, each
+`script_split`'s kernel score counts problems. This one counts what a director would be proud of: fourteen signals, each
 a list of small checks that name the card they are about. A fidelity break or an overrun is a LOSS before any of it
-counts. Weights start equal (tuned on the gold set in Phase 10). Model critics write notes for a person; this decides
-which version is kept (Chakrabarty et al.: model judges do not agree with experts on creativity).
+counts. Weights start equal, apart from `coverage` (tuned on the gold set in Phase 10). Model critics write notes for a
+person; this decides which version is kept (Chakrabarty et al.: model judges do not agree with experts on creativity).
 
 The score explains itself: every check says whether it earned its points, which card it concerns and why.
+
+Plan/2026-11-04c made the yardstick able to see what a bare plan lacks: every signal scores the SHARE of what it needs,
+`coverage` asks for the faces the analysis says must be seen (`adam_coverage`), `one_job_per_card` for a card that stays
+on one face, and the required cells also GATE the percent (a plan missing a face cannot read as 100 %). The rank adds
+the cells a plan LOSES to the other candidate, so a revision cannot win by deleting what the scene needs.
 """
 from __future__ import annotations
 
@@ -27,9 +32,10 @@ from contracts.adam.plan import (
 
 SIGNALS: tuple[str, ...] = (
     "turn_seen", "baseline_shown", "pov_kept", "size_arc_kept", "one_rhythm_break", "plant_paid_off",
-    "line_placement", "variety", "motivated_cuts", "ending", "sound", "feasibility",
+    "line_placement", "variety", "motivated_cuts", "ending", "sound", "feasibility", "coverage", "one_job_per_card",
 )
-DEFAULT_WEIGHTS: dict[str, float] = dict.fromkeys(SIGNALS, 1.0)
+DEFAULT_WEIGHTS: dict[str, float] = {**dict.fromkeys(SIGNALS, 1.0), "coverage": 3.0}  # it carries what the rest miss
+LINKING_MOVES = ("pan", "track", "reveal", "crane")  # a camera move that carries the frame from one face to another
 SIZE_TOLERANCE = 1  # "shot sizes follow the treatment's arc (tolerance of one step)"
 OWNED = 0.5  # the POV owner's shots must be at least this share of their stretch
 WIDE_AUTHORITY = ("two", "group")  # arrangements that put several people in one frame
@@ -45,8 +51,10 @@ class Check:
 class Ctx:
     """The plan, indexed once for every signal."""
 
-    def __init__(self, scene: SceneScript, plan: AdamPlan, feasibility: dict[str, Any]) -> None:
+    def __init__(self, scene: SceneScript, plan: AdamPlan, feasibility: dict[str, Any],
+                 coverage: dict[str, Any] | None = None) -> None:
         self.scene, self.plan, self.feasibility = scene, plan, feasibility
+        self.coverage = coverage or {}
         self.by_id: dict[str, Moment] = {m.id: m for m in plan.moments}
         self.cards = plan.cards
         self.card_of: dict[str, ShotCard] = {mid: c for c in plan.cards for mid in c.moments}
@@ -85,15 +93,21 @@ def turn_seen(c: Ctx) -> list[Check] | None:
 
 
 def baseline_shown(c: Ctx) -> list[Check] | None:
+    """Each block of the state before the break has a moment of its own (a baseline moment, or a card that is only about
+    the baseline): one check per block, so one baseline card does not earn it for a scene with two."""
     base = set(c.plan.analysis.baseline.blocks)
     if not base:
         return None
-    own = [card for card in c.cards if c.blocks(card) and c.blocks(card) <= base]
-    added = [card for card in c.cards if any(c.by_id[m].kind == "baseline" for m in card.moments if m in c.by_id)]
-    hit = (added or own)
-    return [Check(hit[0].number if hit else None, bool(hit),
-                  "the state before the break has a moment of its own" if hit else
-                  "the state before the break never gets a moment of its own")]
+    out = []
+    for block in sorted(base):
+        added = [card for card in c.cards if any((m := c.by_id.get(i)) and m.kind == "baseline" and block in m.blocks
+                                                 for i in card.moments)]
+        own = [card for card in c.cards if block in c.blocks(card) and c.blocks(card) <= base]
+        hit = added or own
+        out.append(Check(hit[0].number if hit else None, bool(hit),
+                         f"the state before the break (block {block}) has a moment of its own" if hit else
+                         f"the state before the break (block {block}) never gets a moment of its own"))
+    return out
 
 
 def pov_kept(c: Ctx) -> list[Check] | None:
@@ -126,8 +140,16 @@ def pov_kept(c: Ctx) -> list[Check] | None:
 def size_arc_kept(c: Ctx) -> list[Check] | None:
     sections = c.plan.treatment.sections
     bands = {i: sorted(SIZE_RANK[s] for s in sec.size_band if s in SIZE_RANK) for i, sec in enumerate(sections)}
+    arc = sorted(SIZE_RANK[s] for s in c.plan.treatment.size_arc if s in SIZE_RANK)
+    used = sorted(SIZE_RANK[card.size] for card in c.cards if card.size in SIZE_RANK)
+    reach: list[Check] = []
+    if len(set(arc)) > 1 and used:  # the cards travel the arc: they get as wide and as close as the treatment says
+        for label, want, got in (("widest", arc[0], used[0]), ("closest", arc[-1], used[-1])):
+            ok = abs(want - got) <= SIZE_TOLERANCE
+            reach.append(Check(None, ok, f"the {label} card reaches the treatment's {label} size (arc)" if ok else
+                               f"the {label} card is more than one step from the treatment's {label} size (arc)"))
     if not any(len(b) == 2 for b in bands.values()):
-        return None
+        return reach or None
     beat_of = {b: i for i, beat in enumerate(c.plan.analysis.beats) for b in beat.blocks}
     section_of = {beat: i for i, sec in enumerate(sections) for beat in sec.beats}
     out = []
@@ -142,7 +164,7 @@ def size_arc_kept(c: Ctx) -> list[Check] | None:
         ok = lo - SIZE_TOLERANCE <= SIZE_RANK[card.size] <= hi + SIZE_TOLERANCE
         out.append(Check(card.number, ok, f"{card.size} against the treatment's band for section {sec + 1}"
                          + ("" if ok else " (more than one step outside it)")))
-    return out or None
+    return [*out, *reach] or None
 
 
 def one_rhythm_break(c: Ctx) -> list[Check] | None:
@@ -181,32 +203,39 @@ def plant_paid_off(c: Ctx) -> list[Check] | None:
                   f"the {plant.object} plant moment is in no card")]
 
 
+def hears(c: Ctx, cl: Any) -> bool:
+    """A line off its speaker plays over a LISTENER: a person present who is not the one speaking."""
+    who = norm(cl.over_whom)
+    return bool(who in c.cast and who != c.speaker.get(cl.line_id, ""))
+
+
 def line_placement(c: Ctx) -> list[Check] | None:
+    """Never over an object, over nobody or over the speaker's own face or hands (plan/2026-11-04c F6)."""
     off = [(card, cl) for card in c.cards for cl in card.lines if not cl.on_speaker]
     if not (c.plan.treatment.off_speaker or off):
         return None
     out: list[Check] = []
     if c.plan.treatment.off_speaker:
-        present = [(card, cl) for card, cl in off if c.speaker.get(cl.line_id) in c.cast]
-        out.append(Check(present[0][0].number if present else None, bool(present),
-                         "a line plays over the face that hears it" if present else
+        heard = [(card, cl) for card, cl in off if hears(c, cl)]
+        out.append(Check(heard[0][0].number if heard else None, bool(heard),
+                         "a line plays over the face that hears it" if heard else
                          "the treatment asks for a line over a listener and none is"))
     for card, cl in off:
-        who = c.speaker.get(cl.line_id, "")
-        if who not in c.cast:
-            continue  # a voice that is never in the scene (the phone, a narrator): nothing to lip-sync
-        shows_speaker = norm(cl.over_whom) == who or (c.subject(card) == who and card.arrangement == "single")
-        out.append(Check(card.number, not shows_speaker,
-                         f"line {cl.line_id} plays over {cl.over_whom or 'another face'}, not its speaker" if not
-                         shows_speaker else f"line {cl.line_id} is off its speaker but the speaker's mouth is in frame "
-                                            "(lip sync would show)"))
+        ok = hears(c, cl)
+        own = norm(cl.over_whom) == c.speaker.get(cl.line_id, "")
+        out.append(Check(card.number, ok, f"line {cl.line_id} plays over {cl.over_whom}, who hears it" if ok else
+                         f"line {cl.line_id} is off its speaker but plays over {cl.over_whom or 'no one'}"
+                         + (", the speaker's own face" if own else ": it needs a person present who is not the "
+                            "speaker")))
     return out
 
 
 def variety(c: Ctx) -> list[Check] | None:
+    """Each card differs from the one before it. Counted per card (the first always passes), so a plan is not rewarded
+    for having fewer cards, which leaves fewer neighbours to repeat."""
     if len(c.cards) < 2:
         return None
-    out = []
+    out = [Check(c.cards[0].number, True, "the first card has nothing to repeat")]
     for a, b in zip(c.cards, c.cards[1:], strict=False):
         same = (a.size, a.angle, a.arrangement, c.subject(a)) == (b.size, b.angle, b.arrangement, c.subject(b))
         out.append(Check(b.number, not same, f"card {b.number} differs from card {a.number}" if not same else
@@ -259,17 +288,52 @@ def feasibility(c: Ctx) -> list[Check] | None:
             for f in bad]
 
 
+def coverage(c: Ctx) -> list[Check] | None:
+    """One check per required cell of the coverage grid (`adam_coverage`): the faces the analysis says must be seen."""
+    cells = c.coverage.get("cells") or []
+    if not cells:
+        return None
+    return [Check(cell.get("card"), bool(cell["ok"]), cell["why"] if cell["ok"] else f"missing: {cell['why']}")
+            for cell in cells]
+
+
+def one_job_per_card(c: Ctx) -> list[Check] | None:
+    """A card has one main job: a change of the face we are on, or of the beat, starts a new card, unless a move or a
+    rack carries the frame across (plan/2026-11-04c F6). Two things are looked for in a card of two moments or more: a
+    moment about someone other than the person the frame is on, and moments from two beats of the analysis (a plant
+    serves the block where it pays off, so it does not count towards the beats a card spans)."""
+    beat_of = {b: i for i, beat in enumerate(c.plan.analysis.beats) for b in beat.blocks}
+    out = []
+    for card in c.cards:
+        if len(card.moments) < 2:
+            continue
+        held = [m for ident in card.moments if (m := c.by_id.get(ident))]
+        on = c.subject(card)
+        away = [m.id for m in held if m.who and on and on not in {norm(w) for w in m.who}
+                and card.arrangement not in WIDE_AUTHORITY]
+        beats = {beat_of[b] for m in held if m.kind != "plant" for b in m.blocks if b in beat_of}
+        carried = card.focus.kind == "rack" or card.movement in LINKING_MOVES
+        ok = (not away and len(beats) < 2) or carried
+        why = (f"card {card.number} stays on one face and one beat" if ok else
+               f"card {card.number} is on {on} but {', '.join(away)} is about someone else" if away else
+               f"card {card.number} holds moments from {len(beats)} beats")
+        out.append(Check(card.number, ok, why if ok else why + ", with no move or rack between them: one job per "
+                                                              "card, so cut"))
+    return out or None
+
+
 FUNCS = {"turn_seen": turn_seen, "baseline_shown": baseline_shown, "pov_kept": pov_kept,
          "size_arc_kept": size_arc_kept, "one_rhythm_break": one_rhythm_break, "plant_paid_off": plant_paid_off,
          "line_placement": line_placement, "variety": variety, "motivated_cuts": motivated_cuts, "ending": ending,
-         "sound": sound, "feasibility": feasibility}
+         "sound": sound, "feasibility": feasibility, "coverage": coverage, "one_job_per_card": one_job_per_card}
 
 
 def score(scene: SceneScript, plan: AdamPlan, fidelity: dict[str, Any], fit: dict[str, Any],
-          feasibility_report: dict[str, Any], weights: dict[str, float] | None = None) -> dict[str, Any]:
+          feasibility_report: dict[str, Any], weights: dict[str, float] | None = None,
+          coverage_report: dict[str, Any] | None = None) -> dict[str, Any]:
     """The score of one plan, given the code reports that decide whether it loses before it is read for craft."""
     w = {**DEFAULT_WEIGHTS, **(weights or {})}
-    ctx = Ctx(scene, plan, feasibility_report)
+    ctx = Ctx(scene, plan, feasibility_report, coverage_report)
     signals, total, best = [], 0.0, 0.0
     for name in SIGNALS:
         checks = FUNCS[name](ctx)
@@ -286,11 +350,24 @@ def score(scene: SceneScript, plan: AdamPlan, fidelity: dict[str, Any], fit: dic
     breaks = int(fidelity.get("counts", {}).get("breaks", len(fidelity.get("breaks", []))))
     overruns = int(fit.get("overruns", 0))
     reasons = ([f"{breaks} fidelity break(s)"] if breaks else []) + ([f"{overruns} overrun(s)"] if overruns else [])
+    share = float((coverage_report or {}).get("coverage", 1.0))  # the share of required faces gates the percent
+    craft = 100 * total / best if best else 0.0
     return {"loss": bool(reasons), "loss_reasons": reasons, "fidelity_breaks": breaks, "overruns": overruns,
-            "score": round(total, 4), "max": round(best, 4), "percent": round(100 * total / best, 1) if best else 0.0,
-            "signals": signals}
+            "score": round(total, 4), "max": round(best, 4), "percent": round(craft * share, 1),
+            "craft_percent": round(craft, 1), "coverage": round(share, 4),
+            "filled": [x["id"] for x in (coverage_report or {}).get("cells", []) if x["ok"]], "signals": signals}
 
 
-def rank(result: dict[str, Any]) -> tuple[int, int, float]:
-    """Lower is better: fewer fidelity breaks, then fewer overruns, then more craft."""
-    return (int(result["fidelity_breaks"]), int(result["overruns"]), -float(result["score"]))
+def rank(result: dict[str, Any], lost: int = 0) -> tuple[int, int, int, float]:
+    """Lower is better: fewer fidelity breaks, then fewer required cells lost to the other candidate, then fewer
+    overruns, then more craft. A candidate that leaves empty a cell another candidate fills loses the way a break loses
+    (plan/2026-11-04c F4), so deleting what the scene needs is never the way to win. A break still comes first: craft
+    and coverage cannot rescue it."""
+    return (int(result["fidelity_breaks"]), lost, int(result["overruns"]), -float(result["score"]))
+
+
+def lost_cells(results: list[dict[str, Any]]) -> list[int]:
+    """For each result, how many required cells another result fills and this one leaves empty."""
+    filled = [set(r.get("filled") or []) for r in results]
+    return [len(set().union(*(f for j, f in enumerate(filled) if j != i)) - mine) if len(filled) > 1 else 0
+            for i, mine in enumerate(filled)]

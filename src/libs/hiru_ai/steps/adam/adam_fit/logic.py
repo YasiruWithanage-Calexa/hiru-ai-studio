@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from typing import Any
 
-from contracts.adam.plan import Moment, SceneScript, ShotCard
+from contracts.adam.plan import Moment, SceneScript, ShotCard, norm
 from contracts.shotplan import LEAD_IN_S, LINE_GAP_S, TAIL_S
 from contracts.timing import (
     over_budget,
@@ -31,12 +31,18 @@ WARNING = "warning"
 
 @dataclass(frozen=True)
 class Issue:
-    # line_overrun | word_budget | crowded | bad_length | use_over_take | use_too_short | trim_not_ready | envelope
+    # line_overrun | word_budget | crowded | bad_length | bad_listener | use_over_take | use_too_short | trim_not_ready
+    # | envelope
     code: str
     level: str  # overrun | warning
     message: str
     card: int | None = None
     line_id: str | None = None
+
+
+def _speakers(scene: SceneScript) -> dict[str, str]:
+    """line id → who says it."""
+    return {b.line_id: norm(b.speaker) for b in scene.lines if b.line_id}
 
 
 def _line_facts(scene: SceneScript) -> dict[str, tuple[int, str]]:
@@ -80,9 +86,17 @@ def check(scene: SceneScript, moments: list[Moment], cards: list[ShotCard], *,
           editorial: bool = False) -> dict[str, Any]:
     issues: list[Issue] = []
     rows: list[dict[str, Any]] = []
+    cast, speaker = {norm(c) for c in scene.cast}, _speakers(scene)
     for card in cards:
         clock = card_clock(scene, moments, card)
         need, take = float(clock["need_s"]), card.take_s
+        for cl in card.lines:  # an off-speaker line plays over a listener: a person present who is not the speaker
+            who = norm(cl.over_whom)
+            if not cl.on_speaker and (who not in cast or who == speaker.get(cl.line_id, "")):
+                issues.append(Issue("bad_listener", OVERRUN, f"line {cl.line_id} plays off its speaker over "
+                                    f"{cl.over_whom or 'no one'}: it must play over a person present who is not the "
+                                    "speaker, never over an object or the speaker's own face or hands", card.number,
+                                    cl.line_id))
         end_limit = take - TAIL_S
         if take not in VEO_DURATIONS:
             issues.append(Issue("bad_length", OVERRUN, f"a {take} s take cannot be rendered; Veo makes "

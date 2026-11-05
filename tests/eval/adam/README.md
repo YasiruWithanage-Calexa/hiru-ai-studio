@@ -25,6 +25,15 @@ and require it to out-score its baseline. They prove the masters are internally 
 a vivid plan from a flat one. They do NOT prove the masters are good: that is a Hiru director's judgement, which is
 what the status field records.
 
+## The score is held to the masters
+
+`tests/adam/test_score_mutations.py` breaks each master on purpose (`tests/adam/mutants.py`: the other person's moments
+removed, a bare plan, the break moved, a flat size arc, an own line over hands, the irony face cut, adjacent cards merged)
+and requires the score to drop by a point of 100 for each. `hiru-ai eval` prints the mutation score. A change to the
+score must keep it at 100 % of the mutants that are faults; what the score cannot see is named in `mutants.BLIND_SPOTS`
+(today: a bare `silent_morning`). `live/phone_call.json` is the saved plan of the third live run (2026-11-04), kept as the
+yardstick's worst case: its score must stay well below the master's.
+
 ## Remaining scene kinds to cover (§8.1)
 
 The test scene (a call that breaks a mood), an argument (`father_refuses`), a silent scene (`silent_morning`), a

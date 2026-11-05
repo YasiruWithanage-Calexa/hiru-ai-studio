@@ -11,7 +11,14 @@
     write     (the caller) adam_write
 
 A scene that cannot be planned raises `Failed` with a reason a person can read; nothing is half-written, and the classic
-planner is the way out (plan §5.5: Adam has no rules fallback worth having). Overruns are REPORTED, never trimmed.
+planner is the way out (plan §5.5: Adam has no rules fallback worth having). Overruns are REPORTED, never trimmed; a
+crowded card is first repaired by `adam_split` (plan/2026-11-04c F4), so a plan enters screening with no overrun that
+code could mend.
+
+Nothing is lost without a record (plan/2026-11-04c F1): every moment the writer made ends as kept, dropped by fidelity,
+removed by a person or removed by a revision for a note, and `adam_ledger` fails the scene when one is in no bucket.
+`report.history` keeps the first plan, the cards sent back, the critics' notes, what the revision did and why, and which
+version was kept, so a person can see what screening changed.
 
 Pure orchestration over the agents and steps by id: no database here. The caller (graph.py) reads the rows and
 writes them.
@@ -125,12 +132,25 @@ def _dump(value: Any) -> Any:
     return value.model_dump(mode="json", by_alias=True)
 
 
-def _refusals(fidelity: dict[str, Any], fit: dict[str, Any] | None = None) -> str:
+def _refusals(fidelity: dict[str, Any], fit: dict[str, Any] | None = None,
+              coverage: dict[str, Any] | None = None) -> str:
     rows = [f"[{b['code']}] {b['where']}: {b['reason']}" for b in fidelity.get("breaks") or []
             if b.get("fix") != "drop"]
     rows += [f"[{i['code']}] card {i.get('card') or '-'}: {i['message']}"
              for i in (fit or {}).get("issues") or [] if i.get("level") == "overrun"]
+    rows += [f"[coverage] {h['why']}: give it a card ({h['suggest']})" for h in (coverage or {}).get("holes") or []]
     return "\n".join(rows)
+
+
+def _glance(cards: list[ShotCard]) -> list[dict[str, Any]]:
+    """Cards as the history keeps them: compact, enough to see what changed."""
+    return [{"number": c.number, "moments": list(c.moments), "size": c.size, "arrangement": c.arrangement,
+             "subject": c.subject, "take_s": c.take_s} for c in cards]
+
+
+def _why_dropped(check: dict[str, Any], ident: str) -> str:
+    return next((str(b.get("reason")) for b in check.get("breaks") or [] if b.get("moment") == ident
+                 and b.get("reason")), "it invented story")
 
 
 def _forget(analysis: SceneAnalysis, treatment: Treatment, gone: set[str]) -> tuple[SceneAnalysis, Treatment]:
@@ -170,6 +190,9 @@ class Planner:
         self.log: list[str] = []
         self.report: dict[str, Any] = {}
         self.panel = parts.module("panel", "adam_screening", "graph")
+        self.events: list[dict[str, Any]] = []  # report.history.events: append-only within a job
+        self.first: dict[str, Any] = {}  # the plan as it entered screening, compact
+        self.trace: dict[str, Any] = {"created": [], "dropped_fidelity": [], "removed_by_person": []}
 
     def ask(self, agent_id: str, inp: dict[str, Any]) -> Any:
         try:
@@ -226,6 +249,7 @@ class Planner:
             out = self.ask("adam_moment_writer", {"scene": self.scene, "analysis": _dump(analysis),
                                                   "treatment": _dump(chosen), "notes": notes})
             moments = out.moment_list()
+            self.trace["created"] = [m.id for m in moments]
             bound_analysis, bound = out.bind(analysis, chosen)
             left = _step("adam_write").run({"moments": _dump(moments), "removed": _dump(self.removed)})
             moments, gone = [Moment.model_validate(m) for m in left["moments"]], left["dropped"]
@@ -237,6 +261,8 @@ class Planner:
             if attempt == 2:
                 raise Failed("The moments broke the script even after being sent back: " + notes.splitlines()[0])
         drop = set(check["dropped"]) | set(gone)
+        self.trace["dropped_fidelity"] = [{"id": i, "reason": _why_dropped(check, i)} for i in check["dropped"]]
+        self.trace["removed_by_person"] = sorted(gone)
         if check["dropped"]:
             self.log.append(f"{len(check['dropped'])} added moment(s) dropped: they invented story")
         self.report["moments"] = {"dropped": sorted(check["dropped"]), "removed_by_a_person": sorted(gone)}
@@ -251,32 +277,60 @@ class Planner:
         base = {"scene": self.scene, "analysis": _dump(analysis), "treatment": _dump(treatment),
                 "moments": _dump(moments)}
         staging = self.ask("adam_blocker", base).staging()
-        best: tuple[tuple[int, int], list[ShotCard]] | None = None
+        best: tuple[tuple[int, int, int], list[ShotCard]] | None = None
         notes = ""
         for _ in (1, 2):  # the second is the one retry, with the reasons
             cards = self.ask("adam_shot_designer", {**base, "staging": _dump(staging), "notes": notes,
-                                                    "devices": self.devices}).card_list()
+                                                    "devices": self.devices,
+                                                    "required": self.required(analysis, treatment)}).card_list()
             plan = {"analysis": _dump(analysis), "treatment": _dump(treatment), "moments": _dump(moments),
                     "staging": _dump(staging), "cards": _dump(cards)}
             fidelity = _step("adam_fidelity").run({"scene": self.scene, "plan": plan})
             fit = _step("adam_fit").run({"scene": self.scene, "plan": plan})
-            rank = (int(fidelity["counts"]["breaks"]), int(fit["overruns"]))
+            if not fidelity["counts"]["breaks"] and fit["overruns"]:
+                cards, fit = self.mend(treatment, moments, cards, fit)  # a crowded card is repaired in code first (F4)
+                plan["cards"] = _dump(cards)
+            seen = _step("adam_coverage").run({"scene": self.scene, "plan": plan})  # a hole is a send-back (F2)
+            rank = (int(fidelity["counts"]["breaks"]), int(fit["overruns"]), len(seen["holes"]))
             if best is None or rank < best[0]:
                 best = (rank, cards)
-            if rank == (0, 0):
+            if rank == (0, 0, 0):
                 break
-            notes = _refusals(fidelity, fit)
+            notes = _refusals(fidelity, fit, seen)
+            self.events.append({"stage": "design", "kind": "sent_back", "why": notes.splitlines(),
+                                "cards": _glance(cards)})
             self.log.append(f"the cards were sent back once: {notes.splitlines()[0]}")
         assert best is not None
-        (breaks, overruns), cards = best
+        (breaks, overruns, holes), cards = best
         if breaks:
             raise Failed("The cards broke the script even after being sent back (a line or a moment is missing or "
                          "out of order).")
         if overruns:
             self.log.append(f"{overruns} overrun(s) remain: reported, never trimmed")
+        if holes:
+            self.log.append(f"{holes} required face(s) are still not seen: reported, screening is asked to mend it")
         sound = self.ask("adam_sound_designer", {"scene": self.scene, "treatment": _dump(treatment),
                                                  "moments": _dump(moments), "cards": _dump(cards)})
         return staging, sound.apply(cards), sound.sound_map()
+
+    def required(self, analysis: SceneAnalysis, treatment: Treatment) -> list[str]:
+        """The faces the analysis says must be seen, in words: what the designer is told to meet (F2)."""
+        found = _step("adam_coverage").run({"scene": self.scene, "analysis": _dump(analysis),
+                                            "treatment": _dump(treatment)})
+        return [str(line) for line in found.get("required") or []]
+
+    def mend(self, treatment: Treatment, moments: list[Moment], cards: list[ShotCard], fit: dict[str, Any]
+             ) -> tuple[list[ShotCard], dict[str, Any]]:
+        """Split or lengthen a crowded card by code; -> (the cards, the fit report of them)."""
+        mended = _step("adam_split").run({"scene": self.scene, "moments": _dump(moments), "cards": _dump(cards),
+                                          "treatment": _dump(treatment)})
+        if not mended["changed"]:
+            return cards, fit
+        cards = [ShotCard.model_validate(c) for c in mended["cards"]]
+        self.events.append({"stage": "design", "kind": "split", "splits": mended["splits"], "cards": _glance(cards)})
+        self.log.append("a crowded card was repaired in code: " + "; ".join(
+            f"card {s['card']} {s['how']} ({' + '.join(str(t) for t in s['takes'])} s)" for s in mended["splits"]))
+        return cards, _step("adam_fit").run({"scene": self.scene, "moments": _dump(moments), "cards": _dump(cards)})
 
     # ⑥ screen and the report ───────────────────────────────────────────────────────────────────
 
@@ -294,20 +348,70 @@ class Planner:
             return plan, []
         winner = out["candidates"][out["winner"]]
         scores = {r["lens"]: r["score"] for r in out.get("results") or [] if r}
+        revision = (out["candidates"][1].get("report") or {}).get("revision") if len(out["candidates"]) > 1 else None
+        kept = "revision" if out["winner"] else "first"
         shown.update(ran=True, scores=scores, notes=list(out.get("notes") or []), revised=len(out["candidates"]) > 1,
-                     kept="revision" if out["winner"] else "first", error=out.get("error", ""),
-                     revision=(winner.get("report") or {}).get("revision") if out["winner"] else None)
+                     kept=kept, error=out.get("error", ""), revision=revision)
         self.report["screening"] = shown
-        if out["winner"]:
+        self.events += self.screened(kit, out, revision, kept)
+        if revision and revision.get("invalid"):
+            self.log.append("the revision did not stand (" + revision["invalid"][0] + "): the first plan is kept")
+        elif out["winner"]:
             self.log.append("the revision after screening scored better and was kept")
         return AdamPlan.model_validate(winner), list(out.get("notes") or [])
+
+    def screened(self, kit: PanelKit, out: dict[str, Any], revision: dict[str, Any] | None, kept: str
+                 ) -> list[dict[str, Any]]:
+        """What screening did, for the plan log: the notes, the revision (each operation, the note it answered, any
+        reason it did not stand) and how the two plans ranked."""
+        judge = parts.module("step", "adam_score", "logic")
+        events: list[dict[str, Any]] = [{"stage": "screening", "kind": "notes", "notes":
+                                         _step("adam_notes").run({"results": out.get("results") or []})["kept"]}]
+        if revision:
+            events.append({"stage": "screening", "kind": "revision", **{k: revision.get(k) for k in (
+                "ops", "ledger", "invalid", "splits", "unsplit", "dropped", "skipped")}})
+        evals = [self.panel.evaluate(kit, self.scene, c) for c in out["candidates"]]
+        lost = judge.lost_cells([e["score"] for e in evals])
+        rows = [{"which": "first" if i == 0 else "revision", "rank": list(judge.rank(e["score"], lost[i])),
+                 "percent": e["score"]["percent"], "coverage": e["score"].get("coverage"), "cards": len(c["cards"]),
+                 "moments": len(c["moments"]), "lost_cells": lost[i]}
+                for i, (e, c) in enumerate(zip(evals, out["candidates"], strict=True))]
+        events.append({"stage": "screening", "kind": "kept", "which": kept, "candidates": rows})
+        return events
+
+    def reconcile(self, plan: AdamPlan) -> dict[str, Any]:
+        """Every moment the writer made ends in exactly one bucket (F1); one with no record fails the scene."""
+        screening = self.report.get("screening") or {}
+        revision = screening.get("revision") if screening.get("kept") == "revision" else None
+        by_op = [{"id": o["target"], "op": f"operation {o['n']} ({o['op']})", "note_id": o.get("note_id") or ""}
+                 for o in (revision or {}).get("ops") or [] if o["op"] == "remove_moment" and o["applied"]]
+        from_revision = [{"id": i, "reason": "the revision invented story"}
+                         for i in (revision or {}).get("dropped") or []]
+        inputs = {"created": self.trace["created"], "final": [m.id for m in plan.moments],
+                  "dropped_fidelity": [*self.trace["dropped_fidelity"], *from_revision],
+                  "removed_by_person": self.trace["removed_by_person"], "removed_by_operation": by_op}
+        found = _step("adam_ledger").run(inputs)
+        self.report["ledger"] = {**found, "inputs": inputs}
+        if not found["ok"]:
+            raise Failed(f"Shot Planner Adam lost track of the plan ({found['problems'][0]}). Try again, or use the "
+                         "classic planner for this scene.")
+        return found
 
     def finish(self, plan: AdamPlan, *, analysis: SceneAnalysis, treatments: list[Treatment], index: int,
                chosen_by: str, previous: dict[str, Any], notes: list[str], job_id: str) -> Planned:
         kit = PanelKit(self.panel.ID, self.ctx)
         ev = self.panel.evaluate(kit, self.scene, _dump(plan))
         fit, score = ev["fit"], ev["score"]
+        self.reconcile(plan)
+        asked: list[dict[str, Any]] = [{"question": q.question, "blocks": q.blocks, "source": q.source}
+                                       for q in plan.analysis.questions]
+        asked += [{"question": q["question"], "blocks": q["blocks"], "source": "continuity"}
+                  for q in ev["continuity"].get("questions") or []
+                  if not any(q["object"] in str(a["question"]).lower() for a in asked)]
         self.report.update(
+            questions=asked,
+            coverage={k: ev["coverage"].get(k) for k in ("required", "filled", "coverage", "holes", "grid", "cells")},
+            history={"first": self.first, "events": self.events},
             fidelity={"ok": ev["fidelity"].get("ok"), "counts": ev["fidelity"].get("counts"),
                       "breaks": ev["fidelity"].get("breaks")},
             fit={"runtime_s": fit.get("runtime_s"), "envelope_s": fit.get("envelope_s"),
@@ -317,10 +421,15 @@ class Planner:
             feasibility={"unaddressed": ev["feasibility"].get("unaddressed"),
                          "flags": [f for f in ev["feasibility"].get("flags") or [] if not f.get("addressed")]},
             score={"percent": score.get("percent"), "score": score.get("score"), "max": score.get("max"),
+                   "craft_percent": score.get("craft_percent"), "coverage": score.get("coverage"),
                    "loss": score.get("loss"), "loss_reasons": score.get("loss_reasons"),
                    "signals": [{"signal": s["signal"], "applicable": s["applicable"], "weight": s["weight"],
                                 "points": s["points"]} for s in score.get("signals") or []]},
             log=self.log)
+        n = len(plan.cards) or 1  # density is measured, not targeted: ASL alone is the wrong single number (F6)
+        self.report["density"] = {"cards": len(plan.cards), "moments": len(plan.moments),
+                                  "moments_per_card": round(len(plan.moments) / n, 2),
+                                  "used_shot_length_s": round(float(fit.get("runtime_s") or 0) / n, 2)}
         chosen = plan.treatment
         others = [t for i, t in enumerate(treatments) if i != index]
         stored = StoredPlan(job_id=job_id, chosen=chosen.stance or treatments[index].stance, chosen_by=chosen_by,  # type: ignore[arg-type]
@@ -344,6 +453,7 @@ class Planner:
         plan = AdamPlan(analysis=analysis, treatment=bound, moments=moments, staging=staging, cards=cards,
                         sound_map=sound_map, report={"editorial": True} if self.editorial else {})
         notes: list[str] = []
+        self.first = {"cards": _glance(cards), "moments": [m.id for m in moments]}
         if self.screening:
             plan, notes = self.screen(plan)
         else:
@@ -360,6 +470,14 @@ class Planner:
         if found.tier == "script":
             raise Failed("A moment that presents the script cannot be removed.")
         self.removed = [*stored.removed, Removed.of(found)]
+        before = (stored.report.get("ledger") or {}).get("inputs") or {}
+        self.trace = {"created": list(before.get("created") or [m.id for m in stored.moments]),
+                      "dropped_fidelity": list(before.get("dropped_fidelity") or []),
+                      "removed_by_person": [*(before.get("removed_by_person") or []), moment_id]}
+        history = stored.report.get("history") or {}
+        self.first, self.events = dict(history.get("first") or {}), list(history.get("events") or [])
+        self.events.append({"stage": "person", "kind": "removed", "moment": moment_id, "what": found.kind,
+                            "cards": len(stored.cards)})
         moments, cards, numbers = drop_moments(stored.moments, stored.cards, {moment_id})
         analysis, treatment = _forget(stored.analysis, stored.treatment, {moment_id})
         sound = remap_sound(stored.sound_map, numbers, {m.id for m in moments})

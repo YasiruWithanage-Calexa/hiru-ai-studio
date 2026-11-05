@@ -42,6 +42,7 @@ _log = logging.getLogger(__name__)
 AGENT = Agent.PLANNER.value
 PLAN_WORKERS = 4
 TIME_BUDGET_S = 420.0  # of the 900 s deadline: a scene is about eleven model calls
+PLAN_WITH_TRIMS = True  # plan/2026-11-04c D3: plans carry their editorial trims whatever the final cut is set to
 Row = dict[str, Any]
 
 
@@ -64,7 +65,9 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
     started = time.monotonic()
     limit = TIME_BUDGET_S if budget_s is None else budget_s
     edit: Row = dict(payload.state.get("edit") or {})
-    editorial = ProductionSettings.model_validate(production.get("settings") or {}).final_cut_trim
+    # Plan/2026-11-04c D3: Adam plans with the editorial trims on (a 2 s reaction cut from a 4 s take costs 2 s), so a
+    # dense plan is not charged 4 s a cut. The final cut applies them only when the production's setting is on.
+    editorial = PLAN_WITH_TRIMS or ProductionSettings.model_validate(production.get("settings") or {}).final_cut_trim
 
     characters = split.characters(production_id)
     cards = {str(c["name"]): str(((c.get("current") or {}).get("card") or {}).get("summary") or "")

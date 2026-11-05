@@ -14,6 +14,8 @@ director_note: >
   meaning. The last image is Dasun and the empty space beside him.
 plan:
   analysis:
+    questions:
+    - { question: 'Does Anudi take her phone when she leaves?', blocks: [7, 9] }
     about: A daughter's freedom ends with one phone call.
     dramatic_question: Will she let him see what the call has cost her?
     value: { start: warmth, end: dread }

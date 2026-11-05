@@ -40,7 +40,8 @@ def test_a_good_answer_is_untouched():
 def test_a_note_on_a_card_the_plan_lacks_is_dropped_and_four_notes_are_kept_most_severe_first():
     c = case("phone_call")
     inp = Input.model_validate(c["input"])
-    note = lambda card, severity: {"card": card, "severity": severity, "note": f"card {card}"}  # noqa: E731
+    note = lambda card, severity: {"card": card, "severity": severity, "kind": "change", "cell": "",  # noqa: E731
+                                   "note": f"card {card}"}
     reply = {"score": 3, "notes": [note(1, "low"), note(99, "high"), note(2, "medium"), note(0, "high"),
                                    note(3, "low"), note(4, "low"), note(5, "medium")]}
     out = agent.finish(inp, Output.model_validate(reply))

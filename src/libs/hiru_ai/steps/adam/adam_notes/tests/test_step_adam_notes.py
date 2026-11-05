@@ -10,8 +10,8 @@ from hiru_ai.steps.adam.adam_notes import step
 HERE = Path(__file__).resolve().parents[1]
 
 
-def note(card: int, severity: str, text: str) -> dict[str, Any]:
-    return {"card": card, "severity": severity, "note": text}
+def note(card: int, severity: str, text: str, kind: str = "change", cell: str = "") -> dict[str, Any]:
+    return {"card": card, "severity": severity, "kind": kind, "cell": cell, "note": text}
 
 
 def answer(lens: str, score: int, *notes: dict[str, Any]) -> dict[str, Any]:
@@ -20,7 +20,8 @@ def answer(lens: str, score: int, *notes: dict[str, Any]) -> dict[str, Any]:
 
 def test_the_example_runs_alone():
     out = step.run(json.loads((HERE / "examples" / "basic.json").read_text(encoding="utf-8")))
-    assert out["notes"] == ["[audience, medium] card 2: Dasun's face is never in frame when the call turns."]
+    assert out["notes"] == ["n1 [audience, medium, add -> other:2:dasun] card 2: Dasun's face is never in frame when "
+                            "the call turns."]
     assert out["scores"] == {"audience": 3} and out["failed"] == 1
 
 
@@ -29,20 +30,27 @@ def test_notes_are_most_severe_first_and_a_lens_keeps_its_own_order_within_a_sev
         answer("audience", 3, note(1, "low", "a"), note(2, "high", "b")),
         answer("editor", 4, note(3, "high", "c"), note(4, "medium", "d"))]})
     assert [n["note"] for n in out["kept"]] == ["b", "c", "d", "a"]
-    assert out["notes"][0] == "[audience, high] card 2: b"
+    assert out["notes"][0] == "n1 [audience, high, change] card 2: b"
+    assert [n["id"] for n in out["kept"]] == ["n1", "n2", "n3", "n4"]  # the reviser answers a note by its id
 
 
 def test_a_repeated_note_on_a_card_is_kept_once_and_a_note_about_the_scene_says_so():
     out = step.run({"results": [
         answer("audience", 3, note(2, "high", "The turn is not seen on her face.")),
         answer("opportunity", 3, note(2, "high", "the turn is not seen on her face, add a CU"), note(0, "low", "x"))]})
-    assert len(out["kept"]) == 2 and out["notes"][-1] == "[opportunity, low] the scene: x"
+    assert len(out["kept"]) == 2 and out["notes"][-1] == "n2 [opportunity, low, change] the scene: x"
 
 
 def test_the_list_is_capped_and_says_how_many_were_left_out():
     many = [answer(f"l{n}", 3, *[note(n, "medium", f"note {n} {k}") for k in range(4)]) for n in range(1, 5)]
     out = step.run({"results": many})
     assert len(out["notes"]) == 8 and out["dropped"] == 8
+
+
+def test_an_add_note_names_the_cell_it_would_fill():
+    out = step.run({"results": [answer("audience", 3, note(2, "high", "Dasun is not seen", "add", "other:2:dasun"))]})
+    assert out["notes"] == ["n1 [audience, high, add -> other:2:dasun] card 2: Dasun is not seen"]
+    assert out["kept"][0]["cell"] == "other:2:dasun" and out["kept"][0]["kind"] == "add"
 
 
 def test_a_critic_that_failed_is_counted_and_the_rest_still_speak():

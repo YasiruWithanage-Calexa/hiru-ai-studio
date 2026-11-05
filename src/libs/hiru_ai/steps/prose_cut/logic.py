@@ -71,7 +71,7 @@ def sections(text: str) -> list[Section]:
     twice (a contents list, then the body) keeps the longer section."""
     lines = text.replace("\f", "\n").split("\n")
     heads = [(i, m) for i, ln in enumerate(lines) if not _END_MARK.match(ln) and (m := _HEAD.match(ln))]
-    if not heads:  # the legacy engine raised here (zip strict) for any text with no `Episode n` line (a plain bible)
+    if not heads:  # a plain bible or notes file has no `Episode n` line: no episodes, not an error
         return []
     found: dict[int, Section] = {}
     for (i, m), end in zip(heads, [i for i, _ in heads[1:]] + [len(lines)], strict=True):

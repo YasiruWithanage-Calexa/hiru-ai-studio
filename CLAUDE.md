@@ -43,7 +43,11 @@ words are the script's). Read `docs/adam/README.md` and `plan/2026-11-04b/IMPLEM
 for a person). Phases 0 to 10 are built offline: the agents take a wire shape from `contracts/adam/wire.py` and have no
 fallback; the system is `adam_shot_planner` (job `plan_scene_adam`, function `shot_planner_adam`); a production chooses it with
 `settings.shot_planner`. The live runs (`scripts/adam_live.py --yes`), the A/B and the default are a person's; the gold masters
-are drafts until a Hiru director approves them.
+are drafts until a Hiru director approves them. Plan/2026-11-04c made the system defend the scene
+(`plan/2026-11-04c/IMPLEMENTED.md`): a score held to the masters by mutation tests, `adam_coverage` (the faces the analysis
+says must be seen), `adam_split` (a crowded card is repaired, never deleted), `adam_ledger` (no moment leaves without a
+record), the reviser's dispositions (every note answered), and `report.history`. Phases 1 to 6 are built offline; the live
+verification (`scripts/adam_live.py --yes --runs 3`) is a person's.
 
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.

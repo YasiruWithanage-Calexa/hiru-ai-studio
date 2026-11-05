@@ -5,6 +5,9 @@ picture asks for or the time its lines take to say, whichever is longer, plus th
 it can group moments into 4, 6 or 8 second takes. What does not fit is REPORTED by `adam_fit` after this agent and
 never trimmed; a line is named by its id and its words are the script's. The answer is cleaned in code: a card that
 shows no moment is dropped. There is no fallback (plan §5.5).
+
+It is also told which faces must be seen, on which beats (`required`, from `adam_coverage`), the way it is told the Veo
+clock: a hole after design is a send-back with the hole named (plan/2026-11-04c F2).
 """
 from __future__ import annotations
 
@@ -38,6 +41,7 @@ def user_message(inp: Input) -> str:
             + f"<moments>\n{moments_text(inp.moments)}\n</moments>\n\n"
             + f"<staging>\n{compact(inp.staging)}\n</staging>\n\n"
             + f"<clock>\n{clock_text(inp.scene, inp.moments)}\n</clock>"
+            + (f"\n\n<required>\n{chr(10).join(inp.required)}\n</required>" if inp.required else "")
             + (f"\n\n<notes>\n{inp.notes}\n</notes>" if inp.notes else ""))
 
 

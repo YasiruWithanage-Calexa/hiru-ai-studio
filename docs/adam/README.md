@@ -28,7 +28,10 @@ Deleting those folders removes Adam; `hiru-ai remove --group adam` lists them an
 | `adam_fit` | step | Moments and cards on the Veo clock (4/6/8 s, 2.2 words/s). Reports overruns, the runtime against the envelope. Never trims a line. |
 | `adam_continuity` | step | The 180° line, eyelines and screen direction, a person in two places without a move, props that change hands unseen. |
 | `adam_feasibility` | step | What Veo renders badly (readable text, mirrors, fast hands, touching, crowds, a line across two takes) and the known fix. |
-| `adam_score` | step | The craft score: twelve signals, each naming the card it is about. A fidelity break or an overrun loses first. Picks the better of two plans. |
+| `adam_score` | step | The craft score: fourteen signals, each naming the card it is about (plan 2026-11-04c added `coverage`, weight 3, and `one_job_per_card`). A fidelity break, an overrun or a required face lost to the other plan loses first. The percent is the craft share times the coverage share. Picks the better of two plans. |
+| `adam_coverage` | step | The coverage grid (beats by people) and the faces the analysis says must be seen: the turn, the other person at it, the irony, each subtext, each person's stake. Holes are named. The designer is told them before it designs. |
+| `adam_split` | step | Repairs a crowded card in code: a longer take, or a split at a moment boundary; never a deletion, never a trimmed line. |
+| `adam_ledger` | step | Every moment the writer made ends as kept, dropped by fidelity, removed by a person or removed by an operation for a note; one that left with no record fails the scene. |
 | `adam_distinct` | step | The three treatments of a scene differ on purpose: every pair differs on at least two of size arc, point of view and sound concept, and in name and stance. |
 | `adam_film_grammar` | knowledge base | 16 principles, 40 devices, the house drama notes (draft) and the Veo notes. |
 | `adam_dramaturg` | agent, high | ① What the scene is about: the value that turns, beats, wants (verbs), whose scene it is, what the audience knows, baseline, break, key moment. |
@@ -70,6 +73,16 @@ dramaturg → director ×3 → adam_distinct → [choose] → moment writer → 
 | Phase 10 tools | `scripts/adam_live.py` (live runs; refuses without `--yes`), `scripts/adam_ab.py` (counts the blind A/B against the targets; suggests weights). |
 
 The interface side is `hiru-ai-studio-interface/src/features/adam/`.
+
+## Plan 2026-11-04c: the system defends the scene
+
+[plan/2026-11-04c](../../plan/2026-11-04c/PLAN.md) (status: [IMPLEMENTED.md](../../plan/2026-11-04c/IMPLEMENTED.md)) came from
+three live runs that passed every check and got worse. The yardstick could not see the other person's side, so it now
+can (`adam_coverage`) and is tested by mutation (`tests/adam/test_score_mutations.py`); a revision cannot win by deleting
+(`adam_split`, the rank counts the required faces it loses); nothing leaves the plan without a record (`adam_ledger`,
+`report.history`); the reviser answers every note (`dispositions`); the designer is told the faces it must give a card;
+the script's open questions go to a person (`questions`). The stored report gains `coverage`, `history`, `ledger`,
+`questions` and `density`.
 
 ## The rules that keep it apart
 

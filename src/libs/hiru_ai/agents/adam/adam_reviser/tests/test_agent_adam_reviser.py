@@ -29,7 +29,7 @@ def test_the_user_message_is_the_plan_then_the_notes_one_to_a_line():
     inp = Input.model_validate(case("phone_call")["input"])
     message = agent.user_message(inp)
     assert message.index("<cards>") < message.index("<report>") < message.index("<notes>")
-    assert message.rstrip().endswith("</notes>") and "1. [opportunity, low] card 1:" in message
+    assert message.rstrip().endswith("</notes>") and "1. n1 [opportunity, low, change] card 1:" in message
 
 
 def test_a_scripted_reply_applies_to_the_plan_without_changing_it():

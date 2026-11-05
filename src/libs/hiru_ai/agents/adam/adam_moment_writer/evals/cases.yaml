@@ -433,6 +433,9 @@
       break: {block: 4}
       aftermath: {state: left behind}
       key_moment: {block: 5, why: 'the silence after marriage, where her smile and her eyes disagree'}
+      questions:
+      - question: Does Anudi take her phone when she leaves?
+        blocks: [7, 9]
     treatment:
       name: intimate, then distant
       stance: intimate

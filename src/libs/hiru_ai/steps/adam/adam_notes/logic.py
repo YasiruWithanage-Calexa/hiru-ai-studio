@@ -42,8 +42,12 @@ def merge(results: list[dict[str, Any] | None]) -> dict[str, Any]:
         seen.add(key)
         kept.append((lens, note))
     shown = kept[:MAX_TOTAL]
-    return {"notes": [note_line(lens, n) for lens, n in shown], "scores": scores, "failed": failed,
-            "kept": [{"lens": lens, **n.model_dump()} for lens, n in shown], "dropped": len(kept) - len(shown)}
+    ids = [f"n{i}" for i in range(1, len(shown) + 1)]  # the reviser answers a note by its id (plan/2026-11-04c F5)
+    return {"notes": [note_line(lens, n, ident) for ident, (lens, n) in zip(ids, shown, strict=True)],
+            "scores": scores, "failed": failed,
+            "kept": [{"id": ident, "lens": lens, **n.model_dump()}
+                     for ident, (lens, n) in zip(ids, shown, strict=True)],
+            "dropped": len(kept) - len(shown)}
 
 
 def _lines(rows: list[str]) -> list[str]:
@@ -84,6 +88,17 @@ def report(reports: dict[str, dict[str, Any]]) -> dict[str, Any]:
                                              else f"{len(open_flags)} open flag(s)"))
     out += _lines([f"  [{f['code']}] card {f['card']} ({f['risk']}): {f['why']}; fix: {f['fix']}"
                    for f in open_flags])
+
+    cover = reports.get("coverage") or {}
+    if cover.get("cells"):
+        holes = cover.get("holes") or []
+        problems += len(holes)
+        out.append(f"Coverage: {cover['filled']} of {cover['required']} faces the scene needs are seen"
+                   + ("." if not holes else f"; {len(holes)} missing."))
+        out += _lines([f"  [{h['kind']}] {h['why']} (try: {h['suggest']})" for h in holes])
+        kept = [f"{c['id']} (card {c['card']})" for c in cover["cells"] if c["ok"]]
+        if kept:
+            out.append("  Never remove a moment that fills one of these: " + ", ".join(kept))
 
     if score:
         out.append(f"Craft score: {score.get('percent', 0):g}% of {score.get('max', 0):g} points.")

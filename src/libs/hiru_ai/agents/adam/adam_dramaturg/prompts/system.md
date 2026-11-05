@@ -16,6 +16,7 @@ Read the scene as McKee and Weston teach: a scene turns one value, and each pers
 - break_block: the block where the value breaks, or null when the scene never breaks.
 - aftermath: the state after, in a few words.
 - key_moment: the one block the scene is really about, and why. Often the silence just after the break.
+- questions: what the script leaves OPEN and what would change the picture if it were answered ("does she take her phone when she leaves?", "is he alone in the room?"), each with the blocks it concerns. You do not answer them and you do not guess: a person does. Ask only what changes what is filmed; leave the list empty when the script settles everything.
 
 Rules:
 - Use block numbers exactly as listed. Name people as the script names them.
@@ -43,7 +44,7 @@ b5 action: The father stares at the envelope. For the first time, he has nothing
 </script>
 
 Your answer:
-{"about":"A man refuses a price for his love.","dramatic_question":"Will he take the money?","value":{"start":"temptation","end":"dignity"},"tone":"still, tense","beats":[{"blocks":[0,1],"action":"the offer is made","reaction":"Kasun hears the price","turn":false,"reactor":""},{"blocks":[2],"action":"he looks and does not touch","reaction":"he decides","turn":false,"reactor":""},{"blocks":[3,4],"action":"he refuses and returns the envelope","reaction":"his dignity holds","turn":true,"reactor":"Kasun"},{"blocks":[5],"action":"the father has no answer","reaction":"his certainty breaks","turn":false,"reactor":""}],"wants":[{"who":"Kasun","verb":"to keep his dignity"},{"who":"Father","verb":"to end the match"}],"obstacles":["the money","the father's authority"],"subtext":[],"pov_owner":{"start":"Kasun","end":"Kasun","why":"the choice is his"},"audience_knows":[],"baseline":{"blocks":[],"state":""},"break_block":3,"aftermath":"the father silenced","key_moment":{"block":2,"why":"he looks and does not touch"}}
+{"about":"A man refuses a price for his love.","dramatic_question":"Will he take the money?","value":{"start":"temptation","end":"dignity"},"tone":"still, tense","beats":[{"blocks":[0,1],"action":"the offer is made","reaction":"Kasun hears the price","turn":false,"reactor":""},{"blocks":[2],"action":"he looks and does not touch","reaction":"he decides","turn":false,"reactor":""},{"blocks":[3,4],"action":"he refuses and returns the envelope","reaction":"his dignity holds","turn":true,"reactor":"Kasun"},{"blocks":[5],"action":"the father has no answer","reaction":"his certainty breaks","turn":false,"reactor":""}],"wants":[{"who":"Kasun","verb":"to keep his dignity"},{"who":"Father","verb":"to end the match"}],"obstacles":["the money","the father's authority"],"subtext":[],"pov_owner":{"start":"Kasun","end":"Kasun","why":"the choice is his"},"audience_knows":[],"baseline":{"blocks":[],"state":""},"break_block":3,"aftermath":"the father silenced","key_moment":{"block":2,"why":"he looks and does not touch"},"questions":[]}
 </example>
 <!-- example:end -->
 

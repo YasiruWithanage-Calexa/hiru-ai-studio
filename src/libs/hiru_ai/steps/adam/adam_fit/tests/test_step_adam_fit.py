@@ -96,6 +96,30 @@ def test_the_scene_is_never_squeezed_to_fit_its_envelope():
     assert out["ok"] and out["runtime_s"] == 4  # reported, not repaired
 
 
+def two_people() -> dict[str, Any]:
+    return {"cast": ["A", "B"], "blocks": [{"index": 0, "kind": "dialogue", "speaker": "A", "line_id": "L1",
+                                            "text": FIVE}]}
+
+
+def test_an_off_speaker_line_must_play_over_a_listener_who_is_not_the_speaker():
+    """Plan 2026-11-04c F6: "I'll come" over her own hands is refused; over the person who hears it is fine."""
+    over = lambda who: [card(4, lines=[{"line_id": "L1", "on_speaker": False, "over_whom": who}])]  # noqa: E731
+    for who in ("A", "", "the phone"):  # the speaker's own face, no one, an object
+        out = run(two_people(), [moment()], over(who))
+        bad = [i for i in out["issues"] if i["code"] == "bad_listener"]
+        assert len(bad) == 1 and bad[0]["level"] == "overrun" and bad[0]["card"] == 1 and not out["ok"]
+    assert run(two_people(), [moment()], over("B"))["ok"]
+    on_speaker = [card(4, lines=[{"line_id": "L1", "on_speaker": True}])]
+    assert "bad_listener" not in issue_codes(run(two_people(), [moment()], on_speaker))
+
+
+def test_with_trims_on_a_two_second_reaction_from_a_four_second_take_counts_two_seconds():
+    reaction = card(4, beats=[{"window": [0, 2], "action": "he reads her face"}], use_s=2.0, lines=[])
+    out = run(two_people(), [{**moment(), "lines": [], "seconds_need": 2.0}], [reaction], editorial=True)
+    assert out["ok"] and out["runtime_s"] == 2.0 and out["cards"][0]["use_s"] == 2.0
+    assert run(two_people(), [{**moment(), "lines": [], "seconds_need": 2.0}], [reaction])["runtime_s"] == 4
+
+
 def test_a_malformed_plan_is_reported_not_raised():
     out = step.run({"scene": scene(), "moments": [{"id": "m1"}], "cards": []})
     assert not out["ok"] and out["issues"][0]["code"] == "malformed"

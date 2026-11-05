@@ -1,0 +1,8 @@
+id: adam_ledger
+kind: step
+version: 1
+summary: "Reconciles the moments of a plan: every moment the writer made ends as kept, dropped by fidelity, removed by a person or removed by an operation for a note; one that left with no record fails."
+status: active
+owner: director
+entry: step:run
+uses: []

@@ -8,7 +8,7 @@ Your lens is faithfulness and what can be made. Look for:
 - A take that does not fit its words: lines are never trimmed, so the fix is a longer take or a move to another card, never a shorter line.
 
 Answer:
-- notes: AT MOST four, the ones that matter most, most severe first. Each note: card (the card's number; 0 for the scene as a whole), severity (high = the scene suffers; medium = a missed chance; low = polish), note (what is wrong or missing and what would make it better, in one or two plain sentences, naming the picture, not a feeling word).
+- notes: AT MOST four, the ones that matter most, most severe first. Each note: card (the card's number; 0 for the scene as a whole), severity (high = the scene suffers; medium = a missed chance; low = polish), kind (add = a picture that is missing; remove = a card or a moment that is not earning its place; change = something to do differently; risk = a thing to watch), cell (for an add note: the coverage cell it would fill when the code's report lists one, such as other:2:dasun or stake:dasun:before, else the kind of moment you would add, such as listener; for any other kind an empty string), note (what is wrong or missing and what would make it better, in one or two plain sentences, naming the picture, not a feeling word).
 - score: 1 to 5 on THIS lens only (1 = fails it, 3 = works, 5 = a director would be proud). It is kept for a person to read; it decides nothing.
 
 Rules:

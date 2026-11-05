@@ -46,8 +46,16 @@ def moment_op(op: str, moment: Moment | None = None, **extra: Any) -> dict[str, 
     return {"op": op, "why": "a note", "number": 0, "after": "", "id": "", "card": None, "moment": wire, **extra}
 
 
-def revision(*ops: dict[str, Any]) -> sc.RevisionWire:
-    return sc.RevisionWire.model_validate({"operations": list(ops)})
+def revision(*ops: dict[str, Any], answers: tuple[dict[str, Any], ...] = ()) -> sc.RevisionWire:
+    return sc.RevisionWire.model_validate({"operations": list(ops), "dispositions": list(answers)})
+
+
+def done(note_id: str, *operations: int) -> dict[str, Any]:
+    return {"note_id": note_id, "done": list(operations), "declined": ""}
+
+
+def declined(note_id: str, why: str) -> dict[str, Any]:
+    return {"note_id": note_id, "done": [], "declined": why}
 
 
 # ── the reviser's operations ─────────────────────────────────────────────────────────────────────
@@ -129,7 +137,7 @@ def test_the_sound_map_follows_the_cards_to_their_new_numbers_and_loses_what_is_
 
 def test_a_critic_answer_is_cleaned_to_four_notes_most_severe_first_and_cards_that_exist():
     def n(card: int, severity: str) -> dict[str, Any]:
-        return {"card": card, "severity": severity, "note": f"card {card}"}
+        return {"card": card, "severity": severity, "kind": "change", "cell": "", "note": f"card {card}"}
 
     wire = sc.CriticWire.model_validate({"score": 3, "notes": [
         n(1, "low"), n(9, "high"), n(2, "medium"), n(0, "high"), n(3, "low"), {**n(4, "high"), "note": "  "},
@@ -154,7 +162,8 @@ def route(messages: list[Any]) -> str:
 
 
 def critic_reply(score: int = 2) -> dict[str, Any]:
-    return {"score": score, "notes": [{"card": 5, "severity": "high", "note": "The cut has no reason."}]}
+    return {"score": score, "notes": [{"card": 5, "severity": "high", "kind": "change", "cell": "",
+                                       "note": "The cut has no reason."}]}
 
 
 def run_panel(candidate: AdamPlan, replies: dict[str, list[Any]]) -> dict[str, Any]:
@@ -181,20 +190,23 @@ def test_the_panel_has_four_lenses_the_reviser_and_the_craft_score_as_judge():
 
 def test_a_revision_that_restores_the_cuts_beats_the_first_plan_and_the_scores_are_kept_for_a_person():
     p, good = flawed(), master()
-    fixes = revision(*[card_op("replace_card", n, good.cards[n - 1]) for n in (5, 6, 7)]).model_dump(mode="json")
+    fixes = revision(*[card_op("replace_card", n, good.cards[n - 1]) for n in (5, 6, 7)],
+                     answers=(done("n1", 1, 2, 3),)).model_dump(mode="json")
     out = run_panel(p, all_critics(reviser=[fixes]))
     assert len(out["candidates"]) == 2 and out["winner"] == 1
     assert rank_of(out["candidates"][1]) < rank_of(out["candidates"][0])
     assert [r["lens"] for r in out["results"]] == ["audience", "editor", "opportunity", "fidelity"]
     assert {r["lens"]: r["score"] for r in out["results"]} == dict.fromkeys(("audience", "editor", "opportunity",
                                                                               "fidelity"), 2)
-    assert out["notes"] and out["notes"][0].startswith("[audience, high] card 5")
-    assert out["candidates"][1]["report"]["revision"] == {"operations": 3, "skipped": [], "dropped": []}
+    assert out["notes"] and out["notes"][0].startswith("n1 [audience, high, change] card 5")
+    record = out["candidates"][1]["report"]["revision"]
+    assert (record["operations"], record["skipped"], record["dropped"], record["invalid"]) == (3, [], [], [])
+    assert [o["note_id"] for o in record["ops"]] == ["n1", "n1", "n1"] and record["ledger"][0]["answered"]
 
 
 def test_the_fidelity_critic_alone_is_given_the_code_report():
     p = flawed()
-    model = RoutedChatModel(routes=all_critics(reviser=[{"operations": []}]), choose=route)
+    model = RoutedChatModel(routes=all_critics(reviser=[{"operations": [], "dispositions": []}]), choose=route)
     with llm.use_models(model):
         graph.build(RunContext()).invoke({"brief": {"scene": gold.scene(NAME)}, "candidates": [plan_dict(p)],
                                           "lenses": graph.lenses(PanelKit(graph.ID))})
@@ -207,7 +219,8 @@ def test_a_revision_that_invents_a_person_is_dropped_before_it_is_scored_so_it_c
     waiter = Moment(id="m90", tier="elaboration", kind="reaction", serves=["m1"], who=["Waiter"],
                     seen="a waiter looks up")
     card = p.cards[0].model_copy(update={"moments": ["m90"], "title": "The waiter"})
-    ops = revision(moment_op("add_moment", waiter, after="m1"), card_op("insert_card", 1, card))
+    ops = revision(moment_op("add_moment", waiter, after="m1"), card_op("insert_card", 1, card),
+                   answers=(done("n1", 1, 2),))
     out = run_panel(p, all_critics(reviser=[ops.model_dump(mode="json")]))
     revised = out["candidates"][1]
     assert revised["report"]["revision"]["dropped"] == ["m90"]
@@ -217,7 +230,7 @@ def test_a_revision_that_invents_a_person_is_dropped_before_it_is_scored_so_it_c
 
 def test_a_revision_that_makes_the_plan_worse_loses_and_the_first_plan_stands():
     p = master()
-    ops = revision(card_op("remove_card", len(p.cards)))  # the ending image goes
+    ops = revision(card_op("remove_card", len(p.cards)), answers=(done("n1", 1),))  # the ending image goes
     out = run_panel(p, all_critics(reviser=[ops.model_dump(mode="json")]))
     assert len(out["candidates"]) == 2 and out["winner"] == 0
 
@@ -226,8 +239,8 @@ def test_a_revision_that_breaks_the_script_loses_automatically():
     p = master()
     first_line = next(c for c in p.cards if c.lines)
     stripped = first_line.model_copy(update={"lines": []})  # a spoken line is no longer bound to any card
-    out = run_panel(p, all_critics(reviser=[revision(card_op("replace_card", first_line.number, stripped)
-                                                    ).model_dump(mode="json")]))
+    out = run_panel(p, all_critics(reviser=[revision(card_op("replace_card", first_line.number, stripped),
+                                                     answers=(done("n1", 1),)).model_dump(mode="json")]))
     assert rank_of(out["candidates"][1])[0] > 0 and out["winner"] == 0
 
 
@@ -238,7 +251,7 @@ def test_when_every_critic_fails_the_first_plan_stands_with_no_notes_and_no_revi
 
 
 def test_a_critic_that_fails_is_left_out_and_the_others_still_count():
-    out = run_panel(flawed(), all_critics(audience=[], reviser=[{"operations": []}]))
+    out = run_panel(flawed(), all_critics(audience=[], reviser=[{"operations": [], "dispositions": []}]))
     assert out["results"][0] is None and out["notes"]
 
 
@@ -248,9 +261,136 @@ def test_a_reviser_that_fails_leaves_the_first_plan_and_keeps_the_notes():
 
 
 def test_content_critics_with_no_notes_leave_the_first_plan_alone():
-    quiet = {"score": 5, "notes": []}
+    quiet: dict[str, Any] = {"score": 5, "notes": []}
     out = run_panel(master(), {lens: [quiet] for lens in ("audience", "editor", "opportunity", "fidelity")})
     assert out["notes"] == [] and out["winner"] == 0 and len(out["candidates"]) == 1
+
+
+# ── plan/2026-11-04c: selection without a deletion loophole, and a notes ledger ─────────────────
+
+
+def note(card: int, text: str, severity: str = "high", kind: str = "change", cell: str = "") -> dict[str, Any]:
+    return {"card": card, "severity": severity, "kind": kind, "cell": cell, "note": text}
+
+
+def one_critic(*notes: dict[str, Any], **over: Any) -> dict[str, list[Any]]:
+    """The audience critic says these notes; the other three have nothing to add."""
+    quiet = {"score": 4, "notes": []}
+    return {"audience": [{"score": 3, "notes": list(notes)}], "editor": [quiet], "opportunity": [quiet],
+            "fidelity": [quiet]} | over
+
+
+def crowded_first() -> AdamPlan:
+    """The master with its cards 7 and 8 in one card of 8 s: the third live run's crowded card."""
+    p = master()
+    merged = p.cards[6].model_copy(update={"moments": p.cards[6].moments + p.cards[7].moments, "take_s": 8,
+                                           "rhythm_break": True})
+    cards = [*p.cards[:6], merged, *p.cards[8:]]
+    return p.model_copy(update={"cards": [c.model_copy(update={"number": i}) for i, c in enumerate(cards, start=1)]})
+
+
+def record_of(out: dict[str, Any]) -> dict[str, Any]:
+    return dict(out["candidates"][1]["report"]["revision"])
+
+
+def test_a_revision_that_deletes_the_scenes_moment_to_end_an_overrun_loses():
+    """Run 3's shape: a crowded first plan (an overrun is a loss), and a revision that removes the hold that is the
+    scene's break. Before plan 2026-11-04c it won, because it had no overrun and nothing protected the break."""
+    p = crowded_first()
+    assert graph.evaluate(PanelKit(graph.ID), gold.scene(NAME), plan_dict(p))["fit"]["overruns"] >= 1
+    ops = revision(moment_op("remove_moment", id="m11"), answers=(done("n1", 1),))
+    out = run_panel(p, one_critic(note(7, "The card is crowded; take something out."), reviser=[ops.model_dump()]))
+    assert record_of(out)["invalid"] == []
+    revised = {m["id"] for m in out["candidates"][1]["moments"]}
+    assert "m11" not in revised and graph.evaluate(PanelKit(graph.ID), gold.scene(NAME), out["candidates"][1])["fit"][
+        "overruns"] == 0  # the deletion did end the overrun ...
+    assert out["winner"] == 0  # ... and the revision still loses: it left a required cell empty
+
+
+def test_the_split_repairs_a_crowded_card_in_the_revision_so_nothing_has_to_be_deleted():
+    p = crowded_first()
+    ops = revision(answers=(declined("n1", "the card is mended by code; nothing to change"),))
+    out = run_panel(p, one_critic(note(7, "The card is crowded."), reviser=[ops.model_dump()]))
+    record = record_of(out)
+    assert record["invalid"] == [] and record["splits"][0]["card"] == 7 and record["splits"][0]["how"] == "split"
+    assert out["winner"] == 1 and len(out["candidates"][1]["cards"]) == len(p.cards) + 1
+    assert {m["id"] for m in out["candidates"][1]["moments"]} == {m.id for m in p.moments}  # every moment kept
+
+
+def test_a_removal_that_answers_no_note_does_not_stand_and_the_first_plan_stays():
+    p = master()
+    ops = revision(moment_op("remove_moment", id="m14"), answers=(declined("n1", "no change needed"),))
+    out = run_panel(p, one_critic(note(5, "The cut has no reason."), reviser=[ops.model_dump()]))
+    assert out["winner"] == 0 and record_of(out)["invalid"] == ["operation 1 removes m14 and answers no note"]
+    assert out["candidates"][1]["moments"] == out["candidates"][0]["moments"]  # nothing was removed
+    assert record_of(out)["ops"][0]["note_id"] == ""  # and the log says nobody asked for it
+
+
+def test_a_high_note_with_no_disposition_makes_the_revision_invalid_and_a_declined_one_is_valid():
+    p = master()
+    notes = [note(n, f"high note about card {n}") for n in (1, 2, 3, 4)]
+    three = revision(answers=(declined("n1", "fine as it is"), declined("n2", "fine"), declined("n3", "fine")))
+    out = run_panel(p, one_critic(*notes, reviser=[three.model_dump()]))
+    assert record_of(out)["invalid"] == ["n4 is a high note and has no disposition"] and out["winner"] == 0
+    four = revision(answers=(declined("n1", "fine as it is"), declined("n2", "fine"), declined("n3", "fine"),
+                             declined("n4", "the treatment rules it out")))
+    out = run_panel(p, one_critic(*notes, reviser=[four.model_dump()]))
+    rows = record_of(out)["ledger"]
+    assert record_of(out)["invalid"] == [] and [r["answered"] for r in rows] == [True] * 4
+    assert rows[3]["declined"] == "the treatment rules it out" and rows[3]["done"] == []  # the reason is kept
+
+
+def test_a_disposition_must_be_done_or_declined_and_a_done_must_name_an_operation_that_applied():
+    p = master()
+    both = {"note_id": "n1", "done": [1], "declined": "also declined"}
+    neither = {"note_id": "n1", "done": [], "declined": " "}
+    lost = done("n1", 7)
+    for answer in (both, neither, lost):
+        ops = revision(card_op("remove_card", 77), answers=(answer,))  # operation 1 cannot apply either
+        out = run_panel(p, one_critic(note(5, "The cut has no reason."), reviser=[ops.model_dump()]))
+        assert record_of(out)["invalid"] and out["winner"] == 0
+
+
+def test_an_add_note_marked_done_must_fill_the_cell_it_named():
+    p = master()
+    dasun = next(m for m in p.moments if m.id == "m14")
+    card = next(c for c in p.cards if c.moments == ["m14"])
+    bare = p.model_copy(update={"moments": [m for m in p.moments if m.id != "m14"],
+                                "cards": [c.model_copy(update={"number": i}) for i, c in enumerate(
+                                    [c for c in p.cards if c.moments != ["m14"]], start=1)]})
+    cell = "other:2:dasun"
+    ask = note(6, "Dasun's face is not seen after the turn.", kind="add", cell=cell)
+    idle = revision(card_op("replace_card", 1, bare.cards[0]), answers=(done("n1", 1),))
+    out = run_panel(bare, one_critic(ask, reviser=[idle.model_dump()]))
+    assert record_of(out)["invalid"] == [f"n1 is marked done but nothing fills {cell}"] and out["winner"] == 0
+    fills = revision(moment_op("add_moment", dasun, after="m13"), card_op("insert_card", 10, card),
+                     answers=(done("n1", 1, 2),))
+    out = run_panel(bare, one_critic(ask, reviser=[fills.model_dump()]))
+    assert record_of(out)["invalid"] == [] and out["winner"] == 1  # it fills the cell, so the revision stands and wins
+
+
+def test_a_remove_note_marked_done_must_remove_the_card_it_named():
+    p = master()
+    ask = note(3, "This glance explains what the face already says.", kind="remove")
+    wrong = revision(card_op("remove_card", 4), answers=(done("n1", 1),))
+    out = run_panel(p, one_critic(ask, reviser=[wrong.model_dump()]))
+    assert record_of(out)["invalid"] == ["n1 is marked done but card 3 is still in the plan"]
+    right = revision(card_op("remove_card", 3), answers=(done("n1", 1),))
+    out = run_panel(p, one_critic(ask, reviser=[right.model_dump()]))
+    assert record_of(out)["invalid"] == [] and len(out["candidates"][1]["cards"]) == len(p.cards) - 1
+
+
+def test_the_reviser_is_told_each_notes_id_and_which_faces_must_never_be_lost():
+    model = RoutedChatModel(routes=one_critic(note(5, "The cut has no reason."), reviser=[
+        {"operations": [], "dispositions": [declined("n1", "fine")]}], fidelity=[{"score": 4, "notes": []}]),
+        choose=route)
+    with llm.use_models(model):
+        graph.build(RunContext()).invoke({"brief": {"scene": gold.scene(NAME)}, "candidates": [plan_dict(master())],
+                                          "lenses": graph.lenses(PanelKit(graph.ID))})
+    asked = next(str(m[1].content) for m in model.calls if route(m) == "reviser")
+    assert "n1 [audience, high, change] card 5: The cut has no reason." in asked
+    assert "Coverage: 11 of 11 faces the scene needs are seen." in asked
+    assert "Never remove a moment that fills one of these: turn:2 (card 7)" in asked
 
 
 # ── the eval cases are generated, never hand-copied ──────────────────────────────────────────────

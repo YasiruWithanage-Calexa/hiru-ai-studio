@@ -79,7 +79,8 @@ def analysis_wire(a: SceneAnalysis) -> w.AnalysisWire:
         "pov_owner": {"start": a.pov_owner.start, "end": a.pov_owner.end or a.pov_owner.start,
                       "why": a.pov_owner.why},
         "audience_knows": [k.model_dump() for k in a.audience_knows], "baseline": a.baseline.model_dump(),
-        "break_block": a.break_.block, "aftermath": a.aftermath.state, "key_moment": a.key_moment.model_dump()})
+        "break_block": a.break_.block, "aftermath": a.aftermath.state, "key_moment": a.key_moment.model_dump(),
+        "questions": [{"question": q.question, "blocks": q.blocks} for q in a.questions]})
 
 
 def treatment_wire(t: Treatment, moments: list[Moment], stance: str) -> w.TreatmentW:
@@ -223,11 +224,11 @@ def screen_input(name: str, agent: str = "") -> dict[str, Any]:
     if agent in ("adam_critic_fidelity", "adam_reviser"):
         base = {"scene": scene, "plan": p.model_dump(mode="json", by_alias=True)}
         found = {n: dict(parts.module("step", f"adam_{n}", "step").run(base))
-                 for n in ("fidelity", "fit", "continuity", "feasibility")}
+                 for n in ("fidelity", "fit", "continuity", "feasibility", "coverage")}
         score = dict(parts.module("step", "adam_score", "step").run({**base, **found}))
         out["report"] = parts.module("step", "adam_notes", "step").run({**found, "score": score})["text"]
     if agent == "adam_reviser":
-        out["notes"] = ["[opportunity, low] card 1: " + LENS_NOTE["adam_critic_opportunity"]]
+        out["notes"] = ["n1 [opportunity, low, change] card 1: " + LENS_NOTE["adam_critic_opportunity"]]
     return out
 
 
@@ -237,8 +238,10 @@ def screen_reply(agent: str, name: str) -> dict[str, Any]:
     if agent == "adam_reviser":
         first = master_with_stance(name).cards[0]
         return {"operations": [{"op": "replace_card", "why": "the note on card 1", "number": 1, "after": "", "id": "",
-                                "card": card_wire(first).model_dump(mode="json"), "moment": None}]}
-    return {"notes": [{"card": 1, "severity": "low", "note": LENS_NOTE[agent]}], "score": 4}
+                                "card": card_wire(first).model_dump(mode="json"), "moment": None}],
+                "dispositions": [{"note_id": "n1", "done": [1], "declined": ""}]}
+    return {"notes": [{"card": 1, "severity": "low", "kind": "change", "cell": "", "note": LENS_NOTE[agent]}],
+            "score": 4}
 
 
 # What a case holds the answer to. Scripted, the answer is the case's own reply; LIVE, a creative agent's words are its

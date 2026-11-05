@@ -309,16 +309,8 @@
       subjective:
       - {moment: m8, kind: narrowing, description: the room holds its breath until the nod}
       silences: [m9]
-    report: 'Fidelity: every script block and line appears once, in order; nothing invented.
-
-      Veo clock: 36 s in 7 takes; no overruns.
-
-      Continuity: no problems.
-
-      What Veo renders badly: nothing left unanswered.
-
-      Craft score: 100% of 12 points.'
-    notes: ['[opportunity, low] card 1: A hands insert (kind hands) before this card would give the moment room.']
+    report: "Fidelity: every script block and line appears once, in order; nothing invented.\nVeo clock: 36 s in 7 takes; no overruns.\nContinuity: no problems.\nWhat Veo renders badly: nothing left unanswered.\nCoverage: 10 of 10 faces the scene needs are seen.\n  Never remove a moment that fills one of these: turn:3 (card 7), other:3:father (card 6), stake:kasun:before (card 1), stake:kasun:after (card 7), stake:father:before (card 2), stake:father:after (card 6), baseline (card 1), key (card 7), plant (card 2), ending (card 7)\nCraft score: 100% of 16 points."
+    notes: ['n1 [opportunity, low, change] card 1: A hands insert (kind hands) before this card would give the moment room.']
   reply:
     operations:
     - op: replace_card
@@ -355,6 +347,10 @@
         veo_notes: ''
         take_s: 6
       moment: null
+    dispositions:
+    - note_id: n1
+      done: [1]
+      declined: ''
   expect: {}
 - name: father_refuses
   input:
@@ -697,16 +693,8 @@
         state: car pulling away
       subjective:
       - {moment: m7, kind: narrowing, description: the traffic thins to the sound of the kettle}
-    report: 'Fidelity: every script block and line appears once, in order; nothing invented.
-
-      Veo clock: 42 s in 8 takes; no overruns.
-
-      Continuity: no problems.
-
-      What Veo renders badly: nothing left unanswered.
-
-      Craft score: 100% of 10 points.'
-    notes: ['[opportunity, low] card 1: A hands insert (kind hands) before this card would give the moment room.']
+    report: "Fidelity: every script block and line appears once, in order; nothing invented.\nVeo clock: 42 s in 8 takes; no overruns.\nContinuity: no problems.\nWhat Veo renders badly: nothing left unanswered.\nCoverage: 9 of 9 faces the scene needs are seen.\n  Never remove a moment that fills one of these: turn:2 (card 6), other:2:father (card 5), stake:kasun:before (card 1), stake:kasun:after (card 6), stake:father:before (card 2), stake:father:after (card 5), key (card 6), plant (card 1), ending (card 8)\nCraft score: 100% of 14 points."
+    notes: ['n1 [opportunity, low, change] card 1: A hands insert (kind hands) before this card would give the moment room.']
   reply:
     operations:
     - op: replace_card
@@ -743,6 +731,10 @@
         veo_notes: ''
         take_s: 6
       moment: null
+    dispositions:
+    - note_id: n1
+      done: [1]
+      declined: ''
   expect: {}
 - name: phone_call
   input:
@@ -796,6 +788,9 @@
       break: {block: 4}
       aftermath: {state: left behind}
       key_moment: {block: 5, why: 'the silence after marriage, where her smile and her eyes disagree'}
+      questions:
+      - question: Does Anudi take her phone when she leaves?
+        blocks: [7, 9]
     treatment:
       name: intimate, then distant
       stance: intimate
@@ -1272,16 +1267,8 @@
       subjective:
       - {moment: m10, kind: narrowing, description: the lake ambience drains to her breath and the phone}
       silences: [m11]
-    report: 'Fidelity: every script block and line appears once, in order; nothing invented.
-
-      Veo clock: 66 s in 13 takes; no overruns.
-
-      Continuity: no problems.
-
-      What Veo renders badly: nothing left unanswered.
-
-      Craft score: 100% of 12 points.'
-    notes: ['[opportunity, low] card 1: A hands insert (kind hands) before this card would give the moment room.']
+    report: "Fidelity: every script block and line appears once, in order; nothing invented.\nVeo clock: 66 s in 13 takes; no overruns.\nContinuity: no problems.\nWhat Veo renders badly: nothing left unanswered.\nCoverage: 11 of 11 faces the scene needs are seen.\n  Never remove a moment that fills one of these: turn:2 (card 7), other:2:dasun (card 11), irony:0 (card 11), stake:anudi:before (card 1), stake:anudi:after (card 7), stake:dasun:before (card 3), stake:dasun:after (card 11), baseline (card 2), key (card 8), plant (card 1), ending (card 13)\nCraft score: 100% of 16 points."
+    notes: ['n1 [opportunity, low, change] card 1: A hands insert (kind hands) before this card would give the moment room.']
   reply:
     operations:
     - op: replace_card
@@ -1318,6 +1305,10 @@
         veo_notes: ''
         take_s: 6
       moment: null
+    dispositions:
+    - note_id: n1
+      done: [1]
+      declined: ''
   expect: {}
 - name: refuses_money
   input:
@@ -1633,16 +1624,8 @@
       subjective:
       - {moment: m6, kind: drop, description: the clock stops mattering as he speaks}
       silences: [m5]
-    report: 'Fidelity: every script block and line appears once, in order; nothing invented.
-
-      Veo clock: 38 s in 8 takes; no overruns.
-
-      Continuity: no problems.
-
-      What Veo renders badly: nothing left unanswered.
-
-      Craft score: 100% of 11 points.'
-    notes: ['[opportunity, low] card 1: A hands insert (kind hands) before this card would give the moment room.']
+    report: "Fidelity: every script block and line appears once, in order; nothing invented.\nVeo clock: 38 s in 8 takes; no overruns.\nContinuity: no problems.\nWhat Veo renders badly: nothing left unanswered.\nCoverage: 9 of 9 faces the scene needs are seen.\n  Never remove a moment that fills one of these: turn:2 (card 5), other:2:father (card 7), stake:kasun:before (card 2), stake:kasun:after (card 5), stake:father:before (card 1), stake:father:after (card 7), key (card 4), plant (card 1), ending (card 8)\nCraft score: 100% of 15 points."
+    notes: ['n1 [opportunity, low, change] card 1: A hands insert (kind hands) before this card would give the moment room.']
   reply:
     operations:
     - op: replace_card
@@ -1679,6 +1662,10 @@
         veo_notes: ''
         take_s: 6
       moment: null
+    dispositions:
+    - note_id: n1
+      done: [1]
+      declined: ''
   expect: {}
 - name: silent_morning
   input:
@@ -1946,16 +1933,8 @@
         ambience: silence
         state: silence
       silences: [m9]
-    report: 'Fidelity: every script block and line appears once, in order; nothing invented.
-
-      Veo clock: 32 s in 6 takes; no overruns.
-
-      Continuity: no problems.
-
-      What Veo renders badly: nothing left unanswered.
-
-      Craft score: 100% of 7 points.'
-    notes: ['[opportunity, low] card 1: A hands insert (kind hands) before this card would give the moment room.']
+    report: "Fidelity: every script block and line appears once, in order; nothing invented.\nVeo clock: 32 s in 6 takes; no overruns.\nContinuity: no problems.\nWhat Veo renders badly: nothing left unanswered.\nCoverage: 3 of 3 faces the scene needs are seen.\n  Never remove a moment that fills one of these: stake:kasun (card 1), key (card 6), ending (card 6)\nCraft score: 100% of 11 points."
+    notes: ['n1 [opportunity, low, change] card 1: A hands insert (kind hands) before this card would give the moment room.']
   reply:
     operations:
     - op: replace_card
@@ -1992,4 +1971,8 @@
         veo_notes: ''
         take_s: 6
       moment: null
+    dispositions:
+    - note_id: n1
+      done: [1]
+      declined: ''
   expect: {}

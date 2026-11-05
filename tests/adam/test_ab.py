@@ -70,3 +70,17 @@ def test_the_summary_prints_and_a_missing_folder_is_not_an_error(tmp_path: Path,
 def test_the_live_runner_will_not_spend_model_calls_unless_told_to(capsys: pytest.CaptureFixture[str]):
     assert live.main([]) == 2
     assert "--yes" in capsys.readouterr().out
+
+
+def test_the_live_runner_judges_each_scene_on_the_median_of_its_runs():
+    """Plan 2026-11-04c Phase 7: coverage at least 90 % (median), no moment without a record, no revision that lost a
+    required face."""
+    def run(coverage: float, **over: Any) -> dict[str, Any]:
+        return {"scene": "phone_call", "coverage": coverage, "unaccounted": 0, "revision_lost_cells": 0, **over}
+
+    good = live.judge([run(0.95), run(0.7), run(0.92)], ["phone_call"])  # the median, 0.92, is what counts
+    assert good[0].endswith(": ok") and "coverage 92%" in good[0]
+    assert live.judge([run(0.95), run(0.95), run(0.95, unaccounted=1)], ["phone_call"])[0].endswith("NOT MET")
+    assert live.judge([run(0.95, revision_lost_cells=1)], ["phone_call"])[0].endswith("NOT MET")
+    assert live.judge([run(0.8), run(0.8), run(0.8)], ["phone_call"])[0].endswith("NOT MET")
+    assert "no run finished" in live.judge([{"scene": "phone_call", "error": "x"}], ["phone_call"])[0]

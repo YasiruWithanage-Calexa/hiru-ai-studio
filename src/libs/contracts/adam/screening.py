@@ -1,13 +1,16 @@
 """What the screening panel's critics and the reviser read and write (plan/2026-11-04b §5.4).
 
 Four critics, each with one lens, read the same plan and answer with at most four notes and a score from 1 to 5 on their
-own lens. A note names a card (0 = the scene as a whole) and a severity. They never choose: the notes go to ONE reviser,
-which answers with OPERATIONS on the plan (replace a card, insert one, remove one, add or remove a moment), not a fresh
-plan, and CODE (`adam_score`) keeps the better version.
+own lens. A note names a card (0 = the scene as a whole), a severity and a KIND (add, remove, change, risk; an `add`
+also names the coverage cell or the moment kind it would fill). They never choose: the notes go to ONE reviser, which
+answers with OPERATIONS on the plan (replace a card, insert one, remove one, add or remove a moment), not a fresh plan,
+and DISPOSITIONS, one for every note: the operations that answered it, or why it was declined (plan/2026-11-04c F5, the
+way a production keeps a notes log). CODE (`adam_score`) keeps the better version.
 
     ScreenInput    what every critic and the reviser are given
     CriticWire     a critic's answer (strict wire shape: no defaults)
     RevisionWire   the reviser's answer; `.apply(moments, cards)` → `Revised`
+    Noted          a merged note with its id (n1, n2 ...); `check_revision` holds the reviser to its dispositions
     drop_moments   remove moments and every card left with none (also what a fidelity "drop" does)
     remap_sound    the sound map after cards were renumbered and moments removed
 
@@ -36,6 +39,8 @@ from contracts.adam.plan import (
 
 Severity = Literal["high", "medium", "low"]
 SEVERITIES: tuple[str, ...] = ("high", "medium", "low")
+NoteKind = Literal["add", "remove", "change", "risk"]
+NOTE_KINDS: tuple[str, ...] = ("add", "remove", "change", "risk")
 MAX_NOTES = 4  # per critic (plan §5.4)
 LENSES: tuple[str, ...] = ("audience", "editor", "opportunity", "fidelity")
 
@@ -75,6 +80,8 @@ class _Wire(BaseModel):
 class NoteW(_Wire):
     card: int  # the card's number; 0 = the scene as a whole
     severity: Severity
+    kind: NoteKind  # add a picture, remove one, change one, or a risk to watch
+    cell: str  # an `add` note: the coverage cell it fills (turn:2, stake:dasun:before) or a moment kind; else ""
     note: str  # what is wrong or missing, in one or two sentences, and what would make it better
 
 
@@ -97,7 +104,7 @@ OpName = Literal["replace_card", "insert_card", "remove_card", "add_moment", "re
 
 class OpW(_Wire):
     op: OpName
-    why: str  # which note this answers
+    why: str  # the note this answers, in a few words
     number: int  # replace_card, remove_card: the card's number. insert_card: the card to insert AFTER (0 = first)
     after: str  # add_moment: the id of the moment to insert after ("" = first)
     id: str  # remove_moment: the moment's id
@@ -105,8 +112,18 @@ class OpW(_Wire):
     moment: w.MomentW | None  # add_moment
 
 
+class DispositionW(_Wire):
+    """What became of one note: the operations that answered it (their numbers in `operations`, from 1), or the reason
+    it was declined. Exactly one of the two is filled."""
+
+    note_id: str
+    done: list[int]
+    declined: str
+
+
 class RevisionWire(_Wire):
     operations: list[OpW]
+    dispositions: list[DispositionW]  # one for every note; a high note must have one
 
     def apply(self, moments: list[Moment], cards: list[ShotCard]) -> Revised:
         """The plan after the operations. Numbers always mean the cards as the critics saw them, whatever the earlier
@@ -115,11 +132,14 @@ class RevisionWire(_Wire):
         entries: list[list[Any]] = [[c.number, c] for c in cards]  # [original number | None, card | None (removed)]
         skipped: list[str] = []
         removed: set[str] = set()
+        applied = [True] * len(self.operations)
+        removals: dict[str, int] = {}  # a moment a `remove_moment` took out → the number of that operation
 
         def at(number: int) -> int | None:
             return next((i for i, e in enumerate(entries) if e[0] == number), None)
 
         for n, op in enumerate(self.operations, start=1):
+            before = len(skipped)
             tag = f"operation {n} ({op.op})"
             if op.op == "replace_card":
                 i = at(op.number)
@@ -155,12 +175,16 @@ class RevisionWire(_Wire):
                 else:
                     out_moments.remove(found)
                     removed.add(op.id)
+                    removals[op.id] = n
+            applied[n - 1] = len(skipped) == before
 
         kept: list[tuple[int | None, ShotCard]] = [(e[0], e[1]) for e in entries if isinstance(e[1], ShotCard)]
         shown_moments, survivors = _drop(out_moments, kept, removed)
         numbered = [c.model_copy(update={"number": i}) for i, (_, c) in enumerate(survivors, start=1)]
         renumbered = {old: i for i, (old, _) in enumerate(survivors, start=1) if isinstance(old, int)}
-        return Revised(moments=shown_moments, cards=numbered, renumbered=renumbered, skipped=skipped)
+        gone = {c.number for c in cards} - set(renumbered)
+        return Revised(moments=shown_moments, cards=numbered, renumbered=renumbered, skipped=skipped, applied=applied,
+                       removals=removals, gone=gone)
 
 
 def _moment(m: w.MomentW) -> Moment:
@@ -174,6 +198,9 @@ class Revised:
     cards: list[ShotCard]
     renumbered: dict[int, int] = field(default_factory=dict)  # a card's old number → its number now
     skipped: list[str] = field(default_factory=list)  # operations that could not apply, and why
+    applied: list[bool] = field(default_factory=list)  # for each operation, did it apply
+    removals: dict[str, int] = field(default_factory=dict)  # a moment removed → the operation that removed it
+    gone: set[int] = field(default_factory=set)  # the old numbers of the cards that no longer exist
 
 
 def _drop[K](moments: list[Moment], cards: list[tuple[K, ShotCard]],
@@ -207,7 +234,72 @@ def remap_sound(sound: SoundMap, renumbered: dict[int, int], moment_ids: set[str
                      if x.card in renumbered]})
 
 
-def note_line(lens: str, note: NoteW) -> str:
-    """A note as one line the reviser (and a person) reads."""
+def note_line(lens: str, note: NoteW, ident: str = "") -> str:
+    """A note as one line the reviser (and a person) reads: its id first, so a disposition can name it."""
     where = f"card {note.card}" if note.card else "the scene"
-    return f"[{lens}, {note.severity}] {where}: {note.note.strip()}"
+    aim = f" -> {note.cell}" if note.kind == "add" and note.cell.strip() else ""
+    return f"{ident + ' ' if ident else ''}[{lens}, {note.severity}, {note.kind}{aim}] {where}: {note.note.strip()}"
+
+
+@dataclass
+class Noted:
+    """A note after merging: the critic's words with an id, so the reviser answers it by id."""
+
+    id: str
+    lens: str
+    severity: str
+    kind: str
+    card: int
+    cell: str
+    note: str
+
+    @classmethod
+    def of(cls, row: dict[str, Any]) -> Noted:
+        return cls(id=str(row["id"]), lens=str(row["lens"]), severity=str(row["severity"]), kind=str(row["kind"]),
+                   card=int(row["card"]), cell=str(row.get("cell") or ""), note=str(row["note"]))
+
+
+def check_revision(notes: list[Noted], wire: RevisionWire, revised: Revised, *, filled: set[str],
+                   known: set[str], first_kinds: set[str], now_kinds: set[str]) -> list[str]:
+    """Why a revision does not stand, or [] when it does (plan/2026-11-04c F5).
+
+    Every note gets a disposition (a high one must have it), a disposition says either which operations answered the
+    note or why it was declined, an `add` marked done must fill the cell it named, a `remove` marked done must remove
+    the card it named, and a removed moment must be named by an operation that answers a note: a moment never leaves
+    the plan without a record of which note asked for it.
+
+    `filled` is the cells the revised plan fills, `known` every cell the scene has; `first_kinds` and `now_kinds` are
+    the kinds of added moment before and after (an `add` note may name a kind instead of a cell)."""
+    by_id = {n.id: n for n in notes}
+    out: list[str] = []
+    seen: set[str] = set()
+    answered: set[int] = set()
+    for d in wire.dispositions:
+        note = by_id.get(d.note_id)
+        if note is None:
+            out.append(f"a disposition names {d.note_id!r}, which is not one of the notes")
+            continue
+        if d.note_id in seen:
+            out.append(f"{note.id} has two dispositions")
+        seen.add(d.note_id)
+        if bool(d.done) == bool(d.declined.strip()):
+            out.append(f"{note.id} must be either done (the operations that answered it) or declined (with a reason)")
+            continue
+        if d.declined.strip():
+            continue
+        bad = [i for i in d.done if not 1 <= i <= len(wire.operations) or not revised.applied[i - 1]]
+        if bad:
+            out.append(f"{note.id} is marked done by operation(s) {bad}, which do not exist or did not apply")
+            continue
+        answered.update(d.done)
+        if note.kind == "add" and note.cell:
+            fills = note.cell in filled if note.cell in known else note.cell in now_kinds - first_kinds
+            if not fills:
+                out.append(f"{note.id} is marked done but nothing fills {note.cell}")
+        if note.kind == "remove" and note.card and note.card not in revised.gone:
+            out.append(f"{note.id} is marked done but card {note.card} is still in the plan")
+    out += [f"{n.id} is a high note and has no disposition" for n in notes
+            if n.severity == "high" and n.id not in seen]
+    out += [f"operation {n} removes {ident} and answers no note" for ident, n in sorted(revised.removals.items())
+            if revised.applied[n - 1] and n not in answered]
+    return out

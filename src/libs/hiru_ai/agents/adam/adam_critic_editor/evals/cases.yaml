@@ -311,7 +311,7 @@
       silences: [m9]
   reply:
     notes:
-    - {card: 1, severity: low, note: 'The cut into this card could be motivated by the look, not only the line.'}
+    - {card: 1, severity: low, kind: change, cell: '', note: 'The cut into this card could be motivated by the look, not only the line.'}
     score: 4
   expect: {score: 4}
 - name: father_refuses
@@ -657,7 +657,7 @@
       - {moment: m7, kind: narrowing, description: the traffic thins to the sound of the kettle}
   reply:
     notes:
-    - {card: 1, severity: low, note: 'The cut into this card could be motivated by the look, not only the line.'}
+    - {card: 1, severity: low, kind: change, cell: '', note: 'The cut into this card could be motivated by the look, not only the line.'}
     score: 4
   expect: {score: 4}
 - name: phone_call
@@ -712,6 +712,9 @@
       break: {block: 4}
       aftermath: {state: left behind}
       key_moment: {block: 5, why: 'the silence after marriage, where her smile and her eyes disagree'}
+      questions:
+      - question: Does Anudi take her phone when she leaves?
+        blocks: [7, 9]
     treatment:
       name: intimate, then distant
       stance: intimate
@@ -1190,7 +1193,7 @@
       silences: [m11]
   reply:
     notes:
-    - {card: 1, severity: low, note: 'The cut into this card could be motivated by the look, not only the line.'}
+    - {card: 1, severity: low, kind: change, cell: '', note: 'The cut into this card could be motivated by the look, not only the line.'}
     score: 4
   expect: {score: 4}
 - name: refuses_money
@@ -1509,7 +1512,7 @@
       silences: [m5]
   reply:
     notes:
-    - {card: 1, severity: low, note: 'The cut into this card could be motivated by the look, not only the line.'}
+    - {card: 1, severity: low, kind: change, cell: '', note: 'The cut into this card could be motivated by the look, not only the line.'}
     score: 4
   expect: {score: 4}
 - name: silent_morning
@@ -1780,6 +1783,6 @@
       silences: [m9]
   reply:
     notes:
-    - {card: 1, severity: low, note: 'The cut into this card could be motivated by the look, not only the line.'}
+    - {card: 1, severity: low, kind: change, cell: '', note: 'The cut into this card could be motivated by the look, not only the line.'}
     score: 4
   expect: {score: 4}

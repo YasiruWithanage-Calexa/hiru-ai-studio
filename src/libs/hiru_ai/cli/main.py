@@ -290,6 +290,27 @@ def cmd_remove(args: argparse.Namespace) -> int:
     return 0
 
 
+def mutation_line() -> str:
+    """Shot Planner Adam's craft score, held to the gold masters (plan/2026-11-04c F3): each master is broken on purpose
+    and the score must notice. Empty when the repository's tests are not here (an installed package)."""
+    try:
+        from tests.adam import gold, mutants
+    except ImportError:
+        return ""
+    killed = total = 0
+    blind: list[str] = []
+    for name in gold.names():
+        for label, (base, broken) in mutants.killed(name).items():
+            total += 1
+            if base - broken >= 1.0:
+                killed += 1
+            else:
+                blind.append(f"{name}/{label}")
+    share = f"{100 * killed / total:.0f}%" if total else "n/a"
+    return (f"adam score mutation: {killed} of {total} mutants of the gold masters caught ({share})"
+            + (f"; not caught (named blind spots): {', '.join(blind)}" if blind else ""))
+
+
 def cmd_eval(args: argparse.Namespace) -> int:
     from hiru_ai.cli import evals
 
@@ -304,6 +325,10 @@ def cmd_eval(args: argparse.Namespace) -> int:
     results = evals.run_all(_registry(args.root), args.agent, live=args.live,
                             prompt=Path(args.prompt) if args.prompt else None, tools=args.tools)
     print(evals.report(results))
+    if not args.agent or args.agent.startswith("adam_"):
+        line = mutation_line()
+        if line:
+            print(line)
     return 0 if results and all(r.passed for r in results) else 1
 
 
