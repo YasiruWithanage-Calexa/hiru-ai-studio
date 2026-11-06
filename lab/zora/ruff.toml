@@ -1,0 +1,7 @@
+# The lab is outside the product's lint scope (`ruff check src tests scripts`); it keeps the same rules where it can.
+extend = "../../pyproject.toml"
+src = ["..", "../../src", "../../src/libs"]
+
+[lint.per-file-ignores]
+"**" = ["E501"]  # long rows of hand-written shot data, and prose in docstrings
+"tests/**" = ["S105", "S106"]

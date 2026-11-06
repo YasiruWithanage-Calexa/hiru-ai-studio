@@ -1,0 +1,1153 @@
+{
+ "name": "arrival",
+ "run": "15-gpt_5-high-arrival",
+ "scene": {
+  "blocks": [
+   {
+    "index": 0,
+    "kind": "action",
+    "text": "The new restaurant on opening evening. KASUN stands by the door, adjusting his shirt, nervous.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "act",
+    "events": 2,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 1,
+    "kind": "action",
+    "text": "A car stops outside. ANUDI'S FATHER steps out and looks up at the sign.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "move",
+    "events": 2,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 2,
+    "kind": "dialogue",
+    "text": "මේක ඔයාගේද?",
+    "speaker": "Father",
+    "line_id": "L2",
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 3,
+    "kind": "dialogue",
+    "text": "ඔව් සර්. මම ඔයා එනකල් බලා හිටියා.",
+    "speaker": "Kasun",
+    "line_id": "L3",
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 4,
+    "kind": "action",
+    "text": "The father looks around the room, then at Kasun. He nods, once.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "act",
+    "events": 3,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   }
+  ],
+  "cast": [
+   "Kasun",
+   "Father"
+  ],
+  "others": [],
+  "place": {
+   "name": "Kasun's new restaurant, opening evening",
+   "objects": [
+    "door",
+    "sign",
+    "car",
+    "tables",
+    "lamps",
+    "counter",
+    "window"
+   ]
+  },
+  "envelope_s": null
+ },
+ "plan": {
+  "treatment": {
+   "logline": "On his restaurant’s opening evening, Kasun greets Anudi’s father at the door; a quiet question and a steady answer end with a single, hard-won nod.",
+   "arc": [
+    {
+     "beat": "Anticipation at the threshold",
+     "blocks": {
+      "first": 0,
+      "last": 0
+     },
+     "feeling": "Kasun holds his nerves as the new space breathes around him"
+    },
+    {
+     "beat": "Arrival and the test",
+     "blocks": {
+      "first": 1,
+      "last": 2
+     },
+     "feeling": "A measured appraisal from the outside world"
+    },
+    {
+     "beat": "Claiming the moment",
+     "blocks": {
+      "first": 3,
+      "last": 3
+     },
+     "feeling": "Pride without show; ownership, simply stated"
+    },
+    {
+     "beat": "Approval, wordless",
+     "blocks": {
+      "first": 4,
+      "last": 4
+     },
+     "feeling": "A nod that lands warmer than any speech"
+    }
+   ],
+   "approach": "Threshold cinema: frame the doorway as the border between two worlds — cool evening street and warm interior. Lenses: 24–35mm for spatial context and doorway compositions; 50mm OTS to bridge across the threshold; 85mm for faces at the turns. Movement is minimal and motivated: a slow push for Kasun’s claim, a gentle pan for the father’s survey of the room; otherwise locked-off for poise. Layer frames with foreground tables, doorframe and glass to give depth and separation.",
+   "colour_script": [
+    {
+     "sequence": "A",
+     "palette": "warm amber practicals inside, cool blue hour outside; wood and brass highlights",
+     "light": "practical hanging lamps and sconces (warm 3200K) inside; soft blue-hour spill (5600K) from door/window; sign glow at the door",
+     "grade": "slightly desaturated, gentle contrast to let nerves breathe"
+    },
+    {
+     "sequence": "B",
+     "palette": "the same warm/cool split with sign’s golden edge light on faces",
+     "light": "practical hanging lamps and sconces (warm 3200K) inside; soft blue-hour spill (5600K) from door/window; sign glow at the door",
+     "grade": "heightened contrast between warm interior and cool street to underline the test"
+    },
+    {
+     "sequence": "C",
+     "palette": "skin tones open up in the warmth; cool rim from the street still present",
+     "light": "practical hanging lamps and sconces (warm 3200K) inside; soft blue-hour spill (5600K) from door/window; sign glow at the door",
+     "grade": "neutral-warm, slightly richer saturation for Kasun’s answer"
+    },
+    {
+     "sequence": "D",
+     "palette": "warm interior dominant, cool outside recedes to accent the nod",
+     "light": "practical hanging lamps and sconces (warm 3200K) inside; soft blue-hour spill (5600K) from door/window; sign glow at the door",
+     "grade": "subtly warmer and softer, a finishing glow without losing naturalism"
+    }
+   ],
+   "geography": "Door is frame-right of the interior; dining room opens left with tables and hanging lamps; counter deeper left. Street and curb run right-to-left outside. The axis is the line through the doorway between Kasun (inside) and the father (outside). We stay on the interior side of this axis for all dialogue and reactions, using OTS from outside over the father’s right shoulder toward Kasun; the exterior wide keeps the restaurant on screen-left and the father on screen-right to preserve orientation. No accidental line crosses; the sign insert acts as a neutral anchor when cutting between interior and exterior.",
+   "key_image": "The father, half-silhouetted in the doorway against the night, nodding once as the restaurant’s warm light holds steady behind Kasun.",
+   "advice": [
+    "If you prefer to play L2 on the father’s face rather than on Kasun’s reaction, swap Shot 5 to a CU of the father; the rest of the geometry holds.",
+    "If you want the father to step inside before he nods, add a [move] block after L3 so we can cross the threshold honestly.",
+    "We avoid readable text on the sign; if its words must be seen, plan an insert with designed artwork or a separate pickup."
+   ]
+  },
+  "sequences": [
+   {
+    "id": "A",
+    "title": "Anticipation",
+    "purpose": "Establish the new space and Kasun’s nerves at the door.",
+    "shots": {
+     "first": 1,
+     "last": 2
+    }
+   },
+   {
+    "id": "B",
+    "title": "Arrival and the question",
+    "purpose": "Bring the father in from the street, set the test, and hold on the listener.",
+    "shots": {
+     "first": 3,
+     "last": 6
+    }
+   },
+   {
+    "id": "C",
+    "title": "Claim",
+    "purpose": "Kasun answers for himself, simply and fully, then let it land on the other face.",
+    "shots": {
+     "first": 7,
+     "last": 9
+    }
+   },
+   {
+    "id": "D",
+    "title": "Approval",
+    "purpose": "Let the father take in the room and close with his tacit blessing.",
+    "shots": {
+     "first": 10,
+     "last": 13
+    }
+   }
+  ],
+  "shots": [
+   {
+    "n": 1,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "EWS",
+    "angle": "eye level",
+    "lens": "24mm: let the new space breathe",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Open the world: the restaurant as a character, Kasun small at its edge shows the weight of the moment.",
+    "ir": {
+     "setting": "Kasun’s new restaurant: small wooden tables, hanging lamps, a counter to the back left, a large glass door and window to the street on frame right",
+     "cinematography": {
+      "camera": "locked-off sticks, 24mm, f/5.6",
+      "angle": "eye level",
+      "framing": "extreme wide from the back corner, door frame-right, dining room spreading left, Kasun by the door",
+      "movement": "locked-off",
+      "white_balance": "mix: warm 3200K practicals inside with cool 5600K spill from outside",
+      "color_tone": "naturalistic, warm inside against cool outside, gentle contrast",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Warm practical pools on tables; cooler dusk spill from the door/window on frame right; subtle sign glow edges the doorway",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "mid-30s, neatly dressed in a light shirt, sleeves rolled; tidy but not flashy",
+       "action": "adjusts his shirt and breathes out",
+       "position": "by the door, frame-right, facing out to the street"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "EWS holding Kasun at the door",
+       "director_line": "The new space holds its breath with him.",
+       "action": "Kasun smooths his shirt front and cuffs once.",
+       "performance": "He checks the glass, fixes a crease, then stills his hands."
+      }
+     ],
+     "audio": "low restaurant hum (fridge, distant clinks), soft evening street outside",
+     "first_frame": {
+      "composition": "door and window frame-right against the warm depth of tables left; Kasun small by the door",
+      "subjects": [
+       "Kasun at the door"
+      ],
+      "setting": "A warm, just-opened restaurant",
+      "lighting": "Amber pools from lamps, cool dusk through glass"
+     }
+    },
+    "sound": {
+     "ambience": "warm interior room tone with faint street wash",
+     "effects": "fabric rustle, a tiny cuff snap",
+     "music": "soft, unobtrusive diegetic bed from speakers",
+     "silence": false
+    }
+   },
+   {
+    "n": 2,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "slightly high",
+    "lens": "100mm macro: make nerves tactile",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Character detail: his hands give away the nerves the face hides.",
+    "ir": {
+     "setting": "By the door inside the restaurant",
+     "cinematography": {
+      "camera": "locked-off sticks, 100mm, f/4",
+      "angle": "slightly high",
+      "framing": "insert on Kasun’s hands at his collar and cuff",
+      "movement": "locked-off",
+      "white_balance": "mix: warm 3200K practicals with cool edge from the door",
+      "color_tone": "naturalistic, warm skin against cooler background bokeh",
+      "depth_of_field": "Shallow with soft, creamy bokeh",
+      "lens_artifacts": "subtle glass reflections from the door"
+     },
+     "lighting": "Warm key from a nearby lamp; a cool rim from the doorway",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "hands, shirt buttons and cuff",
+       "action": "fidgets once, then flattens the fabric",
+       "position": "just inside the doorway"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "insert on hands",
+       "director_line": "A small fidget becomes resolve.",
+       "action": "He tweaks a cuff and presses it flat.",
+       "performance": "Fingertips tremble, then hold still."
+      }
+     ],
+     "audio": "room tone, faint speaker music",
+     "first_frame": {
+      "composition": "hands and shirt front fill the frame; door edge bokeh at far right",
+      "subjects": [
+       "Kasun’s hands"
+      ],
+      "setting": "the threshold inside",
+      "lighting": "warm key, cool rim"
+     }
+    },
+    "sound": {
+     "ambience": "warm interior",
+     "effects": "tiny fabric movement",
+     "music": "soft diegetic bed",
+     "silence": true
+    }
+   },
+   {
+    "n": 3,
+    "sequence": "B",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level",
+    "lens": "28mm: street plus facade in one breath",
+    "take_s": 6,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The arrival: show the father’s scale against the place he’s come to judge.",
+    "ir": {
+     "setting": "Street outside the restaurant: curb, parked car, glowing sign above the door, warm spill from inside",
+     "cinematography": {
+      "camera": "locked-off sticks, 28mm, f/4",
+      "angle": "eye level",
+      "framing": "wide on the facade with the car entering frame-right to stop by the door",
+      "movement": "locked-off",
+      "white_balance": "cool 5600K street with warm 3200K spill from door",
+      "color_tone": "cool evening with warm islands from the interior and sign",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "subtle headlight flare"
+     },
+     "lighting": "Blue-hour ambient outside; warm spill from inside catches the father as he steps out; sign glow edges his profile",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "well-kept, in a dark shirt and slacks, measured carriage",
+       "action": "steps out of the car, closes it off-screen, and looks up at the sign",
+       "position": "curbside near the door, screen-right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "wide facade, car stopping",
+       "director_line": "The world arrives at the door.",
+       "action": "A car eases in and stops.",
+       "performance": ""
+      },
+      {
+       "time": "2-4s",
+       "camera": "unchanged, framing the door and sign",
+       "director_line": "The test steps out and takes the place in from the street side.",
+       "action": "The father steps out and lifts his gaze to the sign.",
+       "performance": "He squares his shoulders, chin tilting to the glow."
+      }
+     ],
+     "audio": "street hush, engine idle then cut, distant scooter pass",
+     "first_frame": {
+      "composition": "restaurant facade left, car entering from right, glowing sign above the door",
+      "subjects": [
+       "facade",
+       "car"
+      ],
+      "setting": "the curb and entrance",
+      "lighting": "cool dusk with warm doorway spill and sign glow"
+     }
+    },
+    "sound": {
+     "ambience": "cool street evening with light traffic wash",
+     "effects": "tyres roll and stop, engine idle then off",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 4,
+    "sequence": "B",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "slightly low",
+    "lens": "85mm: isolate the sign’s glow without readable text",
+    "take_s": 6,
+    "use_s": 2,
+    "link": "cut",
+    "why": "The standard hung above the threshold: the sign becomes the father’s first read of Kasun’s claim.",
+    "ir": {
+     "setting": "Restaurant facade at the door",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.8",
+      "angle": "slightly low to the sign",
+      "framing": "insert on the glowing sign with doorframe below",
+      "movement": "locked-off",
+      "white_balance": "mixed: cool ambient with warm sign glow",
+      "color_tone": "cool-to-warm contrast, text unreadable glow",
+      "depth_of_field": "Shallow to abstract the lettering",
+      "lens_artifacts": "gentle bloom from the sign"
+     },
+     "lighting": "Sign as warm key; cool fill from the sky",
+     "subjects": [
+      {
+       "id": "",
+       "description": "glowing sign above the doorway",
+       "action": "static, humming glow",
+       "position": "top of frame with door edge below"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "insert on sign",
+       "director_line": "The badge of a name, felt not read.",
+       "action": "The sign glows, flickerless.",
+       "performance": ""
+      }
+     ],
+     "audio": "soft electrical hum, street hush",
+     "first_frame": {
+      "composition": "sign dominant, door edge soft at bottom",
+      "subjects": [
+       "sign"
+      ],
+      "setting": "facade",
+      "lighting": "sign glow with cool ambient"
+     }
+    },
+    "sound": {
+     "ambience": "street hush",
+     "effects": "low sign hum",
+     "music": "",
+     "silence": true
+    }
+   },
+   {
+    "n": 5,
+    "sequence": "B",
+    "blocks": [
+     2
+    ],
+    "lines": [
+     "L2"
+    ],
+    "over": "Kasun",
+    "size": "OTS",
+    "angle": "eye level",
+    "lens": "50mm: hold the threshold relationship",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The test lands on the listener: we hear the father while we study Kasun’s face at the door.",
+    "ir": {
+     "setting": "Doorway, from outside looking in",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "angle": "eye level",
+      "framing": "OTS from the father’s right shoulder to Kasun framed inside the doorway",
+      "movement": "locked-off",
+      "white_balance": "mixed: warm interior on Kasun, cool rim from street",
+      "color_tone": "heightened warm/cool split",
+      "depth_of_field": "Medium, shoulder soft, Kasun sharp",
+      "lens_artifacts": "subtle door glass reflections"
+     },
+     "lighting": "Warm interior key on Kasun; cool edge from the street on his far cheek; sign glow kissing the doorframe",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "on the threshold, contained and ready",
+       "action": "listens, holds eye contact just off lens",
+       "position": "inside, centre-right of frame"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "OTS MCU on Kasun",
+       "director_line": "The question arrives from over our shoulder.",
+       "action": "Kasun receives the words without moving.",
+       "performance": "A breath in; his eyes settle, answer forming before speech."
+      }
+     ],
+     "audio": "street hush and interior bed; the father’s voice from just off camera right",
+     "first_frame": {
+      "composition": "father’s shoulder right foreground; Kasun mid-frame inside the warm doorway",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "door threshold",
+      "lighting": "warm/cool split across Kasun"
+     }
+    },
+    "sound": {
+     "ambience": "mixed interior/exterior",
+     "effects": "",
+     "music": "diegetic bed low",
+     "silence": false
+    }
+   },
+   {
+    "n": 6,
+    "sequence": "B",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "85mm: introduce the judge, close enough to read",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Introduce the father as a person, not just a silhouette; after his question, we meet his face cleanly framed in the doorway.",
+    "ir": {
+     "setting": "Doorway seen from just inside looking out",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "eye level",
+      "framing": "MCU on the father framed by the door, cool street behind, warm edge light from inside",
+      "movement": "locked-off",
+      "white_balance": "mixed: cool ambient with warm rim",
+      "color_tone": "heightened warm/cool split",
+      "depth_of_field": "Shallow, background street soft",
+      "lens_artifacts": "soft sign bloom on highlights"
+     },
+     "lighting": "Cool ambient on his outside side; a warm rim from the interior catches his near cheek and hairline",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "measured gaze, composed lines",
+       "action": "finishes looking to the sign, brings eyes back inside",
+       "position": "centre-right in the doorway, facing in"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "MCU on the father",
+       "director_line": "From the name above to the man inside.",
+       "action": "His eyes lift once to the sign edge, then settle back to Kasun.",
+       "performance": "A small set of the jaw; lids ease as he refocuses."
+      }
+     ],
+     "audio": "street hush with warm interior bed faint",
+     "first_frame": {
+      "composition": "father centred in the doorway; warm edge across near cheek",
+      "subjects": [
+       "Father"
+      ],
+      "setting": "door threshold",
+      "lighting": "cool outside, warm rim from interior"
+     }
+    },
+    "sound": {
+     "ambience": "mixed interior/exterior hush",
+     "effects": "",
+     "music": "diegetic bed low",
+     "silence": false
+    }
+   },
+   {
+    "n": 7,
+    "sequence": "C",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "TWO",
+    "angle": "eye level",
+    "lens": "35mm: establish the two across the line",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "Baseline of the relationship before the answer: both men held by the doorway, the line between worlds clear.",
+    "ir": {
+     "setting": "Threshold: interior dining room left, doorway to the right",
+     "cinematography": {
+      "camera": "locked-off sticks, 35mm, f/4",
+      "angle": "eye level",
+      "framing": "two-shot: Kasun inside left facing out; the father half-silhouetted outside right",
+      "movement": "locked-off",
+      "white_balance": "mixed",
+      "color_tone": "neutral-warm overall with cool edge",
+      "depth_of_field": "Deep enough to hold both",
+      "lens_artifacts": "soft glass reflections at the door"
+     },
+     "lighting": "Warm pools behind Kasun; cool dusk on the father with a little sign kiss",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "set, calm",
+       "action": "holds his ground, ready to answer",
+       "position": "inside left, facing right"
+      },
+      {
+       "id": "Father",
+       "description": "measured, composed",
+       "action": "regards Kasun from the street side",
+       "position": "outside right, facing left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "two-shot on the threshold",
+       "director_line": "A breath before the claim.",
+       "action": "They hold each other’s eyes.",
+       "performance": "They don’t rush; a tiny nod from Kasun to begin."
+      }
+     ],
+     "audio": "interior bed, distant street wash through the open glass",
+     "first_frame": {
+      "composition": "Kasun left lit warm; the father right in cooler silhouette, doorframe between",
+      "subjects": [
+       "Kasun",
+       "Father"
+      ],
+      "setting": "doorway split",
+      "lighting": "warm/cool split"
+     }
+    },
+    "sound": {
+     "ambience": "mixed interior/exterior",
+     "effects": "",
+     "music": "diegetic bed continues",
+     "silence": false
+    }
+   },
+   {
+    "n": 8,
+    "sequence": "C",
+    "blocks": [
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "over": "",
+    "size": "CU",
+    "angle": "eye level",
+    "lens": "85mm: make the answer the scene’s heart",
+    "take_s": 6,
+    "use_s": 6,
+    "link": "cut",
+    "why": "Kasun’s claim deserves the closest frame; we let the words live on his face.",
+    "ir": {
+     "setting": "Just inside the door",
+     "cinematography": {
+      "camera": "slider on sticks, 85mm, f/1.8",
+      "angle": "eye level",
+      "framing": "tight close-up on Kasun with the doorframe soft at the edge",
+      "movement": "slow 4–5 cm push in then settle",
+      "white_balance": "mixed, skin balanced warm",
+      "color_tone": "neutral-warm, film-like",
+      "depth_of_field": "Shallow, creamy bokeh",
+      "lens_artifacts": "subtle warm bloom on practicals"
+     },
+     "lighting": "Warm key from a hanging lamp; cool kiss from the door on the far cheek; gentle eye-light from the room",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "eyes steady, mouth easy",
+       "action": "speaks his line, then settles into silence",
+       "position": "centre of frame, just inside the doorway"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "CU on Kasun",
+       "director_line": "He owns the space with restraint.",
+       "action": "He begins speaking, still.",
+       "performance": "Breath sets, eyes don’t flinch."
+      },
+      {
+       "time": "3-6s",
+       "camera": "subtle push then settle",
+       "director_line": "The last words are a promise kept.",
+       "action": "He finishes and holds the father’s gaze.",
+       "performance": "A tiny exhale; a trace of a smile not fully formed."
+      }
+     ],
+     "audio": "room tone warm around his voice",
+     "first_frame": {
+      "composition": "Kasun tight, doorframe soft at edge left, warm bokeh behind",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "just inside the restaurant",
+      "lighting": "warm key, cool rim, clear eyes"
+     }
+    },
+    "sound": {
+     "ambience": "warm interior",
+     "effects": "",
+     "music": "diegetic bed barely felt",
+     "silence": false
+    }
+   },
+   {
+    "n": 9,
+    "sequence": "C",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "85mm: let the line land on the other face",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "End the claim on an image: the father receives Kasun’s words; we read the shift.",
+    "ir": {
+     "setting": "Doorway from just inside looking out",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "eye level",
+      "framing": "MCU on the father framed by the door, street soft behind",
+      "movement": "locked-off",
+      "white_balance": "mixed, cooled half-stop outside with warm rim",
+      "color_tone": "neutral-warm interior edge against cooler street",
+      "depth_of_field": "Shallow",
+      "lens_artifacts": "soft sign bloom"
+     },
+     "lighting": "Cool ambient on his far side; warm rim from inside on near cheek and brow",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "steady, thinking",
+       "action": "holds, eyes on Kasun just off lens",
+       "position": "centre-right in the doorway"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "MCU on the father",
+       "director_line": "A minimal change says enough.",
+       "action": "He holds a breath, then loosens the jaw a touch.",
+       "performance": "Eyes warm a notch; a blink he didn’t plan."
+      }
+     ],
+     "audio": "mixed doorway hush; the room’s music dips subtly under the hold",
+     "first_frame": {
+      "composition": "father framed by door verticals, near cheek rim-lit warm",
+      "subjects": [
+       "Father"
+      ],
+      "setting": "door threshold",
+      "lighting": "cool outside with warm interior rim"
+     }
+    },
+    "sound": {
+     "ambience": "mixed interior/exterior hush",
+     "effects": "",
+     "music": "diegetic bed dips slightly, then holds",
+     "silence": false
+    }
+   },
+   {
+    "n": 10,
+    "sequence": "D",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "over": "",
+    "size": "POV",
+    "angle": "eye level",
+    "lens": "35mm: the father’s eye-line into the room",
+    "take_s": 6,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Let us see the room as the father judges it: a simple, honest sweep.",
+    "ir": {
+     "setting": "From the doorway looking across tables toward the counter and lamps",
+     "cinematography": {
+      "camera": "handheld drift, 35mm, f/4",
+      "angle": "eye level",
+      "framing": "POV through the doorway across empty tables and warm lamps",
+      "movement": "slow left-to-right pan then settle on the room’s heart",
+      "white_balance": "mixed: warm interior, cool fringe at the door",
+      "color_tone": "warm practicals, naturalistic",
+      "depth_of_field": "Medium-deep, foreground table edge soft",
+      "lens_artifacts": "soft doorframe vignette at edges"
+     },
+     "lighting": "Warm pools on tabletops with gentle falloff; cool dusk at frame edge",
+     "subjects": [
+      {
+       "id": "",
+       "description": "tables, lamps, counter — the room’s bones",
+       "action": "static; light flickers gently on glassware",
+       "position": "through the doorway, left-to-right sweep"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "POV sweep across the room",
+       "director_line": "He takes the room in, not rushing.",
+       "action": "Camera pans slowly across tables to the counter and lamps.",
+       "performance": ""
+      }
+     ],
+     "audio": "interior bed and subtle clinks; the street is faint, behind us",
+     "first_frame": {
+      "composition": "foreground table edge low, lamps hovering, counter deep left",
+      "subjects": [
+       "tables",
+       "lamps",
+       "counter"
+      ],
+      "setting": "interior from the threshold",
+      "lighting": "warm pools, calm"
+     }
+    },
+    "sound": {
+     "ambience": "warm interior with faint street wash",
+     "effects": "a gentle glass clink from the counter area",
+     "music": "diegetic bed carries",
+     "silence": false
+    }
+   },
+   {
+    "n": 11,
+    "sequence": "D",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "slightly high",
+    "lens": "85mm: read Kasun as he waits for judgment",
+    "take_s": 6,
+    "use_s": 2,
+    "link": "cut",
+    "why": "Hold on the wait: the answer hangs between the look-around and the nod.",
+    "ir": {
+     "setting": "Just inside the door",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "slightly high",
+      "framing": "medium close-up on Kasun, background doorframe soft",
+      "movement": "locked-off",
+      "white_balance": "mixed",
+      "color_tone": "warm with a cool edge",
+      "depth_of_field": "Shallow",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Warm key from a nearby lamp; cool rim from the doorway",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "composed, listening with his whole face",
+       "action": "waits, eyes tracking the father’s survey off lens",
+       "position": "centre, facing right of camera"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "MCU on Kasun",
+       "director_line": "A still, quiet wait.",
+       "action": "Kasun holds.",
+       "performance": "A faint swallow; lips press then soften."
+      }
+     ],
+     "audio": "room tone and faint street",
+     "first_frame": {
+      "composition": "Kasun on centre with door edge soft behind",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "threshold inside",
+      "lighting": "warm/cool split"
+     }
+    },
+    "sound": {
+     "ambience": "warm interior",
+     "effects": "",
+     "music": "music bed pulls down slightly",
+     "silence": false
+    }
+   },
+   {
+    "n": 12,
+    "sequence": "D",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "over": "",
+    "size": "CU",
+    "angle": "slightly low",
+    "lens": "85mm: the nod is the scene’s punctuation",
+    "take_s": 6,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Resolution: the father’s face framed by the door as he nods once.",
+    "ir": {
+     "setting": "At the doorway from inside looking out",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "slightly low to place the sign glow above",
+      "framing": "close-up on the father half in silhouette with warm spill from inside",
+      "movement": "very subtle push in (2–3 cm) then settle",
+      "white_balance": "mixed, cooled half-stop for his outside side",
+      "color_tone": "slightly warmer grade to seal the approval",
+      "depth_of_field": "Shallow",
+      "lens_artifacts": "soft sign bloom"
+     },
+     "lighting": "Cool ambient on the street side; warm spill across his near cheek; sign glow kissing hair line",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "eyes softened, edges lit by sign and doorway",
+       "action": "finishes his look-around, returns to Kasun, nods once",
+       "position": "centre-right in the doorway, facing in"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "CU on the father",
+       "director_line": "He comes back from the room to the man.",
+       "action": "He brings his gaze to Kasun.",
+       "performance": "Eyes brighten a notch; a tiny breath."
+      },
+      {
+       "time": "2-4s",
+       "camera": "unchanged, tiny settle",
+       "director_line": "The nod lands and holds.",
+       "action": "He nods once.",
+       "performance": "Chin dips once, mouth corners ease."
+      }
+     ],
+     "audio": "mixed door ambience; music soft beneath",
+     "first_frame": {
+      "composition": "father’s face centred, dark street behind, warm edge from interior on cheek",
+      "subjects": [
+       "Father"
+      ],
+      "setting": "doorway",
+      "lighting": "cool outside, warm rim inside"
+     }
+    },
+    "sound": {
+     "ambience": "mixed interior/exterior, quieter now",
+     "effects": "",
+     "music": "music bed lifts a shade then holds",
+     "silence": false
+    }
+   },
+   {
+    "n": 13,
+    "sequence": "D",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "EWS",
+    "angle": "eye level",
+    "lens": "24mm: echo the opening, now with two at the threshold",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Close on an image: the room as it was, now inhabited by assent at the door.",
+    "ir": {
+     "setting": "From the same back corner as Shot 1",
+     "cinematography": {
+      "camera": "locked-off sticks, 24mm, f/5.6",
+      "angle": "eye level",
+      "framing": "extreme wide on the dining room with the door frame-right: Kasun inside by the door, the father in the doorway silhouette",
+      "movement": "locked-off",
+      "white_balance": "mixed",
+      "color_tone": "warm-leaning finish",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Unchanged practical warmth inside, cool dusk outside, sign glow at the edge",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "standing a touch taller",
+       "action": "holds the moment, still at the door",
+       "position": "frame-right inside"
+      },
+      {
+       "id": "Father",
+       "description": "silhouette with warm edge",
+       "action": "stands after the nod",
+       "position": "in the doorway"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "EWS of the space and threshold",
+       "director_line": "The new place keeps its warmth; the threshold holds two.",
+       "action": "They hold their positions, no rush to move.",
+       "performance": "Both men let the beat live before anything else happens."
+      }
+     ],
+     "audio": "interior bed and soft street wash",
+     "first_frame": {
+      "composition": "tables and lamps left; door right with the two figures; counter deep left",
+      "subjects": [
+       "Kasun",
+       "Father"
+      ],
+      "setting": "the restaurant interior with the threshold",
+      "lighting": "warm practical pools, cool door edge"
+     }
+    },
+    "sound": {
+     "ambience": "warm interior with faint street",
+     "effects": "",
+     "music": "a quiet, warm chord sustains then fades",
+     "silence": false
+    }
+   }
+  ],
+  "added": [
+   {
+    "shot": 6,
+    "kind": "reaction",
+    "what": "Father’s introduction close, framed in the doorway after his first question",
+    "who": [
+     "Father"
+    ],
+    "object": ""
+   },
+   {
+    "shot": 7,
+    "kind": "baseline",
+    "what": "Two-shot at the threshold to lock screen direction before the answer",
+    "who": [
+     "Kasun",
+     "Father"
+    ],
+    "object": ""
+   },
+   {
+    "shot": 9,
+    "kind": "reaction",
+    "what": "Father receives L3; the answer settles on his face",
+    "who": [
+     "Father"
+    ],
+    "object": ""
+   },
+   {
+    "shot": 13,
+    "kind": "hold",
+    "what": "Hold on the wide echo of the opening, now with both men at the door",
+    "who": [
+     "Kasun",
+     "Father"
+    ],
+    "object": ""
+   }
+  ],
+  "staging": {
+   "zones": [
+    "Door - inside",
+    "Door - outside",
+    "Curb by car",
+    "Dining floor"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Kasun",
+     "zone": "Door - inside",
+     "facing": "right",
+     "frame_side": "right",
+     "holding": ""
+    },
+    {
+     "block": 0,
+     "who": "Father",
+     "zone": "Curb by car",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": ""
+    },
+    {
+     "block": 1,
+     "who": "Father",
+     "zone": "Door - outside",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": ""
+    }
+   ]
+  },
+  "end_state": {
+   "people": [
+    {
+     "who": "Kasun",
+     "where": "Door - inside",
+     "facing": "right",
+     "holding": "",
+     "look": "steady, light shirt, sleeves rolled"
+    },
+    {
+     "who": "Father",
+     "where": "Door - outside",
+     "facing": "left",
+     "holding": "",
+     "look": "composed, edged by sign glow"
+    }
+   ],
+   "props": [
+    {
+     "what": "sign",
+     "where": "above the doorway, glowing warm"
+    },
+    {
+     "what": "car",
+     "where": "at the curb by the door"
+    }
+   ],
+   "time": "early evening, blue hour",
+   "light": "warm practical lamps inside; cool dusk outside with a touch of sign glow at the door"
+  }
+ }
+}

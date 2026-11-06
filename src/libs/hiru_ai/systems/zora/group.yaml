@@ -1,0 +1,17 @@
+id: zora
+version: 1
+summary: "Zora, the director chat over a planner's stored plan (plan/2026-11-06e): the systems of the group."
+owner: director
+status: active            # disabled switches off every Zora part in this layer
+# The removal list (`hiru-ai remove --group zora`): repo folders that go with the group, beside its folder in each
+# hiru_ai layer. A folder that does not exist yet is skipped. Keep this in step with plan/2026-11-06e §4.0.
+folders:
+  - src/libs/contracts/zora
+  - src/services/zora_chat
+  - tests/zora
+  - tests/eval/zora
+  - lab/zora
+  - docs/zora
+outside:
+  - "hiru-ai-studio-interface: src/features/zora/ and its mount point on the Director page"
+  - "Zora edits the plans Shot Planner Jonathan stores and runs its checks by id (zora_kernel/step.py, zora_board/gate.py): removing Jonathan first leaves Zora with nothing to edit"

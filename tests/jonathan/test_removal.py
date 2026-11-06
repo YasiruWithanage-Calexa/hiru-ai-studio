@@ -59,6 +59,8 @@ MAY_NAME_IT = {
     "supabase/migrations/20261106120000_jonathan.sql", "Database/README.md", "Database/schema_v13.sql",
     "Database/upgrade_v12_to_v13.sql", "scripts/jonathan_spike.py", "scripts/jonathan_compare.py",
     "supabase/tests/database/014_jonathan.test.sql",
+    # Zora (plan/2026-11-06e) edits the plans Jonathan stores and runs Jonathan's checks by id, from these two files
+    "src/libs/hiru_ai/steps/zora/zora_kernel/step.py", "src/libs/hiru_ai/steps/zora/zora_board/gate.py",
 }
 
 

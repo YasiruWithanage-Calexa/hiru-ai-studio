@@ -98,7 +98,7 @@ the way David was built from Adam: independent groups, so Jonathan has its own c
 `steps/jonathan/`, `systems/jonathan/`, `contracts/jonathan/`, `tests/jonathan/`, `tests/eval/jonathan/`, `docs/jonathan/`),
 ids start `jonathan_`, `hiru-ai remove --group jonathan` lists what goes. It never imports Adam or David. The system is
 `jonathan_shot_planner` (job `plan_scene_jonathan`, function `shot_planner_jonathan`, port 8211); the tier is `jonathan`
-(`OPENAI__MODEL_AUTHOR` at `OPENAI__EFFORT_JONATHAN`, default high, the effort the lab proved); a production chooses it with
+(`OPENAI__MODEL_JONATHAN`, default `gpt-6.1-sol`, at `OPENAI__EFFORT_JONATHAN`, default high, the effort the lab proved); a production chooses it with
 `settings.shot_planner = "jonathan"`. **Status: Phase 0 is built (the group, the shared lists, the migration pair); the parts
 are still David's copy renamed and run David's behaviour until Phases 1 to 3 port the lab into them.** Read
 `plan/2026-11-06b/PLAN.md` and `IMPLEMENTED.md` first. The migration (`Database/upgrade_v12_to_v13.sql`,

@@ -92,6 +92,7 @@ def test_a_run_goes_through_the_stabiliser_saves_the_plan_and_its_calls_and_pric
 def test_a_model_is_priced_by_its_exact_name_and_one_with_no_price_is_refused():
     assert spike.price_of("gpt-5") == (1.25, 0.125, 10.00) and spike.price_of("gpt-5-2025-08-07")[2] == 10.00
     assert spike.price_of("gpt-5.5")[2] == 30.00  # not billed as gpt-5 (the lab's prefix bug)
+    assert spike.price_of("gpt-6.1-sol") == (2.00, 0.10, 10.00)  # Jonathan's model
     with pytest.raises(ValueError):
         spike.price_of("gpt-6")
 

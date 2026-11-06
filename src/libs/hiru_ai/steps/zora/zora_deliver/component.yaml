@@ -1,0 +1,8 @@
+id: zora_deliver
+kind: step
+version: 1
+summary: "Zora's delivery check: the effects a turn declared against the diff, paired by shot handle; one re-task for what is missing, the rest reported as asked for and not done."
+status: active
+owner: director
+entry: step:run
+uses: []

@@ -359,3 +359,13 @@ modules = ["hiru_ai.systems.jonathan.*"]
 name = "jonathan knowledge bases never import each other"
 type = "independence"
 modules = ["hiru_ai.knowledge_bases.jonathan.*"]
+
+
+# plan/2026-11-06e §4.0: Zora's parts live in a `zora` folder inside each layer, kept apart the same way. The steps reach
+# each other (and the planner's checks) by id through `core.parts`, never by import.
+
+[[tool.importlinter.contracts]]
+name = "zora steps never import each other"
+type = "independence"
+modules = ["hiru_ai.steps.zora.zora_kernel", "hiru_ai.steps.zora.zora_deps", "hiru_ai.steps.zora.zora_board",
+           "hiru_ai.steps.zora.zora_deliver", "hiru_ai.steps.zora.zora_ledger"]

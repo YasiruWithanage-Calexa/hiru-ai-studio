@@ -70,8 +70,12 @@ reader's, as the plan says.
   `deploy-functions.yml`, `start-functions.ps1`), `settings.jonathan_workers`, `.env.example`, the router (`GET /scenes/{id}/jonathan`,
   `POST .../jonathan/plan`, `POST .../jonathan/added/{n}/remove`), `pyproject.toml` (service names and six independence
   contracts), `CLAUDE.md`, the catalog and `langgraph.json` (regenerated).
-- **A tier of its own**, `jonathan` (`OPENAI__MODEL_AUTHOR` at `OPENAI__EFFORT_JONATHAN`, default `high`, 900 s), because the lab
+- **A tier of its own**, `jonathan` (`OPENAI__MODEL_JONATHAN` at `OPENAI__EFFORT_JONATHAN`, default `high`, 900 s), because the lab
   proved Jonathan at high effort and David's `author` tier defaults to medium. Both agents use it.
+- **2026-11-06, the model moved to `gpt-6.1-sol`** (the person's choice): its own setting `model_jonathan`, so David stays on
+  `OPENAI__MODEL_AUTHOR`. gpt-5 shuts down 2026-12-11. Sol is $2 / $0.10 / $10 per 1M tokens (gpt-5: $1.25 / $0.125 / $10)
+  and supports high effort and strict `json_schema` output. Not yet run live; the lab's results were all on gpt-5 and gpt-5.5,
+  so the spike (`scripts/jonathan_spike.py`, Sol priced) is the check.
 - **The migration pair**, written and not applied: `supabase/migrations/20261106120000_jonathan.sql`,
   `supabase/tests/database/014_jonathan.test.sql`, `Database/upgrade_v12_to_v13.sql`, `Database/schema_v13.sql` (v12 plus this),
   and two rows in `Database/README.md`.

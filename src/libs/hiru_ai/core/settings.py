@@ -28,8 +28,10 @@ class OpenAISettings(BaseModel):
     model_author: str = "gpt-5"
     effort_author: str = "medium"
     effort_repair: str = "low"
-    # Shot Planner Jonathan (plan/2026-11-06b): the `jonathan` tier is the same model at the effort the cinematic lab
-    # proved (high). An environment change, not a code change.
+    # Shot Planner Jonathan (plan/2026-11-06b): the `jonathan` tier, its own model (gpt-5 shuts down 2026-12-11;
+    # GPT-6.1 Sol is OpenAI's near-flagship at gpt-5's price class) at the effort the cinematic lab proved (high).
+    # An environment change, not a code change.
+    model_jonathan: str = "gpt-6.1-sol"
     effort_jonathan: str = "high"
     model_medium: str = "gpt-5-mini"
     effort_medium: str = "low"

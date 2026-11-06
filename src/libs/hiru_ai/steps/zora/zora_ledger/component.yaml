@@ -1,0 +1,8 @@
+id: zora_ledger
+kind: step
+version: 1
+summary: "Zora's change ledger: what the turn changed by treatment, sequence and shot (read from the diff), what was refused, asked for and not done, nothing changed, overruns reported, never trimmed."
+status: active
+owner: director
+entry: step:run
+uses: []

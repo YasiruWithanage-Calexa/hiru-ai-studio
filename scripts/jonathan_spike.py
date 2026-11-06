@@ -45,7 +45,9 @@ SCENE_WORST_USD = 0.75  # one scene's worst case: three calls at the most the la
 # exact name or a dated snapshot of it only (the lab found that a prefix match billed gpt-5.5 as gpt-5).
 PRICES: dict[str, tuple[float, float, float]] = {
     "gpt-5-nano": (0.05, 0.005, 0.40), "gpt-5-mini": (0.25, 0.025, 2.00), "gpt-5": (1.25, 0.125, 10.00),
-    "gpt-5.5": (5.00, 0.50, 30.00)}
+    "gpt-5.5": (5.00, 0.50, 30.00),
+    # read 2026-11-06 off developers.openai.com/api/docs/models/gpt-6.1-sol (<272K input; 2x input above it)
+    "gpt-6.1-sol": (2.00, 0.10, 10.00)}
 Row = dict[str, Any]
 
 

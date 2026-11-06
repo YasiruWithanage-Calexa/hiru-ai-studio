@@ -1,0 +1,634 @@
+{
+ "before": {
+  "treatment": {
+   "logline": "Anudi tells Dasun she has to go.",
+   "arc": [
+    {
+     "beat": "Stillness",
+     "blocks": {
+      "first": 0,
+      "last": 1
+     },
+     "feeling": "a held breath",
+     "_h": "a1"
+    },
+    {
+     "beat": "The question",
+     "blocks": {
+      "first": 2,
+      "last": 3
+     },
+     "feeling": "hurt",
+     "_h": "a2"
+    }
+   ],
+   "approach": "Wide and still, then closer on the question.",
+   "colour_script": [
+    {
+     "sequence": "A",
+     "palette": "gold",
+     "light": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "grade": "warm"
+    },
+    {
+     "sequence": "B",
+     "palette": "gold going grey",
+     "light": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "grade": "cooler"
+    }
+   ],
+   "geography": "Anudi frame left, Dasun frame right, camera on the path side.",
+   "key_image": "The phone face-down between them.",
+   "advice": []
+  },
+  "sequences": [
+   {
+    "id": "A",
+    "title": "Stillness",
+    "purpose": "the two of them, and the phone",
+    "shots": {
+     "first": 1,
+     "last": 2
+    }
+   },
+   {
+    "id": "B",
+    "title": "The question",
+    "purpose": "his hurt",
+    "shots": {
+     "first": 3,
+     "last": 3
+    }
+   }
+  ],
+  "shots": [
+   {
+    "n": 1,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level",
+    "lens": "24mm: the lake around them",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Open on the two of them and the gap the phone makes.",
+    "ir": {
+     "setting": "A wooden bench by a still lake, late afternoon",
+     "cinematography": {
+      "camera": "sticks",
+      "angle": "eye level",
+      "framing": "wide two-shot",
+      "movement": "static"
+     },
+     "lighting": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "subjects": [
+      {
+       "id": "Anudi",
+       "description": "Anudi, blue kurta",
+       "action": "sits",
+       "position": "frame left"
+      },
+      {
+       "id": "Dasun",
+       "description": "Dasun, white shirt",
+       "action": "sits",
+       "position": "frame right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "static",
+       "director_line": "",
+       "action": "they sit apart",
+       "performance": "still"
+      }
+     ],
+     "audio": "lake lapping",
+     "first_frame": {
+      "composition": "Both on the bench, the phone between",
+      "subjects": [
+       "Anudi",
+       "Dasun"
+      ],
+      "setting": "A wooden bench by a still lake, late afternoon",
+      "lighting": "Low late-afternoon sun from frame left, warm, soft shadows"
+     }
+    },
+    "sound": {
+     "ambience": "lake lapping",
+     "effects": "",
+     "music": "",
+     "silence": true
+    },
+    "_h": "h1"
+   },
+   {
+    "n": 2,
+    "sequence": "A",
+    "blocks": [
+     1
+    ],
+    "lines": [
+     "L1"
+    ],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "50mm: plain and near",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Her decision, said quietly to the lake.",
+    "ir": {
+     "setting": "A wooden bench by a still lake, late afternoon",
+     "cinematography": {
+      "camera": "sticks",
+      "angle": "eye level",
+      "framing": "medium close-up",
+      "movement": "static"
+     },
+     "lighting": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "subjects": [
+      {
+       "id": "Anudi",
+       "description": "Anudi, blue kurta",
+       "action": "sits",
+       "position": "frame left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "static",
+       "director_line": "",
+       "action": "she speaks",
+       "performance": "quiet"
+      }
+     ],
+     "audio": "lake lapping",
+     "first_frame": {
+      "composition": "Anudi frame left, looking out",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "A wooden bench by a still lake, late afternoon",
+      "lighting": "Low late-afternoon sun from frame left, warm, soft shadows"
+     }
+    },
+    "sound": {
+     "ambience": "lake lapping",
+     "effects": "",
+     "music": "",
+     "silence": false
+    },
+    "_h": "h2"
+   },
+   {
+    "n": 3,
+    "sequence": "B",
+    "blocks": [
+     2,
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "over": "",
+    "size": "CU",
+    "angle": "eye level",
+    "lens": "85mm: his hurt, close",
+    "take_s": 6,
+    "use_s": 5,
+    "link": "cut",
+    "why": "He looks at the phone, then asks why.",
+    "ir": {
+     "setting": "A wooden bench by a still lake, late afternoon",
+     "cinematography": {
+      "camera": "sticks",
+      "angle": "eye level",
+      "framing": "close-up",
+      "movement": "static"
+     },
+     "lighting": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "subjects": [
+      {
+       "id": "Dasun",
+       "description": "Dasun, white shirt",
+       "action": "sits",
+       "position": "frame right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "static",
+       "director_line": "",
+       "action": "he looks at the phone",
+       "performance": "searching"
+      },
+      {
+       "time": "3-6s",
+       "camera": "static",
+       "director_line": "",
+       "action": "he asks",
+       "performance": "hurt"
+      }
+     ],
+     "audio": "lake lapping",
+     "first_frame": {
+      "composition": "Dasun frame right",
+      "subjects": [
+       "Dasun"
+      ],
+      "setting": "A wooden bench by a still lake, late afternoon",
+      "lighting": "Low late-afternoon sun from frame left, warm, soft shadows"
+     }
+    },
+    "sound": {
+     "ambience": "lake lapping",
+     "effects": "",
+     "music": "",
+     "silence": false
+    },
+    "_h": "h3"
+   }
+  ],
+  "added": [],
+  "staging": {
+   "zones": [
+    "bench left",
+    "bench right"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Anudi",
+     "zone": "bench left",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 0,
+     "who": "Dasun",
+     "zone": "bench right",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": ""
+    }
+   ]
+  },
+  "end_state": {
+   "people": [
+    {
+     "who": "Anudi",
+     "where": "bench left",
+     "facing": "right",
+     "holding": "",
+     "look": "blue kurta"
+    },
+    {
+     "who": "Dasun",
+     "where": "bench right",
+     "facing": "left",
+     "holding": "",
+     "look": "white shirt"
+    }
+   ],
+   "props": [
+    {
+     "what": "phone",
+     "where": "on the bench"
+    }
+   ],
+   "time": "late afternoon",
+   "light": "Low late-afternoon sun from frame left, warm, soft shadows"
+  }
+ },
+ "after": {
+  "treatment": {
+   "logline": "Anudi tells Dasun she has to go.",
+   "arc": [
+    {
+     "beat": "Stillness",
+     "blocks": {
+      "first": 0,
+      "last": 1
+     },
+     "feeling": "a held breath",
+     "_h": "a1"
+    },
+    {
+     "beat": "The question",
+     "blocks": {
+      "first": 2,
+      "last": 3
+     },
+     "feeling": "hurt",
+     "_h": "a2"
+    }
+   ],
+   "approach": "Cold and far: long lenses, nobody close",
+   "colour_script": [
+    {
+     "sequence": "A",
+     "palette": "gold",
+     "light": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "grade": "warm"
+    },
+    {
+     "sequence": "B",
+     "palette": "gold going grey",
+     "light": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "grade": "cooler"
+    }
+   ],
+   "geography": "Anudi frame left, Dasun frame right, camera on the path side.",
+   "key_image": "The phone face-down between them.",
+   "advice": []
+  },
+  "sequences": [
+   {
+    "id": "A",
+    "title": "Stillness",
+    "purpose": "the two of them, and the phone",
+    "shots": {
+     "first": 1,
+     "last": 2
+    }
+   },
+   {
+    "id": "B",
+    "title": "The question",
+    "purpose": "his hurt",
+    "shots": {
+     "first": 3,
+     "last": 3
+    }
+   }
+  ],
+  "shots": [
+   {
+    "n": 1,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level",
+    "lens": "24mm: the lake around them",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Open on the two of them and the gap the phone makes.",
+    "ir": {
+     "setting": "A wooden bench by a still lake, late afternoon",
+     "cinematography": {
+      "camera": "sticks",
+      "angle": "eye level",
+      "framing": "wide two-shot",
+      "movement": "static"
+     },
+     "lighting": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "subjects": [
+      {
+       "id": "Anudi",
+       "description": "Anudi, blue kurta",
+       "action": "sits",
+       "position": "frame left"
+      },
+      {
+       "id": "Dasun",
+       "description": "Dasun, white shirt",
+       "action": "sits",
+       "position": "frame right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "static",
+       "director_line": "",
+       "action": "they sit apart",
+       "performance": "still"
+      }
+     ],
+     "audio": "lake lapping",
+     "first_frame": {
+      "composition": "Both on the bench, the phone between",
+      "subjects": [
+       "Anudi",
+       "Dasun"
+      ],
+      "setting": "A wooden bench by a still lake, late afternoon",
+      "lighting": "Low late-afternoon sun from frame left, warm, soft shadows"
+     }
+    },
+    "sound": {
+     "ambience": "lake lapping",
+     "effects": "",
+     "music": "",
+     "silence": true
+    },
+    "_h": "h1"
+   },
+   {
+    "n": 2,
+    "sequence": "A",
+    "blocks": [
+     1
+    ],
+    "lines": [
+     "L1"
+    ],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "50mm: plain and near",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Her decision, said quietly to the lake.",
+    "ir": {
+     "setting": "A wooden bench by a still lake, late afternoon",
+     "cinematography": {
+      "camera": "sticks",
+      "angle": "eye level",
+      "framing": "medium close-up",
+      "movement": "static"
+     },
+     "lighting": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "subjects": [
+      {
+       "id": "Anudi",
+       "description": "Anudi, blue kurta",
+       "action": "sits",
+       "position": "frame left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "static",
+       "director_line": "",
+       "action": "she speaks",
+       "performance": "quiet"
+      }
+     ],
+     "audio": "lake lapping",
+     "first_frame": {
+      "composition": "Anudi frame left, looking out",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "A wooden bench by a still lake, late afternoon",
+      "lighting": "Low late-afternoon sun from frame left, warm, soft shadows"
+     }
+    },
+    "sound": {
+     "ambience": "lake lapping",
+     "effects": "",
+     "music": "",
+     "silence": false
+    },
+    "_h": "h2"
+   },
+   {
+    "n": 3,
+    "sequence": "B",
+    "blocks": [
+     2,
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "over": "",
+    "size": "CU",
+    "angle": "eye level",
+    "lens": "135mm: he is far from her",
+    "take_s": 6,
+    "use_s": 5,
+    "link": "cut",
+    "why": "He looks at the phone, then asks why.",
+    "ir": {
+     "setting": "A wooden bench by a still lake, late afternoon",
+     "cinematography": {
+      "camera": "sticks",
+      "angle": "eye level",
+      "framing": "close-up",
+      "movement": "static"
+     },
+     "lighting": "Low late-afternoon sun from frame left, warm, soft shadows",
+     "subjects": [
+      {
+       "id": "Dasun",
+       "description": "Dasun, white shirt",
+       "action": "sits",
+       "position": "frame right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "static",
+       "director_line": "",
+       "action": "he looks at the phone",
+       "performance": "searching"
+      },
+      {
+       "time": "3-6s",
+       "camera": "static",
+       "director_line": "",
+       "action": "he asks",
+       "performance": "hurt"
+      }
+     ],
+     "audio": "lake lapping",
+     "first_frame": {
+      "composition": "Dasun frame right",
+      "subjects": [
+       "Dasun"
+      ],
+      "setting": "A wooden bench by a still lake, late afternoon",
+      "lighting": "Low late-afternoon sun from frame left, warm, soft shadows"
+     }
+    },
+    "sound": {
+     "ambience": "lake lapping",
+     "effects": "",
+     "music": "",
+     "silence": false
+    },
+    "_h": "h3"
+   }
+  ],
+  "added": [],
+  "staging": {
+   "zones": [
+    "bench left",
+    "bench right"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Anudi",
+     "zone": "bench left",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 0,
+     "who": "Dasun",
+     "zone": "bench right",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": ""
+    }
+   ]
+  },
+  "end_state": {
+   "people": [
+    {
+     "who": "Anudi",
+     "where": "bench left",
+     "facing": "right",
+     "holding": "",
+     "look": "blue kurta"
+    },
+    {
+     "who": "Dasun",
+     "where": "bench right",
+     "facing": "left",
+     "holding": "",
+     "look": "white shirt"
+    }
+   ],
+   "props": [
+    {
+     "what": "phone",
+     "where": "on the bench"
+    }
+   ],
+   "time": "late afternoon",
+   "light": "Low late-afternoon sun from frame left, warm, soft shadows"
+  }
+ },
+ "attempted": true,
+ "undelivered": [
+  "the shots' angle"
+ ],
+ "overruns": [],
+ "refused": [
+  "S09: there is no S09: the scene has S01–S03"
+ ]
+}

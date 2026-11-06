@@ -1,0 +1,1308 @@
+{
+ "name": "father_refuses",
+ "run": "16-gpt_5-high-father_refuses",
+ "scene": {
+  "blocks": [
+   {
+    "index": 0,
+    "kind": "action",
+    "text": "Evening on a Colombo roadside. KASUN pours tea at his small three-wheeler stall. ANUDI'S FATHER arrives and stands, looking over the stall.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "move",
+    "events": 3,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 1,
+    "kind": "dialogue",
+    "text": "ඔයා දවසකට කොච්චර හොයනවාද?",
+    "speaker": "Father",
+    "line_id": "L1",
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 2,
+    "kind": "dialogue",
+    "text": "ජීවත් වෙන්න ඇති, සර්.",
+    "speaker": "Kasun",
+    "line_id": "L2",
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 3,
+    "kind": "action",
+    "text": "The father looks at the cups, the kettle, the worn stool.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "with_line",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 4,
+    "kind": "dialogue",
+    "text": "මේක මගේ දුව හුරු තැන නෙවෙයි.",
+    "speaker": "Father",
+    "line_id": "L4",
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 5,
+    "kind": "action",
+    "text": "Kasun sets down the kettle. He does not answer at once.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "act",
+    "events": 2,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 6,
+    "kind": "dialogue",
+    "text": "ඒක මම දන්නවා. ඒත් මම මේක වෙනස් කරනවා.",
+    "speaker": "Kasun",
+    "line_id": "L6",
+    "delivery": "steady",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 7,
+    "kind": "action",
+    "text": "The father looks at him a long moment, then turns and walks to his car.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "move",
+    "events": 2,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   }
+  ],
+  "cast": [
+   "Kasun",
+   "Father"
+  ],
+  "others": [],
+  "place": {
+   "name": "A Colombo roadside, evening",
+   "objects": [
+    "three-wheeler",
+    "kettle",
+    "cups",
+    "stool",
+    "car",
+    "counter",
+    "steam"
+   ]
+  },
+  "envelope_s": null
+ },
+ "plan": {
+  "treatment": {
+   "logline": "On a warm Colombo evening, a tea-seller meets his lover’s father’s class test, absorbs the cut, and answers with a quiet promise as the father turns away.",
+   "arc": [
+    {
+     "beat": "He arrives to measure the man",
+     "blocks": {
+      "first": 0,
+      "last": 2
+     },
+     "feeling": "A polite test under streetlights; two worlds across a counter"
+    },
+    {
+     "beat": "Judgement of the place",
+     "blocks": {
+      "first": 3,
+      "last": 4
+     },
+     "feeling": "The stall is appraised and dismissed; the words sting"
+    },
+    {
+     "beat": "The vow and the parting",
+     "blocks": {
+      "first": 5,
+      "last": 7
+     },
+     "feeling": "A steady promise; distance remains"
+    }
+   ],
+   "approach": "Street is character. Open wide and grounded, then climb steadily into faces. Lenses: 24mm/28mm for world and geography, 35mm/50mm for across-the-counter dialogue, 85mm for intimate singles, 100mm macro for steam, cups and kettle. Movement is restrained and motivated: locked-off or a slow push on key turns; little handheld drift for POV details; a sideways pan to follow the father’s exit. Foreground steam and counter edges layer depth; reflections and headlight bokeh carry the city. Play big lines on the listener’s face; push closest on the promise.",
+   "colour_script": [
+    {
+     "sequence": "A",
+     "palette": "warm amber streetlight with cyan-blue in shadows; red brake-light flicks",
+     "light": "continuous sodium streetlamp overhead camera-left, soft shop-neon bounce from camera-right, occasional headlight sweeps; kettle steam catches light",
+     "grade": "naturalistic, slightly desaturated, cooler mids to keep distance"
+    },
+    {
+     "sequence": "B",
+     "palette": "same streetlight/neon; greens in metal and plastic feel a touch sickly",
+     "light": "unchanged continuous street sodium and neon bounce",
+     "grade": "subtly cooler/greener bias to emphasize scrutiny and the cut"
+    },
+    {
+     "sequence": "C",
+     "palette": "unchanged street sources; skin holds a warmer midtone on Kasun while background stays cool",
+     "light": "unchanged continuous street sodium and neon bounce",
+     "grade": "skin-warmth creeps into Kasun’s close-up; cool returns as the father leaves"
+    }
+   ],
+   "geography": "The three-wheeler stall is parked curbside camera-right; its open counter faces camera-left toward the pavement and street. The father’s car is parked further camera-left along the curb. The line runs along the counter (Kasun inside, the father outside). We keep the camera on the stall/Kasun side of the line throughout, so Kasun reads frame-right facing left, the father frame-left facing right. The father arrives from the car at camera-left to the counter (b0), stays at the counter for the exchange, then exits back toward camera-left along the curb to the car (b7). The exit is followed with a pan that stays on our side of the line.",
+   "key_image": "Amber steam billowing up from a dented kettle between two faces across a narrow counter, headlight bokeh drifting through.",
+   "advice": [
+    "We chose to play L4 and L1 on Kasun’s face. If you prefer to see the father say those lines, we can swap shots 10 and 4 to on-speaker coverage.",
+    "We avoid readable phone or signage text and a detailed car door action; if you need a door close clearly seen, we’ll stage it out of frame and play it as sound.",
+    "If the father should be chauffeur-driven or arrive with others, that changes staging and must be written in the scene."
+   ]
+  },
+  "sequences": [
+   {
+    "id": "A",
+    "title": "Arrival and the first test",
+    "purpose": "Establish the world and set the class measure across the counter.",
+    "shots": {
+     "first": 1,
+     "last": 6
+    }
+   },
+   {
+    "id": "B",
+    "title": "Inspection and the cut",
+    "purpose": "Show the father’s eye and let his judgement land, ending on Kasun’s held restraint.",
+    "shots": {
+     "first": 7,
+     "last": 11
+    }
+   },
+   {
+    "id": "C",
+    "title": "The vow and the parting",
+    "purpose": "Kasun states his intent; the father leaves; we close on the world.",
+    "shots": {
+     "first": 12,
+     "last": 15
+    }
+   }
+  ],
+  "shots": [
+   {
+    "n": 1,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "EWS",
+    "angle": "eye level",
+    "lens": "24mm: world first, two small figures in it",
+    "take_s": 8,
+    "use_s": 5,
+    "link": "cut",
+    "why": "Open on the world: place the small stall against the moving city so the class gap is geography before it is words.",
+    "ir": {
+     "setting": "A Colombo roadside at evening: a three-wheeler tea stall parked at the curb, a short counter, cups, a dented kettle steaming; a car at the far left; buses and three-wheelers pass",
+     "cinematography": {
+      "camera": "locked-off sticks, 24mm, f/4",
+      "angle": "eye level from across the street’s width",
+      "framing": "extreme wide with the stall camera-right third, pavement and parked car camera-left",
+      "movement": "locked-off",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "warm amber streetlamp with cyan-blue shadows, slightly desaturated",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "subtle headlight streaks"
+     },
+     "lighting": "Single sodium streetlamp above-left of frame keys the stall; soft neon bounce from right; steam glows; occasional headlight sweeps",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "behind the counter in the stall",
+       "action": "pours tea from a height, steady",
+       "position": "frame-right at the stall opening, facing left"
+      },
+      {
+       "id": "Father",
+       "description": "well-dressed, purposeful",
+       "action": "walks in from the parked car and comes to a stop at the counter",
+       "position": "enters from frame-left toward the counter"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "extreme wide on the whole corner",
+       "director_line": "The city passes; the stall breathes steam.",
+       "action": "Kasun pours tea; traffic streams.",
+       "performance": "Kasun’s body is economical, practised."
+      },
+      {
+       "time": "2-5s",
+       "camera": "unchanged; the father enters from left",
+       "director_line": "A figure crosses the frame and stops at the island of light.",
+       "action": "The father arrives and looks over the stall.",
+       "performance": "He squares to the counter, chin level, taking in the space before the man."
+      }
+     ],
+     "audio": "busy street air, distant horns, a bus brake sigh; kettle simmer and pour",
+     "first_frame": {
+      "composition": "the stall at right under amber light, long pavement left with a parked car",
+      "subjects": [
+       "Kasun at the counter",
+       "steam rising in amber light"
+      ],
+      "setting": "A Colombo roadside at evening",
+      "lighting": "sodium streetlamp from above-left; steam catching amber"
+     }
+    },
+    "sound": {
+     "ambience": "evening street: horns, scooters, footfall, bus airbrakes; soft voices from passing pedestrians",
+     "effects": "kettle simmer, tea stream, cups clink",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 2,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "slightly high angle",
+    "lens": "100mm macro: tactile steam and liquid",
+    "take_s": 8,
+    "use_s": 2,
+    "link": "cut",
+    "why": "Plant the stall’s heart: the pour and the steam give the place a pulse and scale.",
+    "ir": {
+     "setting": "At the stall counter, close to the cup and kettle",
+     "cinematography": {
+      "camera": "slider, 100mm macro, f/2.8",
+      "angle": "slightly high, just above the cup",
+      "framing": "tight on the tea stream, cup rim and steam",
+      "movement": "a small slow push to follow the stream settling",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "warm amber with cyan in shadow edges",
+      "depth_of_field": "Shallow, creamy bokeh from streetlights",
+      "lens_artifacts": "subtle steam flare"
+     },
+     "lighting": "Sodium key from above-left; neon bounce from right; steam glows softly",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "hand with kettle spout",
+       "action": "finishes a pour, steady",
+       "position": "spout just entering from top-left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "insert, the pour",
+       "director_line": "The stream softens and ends.",
+       "action": "The last thread of tea settles into the cup; steam rolls.",
+       "performance": "His hand holds a breath of stillness before moving out."
+      }
+     ],
+     "audio": "kettle hiss up close, liquid settling",
+     "first_frame": {
+      "composition": "cup and spout dominate; background bokeh dots",
+      "subjects": [
+       "kettle spout",
+       "cup rim",
+       "steam"
+      ],
+      "setting": "The stall counter, inches from the pour",
+      "lighting": "amber sodium glow with steam translucence"
+     }
+    },
+    "sound": {
+     "ambience": "street bed under",
+     "effects": "tea stream, small ceramic tick as cup is set down",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 3,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "slightly low",
+    "lens": "50mm: introduce the father with presence",
+    "take_s": 8,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Introduce the father as a force across the counter before any words: stature and appraisal.",
+    "ir": {
+     "setting": "At the counter, city moving behind him",
+     "cinematography": {
+      "camera": "handheld, 50mm, f/2.8",
+      "angle": "slightly low from inside the stall side",
+      "framing": "medium close-up on the father from chest up, the counter edge low in frame",
+      "movement": "handheld micro-drift, settling as he stops",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "warm with a cooler street wash behind",
+      "depth_of_field": "Medium-shallow; background bokeh of headlights",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Sodium key from above-left brushes his forehead and cheek; headlight sweeps skim the background",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "at the counter, shoulders squared",
+       "action": "arrives into frame and looks over the layout of cups and kettle",
+       "position": "frame-left third, facing right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "medium close-up on the father",
+       "director_line": "He takes in the scale of the world he has come to test.",
+       "action": "He settles at the counter and lets his gaze travel across the stall.",
+       "performance": "His eyes track the cups then the kettle, a small nostril flare as he finishes the scan."
+      }
+     ],
+     "audio": "street bed; the nearer rattle of a passing tuk-tuk",
+     "first_frame": {
+      "composition": "the father’s face left third; the counter edge and steam soft to the right",
+      "subjects": [
+       "Father"
+      ],
+      "setting": "Pavement side of the stall",
+      "lighting": "amber streetlight across his features"
+     }
+    },
+    "sound": {
+     "ambience": "evening street",
+     "effects": "soft footfall stop at the counter",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 4,
+    "sequence": "A",
+    "blocks": [
+     1
+    ],
+    "lines": [
+     "L1"
+    ],
+    "over": "Kasun",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "50mm: first read on Kasun’s face",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The test is heard on the listener: we watch how the question lands on Kasun before he speaks.",
+    "ir": {
+     "setting": "Inside the stall at the counter opening",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.2",
+      "angle": "eye level from inside the stall toward the opening",
+      "framing": "medium close-up on Kasun framed by the stall opening",
+      "movement": "locked-off",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "warm amber with cyan in shadows",
+      "depth_of_field": "Shallow; the father is off-frame",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Sodium key above-left kisses his hairline; neon bounce lifts his shadow side; steam feathers through foreground",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "behind the counter, steady",
+       "action": "listens",
+       "position": "centre-right, looking just off camera left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "MCU on Kasun",
+       "director_line": "The question is a measure, not a conversation.",
+       "action": "He keeps pouring hand steady off frame; his eyes don’t drop.",
+       "performance": "A small inhale; eyelids narrow a fraction."
+      },
+      {
+       "time": "2-4s",
+       "camera": "unchanged",
+       "director_line": "He lets it pass through him.",
+       "action": "He sets the finished cup aside out of frame.",
+       "performance": "His jaw unclenches by a breath; stillness holds."
+      }
+     ],
+     "audio": "street bed thins slightly under the line; the father’s voice close but off",
+     "first_frame": {
+      "composition": "Kasun framed by counter uprights; steam strands pass foreground",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "The stall interior at the serving window",
+      "lighting": "amber sodium key, neon fill, steam glow"
+     }
+    },
+    "sound": {
+     "ambience": "street softened under dialogue",
+     "effects": "a ceramic click as a cup is set just out of frame",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 5,
+    "sequence": "A",
+    "blocks": [
+     2
+    ],
+    "lines": [
+     "L2"
+    ],
+    "over": "",
+    "size": "OTS",
+    "angle": "eye level",
+    "lens": "50mm: across-the-counter honesty",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Kasun answers simply across the counter; keep the city in soft motion behind the father’s shoulder.",
+    "ir": {
+     "setting": "Over the father’s near shoulder toward the stall",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.5",
+      "angle": "eye level from father’s side",
+      "framing": "OTS on Kasun, the father’s shoulder soft left foreground",
+      "movement": "locked-off",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "natural amber with cool background bokeh",
+      "depth_of_field": "Shallow; attention on Kasun",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Sodium key and neon fill consistent; steam threads catch highlights around Kasun",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "behind the counter",
+       "action": "answers, steady",
+       "position": "centre-right, eyes to the father off camera"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "OTS on Kasun",
+       "director_line": "He doesn’t over-explain.",
+       "action": "Kasun keeps hands low, voice level.",
+       "performance": "A respectful nod begins but never completes."
+      },
+      {
+       "time": "2-4s",
+       "camera": "unchanged",
+       "director_line": "The line lands clean.",
+       "action": "He holds his look.",
+       "performance": "A tiny half-smile flickers and is gone."
+      }
+     ],
+     "audio": "street bed; kettle low simmer under; Kasun’s voice close",
+     "first_frame": {
+      "composition": "Kasun centre-right; father’s blurred shoulder frames left",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "Counter opening of the stall",
+      "lighting": "consistent amber sodium key, neon fill"
+     }
+    },
+    "sound": {
+     "ambience": "evening traffic wash",
+     "effects": "soft steam hiss",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 6,
+    "sequence": "A",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "over": "",
+    "size": "MS",
+    "angle": "slightly high",
+    "lens": "35mm: give him space to look",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Before the cut, show the eye at work: the father surveying the humble tools.",
+    "ir": {
+     "setting": "Pavement side of the counter",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "slightly high from Kasun’s side, peeking over the counter rim",
+      "framing": "medium shot of the father from waist up, counter and items visible",
+      "movement": "gentle handheld drift following his eyeline",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "slightly cooler grade over warm light",
+      "depth_of_field": "Medium",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Sodium top-light shapes his forehead and nose; neon fill softens the far cheek",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "framed with cups and kettle edges",
+       "action": "lets his gaze drop to the objects in front of him",
+       "position": "frame-left, facing right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "MS on the father with counter objects in",
+       "director_line": "He takes inventory without a word.",
+       "action": "His eyes move from cups to kettle to the stool beyond.",
+       "performance": "A slight purse of lips at the stool; a micro nod to himself."
+      }
+     ],
+     "audio": "street bed; nearby scooter idles then moves off",
+     "first_frame": {
+      "composition": "father at left, counter middle, steam at right",
+      "subjects": [
+       "Father",
+       "counter objects soft foreground"
+      ],
+      "setting": "The stall frontage",
+      "lighting": "amber sodium key, cooler background drift"
+     }
+    },
+    "sound": {
+     "ambience": "traffic wash with a tuk-tuk idle",
+     "effects": "steam hiss, a distant vendor call",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 7,
+    "sequence": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "over": "",
+    "size": "POV",
+    "angle": "eye level",
+    "lens": "50mm: natural POV scale",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Enter his gaze: cups neatly stacked but worn; the first piece of his judgement.",
+    "ir": {
+     "setting": "Counter surface from the father’s side",
+     "cinematography": {
+      "camera": "handheld, 50mm, f/2.8",
+      "angle": "eye level POV over the counter",
+      "framing": "his-eye view of porcelain cups with tea stains at the rims",
+      "movement": "a tiny left-to-right drift as if scanning",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "cooler grade over warm source",
+      "depth_of_field": "Medium-shallow so stains read",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Amber top-light rolls on cup lips; steam veils the background",
+     "subjects": [
+      {
+       "id": "",
+       "description": "stacked cups, clean but visibly used",
+       "action": "sit immobile",
+       "position": "centre frame on the counter"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "POV on the cups",
+       "director_line": "Use is visible.",
+       "action": "Nothing moves but steam.",
+       "performance": ""
+      }
+     ],
+     "audio": "street bed subdued; close ceramic ring from a cup touched off",
+     "first_frame": {
+      "composition": "cup stack centre with brown tea halos; steam wisps pass",
+      "subjects": [
+       "cups"
+      ],
+      "setting": "the counter top",
+      "lighting": "amber key, light soft reflections"
+     }
+    },
+    "sound": {
+     "ambience": "street hum",
+     "effects": "a faint ceramic tick",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 8,
+    "sequence": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "over": "",
+    "size": "POV",
+    "angle": "low",
+    "lens": "50mm: drop to see the stool the way he does",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Second piece of the inventory: the worn stool that speaks of means.",
+    "ir": {
+     "setting": "Below the counter, near the stall opening",
+     "cinematography": {
+      "camera": "handheld, 50mm, f/2.8",
+      "angle": "low, peering under the counter",
+      "framing": "the wooden stool with worn seat and scuffed legs",
+      "movement": "locked with a tiny settle",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "cooler grade over warm source",
+      "depth_of_field": "Medium",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Sodium spill catches the seat edge; the background falls cooler and darker",
+     "subjects": [
+      {
+       "id": "",
+       "description": "a small, worn stool",
+       "action": "rests by the opening",
+       "position": "frame-right, angled to camera"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "low POV on stool",
+       "director_line": "Use etched into wood.",
+       "action": "Traffic light flickers across it.",
+       "performance": ""
+      }
+     ],
+     "audio": "street bed; a scooter dopplers past",
+     "first_frame": {
+      "composition": "stool angled right, scuff marks visible",
+      "subjects": [
+       "stool"
+      ],
+      "setting": "ground level by the counter",
+      "lighting": "amber spill, cool shadow falloff"
+     }
+    },
+    "sound": {
+     "ambience": "traffic wash",
+     "effects": "rubber-on-road hiss from a passing scooter",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 9,
+    "sequence": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "over": "",
+    "size": "POV",
+    "angle": "slightly high",
+    "lens": "50mm: hover over dents and steam",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Complete the scan: the kettle’s dents and patina tell its story.",
+    "ir": {
+     "setting": "Counter top at the kettle",
+     "cinematography": {
+      "camera": "handheld, 50mm, f/2.8",
+      "angle": "slightly high toward the kettle lid",
+      "framing": "tight on the kettle’s dented shoulder, lid, and spout base with steam",
+      "movement": "a tiny push to the dent then hold",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "cooler grade over warm source",
+      "depth_of_field": "Shallow to isolate metal texture",
+      "lens_artifacts": "soft steam flare"
+     },
+     "lighting": "Amber top-light slides along metal; neon adds a cyan edge",
+     "subjects": [
+      {
+       "id": "",
+       "description": "the dented kettle shoulder, lid trembling with heat",
+       "action": "steam exhales",
+       "position": "centre-left in frame"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "POV on the kettle texture",
+       "director_line": "Heat and use shimmer in the light.",
+       "action": "Steam pulses; a droplet trembles at the spout base.",
+       "performance": ""
+      }
+     ],
+     "audio": "close kettle simmer; distant horn",
+     "first_frame": {
+      "composition": "kettle shoulder fills frame; steam curtains the background",
+      "subjects": [
+       "kettle metal and steam"
+      ],
+      "setting": "counter top inches away",
+      "lighting": "amber sheen with cyan edge"
+     }
+    },
+    "sound": {
+     "ambience": "street hum",
+     "effects": "kettle simmer and occasional bubble",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 10,
+    "sequence": "B",
+    "blocks": [
+     4
+    ],
+    "lines": [
+     "L4"
+    ],
+    "over": "Kasun",
+    "size": "CU",
+    "angle": "eye level",
+    "lens": "85mm: the cut is seen on the one who bears it",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Let the judgement land on Kasun; the words are sharper on skin than in the air.",
+    "ir": {
+     "setting": "Inside the stall at the opening",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/1.8",
+      "angle": "eye level, tight on Kasun",
+      "framing": "close-up head-and-shoulders, counter edge a blur",
+      "movement": "locked-off",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "slightly cooler grade over warm skin",
+      "depth_of_field": "Shallow; background melts",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Sodium key from above-left; neon fill lifts opposite cheek; steam threads flare gently",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "close, unmoving",
+       "action": "listens, holds his answer",
+       "position": "centre frame, eyes slightly off-camera left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "tight CU",
+       "director_line": "The cut stings but he holds it.",
+       "action": "He stills even further.",
+       "performance": "A swallow, then the slightest exhale."
+      },
+      {
+       "time": "2-4s",
+       "camera": "unchanged",
+       "director_line": "He chooses to answer with action first.",
+       "action": "His gaze drops a fraction toward the kettle.",
+       "performance": "Resolve begins to gather behind the eyes."
+      }
+     ],
+     "audio": "street bed dips subtly; the father’s voice clean and close off",
+     "first_frame": {
+      "composition": "Kasun’s face fills the frame; a warm steam veil licks the bottom edge",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "the stall opening",
+      "lighting": "amber sodium on one cheek, cyan fill on the other"
+     }
+    },
+    "sound": {
+     "ambience": "street softened under dialogue",
+     "effects": "steam hush",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 11,
+    "sequence": "B",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "slightly high",
+    "lens": "50mm: the act before the words",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "He sets the kettle down first: a calm, grounded intent before speech.",
+    "ir": {
+     "setting": "Counter top at Kasun’s hands and kettle",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "angle": "slightly high toward the counter",
+      "framing": "tight on Kasun’s hand and the kettle landing, cups soft behind",
+      "movement": "a short tilt down to meet the landing and hold",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "neutral over warm source",
+      "depth_of_field": "Shallow; focus on the hand and kettle base",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Amber key glances the knuckles; steam eases as the kettle rests",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "hand and forearm",
+       "action": "places the kettle base down, gently",
+       "position": "enters from frame-right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "insert on the kettle landing",
+       "director_line": "A steady punctuation mark.",
+       "action": "He eases the kettle down and releases the handle.",
+       "performance": "Fingers let go in a measured way; no clatter."
+      }
+     ],
+     "audio": "soft metal-on-wood contact; steam hush subsides a little",
+     "first_frame": {
+      "composition": "kettle base and Kasun’s hand dominate; counter wood grain visible",
+      "subjects": [
+       "kettle",
+       "Kasun’s hand"
+      ],
+      "setting": "counter top inches away",
+      "lighting": "amber sodium sheen"
+     }
+    },
+    "sound": {
+     "ambience": "street hum",
+     "effects": "kettle base tap, handle creak faint",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 12,
+    "sequence": "C",
+    "blocks": [
+     6
+    ],
+    "lines": [
+     "L6"
+    ],
+    "over": "",
+    "size": "CU",
+    "angle": "eye level",
+    "lens": "85mm: promise at full intensity",
+    "take_s": 6,
+    "use_s": 6,
+    "link": "cut",
+    "why": "The scene’s turn: give the promise breath and stillness at the closest size.",
+    "ir": {
+     "setting": "Inside the stall framed by the opening",
+     "cinematography": {
+      "camera": "slider, 85mm, f/1.8",
+      "angle": "eye level",
+      "framing": "tight close-up on Kasun’s face",
+      "movement": "very slow, almost imperceptible push-in that settles by the end of the line",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "skin warms a touch against cooler background",
+      "depth_of_field": "Shallow with soft, creamy bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Consistent sodium key and neon fill; steam threads thin now that the kettle rests",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "framed tight, eyes steady",
+       "action": "speaks, measured and sure",
+       "position": "centre frame, eyes to the father off camera left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "CU, beginning of a slow push",
+       "director_line": "He owns the future tense without raising volume.",
+       "action": "He leans in a fraction.",
+       "performance": "Eyes hold without flinch; a breath anchors the line."
+      },
+      {
+       "time": "3-6s",
+       "camera": "CU, settle by the end",
+       "director_line": "He finishes and lets the intent sit.",
+       "action": "He stills completely.",
+       "performance": "A tiny nod to himself, almost imperceptible."
+      }
+     ],
+     "audio": "street bed narrows; a low musical bed (single sustained note) warms under the line, then releases",
+     "first_frame": {
+      "composition": "Kasun’s eyes on the upper third; background bokeh drifting",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "stall opening as soft geometry behind",
+      "lighting": "amber key, gentle cyan fill"
+     }
+    },
+    "sound": {
+     "ambience": "street lightly dipped under the line",
+     "effects": "distant horn far back",
+     "music": "very low warm pad that fades at line end",
+     "silence": false
+    }
+   },
+   {
+    "n": 13,
+    "sequence": "C",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "slightly low",
+    "lens": "85mm: let the look land",
+    "take_s": 6,
+    "use_s": 3,
+    "link": "cut",
+    "why": "A held, wordless answer from the father before he turns: respect mixed with decision.",
+    "ir": {
+     "setting": "Pavement side at the counter",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "slightly low from the stall side",
+      "framing": "medium close-up on the father, counter edge low",
+      "movement": "locked-off",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "cool returns to skin; background cooler",
+      "depth_of_field": "Shallow",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Sodium top-light defines brow and nose; cooler fill falls off faster now",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "still at the counter",
+       "action": "meets Kasun’s eyes a long beat",
+       "position": "frame-left, facing right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "MCU on the father",
+       "director_line": "He hears the promise and chooses not to answer.",
+       "action": "He holds the look, then his eyes lower a fraction.",
+       "performance": "A tiny blink; corners of the mouth tighten, then release."
+      }
+     ],
+     "audio": "street bed returns to full; a tuk-tuk idles then pulls away",
+     "first_frame": {
+      "composition": "father left third, steam thin at right edge",
+      "subjects": [
+       "Father"
+      ],
+      "setting": "pavement at the counter",
+      "lighting": "amber top-light with cooler falloff"
+     }
+    },
+    "sound": {
+     "ambience": "street full",
+     "effects": "nearby scooter idle and depart",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 14,
+    "sequence": "C",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "over": "",
+    "size": "MWS",
+    "angle": "eye level",
+    "lens": "35mm: give the move its path",
+    "take_s": 6,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Motion follows meaning: we watch him decide and leave, the distance reasserting itself.",
+    "ir": {
+     "setting": "Pavement from the stall to the parked car",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level from the stall side",
+      "framing": "medium wide with the father full-figure, stall at right and car ahead left",
+      "movement": "pan-left with a small side step to follow him from the counter toward the car, then settle as he nears it",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "cooler grade over warm sources",
+      "depth_of_field": "Medium",
+      "lens_artifacts": "headlight streaks at edges"
+     },
+     "lighting": "Continuous sodium pools on the pavement; neon flickers on wet patches; headlights pass behind",
+     "subjects": [
+      {
+       "id": "Father",
+       "description": "full figure",
+       "action": "turns from the counter and walks toward the car",
+       "position": "starts frame-left near the counter, exits toward frame-left car"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "MWS, pan-left follow",
+       "director_line": "The space between them stretches into pavement again.",
+       "action": "He turns and walks, back to us, toward the car.",
+       "performance": "Shoulders stay set; pace measured, not hurried."
+      }
+     ],
+     "audio": "footsteps on pavement; traffic wash surges; a car indicator ticks faintly from somewhere off",
+     "first_frame": {
+      "composition": "stall right, father centre-left turning away, car ahead left",
+      "subjects": [
+       "Father",
+       "stall silhouette"
+      ],
+      "setting": "pavement corridor under streetlight",
+      "lighting": "amber pools with cooler falls between"
+     }
+    },
+    "sound": {
+     "ambience": "evening street, horns and engines layered",
+     "effects": "footfalls, fabric rustle",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 15,
+    "sequence": "C",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "over": "",
+    "size": "EWS",
+    "angle": "eye level",
+    "lens": "24mm: return to the world, altered only by us",
+    "take_s": 6,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Close on the opening motif: steam and traffic; the stall remains as the father recedes.",
+    "ir": {
+     "setting": "The same roadside frame as the opener, nudged to include the car more clearly",
+     "cinematography": {
+      "camera": "locked-off sticks, 24mm, f/4",
+      "angle": "eye level",
+      "framing": "extreme wide: stall right with Kasun inside small; the father reaches his car at left edge",
+      "movement": "locked-off",
+      "white_balance": "3200K sodium lamp intent",
+      "color_tone": "slightly desaturated cool over warm sources",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "subtle headlight streaks"
+     },
+     "lighting": "Unchanged sodium and neon; steam glows",
+     "subjects": [
+      {
+       "id": "Kasun",
+       "description": "small in the stall",
+       "action": "watches a beat, then resumes his work out of frame",
+       "position": "frame-right inside the stall, facing left"
+      },
+      {
+       "id": "Father",
+       "description": "small figure by the car",
+       "action": "arrives at the car, out of earshot",
+       "position": "frame-left edge near the car"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "extreme wide on the corner",
+       "director_line": "The city absorbs them both; only the promise lingers for us.",
+       "action": "Kasun stands, then shifts to work; the father is near the car, not yet inside.",
+       "performance": "Kasun’s shoulders drop a touch before turning back to task."
+      }
+     ],
+     "audio": "full street bed; the kettle’s distant tick as it cools",
+     "first_frame": {
+      "composition": "mirrors shot 1: stall right in amber pool, car left, steam rising",
+      "subjects": [
+       "Kasun small at stall",
+       "Father at car edge"
+      ],
+      "setting": "Colombo roadside evening",
+      "lighting": "amber sodium pools and cooler shadows"
+     }
+    },
+    "sound": {
+     "ambience": "evening street at full, layered horns, voices, and engines",
+     "effects": "kettle metal tick",
+     "music": "",
+     "silence": false
+    }
+   }
+  ],
+  "added": [],
+  "staging": {
+   "zones": [
+    "Stall interior",
+    "Counter at stall",
+    "Pavement by car"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Kasun",
+     "zone": "Stall interior",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": "kettle"
+    },
+    {
+     "block": 0,
+     "who": "Father",
+     "zone": "Counter at stall",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 1,
+     "who": "Father",
+     "zone": "Counter at stall",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 5,
+     "who": "Kasun",
+     "zone": "Stall interior",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": ""
+    },
+    {
+     "block": 7,
+     "who": "Father",
+     "zone": "Pavement by car",
+     "facing": "left",
+     "frame_side": "left",
+     "holding": ""
+    }
+   ]
+  },
+  "end_state": {
+   "people": [
+    {
+     "who": "Kasun",
+     "where": "Stall interior",
+     "facing": "left",
+     "holding": "",
+     "look": "back at work in the warm pool of the streetlamp"
+    },
+    {
+     "who": "Father",
+     "where": "Pavement by car",
+     "facing": "left",
+     "holding": "",
+     "look": "small at the car, decision kept to himself"
+    }
+   ],
+   "props": [
+    {
+     "what": "kettle",
+     "where": "on the counter, steam easing"
+    },
+    {
+     "what": "cups",
+     "where": "stacked on the counter"
+    },
+    {
+     "what": "stool",
+     "where": "by the stall opening"
+    },
+    {
+     "what": "car",
+     "where": "parked along the curb to frame-left"
+    }
+   ],
+   "time": "evening",
+   "light": "continuous sodium streetlight with soft neon bounce; headlight flares pass through"
+  }
+ }
+}
