@@ -1,0 +1,17 @@
+id: adam_critic
+kind: agent
+version: 1
+summary: "Reads a finished plan once through all four lenses (audience, editor, opportunity, fidelity) and answers with tagged notes and one 1 to 5 score for each lens, replacing four calls."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: adam.screen
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe, production_memory]
+memory: ["*"]
+writes_dialogue: false

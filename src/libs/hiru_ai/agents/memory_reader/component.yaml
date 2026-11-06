@@ -1,0 +1,16 @@
+id: memory_reader
+kind: agent
+version: 1
+summary: "Reads one document and writes down what it says about how the drama should look, sound, feel, be performed or be cut, as entries that quote it."
+status: active
+owner: doc_ingest
+model: high
+shape: structured
+phase: doc_ingest.memory
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe, untrusted_text]
+writes_dialogue: false

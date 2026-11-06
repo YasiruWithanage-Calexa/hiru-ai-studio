@@ -1,0 +1,7 @@
+id: memory_conflicts
+kind: step
+version: 1
+summary: "Finds production memory entries that disagree, or ask for what the system cannot make (a lens it does not have, a shot length Veo cannot make), so a person can choose."
+status: active
+owner: doc_ingest
+entry: step:run

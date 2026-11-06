@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v11.sql` | **The newest schema** (everything in v10 plus `shots.card`, `shots.planner` and `scenes.adam`: Shot Planner Adam, plan/2026-11-04b), whole. Run it once on an empty project. |
+| `schema_v12.sql` | **The newest schema** (everything in v11 plus `token_usage.reasoning_tokens`: how much of a call's output was hidden reasoning, plan/2026-11-05; the `production_memory` table, what the documents say about how to make the drama, plan/2026-11-05d; and `scenes.david` with `'david'` as a planner a shot may name: Shot Planner David, plan/2026-11-05e), whole. Run it once on an empty project. |
+| `upgrade_v11_to_v12.sql` | Moves a project on v11 to v12 (one column on `token_usage`, the `production_memory` table, `scenes.david` and the planner check on `shots`). Run once, only on such a project. Then set `USAGE_DETAIL=true` and restart. |
+| `schema_v11.sql` | Kept for reference (everything in v10 plus `shots.card`, `shots.planner` and `scenes.adam`: Shot Planner Adam, plan/2026-11-04b), whole. Run it once on an empty project. |
 | `upgrade_v10_to_v11.sql` | Moves a project on v10 to v11 (two columns on `shots`, one on `scenes`). Run once, only on such a project. |
 | `schema_v10.sql` | Kept for reference (everything in v9 plus the per-component columns of `token_usage`: `component`, `component_version`, `prompt_hash`, `tool_calls`, `tool_result_tokens`; plan/2026-11-04), whole. Run it once on an empty project. |
 | `upgrade_v9_to_v10.sql` | Moves a project on v9 to v10 (five columns and one index on `token_usage`). Run once, only on such a project. |

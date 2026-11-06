@@ -1,0 +1,11 @@
+id: david_shot_planner
+kind: system
+version: 1
+summary: "Shot Planner David: plans each scene in ONE model call (shots, their camera design, additions, staging, end state), checks and mends it in code, repairs only what code cannot (at most two rounds), chains linked scenes through their end states, and writes the shots with a current design."
+status: active
+owner: director
+job_kind: plan_scene_david
+agents: [david_author, david_repair]
+steps: [david_pack, david_links, david_check, david_mend, david_seams, david_write]
+panels: []
+tools: []

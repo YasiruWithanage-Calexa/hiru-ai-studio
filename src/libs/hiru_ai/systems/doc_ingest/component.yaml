@@ -1,11 +1,11 @@
 id: doc_ingest
 kind: system
 version: 1
-summary: "One uploaded document, start to finish: read, name its role, split into passages, write retrieval headers, embed, index."
+summary: "One uploaded document, start to finish: read, name its role, read its story and its direction, split into passages, write retrieval headers, embed, index."
 status: active
 owner: doc_ingest
 job_kind: doc_ingest
 panels: []
-agents: [role_classifier, chunk_contextualiser]
-steps: [extract_text, document_role, chunk, chunk_headers]
+agents: [role_classifier, story_reader, memory_reader, chunk_contextualiser]
+steps: [extract_text, document_role, story_check, memory_check, memory_conflicts, chunk, chunk_headers]
 tools: []

@@ -5,18 +5,28 @@ Phase 7): what only a live run can show.
     python scripts/adam_live.py --yes --runs 3                # three runs each: the median is what the exits judge
     python scripts/adam_live.py --yes --scene phone_call      # one
     python scripts/adam_live.py --yes --no-screening          # without the four critics and the revision
+    python scripts/adam_live.py --yes --runs 3 --mode take    # the one-take planner (plan/2026-11-05); --mode staged is
+    today's
 
-It refuses to start without `--yes`: a scene is about eleven model calls and they cost money, and models vary from run
-to run, so one run proves little (plan/2026-11-04c asks for three). Nothing is written to a database (the planner needs
-none); each plan is saved under `tests/eval/adam/live/<scene>.json` (`<scene>.run<N>.json` from the second run) and a
-table says, per scene, the craft score of the final plan, the share of required faces seen (the coverage grid) and the
-holes by name, whether the revision after screening won or was refused (and why), the moments left without a record,
-the fidelity breaks and the overruns, and the density (moments per card, used shot length). Those are the numbers the
-exits ask for: coverage of at least 90 %, 0 moments lost without a record, a revision that never loses a required cell,
-the revised plan winning on score in at least 60 % of gold scenes and never losing fidelity. Whether the treatments
-are a real director's ideas and whether the cards read like section 9 is a person's judgement, so the plans are saved
-for a person to read and for `adam_ab.py`. Run it with the key in `.env` (OPENAI__API_KEY); the models are the
-configured tiers.
+It refuses to start without `--yes`: a scene is about eleven model calls (staged) or four to six (take) and they cost
+money, and models vary from run to run, so one run proves little (plan/2026-11-04c asks for three). Nothing is written
+to a database (the planner needs none); each plan is saved under `tests/eval/adam/live/<scene>.json`
+(`<scene>.run<N>.json` from the second run; a take-mode plan goes under `live/take/` so it never replaces a saved
+staged one) and a table says, per scene, the craft score of the final plan, the share of required faces seen (the
+coverage grid) and the holes by name, whether the revision after screening won or was refused (and why), the moments
+left without a record, the fidelity breaks and the overruns, and the density (moments per card, used shot length).
+Those are the numbers the exits ask for: coverage of at least 90 %, 0 moments lost without a record, a revision that
+never loses a required cell, the revised plan winning on score in at least 60 % of gold scenes and never losing
+fidelity. Whether the treatments are a real director's ideas and whether the cards read like section 9 is a person's
+judgement, so the plans are saved for a person to read and for `adam_ab.py`. Run it with the key in `.env`
+(OPENAI__API_KEY); the models are the configured tiers.
+
+Plan/2026-11-05 Phase 0: every model call is recorded in the same row `token_usage` holds (tokens, cached tokens, the
+answer and its hidden reasoning, the agent), kept in memory and never written to the database, and priced with
+`adam_cost` at list prices. Each run prints its calls per agent and the cost of the scene, and the end prints the
+median cost per scene: the number plan/2026-11-05 §10 judges (target at most $0.27 for one take with the fixer
+ladder). Costs appear here and in `IMPLEMENTED.md` only; the interface never shows one. (`adam_ab.py` makes no model
+call: it only counts what people judged.)
 """
 from __future__ import annotations
 
@@ -30,14 +40,17 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src" / "libs"))
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import adam_cost  # noqa: E402
 
 LIVE = ROOT / "tests" / "eval" / "adam" / "live"
 WINS_TARGET = 0.60
 COVERAGE_TARGET = 0.90  # per scene, the median of the runs (plan/2026-11-04c Phase 7)
 
 
-def row_of(name: str, planned: Any) -> dict[str, Any]:
-    """The numbers one run gives, read from the plan's own report."""
+def row_of(name: str, planned: Any, usage: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    """The numbers one run gives, read from the plan's own report (and, with the calls it made, what it cost)."""
     report = planned.stored.report
     screening = report.get("screening") or {}
     revision = screening.get("revision") or {}
@@ -52,10 +65,14 @@ def row_of(name: str, planned: Any) -> dict[str, Any]:
             "breaks": (report.get("fidelity") or {}).get("counts", {}).get("breaks"),
             "overruns": (report.get("fit") or {}).get("overruns"), "cards": len(planned.stored.cards),
             "seconds": (report.get("fit") or {}).get("runtime_s"), "density": report.get("density"),
-            "questions": [q["question"] for q in report.get("questions") or []]}
+            "questions": [q["question"] for q in report.get("questions") or []], "mode": report.get("mode", "staged"),
+            "calls": len(usage or []), "cost": adam_cost.total(usage or []),
+            "fixed": [(f["kind"], f["rung"]) for f in (report.get("fixer") or {}).get("problems") or [] if f["fixed"]],
+            "reported": [(f["kind"], f["code"] or f["note_id"])
+                         for f in (report.get("fixer") or {}).get("problems") or [] if not f["fixed"]]}
 
 
-def run_scene(name: str, screening: bool, run: int = 1) -> dict[str, Any]:
+def run_scene(name: str, screening: bool, run: int = 1, mode: str = "staged") -> dict[str, Any]:
     from tests.adam import gold, stages
 
     from contracts.adam.plan import SceneScript
@@ -64,13 +81,19 @@ def run_scene(name: str, screening: bool, run: int = 1) -> dict[str, Any]:
 
     script = SceneScript.model_validate(gold.scene(name))
     line_ids = {b.line_id: b.line_id for b in script.lines if b.line_id}
-    planner = Planner(RunContext(), script, context={"heading": stages.title(name)}, line_ids=line_ids, removed=[],
+    usage: list[dict[str, Any]] = []
+    ctx = RunContext(usage_sink=usage.append, usage_detail=True)  # the rows `token_usage` would hold, kept here
+    planner = Planner(ctx, script, context={"heading": stages.title(name)}, line_ids=line_ids, removed=[],
                       screening=screening, editorial=True)
-    planned = planner.plan()
-    LIVE.mkdir(parents=True, exist_ok=True)
+    planned = planner.plan_take() if mode == "take" else planner.plan()
+    folder = LIVE / "take" if mode == "take" else LIVE
+    folder.mkdir(parents=True, exist_ok=True)
     saved = json.dumps(planned.stored.data(), ensure_ascii=False, indent=2)
-    (LIVE / (f"{name}.json" if run == 1 else f"{name}.run{run}.json")).write_text(saved, encoding="utf-8")
-    return row_of(name, planned)
+    (folder / (f"{name}.json" if run == 1 else f"{name}.run{run}.json")).write_text(saved, encoding="utf-8")
+    (folder / (f"{name}.usage.json" if run == 1 else f"{name}.run{run}.usage.json")).write_text(
+        json.dumps(usage, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"\n{name} run {run} ({mode}): {len(usage)} model calls\n{adam_cost.table(usage)}", flush=True)
+    return row_of(name, planned, usage)
 
 
 def judge(rows: list[dict[str, Any]], names: list[str]) -> list[str]:
@@ -96,9 +119,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--scene", action="append", help="a gold scene (default: all)")
     parser.add_argument("--runs", type=int, default=1, help="runs per scene; the exits judge the median of three")
     parser.add_argument("--no-screening", action="store_true")
+    parser.add_argument("--mode", choices=("staged", "take"), default="staged",
+                        help="staged = the five stages and four critics; take = one call and the fixer ladder")
     args = parser.parse_args(argv)
     if not args.yes:
-        print("This calls the real model about eleven times per scene and run. Run again with --yes to go ahead.")
+        calls = "four to six" if args.mode == "take" else "about eleven"
+        print(f"This calls the real model {calls} times per scene and run. Run again with --yes to go ahead.")
         return 2
     from tests.adam import gold
 
@@ -107,7 +133,7 @@ def main(argv: list[str] | None = None) -> int:
     for name in names:
         for run in range(1, max(1, args.runs) + 1):
             try:
-                rows.append(run_scene(name, not args.no_screening, run))
+                rows.append(run_scene(name, not args.no_screening, run, args.mode))
             except Exception as exc:  # a scene Adam cannot plan is a result, not a crash
                 rows.append({"scene": name, "error": f"{type(exc).__name__}: {exc}"[:160]})
             print(rows[-1], flush=True)
@@ -117,6 +143,11 @@ def main(argv: list[str] | None = None) -> int:
     print(f"\n{len(rows)} runs; the revision won on {won} of {len(revised)} "
           f"(target {WINS_TARGET:.0%}); {broke} with a fidelity break (target 0)")
     print("\n".join(judge(rows, names)))
+    costs = [float(r["cost"]) for r in rows if not r.get("error")]
+    if costs:
+        print(f"\ncost per scene (list prices, standard tier): median ${statistics.median(costs):.3f}, "
+              f"total ${sum(costs):.2f} over {len(costs)} runs "
+              f"(plan/2026-11-05 targets: at most $0.27 a scene for one take with the ladder; staged was $0.52)")
     return 0
 
 

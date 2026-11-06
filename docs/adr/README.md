@@ -14,3 +14,4 @@ consequences. A decision changes by a new record that supersedes the old one, ne
 | [0007](0007-eight-functions.md) | Keep eight Cloud Run functions | Accepted (plan default) |
 | [0008](0008-tracing-tool.md) | Tracing tool | Open (not needed before Phase 8) |
 | [0009](0009-parts-reach-siblings-by-id.md) | A part that builds on a sibling asks for it by id and says so in its manifest | Accepted (2026-11-03, found in Phase 2) |
+| [0010](0010-one-author-pattern.md) | One author per creative unit, code checks, narrow repair (the Hiru AI pattern) | Accepted (2026-11-05, plan/2026-11-05e) |

@@ -1,0 +1,30 @@
+- name: a bible table gives one entry per instruction
+  input:
+    filename: bible.txt
+    text: "GENRE    Action / Crime Thriller / Love\nLove scenes      50mm and 85mm lenses, shallow focus and minimal camera movement.\nSlow motion      Use only twice: Nimal's key falling and Dinu removing the gun."
+  reply:
+    entries:
+      - topic: series
+        applies_to: production
+        says: "The drama is an action, crime thriller and love story."
+        quote: "GENRE Action / Crime Thriller / Love"
+        strength: fact
+      - topic: camera
+        applies_to: "when:love scenes"
+        says: "Use 50mm and 85mm lenses, shallow focus and minimal camera movement."
+        quote: "Love scenes 50mm and 85mm lenses, shallow focus and minimal camera movement."
+        strength: prefer
+      - topic: edit
+        applies_to: "when:Nimal's key falling; Dinu removing the gun"
+        says: "Slow motion only in these two moments in the whole drama."
+        quote: "Use only twice: Nimal's key falling and Dinu removing the gun."
+        strength: must
+  expect:
+    entries:
+      - { topic: series, applies_to: production, strength: fact }
+      - { topic: camera, applies_to: "when:love scenes", strength: prefer }
+      - { topic: edit, strength: must }
+- name: a document with no direction gives no entries
+  input: { filename: card.md, text: "Kamala, 52, the mother. She sells flowers at the temple gate." }
+  reply: { entries: [] }
+  expect: { entries: [] }

@@ -22,6 +22,7 @@ class Context(BaseModel):
     heading: str = ""
     note: str = ""  # the director's note on the scene
     episode_title: str = ""
+    episode: int | None = None  # its number, for the production memory's `episode:` entries
     synopsis: str = ""
     before: str = ""  # the scene before: its heading and what happens
     after: str = ""

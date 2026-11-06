@@ -129,13 +129,18 @@ def test_canon_extractor_and_deduper():
              {"kind": "character", "name": "Silent", "lines": 0, "scenes": 0},
              {"kind": "location", "name": "Harbour", "lines": 0, "scenes": 4}]
     ((system, user),) = sent(lambda ask: model.extract(ask, docs, cands))
-    inp = {"documents": docs,
+    # plan/2026-11-05c S5: the agent sends every document (the engine sent only bible, canon index, notes and outline),
+    # so it is held to the engine's message for the documents the engine sent; and its prompt keeps every rule the
+    # engine's has and adds the one about what the story shows without describing.
+    inp = {"documents": [d for d in docs if d["role"] != "script"],
            "speakers": [{"name": c["name"], "count": c["lines"]} for c in cands if c["kind"] == "character"],
            "places": [{"name": c["name"], "count": c["scenes"]} for c in cands if c["kind"] == "location"]}
     legacy_user = user.replace("<\\/document", "</document")  # the engine did not defuse a closing tag; the agent does
     agent = agents.Agent(REG, "canon_extractor")
     assert agent.messages(inp)[1].replace("<\\/document", "</document") == legacy_user
-    assert agent.prompt.text == system and new_schema(agent) == canon(model.EXTRACT_SCHEMA)
+    assert "ep1.pdf" in agent.messages({**inp, "documents": docs})[1]
+    assert set(system.splitlines()) <= set(agent.prompt.text.splitlines())
+    assert new_schema(agent) == canon(model.EXTRACT_SCHEMA)
     assert (agent.manifest.model, agent.phase) == ("high", "canon_extract.extract")
 
     listing = [{"kind": "character", "name": "Kamala", "code": "C01", "aliases": ["Amma"],

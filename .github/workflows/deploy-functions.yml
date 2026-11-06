@@ -50,7 +50,8 @@ jobs:
             {"name":"hiru-director-chat","src":"src/services/director_chat","memory":"512Mi","timeout":300,"ai":true},
             {"name":"hiru-shot-producer","src":"src/services/shot_producer","memory":"512Mi","timeout":900,"ai":true},
             {"name":"hiru-frame-render","src":"src/services/frame_render","memory":"1Gi","timeout":600,"ai":true},
-            {"name":"hiru-shot-planner-adam","src":"src/services/shot_planner_adam","memory":"1Gi","timeout":900,"ai":true}
+            {"name":"hiru-shot-planner-adam","src":"src/services/shot_planner_adam","memory":"1Gi","timeout":1800,"ai":true},
+            {"name":"hiru-shot-planner-david","src":"src/services/shot_planner_david","memory":"1Gi","timeout":1800,"ai":true}
           ]'
           before="${{ github.event.before }}"
           if [[ "${{ inputs.all }}" == "true" || -z "$before" || "$before" =~ ^0+$ ]] \

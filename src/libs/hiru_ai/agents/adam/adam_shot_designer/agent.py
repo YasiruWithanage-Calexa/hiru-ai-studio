@@ -45,5 +45,10 @@ def user_message(inp: Input) -> str:
             + (f"\n\n<notes>\n{inp.notes}\n</notes>" if inp.notes else ""))
 
 
+def memory_scope(inp: Input) -> dict[str, object]:
+    """What this call is about, so the production memory is narrowed to it (plan/2026-11-05d M6)."""
+    return {"place": inp.scene.place.name, "people": list(inp.scene.cast), "episode": inp.episode}
+
+
 def finish(inp: Input, out: Output) -> Output:
     return Output(cards=[c for c in out.cards if c.moments])

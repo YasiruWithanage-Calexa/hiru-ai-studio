@@ -20,9 +20,13 @@ from contracts.jobs import JobKind
 BUILD_PIPELINE: tuple[JobKind, ...] = (JobKind.CANON_EXTRACT, JobKind.STRUCTURE_BUILD, JobKind.SCRIPT_SPLIT)
 # The same build when the production's `shot_planner` setting says `adam` (plan/2026-11-04b D5): the one branch.
 BUILD_PIPELINE_ADAM: tuple[JobKind, ...] = (JobKind.CANON_EXTRACT, JobKind.STRUCTURE_BUILD, JobKind.PLAN_SCENE_ADAM)
+# ... and `david` (plan/2026-11-05e): the same one branch.
+BUILD_PIPELINE_DAVID: tuple[JobKind, ...] = (JobKind.CANON_EXTRACT, JobKind.STRUCTURE_BUILD, JobKind.PLAN_SCENE_DAVID)
 
 
 def build_pipeline(shot_planner: str) -> tuple[JobKind, ...]:
+    if shot_planner == "david":
+        return BUILD_PIPELINE_DAVID
     return BUILD_PIPELINE_ADAM if shot_planner == "adam" else BUILD_PIPELINE
 
 

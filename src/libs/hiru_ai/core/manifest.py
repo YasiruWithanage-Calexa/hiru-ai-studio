@@ -64,6 +64,10 @@ class ToolsForm(BaseModel):
 class AgentManifest(_Base):
     kind: Literal["agent"] = "agent"
     model: str  # a tier from core/models.yaml
+    # Seconds a call may take, replacing the tier's own: an agent that writes a long answer says so here
+    # (plan/2026-11-05 R2: a call cut off by a timeout may still be billed, is retried, and never reaches
+    # `token_usage`).
+    timeout_s: float | None = Field(None, gt=0, le=900)
     # one typed call | a create_agent tool loop | plain text, streamed (a reply a person reads as it is written)
     shape: Literal["structured", "react", "text"] = "structured"
     input: str  # "schema:Input", relative to the agent's folder
@@ -73,6 +77,9 @@ class AgentManifest(_Base):
     tools: list[ComponentId] = []  # at most MAX_TOOLS, never a tool whose effect is `write` (validate)
     knowledge: list[ComponentId] = []
     middleware: list[str] = []
+    # Production memory topics the agent is given (plan/2026-11-05d); `*` = every topic. `fact` and `must` entries
+    # reach it whatever the topic. Needs `production_memory` in `middleware`.
+    memory: list[str] = []
     writes_dialogue: bool = False  # only approved parts may change a spoken line (language_guard)
     # react: the loop is capped (plan/2026-11-04 D2); `limits` in `middleware` turns the caps on
     max_tool_calls: int = Field(6, ge=1, le=20)  # tool calls in one run

@@ -311,7 +311,7 @@ def test_the_react_middleware_names_are_refused_on_a_structured_agent(root: Path
 # ── usage rows ────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 
-def usage_run(detail: Detail | None) -> list[dict[str, Any]]:
+def usage_run(detail: Detail | None, output_details: dict[str, int] | None = None) -> list[dict[str, Any]]:
     from langchain_core.outputs import ChatGeneration, LLMResult
 
     rows: list[dict[str, Any]] = []
@@ -322,7 +322,8 @@ def usage_run(detail: Detail | None) -> list[dict[str, Any]]:
     answer = AIMessage(content="", tool_calls=[{"name": "a", "args": {}, "id": "1", "type": "tool_call"},
                                                {"name": "b", "args": {}, "id": "2", "type": "tool_call"}],
                        usage_metadata={"input_tokens": 900, "output_tokens": 30, "total_tokens": 930,
-                                       "input_token_details": {"cache_read": 700}},
+                                       "input_token_details": {"cache_read": 700},
+                                       **({"output_token_details": output_details} if output_details else {})},
                        response_metadata={"model_name": "gpt-5"})
     cb.on_llm_end(LLMResult(generations=[[ChatGeneration(message=answer)]]), run_id=run_id)
     return rows
@@ -335,6 +336,15 @@ def test_a_usage_row_names_the_component_and_its_tool_loop_only_when_asked():
     assert row["component"] == "agent:chat_answerer" and row["component_version"] == 2
     assert row["prompt_hash"] == "abc123" and row["tool_calls"] == 2 and row["tool_result_tokens"] == 200
     assert row["input_tokens"] == 900 and row["cached_input_tokens"] == 700
+
+
+def test_a_detailed_usage_row_keeps_the_hidden_reasoning_apart_from_the_answer():
+    """plan/2026-11-05 Phase 0: a reasoning model bills its thinking as output; the row says how much of it that was."""
+    (row,) = usage_run(Detail("agent:planner", 1, "abc"), {"reasoning": 22})
+    assert row["output_tokens"] == 30 and row["reasoning_tokens"] == 22
+    (none,) = usage_run(Detail("agent:planner", 1, "abc"))
+    assert none["reasoning_tokens"] == 0
+    assert "reasoning_tokens" not in usage_run(None, {"reasoning": 22})[0]  # the v9 row stays the v9 row
 
 
 # ── scripted evals and the A/B ────────────────────────────────────────────────────────────────────────────────────────

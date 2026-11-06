@@ -7,7 +7,8 @@ A row has exactly the columns the table has (`phase, model, input_tokens, cached
 the composition root adds `job_id`, `production_id` and `actor_user_id` (`RunContext.usage_row`). With
 `RunContext.usage_detail` (schema v10, plan/2026-11-04 §6.7) a row also says WHICH part made the call and what its tool
 loop cost: `component`, `component_version`, `prompt_hash`, `tool_calls` (tool calls the model's answer asked for) and
-`tool_result_tokens` (tokens of tool results sent to it). Without it a row is exactly the v9 row.
+`tool_result_tokens` (tokens of tool results sent to it); and, from schema v12 (plan/2026-11-05), `reasoning_tokens` (of
+the output, the hidden reasoning a reasoning model bills as output). Without it a row is exactly the v9 row.
 """
 from __future__ import annotations
 
@@ -95,6 +96,7 @@ class UsageCallback(BaseCallbackHandler):
                 if self.detail is not None:
                     usage |= {"component": self.detail.component, "component_version": self.detail.version,
                               "prompt_hash": self.detail.prompt_hash,
+                              "reasoning_tokens": int((meta.get("output_token_details") or {}).get("reasoning") or 0),
                               "tool_calls": len(getattr(gen.message, "tool_calls", None) or []),
                               "tool_result_tokens": self._sent.pop(run_id, 0) if run_id else 0}
                 self.rows.append(usage)

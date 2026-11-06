@@ -30,6 +30,11 @@ def user_message(inp: Input) -> str:
             + f"<script>\n{inp.scene.listing()}\n</script>")
 
 
+def memory_scope(inp: Input) -> dict[str, object]:
+    """What this call is about, so the production memory is narrowed to it (plan/2026-11-05d M6)."""
+    return {"place": inp.scene.place.name, "people": list(inp.scene.cast), "episode": inp.context.episode}
+
+
 def clean(scene: SceneScript, out: Output) -> tuple[Output, list[str]]:
     """The answer without any reference to a block the scene does not have. -> (the answer, what was dropped)."""
     valid = {b.index for b in scene.blocks}

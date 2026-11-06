@@ -46,8 +46,12 @@ class StoredPlan(_Model):
     version: int = STORED_VERSION
     planner: Literal["adam"] = "adam"
     job_id: str = ""
+    # A hash of what Adam was given for this scene (the script, its context, the elaborations a person removed, the
+    # mode): a rebuild whose hash is unchanged keeps this plan instead of planning again (plan/2026-11-05 L5).
+    # "" = unknown.
+    input_hash: str = ""
     chosen: str = ""  # the stance of the treatment in use
-    chosen_by: Literal["score", "person"] = "score"
+    chosen_by: Literal["score", "person", "model"] = "score"  # "model": the one take chose (plan/2026-11-05)
     analysis: SceneAnalysis
     treatment: Treatment  # the one in use, with its moment ids bound
     alternates: list[Treatment] = []  # the other stances, as the director wrote them: switching one re-plans the cards

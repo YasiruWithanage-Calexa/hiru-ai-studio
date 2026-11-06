@@ -87,6 +87,24 @@ class DocStore(Protocol):
         """The document's passages become exactly `rows`: a re-run replaces, never appends."""
 
 
+class MemoryStore(Protocol):
+    """The production's memory: what its documents (and its people) say about how to make the drama, one entry per row
+    (`production_memory`, plan/2026-11-05d). Not the director's `memory_items` (decisions, notes) and not the search
+    corpus `memory`."""
+
+    def entries(self, production_id: UUID) -> list[Row]:
+        """Every entry of the production, any status, oldest first: `id, document_id, topic, applies_to, says, quote,
+        strength, status, source`."""
+
+    def replace_from(self, production_id: UUID, document_id: UUID, entries: list[Row]) -> None:
+        """A document's reader drafts become exactly `entries` (`topic, applies_to, says, quote, strength`). An entry a
+        person approved, rejected or edited is kept, and a new entry that says what one of those already says is not
+        added again (a rejected direction does not come back as a draft). Safe to repeat."""
+
+    def upsert(self, row: Row) -> None:
+        """A person's entry, new (no `id`) or changed."""
+
+
 class Search(Protocol):
     """Retrieval over `chunks`. The scope (production, corpora, documents) is the caller's, from trusted data."""
 

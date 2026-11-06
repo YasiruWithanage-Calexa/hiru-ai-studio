@@ -6,6 +6,8 @@ something that runs. The agent's own code is small and typed:
     schema.py   Input, Output           pydantic; the only things the agent shares with whoever calls it
     agent.py    user_message(inp)       per-item data for the USER message (the system prompt stays static)
                 fallback(inp)           the rules-only answer, or None when there is none (optional)
+                memory_scope(inp)       what the call is about, `{place, people, episode}`, so the production memory is
+                                        narrowed to it (optional; with `memory:` in the manifest)
                 finish(inp, out)        the answer cleaned up exactly as the engine did (optional)
                 documents(inp)          uploaded text, wrapped by the `untrusted_text` middleware (optional)
                 images(inp)             (mime, base64) pictures sent with the user message (a vision agent; optional)
@@ -89,23 +91,29 @@ class Agent:
         before, after = getattr(hook, "lines_before", None), getattr(hook, "lines_after", None)
         docs = getattr(hook, "documents", None)
         images = getattr(hook, "images", None)
+        scope = getattr(hook, "memory_scope", None)
         return ModelCall(
             component=self.component, phase=self.phase, tier=self.manifest.model, system=system, user=user,
-            version=self.manifest.version, static=self.prompt,
+            version=self.manifest.version, static=self.prompt, timeout_s=self.manifest.timeout_s,
             tools=self.tool_block() if self.manifest.tools else "",
             documents=tuple(docs(inp)) if docs else (),
             images=tuple(images(inp)) if images else (),
             lines_before=before(inp) if before else None, lines_after=after,
-            fallback=MISSING if answer is None else answer)
+            fallback=MISSING if answer is None else answer,
+            memory_topics=tuple(self.manifest.memory),
+            memory_scope=scope(inp) if scope and self.manifest.memory else None)
 
     # ── running ───────────────────────────────────────────────────────────────────────────
 
     def run(self, inp: BaseModel | dict[str, Any], ctx: RunContext | None = None, *,
-            config: dict[str, Any] | None = None) -> Any:
-        """The agent's Output. `ctx` carries the usage sink and the ports; without one the agent still runs."""
+            config: dict[str, Any] | None = None, tier: str | None = None) -> Any:
+        """The agent's Output. `ctx` carries the usage sink and the ports; without one the agent still runs. `tier`
+        runs this call on another model tier than the manifest's (the fixer ladder picks one per problem)."""
         inp, ctx = self._input(inp), ctx or RunContext()
         call = self.prepare(inp)
         call.config = dict(config or {})
+        if tier:
+            call.tier = tier
         chain = middleware.build(self.manifest.middleware, writes_dialogue=self.manifest.writes_dialogue)
         terminal = {"structured": self._structured, "react": self._react, "text": self._text}[self.manifest.shape]
         return middleware.run_chain(chain, call, ctx, lambda c: self._finish(inp, terminal(c, ctx)))
@@ -172,7 +180,7 @@ class Agent:
         return hook() if hook else self.output_cls
 
     def _structured(self, call: ModelCall, ctx: RunContext) -> Any:
-        runnable = llm.get_structured(call.tier, self.wire_schema())
+        runnable = llm.get_structured(call.tier, self.wire_schema(), timeout_s=call.timeout_s)
         user: Any = call.user
         if call.images:  # a vision call: the text, then each picture at low detail
             user = [{"type": "text", "text": call.user},

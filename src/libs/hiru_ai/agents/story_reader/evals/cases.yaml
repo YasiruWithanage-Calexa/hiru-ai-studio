@@ -1,0 +1,31 @@
+- name: a scene whose speakers are written above their lines
+  input:
+    filename: scene.md
+    text: "**FATHER (ON THE PHONE)**\n*(Quietly)*\nCome home soon.\n\n**ANUDI**\nI am on my way."
+  reply:
+    contains: [script]
+    episodes:
+      - number: null
+        title: ""
+        starts_with: "FATHER (ON THE PHONE) Quietly Come home soon"
+        ends_with: "ANUDI I am on my way"
+        duration_s: null
+        kind: script
+        spoken:
+          - { speaker: FATHER, delivery: on the phone, text: "Come home soon." }
+          - { speaker: ANUDI, delivery: "", text: "I am on my way." }
+    people:
+      - { name: Father, aliases: [], voice_only: true, evidence: "FATHER (ON THE PHONE)" }
+      - { name: Anudi, aliases: [], voice_only: false, evidence: "ANUDI" }
+    ignore: []
+  expect:
+    contains: [script]
+    episodes: [ { number: null, kind: script } ]
+- name: a bible with nobody speaking has no episode
+  input: { filename: bible.md, text: "Kamala, 52, the mother. Wears a faded cotton sari." }
+  reply:
+    contains: [bible]
+    episodes: []
+    people: [ { name: Kamala, aliases: [], voice_only: false, evidence: "Kamala, 52, the mother" } ]
+    ignore: []
+  expect: { contains: [bible], episodes: [] }

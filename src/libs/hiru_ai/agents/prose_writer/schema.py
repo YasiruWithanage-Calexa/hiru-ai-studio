@@ -12,7 +12,7 @@ class CanonName(BaseModel):
 
 
 class Input(BaseModel):
-    number: int
+    number: int | None  # None: a lone scene the document does not number
     title: str
     duration_s: int | None = None  # the episode's stated length, if it states one
     body: str  # the episode's prose

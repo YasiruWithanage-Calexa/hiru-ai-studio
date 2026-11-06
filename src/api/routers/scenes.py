@@ -248,6 +248,25 @@ class AdamView(BaseModel):
     plan: dict[str, Any] | None = None
 
 
+class DavidView(BaseModel):
+    """What Shot Planner David keeps for a scene (plan/2026-11-05e): `plan` is None for a scene it never planned."""
+
+    scene_id: UUID
+    planner: str  # classic | adam | david: who made the shots on the scene now
+    # The plan as David stored it (`scenes.david`), passed on as it is: this router knows nothing of its parts, so
+    # removing David removes nothing here but these endpoints.
+    plan: dict[str, Any] | None = None
+
+
+class DavidPlanRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    # A person's note on the plan ("start closer on Anudi"): one repair call with the note as the problem, on the
+    # plan as
+    # it stands. Empty: David plans the scene again from the script.
+    note: str = Field(default="", max_length=1000)
+
+
 class AdamPlanRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -565,8 +584,9 @@ async def plan_with_adam(production_id: UUID, scene_id: UUID, body: AdamPlanRequ
     _editable(ld.scene)
     if not ld.scene.get("script"):
         raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no script to plan shots from.")
+    # "Plan with Adam" is a person asking to plan again: it never reuses an unchanged plan (plan/2026-11-05 L5).
     return await _adam_job(repos, access, scene_id, {"edit": {"treatment": body.treatment} if body.treatment else {},
-                                                     "screening": body.screening}, "scene.adam_plan")
+                                                     "screening": body.screening, "replan": True}, "scene.adam_plan")
 
 
 @router.post("/scenes/{scene_id}/adam/moments/{moment_id}/remove", response_model=ResplitStarted,
@@ -588,6 +608,81 @@ async def remove_adam_moment(production_id: UUID, scene_id: UUID, moment_id: str
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT,
                             "A moment that presents the script cannot be removed.")
     return await _adam_job(repos, access, scene_id, {"edit": {"remove_moment": moment_id}}, "scene.adam_remove_moment")
+
+
+# ── Shot Planner David (plan/2026-11-05e) ───────────────────────────────────────────────────
+
+
+@router.get("/scenes/{scene_id}/david", response_model=DavidView, response_model_by_alias=True)
+async def get_david(production_id: UUID, scene_id: UUID, access: CanView, repos: ReposDep) -> DavidView:
+    """The scene's David plan: the author's notes, the shots with their camera, what was added, the checks (what code
+    mended, what a repair changed, what is reported), the end state, the look changes and the joins with the scenes
+    around it."""
+    ld = await load(repos, access, scene_id)
+    stored = _david_plan(ld.scene)
+    made_by_david = any(s.get("planner") == "david" for s in ld.shots)
+    return DavidView(scene_id=scene_id, planner="david" if made_by_david else "classic",
+                     plan=stored if made_by_david else None)
+
+
+def _david_plan(scene: Row) -> dict[str, Any] | None:
+    """The scene's stored David plan, or None when David never planned it."""
+    raw = scene.get("david")
+    return raw if isinstance(raw, dict) and raw.get("planner") == "david" else None
+
+
+async def _david_job(repos: Repos, access: ProductionAccess, scene_id: UUID, state: dict[str, Any],
+                     action: str) -> ResplitStarted:
+    job_id = await task_manager.dispatch(JobKind.PLAN_SCENE_DAVID, repos, actor_user_id=access.user.id,
+                                         production_id=access.production_id, request={"scene_id": str(scene_id)},
+                                         state={"scene_ids": [str(scene_id)], **state})
+    await repos.audit.record(action=action, entity="scene", entity_id=str(scene_id), actor_user_id=access.user.id,
+                             production_id=access.production_id, diff={"job_id": str(job_id)})
+    return ResplitStarted(job_id=job_id)
+
+
+@router.post("/scenes/{scene_id}/david/plan", response_model=ResplitStarted, status_code=status.HTTP_202_ACCEPTED)
+async def plan_with_david(production_id: UUID, scene_id: UUID, body: DavidPlanRequest, access: CanDirect,
+                          repos: ReposDep) -> ResplitStarted:
+    """Plan the scene's shots with Shot Planner David ("Plan with David"), or, with a note, change the plan David made.
+    Replaces the shot list; an approved scene is refused. The scenes after it that carry on from it and that David
+    planned are planned again in order until one's end state comes out the same."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    if not ld.scene.get("script"):
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no script to plan shots from.")
+    note = body.note.strip()
+    if note and _david_plan(ld.scene) is None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene was not planned by Shot Planner David, so there is "
+                                                     "no plan to change. Plan it with David first.")
+    # "Plan with David" is a person asking to plan again: it never reuses an unchanged plan (plan §4.4).
+    return await _david_job(repos, access, scene_id, {"edit": {"note": note} if note else {}, "replan": True},
+                            "scene.david_plan")
+
+
+@router.post("/scenes/{scene_id}/david/added/{number}/remove", response_model=ResplitStarted,
+             status_code=status.HTTP_202_ACCEPTED)
+async def remove_david_addition(production_id: UUID, scene_id: UUID, number: int, access: CanDirect,
+                                repos: ReposDep) -> ResplitStarted:
+    """Take out something David added (addition `number`, counted from 1 in the plan's `added`). The shot that exists
+    for
+    it goes, and the same addition is never added back when the scene is planned again. A shot that shows the script
+    cannot
+    be removed this way. No model is called."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    stored = _david_plan(ld.scene)
+    if stored is None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene was not planned by Shot Planner David.")
+    plan = stored.get("plan") or {}
+    added = plan.get("added") or []
+    if not 1 <= number <= len(added):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "The plan has no such addition.")
+    shot = next((s for s in plan.get("shots") or [] if s.get("n") == added[number - 1].get("shot")), None)
+    if shot is not None and (shot.get("blocks") or shot.get("lines")):
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT,
+                            "That addition is part of a shot that shows the script. Plan again with a note.")
+    return await _david_job(repos, access, scene_id, {"edit": {"remove_added": number}}, "scene.david_remove_added")
 
 
 async def _episode_status(repos: Repos, production_id: UUID, episode_id: UUID) -> None:

@@ -21,6 +21,12 @@ class OpenAISettings(BaseModel):
     effort_ultra: str = "high"
     model_high: str = "gpt-5"
     effort_high: str = "medium"
+    effort_fixer: str = "low"  # the `fixer` tier is model_high at this effort (Shot Planner Adam's top fixer rung)
+    # Shot Planner David (plan/2026-11-05e §4.2): the author and the repairer use one model; the spike decides which
+    # (D3). Changing it is an environment change, not a code change.
+    model_author: str = "gpt-5"
+    effort_author: str = "medium"
+    effort_repair: str = "low"
     model_medium: str = "gpt-5-mini"
     effort_medium: str = "low"
     model_low: str = "gpt-5-nano"
@@ -47,8 +53,19 @@ class AISettings(BaseSettings):
 
     environment: str = "local"
     # Write the per-component columns of `token_usage` (component, component_version, prompt_hash, tool_calls,
-    # tool_result_tokens: schema v10). Off until the database has them, so a row never names a column it lacks.
+    # tool_result_tokens: schema v10; reasoning_tokens: schema v12). Off until the database has them, so a row never
+    # names a column it lacks.
     usage_detail: bool = False
+    # How Shot Planner Adam plans a scene: `staged` (five gpt-5 stages and four critics, plan/2026-11-04b) or `take`
+    # (one gpt-5 call for the plan and a ladder of small-model fixes, plan/2026-11-05). `staged` until a person has
+    # judged the two side by side (plan/2026-11-05 §7) and chosen.
+    adam_mode: str = "staged"
+    # How many scenes Adam plans at once in one delivery (plan/2026-11-05b). A staged scene is about 40,000 gpt-5 output
+    # tokens over ~11 minutes, so ten at once is far under the per-minute limits of a paid tier; lower it if the
+    # account's are low. A setting, not code: changing it is an environment change.
+    adam_workers: int = 10
+    # How many scenes David plans at once in one delivery (plan/2026-11-05e §4.4); a chain of linked scenes is one worker.
+    david_workers: int = 10
     # Agents that run as a tool loop (their manifest's `with_tools` form), as a comma-separated list of ids. Empty =
     # none: an agent switches only after a live A/B says it is at least as good (plan/2026-11-04 §8). Going back is
     # removing the id.

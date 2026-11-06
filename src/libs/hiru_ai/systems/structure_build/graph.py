@@ -30,7 +30,7 @@ from contracts.build import Agent, QuestionStatus, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
-from hiru_ai.core import llm, parts
+from hiru_ai.core import llm, parts, story
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.patterns import ask_node
 from hiru_ai.core.registry import Registry
@@ -39,6 +39,12 @@ from hiru_ai.systems.structure_build.state import State
 
 _logger = logging.getLogger(__name__)
 AGENT = Agent.ARCHITECT.value
+
+
+def _episodes(numbers: list[int | None]) -> str:
+    named = [str(n) for n in numbers if n is not None]
+    return (f"episodes {', '.join(named)}" if len(named) > 1 else f"episode {named[0]}" if named
+            else "the unnumbered scene")
 
 
 def build(ctx: RunContext, payload: DispatchPayload, *, durable: bool, envelope_s: int, aspect_ratio: str,
@@ -63,8 +69,10 @@ def build(ctx: RunContext, payload: DispatchPayload, *, durable: bool, envelope_
                 item = {"id": str(d["id"]), "filename": d["filename"], "role": role,
                         "text": docs_port.text(d["text_path"])}
                 # A story written as prose (a bible with its episodes in it, a treatment) has no scene headings for the
-                # parser; it becomes screenplay text first, whatever its role.
-                todo = prose.to_cut(item["text"])
+                # parser; it becomes screenplay text first, whatever its role. The story reader's reading of the
+                # document says where its episodes and spoken lines are, in any layout; without one, the rules look.
+                reading = None if prose.has_scenes(item["text"]) else story.story_for(ctx, d, item["text"])
+                todo = prose.to_cut(item["text"], reading)
                 if todo:
                     if llm.models_enabled():
                         answers = drafts([{"member": "prose", "key": str(s.number), "input": prose.cut_input(s, canon)}
@@ -81,14 +89,15 @@ def build(ctx: RunContext, payload: DispatchPayload, *, durable: bool, envelope_
                                  "scene_seconds": converted.scene_seconds})
                     how = "by the model" if converted.by_model else "by rules"
                     jobs.event(job_id, JobEventType.AGENT_STEP,
-                               {"text": f"{d['filename']} tells its episodes as prose. Cut episodes "
-                                        f"{', '.join(map(str, converted.episodes))} into scenes {how}."}, agent=AGENT)
+                               {"text": f"{d['filename']} tells its episodes as prose. Cut "
+                                        f"{_episodes(converted.episodes)} into scenes {how}."}, agent=AGENT)
                     if converted.fallbacks:
                         jobs.event(job_id, JobEventType.WARNING,
-                                   {"text": "The model's scenes for episode "
-                                            f"{', '.join(map(str, converted.fallbacks))} did not keep every spoken "
-                                            "line word for word, so they were cut by rules: one scene each, no "
-                                            "places. Check them."}, agent=AGENT)
+                                   {"text": f"The model's scenes for {_episodes(converted.fallbacks)} did not keep "
+                                            "every spoken line word for word, so they were cut by rules: one scene "
+                                            "each, no places. Check them."}, agent=AGENT)
+                    for warning in (reading or {}).get("warnings", []):
+                        jobs.event(job_id, JobEventType.WARNING, {"text": f"{d['filename']}: {warning}"}, agent=AGENT)
                 elif role in ("script", "outline"):
                     docs.append(item)
             elif role in ("script", "outline"):

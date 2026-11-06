@@ -1,0 +1,20 @@
+id: adam_take
+kind: agent
+version: 1
+summary: "Plans one scene in ONE call for Shot Planner Adam: the analysis, the chosen treatment and two pitches, the moments, the staging and the shot cards (without sound), thinking once instead of five times."
+status: active
+owner: director
+model: high
+# The largest call measured wrote 21,573 tokens; a take writes about 25,000. A call cut off by a timeout may still be billed
+# and never reaches token_usage (plan/2026-11-05 R2).
+timeout_s: 600
+shape: structured
+phase: adam.take
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe, production_memory]
+memory: [visual, camera, lighting]
+writes_dialogue: false

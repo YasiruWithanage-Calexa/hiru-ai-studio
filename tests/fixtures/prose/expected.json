@@ -1,0 +1,30 @@
+{
+  "three-episode-drama.txt": {
+    "builds_today": true,
+    "episodes": [1, 2, 3],
+    "spoken": [6, 7, 10],
+    "speakers": ["Kasun", "Anudi", "Father"]
+  },
+  "phone-call-bible-and-script.txt": {
+    "builds_today": false,
+    "episodes": [1, 2, 3],
+    "spoken": [3, 3, 2],
+    "speakers": ["DASUN", "ANUDI"],
+    "people": ["Anudi", "Dasun", "Father"]
+  },
+  "scene-father-on-the-phone.md": {
+    "builds_today": false,
+    "episodes": [null],
+    "spoken": [3],
+    "speakers": ["FATHER", "ANUDI"],
+    "people": ["Anudi", "Father"],
+    "props": ["handbag", "phone", "café"]
+  },
+  "phone-call-story-bible.md": {
+    "builds_today": null,
+    "episodes": [],
+    "spoken": [],
+    "people": ["Anudi", "Dasun", "Father"],
+    "props": ["handbag", "phone", "paper cup of tea"]
+  }
+}

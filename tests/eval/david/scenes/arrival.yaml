@@ -1,0 +1,17 @@
+# Gold scene: the father arrives at Kasun's new restaurant. An arrival that is a verdict. DRAFT wording for a Hiru
+# director to correct; the situation is from the 3-episode drama fixture (tests/fixtures/prose).
+id: arrival
+title: Opening Night
+covers: an arrival
+status: draft
+scene:
+  cast: [Kasun, Father]
+  place:
+    name: Kasun's new restaurant, opening evening
+    objects: [door, sign, car, tables, lamps, counter, window]
+  blocks:
+    - { index: 0, kind: action, text: "The new restaurant on opening evening. KASUN stands by the door, adjusting his shirt, nervous." }
+    - { index: 1, kind: action, text: "A car stops outside. ANUDI'S FATHER steps out and looks up at the sign." }
+    - { index: 2, kind: dialogue, speaker: Father, line_id: L2, text: "මේක ඔයාගේද?" }
+    - { index: 3, kind: dialogue, speaker: Kasun, line_id: L3, text: "ඔව් සර්. මම ඔයා එනකල් බලා හිටියා." }
+    - { index: 4, kind: action, text: "The father looks around the room, then at Kasun. He nods, once." }

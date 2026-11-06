@@ -1,0 +1,8 @@
+id: david_pack
+kind: step
+version: 1
+summary: "Builds the author's context pack as text, static part first so it caches: production rules and cast, the scene's context, the start state (or canon looks), the last shot of the scene before word for word, and the numbered script with each line's clock facts."
+status: active
+owner: director
+entry: step:run
+uses: []

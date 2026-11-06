@@ -1,0 +1,17 @@
+id: david_repair
+kind: agent
+version: 1
+summary: "Repairs a David plan: given the exact problems code found, the shots involved and their neighbours, it answers with a PATCH (replacements of numbered runs of shots, a new staging or end state); it cannot rewrite the plan."
+status: active
+owner: director
+model: repair
+timeout_s: 300
+shape: structured
+phase: david.repair
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

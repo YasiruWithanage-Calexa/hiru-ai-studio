@@ -10,6 +10,7 @@ class State(TypedDict, total=False):
     carried: dict[str, Any]  # totals from earlier deliveries of this hop
     written: int
     shot_count: int
+    reused: int  # scenes whose input is unchanged since Adam planned them: left as they were
     failed: list[dict[str, Any]]  # {"scene_id", "label", "reason"} of the scenes Adam could not plan: left as they were
     continuity: list[str]  # overruns and continuity problems, as lines a person reads
     episodes: dict[str, int]  # episode number -> seconds of shots planned

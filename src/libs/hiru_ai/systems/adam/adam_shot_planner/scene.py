@@ -20,12 +20,21 @@ removed by a person or removed by a revision for a note, and `adam_ledger` fails
 `report.history` keeps the first plan, the cards sent back, the critics' notes, what the revision did and why, and which
 version was kept, so a person can see what screening changed.
 
+Plan/2026-11-05 adds the same scene in ONE take (`Planner.plan_take`, `ADAM_MODE=take`): `adam_take` writes the
+analysis, the chosen treatment, the moments, the staging and the cards in one call, the sound designer writes the
+sound, code checks everything, one critic reads it in four lenses, and the fixer ladder (`ladder.py`) fixes what is
+left one problem at a time, a small model first and a bigger one only when code refuses the small model's fix. The
+staged `plan` stays beside it.
+
 Pure orchestration over the agents and steps by id: no database here. The caller (graph.py) reads the rows and
 writes them.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import logging
+import time
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -43,20 +52,34 @@ from contracts.adam.plan import (
     Treatment,
     norm,
 )
+from contracts.adam.problems import Problem
 from contracts.adam.screening import drop_moments, remap_sound
 from contracts.adam.stored import Removed, StoredPlan
 from contracts.adam.wire import STANCES
+from contracts.shotplan import LEAD_IN_S, LINE_GAP_S, TAIL_S
+from contracts.timing import WORDS_PER_SECOND, speech_seconds, words_in
+from contracts.veo import VEO_DURATIONS
 from hiru_ai.core import agents, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.panels import PanelKit
+from hiru_ai.systems.adam.adam_shot_planner.ladder import Fixed, Ladder
 
 _log = logging.getLogger(__name__)
 Row = dict[str, Any]
 NO_MODEL = "Shot Planner Adam needs the AI model, which is not available. Use the classic planner for this scene."
+TAKE_BACKOFF_S = 2.0  # the wait before the one retry of a take that could not be made (plan/2026-11-05 R3)
+MODES = ("staged", "take")
 
 
 class Failed(Exception):
     """The scene could not be planned; the message says why, in words a person reads."""
+
+
+@dataclass
+class Unchanged:
+    """A scene whose input is the one its stored plan was made from: it is kept as it is (plan/2026-11-05 L5)."""
+
+    stored: StoredPlan
 
 
 @dataclass
@@ -114,7 +137,8 @@ def objects_of(props: list[Row], location: Row | None, blocks: list[Block]) -> l
 
 def context_of(scene: Row, episode: Row, before: str, after: str, cards: list[tuple[str, str]]) -> Row:
     return {"heading": str(scene.get("heading") or ""), "note": str(scene.get("note") or ""),
-            "episode_title": str(episode.get("title") or ""), "synopsis": str(episode.get("synopsis") or ""),
+            "episode_title": str(episode.get("title") or ""), "episode": episode.get("number"),
+            "synopsis": str(episode.get("synopsis") or ""),
             "before": before, "after": after,
             "characters": [{"name": n, "summary": s} for n, s in cards]}
 
@@ -176,6 +200,62 @@ def unbound(t: Treatment) -> Treatment:
     return t.model_copy(update={"plant": plant, "rhythm_break": brk, "ending_moment": ""})
 
 
+def facts_of(script: SceneScript) -> str:
+    """What code already knows about the scene's clock, in words, so the model does not work it out in its reasoning
+    (plan/2026-11-05 L2): each line's words, the seconds it takes to say, and the shortest Veo take that holds it
+    alone."""
+    takes = sorted(int(t) for t in VEO_DURATIONS)
+    rows, spoken = [], 0.0
+    for b in script.lines:
+        words = words_in(b.text)
+        said = speech_seconds(words, b.delivery)
+        spoken += said
+        take = next((t for t in takes if t >= said + LEAD_IN_S + TAIL_S - 1e-9), None)
+        fits = (f"the shortest take that holds it alone: {take} s" if take else
+                f"it does not fit one {takes[-1]} s take alone: it will be reported, never trimmed")
+        rows.append(f"{b.line_id} ({b.speaker}, block {b.index}): {words} words, {said:.1f} s to say; {fits}")
+    dialogue = [f"b{b.index}" for b in script.blocks if b.is_line]
+    action = [f"b{b.index}" for b in script.blocks if not b.is_line]
+    return "\n".join([
+        f"Veo takes are {', '.join(str(t) for t in takes)} s and no other length. Speech runs at "
+        f"{WORDS_PER_SECOND:g} words a second (slower for a whispered or halting delivery). A take with speech needs "
+        f"{LEAD_IN_S:g} s before the first word, {LINE_GAP_S:g} s between two lines and {TAIL_S:g} s after the last.",
+        f"Dialogue blocks: {', '.join(dialogue) or 'none'}. Action blocks: {', '.join(action) or 'none'}. "
+        f"The lines take {spoken:.1f} s to say in all.", *rows])
+
+
+def removed_lines(removed: list[Removed]) -> list[str]:
+    """Elaborations a person took out, in words, for the take to leave out (the same addition never comes back)."""
+    return [f"no {r.kind} serving blocks {', '.join(f'b{b}' for b in r.blocks) or '-'}"
+            + (f" (it showed: {r.seen})" if r.seen else "") for r in removed]
+
+
+@dataclass
+class Draft:
+    """One take, built into the plan's parts and checked by code."""
+
+    analysis: SceneAnalysis
+    treatment: Treatment
+    alternates: list[Treatment]
+    moments: list[Moment]
+    staging: Staging
+    cards: list[ShotCard]
+    created: list[str]  # every moment the take wrote
+    dropped: list[dict[str, str]]  # added moments fidelity dropped, with the reason
+    gone: list[str]  # moments a person had removed before
+    fidelity: dict[str, Any]
+    fit: dict[str, Any]
+    mends: list[str]
+
+    @property
+    def breaks(self) -> int:
+        return int(self.fidelity["counts"]["breaks"])
+
+    @property
+    def overruns(self) -> int:
+        return int(self.fit["overruns"])
+
+
 # ── the pipeline ─────────────────────────────────────────────────────────────────────────────────
 
 
@@ -186,6 +266,8 @@ class Planner:
         self.removed, self.screening = removed, screening
         self.devices = ""
         self.editorial = editorial  # the final cut trims takes: cards get a kept part (Phase 9)
+        # the take is given the clock's facts (plan/2026-11-05 L2); the spike turns it off to measure it
+        self.facts = True
         self.scene = _dump(script)
         self.log: list[str] = []
         self.report: dict[str, Any] = {}
@@ -230,7 +312,8 @@ class Planner:
             devices = self.devices = self.passages("devices", self.device_query(analysis))
             treatments = self.ask("adam_director", {
                 "scene": self.scene, "analysis": _dump(analysis), "before": self.context.get("before", ""),
-                "after": self.context.get("after", ""), "devices": devices}).all()
+                "after": self.context.get("after", ""), "devices": devices,
+                "episode": self.context.get("episode")}).all()
         if not treatments:
             raise Failed("The director wrote no treatment for this scene.")
         distinct = _step("adam_distinct").run({"treatments": _dump(treatments), "analysis": _dump(analysis)})
@@ -282,7 +365,8 @@ class Planner:
         for _ in (1, 2):  # the second is the one retry, with the reasons
             cards = self.ask("adam_shot_designer", {**base, "staging": _dump(staging), "notes": notes,
                                                     "devices": self.devices,
-                                                    "required": self.required(analysis, treatment)}).card_list()
+                                                    "required": self.required(analysis, treatment),
+                                                    "episode": self.context.get("episode")}).card_list()
             plan = {"analysis": _dump(analysis), "treatment": _dump(treatment), "moments": _dump(moments),
                     "staging": _dump(staging), "cards": _dump(cards)}
             fidelity = _step("adam_fidelity").run({"scene": self.scene, "plan": plan})
@@ -432,7 +516,8 @@ class Planner:
                                   "used_shot_length_s": round(float(fit.get("runtime_s") or 0) / n, 2)}
         chosen = plan.treatment
         others = [t for i, t in enumerate(treatments) if i != index]
-        stored = StoredPlan(job_id=job_id, chosen=chosen.stance or treatments[index].stance, chosen_by=chosen_by,  # type: ignore[arg-type]
+        stored = StoredPlan(job_id=job_id, input_hash=self.input_hash(str(self.report.get("mode") or "staged")),
+                            chosen=chosen.stance or treatments[index].stance, chosen_by=chosen_by,  # type: ignore[arg-type]
                             analysis=plan.analysis, treatment=chosen, alternates=others, moments=plan.moments,
                             staging=plan.staging, cards=plan.cards, sound_map=plan.sound_map, removed=self.removed,
                             line_ids=self.line_ids, report=self.report, previous=previous)
@@ -460,6 +545,187 @@ class Planner:
             self.report["screening"] = {"ran": False}
         return self.finish(plan, analysis=plan.analysis, treatments=treatments, index=index, chosen_by=chosen_by,
                            previous=previous or {}, notes=notes, job_id=job_id)
+
+    # ── plan/2026-11-05: the scene in one take ───────────────────────────────────────────────────
+
+    def input_hash(self, mode: str) -> str:
+        """A hash of everything Adam is given for this scene (plan/2026-11-05 L5): a rebuild whose hash is unchanged
+        keeps
+        the plan a person already saw. It holds the script and its context, the real line ids, the elaborations a person
+        took out, whether screening runs, the editorial setting and the mode (the two modes plan differently)."""
+        payload = {"scene": self.scene, "context": self.context, "line_ids": self.line_ids,
+                   "removed": [r.model_dump() for r in self.removed], "screening": self.screening,
+                   "editorial": self.editorial, "mode": mode}
+        return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False, default=str)
+                              .encode("utf-8")).hexdigest()[:16]
+
+    def ask_take(self, inp: dict[str, Any]) -> Any:
+        """The take, with one retry after a short wait when the call could not be made (plan/2026-11-05 R3)."""
+        try:
+            return self.ask("adam_take", inp)
+        except Failed:
+            self.log.append("the take could not be made; asking once more")
+            time.sleep(TAKE_BACKOFF_S)
+            return self.ask("adam_take", inp)
+
+    def draft(self, base: dict[str, Any], notes: str, given: SceneAnalysis | None, stance: str) -> Draft:
+        """One take, built into the plan's parts: the moments a person removed or fidelity refuses are taken out (and
+        out of the cards and the staging), a script line goes to the card that shows its moment (rung 0), and a crowded
+        card is repaired in code. Whether it broke the script is for the caller."""
+        out = self.ask_take({**base, "notes": notes})
+        built = out.plan(analysis=given, stance=stance)
+        created = [m.id for m in built.moments]
+        left = _step("adam_write").run({"moments": _dump(built.moments), "removed": _dump(self.removed)})
+        moments, gone = [Moment.model_validate(m) for m in left["moments"]], list(left["dropped"])
+        check = _step("adam_fidelity").run({"scene": self.scene, "moments": _dump(moments)})
+        drop = set(check["dropped"]) | set(gone)
+        dropped = [{"id": i, "reason": _why_dropped(check, i)} for i in check["dropped"]]
+        analysis, treatment, staging, cards = built.analysis, built.treatment, built.staging, built.cards
+        if drop:
+            moments, cards, _ = drop_moments(moments, cards, drop)
+            staging = staging.model_copy(update={"marks": [m for m in staging.marks if m.moment not in drop],
+                                                 "moves": [m for m in staging.moves if m.moment not in drop]})
+            analysis, treatment = _forget(analysis, treatment, drop)
+        mended = _step("adam_problems").run({"scene": self.scene, "moments": _dump(moments), "cards": _dump(cards)})
+        if mended["changed"]:
+            cards = [ShotCard.model_validate(c) for c in mended["cards"]]
+        plan = {"analysis": _dump(analysis), "treatment": _dump(treatment), "moments": _dump(moments),
+                "staging": _dump(staging), "cards": _dump(cards)}
+        fidelity = _step("adam_fidelity").run({"scene": self.scene, "plan": plan})
+        fit = _step("adam_fit").run({"scene": self.scene, "plan": plan})
+        if not fidelity["counts"]["breaks"] and fit["overruns"]:
+            cards, fit = self.mend(treatment, moments, cards, fit)
+        return Draft(analysis=analysis, treatment=treatment, alternates=built.alternates, moments=moments,
+                     staging=staging, cards=cards, created=created, dropped=dropped, gone=gone, fidelity=fidelity,
+                     fit=fit, mends=list(mended["mends"]))
+
+    def plan_take(self, *, stance: str = "", resume: StoredPlan | None = None, previous: dict[str, Any] | None = None,
+                  job_id: str = "") -> Planned:
+        """The scene in one take: take → the sound → code → one critic → the fixer ladder → finish."""
+        self.report["mode"] = "take"
+        given = None
+        if resume is not None:  # a treatment switch: the analysis is kept, the take is asked again with the new stance
+            given = resume.analysis.model_copy(update={"pov_owner": resume.analysis.pov_owner.model_copy(
+                update={"handover": ""})})
+            self.log.append("the analysis is kept; the scene is taken again under the other treatment")
+        query = self.device_query(given) if given else self.script.listing()[:1200]
+        self.devices = self.passages("devices", query)
+        base = {"scene": self.scene, "context": self.context, "devices": self.devices,
+                "facts": facts_of(self.script) if self.facts else "",
+                "grammar": "" if given else self.passages("grammar", self.script.listing()[:1200]),
+                "removed": removed_lines(self.removed), "analysis": _dump(given) if given else None, "stance": stance}
+        best: Draft | None = None
+        notes = ""
+        for _ in (1, 2):  # the second is the one send-back, with the reasons
+            tried = self.draft(base, notes, given, stance)
+            if best is None or (tried.breaks, tried.overruns) < (best.breaks, best.overruns):
+                best = tried
+            if not tried.breaks:
+                break
+            notes = _refusals(tried.fidelity, tried.fit)
+            self.events.append({"stage": "take", "kind": "sent_back", "why": notes.splitlines(),
+                                "cards": _glance(tried.cards)})
+            self.log.append(f"the take was sent back once: {notes.splitlines()[0]}")
+        assert best is not None
+        if best.breaks:
+            raise Failed("The take broke the script even after being sent back (a line or a moment is missing "
+                         "or out of order).")
+        self.trace = {"created": best.created, "dropped_fidelity": best.dropped, "removed_by_person": sorted(best.gone)}
+        self.report["moments"] = {"dropped": sorted(d["id"] for d in best.dropped),
+                                  "removed_by_a_person": sorted(best.gone)}
+        if best.dropped:
+            self.log.append(f"{len(best.dropped)} added moment(s) dropped: they invented story")
+        if best.mends:
+            self.events.append({"stage": "take", "kind": "mended", "mends": best.mends})
+            self.log += [f"mended in code: {m}" for m in best.mends]
+        if best.overruns:
+            self.log.append(f"{best.overruns} overrun(s) remain: reported, never trimmed")
+        sound = self.ask("adam_sound_designer", {"scene": self.scene, "treatment": _dump(best.treatment),
+                                                 "moments": _dump(best.moments), "cards": _dump(best.cards)})
+        cards = sound.apply(best.cards)
+        if self.editorial:
+            trimmed = _step("adam_trim").run({"cards": _dump(cards)})
+            cards = [ShotCard.model_validate(c) for c in trimmed["cards"]]
+            self.log += trimmed["notes"]
+            self.report["editorial"] = {"saved_s": trimmed["saved_s"], "notes": trimmed["notes"]}
+        plan = AdamPlan(analysis=best.analysis, treatment=best.treatment, moments=best.moments, staging=best.staging,
+                        cards=cards, sound_map=sound.sound_map(), report={"editorial": True} if self.editorial else {})
+        self.first = {"cards": _glance(cards), "moments": [m.id for m in best.moments]}
+        self.events.append({"stage": "take", "kind": "written", "cards": _glance(cards),
+                            "pitches": len(best.alternates)})
+        heard: list[str] = []
+        if self.screening:
+            plan, heard = self.screen_take(plan)
+        else:
+            self.report["screening"] = {"ran": False}
+        alternates = list(best.alternates)
+        for old in [resume.treatment, *resume.alternates] if resume is not None else []:
+            if old.stance != plan.treatment.stance and old.stance not in {a.stance for a in alternates}:
+                alternates.append(old)  # the treatment just left stays one click away
+        return self.finish(plan, analysis=plan.analysis, treatments=[plan.treatment, *alternates], index=0,
+                           chosen_by="person" if stance else "model", previous=previous or {}, notes=heard,
+                           job_id=job_id)
+
+    def screen_take(self, plan: AdamPlan) -> tuple[AdamPlan, list[str]]:
+        """One critic reads the plan in four lenses; code's faults and the critic's high notes become problems; the
+        ladder fixes them one at a time. -> (the plan to keep, the critic's notes). The take's plan stands for anything
+        that fails here."""
+        kit = PanelKit(self.panel.ID, self.ctx)
+        ev = self.panel.evaluate(kit, self.scene, _dump(plan))
+        results: list[dict[str, Any]] = []
+        error = ""
+        try:
+            report = _step("adam_notes").run({**{k: ev[k] for k in self.panel.REPORTS}, "score": ev["score"]})["text"]
+            read = self.ask("adam_critic", {**{k: _dump(getattr(plan, k)) for k in (
+                "analysis", "treatment", "moments", "staging", "cards", "sound_map")}, "scene": self.scene,
+                "report": report})
+            results = read.results({c.number for c in plan.cards})
+        except Failed as failure:
+            error = str(failure)
+            self.log.append("the critic could not answer; the code's faults are still fixed")
+        merged = _step("adam_notes").run({"results": results})
+        sorted_ = _step("adam_problems").run({"reports": {k: ev[k] for k in ("fit", "coverage", "continuity",
+                                                                              "feasibility")},
+                                              "notes": merged["kept"]})
+        problems = [Problem.model_validate(p) for p in sorted_["problems"]]
+        self.events.append({"stage": "screening", "kind": "notes", "notes": merged["kept"]})
+        ladder = Ladder(self.ctx, self.panel, self.scene, events=self.events)
+        fixed = ladder.run(plan, problems) if problems else Fixed(plan=plan, outcomes=[])
+        judge = parts.module("step", "adam_score", "logic")
+        evals = [ev, ladder.evaluate(fixed.plan)] if fixed.changed else [ev]
+        lost = judge.lost_cells([e["score"] for e in evals])
+        ranks = [judge.rank(e["score"], lost[i]) for i, e in enumerate(evals)]
+        worse = fixed.changed and ranks[1] > ranks[0]
+        kept = "revision" if fixed.changed and not worse else "first"
+        by_note = {o.problem.note_id: o for o in fixed.outcomes if o.problem.note_id}
+        left_notes = {p["note_id"] for p in sorted_["left"] if p.get("note_id")}
+        ledger = []
+        for n in merged["kept"]:
+            o = by_note.get(n["id"])
+            declined = (f"not fixed: {o.reason}" if o is not None and not o.fixed else
+                        "left over: the ladder works on a few problems a scene" if n["id"] in left_notes else "")
+            ledger.append({**{k: n[k] for k in ("id", "lens", "severity", "kind", "card", "cell", "note")},
+                           "done": list(o.ops) if o is not None and o.fixed else [], "declined": declined,
+                           "answered": bool(o is not None or declined)})
+        invalid = ["the fixes ranked the plan worse than the take's: the take's plan is kept"] if worse else []
+        record = {"operations": len(fixed.ops), "skipped": fixed.skipped, "dropped": fixed.dropped, "ops": fixed.ops,
+                  "ledger": ledger, "splits": fixed.splits, "unsplit": [], "invalid": invalid, "mode": "ladder",
+                  "problems": [o.row() for o in fixed.outcomes], "left": sorted_["left"]}
+        self.report["screening"] = {"ran": True, "scores": merged["scores"], "notes": list(merged["notes"]),
+                                    "revised": fixed.changed, "kept": kept, "error": error,
+                                    "revision": record if (fixed.outcomes or merged["kept"]) else None}
+        self.report["fixer"] = {"problems": [o.row() for o in fixed.outcomes], "left": len(sorted_["left"]),
+                                "counts": sorted_["counts"]}
+        shown = [fixed.plan if i else plan for i in range(len(evals))]
+        rows = [{"which": "first" if i == 0 else "revision", "rank": list(ranks[i]), "percent": e["score"]["percent"],
+                 "coverage": e["score"].get("coverage"), "cards": len(shown[i].cards),
+                 "moments": len(shown[i].moments), "lost_cells": lost[i]} for i, e in enumerate(evals)]
+        self.events.append({"stage": "screening", "kind": "kept", "which": kept, "candidates": rows})
+        if invalid:
+            self.log.append(invalid[0])
+        elif kept == "revision":
+            self.log.append(f"{sum(o.fixed for o in fixed.outcomes)} of {len(fixed.outcomes)} problem(s) were fixed")
+        return (fixed.plan if kept == "revision" else plan), list(merged["notes"])
 
     def remove_moment(self, stored: StoredPlan, moment_id: str, job_id: str = "") -> Planned:
         """A person took an elaboration out: the moment and any card left with nothing go, the sound map follows, the

@@ -574,6 +574,39 @@ class SupabaseDocs:
             self.rest.insert("chunks", [_with_vector(r) for r in rows[i: i + INSERT_BATCH]])
 
 
+class SupabaseMemory:
+    """`MemoryStore`: the entries of `production_memory`. Needs the table (schema v12); a read that fails because it is
+    missing is handled by the caller (`core.memory.entries`, the ingest), never here."""
+
+    COLUMNS = "id,document_id,topic,applies_to,says,quote,strength,status,source"
+
+    def __init__(self, rest: Rest) -> None:
+        self.rest = rest
+
+    def entries(self, production_id: UUID) -> list[Row]:
+        return self.rest.select("production_memory", {"production_id": f"eq.{production_id}", "select": self.COLUMNS,
+                                                      "order": "created_at,id"})
+
+    def replace_from(self, production_id: UUID, document_id: UUID, entries: list[Row]) -> None:
+        from hiru_ai.core import memory
+
+        mine = self.rest.select("production_memory", {"document_id": f"eq.{document_id}", "select": self.COLUMNS})
+        kept = [r for r in mine if not memory.is_reader_draft(r)]
+        self.rest.delete("production_memory", {"document_id": f"eq.{document_id}", "source": "eq.reader",
+                                               "status": "eq.draft"})
+        rows = [{"production_id": str(production_id), "document_id": str(document_id), "status": "draft",
+                 "source": "reader", **{k: e[k] for k in ("topic", "applies_to", "says", "quote", "strength")}}
+                for e in memory.fresh(kept, entries)]
+        if rows:
+            self.rest.insert("production_memory", rows)
+
+    def upsert(self, row: Row) -> None:
+        if row.get("id"):
+            self.rest.upsert("production_memory", [{**row, "updated_at": datetime.now(UTC).isoformat()}])
+        else:
+            self.rest.insert("production_memory", [row])
+
+
 class SupabaseSearch:
     """`Search`: `match_chunks` (hybrid keyword + vector) and `match_craft_techniques`."""
 
@@ -657,6 +690,7 @@ def _ports(rest: Rest, jobs: Any = None) -> Ports:
                  frames=SupabaseFrames(rest), split=SupabaseSplit(rest), producer=SupabaseProducer(rest),
                  director=SupabaseDirector(rest),
                  docs=SupabaseDocs(rest, files),
+                 memory=SupabaseMemory(rest),
                  search=SupabaseSearch(rest),
                  files=files, jobs=jobs, staging=StagedCards())
 

@@ -12,13 +12,14 @@ output: schema:Output
 prompts: { system: prompts/system.md }
 tools: []
 knowledge: []
-middleware: [static_first, usage]
+middleware: [static_first, usage, production_memory]
+memory: ["*"]
 writes_dialogue: false
 # The same agent as a tool loop (plan/2026-11-04 §8, row 1): switched on by AGENT_TOOLS after a live A/B (`hiru-ai eval
 # chat_answerer --ab base,tools --live`); the whole shot list leaves its prompt, a one-line summary stays.
 with_tools:
   tools: [canon_read, memory_search, questions_read, scene_read, search_kb, shot_read, timing_check]
   knowledge: [production_docs]
-  middleware: [static_first, usage, absent_safe, limits, clear_old_results, tool_retry]
+  middleware: [static_first, usage, absent_safe, limits, clear_old_results, tool_retry, production_memory]
   max_tool_calls: 6
   max_model_calls: 4

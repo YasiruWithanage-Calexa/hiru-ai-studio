@@ -9,6 +9,13 @@ tiers:
   high:   { model: model_high,   effort: effort_high,   timeout_s: 180, retries: 2, fallbacks: [] }
   medium: { model: model_medium, effort: effort_medium, timeout_s: 120, retries: 2, fallbacks: [] }
   low:    { model: model_low,    effort: effort_low,    timeout_s: 60,  retries: 2, fallbacks: [] }
+  # The big model at low effort: the top rung of Shot Planner Adam's fixer ladder (plan/2026-11-05 T3). One problem, a
+  # short answer; it thinks little and costs a fraction of a `high` call.
+  fixer:  { model: model_high,   effort: effort_fixer,  timeout_s: 300, retries: 1, fallbacks: [] }
+  # Shot Planner David (plan/2026-11-05e §4.2): one strong model for the author and the repairer, picked by the spike (D3).
+  # The author writes a whole scene's shots with their camera design in one answer, so it gets a long timeout.
+  author: { model: model_author, effort: effort_author, timeout_s: 600, retries: 1, fallbacks: [] }
+  repair: { model: model_author, effort: effort_repair, timeout_s: 300, retries: 1, fallbacks: [] }
   vision: { model: model_vision,                        timeout_s: 120, retries: 1, fallbacks: [] }  # the frame check
 embed:
   model: embedding_model

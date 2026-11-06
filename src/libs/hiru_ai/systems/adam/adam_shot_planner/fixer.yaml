@@ -1,0 +1,19 @@
+# Shot Planner Adam's fixer ladder (plan/2026-11-05 T3): which model tier each rung of each kind of problem runs on.
+#
+# A problem is fixed by code first (rung 0, not listed here), then by the rungs below, in order, until code accepts a fix.
+# Moving a kind to a stronger model is changing one word in this file: no code changes.
+#
+#   tiers   the names this file uses -> a tier of hiru_ai/core/models.yaml
+#   rounds  the most model rungs one problem may use (the plan says two); the rest of a kind's list is not tried
+#   kinds   for each kind of problem (adam_problems), its rungs, cheapest first
+#
+# Starting point, until the spike (plan/2026-11-05 Phase 1) says where each kind should start: both kinds try the small model
+# and go up to the big one only when code refuses the small model's fix. If the small model is not good enough for a kind,
+# start that kind higher, e.g. `creative: [medium, big]` once a `medium` tier exists, or `creative: [big]`.
+rounds: 2
+tiers:
+  small: medium  # gpt-5-mini, low effort
+  big: fixer     # gpt-5, low effort
+kinds:
+  local: [small, big]
+  creative: [small, big]

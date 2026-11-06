@@ -49,6 +49,44 @@ says must be seen), `adam_split` (a crowded card is repaired, never deleted), `a
 record), the reviser's dispositions (every note answered), and `report.history`. Phases 1 to 6 are built offline; the live
 verification (`scripts/adam_live.py --yes --runs 3`) is a person's.
 
+Plan/2026-11-05 added a second way to plan a scene (`ADAM_MODE=take`, default `staged`): `adam_take` writes the plan in ONE call,
+`adam_critic` reads it once in four lenses, and the fixer ladder (`systems/adam/adam_shot_planner/ladder.py`, tiers in
+`fixer.yaml`) fixes one problem at a time, a small model first and a bigger one only when code refuses the small model's fix
+(`plan/2026-11-05/IMPLEMENTED.md`). Phases 0 to 4 are built offline; the spike (`scripts/adam_take_spike.py --yes`), the live
+gate, `Database/upgrade_v11_to_v12.sql` (+ `USAGE_DETAIL=true`) and the default are a person's. Costs appear in the live scripts and
+`IMPLEMENTED.md` only, never in the interface.
+
+## Production memory (plan/2026-11-05d)
+
+What the documents say about HOW to make the drama (genre, palettes, lenses, lighting, sound, edit ...) is a list of entries,
+never a form: `memory_reader` reads each document at ingest, `steps/memory_check` keeps only entries whose quote is in the text,
+and the `production_memory` middleware adds the entries that concern a call to the END of an agent's user message. An agent
+subscribes with `middleware: [..., production_memory]` and `memory: [camera, lighting]` (`*` = all) in its manifest; `fact` and
+`must` entries reach every subscriber; an agent's `memory_scope(inp)` hook narrows `place:`, `character:` and `episode:` entries.
+No entries gives a call identical byte for byte. Drafts are used and labelled `(draft)`; a rejected entry never is. Conflicts
+(`steps/memory_conflicts`) are reported on the job's events, never resolved. Read `plan/2026-11-05d/IMPLEMENTED.md`: phases 0
+to 4 are built offline, `production_memory` is in `Database/schema_v12.sql` and **not applied**; the live check and the
+interface are a person's.
+
+## Shot Planner David and the Hiru AI pattern (`david/` folders, plan/2026-11-05e)
+
+A third shot planner, beside `script_split` and Adam, which it does not change, and the first system built on **the Hiru AI
+pattern** (`docs/AI_PATTERN.md`, ADR 0010): ONE strong-model author call per creative unit that returns its work and an end
+state; code checks facts and mends what it can; the same model repairs only the exact problems it is shown, with a patch, at
+most twice, then the rest is reported; **a quality problem is fixed in the prompt, the pack or a code check, never by adding
+an agent** (rule 8). Same group rules as Adam: parts in `david/` folders (`agents/david/`, `steps/david/`, `systems/david/`),
+`contracts/david/`, `tests/david/`, `tests/eval/david/`, `docs/david/`, ids start `david_`, `hiru-ai remove --group david` lists
+what goes. David plans a scene's shots AND their camera (the Veo clip IR) in one call, so the shot producer skips the intent
+agent, the DoP and the critic for its shots (`"david"` is in `contracts.staging.AUTHORED`; `david_write` stores `ir` and a
+`design` whose pins are current). The rules are code in `contracts/david/` (`checks.py`, `mend.py`, `links.py`, `seams.py`);
+the closed lists, the wire shapes and `scenes.david` are `plan.py`, `wire.py`, `stored.py`. A production chooses it with
+`settings.shot_planner = "david"`; scenes that carry on from the one before run in order and pass their end state and last shot
+on (`settings.david_order`, D5); the system is `david_shot_planner` (job `plan_scene_david`, function `shot_planner_david`,
+port 8210); the tiers are `author` and `repair` (`OPENAI__MODEL_AUTHOR`, `OPENAI__EFFORT_AUTHOR`, `OPENAI__EFFORT_REPAIR`).
+Read `docs/david/README.md` and `plan/2026-11-05e/IMPLEMENTED.md` first. Phases 0 to 5 are built offline; the spike
+(`scripts/david_spike.py --yes`), the blind comparison (`scripts/david_compare.py`), the decisions D2 to D7 and the default are a
+person's. Costs appear in the spike's output and `IMPLEMENTED.md` only, never in the interface.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
 - A function under `src/services/<name>/` imports only its own package and `contracts`.

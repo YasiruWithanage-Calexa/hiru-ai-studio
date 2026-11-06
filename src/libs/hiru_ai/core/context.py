@@ -21,6 +21,7 @@ from hiru_ai.core.ports import (
     FrameStore,
     ImageGen,
     Jobs,
+    MemoryStore,
     ProducerStore,
     SceneStore,
     Search,
@@ -38,6 +39,7 @@ class Ports:
     canon: CanonStore | None = None
     structure: StructureStore | None = None
     docs: DocStore | None = None
+    memory: MemoryStore | None = None
     search: Search | None = None
     files: Files | None = None
     frames: FrameStore | None = None
@@ -71,6 +73,9 @@ class RunContext:
     tool_events: list[ToolEvent] = field(default_factory=list, compare=False, repr=False)
     # The passages a search tool handed the model, as `{chunk_id, label}`: the reply cites them like any other search.
     citations: list[dict[str, str]] = field(default_factory=list, compare=False, repr=False)
+    # What the `production_memory` middleware loaded for this run (the production's entries, its canon names): read once
+    # per run, then reused by every agent call of it (plan/2026-11-05d M5).
+    memory_cache: dict[str, Any] = field(default_factory=dict, compare=False, repr=False)
 
     def need(self, port: str, kind: str = "") -> Any:
         """A port of this run, or a clear error naming the one that is missing."""

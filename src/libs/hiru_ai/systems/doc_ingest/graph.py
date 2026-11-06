@@ -1,4 +1,5 @@
-"""doc_ingest: one document, start to finish: download → extract → role → chunk → headers → embed → index.
+"""doc_ingest: one document, start to finish: download → extract → role → story → memory → chunk → headers → embed →
+index.
 Ported from `doc_ingest/engine/pipeline.py`; the steps and agents are found by id.
 
 Outcomes, each written to the document row:
@@ -24,7 +25,7 @@ from langgraph.graph.state import CompiledStateGraph
 
 from contracts.documents import DocumentStatus
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
-from hiru_ai.core import agents, llm, parts
+from hiru_ai.core import agents, llm, memory, parts, story
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -81,6 +82,66 @@ def build(ctx: RunContext, payload: DispatchPayload,
         label = parts.step("chunk_headers").ROLE_LABEL[verdict["role"]]
         progress(f"{filename} looks like a {label}", role=verdict["role"], confidence=verdict["confidence"])
         return {"guess": verdict, "role": chosen}
+
+    def story_node(state: State) -> State:
+        """Read the document once for its story (episodes, spoken lines, people) and keep the checked reading beside
+        the text. An extra: a model that is missing or fails leaves no `story.json` and the ingest goes on."""
+        if not llm.models_enabled():
+            return {}
+        try:
+            reading = story.read(ctx, filename, state["text"])
+            if reading is None:
+                return {}
+            story.save(ctx, state["text_path"], reading)
+        except Exception:
+            _logger.warning("story reading failed; continuing without it", exc_info=True)
+            return {}
+        lines = sum(len(e["spoken"]) for e in reading["episodes"])
+        progress(f"Read the story in {filename}: {len(reading['episodes'])} episodes, {lines} spoken lines, "
+                 f"{len(reading['people'])} people")
+        for text in reading["warnings"]:
+            jobs.event(job_id, JobEventType.WARNING, {"text": f"{filename}: {text}", "document_id": str(document_id)},
+                       agent=rules.AGENT)
+        return {}
+
+    def memory_node(state: State) -> State:
+        """Read the document once for the direction it gives about how to make the drama (plan/2026-11-05d) and keep
+        the checked entries as the document's reader drafts. An extra, like the story: with no model, no memory port or
+        no table (the migration is not applied yet) nothing is asked, and a failure leaves the document's earlier
+        entries as they are and the ingest goes on."""
+        port = ctx.ports.memory
+        if port is None or not llm.models_enabled():
+            return {}
+        production_id = UUID(str(document["production_id"]))
+        try:
+            port.entries(production_id)  # the table must be there before a model call is paid for
+        except Exception:
+            _logger.warning("production memory is not available; the direction of %s is not read", filename,
+                            exc_info=True)
+            return {}
+        try:
+            found = memory.read(ctx, filename, state["text"])
+            if found is None:
+                return {}
+            port.replace_from(production_id, document_id, found["entries"])
+        except Exception:
+            _logger.warning("production memory not kept for %s", filename, exc_info=True)
+            jobs.event(job_id, JobEventType.WARNING,
+                       {"text": f"{filename}: the direction it gives could not be kept",
+                        "document_id": str(document_id)},
+                       agent=rules.AGENT)
+            return {}
+        progress(f"Read the direction in {filename}: {len(found['entries'])} entries")
+        for text in found["warnings"]:
+            jobs.event(job_id, JobEventType.WARNING, {"text": f"{filename}: {text}", "document_id": str(document_id)},
+                       agent=rules.AGENT)
+        every = port.entries(production_id)
+        mine = {str(r["id"]) for r in every if str(r.get("document_id")) == str(document_id)}
+        for conflict in memory.conflicts(ctx, every):
+            if mine & {str(i) for i in conflict["ids"]}:  # only what this document is part of
+                jobs.event(job_id, JobEventType.WARNING, {"text": conflict["text"], "document_id": str(document_id)},
+                           agent=rules.AGENT)
+        return {}
 
     def chunk(state: State) -> State:
         split = parts.step("chunk")
@@ -160,12 +221,14 @@ def build(ctx: RunContext, payload: DispatchPayload,
                            "chunks": len(rows), "embedded": len(state["vectors"])}}
 
     g: Any = StateGraph(State)
-    for name, node in (("read", read), ("role", role), ("chunk", chunk), ("headers", headers), ("embed", embed),
-                       ("index", index)):
+    for name, node in (("read", read), ("role", role), ("story", story_node), ("memory", memory_node),
+                       ("chunk", chunk),
+                       ("headers", headers), ("embed", embed), ("index", index)):
         g.add_node(name, node)
     g.add_edge(START, "read")
     g.add_conditional_edges("read", lambda state: END if state.get("rejected") else "role", ["role", END])
-    for before, after in (("role", "chunk"), ("chunk", "headers"), ("headers", "embed"), ("embed", "index")):
+    for before, after in (("role", "story"), ("story", "memory"), ("memory", "chunk"), ("chunk", "headers"),
+                          ("headers", "embed"), ("embed", "index")):
         g.add_edge(before, after)
     g.add_edge("index", END)
     return g.compile()

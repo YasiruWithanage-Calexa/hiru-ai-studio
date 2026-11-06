@@ -11,6 +11,10 @@ shape:
     StagingWire    (adam_blocker)         .staging()     → Staging
     CardsWire      (adam_shot_designer)   .card_list()   → [ShotCard]
     SoundWire      (adam_sound_designer)  .sound_map()   → SoundMap; .apply() → the cards with their sound
+    TakeWire       (adam_take)            .plan()        → TakePlan: stages ①, ②'s chosen treatment, ③, ④ and ⑤ in one
+                                                          answer (plan/2026-11-05); the sound is still the sound
+                                                          designer's
+    CriticsWire    (adam_critic)          .results()     → one answer per lens, in the shape `adam_notes` merges
 
 The conversions keep the model's words and decide nothing: whether a moment invents story, a take fits the clock or a
 cut is motivated belongs to the steps (`adam_fidelity`, `adam_fit`, `adam_continuity`, `adam_score`). Pure standard
@@ -19,6 +23,7 @@ library + pydantic (the `contracts` rule).
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
@@ -445,3 +450,132 @@ class SoundWire(_Wire):
         not write for keeps the sound it had."""
         by_number = {c.number: c.sound.card_sound() for c in self.cards}
         return [c.model_copy(update={"sound": by_number[c.number]}) if c.number in by_number else c for c in cards]
+
+
+# ── the whole plan in one answer (adam_take, plan/2026-11-05) ────────────────────────────────────
+
+
+class PitchW(_Wire):
+    """A treatment the take did not choose, in a line: enough for a person to pick it and for the take to be asked
+    again with it as the stance (plan/2026-11-05 §9 D2)."""
+
+    stance: Stance
+    name: str
+    concept: str  # "we make the viewer feel X by Y"
+
+
+class TakeCardW(_Wire):
+    """A card as the take writes it: every field of `CardW` except `sound`, which the sound designer writes (§9 D3).
+    The fields are listed again (a model's schema keeps the order it is given); `tests/adam/test_take.py` checks that
+    they are `CardW`'s, so a field added to one is added to the other."""
+
+    moments: list[str]
+    title: str
+    size: p.Size
+    arrangement: p.Arrangement
+    subject: str
+    angle: p.Angle
+    height: str
+    lens_feel: p.LensFeel
+    movement: p.Movement
+    focus: FocusW
+    composition: CompositionW
+    eyeline: p.Eyeline
+    axis: p.Axis
+    blocking_in_shot: str
+    beats: list[CardBeatW]
+    lines: list[CardLineW]
+    cut_in: CutInW
+    purpose: str
+    emotional_beat: str
+    rhythm_break: bool
+    veo_notes: str
+    take_s: Literal[4, 6, 8]
+
+    def card_w(self) -> CardW:
+        """The same card as a `CardW`, with no sound yet (the sound designer's)."""
+        silent = CardSoundW(ambience="", effects="", music="", silence=False, pre_lap="", carries_over="")
+        return CardW(**self.model_dump(), sound=silent)
+
+
+class TakeCardsW(_Wire):
+    cards: list[TakeCardW]
+
+
+@dataclass
+class TakePlan:
+    """What `TakeWire.plan()` gives: the plan's parts, built by the same methods the five stages use."""
+
+    analysis: p.SceneAnalysis
+    treatment: p.Treatment  # the chosen one, its moment ids bound
+    alternates: list[p.Treatment]  # the pitches, as treatments that have a stance, a name and a concept
+    moments: list[p.Moment]
+    staging: p.Staging
+    cards: list[p.ShotCard]
+
+
+class TakeWire(_Wire):
+    analysis: AnalysisWire
+    treatment: TreatmentW  # the one chosen
+    pitches: list[PitchW]  # the other two stances, one line each
+    moments: MomentsWire
+    staging: StagingWire
+    cards: TakeCardsW
+
+    def plan(self, analysis: p.SceneAnalysis | None = None, stance: str = "") -> TakePlan:
+        """The parts of the plan. The treatment's plant, break and ending and the analysis' handover are bound to the
+        moments by `MomentsWire.bind`, exactly as after the moment writer. Decides nothing about the story.
+
+        `analysis`: the one already settled (a treatment switch keeps the stored analysis whatever the take wrote).
+        `stance`: a person's choice, which the treatment carries whatever stance the model labelled it with."""
+        analysis = analysis or self.analysis.analysis()
+        analysis, treatment = self.moments.bind(analysis, self.treatment.treatment())
+        if stance:
+            treatment = treatment.model_copy(update={"stance": stance})
+        alternates = [p.Treatment(name=x.name, stance=x.stance, concept=x.concept) for x in self.pitches
+                      if x.stance != treatment.stance]
+        return TakePlan(analysis=analysis, treatment=treatment, alternates=alternates,
+                        moments=self.moments.moment_list(), staging=self.staging.staging(),
+                        cards=CardsWire(cards=[c.card_w() for c in self.cards.cards]).card_list())
+
+
+# ── one critic, four lenses (adam_critic, plan/2026-11-05 T4) ────────────────────────────────────
+
+Lens = Literal["audience", "editor", "opportunity", "fidelity"]
+
+
+class LensNoteW(_Wire):
+    lens: Lens
+    card: int  # the card's number; 0 = the scene as a whole
+    severity: Literal["high", "medium", "low"]
+    kind: Literal["add", "remove", "change", "risk"]
+    cell: str  # an `add` note: the coverage cell it fills or a moment kind; else ""
+    note: str
+
+
+class LensScoreW(_Wire):
+    lens: Lens
+    score: Literal[1, 2, 3, 4, 5]
+
+
+class CriticsWire(_Wire):
+    notes: list[LensNoteW]  # at most four to a lens, the ones that matter most
+    scores: list[LensScoreW]  # one per lens; stored for a person, they decide nothing
+
+    def results(self, card_numbers: set[int]) -> list[dict[str, object]]:
+        """One answer per lens in the shape the four critics give (`CriticWire`), each cleaned the same way: at most
+        four
+        notes, most severe first, none on a card the plan lacks. A lens that has no score is left out, as a critic that
+        failed is."""
+        from contracts.adam.screening import CriticWire, NoteW  # screening imports this module: import late
+
+        lenses = {s.lens: s.score for s in self.scores}
+        out: list[dict[str, object]] = []
+        for lens in ("audience", "editor", "opportunity", "fidelity"):
+            if lens not in lenses:
+                continue
+            mine = [NoteW(card=n.card, severity=n.severity, kind=n.kind, cell=n.cell, note=n.note)
+                    for n in self.notes if n.lens == lens]
+            cleaned = CriticWire(notes=mine, score=lenses[lens]).clean(card_numbers)
+            out.append({"lens": lens, "score": cleaned.score, "notes": [n.model_dump() for n in cleaned.notes]})
+        return out

@@ -47,6 +47,9 @@ class ModelCall:
     lines_after: Callable[[Any], Mapping[str, str]] | None = None  # the lines a result carries, by line id
     fallback: Any = MISSING  # what absent_safe returns when the model is unavailable or fails
     config: dict[str, Any] = field(default_factory=dict)  # LangChain run config (callbacks, metadata)
+    timeout_s: float | None = None  # replaces the tier's timeout (the agent manifest's `timeout_s`)
+    memory_topics: tuple[str, ...] = ()  # the production memory topics the agent is given (manifest `memory`)
+    memory_scope: Mapping[str, Any] | None = None  # what the call is about: place, people, episode (production_memory)
 
 
 Next = Callable[[ModelCall], Any]

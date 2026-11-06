@@ -18,5 +18,6 @@ def _canon_listing(inp: Input) -> str:
 
 def user_message(inp: Input) -> str:
     target = f"{inp.duration_s} s" if inp.duration_s else "not stated"
-    return (f"Episode {inp.number} — {inp.title}\nTarget length: {target}\n"
+    head = f"Episode {inp.number} — {inp.title}" if inp.number is not None else f"Scene — {inp.title}".rstrip(" —")
+    return (f"{head}\nTarget length: {target}\n"
             f"<canon>\n{_canon_listing(inp)}\n</canon>\n<episode>\n{inp.body}\n</episode>")

@@ -1,0 +1,29 @@
+{
+  "_about": "Plan 2026-11-05d Phase 0: what a careful reader writes for each document. Each entry is [topic, applies_to, strength, says, quote]; a quote is the document's own words. The direction-bible is the plan's example (13 entries); the phone-call notes are synthetic; the third file is the real 3-episode drama.",
+  "direction-bible.txt": [
+    ["series", "production", "fact", "The drama is an action, crime thriller and love story.", "GENRE Action / Crime Thriller / Love"],
+    ["series", "production", "fact", "The drama is set in Colombo and the village of Mahawewa.", "SETTING Colombo and Mahawewa village"],
+    ["tone", "production", "fact", "Grounded South Indian realism with commercial action energy.", "TONE Grounded South Indian realism with commercial action energy"],
+    ["series", "production", "fact", "The tagline is Sathya danne ekkenek witharai.", "TAGLINE Sathya danne ekkenek witharai."],
+    ["visual", "place:Colombo", "prefer", "Colombo is cold blue, green and sodium orange; handheld camera, tight frames, crowded backgrounds.", "Colombo palette Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds."],
+    ["visual", "place:Mahawewa village", "prefer", "The village is warm amber and earthy red; locked-off frames, natural light, longer silences.", "Village palette Warm amber and earthy red. Locked-off frames, natural light and longer silences."],
+    ["camera", "when:love scenes", "prefer", "Use 50mm and 85mm lenses, shallow focus and minimal camera movement.", "Love scenes 50mm and 85mm lenses, shallow focus and minimal camera movement."],
+    ["camera", "when:action scenes", "prefer", "Use 24mm for geography, 35mm for movement and 50mm for emotional impact.", "Action lenses 24mm for geography, 35mm for movement and 50mm for emotional impact."],
+    ["lighting", "production", "prefer", "Light with vehicle headlights, sodium lamps, practical bulbs and lightning flashes.", "Lighting Vehicle headlights, sodium lamps, practical bulbs and lightning flashes."],
+    ["edit", "production", "prefer", "Cut fast only on impact; let important punches and reactions stay on screen.", "Fast cuts only on impact. Let important punches and reactions stay on screen."],
+    ["sound", "production", "prefer", "Rain, breathing, metal impacts and footsteps come first.", "Rain, breathing, metal impacts and footsteps first."],
+    ["music", "when:hero elevation moments", "prefer", "Music enters only for hero elevation moments.", "Music enters only for hero elevation moments."],
+    ["rule", "when:Nimal's key falling; Dinu removing the gun", "must", "Slow motion only in these two moments in the whole drama.", "Use only twice: Nimal's key falling and Dinu removing the gun."]
+  ],
+  "phone-call-direction.md": [
+    ["camera", "production", "prefer", "Keep the camera at eye level and play a phone call in one held two-shot where possible.", "Keep the camera at eye level and let a phone call play in one held two-shot where it can."],
+    ["rule", "character:Father", "must", "The father is never shown; his side of the call is only heard.", "The father is never shown: his side of the call is heard only."],
+    ["visual", "episode:2", "must", "Episode 2 is shot entirely in the rain.", "Episode 2 is shot entirely in the rain."],
+    ["sound", "production", "prefer", "Keep ambient street sound under every call and no score.", "Ambient street sound under every call, never a score."],
+    ["music", "when:before Anudi decides to go home", "must", "No music until Anudi decides to go home.", "No music until Anudi decides to go home."],
+    ["sound", "character:Anudi", "prefer", "Anudi's ringtone is the only recurring sound cue.", "Anudi's ringtone is the only recurring sound cue."]
+  ],
+  "../prose/three-episode-drama.txt": [
+    ["visual", "production", "prefer", "Realistic Sri Lankan cinematic drama, natural lighting, emotionally grounded.", "Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, emotionally grounded"]
+  ]
+}

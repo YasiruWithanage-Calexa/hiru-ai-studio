@@ -25,7 +25,7 @@ from contracts.build import Agent, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
-from hiru_ai.core import agents, llm, parts
+from hiru_ai.core import agents, llm, parts, story
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.systems.canon_extract.state import State
@@ -44,9 +44,21 @@ def read_documents(ctx: RunContext, production_id: Any) -> tuple[list[dict[str, 
         if not d.get("text_path"):
             warnings.append(f"{d['filename']} was read before this build step existed; re-ingest it to include it.")
             continue
-        docs.append({"id": str(d["id"]), "filename": d["filename"], "role": role,
+        docs.append({"id": str(d["id"]), "filename": d["filename"], "role": role, "text_path": d["text_path"],
                      "text": docs_port.text(d["text_path"])})
     return docs, warnings
+
+
+def people_found(ctx: RunContext, documents: list[dict[str, str]]) -> list[dict[str, Any]]:
+    """Everyone the story reader found in the documents (read now if a document has no saved reading), once each."""
+    found: dict[str, dict[str, Any]] = {}
+    for d in documents:
+        reading = story.story_for(ctx, d, d["text"])
+        for p in (reading or {}).get("people", []):
+            known = found.setdefault(p["name"].casefold(), {**p, "aliases": []})
+            known["aliases"] = [*known["aliases"], *(a for a in p["aliases"] if a not in known["aliases"])]
+            known["voice_only"] = bool(known["voice_only"] and p["voice_only"])
+    return list(found.values())
 
 
 def build(ctx: RunContext, payload: DispatchPayload, aspect_ratio: str) -> StateGraph[Any, Any, Any, Any]:
@@ -73,7 +85,7 @@ def build(ctx: RunContext, payload: DispatchPayload, aspect_ratio: str) -> State
             try:
                 told = merge.counts(cands)
                 out = agents.build("canon_extractor").run(
-                    {"documents": state["documents"], **told}, ctx)
+                    {"documents": state["documents"], "people": people_found(ctx, state["documents"]), **told}, ctx)
                 cands = merge.combine(cands, merge.from_answer([e.model_dump() for e in out.entities]))
             except Exception:
                 _logger.warning("model extraction failed; keeping the rules' canon", exc_info=True)

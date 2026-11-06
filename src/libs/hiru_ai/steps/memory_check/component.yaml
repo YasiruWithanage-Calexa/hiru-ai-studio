@@ -1,0 +1,8 @@
+id: memory_check
+kind: step
+version: 1
+summary: "Checks the memory reader's entries against the document: a quote that is not in it, an empty direction or a bad target is dropped."
+status: active
+owner: doc_ingest
+uses: [verbatim_check]
+entry: step:run

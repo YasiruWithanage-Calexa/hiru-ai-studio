@@ -32,7 +32,7 @@ from langgraph.graph.state import CompiledStateGraph
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import CameraSettings
 from contracts.staging import AUTHORED
-from hiru_ai.core import agents, llm, parts
+from hiru_ai.core import agents, llm, memory, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.rag.embeddings import embed_texts
@@ -97,7 +97,9 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         def embed(queries: list[str]) -> list[list[float]]:
             return [v for v in embed_texts(queries, "shot_producer.techniques", ctx.sink()) if v is not None]
 
-        found = tech.palette(intents, "Sri Lankan television drama", search.techniques, embed if enabled else None)
+        # the production's own genre when its documents give one
+        genre = memory.genre(ctx, "Sri Lankan television drama")
+        found = tech.palette(intents, genre, search.techniques, embed if enabled else None)
         return "\n\n".join(b for b in (tech.problems_block(problems), found) if b)
 
     def write_intents(scene: Any, wanted: list[Any], prod: Any, canon: list[Row]) -> int:
@@ -332,6 +334,7 @@ def run(payload: DispatchPayload, ctx: RunContext) -> dict[str, Any]:
     if production is None:
         jobs.set(payload.job_id, JobStatus.DONE, result={"skipped": "production deleted"})
         return {"skipped": "production deleted"}
+    memory.report(ctx, jobs, payload.job_id)  # entries that disagree or ask for what cannot be made
     result: dict[str, Any] = build(ctx, payload, production).invoke({})["result"]
     return result
 

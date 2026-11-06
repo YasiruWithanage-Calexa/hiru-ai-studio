@@ -1,0 +1,17 @@
+id: adam_fixer
+kind: agent
+version: 1
+summary: "Fixes ONE problem in a plan, as the reviser's operations on the cards and moments around it. The tier it runs on is chosen per call by the fixer ladder (adam/fixer.yaml), so a small model tries first and a bigger one only when code refuses the small model's fix."
+status: active
+owner: director
+# The manifest's tier is the bottom rung. The ladder passes another tier for a call (`Agent.run(tier=...)`).
+model: medium
+shape: structured
+phase: adam.fix
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

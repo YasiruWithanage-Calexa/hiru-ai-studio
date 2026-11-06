@@ -23,6 +23,7 @@ from typing import Any
 import yaml
 from pydantic import BaseModel
 
+from contracts.memory import topic_key
 from hiru_ai.core import manifest as mf
 from hiru_ai.core.context import Ports
 from hiru_ai.core.errors import ManifestError, UnknownComponent
@@ -176,10 +177,13 @@ class Registry:
         """Import `<part>/<name>.py` the first time it is asked for."""
         comp = self.get(kind, ident, include_disabled=True)
         dotted = f"{comp.package}.{name}"
+        if self.root == PACKAGE_ROOT:
+            # Always through the import system, which holds the module's lock: a function plans scenes in several
+            # threads, and a thread that finds a module another thread is still executing in `sys.modules` would be
+            # handed it half built ("partially initialized module ... has no attribute 'user_message'").
+            return importlib.import_module(dotted)
         if dotted in sys.modules:
             return sys.modules[dotted]
-        if self.root == PACKAGE_ROOT:
-            return importlib.import_module(dotted)
         path = comp.folder / f"{name}.py"  # a registry over another folder (tests, the CLI scaffold check)
         spec = importlib.util.spec_from_file_location(dotted, path)
         if spec is None or spec.loader is None:
@@ -374,6 +378,7 @@ class Registry:
             out.append(Problem(where, f"{', '.join(stray)} apply to react agents; a structured agent is one call "
                                       "(its retries and fallbacks are the tier's, in models.yaml)"))
         out += self._check_agent_tools(where, m)
+        out += self._check_memory(where, m)
         if m.knowledge and m.shape == "structured":
             out.append(Problem(where, "lists knowledge bases, but a structured agent is one call and cannot search; "
                                       "make it a react agent or let its system retrieve and pass the passages in"))
@@ -398,6 +403,22 @@ class Registry:
                     continue
                 if not (isinstance(obj, type) and issubclass(obj, BaseModel)):
                     out.append(Problem(where, f"{label} {ref!r} is not a pydantic model"))
+        return out
+
+    def _check_memory(self, where: str, m: mf.AgentManifest) -> list[Problem]:
+        """`memory:` topics need the middleware that reads them (in the form that runs, and in the tools form), and are
+        lower-case words or `*`."""
+        out: list[Problem] = []
+        if not m.memory:
+            return out
+        if bad := [t for t in m.memory if t != "*" and t != topic_key(t)]:
+            out.append(Problem(where, f"memory topics are lower case words joined by _ (or *): {', '.join(bad)}"))
+        forms = [("", m.middleware)] + ([(" (with_tools)", m.with_tools.middleware)]
+                                        if m.with_tools and m.with_tools.middleware is not None else [])
+        for label, names in forms:
+            if "production_memory" not in names:
+                out.append(Problem(where + label, "lists memory topics but not the production_memory middleware that "
+                                                  "reads them"))
         return out
 
     def _check_tools_form(self, where: str, comp: Component, m: mf.AgentManifest) -> list[Problem]:

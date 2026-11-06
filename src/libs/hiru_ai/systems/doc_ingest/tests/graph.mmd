@@ -7,6 +7,8 @@ graph TD;
 	__start__([<p>__start__</p>]):::first
 	read(read)
 	role(role)
+	story(story)
+	memory(memory)
 	chunk(chunk)
 	headers(headers)
 	embed(embed)
@@ -16,9 +18,11 @@ graph TD;
 	chunk --> headers;
 	embed --> index;
 	headers --> embed;
+	memory --> chunk;
 	read -.-> __end__;
 	read -.-> role;
-	role --> chunk;
+	role --> story;
+	story --> memory;
 	index --> __end__;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0

@@ -20,6 +20,7 @@ class Input(BaseModel):
     devices: str = ""  # passages of the device library the system retrieved (the agent cannot search)
     notes: str = ""  # what code refused in the last attempt (the system retries once); empty on the first try
     required: list[str] = []  # the faces the analysis says must be seen, in words (`adam_coverage`); empty = none
+    episode: int | None = None  # the scene's episode number, for the production memory's `episode:` entries
 
 
 class Output(CardsWire):

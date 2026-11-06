@@ -52,6 +52,10 @@ MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "langgraph.json", "CLAUDE
                "supabase/migrations/20261104100326_adam.sql", "Database/README.md", "Database/schema_v11.sql",
                "Database/upgrade_v10_to_v11.sql", "infra/assemble/app.py",
                "scripts/adam_ab.py", "scripts/adam_live.py",  # Phase 10: the live runs and the A/B
+               # plan/2026-11-05: what a model call costs (the live runner and the spike print it), the spike itself,
+               # the mode setting, and schema v12 (v11 whole, plus one column of token_usage that belongs to no group)
+               "scripts/adam_cost.py", "scripts/adam_take_spike.py", "src/libs/hiru_ai/core/settings.py",
+               "Database/schema_v12.sql", "Database/upgrade_v11_to_v12.sql",
                # Phase 7: the shot producer reads `shots.card` as plain JSON, in two copies that name Adam in their
                # docstring only (the part's and the legacy engine's); drop them with the group's card handling
                "src/libs/hiru_ai/steps/serialize/card.py", "src/services/shot_producer/shot_producer/engine/card.py"}

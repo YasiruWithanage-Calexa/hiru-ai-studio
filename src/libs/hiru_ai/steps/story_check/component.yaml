@@ -1,0 +1,7 @@
+id: story_check
+kind: step
+version: 1
+summary: "Checks the story reader's quotes against the document and cuts each episode and spoken line from the source itself."
+status: active
+owner: doc_ingest
+entry: step:run

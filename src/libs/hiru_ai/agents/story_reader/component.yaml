@@ -1,0 +1,16 @@
+id: story_reader
+kind: agent
+version: 1
+summary: "Reads one document and says what story is in it (episodes, spoken lines, people), as quotes the code can check."
+status: active
+owner: doc_ingest
+model: high
+shape: structured
+phase: doc_ingest.story
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

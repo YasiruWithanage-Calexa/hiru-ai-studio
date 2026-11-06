@@ -17,6 +17,7 @@ class Input(BaseModel):
     before: str = ""  # the scene before: its heading and how it ends, for the way into this one
     after: str = ""  # the scene after: its heading and how it starts, for the way out
     devices: str = ""  # passages of the device library the system retrieved (the agent cannot search)
+    episode: int | None = None  # the scene's episode number, for the production memory's `episode:` entries
 
 
 class Output(TreatmentsWire):

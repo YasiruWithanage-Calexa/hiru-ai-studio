@@ -34,10 +34,11 @@ from contracts.shotplan import HEARD_MARKS, Item
 # Where a voice that is heard but not seen comes from. "" = not said (an ordinary voice off screen).
 VoiceSource = Literal["", "phone", "radio", "television", "speaker", "off_screen"]
 VOICE_SOURCES: tuple[str, ...] = ("", "phone", "radio", "television", "speaker", "off_screen")
-IntentBy = Literal["", "model", "rules", "person", "adam"]
+IntentBy = Literal["", "model", "rules", "person", "adam", "david"]
 # Who writes an intent or a coverage plan that no agent replaces: a person, or Shot Planner Adam, whose shot card
-# already says what the shot is for (plan/2026-11-04b Phase 7).
-AUTHORED: tuple[str, ...] = ("person", "adam")
+# already says what the shot is for (plan/2026-11-04b Phase 7), or Shot Planner David, whose one author call also wrote
+# the camera design (plan/2026-11-05e §4.5).
+AUTHORED: tuple[str, ...] = ("person", "adam", "david")
 
 _SOURCE_WORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("phone", ("phone", "mobile", "call", "rings", "ringing", "ringtone", "dial")),

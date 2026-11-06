@@ -37,7 +37,7 @@ def test_plan_with_adam_sends_one_scene_to_the_adam_function(world: World, fired
     r = post(world, f"/scenes/{s['scene']['id']}/adam/plan")
     assert r.status_code == 202, r.text
     assert fired[0]["kind"] == "plan_scene_adam" and fired[0]["url"].endswith(":8209/")
-    assert fired[0]["state"] == {"scene_ids": [s["scene"]["id"]], "edit": {}, "screening": True}
+    assert fired[0]["state"] == {"scene_ids": [s["scene"]["id"]], "edit": {}, "screening": True, "replan": True}
     assert world.repos.jobs.rows[str(r.json()["job_id"])]["kind"] == "plan_scene_adam"  # type: ignore[attr-defined]
 
 

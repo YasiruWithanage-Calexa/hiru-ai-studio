@@ -5,7 +5,8 @@ this is the code half. Ported from `structure_build/engine/prose.py` (plan/2026-
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+import unicodedata
+from dataclasses import dataclass, field
 from typing import Any
 
 from contracts.beats import sentences
@@ -55,15 +56,31 @@ INT_EXT = ("INT", "EXT", "INT/EXT", "")
 
 @dataclass
 class Section:
-    number: int
+    number: int | None  # None: a lone scene the document does not number
     title: str
     body: str
     duration_s: int | None
 
 
+@dataclass
+class Read(Section):
+    """An episode the story reader found (plan/2026-11-05c): the verified spoken lines, and the text between them."""
+
+    spoken: list[dict[str, str]] = field(default_factory=list)  # {speaker, delivery, text}, in order
+    gaps: list[str] = field(default_factory=list)  # what is seen: before the first line, between, after the last
+
+
 def _display(raw: str) -> str:
     raw = " ".join(raw.split())
     return " ".join(w[:1].upper() + w[1:].lower() for w in raw.split()) if raw.isupper() else raw
+
+
+def _stated_seconds(raw: str) -> int | None:
+    duration = _DURATION.search(raw)
+    if not duration:
+        return None
+    value = float(duration.group(1))
+    return round(value * (60 if duration.group(2).lower().startswith("m") else 1)) or None
 
 
 def sections(text: str) -> list[Section]:
@@ -77,14 +94,10 @@ def sections(text: str) -> list[Section]:
     for (i, m), end in zip(heads, [i for i, _ in heads[1:]] + [len(lines)], strict=True):
         body = [ln for ln in lines[i + 1:end] if not _END_MARK.match(ln)]
         raw = "\n".join(body).strip()
-        duration = _DURATION.search(raw)
-        seconds = None
-        if duration:
-            value = float(duration.group(1))
-            seconds = round(value * (60 if duration.group(2).lower().startswith("m") else 1))
-        section = Section(int(m.group(1)), _display(m.group(2).strip(" \"“”#")), raw, seconds or None)
-        if section.number not in found or len(section.body) > len(found[section.number].body):
-            found[section.number] = section
+        number = int(m.group(1))
+        section = Section(number, _display(m.group(2).strip(" \"“”#")), raw, _stated_seconds(raw))
+        if number not in found or len(section.body) > len(found[number].body):
+            found[number] = section
     return [found[n] for n in sorted(found)]
 
 
@@ -112,9 +125,54 @@ def _strip_quotes(text: str) -> str:
     return " ".join(text.strip().strip(_QUOTES).split())
 
 
+def _fold(text: str) -> str:
+    """Letters, marks and digits in lower case (Sinhala vowel signs are marks): what two copies of a line share."""
+    return "".join(c for ch in unicodedata.normalize("NFC", text) if unicodedata.category(ch)[0] in "LMN"
+                   for c in ch.casefold())
+
+
+_WRAPPED = re.compile(r"^[(\[*_]+.{0,40}?[)\]*_]+$")
+
+
+def _is_label(line: str, speaker: str, delivery: str) -> bool:
+    """The speaker's name and the direction written above a line: `DASUN`, `(Smiling)`, `FATHER (ON THE PHONE)`."""
+    n, name, how = _fold(line), _fold(speaker), _fold(delivery)
+    return (not n or n in (name, how, name + how) or bool(_WRAPPED.match(line.strip()))
+            or (bool(name) and n == name + "ontheline"))
+
+
+def _action(blocks: list[dict[str, str]], gap: str, label: tuple[str, str] | None) -> None:
+    """The sentences of `gap` as action blocks, without the name and direction of the line that follows it."""
+    text = _GLUED_SENTENCE.sub("\n", _GLUED_QUOTE.sub(r"\1\n", gap))
+    lines = [ln.strip() for ln in text.split("\n") if ln.strip() and not _DURATION.search(ln)]
+    for _ in range(3):
+        if label and lines and _is_label(lines[-1], *label):
+            lines.pop()
+    if lines:  # one visible event per block: a paragraph is split at its sentence ends
+        for sentence in sentences(" ".join(lines)):
+            blocks.append({"kind": "action", "speaker": "", "delivery": "", "text": sentence})
+
+
+def by_lines(section: Read) -> list[dict[str, Any]]:
+    """One scene for the episode from the reader's lines (checked against the document): each is dialogue, and what lies
+    between two of them is action. Nothing here depends on how a line is laid out."""
+    blocks: list[dict[str, str]] = []
+    for i, gap in enumerate(section.gaps):
+        line = section.spoken[i] if i < len(section.spoken) else None
+        _action(blocks, gap, (line["speaker"], line["delivery"]) if line else None)
+        if line:
+            blocks.append({"kind": "dialogue", "speaker": line["speaker"], "delivery": line["delivery"],
+                           "text": line["text"]})
+    return [{"int_ext": "", "location": "", "sub_location": "", "time_of_day": "",
+             "seconds": section.duration_s or 0, "blocks": blocks}]
+
+
 def by_rules(section: Section) -> list[dict[str, Any]]:
     """One scene for the episode: `Name:` lines become dialogue, the rest action. The place and the
-    scene breaks need reading; this fallback does not guess them."""
+    scene breaks need reading; this fallback does not guess them. An episode the story reader found is cut from its
+    lines instead (`by_lines`), whatever its layout."""
+    if isinstance(section, Read) and section.spoken and len(section.gaps) == len(section.spoken) + 1:
+        return by_lines(section)
     body = _GLUED_SENTENCE.sub("\n", _GLUED_QUOTE.sub(r"\1\n", section.body))
     lines = [ln.strip() for ln in body.split("\n") if ln.strip() and not _DURATION.search(ln)]
     blocks: list[dict[str, str]] = []
@@ -154,9 +212,15 @@ def _norm(text: str) -> str:
 
 
 def trusted(section: Section, scenes: list[dict[str, Any]]) -> bool:
-    """The model's cut is used only if it kept every spoken line word for word."""
+    """The model's cut is used only if it kept every spoken line word for word. For an episode the story reader found,
+    that is two independent reads agreeing: the cutter's dialogue is the reader's lines, same lines in the same order
+    (each of them is in the document: `story_check` found it there)."""
     source = _norm(section.body)
     spoken = [b["text"] for s in scenes for b in s["blocks"] if b["kind"] == "dialogue"]
+    if isinstance(section, Read) and section.spoken:
+        said = [f for t in spoken if (f := _fold(t))]
+        read = [f for ln in section.spoken if (f := _fold(ln["text"]))]
+        return bool(scenes) and all(s["blocks"] for s in scenes) and said == read
     return (bool(scenes) and all(s["blocks"] for s in scenes)
             and len(spoken) >= len(_cues(section.body))
             and all(_norm(t) in source for t in spoken if _norm(t)))
@@ -204,16 +268,35 @@ def render(scenes: list[dict[str, Any]]) -> str:
 class Converted:
     text: str
     scene_seconds: dict[str, list[int]]
-    episodes: list[int]
-    by_model: list[int]
-    fallbacks: list[int]  # the model's cut was rejected for these episodes
+    episodes: list[int | None]
+    by_model: list[int | None]
+    fallbacks: list[int | None]  # the model's cut was rejected for these episodes
 
 
-def to_cut(text: str) -> list[Section] | None:
+def from_story(story: dict[str, Any] | None) -> list[Section] | None:
+    """The script episodes of a document's reading (`story_check`), whatever their layout; None when it has none."""
+    todo: list[Section] = [
+        Read(ep["number"], ep["title"], ep["body"], ep.get("duration_s") or _stated_seconds(ep["body"]),
+             ep["spoken"], ep["gaps"])
+        for ep in (story or {}).get("episodes", []) if ep["kind"] == "script" and ep["body"].strip()]
+    return todo or None
+
+
+def has_scenes(text: str) -> bool:
+    """Real scene headings: the screenplay parser owns the document, free and the same every time."""
+    return bool(parse_document(text).scenes)
+
+
+def to_cut(text: str, story: dict[str, Any] | None = None) -> list[Section] | None:
     """The episodes to cut, or None when the document has real scene headings (the parser owns it) or no episode in it
-    reads like a script."""
-    if parse_document(text).scenes:
+    reads like a script. With the document's reading, its script episodes are the ones to cut, with no `Name:` gate; the
+    rules look again only when the reading is missing, or lost episodes whose quotes were not in the text."""
+    if has_scenes(text):
         return None
+    if read := from_story(story):
+        return read
+    if story is not None and not story.get("dropped", {}).get("episodes"):
+        return None  # the reader looked and found no script in it
     todo = [s for s in sections(text) if is_script_like(s)]
     return todo or None
 

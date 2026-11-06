@@ -1,0 +1,19 @@
+id: david_author
+kind: agent
+version: 1
+summary: "Plans one scene for Shot Planner David in ONE call: the notes, every shot with its camera design (the Veo clip IR), what was added, the staging and the end state the next scene starts from."
+status: active
+owner: director
+model: author
+# One call writes the whole scene, 10 to 15 shots with a full camera design each: about 6,000 to 8,000 tokens written and
+# 8,000 to 15,000 of reasoning. A call cut off by a timeout may still be billed and never reaches token_usage.
+timeout_s: 600
+shape: structured
+phase: david.author
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

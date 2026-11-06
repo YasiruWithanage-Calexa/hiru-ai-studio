@@ -84,6 +84,36 @@ can (`adam_coverage`) and is tested by mutation (`tests/adam/test_score_mutation
 the script's open questions go to a person (`questions`). The stored report gains `coverage`, `history`, `ledger`,
 `questions` and `density`.
 
+## Plan 2026-11-05b: every scene at once
+
+[plan/2026-11-05b](../../plan/2026-11-05b/PLAN.md) changes **when** scenes are planned, not how. A delivery plans up to
+`ADAM_WORKERS` scenes at once (default 10; lower it if the OpenAI account's gpt-5 limits are low) in a rolling pool: each
+scene is written as it finishes, and no new scene starts after `TIME_BUDGET_S` (900 s) of the 1800 s function deadline,
+so the rest go to a fresh delivery. A continued delivery now keeps the request's `mode`, `replan` and `screening`. The
+function timeout (`deploy-functions.yml`) and `FunctionSpec.deadline_s` (`task_manager.py`) must both say 1800.
+
+## Plan 2026-11-05: the scene in one take
+
+[plan/2026-11-05](../../plan/2026-11-05/PLAN.md) (status: [IMPLEMENTED.md](../../plan/2026-11-05/IMPLEMENTED.md)) came from the
+cost of a build ($5.16 for 9 scenes, 93 % of it gpt-5 reasoning). `ADAM_MODE=take` plans a scene with **one gpt-5 call** and a
+**ladder of small fixes**; `staged` (the default) is everything above, untouched.
+
+```
+adam_take (high, 600 s) → adam_write → fidelity → rung-0 mend → fit/split → adam_sound_designer → trim
+   → checks and score → adam_critic (one call, four lenses) → adam_problems → the ladder → finish
+```
+
+| Part | Kind | What it does |
+|---|---|---|
+| `adam_take` | agent, high | The analysis, the chosen treatment and two pitches, the moments, the staging and the cards (no sound) in one answer (`TakeWire`), given the facts code knows (each line's words and the shortest take that holds it). |
+| `adam_critic` | agent, medium | The four lenses in one call: notes tagged by lens, one score per lens. |
+| `adam_problems` | step | Rung 0 (a script line goes to the card that shows its moment) and the sort of what is left into problems: mechanical, local, creative. |
+| `adam_fixer` | agent, medium | ONE problem in, the reviser's operations out. The tier is chosen per call. |
+| `fixer.yaml`, `ladder.py` | system | Which tier each rung of each kind of problem runs on (`small` → `medium`, `big` → `fixer`, gpt-5 at low effort), and the loop: after every fix code checks the whole plan; a refused fix goes up a rung; what no rung fixes is reported. |
+
+A plan keeps `input_hash`; a rebuild whose input is unchanged keeps the plan ("Plan with Adam" always plans). The cost helper and
+the spike: `scripts/adam_cost.py`, `scripts/adam_live.py --mode take`, `scripts/adam_take_spike.py`.
+
 ## The rules that keep it apart
 
 1. Ids in an `adam/` folder start with `adam_`; an `adam_` id outside one is refused.

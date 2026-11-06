@@ -6,9 +6,14 @@ runs the stages (analyse, conceive, imagine, stage, design, screen), and `adam_w
 APPROVED scene is never touched.
 
     load   the scenes to plan (approved ones and ones with no script are skipped)
-    plan   waves of four scenes planned in parallel and written one at a time; past the time budget the rest go to a
-           fresh delivery of this hop (the function deadline is fixed)
+    plan   up to `ADAM_WORKERS` scenes planned at once, each written (one at a time) as it finishes; past the time
+           budget no new scene starts and the rest go to a fresh delivery of this hop (the function deadline is fixed)
     wrap   totals; the next delivery, or the episodes' status and the build log
+
+How a scene is planned is `ADAM_MODE` (or the delivery's `mode`): `staged`, the five stages and four critics of
+plan/2026-11-04b, or `take`, the one-take planner of plan/2026-11-05. A scene whose input is unchanged since Adam
+planned it is kept as it is (the hash is stored with the plan) unless the delivery says `replan`: "Plan with Adam"
+does.
 
 A delivery can also carry an EDIT for one scene (`state.edit`): `{"remove_moment": "m5"}` takes an elaboration out
 (no model is called; the same addition never comes back) and `{"treatment": "heightened"}` plans the cards again
@@ -20,7 +25,7 @@ from __future__ import annotations
 import contextvars
 import logging
 import time
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from typing import Any
 from uuid import UUID
 
@@ -32,16 +37,18 @@ from contracts.adam.stored import StoredPlan
 from contracts.build import Agent, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
-from hiru_ai.core import llm, parts
+from hiru_ai.core import llm, memory, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
+from hiru_ai.core.settings import get_settings
 from hiru_ai.systems.adam.adam_shot_planner import scene as adam
 from hiru_ai.systems.adam.adam_shot_planner.state import State
 
 _log = logging.getLogger(__name__)
 AGENT = Agent.PLANNER.value
-PLAN_WORKERS = 4
-TIME_BUDGET_S = 420.0  # of the 900 s deadline: a scene is about eleven model calls
+# No new scene starts after this many seconds of the 1800 s deadline (plan/2026-11-05b): a scene is about eleven model
+# calls (staged, ~11 min) or four to six (take), so one that starts last still has 900 s.
+TIME_BUDGET_S = 900.0
 PLAN_WITH_TRIMS = True  # plan/2026-11-04c D3: plans carry their editorial trims whatever the final cut is set to
 Row = dict[str, Any]
 
@@ -65,6 +72,9 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
     started = time.monotonic()
     limit = TIME_BUDGET_S if budget_s is None else budget_s
     edit: Row = dict(payload.state.get("edit") or {})
+    mode = str(payload.state.get("mode") or get_settings().adam_mode)
+    mode = mode if mode in adam.MODES else "staged"
+    replan = bool(payload.state.get("replan"))
     # Plan/2026-11-04c D3: Adam plans with the editorial trims on (a 2 s reaction cut from a 4 s take costs 2 s), so a
     # dense plan is not charged 4 s a cut. The final cut applies them only when the production's setting is on.
     editorial = PLAN_WITH_TRIMS or ProductionSettings.model_validate(production.get("settings") or {}).final_cut_trim
@@ -92,7 +102,7 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
 
     # ── planning one scene (in a worker; the writing happens in the main thread) ───────────────
 
-    def plan_one(job: Row) -> adam.Planned | str:
+    def plan_one(job: Row) -> adam.Planned | adam.Unchanged | str:
         scene, lines = job["scene"], job["lines"]
         stored = StoredPlan.load(scene.get("adam"))
         bare, _ = adam.script_of(scene, lines, cast=[], place="", objects=[])
@@ -112,9 +122,13 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
                 if stored is None:
                     return "This scene was not planned by Adam, so there is nothing to remove from."
                 return planner.remove_moment(stored, str(edit["remove_moment"]), str(job_id))
-            return planner.plan(stance=str(edit.get("treatment") or ""), resume=stored if edit.get("treatment")
-                                else None, previous=previous_of(scenes_port.shots(UUID(str(scene["id"]))), stored),
-                                job_id=str(job_id))
+            shots = scenes_port.shots(UUID(str(scene["id"])))
+            if (stored is not None and not edit and not replan and stored.input_hash == planner.input_hash(mode)
+                    and any(s.get("planner") == "adam" for s in shots)):
+                return adam.Unchanged(stored)  # same input, the plan a person already saw (plan/2026-11-05 L5)
+            plan = planner.plan_take if mode == "take" else planner.plan
+            return plan(stance=str(edit.get("treatment") or ""), resume=stored if edit.get("treatment") else None,
+                        previous=previous_of(shots, stored), job_id=str(job_id))
         except adam.Failed as failure:
             return str(failure)
 
@@ -146,57 +160,78 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
         notes: list[str] = list(carried.get("notes") or [])
         failed: list[Row] = list(carried.get("failed") or [])
         episodes: dict[str, int] = {k: int(v) for k, v in (carried.get("episodes") or {}).items()}
-        written = shot_count = 0
-        left: list[Row] = []
-        workers = PLAN_WORKERS if len(todo) > 1 else 1
+        written = shot_count = reused = 0
+
+        def write_result(job: Row, result: adam.Planned | adam.Unchanged | str) -> None:
+            nonlocal written, shot_count, reused
+            sc, label = job["scene"], job["label"]
+            if isinstance(result, str):
+                failed.append({"scene_id": str(sc["id"]), "label": label, "reason": result})
+                jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {result}"}, agent=AGENT)
+                return
+            if isinstance(result, adam.Unchanged):
+                reused += 1
+                jobs.event(job_id, JobEventType.PROGRESS,
+                           {"text": f"{label}: nothing has changed since Adam planned it; left as it is"},
+                           agent=AGENT)
+                return
+            out = write.run({"scene": sc, "lines": job["lines"], "stored": result.stored.data(),
+                             "fit": result.fit, "notes": result.notes, "people": people})
+            if "refused" in out or "malformed" in out:
+                reason = str(out.get("refused") or out.get("malformed"))
+                failed.append({"scene_id": str(sc["id"]), "label": label, "reason": reason})
+                jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {reason}"}, agent=AGENT)
+                return
+            scenes_port.replace_shots(UUID(str(sc["id"])), out["shots"], out["lines"], out["fields"])
+            written += 1
+            shot_count += len(out["shots"])
+            number = str(episode_no.get(str(sc["episode_id"]), 0))
+            episodes[number] = episodes.get(number, 0) + int(result.fit.get("runtime_s") or 0)
+            notes.extend(f"{label}: {i['message']}" for i in (result.fit.get("issues") or [])
+                         if i.get("level") == "overrun")
+            notes.extend(f"{label}: {i['message']}" for i in result.stored.report.get("continuity", {})
+                         .get("issues") or [])
+            jobs.event(job_id, JobEventType.PROGRESS,
+                       {"text": f"{label}: {len(out['shots'])} shots, {result.fit.get('runtime_s')} s",
+                        "scene_id": str(sc["id"]), "shots": len(out["shots"]),
+                        "total_s": result.fit.get("runtime_s"), "planner": "adam",
+                        "score": (result.stored.report.get("score") or {}).get("percent")}, agent=AGENT)
+
+        # A rolling pool: keep `workers` scenes running and write each as it finishes, so a slow scene holds back
+        # nothing. Only plan_one runs in the pool; writing stays here, in the main thread, one scene at a time.
+        queue = list(todo)
+        pending: dict[Future[Any], Row] = {}
+        first = True
+        workers = max(1, get_settings().adam_workers) if len(todo) > 1 else 1
         with ThreadPoolExecutor(max_workers=workers) as pool:
-            for i in range(0, len(todo), workers):
-                if i and time.monotonic() - started > limit:
-                    left = todo[i:]
-                    break
-                wave = todo[i: i + workers]
-                copies = [contextvars.copy_context() for _ in wave]  # copied here, in this thread, one per task
-                planned = pool.map(lambda pair: pair[0].run(plan_one, pair[1]), zip(copies, wave, strict=True))
-                for job, result in zip(wave, planned, strict=True):
-                    sc, label = job["scene"], job["label"]
-                    if isinstance(result, str):
-                        failed.append({"scene_id": str(sc["id"]), "label": label, "reason": result})
-                        jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {result}"}, agent=AGENT)
-                        continue
-                    out = write.run({"scene": sc, "lines": job["lines"], "stored": result.stored.data(),
-                                     "fit": result.fit, "notes": result.notes, "people": people})
-                    if "refused" in out or "malformed" in out:
-                        reason = str(out.get("refused") or out.get("malformed"))
-                        failed.append({"scene_id": str(sc["id"]), "label": label, "reason": reason})
-                        jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {reason}"}, agent=AGENT)
-                        continue
-                    scenes_port.replace_shots(UUID(str(sc["id"])), out["shots"], out["lines"], out["fields"])
-                    written += 1
-                    shot_count += len(out["shots"])
-                    number = str(episode_no.get(str(sc["episode_id"]), 0))
-                    episodes[number] = episodes.get(number, 0) + int(result.fit.get("runtime_s") or 0)
-                    notes += [f"{label}: {i['message']}" for i in (result.fit.get("issues") or [])
-                              if i.get("level") == "overrun"]
-                    notes += [f"{label}: {i['message']}" for i in result.stored.report.get("continuity", {})
-                              .get("issues") or []]
-                    jobs.event(job_id, JobEventType.PROGRESS,
-                               {"text": f"{label}: {len(out['shots'])} shots, {result.fit.get('runtime_s')} s",
-                                "scene_id": str(sc["id"]), "shots": len(out["shots"]),
-                                "total_s": result.fit.get("runtime_s"), "planner": "adam",
-                                "score": (result.stored.report.get("score") or {}).get("percent")}, agent=AGENT)
-        return {"written": written, "shot_count": shot_count, "failed": failed, "continuity": notes,
+            while queue or pending:
+                # the first scene always starts, so a delivery never ends having done nothing
+                while queue and len(pending) < workers and (first or time.monotonic() - started <= limit):
+                    job, first = queue.pop(0), False
+                    # copied here, in this thread, one per task
+                    pending[pool.submit(contextvars.copy_context().run, plan_one, job)] = job
+                if not pending:
+                    break  # past the cut-off: the rest go to the next delivery
+                finished, _ = wait(pending, return_when=FIRST_COMPLETED)
+                for future in finished:
+                    write_result(pending.pop(future), future.result())
+        left = queue
+        return {"written": written, "shot_count": shot_count, "failed": failed, "continuity": notes, "reused": reused,
                 "episodes": episodes, "left": [str(job["scene"]["id"]) for job in left]}
 
     def wrap(state: State) -> State:
         carried = state["carried"]
         failed = state["failed"]
         totals = {"scenes": state["written"] + int(carried.get("scenes", 0)),
-                  "skipped": state["skipped"] + int(carried.get("skipped", 0)),
+                  "skipped": state["skipped"] + state["reused"] + int(carried.get("skipped", 0)),
                   "shots": state["shot_count"] + int(carried.get("shots", 0)), "failed": len(failed)}
         left, notes = state["left"], state["continuity"]
         if left:
             jobs.event(job_id, JobEventType.PROGRESS, {"text": f"{len(left)} scenes left; continuing"}, agent=AGENT)
+            # the request's own choices go on with it: a fresh delivery must plan the way this one was asked to
             jobs.finish(payload, totals, {"build": bool(payload.state.get("build")), "scene_ids": left,
+                                          "mode": mode, "replan": replan,
+                                          "screening": bool(payload.state.get("screening", True)),
                                           "progress": {**totals, "notes": notes[:50], "failed": failed,
                                                        "episodes": state["episodes"]}}, again=True)
             return {"result": {**totals, "continued": len(left)}}
@@ -253,6 +288,7 @@ def run(payload: DispatchPayload, ctx: RunContext, *, budget_s: float | None = N
     if "remove_moment" not in (payload.state.get("edit") or {}) and not llm.models_enabled():
         jobs.set(payload.job_id, JobStatus.FAILED, error=adam.NO_MODEL)
         return {"failed": adam.NO_MODEL}
+    memory.report(ctx, jobs, payload.job_id, AGENT)  # entries that disagree or ask for what cannot be made
     result: dict[str, Any] = build(ctx, payload, production, budget_s=budget_s).invoke({})["result"]
     return result
 

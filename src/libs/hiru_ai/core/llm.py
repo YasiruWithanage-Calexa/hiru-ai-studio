@@ -16,6 +16,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar
+from dataclasses import replace
 from typing import Any
 
 from langchain_core.callbacks import BaseCallbackHandler
@@ -87,10 +88,13 @@ def _chat(tier: Tier, settings: AISettings, callbacks: list[BaseCallbackHandler]
 
 
 def get_llm(tier: str, *, settings: AISettings | None = None, callbacks: list[BaseCallbackHandler] | None = None,
-            http_client: Any = None) -> BaseChatModel:
-    """The chat model for a tier. Raises `ModelUnavailable` without a key."""
+            http_client: Any = None, timeout_s: float | None = None) -> BaseChatModel:
+    """The chat model for a tier. Raises `ModelUnavailable` without a key. `timeout_s` replaces the tier's timeout for
+    this model (an agent whose answer is long says so in its manifest: plan/2026-11-05 R2)."""
     settings = settings or get_settings()
     resolved = resolve(tier, settings)
+    if timeout_s:
+        resolved = replace(resolved, timeout_s=timeout_s)
     fake = _override.get()
     if fake is not None:
         return fake(resolved)
@@ -100,7 +104,8 @@ def get_llm(tier: str, *, settings: AISettings | None = None, callbacks: list[Ba
 
 
 def get_structured(tier: str, schema: Any, *, settings: AISettings | None = None,
-                   callbacks: list[BaseCallbackHandler] | None = None, http_client: Any = None) -> Runnable[Any, Any]:
+                   callbacks: list[BaseCallbackHandler] | None = None, http_client: Any = None,
+                   timeout_s: float | None = None) -> Runnable[Any, Any]:
     """A runnable that answers with `schema` (a pydantic class; strict JSON-schema output).
 
     The tier's `fallbacks` (models.yaml) are tried in order after the model fails.
@@ -108,7 +113,7 @@ def get_structured(tier: str, schema: Any, *, settings: AISettings | None = None
     settings = settings or get_settings()
 
     def build(name: str) -> Runnable[Any, Any]:
-        model = get_llm(name, settings=settings, callbacks=callbacks, http_client=http_client)
+        model = get_llm(name, settings=settings, callbacks=callbacks, http_client=http_client, timeout_s=timeout_s)
         return model.with_structured_output(schema, method="json_schema", strict=True)
 
     primary = build(tier)

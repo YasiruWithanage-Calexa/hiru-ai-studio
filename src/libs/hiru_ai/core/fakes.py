@@ -423,6 +423,38 @@ class FakeDocs:
         self.chunk_rows = [*kept, *[dict(r) for r in rows]]
 
 
+class FakeMemory:
+    """A `MemoryStore` that keeps its entries in a list, applying `replace_from` the way the real table does."""
+
+    def __init__(self, entries: list[Row] | None = None) -> None:
+        self.rows = [dict(r) for r in entries or []]
+        self.broken: Exception | None = None  # tests: the table is missing (the migration is not applied yet)
+        self.reads = 0
+
+    def entries(self, production_id: UUID) -> list[Row]:
+        self.reads += 1
+        if self.broken is not None:
+            raise self.broken
+        return [dict(r) for r in self.rows if str(r.get("production_id", production_id)) == str(production_id)]
+
+    def replace_from(self, production_id: UUID, document_id: UUID, entries: list[Row]) -> None:
+        from hiru_ai.core import memory
+
+        if self.broken is not None:
+            raise self.broken
+        mine = [r for r in self.rows if str(r.get("document_id")) == str(document_id)]
+        kept = [r for r in mine if not memory.is_reader_draft(r)]
+        self.rows = [r for r in self.rows if str(r.get("document_id")) != str(document_id) or r in kept]
+        self.rows += [{"id": f"m{len(self.rows) + n}", "production_id": str(production_id),
+                       "document_id": str(document_id), "status": "draft", "source": "reader", **e}
+                      for n, e in enumerate(memory.fresh(kept, entries))]
+
+    def upsert(self, row: Row) -> None:
+        if self.broken is not None:
+            raise self.broken
+        _upsert(self.rows, [row if "id" in row else {**row, "id": f"m{len(self.rows)}"}])
+
+
 class FakeSearch:
     """Returns the rows it was given, and remembers how it was asked (so a test can check the scope)."""
 
@@ -544,6 +576,7 @@ def ports_from(fixtures: dict[str, Any]) -> Ports:
                  structure=FakeStructure(fixtures.get("episodes"), fixtures.get("scene_headers"),
                                        fixtures.get("questions")),
                  docs=FakeDocs(fixtures.get("documents"), fixtures.get("texts")),
+                 memory=FakeMemory(fixtures.get("memory")),
                  search=FakeSearch(fixtures.get("chunks"), fixtures.get("techniques")),
                  split=FakeSplit(fixtures.get("episodes"), fixtures.get("scenes")),
                  frames=FakeFrames(fixtures.get("frames"), fixtures.get("shots"), None, fixtures.get("looks"),

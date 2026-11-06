@@ -22,6 +22,11 @@ def user_message(inp: Input) -> str:
             + f"<analysis>\n{compact(inp.analysis)}\n</analysis>")
 
 
+def memory_scope(inp: Input) -> dict[str, object]:
+    """What this call is about, so the production memory is narrowed to it (plan/2026-11-05d M6)."""
+    return {"place": inp.scene.place.name, "people": list(inp.scene.cast), "episode": inp.episode}
+
+
 def clean(scene: SceneScript, beats: int, out: TreatmentsWire) -> tuple[TreatmentsWire, list[str]]:
     """-> (the answer cleaned, what was dropped or changed)."""
     notes: list[str] = []

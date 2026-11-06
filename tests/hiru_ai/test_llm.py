@@ -110,6 +110,13 @@ def test_model_ids_come_from_settings_not_code():
     assert wire.body()["model"] == "gpt-next" and "reasoning_effort" not in wire.body()
 
 
+def test_an_agent_may_ask_for_a_longer_timeout_than_its_tier_gives():
+    """plan/2026-11-05 R2: the tier says 180 s; an agent whose answer is long says 600 in its manifest."""
+    plain = door.get_llm("high", settings=settings())
+    longer = door.get_llm("high", settings=settings(), timeout_s=600)
+    assert plain.request_timeout == 180 and longer.request_timeout == 600  # type: ignore[attr-defined]
+
+
 # ── tokens ───────────────────────────────────────────────────────────────────────────────────
 
 

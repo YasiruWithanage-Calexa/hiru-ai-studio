@@ -30,15 +30,20 @@ from pydantic import BaseModel
 from tests.adam import gold
 
 from contracts.adam import wire as w
-from contracts.adam.plan import AdamPlan, Moment, SceneAnalysis, ShotCard, Treatment
+from contracts.adam.plan import AdamPlan, Moment, SceneAnalysis, SceneScript, ShotCard, Treatment
+from contracts.adam.screening import LENSES
 
 EXAMPLE_SCENE = "refuses_money"
 AGENTS = ("adam_dramaturg", "adam_director", "adam_moment_writer", "adam_blocker", "adam_shot_designer",
           "adam_sound_designer")
+# Plan/2026-11-05: the one-take planner. `adam_take` writes stages ①, ②'s chosen treatment, ③, ④ and ⑤ (without the
+# sound) in one answer and carries the worked example; `adam_critic` reads a plan once in four lenses; `adam_fixer`
+# answers one problem with the reviser's operations. The last two read a whole plan, so they carry no example.
+TAKE_AGENT = "adam_take"
 # Phase 5: the four screening critics and the reviser. They read a whole plan, so their prompts carry no worked example
 # (a critic judges what it is given) and their eval cases are generated here from the masters too.
 SCREEN_AGENTS = ("adam_critic_audience", "adam_critic_editor", "adam_critic_opportunity", "adam_critic_fidelity",
-                 "adam_reviser")
+                 "adam_reviser", "adam_critic", "adam_fixer")
 LENS_NOTE = {  # what a scripted critic says about a master: one low note on card 1, in its own lens
     "adam_critic_audience": "Hold the face a beat longer before the cut so the feeling can land.",
     "adam_critic_editor": "The cut into this card could be motivated by the look, not only the line.",
@@ -111,6 +116,19 @@ def card_wire(c: ShotCard) -> w.CardW:
         "veo_notes": c.veo_notes, "take_s": c.take_s})
 
 
+def take_wire(name: str) -> w.TakeWire:
+    """The master as ONE answer: the analysis, the chosen treatment and the two pitches, the moments with their
+    bindings, the staging and the cards without their sound."""
+    p = master_with_stance(name)
+    pitches = [w.PitchW.model_validate({k: alt[k] for k in ("stance", "name", "concept")})
+               for alt in _yaml("treatments", name)["alternates"]]
+    cards = [w.TakeCardW.model_validate(card_wire(c).model_dump(exclude={"sound"})) for c in p.cards]
+    return w.TakeWire(analysis=analysis_wire(p.analysis), treatment=treatment_wire(p.treatment, p.moments,
+                                                                                   stance_of(name)),
+                      pitches=pitches, moments=moments_wire(p), staging=staging_wire(p),
+                      cards=w.TakeCardsW(cards=cards))
+
+
 def stance_of(name: str) -> str:
     return str(_yaml("treatments", name)["master_stance"])
 
@@ -176,6 +194,8 @@ def inputs(agent: str, name: str) -> dict[str, Any]:
     scene = gold.scene(name)
     if agent == "adam_dramaturg":
         return {"scene": scene, "context": {"heading": title(name)}}
+    if agent == TAKE_AGENT:
+        return take_inputs(name)
     analysis, chosen = unbound(p)
     if agent == "adam_director":
         return {"scene": scene, "analysis": _dump(analysis)}
@@ -191,10 +211,22 @@ def inputs(agent: str, name: str) -> dict[str, Any]:
     raise KeyError(agent)
 
 
+def take_inputs(name: str) -> dict[str, Any]:
+    """What `adam_take` is given: the scene, its context and the facts code knows. The retrieved passages are the
+    system's to add (the agent cannot search), so a case has none."""
+    from hiru_ai.systems.adam.adam_shot_planner import scene as planner
+
+    script = gold.scene(name)
+    return {"scene": script, "context": {"heading": title(name)},
+            "facts": planner.facts_of(SceneScript.model_validate(script))}
+
+
 def replies(agent: str, name: str) -> dict[str, Any]:
     p = master_with_stance(name)
     wire: BaseModel
-    if agent == "adam_dramaturg":
+    if agent == TAKE_AGENT:
+        wire = take_wire(name)
+    elif agent == "adam_dramaturg":
         wire = analysis_wire(p.analysis)
     elif agent == "adam_director":
         wire = director_wire(name)
@@ -221,7 +253,9 @@ def screen_input(name: str, agent: str = "") -> dict[str, Any]:
     out: dict[str, Any] = {"scene": scene, "analysis": _dump(p.analysis), "treatment": _dump(p.treatment),
                            "moments": _dump(p.moments), "staging": _dump(p.staging), "cards": _dump(p.cards),
                            "sound_map": _dump(p.sound_map)}
-    if agent in ("adam_critic_fidelity", "adam_reviser"):
+    if agent == "adam_fixer":
+        return fixer_input(name, out)
+    if agent in ("adam_critic_fidelity", "adam_reviser", "adam_critic"):
         base = {"scene": scene, "plan": p.model_dump(mode="json", by_alias=True)}
         found = {n: dict(parts.module("step", f"adam_{n}", "step").run(base))
                  for n in ("fidelity", "fit", "continuity", "feasibility", "coverage")}
@@ -232,14 +266,31 @@ def screen_input(name: str, agent: str = "") -> dict[str, Any]:
     return out
 
 
+def fixer_input(name: str, whole: dict[str, Any]) -> dict[str, Any]:
+    """What the fixer is given for a master: one local problem about its first card, with the cards around it."""
+    p = master_with_stance(name)
+    cards = [c for c in p.cards if abs(c.number - 1) <= 2]
+    shown = {m for c in cards for m in c.moments}
+    problem = {"id": "p1", "kind": "local", "source": "note", "card": 1, "severity": "high", "note_id": "n1",
+               "note_kind": "change", "text": LENS_NOTE["adam_critic_opportunity"]}
+    return {"scene": whole["scene"], "concept": p.treatment.concept, "problem": problem,
+            "moments": [m for m in whole["moments"] if m["id"] in shown], "cards": [c for c in whole["cards"]
+                                                                                    if c["number"] in
+                                                                                    {x.number for x in cards}]}
+
+
 def screen_reply(agent: str, name: str) -> dict[str, Any]:
     """What a scripted critic answers about a master (one low note, a 4), and the reviser: it writes the first card
     again exactly as it is, an operation that changes nothing."""
-    if agent == "adam_reviser":
+    if agent in ("adam_reviser", "adam_fixer"):
         first = master_with_stance(name).cards[0]
         return {"operations": [{"op": "replace_card", "why": "the note on card 1", "number": 1, "after": "", "id": "",
                                 "card": card_wire(first).model_dump(mode="json"), "moment": None}],
-                "dispositions": [{"note_id": "n1", "done": [1], "declined": ""}]}
+                "dispositions": [{"note_id": "n1" if agent == "adam_reviser" else "p1", "done": [1], "declined": ""}]}
+    if agent == "adam_critic":
+        return {"notes": [{"lens": lens, "card": 1, "severity": "low", "kind": "change", "cell": "",
+                           "note": LENS_NOTE[f"adam_critic_{lens}"]} for lens in LENSES],
+                "scores": [{"lens": lens, "score": 4} for lens in LENSES]}
     return {"notes": [{"card": 1, "severity": "low", "kind": "change", "cell": "", "note": LENS_NOTE[agent]}],
             "score": 4}
 
@@ -250,6 +301,8 @@ def expectation(agent: str, name: str) -> dict[str, Any]:
     reply = replies(agent, name)
     if agent == "adam_dramaturg":
         return {"break_block": reply["break_block"]}
+    if agent == TAKE_AGENT:
+        return {"analysis": {"break_block": reply["analysis"]["break_block"]}}
     if agent == "adam_director":
         return {"treatments": [{"stance": s} for s in w.STANCES]}
     return {}
@@ -284,7 +337,7 @@ def with_example(text: str, block: str) -> str:
 
 
 def write_examples() -> None:
-    for agent in AGENTS:
+    for agent in (*AGENTS, TAKE_AGENT):
         path = prompt_path(agent)
         raw = path.read_bytes().decode("utf-8")
         crlf = "\r\n" in raw
@@ -331,11 +384,11 @@ def cases(agent: str) -> list[dict[str, Any]]:
 def screen_cases(agent: str) -> list[dict[str, Any]]:
     """Every gold scene is a case: these prompts hold no worked example, so none is left out."""
     return [{"name": name, "input": screen_input(name, agent), "reply": screen_reply(agent, name),
-             "expect": {"score": 4} if agent != "adam_reviser" else {}} for name in gold.names()]
+             "expect": {"score": 4} if agent.startswith("adam_critic_") else {}} for name in gold.names()]
 
 
 def write_cases() -> None:
-    for agent in AGENTS:
+    for agent in (*AGENTS, TAKE_AGENT):
         body = yaml.safe_dump(cases(agent), allow_unicode=True, sort_keys=False, width=100000,
                               default_flow_style=None)
         (AGENT_DIR / agent / "evals" / "cases.yaml").write_bytes((CASE_HEADER + body).encode("utf-8"))
