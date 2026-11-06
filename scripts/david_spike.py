@@ -230,7 +230,10 @@ def main(argv: list[str] | None = None) -> int:
     from _common import load_env
 
     load_env()
-    scene_dir = Path(args.scene_dir) if args.scene_dir else None
+    from hiru_ai.core.telemetry import enable_tracing
+
+    print("Langfuse tracing:", "on" if enable_tracing() else "off (no LANGFUSE_ keys)")
+    scene_dir =Path(args.scene_dir) if args.scene_dir else None
     names = args.scene or (sorted(p.stem for p in scene_dir.glob("*.yaml")) if scene_dir else default_scenes())
     configs = list(args.config or ["A", "B"]) + (["C"] if args.c_model else [])
     rows: list[Row] = []

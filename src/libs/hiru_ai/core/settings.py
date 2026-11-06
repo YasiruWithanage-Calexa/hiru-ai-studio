@@ -6,8 +6,9 @@ The names are the ones the functions and the API already use (`OPENAI__API_KEY`,
 from __future__ import annotations
 
 from functools import lru_cache
+from typing import Any
 
-from pydantic import BaseModel, SecretStr
+from pydantic import BaseModel, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -83,6 +84,15 @@ class AISettings(BaseSettings):
     langfuse_public_key: str = ""
     langfuse_secret_key: SecretStr = SecretStr("")
     langfuse_base_url: str = "https://cloud.langfuse.com"
+
+    @field_validator("langfuse_public_key", "langfuse_secret_key", "langfuse_base_url", mode="before")
+    @classmethod
+    def _unquote(cls, value: Any) -> Any:
+        """A launcher that copies `.env` into the environment can keep `KEY="value"`'s quotes; a quoted URL or key
+        fails every send without a word."""
+        if isinstance(value, str) and len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            return value[1:-1]
+        return value
 
     @property
     def tracing(self) -> bool:

@@ -164,6 +164,9 @@ def main(argv: list[str] | None = None) -> int:
     from _common import load_env
 
     load_env()
+    from hiru_ai.core.telemetry import enable_tracing
+
+    print("Langfuse tracing:", "on" if enable_tracing() else "off (no LANGFUSE_ keys)")
     rows: list[Row] = []
     for path in paths:
         for n in range(1, args.repeat + 1):

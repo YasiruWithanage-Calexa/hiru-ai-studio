@@ -20,9 +20,18 @@ Each agent call is named by its component (`agent:translator`) and carries the u
 prompt hash, phase) as metadata. Without `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY`, or without the `langfuse`
 package, nothing is traced.
 
+**The legacy engine.** A function with `AI_ENGINE=legacy` (the default) calls OpenAI directly, outside LangChain.
+Its `main.py` imports `langfuse.openai` when `LANGFUSE_PUBLIC_KEY` is set, which traces every OpenAI SDK call in that
+process (one flat generation per call, no agent tree). Under `AI_ENGINE=graph` it does not, as hiru_ai traces itself.
+Adam, David and Jonathan have no legacy engine.
+
+**Quotes.** `scripts/start-functions.ps1` strips `KEY="value"` quotes, and the settings drop any left over. A quoted
+URL or key made every send fail silently. `enable_tracing()` now checks the keys once and logs a warning if
+Langfuse refuses them.
+
 **Package.** `langfuse==5.2.0` (pyproject dev extras). Langfuse Cloud has retired the v3 SDK for new organisations.
 It pulls protobuf 7, above google-cloud-tasks' declared `<5`; `tasks_v2` still imports, but check the API before
 installing it into a deployed image.
 
 **Not yet.** The deployed functions' `requirements.txt` do not list `langfuse`, so production does not trace until
-a person adds it there and sets the keys. Direct OpenAI SDK calls (pictures, embeddings) are not traced.
+a person adds it there and sets the keys. Under `AI_ENGINE=graph`, hiru_ai's direct OpenAI SDK calls (pictures, embeddings) are not traced.

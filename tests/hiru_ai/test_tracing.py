@@ -13,6 +13,13 @@ def test_both_keys_needed() -> None:
     assert AISettings(_env_file=None, langfuse_public_key="pk", langfuse_secret_key=SecretStr("sk")).tracing
 
 
+def test_quotes_a_launcher_kept_are_dropped() -> None:
+    s = AISettings(_env_file=None, langfuse_public_key='"pk"', langfuse_secret_key="'sk'",
+                   langfuse_base_url='"https://jp.cloud.langfuse.com"')
+    assert (s.langfuse_public_key, s.langfuse_secret_key.get_secret_value()) == ("pk", "sk")
+    assert s.langfuse_base_url == "https://jp.cloud.langfuse.com"
+
+
 def test_tests_never_trace() -> None:
     keys = AISettings(_env_file=None, langfuse_public_key="pk", langfuse_secret_key=SecretStr("sk"))
     assert telemetry.enable_tracing(keys) is False

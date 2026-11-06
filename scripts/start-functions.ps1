@@ -27,7 +27,9 @@ $functions = @(
 # Functions read SUPABASE__* from the environment; load them from .env.
 Get-Content (Join-Path $root ".env") | Where-Object { $_ -match '^\s*[A-Z_]+=' } | ForEach-Object {
     $k, $v = $_ -split '=', 2
-    [Environment]::SetEnvironmentVariable($k.Trim(), $v.Trim(), "Process")
+    $v = $v.Trim()
+    if ($v.Length -ge 2 -and ($v[0] -eq '"' -or $v[0] -eq "'") -and $v[-1] -eq $v[0]) { $v = $v.Substring(1, $v.Length - 2) }  # KEY="value" as dotenv reads it
+    [Environment]::SetEnvironmentVariable($k.Trim(), $v, "Process")
 }
 # `contracts` is importable from the editable install; the service folder goes on PYTHONPATH.
 foreach ($f in $functions) {

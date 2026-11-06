@@ -53,6 +53,12 @@ def enable_tracing(settings: AISettings | None = None) -> bool:
     client = Langfuse(public_key=settings.langfuse_public_key,
                       secret_key=settings.langfuse_secret_key.get_secret_value(),
                       base_url=settings.langfuse_base_url, environment=settings.environment)
+    try:  # once per process: a wrong key or URL otherwise drops every trace in silence
+        if not client.auth_check():
+            logger("telemetry").warning("Langfuse refused the keys for %s: no traces", settings.langfuse_base_url)
+    except Exception:
+        logger("telemetry").warning("cannot reach Langfuse at %s: traces may be lost", settings.langfuse_base_url,
+                                    exc_info=True)
 
     class RunHandler(CallbackHandler):
         """Langfuse's LangChain handler that flushes when the top-level run ends."""
