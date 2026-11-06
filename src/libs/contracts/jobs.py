@@ -38,6 +38,7 @@ class JobKind(StrEnum):
     FRAME_RENDER = "frame_render"
     PLAN_SCENE_ADAM = "plan_scene_adam"  # Shot Planner Adam: one scene, a few, or the last hop of the build
     PLAN_SCENE_DAVID = "plan_scene_david"  # Shot Planner David (plan/2026-11-05e): the same, in one call per scene
+    PLAN_SCENE_JONATHAN = "plan_scene_jonathan"  # Shot Planner Jonathan (plan/2026-11-06b): the cinematic planner
 
 
 class JobStatus(StrEnum):

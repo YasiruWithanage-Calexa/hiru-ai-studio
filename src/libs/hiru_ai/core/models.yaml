@@ -16,6 +16,9 @@ tiers:
   # The author writes a whole scene's shots with their camera design in one answer, so it gets a long timeout.
   author: { model: model_author, effort: effort_author, timeout_s: 600, retries: 1, fallbacks: [] }
   repair: { model: model_author, effort: effort_repair, timeout_s: 300, retries: 1, fallbacks: [] }
+  # Shot Planner Jonathan (plan/2026-11-06b): its author and its reviser, the author model at the effort the lab proved. A whole
+  # scene's treatment and shots in one answer, and a corrected plan in the next, so a long timeout.
+  jonathan: { model: model_author, effort: effort_jonathan, timeout_s: 900,  retries: 1, fallbacks: [] }
   vision: { model: model_vision,                        timeout_s: 120, retries: 1, fallbacks: [] }  # the frame check
 embed:
   model: embedding_model

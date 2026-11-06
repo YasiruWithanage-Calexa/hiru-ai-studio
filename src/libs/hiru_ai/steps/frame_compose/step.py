@@ -3,7 +3,7 @@
     {"op": "looks", "all_looks": [...], "scene_looks": [...], "episode": 1}
     {"op": "references", <world>, "shot": row}            -> {"references": [{"id", "choices": [{"label", "path"}]}]}
     {"op": "compose", <world>, "shot": row, "labels": []} -> {"prompt", "pins"}
-    {"op": "expected", <world>, "shot": row}              -> {"seen", "unseen", "frame", "names"}
+    {"op": "expected", <world>, "shot": row}              -> {"seen", "unseen", "frame", "hands", "names"}
     {"op": "checks", <world>, "shot": row, "attached": [ids], "answer": row | null} -> {"checks": [...]}
     {"op": "reference_sheet", "production": row, "entity": row}  -> {"prompt", "aspect"}
     {"op": "look_sheet", "entity": row, "look": row}              -> {"prompt", "aspect"}

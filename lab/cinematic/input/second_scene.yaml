@@ -1,0 +1,37 @@
+# The overfit guard (plan/2026-11-06 §2.9, §7.4, decision L4): a scene unlike Episode 1. Today it is the gold
+# `phone_call` (tests/eval/david/scenes/phone_call.yaml: a bench by the lake, Sinhala lines, a call that breaks a mood).
+# Replace it with a real Hiru scene of yours by keeping this shape; the lab changes nothing else.
+id: phone_call
+title: An Unexpected Phone Call
+heading: EXT. LAKE BENCH – LATE AFTERNOON
+episode_title: An Unexpected Phone Call
+synopsis: ""
+style: >-
+  Cinematic Sri Lankan romantic drama for television. Realistic, monsoon Colombo, rich but natural colour.
+time:
+  guide_s: 60
+  policy: >-
+    The length is a guide (about 60 s). Write the plan the scene deserves; it may run longer. An overrun is reported,
+    never trimmed. A take may be longer than the edit keeps: `use_s` is the seconds the editor keeps (2 to the take).
+people:
+  - { name: Anudi, code: C01, look: "", essence: "" }
+  - { name: Dasun, code: C02, look: "", essence: "" }
+  - { name: Father, code: C03, look: "(heard only; never seen in this scene)", essence: "" }
+story_objects: [phone, bag]
+scene:
+  cast: [Anudi, Dasun, Father]
+  others: [Kasun]
+  place:
+    name: A bench by the lake, late afternoon
+    objects: [bench, lake, phone, bag, trees, water]
+  blocks:
+    - { index: 0, kind: action, text: "A bench by the lake, late afternoon. ANUDI laughs, her phone face-down on the bench between her and DASUN." }
+    - { index: 1, kind: dialogue, speaker: Dasun, line_id: L1, text: "ඉතින් මම කිව්වා, ඕක බොරු!" }
+    - { index: 2, kind: action, text: "Her phone buzzes on the bench. The screen lights: THATHTHA." }
+    - { index: 3, kind: action, text: "Anudi glances at it, still smiling, and answers." }
+    - { index: 4, kind: dialogue, speaker: Father (on the phone), line_id: L4, text: "දුවේ, ඔයාගේ විවාහය ගැන අපි තීරණය කළා." }
+    - { index: 5, kind: action, text: "Her smile begins to fade." }
+    - { index: 6, kind: dialogue, speaker: Anudi, line_id: L6, delivery: quietly, text: "මම එන්නම්, තාත්තේ." }
+    - { index: 7, kind: action, text: "She ends the call and puts the phone face-down on the bench." }
+    - { index: 8, kind: dialogue, speaker: Anudi, line_id: L8, delivery: restrained, text: "ආයෙ හම්බවෙමු." }
+    - { index: 9, kind: action, text: "She picks up her bag and walks out. Dasun watches her go." }

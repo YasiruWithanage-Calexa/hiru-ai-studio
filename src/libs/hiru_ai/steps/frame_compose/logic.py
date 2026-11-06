@@ -22,6 +22,7 @@ from contracts.canon import (
     reference_sheet_aspect,
     reference_sheet_prompt,
 )
+from contracts.holding import Hands, hands_for, references_for
 from contracts.producer import (
     CameraSettings,
     CastMember,
@@ -37,7 +38,8 @@ from contracts.staging import Staging, shot_cast, source_phrase, staging, unseen
 from contracts.veo import ASPECT_RATIO, Orientation
 
 Row = dict[str, Any]
-MAX_REFERENCES = 4
+# The people seen, the place, a second place (the stall) and what they hold; the image model takes up to 16
+MAX_REFERENCES = 6
 ASPECT_OF_SHEET = SHEET_ASPECT
 
 
@@ -103,14 +105,18 @@ class World:
         system takes the first that can be read, and leaves one with none out. Someone only heard is never attached:
         their sheet would put their face in the frame."""
         staged = self._own(shot)[2]
+        edits = PersonEdits.of(shot)
+        seen = {c: self.members[c].name for c in staged.on_screen if c in self.members}
+        planned = references_for(self.scene, shot, self.canon, shot_canon_ids(self.scene, staged.on_screen, edits),
+                                 seen, removed=edits.cast.remove, has_sheet=lambda r: bool(sheet_path(r)))
         out: list[Row] = []
-        for cid in shot_canon_ids(self.scene, staged.on_screen, PersonEdits.of(shot)):
+        for cid, note in planned:
             row = self.by_id.get(cid)
             if not row or len(out) >= MAX_REFERENCES:
                 continue
             what = {"location": "the location plate for", "prop": "the reference sheet for"}.get(
                 row["kind"], "the character sheet for")
-            choices = [{"label": f"{what} {row['name']}", "path": sheet_path(row)}]
+            choices = [{"label": f"{what} {row['name']}" + (f" ({note})" if note else ""), "path": sheet_path(row)}]
             look = self.looks.get(cid) if row["kind"] == "character" else None
             if look is not None:
                 choices.insert(0, {"label": f"the look sheet for {row['name']}", "path": look_sheet_path(look)})
@@ -141,8 +147,14 @@ class World:
         prompt = frame_prompt(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
                               cast=self.cast(shot, staged.on_screen), references=labels,
                               recommended_framing=recommended.framing,
-                              unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}))
+                              unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
+                              hands=self.hands(shot).sentence)
         return prompt, pins.model_dump()
+
+    def hands(self, shot: Row) -> Hands:
+        """Who holds what as the shot opens (`contracts.holding`), for the people the camera sees."""
+        staged = self._own(shot)[2]
+        return hands_for(self.scene, shot, [self.members[c].name for c in staged.on_screen if c in self.members])
 
     def expected(self, shot: Row) -> Row:
         """What the vision check compares the picture with: `{seen, unseen, frame}`."""
@@ -155,7 +167,7 @@ class World:
         return {"seen": [identity_line(m) for m in self.cast(shot, staged.on_screen)],
                 "unseen": [f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"
                            for c in staged.heard_only if c in self.members],
-                "frame": text}
+                "frame": text, "hands": self.hands(shot).expect}
 
     def seen_names(self, shot: Row) -> dict[str, str]:
         staged = self.staged(shot)
@@ -181,6 +193,9 @@ def vision_checks(answer: Row | None, expected: Row) -> list[Row]:
         checks.append({"label": f"{people} people in frame, expected {len(expected['seen'])}", "tone": "advisory"})
     if expected["unseen"] and answer.get("unexpected_person"):
         checks.append({"label": "Shows someone who is only heard", "tone": "advisory"})
+    if expected.get("hands") and answer.get("hands_match") is False:
+        what = " ".join(str(answer.get("hands_problem") or "").split())[:120]
+        checks.append({"label": f"Hands · {what or 'not holding what the shot says'}", "tone": "advisory"})
     if answer.get("matches") is False:
         problems = [" ".join(str(p).split())[:120] for p in answer.get("problems") or [] if str(p).strip()][:2]
         checks += [{"label": f"Differs · {p}", "tone": "advisory"} for p in problems] or [

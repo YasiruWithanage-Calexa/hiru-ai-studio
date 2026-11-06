@@ -19,6 +19,7 @@ from hiru_ai.cli import scaffold
 from hiru_ai.core import manifest as mf
 from hiru_ai.core.errors import HiruAIError, ToolRefused
 from hiru_ai.core.registry import PACKAGE_ROOT, Registry
+from hiru_ai.core.telemetry import enable_tracing
 
 
 def _registry(root: str | None) -> Registry:
@@ -414,6 +415,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8", errors="replace")
     args = parser().parse_args(argv)
+    enable_tracing()  # off unless LANGFUSE_ keys are set
     try:
         return int(args.run(args))
     except HiruAIError as exc:

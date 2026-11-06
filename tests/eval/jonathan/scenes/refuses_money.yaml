@@ -1,0 +1,18 @@
+# Gold scene: Kasun refuses the father's money. A confession of principle. DRAFT wording for a Hiru director to
+# correct; the situation is from the 3-episode drama fixture (tests/fixtures/prose).
+id: refuses_money
+title: The Envelope
+covers: a refusal / a confession of principle
+status: draft
+scene:
+  cast: [Kasun, Father]
+  place:
+    name: A quiet office
+    objects: [desk, envelope, chairs, window, lamp, tea]
+  blocks:
+    - { index: 0, kind: action, text: "A quiet office. ANUDI'S FATHER slides an envelope across the desk to KASUN." }
+    - { index: 1, kind: dialogue, speaker: Father, line_id: L1, text: "මේක ගන්න. ඊට පස්සේ මගේ දුවව අමතක කරන්න." }
+    - { index: 2, kind: action, text: "Kasun looks at the envelope. He does not touch it." }
+    - { index: 3, kind: dialogue, speaker: Kasun, line_id: L3, delivery: steady, text: "මට මගේම ශක්තියෙන් හදන්න පුළුවන්. ආදරය විකුණන්නේ නැහැ." }
+    - { index: 4, kind: action, text: "He pushes the envelope back, gently, and stands." }
+    - { index: 5, kind: action, text: "The father stares at the envelope. For the first time, he has nothing to say." }

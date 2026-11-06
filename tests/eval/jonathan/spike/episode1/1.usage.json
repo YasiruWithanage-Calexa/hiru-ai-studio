@@ -1,0 +1,50 @@
+[
+ {
+  "phase": "jonathan.author",
+  "model": "gpt-5-2025-08-07",
+  "input_tokens": 10437,
+  "cached_input_tokens": 0,
+  "output_tokens": 21396,
+  "component": "agent:jonathan_author",
+  "component_version": 1,
+  "prompt_hash": "c684c016eed8",
+  "reasoning_tokens": 12672,
+  "tool_calls": 0,
+  "tool_result_tokens": 0,
+  "job_id": null,
+  "production_id": null,
+  "actor_user_id": null
+ },
+ {
+  "phase": "jonathan.revise",
+  "model": "gpt-5-2025-08-07",
+  "input_tokens": 19447,
+  "cached_input_tokens": 10368,
+  "output_tokens": 19627,
+  "component": "agent:jonathan_revise",
+  "component_version": 1,
+  "prompt_hash": "c684c016eed8",
+  "reasoning_tokens": 9984,
+  "tool_calls": 0,
+  "tool_result_tokens": 0,
+  "job_id": null,
+  "production_id": null,
+  "actor_user_id": null
+ },
+ {
+  "phase": "jonathan.revise",
+  "model": "gpt-5-2025-08-07",
+  "input_tokens": 20266,
+  "cached_input_tokens": 10880,
+  "output_tokens": 15146,
+  "component": "agent:jonathan_revise",
+  "component_version": 1,
+  "prompt_hash": "c684c016eed8",
+  "reasoning_tokens": 5376,
+  "tool_calls": 0,
+  "tool_result_tokens": 0,
+  "job_id": null,
+  "production_id": null,
+  "actor_user_id": null
+ }
+]

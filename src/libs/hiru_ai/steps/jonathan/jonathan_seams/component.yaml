@@ -1,0 +1,8 @@
+id: jonathan_seams
+kind: step
+version: 1
+summary: "Compares scene N's end state with how scene N+1 opens: continuous pairs (place, hands, clothes, light) can be repaired, carry pairs (clothes, injuries, kept props) too, unlinked pairs are only reported; also finds a person's look changes inside a scene."
+status: active
+owner: director
+entry: step:run
+uses: []

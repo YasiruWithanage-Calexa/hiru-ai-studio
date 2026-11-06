@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v12.sql` | **The newest schema** (everything in v11 plus `token_usage.reasoning_tokens`: how much of a call's output was hidden reasoning, plan/2026-11-05; the `production_memory` table, what the documents say about how to make the drama, plan/2026-11-05d; and `scenes.david` with `'david'` as a planner a shot may name: Shot Planner David, plan/2026-11-05e), whole. Run it once on an empty project. |
+| `schema_v13.sql` | **The newest schema** (everything in v12 plus `scenes.jonathan` and `'jonathan'` as a planner a shot may name: Shot Planner Jonathan, plan/2026-11-06b), whole. Run it once on an empty project. **Not applied to the hosted project yet.** |
+| `upgrade_v12_to_v13.sql` | Moves a project on v12 to v13 (one column on `scenes` and the planner check on `shots`). Run once, only on such a project. **Not run yet: applying it is a person's decision.** |
+| `schema_v12.sql` | Kept for reference (everything in v11 plus `token_usage.reasoning_tokens`: how much of a call's output was hidden reasoning, plan/2026-11-05; the `production_memory` table, what the documents say about how to make the drama, plan/2026-11-05d; and `scenes.david` with `'david'` as a planner a shot may name: Shot Planner David, plan/2026-11-05e), whole. Run it once on an empty project. |
 | `upgrade_v11_to_v12.sql` | Moves a project on v11 to v12 (one column on `token_usage`, the `production_memory` table, `scenes.david` and the planner check on `shots`). Run once, only on such a project. Then set `USAGE_DETAIL=true` and restart. |
 | `schema_v11.sql` | Kept for reference (everything in v10 plus `shots.card`, `shots.planner` and `scenes.adam`: Shot Planner Adam, plan/2026-11-04b), whole. Run it once on an empty project. |
 | `upgrade_v10_to_v11.sql` | Moves a project on v10 to v11 (two columns on `shots`, one on `scenes`). Run once, only on such a project. |

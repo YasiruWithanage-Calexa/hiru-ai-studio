@@ -1,0 +1,20 @@
+# Gold scene: the father looks over Kasun's stall (an argument that is mostly restraint). DRAFT wording for a Hiru
+# director to correct; the people and the situation are from the 3-episode drama fixture (tests/fixtures/prose).
+id: father_refuses
+title: The Stall
+covers: an argument
+status: draft
+scene:
+  cast: [Kasun, Father]
+  place:
+    name: A Colombo roadside, evening
+    objects: [three-wheeler, kettle, cups, stool, car, counter, steam]
+  blocks:
+    - { index: 0, kind: action, text: "Evening on a Colombo roadside. KASUN pours tea at his small three-wheeler stall. ANUDI'S FATHER arrives and stands, looking over the stall." }
+    - { index: 1, kind: dialogue, speaker: Father, line_id: L1, text: "ඔයා දවසකට කොච්චර හොයනවාද?" }
+    - { index: 2, kind: dialogue, speaker: Kasun, line_id: L2, text: "ජීවත් වෙන්න ඇති, සර්." }
+    - { index: 3, kind: action, text: "The father looks at the cups, the kettle, the worn stool." }
+    - { index: 4, kind: dialogue, speaker: Father, line_id: L4, text: "මේක මගේ දුව හුරු තැන නෙවෙයි." }
+    - { index: 5, kind: action, text: "Kasun sets down the kettle. He does not answer at once." }
+    - { index: 6, kind: dialogue, speaker: Kasun, line_id: L6, delivery: steady, text: "ඒක මම දන්නවා. ඒත් මම මේක වෙනස් කරනවා." }
+    - { index: 7, kind: action, text: "The father looks at him a long moment, then turns and walks to his car." }

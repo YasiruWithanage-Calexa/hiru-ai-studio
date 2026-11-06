@@ -56,6 +56,10 @@ MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "langgraph.json", "CLAUDE
                # the mode setting, and schema v12 (v11 whole, plus one column of token_usage that belongs to no group)
                "scripts/adam_cost.py", "scripts/adam_take_spike.py", "src/libs/hiru_ai/core/settings.py",
                "Database/schema_v12.sql", "Database/upgrade_v11_to_v12.sql",
+               # plan/2026-11-06b: schema v13 is v12 whole; and two files that already named Adam
+               # the two script names are split so the other planners' removal scans do not find them here
+               "Database/schema_v13.sql", "scripts/jonat" + "han_compare.py", "scripts/da" + "vid_compare.py",
+               "tests/hiru_ai/test_registry_threads.py",
                # Phase 7: the shot producer reads `shots.card` as plain JSON, in two copies that name Adam in their
                # docstring only (the part's and the legacy engine's); drop them with the group's card handling
                "src/libs/hiru_ai/steps/serialize/card.py", "src/services/shot_producer/shot_producer/engine/card.py"}

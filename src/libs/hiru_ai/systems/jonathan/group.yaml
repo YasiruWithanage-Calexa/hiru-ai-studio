@@ -1,0 +1,17 @@
+id: jonathan
+version: 1
+summary: "Shot Planner Jonathan: one author call per scene, code checks, narrow repair, built beside script_split and Adam (plan/2026-11-05e)."
+owner: director
+status: active            # disabled switches off every Jonathan part in this layer
+# The removal list (`hiru-ai remove --group jonathan`): repo folders that go with the group, beside its folder in each
+# hiru_ai layer. A folder that does not exist yet is skipped. Keep this in step with plan/2026-11-05e §4.0.
+folders:
+  - src/libs/contracts/jonathan
+  - src/services/shot_planner_jonathan
+  - tests/jonathan
+  - tests/eval/jonathan
+  - docs/jonathan
+outside:
+  - "hiru-ai-studio-interface: src/features/jonathan/ and its mount point (the Jonathan tab) in the scene feature"
+  - "the structure build hop (the one branch on productions.settings.shot_planner), the job kind, and the registration of the function in task_manager.FUNCTIONS, deploy-functions.yml and scripts/start-functions.ps1"
+  - "the migration that adds scenes.jonathan and lets shots.planner and settings.shot_planner say jonathan (left in place: the column stays unused)"

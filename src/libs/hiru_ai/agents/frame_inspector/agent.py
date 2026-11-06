@@ -14,7 +14,8 @@ def user_message(inp: Input) -> str:
     unseen = "\n".join(f"- {p}" for p in inp.unseen)
     return ("<expected>\nMAIN PEOPLE WHO SHOULD BE VISIBLE:\n" + seen
             + (f"\nPEOPLE WHO MUST NOT BE VISIBLE:\n{unseen}" if unseen else "")
-            + f"\nTHE FIRST FRAME SHOULD SHOW: {inp.frame or 'as above'}\n</expected>")
+            + f"\nTHE FIRST FRAME SHOULD SHOW: {inp.frame or 'as above'}"
+            + (f"\nWHAT EACH PERSON HOLDS: {inp.hands}" if inp.hands else "") + "\n</expected>")
 
 
 def images(inp: Input) -> list[tuple[str, str]]:

@@ -1,0 +1,8 @@
+id: jonathan_check
+kind: step
+version: 1
+summary: "Judges a Jonathan plan with code: lines, blocks, the Veo clock, additions, names, speech in free text, staging, heard-not-seen, feasibility and the end state; each failure an exact sentence and who fixes it."
+status: active
+owner: director
+entry: step:run
+uses: []

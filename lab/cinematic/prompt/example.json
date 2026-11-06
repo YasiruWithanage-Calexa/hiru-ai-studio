@@ -1,0 +1,760 @@
+{
+ "scene": "refuses_money",
+ "answer": {
+  "treatment": {
+   "logline": "A man refuses a price for his love, and the one who offered it is left with nothing to say.",
+   "arc": [
+    {
+     "beat": "The offer crosses the desk",
+     "blocks": {
+      "first": 0,
+      "last": 2
+     },
+     "feeling": "Pressure, and a held breath"
+    },
+    {
+     "beat": "Kasun refuses",
+     "blocks": {
+      "first": 3,
+      "last": 4
+     },
+     "feeling": "Quiet pride"
+    },
+    {
+     "beat": "The father is left alone",
+     "blocks": {
+      "first": 5,
+      "last": 5
+     },
+     "feeling": "Respect arriving too late to say"
+    }
+   ],
+   "approach": "Locked-off and patient. The room is shown wide at the start and the end so the two men are small in it; the lens lengthens as the scene gets personal, the camera pushes in only on the faces, and nothing moves that is not moved by a feeling.",
+   "colour_script": [
+    {
+     "sequence": "A",
+     "palette": "grey-green office, cool daylight",
+     "light": "soft overcast window light from camera left",
+     "grade": "cool, muted, slightly desaturated"
+    },
+    {
+     "sequence": "B",
+     "palette": "the same room, skin warmer",
+     "light": "soft overcast window light from camera left",
+     "grade": "neutral, warmth returning to skin"
+    },
+    {
+     "sequence": "C",
+     "palette": "the same room, cooling again",
+     "light": "soft overcast window light from camera left",
+     "grade": "desaturated, cooling toward the window"
+    }
+   ],
+   "geography": "Kasun is at the left end of the desk facing right, the father at the right end facing left, the window behind the camera's left. The camera stays on one side of the line between them for the whole scene.",
+   "key_image": "The envelope alone on the long desk between two men.",
+   "advice": [
+    "The father's silence at the end is written; if you want him to speak, that is a new line for you to write."
+   ]
+  },
+  "sequences": [
+   {
+    "id": "A",
+    "title": "The offer",
+    "purpose": "Show the price and let Kasun take it in.",
+    "shots": {
+     "first": 1,
+     "last": 4
+    }
+   },
+   {
+    "id": "B",
+    "title": "The refusal",
+    "purpose": "Kasun says no, and gives the money back.",
+    "shots": {
+     "first": 5,
+     "last": 6
+    }
+   },
+   {
+    "id": "C",
+    "title": "Nothing to say",
+    "purpose": "The father alone with the envelope; the room as it was.",
+    "shots": {
+     "first": 7,
+     "last": 9
+    }
+   }
+  ],
+  "shots": [
+   {
+    "n": 1,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "EWS",
+    "angle": "eye level",
+    "lens": "24mm: the room is bigger than either man",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Open on the room: two small men and a long desk, the distance the offer must cross.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 24mm, f/5.6",
+      "angle": "eye level",
+      "framing": "extreme wide from the far wall, both men small at either end of the desk",
+      "movement": "locked-off",
+      "white_balance": "neutral 4300K",
+      "color_tone": "cool, muted, slightly desaturated",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Kasun, grey shirt, sleeves buttoned, standing",
+       "action": "waits, hands at his sides",
+       "position": "left end of the desk, facing right"
+      },
+      {
+       "id": "C03",
+       "description": "the father, dark suit, white shirt, grey at the temples, seated",
+       "action": "slides the envelope along the desk",
+       "position": "right end of the desk, facing left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "extreme wide, both men",
+       "director_line": "The room holds its breath.",
+       "action": "The father's hand pushes the envelope forward.",
+       "performance": "The father does not look up; Kasun does not look away."
+      },
+      {
+       "time": "2-4s",
+       "camera": "unchanged",
+       "director_line": "The envelope starts its slow journey.",
+       "action": "The envelope slides across the wood.",
+       "performance": "Kasun's jaw sets."
+      }
+     ],
+     "audio": "quiet room, a clock",
+     "first_frame": {
+      "composition": "a long desk, two small figures, the window grey behind",
+      "subjects": [
+       "Kasun",
+       "the father"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room, a clock",
+     "effects": "paper slides on wood",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 2,
+    "sequence": "A",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "high angle",
+    "lens": "100mm macro: the object, nothing else",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "The price becomes a thing: the envelope is all we see for a moment.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 100mm, f/4",
+      "angle": "high angle",
+      "framing": "insert on the envelope on the desk, the father's fingers leaving it",
+      "movement": "locked-off",
+      "white_balance": "neutral 4300K",
+      "color_tone": "cool, muted, slightly desaturated",
+      "depth_of_field": "Shallow, desk edge soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C03",
+       "description": "the father's hand, dark cuff",
+       "action": "lets go of the envelope",
+       "position": "at the edge of the frame"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "insert, the envelope",
+       "director_line": "It stops in the middle of the desk.",
+       "action": "The envelope comes to rest and the fingers withdraw.",
+       "performance": "The fingers linger a second, then leave."
+      }
+     ],
+     "audio": "quiet room",
+     "first_frame": {
+      "composition": "the envelope centre, fingers at the frame edge",
+      "subjects": [
+       "the envelope",
+       "the father's hand"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room",
+     "effects": "paper stops",
+     "music": "",
+     "silence": true
+    }
+   },
+   {
+    "n": 3,
+    "sequence": "A",
+    "blocks": [
+     1
+    ],
+    "lines": [
+     "L1"
+    ],
+    "over": "Kasun",
+    "size": "MCU",
+    "angle": "slightly above eye level",
+    "lens": "85mm: intimacy",
+    "take_s": 6,
+    "use_s": 5,
+    "link": "cut",
+    "why": "The father's line plays over Kasun's face: the refusal forms while he listens.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "slightly above eye level",
+      "framing": "medium close-up on Kasun, desk edge soft in the foreground",
+      "movement": "slow push in, then settle",
+      "white_balance": "neutral 4300K",
+      "color_tone": "cool, muted, slightly desaturated",
+      "depth_of_field": "Shallow, soft background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Kasun, grey shirt, sleeves buttoned",
+       "action": "listens without moving",
+       "position": "centre of frame, looking right of camera"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "medium close-up, Kasun",
+       "director_line": "He takes the price in.",
+       "action": "Kasun looks at the envelope.",
+       "performance": "His eyes stay on it a moment too long, then rise."
+      },
+      {
+       "time": "3-6s",
+       "camera": "slow push in",
+       "director_line": "The decision shows before he speaks.",
+       "action": "Kasun lifts his gaze.",
+       "performance": "His breathing slows; he stops looking at the money."
+      }
+     ],
+     "audio": "Room tone; the father's voice, close and level",
+     "first_frame": {
+      "composition": "Kasun centre, the desk edge soft in the foreground",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 4,
+    "sequence": "A",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "high angle",
+    "lens": "50mm: what the eye would settle on",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "He does not touch it: the hand that stays still says more than a word.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/4",
+      "angle": "high angle",
+      "framing": "insert on the envelope and Kasun's hand beside it",
+      "movement": "locked-off",
+      "white_balance": "neutral 4300K",
+      "color_tone": "cool, muted, slightly desaturated",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Kasun's right hand, grey cuff",
+       "action": "rests flat on the desk",
+       "position": "beside the envelope"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "insert, the envelope",
+       "director_line": "The hand does not move.",
+       "action": "Kasun's hand stays beside the envelope.",
+       "performance": "The fingers press the wood and do not reach."
+      }
+     ],
+     "audio": "quiet room",
+     "first_frame": {
+      "composition": "the envelope centre, a hand at its edge",
+      "subjects": [
+       "Kasun's hand"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room",
+     "effects": "",
+     "music": "",
+     "silence": true
+    }
+   },
+   {
+    "n": 5,
+    "sequence": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "over": "",
+    "size": "CU",
+    "angle": "eye level",
+    "lens": "85mm: the face is the whole scene",
+    "take_s": 6,
+    "use_s": 5,
+    "link": "cut",
+    "why": "The refusal, steady: the key moment gets the closest size.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/1.8",
+      "angle": "eye level",
+      "framing": "close-up on Kasun",
+      "movement": "locked-off",
+      "white_balance": "neutral 4300K",
+      "color_tone": "neutral, warmth returning to skin",
+      "depth_of_field": "Shallow, soft background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Kasun, grey shirt, sleeves buttoned",
+       "action": "speaks, steady",
+       "position": "centre of frame, facing the father off camera"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-3s",
+       "camera": "close-up, Kasun",
+       "director_line": "He answers without raising his voice.",
+       "action": "Kasun meets the father's eyes.",
+       "performance": "He holds the look and does not blink first."
+      },
+      {
+       "time": "3-6s",
+       "camera": "unchanged",
+       "director_line": "The last words land and he stays still.",
+       "action": "Kasun finishes speaking.",
+       "performance": "His chin lifts a little; the rest of him stays calm."
+      }
+     ],
+     "audio": "Room tone; Kasun's voice, steady",
+     "first_frame": {
+      "composition": "Kasun's face, tight, eyes on the upper third",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 6,
+    "sequence": "B",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "over": "",
+    "size": "MWS",
+    "angle": "eye level",
+    "lens": "35mm: a man and the desk",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "He gives it back and stands: the scene's one action, done gently.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium wide on Kasun at the desk, the envelope leaving the frame",
+      "movement": "slight tilt up as he rises",
+      "white_balance": "neutral 4300K",
+      "color_tone": "neutral, warmth returning to skin",
+      "depth_of_field": "Shallow, soft background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Kasun, grey shirt, sleeves buttoned",
+       "action": "pushes the envelope across the desk and stands",
+       "position": "at the desk, facing right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium wide, Kasun",
+       "director_line": "He returns it.",
+       "action": "Kasun pushes the envelope across the desk.",
+       "performance": "He does it as one returns something borrowed."
+      },
+      {
+       "time": "2-4s",
+       "camera": "tilts up with him",
+       "director_line": "He rises.",
+       "action": "Kasun stands.",
+       "performance": "He does not look down at the father."
+      }
+     ],
+     "audio": "quiet room",
+     "first_frame": {
+      "composition": "Kasun at the desk, the envelope leaving the frame",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room",
+     "effects": "paper on wood, a chair pushed back",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 7,
+    "sequence": "C",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "slightly low angle",
+    "lens": "85mm: intimacy",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "Kasun standing: a held beat that is neither triumph nor relief.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "slightly low angle",
+      "framing": "medium close-up on Kasun, standing, the window light on one side of his face",
+      "movement": "locked-off",
+      "white_balance": "neutral 4300K",
+      "color_tone": "desaturated, cooling toward the window",
+      "depth_of_field": "Shallow, soft background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Kasun, grey shirt, sleeves buttoned",
+       "action": "stands still, breathing out",
+       "position": "centre of frame, looking down and right"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "medium close-up, Kasun",
+       "director_line": "He lets the decision settle.",
+       "action": "Kasun stands, hands still.",
+       "performance": "His shoulders drop an inch; he swallows."
+      }
+     ],
+     "audio": "quiet room",
+     "first_frame": {
+      "composition": "Kasun, window light across his cheek",
+      "subjects": [
+       "Kasun"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room",
+     "effects": "",
+     "music": "",
+     "silence": true
+    }
+   },
+   {
+    "n": 8,
+    "sequence": "C",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "over": "",
+    "size": "CU",
+    "angle": "slightly low angle",
+    "lens": "85mm: the face is the scene's last word",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The father alone with what he offered, with nothing to say.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2",
+      "angle": "slightly low angle",
+      "framing": "close-up on the father",
+      "movement": "very slow push in",
+      "white_balance": "neutral 4300K",
+      "color_tone": "desaturated, cooling toward the window",
+      "depth_of_field": "Shallow, soft background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C03",
+       "description": "the father, dark suit, white shirt, grey at the temples",
+       "action": "stares at the envelope",
+       "position": "centre of frame, looking down"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "close-up, the father",
+       "director_line": "He has nothing to say.",
+       "action": "The father stares at the envelope.",
+       "performance": "His mouth opens a little and closes again."
+      }
+     ],
+     "audio": "quiet room",
+     "first_frame": {
+      "composition": "the father's face, the envelope soft below",
+      "subjects": [
+       "the father"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room",
+     "effects": "a door closes far away",
+     "music": "",
+     "silence": true
+    }
+   },
+   {
+    "n": 9,
+    "sequence": "C",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "over": "",
+    "size": "EWS",
+    "angle": "eye level",
+    "lens": "24mm: the room is bigger than either man",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "Close on the opening image: the long desk, the envelope between two men.",
+    "ir": {
+     "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+     "cinematography": {
+      "camera": "locked-off sticks, 24mm, f/5.6",
+      "angle": "eye level",
+      "framing": "extreme wide from the far wall: the same frame as the first shot, the envelope now back in front of the father",
+      "movement": "locked-off",
+      "white_balance": "neutral 4300K",
+      "color_tone": "desaturated, cooling toward the window",
+      "depth_of_field": "Deep",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Kasun, grey shirt, sleeves buttoned, standing",
+       "action": "stands at his end of the desk",
+       "position": "left end of the desk, facing right"
+      },
+      {
+       "id": "C03",
+       "description": "the father, dark suit, white shirt, grey at the temples, seated",
+       "action": "sits motionless",
+       "position": "right end of the desk, facing left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "extreme wide, both men",
+       "director_line": "The room is as it was, and nothing is.",
+       "action": "Neither man moves.",
+       "performance": "Kasun stays upright; the father keeps his eyes on the envelope."
+      }
+     ],
+     "audio": "quiet room, a clock",
+     "first_frame": {
+      "composition": "a long desk, two small figures, the window grey behind",
+      "subjects": [
+       "Kasun",
+       "the father"
+      ],
+      "setting": "A quiet office: a long desk, two chairs, a window with a grey afternoon behind it, a lamp left unlit",
+      "lighting": "Soft overcast window light from camera left, low contrast, the desk lamp unlit"
+     }
+    },
+    "sound": {
+     "ambience": "quiet room, a clock",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   }
+  ],
+  "added": [
+   {
+    "shot": 2,
+    "kind": "insert_detail",
+    "what": "the envelope coming to rest on the desk",
+    "who": [],
+    "object": "envelope"
+   },
+   {
+    "shot": 7,
+    "kind": "reaction",
+    "what": "Kasun standing, the decision settling",
+    "who": [
+     "Kasun"
+    ],
+    "object": ""
+   }
+  ],
+  "staging": {
+   "zones": [
+    "Kasun's end of the desk",
+    "the father's end of the desk"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Kasun",
+     "zone": "Kasun's end of the desk",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 0,
+     "who": "Father",
+     "zone": "the father's end of the desk",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": ""
+    }
+   ]
+  },
+  "end_state": {
+   "people": [
+    {
+     "who": "Kasun",
+     "where": "standing at Kasun's end of the desk",
+     "facing": "right",
+     "holding": "",
+     "look": "grey shirt, sleeves buttoned"
+    },
+    {
+     "who": "Father",
+     "where": "seated at the father's end of the desk",
+     "facing": "left",
+     "holding": "",
+     "look": "dark suit, white shirt"
+    }
+   ],
+   "props": [
+    {
+     "what": "the envelope",
+     "where": "on the desk, in front of the father"
+    }
+   ],
+   "time": "afternoon",
+   "light": "soft overcast window light from the left"
+  }
+ }
+}

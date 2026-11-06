@@ -22,6 +22,7 @@ from hiru_ai.core.context import Ports, RunContext
 from hiru_ai.core.ports import Row
 from hiru_ai.core.settings import AISettings, get_settings
 from hiru_ai.core.staging import StagedCards
+from hiru_ai.core.telemetry import enable_tracing
 from hiru_ai.core.usage import UsageSink
 
 _log = logging.getLogger("hiru_ai.adapters.supabase")
@@ -708,6 +709,7 @@ def build_context(payload: Any, *, jobs: Any, settings: AISettings | None = None
     function's own job store (it knows the courier hand-off); everything else is Supabase. `images` adds the painter
     (frame_render): without a key it is left out and the system reports the frame as not painted."""
     settings = settings or get_settings()
+    enable_tracing(settings)  # every function builds its context here: one place turns Langfuse on (ADR 0008)
     rest = Rest(settings.supabase.url, settings.supabase.service_role_key.get_secret_value(), client)
     ctx = RunContext(production_id=payload.production_id, actor_user_id=payload.actor_user_id,
                      job_id=getattr(payload, "job_id", None),

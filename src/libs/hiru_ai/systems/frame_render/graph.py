@@ -126,7 +126,7 @@ def _inspect(ctx: RunContext, picture_data: bytes, mime: str, expected: Row) -> 
     try:
         out = agents.build("frame_inspector").run(
             {"image_b64": base64.b64encode(picture_data).decode(), "mime": mime, "seen": expected["seen"],
-             "unseen": expected["unseen"], "frame": expected["frame"]}, ctx)
+             "unseen": expected["unseen"], "frame": expected["frame"], "hands": expected.get("hands") or ""}, ctx)
     except Exception:
         _log.warning("the frame could not be inspected", exc_info=True)
         return None

@@ -44,6 +44,7 @@ from contracts.canon import (
     reference_sheet_aspect,
     reference_sheet_prompt,
 )
+from contracts.holding import Hands, hands_for, references_for
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import (
     CameraSettings,
@@ -64,7 +65,7 @@ from frame_render.engine.inspect import Expected, Inspector, sheet_checks, visio
 _logger = logging.getLogger(__name__)
 AGENT = "frame_render"
 WORKERS = 4
-MAX_REFERENCES = 4
+MAX_REFERENCES = 6  # the people seen, the place, a second place (the stall), what they hold; the model takes 16
 FAILED = "The frame could not be made. Try again in a moment."
 NO_DESIGN = "This shot has no camera design yet. Design the scene first."
 NOT_CONFIGURED = "Image generation is not set up on this server."
@@ -171,14 +172,18 @@ class FrameJob:
         Someone only heard is never attached: their sheet would put their face in the frame."""
         scene, _, _, staged = self._own(shot)
         looks = self.looks(str(shot["scene_id"]))
+        edits = PersonEdits.of(shot)
+        seen = {c: self.members[c].name for c in staged.on_screen if c in self.members}
+        planned = references_for(scene, shot, self.canon, shot_canon_ids(scene, staged.on_screen, edits), seen,
+                                 removed=edits.cast.remove, has_sheet=lambda r: bool(_sheet_path(r)))
         out: list[tuple[str, Reference]] = []
-        for cid in shot_canon_ids(scene, staged.on_screen, PersonEdits.of(shot)):
+        for cid, note in planned:
             row = self.by_id.get(cid)
             if not row or len(out) >= MAX_REFERENCES:
                 continue
             what = {"location": "the location plate for", "prop": "the reference sheet for"}.get(
                 row["kind"], "the character sheet for")
-            choices = [(f"{what} {row['name']}", _sheet_path(row))]
+            choices = [(f"{what} {row['name']}" + (f" ({note})" if note else ""), _sheet_path(row))]
             look = looks.get(cid) if row["kind"] == "character" else None
             if look is not None:
                 choices.insert(0, (f"the look sheet for {row['name']}", look_sheet_path(look)))
@@ -217,8 +222,14 @@ class FrameJob:
         prompt = frame_prompt(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
                               cast=self.cast(shot, staged.on_screen), references=labels,
                               recommended_framing=recommended.framing,
-                              unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}))
+                              unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
+                              hands=self.hands(shot).sentence)
         return prompt, pins.model_dump()
+
+    def hands(self, shot: Row) -> Hands:
+        """Who holds what as the shot opens (`contracts.holding`), for the people the camera sees."""
+        scene, _, _, staged = self._own(shot)
+        return hands_for(scene, shot, [self.members[c].name for c in staged.on_screen if c in self.members])
 
     def expected(self, shot: Row) -> Expected:
         """What the vision check compares the picture with."""
@@ -231,7 +242,7 @@ class FrameJob:
         return Expected(seen=[identity_line(m) for m in self.cast(shot, staged.on_screen)],
                         unseen=[f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"
                                 for c in staged.heard_only if c in self.members],
-                        frame=text)
+                        frame=text, hands=self.hands(shot).expect)
 
 
 def render_frame(job: FrameJob, frame: Row, paint: Painter | None, inspect: Inspector | None = None) -> str:

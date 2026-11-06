@@ -87,6 +87,24 @@ Read `docs/david/README.md` and `plan/2026-11-05e/IMPLEMENTED.md` first. Phases 
 (`scripts/david_spike.py --yes`), the blind comparison (`scripts/david_compare.py`), the decisions D2 to D7 and the default are a
 person's. Costs appear in the spike's output and `IMPLEMENTED.md` only, never in the interface.
 
+## Shot Planner Jonathan, the cinematic planner (`jonathan/` folders, plan/2026-11-06b)
+
+A fourth shot planner, beside `script_split`, Adam and David, none of which it changes. It is the cinematic lab's result
+(`lab/cinematic/`, plan/2026-11-06, `RESULTS.md`): a treatment (logline, arc, approach, colour script, geography, key image),
+sequences, then shots with lens, angle, a story purpose and `use_s`, kept steady by a **stabiliser**: ONE author call, code
+checks facts and measures craft, then up to TWO revise calls that give the author its own best draft back with the findings
+(the best plan is kept; a worse pass is never built on). Not an agent: model calls in a fixed order, code in between. Built
+the way David was built from Adam: independent groups, so Jonathan has its own copy of the parts (`agents/jonathan/`,
+`steps/jonathan/`, `systems/jonathan/`, `contracts/jonathan/`, `tests/jonathan/`, `tests/eval/jonathan/`, `docs/jonathan/`),
+ids start `jonathan_`, `hiru-ai remove --group jonathan` lists what goes. It never imports Adam or David. The system is
+`jonathan_shot_planner` (job `plan_scene_jonathan`, function `shot_planner_jonathan`, port 8211); the tier is `jonathan`
+(`OPENAI__MODEL_AUTHOR` at `OPENAI__EFFORT_JONATHAN`, default high, the effort the lab proved); a production chooses it with
+`settings.shot_planner = "jonathan"`. **Status: Phase 0 is built (the group, the shared lists, the migration pair); the parts
+are still David's copy renamed and run David's behaviour until Phases 1 to 3 port the lab into them.** Read
+`plan/2026-11-06b/PLAN.md` and `IMPLEMENTED.md` first. The migration (`Database/upgrade_v12_to_v13.sql`,
+`supabase/migrations/20261106120000_jonathan.sql`) is not applied; applying it, running a live scene, the gate and the default
+are a person's. Costs appear in the lab's `RESULTS.md` only, never in the interface.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
 - A function under `src/services/<name>/` imports only its own package and `contracts`.

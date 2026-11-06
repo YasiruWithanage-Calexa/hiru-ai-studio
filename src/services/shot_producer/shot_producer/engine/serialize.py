@@ -304,7 +304,7 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
         _section("style", "Style", rules.rule("medium_style"), _clean(ctx.style_note)),
         _section("setting", "Setting", f"{setting.rstrip('.')}." if setting else "",
                  f"Carried over: {ctx.carried}." if ctx.carried and shot.camera_link != "cut" else ""),
-        _section("subjects", "Subjects", f"{described}." if described else "", _heard_text(shot)),
+        _section("subjects", "Subjects", f"{described}." if described else "", _heard_text(shot), shot.hands),
         _section("join", "Join", join),
         _section("camera", "Camera", _camera_text(ir, ctx)),
         _section("lighting", "Lighting", f"{light.rstrip('.')}." if light else ""),

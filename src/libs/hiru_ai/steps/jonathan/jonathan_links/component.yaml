@@ -1,0 +1,8 @@
+id: jonathan_links
+kind: step
+version: 1
+summary: "Says which scenes carry on from the one before (same episode, same place, CONTINUOUS / MOMENTS LATER / SAME TIME; or every pair in episode order) and groups scenes into chains that run in order."
+status: active
+owner: director
+entry: step:run
+uses: []

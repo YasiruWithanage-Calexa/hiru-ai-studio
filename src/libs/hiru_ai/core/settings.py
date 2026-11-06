@@ -27,6 +27,9 @@ class OpenAISettings(BaseModel):
     model_author: str = "gpt-5"
     effort_author: str = "medium"
     effort_repair: str = "low"
+    # Shot Planner Jonathan (plan/2026-11-06b): the `jonathan` tier is the same model at the effort the cinematic lab
+    # proved (high). An environment change, not a code change.
+    effort_jonathan: str = "high"
     model_medium: str = "gpt-5-mini"
     effort_medium: str = "low"
     model_low: str = "gpt-5-nano"
@@ -64,14 +67,26 @@ class AISettings(BaseSettings):
     # tokens over ~11 minutes, so ten at once is far under the per-minute limits of a paid tier; lower it if the
     # account's are low. A setting, not code: changing it is an environment change.
     adam_workers: int = 10
-    # How many scenes David plans at once in one delivery (plan/2026-11-05e §4.4); a chain of linked scenes is one worker.
+    # How many scenes David plans at once in one delivery (plan/2026-11-05e §4.4); a chain of linked scenes is one
+    # worker.
     david_workers: int = 10
+    # The same for Shot Planner Jonathan (plan/2026-11-06b).
+    jonathan_workers: int = 10
     # Agents that run as a tool loop (their manifest's `with_tools` form), as a comma-separated list of ids. Empty =
     # none: an agent switches only after a live A/B says it is at least as good (plan/2026-11-04 §8). Going back is
     # removing the id.
     agent_tools: str = ""
     openai: OpenAISettings = OpenAISettings()
     supabase: SupabaseSettings = SupabaseSettings()
+    # Where traces go (ADR 0008: Langfuse Cloud). Langfuse's own names, as its settings page prints them. Empty keys =
+    # no tracing.
+    langfuse_public_key: str = ""
+    langfuse_secret_key: SecretStr = SecretStr("")
+    langfuse_base_url: str = "https://cloud.langfuse.com"
+
+    @property
+    def tracing(self) -> bool:
+        return bool(self.langfuse_public_key and self.langfuse_secret_key.get_secret_value())
 
 
 @lru_cache

@@ -40,6 +40,8 @@ dev = [
     "langchain==1.4.4",
     "langchain-core==1.7.0",
     "langchain-openai==1.7.2",
+    # tracing (ADR 0008): optional; without it, or without LANGFUSE_ keys, nothing is traced
+    "langfuse==5.2.0",
     # shot_producer
     "PyYAML>=6.0,<7",
 ]
@@ -94,7 +96,7 @@ exclude = ["^src/libs/hiru_ai/[a-z_]+/([a-z_]+/)?[a-z_]+/tests/"]
 root_packages = [
     "api", "contracts", "hiru_ai", "openai", "langchain_openai",
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan",
 ]
 include_external_packages = true
 
@@ -104,7 +106,7 @@ type = "forbidden"
 source_modules = ["contracts"]
 forbidden_modules = [
     "api", "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "hiru_ai",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "hiru_ai",
     "fastapi", "starlette", "httpx", "openai", "supabase", "langgraph", "psycopg",
 ]
 
@@ -113,7 +115,7 @@ name = "services never import the api"
 type = "forbidden"
 source_modules = [
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan",
 ]
 forbidden_modules = ["api"]
 
@@ -123,7 +125,7 @@ type = "forbidden"
 source_modules = ["api"]
 forbidden_modules = [
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan",
 ]
 
 [[tool.importlinter.contracts]]
@@ -131,7 +133,7 @@ name = "services are independent of each other"
 type = "independence"
 modules = [
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan",
 ]
 
 # ── hiru_ai (plan/2026-11-03 Phase 1, §5.8) ──
@@ -192,7 +194,7 @@ type = "forbidden"
 source_modules = ["hiru_ai"]
 forbidden_modules = [
     "api", "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan",
 ]
 
 [[tool.importlinter.contracts]]
@@ -202,7 +204,7 @@ source_modules = ["hiru_ai.adapters"]
 forbidden_modules = [
     "hiru_ai.rag", "hiru_ai.knowledge_bases", "hiru_ai.tools", "hiru_ai.steps", "hiru_ai.agents", "hiru_ai.panels",
     "hiru_ai.systems", "hiru_ai.cli", "api", "echo_service", "doc_ingest", "script_split", "structure_build",
-    "canon_extract", "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david",
+    "canon_extract", "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan",
 ]
 
 [[tool.importlinter.contracts]]
@@ -230,7 +232,7 @@ allow_indirect_imports = true  # the model door (core.llm) uses httpx through op
 name = "a migrated function reaches hiru_ai only through its system, the core and the adapters"
 type = "forbidden"
 source_modules = ["echo_service", "doc_ingest", "canon_extract", "structure_build", "frame_render", "script_split",
-                  "shot_producer", "director_chat", "shot_planner_adam", "shot_planner_david"]
+                  "shot_producer", "director_chat", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan"]
 forbidden_modules = [
     "hiru_ai.agents", "hiru_ai.steps", "hiru_ai.tools", "hiru_ai.panels", "hiru_ai.knowledge_bases", "hiru_ai.rag",
     "hiru_ai.cli",
@@ -323,3 +325,37 @@ modules = ["hiru_ai.systems.david.*"]
 name = "david knowledge bases never import each other"
 type = "independence"
 modules = ["hiru_ai.knowledge_bases.david.*"]
+
+
+# plan/2026-11-06b §4.0: Jonathan's parts live in a `jonathan` folder inside each layer, kept apart the same way.
+
+[[tool.importlinter.contracts]]
+name = "jonathan agents never import each other"
+type = "independence"
+# The two agents, named: the group's `wire_schema` helper is shared by both on purpose and is not a part.
+modules = ["hiru_ai.agents.jonathan.jonathan_author", "hiru_ai.agents.jonathan.jonathan_revise"]
+
+[[tool.importlinter.contracts]]
+name = "jonathan steps never import each other"
+type = "independence"
+modules = ["hiru_ai.steps.jonathan.*"]
+
+[[tool.importlinter.contracts]]
+name = "jonathan panels never import each other"
+type = "independence"
+modules = ["hiru_ai.panels.jonathan.*"]
+
+[[tool.importlinter.contracts]]
+name = "jonathan tools never import each other"
+type = "independence"
+modules = ["hiru_ai.tools.jonathan.*"]
+
+[[tool.importlinter.contracts]]
+name = "jonathan systems never import each other"
+type = "independence"
+modules = ["hiru_ai.systems.jonathan.*"]
+
+[[tool.importlinter.contracts]]
+name = "jonathan knowledge bases never import each other"
+type = "independence"
+modules = ["hiru_ai.knowledge_bases.jonathan.*"]

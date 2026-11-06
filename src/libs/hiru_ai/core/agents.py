@@ -111,7 +111,7 @@ class Agent:
         runs this call on another model tier than the manifest's (the fixer ladder picks one per problem)."""
         inp, ctx = self._input(inp), ctx or RunContext()
         call = self.prepare(inp)
-        call.config = dict(config or {})
+        call.config = {"run_name": self.component, **(config or {})}  # the agent's name in a trace, not the chain's
         if tier:
             call.tier = tier
         chain = middleware.build(self.manifest.middleware, writes_dialogue=self.manifest.writes_dialogue)

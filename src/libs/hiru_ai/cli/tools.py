@@ -139,7 +139,9 @@ def remove(reg: Registry, kind: str, ident: str, *, yes: bool) -> list[str]:
 
 # ── remove a whole group (plan/2026-11-04b §5.0 rule 6) ─────────────────────────────────────────────────────────────
 
-_SCAN_SKIP = {".git", ".venv", "node_modules", "plan", ".idea", ".claude", ".mypy_cache", ".pytest_cache",
+# `lab` is the cinematic lab (plan/2026-11-06): a throwaway outside the product that names David; it is deleted when
+# Jonathan lands.
+_SCAN_SKIP = {".git", ".venv", "node_modules", "plan", "lab", ".idea", ".claude", ".mypy_cache", ".pytest_cache",
               ".ruff_cache", ".import_linter_cache", "hiru_ai_studio.egg-info"}
 _SCAN_SUFFIX = {".py", ".yaml", ".yml", ".sql", ".ps1", ".md", ".toml", ".json", ".txt", ".sh", ".ts", ".tsx"}
 

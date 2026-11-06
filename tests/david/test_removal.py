@@ -54,6 +54,7 @@ MAY_NAME_IT = {
     "src/libs/contracts/build.py", "src/libs/contracts/production.py", "src/libs/contracts/staging.py",
     "src/libs/hiru_ai/core/settings.py", "src/libs/hiru_ai/core/models.yaml",
     "supabase/migrations/20261105120000_david.sql", "Database/README.md", "Database/schema_v12.sql",
+    "Database/schema_v13.sql",  # v12 whole plus plan/2026-11-06b
     "Database/upgrade_v11_to_v12.sql", "scripts/david_spike.py", "scripts/david_compare.py",
     "supabase/tests/database/013_david.test.sql",
 }

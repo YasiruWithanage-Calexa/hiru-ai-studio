@@ -455,13 +455,15 @@ def _clean(text: Any) -> str:
 
 
 def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: str, cast: list[CastMember],
-                 references: list[str] | None = None, recommended_framing: str = "", unseen: str = "") -> str:
+                 references: list[str] | None = None, recommended_framing: str = "", unseen: str = "",
+                 hands: str = "") -> str:
     """The image prompt for a shot's first frame, from the DP's IR and the camera as it stands.
 
     `references` label the images attached to the call, IN ORDER ("Kamala's character sheet"),
     so the prompt can say which image is which. The framing a person chose wins over the IR's
     own composition note. Static wording first, the shot's facts after it. `cast` is who the
-    camera SEES; `unseen` says who is only heard (`contracts.staging.unseen_sentence`)."""
+    camera SEES; `unseen` says who is only heard (`contracts.staging.unseen_sentence`); `hands` says who holds what
+    (`contracts.holding.hands_for`), so a prop is never in a hand the story has not put it in."""
     frame = ir.get("first_frame") if isinstance(ir.get("first_frame"), Mapping) else {}
     subjects = frame.get("subjects") if isinstance(frame, Mapping) else None
     subject_text = "; ".join(_clean(s) for s in subjects) if isinstance(subjects, list) else _clean(subjects)
@@ -489,6 +491,8 @@ def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio:
     people = [identity_line(c) for c in cast if c.kind == "character"]
     if people:
         parts.append("People: " + " | ".join(people) + ".")
+    if hands:
+        parts.append(hands)
     setting = (_clean(frame.get("setting")) if isinstance(frame, Mapping) else "") or _clean(ir.get("setting"))
     if setting:
         parts.append(f"Setting: {setting.rstrip('.')}.")

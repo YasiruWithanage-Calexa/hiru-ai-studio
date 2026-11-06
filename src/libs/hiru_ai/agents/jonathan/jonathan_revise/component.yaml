@@ -1,0 +1,18 @@
+id: jonathan_revise
+kind: agent
+version: 1
+summary: "Revises a Jonathan plan (the stabiliser's pass): the author's own prompt and message, its best draft and what code found (hard problems and craft gaps) in; the complete corrected plan out. Code keeps it only when it is better; at most two passes."
+status: active
+owner: director
+model: jonathan
+# A whole corrected plan, the same size as the author's answer, so the same timeout.
+timeout_s: 900
+shape: structured
+phase: jonathan.revise
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

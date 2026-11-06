@@ -1,0 +1,1439 @@
+[
+ {
+  "scene": {
+   "number": 1,
+   "heading": "EXT. Colombo Road - DAY",
+   "blocks": [
+    {
+     "id": 1,
+     "kind": "action",
+     "text": "It is raining heavily in Colombo."
+    }
+   ]
+  },
+  "stored": {
+   "link": {
+    "by": "rules",
+    "kind": ""
+   },
+   "plan": {
+    "added": [],
+    "notes": "A 4-second prologue that plants the weather and place: heavy Colombo rain, the street alive but softened by water. No turn and no character beat here; it’s a warm, family-friendly establishing that hands off to the next scene at the food three-wheeler. Plan: one clean, readable wide that shows rain intensity, traffic, awnings dripping, and tropical greenery in frame edges.",
+    "shots": [
+     {
+      "n": 1,
+      "ir": {
+       "audio": "Continuous heavy rain with traffic wash and distant horns; tire hiss over wet asphalt.",
+       "beats": [
+        {
+         "time": "0-4s",
+         "action": "Heavy rain falls; a tuk-tuk moves left to right mid-ground; cars roll past; gutters run and an awning drips into a puddle that splashes as a tire passes.",
+         "camera": "wide on the street; hold steady with focus on the rain curtains and reflective road surface",
+         "performance": "",
+         "director_line": "Rain silvers the city as traffic threads through the wet."
+        }
+       ],
+       "setting": "Colombo Road with Sri Lankan shops, awnings, tropical vegetation, and passing cars and tuk-tuks under heavy rain",
+       "lighting": "Soft, overcast daylight from the sky, even and diffused with specular rain highlights on wet surfaces.",
+       "subjects": [],
+       "first_frame": {
+        "setting": "Urban Colombo roadside with small shops and tropical greenery",
+        "lighting": "Flat, bright overcast with rain sparkle on wet ground",
+        "subjects": [
+         "road surface gleaming with rain",
+         "a tuk-tuk mid-ground",
+         "shop awnings dripping"
+        ],
+        "composition": "A locked wide of the road: shopfronts and awnings on frame right, traffic lane center, curb and puddles foreground, palm fronds soft left edge; rain streaks throughout."
+       },
+       "cinematography": {
+        "angle": "eye level across the street",
+        "camera": "locked-off sticks, 35mm, f/4",
+        "framing": "wide street tableau with curb, shopfronts, and traffic lanes in view",
+        "movement": "locked-off",
+        "color_tone": "naturalistic, slightly desaturated with a cool rain cast",
+        "white_balance": "cool 5600K daylight",
+        "depth_of_field": "Deep",
+        "lens_artifacts": "none"
+       }
+      },
+      "why": "Establishes Colombo’s rain-soaked street and the day’s weather in one readable image.",
+      "link": "cut",
+      "over": "",
+      "size": "WIDE",
+      "lines": [],
+      "sound": {
+       "music": "",
+       "effects": "tuk-tuk engine buzz, tire hiss, water splashes from puddles",
+       "silence": false,
+       "ambience": "heavy monsoon rain, traffic wash, distant city horns"
+      },
+      "blocks": [
+       0
+      ],
+      "take_s": 4
+     }
+    ],
+    "staging": {
+     "marks": [],
+     "zones": [
+      "traffic lane",
+      "curbside puddles",
+      "shopfronts under awnings",
+      "vegetation edge"
+     ]
+    },
+    "end_state": {
+     "time": "day",
+     "light": "soft overcast daylight with continuing heavy rain",
+     "props": [],
+     "people": []
+    }
+   },
+   "seams": [],
+   "start": null,
+   "job_id": "2f0c8d77-1423-4193-8d30-95ae46e4ae6f",
+   "mended": [],
+   "report": {
+    "log": [],
+    "calls": {
+     "author": 1,
+     "repair": 0
+    },
+    "checks": {
+     "left": 1,
+     "dropped": []
+    },
+    "first_pass": [
+     {
+      "fix": "report",
+      "code": "staging",
+      "sentence": "The staging map has fewer than two spots or no marks, so teleports, crossed lines and eyelines cannot be checked."
+     }
+    ]
+   },
+   "planner": "david",
+   "removed": [],
+   "repairs": [],
+   "version": 1,
+   "line_ids": {},
+   "previous": {},
+   "problems": [
+    {
+     "fix": "report",
+     "key": "staging:none",
+     "code": "staging",
+     "shots": [],
+     "sentence": "The staging map has fewer than two spots or no marks, so teleports, crossed lines and eyelines cannot be checked."
+    }
+   ],
+   "end_state": {
+    "time": "day",
+    "light": "soft overcast daylight with continuing heavy rain",
+    "props": [],
+    "people": []
+   },
+   "input_hash": "19d85c93f526a128",
+   "look_changes": []
+  }
+ },
+ {
+  "scene": {
+   "number": 2,
+   "heading": "EXT. Kasun's Food Three-Wheeler - DAY",
+   "blocks": [
+    {
+     "id": 1,
+     "kind": "action",
+     "text": "Kasun stands beside his small three-wheeler."
+    },
+    {
+     "id": 2,
+     "kind": "action",
+     "text": "He serves tea to office workers."
+    },
+    {
+     "id": 3,
+     "kind": "action",
+     "text": "He serves homemade short eats to office workers."
+    },
+    {
+     "id": 4,
+     "kind": "action",
+     "text": "His clothes are simple."
+    },
+    {
+     "id": 5,
+     "kind": "action",
+     "text": "His eyes are full of ambition."
+    },
+    {
+     "id": 6,
+     "kind": "dialogue",
+     "text": "One day… I'll have my own restaurant,",
+     "line_id": "L6",
+     "speaker": "Kasun",
+     "delivery": ""
+    },
+    {
+     "id": 7,
+     "kind": "action",
+     "text": "Anudi steps out of a comfortable family car."
+    },
+    {
+     "id": 8,
+     "kind": "action",
+     "text": "She is dressed elegantly."
+    },
+    {
+     "id": 9,
+     "kind": "action",
+     "text": "She holds an umbrella."
+    },
+    {
+     "id": 10,
+     "kind": "action",
+     "text": "She drops her phone near Kasun's three-wheeler."
+    },
+    {
+     "id": 11,
+     "kind": "action",
+     "text": "Kasun picks up the phone."
+    },
+    {
+     "id": 12,
+     "kind": "action",
+     "text": "He runs after her."
+    },
+    {
+     "id": 13,
+     "kind": "dialogue",
+     "text": "Miss! Your phone!",
+     "line_id": "L13",
+     "speaker": "Kasun",
+     "delivery": ""
+    },
+    {
+     "id": 14,
+     "kind": "action",
+     "text": "Anudi turns around."
+    },
+    {
+     "id": 15,
+     "kind": "dialogue",
+     "text": "Oh… thank you.",
+     "line_id": "L15",
+     "speaker": "Anudi",
+     "delivery": ""
+    },
+    {
+     "id": 16,
+     "kind": "action",
+     "text": "She looks at his little business."
+    },
+    {
+     "id": 17,
+     "kind": "dialogue",
+     "text": "You made all this yourself?",
+     "line_id": "L17",
+     "speaker": "Anudi",
+     "delivery": ""
+    },
+    {
+     "id": 18,
+     "kind": "action",
+     "text": "Kasun smiles."
+    },
+    {
+     "id": 19,
+     "kind": "dialogue",
+     "text": "Started with Rs. 5,000. I'm trying to make it bigger.",
+     "line_id": "L19",
+     "speaker": "Kasun",
+     "delivery": ""
+    },
+    {
+     "id": 20,
+     "kind": "action",
+     "text": "Anudi smiles back."
+    },
+    {
+     "id": 21,
+     "kind": "action",
+     "text": "Her phone rings."
+    },
+    {
+     "id": 22,
+     "kind": "dialogue",
+     "text": "Anudi, where are you? Come home. We need to talk about your marriage.",
+     "line_id": "L22",
+     "speaker": "Anudi's Father",
+     "delivery": "on the phone"
+    },
+    {
+     "id": 23,
+     "kind": "action",
+     "text": "Her smile disappears."
+    },
+    {
+     "id": 24,
+     "kind": "action",
+     "text": "She looks at Kasun one more time."
+    },
+    {
+     "id": 25,
+     "kind": "dialogue",
+     "text": "Maybe… I'll see you again.",
+     "line_id": "L25",
+     "speaker": "Anudi",
+     "delivery": ""
+    },
+    {
+     "id": 26,
+     "kind": "action",
+     "text": "She walks away."
+    },
+    {
+     "id": 27,
+     "kind": "action",
+     "text": "Kasun watches her leave."
+    }
+   ]
+  },
+  "stored": {
+   "link": {
+    "by": "rules",
+    "kind": ""
+   },
+   "plan": {
+    "added": [],
+    "notes": "A rainy-day first meeting. It’s Kasun’s scene: we begin with his grind and quiet ambition, then pivot when Anudi enters, drops her phone, and a warm, curious exchange blooms—only to be cut by her father’s call. The turn is the phone call; warmth cools and leaves possibility hanging. Plan: establish the stall and Kasun’s drive; introduce Anudi in one flowing move; keep coverage simple and readable in the rain with steady frames and gentle pushes; listener coverage for the father’s call; end on a held two-shot that resolves into Kasun alone, looking after her.",
+    "shots": [
+     {
+      "n": 1,
+      "ir": {
+       "audio": "Heavy rain, soft street traffic whoosh, utensil clinks, paper rustle",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Kasun pours tea into a plastic cup and slides it out.",
+         "camera": "MS on Kasun at the counter",
+         "performance": "Efficient, eyes checking the street between motions.",
+         "director_line": "The routine under rain shows his hustle."
+        },
+        {
+         "time": "2-4s",
+         "action": "He grabs a short-eats packet and hands it across.",
+         "camera": "unchanged, slight push starting",
+         "performance": "A brief half-smile to a passer hand; focus returns to the stall.",
+         "director_line": "He serves short eats as if counting seconds."
+        },
+        {
+         "time": "4-8s",
+         "action": "Kasun lifts his gaze beyond the counter and speaks.",
+         "camera": "push in to tighter on Kasun’s face",
+         "performance": "He centers himself, eyes brightening; the words come like a promise.",
+         "director_line": "The work fades; the ambition fills the frame as he says it."
+        }
+       ],
+       "setting": "Colombo roadside, small food three-wheeler under a rain-wet awning; plastic containers, tea flask, handwritten menu visible",
+       "lighting": "Soft overcast daylight; awning top bounces a little fill, rain reflections bright on the street; low contrast.",
+       "subjects": [
+        {
+         "id": "C01",
+         "action": "works the counter, then speaks",
+         "position": "Stall Front, centre-left frame, facing right, hands at tea flask",
+         "description": "Kasun in a simple shirt, rain-speckled shoulders"
+        },
+        {
+         "id": "",
+         "action": "take cup/packet and pass money",
+         "position": "Customer Side, right frame edge, off to camera",
+         "description": "anonymous office worker hands reaching in"
+        }
+       ],
+       "first_frame": {
+        "setting": "Colombo roadside with wet street",
+        "lighting": "soft overcast daylight, reflections from wet ground",
+        "subjects": [
+         "Kasun at counter",
+         "anonymous hands entering at frame edge"
+        ],
+        "composition": "Kasun at the counter under a small awning, stall elements framing him; raindrops in BG"
+       },
+       "cinematography": {
+        "angle": "eye level, slightly favoring Kasun across the counter",
+        "camera": "slider on sticks, 35mm, f/2.8",
+        "framing": "medium on Kasun at the counter, space to the customer side",
+        "movement": "slow push in from a loose MS to a tighter MS/MCU framing on Kasun",
+        "color_tone": "naturalistic with gentle warm skin tones against cool rain",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Medium, soft background traffic bokeh",
+        "lens_artifacts": "occasional rain droplet flare at frame edge"
+       }
+      },
+      "why": "Establishes Kasun’s world—the work, the stall, and his aspiration—bridging action into his first spoken thought.",
+      "link": "cut",
+      "over": "",
+      "size": "MS",
+      "lines": [],
+      "sound": {
+       "music": "",
+       "effects": "tea cup set down, plastic rustle, coins",
+       "silence": false,
+       "ambience": "steady rain, light street noise"
+      },
+      "blocks": [
+       0,
+       1,
+       2,
+       3,
+       4
+      ],
+      "take_s": 8
+     },
+     {
+      "n": 2,
+      "ir": {
+       "audio": "Heavy rain, soft street traffic whoosh, utensil clinks, paper rustle",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Kasun pours tea into a plastic cup and slides it out.",
+         "camera": "MS on Kasun at the counter",
+         "performance": "Efficient, eyes checking the street between motions.",
+         "director_line": "The routine under rain shows his hustle."
+        },
+        {
+         "time": "2-4s",
+         "action": "He grabs a short-eats packet and hands it across.",
+         "camera": "unchanged, slight push starting",
+         "performance": "A brief half-smile to a passer hand; focus returns to the stall.",
+         "director_line": "He serves short eats as if counting seconds."
+        },
+        {
+         "time": "4-8s",
+         "action": "Kasun lifts his gaze beyond the counter and speaks.",
+         "camera": "push in to tighter on Kasun’s face",
+         "performance": "He centers himself, eyes brightening; the words come like a promise.",
+         "director_line": "The work fades; the ambition fills the frame as he says it."
+        }
+       ],
+       "setting": "Colombo roadside, small food three-wheeler under a rain-wet awning; plastic containers, tea flask, handwritten menu visible",
+       "lighting": "Soft overcast daylight; awning top bounces a little fill, rain reflections bright on the street; low contrast.",
+       "subjects": [
+        {
+         "id": "C01",
+         "action": "works the counter, then speaks",
+         "position": "Stall Front, centre-left frame, facing right, hands at tea flask",
+         "description": "Kasun in a simple shirt, rain-speckled shoulders"
+        },
+        {
+         "id": "",
+         "action": "take cup/packet and pass money",
+         "position": "Customer Side, right frame edge, off to camera",
+         "description": "anonymous office worker hands reaching in"
+        }
+       ],
+       "first_frame": {
+        "setting": "Colombo roadside with wet street",
+        "lighting": "soft overcast daylight, reflections from wet ground",
+        "subjects": [
+         "Kasun at counter",
+         "anonymous hands entering at frame edge"
+        ],
+        "composition": "Kasun at the counter under a small awning, stall elements framing him; raindrops in BG"
+       },
+       "cinematography": {
+        "angle": "eye level, slightly favoring Kasun across the counter",
+        "camera": "slider on sticks, 35mm, f/2.8",
+        "framing": "medium on Kasun at the counter, space to the customer side",
+        "movement": "slow push in from a loose MS to a tighter MS/MCU framing on Kasun",
+        "color_tone": "naturalistic with gentle warm skin tones against cool rain",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Medium, soft background traffic bokeh",
+        "lens_artifacts": "occasional rain droplet flare at frame edge"
+       }
+      },
+      "why": "Establishes Kasun’s world—the work, the stall, and his aspiration—bridging action into his first spoken thought. (continued)",
+      "link": "continuous",
+      "over": "",
+      "size": "MS",
+      "lines": [
+       "L5"
+      ],
+      "sound": {
+       "music": "",
+       "effects": "tea cup set down, plastic rustle, coins",
+       "silence": false,
+       "ambience": "steady rain, light street noise"
+      },
+      "blocks": [
+       5
+      ],
+      "take_s": 6
+     },
+     {
+      "n": 3,
+      "ir": {
+       "audio": "Rain on car roof, door thud, city bed",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Anudi opens the umbrella as she steps out of the car.",
+         "camera": "wide, car left, stall right",
+         "performance": "She moves neatly, careful with the dress hem.",
+         "director_line": "Elegance enters the rain, umbrella blooming against the grey."
+        },
+        {
+         "time": "2-4s",
+         "action": "Her phone slips from her hand and falls near the three-wheeler’s wheel.",
+         "camera": "small pan right",
+         "performance": "A tiny flinch of her hand; she continues walking, unaware.",
+         "director_line": "The small accident that ties them."
+        }
+       ],
+       "setting": "Kerbside beside the stall; a comfortable family car pulled up under rain",
+       "lighting": "Soft overcast daylight with sheen on car and pavement; no hard shadows.",
+       "subjects": [
+        {
+         "id": "C02",
+         "action": "steps from the car and starts past the stall; phone slips",
+         "position": "Car Door, left frame, facing right, umbrella in hand",
+         "description": "Anudi stepping out, elegant dress under an open umbrella"
+        },
+        {
+         "id": "C01",
+         "action": "glances as she passes",
+         "position": "Stall Front, right frame background, facing left",
+         "description": "Kasun at his stall in BG"
+        }
+       ],
+       "first_frame": {
+        "setting": "wet Colombo kerb with stall",
+        "lighting": "overcast daylight, reflective ground",
+        "subjects": [
+         "Anudi under umbrella",
+         "Kasun at stall (BG)"
+        ],
+        "composition": "Car door opening left, stall right, umbrella opening midframe"
+       },
+       "cinematography": {
+        "angle": "eye level, slight three-quarter",
+        "camera": "locked-off sticks, 28mm, f/4",
+        "framing": "wide with car at left, stall at right, pavement between",
+        "movement": "a small rightward pan to follow her first steps",
+        "color_tone": "naturalistic with gentle warmth on skin tones",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Deep to keep car, Anudi, and stall readable",
+        "lens_artifacts": "fine rain streaks toward lens"
+       }
+      },
+      "why": "Introduces Anudi and the inciting drop in relation to Kasun’s stall and the family car.",
+      "link": "cut",
+      "over": "",
+      "size": "WIDE",
+      "lines": [],
+      "sound": {
+       "music": "",
+       "effects": "car door close, phone clack/splash on wet pavement",
+       "silence": false,
+       "ambience": "rain and light traffic"
+      },
+      "blocks": [
+       6,
+       7,
+       8,
+       9
+      ],
+      "take_s": 8
+     },
+     {
+      "n": 4,
+      "ir": {
+       "audio": "Rain close, footfalls splashing",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Kasun bends, picks up the phone from the wet ground.",
+         "camera": "MS stepping in",
+         "performance": "His movements are neat and careful with the device.",
+         "director_line": "No hesitation."
+        },
+        {
+         "time": "2-4s",
+         "action": "Kasun breaks into a jog toward Anudi.",
+         "camera": "drift right with him",
+         "performance": "Shoulders forward, calling breath forming before he speaks.",
+         "director_line": "Into the rain after her."
+        }
+       ],
+       "setting": "Pavement by the stall, rain beading on the ground",
+       "lighting": "Soft, even daylight under rain; awning spill reduces contrast near stall edge.",
+       "subjects": [
+        {
+         "id": "C01",
+         "action": "scoops up the phone and sets off after Anudi",
+         "position": "Stall Front to Midway, centre frame, facing right",
+         "description": "Kasun at the edge of the stall awning"
+        }
+       ],
+       "first_frame": {
+        "setting": "pavement by stall",
+        "lighting": "soft overcast daylight",
+        "subjects": [
+         "Kasun reaching for phone"
+        ],
+        "composition": "Phone on wet ground foreground, Kasun bending into frame"
+       },
+       "cinematography": {
+        "angle": "eye level, close to the action",
+        "camera": "handheld, 50mm, f/2.8",
+        "framing": "medium on Kasun as he bends and then moves",
+        "movement": "a short handheld step-in and drift right as he starts after her",
+        "color_tone": "naturalistic, gentle warmth on skin",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Medium-shallow to keep focus on Kasun and the phone",
+        "lens_artifacts": "light water speckle at bottom edge"
+       }
+      },
+      "why": "Shows Kasun’s quick, considerate action—he claims the phone and moves.",
+      "link": "cut",
+      "over": "",
+      "size": "MS",
+      "lines": [],
+      "sound": {
+       "music": "",
+       "effects": "shoe scuff, light splash, phone lift",
+       "silence": false,
+       "ambience": "rain"
+      },
+      "blocks": [
+       10,
+       11
+      ],
+      "take_s": 4
+     },
+     {
+      "n": 5,
+      "ir": {
+       "audio": "Rain and a passing vehicle hiss under the voices",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Kasun steps in and calls out to her.",
+         "camera": "two-shot holds, slight favor on Anudi’s profile",
+         "performance": "He leans the phone forward with open-handed courtesy.",
+         "director_line": "His voice reaches her back."
+        },
+        {
+         "time": "2-3.5s",
+         "action": "Anudi turns around to him.",
+         "camera": "unchanged",
+         "performance": "Shoulders relax a notch as she recognizes the gesture.",
+         "director_line": "A simple turn reveals her."
+        },
+        {
+         "time": "3.5-6s",
+         "action": "Anudi answers, taking the phone from his hand.",
+         "camera": "unchanged",
+         "performance": "She meets his eyes briefly, a genuine small smile with the thanks.",
+         "director_line": "The first exchange lands softly between them."
+        }
+       ],
+       "setting": "Pavement between car and stall, umbrellas and rain in the background",
+       "lighting": "Soft overcast daylight; subtle underside fill from pale pavement; no hard edges.",
+       "subjects": [
+        {
+         "id": "C01",
+         "action": "calls out and offers the phone",
+         "position": "Midway, frame left, facing right, holding phone",
+         "description": "Kasun, damp hair, phone extended"
+        },
+        {
+         "id": "C02",
+         "action": "turns to him and replies while taking the phone",
+         "position": "Midway, frame right, facing left, umbrella hand low",
+         "description": "Anudi under umbrella"
+        }
+       ],
+       "first_frame": {
+        "setting": "mid-pavement between car and stall",
+        "lighting": "soft overcast daylight",
+        "subjects": [
+         "Kasun with phone extended",
+         "Anudi with umbrella"
+        ],
+        "composition": "Two-shot under rain, Kasun offering phone, Anudi just turning in"
+       },
+       "cinematography": {
+        "angle": "eye level",
+        "camera": "locked-off sticks, 50mm, f/2.8",
+        "framing": "tight two-shot on Kasun and Anudi, slight profile",
+        "movement": "locked-off",
+        "color_tone": "naturalistic, warm skin tones against cool grey",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Shallow, BG rain soft",
+        "lens_artifacts": "soft rain streak bokeh"
+       }
+      },
+      "why": "Connects the handoff and first exchange clearly, holding both faces in the rain.",
+      "link": "cut",
+      "over": "",
+      "size": "TWO",
+      "lines": [
+       "L12",
+       "L14"
+      ],
+      "sound": {
+       "music": "",
+       "effects": "faint traffic splash",
+       "silence": false,
+       "ambience": "rain and street hiss"
+      },
+      "blocks": [
+       12,
+       13,
+       14
+      ],
+      "take_s": 6
+     },
+     {
+      "n": 6,
+      "ir": {
+       "audio": "Rain patter under the awning, faint kettle tick",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Anudi looks over the counter, containers, and tea flask.",
+         "camera": "OTS holds on the stall and Kasun",
+         "performance": "A soft approving breath; chin lifts slightly.",
+         "director_line": "Her gaze traces his small world."
+        },
+        {
+         "time": "2-6s",
+         "action": "Anudi asks her question toward Kasun.",
+         "camera": "unchanged, slight nudge to favor Anudi as she speaks",
+         "performance": "She leans a touch forward, inviting his story.",
+         "director_line": "Curiosity becomes conversation."
+        }
+       ],
+       "setting": "Facing the stall from Anudi’s side; handwritten menu and containers visible",
+       "lighting": "Overcast daylight with soft wrap; counter surface gives small bounce under chins.",
+       "subjects": [
+        {
+         "id": "C02",
+         "action": "takes in the stall’s details, then speaks",
+         "position": "Midway, left foreground, facing right, holding umbrella and phone",
+         "description": "Anudi’s shoulder, umbrella edge"
+        },
+        {
+         "id": "C01",
+         "action": "waits, open stance",
+         "position": "Stall Front, centre-right BG, facing left",
+         "description": "Kasun framed by his three-wheeler counter"
+        }
+       ],
+       "first_frame": {
+        "setting": "stall frontage",
+        "lighting": "soft overcast daylight",
+        "subjects": [
+         "Kasun at counter",
+         "Anudi shoulder FG"
+        ],
+        "composition": "Stall counter and Kasun center, Anudi’s shoulder and umbrella rim framing left"
+       },
+       "cinematography": {
+        "angle": "eye level over Anudi’s shoulder",
+        "camera": "locked-off sticks, 50mm, f/3.2",
+        "framing": "OTS on Kasun and the stall counter, Anudi’s shoulder and umbrella edge foreground",
+        "movement": "locked-off",
+        "color_tone": "naturalistic, warm skin tones",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Medium, foreground shoulder soft, stall and Kasun readable",
+        "lens_artifacts": "raindrop bokeh highlights"
+       }
+      },
+      "why": "Shows her curiosity about his tiny setup, then her question from her side.",
+      "link": "cut",
+      "over": "",
+      "size": "OTS",
+      "lines": [
+       "L16"
+      ],
+      "sound": {
+       "music": "",
+       "effects": "subtle utensil clink",
+       "silence": false,
+       "ambience": "rain with light metallic patter on awning"
+      },
+      "blocks": [
+       15,
+       16
+      ],
+      "take_s": 6
+     },
+     {
+      "n": 7,
+      "ir": {
+       "audio": "Rain bed with a distant horn",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Kasun smiles to her.",
+         "camera": "MCU on Kasun",
+         "performance": "Smile small but sure, eyes never drop.",
+         "director_line": "Her interest warms him visibly."
+        },
+        {
+         "time": "2-6s",
+         "action": "Kasun speaks his line.",
+         "camera": "unchanged",
+         "performance": "Measured and earnest; a tiny nod on the last words.",
+         "director_line": "His story in one breath."
+        }
+       ],
+       "setting": "Pavement at the stall edge",
+       "lighting": "Soft daylight; gentle up-bounce from wet pavement opens shadows.",
+       "subjects": [
+        {
+         "id": "C01",
+         "action": "smiles, then answers",
+         "position": "Midway, centre frame, facing right toward Anudi",
+         "description": "Kasun, rain-speckled hair, steady gaze"
+        }
+       ],
+       "first_frame": {
+        "setting": "pavement at stall edge",
+        "lighting": "soft daylight",
+        "subjects": [
+         "Kasun face tight"
+        ],
+        "composition": "Kasun centered tight, rain-soft BG"
+       },
+       "cinematography": {
+        "angle": "eye level, intimate distance",
+        "camera": "locked-off sticks, 85mm, f/2",
+        "framing": "tight medium close-up on Kasun",
+        "movement": "locked-off",
+        "color_tone": "naturalistic, warm skin tones",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Shallow, creamy rain bokeh",
+        "lens_artifacts": "none"
+       }
+      },
+      "why": "Holds Kasun’s pride and resolve on his face as he answers.",
+      "link": "cut",
+      "over": "",
+      "size": "MCU",
+      "lines": [
+       "L18"
+      ],
+      "sound": {
+       "music": "",
+       "effects": "",
+       "silence": false,
+       "ambience": "rain, distant city hum"
+      },
+      "blocks": [
+       17,
+       18
+      ],
+      "take_s": 6
+     },
+     {
+      "n": 8,
+      "ir": {
+       "audio": "Rain hush",
+       "beats": [
+        {
+         "time": "0-4s",
+         "action": "Anudi smiles at Kasun.",
+         "camera": "MCU on Anudi",
+         "performance": "The smile grows, then softens, eyes flick to the stall and back.",
+         "director_line": "Their rapport settles in."
+        }
+       ],
+       "setting": "Mid-pavement near the stall",
+       "lighting": "Soft overcast light; umbrella fabric adds a slight top shade.",
+       "subjects": [
+        {
+         "id": "C02",
+         "action": "smiles back to him",
+         "position": "Midway, centre frame, facing left toward Kasun, holding phone and umbrella",
+         "description": "Anudi, hair gathered over one shoulder"
+        }
+       ],
+       "first_frame": {
+        "setting": "pavement near stall",
+        "lighting": "soft daylight",
+        "subjects": [
+         "Anudi"
+        ],
+        "composition": "Anudi framed by umbrella edge, eyes across to Kasun"
+       },
+       "cinematography": {
+        "angle": "eye level",
+        "camera": "locked-off sticks, 85mm, f/2",
+        "framing": "medium close-up on Anudi, umbrella in frame",
+        "movement": "locked-off",
+        "color_tone": "naturalistic, gentle warmth",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Shallow, rain bokeh",
+        "lens_artifacts": "none"
+       }
+      },
+      "why": "Returns the warmth—her reaction completes the exchange.",
+      "link": "cut",
+      "over": "",
+      "size": "MCU",
+      "lines": [],
+      "sound": {
+       "music": "",
+       "effects": "",
+       "silence": false,
+       "ambience": "rain"
+      },
+      "blocks": [
+       19
+      ],
+      "take_s": 4
+     },
+     {
+      "n": 9,
+      "ir": {
+       "audio": "Rain bed; faint phone vibration; father’s voice close in the mix",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Her phone vibrates and lights; she brings it up.",
+         "camera": "MCU on Anudi, eyes down to phone",
+         "performance": "Smile pauses; eyes dip to the screen, then up again.",
+         "director_line": "The interruption arrives between them."
+        },
+        {
+         "time": "2-8s",
+         "action": "She listens to the caller through the phone.",
+         "camera": "unchanged, hold on her face",
+         "performance": "Her posture firms; eyes lose their shine a touch as she hears the last words.",
+         "director_line": "The unseen voice shifts the air."
+        }
+       ],
+       "setting": "Same pavement spot, umbrella overhead, stall soft behind",
+       "lighting": "Soft overcast daylight with subtle fill from wet ground; no speculars.",
+       "subjects": [
+        {
+         "id": "C02",
+         "action": "feels the vibration, answers, listens",
+         "position": "Midway, centre frame, facing slightly left, holding umbrella and phone",
+         "description": "Anudi, phone lifting to ear"
+        }
+       ],
+       "first_frame": {
+        "setting": "pavement by stall (BG soft)",
+        "lighting": "soft daylight",
+        "subjects": [
+         "Anudi with phone"
+        ],
+        "composition": "Anudi tight, phone at chin level, umbrella fabric soft above"
+       },
+       "cinematography": {
+        "angle": "eye level, favoring a listening single",
+        "camera": "locked-off sticks, 85mm, f/2",
+        "framing": "tight MCU on Anudi with phone in hand/at ear",
+        "movement": "locked-off",
+        "color_tone": "naturalistic, gentle warmth",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Shallow to isolate her",
+        "lens_artifacts": "none"
+       }
+      },
+      "why": "Lets us feel the father’s demand through Anudi’s face while the phone call plays.",
+      "link": "cut",
+      "over": "Anudi",
+      "size": "MCU",
+      "lines": [
+       "L21"
+      ],
+      "sound": {
+       "music": "",
+       "effects": "phone buzz",
+       "silence": false,
+       "ambience": "rain"
+      },
+      "blocks": [
+       20,
+       21
+      ],
+      "take_s": 8
+     },
+     {
+      "n": 10,
+      "ir": {
+       "audio": "Rain hush, distant scooter pass",
+       "beats": [
+        {
+         "time": "0-2s",
+         "action": "Her smile disappears.",
+         "camera": "MCU tight",
+         "performance": "Mouth sets; eyes defocus a second, then refocus.",
+         "director_line": "Warmth drains away visibly."
+        },
+        {
+         "time": "2-4s",
+         "action": "She looks at Kasun one more time.",
+         "camera": "unchanged",
+         "performance": "A quick, apologetic glance holds a breath, then releases.",
+         "director_line": "A final connection before she goes."
+        }
+       ],
+       "setting": "Midway, rain continuing",
+       "lighting": "Soft overcast; minimal contrast.",
+       "subjects": [
+        {
+         "id": "C02",
+         "action": "loses her smile; looks once more at Kasun",
+         "position": "Midway, centre frame, facing left",
+         "description": "Anudi lowers the phone slightly"
+        }
+       ],
+       "first_frame": {
+        "setting": "pavement",
+        "lighting": "soft daylight",
+        "subjects": [
+         "Anudi"
+        ],
+        "composition": "Anudi center, eyes heavy, space to look frame right"
+       },
+       "cinematography": {
+        "angle": "eye level",
+        "camera": "locked-off sticks, 85mm, f/2",
+        "framing": "MCU on Anudi, slight space frame right to glance",
+        "movement": "locked-off",
+        "color_tone": "naturalistic",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Shallow",
+        "lens_artifacts": "none"
+       }
+      },
+      "why": "Shows the cost of the call and the last look toward Kasun.",
+      "link": "cut",
+      "over": "",
+      "size": "MCU",
+      "lines": [],
+      "sound": {
+       "music": "",
+       "effects": "",
+       "silence": false,
+       "ambience": "rain and light traffic"
+      },
+      "blocks": [
+       22,
+       23
+      ],
+      "take_s": 4
+     },
+     {
+      "n": 11,
+      "ir": {
+       "audio": "Rain, a passing bus wash in the distance",
+       "beats": [
+        {
+         "time": "0-3s",
+         "action": "Anudi speaks to Kasun.",
+         "camera": "two-shot, slight favor to Anudi for the line",
+         "performance": "She gives a small hopeful tilt of the head on the last word.",
+         "director_line": "A promise left soft in the rain."
+        },
+        {
+         "time": "3-6s",
+         "action": "Anudi walks away down the pavement.",
+         "camera": "two-shot holds as she turns and exits right",
+         "performance": "Her pace is quick but measured; umbrella steadies against the rain.",
+         "director_line": "She goes; space opens between them."
+        },
+        {
+         "time": "6-8s",
+         "action": "Kasun watches her leave out of frame.",
+         "camera": "slow push in a touch to Kasun single",
+         "performance": "Eyes track her path; he exhales, a faint half-smile lingering.",
+         "director_line": "He remains, looking after the possibility she leaves behind."
+        }
+       ],
+       "setting": "Pavement between stall and street, rain steady",
+       "lighting": "Soft overcast daylight; wet ground bounce; consistent low contrast.",
+       "subjects": [
+        {
+         "id": "C02",
+         "action": "speaks, then walks away down the pavement",
+         "position": "Midway to Road Exit, frame right, facing left then turning away",
+         "description": "Anudi under umbrella, phone in hand"
+        },
+        {
+         "id": "C01",
+         "action": "watches her leave",
+         "position": "Midway, frame left, facing right, hands empty",
+         "description": "Kasun, damp shoulders, open stance"
+        }
+       ],
+       "first_frame": {
+        "setting": "pavement between stall and street",
+        "lighting": "soft daylight",
+        "subjects": [
+         "Anudi with umbrella",
+         "Kasun"
+        ],
+        "composition": "Two-shot under rain, stall BG soft, street open to the right"
+       },
+       "cinematography": {
+        "angle": "eye level",
+        "camera": "locked-off sticks, 50mm, f/2.8",
+        "framing": "medium two-shot that can hold both and then Kasun alone",
+        "movement": "very slow push in after she exits, favoring Kasun",
+        "color_tone": "naturalistic with warm skin tones",
+        "white_balance": "neutral daylight 5600K",
+        "depth_of_field": "Medium-shallow",
+        "lens_artifacts": "soft rain streaks"
+       }
+      },
+      "why": "Holds the parting line and lets the frame resolve from two to one as she leaves.",
+      "link": "cut",
+      "over": "",
+      "size": "TWO",
+      "lines": [
+       "L24"
+      ],
+      "sound": {
+       "music": "",
+       "effects": "soft footsteps receding",
+       "silence": false,
+       "ambience": "rain and distant traffic"
+      },
+      "blocks": [
+       24,
+       25,
+       26
+      ],
+      "take_s": 8
+     }
+    ],
+    "staging": {
+     "marks": [
+      {
+       "who": "Kasun",
+       "zone": "Stall Front",
+       "block": 0,
+       "facing": "right",
+       "holding": "tea cup/serving tongs alternately",
+       "frame_side": "left"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Car Door",
+       "block": 6,
+       "facing": "right",
+       "holding": "umbrella, phone",
+       "frame_side": "left"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Midway",
+       "block": 9,
+       "facing": "right",
+       "holding": "umbrella",
+       "frame_side": "centre"
+      },
+      {
+       "who": "Kasun",
+       "zone": "Midway",
+       "block": 11,
+       "facing": "right",
+       "holding": "phone",
+       "frame_side": "left"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Midway",
+       "block": 13,
+       "facing": "left",
+       "holding": "umbrella, taking phone",
+       "frame_side": "right"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Midway",
+       "block": 15,
+       "facing": "left",
+       "holding": "umbrella, phone",
+       "frame_side": "right"
+      },
+      {
+       "who": "Kasun",
+       "zone": "Midway",
+       "block": 17,
+       "facing": "right",
+       "holding": "",
+       "frame_side": "left"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Midway",
+       "block": 19,
+       "facing": "left",
+       "holding": "umbrella, phone",
+       "frame_side": "centre"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Midway",
+       "block": 20,
+       "facing": "left",
+       "holding": "phone at hand",
+       "frame_side": "centre"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Midway",
+       "block": 21,
+       "facing": "left",
+       "holding": "phone at ear, umbrella",
+       "frame_side": "centre"
+      },
+      {
+       "who": "Anudi",
+       "zone": "Road Exit",
+       "block": 25,
+       "facing": "away",
+       "holding": "umbrella, phone",
+       "frame_side": "right"
+      },
+      {
+       "who": "Kasun",
+       "zone": "Midway",
+       "block": 26,
+       "facing": "right",
+       "holding": "",
+       "frame_side": "left"
+      },
+      {
+       "who": "Anudi's Father",
+       "zone": "off",
+       "block": 20,
+       "facing": "",
+       "holding": "",
+       "frame_side": ""
+      }
+     ],
+     "zones": [
+      "Stall Front",
+      "Customer Side",
+      "Car Door",
+      "Midway",
+      "Road Exit",
+      "off"
+     ]
+    },
+    "end_state": {
+     "time": "day",
+     "light": "soft overcast daylight in steady rain",
+     "props": [
+      {
+       "what": "tea flask",
+       "where": "on the three-wheeler counter at Stall Front"
+      },
+      {
+       "what": "short eats in containers",
+       "where": "stacked on the counter, covered"
+      },
+      {
+       "what": "handwritten menu",
+       "where": "clipped to the stall side, rain-speckled"
+      },
+      {
+       "what": "cash box",
+       "where": "on a shelf inside the three-wheeler"
+      },
+      {
+       "what": "Anudi's phone",
+       "where": "with Anudi, off down the pavement"
+      },
+      {
+       "what": "umbrella",
+       "where": "with Anudi, open"
+      },
+      {
+       "what": "comfortable family car",
+       "where": "parked at the kerb near Car Door"
+      }
+     ],
+     "people": [
+      {
+       "who": "Kasun",
+       "look": "simple shirt with damp shoulders from rain; friendly but serious eyes",
+       "where": "Midway, by the stall edge",
+       "facing": "right",
+       "holding": ""
+      },
+      {
+       "who": "Anudi",
+       "look": "elegant dress, hair neat; under umbrella",
+       "where": "off, down the pavement toward Road Exit",
+       "facing": "away",
+       "holding": "umbrella and phone"
+      },
+      {
+       "who": "Anudi's Father",
+       "look": "unseen; voice only",
+       "where": "off",
+       "facing": "away",
+       "holding": ""
+      }
+     ]
+    }
+   },
+   "seams": [],
+   "start": null,
+   "job_id": "2f0c8d77-1423-4193-8d30-95ae46e4ae6f",
+   "mended": [
+    "S01: split into 2 shots at a block boundary (it needed 11.2 s; the longest take is 8 s); the parts keep its camera design",
+    "S02: a 8 s take, not 4 s (it needs 7.0 s)"
+   ],
+   "report": {
+    "log": [
+     "repair round 1: refused, it created 1 new problem(s)",
+     "repair round 2: refused, it created 1 new problem(s)"
+    ],
+    "calls": {
+     "author": 1,
+     "repair": 2
+    },
+    "checks": {
+     "left": 2,
+     "dropped": []
+    },
+    "first_pass": [
+     {
+      "fix": "repair",
+      "code": "staging",
+      "sentence": "Anudi is at the Car Door, and by block 9 at the Midway, with nothing to show the way."
+     },
+     {
+      "fix": "repair",
+      "code": "end_state",
+      "sentence": "Anudi is holding umbrella, phone at the end of the staging, but the end state loses it."
+     }
+    ]
+   },
+   "planner": "david",
+   "removed": [],
+   "repairs": [
+    {
+     "kind": "repair",
+     "sent": [
+      "Anudi is at the Car Door, and by block 9 at the Midway, with nothing to show the way.",
+      "Anudi is holding umbrella, phone at the end of the staging, but the end state loses it."
+     ],
+     "round": 1,
+     "result": "refused: it created Anudi is at the Car Door, and by block 8 at the Customer Side, with nothing to show the way.",
+     "accepted": false
+    },
+    {
+     "kind": "repair",
+     "sent": [
+      "Anudi is at the Car Door, and by block 9 at the Midway, with nothing to show the way.",
+      "Anudi is holding umbrella, phone at the end of the staging, but the end state loses it."
+     ],
+     "round": 2,
+     "result": "refused: it created Anudi is at the Car Door, and by block 8 at the Customer Side, with nothing to show the way.",
+     "accepted": false
+    }
+   ],
+   "version": 1,
+   "line_ids": {
+    "L5": "96c60b83-2f83-45a7-a760-9b51d7046d80",
+    "L12": "5ebfd736-b3b8-44d6-9e21-9901cef679d7",
+    "L14": "a64c3694-2476-4584-b5b2-a172df6e90b4",
+    "L16": "aa9a190b-c2af-47bb-920d-c01614e9afb5",
+    "L18": "c1ab99b0-4763-4329-afa3-ab49dccb2d87",
+    "L21": "7824a868-0781-4313-86a9-3f8241b63c01",
+    "L24": "e3490092-c32b-4bb3-9155-3fd354849321"
+   },
+   "previous": {},
+   "problems": [
+    {
+     "fix": "repair",
+     "key": "staging:teleport:9:None:Anudi",
+     "code": "staging",
+     "shots": [],
+     "sentence": "Anudi is at the Car Door, and by block 9 at the Midway, with nothing to show the way."
+    },
+    {
+     "fix": "repair",
+     "key": "end_state:holding:anudi",
+     "code": "end_state",
+     "shots": [],
+     "sentence": "Anudi is holding umbrella, phone at the end of the staging, but the end state loses it."
+    }
+   ],
+   "end_state": {
+    "time": "day",
+    "light": "soft overcast daylight in steady rain",
+    "props": [
+     {
+      "what": "tea flask",
+      "where": "on the three-wheeler counter at Stall Front"
+     },
+     {
+      "what": "short eats in containers",
+      "where": "stacked on the counter, covered"
+     },
+     {
+      "what": "handwritten menu",
+      "where": "clipped to the stall side, rain-speckled"
+     },
+     {
+      "what": "cash box",
+      "where": "on a shelf inside the three-wheeler"
+     },
+     {
+      "what": "Anudi's phone",
+      "where": "with Anudi, off down the pavement"
+     },
+     {
+      "what": "umbrella",
+      "where": "with Anudi, open"
+     },
+     {
+      "what": "comfortable family car",
+      "where": "parked at the kerb near Car Door"
+     }
+    ],
+    "people": [
+     {
+      "who": "Kasun",
+      "look": "simple shirt with damp shoulders from rain; friendly but serious eyes",
+      "where": "Midway, by the stall edge",
+      "facing": "right",
+      "holding": ""
+     },
+     {
+      "who": "Anudi",
+      "look": "elegant dress, hair neat; under umbrella",
+      "where": "off, down the pavement toward Road Exit",
+      "facing": "away",
+      "holding": "umbrella and phone"
+     },
+     {
+      "who": "Anudi's Father",
+      "look": "unseen; voice only",
+      "where": "off",
+      "facing": "away",
+      "holding": ""
+     }
+    ]
+   },
+   "input_hash": "9e83da4274151dc7",
+   "look_changes": []
+  }
+ }
+]

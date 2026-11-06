@@ -1,0 +1,8 @@
+id: jonathan_write
+kind: step
+version: 1
+summary: "Writes a Jonathan plan as rows: the shots (with their card, intent, finished IR and a design whose pins are current), the scene's lines bound to them, the fit report in the classic shape and the stored plan; refuses an approved scene."
+status: active
+owner: director
+entry: step:run
+uses: []

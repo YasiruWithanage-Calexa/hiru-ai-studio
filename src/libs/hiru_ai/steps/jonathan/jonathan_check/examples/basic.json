@@ -1,0 +1,1275 @@
+{
+ "scene": {
+  "blocks": [
+   {
+    "index": 0,
+    "kind": "action",
+    "text": "A bench by the lake, late afternoon. ANUDI laughs, her phone face-down on the bench between her and DASUN.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "act",
+    "events": 2,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 1,
+    "kind": "dialogue",
+    "text": "ඉතින් මම කිව්වා, ඕක බොරු!",
+    "speaker": "Dasun",
+    "line_id": "L1",
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 2,
+    "kind": "action",
+    "text": "Her phone buzzes on the bench. The screen lights: THATHTHA.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "act",
+    "events": 2,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 3,
+    "kind": "action",
+    "text": "Anudi glances at it, still smiling, and answers.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 4,
+    "kind": "dialogue",
+    "text": "දුවේ, ඔයාගේ විවාහය ගැන අපි තීරණය කළා.",
+    "speaker": "Father (on the phone)",
+    "line_id": "L4",
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 5,
+    "kind": "action",
+    "text": "Her smile begins to fade.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "with_line",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 6,
+    "kind": "dialogue",
+    "text": "මම එන්නම්, තාත්තේ.",
+    "speaker": "Anudi",
+    "line_id": "L6",
+    "delivery": "quietly",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 7,
+    "kind": "action",
+    "text": "She ends the call and puts the phone face-down on the bench.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 8,
+    "kind": "dialogue",
+    "text": "ආයෙ හම්බවෙමු.",
+    "speaker": "Anudi",
+    "line_id": "L8",
+    "delivery": "restrained",
+    "screen": "act",
+    "events": 1,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   },
+   {
+    "index": 9,
+    "kind": "action",
+    "text": "She picks up her bag and walks out. Dasun watches her go.",
+    "speaker": "",
+    "line_id": null,
+    "delivery": "",
+    "screen": "move",
+    "events": 2,
+    "hold_s": 0.0,
+    "hold_kind": "",
+    "hold_who": "",
+    "turn": false
+   }
+  ],
+  "cast": [
+   "Anudi",
+   "Dasun",
+   "Father"
+  ],
+  "others": [
+   "Kasun"
+  ],
+  "place": {
+   "name": "A bench by the lake, late afternoon",
+   "objects": [
+    "bench",
+    "lake",
+    "phone",
+    "bag",
+    "trees",
+    "water"
+   ]
+  },
+  "envelope_s": 90.0
+ },
+ "plan": {
+  "treatment": {
+   "logline": "A call from her father decides Anudi's marriage and ends an easy afternoon on a lakeside bench.",
+   "arc": [
+    {
+     "beat": "Ease",
+     "blocks": {
+      "first": 0,
+      "last": 1
+     },
+     "feeling": "warmth, a private joke"
+    },
+    {
+     "beat": "The call",
+     "blocks": {
+      "first": 2,
+      "last": 6
+     },
+     "feeling": "the floor drops away"
+    },
+    {
+     "beat": "The goodbye",
+     "blocks": {
+      "first": 7,
+      "last": 9
+     },
+     "feeling": "a door quietly closing"
+    }
+   ],
+   "approach": "Wide and still for the ease, closer and longer lenses as the call lands, a held wide for the exit.",
+   "colour_script": [
+    {
+     "sequence": "A",
+     "palette": "gold, green",
+     "light": "low late-afternoon sun from the left",
+     "grade": "warm and open"
+    },
+    {
+     "sequence": "B",
+     "palette": "gold turning grey-green",
+     "light": "the same low sun",
+     "grade": "warmth drained from the mids"
+    },
+    {
+     "sequence": "C",
+     "palette": "cool green, long shadows",
+     "light": "the same low sun",
+     "grade": "cool, lower contrast"
+    }
+   ],
+   "geography": "Anudi frame left on the bench, Dasun frame right, the lake behind; the camera stays on the path side of the bench.",
+   "key_image": "The phone face-down on the bench in the gap between them.",
+   "advice": [
+    "The call's words are heard over her face; the phone's screen is never read."
+   ]
+  },
+  "sequences": [
+   {
+    "id": "A",
+    "title": "Ease",
+    "purpose": "the world and the joke",
+    "shots": {
+     "first": 1,
+     "last": 3
+    }
+   },
+   {
+    "id": "B",
+    "title": "The call",
+    "purpose": "the mood breaks",
+    "shots": {
+     "first": 4,
+     "last": 11
+    }
+   },
+   {
+    "id": "C",
+    "title": "The goodbye",
+    "purpose": "she leaves",
+    "shots": {
+     "first": 12,
+     "last": 15
+    }
+   }
+  ],
+  "shots": [
+   {
+    "n": 1,
+    "sequence": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "over": "",
+    "size": "EWS",
+    "angle": "eye level",
+    "lens": "24mm: the place",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "The world: the bench small against the lake, the two of them at ease.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Anudi in a pale green kurta",
+       "action": "listens",
+       "position": "left end"
+      },
+      {
+       "id": "C02",
+       "description": "Dasun in a white shirt",
+       "action": "watches her",
+       "position": "right end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She sits still.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 2,
+    "sequence": "A",
+    "blocks": [
+     1
+    ],
+    "lines": [
+     "L1"
+    ],
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The joke: Dasun's line lands.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Dasun in a white shirt",
+       "action": "watches her",
+       "position": "right end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She sits still.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 3,
+    "sequence": "A",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "85mm: her face",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "The release: Anudi laughs.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Anudi in a pale green kurta",
+       "action": "listens",
+       "position": "left end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She laughs, head back.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 4,
+    "sequence": "B",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "The trigger: the phone buzzes on the bench.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-4s",
+       "camera": "insert",
+       "director_line": "The phone on the bench.",
+       "action": "The phone buzzes and lights on the bench.",
+       "performance": "A hand rests near it."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 5,
+    "sequence": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "Still smiling, she looks down at it.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Anudi in a pale green kurta",
+       "action": "listens",
+       "position": "left end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She glances down.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 6,
+    "sequence": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "The choice: her hand lifts the phone; the camera tilts up with it.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "tilt up with the hand",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "Her hand lifts the phone from the bench.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 7,
+    "sequence": "B",
+    "blocks": [
+     4
+    ],
+    "lines": [
+     "L4"
+    ],
+    "over": "Anudi",
+    "size": "CU",
+    "angle": "eye level",
+    "lens": "85mm: no escape",
+    "take_s": 6,
+    "use_s": 6,
+    "link": "cut",
+    "why": "The blow: we hear the father and watch her face take it in.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Anudi in a pale green kurta",
+       "action": "listens",
+       "position": "left end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She sits still.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 8,
+    "sequence": "B",
+    "blocks": [
+     5,
+     6
+    ],
+    "lines": [
+     "L6"
+    ],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The turn: the smile goes; she agrees quietly.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Anudi in a pale green kurta",
+       "action": "listens",
+       "position": "left end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She sits still.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 9,
+    "sequence": "B",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "The witness: Dasun understands.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Dasun in a white shirt",
+       "action": "watches her",
+       "position": "right end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "He looks at her and stays still.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 10,
+    "sequence": "B",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 3,
+    "link": "cut",
+    "why": "The end of the call: her thumb ends it.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "Her thumb ends the call on the phone.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 11,
+    "sequence": "B",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "over": "",
+    "size": "ECU",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "A door closing: the phone face-down on the bench.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "The phone lies face-down on the bench.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 12,
+    "sequence": "C",
+    "blocks": [
+     8
+    ],
+    "lines": [
+     "L8"
+    ],
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The goodbye, restrained.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Anudi in a pale green kurta",
+       "action": "listens",
+       "position": "left end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She sits still.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 13,
+    "sequence": "C",
+    "blocks": [],
+    "lines": [],
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 4,
+    "use_s": 2,
+    "link": "cut",
+    "why": "Dasun takes the goodbye and does not argue.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "locked-off",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Dasun in a white shirt",
+       "action": "watches her",
+       "position": "right end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "He nods once.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 14,
+    "sequence": "C",
+    "blocks": [
+     9
+    ],
+    "lines": [],
+    "over": "",
+    "size": "INSERT",
+    "angle": "eye level",
+    "lens": "50mm: the scene's eye",
+    "take_s": 6,
+    "use_s": 2,
+    "link": "cut",
+    "why": "Her hand takes the bag; the camera pans with it.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "pan with the bag",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "Her hand takes the bag from the bench.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   },
+   {
+    "n": 15,
+    "sequence": "C",
+    "blocks": [
+     9
+    ],
+    "lines": [],
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level",
+    "lens": "24mm: the empty place",
+    "take_s": 6,
+    "use_s": 4,
+    "link": "cut",
+    "why": "The exit: she walks out; the bench is suddenly too big.",
+    "ir": {
+     "setting": "A bench by the lake, late afternoon",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "medium",
+      "movement": "slow pan following her",
+      "white_balance": "warm 4500K",
+      "color_tone": "naturalistic, warm",
+      "depth_of_field": "Shallow, soft lake behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low golden sun from camera left, soft, warm",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Anudi in a pale green kurta",
+       "action": "listens",
+       "position": "left end"
+      },
+      {
+       "id": "C02",
+       "description": "Dasun in a white shirt",
+       "action": "watches her",
+       "position": "right end"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-2s",
+       "camera": "medium",
+       "director_line": "She listens.",
+       "action": "She walks away along the path.",
+       "performance": "She keeps smiling a moment too long."
+      }
+     ],
+     "audio": "Lake water, distant birds",
+     "first_frame": {
+      "composition": "Anudi left, lake behind",
+      "subjects": [
+       "Anudi"
+      ],
+      "setting": "bench",
+      "lighting": "golden"
+     }
+    },
+    "sound": {
+     "ambience": "lake water",
+     "effects": "",
+     "music": "",
+     "silence": false
+    }
+   }
+  ],
+  "added": [
+   {
+    "shot": 3,
+    "kind": "reaction",
+    "what": "Anudi laughs at the joke",
+    "who": [
+     "Anudi"
+    ],
+    "object": ""
+   },
+   {
+    "shot": 9,
+    "kind": "reaction",
+    "what": "Dasun understands",
+    "who": [
+     "Dasun"
+    ],
+    "object": ""
+   },
+   {
+    "shot": 13,
+    "kind": "reaction",
+    "what": "Dasun takes the goodbye",
+    "who": [
+     "Dasun"
+    ],
+    "object": ""
+   }
+  ],
+  "staging": {
+   "zones": [
+    "left end of the bench",
+    "right end of the bench",
+    "path"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Anudi",
+     "zone": "left end of the bench",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 0,
+     "who": "Dasun",
+     "zone": "right end of the bench",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": ""
+    },
+    {
+     "block": 3,
+     "who": "Anudi",
+     "zone": "left end of the bench",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": "her phone"
+    },
+    {
+     "block": 7,
+     "who": "Anudi",
+     "zone": "left end of the bench",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": ""
+    },
+    {
+     "block": 9,
+     "who": "Anudi",
+     "zone": "off",
+     "facing": "away",
+     "frame_side": "",
+     "holding": "her bag"
+    }
+   ]
+  },
+  "end_state": {
+   "people": [
+    {
+     "who": "Anudi",
+     "where": "on the path away from the bench",
+     "facing": "away",
+     "holding": "her bag",
+     "look": "pale green kurta"
+    },
+    {
+     "who": "Dasun",
+     "where": "right end of the bench",
+     "facing": "the path",
+     "holding": "",
+     "look": "white shirt"
+    },
+    {
+     "who": "Father",
+     "where": "elsewhere, on the phone",
+     "facing": "",
+     "holding": "",
+     "look": ""
+    }
+   ],
+   "props": [
+    {
+     "what": "her phone",
+     "where": "in her bag"
+    }
+   ],
+   "time": "late afternoon",
+   "light": "low golden sun"
+  }
+ }
+}
