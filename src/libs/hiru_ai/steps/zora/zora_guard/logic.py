@@ -172,4 +172,7 @@ def template_reply(ledger: Ledger, *, fact: str = "") -> str:
         parts.append(ledger.overruns[0])
     if ledger.seams:
         parts.append(f"The next scene no longer starts where this one ends: {ledger.seams[0]}")
+    if ledger.already:
+        parts.append(f"Already in the plan before this turn: {ledger.already[0]}. The script has probably changed "
+                     "since the scene was planned; re-planning the scene with Jonathan fixes it.")
     return " ".join(p.strip() for p in parts if p.strip()) or "Nothing in the plan changed."

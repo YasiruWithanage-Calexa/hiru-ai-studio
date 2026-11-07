@@ -508,7 +508,8 @@ class Turn:
                     undelivered=undelivered_now, attempted=st.attempted, staged=st.staged, mended=st.mended,
                     problems=st.problems, overruns=list(dict.fromkeys(st.overruns)), seams=st.seams,
                     stale=st.stale if st.revision or st.saved_shots else [], offer=st.offer,
-                    undone=st.undone and st.lane not in ("undo", "redo"))
+                    undone=st.undone and st.lane not in ("undo", "redo"),
+                    already=self.kernel.already() if st.attempted and hasattr(self, "kernel") else [])
         if st.lane in ("undo", "redo") and st.saved_shots:
             led = build(self.before, after, attempted=True)
         return led

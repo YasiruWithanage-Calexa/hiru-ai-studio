@@ -154,3 +154,13 @@ def test_an_overrun_reaches_the_reply_as_a_report_with_its_way_out_and_an_offer_
     ctx = "\n".join(led.context())
     assert "reported, never trimmed" in ctx and "OFFERED, NOT DONE" in ctx and "NOTHING CHANGED" not in ctx
     assert led.gate()["overruns"] and led.event()["nothing_changed"] is True
+
+
+def test_one_reason_for_many_refused_ops_is_said_once_and_an_old_fault_is_a_separate_note():
+    plan = ZoraKernel(doc("small")).export(handles=True)
+    why = "the ir.set: the plan would not read (S07 names a line the scene does not have)"
+    out = ledger_step.run({"before": plan, "after": copy.deepcopy(plan), "attempted": True,
+                           "team_refused": [why] * 10, "already": ["S07 names a line the scene does not have"] * 2})
+    assert out["ops"]["refused"] == [why]
+    assert out["gate"]["already"] == ["S07 names a line the scene does not have"]
+    assert any(c.startswith("ALREADY IN THE PLAN BEFORE THIS TURN") for c in out["context"])

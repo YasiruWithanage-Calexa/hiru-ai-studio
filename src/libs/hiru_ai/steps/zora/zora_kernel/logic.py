@@ -8,7 +8,10 @@ guarantees, each pinned by `tests/zora/test_kernel.py`:
      not shift each other, and a task's numbers (post-op) are read against the exported plan.
   2. Undo is exact: every applied operation keeps a snapshot, and `undo(result)` restores the plan byte for byte.
   3. A bad operation never corrupts the plan: after each one the whole plan is re-validated (the planner's wire shape in
-     code, plus the planner's own validation when the step passes it); a failure rolls that one operation back.
+     code, plus the planner's own validation when the step passes it); a failure rolls that one operation back. Only a
+     fault the operation ADDS counts: what the plan already had when it was loaded (S07 naming a line the script has
+     since moved) is `known`, keyed by the shot's handle so renumbering does not make it look new, and is reported by
+     `already()`, never a reason to refuse an edit elsewhere.
   4. Removals land whole or not at all (Nova W3 `_all_or_nothing`): if one removal in a batch is refused, none lands.
   5. A lock is the person saying "not this": the author may not write a locked path; the conductor (the person's own
      words) and the person may, and what they set becomes locked.
@@ -21,6 +24,7 @@ write it.
 from __future__ import annotations
 
 import copy
+import re
 from collections.abc import Callable
 from dataclasses import dataclass
 from dataclasses import field as dc_field
@@ -35,6 +39,7 @@ Row = dict[str, Any]
 SIZE_FOR = {"reaction": "CU", "listener": "MCU", "insert_detail": "INSERT", "hands": "INSERT", "plant": "INSERT",
             "pov": "POV", "atmosphere": "WIDE", "empty_frame": "WIDE", "baseline": "WIDE", "transition": "WIDE",
             "implied_action": "MS", "move": "MS", "hold": "MS"}
+_SHOT_CODE = re.compile(r"\bS(\d+)\b")  # a shot named in a fault's sentence (`O.code`: S07)
 
 
 @dataclass
@@ -83,6 +88,33 @@ class ZoraKernel:
         self.locked: list[str] = [self._to_handles(p) for p in doc.person.locked]
         self.settled: list[str] = [self._to_handles(p) for p in doc.person.settled]
         self.pinned: set[str] = set()  # shots whose take a person set this turn: the mend may lengthen, never shorten
+        self.known: set[str] = {self._fault_key(e) for e in self._faults()}  # what the plan had before any edit
+
+    # ── faults: what makes the plan not read ─────────────────────────────────────────────────────────────
+
+    def _faults(self) -> list[str]:
+        """Every reason the plan as it stands would not read: the wire shape against the scene, then the planner's own
+        validation (both always, so a fault already in the plan does not hide a new one behind it)."""
+        plan = self.export()
+        errors = shape_errors(plan, self.scene)
+        if self.validate is not None:
+            errors += self.validate(plan)
+        return errors
+
+    def _fault_key(self, sentence: str) -> str:
+        """A fault with its shots named by handle (S07 → #h7), so it is the same fault after shots are renumbered."""
+        handles = self.handles()
+        return _SHOT_CODE.sub(lambda m: f"#{handles[int(m[1]) - 1]}" if 1 <= int(m[1]) <= len(handles) else m[0],
+                              sentence)
+
+    def new_faults(self) -> list[str]:
+        """The faults the edits so far ADDED: what refuses an operation."""
+        return [e for e in self._faults() if self._fault_key(e) not in self.known]
+
+    def already(self) -> list[str]:
+        """The faults the plan had when it was loaded and still has, in today's shot numbers: reported to the person
+        once (they block nothing; a re-plan, or the person, clears them)."""
+        return list(dict.fromkeys(e for e in self._faults() if self._fault_key(e) in self.known))
 
     # ── reading ───────────────────────────────────────────────────────────────────────────────
 
@@ -239,9 +271,7 @@ class ZoraKernel:
             snap = self._snapshot()
             try:
                 normalized, changes = self._dispatch(op, addr, arcs, by)
-                errors = shape_errors(self.export(), self.scene)
-                if not errors and self.validate is not None:
-                    errors = self.validate(self.export())
+                errors = self.new_faults()
                 if errors:
                     raise O.OpError(f"the plan would not read ({errors[0]})")
             except O.OpError:

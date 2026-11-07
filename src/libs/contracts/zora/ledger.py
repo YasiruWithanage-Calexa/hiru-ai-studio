@@ -41,6 +41,7 @@ class Ledger(BaseModel):
     staged: list[str] = []  # cards waiting for the person (a line change, a translation)
     mended: list[str] = []  # what code fixed after the edit (a longer take, a split at a block)
     problems: list[str] = []  # faults this turn introduced and could not clear: reported, never blocking
+    already: list[str] = []  # faults the plan had BEFORE this turn (a script edited after planning): never blocking
     overruns: list[str] = []  # a line longer than its take: reported with the way out, NEVER trimmed
     seams: list[str] = []  # the join with the next scene this turn broke
     stale: list[str] = []  # shots whose frame or prompt is now out of date
@@ -57,7 +58,8 @@ class Ledger(BaseModel):
                 "staged": list(self.staged), "mended": list(self.mended), "stale": list(self.stale)}
 
     def gate(self) -> dict[str, object]:
-        return {"problems": list(self.problems), "overruns": list(self.overruns), "seams": list(self.seams)}
+        return {"problems": list(self.problems), "overruns": list(self.overruns), "seams": list(self.seams),
+                "already": list(self.already)}
 
     def context(self) -> list[str]:
         """The reply's account of the turn. Stated to outrank the conversation: an earlier message saying something was
@@ -85,6 +87,11 @@ class Ledger(BaseModel):
         if self.problems:
             parts.append("LEFT FOR THE PERSON (code could not clear these this turn):\n"
                          + "\n".join(f"- {p}" for p in self.problems[:6]))
+        if self.already:
+            parts.append("ALREADY IN THE PLAN BEFORE THIS TURN (not caused by this turn and did NOT stop it; mention "
+                         "it once, briefly, as a separate note: the script has probably changed since the scene was "
+                         "planned, and re-planning the scene with Jonathan fixes it):\n"
+                         + "\n".join(f"- {a}" for a in self.already[:4]))
         if self.seams:
             parts.append("THE NEXT SCENE'S START NO LONGER MATCHES (say so; a re-plan of the next scene can be "
                          "offered, never claimed):\n" + "\n".join(f"- {s}" for s in self.seams))
