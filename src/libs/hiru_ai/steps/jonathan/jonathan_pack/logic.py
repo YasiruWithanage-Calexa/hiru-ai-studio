@@ -97,6 +97,17 @@ def last_shot_part(kind: str, ir: dict[str, Any] | None) -> str:
     return f"{what}\n" + _compact(ir if kind == "continuous" else {"subjects": ir.get("subjects") or []})
 
 
+def pinned_part(treatment: dict[str, Any] | None) -> str:
+    """A treatment a person pinned ("Plan shots from this treatment", plan/2026-11-06e §4.9): printed as fixed. "" =
+    none, so a pack without one is byte for byte what it was."""
+    if not treatment:
+        return ""
+    body = json.dumps({k: v for k, v in treatment.items() if k != "advice"}, ensure_ascii=False, separators=(",", ":"))
+    return ("The person wrote this treatment and pinned it. Copy it into your answer's treatment EXACTLY (logline, arc "
+            "with its blocks, approach, colour script, geography, key image); plan the sequences and every shot FROM "
+            f"it. Only the advice is yours.\n{body}")
+
+
 def pack(payload: dict[str, Any]) -> dict[str, Any]:
     scene = SceneS.model_validate(payload["scene"])
     kind = str(payload.get("link") or "")
@@ -112,8 +123,9 @@ def pack(payload: dict[str, Any]) -> dict[str, Any]:
                                   "note": note_of(payload.get("context") or {}, scene.envelope_s)}),
              "start": start_part(kind, start, dict(payload.get("canon_looks") or {}),
                                  list(payload.get("look_changes") or [])),
-             "last_shot": last_shot_part(kind, payload.get("last_shot_ir")), "script": script}
+             "last_shot": last_shot_part(kind, payload.get("last_shot_ir")),
+             "treatment": pinned_part(payload.get("pinned") or None), "script": script}
     tags = [("production", "production"), ("scene", "scene"), ("start", "start_state"), ("last_shot", "last_shot"),
-            ("script", "script")]
+            ("treatment", "pinned_treatment"), ("script", "script")]
     text = "\n\n".join(f"<{tag}>\n{parts[key]}\n</{tag}>" for key, tag in tags if parts[key])
     return {"text": text, "parts": parts, "words": len(text.split())}

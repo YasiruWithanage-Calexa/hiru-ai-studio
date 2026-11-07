@@ -47,11 +47,13 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
     JobKind.PLAN_SCENE_ADAM: FunctionSpec("hiru-shot-planner-adam", 8209, 1800),
     JobKind.PLAN_SCENE_DAVID: FunctionSpec("hiru-shot-planner-david", 8210, 1800),
     JobKind.PLAN_SCENE_JONATHAN: FunctionSpec("hiru-shot-planner-jonathan", 8211, 1800),
+    JobKind.VIDEO_RENDER: FunctionSpec("hiru-video-render", 8212, 1800),  # Veo takes minutes
     # Added as each engine lands (PLAN.md §13).
 }
 
 # Synchronous functions: called directly by the API (not through Cloud Tasks) and streamed.
 DIRECTOR_CHAT = FunctionSpec("hiru-director-chat", 8206, 300)
+ZORA_CHAT = FunctionSpec("hiru-zora-chat", 8213, 300)  # Zora, the director chat over Jonathan's plan (plan/2026-11-06e)
 
 
 def function_url(spec: FunctionSpec, settings: Settings) -> str:

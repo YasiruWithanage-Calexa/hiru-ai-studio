@@ -7,7 +7,9 @@ goes one phase at a time; at the end of a phase, update IMPLEMENTED.md. A new pl
 in a new `plan/<date>/` folder.
 
 ## Fixed decisions (ask before changing any)
-- **LLMs are OpenAI only.** Ask the user before using Gemini or any other Google model.
+- **LLMs are OpenAI only.** Ask the user before using Gemini or any other Google model. The one exception is RENDERING A TAKE
+  with Gemini Omni Flash or Veo 3.1 (plan/2026-11-06c, PLAN.md Q1): the key is read by `video_render` alone and no Google model
+  writes a prompt, a check or text.
 - Supabase for auth, DB, storage, realtime and pgvector. **Hiru only** (single tenant).
 - Proven PromptMotion engines are **forked**, not imported (PLAN.md §2.1). Each fork gets an
   `UPSTREAM.md` with the source path, commit (`1d748dc` at plan time) and every divergence.
@@ -104,6 +106,37 @@ are still David's copy renamed and run David's behaviour until Phases 1 to 3 por
 `plan/2026-11-06b/PLAN.md` and `IMPLEMENTED.md` first. The migration (`Database/upgrade_v12_to_v13.sql`,
 `supabase/migrations/20261106120000_jonathan.sql`) is not applied; applying it, running a live scene, the gate and the default
 are a person's. Costs appear in the lab's `RESULTS.md` only, never in the interface.
+
+## Zora, the director chat over Jonathan's plan (`zora/` folders, plan/2026-11-06e)
+
+A new director chat beside the classic one, which it does not change. It edits the plan Jonathan stores on a scene
+(`scenes.jonathan`): a small conductor transcribes the person's changes as operations and tasks, code applies them on
+stable handles and works out what went stale, ONE author call (tier `zora`: Jonathan's model and prompt) does the craft,
+Jonathan's own mend and checks gate it (only faults the turn introduced count, at most two repairs), and the reply is
+written from a ledger of exactly what changed (`nothing_changed` explicit). Group rules as Jonathan's (`agents/zora/`,
+`steps/zora/`, `systems/zora/`, `contracts/zora/`, `tests/zora/`, `docs/zora/`, `lab/zora/`); it reaches Jonathan only
+by id. The system is `zora_chat` (function `hiru-zora-chat`, port 8213, streamed like the classic chat; API
+`routers/zora.py`; panel `features/zora/`). Rules that must not drift: **a line's words are never written** (lines are
+bound by code; overruns are reported with the way out, never trimmed); **a lock is the person's** (no model writes a
+locked field; what the person sets is locked); a save goes through `jonathan_write` and keeps every shot's id; undo is
+a `scene_plan_revisions` row (schema v14). It runs only when `ZORA__ENABLED` and the scene has a Jonathan plan (D3).
+Read `plan/2026-11-06e/IMPLEMENTED.md` first: phases 0 to 8 are built offline; the lab's paid run, applying v14,
+turning it on, the Figma frames (D8) and the live check are a person's. No costs in the interface.
+
+## Video generation in Hiru (plan/2026-11-06c)
+
+A person can make a shot's take in Hiru with Omni Flash (default) or Veo 3.1, beside the upload from Flow. The pure rules are
+`contracts/video_gen.py` (capabilities, the three settings layers, references with their binding and ORDER, the seed, the
+request adapters, `validate_render` / `check_render`); the function is `src/services/video_render/` (a fork of PromptMotion's,
+`UPSTREAM.md`, port 8212, `JobKind.VIDEO_RENDER`); the API is `routers/renders.py` + `services/renders.py`; storage is
+`video_renders`, `takes.origin` / `render_id`, `shots.video_settings` (schema v14: `Database/schema_v14.sql`, `upgrade_v13_to_v14.sql`). Rules that must not drift:
+**order is the list order** (never sort or de-duplicate references: Omni numbers them by position); **attached == cited** (the
+citation block is built from the same list as the payload); **labels are words** (a code, id, path or hash is drawn as
+lettering); **checks report, they never edit** the prose or a person's list; **every take records the seed it was sent with**
+(drawn before dispatch); a browser never holds a storage path (it names a picture by kind and id; the server resolves it);
+`Permission.RENDER_VIDEO` (producer, director, admin) guards spending; no costs in the interface. What each engine accepts
+(`EngineCapability.seed`, `verified`) is settled by `scripts/video_probe.py`, a person's to run. Read
+`plan/2026-11-06c/IMPLEMENTED.md` first.
 
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.

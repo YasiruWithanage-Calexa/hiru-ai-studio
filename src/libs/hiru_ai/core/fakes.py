@@ -311,6 +311,32 @@ class FakeDirector:
         self.audits.append(row)
 
 
+class FakeRevisions:
+    """`RevisionStore` in memory. `missing=True` is a database without the table: every call raises."""
+
+    def __init__(self, *, missing: bool = False) -> None:
+        self.rows: list[Row] = []
+        self.missing = missing
+
+    def _check(self) -> None:
+        if self.missing:
+            raise RuntimeError("scene_plan_revisions does not exist")
+
+    def revisions(self, scene_id: UUID | str) -> list[Row]:
+        self._check()
+        return sorted((dict(r) for r in self.rows if str(r["scene_id"]) == str(scene_id)),
+                      key=lambda r: int(r["revision"]))
+
+    def add_revision(self, row: Row) -> None:
+        self._check()
+        self.rows.append(dict(row))
+
+    def drop_revisions(self, scene_id: UUID | str, numbers: list[int]) -> None:
+        self._check()
+        gone = set(numbers)
+        self.rows = [r for r in self.rows if not (str(r["scene_id"]) == str(scene_id) and int(r["revision"]) in gone)]
+
+
 class FakeFrames:
     """`FrameStore` in memory: the frames a job paints, the looks and the shots they read."""
 

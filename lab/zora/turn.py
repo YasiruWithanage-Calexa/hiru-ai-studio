@@ -30,7 +30,7 @@ from hiru_ai.steps.zora.zora_deps.logic import plan_tasks, recut_guard
 from hiru_ai.steps.zora.zora_kernel.logic import ZoraKernel
 from hiru_ai.steps.zora.zora_kernel.step import planner_validation
 from hiru_ai.steps.zora.zora_ledger.logic import build, change_lines
-from zora import schema
+from contracts.zora import wire as schema
 
 LAB = Path(__file__).resolve().parent
 ROOT = LAB.parents[1]

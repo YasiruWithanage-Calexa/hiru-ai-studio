@@ -472,7 +472,7 @@ Decided 2026-10-23:
 
 | # | Question | Decision |
 |---|---|---|
-| Q1 | In-app video generation (Veo through Google's API) | Out of scope until after Phase 5; handoff stays "Copy for Flow" + takes upload. Ask again then. |
+| Q1 | In-app video generation (Veo through Google's API) | Out of scope until after Phase 5; handoff stays "Copy for Flow" + takes upload. Ask again then. **Asked again 2026-11-06 and answered yes** (plan/2026-11-06c): a person can also generate a take in Hiru with Gemini Omni Flash (default) or Veo 3.1. Google models are allowed for rendering a take only; every prompt, check and agent stays on OpenAI. Upload stays. |
 | Q2 | Roles | Production roles producer, director, writer, production, reviewer, plus a workspace **admin** who alone manages members, settings and orientation and has every other permission. Producers do **not** manage members, settings or orientation. |
 | Q3 | Fixed 8 s shots or the 4/6/8 ladder? | Build the ladder; a production setting can force 8 s. |
 | Q4 | Is 10 s renderable on current Veo 3.1? | Keep 10 s off until verified. |

@@ -52,7 +52,9 @@ jobs:
             {"name":"hiru-frame-render","src":"src/services/frame_render","memory":"1Gi","timeout":600,"ai":true},
             {"name":"hiru-shot-planner-adam","src":"src/services/shot_planner_adam","memory":"1Gi","timeout":1800,"ai":true},
             {"name":"hiru-shot-planner-david","src":"src/services/shot_planner_david","memory":"1Gi","timeout":1800,"ai":true},
-            {"name":"hiru-shot-planner-jonathan","src":"src/services/shot_planner_jonathan","memory":"1Gi","timeout":1800,"ai":true}
+            {"name":"hiru-shot-planner-jonathan","src":"src/services/shot_planner_jonathan","memory":"1Gi","timeout":1800,"ai":true},
+            {"name":"hiru-video-render","src":"src/services/video_render","memory":"1Gi","timeout":1800},
+            {"name":"hiru-zora-chat","src":"src/services/zora_chat","memory":"1Gi","timeout":300,"ai":true}
           ]'
           before="${{ github.event.before }}"
           if [[ "${{ inputs.all }}" == "true" || -z "$before" || "$before" =~ ^0+$ ]] \

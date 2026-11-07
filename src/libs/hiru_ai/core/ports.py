@@ -172,6 +172,17 @@ class DirectorStore(Protocol):
     def audit(self, row: Row) -> None: ...
 
 
+class RevisionStore(Protocol):
+    """A scene's plan revisions, behind undo and redo in the director chat (plan/2026-11-06e §4.7,
+    `scene_plan_revisions`). A store whose database has no such table raises; the caller then runs without undo."""
+
+    def revisions(self, scene_id: UUID | str) -> list[Row]:
+        """Every kept revision of the scene, oldest first."""
+
+    def add_revision(self, row: Row) -> None: ...
+    def drop_revisions(self, scene_id: UUID | str, numbers: list[int]) -> None: ...
+
+
 class FrameStore(Protocol):
     """The frames a job paints, and what it reads about their shots, canon and looks (frame_render)."""
 

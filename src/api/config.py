@@ -59,6 +59,23 @@ class OpenAISettings(BaseModel):
         return bool(self.api_key.get_secret_value())
 
 
+class GoogleSettings(BaseModel):
+    """Google is allowed for rendering a take and nothing else (plan/2026-11-06c §2.1). The key belongs to the
+    `video_render` function; the API reads it only to know whether video can be made (absent: the Generate button says
+    why, and upload keeps working) and never sends it anywhere."""
+
+    api_key: SecretStr = SecretStr("")
+
+
+class VideoSettings(BaseModel):
+    """In-app video generation. `fake_provider` runs the whole path with no network (localhost and tests)."""
+
+    fake_provider: bool = False
+    max_running_per_production: int = 4
+    # A render still queued or running after this long is reported failed: the function's own deadline is 30 minutes.
+    stale_after_s: int = 2700
+
+
 class AssembleSettings(BaseModel):
     """The ffmpeg service (infra/assemble): a take's last frame and its probe. Empty URL: takes
     are still accepted, and the carried frame is reported as not made."""
@@ -71,6 +88,13 @@ class UsageSettings(BaseModel):
     """The top-bar usage meter: model tokens used this month as a share of this budget."""
 
     monthly_token_budget: int = 5_000_000
+
+
+class ZoraSettings(BaseModel):
+    """Zora, the director chat over Shot Planner Jonathan's plan (plan/2026-11-06e §4.10): off until a person turns it
+    on (D3). On, a scene whose plan Jonathan made is edited by Zora; every other scene keeps the classic chat."""
+
+    enabled: bool = False
 
 
 class Settings(BaseSettings):
@@ -86,6 +110,13 @@ class Settings(BaseSettings):
     openai: OpenAISettings = OpenAISettings()
     usage: UsageSettings = UsageSettings()
     assemble: AssembleSettings = AssembleSettings()
+    google: GoogleSettings = GoogleSettings()
+    video: VideoSettings = VideoSettings()
+    zora: ZoraSettings = ZoraSettings()
+
+    @property
+    def video_available(self) -> bool:
+        return self.video.fake_provider or bool(self.google.api_key.get_secret_value())
 
 
 @lru_cache

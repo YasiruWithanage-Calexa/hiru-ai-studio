@@ -40,7 +40,8 @@ def test_the_default_tiers_are_the_ones_the_engines_use_today():
                    "low": ("gpt-5-nano", "minimal"), "vision": ("gpt-5-mini", ""),
                    "fixer": ("gpt-5", "low"),  # the big rung of Adam's fixer ladder (plan/2026-11-05)
                    "author": ("gpt-5", "medium"), "repair": ("gpt-5", "low"),  # Shot Planner David (plan/2026-11-05e)
-                   "jonathan": ("gpt-6.1-sol", "high")}  # Shot Planner Jonathan (plan/2026-11-06b)
+                   "jonathan": ("gpt-6.1-sol", "high"),  # Shot Planner Jonathan (plan/2026-11-06b)
+                   "zora": ("gpt-6.1-sol", "low")}  # Zora: Jonathan's model at a lower effort (plan/2026-11-06e D7)
     assert all(models_mod.resolve(n, s).fallbacks == () for n in got)  # today's behaviour: no fallback tiers
 
 

@@ -1,0 +1,35 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	read(read)
+	in_code(in_code)
+	conduct(conduct)
+	restore(restore)
+	confirm(confirm)
+	quiet(quiet)
+	edit(edit)
+	settle(settle)
+	reply(reply)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> read;
+	conduct -.-> edit;
+	conduct -.-> quiet;
+	confirm --> reply;
+	edit --> settle;
+	in_code -.-> conduct;
+	in_code -.-> confirm;
+	in_code -.-> edit;
+	in_code -.-> restore;
+	quiet --> reply;
+	read -.-> __end__;
+	read -.-> in_code;
+	restore --> reply;
+	settle --> reply;
+	reply --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

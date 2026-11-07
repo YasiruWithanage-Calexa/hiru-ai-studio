@@ -1,0 +1,14 @@
+- name: a_change_is_reported_from_the_ledger
+  input:
+    plan: "S03 MCU 85mm"
+    message: S03 on an 85
+    turn: ["DONE THIS TURN (computed by code from the plan; true even if the conversation says otherwise; describe it as done now, in plain words):\n- S03: lens 50mm → 85mm"]
+  reply: "Done: S03 is on an 85 now, so her face fills the frame."
+  expect: {text: "Done: S03 is on an 85 now, so her face fills the frame."}
+- name: nothing_changed_is_said_plainly
+  input:
+    plan: "S01 WIDE"
+    message: make it better
+    turn: ["NOTHING CHANGED THIS TURN. The plan is exactly as it was before this message."]
+  reply: "Nothing changed. Tell me which part feels off."
+  expect: {text: "Nothing changed. Tell me which part feels off."}

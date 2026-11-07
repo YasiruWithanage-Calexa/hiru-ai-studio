@@ -33,6 +33,8 @@ class OpenAISettings(BaseModel):
     # An environment change, not a code change.
     model_jonathan: str = "gpt-6.1-sol"
     effort_jonathan: str = "high"
+    # Zora's author (plan/2026-11-06e D7): the `zora` tier is model_jonathan at this effort; the lab sets it.
+    effort_zora: str = "low"
     model_medium: str = "gpt-5-mini"
     effort_medium: str = "low"
     model_low: str = "gpt-5-nano"
@@ -46,6 +48,21 @@ class OpenAISettings(BaseModel):
     @property
     def enabled(self) -> bool:
         return bool(self.api_key.get_secret_value())
+
+
+class ZoraSettings(BaseModel):
+    """Zora, the director chat over Jonathan's plan (plan/2026-11-06e Phase 4): `ZORA__*`. Off until a person turns it
+    on (D3); the numbers are the plan's."""
+
+    enabled: bool = False
+    max_repairs: int = 2  # repair passes after the planner's checks (§4.6 step 4)
+    delivery_passes: int = 1  # re-tasks for declared effects that did not change (§4.6 step 5)
+    reshape_dirty_ratio: float = 0.5  # an edit that rewrites more than this share of the shots is offered as a re-plan
+    reshape_min_shots: int = 3
+    variants_max: int = 3
+    author_tool_calls: int = 6  # the author's read tools, when it has a `with_tools` form (none in v1)
+    transcript_messages: int = 4
+    revisions_kept: int = 30  # undo depth per scene (D4)
 
 
 class SupabaseSettings(BaseModel):
@@ -81,6 +98,7 @@ class AISettings(BaseSettings):
     agent_tools: str = ""
     openai: OpenAISettings = OpenAISettings()
     supabase: SupabaseSettings = SupabaseSettings()
+    zora: ZoraSettings = ZoraSettings()
     # Where traces go (ADR 0008: Langfuse Cloud). Langfuse's own names, as its settings page prints them. Empty keys =
     # no tracing.
     langfuse_public_key: str = ""

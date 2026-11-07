@@ -1,0 +1,16 @@
+id: zora_conductor
+kind: agent
+version: 1
+summary: "Zora's small transcriber (plan/2026-11-06e §4.4): reads the director's message against the addressable plan and answers the lane, the person's explicit changes as operations, and the tasks (effects and scope) the author must do. Writes no craft; code checks it invented nothing."
+status: active
+owner: director
+model: medium
+shape: structured
+phase: zora.conduct
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage]
+writes_dialogue: false

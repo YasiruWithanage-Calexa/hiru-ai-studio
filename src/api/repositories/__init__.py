@@ -234,6 +234,22 @@ class TakesRepo(Protocol):
     async def accept(self, shot_id: UUID, take_id: UUID, user_id: UUID) -> bool: ...
 
 
+class RendersRepo(Protocol):
+    async def create_many(self, rows: list[Row]) -> None: ...
+    async def get(self, production_id: UUID, render_id: UUID) -> Row | None: ...
+    async def list_for_shots(self, shot_ids: list[str]) -> list[Row]: ...  # oldest first
+    async def update_many(self, render_ids: list[str], fields: Row) -> None: ...
+    # Renders of the production that are queued or running (the per-production cap on spending).
+    async def count_active(self, production_id: UUID) -> int: ...
+
+
+class RevisionsRepo(Protocol):
+    """`scene_plan_revisions` (schema v14, plan/2026-11-06e §4.7), read only: the zora_chat function writes them. A
+    database without the table answers [] (the panel then says undo is not available)."""
+
+    async def list(self, scene_id: UUID) -> list[Row]: ...  # oldest first, without the stored plan
+
+
 class UsageRepo(Protocol):
     async def record(self, row: Row) -> None: ...
     async def tokens_since(self, since: datetime) -> int: ...
@@ -270,3 +286,5 @@ class Repos:
     frames: FramesRepo
     prompts: PromptsRepo
     takes: TakesRepo
+    renders: RendersRepo
+    revisions: RevisionsRepo

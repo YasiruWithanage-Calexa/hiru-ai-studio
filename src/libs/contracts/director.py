@@ -175,7 +175,19 @@ class ContinuityBlock(BaseModel):
     shots: list[str] = Field(default_factory=list)  # the shots it is about, "S02"
 
 
-DirectorBlock = Annotated[TextBlock | DisagreementBlock | OptionsBlock | EditNoteBlock | ContinuityBlock,
+class ChangesBlock(BaseModel):
+    """What a Zora turn changed, under its reply (plan/2026-11-06e §4.10, Nova W2): the `ops` event
+    (`{changes, refused, undelivered, nothing_changed, ...}`) and the `gate` event (`{problems, overruns, seams}`),
+    as code computed them from the plan. `revision` is the plan revision the turn saved (0 = none)."""
+
+    kind: Literal["changes"] = "changes"
+    ops: dict[str, Any] = Field(default_factory=dict)
+    gate: dict[str, Any] = Field(default_factory=dict)
+    revision: int = 0
+    suggestions: list[str] = Field(default_factory=list)  # buttons above the composer ("Draft the arc", ...)
+
+
+DirectorBlock = Annotated[TextBlock | DisagreementBlock | OptionsBlock | EditNoteBlock | ContinuityBlock | ChangesBlock,
                           Field(discriminator="kind")]
 
 

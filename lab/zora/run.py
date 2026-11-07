@@ -37,7 +37,8 @@ if __package__ in (None, ""):  # started as a script: put the repo's import root
 
 from contracts.zora import effects as E
 from hiru_ai.core.tokens import tokens_of
-from zora import schema, turn
+from contracts.zora import wire as schema
+from zora import turn
 
 LAB = Path(__file__).resolve().parent
 ROOT = LAB.parents[1]

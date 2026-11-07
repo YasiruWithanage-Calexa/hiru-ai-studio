@@ -1,14 +1,75 @@
-"""The answer shapes the lab holds the conductor and the author to (strict JSON-schema mode: every key present, unused
-ones null), and the conversion back to Zora's operations (nulls dropped, a structured `ir.set` value parsed).
+"""The answer shapes Zora holds its conductor and its author to (strict JSON-schema mode: every key present, unused
+ones null), and the conversion back to Zora's operations (nulls dropped, a structured `ir.set` value parsed). Written
+for the lab (plan/2026-11-06e Phase 3) and moved here for the agents (Phase 4), so the lab and the product send the same
+bytes.
 
 In strict mode a model cannot be given an open object, so an operation is one flat object with every field any
-operation uses; code keeps the ones its op reads (`contracts.zora.ops`)."""
+operation uses; code keeps the ones its op reads (`contracts.zora.ops`). `ConductorAnswer` and `AuthorAnswer` are what
+the agents return after the wire: plain lists of raw objects, converted with `to_op` by the caller.
+
+Pure standard library + pydantic (the `contracts` rule).
+"""
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, Literal
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from contracts.zora import ops as O
+
+Lane = Literal["chat", "clarify", "edit", "craft", "shape", "options", "translate", "cannot"]
+LANES: tuple[str, ...] = ("chat", "clarify", "edit", "craft", "shape", "options", "translate", "cannot")
+# Lanes that may change nothing (W6): every other lane with no ops and no tasks is re-asked once.
+QUIET_LANES: frozenset[str] = frozenset({"chat", "clarify", "options", "translate", "cannot"})
+
+
+class _Loose(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+
+class ConductorTask(_Loose):
+    writes: list[str] = []
+    scope: list[int] = []  # shot numbers AFTER the turn's ops; [] = the whole scene
+    instruction: str = ""
+    may: list[str] = []  # further effects it may write (code's tasks; the conductor's wire has no such field)
+
+
+class Cannot(_Loose):
+    request: str = ""
+    reason: str = ""
+    route: str = ""
+
+
+class Translate(_Loose):
+    to: str = ""
+
+
+class ConductorAnswer(_Loose):
+    lane: Lane = "clarify"
+    confidence: float = 0.0
+    ops: list[dict[str, Any]] = []
+    tasks: list[ConductorTask] = []
+    variants: int = 0
+    translate: Translate | None = None
+    cannot: Cannot | None = None
+    memory: str = ""
+
+    def does_nothing(self) -> bool:
+        """W6: a lane that should write and carries neither an op nor a task."""
+        return self.lane not in QUIET_LANES and not self.ops and not self.tasks
+
+
+class Variant(_Loose):
+    label: str = ""
+    ops: list[dict[str, Any]] = []
+
+
+class AuthorAnswer(_Loose):
+    notes: str = ""
+    ops: list[dict[str, Any]] = []
+    asks: list[str] = []
+    variants: list[Variant] = Field(default_factory=list)
 
 _STR = {"type": ["string", "null"]}
 _INT = {"type": ["integer", "null"]}

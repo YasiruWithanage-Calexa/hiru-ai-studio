@@ -1,0 +1,23 @@
+# Scripted: the author gets the turn's tasks (what it may write, on which shots, what it must change) and answers
+# operations. LIVE, a case holds it only to what any good answer shares.
+- name: a_colder_approach_rewrites_the_approach
+  input:
+    plan: "Treatment: approach: Warm and close ..."
+    tasks: [{instruction: "make the approach colder", allowed: [treatment.approach, shot.lens], "on": any shot, must: [treatment.approach]}]
+  reply:
+    notes: "The approach is now cold and observational."
+    ops: [{op: treatment.set, field: approach, value: "Cold, observed from a distance; long lenses."}]
+    asks: []
+    variants: []
+  expect: {notes: "The approach is now cold and observational."}
+- name: options_come_as_variants
+  input:
+    plan: "S01 WIDE ..."
+    tasks: [{instruction: "two openings", allowed: [shot.size], "on": "S01, S02", must: [shot.size]}]
+    variants: 2
+  reply:
+    notes: "Two openings."
+    ops: []
+    asks: []
+    variants: [{label: "Close first", ops: [{op: set, shot: S01, field: size, value: CU}]}, {label: "Wide first", ops: []}]
+  expect: {notes: "Two openings."}

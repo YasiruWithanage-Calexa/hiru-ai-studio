@@ -1,0 +1,12 @@
+id: zora_chat
+kind: system
+version: 1
+summary: "Zora: one streamed director turn over a scene's stored Jonathan plan. A small conductor transcribes the person's changes as operations and tasks, code applies them and works out what went stale, ONE author call does the craft, the planner's own checks gate it (only new faults count, at most two repairs), and the reply is written from a ledger of exactly what changed."
+status: active
+owner: director
+# A turn is a synchronous stream (server-sent events), not a job: it serves no JobKind.
+job_kind: ""
+agents: [zora_conductor, zora_author, zora_reply]
+steps: [zora_kernel, zora_deps, zora_board, zora_deliver, zora_ledger, zora_guard, zora_save]
+panels: []
+tools: []

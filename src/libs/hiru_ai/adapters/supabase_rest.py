@@ -302,6 +302,26 @@ class SupabaseSplit:
         self.rest.patch("episodes", {"id": f"eq.{episode_id}"}, {"status": status})
 
 
+class SupabaseRevisions:
+    """`RevisionStore`: `scene_plan_revisions` (schema v14, plan/2026-11-06e §4.7). Before the table exists every call
+    raises, and the director chat runs without undo."""
+
+    def __init__(self, rest: Rest) -> None:
+        self.rest = rest
+
+    def revisions(self, scene_id: UUID | str) -> list[Row]:
+        return self.rest.select("scene_plan_revisions", {"scene_id": f"eq.{scene_id}", "select": "*",
+                                                         "order": "revision"})
+
+    def add_revision(self, row: Row) -> None:
+        self.rest.insert("scene_plan_revisions", [row])
+
+    def drop_revisions(self, scene_id: UUID | str, numbers: list[int]) -> None:
+        if numbers:
+            self.rest.delete("scene_plan_revisions", {"scene_id": f"eq.{scene_id}",
+                                                      "revision": f"in.({','.join(str(n) for n in numbers)})"})
+
+
 class SupabaseDirector:
     """`DirectorStore`: the scene as the director reads it, the board and the thread, the pending action, the memory."""
 
@@ -689,7 +709,7 @@ def _ports(rest: Rest, jobs: Any = None) -> Ports:
     files = SupabaseFiles(rest)
     return Ports(scenes=SupabaseScenes(rest), canon=SupabaseCanon(rest), structure=SupabaseStructure(rest),
                  frames=SupabaseFrames(rest), split=SupabaseSplit(rest), producer=SupabaseProducer(rest),
-                 director=SupabaseDirector(rest),
+                 director=SupabaseDirector(rest), revisions=SupabaseRevisions(rest),
                  docs=SupabaseDocs(rest, files),
                  memory=SupabaseMemory(rest),
                  search=SupabaseSearch(rest),

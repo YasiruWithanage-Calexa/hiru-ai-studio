@@ -90,6 +90,12 @@ class StoredPlan(_Model):
     # side: `{"planner", "shots": [...]}`.
     previous: dict[str, Any] = Field(default_factory=dict)
     report: dict[str, Any] = Field(default_factory=dict)
+    # What a person decided on this plan in the director chat (plan/2026-11-06e §4.7): `{"locked": [paths], "settled":
+    # [paths]}`. A lock is "not this" for any model; a re-plan carries it over. The chat writes it, never a model.
+    person: dict[str, list[str]] = Field(default_factory=dict)
+    # The treatment a person pinned for "Plan shots from this treatment" (plan/2026-11-06e §4.9): the planner prints
+    # it as fixed and its check reports a plan that drifts from it. Empty = none.
+    pinned: dict[str, Any] = Field(default_factory=dict)
 
     def is_removed(self, plan: JonathanWire, added: AddedW) -> bool:
         return any(r.matches(plan, added) for r in self.removed)

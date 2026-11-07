@@ -743,6 +743,44 @@ class SupabaseTakes(_Base):
         return bool(_rows(res.data))
 
 
+class SupabaseRevisions(_Base):
+    async def list(self, scene_id: UUID) -> list[Row]:
+        try:
+            res = (await self.db.table("scene_plan_revisions")
+                   .select("revision,kind,restores,made_by,message_id,created_at")
+                   .eq("scene_id", str(scene_id)).order("revision").execute())
+        except Exception:  # a database not yet on schema v14 has no such table: no undo, never an error
+            return []
+        return _rows(res.data)
+
+
+class SupabaseRenders(_Base):
+    async def create_many(self, rows: list[Row]) -> None:
+        if rows:
+            await self.db.table("video_renders").insert(rows).execute()
+
+    async def get(self, production_id: UUID, render_id: UUID) -> Row | None:
+        res = (await self.db.table("video_renders").select("*").eq("id", str(render_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def list_for_shots(self, shot_ids: list[str]) -> list[Row]:
+        if not shot_ids:
+            return []
+        res = (await self.db.table("video_renders").select("*").in_("shot_id", shot_ids)
+               .order("created_at").execute())
+        return _rows(res.data)
+
+    async def update_many(self, render_ids: list[str], fields: Row) -> None:
+        if render_ids:
+            await self.db.table("video_renders").update(fields).in_("id", render_ids).execute()
+
+    async def count_active(self, production_id: UUID) -> int:
+        res = (await self.db.table("video_renders").select("id", count="exact")  # type: ignore[arg-type]
+               .eq("production_id", str(production_id)).in_("status", ["queued", "running"]).execute())
+        return int(res.count or 0)
+
+
 async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
     db = await acreate_client(url, service_role_key)
     # Count REST calls per API request (see api/observability.py).
@@ -775,4 +813,6 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         frames=SupabaseFrames(db),
         prompts=SupabasePrompts(db),
         takes=SupabaseTakes(db),
+        renders=SupabaseRenders(db),
+        revisions=SupabaseRevisions(db),
     )

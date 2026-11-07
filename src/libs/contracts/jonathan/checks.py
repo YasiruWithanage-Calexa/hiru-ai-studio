@@ -572,3 +572,32 @@ def _holding(scene: SceneS, plan: JonathanWire) -> list[Problem]:
                 break  # one finding per verb kind and block
         last = named or last
     return unique(out)
+
+
+# ── a treatment a person pinned (plan/2026-11-06e §4.9: "Plan shots from this treatment") ───────────────────────────
+
+PINNED_FIELDS = ("logline", "approach", "geography", "key_image")
+
+
+def treatment_drift(plan: JonathanWire, pinned: dict[str, Any] | None) -> list[Problem]:
+    """A plan whose treatment, arc or colour script drifts from the one a person pinned: each field once, as the
+    sentence the reviser is shown. No pin, no problem. The person's advice list is the planner's own and is not held."""
+    if not pinned:
+        return []
+    out = []
+    t = plan.treatment
+    for f in PINNED_FIELDS:
+        want = " ".join(str(pinned.get(f) or "").split())
+        if want and " ".join(getattr(t, f).split()) != want:
+            out.append(Problem(code="treatment", sentence=f"The treatment's {f.replace('_', ' ')} is the person's, "
+                               f"pinned: write it exactly as given: \"{want}\".", key=f"treatment:{f}"))
+    arc = [(norm(str(a.get("beat") or "")), int((a.get("blocks") or {}).get("first", -1)),
+            int((a.get("blocks") or {}).get("last", -1))) for a in pinned.get("arc") or [] if isinstance(a, dict)]
+    if arc and arc != [(norm(a.beat), a.blocks.first, a.blocks.last) for a in t.arc]:
+        out.append(Problem(code="treatment", sentence="The arc is the person's, pinned: keep its beats and their "
+                           "blocks exactly as given; plan the sequences and shots from it.", key="treatment:arc"))
+    colours = [str(c.get("sequence") or "") for c in pinned.get("colour_script") or [] if isinstance(c, dict)]
+    if colours and colours != [c.sequence for c in t.colour_script]:
+        out.append(Problem(code="treatment", sentence="The colour script is the person's, pinned: keep one entry per "
+                           f"sequence, {', '.join(colours)}, as given.", key="treatment:colour"))
+    return out

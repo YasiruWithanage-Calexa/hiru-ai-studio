@@ -31,7 +31,7 @@ PLANNERS = ("ad" + "am", "da" + "vid", "jona" + "than")
 OLD_CHAT = ("director_chat", "scene_kernel")  # the old chat: Zora copies its guards, never imports them
 NOT_FROM_A_PART = ("api", "hiru_ai.adapters", "hiru_ai.cli", *(f"contracts.{p}" for p in PLANNERS),
                    *(f"hiru_ai.{layer}.{p}" for p in PLANNERS for layer in mf.LAYERS.values()))
-STDLIB = {"__future__", "re", "json", "typing", "dataclasses", "collections", "functools"}
+STDLIB = {"__future__", "re", "json", "typing", "dataclasses", "collections", "functools", "uuid"}
 
 
 def imported(source: str) -> set[str]:

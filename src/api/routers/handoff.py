@@ -21,6 +21,7 @@ from uuid import UUID, uuid4
 from fastapi import APIRouter, Depends, File, HTTPException, Response, UploadFile, status
 from pydantic import BaseModel, Field
 
+from api.config import get_settings
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
@@ -35,6 +36,7 @@ from api.routers.production import (
 from api.services import media_links
 from api.services.assemble import Assembler, get_assembler
 from api.services.production import ShotState, camera_checks
+from api.services.renders import RenderView, expire_stale, render_view
 from contracts.handoff import (
     DEFAULT_BANNED_TERMS,
     MAX_TAKE_BYTES,
@@ -69,6 +71,11 @@ class TakeView(BaseModel):
     duration_s: float | None
     duration_note: str  # "" or "7.2 s; the shot is 8 s"
     created_at: str
+    origin: str = "upload"  # upload (from Flow) | generated (made in Hiru)
+    render_id: UUID | None = None
+    engine: str | None = None  # generated takes: the model; with the settings in words and the seed (again / vary)
+    settings_text: str = ""
+    seed: int | None = None
 
 
 class HandoffView(BaseModel):
@@ -85,6 +92,8 @@ class HandoffView(BaseModel):
     next_carries: bool  # accepting a take here makes the next shot's first frame
     takes: list[TakeView]
     accepted_take_id: UUID | None
+    renders: list[RenderView] = Field(default_factory=list)  # queued, running, failed or refused (a made one is a take)
+    video_available: bool = False  # whether Generate can be pressed (a key, or the fake provider)
 
 
 class RejectTake(BaseModel):
@@ -118,7 +127,7 @@ def handoff_checks(ld: Loaded, st: ShotState) -> list[Check]:
                         banned_terms=[*DEFAULT_BANNED_TERMS, *_settings(ld).banned_terms])
 
 
-def _take_view(take: Row, index: int, shot_seconds: int) -> TakeView:
+def _take_view(take: Row, index: int, shot_seconds: int, render: Row | None = None) -> TakeView:
     duration = take.get("duration_s")
     note = ""
     if duration is not None and abs(float(duration) - shot_seconds) > LENGTH_TOLERANCE_S:
@@ -127,13 +136,32 @@ def _take_view(take: Row, index: int, shot_seconds: int) -> TakeView:
                     status=TakeStatus(take["status"]), reason=take.get("reason"),
                     url=media_links.url("takes", str(take["storage_path"])),
                     duration_s=float(duration) if duration is not None else None, duration_note=note,
-                    created_at=str(take["created_at"]))
+                    created_at=str(take["created_at"]), origin=str(take.get("origin") or "upload"),
+                    render_id=take.get("render_id"), engine=render["engine"] if render else None,
+                    settings_text=render_view(render).settings_text if render else "",
+                    seed=render.get("seed") if render else None)
 
 
-async def _view(repos: Repos, access: ProductionAccess, shot_id: UUID) -> HandoffView:
+async def _probe_generated(repos: Repos, assembler: Assembler, takes: list[Row]) -> None:
+    """A generated take is stored without its length (the function has no ffmpeg): probe it once, on first sight."""
+    for take in takes:
+        if take.get("origin") == "generated" and take.get("duration_s") is None:
+            probe = await assembler.probe("takes", str(take["storage_path"]))
+            if probe is not None and probe.duration_s > 0:
+                take["duration_s"] = probe.duration_s
+                await repos.takes.update(UUID(str(take["id"])), {"duration_s": probe.duration_s})
+
+
+async def _view(repos: Repos, access: ProductionAccess, shot_id: UUID,
+                assembler: Assembler | None = None) -> HandoffView:
     ld, st = await load_shot(repos, access, shot_id)
     view = shot_view(ld, st, camera_checks(ld.states)[st.id])
     takes = await repos.takes.list_for_shots([st.id])
+    settings = get_settings()
+    renders = await expire_stale(repos, settings, await repos.renders.list_for_shots([st.id]))
+    if assembler is not None:
+        await _probe_generated(repos, assembler, takes)
+    by_render = {str(r["id"]): r for r in renders}
     checks = handoff_checks(ld, st)
     previous, following = _neighbour(ld, st, -1), _neighbour(ld, st, 1)
     carried = st.row.get("frame_strategy") == FrameStrategy.CARRY_LAST_FRAME
@@ -145,8 +173,11 @@ async def _view(repos: Repos, access: ProductionAccess, shot_id: UUID) -> Handof
         checks=checks, ready=bool(view.prompt) and not (view.prompt and view.prompt.stale) and not blocking(checks),
         opening_frame=opening, carried_from=previous.code if carried and previous else "",
         next_carries=bool(following and following.row.get("frame_strategy") == FrameStrategy.CARRY_LAST_FRAME),
-        takes=[_take_view(t, i, int(st.row["duration_s"])) for i, t in enumerate(takes, start=1)],
-        accepted_take_id=accepted["id"] if accepted else None)
+        takes=[_take_view(t, i, int(st.row["duration_s"]), by_render.get(str(t.get("render_id") or "")))
+               for i, t in enumerate(takes, start=1)],
+        accepted_take_id=accepted["id"] if accepted else None,
+        renders=[render_view(r) for r in renders if r["status"] != "done"],
+        video_available=settings.video_available)
 
 
 async def _audit(repos: Repos, access: ProductionAccess, action: str, entity_id: str, diff: Row) -> None:
@@ -158,8 +189,9 @@ async def _audit(repos: Repos, access: ProductionAccess, action: str, entity_id:
 
 
 @router.get("/shots/{shot_id}/handoff", response_model=HandoffView)
-async def get_handoff(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep) -> HandoffView:
-    return await _view(repos, access, shot_id)
+async def get_handoff(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep,
+                      assembler: AssemblerDep) -> HandoffView:
+    return await _view(repos, access, shot_id, assembler)
 
 
 # ── takes ──────────────────────────────────────────────────────────────────────────────────
