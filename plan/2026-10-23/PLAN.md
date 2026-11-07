@@ -28,7 +28,8 @@
 **Non-goals (for now)**
 - In-app video generation. Handoff is "Copy for Flow" plus takes upload (see open question Q1).
 - Billing or credits. The UI shows only **monthly usage %** (§10). No prices in any API response
-  meant for the UI.
+  meant for the UI. **Changed 2026-11-06 (plan/2026-11-06d):** a scene's total cost (`GET .../scenes/{id}/cost`) for
+  `VIEW_COSTS` holders, and an admin price list; still no credits, no per-video or per-prompt prices.
 - Localising the UI. Only spoken lines are in Sinhala.
 
 ---
@@ -380,7 +381,8 @@ All under `/v1`. Long work returns `{job_id}`; progress through Realtime on `job
 - **No storage-provider URL ever reaches a client.** Files go through encrypted `/files/{ticket}`.
 - Timeline numbers (shot edges, dialogue spoken length, overruns) are computed by
   `contracts.timing` on the server, so the Director and Production panels agree.
-- `/usage` returns a percentage only.
+- `/usage` returns a percentage only. **Changed 2026-11-06 (plan/2026-11-06d):** one scene's total cost is shown, to people
+  who hold `VIEW_COSTS`, beside "Recommend settings for all shots"; nothing else shows money, and `/usage` is unchanged.
 
 ---
 
@@ -473,6 +475,7 @@ Decided 2026-10-23:
 | # | Question | Decision |
 |---|---|---|
 | Q1 | In-app video generation (Veo through Google's API) | Out of scope until after Phase 5; handoff stays "Copy for Flow" + takes upload. Ask again then. **Asked again 2026-11-06 and answered yes** (plan/2026-11-06c): a person can also generate a take in Hiru with Gemini Omni Flash (default) or Veo 3.1. Google models are allowed for rendering a take only; every prompt, check and agent stays on OpenAI. Upload stays. |
+| Q-cost | A scene's cost in the UI | **Asked and answered yes 2026-11-06** (plan/2026-11-06d): one figure per scene for producer, director and admin; USD; an editable dated price list; video actual + 10%, images + 5%, text calls at actual, + 20% retry on the to-finish part. |
 | Q2 | Roles | Production roles producer, director, writer, production, reviewer, plus a workspace **admin** who alone manages members, settings and orientation and has every other permission. Producers do **not** manage members, settings or orientation. |
 | Q3 | Fixed 8 s shots or the 4/6/8 ladder? | Build the ladder; a production setting can force 8 s. |
 | Q4 | Is 10 s renderable on current Veo 3.1? | Keep 10 s off until verified. |

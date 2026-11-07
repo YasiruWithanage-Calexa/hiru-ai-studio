@@ -782,6 +782,75 @@ class SupabaseRenders(_Base):
         return int(res.count or 0)
 
 
+_USAGE_COLUMNS = "id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at"
+
+
+class SupabaseCosts(_Base):
+    async def prices(self) -> list[Row]:
+        try:
+            res = await self.db.table("prices").select("*").order("valid_from", desc=True).execute()
+        except Exception:  # the table arrives with schema v17: until then the prices in code apply
+            _logger.warning("prices unavailable", exc_info=True)
+            return []
+        return _rows(res.data)
+
+    async def add_price(self, row: Row) -> Row:
+        res = await self.db.table("prices").insert(row).execute()
+        return _one(res.data)
+
+    async def scene_usage(self, production_id: UUID, scene_id: UUID) -> list[Row]:
+        found: dict[Any, Row] = {}
+        try:
+            res = await (self.db.table("token_usage").select(_USAGE_COLUMNS).eq("scene_id", str(scene_id))
+                         .execute())
+            found.update({r["id"]: r for r in _rows(res.data)})
+        except Exception:  # no scene_id column yet (before schema v17): the jobs below still count
+            _logger.warning("token_usage.scene_id unavailable", exc_info=True)
+        jobs = await (self.db.table("jobs").select("id").eq("production_id", str(production_id))
+                      .filter("request->>scene_id", "eq", str(scene_id)).execute())
+        job_ids = [str(j["id"]) for j in _rows(jobs.data)]
+        if job_ids:
+            query = self.db.table("token_usage").select(_USAGE_COLUMNS).in_("job_id", job_ids)
+            try:
+                res = await query.is_("scene_id", "null").execute()
+            except Exception:
+                res = await query.execute()
+            found.update({r["id"]: r for r in _rows(res.data)})
+        return list(found.values())
+
+    async def unassigned_usage(self, production_id: UUID, prefixes: tuple[str, ...]) -> list[Row]:
+        phases = ",".join(f"phase.like.{p}*" for p in prefixes)
+        try:
+            res = await (self.db.table("token_usage").select(_USAGE_COLUMNS).eq("production_id", str(production_id))
+                         .is_("scene_id", "null").or_(phases).execute())
+        except Exception:
+            _logger.warning("token_usage.scene_id unavailable", exc_info=True)
+            res = await (self.db.table("token_usage").select(_USAGE_COLUMNS)
+                         .eq("production_id", str(production_id)).or_(phases).execute())
+        rows = _rows(res.data)
+        job_ids = sorted({str(r["job_id"]) for r in rows if r.get("job_id")})
+        if not job_ids:
+            return rows
+        jobs = await (self.db.table("jobs").select("id,request").in_("id", job_ids).execute())
+        scoped = {str(j["id"]) for j in _rows(jobs.data) if (j.get("request") or {}).get("scene_id")}
+        return [r for r in rows if str(r.get("job_id") or "") not in scoped]
+
+    async def recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]:
+        query = self.db.table("token_usage").select(_USAGE_COLUMNS).like("phase", f"{prefix}*")
+        if production_id is not None:
+            query = query.eq("production_id", str(production_id))
+        res = await query.order("created_at", desc=True).limit(limit).execute()
+        return _rows(res.data)
+
+    async def lines_by_scene(self, production_id: UUID) -> dict[str, int]:
+        res = await (self.db.table("dialogue_lines").select("scene_id").eq("production_id", str(production_id))
+                     .execute())
+        counts: dict[str, int] = {}
+        for r in _rows(res.data):
+            counts[str(r["scene_id"])] = counts.get(str(r["scene_id"]), 0) + 1
+        return counts
+
+
 async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
     db = await acreate_client(url, service_role_key)
     # Count REST calls per API request (see api/observability.py).
@@ -816,4 +885,5 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         takes=SupabaseTakes(db),
         renders=SupabaseRenders(db),
         revisions=SupabaseRevisions(db),
+        costs=SupabaseCosts(db),
     )

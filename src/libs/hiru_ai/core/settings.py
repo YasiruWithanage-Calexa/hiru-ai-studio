@@ -91,6 +91,9 @@ class AISettings(BaseSettings):
     # tool_result_tokens: schema v10; reasoning_tokens: schema v12). Off until the database has them, so a row never
     # names a column it lacks.
     usage_detail: bool = False
+    # Write `token_usage.scene_id` (schema v17, plan/2026-11-06d): the scene a call was for, so a scene's cost counts
+    # the director chat's work on it. Off until `Database/upgrade_v16_to_v17.sql` has been run, for the same reason.
+    usage_scene: bool = False
     # How Shot Planner Adam plans a scene: `staged` (five gpt-5 stages and four critics, plan/2026-11-04b) or `take`
     # (one gpt-5 call for the plan and a ladder of small-model fixes, plan/2026-11-05). `staged` until a person has
     # judged the two side by side (plan/2026-11-05 §7) and chosen.

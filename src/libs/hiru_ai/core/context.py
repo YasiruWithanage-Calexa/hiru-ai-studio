@@ -71,6 +71,9 @@ class RunContext:
     # Add the per-component columns (component, component_version, prompt_hash, tool_calls, tool_result_tokens) to the
     # `token_usage` rows of this run. Off until the database is on schema v10; evals turn it on for their own sink.
     usage_detail: bool = False
+    # Add `scene_id` (the scene in scope, if any) to the `token_usage` rows of this run (schema v17, plan/2026-11-06d).
+    # Off until the database has the column, for the same reason as `usage_detail`.
+    usage_scene: bool = False
     # One event per tool call, appended by `tooling.from_part`; scripted evals and the review loop read them back.
     tool_events: list[ToolEvent] = field(default_factory=list, compare=False, repr=False)
     # The passages a search tool handed the model, as `{chunk_id, label}`: the reply cites them like any other search.
@@ -94,10 +97,13 @@ class RunContext:
 
     def usage_row(self, usage: UsageRow) -> UsageRow:
         """A `token_usage` row with the run's ids added (the table's own columns)."""
-        return {**usage,
-                "job_id": str(self.job_id) if self.job_id else None,
-                "production_id": str(self.production_id) if self.production_id else None,
-                "actor_user_id": str(self.actor_user_id) if self.actor_user_id else None}
+        row = {**usage,
+               "job_id": str(self.job_id) if self.job_id else None,
+               "production_id": str(self.production_id) if self.production_id else None,
+               "actor_user_id": str(self.actor_user_id) if self.actor_user_id else None}
+        if self.usage_scene and self.scene_id:
+            row["scene_id"] = str(self.scene_id)
+        return row
 
     def sink(self) -> UsageSink | None:
         """The usage sink with the run's ids added to every row."""

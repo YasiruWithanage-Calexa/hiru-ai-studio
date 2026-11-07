@@ -67,6 +67,7 @@ MAY_NAME_IT = {
     "tests/zora/test_api.py", "src/api/routers/zora.py",  # "Plan shots from this treatment" is a Jonathan job
     "Database/schema_v14.sql",  # a whole schema, so it holds v13's Jonathan column (plan/2026-11-06c)
     "Database/schema_v15.sql", "Database/schema_v16.sql",  # whole schemas: v14 + first frames, + the reader
+    "Database/schema_v17.sql",  # + a scene's cost
 }
 
 

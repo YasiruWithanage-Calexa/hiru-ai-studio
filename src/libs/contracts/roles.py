@@ -41,6 +41,7 @@ class Permission(StrEnum):
     HANDOFF = "handoff"  # copy / download bundle, upload takes
     RENDER_VIDEO = "render_video"  # make a take with Omni / Veo, and add a shot's own reference pictures (spends money)
     APPROVE_SCENE = "approve_scene"  # lock a scene for production
+    VIEW_COSTS = "view_costs"  # a scene's cost in USD (plan/2026-11-06d): the roles that can spend
 
 
 P = Permission
@@ -50,12 +51,12 @@ PRODUCTION_ROLE_PERMISSIONS: dict[ProductionRole, frozenset[Permission]] = {
     ProductionRole.PRODUCER: _EVERYONE
     | {
         P.MANAGE_DOCUMENTS, P.ANSWER_QUESTIONS, P.EDIT_SCRIPT, P.EDIT_CANON,
-        P.DIRECT, P.GENERATE, P.HANDOFF, P.APPROVE_SCENE, P.RENDER_VIDEO,
+        P.DIRECT, P.GENERATE, P.HANDOFF, P.APPROVE_SCENE, P.RENDER_VIDEO, P.VIEW_COSTS,
     },
     ProductionRole.DIRECTOR: _EVERYONE
     | {
         P.MANAGE_DOCUMENTS, P.ANSWER_QUESTIONS, P.EDIT_SCRIPT, P.EDIT_CANON,
-        P.DIRECT, P.GENERATE, P.HANDOFF, P.APPROVE_SCENE, P.RENDER_VIDEO,
+        P.DIRECT, P.GENERATE, P.HANDOFF, P.APPROVE_SCENE, P.RENDER_VIDEO, P.VIEW_COSTS,
     },
     ProductionRole.WRITER: _EVERYONE | {P.ANSWER_QUESTIONS, P.EDIT_SCRIPT},
     ProductionRole.PRODUCTION: _EVERYONE | {P.GENERATE, P.HANDOFF},

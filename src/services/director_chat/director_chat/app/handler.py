@@ -90,7 +90,10 @@ def handle(request: Any) -> Any:
     store = Store(Rest(config.supabase_url, config.service_role_key))
 
     def on_usage(row: dict[str, Any]) -> None:
-        store.record_usage({**row, "production_id": str(req.production_id), "actor_user_id": str(req.actor_user_id)})
+        scene = {"scene_id": str(req.scene_id)} if req.scene_id and os.environ.get("USAGE_SCENE", "").lower() in (
+            "1", "true", "yes") else {}  # schema v17 (plan/2026-11-06d): the scene this answer was about
+        store.record_usage({**row, "production_id": str(req.production_id), "actor_user_id": str(req.actor_user_id),
+                            **scene})
 
     llm = LLM(config, on_usage)
     return Response(stream_with_context(stream(req, store, llm)), mimetype="text/event-stream",

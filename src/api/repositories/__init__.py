@@ -258,6 +258,26 @@ class UsageRepo(Protocol):
     async def set_budget(self, month: str, tokens: int, user_id: UUID) -> None: ...
 
 
+class CostsRepo(Protocol):
+    """What a scene's cost is worked out from (plan/2026-11-06d). Money is never stored: these return metered usage and
+    the dated price list, and `contracts.costs` does the arithmetic."""
+
+    # Every price row, newest first. [] when the table is missing (a database before schema v17).
+    async def prices(self) -> list[Row]: ...
+    async def add_price(self, row: Row) -> Row: ...
+    # `token_usage` rows for one scene: those that name it, and (older rows, legacy engines) those of a job whose
+    # request
+    # named exactly that scene.
+    async def scene_usage(self, production_id: UUID, scene_id: UUID) -> list[Row]: ...
+    # Rows of a production tied to no scene whose phase starts with one of `prefixes`: whole-episode work that every
+    # scene shares (a job that named a scene is not here).
+    async def unassigned_usage(self, production_id: UUID, prefixes: tuple[str, ...]) -> list[Row]: ...
+    # The newest rows of a phase prefix, newest first; `production_id` None = across productions.
+    async def recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]: ...
+    # Dialogue lines per scene of the production (scene id -> count).
+    async def lines_by_scene(self, production_id: UUID) -> dict[str, int]: ...
+
+
 @dataclass
 class Repos:
     profiles: ProfilesRepo
@@ -289,3 +309,4 @@ class Repos:
     takes: TakesRepo
     renders: RendersRepo
     revisions: RevisionsRepo
+    costs: CostsRepo

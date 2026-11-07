@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v16.sql` | **The newest schema** (everything in v15 plus the document reader, plan/2026-11-06f: `documents.reading_path` / `read_from` and `scenes.read_from` / `read_confirmed_by` / `read_confirmed_at`), whole. Run it once on an empty project. |
+| `schema_v17.sql` | **The newest schema** (everything in v16 plus a scene's production cost, plan/2026-11-06d: the `prices` table with its seed and `token_usage.scene_id`), whole. Run it once on an empty project. |
+| `upgrade_v16_to_v17.sql` | Moves a project on v16 to v17 (the `prices` table and its seed, `token_usage.scene_id` with its index, and a backfill of old rows from the job that named one scene). Run once, only on such a project. Safe to re-run. Then set `USAGE_SCENE=true`. **Not run yet: applying it is a person's decision.** |
+| `schema_v16.sql` | Kept for reference (the previous schema) (everything in v15 plus the document reader, plan/2026-11-06f: `documents.reading_path` / `read_from` and `scenes.read_from` / `read_confirmed_by` / `read_confirmed_at`), whole. Run it once on an empty project. |
 | `upgrade_v15_to_v16.sql` | Moves a project on v15 to v16 (two columns on `documents`, three and an index on `scenes`). Run once, only on such a project, before `READER__ENABLED=true`. Safe to re-run. |
 | `schema_v15.sql` | Kept for reference (the previous schema) (everything in v14 plus draft and final first frames: `first_frames.stage` and `first_frames.draft_id`, one accepted frame per shot AND stage), whole. Run it once on an empty project. |
 | `upgrade_v14_to_v15.sql` | Moves a project on v14 to v15 (two columns, a constraint and two indexes on `first_frames`). Run once, only on such a project. Until it is run, no first frame can be asked for. **Not run yet: applying it is a person's decision.** |

@@ -222,6 +222,9 @@ def _render(store: Any, cfg: Config, row: Row, *, job_id: str, actor: str, resum
              "aspect_ratio": spec.aspect_ratio, "seconds": spec.duration_s, "refs": len(built["references"]),
              "latency_ms": _ms(started), "bytes": len(data), "prompt_tokens": int(outcome.get("prompt_tokens") or 0),
              "completion_tokens": int(outcome.get("completion_tokens") or 0), "provider_seconds": seconds,
+             # What a scene's cost prices (plan/2026-11-06d): seconds the provider rendered x takes this row made. A
+             # failed or refused render carries `billed` only once the Phase 0 probe has shown the provider bills it.
+             "seconds_rendered": seconds or spec.duration_s, "takes_made": 1,
              "resumed": bool(resume_id), "mime": mime}
     store.finish_render(rid, {"status": "done", "take_id": take_id, "provider_id": outcome.get("provider_id") or None,
                               "usage": usage, "error": None, "refusal": None,

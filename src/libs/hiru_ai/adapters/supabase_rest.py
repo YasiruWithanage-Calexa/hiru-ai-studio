@@ -735,7 +735,8 @@ def build_context(payload: Any, *, jobs: Any, settings: AISettings | None = None
     rest = Rest(settings.supabase.url, settings.supabase.service_role_key.get_secret_value(), client)
     ctx = RunContext(production_id=payload.production_id, actor_user_id=payload.actor_user_id,
                      job_id=getattr(payload, "job_id", None),
-                     usage_sink=usage_sink(rest), ports=_ports(rest, jobs), usage_detail=settings.usage_detail)
+                     usage_sink=usage_sink(rest), ports=_ports(rest, jobs), usage_detail=settings.usage_detail,
+                     usage_scene=settings.usage_scene)
     if not images:
         return ctx
     from hiru_ai.adapters import images as painter

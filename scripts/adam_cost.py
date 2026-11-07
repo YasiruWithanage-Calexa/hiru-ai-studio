@@ -6,9 +6,11 @@ calls per agent and per scene, for the live runner and the spike to print.
     ... run a scene with ctx ...
     print(table(rows))
 
-Costs appear here and in `IMPLEMENTED.md` only: the interface never shows a credit or a cost (CLAUDE.md). The prices are
-OpenAI's list prices on the standard tier, per million tokens, as plan/2026-11-05 §1 used them; a model whose name is
-not listed is priced as the nearest listed one that its name starts with, else as gpt-5. An output token includes the
+These are ACTUAL costs, no margin: the prices are the ones in `contracts.costs.SEED_PRICES` (plan/2026-11-06d: one
+source of truth, also what the database seeds), OpenAI's list prices per million tokens; a model whose name is not
+listed is priced as the nearest listed one that its name starts with, else as gpt-5 (the product's scene cost reports a
+missing price instead). A scene's cost in the interface is `contracts.costs` + `api/services/costs.py`, for people who
+can spend only. An output token includes the
 hidden reasoning (a row's `reasoning_tokens` says how much), so cost is never read from the visible answer.
 """
 from __future__ import annotations
@@ -16,12 +18,13 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Any
 
+from contracts.costs import MICROS_PER_USD, SEED_PRICES
+
 # model prefix -> (input, cached input, output), US dollars per million tokens. Longest prefix wins.
 PRICES: dict[str, tuple[float, float, float]] = {
-    "gpt-5-nano": (0.05, 0.005, 0.40),
-    "gpt-5-mini": (0.25, 0.025, 2.00),
-    "gpt-5": (1.25, 0.125, 10.00),
-}
+    p.model_prefix: (p.input_micros / MICROS_PER_USD, p.cached_input_micros / MICROS_PER_USD,
+                     p.output_micros / MICROS_PER_USD)
+    for p in SEED_PRICES if p.kind == "tokens" and p.model_prefix.startswith("gpt-5")}
 Row = dict[str, Any]
 
 

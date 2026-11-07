@@ -18,6 +18,7 @@ from api.routers import (
     ask,
     build,
     canon,
+    costs,
     director,
     documents,
     files,
@@ -86,7 +87,7 @@ def create_app(repos: Repos | None = None) -> FastAPI:
         return {"status": "ok"}
 
     for module in (me, members, productions, overview, documents, search, build, structure, canon, looks, scene_looks,
-                   scene_canon, scenes, production, handoff, renders, director, zora, activity, ask, jobs, usage,
+                   scene_canon, scenes, production, handoff, renders, costs, director, zora, activity, ask, jobs, usage,
                    files, internal):
         app.include_router(module.router)
     app.include_router(looks.drafts)  # production-wide: /productions/{id}/looks/draft

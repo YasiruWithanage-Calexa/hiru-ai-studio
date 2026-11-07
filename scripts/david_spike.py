@@ -53,10 +53,14 @@ SPIKE = EVAL / "spike"
 EXAMPLE_SCENE = "refuses_money"  # the scene the author's prompt shows: the model has seen that answer, so it is not run
 CONFIGS = ("A", "B", "C")
 # model prefix -> (input, cached input, output), US dollars per million tokens: OpenAI's list prices on the standard
-# tier
-# (plan §8). Longest prefix wins; a model not listed is priced as gpt-5.
+# tier (plan §8), from `contracts.costs.SEED_PRICES` (plan/2026-11-06d: the one list). Longest prefix wins; a model not
+# listed is priced as gpt-5. Actual cost, no margin.
+from contracts.costs import MICROS_PER_USD, SEED_PRICES  # noqa: E402
+
 PRICES: dict[str, tuple[float, float, float]] = {
-    "gpt-5-nano": (0.05, 0.005, 0.40), "gpt-5-mini": (0.25, 0.025, 2.00), "gpt-5": (1.25, 0.125, 10.00)}
+    p.model_prefix: (p.input_micros / MICROS_PER_USD, p.cached_input_micros / MICROS_PER_USD,
+                     p.output_micros / MICROS_PER_USD)
+    for p in SEED_PRICES if p.kind == "tokens" and p.model_prefix.startswith("gpt-5")}
 Row = dict[str, Any]
 
 

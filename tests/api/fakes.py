@@ -574,6 +574,44 @@ class FakeRenders(_Table):
                    if r["production_id"] == str(production_id) and r["status"] in ("queued", "running"))
 
 
+class FakeCosts:
+    """`token_usage` rows live here as plain dicts (with `scene_id` and `production_id` when they have them)."""
+
+    def __init__(self) -> None:
+        self.price_rows: list[Row] = []
+        self.usage: list[Row] = []
+        self.jobs: dict[str, Row] = {}  # job id -> its request
+        self.lines: dict[str, int] = {}
+        self.queries = 0
+
+    async def prices(self) -> list[Row]:
+        return sorted((dict(r) for r in self.price_rows), key=lambda r: str(r.get("valid_from")), reverse=True)
+
+    async def add_price(self, row: Row) -> Row:
+        full = {"id": str(uuid4()), "created_at": _now(), **row}
+        self.price_rows.append(full)
+        return full
+
+    async def scene_usage(self, production_id: UUID, scene_id: UUID) -> list[Row]:
+        self.queries += 1
+        sid = str(scene_id)
+        return [dict(r) for r in self.usage if r.get("scene_id") == sid or (
+            not r.get("scene_id") and (self.jobs.get(str(r.get("job_id"))) or {}).get("scene_id") == sid)]
+
+    async def unassigned_usage(self, production_id: UUID, prefixes: tuple[str, ...]) -> list[Row]:
+        return [dict(r) for r in self.usage if r.get("production_id") == str(production_id) and not r.get("scene_id")
+                and str(r["phase"]).startswith(prefixes)
+                and not (self.jobs.get(str(r.get("job_id"))) or {}).get("scene_id")]
+
+    async def recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]:
+        rows = [dict(r) for r in self.usage if str(r["phase"]).startswith(prefix)
+                and (production_id is None or r.get("production_id") == str(production_id))]
+        return sorted(rows, key=lambda r: str(r.get("created_at")), reverse=True)[:limit]
+
+    async def lines_by_scene(self, production_id: UUID) -> dict[str, int]:
+        return dict(self.lines)
+
+
 def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
@@ -608,4 +646,5 @@ def build_fake_repos() -> Repos:
         takes=FakeTakes(),
         renders=FakeRenders(),
         revisions=FakeRevisions(),
+        costs=FakeCosts(),
     )

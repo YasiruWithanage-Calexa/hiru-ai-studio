@@ -13,7 +13,8 @@ in a new `plan/<date>/` folder.
 - Supabase for auth, DB, storage, realtime and pgvector. **Hiru only** (single tenant).
 - Proven PromptMotion engines are **forked**, not imported (PLAN.md §2.1). Each fork gets an
   `UPSTREAM.md` with the source path, commit (`1d748dc` at plan time) and every divergence.
-- The UI shows **no credits or costs**; `/v1/usage` returns a percentage only.
+- The UI shows **no credits or costs**, with ONE exception: a scene's total cost, for people who hold `VIEW_COSTS`
+  (producer, director, admin; plan/2026-11-06d, below). `/v1/usage` returns a percentage only.
 - Nothing is deployed until the user says so; everything is tested on localhost first.
 
 ## The AI package (`src/libs/hiru_ai`, plan/2026-11-03)
@@ -154,6 +155,19 @@ lettering); **checks report, they never edit** the prose or a person's list; **e
 `Permission.RENDER_VIDEO` (producer, director, admin) guards spending; no costs in the interface. What each engine accepts
 (`EngineCapability.seed`, `verified`) is settled by `scripts/video_probe.py`, a person's to run. Read
 `plan/2026-11-06c/IMPLEMENTED.md` first.
+
+## A scene's production cost (plan/2026-11-06d)
+
+The scene panel's header shows ONE figure, "Scene ≈ $20.86": what the scene has cost plus what it will cost to finish. The
+rules are `contracts/costs.py` (pure; money in integer micro-dollars; margins in basis points); the arithmetic's inputs are
+gathered by `api/services/costs.py` and served by `routers/costs.py` (`GET .../scenes/{id}/cost`, `VIEW_COSTS`; the admin
+price list `GET|PUT /v1/prices`); storage is `prices` and `token_usage.scene_id` (schema v17: `Database/schema_v17.sql`,
+`upgrade_v16_to_v17.sql`). Rules that must not drift: **each margin is applied once**, in `with_margin` / `with_retry` only
+(video +10%, images +5%, text 0, then +20% retry on the TO-FINISH part only); **a missing price is a note, never zero and
+never a guess** (`complete: false`); **the response is the total and two flags and nothing else**, so no breakdown, rate
+or margin can leak through the network tab; **nothing stores a money figure**: a cost is metered usage x the price valid
+when the work was made, and prices are added with a `valid_from`, never edited; a model name is priced only if it is a listed
+name or a dated snapshot of it (a bare prefix once billed gpt-5.5 as gpt-5). Read `plan/2026-11-06d/IMPLEMENTED.md` first.
 
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
