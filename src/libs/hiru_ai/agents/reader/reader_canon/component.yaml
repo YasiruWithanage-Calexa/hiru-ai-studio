@@ -1,0 +1,17 @@
+id: reader_canon
+kind: agent
+version: 1
+summary: "Reads a document's front pages, a bible or a canon index (its text, or its page images when the text is scrambled) and lists the people, places and things with only what the document says."
+status: active
+owner: doc_ingest
+model: reader
+timeout_s: 900
+shape: structured
+phase: doc_ingest.reader.canon
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

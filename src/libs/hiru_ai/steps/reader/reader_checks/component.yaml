@@ -1,0 +1,8 @@
+id: reader_checks
+kind: step
+version: 1
+summary: "The document reader's checks (plan/2026-11-06f §4.4): is the text scrambled, where are the episodes, and does an answer keep every word and every scene."
+status: active
+owner: doc_ingest
+entry: step:run
+uses: []

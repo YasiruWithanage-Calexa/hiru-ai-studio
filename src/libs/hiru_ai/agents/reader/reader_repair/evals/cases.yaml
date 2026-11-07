@@ -1,0 +1,41 @@
+# The reader's repair call (plan/2026-11-06f): a patch, never a new reading.
+- name: a reworded line is replaced by its scene as written
+  input:
+    piece: { filename: e.pdf, mode: text, kind: whole, episode: 0, title: "", first_page: 1, last_page: 1,
+             first_line: 1, last_line: 2, text: "L0001 SCENE 01 - EXT. CANAL - DAWN
+L0002 ARUNI - Oya enawada?",
+             pdf_b64: "", roster: "(none yet)" }
+    answer:
+      canon: { characters: [], locations: [], props: [] }
+      episodes: [ { number: 0, title: "", stated_runtime: "", scenes: [
+        { number: "01", heading: "SCENE 01 - EXT. CANAL - DAWN", int_ext: EXT, location: Canal, sub_location: "",
+          time_of_day: DAWN, clock: "", stated_seconds: 0, flashback: false, lines: [1, 2],
+          blocks: [ { kind: dialogue, speaker: Aruni, cue: ARUNI, delivery: "", text: "Are you coming?", src: [2, 2] } ] } ] } ]
+      transcription: []
+    problems: ["Episode 0 scene 0 block 0 (dialogue) is not the words of L0002-L0002."]
+    tried: []
+  reply:
+    replaces:
+      - { episode: 0, replace_from: 0, replace_to: 0, scenes: [
+          { number: "01", heading: "SCENE 01 - EXT. CANAL - DAWN", int_ext: EXT, location: Canal, sub_location: "",
+            time_of_day: DAWN, clock: "", stated_seconds: 0, flashback: false, lines: [1, 2],
+            blocks: [ { kind: dialogue, speaker: Aruni, cue: ARUNI, delivery: "", text: "Oya enawada?", src: [2, 2] } ] } ] }
+  expect:
+    replaces: [ { episode: 0, replace_from: 0, replace_to: 0 } ]
+- name: a missing scene is inserted
+  input:
+    piece: { filename: e.pdf, mode: pages, kind: episode, episode: 2, title: "", first_page: 4, last_page: 5,
+             first_line: 1, last_line: 9, text: "", pdf_b64: "JVBERi0xLjQK", roster: "(none yet)" }
+    answer:
+      canon: { characters: [], locations: [], props: [] }
+      episodes: [ { number: 2, title: "", stated_runtime: "", scenes: [] } ]
+      transcription: []
+    problems: ["Scenes the pages hold are missing from the answer: page 4: \"3. INT. SAFEHOUSE — NIGHT\""]
+    tried: []
+  reply:
+    replaces:
+      - { episode: 2, replace_from: 0, replace_to: -1, scenes: [
+          { number: "3", heading: "3. INT. SAFEHOUSE — NIGHT", int_ext: INT, location: Safehouse, sub_location: "",
+            time_of_day: NIGHT, clock: "", stated_seconds: 0, flashback: false, lines: [], blocks: [] } ] }
+  expect:
+    replaces: [ { episode: 2, replace_from: 0, replace_to: -1 } ]

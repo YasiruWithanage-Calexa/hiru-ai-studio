@@ -1,0 +1,61 @@
+# The reader's episode call (plan/2026-11-06f). Scripted replies test the seams; the live eval is a person's.
+- name: one Ekama scene with a dash-cue line, in text mode
+  input:
+    filename: ekama_sakshiya_screenplay.pdf
+    mode: text
+    kind: whole
+    episode: 0
+    title: ""
+    first_page: 1
+    last_page: 4
+    first_line: 46
+    last_line: 51
+    text: "L0046 SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+L0050  ARUNI - Dinu... oyata meka ahenne nadda?"
+    pdf_b64: ""
+    roster: "(none yet)"
+  reply:
+    canon: { characters: [], locations: [], props: [] }
+    episodes:
+      - number: 0
+        title: ""
+        stated_runtime: ""
+        scenes:
+          - { number: "01", heading: "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE", int_ext: EXT,
+              location: Mahawewa Canal, sub_location: "", time_of_day: DAWN, clock: "", stated_seconds: 60,
+              flashback: false, lines: [46, 50],
+              blocks: [ { kind: dialogue, speaker: Aruni, cue: ARUNI, delivery: "",
+                          text: "Dinu... oyata meka ahenne nadda?", src: [50, 50] } ] }
+    transcription: []
+  expect:
+    episodes: [ { number: 0, scenes: [ { time_of_day: DAWN, stated_seconds: 60,
+                                        blocks: [ { cue: ARUNI, text: "Dinu... oyata meka ahenne nadda?" } ] } ] } ]
+- name: an episode read from page images keeps its Sinhala and transcribes the page
+  input:
+    filename: AVASANA_SANGNAWA_SEASON_01_SCREENPLAY_SI.pdf
+    mode: pages
+    kind: episode
+    episode: 1
+    title: "11:17"
+    first_page: 3
+    last_page: 3
+    first_line: 27
+    last_line: 60
+    text: ""
+    pdf_b64: "JVBERi0xLjQK"
+    roster: "PERSON Nisha (also: නිශා)"
+  reply:
+    canon: { characters: [], locations: [], props: [] }
+    episodes:
+      - number: 1
+        title: "11:17"
+        stated_runtime: "45 MIN"
+        scenes:
+          - { number: "1", heading: "1. EXT. — කොළඹ අලුයම — 05:08", int_ext: EXT, location: කොළඹ, sub_location: "",
+              time_of_day: DAWN, clock: "05:08", stated_seconds: 0, flashback: false, lines: [],
+              blocks: [ { kind: dialogue, speaker: Nisha, cue: නිශා, delivery: V.O., text: "තාත්තේ... මාව ඇහෙනවද?",
+                          src: [] } ] }
+    transcription: [ { page: 3, text: "1. EXT. — කොළඹ අලුයම — 05:08" } ]
+  expect:
+    episodes: [ { number: 1, scenes: [ { blocks: [ { speaker: Nisha, text: "තාත්තේ... මාව ඇහෙනවද?" } ] } ] } ]
+    transcription: [ { page: 3 } ]

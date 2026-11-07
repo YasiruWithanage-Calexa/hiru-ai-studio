@@ -1,0 +1,17 @@
+id: reader_repair
+kind: agent
+version: 1
+summary: "Repairs the reader's answer for one part: given the exact problems code found, it answers with a patch that replaces runs of scenes; it cannot rewrite the reading."
+status: active
+owner: doc_ingest
+model: reader
+timeout_s: 900
+shape: structured
+phase: doc_ingest.reader.repair
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

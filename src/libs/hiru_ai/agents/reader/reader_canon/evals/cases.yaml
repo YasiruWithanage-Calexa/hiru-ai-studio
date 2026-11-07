@@ -1,0 +1,45 @@
+# The reader's canon call (plan/2026-11-06f). Scripted replies: these test the agent's seams; what the model really
+# reads is the live eval's (`scripts/eval_reader.py --yes`, a person's to run).
+- name: a cast table in text mode
+  input:
+    filename: ekama_sakshiya_screenplay.pdf
+    role: script front pages
+    mode: text
+    first_page: 1
+    last_page: 1
+    text: "L0024 MAIN CHARACTERS\nL0027 Dinu\nL0028 30, Colombo cash-transport driver. Quiet, experienced, violent only when\nL0029 cornered."
+    pdf_b64: ""
+  reply:
+    canon:
+      characters:
+        - { name: Dinu, aliases: [DINU], code: "", core: true, summary: "Colombo cash-transport driver.", age: "30",
+            gender: male, appearance: "", wardrobe: "", voice: "", accent: "", per_episode: [],
+            quote: "30, Colombo cash-transport driver." }
+      locations: []
+      props: []
+    transcription: []
+  expect:
+    canon: { characters: [ { name: Dinu, age: "30", core: true } ] }
+    transcription: []
+- name: scrambled pages are read from their images and transcribed
+  input:
+    filename: AVASANA_SANGNAWA_SEASON_01_SCREENPLAY_SI.pdf
+    role: script front pages
+    mode: pages
+    first_page: 1
+    last_page: 2
+    text: ""
+    pdf_b64: "JVBERi0xLjQK"
+  reply:
+    canon:
+      characters:
+        - { name: Aravinda Senanayaka, aliases: [අරවින්ද], code: "", core: true, summary: "හිටපු යුද හමුදා සන්නිවේදන ඉංජිනේරු",
+            age: "43", gender: male, appearance: "", wardrobe: "", voice: "", accent: "", per_episode: [], quote: "" }
+      locations: []
+      props: []
+    transcription:
+      - { page: 1, text: "THE LAST SIGNAL" }
+      - { page: 2, text: "Principal Cast in Episode 01" }
+  expect:
+    canon: { characters: [ { name: Aravinda Senanayaka, age: "43" } ] }
+    transcription: [ { page: 1 }, { page: 2 } ]
