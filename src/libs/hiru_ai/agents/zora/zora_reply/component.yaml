@@ -1,0 +1,16 @@
+id: zora_reply
+kind: agent
+version: 1
+summary: "Writes Zora's reply to the director, streamed, from the turn's ledger (read last): what changed, what was refused, what was asked for and not done, overruns reported, never trimmed."
+status: active
+owner: director
+model: medium
+shape: text
+phase: zora.reply
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage]
+writes_dialogue: false

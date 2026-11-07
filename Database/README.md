@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v13.sql` | **The newest schema** (everything in v12 plus `scenes.jonathan` and `'jonathan'` as a planner a shot may name: Shot Planner Jonathan, plan/2026-11-06b), whole. Run it once on an empty project. **Not applied to the hosted project yet.** |
+| `schema_v14.sql` | **The newest schema** (everything in v13 plus in-app video generation, plan/2026-11-06c: the `video_renders` table, `takes.origin`, `takes.render_id` and `shots.video_settings`; and Zora's undo history, plan/2026-11-06e: the `scene_plan_revisions` table), whole. Run it once on an empty project. |
+| `upgrade_v13_to_v14.sql` | Moves a project on v13 to v14 (the `video_renders` table and three columns for it, and the `scene_plan_revisions` table: without it Zora runs with no undo). Run once, only on such a project. Then set `GOOGLE__API_KEY` for the `video_render` function. **Not run yet: applying it is a person's decision.** |
+| `schema_v13.sql` | Kept for reference (everything in v12 plus `scenes.jonathan` and `'jonathan'` as a planner a shot may name: Shot Planner Jonathan, plan/2026-11-06b), whole. Run it once on an empty project. |
 | `upgrade_v12_to_v13.sql` | Moves a project on v12 to v13 (one column on `scenes` and the planner check on `shots`). Run once, only on such a project. **Not run yet: applying it is a person's decision.** |
 | `schema_v12.sql` | Kept for reference (everything in v11 plus `token_usage.reasoning_tokens`: how much of a call's output was hidden reasoning, plan/2026-11-05; the `production_memory` table, what the documents say about how to make the drama, plan/2026-11-05d; and `scenes.david` with `'david'` as a planner a shot may name: Shot Planner David, plan/2026-11-05e), whole. Run it once on an empty project. |
 | `upgrade_v11_to_v12.sql` | Moves a project on v11 to v12 (one column on `token_usage`, the `production_memory` table, `scenes.david` and the planner check on `shots`). Run once, only on such a project. Then set `USAGE_DETAIL=true` and restart. |
@@ -40,6 +42,15 @@ empty database and comparing the dump with the one the migrations build (identic
 running the 94 database tests and Supabase's advisor check on it (all pass). v1 plus
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
+
+## v14 check (2026-11-07)
+
+The `public,storage` dumps of the migrations, of `schema_v14.sql` on an empty database and of `schema_v13.sql` +
+`upgrade_v13_to_v14.sql` were compared on the local stack: v14 and v13 + upgrade are identical to each other, and
+`video_renders` and `scene_plan_revisions` are identical in all three. Both differ from the migrations in two older
+things this version did not touch: the column order of `dialogue_lines` (`source_text`, `source_lang`) and of
+`token_usage` (`created_at`), and the comment on `token_usage.reasoning_tokens`, which the hand-made files lack. The 17
+database test files (214 tests) and the advisors (no issues) pass on the migrations.
 
 ## Moving a project from v10 to v11
 

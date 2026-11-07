@@ -3,8 +3,9 @@
     {"scene": SceneS, "production": {style_note, rules, people[{name, code, look, voice}]},
      "context": {heading, note, episode_title, synopsis, before, after, place},
      "link": "continuous" | "carry" | "", "start": EndState | None, "canon_looks": {name: look},
-     "look_changes": [LookChange], "last_shot_ir": {…} | None, "reading": str, "removed": [str]}
-        → {"text", "parts": {production, scene, start, last_shot, script}, "words"}
+     "look_changes": [LookChange], "last_shot_ir": {…} | None, "reading": str, "removed": [str],
+     "pinned"?: Treatment (a person's, plan/2026-11-06e §4.9)}
+        → {"text", "parts": {production, scene, start, last_shot, treatment, script}, "words"}
 
 The parts are in the order that caches best: what is the same for the whole job comes first, the script last.
 """

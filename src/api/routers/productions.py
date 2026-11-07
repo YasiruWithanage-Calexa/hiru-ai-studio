@@ -23,6 +23,7 @@ from contracts.production import (
     ProductionUpdate,
 )
 from contracts.roles import Permission, ProductionRole
+from contracts.video_gen import LOCKED_VIDEO_FIELDS
 
 router = APIRouter(prefix="/v1/productions", tags=["productions"])
 ReposDep = Annotated[Repos, Depends(get_repos)]
@@ -70,6 +71,8 @@ async def update_production(production_id: UUID, body: ProductionUpdate, access:
                             repos: ReposDep) -> Production:
     fields = body.model_dump(mode="json", exclude_unset=True)
     before = access.production
+    if body.settings is not None:
+        fields["settings"]["video"] = _locked_video(before, body.settings)
     row = await repos.productions.update(production_id, fields) if fields else before
     if fields:
         await repos.audit.record(action="production.update", entity="production",
@@ -77,6 +80,19 @@ async def update_production(production_id: UUID, body: ProductionUpdate, access:
                                  production_id=production_id,
                                  diff={k: [before.get(k), v] for k, v in fields.items()})
     return _production(row, access.role)
+
+
+def _locked_video(before: Row, new: ProductionSettings) -> dict:
+    """The video model and size are chosen when the production is created and never change (`LOCKED_VIDEO_FIELDS`).
+    Settings sent without `video` keep the production's; a change to a locked field is refused, never applied."""
+    old = ProductionSettings.model_validate(before.get("settings") or {}).video
+    if "video" not in new.model_fields_set:
+        return old.model_dump(mode="json")
+    changed = [f for f in LOCKED_VIDEO_FIELDS if getattr(new.video, f) != getattr(old, f)]
+    if changed:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT,
+                            "The video model and size are chosen when the production is created and cannot be changed.")
+    return new.video.model_dump(mode="json")
 
 
 @router.get("/{production_id}/access", response_model=MyAccess)

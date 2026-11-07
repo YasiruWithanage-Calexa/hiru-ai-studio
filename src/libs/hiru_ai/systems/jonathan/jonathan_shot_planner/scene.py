@@ -215,7 +215,8 @@ class Planner:
         mended = JonathanWire.model_validate(out["plan"])
         found = _step("jonathan_check").run({"scene": self.scene.model_dump(mode="json"),
                                              "plan": mended.model_dump(mode="json"), "removed": self.removed_pairs(),
-                                             "craft": self.craft.model_dump()})
+                                             "craft": self.craft.model_dump(),
+                                             "pinned": self.pack_data.get("pinned") or None})
         judged = Judged(plan=mended, problems=problems_of(found["problems"]),
                         measures=[Measure.model_validate(m) for m in found.get("measures") or []],
                         dropped=problems_of(out["dropped"]), extra=list(extra or []), mended=list(out["mended"]))
@@ -336,7 +337,8 @@ class Planner:
                             line_ids=line_ids or self.line_ids, mended=list(dict.fromkeys(self.mended)),
                             repairs=list(self.passes), problems=[*best.problems, *best.dropped], seams=seams,
                             measures=[m.model_dump() for m in best.measures], look_changes=look,
-                            end_state=plan.end_state, previous=previous, report=report)
+                            end_state=plan.end_state, previous=previous, report=report,
+                            pinned=dict(self.pack_data.get("pinned") or {}))
         same = before_end is not None and before_end == plan.end_state
         return Planned(stored, changed_end=not same, log=list(self.log))
 

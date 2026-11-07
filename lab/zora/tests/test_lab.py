@@ -10,7 +10,8 @@ import pytest
 
 from contracts.zora import effects as E
 from contracts.zora import ops as O
-from zora import run, schema, turn
+from contracts.zora import wire as schema
+from zora import run, turn
 
 CASES = {c["id"]: c for c in run.cases()}
 

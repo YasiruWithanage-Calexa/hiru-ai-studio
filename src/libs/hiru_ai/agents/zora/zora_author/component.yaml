@@ -1,0 +1,19 @@
+id: zora_author
+kind: agent
+version: 1
+summary: "Zora's one creative call per turn (plan/2026-11-06e §4.5): the planner's own prompt as the primer, the turn's tasks each with what it may write and on which shots, what is already done; answers operations, notes, asks and (for options) variants. Code keeps it to its tasks."
+status: active
+owner: director
+model: zora
+# One call for all of a turn's tasks; a repair pass is the same call shown the exact new faults.
+timeout_s: 600
+shape: structured
+phase: zora.author
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, production_memory]
+memory: ["*"]
+writes_dialogue: false

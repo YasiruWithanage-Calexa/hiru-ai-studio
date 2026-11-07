@@ -22,6 +22,7 @@ from contracts.veo import (
     Orientation,
     SoundMode,
 )
+from contracts.video_gen import VideoSettings
 
 
 class _Model(BaseModel):
@@ -81,6 +82,9 @@ class ProductionSettings(_Model):
     # Whether the final cut trims a take to the part its card keeps and lays sound across cuts (pre-lap, carry): plan
     # 2026-11-04b Phase 9. Off until it is proven; then every take plays whole.
     final_cut_trim: bool = False
+    # The default for making a take in Hiru (plan/2026-11-06c §4.2): engine, resolution, takes per press, seed ...
+    # A shot overrides it (`shots.video_settings`) and a run overrides that.
+    video: VideoSettings = Field(default_factory=lambda: VideoSettings())
 
     @field_validator("fixed_shot_seconds")
     @classmethod

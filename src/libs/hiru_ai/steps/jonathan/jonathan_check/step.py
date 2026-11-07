@@ -1,5 +1,6 @@
-"""jonathan_check: `{"scene", "plan", "removed"?, "craft"?}` → `{"ok", "problems", "measures", "score", "counts"}`
-(plan/2026-11-06b §5).
+"""jonathan_check: `{"scene", "plan", "removed"?, "craft"?, "pinned"?}` → `{"ok", "problems", "measures", "score",
+"counts"}` (plan/2026-11-06b §5). `pinned`: a treatment a person pinned (plan/2026-11-06e §4.9), held by the `treatment`
+check.
 
 Deterministic, no model. A problem is `{code, sentence, shots, fix, key}`; `fix` says who deals with it: `mend` (code,
 in
@@ -30,7 +31,8 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
                                                               "fix": "repair", "key": "shape:malformed"}],
                 "measures": [], "score": [99, 99], "counts": {"repair": 1}}
     removed = [(str(r["kind"]), int(r["after_block"])) for r in payload.get("removed") or []]
-    found = checks.problems(scene, plan, removed)
+    found = checks.unique([*checks.problems(scene, plan, removed),
+                           *checks.treatment_drift(plan, payload.get("pinned") or None)])
     measured = measures.measures(scene, plan, craft)
     counts: dict[str, int] = {}
     for p in found:

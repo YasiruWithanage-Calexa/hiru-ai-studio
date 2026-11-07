@@ -63,7 +63,7 @@ ops, declared effects. The reply is not in the lab.
 |---|---|
 | `prompts/conductor.md` | the conductor's charter (≤ 7,500 characters, no case wording: `tests/test_lab.py`) |
 | `prompts/author.md` | Zora's charter, appended to Jonathan's own author prompt (≤ 3,000 characters) |
-| `schema.py` | the strict answer shapes and their conversion to Zora's operations |
+| `contracts/zora/wire.py` | the strict answer shapes and their conversion to Zora's operations (moved out of the lab on 2026-11-07, so the lab and the product's agents send the same bytes) |
 | `turn.py` | one turn on the product's code: kernel → stale tasks → author or seats → board → kernel → gate (one repair) → delivery (one re-task) → scoring |
 | `run.py` | dry, cost, offline, paid, ledger, compare |
 | `answers/` | hand-written author answers for three cases (the offline run and the tests; no model wrote them) |

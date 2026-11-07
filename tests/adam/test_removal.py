@@ -60,6 +60,7 @@ MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "langgraph.json", "CLAUDE
                # the two script names are split so the other planners' removal scans do not find them here
                "Database/schema_v13.sql", "scripts/jonat" + "han_compare.py", "scripts/da" + "vid_compare.py",
                "tests/hiru_ai/test_registry_threads.py",
+               "Database/schema_v14.sql",  # plan/2026-11-06c: v13 whole plus video generation
                # Phase 7: the shot producer reads `shots.card` as plain JSON, in two copies that name Adam in their
                # docstring only (the part's and the legacy engine's); drop them with the group's card handling
                "src/libs/hiru_ai/steps/serialize/card.py", "src/services/shot_producer/shot_producer/engine/card.py"}

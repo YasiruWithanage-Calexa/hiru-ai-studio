@@ -21,6 +21,7 @@ shown anywhere (CLAUDE.md).
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Mapping
 from typing import Annotated, Any
 from uuid import UUID, uuid4
 
@@ -221,8 +222,11 @@ class RejectRequest(BaseModel):
 
 
 class Loaded:
-    def __init__(self, production: Row, scene: Row, states: list[ShotState], lines: list[Row]) -> None:
+    def __init__(self, production: Row, scene: Row, states: list[ShotState], lines: list[Row],
+                 canon: list[Row] | None = None, looks: Mapping[str, Mapping[str, Any]] | None = None) -> None:
         self.production, self.scene, self.states, self.lines = production, scene, states, lines
+        self.canon: list[Row] = canon or []  # the production's cards, as read for these states
+        self.looks: Mapping[str, Mapping[str, Any]] = looks or {}  # character id → the look the scene uses
 
     @property
     def aspect(self) -> str:
@@ -250,7 +254,7 @@ async def load(repos: Repos, access: ProductionAccess, scene_id: UUID) -> Loaded
         repos.looks.list_for_production(production_id), repos.scene_looks.list(scene_id))
     looks = looks_in_force(all_looks, picks, int(episode["number"]) if episode else None)
     states = scene_states(scene, shots, lines, canon, frames, prompts, looks)
-    return Loaded(access.production, scene, states, lines)
+    return Loaded(access.production, scene, states, lines, canon, looks)
 
 
 async def load_shot(repos: Repos, access: ProductionAccess, shot_id: UUID) -> tuple[Loaded, ShotState]:

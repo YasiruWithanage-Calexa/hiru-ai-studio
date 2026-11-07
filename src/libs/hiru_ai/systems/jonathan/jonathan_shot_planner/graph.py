@@ -185,7 +185,10 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
                 "canon_looks": {n: str(cards[n].get("wardrobe_anchor") or (cards[n].get("card") or {})
                                        .get("appearance") or "") for n in cast if n in cards},
                 "look_changes": earlier, "last_shot_ir": last_ir,
-                "reading": reading.text() if reading is not None and reading.by == "person" else ""}
+                "reading": reading.text() if reading is not None and reading.by == "person" else "",
+                # a treatment a person pinned in the director chat (plan/2026-11-06e §4.9): this delivery's, else the
+                # one the scene keeps
+                "pinned": dict((payload.state.get("pinned") or {}).get(sid) or (stored.pinned if stored else {}))}
         link = Link(kind=kind or "", by="person" if sid in overrides else "rules")  # type: ignore[arg-type]
         craft = Craft(codes={n: c for n, c in codes.items() if n in cast},
                       story_objects=jonathan.story_objects(props, bare.blocks), guide_s=float(script.envelope_s or 0))
@@ -287,6 +290,9 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
                            {"text": f"{label}: nothing has changed since Jonathan planned it; left as it is"},
                                agent=AGENT)
                 return
+            kept = stored_row(sc)
+            if kept is not None and kept.person:  # a person's locks outlive a re-plan (plan/2026-11-06e §4.7)
+                result.stored.person = dict(kept.person)
             out = write.run({"scene": sc, "lines": job["lines"], "stored": result.stored.data(), "canon": canon,
                              "production": production, "job_id": str(job_id)})
             if "refused" in out or "malformed" in out:

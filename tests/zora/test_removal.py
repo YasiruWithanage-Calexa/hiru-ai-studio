@@ -10,7 +10,7 @@ from hiru_ai.core.registry import PACKAGE_ROOT, Registry
 REPO = PACKAGE_ROOT.parents[2]
 
 THE_PLAN_REMOVES = {
-    *(f"src/libs/hiru_ai/{layer}/zora" for layer in ("steps", "systems")),
+    *(f"src/libs/hiru_ai/{layer}/zora" for layer in ("agents", "steps", "systems")),
     "src/libs/contracts/zora",
     "src/services/zora_chat",
     "tests/zora",
@@ -20,7 +20,16 @@ THE_PLAN_REMOVES = {
 }
 # Files outside the group that may name it: the import-linter contract, the generated catalog, the working rules and
 # the planner's own removal list (which names the two Zora files that reach its checks by id).
-MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "CLAUDE.md", "tests/jonathan/test_removal.py"}
+MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "CLAUDE.md", "tests/jonathan/test_removal.py",
+               # Phases 4 to 7: the tier and the settings, the function's registration, the API and the database pair
+               "src/libs/hiru_ai/core/models.yaml", "src/libs/hiru_ai/core/settings.py", "langgraph.json",
+               ".env.example",
+               ".github/workflows/deploy-functions.yml", "scripts/start-functions.ps1", "src/api/routers/zora.py",
+               "src/api/services/zora.py", "src/api/repositories/__init__.py", "src/api/main.py",
+               "src/api/workers/task_manager.py", "src/api/config.py", "src/libs/contracts/director.py",
+               "Database/schema_v14.sql", "Database/upgrade_v13_to_v14.sql", "Database/README.md",
+               "supabase/migrations/20261106185010_zora_revisions.sql",
+               "supabase/tests/database/016_scene_plan_revisions.test.sql"}
 
 
 def test_the_removal_list_is_the_plans_list():

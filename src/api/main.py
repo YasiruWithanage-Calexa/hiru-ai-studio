@@ -30,12 +30,14 @@ from api.routers import (
     overview,
     production,
     productions,
+    renders,
     scene_canon,
     scene_looks,
     scenes,
     search,
     structure,
     usage,
+    zora,
 )
 
 _logger = logging.getLogger(__name__)
@@ -84,7 +86,8 @@ def create_app(repos: Repos | None = None) -> FastAPI:
         return {"status": "ok"}
 
     for module in (me, members, productions, overview, documents, search, build, structure, canon, looks, scene_looks,
-                   scene_canon, scenes, production, handoff, director, activity, ask, jobs, usage, files, internal):
+                   scene_canon, scenes, production, handoff, renders, director, zora, activity, ask, jobs, usage,
+                   files, internal):
         app.include_router(module.router)
     app.include_router(looks.drafts)  # production-wide: /productions/{id}/looks/draft
     return app

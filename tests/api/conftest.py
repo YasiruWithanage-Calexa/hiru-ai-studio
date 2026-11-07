@@ -25,6 +25,9 @@ def _settings(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     # Tests never call OpenAI: an empty key here overrides a real one in .env. Tests that need
     # the AI path install a fake client (tests/api/test_search.py::with_ai).
     monkeypatch.setenv("OPENAI__API_KEY", "")
+    # Nor Google: video generation is "not set up" unless a test turns on the fake provider.
+    monkeypatch.setenv("GOOGLE__API_KEY", "")
+    monkeypatch.setenv("VIDEO__FAKE_PROVIDER", "false")
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()

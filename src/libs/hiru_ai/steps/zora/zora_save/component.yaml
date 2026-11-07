@@ -1,0 +1,8 @@
+id: zora_save
+kind: step
+version: 1
+summary: "Stores Zora's edited plan through the planner's own write path (by id): shots with their card, intent, camera design and current pins, the lines rebound, and every shot that was there keeps its id; the revisions behind undo and redo."
+status: active
+owner: director
+entry: step:run
+uses: []

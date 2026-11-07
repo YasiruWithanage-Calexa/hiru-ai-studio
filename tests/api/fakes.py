@@ -548,6 +548,32 @@ class FakeTakes(_Table):
         return True
 
 
+class FakeRevisions:
+    def __init__(self) -> None:
+        self.rows: list[Row] = []
+
+    async def list(self, scene_id: UUID) -> list[Row]:
+        return sorted((dict(r) for r in self.rows if r["scene_id"] == str(scene_id)), key=lambda r: r["revision"])
+
+
+class FakeRenders(_Table):
+    async def create_many(self, rows: list[Row]) -> None:
+        for r in rows:
+            self.rows[r["id"]] = {"created_at": _now(), "updated_at": _now(), "status": "queued", "error": None,
+                                  "refusal": None, "take_id": None, "provider_id": None, "usage": {}, **r}
+
+    async def list_for_shots(self, shot_ids: list[str]) -> list[Row]:
+        return sorted((r for r in self.rows.values() if r["shot_id"] in shot_ids), key=lambda r: r["created_at"])
+
+    async def update_many(self, render_ids: list[str], fields: Row) -> None:
+        for rid in render_ids:
+            self.rows[rid].update(fields)
+
+    async def count_active(self, production_id: UUID) -> int:
+        return sum(1 for r in self.rows.values()
+                   if r["production_id"] == str(production_id) and r["status"] in ("queued", "running"))
+
+
 def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
@@ -580,4 +606,6 @@ def build_fake_repos() -> Repos:
         frames=FakeFrames(),
         prompts=FakePrompts(),
         takes=FakeTakes(),
+        renders=FakeRenders(),
+        revisions=FakeRevisions(),
     )

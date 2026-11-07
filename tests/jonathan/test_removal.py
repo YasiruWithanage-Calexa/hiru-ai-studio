@@ -1,7 +1,7 @@
 """Plan/2026-11-05e §4.0: deleting the `jonathan` folders removes Jonathan. `hiru-ai remove --group jonathan` must know
-every
-folder
-on the plan's list (the ones that exist today are deleted, the rest are on its list for when they are made)."""
+every folder on the plan's list (the ones that exist today are deleted, the rest are on its list for when they are
+made)."""
+
 from __future__ import annotations
 
 from hiru_ai.cli.tools import group_folders, remove_group
@@ -11,8 +11,8 @@ from hiru_ai.core.registry import PACKAGE_ROOT, Registry
 REPO = PACKAGE_ROOT.parents[2]
 
 # §4.0: the six hiru_ai/<layer>/jonathan/ folders, contracts/jonathan/, services/shot_planner_jonathan/,
-# tests/jonathan/,
-# tests/eval/jonathan/, docs/jonathan/ (and the interface's features/jonathan/, which is in another repository)
+# tests/jonathan/, tests/eval/jonathan/, docs/jonathan/ (and the interface's features/jonathan/, which is in another
+# repository)
 THE_PLAN_REMOVES = {
     *(f"src/libs/hiru_ai/{layer}/jonathan" for layer in mf.LAYERS.values()),
     "src/libs/contracts/jonathan",
@@ -46,8 +46,8 @@ def test_remove_group_on_the_real_tree_is_a_dry_run_that_lists_the_folders_that_
 
 # Files outside the group that may name it, each a line or a block to drop with the group: the import-linter contracts,
 # the generated catalog, the working rules, the function's registration, the endpoints that start it or read its
-# plan, the
-# job kind, the settings, the migration and the Database pair, and the live tools (the spike and the blind comparison).
+# plan, the job kind, the settings, the migration and the Database pair, and the live tools (the spike and the blind
+# comparison).
 # No code that plans, checks or writes is on this list.
 MAY_NAME_IT = {
     "pyproject.toml", "docs/AI_CATALOG.md", "docs/AI_PATTERN.md", "docs/adr/0010-one-author-pattern.md",
@@ -61,6 +61,11 @@ MAY_NAME_IT = {
     "supabase/tests/database/014_jonathan.test.sql",
     # Zora (plan/2026-11-06e) edits the plans Jonathan stores and runs Jonathan's checks by id, from these two files
     "src/libs/hiru_ai/steps/zora/zora_kernel/step.py", "src/libs/hiru_ai/steps/zora/zora_board/gate.py",
+    "src/libs/hiru_ai/steps/zora/zora_save/step.py",  # Zora stores its edits through Jonathan's write path, by id
+    "src/libs/hiru_ai/systems/zora/zora_chat/scene.py",  # and reads the scene through Jonathan's scene builder, by id
+    "src/libs/hiru_ai/agents/zora/zora_author/tests/test_agent_zora_author.py",  # its prompt starts with Jonathan's
+    "tests/zora/test_api.py", "src/api/routers/zora.py",  # "Plan shots from this treatment" is a Jonathan job
+    "Database/schema_v14.sql",  # a whole schema, so it holds v13's Jonathan column (plan/2026-11-06c)
 }
 
 

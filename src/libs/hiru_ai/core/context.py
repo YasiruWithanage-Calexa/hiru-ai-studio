@@ -23,6 +23,7 @@ from hiru_ai.core.ports import (
     Jobs,
     MemoryStore,
     ProducerStore,
+    RevisionStore,
     SceneStore,
     Search,
     SplitStore,
@@ -46,6 +47,7 @@ class Ports:
     split: SplitStore | None = None
     producer: ProducerStore | None = None
     director: DirectorStore | None = None
+    revisions: RevisionStore | None = None
     images: ImageGen | None = None
     jobs: Jobs | None = None
     staging: Staging | None = None
