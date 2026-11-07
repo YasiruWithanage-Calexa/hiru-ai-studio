@@ -23,9 +23,10 @@ from uuid import UUID
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
+from contracts.doc_read_run import transcribed_text
 from contracts.documents import DocumentStatus
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
-from hiru_ai.core import agents, llm, memory, parts, story
+from hiru_ai.core import agents, doc_reader, llm, memory, parts, story
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -82,6 +83,55 @@ def build(ctx: RunContext, payload: DispatchPayload,
         label = parts.step("chunk_headers").ROLE_LABEL[verdict["role"]]
         progress(f"{filename} looks like a {label}", role=verdict["role"], confidence=verdict["confidence"])
         return {"guess": verdict, "role": chosen}
+
+    def reader_node(state: State) -> State:
+        """Read the whole document with the model into one format (plan/2026-11-06f) and keep it beside the text.
+        Only when `READER__ENABLED` and a key are set: then the `documents.reading_path` / `read_from` columns exist
+        (schema v16). When the text is scrambled the reading also gives a clean transcription, which replaces the text
+        for search, the story and the production memory from here on (decision 8); `extracted.txt` keeps the
+        original. No reading (a failure, or a call that failed its checks): the rules read the document as before,
+        and the job says why."""
+        if not doc_reader.wanted(state["role"]):
+            return {}
+        cached: dict[str, bytes] = {}
+
+        def pdf() -> bytes:
+            if "data" not in cached:
+                cached["data"] = files.download(rules.BUCKET, document["storage_path"])
+            return cached["data"]
+
+        try:
+            outcome = doc_reader.read(ctx, filename=filename, role=state["role"],
+                                      text=rules.paged_text(state["extracted"]["lines"]),
+                                      pdf=pdf if state["extracted"]["kind"] == "pdf" else None, progress=progress)
+        except Exception:
+            _logger.warning("the document reader failed for %s; the rules read it", filename, exc_info=True)
+            outcome = None
+        if outcome is None or outcome.reading is None:
+            why = outcome.reason if outcome is not None else "the reader failed"
+            jobs.event(job_id, JobEventType.WARNING,
+                       {"text": f"{filename}: the reader could not read it ({why}); the rules read it instead.",
+                        "document_id": str(document_id)}, agent=rules.AGENT)
+            return {"reading": {"path": None, "read_from": None}}
+        reading = outcome.reading
+        path = doc_reader.save(ctx, state["text_path"], reading)
+        scenes = sum(len(e.scenes) for e in reading.episodes)
+        lines = sum(1 for e in reading.episodes for s in e.scenes for b in s.blocks if b.kind == "dialogue")
+        progress(f"Read {filename}: {len(reading.episodes)} episodes, {scenes} scenes, {lines} spoken lines, "
+                 f"{len(reading.canon.characters)} people"
+                 + (" (from the page images: check the dialogue)" if reading.source == "pages" else ""))
+        for text in [*reading.notes, *reading.unresolved]:
+            jobs.event(job_id, JobEventType.WARNING, {"text": f"{filename}: {text}", "document_id": str(document_id)},
+                       agent=rules.AGENT)
+        out: State = {"reading": {"path": path, "read_from": reading.source}}
+        if reading.source == "pages":  # decision 8: search and memory read the transcription, not the scrambled text
+            clean = transcribed_text(reading, int(state["extracted"]["page_count"] or 1))
+            extracted = dict(state["extracted"])
+            extracted["lines"] = [{"text": line, "page": n} for n, page in enumerate(clean.split("\f"), start=1)
+                                  for line in page.split("\n") if line.strip()]
+            out["extracted"], out["original"] = extracted, state["extracted"]
+            out["text"] = clean.replace("\f", "\n")
+        return out
 
     def story_node(state: State) -> State:
         """Read the document once for its story (episodes, spoken lines, people) and keep the checked reading beside
@@ -168,7 +218,7 @@ def build(ctx: RunContext, payload: DispatchPayload,
         made = parts.module("step", "chunk_headers", "step").run(
             {"filename": filename, "role": state["role"], "chunks": chunks, "answers": answers})
         warnings = []
-        if (w := rules.legacy_font_warning(state["extracted"], state["role"])) is not None:
+        if (w := rules.legacy_font_warning(state.get("original") or state["extracted"], state["role"])) is not None:
             warnings.append(w)
         return {"headers": made["headers"], "warnings": warnings}
 
@@ -216,18 +266,22 @@ def build(ctx: RunContext, payload: DispatchPayload,
             "text_path": state["text_path"],
             "warnings": state["warnings"],
             "error": None,
+            **({"reading_path": state["reading"]["path"], "read_from": state["reading"]["read_from"]}
+               if state.get("reading") else {}),
         })
         return {"result": {"document_id": str(document_id), "status": "ready", "role": guess["role"],
                            "chunks": len(rows), "embedded": len(state["vectors"])}}
 
     g: Any = StateGraph(State)
-    for name, node in (("read", read), ("role", role), ("story", story_node), ("memory", memory_node),
+    for name, node in (("read", read), ("role", role), ("reader", reader_node), ("story", story_node),
+                       ("memory", memory_node),
                        ("chunk", chunk),
                        ("headers", headers), ("embed", embed), ("index", index)):
         g.add_node(name, node)
     g.add_edge(START, "read")
     g.add_conditional_edges("read", lambda state: END if state.get("rejected") else "role", ["role", END])
-    for before, after in (("role", "story"), ("story", "memory"), ("memory", "chunk"), ("chunk", "headers"),
+    for before, after in (("role", "reader"), ("reader", "story"), ("story", "memory"), ("memory", "chunk"),
+                          ("chunk", "headers"),
                           ("headers", "embed"), ("embed", "index")):
         g.add_edge(before, after)
     g.add_edge("index", END)

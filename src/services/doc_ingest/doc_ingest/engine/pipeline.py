@@ -17,11 +17,14 @@ import logging
 from typing import Any, Protocol
 from uuid import UUID
 
+from contracts.doc_read import READINGS, Reading, reading_path
+from contracts.doc_read_quality import SCRAMBLED_WARNING, quality
+from contracts.doc_read_run import transcribed_text
 from contracts.documents import DocumentRole, DocumentStatus
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
-from doc_ingest.engine import context, roles
+from doc_ingest.engine import context, reader, roles
 from doc_ingest.engine.chunking import chunk
-from doc_ingest.engine.extract import Extracted, Rejected, extract
+from doc_ingest.engine.extract import Extracted, Line, Rejected, extract
 from doc_ingest.runtime.llm import LLM
 
 _logger = logging.getLogger(__name__)
@@ -55,10 +58,24 @@ class StoreLike(Protocol):
 
 
 def legacy_font_warning(extracted: Extracted, role: DocumentRole) -> str | None:
-    """Hiru's dialogue is Sinhala, so a script PDF with no Sinhala code points is suspicious."""
-    if extracted.kind == "pdf" and role == DocumentRole.SCRIPT and not extracted.has_sinhala:
+    """Hiru's dialogue is Sinhala, so a script PDF with no Sinhala code points is suspicious. Sinhala that is there but
+    scrambled (a font that stores the vowel signs in the wrong order, plan/2026-11-06f §4.1) is warned about too."""
+    if extracted.kind != "pdf":
+        return None
+    if role == DocumentRole.SCRIPT and not extracted.has_sinhala:
         return LEGACY_FONT_WARNING
+    if role.value in READINGS and extracted.has_sinhala and \
+            quality(paged_text(extracted).split(FORM_FEED)).mode == "pages":
+        return SCRAMBLED_WARNING
     return None
+
+
+def from_transcription(extracted: Extracted, reading: Reading) -> Extracted:
+    """The reader's clean transcription as the text to chunk and search (decision 8), page by page."""
+    clean = transcribed_text(reading, extracted.page_count or 1)
+    lines = [Line(line, n) for n, page in enumerate(clean.split(FORM_FEED), start=1)
+             for line in page.split("\n") if line.strip()]
+    return Extracted(extracted.kind, lines, extracted.page_count, list(extracted.warnings))
 
 
 def paged_text(extracted: Extracted) -> str:
@@ -76,6 +93,37 @@ def paged_text(extracted: Extracted) -> str:
 
 def embed_hash(model: str, text: str) -> str:
     return hashlib.sha256(f"{model}\n{text}".encode()).hexdigest()
+
+
+def read_whole(store: StoreLike, llm: LLM, job_id: UUID, document_id: UUID, filename: str, role: DocumentRole,
+               extracted: Extracted, text_path: str, data: bytes,
+               progress: Any) -> tuple[dict[str, Any], Reading | None]:
+    """Read the document with the reader and keep the reading beside its text. -> (the document row's reading
+    columns, the reading or None). No reading: the rules read the document as before, and the job says why."""
+    try:
+        outcome = reader.read(llm, filename=filename, role=role.value, text=paged_text(extracted),
+                              pdf=(lambda: data) if extracted.kind == "pdf" else None, progress=progress)
+    except Exception:
+        _logger.warning("the document reader failed for %s; the rules read it", filename, exc_info=True)
+        outcome = None
+    if outcome is None or outcome.reading is None:
+        why = outcome.reason if outcome is not None else "the reader failed"
+        store.event(job_id, JobEventType.WARNING,
+                    {"text": f"{filename}: the reader could not read it ({why}); the rules read it instead.",
+                     "document_id": str(document_id)}, agent=AGENT)
+        return {"reading_path": None, "read_from": None}, None
+    read = outcome.reading
+    path = reading_path(text_path)
+    store.upload_text(BUCKET, path, read.dumps())
+    scenes = sum(len(e.scenes) for e in read.episodes)
+    lines = sum(1 for e in read.episodes for s in e.scenes for b in s.blocks if b.kind == "dialogue")
+    progress(f"Read {filename}: {len(read.episodes)} episodes, {scenes} scenes, {lines} spoken lines, "
+             f"{len(read.canon.characters)} people"
+             + (" (from the page images: check the dialogue)" if read.source == "pages" else ""))
+    for note in [*read.notes, *read.unresolved]:
+        store.event(job_id, JobEventType.WARNING, {"text": f"{filename}: {note}", "document_id": str(document_id)},
+                    agent=AGENT)
+    return {"reading_path": path, "read_from": read.source}, read
 
 
 def run(payload: DispatchPayload, store: StoreLike, llm: LLM) -> dict[str, Any]:
@@ -121,6 +169,15 @@ def run(payload: DispatchPayload, store: StoreLike, llm: LLM) -> dict[str, Any]:
     progress(f"{filename} looks like a {context.ROLE_LABEL[guess.role]}", role=guess.role.value,
              confidence=guess.confidence)
 
+    original = extracted
+    reading_fields: dict[str, Any] = {}
+    if reader.wanted(llm, role.value):  # plan/2026-11-06f: the model reads the whole document into one format
+        reading_fields, read = read_whole(store, llm, job_id, document_id, filename, role, extracted, text_path,
+                                          data, progress)
+        if read is not None and read.source == "pages":
+            extracted = from_transcription(extracted, read)
+            text = extracted.text
+
     chunks = chunk(extracted, script_like=role == DocumentRole.SCRIPT)
     progress(f"Split into {len(chunks)} passages")
     head = context.headers(filename, role, text, chunks,
@@ -128,7 +185,7 @@ def run(payload: DispatchPayload, store: StoreLike, llm: LLM) -> dict[str, Any]:
                                      schema_name="chunk_headers", schema=context.HEADER_SCHEMA))
 
     warnings: list[str] = []
-    if (w := legacy_font_warning(extracted, role)) is not None:
+    if (w := legacy_font_warning(original, role)) is not None:
         warnings.append(w)
 
     model = llm.config.embedding_model
@@ -181,6 +238,7 @@ def run(payload: DispatchPayload, store: StoreLike, llm: LLM) -> dict[str, Any]:
         "text_path": text_path,
         "warnings": warnings,
         "error": None,
+        **reading_fields,
     })
     result = {"document_id": str(document_id), "status": "ready", "role": guess.role.value,
               "chunks": len(rows), "embedded": len(vectors)}

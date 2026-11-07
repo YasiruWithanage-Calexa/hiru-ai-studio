@@ -531,3 +531,21 @@ def test_a_removed_move_step_is_remembered_on_the_block_after_it(world: World):
     assert r.status_code == 200, r.text
     assert not [b for b in r.json()["script"] if b["implied"]]
     assert world.repos.scenes.rows[sid]["script"][3]["skip_bridges"] == ["move:kamala"]  # type: ignore[attr-defined]
+
+
+def test_a_scene_read_from_page_images_waits_for_a_person_to_check_it(world: World):
+    """plan/2026-11-06f decision 6: the dialogue of a scene the reader read from page images is confirmed by a person
+    who may edit the script; any other scene has nothing to confirm."""
+    s = seed_scene(world)
+    sid = s["scene"]["id"]
+    h = world.headers(world.director)
+    v = world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    assert v["read_from"] is None and v["read_confirmed_at"] is None
+    assert world.client.post(url(world, f"/scenes/{sid}/read-check"), headers=h).status_code == 409
+    world.repos.scenes.rows[sid]["read_from"] = "pages"  # type: ignore[attr-defined]
+    assert world.client.post(url(world, f"/scenes/{sid}/read-check"),
+                             headers=world.headers(world.reviewer)).status_code == 403
+    v = world.client.post(url(world, f"/scenes/{sid}/read-check"), headers=h).json()
+    assert v["read_from"] == "pages" and v["read_confirmed_at"]
+    row = world.repos.scenes.rows[sid]  # type: ignore[attr-defined]
+    assert row["read_confirmed_by"] == str(world.director)

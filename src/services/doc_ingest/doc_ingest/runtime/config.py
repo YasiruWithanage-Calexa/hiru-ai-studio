@@ -18,6 +18,12 @@ class Config:
     effort_low: str
     embedding_model: str
     embedding_dimensions: int
+    # The document reader (plan/2026-11-06f): the author's model at its own effort. Off until a person turns it on
+    # after the live eval (READER__ENABLED); then `documents.reading_path` / `read_from` must exist (schema v16).
+    model_reader: str = "gpt-5"
+    effort_reader: str = "medium"
+    reader_enabled: bool = False
+    reader_workers: int = 4
 
     @property
     def llm_enabled(self) -> bool:
@@ -37,4 +43,8 @@ def get_config() -> Config:
         effort_low=env("OPENAI__EFFORT_LOW", "minimal"),
         embedding_model=env("OPENAI__EMBEDDING_MODEL", "text-embedding-3-large"),
         embedding_dimensions=int(env("OPENAI__EMBEDDING_DIMENSIONS", "1536")),
+        model_reader=env("OPENAI__MODEL_AUTHOR", "gpt-5"),
+        effort_reader=env("OPENAI__EFFORT_READER", "medium"),
+        reader_enabled=env("READER__ENABLED", "").strip().lower() in ("1", "true", "yes", "on"),
+        reader_workers=int(env("READER__WORKERS", "4")),
     )

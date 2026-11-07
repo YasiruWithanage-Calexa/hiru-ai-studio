@@ -232,6 +232,10 @@ class SceneView(BaseModel):
     staging: stagemap.SceneStaging | None = None  # where everyone is (plan/2026-11-01d, Phase 4)
     staging_stale: bool = False
     staging_findings: list[StagingFindingView] = []  # teleports, crossed lines, eyelines found in code
+    # How the script was read (plan/2026-11-06f decision 6): "pages" = the document reader read it from page images, so
+    # its dialogue waits for a person to check it against the page; None = the rules read it.
+    read_from: str | None = None
+    read_confirmed_at: datetime | None = None
 
 
 class ResplitStarted(BaseModel):
@@ -478,7 +482,8 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))),
         staging=staging, staging_stale=bool(staging and staging.stale(
             sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))),
-        staging_findings=staging_findings(staging, kernel_items, result, cast_names, shot_of_number))
+        staging_findings=staging_findings(staging, kernel_items, result, cast_names, shot_of_number),
+        read_from=scene.get("read_from"), read_confirmed_at=scene.get("read_confirmed_at"))
 
 
 def staging_findings(staging: stagemap.SceneStaging | None, items: list[Any], result: FitResult | None,
@@ -811,6 +816,22 @@ async def unapprove_scene(production_id: UUID, scene_id: UUID, access: CanApprov
         await repos.scenes.update(scene_id, {"status": SceneStatus.SPLIT.value, "locked_by": None, "locked_at": None})
         await _episode_status(repos, production_id, UUID(str(ld.scene["episode_id"])))
         await repos.audit.record(action="scene.unapprove", entity="scene", entity_id=str(scene_id),
+                                 actor_user_id=access.user.id, production_id=production_id)
+    return await view(repos, access, scene_id)
+
+
+@router.post("/scenes/{scene_id}/read-check", response_model=SceneView)
+async def confirm_read(production_id: UUID, scene_id: UUID, access: CanWrite, repos: ReposDep) -> SceneView:
+    """A person checked the dialogue of a scene the document reader read from page images against the page
+    (plan/2026-11-06f decision 6). Only a "pages" scene has anything to confirm; the next build that rewrites the scene
+    clears it."""
+    ld = await load(repos, access, scene_id)
+    if ld.scene.get("read_from") != "pages":
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene was not read from page images.")
+    if not ld.scene.get("read_confirmed_at"):
+        await repos.scenes.update(scene_id, {"read_confirmed_by": str(access.user.id),
+                                             "read_confirmed_at": datetime.now(UTC).isoformat()})
+        await repos.audit.record(action="scene.read_check", entity="scene", entity_id=str(scene_id),
                                  actor_user_id=access.user.id, production_id=production_id)
     return await view(repos, access, scene_id)
 

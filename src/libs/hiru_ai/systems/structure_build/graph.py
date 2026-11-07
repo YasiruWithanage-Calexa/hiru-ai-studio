@@ -30,7 +30,7 @@ from contracts.build import Agent, QuestionStatus, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
-from hiru_ai.core import llm, parts, story
+from hiru_ai.core import doc_reader, llm, parts, story
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.patterns import ask_node
 from hiru_ai.core.registry import Registry
@@ -68,6 +68,13 @@ def build(ctx: RunContext, payload: DispatchPayload, *, durable: bool, envelope_
             if role in rules.PROSE_ROLES and d.get("text_path"):
                 item = {"id": str(d["id"]), "filename": d["filename"], "role": role,
                         "text": docs_port.text(d["text_path"])}
+                read = doc_reader.load(ctx, d)
+                if read is not None and read.episodes:  # the reader read it (plan/2026-11-06f): no prose cut
+                    docs.append({**item, "role": "script", "reading": read.model_dump(mode="json")})
+                    jobs.event(job_id, JobEventType.AGENT_STEP,
+                               {"text": f"{d['filename']}: scenes from the reader's reading "
+                                        f"({'page images' if read.source == 'pages' else 'text'})."}, agent=AGENT)
+                    continue
                 # A story written as prose (a bible with its episodes in it, a treatment) has no scene headings for the
                 # parser; it becomes screenplay text first, whatever its role. The story reader's reading of the
                 # document says where its episodes and spoken lines are, in any layout; without one, the rules look.

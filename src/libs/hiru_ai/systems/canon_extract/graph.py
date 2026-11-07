@@ -22,10 +22,11 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
 from contracts.build import Agent, Stage
+from contracts.doc_read import reading_candidates
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
-from hiru_ai.core import agents, llm, parts, story
+from hiru_ai.core import agents, doc_reader, llm, parts, story
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.systems.canon_extract.state import State
@@ -44,8 +45,12 @@ def read_documents(ctx: RunContext, production_id: Any) -> tuple[list[dict[str, 
         if not d.get("text_path"):
             warnings.append(f"{d['filename']} was read before this build step existed; re-ingest it to include it.")
             continue
-        docs.append({"id": str(d["id"]), "filename": d["filename"], "role": role, "text_path": d["text_path"],
-                     "text": docs_port.text(d["text_path"])})
+        item: dict[str, Any] = {"id": str(d["id"]), "filename": d["filename"], "role": role,
+                                "text_path": d["text_path"], "text": docs_port.text(d["text_path"])}
+        read = doc_reader.load(ctx, d)  # the document reader's reading (plan/2026-11-06f)
+        if read is not None:
+            item["reading"] = read.model_dump(mode="json")
+        docs.append(item)
     return docs, warnings
 
 
@@ -80,7 +85,14 @@ def build(ctx: RunContext, payload: DispatchPayload, aspect_ratio: str) -> State
 
     def extract(state: State) -> State:
         jobs.stage(job_id, Stage.CANON.value, "active")
-        cands = parts.module("step", "canon_rules", "step").rule_candidates(state["documents"])
+        canon_rules = parts.module("step", "canon_rules", "step")
+        found = reading_candidates(state["documents"], rule_candidates=canon_rules.rule_candidates,
+                                   merge=canon_rules.rules.merge, same=canon_rules.rules.same)
+        if found is not None:  # the reader already mapped every cue to a person: no extraction, no dedupe
+            jobs.event(job_id, JobEventType.AGENT_STEP,
+                       {"text": "Canon from the document reader's readings; codes from the documents."}, agent=AGENT)
+            return {"candidates": found, "read": True}
+        cands = canon_rules.rule_candidates(state["documents"])
         if llm.models_enabled():
             try:
                 told = merge.counts(cands)
@@ -93,7 +105,7 @@ def build(ctx: RunContext, payload: DispatchPayload, aspect_ratio: str) -> State
 
     def dedupe(state: State) -> State:
         cands = state["candidates"]
-        if llm.models_enabled() and len(cands) > 1:
+        if llm.models_enabled() and len(cands) > 1 and not state.get("read"):
             try:
                 out = agents.build("canon_deduper").run({"candidates": merge.dedupe_input(cands)}, ctx)
                 cands = merge.apply_groups(cands, [g.model_dump() for g in out.groups])

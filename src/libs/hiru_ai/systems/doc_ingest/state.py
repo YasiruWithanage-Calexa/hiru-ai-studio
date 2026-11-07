@@ -20,3 +20,5 @@ class State(TypedDict, total=False):
     hashes: dict[int, str]
     result: dict[str, Any]
     rejected: bool
+    original: dict[str, Any]  # `extracted` as the PDF gave it, when the reader's transcription replaced it
+    reading: dict[str, Any]  # the document reader's outcome: {path, read_from} (plan/2026-11-06f), {} when not read

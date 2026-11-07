@@ -11,3 +11,4 @@ class State(TypedDict, total=False):
     notes: list[str]
     warnings: list[str]
     report: dict[str, Any]
+    read: bool  # the candidates came from the document reader's readings: no model extraction or dedupe

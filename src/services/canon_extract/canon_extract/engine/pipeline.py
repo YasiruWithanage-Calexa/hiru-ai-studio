@@ -19,6 +19,7 @@ from langgraph.graph import END, START, StateGraph
 from canon_extract.engine import model, rules, write
 from contracts.build import Agent, Stage
 from contracts.canon import CanonKind
+from contracts.doc_read import Reading, reading_candidates
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.screenplay import parse_document
@@ -61,6 +62,7 @@ class State(TypedDict, total=False):
     notes: list[str]
     warnings: list[str]
     report: dict[str, Any]
+    read: bool  # the candidates came from the document reader's readings: no model extraction or dedupe
 
 
 def read_documents(store: StoreLike, production_id: UUID) -> tuple[list[dict[str, str]], list[str]]:
@@ -72,7 +74,16 @@ def read_documents(store: StoreLike, production_id: UUID) -> tuple[list[dict[str
         if not d.get("text_path"):
             warnings.append(f"{d['filename']} was read before this build step existed; re-ingest it to include it.")
             continue
-        docs.append({"id": str(d["id"]), "filename": d["filename"], "role": role, "text": store.text(d["text_path"])})
+        item: dict[str, Any] = {"id": str(d["id"]), "filename": d["filename"], "role": role,
+                                "text": store.text(d["text_path"])}
+        if d.get("reading_path"):  # the document reader's reading (plan/2026-11-06f)
+            try:
+                read = Reading.loads(store.text(d["reading_path"]))
+            except Exception:
+                read = None
+            if read is not None:
+                item["reading"] = read.model_dump(mode="json")
+        docs.append(item)
     return docs, warnings
 
 
@@ -117,6 +128,12 @@ def build_graph(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm:
 
     def extract(state: State) -> State:
         jobs.stage(job_id, Stage.CANON.value, "active")
+        found = reading_candidates(state["documents"], rule_candidates=rule_candidates, merge=rules.merge,
+                                   same=rules.same)
+        if found is not None:  # the reader already mapped every cue to a person: no extraction, no dedupe
+            jobs.event(job_id, JobEventType.AGENT_STEP,
+                       {"text": "Canon from the document reader's readings; codes from the documents."}, agent=AGENT)
+            return {"candidates": found, "read": True}
         cands = rule_candidates(state["documents"])
         if llm.enabled:
             try:
@@ -129,7 +146,7 @@ def build_graph(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm:
 
     def dedupe(state: State) -> State:
         cands = state["candidates"]
-        if llm.enabled and len(cands) > 1:
+        if llm.enabled and len(cands) > 1 and not state.get("read"):
             try:
                 cands = model.dedupe(ask("medium", "canon_extract.dedupe", "canon_dupes", model.DEDUPE_SCHEMA), cands)
             except Exception:

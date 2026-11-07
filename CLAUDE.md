@@ -123,6 +123,23 @@ a `scene_plan_revisions` row (schema v14). It runs only when `ZORA__ENABLED` and
 Read `plan/2026-11-06e/IMPLEMENTED.md` first: phases 0 to 8 are built offline; the lab's paid run, applying v14,
 turning it on, the Figma frames (D8) and the live check are a person's. No costs in the interface.
 
+## The document reader (plan/2026-11-06f)
+
+The model reads a whole uploaded script, bible, canon index or outline ONCE at ingest into one format
+(`contracts/doc_read.py`), kept beside the text (`documents.reading_path`); the structure build and the canon extraction
+then use that reading instead of the rules, and nothing after them changes. The run (pieces, calls, checks, at most two
+repairs, the merge) is pure code in `contracts/doc_read_run.py` with its model calls passed in, so both engines share it:
+the graph passes the `reader/` group's agents (`reader_canon`, `reader_episode`, `reader_repair`; tier `reader` =
+OPENAI__MODEL_AUTHOR at OPENAI__EFFORT_READER), the doc_ingest service its own `runtime/llm.py` (prompts copied into
+`engine/reader_prompts/`; a test holds them equal: change both). A PDF whose Sinhala text layer is scrambled
+(`contracts/doc_read_quality.py`) is read from its page images (a Chat Completions `file` part); its scenes carry
+`read_from = "pages"` and wait for a person to confirm their dialogue, and its clean transcription replaces the text for
+search and memory. Rules that must not drift: **dialogue is never invented, translated or tidied** (text mode checks
+every word against the source lines); **only what is written** (a canon entry whose quote is not in the text loses its
+description); a failed read leaves the rules, and the job says why. Off until `READER__ENABLED` (a person turns it on
+after `scripts/eval_reader.py --yes`); it needs schema v16. Read `docs/reader/README.md` and
+`plan/2026-11-06f/IMPLEMENTED.md` first.
+
 ## Video generation in Hiru (plan/2026-11-06c)
 
 A person can make a shot's take in Hiru with Omni Flash (default) or Veo 3.1, beside the upload from Flow. The pure rules are

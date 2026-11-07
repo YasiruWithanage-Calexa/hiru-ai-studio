@@ -380,3 +380,14 @@ modules = ["hiru_ai.agents.zora.*"]
 name = "zora systems never import each other"
 type = "independence"
 modules = ["hiru_ai.systems.zora.*"]
+
+# The document reader (plan/2026-11-06f): the `reader` group.
+[[tool.importlinter.contracts]]
+name = "reader agents never import each other"
+type = "independence"
+modules = ["hiru_ai.agents.reader.*"]
+
+[[tool.importlinter.contracts]]
+name = "reader steps never import each other"
+type = "independence"
+modules = ["hiru_ai.steps.reader.*"]

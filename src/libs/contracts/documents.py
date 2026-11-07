@@ -66,6 +66,9 @@ class Document(BaseModel):
     chunk_count: int = 0
     warnings: list[str] = Field(default_factory=list)
     error: str | None = None
+    # How the document reader read it (plan/2026-11-06f): "text" (checked word for word), "pages" (from the page
+    # images: its scenes wait for a person), None (not read; the rules read it).
+    read_from: str | None = None
     created_at: datetime
     updated_at: datetime
 

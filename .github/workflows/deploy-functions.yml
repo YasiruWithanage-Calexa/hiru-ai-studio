@@ -43,7 +43,7 @@ jobs:
           # "ai":true = the zip also holds hiru_ai (AI_ENGINE=graph); set it when the function's system is migrated
           ALL='[
             {"name":"hiru-echo","src":"src/services/echo","memory":"256Mi","timeout":60,"ai":true},
-            {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":540,"ai":true},
+            {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":1800,"ai":true},
             {"name":"hiru-script-split","src":"src/services/script_split","memory":"512Mi","timeout":900,"ai":true},
             {"name":"hiru-structure-build","src":"src/services/structure_build","memory":"1Gi","timeout":900,"ai":true},
             {"name":"hiru-canon-extract","src":"src/services/canon_extract","memory":"1Gi","timeout":600,"ai":true},

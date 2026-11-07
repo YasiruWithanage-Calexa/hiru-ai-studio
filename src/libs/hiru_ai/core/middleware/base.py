@@ -43,6 +43,7 @@ class ModelCall:
     tools: str = ""  # a react agent's tool definitions as sent (Agent.tool_block): part of the cached prefix too
     documents: Sequence[Document] = ()  # appended to `user` inside tags (untrusted_text)
     images: Sequence[tuple[str, str]] = ()  # (mime, base64) pictures sent with the user message (the frame check)
+    files: Sequence[tuple[str, str]] = ()  # (filename, base64) PDFs sent with the user message (the document reader)
     lines_before: Mapping[str, str] | None = None  # spoken lines as given, by line id (language_guard)
     lines_after: Callable[[Any], Mapping[str, str]] | None = None  # the lines a result carries, by line id
     fallback: Any = MISSING  # what absent_safe returns when the model is unavailable or fails

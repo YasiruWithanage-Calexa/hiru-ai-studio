@@ -131,6 +131,10 @@ def plan(structure: dict[str, Any], *, production_id: str, canon: list[Row], exi
                 "script": blocks,
                 "script_version": int(old["script_version"]) + 1 if old else 1, "status": "draft",
                 "fit_report": {},
+                # How the scene was read (plan/2026-11-06f decision 6); only a reading sets it, so a build without
+                # one never names the columns (schema v16). A rewritten scene waits for a person again.
+                **({"read_from": scene["read_from"], "read_confirmed_by": None, "read_confirmed_at": None}
+                   if scene.get("read_from") else {}),
             }, lines))
     # Scenes left over in an episode the scripts rebuilt no longer exist in the script.
     rebuilt = {e["id"] for e, src in zip(out.episodes, structure["episodes"], strict=True) if src["scenes"]}

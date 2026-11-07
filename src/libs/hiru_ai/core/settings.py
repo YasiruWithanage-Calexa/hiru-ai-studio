@@ -28,6 +28,9 @@ class OpenAISettings(BaseModel):
     model_author: str = "gpt-5"
     effort_author: str = "medium"
     effort_repair: str = "low"
+    # The document reader (plan/2026-11-06f Q1): the `reader` tier is model_author at this effort. Reading is less
+    # creative than planning; the live eval (`scripts/eval_reader.py --yes`) decides.
+    effort_reader: str = "medium"
     # Shot Planner Jonathan (plan/2026-11-06b): the `jonathan` tier, its own model (gpt-5 shuts down 2026-12-11;
     # GPT-6.1 Sol is OpenAI's near-flagship at gpt-5's price class) at the effort the cinematic lab proved (high).
     # An environment change, not a code change.
@@ -66,6 +69,14 @@ class ZoraSettings(BaseModel):
     revisions_kept: int = 30  # undo depth per scene (D4)
 
 
+class ReaderSettings(BaseModel):
+    """The document reader (plan/2026-11-06f): `READER__*`. Off until a person turns it on after the live eval
+    (Phase 5): with it off, ingest reads no document with a model and every build is as before."""
+
+    enabled: bool = False
+    workers: int = 4  # episode calls at once
+
+
 class SupabaseSettings(BaseModel):
     url: str = "http://127.0.0.1:54321"
     service_role_key: SecretStr = SecretStr("")
@@ -100,6 +111,7 @@ class AISettings(BaseSettings):
     openai: OpenAISettings = OpenAISettings()
     supabase: SupabaseSettings = SupabaseSettings()
     zora: ZoraSettings = ZoraSettings()
+    reader: ReaderSettings = ReaderSettings()
     # Where traces go (ADR 0008: Langfuse Cloud). Langfuse's own names, as its settings page prints them. Empty keys =
     # no tracing.
     langfuse_public_key: str = ""

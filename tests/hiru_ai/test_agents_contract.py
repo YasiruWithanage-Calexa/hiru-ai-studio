@@ -107,8 +107,9 @@ def test_an_eval_case_runs_against_a_scripted_model(comp: Component, case: dict[
             got = agent.run(inp, ctx)
         sent = model.calls[0]
         sent_user = sent[1].content
-        if isinstance(sent_user, list):  # a vision call: the text part, then the pictures
-            assert [p["type"] for p in sent_user] == ["text", *["image_url"] * (len(sent_user) - 1)]
+        if isinstance(sent_user, list):  # the text part, then the pictures, then the PDFs (the document reader)
+            kinds = [p["type"] for p in sent_user]
+            assert kinds[0] == "text" and kinds[1:] == sorted(kinds[1:], key=["image_url", "file"].index)
             sent_user = sent_user[0]["text"]
         assert sent[0].content == system and sent_user == user
     assert isinstance(got, agent.output_cls)

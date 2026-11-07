@@ -11,6 +11,7 @@ something that runs. The agent's own code is small and typed:
                 finish(inp, out)        the answer cleaned up exactly as the engine did (optional)
                 documents(inp)          uploaded text, wrapped by the `untrusted_text` middleware (optional)
                 images(inp)             (mime, base64) pictures sent with the user message (a vision agent; optional)
+                files(inp)              (filename, base64) PDFs sent with the user message (the document reader)
                 output_schema()         a JSON schema (with a top-level `title`) when the shape is decided at run time
                 lines_before(inp), lines_after(out)   spoken lines in and out, for `language_guard` (optional)
 
@@ -91,6 +92,7 @@ class Agent:
         before, after = getattr(hook, "lines_before", None), getattr(hook, "lines_after", None)
         docs = getattr(hook, "documents", None)
         images = getattr(hook, "images", None)
+        files = getattr(hook, "files", None)
         scope = getattr(hook, "memory_scope", None)
         return ModelCall(
             component=self.component, phase=self.phase, tier=self.manifest.model, system=system, user=user,
@@ -98,6 +100,7 @@ class Agent:
             tools=self.tool_block() if self.manifest.tools else "",
             documents=tuple(docs(inp)) if docs else (),
             images=tuple(images(inp)) if images else (),
+            files=tuple(files(inp)) if files else (),
             lines_before=before(inp) if before else None, lines_after=after,
             fallback=MISSING if answer is None else answer,
             memory_topics=tuple(self.manifest.memory),
@@ -182,10 +185,13 @@ class Agent:
     def _structured(self, call: ModelCall, ctx: RunContext) -> Any:
         runnable = llm.get_structured(call.tier, self.wire_schema(), timeout_s=call.timeout_s)
         user: Any = call.user
-        if call.images:  # a vision call: the text, then each picture at low detail
+        if call.images or call.files:  # the text, then each picture at low detail, then each PDF (its pages' text and
+            # images reach the model: OpenAI's file input)
             user = [{"type": "text", "text": call.user},
                     *({"type": "image_url", "image_url": {"url": f"data:{mime};base64,{data}", "detail": "low"}}
-                      for mime, data in call.images)]
+                      for mime, data in call.images),
+                    *({"type": "file", "file": {"filename": name, "file_data": f"data:application/pdf;base64,{data}"}}
+                      for name, data in call.files)]
         raw = runnable.invoke([SystemMessage(call.system), HumanMessage(content=user)], config=cast(Any, call.config))
         return raw if isinstance(raw, self.output_cls) else self.output_cls.model_validate(raw)
 

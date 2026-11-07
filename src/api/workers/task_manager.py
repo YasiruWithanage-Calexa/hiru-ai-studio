@@ -38,7 +38,7 @@ class FunctionSpec:
 
 FUNCTIONS: dict[JobKind, FunctionSpec] = {
     JobKind.ECHO: FunctionSpec("hiru-echo", 8201, 60),
-    JobKind.DOC_INGEST: FunctionSpec("hiru-doc-ingest", 8202, 540),
+    JobKind.DOC_INGEST: FunctionSpec("hiru-doc-ingest", 8202, 1800),  # the document reader (plan/2026-11-06f)
     JobKind.SCRIPT_SPLIT: FunctionSpec("hiru-script-split", 8203, 900),
     JobKind.STRUCTURE_BUILD: FunctionSpec("hiru-structure-build", 8204, 900),
     JobKind.CANON_EXTRACT: FunctionSpec("hiru-canon-extract", 8205, 600),

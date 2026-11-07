@@ -5,6 +5,9 @@ from __future__ import annotations
 import hashlib
 from typing import Any
 
+from contracts.doc_read import READINGS
+from contracts.doc_read_quality import SCRAMBLED_WARNING, quality
+
 FORM_FEED = "\f"  # between PDF pages in the stored text
 BUCKET = "documents"
 EMBED_BATCH = 64
@@ -21,10 +24,20 @@ LEGACY_FONT_WARNING = ("No Sinhala Unicode text was found in this script. If its
 
 
 def legacy_font_warning(extracted: dict[str, Any], role: str) -> str | None:
-    """Hiru's dialogue is Sinhala, so a script PDF with no Sinhala code points is suspicious."""
-    if extracted["kind"] == "pdf" and role == "script" and not extracted["has_sinhala"]:
+    """Hiru's dialogue is Sinhala, so a script PDF with no Sinhala code points is suspicious. Sinhala that is there but
+    scrambled (a font that stores the vowel signs in the wrong order, plan/2026-11-06f §4.1) is warned about too."""
+    if extracted["kind"] != "pdf":
+        return None
+    if role == "script" and not extracted["has_sinhala"]:
         return LEGACY_FONT_WARNING
+    if role in READINGS and extracted["has_sinhala"] and quality(page_texts(extracted["lines"])).mode == "pages":
+        return SCRAMBLED_WARNING
     return None
+
+
+def page_texts(lines: list[dict[str, Any]]) -> list[str]:
+    """The text of each page, in order, from the extracted lines."""
+    return paged_text(lines).split(FORM_FEED)
 
 
 def paged_text(lines: list[dict[str, Any]]) -> str:

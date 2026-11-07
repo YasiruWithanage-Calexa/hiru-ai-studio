@@ -20,6 +20,7 @@ import re
 from typing import Any
 
 from contracts.canon import CanonKind, name_key
+from contracts.doc_read import Reading, to_parsed
 from contracts.screenplay import ParsedDocument, parse_document, parse_outline
 
 Plan = dict[str, Any]
@@ -96,7 +97,7 @@ def analyse(documents: list[dict[str, Any]], canon: list[dict[str, Any]]) -> Pla
                 outline.setdefault(e.number, {"title": e.title, "synopsis": e.synopsis})
 
     parsed: list[tuple[dict[str, Any], ParsedDocument]] = [
-        (d, parse_document(d["text"], d["filename"], known)) for d in documents if d["role"] == "script"]
+        (d, _parsed(d, known)) for d in documents if d["role"] == "script"]
 
     questions: list[Question] = []
     claims: dict[int, list[str]] = {}  # episode number → script units claiming it, oldest first
@@ -107,6 +108,9 @@ def analyse(documents: list[dict[str, Any]], canon: list[dict[str, Any]]) -> Pla
                 continue
             uid = f"{d['id']}:{i}"
             scenes = [_scene(s, n) for n, s in enumerate(ep.scenes, start=1)]
+            if d.get("reading"):  # how each scene was read: "pages" scenes wait for a person (decision 6)
+                for scene in scenes:
+                    scene["read_from"] = d["reading"].get("source") or "text"
             # Lengths the episode's own text stated (prose episodes), one per scene.
             seconds = (d.get("scene_seconds") or {}).get(str(ep.number)) or []
             if len(seconds) == len(scenes):
@@ -187,13 +191,23 @@ def analyse(documents: list[dict[str, Any]], canon: list[dict[str, Any]]) -> Pla
             "outline": {str(k): v for k, v in outline.items()}, "questions": questions}
 
 
+def _parsed(d: dict[str, Any], known: set[str]) -> ParsedDocument:
+    """The document's scenes: the reader's reading when it has one (plan/2026-11-06f), else the rules."""
+    if d.get("reading"):
+        return to_parsed(Reading.model_validate(d["reading"]))
+    return parse_document(d["text"], d["filename"], known)
+
+
 def _scene(s: Any, number: int) -> dict[str, Any]:
     h = s.heading
     heading = {"raw": h.raw, "int_ext": h.int_ext, "location": h.location, "sub_location": h.sub_location,
                "time_of_day": h.time_of_day}
-    return {"number": number, "heading": heading, "title": _scene_title(heading),
-            "blocks": [{"kind": b.kind, "text": b.text, "speaker": b.speaker, "delivery": b.delivery}
-                       for b in s.blocks]}
+    out = {"number": number, "heading": heading, "title": _scene_title(heading),
+           "blocks": [{"kind": b.kind, "text": b.text, "speaker": b.speaker, "delivery": b.delivery}
+                      for b in s.blocks]}
+    if getattr(h, "stated_seconds", 0) >= 4:  # "SCENE 01 - ... - 1 MINUTE": the script's own length is the envelope
+        out["envelope_s"] = int(h.stated_seconds)
+    return out
 
 
 def default_answers(questions: list[Question]) -> dict[str, dict[str, Any]]:

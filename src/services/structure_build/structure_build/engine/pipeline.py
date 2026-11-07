@@ -21,6 +21,7 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
 
 from contracts.build import Agent, QuestionStatus, Stage
+from contracts.doc_read import Reading
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
@@ -77,6 +78,17 @@ class State(TypedDict, total=False):
     report: dict[str, Any]
 
 
+def stored_reading(store: StoreLike, d: dict[str, Any]) -> Reading | None:
+    """The document reader's stored reading of `d` (plan/2026-11-06f), or None: never read, or unreadable."""
+    if not d.get("reading_path"):
+        return None
+    try:
+        return Reading.loads(store.text(d["reading_path"]))
+    except Exception:
+        _logger.warning("the reading of %s could not be loaded; the rules read it", d.get("filename"), exc_info=True)
+        return None
+
+
 def question_id(job_id: UUID, key: str) -> str:
     return str(uuid.uuid5(QUESTION_NS, f"{job_id}:{key}"))
 
@@ -109,6 +121,13 @@ def build_graph(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm:
             if role in PROSE_ROLES and d.get("text_path"):
                 item = {"id": str(d["id"]), "filename": d["filename"], "role": role,
                         "text": store.text(d["text_path"])}
+                read = stored_reading(store, d)
+                if read is not None and read.episodes:  # the reader read it (plan/2026-11-06f): no prose cut
+                    docs.append({**item, "role": "script", "reading": read.model_dump(mode="json")})
+                    jobs.event(job_id, JobEventType.AGENT_STEP,
+                               {"text": f"{d['filename']}: scenes from the reader's reading "
+                                        f"({'page images' if read.source == 'pages' else 'text'})."}, agent=AGENT)
+                    continue
                 # A story written as prose (a bible with its episodes in it, a treatment) has no
                 # scene headings for the parser; it becomes screenplay text first, whatever its role.
                 converted = prose.convert(item["text"], ask_model, canon)
