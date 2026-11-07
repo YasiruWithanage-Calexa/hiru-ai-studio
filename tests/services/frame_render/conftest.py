@@ -49,9 +49,14 @@ class FakeStore:
         self.scene_look_rows: list[dict] = []  # entity_id, look_id: the scene's picks
         self.episode = 1
 
-    def add_frame(self, shot_id: str, status: str = "queued") -> str:
+    def add_frame(self, shot_id: str, status: str = "queued", **fields: Any) -> str:
         fid = str(uuid4())
-        self.frame_rows[fid] = {"id": fid, "production_id": str(PID), "shot_id": shot_id, "status": status}
+        self.frame_rows[fid] = {"id": fid, "production_id": str(PID), "shot_id": shot_id, "status": status, **fields}
+        return fid
+
+    def add_draft(self, shot_id: str, status: str = "done") -> str:
+        """A finished draft of the shot, with its picture in the frames bucket."""
+        fid = self.add_frame(shot_id, status, stage="draft", storage_path=f"{PID}/{shot_id}/draft.png")
         return fid
 
     def production(self, production_id: UUID) -> dict | None:
@@ -89,6 +94,11 @@ class FakeStore:
             raise OSError("gone")
         return f"sheet:{path}".encode()
 
+    def download_frame(self, path: str) -> bytes:
+        if path in self.unreadable:
+            raise OSError("gone")
+        return f"frame:{path}".encode()
+
     def claim_frame(self, frame_id: str) -> bool:
         row = self.frame_rows[frame_id]
         if row["status"] != "queued":
@@ -116,11 +126,13 @@ class FakeStore:
 class FakePainter:
     def __init__(self, refuse: bool = False, fail: bool = False) -> None:
         self.calls: list[dict] = []
+        self.drafts: list[bool] = []  # per call: was it painted as a draft (low quality)
         self.refuse, self.fail = refuse, fail
 
-    def __call__(self, prompt: str, aspect: str, references: list[Reference]) -> Picture:
+    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False) -> Picture:
         self.calls.append({"prompt": prompt, "aspect": aspect, "references": [r.label for r in references],
                            "pictures": [r.data for r in references]})
+        self.drafts.append(draft)
         if self.refuse:
             raise RefusedError("The image model declined to make this frame.")
         if self.fail:

@@ -7,10 +7,12 @@ prompt (PLAN.md §10, §13 Phase 4). Rules in `api/services/production.py`.
     PATCH .../shots/{id}/camera           a person's camera (null = back to the recommendation)
     PATCH .../shots/{id}/intent           a person's intent: what the shot is for, who is seen
     PATCH .../scenes/{id}/coverage        a person's coverage plan for the scene
-    POST  .../shots/{id}/frames           first frames for one shot (job)
+    POST  .../shots/{id}/frames           first frames for one shot (job): `stage` draft (low quality) or final
+                                          (medium); a final may be `from_draft` (the accepted draft is a reference)
     POST  .../scenes/{id}/frames          first frames for every shot that needs one (job)
     POST  .../shots/{id}/frames/upload    a frame a person made elsewhere
-    POST  .../frames/{id}/accept|reject   picking is free; accepting unlocks the prompt
+    POST  .../frames/{id}/accept|reject   picking is free; accepting a FINAL unlocks the prompt, accepting a draft only
+                                          makes it the reference a final may be painted from
     POST  .../shots/{id}/prompt           a new prompt version (job), once unlocked
     POST  .../scenes/{id}/prompts         prompts for every unlocked shot of the scene (job)
     GET   .../shots/{id}/prompt|prompts   the latest prompt / every version
@@ -26,7 +28,7 @@ from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
@@ -42,8 +44,10 @@ from contracts.producer import (
     CameraSettings,
     CameraUpdate,
     Check,
+    FrameStage,
     PromptSection,
     frame_prompt,
+    frame_stage,
     storyboard_note,
 )
 from contracts.production import Framing, SceneStatus, ShotStatus
@@ -113,7 +117,9 @@ class CameraView(BaseModel):
 
 class FrameView(BaseModel):
     id: UUID
-    label: str  # "First frame 2"
+    label: str  # "First frame 2", or "Draft 2" for a draft
+    stage: FrameStage  # draft = low quality, a reference only; final = medium quality, what opens the video prompt
+    draft_id: UUID | None  # the accepted draft this final was painted from (None: painted without one)
     status: str  # queued | running | done | failed | refused
     url: str | None  # /files/{ticket}, never a storage URL
     error: str | None
@@ -177,8 +183,10 @@ class ShotProductionView(BaseModel):
     camera: CameraView
     checks: list[CameraCheck]
     frame_prompt: str  # what the next frame will be asked for ("" until designed)
-    frames: list[FrameView]
+    frames: list[FrameView]  # the finals (uploads and carried frames too)
     accepted_frame_id: UUID | None
+    drafts: list[FrameView]  # low-quality drafts, newest last
+    accepted_draft_id: UUID | None
     prompt_lock: LockView
     prompt: PromptView | None
 
@@ -206,11 +214,22 @@ class DesignRequest(BaseModel):
     force: bool = False  # re-design shots whose design is still current
 
 
-class FramesRequest(BaseModel):
+class FramesBase(BaseModel):
     count: int = Field(default=1, ge=1, le=MAX_FRAMES_PER_REQUEST)
 
 
-class SceneFramesRequest(FramesRequest):
+class FramesRequest(FramesBase):
+    stage: FrameStage = FrameStage.FINAL
+    from_draft: bool = False  # a final only: attach the shot's accepted draft as a reference
+
+    @model_validator(mode="after")
+    def _draft_is_not_from_a_draft(self) -> FramesRequest:
+        if self.from_draft and self.stage != FrameStage.FINAL:
+            raise ValueError("only a final can be painted from a draft")
+        return self
+
+
+class SceneFramesRequest(FramesBase):
     only_missing: bool = True  # skip shots that already have an accepted, current frame
 
 
@@ -320,15 +339,20 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
             lines.append(ShotLine(id=ln["id"], speaker=ln["speaker"], character_id=ln.get("character_id"),
                                   text=ln["text"], delivery=ln.get("delivery") or "", words=int(ln.get("words") or 0),
                                   start_s=ln.get("start_s")))
-    frames = []
-    for n, f in enumerate(st.frames, start=1):
-        reasons = st.frame_reasons.get(str(f["id"]), [])
-        frames.append(FrameView(
-            id=f["id"], label=f"First frame {n}", status=str(f["status"]),
-            url=media_links.url("frames", str(f["storage_path"])) if f.get("storage_path") else None,
-            error=f.get("error"), rejected_reason=f.get("rejected_reason"), accepted=bool(f.get("accepted_at")),
-            stale=bool(reasons), stale_reasons=reasons, created_at=str(f["created_at"]),
-            checks=_checks(f.get("checks"))))
+    def frame_views(rows: list[Row], noun: str) -> list[FrameView]:
+        views = []
+        for n, f in enumerate(rows, start=1):
+            reasons = st.frame_reasons.get(str(f["id"]), [])
+            views.append(FrameView(
+                id=f["id"], label=f"{noun} {n}", stage=frame_stage(f), draft_id=f.get("draft_id"),
+                status=str(f["status"]),
+                url=media_links.url("frames", str(f["storage_path"])) if f.get("storage_path") else None,
+                error=f.get("error"), rejected_reason=f.get("rejected_reason"), accepted=bool(f.get("accepted_at")),
+                stale=bool(reasons), stale_reasons=reasons, created_at=str(f["created_at"]),
+                checks=_checks(f.get("checks"))))
+        return views
+
+    frames = frame_views(st.frames, "First frame")
     state = "missing" if st.design_reasons == ["no design"] else ("stale" if st.design_reasons else "current")
     changed = [CameraField(k) for k, v in st.camera.model_dump().items() if v != getattr(st.recommended, k)]
     return ShotProductionView(
@@ -354,6 +378,8 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
                                   unseen=unseen_sentence(st.staged, {c.id: c.name for c in st.cast}))
         if st.has_design else "",
         frames=frames, accepted_frame_id=st.accepted["id"] if st.accepted else None,
+        drafts=frame_views(st.drafts, "Draft"),
+        accepted_draft_id=st.accepted_draft["id"] if st.accepted_draft else None,
         prompt_lock=LockView(locked=bool(st.lock), reason=st.lock),
         prompt=_prompt_view(st.prompt, st.prompt_reasons) if st.prompt else None)
 
@@ -515,12 +541,16 @@ async def update_coverage(production_id: UUID, scene_id: UUID, body: CoverageUpd
 
 
 async def _start_frames(repos: Repos, access: ProductionAccess, ld: Loaded, targets: list[ShotState],
-                        count: int) -> Started:
+                        count: int, stage: FrameStage = FrameStage.FINAL, from_draft: bool = False) -> Started:
     """Frame rows first (the panel shows them at once), then one job: designs that are missing
-    or out of date are made first (shot_producer), then every frame is painted (frame_render)."""
+    or out of date are made first (shot_producer), then every frame is painted (frame_render): a draft at low
+    quality, a final at medium. A final `from_draft` carries the shot's accepted draft, which the job attaches as
+    a reference (`draft_id` names it on the row, so a re-delivered job paints the same thing)."""
     pid = access.production_id
     rows = [{"id": str(uuid4()), "production_id": str(pid), "shot_id": st.id, "status": "queued",
-             "created_by": str(access.user.id)} for st in targets for _ in range(count)]
+             "stage": stage.value, "created_by": str(access.user.id),
+             **({"draft_id": str(st.accepted_draft["id"])} if from_draft and st.accepted_draft else {})}
+            for st in targets for _ in range(count)]
     await repos.frames.create_many(rows)
     frame_ids = [r["id"] for r in rows]
     needs_design = [st.id for st in targets if st.design_reasons]
@@ -539,7 +569,8 @@ async def _start_frames(repos: Repos, access: ProductionAccess, ld: Loaded, targ
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Frames could not be started. Try again.") from None
     await repos.frames.update_many(frame_ids, {"job_id": str(job_id)})
     await _audit(repos, access, "frames.request", "scene", str(ld.scene["id"]),
-                 {"job_id": str(job_id), "shots": [st.code for st in targets], "count": count})
+                 {"job_id": str(job_id), "shots": [st.code for st in targets], "count": count, "stage": stage.value,
+                  "from_draft": from_draft})
     return Started(job_id=job_id, frame_ids=[UUID(f) for f in frame_ids])
 
 
@@ -556,7 +587,14 @@ async def request_frames(production_id: UUID, shot_id: UUID, body: FramesRequest
     _require_approved(ld)
     if st.row.get("frame_strategy") == FrameStrategy.CARRY_LAST_FRAME:
         raise HTTPException(status.HTTP_409_CONFLICT, _carried(st, ld))
-    return await _start_frames(repos, access, ld, [st], body.count)
+    if body.from_draft:
+        draft = st.accepted_draft
+        if draft is None or not draft.get("storage_path"):
+            raise HTTPException(status.HTTP_409_CONFLICT, "Accept a draft first, or paint the final without one.")
+        if st.frame_reasons.get(str(draft["id"])):
+            raise HTTPException(status.HTTP_409_CONFLICT, "The accepted draft was made for an earlier version of the "
+                                "shot: " + " ".join(st.frame_reasons[str(draft["id"])]))
+    return await _start_frames(repos, access, ld, [st], body.count, body.stage, body.from_draft)
 
 
 @router.post("/scenes/{scene_id}/frames", response_model=Started, status_code=status.HTTP_202_ACCEPTED)
@@ -591,12 +629,13 @@ async def accept_frame(production_id: UUID, frame_id: UUID, access: CanGenerate,
     if st.frame_reasons.get(str(frame_id)):
         raise HTTPException(status.HTTP_409_CONFLICT, "This frame was made for an earlier version of the shot: "
                             + " ".join(st.frame_reasons[str(frame_id)]))
-    if not await repos.frames.accept(UUID(st.id), frame_id, access.user.id):
+    stage = frame_stage(frame)
+    if not await repos.frames.accept(UUID(st.id), frame_id, access.user.id, stage.value):
         raise HTTPException(status.HTTP_409_CONFLICT, "Someone accepted another frame meanwhile. Reload the shot.")
     await repos.frames.update_many([str(frame_id)], {"rejected_reason": None})
-    if st.row.get("status") == ShotStatus.DRAFT:
+    if stage == FrameStage.FINAL and st.row.get("status") == ShotStatus.DRAFT:  # a draft never opens the prompt
         await repos.shots.update(UUID(st.id), {"status": ShotStatus.FRAME.value})
-    await _audit(repos, access, "frame.accept", "frame", str(frame_id), {"shot_id": st.id})
+    await _audit(repos, access, "frame.accept", "frame", str(frame_id), {"shot_id": st.id, "stage": stage.value})
     ld, st = await load_shot(repos, access, UUID(st.id))
     return shot_view(ld, st, camera_checks(ld.states)[st.id])
 
@@ -608,7 +647,7 @@ async def reject_frame(production_id: UUID, frame_id: UUID, body: RejectRequest,
     ld, st = await load_shot(repos, access, UUID(str(frame["shot_id"])))
     if frame.get("accepted_at"):
         await repos.frames.unaccept(frame_id)
-        if st.row.get("status") == ShotStatus.FRAME:
+        if frame_stage(frame) == FrameStage.FINAL and st.row.get("status") == ShotStatus.FRAME:
             await repos.shots.update(UUID(st.id), {"status": ShotStatus.DRAFT.value})
     await repos.frames.update_many([str(frame_id)], {"rejected_reason": body.reason.strip() or "Rejected"})
     await _audit(repos, access, "frame.reject", "frame", str(frame_id), {"shot_id": st.id, "reason": body.reason})

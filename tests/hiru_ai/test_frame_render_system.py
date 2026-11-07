@@ -32,14 +32,14 @@ def run_graph(store: FakeStore, p: Any, jobs: FakeJobs, paint: FakePainter | Non
               env: dict[str, str] | None = None, replies: list[Any] | None = None) -> dict[str, Any]:
     class Files:
         def download(self, bucket: str, path: str) -> bytes:
-            return store.download_reference(path)
+            return store.download_frame(path) if bucket == "frames" else store.download_reference(path)
 
         def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
             store.upload(bucket, path, data, mime)
 
-    def images(prompt: str, aspect: str, references: list[Any]) -> Any:
+    def images(prompt: str, aspect: str, references: list[Any], *, draft: bool = False) -> Any:
         try:
-            return paint(prompt, aspect, references)  # type: ignore[misc]
+            return paint(prompt, aspect, references, draft=draft)  # type: ignore[misc]
         except RefusedError as exc:
             raise ImageRefused(str(exc)) from exc
 
@@ -61,7 +61,8 @@ def outcome(store: FakeStore, jobs: FakeJobs, paint: FakePainter | None, result:
             "uploads": {f"{b}/{n}": d for (b, n), d in store.uploads.items()}, "audits": copied(store.audits),
             "assets": copied(store.asset_writes), "looks": copied(store.look_writes),
             "look_rows": copied(store.look_rows),
-            "painted": [c["references"] + [c["aspect"], c["prompt"], c["pictures"]] for c in calls]}
+            "painted": [c["references"] + [c["aspect"], c["prompt"], c["pictures"]] for c in calls],
+            "drafts": list(paint.drafts) if paint else []}
 
 
 def both(setup: Setup, *, orientation: str = "horizontal", painter: dict[str, Any] | None = None,
@@ -262,3 +263,32 @@ class _Files:
 
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
         self.store.upload(bucket, path, data, mime)
+
+
+# ── draft and final ────────────────────────────────────────────────────────────────────────
+
+
+def test_a_draft_is_painted_low_and_a_final_from_a_draft_carries_it_first_on_both_engines():
+    def setup(store: FakeStore) -> dict[str, Any]:
+        shot = shots(store)[0]["id"]
+        draft = store.add_draft(shot)
+        return {"frame_ids": [store.add_frame(shot, stage="draft"), store.add_frame(shot, draft_id=draft),
+                              store.add_frame(shot)]}
+
+    got = both(setup, painter={})
+    assert got["drafts"] == [True, False, False]
+    from_draft = next(p for p in got["painted"] if "the approved draft of this frame" in p)
+    assert from_draft[0] == "the approved draft of this frame"
+    assert got["result"]["done"] == 3
+
+
+def test_an_unreadable_or_foreign_draft_fails_the_final_on_both_engines():
+    def setup(store: FakeStore) -> dict[str, Any]:
+        shot, other = shots(store)[0]["id"], shots(store)[1]["id"]
+        gone = store.add_draft(shot)
+        store.unreadable.add(store.frame_rows[gone]["storage_path"])
+        foreign = store.add_draft(other)
+        return {"frame_ids": [store.add_frame(shot, draft_id=gone), store.add_frame(shot, draft_id=foreign)]}
+
+    got = both(setup, painter={})
+    assert got["result"]["failed"] == 2 and got["painted"] == []

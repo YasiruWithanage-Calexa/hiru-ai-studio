@@ -66,6 +66,7 @@ MAY_NAME_IT = {
     "src/libs/hiru_ai/agents/zora/zora_author/tests/test_agent_zora_author.py",  # its prompt starts with Jonathan's
     "tests/zora/test_api.py", "src/api/routers/zora.py",  # "Plan shots from this treatment" is a Jonathan job
     "Database/schema_v14.sql",  # a whole schema, so it holds v13's Jonathan column (plan/2026-11-06c)
+    "Database/schema_v15.sql",  # v14 whole plus first-frame stages (draft / final)
 }
 
 

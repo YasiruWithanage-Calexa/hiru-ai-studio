@@ -335,14 +335,14 @@ def _frame_render_graph(payload: Any, store: Any, jobs: Any, paint: Any) -> dict
 
     class Files:
         def download(self, bucket: str, path: str) -> bytes:
-            return store.download_reference(path)  # type: ignore[no-any-return]
+            return store.download_frame(path) if bucket == "frames" else store.download_reference(path)  # type: ignore[no-any-return]
 
         def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
             store.upload(bucket, path, data, mime)
 
-    def images(prompt: str, aspect: str, references: list[Any]) -> Any:
+    def images(prompt: str, aspect: str, references: list[Any], *, draft: bool = False) -> Any:
         try:
-            return paint(prompt, aspect, references)
+            return paint(prompt, aspect, references, draft=draft)
         except RefusedError as exc:
             raise ImageRefused(str(exc)) from exc
 

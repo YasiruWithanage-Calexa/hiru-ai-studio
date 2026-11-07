@@ -402,7 +402,7 @@ class FakeFrames:
                    "accepted": bool(r.get("accepted_at")), "pins": r.get("pins") or {}, "error": r.get("error"),
                    "created_at": r.get("created_at")}
                   for r in self.frame_rows.values()
-                  if str(r.get("shot_id")) in wanted
+                  if str(r.get("shot_id")) in wanted and r.get("stage") != "draft"
                      and str(r.get("production_id", production_id)) == str(production_id)]
         sheets = []
         for code in codes or []:
@@ -542,9 +542,11 @@ class FakeImages:
     def __init__(self, error: Exception | None = None) -> None:
         self.error = error
         self.calls: list[tuple[str, str, list[Reference]]] = []
+        self.drafts: list[bool] = []  # per call: was it painted as a draft
 
-    def __call__(self, prompt: str, aspect: str, references: list[Reference]) -> Picture:
+    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False) -> Picture:
         self.calls.append((prompt, aspect, list(references)))
+        self.drafts.append(draft)
         if self.error is not None:
             raise self.error
         return Picture(data=b"\x89PNG-fake", mime="image/png", input_tokens=120, output_tokens=1056)

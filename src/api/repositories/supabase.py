@@ -674,10 +674,11 @@ class SupabaseFrames(_Base):
         if frame_ids:
             await self.db.table("first_frames").update(fields).in_("id", frame_ids).execute()
 
-    async def accept(self, shot_id: UUID, frame_id: UUID, user_id: UUID) -> bool:
-        # Clear the old choice first: one accepted frame per shot is a unique index.
+    async def accept(self, shot_id: UUID, frame_id: UUID, user_id: UUID, stage: str = "final") -> bool:
+        # Clear the old choice first: one accepted frame per shot and stage is a unique index.
         await (self.db.table("first_frames").update({"accepted_at": None, "accepted_by": None})
-               .eq("shot_id", str(shot_id)).neq("id", str(frame_id)).not_.is_("accepted_at", "null").execute())
+               .eq("shot_id", str(shot_id)).eq("stage", stage).neq("id", str(frame_id))
+               .not_.is_("accepted_at", "null").execute())
         try:
             res = await (self.db.table("first_frames").update({"accepted_at": datetime.now(UTC).isoformat(),
                                                                "accepted_by": str(user_id)})

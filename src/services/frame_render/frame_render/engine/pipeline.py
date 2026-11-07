@@ -47,11 +47,14 @@ from contracts.canon import (
 from contracts.holding import Hands, hands_for, references_for
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import (
+    DRAFT_LABEL,
     CameraSettings,
     CastMember,
+    FrameStage,
     PersonEdits,
     default_camera,
     frame_prompt,
+    frame_stage,
     identity_line,
     pins_for,
     shot_canon_ids,
@@ -69,8 +72,10 @@ MAX_REFERENCES = 6  # the people seen, the place, a second place (the stall), wh
 FAILED = "The frame could not be made. Try again in a moment."
 NO_DESIGN = "This shot has no camera design yet. Design the scene first."
 NOT_CONFIGURED = "Image generation is not set up on this server."
+NO_DRAFT = "The accepted draft could not be read. Accept a draft again, or paint the final without one."
 Row = dict[str, Any]
-Painter = Callable[[str, str, list[Reference]], Picture]  # (prompt, aspect ratio, references)
+# (prompt, aspect ratio, references, draft=): a draft is painted at the draft (low) quality, a final at the usual one
+Painter = Callable[..., Picture]
 
 
 class StoreLike(Protocol):
@@ -85,6 +90,7 @@ class StoreLike(Protocol):
     def scene_looks(self, scene_id: str) -> list[Row]: ...
     def episode_number(self, episode_id: str) -> int | None: ...
     def download_reference(self, path: str) -> bytes: ...
+    def download_frame(self, path: str) -> bytes: ...
     def claim_frame(self, frame_id: str) -> bool: ...
     def finish_frame(self, frame_id: str, fields: Row) -> None: ...
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None: ...
@@ -197,6 +203,15 @@ class FrameJob:
                     _logger.warning("%s could not be read", label, exc_info=True)
         return out
 
+    def draft(self, draft_id: str, shot_id: str) -> bytes:
+        """The picture of a draft of THIS shot (a frame id from another shot is never attached)."""
+        row = next((f for f in self.store.frames(self.production_id, [draft_id])
+                    if str(f["shot_id"]) == shot_id and frame_stage(f) == FrameStage.DRAFT
+                    and f.get("status") == "done" and f.get("storage_path")), None)
+        if row is None:
+            raise LookupError(draft_id)
+        return self.store.download_frame(str(row["storage_path"]))
+
     def cast(self, shot: Row, cast_ids: list[str]) -> list[CastMember]:
         """The people in the shot, each dressed in the look the scene uses, if any."""
         looks = self.looks(str(shot["scene_id"]))
@@ -261,9 +276,18 @@ def render_frame(job: FrameJob, frame: Row, paint: Painter | None, inspect: Insp
         job.store.finish_frame(fid, {"status": "failed", "error": NOT_CONFIGURED})
         return "failed"
     refs = job.references(shot)
-    prompt, pins = job.compose(shot, [r.label for _, r in refs])
+    pictures = [r for _, r in refs]
+    draft = frame_stage(frame) == FrameStage.DRAFT
+    if frame.get("draft_id") and not draft:  # a final painted from the shot's accepted draft: it goes in FIRST
+        try:
+            pictures.insert(0, Reference(label=DRAFT_LABEL, data=job.draft(str(frame["draft_id"]), str(shot["id"]))))
+        except Exception:  # not silently painted without it: the person chose to paint from the draft
+            _logger.warning("draft %s of frame %s could not be read", frame["draft_id"], fid, exc_info=True)
+            job.store.finish_frame(fid, {"status": "failed", "error": NO_DRAFT})
+            return "failed"
+    prompt, pins = job.compose(shot, [r.label for r in pictures])
     try:
-        picture = paint(prompt, job.aspect, [r for _, r in refs])
+        picture = paint(prompt, job.aspect, pictures, draft=draft)
     except RefusedError as exc:
         job.store.finish_frame(fid, {"status": "refused", "error": str(exc), "prompt": prompt, "pins": pins})
         return "refused"

@@ -270,3 +270,92 @@ def test_an_unreadable_look_sheet_falls_back_to_the_base_sheet_with_the_looks_wa
     call, _ = paint_s01(store)
     assert call["references"][0] == "the character sheet for Kamala"
     assert call["pictures"][0] == b"sheet:p/kamala.png" and "outfit maroon silk saree" in call["prompt"]
+
+
+# ── draft and final (a draft is painted at low quality; a final may be painted from the accepted draft) ──────────
+
+
+def test_a_draft_is_painted_at_the_draft_quality_and_a_final_is_not():
+    store = FakeStore()
+    s1 = shots(store)[0]
+    draft = store.add_frame(s1["id"], stage="draft")
+    final = store.add_frame(s1["id"])
+    paint = FakePainter()
+    pipeline.run(payload(frame_ids=[draft]), store, FakeJobs(), paint)
+    pipeline.run(payload(frame_ids=[final]), store, FakeJobs(), paint)
+    assert paint.drafts == [True, False]
+    assert store.frame_rows[draft]["status"] == "done" and store.frame_rows[final]["status"] == "done"
+
+
+def test_the_painter_uses_the_draft_quality_only_for_a_draft():
+    asked: list[str] = []
+
+    class Images:
+        def generate(self, **kw):
+            asked.append(kw["quality"])
+            return SimpleNamespace(data=[SimpleNamespace(b64_json="UE5H")], usage=None)
+
+    config = Config(supabase_url="", service_role_key="", openai_api_key="k", image_model="m", image_quality="medium",
+                    api_internal_url="", internal_secret="", image_quality_draft="low")
+    usage = SimpleNamespace(record_usage=lambda row: None)
+    paint = painter(config, payload(), usage, client=SimpleNamespace(images=Images()))
+    paint("a harbour", "16:9", [], draft=True)
+    paint("a harbour", "16:9", [])
+    assert asked == ["low", "medium"]
+
+
+def test_a_final_from_a_draft_attaches_the_draft_first_and_names_it():
+    store = FakeStore()
+    s1 = shots(store)[0]
+    draft = store.add_draft(s1["id"])
+    final = store.add_frame(s1["id"], draft_id=draft)
+    paint = FakePainter()
+    pipeline.run(payload(frame_ids=[final]), store, FakeJobs(), paint)
+    call = paint.calls[0]
+    assert call["references"][0] == image_draft_label() and paint.drafts == [False]
+    assert call["pictures"][0] == f"frame:{PID}/{s1['id']}/draft.png".encode(), "the draft's own picture"
+    assert call["references"][1:] == ["the character sheet for Kamala", "the location plate for Kamala's house"]
+    assert f"image 1 is {image_draft_label()}; image 2 is the character sheet for Kamala" in call["prompt"]
+    assert "keep its composition" in call["prompt"] and "paint it again as the finished frame" in call["prompt"]
+    assert store.frame_rows[final]["reference_ids"][0] == KAMALA, "the draft is not a canon sheet"
+
+
+def test_a_final_without_a_draft_is_the_frame_it_always_was():
+    store = FakeStore()
+    s1 = shots(store)[0]
+    store.add_draft(s1["id"])  # an accepted draft exists, but this frame was not asked to use it
+    final = store.add_frame(s1["id"])
+    paint = FakePainter()
+    pipeline.run(payload(frame_ids=[final]), store, FakeJobs(), paint)
+    assert image_draft_label() not in paint.calls[0]["references"] and "approved draft" not in paint.calls[0]["prompt"]
+
+
+def test_a_draft_that_cannot_be_read_fails_the_final_before_paying_for_it():
+    store = FakeStore()
+    s1 = shots(store)[0]
+    draft = store.add_draft(s1["id"])
+    store.unreadable.add(store.frame_rows[draft]["storage_path"])
+    final = store.add_frame(s1["id"], draft_id=draft)
+    paint = FakePainter()
+    pipeline.run(payload(frame_ids=[final]), store, FakeJobs(), paint)
+    assert store.frame_rows[final]["status"] == "failed" and "draft" in store.frame_rows[final]["error"]
+    assert paint.calls == [], "nothing was painted, so nothing was paid for"
+
+
+def test_a_draft_of_another_shot_or_a_final_is_never_attached():
+    store = FakeStore()
+    s1, s2 = shots(store)[0], shots(store)[1]
+    other_shot = store.add_draft(s2["id"])
+    not_a_draft = store.add_frame(s1["id"], "done", storage_path="p/final.png")
+    paint = FakePainter()
+    for bad in (other_shot, not_a_draft):
+        final = store.add_frame(s1["id"], draft_id=bad)
+        pipeline.run(payload(frame_ids=[final]), store, FakeJobs(), paint)
+        assert store.frame_rows[final]["status"] == "failed"
+    assert paint.calls == []
+
+
+def image_draft_label() -> str:
+    from contracts.producer import DRAFT_LABEL
+
+    return DRAFT_LABEL
