@@ -173,10 +173,14 @@ def build(before: Row, after: Row, *, refused: list[str] | None = None, team_ref
           undelivered: list[str] | None = None, attempted: bool = False, staged: list[str] | None = None,
           mended: list[str] | None = None, problems: list[str] | None = None, overruns: list[str] | None = None,
           seams: list[str] | None = None, stale: list[str] | None = None, offer: str = "", undone: bool = False,
-          locks: list[str] | None = None) -> Ledger:
+          locks: list[str] | None = None, already: list[str] | None = None) -> Ledger:
     lines = [] if undone else change_lines(before, after)
     lines += [Line(level="lock", where="Locks", text=t) for t in locks or []]
-    return Ledger(changes=lines, refused=list(refused or []), team_refused=list(team_refused or []),
-                  undelivered=list(undelivered or []), attempted=attempted, staged=list(staged or []),
-                  mended=list(mended or []), problems=list(problems or []), overruns=list(overruns or []),
-                  seams=list(seams or []), stale=list(stale or []), offer=offer, undone=undone)
+
+    def once(xs: list[str] | None) -> list[str]:  # ten ops refused for one reason are one reason
+        return list(dict.fromkeys(xs or []))
+
+    return Ledger(changes=lines, refused=once(refused), team_refused=once(team_refused),
+                  undelivered=once(undelivered), attempted=attempted, staged=once(staged),
+                  mended=once(mended), problems=once(problems), overruns=once(overruns),
+                  seams=once(seams), stale=once(stale), offer=offer, undone=undone, already=once(already))

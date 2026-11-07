@@ -251,3 +251,39 @@ def test_staging_marks_and_the_end_state_are_checked_against_the_cast_and_the_zo
     assert k.apply([{"op": "end.set", "who": "Dasun", "field": "where", "value": "the path"}], by="author").rejected
     assert not k.apply([{"op": "end.set", "who": "Dasun", "field": "where", "value": "the path"}],
                        by="conductor").rejected
+
+
+# ── a fault the plan already had blocks nothing (the S04 edit refused for S07's line) ─────────────────
+
+
+def broken(validate: Any = None) -> ZoraKernel:
+    """father_refuses with S12 naming a line the scene does not have (the script changed after it was planned)."""
+    d = doc()
+    d.plan["shots"][11]["lines"] = ["L99"]
+    return ZoraKernel(d, validate=validate)
+
+
+def test_a_fault_the_plan_already_had_does_not_refuse_an_edit_to_another_shot_and_is_reported():
+    k = broken()
+    r = k.apply([{"op": "set", "shot": 4, "field": "lens", "value": "100mm macro"}])
+    assert not r.rejected and k.export()["shots"][3]["lens"] == "100mm macro"
+    assert k.new_faults() == [] and k.already() == ["S12 names a line the scene does not have"]
+
+
+def test_an_old_fault_stays_old_when_shots_are_renumbered():
+    k = broken()
+    r = k.apply([{"op": "insert", "after": 5, "kind": "hands", "what": "his hands on the table", "who": ["Kasun"]},
+                 {"op": "set", "shot": 4, "field": "lens", "value": "100mm macro"}])
+    assert not r.rejected
+    assert k.already() == ["S13 names a line the scene does not have"]  # S12 at the start is S13 now
+
+
+def test_a_fault_an_edit_adds_is_still_refused_when_the_plan_already_had_one():
+    def strict(plan: dict[str, Any]) -> list[str]:
+        return ["shots.3.lens: no fisheyes"] if "fisheye" in plan["shots"][3]["lens"] else []
+
+    k = broken(strict)
+    before = dump(k)
+    r = k.apply([{"op": "set", "shot": 4, "field": "lens", "value": "8mm fisheye"}])
+    assert len(r.rejected) == 1 and "no fisheyes" in r.rejected[0]["reason"] and dump(k) == before
+    assert len(k.already()) == 1
