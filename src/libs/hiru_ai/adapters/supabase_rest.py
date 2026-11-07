@@ -437,7 +437,8 @@ class SupabaseProducer:
         if not shot_ids:
             return {}
         rows = self.rest.select("first_frames", {"shot_id": f"in.({','.join(shot_ids)})",
-                                                 "accepted_at": "not.is.null", "select": "id,shot_id,pins"})
+                                                 "accepted_at": "not.is.null", "stage": "neq.draft",
+                                                 "select": "id,shot_id,pins"})
         return {str(r["shot_id"]): r for r in rows}
 
     def last_prompt_version(self, shot_id: str) -> int:
@@ -508,6 +509,7 @@ class SupabaseFrames:
         if shot_ids:
             rows = self.rest.select("first_frames", {
                 "production_id": f"eq.{production_id}", "shot_id": f"in.({','.join(shot_ids)})",
+                "stage": "neq.draft",  # a draft is a reference for a first frame, not one
                 "select": "id,shot_id,status,accepted_at,pins,error,created_at", "order": "created_at"})
             frames = [{"id": r["id"], "shot_id": r["shot_id"], "status": r["status"],
                        "accepted": bool(r.get("accepted_at")), "pins": r.get("pins") or {}, "error": r.get("error"),

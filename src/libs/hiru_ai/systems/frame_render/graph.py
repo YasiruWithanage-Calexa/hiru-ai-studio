@@ -34,6 +34,7 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
+from contracts.producer import DRAFT_LABEL, FrameStage, frame_stage
 from hiru_ai.core import agents, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.ports import ImageRefused, Reference
@@ -47,6 +48,7 @@ WORKERS = 4
 FAILED = "The frame could not be made. Try again in a moment."
 NO_DESIGN = "This shot has no camera design yet. Design the scene first."
 NOT_CONFIGURED = "Image generation is not set up on this server."
+NO_DRAFT = "The accepted draft could not be read. Accept a draft again, or paint the final without one."
 Row = dict[str, Any]
 
 
@@ -112,6 +114,17 @@ def _references(ctx: RunContext, world: Row, shot: Row) -> list[tuple[str, Refer
     return out
 
 
+def _draft_picture(ctx: RunContext, scenes: Scenes, draft_id: str, shot_id: str) -> Reference:
+    """The picture of a draft of THIS shot (a frame id from another shot is never attached). Raises when it cannot be
+    read: a final the person chose to paint from its draft is not silently painted without it."""
+    row = next((f for f in ctx.need("frames").frames(scenes.production_id, [draft_id])
+                if str(f["shot_id"]) == shot_id and frame_stage(f) == FrameStage.DRAFT
+                and f.get("status") == "done" and f.get("storage_path")), None)
+    if row is None:
+        raise LookupError(draft_id)
+    return Reference(label=DRAFT_LABEL, data=bytes(ctx.need("files").download("frames", str(row["storage_path"]))))
+
+
 def _vision_enabled() -> bool:
     return bool(get_settings().openai.model_vision)
 
@@ -151,11 +164,20 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
         return "failed"
     world = scenes.world(str(shot["scene_id"]))
     refs = _references(ctx, world, shot)
-    composed = _compose("compose", **world, shot=shot, labels=[r.label for _, r in refs])
+    pictures = [r for _, r in refs]
+    draft = frame_stage(frame) == FrameStage.DRAFT
+    if frame.get("draft_id") and not draft:  # a final painted from the shot's accepted draft: it goes in FIRST
+        try:
+            pictures.insert(0, _draft_picture(ctx, scenes, str(frame["draft_id"]), str(shot["id"])))
+        except Exception:
+            _log.warning("draft %s of frame %s could not be read", frame["draft_id"], fid, exc_info=True)
+            frames.finish_frame(fid, {"status": "failed", "error": NO_DRAFT})
+            return "failed"
+    composed = _compose("compose", **world, shot=shot, labels=[r.label for r in pictures])
     prompt, pins = composed["prompt"], composed["pins"]
     aspect = parts.module("step", "frame_compose").production_aspect(scenes.production)
     try:
-        picture = paint(prompt, aspect, [r for _, r in refs])
+        picture = paint(prompt, aspect, pictures, draft=draft)
     except ImageRefused as exc:
         frames.finish_frame(fid, {"status": "refused", "error": str(exc), "prompt": prompt, "pins": pins})
         return "refused"

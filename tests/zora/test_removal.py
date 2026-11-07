@@ -28,6 +28,7 @@ MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "CLAUDE.md", "tests/jonat
                "src/api/services/zora.py", "src/api/repositories/__init__.py", "src/api/main.py",
                "src/api/workers/task_manager.py", "src/api/config.py", "src/libs/contracts/director.py",
                "Database/schema_v14.sql", "Database/upgrade_v13_to_v14.sql", "Database/README.md",
+               "Database/schema_v15.sql",  # v14 whole plus first-frame stages (draft / final)
                "supabase/migrations/20261106185010_zora_revisions.sql",
                "supabase/tests/database/016_scene_plan_revisions.test.sql"}
 

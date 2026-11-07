@@ -62,6 +62,10 @@ class Store:
     def download_reference(self, path: str) -> bytes:
         return self.rest.download(REFERENCES_BUCKET, path)
 
+    def download_frame(self, path: str) -> bytes:
+        """A painted frame (a draft a final is painted from)."""
+        return self.rest.download(FRAMES_BUCKET, path)
+
     # ── writing ──────────────────────────────────────────────────────────────────────────
     def claim_frame(self, frame_id: str) -> bool:
         """queued → running, or False when another delivery already has it (the take-row lock

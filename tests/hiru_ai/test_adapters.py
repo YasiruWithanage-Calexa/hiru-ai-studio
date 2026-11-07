@@ -317,3 +317,15 @@ def test_the_legacy_painter_and_the_adapter_agree_on_what_counts_as_a_refusal():
 
     for exc in (Coded("x"), Blocked("moderation said no"), Blocked("invalid size"), ValueError("fine")):
         assert images._refused(exc) == legacy._refused(exc)
+
+
+def test_a_draft_is_painted_at_the_draft_quality_and_a_final_at_the_usual_one():
+    sdk = Images()
+    paint = images.OpenAIImages(SimpleNamespace(images=sdk), model="gpt-image-2", quality="medium", draft_quality="low")
+    paint("a harbour", "16:9", [], draft=True)
+    paint("a harbour", "16:9", [Reference("one", b"1")], draft=True)
+    paint("a harbour", "16:9", [])
+    assert [kw["quality"] for _, kw in sdk.calls] == ["low", "low", "medium"]
+    sdk = Images()  # without a draft quality a draft is painted like any frame
+    images.OpenAIImages(SimpleNamespace(images=sdk), model="m", quality="medium")("p", "16:9", [], draft=True)
+    assert sdk.calls[0][1]["quality"] == "medium"

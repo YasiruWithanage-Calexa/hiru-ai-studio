@@ -504,12 +504,12 @@ class FakeFrames(_Table):
         for fid in frame_ids:
             self.rows[fid].update(fields)
 
-    async def accept(self, shot_id: UUID, frame_id: UUID, user_id: UUID) -> bool:
+    async def accept(self, shot_id: UUID, frame_id: UUID, user_id: UUID, stage: str = "final") -> bool:
         row = self.rows[str(frame_id)]
         if row["status"] != "done":
             return False
         for other in self.rows.values():
-            if other["shot_id"] == str(shot_id):
+            if other["shot_id"] == str(shot_id) and other.get("stage", "final") == stage:
                 other.update(accepted_at=None, accepted_by=None)
         row.update(accepted_at=_now(), accepted_by=str(user_id))
         return True

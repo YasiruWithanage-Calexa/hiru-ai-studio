@@ -1,7 +1,7 @@
 -- Phase 4: the Production panel. Frames and prompts hang off shots, one accepted frame per
 -- shot, prompt versions unique per shot, private buckets, read-only for browsers.
 begin;
-select plan(21);
+select plan(26);
 
 delete from public.video_prompts; delete from public.first_frames;
 delete from public.memory_items; delete from public.chat_messages; delete from public.chat_threads;
@@ -61,6 +61,31 @@ select throws_ok($$ update public.first_frames set accepted_at = now()
 select throws_ok($$ insert into public.first_frames (production_id, shot_id, status)
                     values ('00000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-000000000301', 'lost') $$,
                  '23514', null, 'a frame has a known status');
+-- a draft (low quality) is accepted apart from the final: one accepted frame per shot AND stage
+insert into public.first_frames (id, production_id, shot_id, status, storage_path, stage) values
+  ('00000000-0000-0000-0000-000000000405', '00000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-000000000301', 'done', 'a/d1.png', 'draft'),
+  ('00000000-0000-0000-0000-000000000406', '00000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-000000000301', 'done', 'a/d2.png', 'draft');
+select lives_ok($$ update public.first_frames set accepted_at = now()
+                   where id = '00000000-0000-0000-0000-000000000405' $$,
+                'a draft is accepted next to the accepted final');
+select throws_ok($$ update public.first_frames set accepted_at = now()
+                    where id = '00000000-0000-0000-0000-000000000406' $$,
+                 '23505', null, 'one accepted draft per shot');
+select lives_ok($$ insert into public.first_frames (id, production_id, shot_id, status, draft_id)
+                   values ('00000000-0000-0000-0000-000000000407', '00000000-0000-0000-0000-0000000000a1',
+                           '00000000-0000-0000-0000-000000000301', 'queued', '00000000-0000-0000-0000-000000000405') $$,
+                'a final records the draft it is painted from');
+select throws_ok($$ insert into public.first_frames (production_id, shot_id, status, stage, draft_id)
+                    values ('00000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-000000000301',
+                            'queued', 'draft', '00000000-0000-0000-0000-000000000405') $$,
+                 '23514', null, 'a draft is never painted from a draft');
+select throws_ok($$ insert into public.first_frames (production_id, shot_id, status, stage)
+                    values ('00000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-000000000301',
+                            'queued', 'proof') $$,
+                 '23514', null, 'a frame is a draft or a final');
+delete from public.first_frames where id in ('00000000-0000-0000-0000-000000000405',
+  '00000000-0000-0000-0000-000000000406', '00000000-0000-0000-0000-000000000407');
+
 select throws_ok($$ insert into public.video_prompts (production_id, shot_id, version)
                     values ('00000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-000000000301', 1) $$,
                  '23505', null, 'prompt versions are unique per shot');

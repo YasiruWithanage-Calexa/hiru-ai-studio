@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v14.sql` | **The newest schema** (everything in v13 plus in-app video generation, plan/2026-11-06c: the `video_renders` table, `takes.origin`, `takes.render_id` and `shots.video_settings`; and Zora's undo history, plan/2026-11-06e: the `scene_plan_revisions` table), whole. Run it once on an empty project. |
+| `schema_v15.sql` | **The newest schema** (everything in v14 plus draft and final first frames: `first_frames.stage` and `first_frames.draft_id`, one accepted frame per shot AND stage), whole. Run it once on an empty project. |
+| `upgrade_v14_to_v15.sql` | Moves a project on v14 to v15 (two columns, a constraint and two indexes on `first_frames`). Run once, only on such a project. Until it is run, no first frame can be asked for. **Not run yet: applying it is a person's decision.** |
+| `schema_v14.sql` | Kept for reference (the previous schema) (everything in v13 plus in-app video generation, plan/2026-11-06c: the `video_renders` table, `takes.origin`, `takes.render_id` and `shots.video_settings`; and Zora's undo history, plan/2026-11-06e: the `scene_plan_revisions` table), whole. Run it once on an empty project. |
 | `upgrade_v13_to_v14.sql` | Moves a project on v13 to v14 (the `video_renders` table and three columns for it, and the `scene_plan_revisions` table: without it Zora runs with no undo). Run once, only on such a project. Then set `GOOGLE__API_KEY` for the `video_render` function. **Not run yet: applying it is a person's decision.** |
 | `schema_v13.sql` | Kept for reference (everything in v12 plus `scenes.jonathan` and `'jonathan'` as a planner a shot may name: Shot Planner Jonathan, plan/2026-11-06b), whole. Run it once on an empty project. |
 | `upgrade_v12_to_v13.sql` | Moves a project on v12 to v13 (one column on `scenes` and the planner check on `shots`). Run once, only on such a project. **Not run yet: applying it is a person's decision.** |
@@ -42,6 +44,14 @@ empty database and comparing the dump with the one the migrations build (identic
 running the 94 database tests and Supabase's advisor check on it (all pass). v1 plus
 `upgrade_v1_to_v2.sql` gives the identical dump too. The local stack (`npx supabase start`)
 still builds from `supabase/migrations/`, and the tests run there.
+
+## v15 (not yet verified)
+
+`schema_v15.sql` and `upgrade_v14_to_v15.sql` carry `first_frames.stage`, `first_frames.draft_id`, the constraint
+`first_frames_draft_final` and the indexes `first_frames_one_accepted` (now on `shot_id, stage`) and `first_frames_draft_idx`
+(`supabase/migrations/20261107022920_frame_stage.sql`), with five new assertions in
+`supabase/tests/database/005_production.test.sql`. The three-way dump comparison (migrations, v15 on an empty database, v14 +
+upgrade), `supabase test db` and the advisors still have to be run on the local stack (Docker was not running).
 
 ## v14 check (2026-11-07)
 

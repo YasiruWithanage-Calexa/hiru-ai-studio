@@ -6,16 +6,19 @@ from pydantic import ValidationError
 
 from contracts.producer import (
     CAMERA_OPTIONS,
+    DRAFT_LABEL,
     CameraField,
     CameraSettings,
     CameraUpdate,
     CastMember,
+    FrameStage,
     PromptSection,
     PromptSegment,
     camera_checks,
     cast_in,
     default_camera,
     frame_prompt,
+    frame_stage,
     lighting_for,
     look_pins,
     pins_for,
@@ -108,6 +111,23 @@ def test_the_frame_prompt_names_references_by_position_and_honours_a_persons_fra
     assert "Kamala: 52, grey hair in a bun; wearing a faded blue saree" in text
     assert text.endswith("no collage, no split panels.") and "9:16 vertical framing" in text
     assert "Night, lamp key" in text, "the preset lights a frame the IR says nothing about"
+
+
+def test_an_attached_draft_is_named_and_told_to_be_kept_and_without_one_the_prompt_is_unchanged():
+    cam = default_camera("WIDE", heading="INT. X - NIGHT")
+    ir = {"setting": "the kitchen", "first_frame": {"composition": "Kamala at the stove", "subjects": ["Kamala"]}}
+    sheet = "the character sheet for Kamala"
+    plain = frame_prompt(ir=ir, camera=cam, aspect_ratio="16:9", cast=[KAMALA], references=[sheet])
+    drafted = frame_prompt(ir=ir, camera=cam, aspect_ratio="16:9", cast=[KAMALA], references=[DRAFT_LABEL, sheet])
+    assert f"image 1 is {DRAFT_LABEL}; image 2 is {sheet}" in drafted
+    assert "keep its composition, framing, pose, expression, props and light exactly" in drafted
+    assert "The sheets still decide faces, hair and the place." in drafted
+    assert "approved draft" not in plain, "no draft attached: the frame prompt is what it always was"
+
+
+def test_a_frame_row_is_a_final_unless_it_says_draft():
+    assert frame_stage({}) == FrameStage.FINAL and frame_stage({"stage": "final"}) == FrameStage.FINAL
+    assert frame_stage({"stage": "draft"}) == FrameStage.DRAFT
 
 
 def test_camera_checks_follow_the_axis_and_the_cards():

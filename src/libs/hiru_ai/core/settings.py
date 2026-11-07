@@ -41,7 +41,8 @@ class OpenAISettings(BaseModel):
     effort_low: str = "minimal"
     model_vision: str = "gpt-5-mini"  # looks at pictures (the frame check); no reasoning effort
     model_image: str = "gpt-image-2"
-    image_quality: str = "medium"
+    image_quality: str = "medium"  # a final first frame
+    image_quality_draft: str = "low"  # a draft first frame: cheap, to settle the picture before the final is painted
     embedding_model: str = "text-embedding-3-large"
     embedding_dimensions: int = 1536  # must match chunks.embedding vector(1536)
 

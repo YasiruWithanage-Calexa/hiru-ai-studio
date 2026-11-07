@@ -376,3 +376,100 @@ def test_damaged_person_edits_read_as_none(world: World):
     s = seed_scene(world)
     world.repos.shots.rows[s["shots"][0]["id"]]["person_edits"] = {"cast": "nonsense", "dop_note": 5}  # type: ignore[attr-defined]
     assert panel(world, s)[0]["design"]["note_by_person"] is False
+
+
+# ── draft and final first frames ───────────────────────────────────────────────────────────
+
+
+def test_a_draft_is_its_own_stage_and_never_unlocks_the_prompt(world: World, fired: list[dict]):
+    s = approved_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft", "count": 2}, headers=crew)
+    assert r.status_code == 202, r.text
+    ids = r.json()["frame_ids"]
+    rows = world.repos.frames.rows  # type: ignore[attr-defined]
+    assert all(rows[f]["stage"] == "draft" and "draft_id" not in rows[f] for f in ids)
+    assert fired[-1]["kind"] == "frame_render" and fired[-1]["state"] == {"frame_ids": ids}
+    finish_frames(world, s, ids)
+
+    v = world.client.get(shot_url(world, s, 1), headers=crew).json()
+    assert v["frames"] == [] and [d["label"] for d in v["drafts"]] == ["Draft 1", "Draft 2"], "drafts are kept apart"
+    assert all(d["stage"] == "draft" for d in v["drafts"])
+
+    v = world.client.post(url(world, f"/frames/{ids[0]}/accept"), headers=crew).json()
+    assert v["accepted_draft_id"] == ids[0] and v["accepted_frame_id"] is None
+    assert v["status"] == "draft" and v["prompt_lock"]["locked"], "an accepted draft is not a first frame"
+    v = world.client.post(url(world, f"/frames/{ids[1]}/accept"), headers=crew).json()
+    assert v["accepted_draft_id"] == ids[1] and [d["accepted"] for d in v["drafts"]] == [False, True]
+    v = world.client.post(url(world, f"/frames/{ids[1]}/reject"), json={}, headers=crew).json()
+    assert v["accepted_draft_id"] is None and v["status"] == "draft"
+
+
+def test_a_draft_and_a_final_are_accepted_independently(world: World, fired: list[dict]):
+    s = approved_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    (draft,) = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft"},
+                                 headers=crew).json()["frame_ids"]
+    (final,) = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).json()["frame_ids"]
+    finish_frames(world, s, [draft, final])
+    world.client.post(url(world, f"/frames/{draft}/accept"), headers=crew)
+    v = world.client.post(url(world, f"/frames/{final}/accept"), headers=crew).json()
+    assert v["accepted_draft_id"] == draft and v["accepted_frame_id"] == final, "one accepted per stage"
+    assert v["status"] == "frame" and not v["prompt_lock"]["locked"]
+    assert [f["id"] for f in v["frames"]] == [final] and [d["id"] for d in v["drafts"]] == [draft]
+
+
+def test_a_final_can_be_painted_from_the_accepted_draft_or_without_it(world: World, fired: list[dict]):
+    s = approved_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    rows = world.repos.frames.rows  # type: ignore[attr-defined]
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={"from_draft": True}, headers=crew)
+    assert r.status_code == 409 and "Accept a draft first" in r.json()["detail"]
+    (draft,) = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft"},
+                                 headers=crew).json()["frame_ids"]
+    finish_frames(world, s, [draft])
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={"from_draft": True}, headers=crew)
+    assert r.status_code == 409, "a draft that is not accepted is not the draft"
+    world.client.post(url(world, f"/frames/{draft}/accept"), headers=crew)
+
+    (with_draft,) = world.client.post(shot_url(world, s, 1, "/frames"), json={"from_draft": True},
+                                      headers=crew).json()["frame_ids"]
+    (without,) = world.client.post(shot_url(world, s, 1, "/frames"), json={"from_draft": False},
+                                   headers=crew).json()["frame_ids"]
+    assert rows[with_draft]["stage"] == "final" and rows[with_draft]["draft_id"] == draft
+    assert rows[without]["stage"] == "final" and "draft_id" not in rows[without]
+    v = world.client.get(shot_url(world, s, 1), headers=crew).json()
+    assert [f["draft_id"] for f in v["frames"]] == [draft, None]
+
+
+def test_a_draft_cannot_be_painted_from_a_draft_and_a_stale_draft_is_not_a_reference(world: World, fired: list[dict]):
+    s = approved_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft", "from_draft": True}, headers=crew)
+    assert r.status_code == 422
+    (draft,) = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft"},
+                                 headers=crew).json()["frame_ids"]
+    finish_frames(world, s, [draft])
+    world.client.post(url(world, f"/frames/{draft}/accept"), headers=crew)
+    world.repos.shots.rows[s["shots"][1]["id"]]["version"] += 1  # type: ignore[attr-defined]  # the shot moved on
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={"from_draft": True}, headers=crew)
+    assert r.status_code == 409 and "earlier version" in r.json()["detail"]
+
+
+def test_scene_frames_are_finals_and_a_draft_does_not_count_as_having_a_frame(world: World, fired: list[dict]):
+    s = approved_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    (draft,) = world.client.post(shot_url(world, s, 0, "/frames"), json={"stage": "draft"},
+                                 headers=crew).json()["frame_ids"]
+    finish_frames(world, s, [draft])
+    world.client.post(url(world, f"/frames/{draft}/accept"), headers=crew)
+    r = world.client.post(url(world, f"/scenes/{s['scene']['id']}/frames"), json={}, headers=crew)
+    assert r.status_code == 202
+    rows = world.repos.frames.rows  # type: ignore[attr-defined]
+    assert {rows[f]["stage"] for f in r.json()["frame_ids"]} == {"final"}
+    assert s["shots"][0]["id"] in {rows[f]["shot_id"] for f in r.json()["frame_ids"]}, "S01 still needs a first frame"

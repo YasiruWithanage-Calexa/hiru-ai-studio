@@ -454,6 +454,24 @@ def _clean(text: Any) -> str:
     return " ".join(str(text or "").split())
 
 
+class FrameStage(StrEnum):
+    """A first frame is first tried small (a DRAFT, painted at low quality: cheap, to settle the picture) and then
+    painted for real (the FINAL, medium quality). Only a final can open the video prompt; an accepted draft is a
+    reference a final may be painted from."""
+
+    DRAFT = "draft"
+    FINAL = "final"
+
+
+def frame_stage(row: Mapping[str, Any]) -> FrameStage:
+    """A frame row's stage; a row from before stages existed is a final."""
+    return FrameStage.DRAFT if row.get("stage") == FrameStage.DRAFT else FrameStage.FINAL
+
+
+# The label the draft goes by when it is attached to a final. The prompt keys on its start, as it does for sheets.
+DRAFT_LABEL = "the approved draft of this frame"
+
+
 def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: str, cast: list[CastMember],
                  references: list[str] | None = None, recommended_framing: str = "", unseen: str = "",
                  hands: str = "") -> str:
@@ -473,6 +491,12 @@ def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio:
         named = "; ".join(f"image {n} is {label}" for n, label in enumerate(references, start=1))
         parts.append(f"Reference images, in order: {named}. Match them exactly: the same faces, hair, skin "
                      "tone and build, the same place. Do not redesign anyone.")
+        if any(label.startswith(DRAFT_LABEL) for label in references):
+            # The draft was painted small to settle the picture: keep what was settled, make it final.
+            parts.append("The approved draft is a rough, low-quality version of this very frame: keep its "
+                         "composition, framing, pose, expression, props and light exactly, and paint it again "
+                         "as the finished frame with full detail and sharpness. The sheets still decide faces, "
+                         "hair and the place.")
         if any(label.startswith("the look sheet") for label in references):
             # A look sheet IS the costume of this shot: clothes, hair, makeup and accessories.
             parts.append("A look sheet shows what that person wears in this shot: dress them exactly as their "

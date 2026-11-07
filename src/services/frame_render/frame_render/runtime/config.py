@@ -18,6 +18,8 @@ class Config:
     internal_secret: str
     # The frame check (plan/2026-11-01 fix 8): a vision model looks at each painted frame. "" = off.
     vision_model: str = ""
+    # A DRAFT first frame is painted at this (cheap) quality; a final at `image_quality`.
+    image_quality_draft: str = "low"
 
     @property
     def images_enabled(self) -> bool:
@@ -36,4 +38,5 @@ def get_config() -> Config:
         api_internal_url=env("API__INTERNAL_URL", "http://localhost:8000"),
         internal_secret=env("API__INTERNAL_SECRET", ""),
         vision_model=env("OPENAI__MODEL_VISION", "gpt-5-mini"),
+        image_quality_draft=env("OPENAI__IMAGE_QUALITY_DRAFT", "low"),
     )

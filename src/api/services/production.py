@@ -19,10 +19,12 @@ from contracts.producer import (
     CameraCheck,
     CameraSettings,
     CastMember,
+    FrameStage,
     PersonEdits,
     Pins,
     apply_waivers,
     default_camera,
+    frame_stage,
     look_pins,
     pins_for,
     script_hash,
@@ -59,9 +61,11 @@ class ShotState:
     recommended: CameraSettings
     camera: CameraSettings
     design_reasons: list[str] = field(default_factory=list)  # [] = current; ["no design"] = none
-    frames: list[Row] = field(default_factory=list)
-    frame_reasons: dict[str, list[str]] = field(default_factory=dict)
-    accepted: Row | None = None
+    frames: list[Row] = field(default_factory=list)  # the FINAL first frames (uploads and carried frames too)
+    drafts: list[Row] = field(default_factory=list)  # low-quality drafts: only ever a reference for a final
+    frame_reasons: dict[str, list[str]] = field(default_factory=dict)  # for drafts too
+    accepted: Row | None = None  # the accepted FINAL: it opens the video prompt
+    accepted_draft: Row | None = None  # the accepted draft: what a final may be painted from
     prompt: Row | None = None
     prompt_reasons: list[str] = field(default_factory=list)
     lock: str = ""  # why a prompt cannot be made now; "" = unlocked
@@ -135,9 +139,12 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
         if st.has_design and st.intent is not None and design.get("intent") \
                 and design["intent"] != st.intent.stamp():
             st.design_reasons.append("What the shot is for changed.")
-        st.frames = [f for f in frames if str(f["shot_id"]) == st.id]
-        st.frame_reasons = {str(f["id"]): reasons(f.get("pins"), frame=True) for f in st.frames}
+        own_frames = [f for f in frames if str(f["shot_id"]) == st.id]
+        st.frames = [f for f in own_frames if frame_stage(f) == FrameStage.FINAL]
+        st.drafts = [f for f in own_frames if frame_stage(f) == FrameStage.DRAFT]
+        st.frame_reasons = {str(f["id"]): reasons(f.get("pins"), frame=True) for f in own_frames}
         st.accepted = next((f for f in st.frames if f.get("accepted_at")), None)
+        st.accepted_draft = next((f for f in st.drafts if f.get("accepted_at")), None)
         st.prompt = prompts.get(st.id)
         if st.prompt:
             st.prompt_reasons = reasons(st.prompt.get("pins"))

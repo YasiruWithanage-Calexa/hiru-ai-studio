@@ -172,6 +172,13 @@ def image_model(settings: AISettings | None = None) -> tuple[str, str]:
     return str(getattr(settings.openai, spec.model)), str(getattr(settings.openai, spec.quality))
 
 
+def image_draft_quality(settings: AISettings | None = None) -> str:
+    """The quality a DRAFT first frame is painted at (`draft_quality` of the `image` entry), else the usual one."""
+    settings = settings or get_settings()
+    spec = load_models().image
+    return str(getattr(settings.openai, spec.draft_quality or spec.quality))
+
+
 def openai_client(settings: AISettings | None = None, *, timeout_s: float = 180.0, retries: int = 0) -> Any:
     """The raw `openai` SDK client, for the calls LangChain has no wrapper for (pictures). Same key and base URL as
     the chat tiers; no key raises `ModelUnavailable`. Adapters take this from here so that `core.llm` stays the one
