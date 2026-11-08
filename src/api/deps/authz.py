@@ -16,6 +16,7 @@ from uuid import UUID
 
 from fastapi import Depends, HTTPException, status
 
+from api.cache import AsyncTTLCache
 from api.deps.auth import CurrentUser, User
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
@@ -43,9 +44,21 @@ class ProductionAccess:
     production: Row
 
 
+# A page fires several requests at once and each one resolves access. Kept 15 s per (database, production, person) and
+# cleared by `forget_access()` wherever this process changes a member, a role or the production row
+# (plan/2026-11-08c phase 4). A missing production or role is never kept: a person just added gets in at once.
+ACCESS_TTL_S = 15.0
+_access: AsyncTTLCache[tuple[Row, str | None]] = AsyncTTLCache(ACCESS_TTL_S, max_entries=512)
+
+
+def forget_access() -> None:
+    _access.clear()
+
+
 async def resolve_access(user: CurrentUser, production_id: UUID, repos: Repos) -> ProductionAccess:
     """The caller's role and permissions on one production, or 404 if they cannot see it."""
-    found = await repos.productions.get_with_role(production_id, user.id)
+    found = await _access.get((id(repos), production_id, user.id),
+                              lambda: repos.productions.get_with_role(production_id, user.id))
     if found is None:
         raise NOT_FOUND
     production, role_name = found

@@ -12,7 +12,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from api.config import Settings, get_settings
-from api.deps.authz import Admin
+from api.deps.authz import Admin, forget_access
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.schemas import InvitationCreate, InvitationResult, Member, MemberUpdate, initials
@@ -53,6 +53,7 @@ async def update_member(user_id: UUID, body: MemberUpdate, admin: Admin,
                             "This is the last active admin. Make someone else admin first.")
 
     row = await repos.profiles.update(user_id, fields)
+    forget_access()
     await repos.audit.record(action="member.update", entity="profile", entity_id=str(user_id),
                              actor_user_id=admin.id,
                              diff={k: [current.get(k), v] for k, v in fields.items()})
@@ -78,6 +79,7 @@ async def invite(body: InvitationCreate, admin: Admin, repos: ReposDep,
             await repos.profiles.update(user_id, {"app_role": AppRole.ADMIN.value})
         if body.production_id and body.production_role:
             await repos.members.upsert(body.production_id, user_id, body.production_role.value, admin.id)
+            forget_access()
         await repos.audit.record(action="member.grant", entity="profile", entity_id=str(user_id),
                                  actor_user_id=admin.id, production_id=body.production_id,
                                  diff=body.model_dump(mode="json", exclude={"email"}))

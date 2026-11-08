@@ -1,0 +1,84 @@
+{
+ "stage": 2,
+ "from": "3-gpt_5_high_episode1",
+ "stopped": "finished",
+ "complete": true,
+ "turns": 5,
+ "detail": "",
+ "blend_notes": [
+  "c15 (1M-1): open with c01; The street under the rain from above, before we meet him: the size of his world.",
+  "c16 (1Q-1): cut_in with c08; Her grip tightens on the phone: the call is cold before her face shows it.",
+  "c17 (1N-1): cut_in with c07; Focus moves from the flask to his hand: the stall is what he has.",
+  "c18 (1P-1): under_line with c07; We creep into his face as his aim lands.",
+  "c19 (1R-1): under_line with c07; The rain on the awning frames him while he talks of his aim."
+ ],
+ "moment_review": [
+  {
+   "moment": 1,
+   "earns": true,
+   "why": "it turns the scene"
+  },
+  {
+   "moment": 2,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  },
+  {
+   "moment": 3,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  },
+  {
+   "moment": 4,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  },
+  {
+   "moment": 5,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  },
+  {
+   "moment": 6,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  },
+  {
+   "moment": 7,
+   "earns": true,
+   "why": "it turns the scene"
+  },
+  {
+   "moment": 8,
+   "earns": true,
+   "why": "it turns the scene"
+  },
+  {
+   "moment": 9,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  },
+  {
+   "moment": 10,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  },
+  {
+   "moment": 11,
+   "earns": false,
+   "why": "plain coverage: the must clip carries it"
+  }
+ ],
+ "cinematic": [
+  "c15",
+  "c16",
+  "c17",
+  "c18",
+  "c19"
+ ],
+ "changed_must": [],
+ "take_s": 90,
+ "target_s": 60.0,
+ "cap_s": 120.0,
+ "faults": []
+}

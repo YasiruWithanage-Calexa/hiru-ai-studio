@@ -73,18 +73,29 @@ class ProductionSettings(_Model):
     # Which planner makes the shot lists (plan/2026-11-04b D5): the classic `script_split`, Shot Planner Adam, or Shot
     # Planner David (plan/2026-11-05e). A scene can also be planned with either on its own ("Plan with Adam"), whatever
     # this says.
-    shot_planner: Literal["classic", "adam", "david", "jonathan"] = "classic"
+    shot_planner: Literal["classic", "adam", "david", "jonathan", "raphael"] = "classic"
     # How David orders the scenes of an episode (plan/2026-11-05e D5): `linked` runs CONTINUOUS chains in order and the
     # rest at once; `episode` runs every scene after the one before it (strict continuity, same calls and cost, slower).
     david_order: Literal["linked", "episode"] = "linked"
     # The same choice for Shot Planner Jonathan (plan/2026-11-06b).
     jonathan_order: Literal["linked", "episode"] = "linked"
+    # Shot Planner Raphael's length cap (plan/2026-11-08e §2.1, L1): the whole bin of one scene may hold the scene's
+    # given length times this, in seconds of takes. A scene's own choice, when someone plans it, overrides it for
+    # that run.
+    raphael_length_cap: float = 2
     # Whether the final cut trims a take to the part its card keeps and lays sound across cuts (pre-lap, carry): plan
     # 2026-11-04b Phase 9. Off until it is proven; then every take plays whole.
     final_cut_trim: bool = False
     # The default for making a take in Hiru (plan/2026-11-06c §4.2): engine, resolution, takes per press, seed ...
     # A shot overrides it (`shots.video_settings`) and a run overrides that.
     video: VideoSettings = Field(default_factory=lambda: VideoSettings())
+
+    @field_validator("raphael_length_cap")
+    @classmethod
+    def _a_length_cap(cls, v: float) -> float:
+        if v not in (1.5, 2, 2.5, 3):
+            raise ValueError("raphael_length_cap must be one of 1.5, 2, 2.5, 3")
+        return float(v)
 
     @field_validator("fixed_shot_seconds")
     @classmethod

@@ -87,6 +87,7 @@ class RefOut(BaseModel):
     origin: Literal["code", "person"]
     tag: str  # `<IMAGE_REF_0>`, `image 2`, "start frame": the name the request gives it
     url: str | None  # /files/{ticket}
+    thumb_url: str | None = None  # the small WebP beside it, for tiles
     version: int | None
 
 
@@ -96,6 +97,7 @@ class CatalogItem(BaseModel):
     binds_to: UUID | None
     label: str
     url: str | None
+    thumb_url: str | None = None
     version: int | None
 
 
@@ -351,6 +353,11 @@ async def build_plan(repos: Repos, settings: Settings, ld: Loaded, st: ShotState
                 hash=request_hash(spec, with_seed=False), pictures=pictures)
 
 
+def _thumb(bucket: str, path: str | None) -> str | None:
+    """The small copy of a PICTURE (only frames and references have one)."""
+    return media_links.thumb_url(bucket, path) if path and bucket in ("frames", "references") else None
+
+
 def ref_out(spec: RenderSpec, bindings: list[RefBinding] | None = None) -> list[RefOut]:
     """The pictures as the browser sees them, in WIRE order with the tag each goes by."""
     ordered = wire_order(bindings if bindings is not None else spec.references)
@@ -358,6 +365,7 @@ def ref_out(spec: RenderSpec, bindings: list[RefBinding] | None = None) -> list[
     return [RefOut(slot=b.slot, kind=b.source.kind, id=b.source.id, binds_to=b.binds_to, label=b.label,
                    origin=b.origin, tag=tag,
                    url=media_links.url(b.source.bucket, b.source.path) if b.source.path else None,
+                   thumb_url=_thumb(b.source.bucket, b.source.path),
                    version=b.source.version) for b, tag in zip(ordered, tags, strict=True)]
 
 
@@ -368,7 +376,7 @@ def plan_view(shot_id: UUID, plan: Plan, settings: Settings) -> PlanView:
     spec_default = plan.spec.model_copy(update={"references": plan.default.bindings})
     catalog = [CatalogItem(kind=src.kind, id=src.id, binds_to=plan.pictures.binds.get(key),
                            label=plan.pictures.labels[key], version=src.version,
-                           url=media_links.url(src.bucket, src.path))
+                           url=media_links.url(src.bucket, src.path), thumb_url=_thumb(src.bucket, src.path))
                for key, src in plan.pictures.by_key.items()]
     return PlanView(
         shot_id=shot_id, available=settings.video_available,

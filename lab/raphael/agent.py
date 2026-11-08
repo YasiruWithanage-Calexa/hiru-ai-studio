@@ -41,7 +41,8 @@ class Config:
 
     model: tuple[str, str] = ("gpt-5", "high")  # (model, effort)
     max_output: int = 48_000  # reasoning included; a sequence of complete clips per call. It bounds a turn's worst case
-    max_turns: int = 20  # R1
+    max_turns: int = 20  # R1 (stage 2: 12, S4)
+    prompt: str = "raphael"  # runs 1-3: "raphael"; S1 (must clips only, not yet paid for): "raphael_must"
     scene: str = "1"  # the slate's scene number (D8)
     allowed: tuple[str, ...] = schema.TECHNIQUES  # the production's visual language (D3): every technique until it is set
 
@@ -57,6 +58,16 @@ class Outcome:
     @property
     def finished(self) -> bool:
         return self.stopped == "finished"
+
+
+DROPPED = ("screen text",)  # the person (2026-11-08): phone close-ups are fine, so the shared screen-text report is dropped
+
+
+def lab_checks(reading: pack.Reading, work: Bin, allowed: tuple[str, ...] = schema.TECHNIQUES) -> list[checks.Fault]:
+    """DaVinci's checks (R2), minus the reports the person struck for Raphael. The shared check in `contracts.david` is
+    unchanged, so every other planner is judged as before."""
+    return [f for f in checks.check_all(reading, work, allowed)
+            if not (f.code == "feasibility" and any(f.key.endswith(f":{d}") for d in DROPPED))]
 
 
 def prompt(name: str = "raphael") -> str:
@@ -113,6 +124,9 @@ def length_block(reading: pack.Reading) -> str:
 
 
 class Raphael:
+    SLOT = "raphael"  # the ledger's slot and the name in the trace
+    TOOLS: tuple[str, ...] = TOOLS
+
     def __init__(self, reading: pack.Reading, backend: Backend, meter: Meter, folder: Path, cfg: Config | None = None) -> None:
         self.reading, self.backend, self.meter, self.folder = reading, backend, meter, folder
         self.cfg = cfg or Config()
@@ -124,7 +138,7 @@ class Raphael:
         self.touched: set[str] = set()  # the clips the current write replaced: a fault on them that survives was tried before
         self.ctx = 0  # an estimate (high) of the conversation in tokens
         self.trace = folder / "trace.jsonl"
-        self.system = prompt()
+        self.system = prompt(self.cfg.prompt)
         self.opening = "\n\n".join(p for p in (pack.message(reading), voice_only(reading), length_block(reading),
                                                "Plan this scene. Start with the intended cut.") if p)
 
@@ -137,7 +151,7 @@ class Raphael:
 
     def run(self) -> Outcome:
         model, effort = self.cfg.model
-        specs = tool_specs()
+        specs = self.specs()
         self.ctx = tokens_of(self.system + self.opening + json.dumps(specs))
         items: list[dict[str, Any]] = [{"role": "user", "content": self.opening}]
         previous: str | None = None
@@ -154,7 +168,7 @@ class Raphael:
                 reply = self.backend.step(system=self.system, items=items, previous_id=previous, tools=specs, model=model,
                                           effort=effort, max_output=self.cfg.max_output)
             except Exception as exc:  # the call may still have been billed: entered at its worst case
-                self.meter.fail("raphael", model, effort, worst, type(exc).__name__)
+                self.meter.fail(self.SLOT, model, effort, worst, type(exc).__name__)
                 return self.end("error", f"The model call failed ({type(exc).__name__}: {exc}).")
             self.charge(model, effort, reply, worst, turn)
             self.ctx += reply.usage.output_tokens if reply.usage and reply.usage.reported else self.cfg.max_output
@@ -162,7 +176,7 @@ class Raphael:
             if not reply.calls:
                 idle += 1
                 if idle > 2:
-                    return self.end("idle", "Raphael stopped calling tools before `finish`.")
+                    return self.end("idle", f"{self.SLOT} stopped calling tools before `finish`.")
                 items = [{"role": "user", "content": "Continue with a tool call. When no blocking fault remains, call `finish`."}]
                 continue
             outputs = []
@@ -176,15 +190,18 @@ class Raphael:
             if self.done:
                 return self.end("finished", "")
             items = outputs
-        return self.end("turns", f"Raphael used all {self.cfg.max_turns} turns.")
+        return self.end("turns", f"{self.SLOT} used all {self.cfg.max_turns} turns.")
+
+    def specs(self) -> list[dict[str, Any]]:
+        return tool_specs()
 
     def charge(self, model: str, effort: str, reply: Reply, worst: float, turn: int) -> None:
-        spent = self.meter.charge("raphael", model, effort, reply.usage, worst)
-        self.record({"slot": "raphael", "model": model, "turn": turn, "dollars": round(spent, 4),
+        spent = self.meter.charge(self.SLOT, model, effort, reply.usage, worst)
+        self.record({"slot": self.SLOT, "model": model, "turn": turn, "dollars": round(spent, 4),
                      "usage": reply.usage.__dict__ if reply.usage else None, "calls": [c.name for c in reply.calls]})
 
     def end(self, stopped: str, detail: str) -> Outcome:
-        found = checks.check_all(self.reading, self.work, self.cfg.allowed)
+        found = lab_checks(self.reading, self.work, self.cfg.allowed)
         return Outcome(stopped=stopped, turns=self.turn, faults=found, editor_notes=self.editor_notes, detail=detail)
 
     # ── the report every write returns ───────────────────────────────────────────────────────────
@@ -204,7 +221,7 @@ class Raphael:
     def report(self) -> str:
         """The whole bin's checks. A fault is marked STILL FAILING when it was in the last report and this write replaced
         one of its clips: the fix was tried and did not work. A hole that is simply not built yet is never marked."""
-        found = checks.check_all(self.reading, self.work, self.cfg.allowed)
+        found = lab_checks(self.reading, self.work, self.cfg.allowed)
         again = {f.key for f in found if f.key in self.last_faults and set(f.clips) & self.touched}
         self.last_faults, self.touched = {f.key for f in found}, set()
         block, told = checks.blocking(found), [f for f in found if f.fix == "report"]
@@ -236,9 +253,9 @@ class Raphael:
     # ── tools ────────────────────────────────────────────────────────────────────────────────────
 
     def tool(self, name: str, raw: str) -> str:
-        fn = getattr(self, f"tool_{name}", None) if name in TOOLS else None
+        fn = getattr(self, f"tool_{name}", None) if name in self.TOOLS else None
         if fn is None:
-            return f"There is no tool {name}. Tools: {', '.join(TOOLS)}."
+            return f"There is no tool {name}. Tools: {', '.join(self.TOOLS)}."
         try:
             args = json.loads(raw or "{}")
         except ValueError:
@@ -313,7 +330,7 @@ class Raphael:
         return f"{len(self.work.clips)} clips. " + ("\n" + "\n".join(rows) if rows else "The bin is empty.")
 
     def tool_finish(self, args: dict[str, Any]) -> str:
-        found = checks.check_all(self.reading, self.work, self.cfg.allowed)
+        found = lab_checks(self.reading, self.work, self.cfg.allowed)
         if checks.blocking(found):
             return "Refused: blocking faults remain.\n" + self.report()
         self.editor_notes = [str(n) for n in args.get("editor_notes") or []]

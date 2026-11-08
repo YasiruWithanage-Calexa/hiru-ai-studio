@@ -15,6 +15,7 @@ from typing import Any, Protocol
 from uuid import UUID
 
 Row = dict[str, Any]
+Rows = list[Row]  # for a class that has a method called `list`, where `list[...]` no longer means the type
 
 
 class ProfilesRepo(Protocol):
@@ -77,6 +78,14 @@ class JobsRepo(Protocol):
     # Compare-and-set, so two deliveries of the same hand-off advance or resume a job once.
     async def advance(self, job_id: UUID, from_cursor: int, request: Row | None = None) -> bool: ...
     async def claim_resume(self, job_id: UUID) -> bool: ...
+    # The sweeper's two reads (plan/2026-11-08c phase 5): jobs still pending/running whose row has not changed since
+    # `before`, and when a job last wrote an event (None: never). Columns only: id, kind, production_id, status,
+    # updated_at.
+    async def active_before(self, before: datetime) -> list[Row]: ...
+    async def last_event_at(self, job_id: UUID) -> datetime | None: ...
+    # `live` (plan/2026-11-08c phase 3): ONE column-limited query for the status read: rows of the production that are
+    # still active, plus (when `since` is given) any that changed after it. Never `*`, never a ticket.
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]: ...  # id, kind, status, updated_at
 
 
 class DocumentsRepo(Protocol):
@@ -86,6 +95,9 @@ class DocumentsRepo(Protocol):
     async def list(self, production_id: UUID) -> list[Row]: ...
     async def update(self, document_id: UUID, fields: Row) -> Row: ...
     async def delete(self, document_id: UUID) -> None: ...
+    # Documents still `processing` whose row has not changed since `before` (the sweeper; columns id, updated_at).
+    async def processing_before(self, before: datetime) -> Rows: ...
+    async def live(self, production_id: UUID, since: datetime | None) -> Rows: ...  # id, status, updated_at
 
 
 class StorageRepo(Protocol):
@@ -238,6 +250,11 @@ class FramesRepo(Protocol):
     # (False: someone accepted another meanwhile).
     async def accept(self, shot_id: UUID, frame_id: UUID, user_id: UUID, stage: str = "final") -> bool: ...
     async def unaccept(self, frame_id: UUID) -> None: ...
+    # Frames still queued/running whose row has not changed since `before` (the sweeper; columns id, job_id,
+    # updated_at).
+    async def active_before(self, before: datetime) -> list[Row]: ...
+    # id, shot_id, status, updated_at
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]: ...
 
 
 class PromptsRepo(Protocol):
@@ -261,6 +278,11 @@ class RendersRepo(Protocol):
     async def update_many(self, render_ids: list[str], fields: Row) -> None: ...
     # Renders of the production that are queued or running (the per-production cap on spending).
     async def count_active(self, production_id: UUID) -> int: ...
+    # Renders still queued/running whose row has not changed since `before` (the sweeper; columns id, job_id,
+    # updated_at).
+    async def active_before(self, before: datetime) -> list[Row]: ...
+    # id, shot_id, status, updated_at
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]: ...
 
 
 class RevisionsRepo(Protocol):

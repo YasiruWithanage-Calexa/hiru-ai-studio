@@ -33,7 +33,7 @@ from pydantic import BaseModel, Field, model_validator
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
-from api.services import media_links
+from api.services import media_links, media_thumbs
 from api.services.production import NOT_APPROVED, ShotState, camera_checks, scene_states
 from api.workers import task_manager
 from contracts.canon import looks_in_force
@@ -45,7 +45,9 @@ from contracts.producer import (
     CameraUpdate,
     Check,
     FrameStage,
+    PersonEdits,
     PromptSection,
+    cast_in,
     frame_prompt,
     frame_stage,
     storyboard_note,
@@ -59,6 +61,7 @@ router = APIRouter(prefix="/v1/productions/{production_id}", tags=["production"]
 ReposDep = Annotated[Repos, Depends(get_repos)]
 CanView = Annotated[ProductionAccess, Depends(require_permission(Permission.VIEW))]
 CanGenerate = Annotated[ProductionAccess, Depends(require_permission(Permission.GENERATE))]
+CanEditCanon = Annotated[ProductionAccess, Depends(require_permission(Permission.EDIT_CANON))]
 MAX_FRAMES_PER_REQUEST = 4
 
 
@@ -122,6 +125,8 @@ class FrameView(BaseModel):
     draft_id: UUID | None  # the accepted draft this final was painted from (None: painted without one)
     status: str  # queued | running | done | failed | refused
     url: str | None  # /files/{ticket}, never a storage URL
+    thumb_url: str | None = None  # the 640 px WebP beside it: for tiles (may 404 for an older frame: use `url`)
+    file_key: str | None = None  # names this file for ever (the URL changes every hour): one browser copy per key
     error: str | None
     rejected_reason: str | None
     accepted: bool
@@ -230,7 +235,8 @@ class FramesRequest(FramesBase):
 
 
 class SceneFramesRequest(FramesBase):
-    only_missing: bool = True  # skip shots that already have an accepted, current frame
+    only_missing: bool = True  # skip shots that already have what this stage makes (see request_scene_frames)
+    stage: FrameStage = FrameStage.FINAL  # draft = low-quality pictures to settle the look, final = first frames
 
 
 class RejectRequest(BaseModel):
@@ -347,6 +353,8 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
                 id=f["id"], label=f"{noun} {n}", stage=frame_stage(f), draft_id=f.get("draft_id"),
                 status=str(f["status"]),
                 url=media_links.url("frames", str(f["storage_path"])) if f.get("storage_path") else None,
+                thumb_url=media_links.thumb_url("frames", str(f["storage_path"])) if f.get("storage_path") else None,
+                file_key=media_links.key("frames", str(f["storage_path"])) if f.get("storage_path") else None,
                 error=f.get("error"), rejected_reason=f.get("rejected_reason"), accepted=bool(f.get("accepted_at")),
                 stale=bool(reasons), stale_reasons=reasons, created_at=str(f["created_at"]),
                 checks=_checks(f.get("checks"))))
@@ -515,6 +523,53 @@ async def update_intent(production_id: UUID, shot_id: UUID, body: IntentUpdate, 
     return shot_view(ld, st, camera_checks(ld.states)[st.id])
 
 
+async def _set_in_shot(repos: Repos, access: ProductionAccess, shot_id: UUID, entity_id: UUID, *,
+                       add: bool) -> ShotProductionView:
+    """Put one canon item in ONE shot, or take it out. Like the scene route, a mark is stored only when it
+    differs from what the script gives the shot. Works on an approved scene: frames and prompts made before
+    show as out of date (their pins no longer match), the shot is not unlocked."""
+    ld, st = await load_shot(repos, access, shot_id)
+    entity = await repos.canon.get(access.production_id, entity_id)
+    if entity is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Canon item not found.")
+    eid = str(entity_id)
+    characters = [c for c in ld.canon if c["kind"] == "character"]
+    natural = {str(c) for c in cast_in(st.items, characters)}
+    if ld.scene.get("location_id"):
+        natural.add(str(ld.scene["location_id"]))
+    edits = PersonEdits.of(st.row)
+    cast = edits.cast
+    before = (list(cast.add), list(cast.remove))
+    if add:
+        cast.remove = [i for i in cast.remove if i != eid]
+        if eid not in natural and eid not in cast.add:
+            cast.add.append(eid)
+    else:
+        cast.add = [i for i in cast.add if i != eid]
+        if eid in natural and eid not in cast.remove:
+            cast.remove.append(eid)
+    if (cast.add, cast.remove) != before:
+        await repos.shots.update(shot_id, {"person_edits": edits.dump()})
+        await _audit(repos, access, "shot.canon_add" if add else "shot.canon_remove", "shot", str(shot_id),
+                     {"canon": entity["name"]})
+    ld, st = await load_shot(repos, access, shot_id)
+    return shot_view(ld, st, camera_checks(ld.states)[st.id])
+
+
+@router.put("/shots/{shot_id}/canon/{entity_id}", response_model=ShotProductionView)
+async def add_shot_canon(production_id: UUID, shot_id: UUID, entity_id: UUID, access: CanEditCanon,
+                         repos: ReposDep) -> ShotProductionView:
+    """Put this canon item in this shot (or back, where it was taken out)."""
+    return await _set_in_shot(repos, access, shot_id, entity_id, add=True)
+
+
+@router.delete("/shots/{shot_id}/canon/{entity_id}", response_model=ShotProductionView)
+async def remove_shot_canon(production_id: UUID, shot_id: UUID, entity_id: UUID, access: CanEditCanon,
+                            repos: ReposDep) -> ShotProductionView:
+    """Take this canon item out of this shot only; the rest of the scene keeps it."""
+    return await _set_in_shot(repos, access, shot_id, entity_id, add=False)
+
+
 @router.patch("/scenes/{scene_id}/coverage", response_model=SceneProductionView)
 async def update_coverage(production_id: UUID, scene_id: UUID, body: CoverageUpdate, access: CanGenerate,
                           repos: ReposDep) -> SceneProductionView:
@@ -605,11 +660,20 @@ async def request_scene_frames(production_id: UUID, scene_id: UUID, body: SceneF
     def has_current_frame(st: ShotState) -> bool:
         return st.accepted is not None and not st.frame_reasons.get(str(st.accepted["id"]))
 
+    def has_current_draft(st: ShotState) -> bool:
+        """A draft that is painting, or finished and still true to the shot; a failed or stale one does not count."""
+        return any(d.get("status") in ("queued", "running") or
+                   (d.get("status") == "done" and not st.frame_reasons.get(str(d["id"])))
+                   for d in st.drafts)
+
+    drafting = body.stage == FrameStage.DRAFT
+    have = has_current_draft if drafting else has_current_frame
     targets = [st for st in ld.states if st.row.get("frame_strategy") != FrameStrategy.CARRY_LAST_FRAME
-               and not (body.only_missing and has_current_frame(st))]
+               and not (body.only_missing and have(st))]
     if not targets:
-        raise HTTPException(status.HTTP_409_CONFLICT, "Every shot that needs a first frame has one.")
-    return await _start_frames(repos, access, ld, targets, body.count)
+        raise HTTPException(status.HTTP_409_CONFLICT, "Every shot that needs a draft has one." if drafting
+                            else "Every shot that needs a first frame has one.")
+    return await _start_frames(repos, access, ld, targets, body.count, body.stage)
 
 
 async def _frame(repos: Repos, production_id: UUID, frame_id: UUID) -> Row:
@@ -723,7 +787,7 @@ async def upload_frame(production_id: UUID, shot_id: UUID, file: Annotated[Uploa
     ext, mime = kind
     frame_id = str(uuid4())
     path = f"{production_id}/{shot_id}/{frame_id}.{ext}"
-    await repos.storage.upload("frames", path, bytes(data), mime)
+    await media_thumbs.store_with_thumb(repos, "frames", path, bytes(data), mime)
     await repos.frames.create_many([{"id": frame_id, "production_id": str(production_id), "shot_id": str(shot_id),
                                      "status": "done", "storage_path": path, "prompt": "Uploaded by a person.",
                                      "pins": st.pins.model_dump(), "created_by": str(access.user.id)}])

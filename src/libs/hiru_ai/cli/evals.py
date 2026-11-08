@@ -133,6 +133,22 @@ def _check_tools(case: dict[str, Any], ctx: RunContext) -> str:
     return f"tool errors: {', '.join(bad)}" if bad and not case.get("allow_tool_errors") else ""
 
 
+def _converse(agent: agents.Agent, inp: Any, case: dict[str, Any], ctx: RunContext, live: bool) -> dict[str, Any]:
+    """A `loop` agent (plan/2026-11-08e): its hooks build the session whose code tools run, the case's `tool_calls` are
+    the model's turns (scripted), and the session's `outcome` is compared with `expect`."""
+    run = agent.hooks.session(inp)
+    args = agent.hooks.converse_args(inp, run)
+    if live:
+        agent.converse(inp, ctx, **args)
+    else:
+        calls = case.get("tool_calls") or []
+        turns = [AIMessage(content="", tool_calls=[{"name": c["name"], "args": c.get("args") or {}, "id": f"call-{n}",
+                                                    "type": "tool_call"}]) for n, c in enumerate(calls)]
+        with llm.use_models(RoutedChatModel(routes={"all": turns}, choose=lambda m: "all")):
+            agent.converse(inp, ctx, **args)
+    return dict(agent.hooks.outcome(run))
+
+
 def run_agent(reg: Registry, ident: str, *, live: bool = False, prompt: Path | None = None,
               tools: bool = False, every: bool = False) -> list[Result]:
     agent = agents.Agent(reg, ident, with_tools=tools)
@@ -147,6 +163,11 @@ def run_agent(reg: Registry, ident: str, *, live: bool = False, prompt: Path | N
         try:
             inp = agent.input_cls.model_validate(case["input"])
             scripted_tools = agent.manifest.shape == "react" and not live
+            if agent.manifest.shape == "loop":
+                got_dict = _converse(agent, inp, case, ctx, live)
+                ok = contained(case.get("expect", {}), got_dict)
+                results.append(_counted(Result(label, name, ok, "" if ok else f"got {got_dict}"), rows, ctx))
+                continue
             if live:
                 got = agent.run(inp, ctx)
             elif case.get("model") == "unavailable":  # no reply left: a model out of reach, never the real one

@@ -1,0 +1,11 @@
+id: raphael_shot_planner
+kind: system
+version: 1
+summary: "Shot Planner Raphael: plans each scene in two stages, each ONE model in one conversation with code tools only: the intended cut and the must bin, then (right after) the cinematic pass over the locked bin, under one run cap and the length cap a person chose; writes one shot per clip with a current design."
+status: active
+owner: director
+job_kind: plan_scene_raphael
+agents: [raphael_planner, raphael_cinematic]
+steps: [raphael_write]
+panels: []
+tools: []

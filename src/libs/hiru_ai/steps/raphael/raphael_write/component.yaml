@@ -1,0 +1,8 @@
+id: raphael_write
+kind: step
+version: 1
+summary: "Writes a Raphael result as rows: one shot per clip (with its plan fields, intent, finished IR and a design whose pins are current), the scene's lines bound to the clip that performs them, the fit report in the classic shape and the stored result; refuses an approved scene."
+status: active
+owner: director
+entry: step:run
+uses: []

@@ -52,3 +52,18 @@ class AsyncTTLCache[T]:
 
     def clear(self) -> None:
         self._values.clear()
+
+
+# Caches whose rows other processes (the workers) also write. When the API learns that a job ended, it clears
+# them, so a person who sees "done" never reads the old copy (plan/2026-11-08c phase 4).
+_after_job: list[AsyncTTLCache] = []
+
+
+def clear_after_job(cache: AsyncTTLCache) -> None:
+    """Register `cache` to be cleared by `job_ended()`."""
+    _after_job.append(cache)
+
+
+def job_ended() -> None:
+    for cache in _after_job:
+        cache.clear()

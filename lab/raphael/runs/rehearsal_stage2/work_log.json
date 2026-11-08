@@ -1,0 +1,27 @@
+[
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\": [{\"id\": \"c05\", \"moment\": 5, \"role\": \"insert\", \"setup\": \"E\", \"blocks\": [], \"lines\": [], \"speaks\": false, \"over\": \"\", \"size\": \"INSERT\", \"angle\": \"eye level\", \"lens\": \"85mm for a close detail\", \"technique\": \"rack_focus\", \"why\": \"A detail of the moment.\", \"take_s\": 4, \"handle_in_s\": 1.0, \"hand",
+  "result": "Not done: c05 is a must clip of stage 1 and is locked (use \"\" to add a new cinematic clip).\nReport: 0 blocking fault(s), 0 report(s). Cinematic clips: 0 (at most 3 a moment; none yet). Seconds: 70 s of takes (70 s must, 0 s cinematic); cap 120 s, 50 s left. Turns left after this one: 11.\nNothing blo"
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\": [{\"id\": \"\", \"moment\": 1, \"role\": \"establishing\", \"setup\": \"M\", \"blocks\": [], \"lines\": [], \"speaks\": false, \"over\": \"\", \"size\": \"EWS\", \"angle\": \"eye level\", \"lens\": \"24mm\", \"technique\": \"drone_establishing\", \"why\": \"The street under the rain from above, before we meet him: the size of his w",
+  "result": "Added c15 [1M-1], c16 [1F-2], c17 [1N-1], c18 [1P-1], c19 [1R-1].\nReport: 2 blocking fault(s), 0 report(s). Cinematic clips: 5 (at most 3 a moment; moment 1: 1, moment 7: 4). Seconds: 90 s of takes (70 s must, 20 s cinematic); cap 120 s, 30 s left. Turns left after this one: 10.\nFix (blocking):\n- ci"
+ },
+ {
+  "tool": "finish",
+  "args": "{\"blend_notes\": [\"(too early)\"], \"moment_review\": []}",
+  "result": "Refused: blocking faults remain.\nReport: 2 blocking fault(s), 0 report(s). Cinematic clips: 5 (at most 3 a moment; moment 1: 1, moment 7: 4). Seconds: 90 s of takes (70 s must, 20 s cinematic); cap 120 s, 30 s left. Turns left after this one: 9.\nFix (blocking):\n- cinematic [c16]: c16 is a single loc"
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\": [{\"id\": \"c16\", \"moment\": 8, \"role\": \"insert\", \"setup\": \"Q\", \"blocks\": [], \"lines\": [], \"speaks\": false, \"over\": \"\", \"size\": \"INSERT\", \"angle\": \"eye level\", \"lens\": \"85mm for a close detail\", \"technique\": \"shallow_isolation\", \"why\": \"Her grip tightens on the phone: the call is cold before h",
+  "result": "Replaced c16 [1Q-1].\nReport: 0 blocking fault(s), 0 report(s). Cinematic clips: 5 (at most 3 a moment; moment 1: 1, moment 7: 3, moment 8: 1). Seconds: 90 s of takes (70 s must, 20 s cinematic); cap 120 s, 30 s left. Turns left after this one: 8.\nNothing blocks. You may call finish."
+ },
+ {
+  "tool": "finish",
+  "args": "{\"blend_notes\": [\"c15 (1M-1): open with c01; The street under the rain from above, before we meet him: the size of his world.\", \"c16 (1Q-1): cut_in with c08; Her grip tightens on the phone: the call is cold before her face shows it.\", \"c17 (1N-1): cut_in with c07; Focus moves from the flask to his h",
+  "result": "Finished. The cinematic clips and your blend notes are written."
+ }
+]

@@ -1,0 +1,266 @@
+{
+ "treatment": {
+  "logline": "In monsoon rain, a humble street vendor returns a fallen phone to a young woman from comfort; a spark forms, but a parent’s call breaks it, leaving him watching the rain as fate whispers change.",
+  "arc": [
+   {
+    "beat": "Rain, work, and a private vow",
+    "blocks": {
+     "first": 0,
+     "last": 3
+    },
+    "feeling": "Grounded, intimate; ambition flickers beneath hardship."
+   },
+   {
+    "beat": "Chance enters",
+    "blocks": {
+     "first": 4,
+     "last": 6
+    },
+    "feeling": "A sudden possibility touches the frame."
+   },
+   {
+    "beat": "First words, first warmth",
+    "blocks": {
+     "first": 7,
+     "last": 14
+    },
+    "feeling": "Tentative curiosity turns to genuine regard."
+   },
+   {
+    "beat": "The interruption",
+    "blocks": {
+     "first": 15,
+     "last": 17
+    },
+    "feeling": "Cold reality cuts through warmth; a promise stalls."
+   },
+   {
+    "beat": "Parting with a thread",
+    "blocks": {
+     "first": 18,
+     "last": 22
+    },
+    "feeling": "Yearning and a quiet promise of more."
+   }
+  ],
+  "approach": "Naturalistic handheld and restrained dolly, rain-forward soundscape, faces favoured over coverage. One vision: cool Colombo greys and blues, with warm skin tones and steam from tea as the emotional counterpoint. Keep moves minimal—one purposeful motion per shot. Perform the spoken lines in clean singles; let reactions breathe in the same frames rather than multiplying angles.",
+  "colour_script": [
+   {
+    "sequence": "Opening rain and resolve",
+    "palette": "Cool greys/blues; a warm amber note from tea steam and stall wood.",
+    "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+    "grade": "Naturalistic, slightly desaturated cool base with warm skin lift."
+   },
+   {
+    "sequence": "Entrance and drop",
+    "palette": "Cool street with a soft warm accent from Anudi’s wardrobe and car interior.",
+    "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+    "grade": "Neutral contrast, rich but not glossy; rain sheen on surfaces."
+   },
+   {
+    "sequence": "Thanks and spark",
+    "palette": "Cool environment; faces graded a touch warmer to carry the moment.",
+    "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+    "grade": "Film-like, gentle highlight roll-off; skin tones protected."
+   },
+   {
+    "sequence": "The call",
+    "palette": "Cool shifts cooler; slight desaturation to feel the chill.",
+    "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+    "grade": "Cooler balance, a touch more contrast; isolate her with shallower depth."
+   },
+   {
+    "sequence": "Parting",
+    "palette": "Return to cool street tones; Kasun’s skin stays warm against grey rain.",
+    "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+    "grade": "Naturalistic; final shot eases saturation slightly as VO lands."
+   }
+  ],
+  "geography": "Kasun’s three-wheeler is curbside under a makeshift awning; counter and tea flask face the pavement. A family car pulls up across the wet two-lane road. Pedestrian flow runs along the stall side; puddles collect by the gutter. Sightlines: from stall to car across the road; approach path brings Anudi past the stall edge where the phone falls.",
+  "key_image": "Kasun, damp under the awning, eyes following her into sheets of rain while steam coils from his tea flask.",
+  "advice": [
+   "Protect lenses and mics from rain; keep rain continuity (intensity, droplet size) between shots.",
+   "Never show the caller; keep phone VO strictly off-screen. A listener is written as ‘listens’.",
+   "Keep the stall props fixed for geography continuity (menu, cash box, tea flask positions).",
+   "One move per shot. If in doubt, lock off and let the rain carry motion.",
+   "Give 1 s handles around action; 0.8 s for tight 4 s takes; long call on 8 s.",
+   "Thought and VO are never performed—lips closed. Keep faces framed so the audience reads the change."
+  ]
+ },
+ "sequences": [
+  {
+   "id": "S1",
+   "title": "Opening rain and resolve",
+   "purpose": "Plant Kasun, the rain, and his inner vow.",
+   "shots": {
+    "first": 0,
+    "last": 3
+   }
+  },
+  {
+   "id": "S2",
+   "title": "Entrance and drop",
+   "purpose": "Introduce Anudi and the inciting mishap.",
+   "shots": {
+    "first": 4,
+    "last": 6
+   }
+  },
+  {
+   "id": "S3",
+   "title": "Thanks and spark",
+   "purpose": "Their first words and mutual curiosity.",
+   "shots": {
+    "first": 7,
+    "last": 14
+   }
+  },
+  {
+   "id": "S4",
+   "title": "The call",
+   "purpose": "Warmth interrupted by pressure from home.",
+   "shots": {
+    "first": 15,
+    "last": 17
+   }
+  },
+  {
+   "id": "S5",
+   "title": "Parting",
+   "purpose": "A fragile promise and a watching heart.",
+   "shots": {
+    "first": 18,
+    "last": 22
+   }
+  }
+ ],
+ "moments": [
+  {
+   "n": 1,
+   "sequence": "S1",
+   "blocks": [
+    0,
+    1,
+    2
+   ],
+   "what": "Heavy rain over Colombo; Kasun tends his tiny stall by the three-wheeler.",
+   "feeling": "Immersed in rain, sensing grit and quiet ambition.",
+   "cut_uses": "master, WIDE at stall—locked-off to let rain paint the frame and place us."
+  },
+  {
+   "n": 2,
+   "sequence": "S1",
+   "blocks": [
+    3
+   ],
+   "what": "Kasun’s private vow drifts over his face.",
+   "feeling": "Intimacy with his drive; a soft push-in to carry the thought.",
+   "cut_uses": "single, MCU on Kasun—gentle dolly-in to cradle the thought."
+  },
+  {
+   "n": 3,
+   "sequence": "S2",
+   "blocks": [
+    4,
+    5
+   ],
+   "what": "Across the road, Anudi arrives with an umbrella; the phone slips near the stall.",
+   "feeling": "A bright note in grey; chance enters.",
+   "cut_uses": "master, MWS spanning car to stall—slow pan reveal to catch the drop."
+  },
+  {
+   "n": 4,
+   "sequence": "S2",
+   "blocks": [
+    6,
+    7
+   ],
+   "what": "Kasun grabs the phone and moves after her, calling out.",
+   "feeling": "Forward motion; generous impulse.",
+   "cut_uses": "single, MS on Kasun—short tracking move for urgency; performs L7."
+  },
+  {
+   "n": 5,
+   "sequence": "S3",
+   "blocks": [
+    8,
+    9
+   ],
+   "what": "She turns; first words of thanks.",
+   "feeling": "Polite warmth, rain-muted.",
+   "cut_uses": "single, MS on Anudi—still frame to let the words land; performs L9."
+  },
+  {
+   "n": 6,
+   "sequence": "S3",
+   "blocks": [
+    10,
+    11
+   ],
+   "what": "She takes in his stall and asks about it.",
+   "feeling": "Curiosity deepens; respect peeks through.",
+   "cut_uses": "single, MCU on Anudi with a soft rack—from stall to her eyes; performs L11."
+  },
+  {
+   "n": 7,
+   "sequence": "S3",
+   "blocks": [
+    12,
+    13
+   ],
+   "what": "He smiles, then shares his small origin and big aim.",
+   "feeling": "Pride without brag; gentle hope.",
+   "cut_uses": "single, MS on Kasun—held frame; performs L13 (smile sits before it)."
+  },
+  {
+   "n": 8,
+   "sequence": "S4",
+   "blocks": [
+    14,
+    15,
+    16,
+    17
+   ],
+   "what": "Her returning smile is cut by a ring; she listens as the call chills the air.",
+   "feeling": "A warm thread tugged cold; responsibility closes in.",
+   "cut_uses": "single, MCU on Anudi—held, let the ring and phone voice play across her face."
+  },
+  {
+   "n": 9,
+   "sequence": "S5",
+   "blocks": [
+    18,
+    19
+   ],
+   "what": "She gives him one last look and a parting line.",
+   "feeling": "Tender uncertainty, a promise in the rain.",
+   "cut_uses": "single, MS on Anudi—still, eyes flick before she speaks; performs L19."
+  },
+  {
+   "n": 10,
+   "sequence": "S5",
+   "blocks": [
+    20
+   ],
+   "what": "She walks away into the rain.",
+   "feeling": "Distance grows; we hold the emptying frame.",
+   "cut_uses": "clean_exit, MWS—locked-off, she leaves the held frame."
+  },
+  {
+   "n": 11,
+   "sequence": "S5",
+   "blocks": [
+    21,
+    22
+   ],
+   "what": "Kasun watches her go; fate’s VO closes the scene.",
+   "feeling": "Yearning suspended; possibility blooms under rain.",
+   "cut_uses": "master, WIDE—slow dolly-out to end on small Kasun in big rain while VO plays."
+  }
+ ],
+ "editor_notes": [
+  "The intended cut is lean: masters for geography, singles for lines, one held call shot. Editors can punch-in digitally on singles; we’ve left clean heads and tails.",
+  "If the drop needs emphasis, an insert of the phone splash can intercut Moment 3 without changing geography.",
+  "Keep caller unseen; all references are ‘the call’ only. The closing VO rides over the final master; do not cut away mid-VO unless punching-in."
+ ]
+}

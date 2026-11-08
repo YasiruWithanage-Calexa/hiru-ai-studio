@@ -1,0 +1,64 @@
+# Scripted: the model's turns are the tool calls below (a `loop` agent), run through the REAL code tools, so a pass says the
+# agent builds its session, sends the right tools, and that `finish` is accepted only when the checks allow it. LIVE
+# (`hiru-ai eval raphael_planner --live`) the model plays the conversation itself and the case holds it only to what any
+# good answer shares; whether it is GOOD is a Hiru director's read (plan/2026-11-08e §7 phase 6).
+- name: one_block_one_clip
+  input: &input
+    opening: "<script>\nb0 action: A man waits at a bus stop in the rain.\n</script>\nPlan this scene."
+    scene: &scene
+      blocks:
+        - { index: 0, kind: action, text: A man waits at a bus stop in the rain., speaker: "", line_id: null, delivery: "" }
+      cast: [Man]
+      others: []
+      place: { name: A bus stop in the rain, objects: [] }
+      envelope_s: 8
+    guide_s: 8
+    scene_no: "1"
+  tool_calls:
+    - name: write_edit_plan
+      args: &plan
+        treatment:
+          logline: A man waits.
+          arc: [{ beat: He waits, blocks: { first: 0, last: 0 }, feeling: Patience }]
+          approach: One steady wide.
+          colour_script: [{ sequence: A, palette: Grey, light: Rain light, grade: Cool }]
+          geography: The stop on the left.
+          key_image: The man under the shelter.
+          advice: []
+        sequences: [{ id: A, title: The wait, purpose: Set the scene, shots: { first: 1, last: 1 } }]
+        moments: [{ n: 1, sequence: A, blocks: [0], what: He waits, feeling: Patience, cut_uses: The master }]
+        editor_notes: []
+    - name: put_clips
+      args:
+        clips:
+          - id: ""
+            moment: 1
+            role: master
+            setup: A
+            blocks: [0]
+            lines: []
+            speaks: false
+            over: ""
+            size: WIDE
+            angle: eye level
+            lens: 35mm for the whole stop
+            technique: locked_off
+            why: The one view that shows the man and the place.
+            take_s: 8
+            handle_in_s: 1
+            handle_out_s: 1
+            priority: must
+            editor_note: ""
+            ir: { setting: A bus stop in the rain, lighting: Grey rain light, subjects: [], beats: [], first_frame: {} }
+            sound: { ambience: Rain on the shelter, effects: "", music: "", silence: false }
+    - name: finish
+      args: { editor_notes: [One clip, nothing to cut.] }
+  expect: { clips: 1, must: 1, take_s: 8, done: true }
+- name: finish_is_refused_with_no_clips
+  input: *input
+  tool_calls:
+    - name: write_edit_plan
+      args: *plan
+    - name: finish
+      args: { editor_notes: [] }
+  expect: { clips: 0, done: false }

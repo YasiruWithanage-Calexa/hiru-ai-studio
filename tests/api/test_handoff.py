@@ -33,6 +33,9 @@ class FakeAssembler:
         self.calls.append(("probe", bucket, path))
         return Probe(duration_s=self.duration, width=1920, height=1080, has_audio=True)
 
+    async def poster(self, bucket: str, path: str, out_path: str) -> str:
+        return out_path
+
     async def last_frame(self, bucket: str, path: str, out_bucket: str, out_path: str) -> str:
         self.calls.append(("last_frame", bucket, path, out_bucket, out_path))
         if not self.frame_ok:

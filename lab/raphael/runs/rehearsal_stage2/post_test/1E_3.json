@@ -1,0 +1,76 @@
+{
+ "id": "c08",
+ "slate": "1E-3",
+ "role": "single",
+ "technique": "locked_off",
+ "take_s": 8,
+ "handle_in_s": 0.5,
+ "handle_out_s": 0.5,
+ "lines": [
+  "L16"
+ ],
+ "speaks": false,
+ "ir": {
+  "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+  "cinematography": {
+   "camera": "locked-off sticks, 85mm, f/2.0",
+   "angle": "eye level",
+   "framing": "MCU, Anudi’s face dominant; umbrella edge and rain beads at frame edge.",
+   "movement": "locked-off on sticks",
+   "white_balance": "5600K overcast daylight",
+   "color_tone": "cooler balance while keeping skin natural",
+   "depth_of_field": "Shallow, background soft and abstract",
+   "lens_artifacts": "none"
+  },
+  "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+  "subjects": [
+   {
+    "id": "C02",
+    "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+    "action": "raises the phone and listens to the call",
+    "position": "right-of-centre, facing left toward off-screen C01; umbrella in right hand, phone raised to ear"
+   }
+  ],
+  "beats": [
+   {
+    "time": "0-0.5s",
+    "camera": "MCU locked-off",
+    "director_line": "We enter the call already begun.",
+    "action": "She steadies the phone at her ear.",
+    "performance": "Her posture firms; lips press together."
+   },
+   {
+    "time": "0.5-7.5s",
+    "camera": "MCU locked-off",
+    "director_line": "Hold as the phone voice reshapes her face.",
+    "action": "She listens to the call.",
+    "performance": "Her eyes lower and glance aside; a small swallow; breath shallow."
+   },
+   {
+    "time": "7.5-8.0s",
+    "camera": "MCU locked-off",
+    "director_line": "A final beat as the weight settles.",
+    "action": "She lowers the phone a little.",
+    "performance": "Her jaw re-sets; eyes flick back toward C01 without a smile."
+   }
+  ],
+  "audio": "Rain bed; close umbrella drip; phone voice present but unseen; street wash under.",
+  "first_frame": {
+   "composition": "C02 tight right-of-centre, negative space to the left; umbrella edge frames top-right.",
+   "subjects": [
+    "C02 shoulders-up, eyes toward off-screen left"
+   ],
+   "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+   "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+  }
+ },
+ "sound": {
+  "ambience": "Rain with umbrella drip close; soft traffic bed.",
+  "effects": "Subtle handset rustle.",
+  "music": "none",
+  "silence": false
+ },
+ "stage": 1,
+ "anchor": [],
+ "blend": ""
+}

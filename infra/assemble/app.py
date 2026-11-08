@@ -2,6 +2,7 @@
 
     POST /last-frame   the last frame of a take → the frames bucket (opens a shot that carries on)
     POST /probe        a take's duration, size and whether it has audio
+    POST /poster       a take's first frame as a 640 px WebP beside it (a card shows it before any video loads)
     POST /cut          takes → one cut: each trimmed to the part its card keeps, its sound laid across the cuts
     GET  /health       whether ffmpeg is on the PATH
 
@@ -48,6 +49,12 @@ class LastFrameRequest(BaseModel):
 class LastFrameResult(BaseModel):
     path: str = ""
     error: str = ""
+
+
+class PosterRequest(BaseModel):
+    bucket: str = "takes"
+    path: str = ""
+    out_path: str = ""
 
 
 class ProbeRequest(BaseModel):
@@ -227,6 +234,35 @@ def probe(body: ProbeRequest, x_assemble_secret: str | None = Header(default=Non
         except httpx.HTTPError:
             return ProbeResult(error="could not read the take")
         return probe_file(src)
+
+
+@app.post("/poster", response_model=LastFrameResult)
+def poster(body: PosterRequest, x_assemble_secret: str | None = Header(default=None)) -> LastFrameResult:
+    """A still from the start of a take, 640 px wide, WebP: stored beside the take so its card needs no video."""
+    _authorize(x_assemble_secret)
+    if not body.path or not body.out_path:
+        raise HTTPException(status_code=400, detail="path and out_path are required")
+    with tempfile.TemporaryDirectory() as tmp:
+        src = Path(tmp) / "in"
+        dst = Path(tmp) / "out.webp"
+        try:
+            src.write_bytes(_download(body.bucket, body.path))
+        except httpx.HTTPError as exc:
+            _logger.warning("download failed: %s", exc)
+            return LastFrameResult(error="could not read the take")
+        try:
+            # 0.1 s in, not 0: the very first frame of a generated clip is often a black fade-in.
+            _run(["ffmpeg", "-nostdin", "-y", "-ss", "0.1", "-i", str(src), "-frames:v", "1",
+                  "-vf", "scale='min(640,iw)':-2", "-c:v", "libwebp", "-quality", "75", str(dst)])
+        except Exception as exc:
+            _logger.warning("poster failed: %s", exc)
+            return LastFrameResult(error="could not make a still of the take")
+        try:
+            _upload(body.bucket, body.out_path, dst.read_bytes(), "image/webp")
+        except httpx.HTTPError as exc:
+            _logger.warning("upload failed: %s", exc)
+            return LastFrameResult(error="could not store the still")
+    return LastFrameResult(path=body.out_path)
 
 
 @app.post("/last-frame", response_model=LastFrameResult)

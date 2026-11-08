@@ -1,0 +1,88 @@
+"""The product is the lab (plan/2026-11-08e phase 2-3): while `lab/raphael` exists, what the model is given is the
+lab's. The
+prompts are the lab's to the letter (stage 2's plus the variety lines, D-V), and the JSON schemas the tools are held
+to are the
+lab's. Deleting the lab skips this file."""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import pytest
+
+from contracts.raphael.wire import SCHEMA_EDIT, SCHEMA_EXTRAS, SCHEMA_PUT, EditPlanW, ExtrasW, PutW
+from hiru_ai.agents.raphael import wire_schema
+
+REPO = Path(__file__).resolve().parents[2]
+LAB = REPO / "lab"
+AGENTS = REPO / "src" / "libs" / "hiru_ai" / "agents" / "raphael"
+
+pytestmark = pytest.mark.skipif(not (LAB / "raphael").exists(), reason="the lab is gone")
+
+
+def lab_text(name: str) -> str:
+    return (LAB / "raphael" / "prompts" / f"{name}.md").read_text(encoding="utf-8").rstrip()
+
+
+def product_text(agent: str) -> str:
+    return (AGENTS / agent / "prompts" / "system.md").read_text(encoding="utf-8").rstrip()
+
+
+ADDED_2026_11_08F = (
+    "- FLOOR (plan/2026-11-08f).",
+    "- COVERAGE (plan/2026-11-08f).",
+    "- LONG ACTIONS (plan/2026-11-08f).",
+)
+
+
+def test_stage_1_prompt_is_the_labs_must_only_prompt_plus_the_length_lines_and_nothing_else():
+    """plan/2026-11-08f added three lines (the 80 % floor, coverage from the script's own time, long actions over
+    consecutive clips); every other line is the lab's, in the lab's order."""
+    lab, product = lab_text("raphael_must"), product_text("raphael_planner")
+    added = [line for line in product.splitlines() if line not in lab.splitlines()]
+    assert [a.split(")", 1)[0] + ")." for a in added] == list(ADDED_2026_11_08F)
+    assert [line for line in product.splitlines() if line not in added] == lab.splitlines()
+
+
+def test_stage_2_prompt_is_the_labs_plus_the_variety_lines_and_nothing_else():
+    lab, product = lab_text("cinematic"), product_text("raphael_cinematic")
+    added = [line for line in product.splitlines() if line not in lab.splitlines()]
+    assert len(added) == 1 and added[0].startswith("- VARIETY (D-V).")
+    assert [line for line in product.splitlines() if line != added[0]] == lab.splitlines()
+
+
+@pytest.fixture(scope="module")
+def lab_schema():
+    sys.path[:0] = [str(LAB), str(REPO / "src"), str(REPO / "src" / "libs")]
+    try:
+        from raphael import schema  # the lab's, not the product's group
+
+        return schema
+    finally:
+        sys.path[:3] = []
+
+
+def test_the_schemas_the_tools_are_held_to_are_the_labs(lab_schema):
+    """The same fields, order, types and closed lists. A class docstring is not part of it: the lab's schema carried
+    one on
+    the cinematic clip alone, and the product sends none (the prompt says it)."""
+    plain = wire_schema._plain
+
+    assert wire_schema.design_schema(EditPlanW, SCHEMA_EDIT) == plain(lab_schema.edit_schema())
+    assert wire_schema.design_schema(PutW, SCHEMA_PUT) == plain(lab_schema.put_schema())
+    assert wire_schema.design_schema(ExtrasW, SCHEMA_EXTRAS) == plain(lab_schema.extras_schema())
+
+
+def test_the_tools_are_the_labs_by_name_and_by_description():
+    sys.path[:0] = [str(LAB), str(REPO / "src"), str(REPO / "src" / "libs")]
+    try:
+        from raphael import agent as lab_agent
+    finally:
+        sys.path[:3] = []
+    lab = {t["name"]: t for t in lab_agent.tool_specs()}
+    mine = {t["function"]["name"]: t["function"] for t in wire_schema.stage1_specs()}
+    assert list(lab) == list(mine)
+    for name, spec in lab.items():
+        assert mine[name]["description"] == spec["description"] and mine[name]["parameters"] == spec["parameters"]
+        assert mine[name]["strict"] is True

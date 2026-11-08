@@ -35,12 +35,15 @@ def test_settings_read_the_names_the_services_already_deploy(monkeypatch: pytest
 
 def test_the_default_tiers_are_the_ones_the_engines_use_today():
     s = AISettings(openai=OpenAISettings())
-    got = {n: (t.model, t.effort) for n in models_mod.tier_names() if (t := models_mod.resolve(n, s))}
+    # Raphael's own extra tiers (plan/2026-11-08f §5) are checked in its group's tests, so removing it stays clean.
+    got = {n: (t.model, t.effort) for n in models_mod.tier_names()
+           if not n.startswith("raphael_") and (t := models_mod.resolve(n, s))}
     assert got == {"ultra": ("gpt-5", "high"), "high": ("gpt-5", "medium"), "medium": ("gpt-5-mini", "low"),
                    "low": ("gpt-5-nano", "minimal"), "vision": ("gpt-5-mini", ""),
                    "fixer": ("gpt-5", "low"),  # the big rung of Adam's fixer ladder (plan/2026-11-05)
                    "author": ("gpt-5", "medium"), "repair": ("gpt-5", "low"),  # Shot Planner David (plan/2026-11-05e)
                    "jonathan": ("gpt-6.1-sol", "high"),  # Shot Planner Jonathan (plan/2026-11-06b)
+                   "raphael": ("gpt-5", "high"),  # Shot Planner Raphael (plan/2026-11-08e D7: the person's to change)
                    "zora": ("gpt-6.1-sol", "low"),  # Zora: Jonathan's model at a lower effort (plan/2026-11-06e D7)
                    "reader": ("gpt-5", "medium"),  # the document reader: the author's model (plan/2026-11-06f Q1)
                    # Sable (plan/2026-11-08 §4.4): the average tier and the deep one a turn may move up to once

@@ -26,7 +26,7 @@ from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.routers.handoff import handoff_checks
 from api.routers.production import load_shot
-from api.services import media_links
+from api.services import media_links, media_thumbs
 from api.services import renders as svc
 from contracts.producer import Check
 from contracts.roles import Permission
@@ -150,7 +150,7 @@ async def upload_reference(production_id: UUID, shot_id: UUID, file: Annotated[U
     ext, mime = kind
     picture_id = uuid4()
     path = f"{production_id}/uploads/{st.id}/{picture_id}.{ext}"
-    await repos.storage.upload("references", path, bytes(data), mime)
+    await media_thumbs.store_with_thumb(repos, "references", path, bytes(data), mime)
     src = RefSource(kind="upload", id=picture_id, path=path, bucket="references")
     state = svc.shot_state(st)
     state.uploads.append(src)
@@ -159,7 +159,8 @@ async def upload_reference(production_id: UUID, shot_id: UUID, file: Annotated[U
                              actor_user_id=access.user.id, production_id=access.production_id,
                              diff={"bytes": len(data)})
     return svc.CatalogItem(kind="upload", id=picture_id, binds_to=None, label="a picture you added", version=None,
-                           url=media_links.url("references", path))
+                           url=media_links.url("references", path),
+                           thumb_url=media_links.thumb_url("references", path))
 
 
 async def _begin(repos: Repos, access: ProductionAccess, settings: Settings, plan: svc.Plan, shot_id: UUID,

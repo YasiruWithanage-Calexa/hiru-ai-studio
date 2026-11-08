@@ -25,7 +25,9 @@ dialogue rule, a static prompt prefix), never copied into an agent. Dependencies
 from __future__ import annotations
 
 import json
+import logging
 from collections.abc import Callable, Iterator
+from dataclasses import dataclass
 from types import ModuleType
 from typing import Any, cast
 
@@ -38,10 +40,35 @@ from hiru_ai.core.errors import ManifestError
 from hiru_ai.core.manifest import AgentManifest, ToolManifest
 from hiru_ai.core.middleware import react
 from hiru_ai.core.middleware.base import MISSING, Document, ModelCall
+from hiru_ai.core.models import resolve as tier_of
 from hiru_ai.core.prompts import Prompt
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.scope import scope_for
 from hiru_ai.core.settings import agents_with_tools
+
+
+class Stop(Exception):
+    """Raised by a `converse` caller's `before` hook to end the conversation cleanly (a money cap, a deadline)."""
+
+    def __init__(self, reason: str, message: str = "") -> None:
+        super().__init__(message or reason)
+        self.reason = reason
+
+
+@dataclass
+class Conversation:
+    """How a `converse` ended: `finished` (the caller's code said so), `turns` (the cap), `idle` (the model stopped
+    calling
+    tools), `error` (a model call failed), or the reason of a `Stop`."""
+
+    stopped: str = "turns"
+    turns: int = 0
+    detail: str = ""
+    idle: int = 0
+
+    @property
+    def ok(self) -> bool:
+        return self.stopped == "finished"
 
 
 class Agent:
@@ -118,6 +145,8 @@ class Agent:
         if tier:
             call.tier = tier
         chain = middleware.build(self.manifest.middleware, writes_dialogue=self.manifest.writes_dialogue)
+        if self.manifest.shape == "loop":
+            raise ManifestError(f"{self.id} is a loop agent: run it with Agent.converse, which takes the code tools")
         terminal = {"structured": self._structured, "react": self._react, "text": self._text}[self.manifest.shape]
         return middleware.run_chain(chain, call, ctx, lambda c: self._finish(inp, terminal(c, ctx)))
 
@@ -171,6 +200,88 @@ class Agent:
 
         out: tuple[str | None, list[BaseMessage]] = self._chain(inp, ctx, go)
         return out
+
+    # ── a capped conversation with the caller's code tools (shape `loop`) ────────────────────────────────────────────
+
+    def converse(self, inp: BaseModel | dict[str, Any], ctx: RunContext | None = None, *, tools: list[dict[str, Any]],
+                 call_tool: Callable[[str, str], str], finished: Callable[[], bool], max_turns: int,
+                 max_output: int | None = None, before: Callable[[int], None] | None = None,
+                 after: Callable[[int, AIMessage], None] | None = None,
+                 later_tier: str | None = None, later_when: Callable[[int], bool] | None = None) -> Conversation:
+        """One conversation: the agent's system prompt and user message, then up to `max_turns` model turns. Each turn
+        the
+        model must call a tool (`tools` are OpenAI function specs); `call_tool(name, args_json)` runs it in the CALLER's
+        code and its text is the reply. The conversation ends when `finished()` is true after a tool call.
+
+        `before(turn)` runs before each model call and may raise to stop the run (a money cap): the raised exception
+        ends the
+        conversation as `stopped = "cap"` when it is a `Stop`, else it propagates. `after(turn, reply, ...)` sees each
+        reply
+        (token counts in `reply.usage_metadata`). The usage rows, the trace and the timeout are the middleware's, as for
+        every agent. A failed model call ends the conversation as `error`; nothing here falls back, a caller decides.
+
+        `later_tier` (plan/2026-11-08f §5) answers the repair turns: by default every turn after the first, or the
+        turns for which `later_when(turn)` is true (Raphael: once its clips are written, so the strong model writes
+        them and the repair tier fixes them). It must use the same API as the first tier (both Responses or
+        both Chat Completions), because the thread is carried in that API's form; otherwise it is ignored."""
+        ctx = ctx or RunContext()
+
+        def bind(tier: str, timeout_s: float | None) -> Any:
+            out: Any = llm.get_llm(tier, timeout_s=timeout_s).bind_tools(tools, tool_choice="required")
+            return out.bind(max_tokens=max_output) if max_output else out
+
+        def go(call: ModelCall) -> Conversation:
+            bound = bind(call.tier, call.timeout_s)
+            later = bound
+            if later_tier and later_tier != call.tier:
+                if tier_of(later_tier).responses == tier_of(call.tier).responses:
+                    later = bind(later_tier, call.timeout_s)
+                else:
+                    _log.warning("%s: later tier %s is on another API than %s; using %s for every turn",
+                                 self.id, later_tier, call.tier, call.tier)
+            thread: list[BaseMessage] = [SystemMessage(call.system), HumanMessage(call.user)]
+            done = Conversation()
+            for turn in range(1, max_turns + 1):
+                done.turns = turn
+                try:
+                    if before is not None:
+                        before(turn)
+                    repairing = later_when(turn) if later_when is not None else turn > 1
+                    reply = (later if repairing else bound).invoke(thread, config=cast(Any, call.config))
+                except Stop as stop:
+                    done.stopped, done.detail = stop.reason, str(stop)
+                    return done
+                except Exception as exc:  # the call may still have been billed: the caller decides what that means
+                    _log.warning("%s: the model call failed on turn %s", self.id, turn, exc_info=True)
+                    done.stopped, done.detail = "error", type(exc).__name__
+                    return done
+                if after is not None:
+                    after(turn, reply)
+                asked = list(getattr(reply, "tool_calls", None) or [])
+                thread.append(reply if isinstance(reply, AIMessage) else AIMessage(content=str(reply.content or "")))
+                if not asked:
+                    done.idle += 1
+                    if done.idle > 2:
+                        done.stopped, done.detail = "idle", "the model stopped calling tools before it finished"
+                        return done
+                    thread.append(HumanMessage("Continue with a tool call. When nothing blocks, call `finish`."))
+                    continue
+                for tool in asked:
+                    args = tool.get("args")
+                    text = call_tool(tool["name"], args if isinstance(args, str) else json.dumps(args or {}))
+                    thread.append(ToolMessage(content=text, tool_call_id=str(tool.get("id") or tool["name"])))
+                    if finished():
+                        done.stopped = "finished"
+                        return done
+                for bad in getattr(reply, "invalid_tool_calls", None) or []:
+                    thread.append(ToolMessage(content="The arguments are not valid JSON: send what the schema asks "
+                                                      "for.",
+                                              tool_call_id=str(bad.get("id") or bad.get("name"))))
+            done.stopped, done.detail = "turns", f"the conversation used all {max_turns} turns"
+            return done
+
+        result: Conversation = self._chain(inp, ctx, go)
+        return result
 
     def _finish(self, inp: Any, out: Any) -> Any:
         finish = getattr(self.hooks, "finish", None)
@@ -267,4 +378,6 @@ def build(ident: str, registry: Registry | None = None, *, with_tools: bool | No
     return Agent(registry or parts._registry(), ident, with_tools=with_tools)
 
 
-__all__ = ["Agent", "Document", "build"]
+_log = logging.getLogger(__name__)
+
+__all__ = ["Agent", "Conversation", "Document", "Stop", "build"]

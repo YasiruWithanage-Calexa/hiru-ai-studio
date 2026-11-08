@@ -81,6 +81,9 @@ def _chat(tier: Tier, settings: AISettings, callbacks: list[BaseCallbackHandler]
         kwargs["base_url"] = settings.openai.base_url
     if http_client is not None:
         kwargs["http_client"] = http_client
+    if tier.responses:  # plan/2026-11-08f §5: the Responses API, the reasoning carried by `previous_response_id`
+        kwargs["use_responses_api"] = True
+        kwargs["use_previous_response_id"] = True
     return ChatOpenAI(model=tier.model, api_key=SecretStr(settings.openai.api_key.get_secret_value() or "unset"),
                       timeout=tier.timeout_s, max_retries=tier.retries,
                       stream_usage=True,  # a streamed call still reports its tokens

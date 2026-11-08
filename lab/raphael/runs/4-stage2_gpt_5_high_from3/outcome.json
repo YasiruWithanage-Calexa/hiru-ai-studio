@@ -1,0 +1,66 @@
+{
+ "stage": 2,
+ "from": "3-gpt_5_high_episode1",
+ "stopped": "finished",
+ "complete": true,
+ "turns": 6,
+ "detail": "",
+ "blend_notes": [
+  "c15: Moment 1 (S1). Cut in from c01 mid-moment for a brief steam detail, then back to c01; over c01’s ambient rain (no lines).",
+  "c16: Moment 3 (S2). Cut in on the phone splash within c03 during b5, then return to the slow pan in c03; over c03’s ambient.",
+  "c17: Moment 6 (S3). Under-line beneath c06 across the middle of L11 while she takes in the stall, then back to c06 on her eyes; over Anudi’s L11 from c06.",
+  "c18: Moment 7 (S3). Under-line beneath c07 during the heart of L13, then return to c07 for the close of the beat; over Kasun’s L13 from c07."
+ ],
+ "cinematic": [
+  "c15",
+  "c16",
+  "c17",
+  "c18"
+ ],
+ "changed_must": [],
+ "take_s": 88,
+ "target_s": 60.0,
+ "cap_s": 90.0,
+ "faults": [
+  {
+   "code": "feasibility",
+   "sentence": "c03 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c03"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c03:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c05 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c05"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c05:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c07 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c07"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c07:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c14 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c14"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c14:screen text"
+  }
+ ]
+}

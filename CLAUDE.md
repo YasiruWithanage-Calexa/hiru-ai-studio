@@ -90,6 +90,22 @@ Read `docs/david/README.md` and `plan/2026-11-05e/IMPLEMENTED.md` first. Phases 
 (`scripts/david_spike.py --yes`), the blind comparison (`scripts/david_compare.py`), the decisions D2 to D7 and the default are a
 person's. Costs appear in the spike's output and `IMPLEMENTED.md` only, never in the interface.
 
+## Shot Planner Raphael, raw coverage for post (`raphael/` folders, plan/2026-11-08e)
+
+A fifth planner beside `script_split`, Adam, David and Jonathan, none of which it changes: ONE agent per stage, code tools only.
+Stage 1 (`raphael_planner`) writes the intended cut and the MUST clips; stage 2 (`raphael_cinematic`, a fresh conversation over
+the locked bin) adds cinematic clips on the moments that earn them, each anchored to a must clip, silent, with a blend and a
+review of every moment. The loop is `Agent.converse` (agent shape `loop`); the tools are `contracts/raphael/tools.py`, the
+checks `contracts/raphael/checks.py`; the system is `raphael_shot_planner` (jobs `plan_scene_raphael` and
+`cinematic_scene_raphael`, one function `hiru-shot-planner-raphael`, port 8215); the write step `raphael_write` makes one shot
+per clip. Rules that must not drift: **the length cap is a person's choice** (1.5x, 2x, 2.5x, 3x the scene's given length;
+production default `raphael_length_cap`, per run in the API) and is a hard cap on the whole bin; **stage 2's tools refuse every
+must clip id**; **one $5 run cap covers both stages** and lives in `contracts/raphael/money.py` and the logs only (the interface
+shows seconds, never money); a stage that stops early is saved marked `stopped`, stage 1's bin whole. Group rules as Jonathan's
+(`agents/raphael/`, `steps/raphael/`, `systems/raphael/`, `contracts/raphael/`, `tests/raphael/`, `docs/raphael/`). Read
+`docs/raphael/README.md` and `plan/2026-11-08e/IMPLEMENTED.md` first: phases 1 to 5 are built offline; schema v19 is not applied;
+the live trial, the model (D7) and the default planner are a person's.
+
 ## Shot Planner Jonathan, the cinematic planner (`jonathan/` folders, plan/2026-11-06b)
 
 A fourth shot planner, beside `script_split`, Adam and David, none of which it changes. It is the cinematic lab's result
@@ -230,6 +246,29 @@ name or a dated snapshot of it (a bare prefix once billed gpt-5.5 as gpt-5). Rea
 ## Files
 - **Never return a storage-provider URL** (signed or public) to a client. Use
   `api/services/media_links.url()` → `GET /files/{ticket}`.
+- **Quiet by default (plan/2026-11-08c).** A file crosses the internet from Supabase ONCE: `/files` serves from the
+  API's disk copy (`api/services/file_cache.py`, `FILES__CACHE_DIR` / `FILES__CACHE_MAX_GB`). The same file in the
+  same hour is the same URL (`media_links.ticket` is deterministic), so the browser can cache it.
+- **Media paths are never overwritten.** Frames, references and takes are written once (`x-upsert: false`; only our
+  own retry of a write that landed may see "already exists"). A path always includes a fresh id. Documents and their
+  text still overwrite.
+- **Every picture is stored twice**: `<path>.thumb.webp` (640 px WebP, `hiru_ai/core/thumbs.py`) beside it. Views
+  carry `thumb_url` next to `url` and a `file_key` (`media_links.key`, never the path). A take's still is
+  `<take>.poster.webp` (`assemble /poster`). `scripts/backfill_thumbs.py` makes the missing ones, once.
+- **A write route returns the updated view** (the interface puts it in its cache instead of reading the page again).
+  Status reads list their columns and mint no tickets.
+- **The status read is `GET /v1/productions/{id}/live`** (`routers/live.py`): named columns of four tables, no canon,
+  looks, prompts or tickets. The interface polls it only while something is queued or running. (`/activity` is the audit
+  log.) `GET .../scenes/{id}/page` answers the shot page's five first reads in one request, by calling the same functions.
+- **Stuck work ends** (`api/workers/sweeper.py`, once a minute): a job, frame, render or document with no progress past
+  its limit (frame 10 min, take 30, document 20, other jobs 15; D6) becomes `failed` with "Stopped: no progress for N
+  minutes." A job `waiting_input` is never swept. A new worker must touch its row (`updated_at`) or write `job_events`.
+- **Kept briefly, cleared on write** (plan/2026-11-08c phase 4): access per (production, person) 15 s
+  (`authz.forget_access()` after any member, role or production write), canon and looks 30 s per production (cleared by
+  the repo's own writes and by `api.cache.job_ended()`, called when a job or a `/live` read shows work settled). A new
+  route that changes members, roles, canon or looks calls the same.
+- **Traffic log:** `DEBUG_TRAFFIC=true` logs calls, queries and bytes per route each minute, and warns on a route over
+  60 calls/min or a file fetched from Supabase more than twice an hour. `scripts/traffic_scene.py` measures a shot page.
 
 ## Veo and timing
 - `contracts/veo.py` and `contracts/timing.py` mirror the frontend's `src/lib/veo/timing.ts`;

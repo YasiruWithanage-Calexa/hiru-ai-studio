@@ -106,6 +106,8 @@ class CanonEntity(BaseModel):
     current: CanonVersion | None = None
     # The current card's reference sheet, through /files/{ticket} ("" when there is none).
     reference_sheet_url: str = ""
+    reference_sheet_thumb_url: str = ""  # its 640 px WebP, for cards (may 404 for an older sheet: use the full one)
+    reference_sheet_key: str = ""  # names the sheet's file for ever; the URLs change every hour
     created_at: datetime
     updated_at: datetime
 
@@ -187,6 +189,8 @@ class CanonLook(LookFields):
     status: Literal["draft", "ready"] = "draft"
     # The newest look sheet, through /files/{ticket} ("" until one is made).
     sheet_url: str = ""
+    sheet_thumb_url: str = ""
+    sheet_key: str = ""
     created_at: datetime
     updated_at: datetime
 

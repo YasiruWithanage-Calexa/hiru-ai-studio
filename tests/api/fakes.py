@@ -12,6 +12,10 @@ def _now() -> str:
     return datetime.now(UTC).isoformat()
 
 
+def _when(value: Any) -> datetime:
+    return value if isinstance(value, datetime) else datetime.fromisoformat(str(value))
+
+
 class FakeProfiles:
     def __init__(self) -> None:
         self.rows: dict[str, Row] = {}
@@ -142,6 +146,8 @@ class FakeAudit:
 
 
 class FakeJobs:
+    live_queries = 0
+
     def __init__(self) -> None:
         self.rows: dict[str, Row] = {}
         self.event_rows: list[Row] = []
@@ -180,12 +186,28 @@ class FakeJobs:
         row["status"] = "running"
         return True
 
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]:
+        self.live_queries += 1
+        return [{k: r.get(k) for k in ('id', 'kind', 'status', 'updated_at')} for r in self.rows.values()
+                if r.get("production_id") == str(production_id)
+                and (r["status"] in ('pending', 'running') or (since is not None and _when(r["updated_at"]) > since))]
+
+    async def active_before(self, before: datetime) -> list[Row]:
+        return [r for r in self.rows.values() if r["status"] in ("pending", "running")
+                and _when(r["updated_at"]) < before]
+
+    async def last_event_at(self, job_id: UUID) -> datetime | None:
+        times = [_when(e["created_at"]) for e in self.event_rows if e["job_id"] == str(job_id)]
+        return max(times) if times else None
+
     def add_event(self, job_id: str, type_: str, payload: Row, agent: str | None = None) -> None:
         self.event_rows.append({"job_id": job_id, "seq": len(self.event_rows) + 1, "type": type_,
                                 "agent": agent, "payload": payload, "created_at": _now()})
 
 
 class FakeDocuments:
+    live_queries = 0
+
     def __init__(self) -> None:
         self.rows: dict[str, Row] = {}
 
@@ -213,6 +235,15 @@ class FakeDocuments:
 
     async def delete(self, document_id: UUID) -> None:
         self.rows.pop(str(document_id), None)
+
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]:
+        self.live_queries += 1
+        return [{k: r.get(k) for k in ('id', 'status', 'updated_at')} for r in self.rows.values()
+                if r.get("production_id") == str(production_id)
+                and (r["status"] in ('processing',) or (since is not None and _when(r["updated_at"]) > since))]
+
+    async def processing_before(self, before: datetime) -> list[Row]:
+        return [r for r in self.rows.values() if r["status"] == "processing" and _when(r["updated_at"]) < before]
 
 
 class FakeStorage:
@@ -264,6 +295,8 @@ class FakeUsage:
 
 class _Table:
     """A dict of rows scoped by production, enough for the structure repos."""
+
+    live_queries = 0
 
     def __init__(self) -> None:
         self.rows: dict[str, Row] = {}
@@ -525,7 +558,8 @@ class FakeQuestions(_Table):
 class FakeFrames(_Table):
     async def create_many(self, rows: list[Row]) -> None:
         for row in rows:
-            self.rows[row["id"]] = {"created_at": _now(), "accepted_at": None, "accepted_by": None, "pins": {},
+            self.rows[row["id"]] = {"created_at": _now(), "updated_at": _now(), "accepted_at": None,
+                                    "accepted_by": None, "pins": {},
                                     "storage_path": None, "error": None, "rejected_reason": None, "prompt": "",
                                     "reference_ids": [], **row}
 
@@ -548,6 +582,16 @@ class FakeFrames(_Table):
 
     async def unaccept(self, frame_id: UUID) -> None:
         self.rows[str(frame_id)].update(accepted_at=None, accepted_by=None)
+
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]:
+        self.live_queries += 1
+        return [{k: r.get(k) for k in ('id', 'shot_id', 'status', 'updated_at')} for r in self.rows.values()
+                if r.get("production_id") == str(production_id)
+                and (r["status"] in ('queued', 'running') or (since is not None and _when(r["updated_at"]) > since))]
+
+    async def active_before(self, before: datetime) -> list[Row]:
+        return [r for r in self.rows.values() if r["status"] in ("queued", "running")
+                and _when(r["updated_at"]) < before]
 
 
 class FakePrompts(_Table):
@@ -604,6 +648,16 @@ class FakeRenders(_Table):
     async def count_active(self, production_id: UUID) -> int:
         return sum(1 for r in self.rows.values()
                    if r["production_id"] == str(production_id) and r["status"] in ("queued", "running"))
+
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]:
+        self.live_queries += 1
+        return [{k: r.get(k) for k in ('id', 'shot_id', 'status', 'updated_at')} for r in self.rows.values()
+                if r.get("production_id") == str(production_id)
+                and (r["status"] in ('queued', 'running') or (since is not None and _when(r["updated_at"]) > since))]
+
+    async def active_before(self, before: datetime) -> list[Row]:
+        return [r for r in self.rows.values() if r["status"] in ("queued", "running")
+                and _when(r["updated_at"]) < before]
 
 
 class FakeCosts:

@@ -36,6 +36,22 @@ class OpenAISettings(BaseModel):
     # An environment change, not a code change.
     model_jonathan: str = "gpt-6.1-sol"
     effort_jonathan: str = "high"
+    # Shot Planner Raphael (plan/2026-11-08e D7): the `raphael` tier. The lab ran gpt-5 at high (shuts down 2026-12-11);
+    # the model
+    # for the product is the person's choice, an environment change and not a code change. A model needs a price in
+    # contracts.raphael.money.PRICES (the $5 run cap) or the run refuses to start.
+    model_raphael: str = "gpt-5"
+    effort_raphael: str = "high"
+    # plan/2026-11-08f §5. Raphael's turns after the first (repairs from a check report) at their own effort, on the
+    # same model; and the cinematic pass (stage 2) on its own model and effort. They default to what the lab proved
+    # (gpt-5 high) so nothing changes until the cost lab picks cheaper ones: environment changes, not code. A model
+    # needs a price in contracts.raphael.money.PRICES.
+    model_raphael_repair: str = "gpt-5"
+    effort_raphael_repair: str = "high"
+    model_raphael_cinematic: str = "gpt-5"
+    effort_raphael_cinematic: str = "high"
+    model_raphael_cinematic_repair: str = "gpt-5"
+    effort_raphael_cinematic_repair: str = "high"
     # Zora's author (plan/2026-11-06e D7): the `zora` tier is model_jonathan at this effort; the lab sets it.
     effort_zora: str = "low"
     # Sable (plan/2026-11-08 §4.4, D2): the average tier and the deep tier a turn may move up to once. Until the lab
@@ -121,6 +137,12 @@ class AISettings(BaseSettings):
     david_workers: int = 10
     # The same for Shot Planner Jonathan (plan/2026-11-06b).
     jonathan_workers: int = 10
+    # The same for Shot Planner Raphael (plan/2026-11-08e): scenes at once in one delivery.
+    raphael_workers: int = 10
+    # Shot Planner Raphael's money limit for ONE scene, both stages together (plan/2026-11-08f §4). The lab ran with $5;
+    # a healthy scene cost $0.58-0.75 there, and a stuck one $1.50 live (2026-11-08). At the limit the scene stops and
+    # keeps what it wrote. A setting, not code.
+    raphael_scene_cap_usd: float = 1.00
     # Agents that run as a tool loop (their manifest's `with_tools` form), as a comma-separated list of ids. Empty =
     # none: an agent switches only after a live A/B says it is at least as good (plan/2026-11-04 §8). Going back is
     # removing the id.

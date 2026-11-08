@@ -19,6 +19,7 @@ $functions = @(
     @{ Name = "hiru-shot-planner-adam"; Source = "src\services\shot_planner_adam"; Port = 8209 },
     @{ Name = "hiru-shot-planner-david"; Source = "src\services\shot_planner_david"; Port = 8210 },
     @{ Name = "hiru-shot-planner-jonathan"; Source = "src\services\shot_planner_jonathan"; Port = 8211 },
+    @{ Name = "hiru-shot-planner-raphael"; Source = "src\services\shot_planner_raphael"; Port = 8215 },
     @{ Name = "hiru-video-render"; Source = "src\services\video_render"; Port = 8212 },
     @{ Name = "hiru-zora-chat"; Source = "src\services\zora_chat"; Port = 8213 },
     @{ Name = "hiru-sable-chat"; Source = "src\services\sable_chat"; Port = 8214 }

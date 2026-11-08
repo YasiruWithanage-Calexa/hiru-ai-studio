@@ -1,0 +1,71 @@
+{
+ "id": "c17",
+ "slate": "1N-1",
+ "role": "insert",
+ "technique": "rack_focus",
+ "take_s": 4,
+ "handle_in_s": 1.0,
+ "handle_out_s": 1.0,
+ "lines": [],
+ "speaks": false,
+ "ir": {
+  "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+  "cinematography": {
+   "camera": "cinema camera on a light rig",
+   "angle": "eye level",
+   "framing": "INSERT: Focus moves from the flask to his hand: the stall is what he has.",
+   "movement": "rack focus, one continuous path",
+   "white_balance": "5600K overcast daylight",
+   "color_tone": "as the anchor",
+   "depth_of_field": "shallow",
+   "lens_artifacts": "none"
+  },
+  "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+  "subjects": [
+   {
+    "id": "C01",
+    "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+    "action": "his hand rests on the flask",
+    "position": "where the anchor places them"
+   }
+  ],
+  "beats": [
+   {
+    "time": "0-1s",
+    "camera": "INSERT, settled",
+    "director_line": "Hold the frame before the move.",
+    "action": "The frame holds.",
+    "performance": "Stillness; breath visible."
+   },
+   {
+    "time": "1-3s",
+    "camera": "rack focus",
+    "director_line": "Focus moves from the flask to his hand: the stall is what he has.",
+    "action": "his hand rests on the flask",
+    "performance": "Eyes lower, then lift."
+   },
+   {
+    "time": "3-4s",
+    "camera": "settled",
+    "director_line": "Let it land.",
+    "action": "The frame settles.",
+    "performance": "Lips closed; stillness."
+   }
+  ],
+  "audio": "Close rain on awning; faint kettle hiss; city wash soft.",
+  "first_frame": {
+   "composition": "INSERT frame for the insert.",
+   "subjects": [
+    "C01 as in the anchor"
+   ],
+   "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+   "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+  }
+ },
+ "sound": {
+  "ambience": "Rain under awning; distant traffic; soft stall noises.",
+  "effects": "Occasional drip on metal; faint glass clink.",
+  "music": "none",
+  "silence": false
+ }
+}

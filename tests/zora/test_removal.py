@@ -30,6 +30,7 @@ MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "CLAUDE.md", "tests/jonat
                "Database/schema_v14.sql", "Database/upgrade_v13_to_v14.sql", "Database/README.md",
                "Database/schema_v15.sql", "Database/schema_v16.sql",  # whole schemas after v14
                "Database/schema_v17.sql",  # + a scene's cost
+               "Database/schema_v18.sql", "Database/schema_v19.sql",  # whole schemas: + Sable, + Raphael
                "supabase/migrations/20261106185010_zora_revisions.sql",
                "supabase/tests/database/016_scene_plan_revisions.test.sql"}
 

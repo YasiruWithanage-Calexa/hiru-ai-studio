@@ -11,6 +11,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
+from api.cache import job_ended
 from api.deps.auth import CurrentUser, User
 from api.deps.authz import Admin, resolve_access
 from api.deps.db import get_repos
@@ -21,6 +22,7 @@ from contracts.roles import Permission
 
 router = APIRouter(prefix="/v1/jobs", tags=["jobs"])
 ReposDep = Annotated[Repos, Depends(get_repos)]
+TERMINAL_VALUES = frozenset({"done", "failed", "cancelled"})
 _NOT_FOUND = HTTPException(status.HTTP_404_NOT_FOUND, "Job not found.")
 
 
@@ -42,7 +44,10 @@ async def _visible_job(job_id: UUID, user: CurrentUser, repos: Repos) -> Row:
 
 @router.get("/{job_id}", response_model=Job)
 async def get_job(job_id: UUID, user: User, repos: ReposDep) -> Job:
-    return Job.model_validate(await _visible_job(job_id, user, repos))
+    row = await _visible_job(job_id, user, repos)
+    if row.get("status") in TERMINAL_VALUES:
+        job_ended()  # workers wrote rows this process may still hold a copy of (canon, looks)
+    return Job.model_validate(row)
 
 
 @router.get("/{job_id}/events", response_model=list[JobEvent])

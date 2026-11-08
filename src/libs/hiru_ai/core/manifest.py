@@ -68,8 +68,10 @@ class AgentManifest(_Base):
     # (plan/2026-11-05 R2: a call cut off by a timeout may still be billed, is retried, and never reaches
     # `token_usage`).
     timeout_s: float | None = Field(None, gt=0, le=900)
-    # one typed call | a create_agent tool loop | plain text, streamed (a reply a person reads as it is written)
-    shape: Literal["structured", "react", "text"] = "structured"
+    # one typed call | a create_agent tool loop | plain text, streamed (a reply a person reads as it is written) |
+    # `loop`: a
+    # capped conversation whose tools are the CALLER's code (`Agent.converse`; plan/2026-11-08e: Raphael)
+    shape: Literal["structured", "react", "text", "loop"] = "structured"
     input: str  # "schema:Input", relative to the agent's folder
     output: str
     prompts: dict[str, str] = {"system": "prompts/system.md"}

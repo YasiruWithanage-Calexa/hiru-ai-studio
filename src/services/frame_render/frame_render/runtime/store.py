@@ -7,6 +7,7 @@ from uuid import UUID
 
 import httpx
 
+from frame_render.runtime import thumbs
 from frame_render.runtime.rest import Rest, Row
 
 _logger = logging.getLogger(__name__)
@@ -87,6 +88,13 @@ class Store:
 
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
         self.rest.upload(bucket, path, data, mime)
+        if thumbs.wants_thumb(bucket, path, mime):  # the small copy beside the picture (plan/2026-11-08c 1c)
+            small = thumbs.make(data)
+            if small is not None:
+                try:
+                    self.rest.upload(bucket, thumbs.thumb_path(path), small, thumbs.MIME)
+                except Exception:  # best effort: the tile falls back to the full picture
+                    _logger.warning("thumbnail of %s/%s not stored", bucket, path, exc_info=True)
 
     def add_reference_asset(self, version_id: str, assets: list[Any]) -> None:
         self.rest.patch("canon_versions", {"id": f"eq.{version_id}"}, {"reference_assets": assets})

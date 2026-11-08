@@ -1,0 +1,17 @@
+id: raphael_cinematic
+kind: agent
+version: 1
+summary: "Raphael stage 2, the cinematic pass: a fresh conversation reads the scene, the intended cut and stage 1's locked must bin and adds cinematic clips (anchored, silent, blended by post) on the moments that earn them, with a review of every moment."
+status: active
+owner: director
+model: raphael_cinematic  # its own model and effort (plan/2026-11-08f §5)
+timeout_s: 900
+shape: loop
+phase: raphael.cinematic
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage]
+writes_dialogue: false

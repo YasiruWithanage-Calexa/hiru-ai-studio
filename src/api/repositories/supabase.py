@@ -1,6 +1,7 @@
 """Supabase-backed repositories (supabase-py async client, service role)."""
 from __future__ import annotations
 
+import copy
 import hashlib
 import logging
 from datetime import UTC, datetime
@@ -9,9 +10,11 @@ from uuid import UUID
 
 from supabase import AsyncClient, acreate_client
 
-from api.cache import AsyncTTLCache
+from api.cache import AsyncTTLCache, clear_after_job
+from api.config import get_settings
 from api.observability import count_db_call
-from api.repositories import Repos, Row
+from api.repositories import Repos, Row, Rows
+from api.services import file_cache
 
 _logger = logging.getLogger(__name__)
 
@@ -31,6 +34,18 @@ def _one(data: Any) -> Row:
     if not rows:
         raise LookupError("no row returned")
     return rows[0]
+
+
+async def _live(db: AsyncClient, table: str, columns: str, production_id: UUID, since: datetime | None,
+                active: tuple[str, ...]) -> list[Row]:
+    """The status read (plan/2026-11-08c phase 3): named columns only, rows still active or changed after `since`."""
+    query = db.table(table).select(columns).eq("production_id", str(production_id))
+    if since is None:
+        query = query.in_("status", list(active))
+    else:  # `Z` form: a `+` in a filter string would be read as a space
+        stamp = since.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        query = query.or_(f"status.in.({','.join(active)}),updated_at.gt.{stamp}")
+    return _rows((await query.execute()).data)
 
 
 class _Base:
@@ -273,6 +288,20 @@ class SupabaseJobs(_Base):
                .eq("status", "waiting_input").execute())
         return bool(res.data)
 
+    async def active_before(self, before: datetime) -> list[Row]:
+        res = (await self.db.table("jobs").select("id,kind,production_id,status,updated_at")
+               .in_("status", ["pending", "running"]).lt("updated_at", before.isoformat()).execute())
+        return _rows(res.data)
+
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]:
+        return await _live(self.db, "jobs", "id,kind,status,updated_at", production_id, since, ("pending", "running"))
+
+    async def last_event_at(self, job_id: UUID) -> datetime | None:
+        res = (await self.db.table("job_events").select("created_at").eq("job_id", str(job_id))
+               .order("seq", desc=True).limit(1).execute())
+        row = _first(res.data)
+        return datetime.fromisoformat(str(row["created_at"])) if row else None
+
 
 class SupabaseDocuments(_Base):
     async def create(self, fields: Row) -> Row:
@@ -298,6 +327,14 @@ class SupabaseDocuments(_Base):
         res = await self.db.table("documents").update(fields).eq("id", str(document_id)).execute()
         return _one(res.data)
 
+    async def live(self, production_id: UUID, since: datetime | None) -> Rows:
+        return await _live(self.db, "documents", "id,status,updated_at", production_id, since, ("processing",))
+
+    async def processing_before(self, before: datetime) -> Rows:
+        res = (await self.db.table("documents").select("id,updated_at").eq("status", "processing")
+               .lt("updated_at", before.isoformat()).execute())
+        return _rows(res.data)
+
     async def delete(self, document_id: UUID) -> None:
         await self.db.table("documents").delete().eq("id", str(document_id)).execute()
 
@@ -308,6 +345,7 @@ class SupabaseStorage(_Base):
 
     async def remove(self, bucket: str, path: str) -> None:
         await self.db.storage.from_(bucket).remove([path])
+        file_cache.evict(get_settings(), bucket, path)  # the API's disk copy goes with the object
 
     async def download(self, bucket: str, path: str) -> bytes:
         return bytes(await self.db.storage.from_(bucket).download(path))
@@ -577,9 +615,21 @@ _CANON = ("*, current:canon_versions!canon_entities_current_version_fkey"
           " created_by, created_at)")
 
 
+# The scene loader reads the whole canon and every look on each call (plan/2026-11-08c phase 4). Kept 30 s per
+# production; cleared by this process's own writes, and by the API learning that a job ended (workers write cards
+# and sheets).
+CANON_TTL_S = 30.0
+
+
 class SupabaseCanon(_Base):
+    def __init__(self, db: AsyncClient) -> None:
+        super().__init__(db)
+        self._cache: AsyncTTLCache[list[Row]] = AsyncTTLCache(CANON_TTL_S)
+        clear_after_job(self._cache)
+
     async def create(self, fields: Row) -> Row:
         res = await self.db.table("canon_entities").insert(fields).execute()
+        self._cache.clear()
         return _one(res.data)
 
     async def get(self, production_id: UUID, entity_id: UUID) -> Row | None:
@@ -594,6 +644,7 @@ class SupabaseCanon(_Base):
 
     async def update(self, entity_id: UUID, fields: Row) -> Row:
         res = await self.db.table("canon_entities").update(fields).eq("id", str(entity_id)).execute()
+        self._cache.clear()
         return _one(res.data)
 
     async def add_version(self, entity_id: UUID, version: Row) -> Row:
@@ -601,19 +652,33 @@ class SupabaseCanon(_Base):
         row = _one(res.data)
         await self.db.table("canon_entities").update({"current_version_id": row["id"]}).eq(
             "id", str(entity_id)).execute()
+        self._cache.clear()
         return row
 
     async def list(self, production_id: UUID) -> list[Row]:
+        rows = await self._cache.get(str(production_id), lambda: self._list(production_id))
+        return copy.deepcopy(rows) if rows else []  # callers may edit what they get
+
+    async def _list(self, production_id: UUID) -> Rows | None:
         res = await self.db.table("canon_entities").select(_CANON).eq("production_id", str(production_id)).order(
             "code").execute()
-        return _rows(res.data)
+        return _rows(res.data) or None  # an empty canon is read again: a first card may land any moment
 
 
 class SupabaseLooks(_Base):
+    def __init__(self, db: AsyncClient) -> None:
+        super().__init__(db)
+        self._cache: AsyncTTLCache[list[Row]] = AsyncTTLCache(CANON_TTL_S)
+        clear_after_job(self._cache)
+
     async def list_for_production(self, production_id: UUID) -> list[Row]:
+        rows = await self._cache.get(str(production_id), lambda: self._list_for_production(production_id))
+        return copy.deepcopy(rows) if rows else []
+
+    async def _list_for_production(self, production_id: UUID) -> list[Row] | None:
         res = await self.db.table("canon_looks").select("*").eq("production_id", str(production_id)).order(
             "created_at").execute()
-        return _rows(res.data)
+        return _rows(res.data) or None
 
     async def list(self, entity_id: UUID) -> list[Row]:
         res = await self.db.table("canon_looks").select("*").eq("entity_id", str(entity_id)).order(
@@ -627,14 +692,17 @@ class SupabaseLooks(_Base):
 
     async def create(self, fields: Row) -> Row:
         res = await self.db.table("canon_looks").insert(fields).execute()
+        self._cache.clear()
         return _one(res.data)
 
     async def update(self, look_id: UUID, fields: Row) -> Row:
         res = await self.db.table("canon_looks").update(fields).eq("id", str(look_id)).execute()
+        self._cache.clear()
         return _one(res.data)
 
     async def delete(self, look_id: UUID) -> None:
         await self.db.table("canon_looks").delete().eq("id", str(look_id)).execute()
+        self._cache.clear()
 
 
 class SupabaseSceneLooks(_Base):
@@ -710,16 +778,30 @@ class SupabaseFrames(_Base):
             return False
         return bool(_rows(res.data))
 
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]:
+        return await _live(self.db, "first_frames", "id,shot_id,status,updated_at", production_id, since,
+                           ("queued", "running"))
+
+    async def active_before(self, before: datetime) -> list[Row]:
+        res = (await self.db.table("first_frames").select("id,job_id,updated_at").in_("status", ["queued", "running"])
+               .lt("updated_at", before.isoformat()).execute())
+        return _rows(res.data)
+
     async def unaccept(self, frame_id: UUID) -> None:
         await self.db.table("first_frames").update({"accepted_at": None, "accepted_by": None}).eq(
             "id", str(frame_id)).execute()
+
+
+# The scene loader needs a prompt's text, checks, pins and camera, never the IR it was written from
+# (plan/2026-11-08c phase 4).
+_PROMPT_COLUMNS = "id,production_id,shot_id,version,sections,prose,model,camera,checks,frame_id,pins,created_at"
 
 
 class SupabasePrompts(_Base):
     async def latest_for_shots(self, shot_ids: list[str]) -> dict[str, Row]:
         if not shot_ids:
             return {}
-        res = (await self.db.table("video_prompts").select("*").in_("shot_id", shot_ids)
+        res = (await self.db.table("video_prompts").select(_PROMPT_COLUMNS).in_("shot_id", shot_ids)
                .order("version", desc=True).execute())
         out: dict[str, Row] = {}
         for row in _rows(res.data):
@@ -812,6 +894,15 @@ class SupabaseRenders(_Base):
     async def update_many(self, render_ids: list[str], fields: Row) -> None:
         if render_ids:
             await self.db.table("video_renders").update(fields).in_("id", render_ids).execute()
+
+    async def live(self, production_id: UUID, since: datetime | None) -> list[Row]:
+        return await _live(self.db, "video_renders", "id,shot_id,status,updated_at", production_id, since,
+                           ("queued", "running"))
+
+    async def active_before(self, before: datetime) -> list[Row]:
+        res = (await self.db.table("video_renders").select("id,job_id,updated_at").in_("status", ["queued", "running"])
+               .lt("updated_at", before.isoformat()).execute())
+        return _rows(res.data)
 
     async def count_active(self, production_id: UUID) -> int:
         res = (await self.db.table("video_renders").select("id", count="exact")  # type: ignore[arg-type]

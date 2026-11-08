@@ -1,0 +1,22 @@
+[
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":8,\"role\":\"insert\",\"setup\":\"M\",\"blocks\":[15],\"lines\":[],\"speaks\":false,\"over\":\"phone ring\",\"size\":\"INSERT\",\"angle\":\"eye-level to the device\",\"lens\":\"100mm macro\",\"technique\":\"shallow_isolation\",\"why\":\"Punches in on the ring — a tactile cue that interrupts the warmth.\",\"take_s\":4,\"",
+  "result": "Added c15 [1M-1], c16 [1N-1], c17 [1P-1], c18 [1Q-1], c19 [1R-1], c20 [1S-1], c21 [1T-1], c22 [1U-1].\nReport: 3 blocking fault(s), 1 report(s). Cinematic clips: 8 (at most 3 a moment; moment 1: 1, moment 2: 1, moment 3: 1, moment 4: 1, moment 8: 2, moment 10: 1, moment 11: 1). Seconds: 102 s of take"
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":8,\"role\":\"atmosphere\",\"setup\":\"N\",\"blocks\":[16],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"L16\",\"size\":\"CU\",\"angle\":\"slightly high along umbrella rim\",\"lens\":\"85mm\",\"technique\":\"slow_creep\",\"why\":\"Lets the pressure of the call seep in through rain texture without leaving her.\",\"take_",
+  "result": "Replaced c16 [1N-1], c19 [1R-1], c20 [1S-1], c22 [1U-1].\nReport: 0 blocking fault(s), 3 report(s). Cinematic clips: 8 (at most 3 a moment; moment 1: 1, moment 2: 1, moment 3: 1, moment 4: 1, moment 8: 2, moment 10: 1, moment 11: 1). Seconds: 102 s of takes (70 s must, 32 s cinematic); cap 120 s, 18 "
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":8,\"role\":\"atmosphere\",\"setup\":\"N\",\"blocks\":[16],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"L16\",\"size\":\"CU\",\"angle\":\"slightly high along umbrella rim\",\"lens\":\"85mm\",\"technique\":\"slow_creep\",\"why\":\"Lets the pressure of the call seep in through rain texture without leaving her.\",\"take_",
+  "result": "Replaced c16 [1N-1], c19 [1R-1], c22 [1U-1].\nReport: 0 blocking fault(s), 0 report(s). Cinematic clips: 8 (at most 3 a moment; moment 1: 1, moment 2: 1, moment 3: 1, moment 4: 1, moment 8: 2, moment 10: 1, moment 11: 1). Seconds: 112 s of takes (70 s must, 42 s cinematic); cap 120 s, 8 s left. Turns"
+ },
+ {
+  "tool": "finish",
+  "args": "{\"blend_notes\":[\"c15 — Moment 8: cut in on the first ring (b15) between c13 and c08; over rain and phone ring SFX (no dialogue).\",\"c16 — Moment 8: lay over the middle of the call while c08 holds her; under L16 (phone voice) audio.\",\"c17 — Moment 3: cut in at the drop (b5) for the splash, then return",
+  "result": "Finished. The cinematic clips and your blend notes are written."
+ }
+]

@@ -104,12 +104,22 @@ class SableSettings(BaseModel):
     enabled: bool = False
 
 
+class FilesSettings(BaseModel):
+    """The API's own disk copy of every stored file (plan/2026-11-08c D3): a file crosses the internet from Supabase
+    once, then every later request is served from here. `cache_dir` empty = the user's cache folder
+    (`%LOCALAPPDATA%/hiru-ai/files` on Windows). `cache_max_gb` 0 turns the copy off (every request streams through)."""
+
+    cache_dir: str = ""
+    cache_max_gb: float = 5.0
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", env_nested_delimiter="__", extra="ignore", case_sensitive=False
     )
 
     environment: Literal["local", "test", "staging", "prod"] = "local"
+    debug_traffic: bool = False  # plan/2026-11-08c phase 0: log calls, queries and bytes per route each minute
     local_functions: bool = True
     supabase: SupabaseSettings = SupabaseSettings()
     api: ApiSettings = ApiSettings()
@@ -121,6 +131,7 @@ class Settings(BaseSettings):
     video: VideoSettings = VideoSettings()
     zora: ZoraSettings = ZoraSettings()
     sable: SableSettings = SableSettings()
+    files: FilesSettings = FilesSettings()
 
     @property
     def video_available(self) -> bool:

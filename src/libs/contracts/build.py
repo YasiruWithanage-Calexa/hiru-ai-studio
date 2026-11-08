@@ -25,9 +25,14 @@ BUILD_PIPELINE_DAVID: tuple[JobKind, ...] = (JobKind.CANON_EXTRACT, JobKind.STRU
 # ... and `jonathan` (plan/2026-11-06b): the same one branch.
 BUILD_PIPELINE_JONATHAN: tuple[JobKind, ...] = (JobKind.CANON_EXTRACT, JobKind.STRUCTURE_BUILD,
                                                 JobKind.PLAN_SCENE_JONATHAN)
+# ... and `raphael` (plan/2026-11-08e): the same one branch.
+BUILD_PIPELINE_RAPHAEL: tuple[JobKind, ...] = (JobKind.CANON_EXTRACT, JobKind.STRUCTURE_BUILD,
+                                               JobKind.PLAN_SCENE_RAPHAEL)
 
 
 def build_pipeline(shot_planner: str) -> tuple[JobKind, ...]:
+    if shot_planner == "raphael":
+        return BUILD_PIPELINE_RAPHAEL
     if shot_planner == "jonathan":
         return BUILD_PIPELINE_JONATHAN
     if shot_planner == "david":

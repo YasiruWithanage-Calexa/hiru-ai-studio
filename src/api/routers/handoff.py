@@ -35,6 +35,7 @@ from api.routers.production import (
 )
 from api.services import media_links
 from api.services.assemble import Assembler, get_assembler
+from api.services.media_thumbs import poster_path
 from api.services.production import ShotState, camera_checks
 from api.services.renders import RenderView, expire_stale, render_view
 from contracts.handoff import (
@@ -68,6 +69,8 @@ class TakeView(BaseModel):
     status: TakeStatus
     reason: str | None
     url: str  # /files/{ticket}, never a storage URL
+    poster_url: str = ""  # a still from the take (<take>.poster.webp), so a card shows without downloading the video
+    file_key: str = ""
     duration_s: float | None
     duration_note: str  # "" or "7.2 s; the shot is 8 s"
     created_at: str
@@ -135,6 +138,8 @@ def _take_view(take: Row, index: int, shot_seconds: int, render: Row | None = No
     return TakeView(id=take["id"], label=f"Take {index}", prompt_version=take.get("prompt_version"),
                     status=TakeStatus(take["status"]), reason=take.get("reason"),
                     url=media_links.url("takes", str(take["storage_path"])),
+                    poster_url=media_links.url("takes", poster_path(str(take["storage_path"]))),
+                    file_key=media_links.key("takes", str(take["storage_path"])),
                     duration_s=float(duration) if duration is not None else None, duration_note=note,
                     created_at=str(take["created_at"]), origin=str(take.get("origin") or "upload"),
                     render_id=take.get("render_id"), engine=render["engine"] if render else None,
@@ -216,6 +221,7 @@ async def upload_take(production_id: UUID, shot_id: UUID, file: Annotated[Upload
     path = f"{production_id}/{shot_id}/{take_id}.{ext}"
     await repos.storage.upload("takes", path, bytes(data), mime)
     probe = await assembler.probe("takes", path)
+    await assembler.poster("takes", path, poster_path(path))  # best effort: no still just means no poster
     await repos.takes.create({
         "id": take_id, "production_id": str(production_id), "shot_id": str(shot_id),
         "prompt_id": str(st.prompt["id"]) if st.prompt else None,

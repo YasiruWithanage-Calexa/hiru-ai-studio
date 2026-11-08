@@ -1,6 +1,7 @@
 # Quiet by default: one copy of the data, one download per file (plan/2026-11-08c)
 
-Status: written 2026-11-08, not built. Plain words: [human-read.md](human-read.md). Repos: this one (API) and
+Status: written 2026-11-08. **Phases 0, 1, 3, 4, 5 built offline 2026-11-08, and phase 2 for the shot workspace,
+uncommitted** (see [IMPLEMENTED.md](IMPLEMENTED.md), which names what is left in phase 2). Plain words: [human-read.md](human-read.md). Repos: this one (API) and
 `hiru-ai-studio-interface`. Model to copy: PromptMotion's frontend (`prompt-motion-frontend/src`), which already works
 this way.
 

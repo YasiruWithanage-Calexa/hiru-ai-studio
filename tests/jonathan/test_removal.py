@@ -68,6 +68,7 @@ MAY_NAME_IT = {
     "Database/schema_v14.sql",  # a whole schema, so it holds v13's Jonathan column (plan/2026-11-06c)
     "Database/schema_v15.sql", "Database/schema_v16.sql",  # whole schemas: v14 + first frames, + the reader
     "Database/schema_v17.sql",  # + a scene's cost
+    "Database/schema_v19.sql",  # + Raphael (and a whole schema holds v13's Jonathan column)
     "Database/schema_v18.sql",  # + Sable's chat (plan/2026-11-08)
 }
 

@@ -12,6 +12,7 @@ import httpx
 
 Row = dict[str, Any]
 _BATCH = 200
+IMMUTABLE_BUCKETS = frozenset({"frames", "references", "takes"})  # a path here is written once, ever
 _ATTEMPTS = 4
 _BACKOFF = 1.0  # seconds; doubles each retry
 # Picture-sized bodies on a slow link need a long read/write; a dead host should still fail fast.
@@ -80,10 +81,23 @@ class Rest:
         return _retrying(get)
 
     def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None:
+        """Pictures and video are written ONCE (`x-upsert: false`, plan/2026-11-08c 1d): the API and the browser keep
+        a copy by path, so a path must name one file forever. A second write is a bug and fails loudly, except our
+        own retry of a write that landed and whose answer was lost."""
+        once = bucket in IMMUTABLE_BUCKETS
         headers = {"apikey": self.headers["apikey"], "Authorization": self.headers["Authorization"],
-                   "Content-Type": content_type, "x-upsert": "true"}
+                   "Content-Type": content_type, "x-upsert": "false" if once else "true"}
+        tries = 0
 
         def post() -> None:
+            nonlocal tries
+            tries += 1
             r = self.client.post(f"{self.storage}/object/{bucket}/{path}", headers=headers, content=data)
+            if once and tries > 1 and _already_exists(r):
+                return
             r.raise_for_status()
-        _retrying(post)  # x-upsert makes a repeat safe
+        _retrying(post)
+
+
+def _already_exists(r: httpx.Response) -> bool:
+    return r.status_code in (400, 409) and any(w in r.text.lower() for w in ("duplicate", "already exists"))

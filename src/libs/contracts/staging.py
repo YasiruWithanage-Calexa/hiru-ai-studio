@@ -34,12 +34,12 @@ from contracts.shotplan import HEARD_MARKS, Item
 # Where a voice that is heard but not seen comes from. "" = not said (an ordinary voice off screen).
 VoiceSource = Literal["", "phone", "radio", "television", "speaker", "off_screen"]
 VOICE_SOURCES: tuple[str, ...] = ("", "phone", "radio", "television", "speaker", "off_screen")
-IntentBy = Literal["", "model", "rules", "person", "adam", "david", "jonathan"]
+IntentBy = Literal["", "model", "rules", "person", "adam", "david", "jonathan", "raphael"]
 # Who writes an intent or a coverage plan that no agent replaces: a person, or Shot Planner Adam, whose shot card
 # already says what the shot is for (plan/2026-11-04b Phase 7), or Shot Planner David, whose one author call also wrote
 # the camera design (plan/2026-11-05e §4.5).
 # Shot Planner Jonathan (plan/2026-11-06b) writes the camera design in its one author call too.
-AUTHORED: tuple[str, ...] = ("person", "adam", "david", "jonathan")
+AUTHORED: tuple[str, ...] = ("person", "adam", "david", "jonathan", "raphael")  # Raphael: plan/2026-11-08e
 
 _SOURCE_WORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("phone", ("phone", "mobile", "call", "rings", "ringing", "ringtone", "dial")),
@@ -259,7 +259,7 @@ def staging(items: Iterable[Item], characters: Sequence[Mapping[str, Any]], shot
         # A model left someone out: the rules decide for them. Not a person's list, and not Jonathan's: its author
         # lists who the frame shows, and a name in passing ("near Kasun's three-wheeler") must not add a face
         # (PromptMotion's `_prune_subjects`: the list is authoritative, even when it is short).
-        if intent.by not in ("person", "jonathan"):
+        if intent.by not in ("person", "jonathan", "raphael"):
             seen |= {c for c in cast if c not in listed and c not in by_rule}
         source = "person" if intent.by == "person" else "intent"
     elif design_on is not None:

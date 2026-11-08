@@ -201,13 +201,67 @@ def test_a_download_that_keeps_failing_gives_up_after_four_tries():
     assert len(rec.requests) == 4 and pauses == [1.0, 2.0, 4.0]
 
 
-def test_an_upload_overwrites_so_a_retried_job_leaves_one_object():
+def test_a_document_text_upload_overwrites_so_a_retried_job_leaves_one_object():
     rec = Recorder(httpx.Response(200))
     f, _ = files(rec)
-    f.upload("frames", "p/f.png", b"png", "image/png")
+    f.upload("documents", "p/doc.txt", b"text", "text/plain")
     req = rec.requests[0]
-    assert req.url.path.endswith("/object/frames/p/f.png") and req.headers["x-upsert"] == "true"
-    assert req.headers["content-type"] == "image/png" and req.content == b"png"
+    assert req.url.path.endswith("/object/documents/p/doc.txt") and req.headers["x-upsert"] == "true"
+    assert req.headers["content-type"] == "text/plain" and req.content == b"text"
+
+
+def test_a_picture_is_written_once_and_never_overwritten():
+    """plan/2026-11-08c 1d: the API and the browser keep a copy by path, so a media path names one file for ever."""
+    rec = Recorder(httpx.Response(200))
+    f, _ = files(rec)
+    f.upload("frames", "p/f.png", b"not-a-picture", "image/png")
+    req = rec.requests[0]
+    assert req.url.path.endswith("/object/frames/p/f.png") and req.headers["x-upsert"] == "false"
+    assert req.content == b"not-a-picture"
+    for bucket in ("references", "takes"):
+        f.upload(bucket, "p/x.bin", b"x", "application/octet-stream")
+        assert rec.requests[-1].headers["x-upsert"] == "false"
+
+
+def test_writing_a_media_path_twice_fails_loudly():
+    rec = Recorder(httpx.Response(400, json={"error": "Duplicate", "message": "The resource already exists"}))
+    f, pauses = files(rec)
+    with pytest.raises(httpx.HTTPStatusError):
+        f.upload("frames", "p/f.png", b"x", "image/png")
+    assert len(rec.requests) == 1 and pauses == []
+
+
+def test_our_own_retry_of_a_write_that_landed_is_success():
+    """The first answer was lost (a 502), the object is there: the retry's 'already exists' is not a bug."""
+    rec = Recorder(httpx.Response(502), httpx.Response(400, json={"message": "The resource already exists"}))
+    f, pauses = files(rec)
+    f.upload("frames", "p/f.png", b"x", "image/png")
+    assert len(rec.requests) == 2 and pauses == [1.0]
+
+
+def test_a_picture_is_stored_with_its_small_copy_beside_it():
+    from io import BytesIO
+
+    from PIL import Image
+
+    out = BytesIO()
+    Image.new("RGB", (1536, 1024), (200, 30, 30)).save(out, "PNG")
+    rec = Recorder(httpx.Response(200))
+    f, _ = files(rec)
+    f.upload("frames", "p/f.png", out.getvalue(), "image/png")
+    stored = [r.url.path.rsplit("/object/", 1)[1] for r in rec.requests]
+    assert stored == ["frames/p/f.png", "frames/p/f.png.thumb.webp"]
+    thumb = Image.open(BytesIO(rec.requests[1].content))
+    assert thumb.format == "WEBP" and thumb.width == 640 and thumb.height == 427
+    assert len(rec.requests[1].content) < len(out.getvalue()) / 4
+    assert rec.requests[1].headers["content-type"] == "image/webp"
+
+
+def test_a_picture_that_cannot_be_shrunk_is_still_stored():
+    rec = Recorder(httpx.Response(200))
+    f, _ = files(rec)
+    f.upload("references", "p/s.png", b"garbage", "image/png")
+    assert len(rec.requests) == 1
 
 
 def test_documents_text_is_decoded_as_utf8():

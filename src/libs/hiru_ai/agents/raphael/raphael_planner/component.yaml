@@ -1,0 +1,18 @@
+id: raphael_planner
+kind: agent
+version: 1
+summary: "Raphael stage 1: ONE model in one conversation plans a scene for the post team with code tools only: the intended cut, then the must clips (plan and Veo design together), repairing from the check report of every write until finish."
+status: active
+owner: director
+model: raphael
+# A conversation of up to 20 turns, each writing whole clips with their camera design: the tier's long timeout per call.
+timeout_s: 900
+shape: loop
+phase: raphael.plan
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage]
+writes_dialogue: false

@@ -157,18 +157,21 @@ def _version_row(entity: Row, card: CanonCard, production: Row, user_id: UUID, n
     }
 
 
-def _sheet_url(current: Row | None) -> str:
+def _sheet_path(current: Row | None) -> str:
     assets = (current or {}).get("reference_assets") or []
     first = assets[0] if assets else None
     path = first.get("path") if isinstance(first, dict) else first
-    return media_links.url("references", str(path)) if path else ""
+    return str(path) if path else ""
 
 
 def _entity(row: Row) -> CanonEntity:
     current = row.get("current")
+    path = _sheet_path(current)
     return CanonEntity.model_validate({**row, "current": current,
                                        "current_version": current["version"] if current else None,
-                                       "reference_sheet_url": _sheet_url(current)})
+                                       "reference_sheet_url": media_links.url("references", path),
+                                       "reference_sheet_thumb_url": media_links.thumb_url("references", path),
+                                       "reference_sheet_key": media_links.key("references", path) if path else ""})
 
 
 async def _get(repos: Repos, production_id: UUID, entity_id: UUID) -> Row:

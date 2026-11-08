@@ -1,0 +1,62 @@
+{
+ "id": "c15",
+ "slate": "1M-1",
+ "role": "establishing",
+ "technique": "drone_establishing",
+ "take_s": 4,
+ "handle_in_s": 1.0,
+ "handle_out_s": 1.0,
+ "lines": [],
+ "speaks": false,
+ "ir": {
+  "setting": "A Colombo roadside from high above, the stall a small light in the rain.",
+  "cinematography": {
+   "camera": "cinema camera on a light rig",
+   "angle": "eye level",
+   "framing": "EWS: The street under the rain from above, before we meet him: the size of his world.",
+   "movement": "drone establishing, one continuous path",
+   "white_balance": "5600K overcast daylight",
+   "color_tone": "as the anchor",
+   "depth_of_field": "deep",
+   "lens_artifacts": "none"
+  },
+  "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+  "subjects": [],
+  "beats": [
+   {
+    "time": "0-1s",
+    "camera": "EWS, settled",
+    "director_line": "Hold the frame before the move.",
+    "action": "The frame holds.",
+    "performance": "Stillness; breath visible."
+   },
+   {
+    "time": "1-3s",
+    "camera": "drone establishing",
+    "director_line": "The street under the rain from above, before we meet him: the size of his world.",
+    "action": "The place under the rain.",
+    "performance": "The place carries it."
+   },
+   {
+    "time": "3-4s",
+    "camera": "settled",
+    "director_line": "Let it land.",
+    "action": "The frame settles.",
+    "performance": "Lips closed; stillness."
+   }
+  ],
+  "audio": "Thick rain on awning and road, passing vehicles’ wet whoosh, distant tuk-tuk idle, faint street chatter under.",
+  "first_frame": {
+   "composition": "EWS frame for the establishing.",
+   "subjects": [],
+   "setting": "A Colombo roadside from high above, the stall a small light in the rain.",
+   "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+  }
+ },
+ "sound": {
+  "ambience": "Heavy monsoon rain under awning and on road; steady Colombo traffic swish; distant tuk-tuk idle.",
+  "effects": "Rain impacts on awning; occasional tyre hiss through puddles.",
+  "music": "none",
+  "silence": false
+ }
+}

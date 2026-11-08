@@ -29,6 +29,7 @@ class Probe:
 class Assembler(Protocol):
     async def probe(self, bucket: str, path: str) -> Probe | None: ...
     async def last_frame(self, bucket: str, path: str, out_bucket: str, out_path: str) -> str: ...
+    async def poster(self, bucket: str, path: str, out_path: str) -> str: ...
 
 
 def _id_token(audience: str) -> str:
@@ -69,6 +70,11 @@ class HttpAssembler:
                                                 "out_path": out_path})
         return str(data.get("path") or "") if data and not data.get("error") else ""
 
+    async def poster(self, bucket: str, path: str, out_path: str) -> str:
+        """A 640 px WebP still from the start of a take, stored beside it (plan/2026-11-08c 2f): the card shows it with
+        no video downloaded. The stored path, or "" when it could not be made (the card then has no still)."""
+        data = await self._post("/poster", {"bucket": bucket, "path": path, "out_path": out_path})
+        return str(data.get("path") or "") if data and not data.get("error") else ""
 
     async def cut(self, clips: list[dict[str, Any]], out_bucket: str, out_path: str) -> tuple[str, float]:
         """One scene's cut (plan/2026-11-04b Phase 9): each take trimmed to the part its card keeps, its sound laid

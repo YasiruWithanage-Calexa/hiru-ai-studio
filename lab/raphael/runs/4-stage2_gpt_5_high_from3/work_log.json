@@ -1,0 +1,32 @@
+[
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":1,\"role\":\"insert\",\"setup\":\"L\",\"blocks\":[0,1,2],\"lines\":[],\"speaks\":false,\"over\":\"anchor c01 rain bed\",\"size\":\"INSERT\",\"angle\":\"eye level at flask height\",\"lens\":\"85mm\",\"technique\":\"shallow_isolation\",\"why\":\"Warm steam against cold rain to plant the stall’s heartbeat and add tacti",
+  "result": "Added c15 [1L-1], c16 [1M-1], c17 [1N-1], c18 [1O-1].\nReport: 2 blocking fault(s), 6 report(s). Cinematic clips: 4 (guide about 3-6, at most 2 a moment; moment 1: 1, moment 3: 1, moment 6: 1, moment 7: 1). Seconds: 88 s of takes (70 s must, 18 s cinematic); cap 90 s, 2 s left. Turns left after this "
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":1,\"role\":\"insert\",\"setup\":\"L\",\"blocks\":[0,1,2],\"lines\":[],\"speaks\":false,\"over\":\"anchor c01 rain bed\",\"size\":\"INSERT\",\"angle\":\"eye level at flask height\",\"lens\":\"85mm\",\"technique\":\"shallow_isolation\",\"why\":\"Warm steam against cold rain to plant the stall’s heartbeat and add tacti",
+  "result": "Replaced c15 [1L-1], c16 [1M-1], c18 [1O-1].\nReport: 2 blocking fault(s), 4 report(s). Cinematic clips: 4 (guide about 3-6, at most 2 a moment; moment 1: 1, moment 3: 1, moment 6: 1, moment 7: 1). Seconds: 88 s of takes (70 s must, 18 s cinematic); cap 90 s, 2 s left. Turns left after this one: 10.\n"
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":1,\"role\":\"insert\",\"setup\":\"L\",\"blocks\":[0,1,2],\"lines\":[],\"speaks\":false,\"over\":\"anchor c01 rain bed\",\"size\":\"INSERT\",\"angle\":\"eye level at flask height\",\"lens\":\"85mm\",\"technique\":\"shallow_isolation\",\"why\":\"Warm steam against cold rain to plant the stall’s heartbeat and add tacti",
+  "result": "Replaced c15 [1L-1], c18 [1O-1].\nReport: 1 blocking fault(s), 4 report(s). Cinematic clips: 4 (guide about 3-6, at most 2 a moment; moment 1: 1, moment 3: 1, moment 6: 1, moment 7: 1). Seconds: 90 s of takes (70 s must, 20 s cinematic); cap 90 s, 0 s left. Turns left after this one: 9.\nFix (blocking"
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":7,\"role\":\"insert\",\"setup\":\"O\",\"blocks\":[12,13],\"lines\":[\"L13\"],\"speaks\":false,\"over\":\"L13 from c07\",\"size\":\"INSERT\",\"angle\":\"waist height at counter edge\",\"lens\":\"60mm\",\"technique\":\"push_past_foreground\",\"why\":\"Tie his words to tangible grind — damp rupee notes and a humble cash ",
+  "result": "Replaced c18 [1O-1].\nReport: 0 blocking fault(s), 5 report(s). Cinematic clips: 4 (guide about 3-6, at most 2 a moment; moment 1: 1, moment 3: 1, moment 6: 1, moment 7: 1). Seconds: 88 s of takes (70 s must, 18 s cinematic); cap 90 s, 2 s left. Turns left after this one: 8.\nNothing blocks. You may c"
+ },
+ {
+  "tool": "put_extras",
+  "args": "{\"clips\":[{\"moment\":7,\"role\":\"insert\",\"setup\":\"O\",\"blocks\":[12,13],\"lines\":[],\"speaks\":false,\"over\":\"anchor c07 audio\",\"size\":\"INSERT\",\"angle\":\"waist height at counter edge\",\"lens\":\"60mm\",\"technique\":\"push_past_foreground\",\"why\":\"Tie his words to tangible grind — damp rupee notes and a humble cash b",
+  "result": "Replaced c18 [1O-1].\nReport: 0 blocking fault(s), 4 report(s). Cinematic clips: 4 (guide about 3-6, at most 2 a moment; moment 1: 1, moment 3: 1, moment 6: 1, moment 7: 1). Seconds: 88 s of takes (70 s must, 18 s cinematic); cap 90 s, 2 s left. Turns left after this one: 7.\nNothing blocks. You may c"
+ },
+ {
+  "tool": "finish",
+  "args": "{\"blend_notes\":[\"c15: Moment 1 (S1). Cut in from c01 mid-moment for a brief steam detail, then back to c01; over c01’s ambient rain (no lines).\",\"c16: Moment 3 (S2). Cut in on the phone splash within c03 during b5, then return to the slow pan in c03; over c03’s ambient.\",\"c17: Moment 6 (S3). Under-l",
+  "result": "Finished. The cinematic clips and your blend notes are written."
+ }
+]

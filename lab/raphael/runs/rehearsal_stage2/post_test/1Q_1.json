@@ -1,0 +1,76 @@
+{
+ "id": "c16",
+ "slate": "1Q-1",
+ "role": "insert",
+ "technique": "shallow_isolation",
+ "take_s": 4,
+ "handle_in_s": 1.0,
+ "handle_out_s": 1.0,
+ "lines": [],
+ "speaks": false,
+ "ir": {
+  "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+  "cinematography": {
+   "camera": "cinema camera on a light rig",
+   "angle": "eye level",
+   "framing": "INSERT: Her grip tightens on the phone: the call is cold before her face shows it.",
+   "movement": "shallow isolation, one continuous path",
+   "white_balance": "5600K overcast daylight",
+   "color_tone": "as the anchor",
+   "depth_of_field": "shallow",
+   "lens_artifacts": "none"
+  },
+  "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+  "subjects": [
+   {
+    "id": "C02",
+    "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+    "action": "her hand holds the phone to her ear",
+    "position": "where the anchor places them"
+   }
+  ],
+  "beats": [
+   {
+    "time": "0-1s",
+    "camera": "INSERT, settled",
+    "director_line": "Hold the frame before the move.",
+    "action": "The frame holds.",
+    "performance": "Stillness; breath visible."
+   },
+   {
+    "time": "1-3s",
+    "camera": "shallow isolation",
+    "director_line": "Her grip tightens on the phone: the call is cold before her face shows it.",
+    "action": "her hand holds the phone to her ear",
+    "performance": "Eyes lower, then lift."
+   },
+   {
+    "time": "3-4s",
+    "camera": "settled",
+    "director_line": "Let it land.",
+    "action": "The frame settles.",
+    "performance": "Lips closed; stillness."
+   }
+  ],
+  "audio": "Rain bed; close umbrella drip; phone voice present but unseen; street wash under.",
+  "first_frame": {
+   "composition": "INSERT frame for the insert.",
+   "subjects": [
+    "C02 as in the anchor"
+   ],
+   "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+   "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+  }
+ },
+ "sound": {
+  "ambience": "Rain with umbrella drip close; soft traffic bed.",
+  "effects": "Subtle handset rustle.",
+  "music": "none",
+  "silence": false
+ },
+ "stage": 2,
+ "anchor": [
+  "c08"
+ ],
+ "blend": "cut_in"
+}

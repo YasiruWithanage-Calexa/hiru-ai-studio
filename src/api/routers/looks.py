@@ -52,7 +52,9 @@ def _asset_path(assets: object) -> str:
 
 def _look(row: Row) -> CanonLook:
     path = _asset_path(row.get("sheet_assets"))
-    return CanonLook.model_validate({**row, "sheet_url": media_links.url("references", path) if path else ""})
+    return CanonLook.model_validate({**row, "sheet_url": media_links.url("references", path),
+                                     "sheet_thumb_url": media_links.thumb_url("references", path),
+                                     "sheet_key": media_links.key("references", path) if path else ""})
 
 
 def _ranges(ranges: list[EpisodeRange]) -> list[dict[str, int]]:

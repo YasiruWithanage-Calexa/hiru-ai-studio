@@ -5,7 +5,8 @@ code tools only. Nothing under `src/` changes, no database row is written, DaVin
 deleting this folder removes the lab.
 
 **Status (2026-11-08):** phase 0a built; phase 0b's three paid runs done ($1.18 of $5.00), all reached `finish` in 4-7
-turns. Results: [plan/2026-11-08e/RESULTS.md](../../plan/2026-11-08e/RESULTS.md). A fourth run waits for the person's read.
+turns. Results: [plan/2026-11-08e/RESULTS.md](../../plan/2026-11-08e/RESULTS.md). Phase 0c (stage 2, the cinematic pass)
+built offline the same day; its paid runs (phase 0d) wait for the person's yes.
 
 ## Run it (from the repo root)
 
@@ -14,6 +15,10 @@ turns. Results: [plan/2026-11-08e/RESULTS.md](../../plan/2026-11-08e/RESULTS.md)
 OPENAI__API_KEY= .venv/Scripts/python.exe lab/raphael/run.py dry          # the prompt, first message, tools and the price; calls nothing
 OPENAI__API_KEY= .venv/Scripts/python.exe lab/raphael/run.py rehearse     # the whole loop with NO model; writes runs/rehearsal/bin.html
 OPENAI__API_KEY= .venv/Scripts/python.exe lab/raphael/run.py pick         # the small part for the post team
+OPENAI__API_KEY= .venv/Scripts/python.exe lab/raphael/run.py stage2 dry       # stage 2 on run 3's bin: what it sends, the price
+OPENAI__API_KEY= .venv/Scripts/python.exe lab/raphael/run.py stage2 rehearse  # stage 2 with NO model; runs/rehearsal_stage2/bin.html
+.venv/Scripts/python.exe lab/raphael/run.py stage2 paid --yes --hypothesis "…"   # a REAL pass (the person's yes first)
+.venv/Scripts/python.exe lab/raphael/run.py full --yes --past-read --hypothesis "…"  # stage 1 must-only + stage 2 (yes first)
 .venv/Scripts/python.exe lab/raphael/run.py paid --yes --hypothesis "…"   # a REAL run: the person's yes first, `dry` first
 ```
 
@@ -26,7 +31,10 @@ OPENAI__API_KEY= .venv/Scripts/python.exe lab/raphael/run.py pick         # the 
 | `prompts/raphael.md` | the one prompt: DaVinci's director prompt minus delegation, plus the clip writer's design rules, plus the length target |
 | `rehearsal.py` | DaVinci's hand-written Episode 1 tables through the real loop: edit plan, three sequences, a refused `finish`, ONE batch repair of two clips, `finish` accepted (7 turns) |
 | `render.py` | DaVinci's page, titled Raphael, with seconds against the target and the cap, and the turns used |
-| `run.py` | `dry`, `rehearse`, `paid`, `pick`, `ledger` |
+| `run.py` | `dry`, `rehearse`, `paid`, `pick`, `ledger`; `stage2 dry/rehearse/paid --from DIR`; `full` |
+| `stage2.py` | stage 2, the cinematic pass: loads a finished stage 1 run, tools `put_extras`, `remove_extras`, `read_bin`, `finish(blend_notes)`; the anchor / blend / silent / differs / 2-a-moment checks |
+| `prompts/cinematic.md` | stage 2's prompt; `prompts/raphael_must.md` is S1's must-only stage 1 prompt (`--prompt raphael_must`) |
+| `rehearsal2.py` | stage 2's scripted run on run 3's real bin (a must id refused, a same-angle and a crowded moment refused, one batch repair, `finish`) |
 
 Imported from `lab/davinci` (R2, one copy): `checks` (all of them, including the 1.5x length cap), `state.Bin` (ids, slates,
 replace keeps must), the edit-plan shape, `money.Meter`, `brain.OpenAIBackend`. Raphael has its **own** ledger

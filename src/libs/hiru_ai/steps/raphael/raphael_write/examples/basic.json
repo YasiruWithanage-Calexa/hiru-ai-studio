@@ -1,0 +1,2542 @@
+{
+ "scene": {
+  "id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+  "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+  "episode_id": "8d090b0f-bce9-4b07-977d-62c96742d052",
+  "number": 1,
+  "heading": "Scene 1",
+  "title": "",
+  "location_id": "loc-1",
+  "envelope_s": 60,
+  "script": [
+   {
+    "kind": "action",
+    "text": "It is raining heavily in Colombo.",
+    "screen": "info",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "action",
+    "text": "Kasun stands beside his small three-wheeler, selling homemade short eats and tea to office workers.",
+    "screen": "act",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "action",
+    "text": "His clothes are simple, but his eyes are full of ambition.",
+    "screen": "act",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "4dfd0c66-770f-4938-b64b-e9751176fede"
+   },
+   {
+    "kind": "action",
+    "text": "Across the road, Anudi steps out of a comfortable family car, dressed elegantly and holding an umbrella.",
+    "screen": "move",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "action",
+    "text": "She accidentally drops her phone near Kasun's three-wheeler.",
+    "screen": "act",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "action",
+    "text": "Kasun picks it up and runs after her.",
+    "screen": "move",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "c3ee1bc3-fd36-43d5-a7f3-da99dca068f3"
+   },
+   {
+    "kind": "action",
+    "text": "Anudi turns around.",
+    "screen": "with_line",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "490dc764-ef44-410e-8d0e-9bb41add4cac"
+   },
+   {
+    "kind": "action",
+    "text": "She looks at his little business.",
+    "screen": "with_line",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "dcb89d71-81c0-4f27-aaf5-b0ce36bb00ab"
+   },
+   {
+    "kind": "action",
+    "text": "Kasun smiles.",
+    "screen": "with_line",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "0ed9d242-12e3-434a-ac24-98e034df3c09"
+   },
+   {
+    "kind": "action",
+    "text": "Anudi smiles back.",
+    "screen": "act",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "action",
+    "text": "Suddenly, her phone rings. It is her father.",
+    "screen": "act",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "82f26212-2ad1-4ce1-8109-625ced88c542"
+   },
+   {
+    "kind": "action",
+    "text": "Her smile disappears.",
+    "screen": "act",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "action",
+    "text": "She looks at Kasun one more time.",
+    "screen": "with_line",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "46d98f7f-ab37-4a68-852e-df4c62b4a95a"
+   },
+   {
+    "kind": "action",
+    "text": "She walks away.",
+    "screen": "move",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "action",
+    "text": "Kasun watches her leave.",
+    "screen": "move",
+    "events": 1,
+    "by": "person"
+   },
+   {
+    "kind": "dialogue",
+    "line_id": "a9414c36-d9b1-4bcd-ac3a-e8c10c27d23f"
+   }
+  ],
+  "status": "draft",
+  "note": "",
+  "script_version": 1,
+  "time_of_day": "DAY",
+  "raphael": {}
+ },
+ "lines": [
+  {
+   "id": "4dfd0c66-770f-4938-b64b-e9751176fede",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 0,
+   "speaker": "Kasun",
+   "character_id": "char-Kasun",
+   "text": "One day… I'll have my own restaurant.",
+   "delivery": "voice over, to himself"
+  },
+  {
+   "id": "c3ee1bc3-fd36-43d5-a7f3-da99dca068f3",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 1,
+   "speaker": "Kasun",
+   "character_id": "char-Kasun",
+   "text": "Miss! Your phone!",
+   "delivery": ""
+  },
+  {
+   "id": "490dc764-ef44-410e-8d0e-9bb41add4cac",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 2,
+   "speaker": "Anudi",
+   "character_id": "char-Anudi",
+   "text": "Oh… thank you.",
+   "delivery": ""
+  },
+  {
+   "id": "dcb89d71-81c0-4f27-aaf5-b0ce36bb00ab",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 3,
+   "speaker": "Anudi",
+   "character_id": "char-Anudi",
+   "text": "You made all this yourself?",
+   "delivery": ""
+  },
+  {
+   "id": "0ed9d242-12e3-434a-ac24-98e034df3c09",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 4,
+   "speaker": "Kasun",
+   "character_id": "char-Kasun",
+   "text": "Started with Rs. 5,000. I'm trying to make it bigger.",
+   "delivery": ""
+  },
+  {
+   "id": "82f26212-2ad1-4ce1-8109-625ced88c542",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 5,
+   "speaker": "Father",
+   "character_id": "char-Father",
+   "text": "Anudi, where are you? Come home. We need to talk about your marriage.",
+   "delivery": "on the phone"
+  },
+  {
+   "id": "46d98f7f-ab37-4a68-852e-df4c62b4a95a",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 6,
+   "speaker": "Anudi",
+   "character_id": "char-Anudi",
+   "text": "Maybe… I'll see you again.",
+   "delivery": ""
+  },
+  {
+   "id": "a9414c36-d9b1-4bcd-ac3a-e8c10c27d23f",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "scene_id": "7b39f236-c868-40dc-a8eb-dd41a4c77bd9",
+   "ord": 7,
+   "speaker": "Narrator",
+   "character_id": "char-Narrator",
+   "text": "He had no idea that this meeting was about to change his life.",
+   "delivery": "narrator voice over"
+  }
+ ],
+ "stored": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "job-1",
+  "input_hash": "",
+  "stage1": "finished",
+  "stage2": "finished",
+  "stopped": "",
+  "cap": 2.0,
+  "edit": {
+   "treatment": {
+    "logline": "In monsoon rain, a humble street vendor returns a fallen phone to a young woman from comfort; a spark forms, but a parent’s call breaks it, leaving him watching the rain as fate whispers change.",
+    "arc": [
+     {
+      "beat": "Rain, work, and a private vow",
+      "blocks": {
+       "first": 0,
+       "last": 3
+      },
+      "feeling": "Grounded, intimate; ambition flickers beneath hardship."
+     },
+     {
+      "beat": "Chance enters",
+      "blocks": {
+       "first": 4,
+       "last": 6
+      },
+      "feeling": "A sudden possibility touches the frame."
+     },
+     {
+      "beat": "First words, first warmth",
+      "blocks": {
+       "first": 7,
+       "last": 14
+      },
+      "feeling": "Tentative curiosity turns to genuine regard."
+     },
+     {
+      "beat": "The interruption",
+      "blocks": {
+       "first": 15,
+       "last": 17
+      },
+      "feeling": "Cold reality cuts through warmth; a promise stalls."
+     },
+     {
+      "beat": "Parting with a thread",
+      "blocks": {
+       "first": 18,
+       "last": 22
+      },
+      "feeling": "Yearning and a quiet promise of more."
+     }
+    ],
+    "approach": "Naturalistic handheld and restrained dolly, rain-forward soundscape, faces favoured over coverage. One vision: cool Colombo greys and blues, with warm skin tones and steam from tea as the emotional counterpoint. Keep moves minimal—one purposeful motion per shot. Perform the spoken lines in clean singles; let reactions breathe in the same frames rather than multiplying angles.",
+    "colour_script": [
+     {
+      "sequence": "Opening rain and resolve",
+      "palette": "Cool greys/blues; a warm amber note from tea steam and stall wood.",
+      "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+      "grade": "Naturalistic, slightly desaturated cool base with warm skin lift."
+     },
+     {
+      "sequence": "Entrance and drop",
+      "palette": "Cool street with a soft warm accent from Anudi’s wardrobe and car interior.",
+      "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+      "grade": "Neutral contrast, rich but not glossy; rain sheen on surfaces."
+     },
+     {
+      "sequence": "Thanks and spark",
+      "palette": "Cool environment; faces graded a touch warmer to carry the moment.",
+      "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+      "grade": "Film-like, gentle highlight roll-off; skin tones protected."
+     },
+     {
+      "sequence": "The call",
+      "palette": "Cool shifts cooler; slight desaturation to feel the chill.",
+      "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+      "grade": "Cooler balance, a touch more contrast; isolate her with shallower depth."
+     },
+     {
+      "sequence": "Parting",
+      "palette": "Return to cool street tones; Kasun’s skin stays warm against grey rain.",
+      "light": "Overcast monsoon daylight, flat and soft with heavy rain.",
+      "grade": "Naturalistic; final shot eases saturation slightly as VO lands."
+     }
+    ],
+    "geography": "Kasun’s three-wheeler is curbside under a makeshift awning; counter and tea flask face the pavement. A family car pulls up across the wet two-lane road. Pedestrian flow runs along the stall side; puddles collect by the gutter. Sightlines: from stall to car across the road; approach path brings Anudi past the stall edge where the phone falls.",
+    "key_image": "Kasun, damp under the awning, eyes following her into sheets of rain while steam coils from his tea flask.",
+    "advice": [
+     "Protect lenses and mics from rain; keep rain continuity (intensity, droplet size) between shots.",
+     "Never show the caller; keep phone VO strictly off-screen. A listener is written as ‘listens’.",
+     "Keep the stall props fixed for geography continuity (menu, cash box, tea flask positions).",
+     "One move per shot. If in doubt, lock off and let the rain carry motion.",
+     "Give 1 s handles around action; 0.8 s for tight 4 s takes; long call on 8 s.",
+     "Thought and VO are never performed—lips closed. Keep faces framed so the audience reads the change."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "Opening rain and resolve",
+     "purpose": "Plant Kasun, the rain, and his inner vow.",
+     "shots": {
+      "first": 0,
+      "last": 3
+     }
+    },
+    {
+     "id": "S2",
+     "title": "Entrance and drop",
+     "purpose": "Introduce Anudi and the inciting mishap.",
+     "shots": {
+      "first": 4,
+      "last": 6
+     }
+    },
+    {
+     "id": "S3",
+     "title": "Thanks and spark",
+     "purpose": "Their first words and mutual curiosity.",
+     "shots": {
+      "first": 7,
+      "last": 14
+     }
+    },
+    {
+     "id": "S4",
+     "title": "The call",
+     "purpose": "Warmth interrupted by pressure from home.",
+     "shots": {
+      "first": 15,
+      "last": 17
+     }
+    },
+    {
+     "id": "S5",
+     "title": "Parting",
+     "purpose": "A fragile promise and a watching heart.",
+     "shots": {
+      "first": 18,
+      "last": 22
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0,
+      1,
+      2
+     ],
+     "what": "Heavy rain over Colombo; Kasun tends his tiny stall by the three-wheeler.",
+     "feeling": "Immersed in rain, sensing grit and quiet ambition.",
+     "cut_uses": "master, WIDE at stall—locked-off to let rain paint the frame and place us."
+    },
+    {
+     "n": 2,
+     "sequence": "S1",
+     "blocks": [
+      3
+     ],
+     "what": "Kasun’s private vow drifts over his face.",
+     "feeling": "Intimacy with his drive; a soft push-in to carry the thought.",
+     "cut_uses": "single, MCU on Kasun—gentle dolly-in to cradle the thought."
+    },
+    {
+     "n": 3,
+     "sequence": "S2",
+     "blocks": [
+      4,
+      5
+     ],
+     "what": "Across the road, Anudi arrives with an umbrella; the phone slips near the stall.",
+     "feeling": "A bright note in grey; chance enters.",
+     "cut_uses": "master, MWS spanning car to stall—slow pan reveal to catch the drop."
+    },
+    {
+     "n": 4,
+     "sequence": "S2",
+     "blocks": [
+      6,
+      7
+     ],
+     "what": "Kasun grabs the phone and moves after her, calling out.",
+     "feeling": "Forward motion; generous impulse.",
+     "cut_uses": "single, MS on Kasun—short tracking move for urgency; performs L7."
+    },
+    {
+     "n": 5,
+     "sequence": "S3",
+     "blocks": [
+      8,
+      9
+     ],
+     "what": "She turns; first words of thanks.",
+     "feeling": "Polite warmth, rain-muted.",
+     "cut_uses": "single, MS on Anudi—still frame to let the words land; performs L9."
+    },
+    {
+     "n": 6,
+     "sequence": "S3",
+     "blocks": [
+      10,
+      11
+     ],
+     "what": "She takes in his stall and asks about it.",
+     "feeling": "Curiosity deepens; respect peeks through.",
+     "cut_uses": "single, MCU on Anudi with a soft rack—from stall to her eyes; performs L11."
+    },
+    {
+     "n": 7,
+     "sequence": "S3",
+     "blocks": [
+      12,
+      13
+     ],
+     "what": "He smiles, then shares his small origin and big aim.",
+     "feeling": "Pride without brag; gentle hope.",
+     "cut_uses": "single, MS on Kasun—held frame; performs L13 (smile sits before it)."
+    },
+    {
+     "n": 8,
+     "sequence": "S4",
+     "blocks": [
+      14,
+      15,
+      16,
+      17
+     ],
+     "what": "Her returning smile is cut by a ring; she listens as the call chills the air.",
+     "feeling": "A warm thread tugged cold; responsibility closes in.",
+     "cut_uses": "single, MCU on Anudi—held, let the ring and phone voice play across her face."
+    },
+    {
+     "n": 9,
+     "sequence": "S5",
+     "blocks": [
+      18,
+      19
+     ],
+     "what": "She gives him one last look and a parting line.",
+     "feeling": "Tender uncertainty, a promise in the rain.",
+     "cut_uses": "single, MS on Anudi—still, eyes flick before she speaks; performs L19."
+    },
+    {
+     "n": 10,
+     "sequence": "S5",
+     "blocks": [
+      20
+     ],
+     "what": "She walks away into the rain.",
+     "feeling": "Distance grows; we hold the emptying frame.",
+     "cut_uses": "clean_exit, MWS—locked-off, she leaves the held frame."
+    },
+    {
+     "n": 11,
+     "sequence": "S5",
+     "blocks": [
+      21,
+      22
+     ],
+     "what": "Kasun watches her go; fate’s VO closes the scene.",
+     "feeling": "Yearning suspended; possibility blooms under rain.",
+     "cut_uses": "master, WIDE—slow dolly-out to end on small Kasun in big rain while VO plays."
+    }
+   ],
+   "editor_notes": [
+    "The intended cut is lean: masters for geography, singles for lines, one held call shot. Editors can punch-in digitally on singles; we’ve left clean heads and tails.",
+    "If the drop needs emphasis, an insert of the phone splash can intercut Moment 3 without changing geography.",
+    "Keep caller unseen; all references are ‘the call’ only. The closing VO rides over the final master; do not cut away mid-VO unless punching-in."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     0,
+     1,
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level",
+    "lens": "24mm",
+    "technique": "locked_off",
+    "why": "Place the geography and the rain; let the world breathe while we meet Kasun.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Opening geography and rain bed to anchor the world.",
+    "id": "c01",
+    "slate": "1A-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 24mm, f/4.0",
+      "angle": "eye level",
+      "framing": "WIDE, Kasun small mid-left; stall and awning clear; rain fills depth and foreground streaks.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Deep, rain and street readable; soft bokeh in far distance",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+       "action": "tidies his counter and checks the tea flask",
+       "position": "mid-left under the awning by the counter, facing right, one hand on the flask handle"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE locked-off, focus on C01 and stall",
+       "director_line": "Still frame holds rain streaks as the stall anchors the street.",
+       "action": "Rain lashes the road; C01 stands at the counter.",
+       "performance": "He works with economical movements, chin slightly lifted to the street."
+      },
+      {
+       "time": "1-5s",
+       "camera": "unchanged",
+       "director_line": "Rain fills the depth as the stall breathes with tiny motions.",
+       "action": "C01 wipes the counter and adjusts a glass near the flask.",
+       "performance": "He keeps steady, purposeful hands, eyes briefly scanning the street."
+      },
+      {
+       "time": "5-6s",
+       "camera": "unchanged",
+       "director_line": "Hold the quiet before we push closer.",
+       "action": "C01 settles, hands resting by the flask.",
+       "performance": "He pauses a beat, breathing visible in the mist."
+      }
+     ],
+     "audio": "Thick rain on awning and road, passing vehicles’ wet whoosh, distant tuk-tuk idle, faint street chatter under.",
+     "first_frame": {
+      "composition": "C01 in the left third under the awning; counter foreground; road and rain fill the rest.",
+      "subjects": [
+       "C01 damp under the awning, hands near the flask"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy monsoon rain under awning and on road; steady Colombo traffic swish; distant tuk-tuk idle.",
+     "effects": "Rain impacts on awning; occasional tyre hiss through puddles.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "50mm",
+    "technique": "dolly_in",
+    "why": "Draw us into his private vow without words; a gentle move mirrors resolve forming.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Kasun’s thought plays over this held face; no lips move.",
+    "id": "c02",
+    "slate": "1B-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "dolly, 50mm, f/2.0",
+      "angle": "eye level",
+      "framing": "MCU, Kasun fills about two-thirds frame, shoulders in.",
+      "movement": "slow dolly in from a loose medium to a tight MCU, then settle",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Shallow, soft rain bokeh behind him",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+       "action": "pauses at the stall, gazing past frame with lips closed",
+       "position": "centre-left of frame, under awning edge, facing right, empty hands"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU, dolly begins, focus on C01",
+       "director_line": "We ease in as rain beads on his hair.",
+       "action": "He stills at the counter.",
+       "performance": "His eyes set forward, a tiny inhale steadies him."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU tighter, move continues then settles",
+       "director_line": "The frame closes gently, isolating him from the street.",
+       "action": "He holds still, slight chest rise in breath.",
+       "performance": "His gaze holds; a flicker of resolve tightens his jaw, lips closed."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU tight, settled",
+       "director_line": "Hold on the quiet after the thought lands.",
+       "action": "He remains still.",
+       "performance": "He lets the breath out slowly, eyes softening."
+      }
+     ],
+     "audio": "Rain bed as before; closer awning drips; soft traffic wash.",
+     "first_frame": {
+      "composition": "Tight on C01’s face at the left-of-centre; awning edge and rain streaks abstract behind.",
+      "subjects": [
+       "C01 framed from chest up, hair speckled with rain"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain close on awning, soft city wash.",
+     "effects": "Occasional drip on metal; faint kettle hiss from stall.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "master",
+    "setup": "C",
+    "blocks": [
+     4,
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "slightly above eye level",
+    "lens": "35mm",
+    "technique": "slow_pan_reveal",
+    "why": "One shared frame connects car to stall so the drop reads without cutting the space.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Keep umbrella readable; phone fall must be visible near the stall edge.",
+    "id": "c03",
+    "slate": "1C-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "sticks, 35mm, f/2.8",
+      "angle": "slightly above eye level",
+      "framing": "MWS spanning the stall mid-left to the opposite curb and car on the right edge.",
+      "movement": "slow pan reveal from stall toward the car, then continue to catch action near the stall",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Medium, both car and stall readable",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+       "action": "tends the stall as movement across the road draws his eye",
+       "position": "mid-left under awning, facing out to the street, empty hands"
+      },
+      {
+       "id": "C02",
+       "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+       "action": "steps from a car with an umbrella, then nears the stall where a phone slips from her hand",
+       "position": "enters from right by the car, then approaches frame centre; umbrella in right hand, phone in left until it falls"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS, pan holding the stall before moving",
+       "director_line": "Rain veils the road; the stall sits steady.",
+       "action": "C01 continues his small tasks.",
+       "performance": "He glances across the road briefly, posture open."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MWS, slow pan right-to-left, favour C02 as she steps and nears the stall edge",
+       "director_line": "The frame glides to the car as she emerges under an umbrella, then brings her toward the stall.",
+       "action": "C02 steps out, closes the door with her hip, then nears the stall; her phone slips and drops near the awning edge.",
+       "performance": "She handles the umbrella carefully; a small flinch as the phone slips."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MWS, end of pan, settle with phone on wet ground near stall edge",
+       "director_line": "Hold a beat on the fallen phone by the stall, rain rippling the glass.",
+       "action": "Phone lies by the gutter as rain splashes its glass.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain and traffic; car door thud softened by rain; umbrella fabric rustle; faint splash as phone hits puddle.",
+     "first_frame": {
+      "composition": "Stall left, road centre, car right framed through rain; space connects both sides.",
+      "subjects": [
+       "C01 small under awning",
+       "C02 framed by the car door with umbrella"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain with wide street wash.",
+     "effects": "Car door soft thud; umbrella rustle; phone splash on puddle.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "single",
+    "setup": "D",
+    "blocks": [
+     6,
+     7
+    ],
+    "lines": [
+     "L7"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "35mm",
+    "technique": "tracking",
+    "why": "Keep momentum on Kasun as he retrieves and offers the phone; the move matches his impulse.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Clean performance of L7 with rain-safe mic; keep phone and his hand high in frame as he steps.",
+    "id": "c04",
+    "slate": "1D-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "handheld, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "MS, Kasun waist-up with the phone visible in his lead hand.",
+      "movement": "tracking right two steps from stall edge to pavement, then settle",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Medium, background rain soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+       "action": "bends to grab the phone, steps after C02, lifting the phone to offer it",
+       "position": "centre frame stepping from awning edge toward right, phone in right hand held up"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS, tracking begins from stall edge",
+       "director_line": "We move with him into the rain.",
+       "action": "He reaches down toward the phone.",
+       "performance": "He plants his feet, intent, breath gathering."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MS, tracking continues then settles",
+       "director_line": "The frame steadies as he closes the gap and presents the phone.",
+       "action": "He lifts the phone, arm extended slightly.",
+       "performance": "He makes brief eye contact, lips move to L7 with a small lift of chin."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MS, settled",
+       "director_line": "Hold a beat after he offers it.",
+       "action": "He keeps the phone offered.",
+       "performance": "His mouth closes; he waits for her response."
+      }
+     ],
+     "audio": "Close rain on awning edge; foot splashes; nearby traffic hiss.",
+     "first_frame": {
+      "composition": "C01 enters from left under the awning line; phone low in frame, rain beyond.",
+      "subjects": [
+       "C01 stepping out with intent, hand reaching down"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain with nearer pavement splashes; light traffic wash.",
+     "effects": "Footsteps through puddles; small water drips from awning edge.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     8,
+     9
+    ],
+    "lines": [
+     "L9"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Hold her turn and first words in a clean, calm frame so the exchange feels intimate.",
+    "take_s": 4,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "must",
+    "editor_note": "Anchor her first response clean; rain texture behind her.",
+    "id": "c05",
+    "slate": "1E-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.0",
+      "angle": "eye level",
+      "framing": "MS, Anudi from mid-torso up; umbrella edge and rain behind.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Shallow, raindrops melt into soft bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+       "action": "turns back toward C01 and receives the phone, lips forming L9",
+       "position": "right-of-centre, facing left toward off-screen C01, umbrella in right hand"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "MS locked-off",
+       "director_line": "She begins to pivot into frame, rain soft behind.",
+       "action": "She turns toward C01.",
+       "performance": "Her eyes find him; her mouth prepares to respond."
+      },
+      {
+       "time": "0.8-3.2s",
+       "camera": "MS locked-off, favouring her face",
+       "director_line": "We hold steady to read the first exchange.",
+       "action": "She accepts the phone.",
+       "performance": "She offers a small, sincere smile; lips move to L9."
+      },
+      {
+       "time": "3.2-4s",
+       "camera": "MS locked-off",
+       "director_line": "Settle on her face after the thanks lands.",
+       "action": "She steadies the umbrella.",
+       "performance": "Her smile lingers a fraction, eyes bright."
+      }
+     ],
+     "audio": "Rain wash; close umbrella drip; street noise soft.",
+     "first_frame": {
+      "composition": "C02 in right third; negative space left to her eyeline; umbrella edge frames top.",
+      "subjects": [
+       "C02 mid-torso up, wet hair strands at her cheek"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and soft traffic; umbrella drip close.",
+     "effects": "Small water beads hitting umbrella fabric.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     10,
+     11
+    ],
+    "lines": [
+     "L11"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "85mm",
+    "technique": "rack_focus",
+    "why": "Let her glance to the stall then return to her eyes, showing curiosity before the question.",
+    "take_s": 4,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "must",
+    "editor_note": "Begin focused slightly past her shoulder to stall, then pull to her eyes for the line.",
+    "id": "c06",
+    "slate": "1E-2",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.0",
+      "angle": "eye level",
+      "framing": "MCU, Anudi’s face and shoulders dominant; stall soft behind her.",
+      "movement": "rack focus from the soft stall behind to C02’s eyes, then hold",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Shallow, background resolves only briefly in focus pull",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+       "action": "glances toward the stall and back before asking, lips forming L11",
+       "position": "right-of-centre, facing left toward off-screen C01, umbrella in right hand, phone now in left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "MCU, start with focus nearer the stall plane then pull forward",
+       "director_line": "A soft pull brings attention from his work to her eyes.",
+       "action": "She looks past camera toward the stall.",
+       "performance": "Her eyes track the counter; chin tilts slightly with interest."
+      },
+      {
+       "time": "0.8-3.2s",
+       "camera": "MCU, focus settled on her eyes",
+       "director_line": "Hold close as the question bridges curiosity and respect.",
+       "action": "She returns her gaze toward C01.",
+       "performance": "A small nod; lips move to L11."
+      },
+      {
+       "time": "3.2-4s",
+       "camera": "MCU, steady",
+       "director_line": "Hold the moment after the question.",
+       "action": "She steadies the umbrella and phone.",
+       "performance": "She waits, eyes open and attentive."
+      }
+     ],
+     "audio": "Rain patter and city wash as bed; umbrella drip close.",
+     "first_frame": {
+      "composition": "C02 tight right-of-centre; rain-soft stall behind her shoulder.",
+      "subjects": [
+       "C02 framed shoulders-up, a few rain beads at collar"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain with umbrella drip; light street wash.",
+     "effects": "Subtle cloth rustle; occasional drip on metal.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "single",
+    "setup": "F",
+    "blocks": [
+     12,
+     13
+    ],
+    "lines": [
+     "L13"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "Let Kasun’s pride and modesty play in one honest held frame.",
+    "take_s": 6,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Give him time to smile before the line; clean, steady frame for the longer response.",
+    "id": "c07",
+    "slate": "1F-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "angle": "eye level",
+      "framing": "MS, Kasun framed from mid-torso up with stall texture around him.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Medium-shallow, stall reads softly",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+       "action": "meets her eyes, offers a smile, then answers with the line",
+       "position": "centre-left of frame by the counter, facing right, hands near the flask"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MS locked-off",
+       "director_line": "We rest with him as the rain murmurs.",
+       "action": "He softens into a smile.",
+       "performance": "His eyes brighten; shoulders ease a touch."
+      },
+      {
+       "time": "0.5-5.5s",
+       "camera": "MS locked-off, favouring his face",
+       "director_line": "Hold steady for the full reply.",
+       "action": "He speaks the line to her.",
+       "performance": "He keeps the smile contained; lips move to L13 with gentle conviction."
+      },
+      {
+       "time": "5.5-6s",
+       "camera": "MS locked-off",
+       "director_line": "Hold after the words sit between them.",
+       "action": "He returns his hands toward the counter.",
+       "performance": "He looks to the stall briefly, breath measured."
+      }
+     ],
+     "audio": "Close rain on awning; faint kettle hiss; city wash soft.",
+     "first_frame": {
+      "composition": "C01 mid-torso up, left-of-centre; counter items frame the bottom edge.",
+      "subjects": [
+       "C01, damp hair and a restrained smile forming"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain under awning; distant traffic; soft stall noises.",
+     "effects": "Occasional drip on metal; faint glass clink.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 8,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     16,
+     17
+    ],
+    "lines": [
+     "L16"
+    ],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Keep on her face so the phone voice transforms the moment; focused only on the call and its effect.",
+    "take_s": 8,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Carries the phone VO and her change; no pre-ring smile here.",
+    "id": "c08",
+    "slate": "1E-3",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.0",
+      "angle": "eye level",
+      "framing": "MCU, Anudi’s face dominant; umbrella edge and rain beads at frame edge.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "cooler balance while keeping skin natural",
+      "depth_of_field": "Shallow, background soft and abstract",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+       "action": "raises the phone and listens to the call",
+       "position": "right-of-centre, facing left toward off-screen C01; umbrella in right hand, phone raised to ear"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MCU locked-off",
+       "director_line": "We enter the call already begun.",
+       "action": "She steadies the phone at her ear.",
+       "performance": "Her posture firms; lips press together."
+      },
+      {
+       "time": "0.5-7.5s",
+       "camera": "MCU locked-off",
+       "director_line": "Hold as the phone voice reshapes her face.",
+       "action": "She listens to the call.",
+       "performance": "Her eyes lower and glance aside; a small swallow; breath shallow."
+      },
+      {
+       "time": "7.5-8.0s",
+       "camera": "MCU locked-off",
+       "director_line": "A final beat as the weight settles.",
+       "action": "She lowers the phone a little.",
+       "performance": "Her jaw re-sets; eyes flick back toward C01 without a smile."
+      }
+     ],
+     "audio": "Rain bed; close umbrella drip; phone voice present but unseen; street wash under.",
+     "first_frame": {
+      "composition": "C02 tight right-of-centre, negative space to the left; umbrella edge frames top-right.",
+      "subjects": [
+       "C02 shoulders-up, eyes toward off-screen left"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain with umbrella drip close; soft traffic bed.",
+     "effects": "Subtle handset rustle.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 9,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     18,
+     19
+    ],
+    "lines": [
+     "L19"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Hold her last look and the small promise without distraction.",
+    "take_s": 4,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "must",
+    "editor_note": "Run the glance before the line within the same held frame.",
+    "id": "c10",
+    "slate": "1E-4",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.0",
+      "angle": "eye level",
+      "framing": "MS, Anudi framed to allow an eyeline out of frame toward C01.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Shallow, rain soft behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+       "action": "gives C01 a last look, then speaks the parting line",
+       "position": "right-of-centre, facing left toward off-screen C01, umbrella in right hand, phone low in left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "MS locked-off",
+       "director_line": "Her eyes return to him for a final time.",
+       "action": "She glances toward C01.",
+       "performance": "She softens a fraction; shoulders square as if deciding."
+      },
+      {
+       "time": "0.8-3.2s",
+       "camera": "MS locked-off",
+       "director_line": "We stay on her as she offers a thread of hope.",
+       "action": "She speaks the line.",
+       "performance": "Her lips move to L19; a small, restrained smile appears then fades."
+      },
+      {
+       "time": "3.2-4s",
+       "camera": "MS locked-off",
+       "director_line": "A breath between them before she moves away.",
+       "action": "She begins to shift her weight to go.",
+       "performance": "She blinks once, eyes lingering toward him."
+      }
+     ],
+     "audio": "Rain bed; umbrella drip close; street wash soft.",
+     "first_frame": {
+      "composition": "C02 in right third with open space to left; rain soft behind.",
+      "subjects": [
+       "C02 mid-frame, eyes off to left"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and umbrella drip; distant traffic.",
+     "effects": "Soft step shift; small water drips.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 10,
+    "role": "clean_exit",
+    "setup": "H",
+    "blocks": [
+     20
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "eye level",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "Let the frame empty as she leaves, rain carrying motion.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Clear path for her to walk out of frame; hold the empty space after.",
+    "id": "c11",
+    "slate": "1H-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 35mm, f/2.8",
+      "angle": "eye level",
+      "framing": "MWS, stall at left edge, pavement centre; exit path open to frame right.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Medium, rain readable, background soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+       "action": "turns and walks out of the held frame",
+       "position": "centre frame, then exits frame right; umbrella in right hand, phone in left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MWS locked-off",
+       "director_line": "We hold the path open under the rain.",
+       "action": "She turns away from C01.",
+       "performance": "Her shoulders draw in slightly; head turns forward."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MWS locked-off",
+       "director_line": "Let distance arrive in one continuous walk.",
+       "action": "She walks out of frame to the right.",
+       "performance": "Her pace is steady; umbrella tilts forward to shield rain."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MWS locked-off",
+       "director_line": "Hold the now-empty path and rain for a breath.",
+       "action": "Pavement and rain remain.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain strong; footfalls through shallow puddles; soft traffic wash.",
+     "first_frame": {
+      "composition": "Stall left; open pavement centre-right; rain bands visible.",
+      "subjects": [
+       "C02 mid-frame preparing to leave, umbrella angled forward"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and street wash; puddle footsteps.",
+     "effects": "Footsteps diminishing; umbrella fabric rustle.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 11,
+    "role": "master",
+    "setup": "I",
+    "blocks": [
+     22
+    ],
+    "lines": [
+     "L22"
+    ],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level",
+    "lens": "35mm",
+    "technique": "dolly_out",
+    "why": "Let the VO expand the world as we gently pull back.",
+    "take_s": 8,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "must",
+    "editor_note": "Carries the VO clean; extend to 8 s to hold the line comfortably.",
+    "id": "c12",
+    "slate": "1I-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "dolly, 35mm, f/4.0",
+      "angle": "eye level",
+      "framing": "WIDE, stall and Kasun left; receding rain street centre-right.",
+      "movement": "slow dolly out from a medium-wide to a wider master, then settle",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic cools with warm skin lift",
+      "depth_of_field": "Deep, environment readable with rain layers",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+       "action": "stands under the awning as the rain fills the frame",
+       "position": "left third by the stall, facing right, hands idle near the counter"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "WIDE, dolly out begins",
+       "director_line": "We ease back, letting the rain fill more of the frame.",
+       "action": "He stands, gazing into the rain.",
+       "performance": "He holds still; eyes follow the empty path."
+      },
+      {
+       "time": "0.8-7.2s",
+       "camera": "WIDE, dolly continues and settles wider",
+       "director_line": "Distance grows; the world stays busy around his small stillness.",
+       "action": "Rain and street motion continue around him.",
+       "performance": "He exhales, a small glance to his stall returns him to himself."
+      },
+      {
+       "time": "7.2-8s",
+       "camera": "WIDE, settled",
+       "director_line": "Hold as the voice finishes over rain.",
+       "action": "He remains in place.",
+       "performance": "He stands quiet, eyes forward."
+      }
+     ],
+     "audio": "Broad rain bed; light traffic wash; stall ambience soft.",
+     "first_frame": {
+      "composition": "C01 at left third under awning; deep rain street expands to right.",
+      "subjects": [
+       "C01 small against the stall, facing into rain space"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Full rain and city wash to support VO.",
+     "effects": "Occasional puddle splash by passing tyres.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 8,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     14,
+     15
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Pre-ring warmth then the ring that breaks it; keep it intimate and simple.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Use this immediately before the call shot; smile then ring.",
+    "id": "c13",
+    "slate": "1E-5",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.0",
+      "angle": "eye level",
+      "framing": "MCU, Anudi’s face dominant; umbrella edge and rain behind.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic with a touch cooler",
+      "depth_of_field": "Shallow, background abstract",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "elegant blouse and trousers, simple jewellery, stylish handbag; long dark hair, elegant natural makeup; wet from rain",
+       "action": "shares a small returning smile toward C01; a ring interrupts and she looks down",
+       "position": "right-of-centre, facing left toward off-screen C01; umbrella in right hand, phone low in left"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MCU locked-off",
+       "director_line": "We sit with the shared warmth.",
+       "action": "She smiles lightly toward C01.",
+       "performance": "Her eyes soften; a tiny exhale."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MCU locked-off",
+       "director_line": "The interruption lands inside the same frame.",
+       "action": "The phone rings and vibrates; she glances down to it.",
+       "performance": "Her smile breaks; brows knit; shoulders draw in."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MCU locked-off",
+       "director_line": "A beat of decision before lifting it.",
+       "action": "She shifts the phone, preparing to raise it.",
+       "performance": "Her lips close; eyes refocus downward."
+      }
+     ],
+     "audio": "Rain bed with clear phone ring; umbrella drip close.",
+     "first_frame": {
+      "composition": "C02 tight right-of-centre; negative space to left toward C01’s eyeline.",
+      "subjects": [
+       "C02 shoulders-up, small smile forming"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and umbrella drip; soft traffic wash.",
+     "effects": "Phone ring.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 11,
+    "role": "reaction",
+    "setup": "K",
+    "blocks": [
+     21
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "Give a closer held read of him watching her leave before the VO dolly-out.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Use before the final dolly-out; no lips moving here.",
+    "id": "c14",
+    "slate": "1K-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "angle": "eye level",
+      "framing": "MS, Kasun framed left-of-centre, rain space to his right.",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+      "depth_of_field": "Medium-shallow, background rain soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+       "action": "watches her go into the rain, then drops his gaze a little",
+       "position": "left-of-centre by the counter edge, facing right, empty hands"
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MS locked-off",
+       "director_line": "Hold him in the pocket of the awning.",
+       "action": "He looks into the rain where she left.",
+       "performance": "His eyes track outward; a slight swallow."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MS locked-off",
+       "director_line": "Let the stillness speak over rain.",
+       "action": "He keeps watching, then glances back toward the stall.",
+       "performance": "His shoulders settle; breath eases out."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MS locked-off",
+       "director_line": "A breath before we go wide.",
+       "action": "He stays put.",
+       "performance": "He plants his weight, eyes forward."
+      }
+     ],
+     "audio": "Close rain on awning; city wash soft.",
+     "first_frame": {
+      "composition": "C01 left-of-centre; negative rain space to the right; counter edge frames bottom.",
+      "subjects": [
+       "C01 mid-frame, eyes out to rain"
+      ],
+      "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+      "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Rain under awning; gentle street bed.",
+     "effects": "Subtle drips and distant tyre hiss.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 8,
+    "role": "insert",
+    "setup": "M",
+    "blocks": [
+     15
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "phone ring",
+    "size": "INSERT",
+    "angle": "eye-level to the device",
+    "lens": "100mm macro",
+    "technique": "shallow_isolation",
+    "why": "Punches in on the ring — a tactile cue that interrupts the warmth.",
+    "take_s": 4,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "should",
+    "editor_note": "Quick cut-in on the vibrating, rain-speckled phone as the ring starts, then back to her face.",
+    "id": "c15",
+    "slate": "1M-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "handheld, 100mm macro, f/2.8",
+      "angle": "eye level to the device",
+      "framing": "INSERT: the phone fills about 70% of frame, wet fingers soft at the edges.",
+      "movement": "subtle handheld drift that holds the device readable throughout.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool, film-like",
+      "depth_of_field": "Shallow; rain and street turn to creamy bokeh.",
+      "lens_artifacts": "fine water beads on the filter edge; minor refraction on highlights."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "INSERT on the phone; shallow focus holds the screen; gentle micro-drift in.",
+       "director_line": "The dark screen sits in a wet hand; rain specks glint.",
+       "action": "The phone rests motionless; drops gather on the glass.",
+       "performance": ""
+      },
+      {
+       "time": "0.8-3.2s",
+       "camera": "INSERT unchanged, favouring the phone glass; slight settle.",
+       "director_line": "The phone shivers and lights; water skitters along the edge.",
+       "action": "A vibration pulses; the screen wakes as tiny ripples in the puddles reflect light.",
+       "performance": ""
+      },
+      {
+       "time": "3.2-4s",
+       "camera": "INSERT unchanged; hold for the editorial return.",
+       "director_line": "The vibration repeats once more; the hand steadies.",
+       "action": "The device buzzes again as the rain continues.",
+       "performance": ""
+      }
+     ],
+     "audio": "Close rain hiss and hand rustle; faint device vibration if used; otherwise MOS.",
+     "first_frame": {
+      "composition": "Tight on the phone glass with beads of rain; knuckles just at the lower edge.",
+      "subjects": [
+       "phone face in wet hand",
+       "raindrops on glass"
+      ],
+      "setting": "Puddle-slick roadside by the stall edge.",
+      "lighting": "Flat grey, soft skylight with bright road reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Close rain bed under awning with distant traffic wash.",
+     "effects": "Muted phone vibration; soft water ticks on plastic.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c13"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 8,
+    "role": "atmosphere",
+    "setup": "N",
+    "blocks": [
+     16
+    ],
+    "lines": [
+     "L16"
+    ],
+    "speaks": false,
+    "over": "L16",
+    "size": "CU",
+    "angle": "slightly high along umbrella rim",
+    "lens": "85mm",
+    "technique": "slow_creep",
+    "why": "Lets the pressure of the call seep in through rain texture without leaving her.",
+    "take_s": 8,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Lay this over the phone-voice; a slow glide along umbrella beads matches the cooling mood.",
+    "id": "c16",
+    "slate": "1N-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "handheld, 85mm, f/2.8",
+      "angle": "slightly above eye level, tracking the umbrella edge",
+      "framing": "CU: umbrella fabric seam and bead-lined rim fill the frame; street bokeh behind.",
+      "movement": "slow forward creep along the rim to catch a rivulet building and falling.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool, film-like",
+      "depth_of_field": "Shallow; rim sharp, background rain blooms.",
+      "lens_artifacts": "occasional droplet smear crossing the top edge."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU on rim; shallow focus; drift begins.",
+       "director_line": "Beads hang under the rim, trembling.",
+       "action": "Raindrops collect and tremble under the fabric edge.",
+       "performance": ""
+      },
+      {
+       "time": "1-7s",
+       "camera": "CU unchanged; forward creep continues.",
+       "director_line": "A line of water joins, then releases into a single run; new beads form.",
+       "action": "A rivulet builds, slips off the edge, and is followed by fresh droplets.",
+       "performance": ""
+      },
+      {
+       "time": "7-8s",
+       "camera": "CU unchanged; brief hold to land the cut.",
+       "director_line": "Beads rest, ready to fall again.",
+       "action": "Drops quiver in place.",
+       "performance": ""
+      }
+     ],
+     "audio": "None in clip (laid under the call).",
+     "first_frame": {
+      "composition": "Umbrella edge cuts diagonally; beads string along the lip.",
+      "subjects": [
+       "umbrella fabric seam",
+       "hanging water beads"
+      ],
+      "setting": "Rain-soaked roadside depth out of focus.",
+      "lighting": "Soft grey overcast with specular reflections."
+     }
+    },
+    "sound": {
+     "ambience": "-",
+     "effects": "-",
+     "music": "-",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c08"
+    ],
+    "blend": "under_line"
+   },
+   {
+    "moment": 3,
+    "role": "insert",
+    "setup": "P",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "mishap beat",
+    "size": "INSERT",
+    "angle": "low to the ground",
+    "lens": "100mm macro",
+    "technique": "slow_motion",
+    "why": "Crystallises the inciting mishap with a readable splash and bounce.",
+    "take_s": 4,
+    "handle_in_s": 0.6,
+    "handle_out_s": 0.6,
+    "priority": "should",
+    "editor_note": "Use as a punch between the pan-reveal and the run; one clean bounce and splash.",
+    "id": "c17",
+    "slate": "1P-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 100mm macro, f/4.0",
+      "angle": "low angle at curb level",
+      "framing": "INSERT: near-ground plane with a puddle occupying foreground; drop zone centre-left.",
+      "movement": "locked-off on sticks for a crisp object read.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool, film-like",
+      "depth_of_field": "Medium; phone and splash crisp, background ankles abstract.",
+      "lens_artifacts": "raindrops accumulating on matte box lip."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-0.6s",
+       "camera": "INSERT on puddle; locked; slow-motion capture.",
+       "director_line": "Ripples dapple the puddle; curb texture sharp.",
+       "action": "Rain dimples the water surface.",
+       "performance": ""
+      },
+      {
+       "time": "0.6-3.2s",
+       "camera": "INSERT unchanged; slow-motion holds the moment.",
+       "director_line": "The phone clips frame, hits, splashes, and skids a hand’s width.",
+       "action": "Device falls in, sends a crown splash, then settles half-in water.",
+       "performance": ""
+      },
+      {
+       "time": "3.2-4s",
+       "camera": "INSERT unchanged; settle.",
+       "director_line": "Ripples widen and fade; rain resumes its pattern.",
+       "action": "Residual ripples dissipate.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain-only bed if used; otherwise silent under the cut.",
+     "first_frame": {
+      "composition": "Curb edge top-right; reflective puddle centre; debris flecks for texture.",
+      "subjects": [
+       "puddle surface",
+       "curb stones"
+      ],
+      "setting": "Curbside by the stall wheel well.",
+      "lighting": "Flat grey with hard reflections from the wet road."
+     }
+    },
+    "sound": {
+     "ambience": "Rain splatter at curb, faint traffic wash.",
+     "effects": "Soft splash accent (optional).",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c03"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 4,
+    "role": "insert",
+    "setup": "Q",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "action beat",
+    "size": "INSERT",
+    "angle": "low three-quarter on hand and curb",
+    "lens": "50mm macro",
+    "technique": "foreground_framing",
+    "why": "Connects Kasun’s impulse to act with a kinetic, tactile grab through rain and texture.",
+    "take_s": 4,
+    "handle_in_s": 0.6,
+    "handle_out_s": 0.6,
+    "priority": "should",
+    "editor_note": "Intercut as he moves—hand scoops the phone, sandals splash past frame edge.",
+    "id": "c18",
+    "slate": "1Q-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "handheld, 50mm macro, f/2.8",
+      "angle": "low three-quarter facing the curb",
+      "framing": "INSERT: phone mid-frame; foreground raindrops and awning rope blur across edges.",
+      "movement": "short handheld nudge in as the hand enters, then settle for the lift.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool, film-like",
+      "depth_of_field": "Shallow; hand and phone snap into focus, surroundings melt.",
+      "lens_artifacts": "light water streaking across the glass for grit."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-0.6s",
+       "camera": "INSERT; shallow focus; push begins.",
+       "director_line": "Rain streaks past the frame; the phone sits wet on the curb.",
+       "action": "Water runs along the curb; the device lies at rest.",
+       "performance": ""
+      },
+      {
+       "time": "0.6-3.2s",
+       "camera": "INSERT; the push completes and holds.",
+       "director_line": "A wet hand darts in, lifts the phone; sandals clip the bottom edge with a splash.",
+       "action": "Fingers close on the device; it’s lifted in one smooth motion; water flicks off.",
+       "performance": ""
+      },
+      {
+       "time": "3.2-4s",
+       "camera": "INSERT; hold on the emptied spot, then cut.",
+       "director_line": "Only rain and ripples remain.",
+       "action": "Curb returns to empty wet stone.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain hiss and a brief splash on contact.",
+     "first_frame": {
+      "composition": "Foreground blur masks the lower edge; phone centred near curb line.",
+      "subjects": [
+       "wet phone on curb",
+       "foreground rain threads"
+      ],
+      "setting": "Stall-side curb with puddle sheen.",
+      "lighting": "Soft grey skylight with bright reflections."
+     }
+    },
+    "sound": {
+     "ambience": "Close rain and stall canvas flap rustle.",
+     "effects": "Quick water flick and footstep splash.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c04"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 2,
+    "role": "atmosphere",
+    "setup": "R",
+    "blocks": [
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "speaks": false,
+    "over": "L3",
+    "size": "INSERT",
+    "angle": "eye-level to flask spout",
+    "lens": "85mm",
+    "technique": "tilt_reveal",
+    "why": "Threads Kasun’s inner vow with the warmer counterpoint of tea steam in the rain.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Lay beneath his thought; a gentle tilt from metal to steam gives a visual breath.",
+    "id": "c19",
+    "slate": "1R-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "handheld, 85mm, f/2.8",
+      "angle": "eye level to the counter",
+      "framing": "INSERT: flask spout tight at lower third; steam occupies upper frame.",
+      "movement": "gentle upward tilt from spout to steam plume, then settle.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool with warm steam highlights, film-like",
+      "depth_of_field": "Shallow; spout sharp then steam softens into bokeh.",
+      "lens_artifacts": "subtle condensate halo near frame edge."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT on spout; tilt begins slowly.",
+       "director_line": "Raindrops tick on the metal; first curls of steam drift up.",
+       "action": "Steam begins to rise from the spout mouth.",
+       "performance": ""
+      },
+      {
+       "time": "1-5s",
+       "camera": "INSERT continues; tilt reveals full steam plume; settle.",
+       "director_line": "Steam billows and thins, threading into the rain.",
+       "action": "Steam rises in rhythmic curls.",
+       "performance": ""
+      },
+      {
+       "time": "5-6s",
+       "camera": "INSERT unchanged; brief hold.",
+       "director_line": "A last curl of steam drifts across frame.",
+       "action": "Steam dissipates.",
+       "performance": ""
+      }
+     ],
+     "audio": "None in clip (laid under VO).",
+     "first_frame": {
+      "composition": "Shiny spout lower frame; negative space above for steam.",
+      "subjects": [
+       "tea flask spout",
+       "steam curls"
+      ],
+      "setting": "Counter edge of the stall.",
+      "lighting": "Soft grey skylight with warm specular on metal."
+     }
+    },
+    "sound": {
+     "ambience": "-",
+     "effects": "-",
+     "music": "-",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c02"
+    ],
+    "blend": "under_line"
+   },
+   {
+    "moment": 1,
+    "role": "atmosphere",
+    "setup": "S",
+    "blocks": [],
+    "lines": [],
+    "speaks": false,
+    "over": "opening rain bed",
+    "size": "INSERT",
+    "angle": "top-down at curb",
+    "lens": "50mm",
+    "technique": "top_down",
+    "why": "Opens with rain texture and reflections to set place and mood before the master.",
+    "take_s": 4,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "nice",
+    "editor_note": "Use as a breath before the first master — ripples give scale and weather.",
+    "id": "c20",
+    "slate": "1S-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/4.0",
+      "angle": "top-down at curb height",
+      "framing": "INSERT: puddle fills frame with curb line on a diagonal.",
+      "movement": "locked-off on sticks.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool, film-like",
+      "depth_of_field": "Deep; surface ripples and grit in focus.",
+      "lens_artifacts": "occasional droplet hits the glass."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "INSERT top-down; locked; handle in.",
+       "director_line": "Rain stipples the puddle; concentric ripples spread from fresh drops.",
+       "action": "Continuous rainfall dimples the water; small waves expand and overlap.",
+       "performance": ""
+      },
+      {
+       "time": "0.8-3.2s",
+       "camera": "INSERT unchanged; hold for rhythm.",
+       "director_line": "Crossing ripples weave a shifting pattern; a leaf eddies at the edge.",
+       "action": "Patterns form and fade on the surface.",
+       "performance": ""
+      },
+      {
+       "time": "3.2-4s",
+       "camera": "INSERT unchanged; handle out.",
+       "director_line": "The surface returns to a steady shimmer.",
+       "action": "Rain continues evenly.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain wash close to ground, faint tyre hiss.",
+     "first_frame": {
+      "composition": "Diagonal curb and shallow water field.",
+      "subjects": [
+       "puddle surface",
+       "leaf fragment"
+      ],
+      "setting": "Curbside at the stall.",
+      "lighting": "Flat grey, reflective wet road."
+     }
+    },
+    "sound": {
+     "ambience": "Rain bed with distant Colombo traffic wash.",
+     "effects": "None specific.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c01"
+    ],
+    "blend": "open"
+   },
+   {
+    "moment": 10,
+    "role": "atmosphere",
+    "setup": "T",
+    "blocks": [],
+    "lines": [],
+    "speaks": false,
+    "over": "after her exit",
+    "size": "MWS",
+    "angle": "eye-level across pavement",
+    "lens": "35mm",
+    "technique": "pull_back",
+    "why": "Holds the emptiness after she goes, giving the editor an elegiac beat before the end.",
+    "take_s": 4,
+    "handle_in_s": 0.6,
+    "handle_out_s": 0.6,
+    "priority": "nice",
+    "editor_note": "Place after she clears frame; a gentle pull back lets rain reclaim the space.",
+    "id": "c21",
+    "slate": "1T-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "dolly, 35mm, f/4.0",
+      "angle": "eye level looking along the pavement",
+      "framing": "MWS: stall edge left, open pavement centre, rain sheets through depth.",
+      "movement": "short dolly pull-back of about a metre, then hold.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool, film-like",
+      "depth_of_field": "Medium-deep to keep rain planes readable.",
+      "lens_artifacts": "fine flare on wet highlights."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-0.6s",
+       "camera": "MWS; begin gentle pull-back.",
+       "director_line": "Empty walkway breathes; rain threads the space.",
+       "action": "Rain falls; traffic ghosts beyond.",
+       "performance": ""
+      },
+      {
+       "time": "0.6-3.4s",
+       "camera": "MWS continuing pull-back, then settle.",
+       "director_line": "Distance grows from the empty path; stall edge looms slightly.",
+       "action": "Raindrops streak; a puddle widens.",
+       "performance": ""
+      },
+      {
+       "time": "3.4-4s",
+       "camera": "MWS hold for the cut point.",
+       "director_line": "Only rain remains.",
+       "action": "Continuous rainfall.",
+       "performance": ""
+      }
+     ],
+     "audio": "Ambient rain and traffic; no added detail.",
+     "first_frame": {
+      "composition": "Pavement centre with stall edge left; exit path clean to frame right.",
+      "subjects": [
+       "wet pavement",
+       "rain curtains"
+      ],
+      "setting": "Pavement along the stall frontage.",
+      "lighting": "Soft grey skylight, reflective wet surfaces."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and distant engines.",
+     "effects": "None.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c11"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 11,
+    "role": "atmosphere",
+    "setup": "U",
+    "blocks": [
+     22
+    ],
+    "lines": [
+     "L22"
+    ],
+    "speaks": false,
+    "over": "L22",
+    "size": "CU",
+    "angle": "eye-level under awning",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Offers a quiet rain texture under the closing VO without competing with the final dolly-out.",
+    "take_s": 8,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Layer briefly under the VO or as a bridge before the last dolly-out settles.",
+    "id": "c22",
+    "slate": "1U-1",
+    "ir": {
+     "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.8",
+      "angle": "eye level tucked under the awning edge",
+      "framing": "CU: awning rope and dripping seam close, street bokeh beyond.",
+      "movement": "locked-off on sticks.",
+      "white_balance": "cool 5600K overcast daylight",
+      "color_tone": "naturalistic, slightly desaturated cool, film-like",
+      "depth_of_field": "Shallow; rope and drips sharp, street melts away.",
+      "lens_artifacts": "tiny droplets clinging at frame edge."
+     },
+     "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU on rope; locked; handle in.",
+       "director_line": "Drops swell on the rope’s fibres.",
+       "action": "Water gathers at a knot.",
+       "performance": ""
+      },
+      {
+       "time": "1-7s",
+       "camera": "CU unchanged; hold for VO cadence.",
+       "director_line": "One drop elongates and lets go; another begins.",
+       "action": "A drop falls; a new bead forms.",
+       "performance": ""
+      },
+      {
+       "time": "7-8s",
+       "camera": "CU unchanged; brief tail.",
+       "director_line": "Fresh droplets shimmer, waiting.",
+       "action": "Water continues to collect and fall.",
+       "performance": ""
+      }
+     ],
+     "audio": "None in clip (laid under VO).",
+     "first_frame": {
+      "composition": "Rope diagonal with drip at the lower third; out-of-focus street beyond.",
+      "subjects": [
+       "awning rope",
+       "dripping water"
+      ],
+      "setting": "Under-stall awning looking out to road.",
+      "lighting": "Soft grey overcast with specular rain highlights."
+     }
+    },
+    "sound": {
+     "ambience": "-",
+     "effects": "-",
+     "music": "-",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c12"
+    ],
+    "blend": "under_line"
+   }
+  ],
+  "line_ids": {
+   "L3": "4dfd0c66-770f-4938-b64b-e9751176fede",
+   "L7": "c3ee1bc3-fd36-43d5-a7f3-da99dca068f3",
+   "L9": "490dc764-ef44-410e-8d0e-9bb41add4cac",
+   "L11": "dcb89d71-81c0-4f27-aaf5-b0ce36bb00ab",
+   "L13": "0ed9d242-12e3-434a-ac24-98e034df3c09",
+   "L16": "82f26212-2ad1-4ce1-8109-625ced88c542",
+   "L19": "46d98f7f-ab37-4a68-852e-df4c62b4a95a",
+   "L22": "a9414c36-d9b1-4bcd-ac3a-e8c10c27d23f"
+  },
+  "editor_notes": [
+   "The intended cut is lean: masters for geography, singles for lines, one held call shot. Editors can punch-in digitally on singles; we’ve left clean heads and tails.",
+   "If the drop needs emphasis, an insert of the phone splash can intercut Moment 3 without changing geography.",
+   "Keep caller unseen; all references are ‘the call’ only. The closing VO rides over the final master; do not cut away mid-VO unless punching-in."
+  ],
+  "blend_notes": [
+   "c15 — Moment 8: cut in on the first ring (b15) between c13 and c08; over rain and phone ring SFX (no dialogue).",
+   "c16 — Moment 8: lay over the middle of the call while c08 holds her; under L16 (phone voice) audio.",
+   "c17 — Moment 3: cut in at the drop (b5) for the splash, then return to c03; over ambient rain.",
+   "c18 — Moment 4: cut in on the grab (b6) just before L7, then back to c04 for the line; over ambient rain/foot splash.",
+   "c19 — Moment 2: layer under Kasun’s thought while c02 carries the face; under L3 audio.",
+   "c20 — Moment 1: open the scene with top-down rain on the curb, then into c01; over ambient rain.",
+   "c21 — Moment 10: close after she clears frame in c11 with a short pull-back; over ambient rain.",
+   "c22 — Moment 11: layer under the opening bars of the closing VO, then back to c12’s dolly-out; under L22 audio."
+  ],
+  "review": [
+   {
+    "moment": 8,
+    "earns": true,
+    "why": "The phone ring interrupts their warmth: an ECU of the phone (c15) punctuates the break, and rain texture on the umbrella (c16) carries the pressure of the call under the anchor without leaving her face."
+   },
+   {
+    "moment": 11,
+    "earns": true,
+    "why": "The close needs room for the VO: dripping awning detail (c22) lets the line bloom without competing with the final master."
+   },
+   {
+    "moment": 3,
+    "earns": true,
+    "why": "The mishap that triggers the scene benefits from a crisp insert: a slow-motion splash on the dropped phone (c17) makes the accident readable and cinematic."
+   },
+   {
+    "moment": 4,
+    "earns": true,
+    "why": "Momentum into first contact: a tactile insert of the grab (c18) ties Kasun’s impulse to act to rain and texture."
+   },
+   {
+    "moment": 2,
+    "earns": true,
+    "why": "His inner vow asks for a visual counterpoint: tea steam (c19) adds warmth under the thought without leaving his single."
+   },
+   {
+    "moment": 1,
+    "earns": true,
+    "why": "To set weather and place before we meet him: a top-down puddle texture (c20) opens the scene and grounds the rain soundscape."
+   },
+   {
+    "moment": 10,
+    "earns": true,
+    "why": "After she exits, a brief empty-frame pull-back (c21) gives the editor a breath before the final image."
+   },
+   {
+    "moment": 5,
+    "earns": false,
+    "why": "Her thanks lands clean in the must single; adding a cutaway would dilute the first eye contact and slow pacing."
+   },
+   {
+    "moment": 6,
+    "earns": false,
+    "why": "The must rack onto her eyes already provides the cinematic beat; more coverage would repeat the idea."
+   },
+   {
+    "moment": 7,
+    "earns": false,
+    "why": "His pride and line sit well in a held single; a second angle would be redundant and risk over-cutting the honesty."
+   },
+   {
+    "moment": 9,
+    "earns": false,
+    "why": "Her parting line is designed to play straight; a cutaway would undercut the fragile, direct promise."
+   }
+  ],
+  "seconds": {
+   "target_s": 60.0,
+   "cap_s": 120.0,
+   "take_s": 112,
+   "must_s": 70,
+   "cinematic_s": 42
+  },
+  "left": [],
+  "report": {},
+  "previous": {}
+ },
+ "canon": [
+  {
+   "id": "char-Kasun",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "character",
+   "name": "Kasun",
+   "code": "C01",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {
+     "summary": "Kasun in the drama",
+     "appearance": "Kasun, 25"
+    },
+    "wardrobe_anchor": "",
+    "voice_pin": "Kasun's voice"
+   }
+  },
+  {
+   "id": "char-Anudi",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "character",
+   "name": "Anudi",
+   "code": "C02",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {
+     "summary": "Anudi in the drama",
+     "appearance": "Anudi, 25"
+    },
+    "wardrobe_anchor": "",
+    "voice_pin": "Anudi's voice"
+   }
+  },
+  {
+   "id": "char-Father",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "character",
+   "name": "Father",
+   "code": "C03",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {
+     "summary": "Father in the drama",
+     "appearance": "Father, 25"
+    },
+    "wardrobe_anchor": "",
+    "voice_pin": "Father's voice"
+   }
+  },
+  {
+   "id": "char-Narrator",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "character",
+   "name": "Narrator",
+   "code": "C04",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {
+     "summary": "Narrator in the drama",
+     "appearance": "Narrator, 25"
+    },
+    "wardrobe_anchor": "",
+    "voice_pin": "Narrator's voice"
+   }
+  },
+  {
+   "id": "loc-1",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "location",
+   "name": "A Colombo roadside",
+   "code": "L01",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {
+     "look": "road, rain"
+    }
+   }
+  },
+  {
+   "id": "prop-phone",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "prop",
+   "name": "phone",
+   "code": "P-phone",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {}
+   }
+  },
+  {
+   "id": "prop-tea",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "prop",
+   "name": "tea",
+   "code": "P-tea",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {}
+   }
+  },
+  {
+   "id": "prop-umbrella",
+   "production_id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+   "kind": "prop",
+   "name": "umbrella",
+   "code": "P-umbrella",
+   "aliases": [],
+   "current": {
+    "version": 1,
+    "card": {}
+   }
+  }
+ ],
+ "production": {
+  "id": "458feb41-2bca-4b39-92c7-88875ecabce7",
+  "settings": {}
+ },
+ "job_id": "job-1"
+}

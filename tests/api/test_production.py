@@ -145,6 +145,23 @@ def test_scene_frames_skip_shots_that_have_one_and_carried_shots(world: World, f
     assert shots == {s["shots"][1]["id"], s["shots"][3]["id"]}
 
 
+def test_scene_drafts_skip_shots_that_have_a_current_draft_and_carried_shots(world: World, fired: list[dict]):
+    s = approved_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    world.repos.shots.rows[s["shots"][2]["id"]].update(camera_link="continuous",  # type: ignore[attr-defined]
+                                                       frame_strategy="carry_last_frame")
+    one = world.client.post(shot_url(world, s, 0, "/frames"), json={"stage": "draft"}, headers=crew).json()
+    r = world.client.post(url(world, f"/scenes/{s['scene']['id']}/frames"), json={"stage": "draft"}, headers=crew)
+    assert r.status_code == 202
+    rows = world.repos.frames.rows  # type: ignore[attr-defined]
+    assert {rows[f]["shot_id"] for f in r.json()["frame_ids"]} == {s["shots"][1]["id"], s["shots"][3]["id"]}
+    assert {rows[f]["stage"] for f in r.json()["frame_ids"]} == {"draft"}
+    assert one["frame_ids"][0] not in r.json()["frame_ids"], "a painting draft counts as having one"
+    again = world.client.post(url(world, f"/scenes/{s['scene']['id']}/frames"), json={"stage": "draft"}, headers=crew)
+    assert again.status_code == 409 and "draft" in again.json()["detail"]
+
+
 def test_accepting_a_frame_unlocks_the_prompt(world: World, fired: list[dict]):
     s = approved_scene(world)
     design(world, s)
@@ -326,6 +343,33 @@ def test_canon_chips_follow_what_a_person_added_or_took_out(world: World):
     assert any(ref.startswith("C01") for ref in added) and any(ref.startswith("L01") for ref in added)
     names = [c.name for c in states(world, s)[0].cast]
     assert "Kamala" in names  # a person added Kamala, so her wardrobe check applies to the shot
+
+
+def test_a_person_adds_and_removes_canon_for_one_shot(world: World):
+    s = approved_scene(world)
+    design(world, s)
+    house = str(s["house"]["id"])
+    kamala = str(s["kamala"]["id"])
+    director = world.headers(world.director)
+    base = panel(world, s)
+    # Taking the place out of shot 2 only: the answer is that shot, and shot 1 keeps it.
+    r = world.client.delete(shot_url(world, s, 1, f"/canon/{house}"), headers=director)
+    assert r.status_code == 200, r.text
+    assert not any(ref.startswith("L01") for ref in r.json()["canon_refs"])
+    assert panel(world, s)[0]["canon_refs"] == base[0]["canon_refs"]
+    # The shot was designed before: its design now reads as out of date (approval is not undone).
+    assert "Different people or place in the shot." in r.json()["design"]["stale_reasons"]
+    # Putting it back stores nothing: the script already gives the shot its place.
+    r = world.client.put(shot_url(world, s, 1, f"/canon/{house}"), headers=director)
+    assert r.json()["canon_refs"] == base[1]["canon_refs"] and r.json()["design"]["state"] == "current"
+    # Canon the script never uses goes into this shot only.
+    r = world.client.put(shot_url(world, s, 0, f"/canon/{kamala}"), headers=director)
+    assert any(ref.startswith("C01") for ref in r.json()["canon_refs"])
+    assert not any(ref.startswith("C01") for ref in panel(world, s)[1]["canon_refs"])
+    # A person who may generate but not change canon is refused; an unknown item is not found.
+    assert world.client.put(shot_url(world, s, 0, f"/canon/{kamala}"), headers=world.headers(world.crew)).status_code == 403
+    unknown = "00000000-0000-0000-0000-000000000000"
+    assert world.client.put(shot_url(world, s, 0, f"/canon/{unknown}"), headers=director).status_code == 404
 
 
 def test_a_shot_made_before_a_chip_changed_is_out_of_date(world: World):

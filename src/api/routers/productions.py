@@ -11,7 +11,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 
 from api.deps.auth import User
-from api.deps.authz import Admin, ProductionAccess, require_permission
+from api.deps.authz import Admin, ProductionAccess, forget_access, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.schemas import MyAccess, ProductionMemberSet
@@ -74,6 +74,7 @@ async def update_production(production_id: UUID, body: ProductionUpdate, access:
     if body.settings is not None:
         fields["settings"]["video"] = _locked_video(before, body.settings)
     row = await repos.productions.update(production_id, fields) if fields else before
+    forget_access()
     if fields:
         await repos.audit.record(action="production.update", entity="production",
                                  entity_id=str(production_id), actor_user_id=access.user.id,
@@ -117,6 +118,7 @@ async def set_production_member(production_id: UUID, user_id: UUID, body: Produc
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Member not found.")
     before = await repos.members.role_of(production_id, user_id)
     await repos.members.upsert(production_id, user_id, body.role.value, access.user.id)
+    forget_access()
     await repos.audit.record(action="production.member_set", entity="production_member",
                              entity_id=str(user_id), actor_user_id=access.user.id,
                              production_id=production_id, diff={"role": [before, body.role.value]})
@@ -129,6 +131,7 @@ async def remove_production_member(production_id: UUID, user_id: UUID, access: C
                                    repos: ReposDep) -> Response:
     if not await repos.members.delete(production_id, user_id):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Not a member of this production.")
+    forget_access()
     await repos.audit.record(action="production.member_remove", entity="production_member",
                              entity_id=str(user_id), actor_user_id=access.user.id,
                              production_id=production_id)

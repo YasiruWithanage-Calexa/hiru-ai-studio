@@ -48,6 +48,9 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
     JobKind.PLAN_SCENE_DAVID: FunctionSpec("hiru-shot-planner-david", 8210, 1800),
     JobKind.PLAN_SCENE_JONATHAN: FunctionSpec("hiru-shot-planner-jonathan", 8211, 1800),
     JobKind.VIDEO_RENDER: FunctionSpec("hiru-video-render", 8212, 1800),  # Veo takes minutes
+    # Shot Planner Raphael (plan/2026-11-08e): the whole scene, or the cinematic pass alone: one function, two kinds.
+    JobKind.PLAN_SCENE_RAPHAEL: FunctionSpec("hiru-shot-planner-raphael", 8215, 1800),
+    JobKind.CINEMATIC_SCENE_RAPHAEL: FunctionSpec("hiru-shot-planner-raphael", 8215, 1800),
     # Added as each engine lands (PLAN.md §13).
 }
 

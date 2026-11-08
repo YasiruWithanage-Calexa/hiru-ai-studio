@@ -24,6 +24,9 @@ class TierSpec(BaseModel):
     timeout_s: float = 120
     retries: int = Field(2, ge=0)
     fallbacks: list[str] = []
+    # A conversation on this tier goes through the Responses API with `previous_response_id`, so a reasoning
+    # model's reasoning carries from turn to turn (plan/2026-11-08f §5). Off: Chat Completions, as before.
+    responses: bool = False
 
 
 class EmbedSpec(BaseModel):
@@ -59,6 +62,7 @@ class Tier:
     timeout_s: float
     retries: int
     fallbacks: tuple[str, ...]
+    responses: bool = False
 
 
 def _merge(base: dict[str, Any], over: dict[str, Any]) -> dict[str, Any]:
@@ -113,4 +117,5 @@ def resolve(name: str, settings: AISettings | None = None, models: ModelsFile | 
     spec = models.tiers[name]
     return Tier(name=name, model=str(_setting(settings, spec.model)),
                 effort=str(_setting(settings, spec.effort)) if spec.effort else "",
-                timeout_s=spec.timeout_s, retries=spec.retries, fallbacks=tuple(spec.fallbacks))
+                timeout_s=spec.timeout_s, retries=spec.retries, fallbacks=tuple(spec.fallbacks),
+                responses=spec.responses)

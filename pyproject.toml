@@ -21,6 +21,7 @@ dependencies = [
     "google-cloud-tasks==2.16.3",
     "python-multipart==0.0.32",
     "openai>=1.60,<3",
+    "Pillow>=11,<13",  # thumbnails (plan/2026-11-08c 1c)
 ]
 
 [project.optional-dependencies]
@@ -96,7 +97,7 @@ exclude = ["^src/libs/hiru_ai/[a-z_]+/([a-z_]+/)?[a-z_]+/tests/"]
 root_packages = [
     "api", "contracts", "hiru_ai", "openai", "langchain_openai",
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat",
 ]
 include_external_packages = true
 
@@ -106,7 +107,7 @@ type = "forbidden"
 source_modules = ["contracts"]
 forbidden_modules = [
     "api", "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat", "hiru_ai",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat", "hiru_ai",
     "fastapi", "starlette", "httpx", "openai", "supabase", "langgraph", "psycopg",
 ]
 
@@ -115,7 +116,7 @@ name = "services never import the api"
 type = "forbidden"
 source_modules = [
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat",
 ]
 forbidden_modules = ["api"]
 
@@ -125,7 +126,7 @@ type = "forbidden"
 source_modules = ["api"]
 forbidden_modules = [
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat",
 ]
 
 [[tool.importlinter.contracts]]
@@ -133,7 +134,7 @@ name = "services are independent of each other"
 type = "independence"
 modules = [
     "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat",
 ]
 
 # ── hiru_ai (plan/2026-11-03 Phase 1, §5.8) ──
@@ -194,7 +195,7 @@ type = "forbidden"
 source_modules = ["hiru_ai"]
 forbidden_modules = [
     "api", "echo_service", "doc_ingest", "script_split", "structure_build", "canon_extract",
-    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat",
+    "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat",
 ]
 
 [[tool.importlinter.contracts]]
@@ -204,7 +205,7 @@ source_modules = ["hiru_ai.adapters"]
 forbidden_modules = [
     "hiru_ai.rag", "hiru_ai.knowledge_bases", "hiru_ai.tools", "hiru_ai.steps", "hiru_ai.agents", "hiru_ai.panels",
     "hiru_ai.systems", "hiru_ai.cli", "api", "echo_service", "doc_ingest", "script_split", "structure_build",
-    "canon_extract", "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat",
+    "canon_extract", "director_chat", "shot_producer", "frame_render", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat",
 ]
 
 [[tool.importlinter.contracts]]
@@ -232,7 +233,7 @@ allow_indirect_imports = true  # the model door (core.llm) uses httpx through op
 name = "a migrated function reaches hiru_ai only through its system, the core and the adapters"
 type = "forbidden"
 source_modules = ["echo_service", "doc_ingest", "canon_extract", "structure_build", "frame_render", "script_split",
-                  "shot_producer", "director_chat", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "video_render", "zora_chat", "sable_chat"]
+                  "shot_producer", "director_chat", "shot_planner_adam", "shot_planner_david", "shot_planner_jonathan", "shot_planner_raphael", "video_render", "zora_chat", "sable_chat"]
 forbidden_modules = [
     "hiru_ai.agents", "hiru_ai.steps", "hiru_ai.tools", "hiru_ai.panels", "hiru_ai.knowledge_bases", "hiru_ai.rag",
     "hiru_ai.cli",
@@ -359,6 +360,40 @@ modules = ["hiru_ai.systems.jonathan.*"]
 name = "jonathan knowledge bases never import each other"
 type = "independence"
 modules = ["hiru_ai.knowledge_bases.jonathan.*"]
+
+
+# plan/2026-11-08e §7: Raphael's parts live in a `raphael` folder inside each layer, kept apart the same way.
+
+[[tool.importlinter.contracts]]
+name = "raphael agents never import each other"
+type = "independence"
+# The two agents, named: the group's `wire_schema` helper is shared by both on purpose and is not a part.
+modules = ["hiru_ai.agents.raphael.raphael_planner", "hiru_ai.agents.raphael.raphael_cinematic"]
+
+[[tool.importlinter.contracts]]
+name = "raphael steps never import each other"
+type = "independence"
+modules = ["hiru_ai.steps.raphael.*"]
+
+[[tool.importlinter.contracts]]
+name = "raphael panels never import each other"
+type = "independence"
+modules = ["hiru_ai.panels.raphael.*"]
+
+[[tool.importlinter.contracts]]
+name = "raphael tools never import each other"
+type = "independence"
+modules = ["hiru_ai.tools.raphael.*"]
+
+[[tool.importlinter.contracts]]
+name = "raphael systems never import each other"
+type = "independence"
+modules = ["hiru_ai.systems.raphael.*"]
+
+[[tool.importlinter.contracts]]
+name = "raphael knowledge bases never import each other"
+type = "independence"
+modules = ["hiru_ai.knowledge_bases.raphael.*"]
 
 
 # plan/2026-11-06e §4.0: Zora's parts live in a `zora` folder inside each layer, kept apart the same way. The steps reach

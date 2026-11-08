@@ -1,0 +1,73 @@
+{
+ "id": "c07",
+ "slate": "1F-1",
+ "role": "single",
+ "technique": "locked_off",
+ "take_s": 6,
+ "handle_in_s": 0.5,
+ "handle_out_s": 0.5,
+ "lines": [
+  "L13"
+ ],
+ "speaks": true,
+ "ir": {
+  "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+  "cinematography": {
+   "camera": "locked-off sticks, 50mm, f/2.8",
+   "angle": "eye level",
+   "framing": "MS, Kasun framed from mid-torso up with stall texture around him.",
+   "movement": "locked-off on sticks",
+   "white_balance": "5600K overcast daylight",
+   "color_tone": "naturalistic, slightly desaturated cool with warm skin lift",
+   "depth_of_field": "Medium-shallow, stall reads softly",
+   "lens_artifacts": "none"
+  },
+  "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections.",
+  "subjects": [
+   {
+    "id": "C01",
+    "description": "slim, medium brown skin, short black hair, light stubble; plain T-shirt, dark jeans, sandals; wet from rain",
+    "action": "meets her eyes, offers a smile, then answers with the line",
+    "position": "centre-left of frame by the counter, facing right, hands near the flask"
+   }
+  ],
+  "beats": [
+   {
+    "time": "0-0.5s",
+    "camera": "MS locked-off",
+    "director_line": "We rest with him as the rain murmurs.",
+    "action": "He softens into a smile.",
+    "performance": "His eyes brighten; shoulders ease a touch."
+   },
+   {
+    "time": "0.5-5.5s",
+    "camera": "MS locked-off, favouring his face",
+    "director_line": "Hold steady for the full reply.",
+    "action": "He speaks the line to her.",
+    "performance": "He keeps the smile contained; lips move to L13 with gentle conviction."
+   },
+   {
+    "time": "5.5-6s",
+    "camera": "MS locked-off",
+    "director_line": "Hold after the words sit between them.",
+    "action": "He returns his hands toward the counter.",
+    "performance": "He looks to the stall briefly, breath measured."
+   }
+  ],
+  "audio": "Close rain on awning; faint kettle hiss; city wash soft.",
+  "first_frame": {
+   "composition": "C01 mid-torso up, left-of-centre; counter items frame the bottom edge.",
+   "subjects": [
+    "C01, damp hair and a restrained smile forming"
+   ],
+   "setting": "A Colombo roadside beside Kasun's small three-wheeler stall under heavy monsoon rain.",
+   "lighting": "Flat grey overcast daylight under heavy monsoon rain; soft skylight with wet road reflections."
+  }
+ },
+ "sound": {
+  "ambience": "Rain under awning; distant traffic; soft stall noises.",
+  "effects": "Occasional drip on metal; faint glass clink.",
+  "music": "none",
+  "silence": false
+ }
+}

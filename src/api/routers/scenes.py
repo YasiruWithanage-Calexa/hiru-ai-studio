@@ -120,6 +120,13 @@ class ShotView(BaseModel):
     holds: list[HoldView] = []  # time the scene's reading gave it: a reaction, a look held, a last image
     places: list[PlaceView] = []  # where the people it shows are when it starts (empty without a staging map)
     planner: str = "classic"  # which planner made the shot: classic | adam (plan/2026-11-04b)
+    # Shot Planner Raphael (plan/2026-11-08e): the clip a shot is in the bin ("" and 0 for another planner's shot)
+    slate: str = ""
+    role: str = ""
+    priority: str = ""
+    stage: int = 0
+    anchor: list[str] = []
+    blend: str = ""
 
 
 class LineView(BaseModel):
@@ -290,6 +297,34 @@ class JonathanPlanRequest(BaseModel):
     note: str = Field(default="", max_length=1000)
 
 
+class RaphaelView(BaseModel):
+    """What Shot Planner Raphael keeps for a scene (plan/2026-11-08e): `result` is None for a scene it never planned."""
+
+    scene_id: UUID
+    planner: str  # classic | adam | david | jonathan | raphael: who made the shots on the scene now
+    # The result as Raphael stored it (`scenes.raphael`), passed on as it is: this router knows nothing of its parts, so
+    # removing Raphael removes nothing here but these endpoints.
+    result: dict[str, Any] | None = None
+    # The length cap the production plans with (a choice, plan §2.1) and the four choices a person may make for a run.
+    default_cap: float = 2
+    caps: list[float] = Field(default_factory=lambda: [1.5, 2, 2.5, 3])
+
+
+class RaphaelPlanRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    # The length cap for this run, one of 1.5, 2, 2.5, 3 times the scene's given length. Empty: the production's.
+    cap: float | None = None
+    # A person's note on the scene ("keep it tighter"): it goes in the scene's context for the whole plan.
+    note: str = Field(default="", max_length=1000)
+
+
+class RaphaelCinematicRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    cap: float | None = None
+
+
 class AdamPlanRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -413,6 +448,9 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             block_start=f.start, block_end=f.end, word_target=f.word_target, words=f.words,
             line_ids=[UUID(x) for x in f.line_ids], status=ShotStatus(row.get("status") or "draft"),
             planner=str(row.get("planner") or "classic"),
+            slate=str(row.get("slate") or ""), role=str(row.get("role") or ""),
+            priority=str(row.get("priority") or ""), stage=int(row.get("stage") or 0),
+            anchor=[str(a) for a in row.get("anchor") or []], blend=str(row.get("blend") or ""),
             version=int(row.get("version") or 1), picture_s=f.picture_s, need_s=f.need_s,
             crowded=f.number in result.crowded if result else False,
             timeline=[TimelineSlot(block=s.index, kind="line" if s.is_line else "picture", start_s=round(s.start_s, 2),
@@ -785,6 +823,87 @@ async def remove_jonathan_addition(production_id: UUID, scene_id: UUID, number: 
                             "That addition is part of a shot that shows the script. Plan again with a note.")
     return await _jonathan_job(repos, access, scene_id, {"edit": {"remove_added": number}},
         "scene.jonathan_remove_added")
+
+
+# ── Shot Planner Raphael (plan/2026-11-08e) ────────────────────────────────────────────────────
+
+RAPHAEL_CAPS = (1.5, 2, 2.5, 3)
+
+
+def _raphael_result(scene: Row) -> dict[str, Any] | None:
+    """The scene's stored Raphael result, or None when Raphael never planned it."""
+    raw = scene.get("raphael")
+    return raw if isinstance(raw, dict) and raw.get("planner") == "raphael" else None
+
+
+def _a_cap(cap: float | None) -> float | None:
+    if cap is not None and cap not in RAPHAEL_CAPS:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT,
+                            "The length cap is one of 1.5, 2, 2.5 or 3 times the scene's length.")
+    return cap
+
+
+@router.get("/scenes/{scene_id}/raphael", response_model=RaphaelView, response_model_by_alias=True)
+async def get_raphael(production_id: UUID, scene_id: UUID, access: CanView, repos: ReposDep) -> RaphaelView:
+    """The scene's Raphael result: the intended cut, the shoot bin by moment with its slates (the must clips and the
+    cinematic clips under their anchors), the editor and blend notes, the moment review, what is left reported, the
+    length cap used and the seconds against the target and the cap. Never a cost."""
+    ld = await load(repos, access, scene_id)
+    stored = _raphael_result(ld.scene)
+    made_by_raphael = any(s.get("planner") == "raphael" for s in ld.shots)
+    return RaphaelView(scene_id=scene_id, planner="raphael" if made_by_raphael else "classic",
+                       result=stored if made_by_raphael else None,
+                       default_cap=float(ld.settings.raphael_length_cap))
+
+
+async def _raphael_job(repos: Repos, access: ProductionAccess, scene_id: UUID, kind: JobKind, state: dict[str, Any],
+                       action: str) -> ResplitStarted:
+    job_id = await task_manager.dispatch(kind, repos, actor_user_id=access.user.id, production_id=access.production_id,
+                                         request={"scene_id": str(scene_id)},
+                                         state={"scene_ids": [str(scene_id)], **state})
+    await repos.audit.record(action=action, entity="scene", entity_id=str(scene_id), actor_user_id=access.user.id,
+                             production_id=access.production_id, diff={"job_id": str(job_id)})
+    return ResplitStarted(job_id=job_id)
+
+
+@router.post("/scenes/{scene_id}/raphael/plan", response_model=ResplitStarted, status_code=status.HTTP_202_ACCEPTED)
+async def plan_with_raphael(production_id: UUID, scene_id: UUID, body: RaphaelPlanRequest, access: CanDirect,
+                            repos: ReposDep) -> ResplitStarted:
+    """Plan the scene with Shot Planner Raphael ("Plan with Raphael"): the must bin, then the cinematic pass, under the
+    length cap asked for (else the production's). Replaces the shot list; an approved scene is refused."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    if not ld.scene.get("script"):
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no script to plan shots from.")
+    edit: dict[str, Any] = {}
+    if (cap := _a_cap(body.cap)) is not None:
+        edit["cap"] = cap
+    if note := body.note.strip():
+        edit["note"] = note
+    # "Plan with Raphael" is a person asking to plan again: it never reuses an unchanged result.
+    return await _raphael_job(repos, access, scene_id, JobKind.PLAN_SCENE_RAPHAEL, {"edit": edit, "replan": True},
+                              "scene.raphael_plan")
+
+
+@router.post("/scenes/{scene_id}/raphael/cinematic", response_model=ResplitStarted,
+             status_code=status.HTTP_202_ACCEPTED)
+async def more_cinematic(production_id: UUID, scene_id: UUID, body: RaphaelCinematicRequest, access: CanDirect,
+                         repos: ReposDep) -> ResplitStarted:
+    """"More cinematic": run the cinematic pass again over the scene's must bin, with the length cap asked for. The must
+    clips stay as they are; the cinematic clips are written again. Needs a scene Raphael planned with a finished
+    stage 1."""
+    ld = await load(repos, access, scene_id)
+    _editable(ld.scene)
+    stored = _raphael_result(ld.scene)
+    if stored is None or stored.get("stage1") != "finished":
+        raise HTTPException(status.HTTP_409_CONFLICT,
+                            "Raphael has not finished the must clips for this scene, so there is nothing to add to. "
+                            "Plan it with Raphael first.")
+    edit: dict[str, Any] = {"stage": "cinematic"}
+    if (cap := _a_cap(body.cap)) is not None:
+        edit["cap"] = cap
+    return await _raphael_job(repos, access, scene_id, JobKind.CINEMATIC_SCENE_RAPHAEL, {"edit": edit},
+                              "scene.raphael_cinematic")
 
 
 async def _episode_status(repos: Repos, production_id: UUID, episode_id: UUID) -> None:

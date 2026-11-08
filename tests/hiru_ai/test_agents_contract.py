@@ -5,6 +5,7 @@ its own name. For each agent: it builds, its system prompt is static text that c
 the per-item data, its Output schema is one the model door can send strictly, its eval cases run against a scripted
 model and give the expected answer, and with no model it takes its fallback.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -16,7 +17,7 @@ from pydantic import BaseModel
 
 from hiru_ai.core import agents, llm
 from hiru_ai.core.context import RunContext
-from hiru_ai.core.errors import ModelUnavailable
+from hiru_ai.core.errors import ManifestError, ModelUnavailable
 from hiru_ai.core.middleware.base import MISSING
 from hiru_ai.core.registry import Component, default
 from hiru_ai.core.testing import RoutedChatModel, ScriptedChatModel
@@ -33,8 +34,11 @@ def cases(comp: Component, form: str = "base") -> list[dict[str, Any]]:
     return [c for c in out if c.get("variant") in (None, form)]
 
 
-CASES = [pytest.param(p.values[0], case, id=f"{p.values[0].manifest.id}/{case['name']}")
-         for p in AGENTS for case in cases(p.values[0])]
+CASES = [
+    pytest.param(p.values[0], case, id=f"{p.values[0].manifest.id}/{case['name']}")
+    for p in AGENTS
+    for case in cases(p.values[0])
+]
 
 
 def subset(expected: Any, got: Any) -> bool:
@@ -42,8 +46,11 @@ def subset(expected: Any, got: Any) -> bool:
     if isinstance(expected, dict):
         return isinstance(got, dict) and all(k in got and subset(v, got[k]) for k, v in expected.items())
     if isinstance(expected, list):
-        return (isinstance(got, list) and len(expected) == len(got)
-                and all(subset(a, b) for a, b in zip(expected, got, strict=True)))
+        return (
+            isinstance(got, list)
+            and len(expected) == len(got)
+            and all(subset(a, b) for a, b in zip(expected, got, strict=True))
+        )
     return bool(expected == got)
 
 
@@ -89,7 +96,8 @@ def test_every_agent_has_two_eval_cases_that_name_their_reply(comp: Component):
     found = cases(comp)
     assert len(found) >= 2
     for case in found:
-        assert case.get("input") is not None and ("reply" in case or case.get("model") == "unavailable"), case["name"]
+        scripted = "tool_calls" if comp.manifest.shape == "loop" else "reply"  # a loop agent's turns are tool calls
+        assert case.get("input") is not None and (scripted in case or case.get("model") == "unavailable"), case["name"]
 
 
 @pytest.mark.parametrize(("comp", "case"), CASES)
@@ -99,6 +107,13 @@ def test_an_eval_case_runs_against_a_scripted_model(comp: Component, case: dict[
     system, user = agent.messages(inp)
     assert system.startswith(agent.prompt.text) and user.strip(), "a static system prompt, per-item data in the user"
     ctx = RunContext(strict=True)  # static_first raises instead of logging
+    # a conversation whose tools are code (Raphael): its turns scripted as tool calls
+    if agent.manifest.shape == "loop":
+        from hiru_ai.cli import evals
+
+        got_dict = evals._converse(agent, inp, case, RunContext(strict=True), live=False)
+        assert subset(case.get("expect", {}), got_dict), f"{case['name']}: {got_dict!r}"
+        return
     if case.get("model") == "unavailable":
         got = agent.run(inp, ctx)  # no key in tests: the door says so and absent_safe takes the fallback
     elif agent.manifest.shape == "react":  # a tool loop (Sable): its rounds scripted as `hiru-ai eval` scripts them
@@ -128,6 +143,10 @@ def test_without_a_model_an_agent_with_a_fallback_answers_and_one_without_says_s
     agent = agents.Agent(REGISTRY, comp.manifest.id)
     inp = agent.input_cls.model_validate(next(c for c in cases(comp))["input"])
     has_fallback = agent.prepare(inp).fallback is not MISSING
+    if agent.manifest.shape == "loop":  # no `run`: the caller's code tools are needed (`Agent.converse`)
+        with pytest.raises(ManifestError):
+            agent.run(inp, RunContext())
+        return
     if "absent_safe" in agent.manifest.middleware and has_fallback:
         assert isinstance(agent.run(inp, RunContext()), agent.output_cls)
     else:
@@ -153,8 +172,12 @@ TOOL_AGENTS = [p for p in AGENTS if p.values[0].manifest.with_tools is not None]
 
 
 def test_the_four_agents_of_phase_2_have_a_tools_form():
-    assert {p.values[0].manifest.id for p in TOOL_AGENTS} >= {"chat_answerer", "options_writer", "translator",
-                                                              "shot_critic"}
+    assert {p.values[0].manifest.id for p in TOOL_AGENTS} >= {
+        "chat_answerer",
+        "options_writer",
+        "translator",
+        "shot_critic",
+    }
 
 
 @pytest.mark.parametrize("comp", TOOL_AGENTS)
@@ -183,7 +206,8 @@ def test_the_tools_form_is_off_until_agent_tools_names_it(comp: Component, monke
 
 @pytest.mark.parametrize("comp", TOOL_AGENTS)
 def test_the_tools_form_passes_its_scripted_cases_and_has_a_case_that_calls_a_tool_and_one_that_must_not(
-        comp: Component):
+    comp: Component,
+):
     from hiru_ai.cli import evals
 
     found = cases(comp, "tools")

@@ -1,0 +1,112 @@
+# Scripted, as raphael_planner's: the model's turns are the tool calls, run through the REAL stage 2 tools. The must clip is
+# stage 1's and LOCKED; a call that names its id is refused and the clip comes out byte for byte as it went in.
+- name: an_insert_and_a_review
+  input: &input
+    opening: "<script>\nb0 action: A man waits at a bus stop in the rain.\n</script>\nReview every moment."
+    scene: &scene
+      blocks:
+        - { index: 0, kind: action, text: A man waits at a bus stop in the rain., speaker: "", line_id: null, delivery: "" }
+      cast: [Man]
+      others: []
+      place: { name: A bus stop in the rain, objects: [] }
+      envelope_s: 8
+    guide_s: 8
+    scene_no: "1"
+    cap: 2
+    edit: &edit
+      treatment:
+        logline: A man waits.
+        arc: [{ beat: He waits, blocks: { first: 0, last: 0 }, feeling: Patience }]
+        approach: One steady wide.
+        colour_script: [{ sequence: A, palette: Grey, light: Rain light, grade: Cool }]
+        geography: The stop on the left.
+        key_image: The man under the shelter.
+        advice: []
+      sequences: [{ id: A, title: The wait, purpose: Set the scene, shots: { first: 1, last: 1 } }]
+      moments: [{ n: 1, sequence: A, blocks: [0], what: He waits, feeling: Patience, cut_uses: The master }]
+      editor_notes: []
+    clips: &clips
+      - id: c01
+        slate: 1A-1
+        moment: 1
+        role: master
+        setup: A
+        blocks: [0]
+        lines: []
+        speaks: false
+        over: ""
+        size: WIDE
+        angle: eye level
+        lens: 35mm for the whole stop
+        technique: locked_off
+        why: The one view that shows the man and the place.
+        take_s: 8
+        handle_in_s: 1
+        handle_out_s: 1
+        priority: must
+        editor_note: ""
+        ir: { setting: A bus stop in the rain, lighting: Grey rain light, subjects: [], beats: [], first_frame: {} }
+        sound: { ambience: Rain on the shelter, effects: "", music: "", silence: false }
+        stage: 1
+        anchor: []
+        blend: ""
+  tool_calls:
+    - name: put_extras
+      args:
+        clips:
+          - id: ""
+            moment: 1
+            role: insert
+            setup: B
+            blocks: []
+            lines: []
+            speaks: false
+            over: ""
+            size: INSERT
+            angle: high
+            lens: 50mm macro
+            technique: shallow_isolation
+            why: Rain on the shelter roof gives the wait a pulse the master does not.
+            take_s: 4
+            handle_in_s: 1
+            handle_out_s: 1
+            priority: nice
+            editor_note: ""
+            ir: { setting: A bus stop in the rain, lighting: Grey rain light, subjects: [], beats: [], first_frame: {} }
+            sound: { ambience: Rain on the shelter, effects: "", music: "", silence: false }
+            anchor: [c01]
+            blend: cut_in
+    - name: finish
+      args:
+        blend_notes: [c02 cuts in over the master while the man waits, under the rain.]
+        moment_review: [{ moment: 1, earns: true, why: The wait gains a texture shot. }]
+  expect: { clips: 2, cinematic: 1, take_s: 12, changed_must: [], done: true }
+- name: a_must_clip_id_is_refused
+  input: *input
+  tool_calls:
+    - name: put_extras
+      args:
+        clips:
+          - id: c01
+            moment: 1
+            role: insert
+            setup: B
+            blocks: []
+            lines: []
+            speaks: false
+            over: ""
+            size: INSERT
+            angle: high
+            lens: 50mm macro
+            technique: shallow_isolation
+            why: Try to overwrite the master.
+            take_s: 4
+            handle_in_s: 1
+            handle_out_s: 1
+            priority: nice
+            editor_note: ""
+            ir: { setting: x, lighting: y, subjects: [], beats: [], first_frame: {} }
+            sound: { ambience: "", effects: "", music: "", silence: false }
+            anchor: [c01]
+            blend: cut_in
+  expect: { clips: 1, cinematic: 0, changed_must: [], done: false }

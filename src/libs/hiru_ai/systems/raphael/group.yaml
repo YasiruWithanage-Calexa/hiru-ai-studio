@@ -1,0 +1,17 @@
+id: raphael
+version: 1
+summary: "Shot Planner Raphael: the must bin, then the cinematic pass, by one agent each with code tools only (plan/2026-11-08e)."
+owner: director
+status: active            # disabled switches off every Raphael part in this layer
+# The removal list (`hiru-ai remove --group raphael`): repo folders that go with the group, beside its folder in each
+# hiru_ai layer. A folder that does not exist yet is skipped. Keep this in step with plan/2026-11-08e §7.
+folders:
+  - src/libs/contracts/raphael
+  - src/services/shot_planner_raphael
+  - tests/raphael
+  - docs/raphael
+outside:
+  - "hiru-ai-studio-interface: src/features/raphael/ and its mount point (the Raphael tab) in the scene feature"
+  - "the structure build hop (the one branch on productions.settings.shot_planner), the job kinds, and the registration of the function in task_manager.FUNCTIONS, deploy-functions.yml and scripts/start-functions.ps1"
+  - "the migration that adds scenes.raphael and lets shots.planner and settings.shot_planner say raphael (left in place: the column stays unused)"
+  - "core: the `loop` agent shape (Agent.converse) and the `raphael` model tier, both generic and left in place"
