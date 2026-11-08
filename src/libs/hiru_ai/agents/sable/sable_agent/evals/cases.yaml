@@ -1,0 +1,91 @@
+# Sable's scripted evals (plan/2026-11-08 Phase 1). Each case scripts the tool calls the model makes, then its answer;
+# CI checks the loop runs them, that each tool answers without an error, and that the answer comes back whole. The
+# world of a case is the named tool's examples/basic.json (`example:`). The tiering, the caps, the citations and the
+# quote guard are tested in tests/sable with two fake models; the live grades are the lab's (Phase 4).
+- name: a person in the story is read from the canon
+  example: canon_read
+  input: { message: "Who is Anudi?", scene: E1S2 }
+  tool_calls:
+    - { name: canon_read, args: { name_or_code: Anudi }, expect: { name: Anudi } }
+  reply: { text: "Anudi is the young woman at the food stall.", handoff_scene: "", handoff_request: "" }
+  expect: { text: "Anudi is the young woman at the food stall.", handoff_scene: "" }
+- name: a decision the team made is read from the memory
+  example: memory_search
+  input: { message: "What did we decide about how Anudi shows anger?" }
+  tool_calls:
+    - { name: memory_search, args: { query: how does Anudi show anger }, expect: {} }
+  reply: { text: "The team decided her anger shows in her hands, never her voice (a remembered decision).", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: what the documents say is searched in the documents
+  example: search_kb
+  input: { message: "What does the bible say about the boat?" }
+  tool_calls:
+    - { name: search_kb, args: { query: the boat, corpus: production_docs }, expect: {} }
+  reply: { text: "The bible says the boat is her father's (the series bible).", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: a timing question reads the timing
+  example: timing_check
+  input: { message: "Does E1S2 overrun?", scene: E1S2 }
+  tool_calls:
+    - { name: timing_check, args: { scene: E1S2 }, expect: {} }
+  reply: { text: "No: E1S2 fits its envelope.", handoff_scene: "", handoff_request: "" }
+  expect: { text: "No: E1S2 fits its envelope." }
+- name: why a shot is the way it is reads the shot
+  example: shot_read
+  input: { message: "Why is S01 a close-up?", scene: E1S2 }
+  tool_calls:
+    - { name: shot_read, args: { shot: S01, scene: E1S2 }, expect: { shot: S01 } }
+  reply: { text: "S01 holds the smile before the call breaks it.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: how far along an episode is reads the overview
+  example: sable_overview
+  input: { message: "How far along is episode 1?" }
+  tool_calls:
+    - { name: sable_overview, args: { episode: 1 }, expect: { production: Harbour Lights } }
+  reply: { text: "Episode 1 has 3 scenes: 1 approved, 1 planned by Jonathan, 1 still waiting for a plan.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: which scenes a person is in is a scene search
+  example: sable_scene_find
+  input: { message: "Which scenes is Kasun in?" }
+  tool_calls:
+    - { name: sable_scene_find, args: { character: Kasun }, expect: { matched: { character: C01 Kasun } } }
+  reply: { text: "Kasun speaks in E1S2.", handoff_scene: "", handoff_request: "" }
+  expect: { text: "Kasun speaks in E1S2." }
+- name: what the recent chat already says needs no lookup
+  input:
+    message: "So that was E1S2?"
+    history: "Dee: Which scene has the phone call?\nSable: E1S2: Anudi's father calls her at the stall."
+  reply: { text: "Yes, E1S2.", handoff_scene: "", handoff_request: "" }
+  expect_no_tools: true
+  expect: { text: "Yes, E1S2." }
+- name: rewriting a line is refused with the route, without a lookup
+  input: { message: "Rewrite Kasun's line to sound kinder", scene: E1S2 }
+  reply: { text: "I never write or change dialogue. Send the exact new line in the scene's chat, or open Script and change it there.", handoff_scene: "", handoff_request: "" }
+  expect_no_tools: true
+  expect: { handoff_scene: "" }
+- name: an edit of a scene's plan is handed over, not made
+  example: plan_try
+  input: { message: "Make the opening shot of E1S2 a close-up", scene: E1S2 }
+  tool_calls:
+    - { name: plan_try, args: { scene: E1S2, ops: [{ op: set, shot: 1, field: framing, value: CU }] }, expect: {} }
+  reply: { text: "That would land. Open E1S2 to make it: the request is ready to send.", handoff_scene: E1S2, handoff_request: "Make the opening shot a close-up" }
+  expect: { handoff_scene: E1S2, handoff_request: "Make the opening shot a close-up" }
+- name: a refused lookup is fixed once, then answered
+  example: canon_read
+  allow_tool_errors: true
+  input: { message: "Who is Anudii?" }
+  tool_calls:
+    - { name: canon_read, args: { name_or_code: Anudii } }
+    - { name: canon_read, args: { name_or_code: Anudi }, expect: { name: Anudi } }
+  reply: { text: "Anudi (you wrote Anudii) is the young woman at the food stall.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: a hard question asks to think harder before answering
+  example: sable_overview
+  input: { message: "Is episode 1's coverage enough for the edit?" }
+  tool_calls:
+    - { name: sable_overview, args: { episode: 1 }, expect: { production: Harbour Lights } }
+    - { name: sable_think_harder, args: { reason: "A judgement of coverage across three scenes." }, expect: { ok: true } }
+  reply: { text: "Mostly: E1S3 has no shots yet, so it cannot be judged.", handoff_scene: "", handoff_request: "" }
+  expect: { text: "Mostly: E1S3 has no shots yet, so it cannot be judged." }
+# A card (change_propose, memory_propose) is drafted again on the deep tier (the `stage` signal), which a one-queue
+# script cannot show: tests/sable/test_tiering.py covers it with two fake models.

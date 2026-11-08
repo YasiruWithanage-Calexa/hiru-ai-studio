@@ -418,6 +418,27 @@ class FakeFrames:
         return {"frames": frames, "sheets": sheets}
 
 
+class FakeChat:
+    """`ChatStore` in memory: threads by id, messages oldest first."""
+
+    def __init__(self, threads: list[Row] | None = None, messages: list[Row] | None = None) -> None:
+        self.threads: dict[str, Row] = {str(t["id"]): dict(t) for t in threads or []}
+        self.message_rows: list[Row] = [dict(m) for m in messages or []]
+
+    def thread(self, thread_id: UUID | str) -> Row | None:
+        return self.threads.get(str(thread_id))
+
+    def messages(self, thread_id: UUID | str, limit: int = 200) -> list[Row]:
+        return [m for m in self.message_rows if str(m.get("thread_id")) == str(thread_id)][-limit:]
+
+    def add_message(self, row: Row) -> None:
+        self.message_rows.append(dict(row))
+
+    def set_summary(self, thread_id: UUID | str, summary: str, summarised: int) -> None:
+        self.threads.setdefault(str(thread_id), {"id": str(thread_id)}).update(
+            {"summary": summary, "summarised": summarised})
+
+
 FakeStaging = StagedCards  # the real thing is just a list; the fake keeps the test-side name
 
 
@@ -609,4 +630,5 @@ def ports_from(fixtures: dict[str, Any]) -> Ports:
                  split=FakeSplit(fixtures.get("episodes"), fixtures.get("scenes")),
                  frames=FakeFrames(fixtures.get("frames"), fixtures.get("shots"), None, fixtures.get("looks"),
                                    canon=fixtures.get("canon")),
-                 files=FakeFiles(), images=FakeImages(), staging=FakeStaging())
+                 files=FakeFiles(), images=FakeImages(), staging=FakeStaging(),
+                 chat=FakeChat(fixtures.get("threads"), fixtures.get("messages")))

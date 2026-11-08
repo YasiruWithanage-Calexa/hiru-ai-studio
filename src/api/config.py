@@ -97,6 +97,13 @@ class ZoraSettings(BaseModel):
     enabled: bool = False
 
 
+class SableSettings(BaseModel):
+    """Sable, the production assistant chat (plan/2026-11-08): off until a person turns it on (Phase 8), after schema
+    v18 is applied (its threads need `chat_threads.chat`)."""
+
+    enabled: bool = False
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", env_nested_delimiter="__", extra="ignore", case_sensitive=False
@@ -113,6 +120,7 @@ class Settings(BaseSettings):
     google: GoogleSettings = GoogleSettings()
     video: VideoSettings = VideoSettings()
     zora: ZoraSettings = ZoraSettings()
+    sable: SableSettings = SableSettings()
 
     @property
     def video_available(self) -> bool:

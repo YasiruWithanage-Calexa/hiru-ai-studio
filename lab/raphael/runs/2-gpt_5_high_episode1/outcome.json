@@ -1,0 +1,114 @@
+{
+ "stopped": "finished",
+ "complete": true,
+ "turns": 4,
+ "detail": "",
+ "editor_notes": [
+  "Coverage map (musts): Each script block has one primary (must) angle carrying it in order. n1 A-wide b0–b1; n2 Kasun CU slow-creep b2–b3 (L3 VO, lips closed); n3 WIDE reveal b4–b5; n4 Kasun follow MS b6; n5 Kasun MCU b7 (L7); n6 Anudi MCU b8–b11 (L9, L11 + visible look to stall for b10); n7 Kasun MS b12–b13 (L13); n8 Anudi MCU reaction b14; n9 Anudi MCU b15–b17 (L16 VO, lips closed); n10 Anudi MCU b18–b19 (L19); n11 Clean exit MWS b20; n12 Wide dolly-out b21–b22 (L22 VO).",
+  "Alternates: c13 (MS reaction on Kasun for b15–b17) can extend the phone-voice (L16) under rain; c14 (MS on Kasun for b21–b22) can extend narration (L22) tighter on his face. Both are optional and designed to overlap, not to replace the musts.",
+  "Long VO lines: L16 and L22 each run ~5.9 s. The 8 s musts (c09, c12) intentionally hold them with room for picture beats; if you feel pinched, interleave c13 (for L16) and c14 (for L22) to carry the tails cleanly. Do not trim lines; overlap the alternates under continuous rain bed.",
+  "Eyeline and axis: All F-setup Anudi singles (c06, c08, c09, c10) share the same lens, height and look-room toward Kasun (camera-right). Kasun’s singles (B, E, G setups) keep his look-room toward camera-left. The wide A setups preserve geography so you can always reset.",
+  "Pacing: Intended rhythm is wide (rain), close (vow), incident (drop/chase), two clean singles for the exchange, a held beat on her smile, then the intrusion and goodbye. If time is tight in cut, you can safely drop n8 (her smile c08) or compress n1 to a shorter use from the 4 s take, but keep the vow and the two core singles intact.",
+  "Technique notes: Only two motivated moves in musts — c02 slow creep (vow) and c12 slow dolly-out (afterglow). Everything else is locked or simple handheld follow to protect clarity in rain. Avoid adding extra moves in post; the rain will strobe if you speed-ramp a move.",
+  "Post-only treatments: You may add a very light noise reduction on rain hiss; gentle film grain if desired; a subtle punch-in on c06 or c07 can work (shoot is 4K-safe). Freeze-frame or split-screen are not intended here. No speed ramps over dialogue; if you need air, steal from handles, not from lines.",
+  "Sound: Keep a continuous rain/traffic bed across cuts. Phone ring starts just before c09 picture turn. VO (L3, L16, L22) always rides over lips-closed faces or place. Avoid SFX that mask articulation on L7/L9/L11/L13/L19. A barely-there warm pad can enter under c12/c14 if the channel wants musical glue.",
+  "What we avoided (Veo limits): No readable phone or menu text; background boards are soft. No mirrors or screen reflections. No fast finger business; hands are shown settling on objects rather than intricate movement. No body contact beats; tea handoff is staged as set-down/take.",
+  "Risky joins to mind: The emotional turn sits on the cut from c08 (her smile) into c09 (ring/listen); hold one extra beat of rain if you feel abrupt. Another sensitive join is from c12 (wide dolly-out under narration) to any end-card or next scene; match on rain density and keep tonal continuity.",
+  "Use s and budget: The bin is heavy on purpose where the turn lands (phone call, narration). If you must cut for time, drop alternates c13 and c14 first; then consider using shorter use from c03 or c11 while preserving actions. Must coverage totals 76 s of takes; full bin 88 s under the 90 s cap."
+ ],
+ "take_s": 88,
+ "target_s": 60.0,
+ "cap_s": 90.0,
+ "faults": [
+  {
+   "code": "clock",
+   "sentence": "c09 needs 8.9 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c09"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c09"
+  },
+  {
+   "code": "clock",
+   "sentence": "c12 needs 8.9 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c12"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c12"
+  },
+  {
+   "code": "clock",
+   "sentence": "c13 needs 8.9 s for what it carries and the take is 6 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c13"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c13"
+  },
+  {
+   "code": "clock",
+   "sentence": "c14 needs 8.9 s for what it carries and the take is 6 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c14"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c14"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c07 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c07"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c07:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c08 asks for a mirror. Veo breaks reflections: shoot the person, not the glass.",
+   "clips": [
+    "c08"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c08:a mirror"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c10 asks for fast hands. fast finger work blurs: hold on the face, or show the hands still on the object.",
+   "clips": [
+    "c10"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c10:fast hands"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c11 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c11"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c11:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c14 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c14"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c14:screen text"
+  }
+ ]
+}

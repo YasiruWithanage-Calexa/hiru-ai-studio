@@ -1,0 +1,81 @@
+{
+ "id": "c05",
+ "slate": "1P-1",
+ "role": "master",
+ "technique": "locked_off",
+ "take_s": 8,
+ "handle_in_s": 0.5,
+ "handle_out_s": 0.5,
+ "lines": [
+  "L7",
+  "L9"
+ ],
+ "speaks": true,
+ "ir": {
+  "setting": "A Colombo roadside in heavy monsoon rain: a wet road, tuk-tuks and traffic, Kasun's small three-wheeler and tea counter on the pavement",
+  "cinematography": {
+   "camera": "35mm lens, locked off",
+   "angle": "eye level",
+   "framing": "TWO on Kasun and Anudi",
+   "movement": "locked off",
+   "white_balance": "cool 5200K",
+   "color_tone": "cool, desaturated teal-grey with warm tea steam",
+   "depth_of_field": "Shallow, soft background",
+   "lens_artifacts": "rain streaks, headlight flare"
+  },
+  "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights",
+  "subjects": [
+   {
+    "id": "C01",
+    "description": "Kasun, plain T-shirt soaked dark, dark jeans, sandals, short black hair wet, light stubble",
+    "action": "Kasun holds the phone out to Anudi; she turns toward him and her face opens",
+    "position": "left"
+   },
+   {
+    "id": "C02",
+    "description": "Anudi, elegant blouse and trousers, simple jewellery, a stylish handbag, long dark hair, an umbrella",
+    "action": "Kasun holds the phone out to Anudi; she turns toward him and her face opens",
+    "position": "right"
+   }
+  ],
+  "beats": [
+   {
+    "time": "0-0.5s",
+    "camera": "TWO settled",
+    "director_line": "The frame holds before the action.",
+    "action": "The frame settles.",
+    "performance": "Stillness."
+   },
+   {
+    "time": "0.5-7.5s",
+    "camera": "TWO, locked off",
+    "director_line": "The meeting in one frame: the editor can cut away and always come back.",
+    "action": "Kasun holds the phone out to Anudi; she turns toward him and her face opens to line L7, L9.",
+    "performance": "He is out of breath and shy; she is surprised and then warm."
+   },
+   {
+    "time": "7.5-8s",
+    "camera": "TWO holds",
+    "director_line": "The action finishes and the frame holds.",
+    "action": "The frame holds.",
+    "performance": "Stillness."
+   }
+  ],
+  "audio": "heavy rain, traffic, wet tyres",
+  "first_frame": {
+   "composition": "TWO on Kasun and Anudi, rain across the frame",
+   "subjects": [
+    "Kasun",
+    "Anudi"
+   ],
+   "setting": "A Colombo roadside in heavy monsoon rain: a wet road, tuk-tuks and traffic, Kasun's small three-wheeler and tea counter on the pavement",
+   "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights"
+  }
+ },
+ "sound": {
+  "ambience": "heavy rain, traffic, wet tyres",
+  "effects": "",
+  "music": "",
+  "silence": false
+ }
+}

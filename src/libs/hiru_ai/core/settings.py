@@ -38,6 +38,12 @@ class OpenAISettings(BaseModel):
     effort_jonathan: str = "high"
     # Zora's author (plan/2026-11-06e D7): the `zora` tier is model_jonathan at this effort; the lab sets it.
     effort_zora: str = "low"
+    # Sable (plan/2026-11-08 §4.4, D2): the average tier and the deep tier a turn may move up to once. Until the lab
+    # picks the pair: gpt-5-mini at low, and gpt-5 at medium. An environment change, not a code change.
+    model_sable: str = "gpt-5-mini"
+    effort_sable: str = "low"
+    model_sable_deep: str = "gpt-5"
+    effort_sable_deep: str = "medium"
     model_medium: str = "gpt-5-mini"
     effort_medium: str = "low"
     model_low: str = "gpt-5-nano"
@@ -67,6 +73,14 @@ class ZoraSettings(BaseModel):
     author_tool_calls: int = 6  # the author's read tools, when it has a `with_tools` form (none in v1)
     transcript_messages: int = 4
     revisions_kept: int = 30  # undo depth per scene (D4)
+
+
+class SableSettings(BaseModel):
+    """Sable, the production assistant chat (plan/2026-11-08): `SABLE__*`. Off until a person turns it on (Phase 8)."""
+
+    enabled: bool = False
+    history_messages: int = 12  # the last messages sent whole (§4.5)
+    summary_after_tokens: int = 6000  # older messages are summarised once the thread passes this (§4.5)
 
 
 class ReaderSettings(BaseModel):
@@ -115,6 +129,7 @@ class AISettings(BaseSettings):
     supabase: SupabaseSettings = SupabaseSettings()
     zora: ZoraSettings = ZoraSettings()
     reader: ReaderSettings = ReaderSettings()
+    sable: SableSettings = SableSettings()
     # Where traces go (ADR 0008: Langfuse Cloud). Langfuse's own names, as its settings page prints them. Empty keys =
     # no tracing.
     langfuse_public_key: str = ""

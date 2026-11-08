@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v17.sql` | **The newest schema** (everything in v16 plus a scene's production cost, plan/2026-11-06d: the `prices` table with its seed and `token_usage.scene_id`), whole. Run it once on an empty project. |
+| `schema_v18.sql` | **The newest schema** (everything in v17 plus Sable, the production assistant chat, plan/2026-11-08: `chat_threads.chat` / `summary` / `summarised`, per-person read policies on `chat_threads` and `chat_messages`, and the admin-only `chat_turn_meta` table), whole. Run it once on an empty project. |
+| `upgrade_v17_to_v18.sql` | Moves a project on v17 to v18 (the three `chat_threads` columns with their checks and index, the two read policies made again, `chat_turn_meta` with RLS). No backfill: every existing thread is a scene chat. Run once, only on such a project. Safe to re-run. Then Sable may be turned on with `SABLE__ENABLED=true`. **Not run yet, and not yet verified against a local stack (Docker was not running): applying it is a person's decision.** |
+| `schema_v17.sql` | Kept for reference (the previous schema) (everything in v16 plus a scene's production cost, plan/2026-11-06d: the `prices` table with its seed and `token_usage.scene_id`), whole. Run it once on an empty project. |
 | `upgrade_v16_to_v17.sql` | Moves a project on v16 to v17 (the `prices` table and its seed, `token_usage.scene_id` with its index, and a backfill of old rows from the job that named one scene). Run once, only on such a project. Safe to re-run. Then set `USAGE_SCENE=true`. **Not run yet: applying it is a person's decision.** |
 | `schema_v16.sql` | Kept for reference (the previous schema) (everything in v15 plus the document reader, plan/2026-11-06f: `documents.reading_path` / `read_from` and `scenes.read_from` / `read_confirmed_by` / `read_confirmed_at`), whole. Run it once on an empty project. |
 | `upgrade_v15_to_v16.sql` | Moves a project on v15 to v16 (two columns on `documents`, three and an index on `scenes`). Run once, only on such a project, before `READER__ENABLED=true`. Safe to re-run. |

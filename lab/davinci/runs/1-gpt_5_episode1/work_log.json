@@ -1,0 +1,202 @@
+[
+ {
+  "tool": "write_edit_plan",
+  "args": "{\"treatment\":{\"logline\":\"In monsoon Colombo, a humble tea-seller returns a stranger’s fallen phone; a spark flickers until her father’s call ends it, leaving an ambition burning in the rain.\",\"arc\":[{\"beat\":\"World and boy of ambition\",\"blocks\":{\"first\":0,\"last\":3},\"feeling\":\"Grounded, rain-soaked re",
+  "result": "The edit plan is saved: 10 moments in 7 sequences."
+ },
+ {
+  "tool": "plan_coverage",
+  "args": "{\"moments\":[1,2,3,4,5,6,7,8,9,10],\"brief\":\"Build a 60 s naturalistic meet-cute in heavy Colombo rain. Priorities: clean master geography, progressive intimacy (wide to singles), rain/steam texture, and strict audio: L3 (thought), L16 (father), L22 (narrator) are V/O — never performed; Father is neve",
+  "result": "The coverage planner added 24 clips:\nc01 [1A-1] moment 1 must establishing WIDE locked_off 6s handles 1/1 blocks [0, 1, 2] (menu only): Place Kasun’s stall in the rain-soaked street so editor can cut into the meeting geography; locked_off to hold the world steady in the downpour.\nc02 [1B-1] moment 2"
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":5,\"role\":\"master\",\"setup\":\"N\",\"blocks\":[7,8],\"lines\":[\"L7\"],\"speaks\":true,\"over\":\"\",\"size\":\"WIDE\",\"angle\":\"neutral eye-level from stall side, holding both\",\"lens\":\"24mm\",\"technique\":\"locked_off\",\"why\":\"A geography-safe master for L7 ensures the line can be performed in a wide and",
+  "result": "Added 4 clips:\nc25 [1N-2] moment 5 should master WIDE locked_off 4s handles 1/1 blocks [7, 8] lines L7 speaks (menu only): A geography-safe master for L7 ensures the line can be performed in a wide and cut under other angles; preserves rain choreography as she turns.\nc26 [1O-2] moment 6 should maste"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c09\"]}",
+  "result": "Removed c09."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":6,\"role\":\"master\",\"setup\":\"R\",\"blocks\":[9,10,11],\"lines\":[\"L9\",\"L11\"],\"speaks\":true,\"over\":\"\",\"size\":\"MWS\",\"angle\":\"square-on, both in frame under umbrella edge\",\"lens\":\"28mm\",\"technique\":\"locked_off\",\"why\":\"Primary dialogue master performs L9 and L11 while holding rain, umbrella",
+  "result": "Added 2 clips:\nc29 [1R-2] moment 6 must master MWS locked_off 6s handles 1/1 blocks [9, 10, 11] lines L9,L11 speaks (menu only): Primary dialogue master performs L9 and L11 while holding rain, umbrella, and stall continuity; anchors the exchange.\nc30 [1S-2] moment 6 should two_shot MS locked_off 6s "
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c01\",\"c02\"],\"note\":\"Ensure L3 is a thought V/O: lips closed; no mouth articulation in c02.\"}",
+  "result": "Designed 2 of 2 clips in 1 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c03\",\"c04\",\"c05\",\"c06\",\"c07\",\"c08\",\"c25\"],\"note\":\"\"}",
+  "result": "Designed 7 of 7 clips in 2 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c10\",\"c11\",\"c12\",\"c26\",\"c29\",\"c30\"],\"note\":\"Two-shots should not perform lines; audio for L9/L11 to come from c29 or c10 as needed.\"}",
+  "result": "Designed 6 of 6 clips in 1 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c13\",\"c14\",\"c15\",\"c27\"],\"note\":\"\"}",
+  "result": "Designed 4 of 4 clips in 1 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c16\",\"c17\",\"c18\"],\"note\":\"Father’s L16 is V/O: no lips move in any clip; do not show Father in any reflection or screen.\"}",
+  "result": "Designed 3 of 3 clips in 1 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c19\",\"c20\",\"c21\"],\"note\":\"\"}",
+  "result": "Designed 3 of 3 clips in 1 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c22\",\"c23\",\"c24\",\"c28\"],\"note\":\"L22 narrator is V/O; no mouths move. c23 to hold MS master under VO.\"}",
+  "result": "Designed 4 of 4 clips in 1 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "27 blocking fault(s), 15 report(s). Bin: 29 clips (29 designed; 17 must, 10 should, 2 nice).\n(director, repair) coverage: Block b8 has no must clip: the intended cut has nothing to show for it.\n(director, repair) clock [c05]: c05: its handles (1 s + 1 s) and what it shows do not fit a 4 s take. Take"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c05\",\"c11\",\"c16\",\"c18\",\"c20\",\"c22\",\"c26\",\"c28\",\"c29\"]}",
+  "result": "Removed c05, c11, c16, c18, c20, c22, c26, c28, c29."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":5,\"role\":\"reaction\",\"setup\":\"T\",\"blocks\":[8],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"single on Anudi turning to Kasun\",\"lens\":\"50mm\",\"technique\":\"locked_off\",\"why\":\"Guarantees a must coverage for b8, the physical turn, without performing lines; the beat is her r",
+  "result": "Added 10 clips:\nc31 [1T-1] moment 5 must reaction MCU locked_off 4s handles 1/1 blocks [8] (menu only): Guarantees a must coverage for b8, the physical turn, without performing lines; the beat is her reaction.\nc32 [1E-1] moment 2 must single MS follow 6s handles 1/1 blocks [6] (menu only): More hand"
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c01\",\"c02\",\"c06\",\"c10\",\"c11\",\"c12\",\"c24\",\"c30\",\"c38\"],\"note\":\"Fix feasibility: Do not show any readable on-screen text or UI. If a phone/menu/sign appears, keep it as abstract texture or glow; no legible characters. Reframe or defocus as needed.\"}",
+  "result": "Designed 8 of 8 clips in 4 call(s). Unknown ids: ['c11']."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c03\",\"c07\",\"c08\",\"c17\",\"c19\",\"c25\",\"c34\",\"c35\"],\"note\":\"Remove Father from subjects and any reflections/screens; he is only a voice. For non-speaking coverage (c07, c08), avoid implying speech: show her turning/listening only. Keep phone screens unreadable; show only glow/vibration.\"}",
+  "result": "Designed 8 of 8 clips in 3 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c31\",\"c32\",\"c33\",\"c34\",\"c35\",\"c36\",\"c37\",\"c38\",\"c39\",\"c40\"],\"note\":\"Moment 5 consistency: copy the exact same setting and lighting sentences across all moment-5 clips (c06, c07, c08, c25, c31). VO rules: L19 performed only on singles/masters marked speaks; L16 and L22 are V/O and never",
+  "result": "Designed 10 of 10 clips in 6 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "13 blocking fault(s), 13 report(s). Bin: 30 clips (30 designed; 18 must, 10 should, 2 nice).\n(director, repair) coverage: Moment 4 has no must clip.\n(director, report) clock [c10]: c10 needs 4.9 s for what it carries and the take is 4 s: a line is kept whole and never trimmed. Split the exchange int"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c32\",\"c10\",\"c13\",\"c14\",\"c23\",\"c27\"]}",
+  "result": "Removed c32, c10, c13, c14, c23, c27."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":4,\"role\":\"single\",\"setup\":\"E2\",\"blocks\":[6],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MS\",\"angle\":\"profile follow from stall toward road\",\"lens\":\"35mm\",\"technique\":\"follow\",\"why\":\"Must coverage for Kasun’s move with adequate handles during rain.\",\"take_s\":6,\"handle_in_s\":1,\"han",
+  "result": "Added 7 clips:\nc41 [1E-1] moment 4 must single MS follow 6s handles 1/1 blocks [6] (menu only): Must coverage for Kasun’s move with adequate handles during rain.\nc42 [1J-1] moment 6 must single MCU locked_off 6s handles 1/1 blocks [9, 11] lines L9,L11 speaks (menu only): Longer take to comfortably c"
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c41\",\"c42\",\"c43\",\"c44\",\"c45\",\"c46\",\"c47\"],\"note\":\"Design with VO rules: L16 and L22 are V/O and never performed. Father and Narrator are never seen; no reflections; no readable UI. Keep background signage/menu unreadable by defocus or occlusion. One move per clip as specified.\"}",
+  "result": "Designed 7 of 7 clips in 5 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c02\"],\"note\":\"Do not include any readable signs or UI. Subject is Kasun only with rain texture; no phones, no text. If any signage appears, defocus to unreadable. Lips closed for L3 thought; no mouth movement. Father/Narrator not present.\"}",
+  "result": "Designed 1 of 1 clips in 1 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c06\",\"c07\",\"c08\",\"c19\",\"c25\",\"c31\",\"c34\",\"c36\"],\"note\":\"Purge Father from subjects and any frame; he is only a voice later and is never seen. No readable text anywhere; defocus any background signs or menus. For c07 and c08, these are non-speaking shots: show Anudi turning/listening; n",
+  "result": "Designed 8 of 8 clips in 3 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c30\",\"c33\",\"c38\",\"c40\",\"c42\"],\"note\":\"Moment 6 consistency: copy the exact same C01 look sentence into each design: \\\"Simple plain T-shirt, dark jeans, sandals; slim, medium brown skin, short black hair, light stubble; wet from the rain.\\\" Ensure setting and lighting paragraphs are wor",
+  "result": "Designed 5 of 5 clips in 1 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "16 blocking fault(s), 8 report(s). Bin: 31 clips (31 designed; 18 must, 11 should, 2 nice).\n(director, report) clock [c17]: c17 needs 8.9 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.  [STILL FAILING after your last fix:"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c45\"]}",
+  "result": "Removed c45."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":8,\"role\":\"single\",\"setup\":\"Q4\",\"blocks\":[16],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"on Anudi processing Father’s words\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Carry only L16 with room for handles; exclude the follow-on beat to fit the take.\",\"take_s\"",
+  "result": "Added 1 clips:\nc48 [1Q-3] moment 8 should single CU locked_off 8s handles 1/1 blocks [16] lines L16 (menu only): Carry only L16 with room for handles; exclude the follow-on beat to fit the take."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c48\"],\"note\":\"VO rule: L16 is V/O; no lips. Fix feasibility: no readable text; no reflections. No Father in any form.\"}",
+  "result": "Designed 1 of 1 clips in 1 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c02\",\"c06\",\"c07\",\"c25\",\"c34\",\"c36\"],\"note\":\"Fix feasibility: screen text. Remove any instruction to show readable text or UI. If signage/menus/phones appear, make them unreadable: defocus, glare, or crop. Do not mention text in the design.\"}",
+  "result": "Designed 6 of 6 clips in 4 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c03\",\"c07\",\"c08\",\"c17\",\"c19\",\"c25\",\"c30\",\"c31\",\"c36\",\"c38\",\"c40\",\"c42\"],\"note\":\"Fix design: Father is only heard. Remove Father from subjects and first frames; no reflections or implied presence. For non-speaking angles, replace any verbs like “speaks/calls/asks” with physical actions ",
+  "result": "Designed 12 of 12 clips in 4 call(s)."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c37\",\"c39\",\"c47\"],\"note\":\"Moment 10 consistency: copy this exact C01 look sentence into each design: \\\"Simple plain T-shirt, dark jeans, sandals; slim, medium brown skin, short black hair, light stubble; wet from the rain.\\\" Ensure setting and lighting text is word-for-word identical a",
+  "result": "Designed 3 of 3 clips in 1 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "16 blocking fault(s), 12 report(s). Bin: 31 clips (31 designed; 18 must, 11 should, 2 nice).\n(director, report) clock [c17]: c17 needs 8.9 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.  [STILL FAILING after your last fix"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c07\",\"c08\",\"c25\",\"c30\",\"c44\",\"c46\",\"c03\",\"c06\",\"c19\",\"c31\",\"c36\",\"c40\",\"c02\"]}",
+  "result": "Removed c07, c08, c25, c30, c44, c46, c03, c06, c19, c31, c36, c40, c02."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":3,\"role\":\"clean_entry\",\"setup\":\"A2\",\"blocks\":[4],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MWS\",\"angle\":\"profile on curb, car door frame foreground\",\"lens\":\"28mm\",\"technique\":\"enter_held_frame\",\"why\":\"Show Anudi’s graceful step out without any phone/UI; clean geography for her ",
+  "result": "Added 6 clips:\nc49 [1A-2] moment 3 must clean_entry MWS enter_held_frame 6s handles 1/1 blocks [4] (menu only): Show Anudi’s graceful step out without any phone/UI; clean geography for her arrival.\nc50 [1F-1] moment 5 must single MCU locked_off 4s handles 1/1 blocks [7] lines L7 speaks (menu only): "
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c17\"]}",
+  "result": "Removed c17."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":8,\"role\":\"single\",\"setup\":\"Q5\",\"blocks\":[16],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"on Anudi, eyes slightly down, rain bed behind\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Must CU to carry Father’s V/O only (block 16) with enough head and tail; avoids ",
+  "result": "Added 2 clips:\nc55 [1Q-3] moment 8 must single CU locked_off 8s handles 1/1 blocks [16] lines L16 (menu only): Must CU to carry Father’s V/O only (block 16) with enough head and tail; avoids timing overrun.\nc56 [1R-2] moment 8 should reaction MCU locked_off 6s handles 1/1 blocks [17] (menu only): Co"
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c49\",\"c50\",\"c51\",\"c52\",\"c53\",\"c54\",\"c55\",\"c56\"],\"note\":\"Design with strict exclusions: Father never appears; no readable text or UI; background signage defocused/occluded; hands slow and simple (no fast finger work). VO lines (L3, L16) are never performed. Keep subjects to C01/C02 only",
+  "result": "Designed 8 of 8 clips in 5 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "12 blocking fault(s), 5 report(s). Bin: 25 clips (25 designed; 17 must, 6 should, 2 nice).\n(director, repair) coverage: Block b17 has no must clip: the intended cut has nothing to show for it.\n(director, repair) coverage: Moment 2 has no must clip.\n(clip_writer, report) feasibility [c38]: c38 asks f"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c54\",\"c38\",\"c39\",\"c42\"]}",
+  "result": "Removed c54, c38, c39, c42."
+ }
+]

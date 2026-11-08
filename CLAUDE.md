@@ -124,6 +124,21 @@ a `scene_plan_revisions` row (schema v14). It runs only when `ZORA__ENABLED` and
 Read `plan/2026-11-06e/IMPLEMENTED.md` first: phases 0 to 8 are built offline; the lab's paid run, applying v14,
 turning it on, the Figma frames (D8) and the live check are a person's. No costs in the interface.
 
+## Sable, the production assistant chat (`sable/` folders, plan/2026-11-08)
+
+A second chat beside Zora, which it does not change: ONE react agent (`sable_agent`) that answers, finds, checks and
+explains across the whole production with the shared read tools (listed in `agents/sable/group.yaml` `shared:`) and its
+own three (`sable_overview`, `sable_scene_find`, `sable_think_harder`). It changes nothing itself: a change is a staged card
+(`change_propose`, `memory_propose`) a person with DIRECT accepts, and a scene's plan edit is a handoff card that opens the
+scene with the request in its chat's draft. A turn starts on tier `sable` (average) and the generic `tiering` middleware
+(`core/middleware/tiering.py`) moves it ONCE, upward, to `sable_deep` (pre-route `steps/sable/sable_route`, the model's
+`sable_think_harder`, or code signals). System `sable_chat` (function `hiru-sable-chat`, port 8214; API `routers/sable.py`;
+panel `features/sable/`). Rules that must not drift: **Sable imports nothing of Zora's** but `api/services/zora.routes_here`
+(`tests/sable/test_zora_untouched.py`); **a quoted line no tool returned is taken out** (`guard.py`); **no tier, model or
+tool id reaches a browser** (a reply's record is `chat_turn_meta`, admin-read only); **a thread is one person's own**.
+Off until `SABLE__ENABLED`; it needs schema v18 (not applied). Read `plan/2026-11-08/IMPLEMENTED.md` first: phases 0–3 and
+5–7 are built offline; the question set, the lab, applying v18 and the live check are a person's.
+
 ## The document reader (plan/2026-11-06f)
 
 The model reads a whole uploaded script, bible, canon index or outline ONCE at ingest into one format

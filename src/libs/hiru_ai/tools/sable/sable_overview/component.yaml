@@ -1,0 +1,19 @@
+id: sable_overview
+kind: tool
+version: 1
+summary: "The production at a glance: each episode's scenes with their status, which planner planned them, how many shots they have, and how many questions are still open."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes, structure]
+effect: read
+max_result_tokens: 1500
+guide: |
+  Returns the production's title, one line per episode (number, title, status, scenes, scenes planned, scenes approved),
+  the number of open structure questions, and one line per scene a page at a time (E1S2, heading, status, the planner
+  whose plan is stored, shots). With `episode` it lists that episode's scenes only; `waiting: true` keeps only the scenes
+  that are not approved yet (`waiting_for` says whether each waits for a plan or for approval).
+  Use it for "how far along is episode 3?", "what is still waiting?", "which scenes have no shots?".
+  Example: {"episode": 3} or {"waiting": true}.
+  Do not use it for one scene's script or shots (use scene_read), for one episode's synopsis (use episode_read) or for
+  what the open questions say (use questions_read).

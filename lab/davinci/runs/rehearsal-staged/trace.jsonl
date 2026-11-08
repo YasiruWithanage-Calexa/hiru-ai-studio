@@ -1,0 +1,16 @@
+{"slot": "director", "model": "gpt-5", "dollars": 0.195, "usage": {"input_tokens": 12000, "cached_tokens": 0, "output_tokens": 18000, "reasoning_tokens": 12000, "status": "done", "reported": true}}
+{"mend": ["c13: line L22 added (it covers block b22 and no must clip carried the line)"], "faults": ["(director, repair) coverage: Block b4 has no must clip: the intended cut has nothing to show for it.", "(director, repair) coverage: Moment 3 has no must clip."]}
+{"stage_done": {"stage": "plan", "start": "15:54:45", "end": "15:54:45", "seconds": 0.0, "calls": 1, "dollars": 0.195, "detail": "13 clips, 86 s; 2 blocking fault(s); mend: 1 fix(es)"}}
+{"slot": "director", "model": "gpt-5", "dollars": 0.195, "usage": {"input_tokens": 12000, "cached_tokens": 0, "output_tokens": 18000, "reasoning_tokens": 12000, "status": "done", "reported": true}}
+{"repair_round": 1, "kept": true, "mend": [], "faults": []}
+{"stage_done": {"stage": "repair", "start": "15:54:45", "end": "15:54:45", "seconds": 0.0, "calls": 1, "dollars": 0.195, "detail": "round 1: 2 -> 0 blocking fault(s), kept"}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0177, "usage": {"input_tokens": 6000, "cached_tokens": 0, "output_tokens": 8100, "reasoning_tokens": 1500, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0177, "usage": {"input_tokens": 6000, "cached_tokens": 0, "output_tokens": 8100, "reasoning_tokens": 1500, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0163, "usage": {"input_tokens": 6000, "cached_tokens": 0, "output_tokens": 7400, "reasoning_tokens": 1500, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0163, "usage": {"input_tokens": 6000, "cached_tokens": 0, "output_tokens": 7400, "reasoning_tokens": 1500, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0163, "usage": {"input_tokens": 6000, "cached_tokens": 0, "output_tokens": 7400, "reasoning_tokens": 1500, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0163, "usage": {"input_tokens": 6000, "cached_tokens": 0, "output_tokens": 7400, "reasoning_tokens": 1500, "status": "done", "reported": true}}
+{"stage_done": {"stage": "design", "start": "15:54:45", "end": "15:54:45", "seconds": 0.0, "calls": 6, "dollars": 0.1006, "detail": "14 clips in 6 parallel call(s); 1 design fault(s)"}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0149, "usage": {"input_tokens": 6000, "cached_tokens": 0, "output_tokens": 6700, "reasoning_tokens": 1500, "status": "done", "reported": true}}
+{"stage_done": {"stage": "redesign", "start": "15:54:45", "end": "15:54:45", "seconds": 0.0, "calls": 1, "dollars": 0.0149, "detail": "round 1: 1 clip(s) sent (c11), 0 still failing"}}
+{"end": "finished", "detail": ""}

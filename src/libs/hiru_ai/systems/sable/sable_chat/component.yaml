@@ -1,0 +1,12 @@
+id: sable_chat
+kind: system
+version: 1
+summary: "Sable: one streamed turn of the production assistant chat. The thread is read (older messages folded into a stored summary), code picks the starting tier, ONE react agent answers with the production's read tools and may move up a tier once, a quote guard takes out any line no tool returned, and the reply is saved with its cards, citations and the turn's record."
+status: active
+owner: director
+# A turn is a synchronous stream (server-sent events), not a job: it serves no JobKind.
+job_kind: ""
+agents: [sable_agent, sable_summary]
+steps: [sable_route]
+panels: []
+tools: []

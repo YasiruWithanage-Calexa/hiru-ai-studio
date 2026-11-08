@@ -54,6 +54,7 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
 # Synchronous functions: called directly by the API (not through Cloud Tasks) and streamed.
 DIRECTOR_CHAT = FunctionSpec("hiru-director-chat", 8206, 300)
 ZORA_CHAT = FunctionSpec("hiru-zora-chat", 8213, 300)  # Zora, the director chat over Jonathan's plan (plan/2026-11-06e)
+SABLE_CHAT = FunctionSpec("hiru-sable-chat", 8214, 300)  # Sable, the production assistant chat (plan/2026-11-08)
 
 
 def function_url(spec: FunctionSpec, settings: Settings) -> str:

@@ -373,6 +373,30 @@ class FakeThreads(_Table):
         self.rows[str(thread_id)]["updated_at"] = _now()
 
 
+class FakeSable:
+    """`SableRepo` over the same rows as `FakeThreads`, so a test can see that no other chat's list shows a Sable
+    thread (plan/2026-11-08 §4.8)."""
+
+    def __init__(self, threads: FakeThreads, messages: FakeMessages) -> None:
+        self.t, self.m = threads, messages
+
+    async def threads(self, production_id: UUID, user_id: UUID) -> list[Row]:
+        rows = [r for r in self.t._scoped(production_id) if r.get("chat") == "sable"
+                and r.get("created_by") == str(user_id)]
+        return sorted(rows, key=lambda r: r["updated_at"], reverse=True)
+
+    async def thread(self, production_id: UUID, thread_id: UUID) -> Row | None:
+        row = await self.t.get(production_id, thread_id)
+        return row if row and row.get("chat") == "sable" else None
+
+    async def create(self, fields: Row) -> Row:
+        return self.t.add(**{"title": "", **fields, "chat": "sable", "scene_id": None})
+
+    async def delete(self, thread_id: UUID) -> None:
+        self.t.rows.pop(str(thread_id), None)
+        await self.m.clear(thread_id)
+
+
 class FakeMessages(_Table):
     async def list(self, thread_id: UUID, limit: int = 100) -> list[Row]:  # type: ignore[override]
         rows = [r for r in self.rows.values() if r["thread_id"] == str(thread_id)]
@@ -407,6 +431,14 @@ class FakeMemory(_Table):
     async def delete(self, item_id: UUID) -> None:
         self.rows.pop(str(item_id), None)
         self.chunks.pop(f"memory:{item_id}", None)
+
+
+class FakeDirection(_Table):
+    """`production_memory` rows (`add_row` puts one in, as the ingest would)."""
+
+    def add_row(self, item: Row) -> Row:
+        return super().add(**{"topic": "camera", "applies_to": "production", "quote": "", "strength": "prefer",
+                              "document_id": None, "status": "draft", "source": "reader", **item})
 
 
 class FakeCanon(_Table):
@@ -616,6 +648,7 @@ def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
     personas = FakePersonas()
+    threads, messages = FakeThreads(), FakeMessages()
     return Repos(
         profiles=profiles,
         productions=FakeProductions(members),
@@ -638,13 +671,15 @@ def build_fake_repos() -> Repos:
         questions=FakeQuestions(),
         personas=personas,
         board=FakeBoard(personas),
-        threads=FakeThreads(),
-        messages=FakeMessages(),
+        threads=threads,
+        messages=messages,
         memory=FakeMemory(),
+        direction=FakeDirection(),
         frames=FakeFrames(),
         prompts=FakePrompts(),
         takes=FakeTakes(),
         renders=FakeRenders(),
         revisions=FakeRevisions(),
         costs=FakeCosts(),
+        sable=FakeSable(threads, messages),
     )

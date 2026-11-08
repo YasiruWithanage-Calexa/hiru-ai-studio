@@ -1,0 +1,228 @@
+{
+ "treatment": {
+  "logline": "In monsoon-soaked Colombo, a humble vendor and a sheltered young woman share a brief, tender first meeting—cut short by a father's call yet destined to change his life.",
+  "arc": [
+   {
+    "beat": "Kasun’s world and inner vow",
+    "blocks": {
+     "first": 0,
+     "last": 3
+    },
+    "feeling": "Intimate focus inside a noisy, wet city; quiet ambition beneath hardship."
+   },
+   {
+    "beat": "The drop and the chase",
+    "blocks": {
+     "first": 4,
+     "last": 7
+    },
+    "feeling": "A spark of urgency and courtesy; rain energizes the moment."
+   },
+   {
+    "beat": "First words",
+    "blocks": {
+     "first": 8,
+     "last": 13
+    },
+    "feeling": "Warm curiosity and pride; gentle mutual interest blooms."
+   },
+   {
+    "beat": "Interruption and parting",
+    "blocks": {
+     "first": 14,
+     "last": 22
+    },
+    "feeling": "Hope collides with control; a lingering ache and promise."
+   }
+  ],
+  "approach": "Naturalistic romance in real rain, camera restrained and purposeful. Let sound of rain and traffic texture the scene while the lens isolates faces at key turns. Keep coverage lean—one strong angle per beat—with just a few lifelines for the cut.",
+  "colour_script": [
+   {
+    "sequence": "Kasun’s world",
+    "palette": "Cool greys and deep teals from rain and asphalt; warm tea amber accents.",
+    "light": "Overcast monsoon soft-top; wet speculars; steam glow.",
+    "grade": "Rich but natural; slight lift in warmth on skin."
+   },
+   {
+    "sequence": "The drop/chase",
+    "palette": "Muted city hues with a pop from Anudi’s elegant neutrals.",
+    "light": "Consistent overcast; brighter puddle bounce.",
+    "grade": "Neutral contrast; crisp raindrop detail."
+   },
+   {
+    "sequence": "First words",
+    "palette": "Balanced skin tones against subdued background; stall browns and metal.",
+    "light": "Soft daylight wrap; controlled highlights on wet surfaces.",
+    "grade": "Subtle midtone lift for intimacy."
+   },
+   {
+    "sequence": "Interruption/parting",
+    "palette": "Cooler shift as tension enters; rain greys reassert.",
+    "light": "Same soft daylight; reduce warmth, hold speculars.",
+    "grade": "Gentle cool grade drift; final shot slightly cooler to underline VO fate line."
+   }
+  ],
+  "geography": "Kasun’s three-wheeler stall is curbside on a Colombo street; road and tuk-tuks pass frame right; shop fronts frame left. Family car pulls up across the road opposite the stall. Puddles collect along the gutter near the stall’s wheel and counter.",
+  "key_image": "Rain beads on Kasun’s lashes as steam curls from tea; beyond, Anudi stands under an umbrella—two worlds inches apart by a wet street.",
+  "advice": [
+   "Record strong production rain and traffic beds; isolate dialogue with overheads close under umbrellas.",
+   "Protect for VO: hold clean 8 s takes for b16 and b22 without on-camera speaking.",
+   "Avoid slow motion under dialogue; any speed work limited to B-roll only (not used here).",
+   "Allow discreet digital punch-ins on singles in post; keep framing with safe headroom.",
+   "No whip pans or complex transitions—romance reads better on stillness and gentle moves.",
+   "Keep eye-lines consistent across D setup (Anudi singles) and C setup (Kasun singles)."
+  ]
+ },
+ "sequences": [
+  {
+   "id": "S1",
+   "title": "Rain and resolve",
+   "purpose": "Establish place, work, and Kasun’s inner vow.",
+   "shots": {
+    "first": 0,
+    "last": 3
+   }
+  },
+  {
+   "id": "S2",
+   "title": "The drop and call-out",
+   "purpose": "Inciting meet-cute: Anudi arrives, drops phone; Kasun acts.",
+   "shots": {
+    "first": 4,
+    "last": 7
+   }
+  },
+  {
+   "id": "S3",
+   "title": "First words",
+   "purpose": "Curiosity and pride bond them.",
+   "shots": {
+    "first": 8,
+    "last": 13
+   }
+  },
+  {
+   "id": "S4",
+   "title": "Interruption and parting",
+   "purpose": "Father’s voice intrudes; a promise as distance returns.",
+   "shots": {
+    "first": 14,
+    "last": 22
+   }
+  }
+ ],
+ "moments": [
+  {
+   "n": 1,
+   "sequence": "S1",
+   "blocks": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "what": "Rain hammers the street; Kasun serves at his stall, eyes burning with plans as his thought floats over.",
+   "feeling": "Empathy and respect; a quiet seed of ambition.",
+   "cut_uses": "Use master MWS from setup A with a slow creep to Kasun to carry L3 as a thought over his face."
+  },
+  {
+   "n": 2,
+   "sequence": "S2",
+   "blocks": [
+    4,
+    5
+   ],
+   "what": "Across the road, Anudi steps from her family car, elegant; her phone slips near the stall.",
+   "feeling": "A delicate shift—wealth meets grit, lightly.",
+   "cut_uses": "Use a locked-off master WIDE from setup B capturing her exit and the phone drop in one clear action."
+  },
+  {
+   "n": 3,
+   "sequence": "S2",
+   "blocks": [
+    6,
+    7
+   ],
+   "what": "Kasun grabs the phone and hustles after her, calling out.",
+   "feeling": "Energy and courtesy; a first bridge between them.",
+   "cut_uses": "Use a handheld MS single on Kasun from setup C to perform L7 with forward motion through rain."
+  },
+  {
+   "n": 4,
+   "sequence": "S3",
+   "blocks": [
+    8,
+    9
+   ],
+   "what": "Anudi turns; their eyes meet; she thanks him.",
+   "feeling": "Softness, shy warmth.",
+   "cut_uses": "Use an MCU single on Anudi from setup D to perform L9 cleanly against rain texture."
+  },
+  {
+   "n": 5,
+   "sequence": "S3",
+   "blocks": [
+    10,
+    11
+   ],
+   "what": "She takes in his scrappy stall, asks if he made it all.",
+   "feeling": "Genuine curiosity; respect forming.",
+   "cut_uses": "Use a MS single on Anudi from setup D to perform L11 with the stall hinted in background."
+  },
+  {
+   "n": 6,
+   "sequence": "S3",
+   "blocks": [
+    12,
+    13
+   ],
+   "what": "Kasun smiles and shares his small-beginnings pride.",
+   "feeling": "Inspiration; charm without boasting.",
+   "cut_uses": "Use a MS single on Kasun from setup C to perform L13; hold his earnest eyes."
+  },
+  {
+   "n": 7,
+   "sequence": "S4",
+   "blocks": [
+    14,
+    15,
+    16
+   ],
+   "what": "Her phone rings; Father’s voice fills the space.",
+   "feeling": "A chill enters; control from afar.",
+   "cut_uses": "Use an Anudi MCU reaction from setup D; play L16 over her face, no lips moving."
+  },
+  {
+   "n": 8,
+   "sequence": "S4",
+   "blocks": [
+    17,
+    18,
+    19
+   ],
+   "what": "Her smile fades; one last look; a hopeful promise.",
+   "feeling": "Bittersweet longing with a spark of defiance.",
+   "cut_uses": "Use an Anudi MS single from setup D to perform L19, eyes briefly back to Kasun."
+  },
+  {
+   "n": 9,
+   "sequence": "S4",
+   "blocks": [
+    20,
+    21,
+    22
+   ],
+   "what": "She walks away; Kasun stays, watching; a narrator seals the fate.",
+   "feeling": "Lonely street, destiny hovers.",
+   "cut_uses": "Use a locked-off two-shot/master from setup A: clean exit of Anudi, hold on Kasun while L22 plays. Fade or straight cut out."
+  }
+ ],
+ "editor_notes": [
+  "Intended cut lands around 55–65 s; bin is 60 s. Dialogue lines are performed only on the speaker’s singles (D and C setups).",
+  "Thought L3 (b3), Father’s line L16 (b16), and Narrator L22 (b22) are heard-only; never perform. Maintain on-screen faces with closed lips during these.",
+  "Keep one move per shot. A1 uses a slow creep; C2 handheld tracking is the only kinetic shot in the meet-cute; the rest locked-off or shallow isolation.",
+  "Post tools: allow subtle digital punch-ins on D and C singles (4–8%); no slow-motion under dialogue; no split screens; match levels between rain beds before and after Father’s call.",
+  "Risky overlaps: b16 is a long VO—hold D3 clean for 8 s; do not intercut with mouths. b22 also needs a clean 8 s bed (A2).",
+  "If pacing drags, trim from the heads/tails using the 1 s handles; never cut into the VO words. The phone-insert E1 and atmosphere F1 are expendable first."
+ ]
+}

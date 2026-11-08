@@ -497,6 +497,28 @@ class SupabaseThreads(_Base):
         return _rows(res.data)
 
 
+class SupabaseSable(_Base):
+    """`SableRepo`: `chat_threads` rows with `chat = 'sable'` (schema v18, plan/2026-11-08 §4.8)."""
+
+    async def threads(self, production_id: UUID, user_id: UUID) -> list[Row]:
+        res = (await self.db.table("chat_threads").select("id, production_id, title, created_at, updated_at")
+               .eq("production_id", str(production_id)).eq("chat", "sable").eq("created_by", str(user_id))
+               .order("updated_at", desc=True).execute())
+        return _rows(res.data)
+
+    async def thread(self, production_id: UUID, thread_id: UUID) -> Row | None:
+        res = (await self.db.table("chat_threads").select("*").eq("id", str(thread_id))
+               .eq("production_id", str(production_id)).eq("chat", "sable").limit(1).execute())
+        return _first(res.data)
+
+    async def create(self, fields: Row) -> Row:
+        res = await self.db.table("chat_threads").insert({**fields, "chat": "sable", "scene_id": None}).execute()
+        return _one(res.data)
+
+    async def delete(self, thread_id: UUID) -> None:
+        await self.db.table("chat_threads").delete().eq("id", str(thread_id)).eq("chat", "sable").execute()
+
+
 class SupabaseMessages(_Base):
     async def create(self, fields: Row) -> Row:
         res = await self.db.table("chat_messages").insert(fields).execute()
@@ -744,6 +766,21 @@ class SupabaseTakes(_Base):
         return bool(_rows(res.data))
 
 
+class SupabaseDirection(_Base):
+    async def get(self, production_id: UUID, entry_id: UUID) -> Row | None:
+        try:
+            res = (await self.db.table("production_memory").select("*").eq("id", str(entry_id))
+                   .eq("production_id", str(production_id)).limit(1).execute())
+        except Exception:  # a database not yet on schema v12 has no such table: nothing to find, never an error
+            return None
+        return _first(res.data)
+
+    async def update(self, entry_id: UUID, fields: Row) -> Row:
+        res = (await self.db.table("production_memory")
+               .update({**fields, "updated_at": datetime.now(UTC).isoformat()}).eq("id", str(entry_id)).execute())
+        return _one(res.data)
+
+
 class SupabaseRevisions(_Base):
     async def list(self, scene_id: UUID) -> list[Row]:
         try:
@@ -880,10 +917,12 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         threads=SupabaseThreads(db),
         messages=SupabaseMessages(db),
         memory=SupabaseMemory(db),
+        direction=SupabaseDirection(db),
         frames=SupabaseFrames(db),
         prompts=SupabasePrompts(db),
         takes=SupabaseTakes(db),
         renders=SupabaseRenders(db),
         revisions=SupabaseRevisions(db),
         costs=SupabaseCosts(db),
+        sable=SupabaseSable(db),
     )

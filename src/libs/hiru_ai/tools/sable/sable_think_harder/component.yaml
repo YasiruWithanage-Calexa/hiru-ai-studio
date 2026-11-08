@@ -1,0 +1,17 @@
+id: sable_think_harder
+kind: tool
+version: 1
+summary: "Asks for more thought on this message: from the next step on, the answer is worked out more carefully, with everything already read."
+status: active
+owner: director
+entry: tool:run
+ports: []
+effect: read      # it reads and writes no data: the tiering middleware sees the call and moves the turn up (§4.4)
+max_result_tokens: 200
+guide: |
+  Call it once, before you answer, when the answer needs reasoning across many results, a judgement of craft (is this
+  coverage enough? does this cut work? which reads better?), a plan of several steps, or when you are still unsure
+  after reading. Give one sentence of `reason`. It returns at once; then carry on with what you have already read.
+  Example: {"reason": "Comparing the coverage of three scenes."}
+  Do not use it for a simple lookup, more than once, or instead of reading what the question needs (use the read tools
+  for that, such as scene_read or search_kb).

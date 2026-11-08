@@ -1,0 +1,62 @@
+[
+ {
+  "tool": "read_bin",
+  "args": "{\"moment\": 0}",
+  "result": "0 clips (0 designed). The bin is empty."
+ },
+ {
+  "tool": "finish",
+  "args": "{\"editor_notes\": [\"(too early)\"]}",
+  "result": "Refused: the checks do not pass yet.\n(director, repair) edit: There is no edit plan yet: write the intended cut first (write_edit_plan).\n(director, repair) coverage: Block b0 has no must clip: the intended cut has nothing to show for it.\n(director, repair) coverage: Block b1 has no must clip: the in"
+ },
+ {
+  "tool": "write_edit_plan",
+  "args": "{\"treatment\": {\"logline\": \"A street-food vendor returns a stranger's phone and, for one rainy minute, the two of them forget their worlds.\", \"arc\": [{\"beat\": \"his small world\", \"blocks\": {\"first\": 0, \"last\": 3}, \"feeling\": \"hunger for more\"}, {\"beat\": \"the meeting\", \"blocks\": {\"first\": 4, \"last\": 14",
+  "result": "The edit plan is saved: 8 moments in 3 sequences."
+ },
+ {
+  "tool": "plan_coverage",
+  "args": "{\"moments\": [1, 2, 3], \"brief\": \"Sequence A: the world. Plain coverage with an establishing and B-roll.\"}",
+  "result": "The coverage planner added 3 clips:\nc01 [1B-1] moment 1 must master WIDE locked_off 6s handles 1/1 blocks [0, 1, 2] (menu only): The place is a character: the rain, the traffic, the little stall.\nc02 [1F-1] moment 2 must single CU slow_creep 6s handles 1/1 blocks [3] lines L3 (menu only): The though"
+ },
+ {
+  "tool": "plan_coverage",
+  "args": "{\"moments\": [4, 5, 6], \"brief\": \"Sequence B: the meeting. Cover each line from the master and the singles; a whip pair.\"}",
+  "result": "The coverage planner added 6 clips:\nc04 [1K-1] moment 4 must master WIDE locked_off 8s handles 1/1 blocks [5, 6] (menu only): The drop and the run in one wide, so the editor has the geography.\nc05 [1P-1] moment 5 must master TWO locked_off 8s handles 0.5/0.5 blocks [7, 8, 9] lines L7,L9 speaks (menu"
+ },
+ {
+  "tool": "plan_coverage",
+  "args": "{\"moments\": [7, 8], \"brief\": \"Sequence C: the call. The father is a voice; show the listener.\"}",
+  "result": "The coverage planner added 4 clips:\nc10 [1B-2] moment 7 must reaction MCU locked_off 8s handles 0.5/0.5 blocks [15, 16] lines L16 (menu only): The father is only a voice: we watch it land on her face.\nc11 [1D-1] moment 7 must single MCU locked_off 6s handles 0.5/0.5 blocks [17, 18, 19] lines L19 spe"
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\": [{\"moment\": 4, \"role\": \"insert\", \"setup\": \"L\", \"blocks\": [5], \"lines\": [], \"speaks\": false, \"over\": \"\", \"size\": \"INSERT\", \"angle\": \"high\", \"lens\": \"50mm: the phone falls\", \"technique\": \"tilt_reveal\", \"why\": \"The camera follows the phone down to the wet ground: the trigger.\", \"take_s\": 4, \"",
+  "result": "Added 1 clips:\nc14 [1L-1] moment 4 should insert INSERT tilt_reveal 4s handles 1/1 blocks [5] (menu only): The camera follows the phone down to the wet ground: the trigger."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\": [\"c01\", \"c02\", \"c03\", \"c04\", \"c05\", \"c06\", \"c07\", \"c08\", \"c09\", \"c10\", \"c11\", \"c12\", \"c13\", \"c14\"], \"note\": \"\"}",
+  "result": "Designed 14 of 14 clips in 4 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "1 blocking fault(s), 0 report(s). Bin: 14 clips (14 designed; 11 must, 3 should, 0 nice).\n(clip_writer, repair) consistency [c07]: The clips of moment 5 do not describe the lighting word for word the same: copy one sentence into every clip.\nWork log (latest):\n- write_edit_plan: The edit plan is save"
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\": [\"c07\"], \"note\": \"Copy the lighting sentence word for word into this clip.\"}",
+  "result": "Designed 1 of 1 clips in 1 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "0 blocking fault(s), 0 report(s). Bin: 14 clips (14 designed; 11 must, 3 should, 0 nice).\nNo faults.\nWork log (latest):\n- plan_coverage: The coverage planner added 6 clips:\nc04 [1K-1] moment 4 must master WIDE locked_off 8s handles 1/1 b\n- plan_coverage: The coverage planner added 4 clips:\nc10 [1B-2"
+ },
+ {
+  "tool": "finish",
+  "args": "{\"editor_notes\": [\"Masters (setups B, H, K, P, U, V, G) are the cut; the two Q/S singles and the insert are the only alternates: the bin is held to the given length plus 50%.\", \"Avoided: a dolly zoom on the phone call (Veo is unreliable); the father is never shown; a speed ramp on the run is post on",
+  "result": "Finished. The intended cut, the shoot bin and your notes are written."
+ }
+]

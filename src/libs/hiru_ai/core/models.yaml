@@ -25,6 +25,10 @@ tiers:
   # The document reader (plan/2026-11-06f Q1): the author's model reads a whole episode, or its page images, in one
   # answer; its repairer is the same model on the same tier.
   reader:   { model: model_author,   effort: effort_reader,   timeout_s: 900,  retries: 1, fallbacks: [] }
+  # Sable, the production assistant chat (plan/2026-11-08 §4.4): a turn starts on `sable` (the average model) and moves
+  # once, upward, to `sable_deep` when the work needs it (core/middleware/tiering.py). The lab (Phase 4) picks the pair.
+  sable:      { model: model_sable,      effort: effort_sable,      timeout_s: 120, retries: 2, fallbacks: [] }
+  sable_deep: { model: model_sable_deep, effort: effort_sable_deep, timeout_s: 300, retries: 1, fallbacks: [] }
   vision: { model: model_vision,                        timeout_s: 120, retries: 1, fallbacks: [] }  # the frame check
 embed:
   model: embedding_model

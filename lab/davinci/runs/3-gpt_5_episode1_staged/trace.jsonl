@@ -1,0 +1,13 @@
+{"slot": "director", "model": "gpt-5", "dollars": 0.1584, "usage": {"input_tokens": 4191, "cached_tokens": 0, "output_tokens": 15315, "reasoning_tokens": 11392, "status": "done", "reported": true}}
+{"mend": ["c02: take 4 s rounded up to 6 s to hold its handles", "c05: take 6 s rounded up to 8 s to hold its handles", "c09: take 4 s rounded up to 6 s to hold its handles"], "faults": ["(director, repair) feasibility [c02]: c02 asks for a post technique. It is made in the edit: shoot a clean source and name the technique in editor_notes."]}
+{"stage_done": {"stage": "plan", "start": "15:59:57", "end": "16:02:37", "seconds": 159.9, "calls": 1, "dollars": 0.1584, "detail": "11 clips, 66 s; 1 blocking fault(s); mend: 3 fix(es)"}}
+{"slot": "director", "model": "gpt-5", "dollars": 0.0677, "usage": {"input_tokens": 8445, "cached_tokens": 4096, "output_tokens": 6179, "reasoning_tokens": 2240, "status": "done", "reported": true}}
+{"repair_round": 1, "kept": true, "mend": [], "faults": []}
+{"stage_done": {"stage": "repair", "start": "16:02:37", "end": "16:03:29", "seconds": 52.3, "calls": 1, "dollars": 0.0677, "detail": "round 1: 1 -> 0 blocking fault(s), kept"}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0131, "usage": {"input_tokens": 5149, "cached_tokens": 0, "output_tokens": 5888, "reasoning_tokens": 3200, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0126, "usage": {"input_tokens": 5203, "cached_tokens": 4352, "output_tokens": 6148, "reasoning_tokens": 3904, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0141, "usage": {"input_tokens": 4883, "cached_tokens": 0, "output_tokens": 6425, "reasoning_tokens": 4544, "status": "done", "reported": true}}
+{"slot": "clip_writer", "model": "gpt-5-mini", "dollars": 0.0142, "usage": {"input_tokens": 5059, "cached_tokens": 3840, "output_tokens": 6908, "reasoning_tokens": 4160, "status": "done", "reported": true}}
+{"stage_done": {"stage": "design", "start": "16:03:29", "end": "16:04:40", "seconds": 71.6, "calls": 4, "dollars": 0.054, "detail": "11 clips in 4 parallel call(s); 0 design fault(s)"}}
+{"stage_done": {"stage": "redesign", "start": "16:04:40", "end": "16:04:40", "seconds": 0.0, "calls": 0, "dollars": 0.0, "detail": "no design fault: nothing to redo"}}
+{"end": "finished", "detail": ""}

@@ -2,6 +2,7 @@
 and production memory."""
 from __future__ import annotations
 
+import asyncio
 import json
 from collections.abc import AsyncIterator
 from uuid import uuid4
@@ -408,6 +409,34 @@ def test_memory_is_listed_added_and_forgotten(world: World):
     assert not chunks and world.client.get(url(world, "/memory"), headers=h).json() == []
 
 
+def test_a_direction_a_reply_used_is_rejected_by_a_director_only(world: World):
+    """A reply's "used" chip removes a production-memory entry (plan/2026-11-07 Phase 3): it is rejected (no agent is
+    given it again, the next reading does not bring it back), never deleted, and only a person with `direct` can."""
+    entry = world.repos.direction.add_row({"production_id": str(world.production),  # type: ignore[attr-defined]
+                                           "says": "Handheld only in the hospital."})
+    path = url(world, f"/production-memory/{entry['id']}/reject")
+    assert world.client.post(path, headers=world.headers(world.writer)).status_code == 403
+    assert world.client.post(path, headers=world.headers(world.director)).status_code == 204
+    assert world.repos.direction.rows[entry["id"]]["status"] == "rejected"  # type: ignore[attr-defined]
+    assert world.client.post(path, headers=world.headers(world.director)).status_code == 204  # safe to repeat
+    other = url(world, f"/production-memory/{uuid4()}/reject")
+    assert world.client.post(other, headers=world.headers(world.director)).status_code == 404
+
+
+def test_a_stored_reply_with_a_used_block_is_served_as_it_is(world: World):
+    s = seed_scene(world)
+    h = world.headers(world.director)
+    thread = world.client.post(url(world, f"/scenes/{s['scene']['id']}/threads"), json={}, headers=h).json()
+    used = {"kind": "used", "memory": [{"id": str(uuid4()), "text": "Handheld only in the hospital.",
+                                        "document_id": None, "document_title": ""}]}
+    asyncio.run(world.repos.messages.create({
+        "id": str(uuid4()), "production_id": str(world.production), "thread_id": thread["id"], "kind": "director",
+        "speaker": "Zora", "tone": "lead", "text": "", "blocks": [{"kind": "text", "text": "Done."}, used]}))
+    got = world.client.get(url(world, f"/threads/{thread['id']}/messages"), headers=h)
+    assert got.status_code == 200, got.text
+    assert got.json()[-1]["blocks"][-1] == used
+
+
 def test_an_answered_build_question_becomes_memory(world: World):
     q = world.repos.questions.add(  # type: ignore[attr-defined]
         production_id=str(world.production), job_id=None, agent="structure", scope="Ep 01 Scene 2", key="loc:pier",
@@ -439,3 +468,38 @@ def test_the_goal_of_the_chosen_option_reaches_the_function_and_a_replys_fields_
     blocks = r.json()["message"]["blocks"]
     assert blocks[0]["advice"] is False and blocks[0]["route"] == "Use Script → Edit."
     assert blocks[1]["chosen"] == 0 and blocks[1]["options"][0]["intent"] == "dialogue.si"
+
+
+# ── Edit / Ask again (plan/2026-11-07 Phase 4) ─────────────────────────────────────────────
+
+
+def test_a_message_may_replace_the_persons_last_one_and_nothing_is_deleted(world: World, recorder: Recorder):
+    sid = seed_scene(world)["scene"]["id"]
+    h = world.headers(world.director)
+    first = frames(world.client.post(url(world, f"/scenes/{sid}/chat"), json={"message": "explain shot 2"},
+                                     headers=h).text)[0][1]
+    old = first["message"]["id"]
+    again = frames(world.client.post(url(world, f"/scenes/{sid}/chat"),
+                                     json={"message": "explain shot 2", "replaces": old}, headers=h).text)[0][1]
+    assert again["message"]["blocks"] == [{"kind": "replaces", "message_id": old, "how": "again"}]
+    assert str(recorder.payloads[-1].replaces) == old
+    edited = frames(world.client.post(url(world, f"/scenes/{sid}/chat"),
+                                      json={"message": "explain shot 3", "replaces": again["message"]["id"]},
+                                      headers=h).text)[0][1]
+    assert edited["message"]["blocks"][0]["how"] == "edit"
+    msgs = world.client.get(url(world, f"/threads/{first['thread_id']}/messages"), headers=h).json()
+    assert [m["text"] for m in msgs] == ["explain shot 2", "explain shot 2", "explain shot 3"]  # all kept
+
+
+def test_only_the_last_message_can_be_replaced(world: World, recorder: Recorder):
+    sid = seed_scene(world)["scene"]["id"]
+    h = world.headers(world.director)
+    first = frames(world.client.post(url(world, f"/scenes/{sid}/chat"), json={"message": "one"}, headers=h).text)[0][1]
+    world.client.post(url(world, f"/scenes/{sid}/chat"), json={"message": "two"}, headers=h)
+    r = world.client.post(url(world, f"/scenes/{sid}/chat"),
+                          json={"message": "one, again", "replaces": first["message"]["id"]}, headers=h)
+    assert r.status_code == 409 and r.json()["detail"] == director_service.NOT_LAST
+    r = world.client.post(url(world, f"/scenes/{sid}/chat"), json={"message": "x", "replaces": str(uuid4())},
+                          headers=h)
+    assert r.status_code == 409
+    assert len(recorder.payloads) == 2  # a refused replacement never reaches the function

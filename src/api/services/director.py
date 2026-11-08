@@ -20,7 +20,16 @@ import httpx
 from api.config import get_settings
 from api.repositories import Repos, Row
 from api.workers import task_manager
-from contracts.director import BoardMember, ChoicePayload, ChoiceResult, Persona, Seat, TurnPayload
+from contracts.director import (
+    BoardMember,
+    ChoicePayload,
+    ChoiceResult,
+    MessageKind,
+    Persona,
+    ReplacesBlock,
+    Seat,
+    TurnPayload,
+)
 
 _logger = logging.getLogger(__name__)
 DEFAULT_LEAD = "classic-teledrama"  # the lead a production has before anyone picks one
@@ -31,6 +40,26 @@ TurnStreamer = Callable[[TurnPayload], AsyncIterator[bytes]]
 
 def sse(event: str, data: dict[str, Any]) -> bytes:
     return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False, default=str)}\n\n".encode()
+
+
+NOT_LAST = "Only your last message can be edited or asked again."
+
+
+class NotReplaceable(ValueError):
+    """`replaces` names something other than the thread's last message from a person (→ 409, with the sentence)."""
+
+
+async def replaces_blocks(repos: Repos, thread_id: Any, replaces: Any, text: str) -> list[Row]:
+    """The blocks of a person's message that replaces their last one (Edit / Ask again, plan/2026-11-07 Phase 4): one
+    `replaces` block, "again" when the words are the same, "edit" when they changed. Nothing is deleted. `[]` when the
+    message replaces nothing."""
+    if replaces is None:
+        return []
+    people = [m for m in await repos.messages.list(thread_id) if m.get("kind") == MessageKind.USER.value]
+    if not people or str(people[-1].get("id")) != str(replaces):
+        raise NotReplaceable(NOT_LAST)
+    same = str(people[-1].get("text") or "").strip() == text
+    return [ReplacesBlock(message_id=replaces, how="again" if same else "edit").model_dump(mode="json")]
 
 
 def persona(row: Row) -> Persona:

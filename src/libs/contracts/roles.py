@@ -42,10 +42,11 @@ class Permission(StrEnum):
     RENDER_VIDEO = "render_video"  # make a take with Omni / Veo, and add a shot's own reference pictures (spends money)
     APPROVE_SCENE = "approve_scene"  # lock a scene for production
     VIEW_COSTS = "view_costs"  # a scene's cost in USD (plan/2026-11-06d): the roles that can spend
+    USE_SABLE = "use_sable"  # ask Sable, the production assistant (plan/2026-11-08 §4.9): every role that can view
 
 
 P = Permission
-_EVERYONE = frozenset({P.VIEW, P.COMMENT})
+_EVERYONE = frozenset({P.VIEW, P.COMMENT, P.USE_SABLE})  # Sable only reads; its cards need DIRECT (D8)
 
 PRODUCTION_ROLE_PERMISSIONS: dict[ProductionRole, frozenset[Permission]] = {
     ProductionRole.PRODUCER: _EVERYONE

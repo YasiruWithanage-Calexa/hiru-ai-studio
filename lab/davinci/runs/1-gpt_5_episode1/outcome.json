@@ -1,0 +1,141 @@
+{
+ "stopped": "turns",
+ "detail": "The director used all 40 turns.",
+ "editor_notes": [],
+ "faults": [
+  {
+   "code": "coverage",
+   "sentence": "Block b3 has no must clip: the intended cut has nothing to show for it.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:must:3"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Block b9 has no must clip: the intended cut has nothing to show for it.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:must:9"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Block b11 has no must clip: the intended cut has nothing to show for it.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:must:11"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Block b17 has no must clip: the intended cut has nothing to show for it.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:must:17"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Moment 2 has no must clip.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:moment_must:2"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Line L3 is carried by no must clip.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:carrier:L3"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Line L9 is carried by no must clip.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:carrier:L9"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Line L11 is carried by no must clip.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:carrier:L11"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c43 asks for fast hands. fast finger work blurs: hold on the face, or show the hands still on the object.",
+   "clips": [
+    "c43"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c43:fast hands"
+  },
+  {
+   "code": "design",
+   "sentence": "c37: Father is only heard (a voice on the phone) and is in its subjects or first frame: take them out of the picture.",
+   "clips": [
+    "c37"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:heard:c37:Father"
+  },
+  {
+   "code": "design",
+   "sentence": "c51 does not perform a line, but a beat says someone \"calls out\": nobody speaks in a clip that does not perform a line (Veo invents the speech). Say what they DO.",
+   "clips": [
+    "c51"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:speaks:c51"
+  },
+  {
+   "code": "design",
+   "sentence": "c52: Father is only heard (a voice on the phone) and is in its subjects or first frame: take them out of the picture.",
+   "clips": [
+    "c52"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:heard:c52:Father"
+  },
+  {
+   "code": "design",
+   "sentence": "c55 does not perform a line, but a beat says someone \"speaking\": nobody speaks in a clip that does not perform a line (Veo invents the speech). Say what they DO.",
+   "clips": [
+    "c55"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:speaks:c55"
+  },
+  {
+   "code": "consistency",
+   "sentence": "In moment 10, C01 is described in 2 different ways: the clothes and look are word for word the same in every angle.",
+   "clips": [
+    "c53"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "consistency:10:C01"
+  },
+  {
+   "code": "consistency",
+   "sentence": "In moment 10, C02 is described in 2 different ways: the clothes and look are word for word the same in every angle.",
+   "clips": [
+    "c53"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "consistency:10:C02"
+  }
+ ]
+}

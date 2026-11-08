@@ -172,6 +172,19 @@ class DirectorStore(Protocol):
     def audit(self, row: Row) -> None: ...
 
 
+class ChatStore(Protocol):
+    """A chat thread a production assistant reads and answers in (Sable, plan/2026-11-08 §4.5, §4.8): the thread with
+    its stored summary, its messages, the reply. `chat_threads.summary` and `.summarised` (how many of the oldest
+    messages the summary covers) and `chat_turn_meta` (a reply's `meta`) are schema v18."""
+
+    def thread(self, thread_id: UUID | str) -> Row | None: ...
+    def messages(self, thread_id: UUID | str, limit: int = 200) -> list[Row]:
+        """The thread's messages, oldest first (at most `limit`, the newest kept)."""
+
+    def add_message(self, row: Row) -> None: ...
+    def set_summary(self, thread_id: UUID | str, summary: str, summarised: int) -> None: ...
+
+
 class RevisionStore(Protocol):
     """A scene's plan revisions, behind undo and redo in the director chat (plan/2026-11-06e §4.7,
     `scene_plan_revisions`). A store whose database has no such table raises; the caller then runs without undo."""

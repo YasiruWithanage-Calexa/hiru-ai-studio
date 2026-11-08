@@ -1,0 +1,73 @@
+{
+ "id": "c17",
+ "slate": "1Q-1",
+ "role": "single",
+ "technique": "locked_off",
+ "take_s": 4,
+ "handle_in_s": 0.5,
+ "handle_out_s": 0.5,
+ "lines": [
+  "L7"
+ ],
+ "speaks": true,
+ "ir": {
+  "setting": "A Colombo roadside in heavy monsoon rain: a wet road, tuk-tuks and traffic, Kasun's small three-wheeler and tea counter on the pavement",
+  "cinematography": {
+   "camera": "85mm lens, locked off",
+   "angle": "eye level",
+   "framing": "MCU on Kasun",
+   "movement": "locked off",
+   "white_balance": "cool 5200K",
+   "color_tone": "cool, desaturated teal-grey with warm tea steam",
+   "depth_of_field": "Shallow, soft background",
+   "lens_artifacts": "rain streaks, headlight flare"
+  },
+  "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights",
+  "subjects": [
+   {
+    "id": "C01",
+    "description": "Kasun, plain T-shirt soaked dark, dark jeans, sandals, short black hair wet, light stubble",
+    "action": "Kasun holds the phone out to Anudi; she turns toward him and her face opens",
+    "position": "centre of frame"
+   }
+  ],
+  "beats": [
+   {
+    "time": "0-0.5s",
+    "camera": "MCU settled",
+    "director_line": "The frame holds before the action.",
+    "action": "The frame settles.",
+    "performance": "Stillness."
+   },
+   {
+    "time": "0.5-3.5s",
+    "camera": "MCU, locked off",
+    "director_line": "His face as he calls: shy and out of breath.",
+    "action": "Kasun holds the phone out to Anudi; she turns toward him and her face opens to line L7.",
+    "performance": "He is out of breath and shy; she is surprised and then warm."
+   },
+   {
+    "time": "3.5-4s",
+    "camera": "MCU holds",
+    "director_line": "The action finishes and the frame holds.",
+    "action": "The frame holds.",
+    "performance": "Stillness."
+   }
+  ],
+  "audio": "heavy rain, traffic, wet tyres",
+  "first_frame": {
+   "composition": "MCU on Kasun, rain across the frame",
+   "subjects": [
+    "Kasun"
+   ],
+   "setting": "A Colombo roadside in heavy monsoon rain: a wet road, tuk-tuks and traffic, Kasun's small three-wheeler and tea counter on the pavement",
+   "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights"
+  }
+ },
+ "sound": {
+  "ambience": "heavy rain, traffic, wet tyres",
+  "effects": "",
+  "music": "",
+  "silence": false
+ }
+}

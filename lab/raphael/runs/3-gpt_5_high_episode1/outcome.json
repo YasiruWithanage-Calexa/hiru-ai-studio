@@ -1,0 +1,62 @@
+{
+ "stopped": "finished",
+ "complete": true,
+ "turns": 7,
+ "detail": "",
+ "editor_notes": [
+  "Coverage map: Masters (A, C, I) place geography and carry VO; Singles (B, D, E, F, K) carry all spoken lines clean; Reaction (K) and clean_exit (H) give the end shape. One move per shot, all motivated: dolly-in for a private vow, pan to connect car-to-stall, tracking for Kasun’s impulse, locked-off for exchanges, held MCU for the phone call, dolly-out for the VO close.",
+  "Handles and timing: Speaking takes use 0.5 s handles to maximise action window (esp. L13 4.5 s, L16 5.9 s). The phone call and final VO each exceed a single 6 s take; they’re split: pre-ring (b14–b15) and call (b16–b17); b21 reaction then final VO master for b22. Editors can overlap these if needed; neighbours may share one block by design.",
+  "Rain continuity: Keep rainfall intensity, direction, droplet size, and awning drips consistent. Preserve puddle size and reflections across Setups A/C/E/F/H/I/K. Keep wardrobe wetness continuity (hair and cloth) between adjacent moments.",
+  "Never show the caller: The phone voice is audio only. Picture text never names the caller; listeners are written as ‘listens to the call’.",
+  "Phone and screens: We avoid readable screen text. If emphasis is needed, favour the INSERT we dropped in planning by punching into the MCU on her face or the phone hand; do not attempt to show on-screen words.",
+  "Post-only options (shoot clean sources): Allowed in edit if needed: subtle digital punch-ins on singles (B/E/F/K), gentle speed ramps on the dolly moves (B, I) to polish timing, and a brief hold (freeze) on the last frame of I if VO needs tail. No split diopter, no mirrors, no fast UI reads. Keep the rain sound bed clean for possible VO/music.",
+  "Match/risk notes: The pan in C bridges car-to-stall; cut to D tracking on Kasun over a small axis—use the moment he lifts the phone as the action match. The shared eyeline (E to F and back) is maintained screen-left/right; avoid flipping. The call pair (E: c13 then c08) are same setup and lens for seamless cut-in to the longer call hold.",
+  "Sound beds: Heavy rain + traffic is the spine. Effects to catch: umbrella rustle, puddle footfalls, car door, phone ring, kettle hiss. Keep dialogue on booms/lavs under rain; ADR can top up later. VO lines (L22) and thought (L3) ride over picture; no lips move for those lines.",
+  "What we avoided in camera: readable screens; any crowded background action that needs faces sharp; complex multi-move shots. One move per clip throughout."
+ ],
+ "take_s": 70,
+ "target_s": 60.0,
+ "cap_s": 90.0,
+ "faults": [
+  {
+   "code": "feasibility",
+   "sentence": "c03 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c03"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c03:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c05 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c05"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c05:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c07 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c07"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c07:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c14 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c14"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c14:screen text"
+  }
+ ]
+}

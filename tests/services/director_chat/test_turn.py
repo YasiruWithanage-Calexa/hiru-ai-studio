@@ -268,3 +268,23 @@ def test_a_rule_the_production_already_holds_is_not_stored_again():
                                                   memory=["Kamala never cries on screen", "Rain scenes are at dusk."])}
     run(store, "make shot 4 eight seconds", DirectorLLM(echo))
     assert [m["text"] for m in store.memory_rows] == ["Kamala never cries on screen.", "Rain scenes are at dusk."]
+
+
+# ── Stop (plan/2026-11-07 Phase 2) ──────────────────────────────────────────────────────────
+
+
+def test_stopping_at_any_frame_still_saves_the_edit_and_its_message():
+    """A person who presses Stop only stops waiting: the server closes the response and the turn finishes unwritten,
+    so the shot list and the reply message are saved together (never an edit with no message)."""
+    whole = list(stream(payload(store0(), "make shot 2 eight seconds"), store0(), DirectorLLM(enabled=False)))
+    full = store0()
+    list(stream(payload(full, "make shot 2 eight seconds"), full, DirectorLLM(enabled=False)))
+    assert len(full.saved) == 1 and len(full.message_rows) == 1
+    for stop in range(1, len(whole)):
+        store = store0()
+        frames = stream(payload(store, "make shot 2 eight seconds"), store, DirectorLLM(enabled=False))
+        for _ in range(stop):
+            next(frames)
+        frames.close()  # what the WSGI server does when the write to a gone client fails
+        assert (len(store.saved), len(store.message_rows)) == (1, 1), f"stopped after frame {stop}"
+        assert store.saved[-1]["shots"][1]["duration_s"] == 8

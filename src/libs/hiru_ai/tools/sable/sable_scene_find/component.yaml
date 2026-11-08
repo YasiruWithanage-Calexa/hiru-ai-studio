@@ -1,0 +1,18 @@
+id: sable_scene_find
+kind: tool
+version: 1
+summary: "Finds scenes across the production by who is in them, where they are, the time of day, the episode or a word in the heading or title; answers scene labels like E1S2."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes, canon]
+effect: read
+max_result_tokens: 1200
+guide: |
+  Returns one line per matching scene, a page at a time: E1S2, heading, title, time of day, and (with `character`) how
+  the person is in it: they speak, or they are named in the action. Every filter you give must hold. A character or a
+  place is matched against the canon (code, name or alias), so "Nimal" finds the scenes of the character N01.
+  Use it for "which scenes have Nimal at the temple at night?" or "where does the market appear?". Example:
+  {"character": "Nimal", "place": "temple", "time_of_day": "night"}.
+  Do not use it for what the documents say (use search_kb), for one scene's lines (use dialogue_read or scene_read), or
+  to find a canon card (use canon_find).

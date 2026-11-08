@@ -1,0 +1,71 @@
+{
+ "id": "c14",
+ "slate": "1N-1",
+ "role": "transition_out",
+ "technique": "whip_out",
+ "take_s": 6,
+ "handle_in_s": 1.0,
+ "handle_out_s": 1.0,
+ "lines": [],
+ "speaks": false,
+ "ir": {
+  "setting": "A Colombo roadside in heavy monsoon rain: a wet road, tuk-tuks and traffic, Kasun's small three-wheeler and tea counter on the pavement",
+  "cinematography": {
+   "camera": "35mm lens, whip out",
+   "angle": "eye level",
+   "framing": "MS on Kasun",
+   "movement": "whip out",
+   "white_balance": "cool 5200K",
+   "color_tone": "cool, desaturated teal-grey with warm tea steam",
+   "depth_of_field": "Shallow, soft background",
+   "lens_artifacts": "rain streaks, headlight flare"
+  },
+  "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights",
+  "subjects": [
+   {
+    "id": "C01",
+    "description": "Kasun, plain T-shirt soaked dark, dark jeans, sandals, short black hair wet, light stubble",
+    "action": "Anudi's phone slips from her hand and lands near the three-wheeler; Kasun lifts it and runs after her",
+    "position": "centre of frame"
+   }
+  ],
+  "beats": [
+   {
+    "time": "0-1s",
+    "camera": "MS settled",
+    "director_line": "The frame holds before the action.",
+    "action": "The frame settles.",
+    "performance": "Stillness."
+   },
+   {
+    "time": "1-5s",
+    "camera": "MS, whip out",
+    "director_line": "A whip leaves him mid-run so the next scene can arrive on a whip.",
+    "action": "Anudi's phone slips from her hand and lands near the three-wheeler; Kasun lifts it and runs after her.",
+    "performance": "He does not decide; his feet do."
+   },
+   {
+    "time": "5-6s",
+    "camera": "MS holds",
+    "director_line": "The action finishes and the frame holds.",
+    "action": "The frame holds.",
+    "performance": "Stillness."
+   }
+  ],
+  "audio": "heavy rain, traffic, wet tyres",
+  "first_frame": {
+   "composition": "MS on Kasun, rain across the frame",
+   "subjects": [
+    "Kasun"
+   ],
+   "setting": "A Colombo roadside in heavy monsoon rain: a wet road, tuk-tuks and traffic, Kasun's small three-wheeler and tea counter on the pavement",
+   "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights"
+  }
+ },
+ "sound": {
+  "ambience": "heavy rain, traffic, wet tyres",
+  "effects": "",
+  "music": "",
+  "silence": true
+ }
+}

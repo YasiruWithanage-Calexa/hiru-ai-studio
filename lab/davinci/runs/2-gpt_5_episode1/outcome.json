@@ -1,0 +1,113 @@
+{
+ "stopped": "turns",
+ "detail": "The director used all 40 turns.",
+ "editor_notes": [],
+ "faults": [
+  {
+   "code": "coverage",
+   "sentence": "Line L16 is carried by no must clip.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:carrier:L16"
+  },
+  {
+   "code": "coverage",
+   "sentence": "Line L22 is carried by no must clip.",
+   "clips": [],
+   "owner": "director",
+   "fix": "repair",
+   "key": "coverage:carrier:L22"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c05 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c05"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c05:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c07 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c07"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c07:screen text"
+  },
+  {
+   "code": "design",
+   "sentence": "c03 has no design yet (write_clips).",
+   "clips": [
+    "c03"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:none:c03"
+  },
+  {
+   "code": "design",
+   "sentence": "c11 has no design yet (write_clips).",
+   "clips": [
+    "c11"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:none:c11"
+  },
+  {
+   "code": "design",
+   "sentence": "c12 has no design yet (write_clips).",
+   "clips": [
+    "c12"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:none:c12"
+  },
+  {
+   "code": "design",
+   "sentence": "c14 has no design yet (write_clips).",
+   "clips": [
+    "c14"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:none:c14"
+  },
+  {
+   "code": "design",
+   "sentence": "c15 has no design yet (write_clips).",
+   "clips": [
+    "c15"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:none:c15"
+  },
+  {
+   "code": "design",
+   "sentence": "c16 has no design yet (write_clips).",
+   "clips": [
+    "c16"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:none:c16"
+  },
+  {
+   "code": "design",
+   "sentence": "c18 has no design yet (write_clips).",
+   "clips": [
+    "c18"
+   ],
+   "owner": "clip_writer",
+   "fix": "repair",
+   "key": "design:none:c18"
+  }
+ ]
+}

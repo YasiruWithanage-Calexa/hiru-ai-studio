@@ -1,0 +1,16 @@
+id: sable_summary
+kind: agent
+version: 1
+summary: "Folds the older messages of a Sable thread into its stored summary, so a long thread is not sent whole (plan/2026-11-08 §4.5)."
+status: active
+owner: director
+model: low
+shape: structured
+phase: sable.summary
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

@@ -15,6 +15,7 @@ from uuid import UUID
 from hiru_ai.core.errors import PortMissing
 from hiru_ai.core.ports import (
     CanonStore,
+    ChatStore,
     DirectorStore,
     DocStore,
     Files,
@@ -51,6 +52,7 @@ class Ports:
     images: ImageGen | None = None
     jobs: Jobs | None = None
     staging: Staging | None = None
+    chat: ChatStore | None = None  # a production assistant's thread (Sable, plan/2026-11-08)
 
 
 @dataclass(frozen=True)
@@ -81,6 +83,9 @@ class RunContext:
     # What the `production_memory` middleware loaded for this run (the production's entries, its canon names): read once
     # per run, then reused by every agent call of it (plan/2026-11-05d M5).
     memory_cache: dict[str, Any] = field(default_factory=dict, compare=False, repr=False)
+    # What the `tiering` middleware decided for this run (plan/2026-11-08 §4.4): {tier_start, tier_end, escalated_by,
+    # reason}. Empty when the agent does not tier.
+    tiering: dict[str, Any] = field(default_factory=dict, compare=False, repr=False)
 
     def need(self, port: str, kind: str = "") -> Any:
         """A port of this run, or a clear error naming the one that is missing."""

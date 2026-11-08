@@ -27,7 +27,7 @@ from dataclasses import dataclass, field
 from dataclasses import replace as dc_replace
 from typing import Any
 
-from contracts.director import TurnPayload
+from contracts.director import TurnPayload, without_replaced
 from contracts.zora import effects as E
 from contracts.zora import ops as O
 from contracts.zora import treatment as T
@@ -37,6 +37,7 @@ from contracts.zora.render import addressable, consumer
 from contracts.zora.tasks import Task, merge_tasks
 from contracts.zora.wire import ConductorAnswer, to_op
 from hiru_ai.core import agents, llm
+from hiru_ai.core import memory as production_memory
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.settings import ZoraSettings, get_settings
 from hiru_ai.steps.zora.zora_board import gate
@@ -145,7 +146,9 @@ class Turn:
         self.base = gate.judge(world.scene, self.kernel.export(), mend=False)
         self.base_handles = self.kernel.handles()
         self.saver = Saver(self.ctx, world, actor_user_id=req.actor_user_id, kept=self.cfg.revisions_kept)
-        history = [m for m in self.director.messages(req.thread_id, 12) if str(m.get("id")) != str(req.user_message_id)]
+        # Without this turn's own message (it is the `message`) and the pairs a person replaced (Edit / Ask again).
+        history = without_replaced([m for m in self.director.messages(req.thread_id, 12)
+                                    if str(m.get("id")) != str(req.user_message_id)], req.replaces)
         self.history = history
         self.transcript = [f"{m.get('speaker') or m.get('kind')}: {m.get('text') or _blocks_text(m)}" for m in history]
         seats = self.director.board(req.production_id)
@@ -582,16 +585,18 @@ class Turn:
             text_block |= {"goal": st.goal, "met": st.met, "advice": False, "route": st.route}
         suggestions = T.suggestions(self.world.stored["plan"], self.world.scene,
                                     settled=self.kernel.person().settled)
+        lane = "reshape" if st.offer else st.lane
         blocks: list[Row] = [text_block, {"kind": "changes", "ops": ledger.event(), "gate": ledger.gate(),
-                                          "revision": st.revision, "suggestions": suggestions}]
+                                          "revision": st.revision, "suggestions": suggestions, "lane": lane}]
         if st.proposals:
             blocks.append({"kind": "options", "question": "", "options": st.proposals})
+        if used := production_memory.used_block(self.ctx):  # the production memory the turn's agents were given
+            blocks.append(used)
         message = {"id": str(uuid.uuid4()), "production_id": str(req.production_id), "thread_id": str(req.thread_id),
                    "kind": "director", "persona_id": lead.get("id"), "speaker": lead.get("name", "Director"),
                    "tone": "lead", "text": "", "blocks": blocks, "ops": [], "citations": []}
         self.director.add_message(message)
         self.emit("message", message)
-        lane = "reshape" if st.offer else st.lane
         self.emit("done", {"message_id": message["id"], "lane": lane, "revision": st.revision,
                            "suggestions": suggestions})
 

@@ -1,0 +1,22 @@
+[
+ {
+  "tool": "write_edit_plan",
+  "args": "{\"treatment\":{\"logline\":\"In pounding monsoon rain, a shy street vendor and a warm stranger spark a brief connection over a dropped phone, his quiet vow and her sudden call hinting at a future that neither yet sees.\",\"arc\":[{\"beat\":\"Rain, work, and a private vow\",\"blocks\":{\"first\":0,\"last\":3},\"feelin",
+  "result": "The edit plan is saved: 12 moments in 5 sequences.\nReport: 43 blocking fault(s), 0 report(s). Bin: 0 clips (0 must, 0 should, 0 nice). Seconds: 0 s of takes (0 s must); target 60 s, cap 90 s. Turns left after this one: 19.\nFix (blocking):\n- coverage: Block b0 has no must clip: the intended cut has n"
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\":[{\"moment\":1,\"role\":\"establishing\",\"setup\":\"A\",\"blocks\":[0,1],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"WIDE\",\"angle\":\"eye level across the curb\",\"lens\":\"24mm\",\"technique\":\"locked_off\",\"why\":\"Set rain, road and stall clearly so later singles have context and screen direction.\",\"take_s\":4,",
+  "result": "Added c01 [1A-1], c02 [1B-1], c03 [1C-1], c04 [1D-1], c05 [1E-1], c06 [1F-1], c07 [1G-1], c08 [1F-2], c09 [1F-3], c10 [1F-4], c11 [1H-1], c12 [1A-2].\nReport: 7 blocking fault(s), 6 report(s). Bin: 12 clips (12 must, 0 should, 0 nice). Seconds: 62 s of takes (62 s must); target 60 s, cap 90 s. Turns "
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\":[{\"moment\":2,\"role\":\"single\",\"setup\":\"B\",\"blocks\":[2,3],\"lines\":[\"L3\"],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level three-quarter front\",\"lens\":\"50mm\",\"technique\":\"slow_creep\",\"why\":\"Hold on his eyes so his inner vow can live under rain without cutting.\",\"take_s\":8,\"handle_in_s\":",
+  "result": "Added c13 [1I-1], c14 [1J-1]. Replaced c02 [1B-1], c03 [1C-1], c04 [1D-1], c06 [1F-1], c07 [1G-1], c10 [1F-4], c11 [1H-1].\nReport: 0 blocking fault(s), 9 report(s). Bin: 14 clips (12 must, 2 should, 0 nice). Seconds: 88 s of takes (76 s must); target 60 s, cap 90 s. Turns left after this one: 17.\nNo"
+ },
+ {
+  "tool": "finish",
+  "args": "{\"editor_notes\":[\"Coverage map (musts): Each script block has one primary (must) angle carrying it in order. n1 A-wide b0–b1; n2 Kasun CU slow-creep b2–b3 (L3 VO, lips closed); n3 WIDE reveal b4–b5; n4 Kasun follow MS b6; n5 Kasun MCU b7 (L7); n6 Anudi MCU b8–b11 (L9, L11 + visible look to stall for",
+  "result": "Finished. The intended cut, the shoot bin and your notes are written."
+ }
+]

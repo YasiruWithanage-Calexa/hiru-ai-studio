@@ -58,6 +58,7 @@ MAY_NAME_IT = {
     "Database/schema_v14.sql",  # v13 whole plus plan/2026-11-06c
     "Database/schema_v15.sql", "Database/schema_v16.sql",  # whole schemas: v14 + first frames, + the reader
     "Database/schema_v17.sql",  # + a scene's cost
+    "Database/schema_v18.sql",  # + Sable's chat (plan/2026-11-08)
     "Database/upgrade_v11_to_v12.sql", "scripts/david_spike.py", "scripts/david_compare.py",
     "supabase/tests/database/013_david.test.sql",
 }

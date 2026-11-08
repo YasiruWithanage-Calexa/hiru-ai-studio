@@ -1,0 +1,37 @@
+[
+ {
+  "tool": "write_edit_plan",
+  "args": "{\"treatment\": {\"logline\": \"A street-food vendor returns a stranger's phone and, for one rainy minute, the two of them forget their worlds.\", \"arc\": [{\"beat\": \"his small world\", \"blocks\": {\"first\": 0, \"last\": 3}, \"feeling\": \"hunger for more\"}, {\"beat\": \"the meeting\", \"blocks\": {\"first\": 4, \"last\": 14",
+  "result": "The edit plan is saved: 8 moments in 3 sequences.\nReport: 39 blocking fault(s), 0 report(s). Bin: 0 clips (0 must, 0 should, 0 nice). Seconds: 0 s of takes (0 s must); target 60 s, cap 90 s. Turns left after this one: 19.\nFix (blocking):\n- coverage: Block b0 has no must clip: the intended cut has no"
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\": [{\"id\": \"\", \"moment\": 1, \"role\": \"master\", \"setup\": \"B\", \"blocks\": [0, 1, 2], \"lines\": [], \"speaks\": false, \"over\": \"\", \"size\": \"WIDE\", \"angle\": \"eye level\", \"lens\": \"28mm: place and man together\", \"technique\": \"locked_off\", \"why\": \"The place is a character: the rain, the traffic, the litt",
+  "result": "Added c01 [1B-1], c02 [1F-1], c03 [1H-1].\nReport: 30 blocking fault(s), 0 report(s). Bin: 3 clips (3 must, 0 should, 0 nice). Seconds: 16 s of takes (16 s must); target 60 s, cap 90 s. Turns left after this one: 18.\nFix (blocking):\n- coverage: Block b5 has no must clip: the intended cut has nothing "
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\": [{\"id\": \"\", \"moment\": 4, \"role\": \"master\", \"setup\": \"K\", \"blocks\": [5, 6], \"lines\": [], \"speaks\": false, \"over\": \"\", \"size\": \"WIDE\", \"angle\": \"eye level\", \"lens\": \"35mm: the whole accident\", \"technique\": \"locked_off\", \"why\": \"The drop and the run in one wide, so the editor has the geograph",
+  "result": "Added c04 [1K-1], c05 [1P-1], c06 [1Q-1], c07 [1S-1], c08 [1U-1], c09 [1V-1].\nReport: 15 blocking fault(s), 0 report(s). Bin: 9 clips (7 must, 2 should, 0 nice). Seconds: 58 s of takes (48 s must); target 60 s, cap 90 s. Turns left after this one: 17.\nFix (blocking):\n- coverage: Block b15 has no mus"
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\": [{\"id\": \"\", \"moment\": 7, \"role\": \"reaction\", \"setup\": \"B\", \"blocks\": [15, 16], \"lines\": [\"L16\"], \"speaks\": false, \"over\": \"Anudi\", \"size\": \"MCU\", \"angle\": \"eye level\", \"lens\": \"85mm: she listens\", \"technique\": \"locked_off\", \"why\": \"The father is only a voice: we watch it land on her face.\"",
+  "result": "Added c10 [1B-2], c11 [1D-1], c12 [1G-1], c13 [1I-1].\nReport: 2 blocking fault(s), 0 report(s). Bin: 13 clips (11 must, 2 should, 0 nice). Seconds: 86 s of takes (76 s must); target 60 s, cap 90 s. Turns left after this one: 16.\nFix (blocking):\n- consistency [c06]: The clips of moment 5 do not descr"
+ },
+ {
+  "tool": "finish",
+  "args": "{\"editor_notes\": [\"(too early: the report shows two faults)\"]}",
+  "result": "Refused: blocking faults remain.\nReport: 2 blocking fault(s), 0 report(s). Bin: 13 clips (11 must, 2 should, 0 nice). Seconds: 86 s of takes (76 s must); target 60 s, cap 90 s. Turns left after this one: 15.\nFix (blocking):\n- consistency [c06]: The clips of moment 5 do not describe the lighting word"
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\": [{\"id\": \"c06\", \"moment\": 5, \"role\": \"single\", \"setup\": \"Q\", \"blocks\": [7], \"lines\": [\"L7\"], \"speaks\": true, \"over\": \"\", \"size\": \"MCU\", \"angle\": \"eye level\", \"lens\": \"85mm: his call\", \"technique\": \"locked_off\", \"why\": \"His face as he calls: shy and out of breath.\", \"take_s\": 4, \"handle_in_s",
+  "result": "Replaced c06 [1Q-1], c09 [1V-1].\nReport: 0 blocking fault(s), 0 report(s). Bin: 13 clips (11 must, 2 should, 0 nice). Seconds: 86 s of takes (76 s must); target 60 s, cap 90 s. Turns left after this one: 14.\nNothing blocks. You may call finish."
+ },
+ {
+  "tool": "finish",
+  "args": "{\"editor_notes\": [\"Masters (setups B, H, K, P, U, V, G) are the cut; the Q and S singles are the only alternates.\", \"Avoided: a dolly zoom on the phone call (Veo is unreliable); the father is never shown; a speed ramp on the run is post only.\", \"Dialogue plays under the chosen audio: only the master",
+  "result": "Finished. The intended cut, the shoot bin and your notes are written."
+ }
+]

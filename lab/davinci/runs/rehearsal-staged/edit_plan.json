@@ -1,0 +1,188 @@
+{
+ "treatment": {
+  "logline": "A street-food vendor returns a stranger's phone and, for one rainy minute, the two of them forget their worlds.",
+  "arc": [
+   {
+    "beat": "his small world",
+    "blocks": {
+     "first": 0,
+     "last": 3
+    },
+    "feeling": "hunger for more"
+   },
+   {
+    "beat": "the meeting",
+    "blocks": {
+     "first": 4,
+     "last": 14
+    },
+    "feeling": "warmth growing"
+   },
+   {
+    "beat": "the call and the leaving",
+    "blocks": {
+     "first": 15,
+     "last": 22
+    },
+    "feeling": "longing, a promise"
+   }
+  ],
+  "approach": "Wide for the world, long lenses for intimacy; a still camera except where a thing falls or someone runs.",
+  "colour_script": [
+   {
+    "sequence": "A",
+    "palette": "cool grey-teal with the tea's warmth",
+    "light": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights",
+    "grade": "cold and desaturated"
+   },
+   {
+    "sequence": "B",
+    "palette": "cool grey-teal with the tea's warmth",
+    "light": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights",
+    "grade": "warmth returning to skin"
+   },
+   {
+    "sequence": "C",
+    "palette": "cool grey-teal with the tea's warmth",
+    "light": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights",
+    "grade": "cooling again"
+   }
+  ],
+  "geography": "Kasun's stall is screen left; the road and her car are screen right; she crosses toward him and leaves to the right.",
+  "key_image": "Anudi small in the rain, walking away, Kasun still behind his stall.",
+  "advice": [
+   "The scene is ~60 s in the cut; the bin is far larger by design."
+  ]
+ },
+ "sequences": [
+  {
+   "id": "A",
+   "title": "The world",
+   "purpose": "Establish the rain, the stall and the other world",
+   "shots": {
+    "first": 1,
+    "last": 3
+   }
+  },
+  {
+   "id": "B",
+   "title": "The meeting",
+   "purpose": "A dropped phone becomes a first conversation",
+   "shots": {
+    "first": 4,
+    "last": 6
+   }
+  },
+  {
+   "id": "C",
+   "title": "The call",
+   "purpose": "The father's call closes the moment; she leaves",
+   "shots": {
+    "first": 7,
+    "last": 8
+   }
+  }
+ ],
+ "moments": [
+  {
+   "n": 1,
+   "sequence": "A",
+   "blocks": [
+    0,
+    1,
+    2
+   ],
+   "what": "Kasun works his stall in the monsoon",
+   "feeling": "wet, small, hungry for more",
+   "cut_uses": "the wide master, then Kasun close: the place first, the ambition second"
+  },
+  {
+   "n": 2,
+   "sequence": "A",
+   "blocks": [
+    3
+   ],
+   "what": "Kasun's thought",
+   "feeling": "private hope",
+   "cut_uses": "Kasun close with lips closed, the thought heard over rain"
+  },
+  {
+   "n": 3,
+   "sequence": "A",
+   "blocks": [
+    4
+   ],
+   "what": "Anudi steps out of the family car",
+   "feeling": "a different world arrives",
+   "cut_uses": "the wide across the road, Anudi small and bright against the grey"
+  },
+  {
+   "n": 4,
+   "sequence": "B",
+   "blocks": [
+    5,
+    6
+   ],
+   "what": "She drops her phone; Kasun picks it up and runs",
+   "feeling": "the trigger",
+   "cut_uses": "the master, the phone as an insert, Kasun running in a track"
+  },
+  {
+   "n": 5,
+   "sequence": "B",
+   "blocks": [
+    7,
+    8,
+    9
+   ],
+   "what": "He calls after her; she turns and thanks him",
+   "feeling": "the first contact",
+   "cut_uses": "the master two-shot, then the singles as the lines land"
+  },
+  {
+   "n": 6,
+   "sequence": "B",
+   "blocks": [
+    10,
+    11,
+    12,
+    13,
+    14
+   ],
+   "what": "She asks; he answers with his story",
+   "feeling": "warmth, a connection",
+   "cut_uses": "the two-shot as the master, Anudi's face as she listens"
+  },
+  {
+   "n": 7,
+   "sequence": "C",
+   "blocks": [
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "what": "Her father's call ends the moment",
+   "feeling": "the world closes in",
+   "cut_uses": "Anudi alone in the frame, the call cutting the warmth"
+  },
+  {
+   "n": 8,
+   "sequence": "C",
+   "blocks": [
+    20,
+    21,
+    22
+   ],
+   "what": "She walks away; Kasun watches",
+   "feeling": "longing, a promise",
+   "cut_uses": "the wide as she walks, then Kasun alone, the narrator over his face"
+  }
+ ],
+ "editor_notes": [
+  "Masters (setups B, H, K, P, U, V, G) are the cut; the Q and S singles and the insert are the only alternates: the bin is held to the given length plus 50%.",
+  "Avoided: a dolly zoom on the phone call (Veo is unreliable); the father is never shown; a speed ramp on the run is post only.",
+  "Dialogue plays under the chosen audio: only the masters and the speakers' singles perform lines."
+ ]
+}

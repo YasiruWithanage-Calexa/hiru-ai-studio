@@ -31,9 +31,10 @@ from collections.abc import Callable, Iterator
 from dataclasses import replace
 from typing import Any
 
-from contracts.director import TurnPayload
+from contracts.director import TurnPayload, without_replaced
 from contracts.production import ProductionSettings
 from hiru_ai.core import agents
+from hiru_ai.core import memory as production_memory
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.settings import get_settings
 from hiru_ai.rag.embeddings import embed_query, embed_texts
@@ -122,8 +123,10 @@ class Turn:
         self.lead = next((s["persona"] for s in seats if s["seat"] == "lead" and s.get("persona")), None) \
             or store.default_persona() or {}
         self.advisors = [s["persona"] for s in seats if s["seat"] == "advisor" and s.get("persona")]
-        # The API stored this turn's message before calling; it is the `message`, not history.
-        self.history = [m for m in store.messages(req.thread_id) if str(m.get("id")) != str(req.user_message_id)]
+        # The API stored this turn's message before calling; it is the `message`, not history. A pair a person
+        # replaced (Edit / Ask again) is not history either.
+        self.history = without_replaced([m for m in store.messages(req.thread_id)
+                                         if str(m.get("id")) != str(req.user_message_id)], req.replaces)
         self.memory = [m["text"] for m in store.memory(pid)]
         # What the person wrote, here and earlier: the only words a dialogue change may use.
         self.earlier = [str(m.get("text") or "") for m in self.history if m.get("kind") == "user" and m.get("text")]
@@ -422,6 +425,8 @@ class Turn:
         notes = [*st.flags, *({"text": c, "shots": []} for c in st.continuity)]
         for note in notes[:4]:
             blocks.append({"kind": "continuity", "text": note["text"], "shots": note["shots"]})
+        if used := production_memory.used_block(self.ctx):  # the production memory the turn's agents were given
+            blocks.append(used)
         message = {"id": str(uuid.uuid4()), "production_id": str(pid), "thread_id": str(req.thread_id),
                    "kind": "director", "persona_id": lead.get("id"), "speaker": lead.get("name", "Director"),
                    "tone": "lead", "text": "", "blocks": blocks, "ops": st.applied,

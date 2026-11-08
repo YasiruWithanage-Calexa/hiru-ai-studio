@@ -1,0 +1,9 @@
+- name: older messages are folded into the summary
+  input: { summary: "", messages: "Dee: Which scenes is Kasun in?\nSable: Kasun speaks in E1S2." }
+  reply: { summary: "Dee asked where Kasun appears: he speaks in E1S2." }
+  expect: { summary: "Dee asked where Kasun appears: he speaks in E1S2." }
+- name: no model keeps the summary as it was
+  input: { summary: "Dee asked about E1S2.", messages: "Dee: and E1S3?" }
+  model: unavailable
+  reply: { summary: "" }
+  expect: { summary: "Dee asked about E1S2." }

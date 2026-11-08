@@ -1,0 +1,186 @@
+"""Sable's routes (plan/2026-11-08 Phase 6), the function stood in for: who may ask (every role that can view), whose
+threads (per person, D3), the stored message first, the payload the function is trusted with, the cards a person
+accepts, and that no other chat's list or message route ever shows a Sable thread."""
+from __future__ import annotations
+
+from collections.abc import AsyncIterator
+from typing import Any
+from uuid import uuid4
+
+import pytest
+
+from api.services import director as director_service
+from api.services import sable as sable_service
+from tests.api.conftest import World, _settings, world  # noqa: F401  (the API's own fixtures)
+from tests.api.test_director import Applier, frames, use
+from tests.api.test_scenes import seed_scene, url
+
+Row = dict[str, Any]
+
+
+@pytest.fixture(autouse=True)
+def _sable_on(monkeypatch: pytest.MonkeyPatch, _settings: None) -> None:  # noqa: F811
+    from api.config import get_settings
+
+    monkeypatch.setenv("SABLE__ENABLED", "true")
+    get_settings.cache_clear()
+
+
+class Function:
+    """Stands in for the sable_chat function: records what it is sent."""
+
+    def __init__(self) -> None:
+        self.turns: list[Row] = []
+
+    async def stream(self, payload: Row) -> AsyncIterator[bytes]:
+        self.turns.append(payload)
+        yield director_service.sse("status", {"text": "Reading E1S1"})
+        yield director_service.sse("done", {"message_id": "m1", "used": []})
+
+
+@pytest.fixture
+def fn(world: World) -> Function:  # noqa: F811
+    f = Function()
+    world.client.app.dependency_overrides[sable_service.get_streamer] = lambda: f.stream  # type: ignore[attr-defined]
+    return f
+
+
+def ask(world: World, who: Any, message: str = "How far along is episode 1?", **body: Any) -> Any:  # noqa: F811
+    return world.client.post(url(world, "/sable/turn"), json={"message": message, **body}, headers=world.headers(who))
+
+
+def test_every_role_that_can_view_may_ask_and_only_direct_may_accept(world: World, fn: Function):  # noqa: F811
+    for who in (world.reviewer, world.crew, world.writer, world.director):
+        assert ask(world, who).status_code == 200
+    assert [t["can_stage"] for t in fn.turns] == [False, False, False, True]
+    assert [t["role"] for t in fn.turns] == ["reviewer", "production", "writer", "director"]
+    assert ask(world, world.outsider).status_code == 404  # a production the caller cannot see
+
+
+def test_a_turn_stores_the_message_first_then_streams(world: World, fn: Function):  # noqa: F811
+    r = ask(world, world.director, "Which scenes is Kamala in?")
+    got = frames(r.text)
+    assert [e for e, _ in got] == ["accepted", "status", "done"]
+    accepted = got[0][1]
+    assert accepted["message"]["text"] == "Which scenes is Kamala in?" and "meta" not in accepted["message"]
+    thread = world.client.get(url(world, f"/sable/threads/{accepted['thread_id']}"),
+                              headers=world.headers(world.director)).json()
+    assert thread["thread"]["title"] == "Which scenes is Kamala in?" and len(thread["messages"]) == 1
+    assert fn.turns[0]["user_message_id"] == accepted["message"]["id"]
+
+
+def test_the_scene_in_view_must_be_in_this_production(world: World, fn: Function):  # noqa: F811
+    sid = seed_scene(world)["scene"]["id"]
+    assert ask(world, world.director, scene_id=str(sid)).status_code == 200
+    assert fn.turns[-1]["scene_id"] == str(sid)
+    assert ask(world, world.director, scene_id=str(uuid4())).status_code == 404
+
+
+def test_threads_are_one_persons_own(world: World, fn: Function):  # noqa: F811
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    mine = world.client.get(url(world, "/sable/threads"), headers=world.headers(world.director)).json()
+    theirs = world.client.get(url(world, "/sable/threads"), headers=world.headers(world.producer)).json()
+    assert [t["id"] for t in mine] == [tid] and theirs == []
+    assert world.client.get(url(world, f"/sable/threads/{tid}"),
+                            headers=world.headers(world.producer)).status_code == 404
+    assert ask(world, world.producer, thread_id=tid).status_code == 404
+    assert world.client.delete(url(world, f"/sable/threads/{tid}"),
+                               headers=world.headers(world.producer)).status_code == 404
+    assert world.client.delete(url(world, f"/sable/threads/{tid}"),
+                               headers=world.headers(world.director)).status_code == 204
+    assert world.client.get(url(world, "/sable/threads"), headers=world.headers(world.director)).json() == []
+
+
+def test_no_other_chat_shows_a_sable_thread(world: World, fn: Function):  # noqa: F811
+    sid = seed_scene(world)["scene"]["id"]
+    tid = frames(ask(world, world.director, scene_id=str(sid)).text)[0][1]["thread_id"]
+    classic = world.client.get(url(world, f"/scenes/{sid}/threads"), headers=world.headers(world.director)).json()
+    assert tid not in [t["id"] for t in classic]
+    assert world.client.get(url(world, f"/threads/{tid}/messages"),
+                            headers=world.headers(world.director)).status_code == 404
+    assert world.client.delete(url(world, f"/threads/{tid}/messages"),
+                               headers=world.headers(world.director)).status_code == 404
+    assert world.repos.messages.rows  # type: ignore[attr-defined]  # the message is still there
+
+
+def test_switched_off_nothing_runs(world: World, fn: Function, monkeypatch: pytest.MonkeyPatch):  # noqa: F811
+    from api.config import get_settings
+
+    monkeypatch.setenv("SABLE__ENABLED", "false")
+    get_settings.cache_clear()
+    assert world.client.get(url(world, "/sable"), headers=world.headers(world.reviewer)).json() == {
+        "enabled": False, "can_accept": False}
+    assert ask(world, world.director).status_code == 409 and fn.turns == []
+
+
+def _reply(world: World, tid: str, blocks: list[Row]) -> str:  # noqa: F811
+    mid = str(uuid4())
+    world.repos.messages.add(id=mid, production_id=str(world.production), thread_id=tid,  # type: ignore[attr-defined]
+                             kind="director", speaker="Sable", text="", blocks=blocks, ops=[], citations=[],
+                             meta={"tier_start": "sable", "tier_end": "sable_deep", "tools": ["sable_overview"]})
+    return mid
+
+
+def test_meta_never_reaches_the_browser_and_a_handoff_says_where_it_opens(world: World, fn: Function):  # noqa: F811
+    sid = seed_scene(world)["scene"]["id"]
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    _reply(world, tid, [{"kind": "text", "text": "Open it."},
+                        {"kind": "handoff", "scene_id": str(sid), "scene": "E1S1", "request": "make S01 a CU"}])
+    body = world.client.get(url(world, f"/sable/threads/{tid}"), headers=world.headers(world.director)).text
+    assert "sable_deep" not in body and "tier" not in body and "meta" not in body
+    messages = world.client.get(url(world, f"/sable/threads/{tid}"), headers=world.headers(world.director)).json()
+    handoff = next(b for m in messages["messages"] for b in m["blocks"] if b["kind"] == "handoff")
+    assert handoff["target"] == "classic"  # no Jonathan plan (or Zora off): the classic chat
+
+
+def test_a_staged_change_is_applied_by_code_once(world: World, fn: Function):  # noqa: F811
+    sid = seed_scene(world)["scene"]["id"]
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    ops = [{"op": "set", "shot_id": str(uuid4()), "field": "framing", "value": "CU"}]
+    mid = _reply(world, tid, [{"kind": "text", "text": "A card."},
+                              {"kind": "sable_change", "scene_id": str(sid), "scene": "E1S1", "summary": "Open close.",
+                               "ops": ops, "status": "open"}])
+    applier = use(world, Applier())
+    path = url(world, f"/sable/messages/{mid}/cards/1/accept")
+    assert world.client.post(path, headers=world.headers(world.writer)).status_code == 403  # no DIRECT
+    r = world.client.post(path, headers=world.headers(world.director))
+    assert r.status_code == 200 and r.json()["ok"] is True
+    assert applier.payloads[0].ops == ops and str(applier.payloads[0].scene_id) == str(sid)
+    assert r.json()["message"]["blocks"][1]["status"] == "accepted"
+    assert world.client.post(path, headers=world.headers(world.director)).status_code == 409  # once
+    assert world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"),
+                             headers=world.headers(world.director)).status_code == 404  # a text block is no card
+
+
+def test_a_change_the_scene_refuses_now_is_marked_failed_with_the_reason(world: World, fn: Function):  # noqa: F811
+    from contracts.director import ChoiceResult
+
+    sid = seed_scene(world)["scene"]["id"]
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    mid = _reply(world, tid, [{"kind": "sable_change", "scene_id": str(sid), "scene": "E1S1", "summary": "x",
+                               "ops": [{"op": "set"}], "status": "open"}])
+    use(world, Applier(ChoiceResult(applied=[], summary="That shot no longer exists.")))
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
+    assert r.json()["ok"] is False and r.json()["message"]["blocks"][0]["status"] == "failed"
+    assert r.json()["text"] == "That shot no longer exists."
+
+
+def test_a_rule_accepted_is_remembered_and_a_dismissed_card_is_set_aside(world: World, fn: Function):  # noqa: F811
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    mid = _reply(world, tid, [{"kind": "sable_memory", "rule": "Kamala never shouts.", "scope": "production",
+                               "status": "open"},
+                              {"kind": "sable_memory", "rule": "Something else.", "scope": "production",
+                               "status": "open"}])
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
+    assert r.status_code == 200 and r.json()["text"] == "Remembered."
+    items = [m for m in world.repos.memory.rows.values()]  # type: ignore[attr-defined]
+    assert [(m["text"], m["kind"]) for m in items] == [("Kamala never shouts.", "decision")]
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/1/dismiss"), headers=world.headers(world.director))
+    assert r.json()["message"]["blocks"][1]["status"] == "dismissed" and len(world.repos.memory.rows) == 1  # type: ignore[attr-defined]
+
+
+def test_a_new_thread_is_titled_from_its_first_line():
+    assert sable_service.title_of("Which scenes?\nmore") == "Which scenes?"
+    long = "word " * 30
+    assert sable_service.title_of(long).endswith("…") and len(sable_service.title_of(long)) <= 61
+    assert sable_service.title_of("   ") == "New chat"

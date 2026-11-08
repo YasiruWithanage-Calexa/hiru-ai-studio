@@ -185,10 +185,41 @@ class ChangesBlock(BaseModel):
     gate: dict[str, Any] = Field(default_factory=dict)
     revision: int = 0
     suggestions: list[str] = Field(default_factory=list)  # buttons above the composer ("Draft the arc", ...)
+    lane: str = ""  # the turn's lane ("edit", "explain", "undo", ...); "" on messages stored before plan/2026-11-07 P4
 
 
-DirectorBlock = Annotated[TextBlock | DisagreementBlock | OptionsBlock | EditNoteBlock | ContinuityBlock | ChangesBlock,
-                          Field(discriminator="kind")]
+class UsedEntry(BaseModel):
+    """One production-memory entry a turn's agents were given: its words as stored, and the document it came from
+    (`document_title` is the file's name; "" for an entry a person wrote). No page: `MemoryEntry` has none."""
+
+    id: UUID
+    text: str
+    document_id: UUID | None = None
+    document_title: str = ""
+
+
+class UsedBlock(BaseModel):
+    """What a reply relied on (plan/2026-11-07 Phase 3): the production-memory entries the middleware put in front of
+    the turn's agents, recorded by code as it injected them (`hiru_ai.core.memory.used_block`), never by a model. A turn
+    that was given none has no such block."""
+
+    kind: Literal["used"] = "used"
+    memory: list[UsedEntry] = Field(default_factory=list)
+
+
+class ReplacesBlock(BaseModel):
+    """On a person's message that takes the place of their previous one (plan/2026-11-07 Phase 4): "edit" when they
+    changed the words, "again" when they asked the same thing again. Nothing is deleted: the replaced message and its
+    reply stay in the thread (the interface greys them), and the turns leave them out of the history they read
+    (`without_replaced`)."""
+
+    kind: Literal["replaces"] = "replaces"
+    message_id: UUID
+    how: Literal["edit", "again"] = "edit"
+
+
+DirectorBlock = Annotated[TextBlock | DisagreementBlock | OptionsBlock | EditNoteBlock | ContinuityBlock | ChangesBlock
+                          | UsedBlock | ReplacesBlock, Field(discriminator="kind")]
 
 
 class MessageKind(StrEnum):
@@ -237,6 +268,8 @@ class TurnRequest(BaseModel):
 
     message: str = Field(min_length=1, max_length=4000)
     thread_id: UUID | None = None  # None: the scene's main thread (created on first use)
+    # Edit / Ask again (plan/2026-11-07 Phase 4): the person's last message in the thread, which this one replaces.
+    replaces: UUID | None = None
 
 
 # `accepted` is the API's own first frame: {thread_id, message} (the stored user message).
@@ -339,6 +372,28 @@ class TurnPayload(BaseModel):
     can_edit_script: bool = False  # Permission.EDIT_SCRIPT: the script's words are changed only with it
     message: str
     user_message_id: UUID
+    replaces: UUID | None = None  # the message this one replaces (Edit / Ask again): left out of the history
+
+
+def without_replaced(history: list[dict[str, Any]], replaces: UUID | str | None = None) -> list[dict[str, Any]]:
+    """The thread as a turn should read it: without the messages a person replaced (Edit / Ask again, plan/2026-11-07
+    Phase 4) or the director replies that answered them. A replaced message is named by a later message's `replaces`
+    block, or by this turn's own `replaces`. Pure: rows in, rows out, order kept."""
+    gone = {str(replaces)} if replaces else set()
+    for message in history:
+        for block in message.get("blocks") or []:
+            if isinstance(block, dict) and block.get("kind") == "replaces" and block.get("message_id"):
+                gone.add(str(block["message_id"]))
+    if not gone:
+        return list(history)
+    kept: list[dict[str, Any]] = []
+    skipping = False
+    for message in history:
+        if message.get("kind") == MessageKind.USER.value:
+            skipping = str(message.get("id")) in gone
+        if not skipping:
+            kept.append(message)
+    return kept
 
 
 # ── choosing a side in a disagreement ─────────────────────────────────────────────────────

@@ -259,10 +259,14 @@ class Registry:
             if m.id.startswith(f"{other}_"):
                 out.append(Problem(where, f"its id starts with '{other}_', which only parts of the {other} group "
                                           f"carry: put it in <layer>/{other}/ or rename it"))
+        layer = mf.LAYERS.get(m.kind, "")
+        shared = set(self.groups[(layer, comp.group)].shared) if (layer, comp.group) in self.groups else set()
         for ref_kind, ref_id in m.refs():
             target = self.components.get((ref_kind, ref_id))
             if target is None or target.group == comp.group:
                 continue
+            if comp.group and not target.group and ref_id in shared:
+                continue  # an ungrouped part the group's group.yaml says it shares (plan/2026-11-08 §4.3)
             if comp.group:
                 out.append(Problem(where, f"names {ref_kind} {ref_id!r}, which is outside the {comp.group} group: a "
                                           "grouped part names only its own group (copy what it needs into the group, "
@@ -443,8 +447,12 @@ class Registry:
     def _check_agent_tools(self, where: str, m: mf.AgentManifest) -> list[Problem]:
         """Least privilege and a short list (plan/2026-11-04 §4.3, §1): no tool that writes, at most `MAX_TOOLS`."""
         out: list[Problem] = []
-        if len(m.tools) > mf.MAX_TOOLS:
-            out.append(Problem(where, f"lists {len(m.tools)} tools; an agent sees at most {mf.MAX_TOOLS}"))
+        cap = max(mf.MAX_TOOLS, min(m.tool_cap, mf.MAX_TOOLS_WIDE))
+        if len(m.tools) > cap:
+            out.append(Problem(where, f"lists {len(m.tools)} tools; an agent sees at most {cap}"
+                                      + ("" if cap > mf.MAX_TOOLS else " (a wider list says so with `tool_cap`)")))
+        if m.deep_model or m.escalate_tool or "tiering" in m.middleware:
+            out += self._check_tiering(where, m)
         if len(set(m.tools)) != len(m.tools):
             out.append(Problem(where, "lists a tool twice"))
         for tool_id in m.tools:
@@ -461,6 +469,24 @@ class Registry:
                 if tool is not None and isinstance(tool.manifest, mf.ToolManifest) and tool.manifest.effect != "stage":
                     out.append(Problem(where, f"gate names {tool_id!r}, whose effect is {tool.manifest.effect}; "
                                               "only a stage tool is gated"))
+        return out
+
+    def _check_tiering(self, where: str, m: mf.AgentManifest) -> list[Problem]:
+        """`tiering` (plan/2026-11-08 §4.4): a react agent, a known deep tier other than its own, and an escalation tool
+        that is one of its tools."""
+        from hiru_ai.core.models import tier_names
+
+        out: list[Problem] = []
+        if "tiering" not in m.middleware:
+            out.append(Problem(where, "names a deep_model or an escalate_tool but not the tiering middleware"))
+        if m.shape != "react":
+            out.append(Problem(where, "tiering switches the model inside a tool loop: the agent must be react"))
+        if not m.deep_model:
+            out.append(Problem(where, "uses tiering without a deep_model"))
+        elif m.deep_model not in tier_names() or m.deep_model == m.model:
+            out.append(Problem(where, f"deep_model {m.deep_model!r} must be a tier of models.yaml other than its own"))
+        if m.escalate_tool and m.escalate_tool not in m.tools:
+            out.append(Problem(where, f"escalate_tool {m.escalate_tool!r} is not one of its tools"))
         return out
 
     def _check_evals(self, where: str, folder: Path) -> list[Problem]:

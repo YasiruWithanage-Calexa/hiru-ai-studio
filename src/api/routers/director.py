@@ -113,9 +113,15 @@ async def create_thread(production_id: UUID, scene_id: UUID, body: ThreadCreate,
     return ChatThread.model_validate(row)
 
 
+def _scene_chat(thread: dict[str, Any] | None) -> bool:
+    """A thread of a scene's chat (classic or Zora). A Sable thread (`chat = 'sable'`, schema v18) is one person's and
+    is read only through `routers/sable.py` (plan/2026-11-08 §4.8)."""
+    return thread is not None and thread.get("chat", "scene") == "scene"
+
+
 @router.get(P + "/threads/{thread_id}/messages", response_model=list[ChatMessage])
 async def list_messages(production_id: UUID, thread_id: UUID, _: CanView, repos: ReposDep) -> list[ChatMessage]:
-    if await repos.threads.get(production_id, thread_id) is None:
+    if not _scene_chat(await repos.threads.get(production_id, thread_id)):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Thread not found.")
     return [ChatMessage.model_validate(m) for m in await repos.messages.list(thread_id)]
 
@@ -123,7 +129,7 @@ async def list_messages(production_id: UUID, thread_id: UUID, _: CanView, repos:
 @router.delete(P + "/threads/{thread_id}/messages", status_code=status.HTTP_204_NO_CONTENT)
 async def clear_thread(production_id: UUID, thread_id: UUID, access: CanDirect, repos: ReposDep) -> None:
     """Empty the conversation (the thread stays, so the next message goes to the same one)."""
-    if await repos.threads.get(production_id, thread_id) is None:
+    if not _scene_chat(await repos.threads.get(production_id, thread_id)):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Thread not found.")
     await repos.messages.clear(thread_id)
     await repos.audit.record(action="director.clear_thread", entity="chat_thread", entity_id=str(thread_id),
@@ -149,16 +155,20 @@ async def chat(production_id: UUID, scene_id: UUID, body: TurnRequest, access: C
             "production_id": str(production_id), "scene_id": str(scene_id), "title": "Director",
             "created_by": str(access.user.id)})
     thread_id = UUID(str(thread["id"]))
+    try:  # Edit / Ask again: the person's last message is replaced, never deleted
+        blocks = await director_service.replaces_blocks(repos, thread_id, body.replaces, body.message.strip())
+    except director_service.NotReplaceable as exc:
+        raise HTTPException(status.HTTP_409_CONFLICT, str(exc)) from exc
     message = await repos.messages.create({
         "id": str(uuid4()), "production_id": str(production_id), "thread_id": str(thread_id),
         "kind": MessageKind.USER.value, "author_user_id": str(access.user.id),
-        "speaker": access.user.display_name, "text": body.message.strip()})
+        "speaker": access.user.display_name, "text": body.message.strip(), "blocks": blocks})
     await repos.threads.touch(thread_id)
     payload = TurnPayload(production_id=production_id, scene_id=scene_id, thread_id=thread_id,
                           actor_user_id=access.user.id, actor_name=access.user.display_name,
                           can_edit=Permission.DIRECT in access.permissions,
                           can_edit_script=Permission.EDIT_SCRIPT in access.permissions, message=body.message.strip(),
-                          user_message_id=UUID(str(message["id"])))
+                          user_message_id=UUID(str(message["id"])), replaces=body.replaces)
     accepted = ChatMessage.model_validate(message).model_dump(mode="json")
 
     async def frames() -> AsyncIterator[bytes]:
@@ -296,3 +306,19 @@ async def delete_memory(production_id: UUID, item_id: UUID, access: CanDirect, r
     await repos.memory.delete(item_id)
     await repos.audit.record(action="memory.delete", entity="memory_item", entity_id=str(item_id),
                              actor_user_id=access.user.id, production_id=production_id, diff={"text": row["text"]})
+
+
+@router.post(P + "/production-memory/{entry_id}/reject", status_code=status.HTTP_204_NO_CONTENT)
+async def reject_direction(production_id: UUID, entry_id: UUID, access: CanDirect, repos: ReposDep) -> None:
+    """A person removes a production-memory entry from a reply's "used" chips (plan/2026-11-07 Phase 3). It is
+    rejected, not deleted: no agent is given it again, and the document's next reading does not bring it back as a
+    draft (`hiru_ai.core.memory.fresh`). The reply that used it keeps its chip: it was true when the reply was
+    written."""
+    row = await repos.direction.get(production_id, entry_id)
+    if row is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Not found.")
+    if row.get("status") != "rejected":
+        await repos.direction.update(entry_id, {"status": "rejected"})
+        await repos.audit.record(action="memory.reject", entity="production_memory", entity_id=str(entry_id),
+                                 actor_user_id=access.user.id, production_id=production_id,
+                                 diff={"says": row.get("says"), "was": row.get("status")})

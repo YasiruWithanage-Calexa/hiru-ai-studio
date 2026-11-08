@@ -170,12 +170,31 @@ class MessagesRepo(Protocol):
     async def clear(self, thread_id: UUID) -> None: ...  # every message of the thread
 
 
+class SableRepo(Protocol):
+    """Sable's threads (plan/2026-11-08 §4.8): rows of `chat_threads` with `chat = 'sable'` and no scene, one person's
+    each (`created_by`). Zora's and the classic chat's threads are `chat = 'scene'` (the column's default) and are
+    listed by scene, so neither list can show a Sable thread. Messages go through `MessagesRepo`. Schema v18."""
+
+    async def threads(self, production_id: UUID, user_id: UUID) -> list[Row]: ...  # newest first
+    async def thread(self, production_id: UUID, thread_id: UUID) -> Row | None: ...  # a Sable thread only
+    async def create(self, fields: Row) -> Row: ...
+    async def delete(self, thread_id: UUID) -> None: ...  # the thread and its messages
+
+
 class MemoryRepo(Protocol):
     async def get(self, production_id: UUID, item_id: UUID) -> Row | None: ...
     # Stores the item and indexes it in `chunks` (corpus 'memory', source 'memory:<id>').
     async def add(self, item: Row, embedding: list[float] | None, embedding_model: str) -> Row: ...
     async def delete(self, item_id: UUID) -> None: ...  # the item and its chunk
     async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]: ...
+
+
+class DirectionRepo(Protocol):
+    """`production_memory` (schema v12, plan/2026-11-05d): what a production's documents say about how to make it. The
+    API only reads one entry and changes its status (a person removes one from a reply's chips, plan/2026-11-07)."""
+
+    async def get(self, production_id: UUID, entry_id: UUID) -> Row | None: ...  # None also when the table is missing
+    async def update(self, entry_id: UUID, fields: Row) -> Row: ...
 
 
 class CanonRepo(Protocol):
@@ -304,9 +323,11 @@ class Repos:
     threads: ThreadsRepo
     messages: MessagesRepo
     memory: MemoryRepo
+    direction: DirectionRepo
     frames: FramesRepo
     prompts: PromptsRepo
     takes: TakesRepo
     renders: RendersRepo
     revisions: RevisionsRepo
     costs: CostsRepo
+    sable: SableRepo

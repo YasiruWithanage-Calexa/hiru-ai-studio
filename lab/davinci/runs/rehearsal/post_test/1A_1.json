@@ -1,0 +1,62 @@
+{
+ "id": "c01",
+ "slate": "1A-1",
+ "role": "establishing",
+ "technique": "drone_establishing",
+ "take_s": 8,
+ "handle_in_s": 1.0,
+ "handle_out_s": 1.0,
+ "lines": [],
+ "speaks": false,
+ "ir": {
+  "setting": "A rain-soaked Colombo road seen from above: tuk-tuks, a family car, shop fronts, the three-wheeler small on the kerb",
+  "cinematography": {
+   "camera": "24mm lens, drone establishing",
+   "angle": "high",
+   "framing": "EWS on the wet road and the rain",
+   "movement": "drone establishing",
+   "white_balance": "cool 5200K",
+   "color_tone": "cool, desaturated teal-grey with warm tea steam",
+   "depth_of_field": "Shallow, soft background",
+   "lens_artifacts": "rain streaks, headlight flare"
+  },
+  "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights",
+  "subjects": [],
+  "beats": [
+   {
+    "time": "0-1s",
+    "camera": "EWS settled",
+    "director_line": "The frame holds before the action.",
+    "action": "The frame settles.",
+    "performance": "Stillness."
+   },
+   {
+    "time": "1-7s",
+    "camera": "EWS, drone establishing",
+    "director_line": "Open on the road in the rain from above: the world he is small in.",
+    "action": "Kasun pours tea for a customer under the awning.",
+    "performance": "He works with practised ease; his eyes drift past the customer."
+   },
+   {
+    "time": "7-8s",
+    "camera": "EWS holds",
+    "director_line": "The action finishes and the frame holds.",
+    "action": "The frame holds.",
+    "performance": "Stillness."
+   }
+  ],
+  "audio": "heavy rain, traffic, wet tyres",
+  "first_frame": {
+   "composition": "EWS on the wet road and the rain, rain across the frame",
+   "subjects": [],
+   "setting": "A rain-soaked Colombo road seen from above: tuk-tuks, a family car, shop fronts, the three-wheeler small on the kerb",
+   "lighting": "Flat, heavy-overcast monsoon daylight, soft and cool, wet surfaces catching the glow of shop fronts and headlights"
+  }
+ },
+ "sound": {
+  "ambience": "heavy rain, traffic, wet tyres",
+  "effects": "",
+  "music": "",
+  "silence": true
+ }
+}

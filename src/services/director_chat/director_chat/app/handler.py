@@ -66,11 +66,27 @@ def run_graph_turn(req: TurnPayload) -> Iterator[tuple[str, dict[str, Any]]]:
     return graph.run(req, supabase_rest.build_context(req, jobs=None))
 
 
-def stream(req: TurnPayload, store: Store, llm: LLM) -> Iterator[str]:
+def finish(events: Iterator[Any], scene_id: Any) -> None:
+    """The person pressed Stop (or the connection dropped): the server closed the response, so nothing more can be
+    written. Run the rest of the turn anyway, so its saves land together: the shot list and the reply message, never
+    an edit without its message (plan/2026-11-07 Phase 2). Never raises."""
     try:
-        events = run_graph_turn(req) if os.environ.get("AI_ENGINE", "legacy") == "graph" else turn.run(req, store, llm)
+        for _ in events:
+            pass
+    except Exception:
+        _logger.exception("a stopped director turn failed while finishing scene=%s", scene_id)
+
+
+def stream(req: TurnPayload, store: Store, llm: LLM) -> Iterator[str]:
+    events: Iterator[tuple[str, dict[str, Any]]] = iter(())
+    try:
+        events = iter(run_graph_turn(req) if os.environ.get("AI_ENGINE", "legacy") == "graph"
+                      else turn.run(req, store, llm))
         for event, data in events:
             yield sse(event, data)
+    except GeneratorExit:
+        finish(events, req.scene_id)
+        raise
     except Exception:
         _logger.exception("director turn failed scene=%s", req.scene_id)
         yield sse("error", {"message": CLIENT_ERROR})

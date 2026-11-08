@@ -19,7 +19,7 @@ from hiru_ai.core.context import RunContext
 from hiru_ai.core.errors import ModelUnavailable
 from hiru_ai.core.middleware.base import MISSING
 from hiru_ai.core.registry import Component, default
-from hiru_ai.core.testing import ScriptedChatModel
+from hiru_ai.core.testing import RoutedChatModel, ScriptedChatModel
 
 REGISTRY = default()
 AGENTS = [pytest.param(c, id=c.manifest.id) for (k, _), c in sorted(REGISTRY.components.items()) if k == "agent"]
@@ -101,6 +101,13 @@ def test_an_eval_case_runs_against_a_scripted_model(comp: Component, case: dict[
     ctx = RunContext(strict=True)  # static_first raises instead of logging
     if case.get("model") == "unavailable":
         got = agent.run(inp, ctx)  # no key in tests: the door says so and absent_safe takes the fallback
+    elif agent.manifest.shape == "react":  # a tool loop (Sable): its rounds scripted as `hiru-ai eval` scripts them
+        from hiru_ai.cli import evals
+
+        model = RoutedChatModel(routes={"all": evals._script(agent, case)}, choose=lambda m: "all")
+        ctx = evals._context(evals.with_example(case), [])
+        with llm.use_models(model):
+            got = agent.run(inp, ctx)
     else:
         model = ScriptedChatModel(replies=[case["reply"]])
         with llm.use_models(model):

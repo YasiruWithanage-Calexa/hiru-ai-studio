@@ -86,6 +86,15 @@ class AgentManifest(_Base):
     max_model_calls: int = Field(4, ge=1, le=10)  # model rounds in one run
     gate: list[ComponentId] = []  # `stage` tools that stop for a person before they run (hitl); a staged card is
     #                               already a person's gate, so this is for a system that wants a second one
+    # `tiering` (plan/2026-11-08 §4.4): the tier a turn moves up to, once, when the work needs it; the tool whose call
+    # asks for it; and which signals are on (model, refusals, cap, stage). Empty `deep_model` = no tiering.
+    deep_model: str = ""
+    escalate_tool: ComponentId | None = None
+    escalate_on: list[Literal["model", "refusals", "cap", "stage"]] = ["model", "refusals", "cap", "stage"]
+    # How many tools this agent may see: MAX_TOOLS unless the manifest says more, up to MAX_TOOLS_WIDE. A wide list is
+    # for an agent whose questions span the production (Sable, plan/2026-11-08 §2.3); it must stay fixed and sorted
+    # so it is part of the cached prompt prefix.
+    tool_cap: int = Field(8, ge=1, le=24)
     with_tools: ToolsForm | None = None  # the same agent as a tool loop, switched on by AGENT_TOOLS (see ToolsForm)
 
     def form(self, with_tools: bool) -> AgentManifest:
@@ -107,6 +116,7 @@ class AgentManifest(_Base):
 
 Effect = Literal["read", "stage", "write"]
 MAX_TOOLS = 8  # tools one agent may see (OpenAI's soft limit is 20; fewer tools, fewer wrong choices)
+MAX_TOOLS_WIDE = 24  # the most an agent's `tool_cap` may allow (plan/2026-11-08 §2.3: past ~30, OpenAI's tool_search)
 
 
 class ToolManifest(_Base):
@@ -282,6 +292,11 @@ class GroupManifest(BaseModel):
     status: Literal["active", "disabled"] = "active"
     folders: list[str] = []
     outside: list[str] = []
+    # Parts OUTSIDE any group that this group's parts in this layer may name as they are (plan/2026-11-08 §4.3): an
+    # assistant that reads the whole production uses the shared read and stage tools instead of copies. A planner group
+    # leaves it empty and copies what it needs (its parts must not change under it). Removing the group never touches
+    # a shared part.
+    shared: list[ComponentId] = []
 
 
 def load_group(path: Path) -> GroupManifest:

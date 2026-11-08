@@ -1,0 +1,102 @@
+{
+ "stopped": "finished",
+ "detail": "",
+ "editor_notes": [
+  "Intended cut lands around 55–65 s; bin is 60 s. Dialogue lines are performed only on the speaker’s singles (D and C setups).",
+  "Thought L3 (b3), Father’s line L16 (b16), and Narrator L22 (b22) are heard-only; never perform. Maintain on-screen faces with closed lips during these.",
+  "Keep one move per shot. A1 uses a slow creep; C2 handheld tracking is the only kinetic shot in the meet-cute; the rest locked-off or shallow isolation.",
+  "Post tools: allow subtle digital punch-ins on D and C singles (4–8%); no slow-motion under dialogue; no split screens; match levels between rain beds before and after Father’s call.",
+  "Risky overlaps: b16 is a long VO—hold D3 clean for 8 s; do not intercut with mouths. b22 also needs a clean 8 s bed (A2).",
+  "If pacing drags, trim from the heads/tails using the 1 s handles; never cut into the VO words. The phone-insert E1 and atmosphere F1 are expendable first."
+ ],
+ "faults": [
+  {
+   "code": "clock",
+   "sentence": "c03 needs 9.4 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c03"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c03"
+  },
+  {
+   "code": "clock",
+   "sentence": "c07 needs 6.7 s for what it carries and the take is 6 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c07"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c07"
+  },
+  {
+   "code": "clock",
+   "sentence": "c08 needs 11.4 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c08"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c08"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c04 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c04"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c04:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c11 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c11"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c11:screen text"
+  }
+ ],
+ "stages": [
+  {
+   "stage": "plan",
+   "start": "15:59:57",
+   "end": "16:02:37",
+   "seconds": 159.9,
+   "calls": 1,
+   "dollars": 0.1584,
+   "detail": "11 clips, 66 s; 1 blocking fault(s); mend: 3 fix(es)"
+  },
+  {
+   "stage": "repair",
+   "start": "16:02:37",
+   "end": "16:03:29",
+   "seconds": 52.3,
+   "calls": 1,
+   "dollars": 0.0677,
+   "detail": "round 1: 1 -> 0 blocking fault(s), kept"
+  },
+  {
+   "stage": "design",
+   "start": "16:03:29",
+   "end": "16:04:40",
+   "seconds": 71.6,
+   "calls": 4,
+   "dollars": 0.054,
+   "detail": "11 clips in 4 parallel call(s); 0 design fault(s)"
+  },
+  {
+   "stage": "redesign",
+   "start": "16:04:40",
+   "end": "16:04:40",
+   "seconds": 0.0,
+   "calls": 0,
+   "dollars": 0.0,
+   "detail": "no design fault: nothing to redo"
+  }
+ ]
+}

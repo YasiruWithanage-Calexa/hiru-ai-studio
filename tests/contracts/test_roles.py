@@ -24,6 +24,7 @@ EXPECTED: dict[Permission, set[ProductionRole]] = {
     P.APPROVE_SCENE: {R.PRODUCER, R.DIRECTOR},
     P.RENDER_VIDEO: {R.PRODUCER, R.DIRECTOR},  # spends money: plan/2026-11-06c D4
     P.VIEW_COSTS: {R.PRODUCER, R.DIRECTOR},  # the people who can spend see a scene's cost: plan/2026-11-06d D1
+    P.USE_SABLE: set(R),  # every role that can view may ask Sable; its cards need DIRECT (plan/2026-11-08 D8)
 }
 
 

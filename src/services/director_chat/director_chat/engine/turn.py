@@ -50,7 +50,7 @@ from uuid import UUID
 
 from contracts import director_capabilities as caps
 from contracts import sceneplan
-from contracts.director import SCRIPT_OPS, ChoicePayload, TurnPayload
+from contracts.director import SCRIPT_OPS, ChoicePayload, TurnPayload, without_replaced
 from contracts.production import ProductionSettings
 from contracts.shotplan import FitResult
 from director_chat.engine import agents, conductor, loop, options, pending, proposals, ripple, translate
@@ -297,7 +297,9 @@ def run(req: TurnPayload, store: StoreLike, llm: LLMLike) -> Iterator[Event]:
         or store.default_persona() or {}
     advisors = [s["persona"] for s in seats if s["seat"] == "advisor" and s.get("persona")]
     # The API stored this turn's message before calling; it is the `message`, not history.
-    history = [m for m in store.messages(req.thread_id) if str(m.get("id")) != str(req.user_message_id)]
+    # A pair a person replaced (Edit / Ask again) is not history either.
+    history = without_replaced([m for m in store.messages(req.thread_id)
+                                if str(m.get("id")) != str(req.user_message_id)], req.replaces)
     memory = [m["text"] for m in store.memory(pid)]
     # What the person wrote, here and earlier: the only words a dialogue change may use.
     earlier = [str(m.get("text") or "") for m in history if m.get("kind") == "user" and m.get("text")]

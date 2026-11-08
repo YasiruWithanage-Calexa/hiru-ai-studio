@@ -1,0 +1,37 @@
+[
+ {
+  "tool": "write_edit_plan",
+  "args": "{\"treatment\":{\"logline\":\"In monsoon rain, a humble street vendor returns a fallen phone to a young woman from comfort; a spark forms, but a parent’s call breaks it, leaving him watching the rain as fate whispers change.\",\"arc\":[{\"beat\":\"Rain, work, and a private vow\",\"blocks\":{\"first\":0,\"last\":3},\"f",
+  "result": "The edit plan is saved: 11 moments in 5 sequences.\nReport: 42 blocking fault(s), 0 report(s). Bin: 0 clips (0 must, 0 should, 0 nice). Seconds: 0 s of takes (0 s must); target 60 s, cap 90 s. Turns left after this one: 19.\nFix (blocking):\n- coverage: Block b0 has no must clip: the intended cut has n"
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\":[{\"moment\":1,\"role\":\"master\",\"setup\":\"A\",\"blocks\":[0,1,2],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"WIDE\",\"angle\":\"eye level\",\"lens\":\"24mm\",\"technique\":\"locked_off\",\"why\":\"Place the geography and the rain; let the world breathe while we meet Kasun.\",\"take_s\":6,\"handle_in_s\":1,\"handle_out_",
+  "result": "Added c01 [1A-1], c02 [1B-1], c03 [1C-1], c04 [1D-1], c05 [1E-1], c06 [1E-2], c07 [1F-1], c08 [1E-3], c09 [1J-1], c10 [1E-4], c11 [1H-1], c12 [1I-1].\nReport: 5 blocking fault(s), 3 report(s). Bin: 12 clips (11 must, 1 should, 0 nice). Seconds: 64 s of takes (60 s must); target 60 s, cap 90 s. Turns "
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\":[{\"moment\":2,\"role\":\"single\",\"setup\":\"B\",\"blocks\":[3],\"lines\":[\"L3\"],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level\",\"lens\":\"50mm\",\"technique\":\"dolly_in\",\"why\":\"Draw us into his private vow without words; a gentle move mirrors resolve forming.\",\"take_s\":6,\"handle_in_s\":1,\"handle_o",
+  "result": "Replaced c02 [1B-1], c08 [1E-3], c12 [1I-1], c07 [1F-1], c11 [1H-1], c03 [1C-1].\nReport: 0 blocking fault(s), 5 report(s). Bin: 12 clips (11 must, 1 should, 0 nice). Seconds: 64 s of takes (60 s must); target 60 s, cap 90 s. Turns left after this one: 17.\nNothing blocks. Fix the reports below first "
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\":[{\"moment\":8,\"role\":\"single\",\"setup\":\"E\",\"blocks\":[16,17],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Keep on her face so the phone voice transforms the moment; focused only on the call and its effect.\",\"take_s\":8,\"",
+  "result": "Added c13 [1E-5], c14 [1K-1]. Replaced c08 [1E-3], c12 [1I-1].\nReport: 3 blocking fault(s), 4 report(s). Bin: 14 clips (13 must, 1 should, 0 nice). Seconds: 74 s of takes (70 s must); target 60 s, cap 90 s. Turns left after this one: 16.\nFix (blocking):\n- clock [c08]: c08: its handles (0.8 s + 0.8 s"
+ },
+ {
+  "tool": "put_clips",
+  "args": "{\"clips\":[{\"moment\":8,\"role\":\"single\",\"setup\":\"E\",\"blocks\":[16,17],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Keep on her face so the phone voice transforms the moment; focused only on the call and its effect.\",\"take_s\":8,\"",
+  "result": "Replaced c08 [1E-3], c13 [1E-5], c14 [1K-1].\nReport: 0 blocking fault(s), 4 report(s). Bin: 14 clips (13 must, 1 should, 0 nice). Seconds: 74 s of takes (70 s must); target 60 s, cap 90 s. Turns left after this one: 15.\nNothing blocks. Fix the reports below first where you can, then call finish.\nYou"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c09\"]}",
+  "result": "Removed c09.\nReport: 0 blocking fault(s), 4 report(s). Bin: 13 clips (13 must, 0 should, 0 nice). Seconds: 70 s of takes (70 s must); target 60 s, cap 90 s. Turns left after this one: 14.\nNothing blocks. Fix the reports below first where you can, then call finish.\nYours to fix (they do not block fin"
+ },
+ {
+  "tool": "finish",
+  "args": "{\"editor_notes\":[\"Coverage map: Masters (A, C, I) place geography and carry VO; Singles (B, D, E, F, K) carry all spoken lines clean; Reaction (K) and clean_exit (H) give the end shape. One move per shot, all motivated: dolly-in for a private vow, pan to connect car-to-stall, tracking for Kasun’s im",
+  "result": "Finished. The intended cut, the shoot bin and your notes are written."
+ }
+]

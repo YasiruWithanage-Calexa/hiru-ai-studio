@@ -1,0 +1,8 @@
+id: sable_route
+kind: step
+version: 1
+summary: "Sable's free pre-route: starts a turn on the deep tier only on hard signals (asked for depth, three or more scenes or a whole episode, an attachment, a very long message); everything else starts on the average tier."
+status: active
+owner: director
+entry: step:run
+uses: []

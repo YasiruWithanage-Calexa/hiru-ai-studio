@@ -10,7 +10,8 @@ run), keeps the subscribed topics, every `fact` and every `must` (a rule binds e
 `character:` and
 `episode:` entries to the ones the call is about when the agent's `memory_scope(inp)` hook says which, and appends them
 to the END of the user message as a tagged block, so the cached system prefix is unchanged. No entries, no block: the
-call is byte for byte what it was before the memory existed.
+call is byte for byte what it was before the memory existed. The entries a call was given are recorded on the run
+(`memory.note_used`) once the call returns, so a reply can show what it relied on (plan/2026-11-07 Phase 3).
 """
 from __future__ import annotations
 
@@ -130,4 +131,7 @@ class ProductionMemory:
             if chosen:
                 text = block(chosen)
                 call.user = f"{call.user}\n\n{text}" if call.user else text
+                out = nxt(call)
+                memory.note_used(ctx, chosen)  # after the call: a call that failed relied on nothing
+                return out
         return nxt(call)

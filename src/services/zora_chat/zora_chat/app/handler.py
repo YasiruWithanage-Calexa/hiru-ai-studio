@@ -41,10 +41,26 @@ def run_action(req: ZoraAction) -> dict[str, Any]:
     return graph.act(req, supabase_rest.build_context(req, jobs=None)).model_dump(mode="json")
 
 
-def stream(req: TurnPayload) -> Iterator[str]:
+def finish(events: Iterator[Any], scene_id: Any) -> None:
+    """The person pressed Stop (or the connection dropped): the server closed the response, so nothing more can be
+    written. Run the rest of the turn anyway, so its saves land together: the plan, its revision and the reply message,
+    never a plan edit without its message (plan/2026-11-07 Phase 2; `tests/zora/test_stop.py`). Never raises."""
     try:
-        for event, data in run_turn(req):
+        for _ in events:
+            pass
+    except Exception:
+        _logger.exception("a stopped turn failed while finishing scene=%s", scene_id)
+
+
+def stream(req: TurnPayload) -> Iterator[str]:
+    events: Iterator[tuple[str, dict[str, Any]]] = iter(())
+    try:
+        events = iter(run_turn(req))
+        for event, data in events:
             yield sse(event, data)
+    except GeneratorExit:
+        finish(events, req.scene_id)
+        raise
     except Exception:
         _logger.exception("zora turn failed scene=%s", req.scene_id)
         yield sse("error", {"message": CLIENT_ERROR})

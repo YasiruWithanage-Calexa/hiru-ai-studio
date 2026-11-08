@@ -1,0 +1,18 @@
+id: sable
+version: 1
+summary: "Sable, one agent that knows the whole production (plan/2026-11-08): the systems of the group."
+owner: director
+status: active            # disabled switches off every Sable part in this layer
+# The removal list (`hiru-ai remove --group sable`): repo folders that go with the group, beside its folder in each
+# hiru_ai layer. A folder that does not exist yet is skipped. Keep this in step with plan/2026-11-08 §4.2.
+folders:
+  - src/libs/contracts/sable
+  - src/services/sable_chat
+  - tests/sable
+  - tests/eval/sable
+  - lab/sable
+  - docs/sable
+outside:
+  - "hiru-ai-studio-interface: src/features/sable/ and its button in the production top bar"
+  - "src/api/routers/sable.py, src/api/services/sable.py, the Sable repositories and Permission.USE_SABLE (by hand)"
+  - "core/middleware/tiering.py is generic (any react agent may use it) and stays"

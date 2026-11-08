@@ -15,6 +15,8 @@ tiers from the model door (`models.yaml`) and a manifest that lists these on it 
   clear_old_results  the results of tool calls older than the last 3 are replaced by a short marker, so a long loop
                      does not pay for every lookup again on every round
   tool_retry         a `read` tool that raised is tried again (a flaky database read); `stage` tools never are
+  tiering            the turn moves once, upward, to the manifest's `deep_model` when the work needs it (tiering.py,
+                     plan/2026-11-08 §4.4). Built by the agent, which knows the run's start tier and its record
 """
 from __future__ import annotations
 
@@ -24,15 +26,16 @@ from typing import Any
 from hiru_ai.core import llm
 from hiru_ai.core.models import resolve
 
-NAMES = ("hitl", "retry", "fallback", "limits", "clear_old_results", "tool_retry")
+NAMES = ("hitl", "retry", "fallback", "limits", "clear_old_results", "tool_retry", "tiering")
 KEEP_RESULTS = 3  # tool results kept whole by `clear_old_results`
 CLEAR_AFTER_TOKENS = 3000  # editing starts once the thread is this long; short loops are left alone
 
 
 def build(names: Sequence[str], *, tier: str, gated: Sequence[str] = (), read_tools: Sequence[str] = (),
-          max_tool_calls: int = 6, max_model_calls: int = 4) -> list[Any]:
+          max_tool_calls: int = 6, max_model_calls: int = 4, tiering: Any = None) -> list[Any]:
     """The LangChain middleware the manifest asks for, outermost first. A request with nothing to do (`hitl` with no
-    gated tool, `tool_retry` with no read tool, `fallback` on a tier with no fallbacks) adds nothing."""
+    gated tool, `tool_retry` with no read tool, `fallback` on a tier with no fallbacks, `tiering` with no middleware
+    built for it) adds nothing. `tiering` is the middleware `tiering.build` made for this run."""
     from langchain.agents.middleware import (
         ClearToolUsesEdit,
         ContextEditingMiddleware,
@@ -60,6 +63,8 @@ def build(names: Sequence[str], *, tier: str, gated: Sequence[str] = (), read_to
         elif name == "clear_old_results":
             out.append(ContextEditingMiddleware(edits=[
                 ClearToolUsesEdit(trigger=CLEAR_AFTER_TOKENS, keep=KEEP_RESULTS)]))
+        elif name == "tiering" and tiering is not None:
+            out.append(tiering)
         elif name == "tool_retry" and read_tools:
             out.append(ToolRetryMiddleware(max_retries=2, tools=list(read_tools), on_failure="continue"))
     return out

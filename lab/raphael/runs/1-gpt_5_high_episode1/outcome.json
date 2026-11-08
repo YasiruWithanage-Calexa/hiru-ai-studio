@@ -1,0 +1,62 @@
+{
+ "stopped": "finished",
+ "complete": true,
+ "turns": 5,
+ "detail": "",
+ "editor_notes": [
+  "What each clip is for: A (c01) is the rain-and-stall geography open; B (c02) carries Kasun’s inner thought over his face; C (c03) stages Anudi’s entrance and the phone drop cleanly; D (c04) injects energy as Kasun retrieves and moves; E (c05) is Kasun’s clean delivery of L7; F (c06) holds Anudi’s turn, gratitude and curiosity with a brief rack to the stall for L9 and L11; G (c07) gives a beat for her question to land on his smile; H (c08) lets Kasun own L13 with room to breathe; I (c09) is one held face for ring + unseen call and the change; J (c10) protects Anudi’s fragile promise on L19; K (c11) is the slow parting with narration over picture.",
+  "Cut strategy: The must clips are the intended cut. Use the wide in c01 for the opener, then live in the singles through the exchange. Hold c09 as one unbroken take so the ring and the off-screen voice work entirely on Anudi’s face; move to J (c10) for the afterglow line, then finish on K (c11) pulling away. Optional trims: c01 can be shorter; enter C (c03) mid-beat if timing demands.",
+  "Risky joins to protect: - From E (c05) to F (c06), match eye lines and umbrella positions; slate a reset if rain beads shift. - From H (c08) to I (c09), ensure Anudi’s phone position is continuous just before the ring. - From J (c10) into K (c11), maintain her exit direction and speed so the dolly-out doesn’t jump. Keep rain density and kettle steam consistent between H and I.",
+  "Audio notes: L3 is a thought and must never be performed on lips; play it over c02. L16 is the unseen caller; keep it over c09 only—no on-screen performance. L22 is narration over c11. Rain is the bed; avoid over-music. Cue a light emotional bed under c11 only if narration needs support. Ringtone should punch above rain for the first hit, then tuck under.",
+  "Post-only techniques to consider: - Gentle digital punch-in up to 115% on H (c08) for the end of L13 if the beat needs weight. - A subtle J->K L-cut to carry the last word of L19 over the first step in K (c11). - Micro speed trim (not ramp) on C (c03) if the phone drop beats late. - Avoid freeze frames; the rain texture will strobe. - Split-screen is not appropriate here and not planned.",
+  "What we avoided because Veo cannot do it: readable phone screen text (none shown); mirrors and reflective storytelling; complex crowds. The phone ring is sold with sound and body action only; no text on screen. Keep all cues physical.",
+  "Continuity: Use one physical light description scene-wide (soft grey monsoon daylight with constant heavy rain). Keep wardrobe wetness consistent per character between adjacent setups. Umbrella tilt and phone hand must remain consistent across F, G, H, I, J.",
+  "Handles: All takes carry ~1 s pre/post handles. Speaking clips already include the 0.5 s lead and tail inside those handles. Do not trim lines; if you need more air around L16 or L22, steal it from picture before/after within I (c09) and K (c11) or overlap with surrounding shots.",
+  "Safety: Record clean room tone of heavy rain and traffic bed for each setup. Slate the exact pacing of ring onset in I (c09) to align with L16’s start in post. Shoot rain continuity b-roll (puddles, awning drips) if weather fluctuates, but it is not in the must bin."
+ ],
+ "take_s": 70,
+ "target_s": 60.0,
+ "cap_s": 90.0,
+ "faults": [
+  {
+   "code": "clock",
+   "sentence": "c09 needs 10.4 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c09"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c09"
+  },
+  {
+   "code": "clock",
+   "sentence": "c11 needs 11.4 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.",
+   "clips": [
+    "c11"
+   ],
+   "owner": "director",
+   "fix": "report",
+   "key": "clock:overrun:c11"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c02 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c02"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c02:screen text"
+  },
+  {
+   "code": "feasibility",
+   "sentence": "c11 asks for screen text. Veo cannot render readable text: show the glow of the screen on a face and let a line or a sound carry the words.",
+   "clips": [
+    "c11"
+   ],
+   "owner": "clip_writer",
+   "fix": "report",
+   "key": "feasibility:c11:screen text"
+  }
+ ]
+}

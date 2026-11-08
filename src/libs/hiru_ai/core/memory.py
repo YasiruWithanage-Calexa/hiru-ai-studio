@@ -17,6 +17,7 @@ from hiru_ai.core.context import RunContext
 
 _logger = logging.getLogger(__name__)
 _LOADED = "entries"
+_USED = "used"
 
 
 def read(ctx: RunContext, filename: str, text: str) -> dict[str, Any] | None:
@@ -78,6 +79,41 @@ def entries(ctx: RunContext) -> list[dict[str, Any]]:
             _logger.warning("production memory could not be read; going on without it", exc_info=True)
     ctx.memory_cache[_LOADED] = rows
     return rows
+
+
+def note_used(ctx: RunContext, rows: list[dict[str, Any]]) -> None:
+    """Record the entries the middleware gave an agent call, once each, in the order they were first given (code, not
+    a model: a reply's "used" chips are exactly what was injected)."""
+    used: dict[str, dict[str, Any]] = ctx.memory_cache.setdefault(_USED, {})
+    for row in rows:
+        if row.get("id") is not None:
+            used.setdefault(str(row["id"]), row)
+
+
+def used(ctx: RunContext) -> list[dict[str, Any]]:
+    """Every entry this run's agents were given so far (see `note_used`)."""
+    return list(ctx.memory_cache.get(_USED, {}).values())
+
+
+def used_block(ctx: RunContext) -> dict[str, Any] | None:
+    """The `used` block a reply message carries (`contracts.director.UsedBlock`), or None when the turn's agents were
+    given no entry. A document's title is its file name; a document that cannot be listed leaves the title empty."""
+    rows = used(ctx)
+    if not rows:
+        return None
+    titles: dict[str, str] = {}
+    docs = ctx.ports.docs
+    if docs is not None and ctx.production_id is not None and any(r.get("document_id") for r in rows):
+        try:
+            titles = {str(d["id"]): str(d.get("filename") or "") for d in docs.documents(ctx.production_id)}
+        except Exception:
+            _logger.warning("documents could not be listed for a reply's memory chips", exc_info=True)
+    memory = []
+    for row in rows:
+        doc = str(row["document_id"]) if row.get("document_id") else None
+        memory.append({"id": str(row["id"]), "text": str(row.get("says") or ""), "document_id": doc,
+                       "document_title": titles.get(doc, "") if doc else ""})
+    return {"kind": "used", "memory": memory}
 
 
 def genre(ctx: RunContext, default: str) -> str:

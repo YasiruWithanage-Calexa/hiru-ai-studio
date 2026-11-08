@@ -322,6 +322,35 @@ class SupabaseRevisions:
                                                       "revision": f"in.({','.join(str(n) for n in numbers)})"})
 
 
+class SupabaseChat:
+    """`ChatStore`: a production assistant's thread (Sable, plan/2026-11-08). `chat_threads.summary`/`summarised` and
+    `chat_turn_meta` are schema v18; Sable is off until it is applied. A reply's `meta` goes to `chat_turn_meta`, a
+    table no member's browser can read, never into `chat_messages`."""
+
+    def __init__(self, rest: Rest) -> None:
+        self.rest = rest
+
+    def thread(self, thread_id: UUID | str) -> Row | None:
+        rows = self.rest.select("chat_threads", {"id": f"eq.{thread_id}", "select": "*", "limit": "1"})
+        return rows[0] if rows else None
+
+    def messages(self, thread_id: UUID | str, limit: int = 200) -> list[Row]:
+        rows = self.rest.select("chat_messages", {"thread_id": f"eq.{thread_id}", "order": "created_at.desc",
+                                                  "limit": str(limit),
+                                                  "select": "id,kind,speaker,text,blocks,citations,created_at"})
+        return rows[::-1]
+
+    def add_message(self, row: Row) -> None:
+        message = {k: v for k, v in row.items() if k != "meta"}
+        self.rest.insert("chat_messages", [message])
+        if row.get("meta"):
+            self.rest.insert("chat_turn_meta", [{"message_id": message["id"], "production_id": message["production_id"],
+                                                 "meta": row["meta"]}])
+
+    def set_summary(self, thread_id: UUID | str, summary: str, summarised: int) -> None:
+        self.rest.patch("chat_threads", {"id": f"eq.{thread_id}"}, {"summary": summary, "summarised": summarised})
+
+
 class SupabaseDirector:
     """`DirectorStore`: the scene as the director reads it, the board and the thread, the pending action, the memory."""
 
@@ -715,7 +744,7 @@ def _ports(rest: Rest, jobs: Any = None) -> Ports:
                  docs=SupabaseDocs(rest, files),
                  memory=SupabaseMemory(rest),
                  search=SupabaseSearch(rest),
-                 files=files, jobs=jobs, staging=StagedCards())
+                 files=files, jobs=jobs, staging=StagedCards(), chat=SupabaseChat(rest))
 
 
 def build_ports(settings: AISettings | None = None, *, sink: UsageSink | None = None,

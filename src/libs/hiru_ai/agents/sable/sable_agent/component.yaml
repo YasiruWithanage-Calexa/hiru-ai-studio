@@ -1,0 +1,29 @@
+id: sable_agent
+kind: agent
+version: 1
+summary: "Sable: answers, finds, checks and explains across the whole production with the read tools, proposes changes only as cards a person accepts, and hands scene edits to Zora or the classic chat (plan/2026-11-08)."
+status: active
+owner: director
+model: sable                  # the average tier (§4.4); the lab (Phase 4) picks its model (D2)
+deep_model: sable_deep        # the one switch a turn may make, upward (core/middleware/tiering.py)
+escalate_tool: sable_think_harder
+escalate_on: [model, refusals, cap, stage]   # the lab decides which code signals stay
+shape: react
+phase: sable.turn             # a deep call is `sable.deep`
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+# 19 read tools + 2 stage tools + Sable's 3 (§4.3). Fixed and sorted by the builder, so the list is part of the cached
+# prefix. No write tool (validate). Left out on purpose: plan_score, dialogue_check and every write tool.
+tool_cap: 24
+tools: [canon_find, canon_read, change_propose, continuity_check, dialogue_read, episode_read, frame_read,
+        glossary_read, memory_propose, memory_search, plan_try, prompt_check, questions_read, sable_overview,
+        sable_scene_find, sable_think_harder, scene_read, scene_reading_read, search_kb, shot_read, staging_check,
+        technique_lookup, timing_check, veo_fit]
+knowledge: [production_docs, cinematography, craft, techniques]
+middleware: [static_first, usage, absent_safe, untrusted_text, production_memory,
+             tiering, limits, retry, fallback, clear_old_results, tool_retry]
+memory: ["*"]
+max_tool_calls: 8
+max_model_calls: 10            # 8 lookups, a card drafted again on the deep tier, the answer (plan said 6: see IMPLEMENTED.md)
+writes_dialogue: false

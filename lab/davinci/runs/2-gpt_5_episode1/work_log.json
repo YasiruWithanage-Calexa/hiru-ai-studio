@@ -1,0 +1,202 @@
+[
+ {
+  "tool": "write_edit_plan",
+  "args": "{\"treatment\":{\"logline\":\"In a monsoon-soaked Colombo minute, a humble vendor and a sheltered daughter meet, spark, and are torn apart by a single phone call.\",\"arc\":[{\"beat\":\"Set the rain, the stall, and Kasun’s inner drive\",\"blocks\":{\"first\":0,\"last\":3},\"feeling\":\"Moody, intimate, hopeful under gre",
+  "result": "The edit plan is saved: 6 moments in 5 sequences."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":1,\"role\":\"establishing\",\"setup\":\"A\",\"blocks\":[0],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"EWS\",\"angle\":\"high street angle, slight offset\",\"lens\":\"24mm\",\"technique\":\"locked_off\",\"why\":\"Set rain, place and texture before we enter Kasun’s head\",\"take_s\":4,\"handle_in_s\":1,\"handle_",
+  "result": "Added 17 clips:\nc01 [1A-1] moment 1 should establishing EWS locked_off 4s handles 1/1 blocks [0] (menu only): Set rain, place and texture before we enter Kasun’s head\nc02 [1B-1] moment 1 must single MCU slow_creep 6s handles 1/1 blocks [1, 2, 3] lines L3 (menu only): Kasun’s inner drive (L3 thought)"
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c01\",\"c02\",\"c03\",\"c04\",\"c05\",\"c06\",\"c07\",\"c08\",\"c09\",\"c10\",\"c11\",\"c12\",\"c13\",\"c14\",\"c15\",\"c16\",\"c17\"],\"note\":\"\"}",
+  "result": "Designed 17 of 17 clips in 5 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "16 blocking fault(s), 9 report(s). Bin: 17 clips (17 designed; 13 must, 4 should, 0 nice).\n(director, repair) coverage: Block b0 has no must clip: the intended cut has nothing to show for it.\n(director, repair) coverage: Block b8 has no must clip: the intended cut has nothing to show for it.\n(direct"
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c02\",\"clip\":{\"moment\":1,\"role\":\"single\",\"setup\":\"B\",\"blocks\":[0,1,2,3],\"lines\":[\"L3\"],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level, 3/4\",\"lens\":\"50mm\",\"technique\":\"slow_creep\",\"why\":\"Kasun’s inner drive (L3 thought) over a contemplative face; isolate from chaos; rain visible ",
+  "result": "c02 now reads:\nc02 [1B-1] moment 1 must single MCU slow_creep 8s handles 1/1 blocks [0, 1, 2, 3] lines L3 (menu only): Kasun’s inner drive (L3 thought) over a contemplative face; isolate from chaos; rain visible to cover b0\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c03\",\"clip\":{\"moment\":2,\"role\":\"establishing\",\"setup\":\"C\",\"blocks\":[4],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"WIDE\",\"angle\":\"eye level across-road\",\"lens\":\"28mm\",\"technique\":\"enter_held_frame\",\"why\":\"Let Anudi step out of the car into rain geography cleanly\",\"take_s\":6,\"handle_in_s\"",
+  "result": "c03 now reads:\nc03 [1C-1] moment 2 must establishing WIDE enter_held_frame 6s handles 1/1 blocks [4] (menu only): Let Anudi step out of the car into rain geography cleanly\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c06\",\"clip\":{\"moment\":3,\"role\":\"master\",\"setup\":\"F\",\"blocks\":[7,8,9,10,11,12],\"lines\":[\"L7\",\"L9\",\"L11\"],\"speaks\":true,\"over\":\"\",\"size\":\"MWS\",\"angle\":\"eye level, shared axis to stall\",\"lens\":\"35mm\",\"technique\":\"locked_off\",\"why\":\"Glue for the exchange with rain texture; plays as alternate",
+  "result": "c06 now reads:\nc06 [1F-1] moment 3 must master MWS locked_off 8s handles 1/1 blocks [7, 8, 9, 10, 11, 12] lines L7,L9,L11 speaks (menu only): Glue for the exchange with rain texture; plays as alternate performance for early lines\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c12\",\"clip\":{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[15,16,17],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level, slight off-axis\",\"lens\":\"85mm\",\"technique\":\"rack_focus\",\"why\":\"Focus shift from phone to eyes as Father’s VO turns her mood\",\"take_s\":8,\"hand",
+  "result": "c12 now reads:\nc12 [1I-1] moment 5 must reaction CU rack_focus 8s handles 1/1 blocks [15, 16, 17] lines L16 (menu only): Focus shift from phone to eyes as Father’s VO turns her mood\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[18],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level, off-axis back toward Kasun\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Hold her last, conflicted look back to Kasun after the call\",\"take_s\":4,\"handle_in_s\":1,\"han",
+  "result": "Added 1 clips:\nc18 [1I-2] moment 5 must reaction CU locked_off 4s handles 1/1 blocks [18] (menu only): Hold her last, conflicted look back to Kasun after the call"
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c15\",\"clip\":{\"moment\":6,\"role\":\"clean_exit\",\"setup\":\"M\",\"blocks\":[20],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MS\",\"angle\":\"eye level along pavement\",\"lens\":\"35mm\",\"technique\":\"locked_off\",\"why\":\"Let Anudi walk out of a held frame, rain filling in behind\",\"take_s\":6,\"handle_in_s\":1,\"h",
+  "result": "c15 now reads:\nc15 [1M-1] moment 6 must clean_exit MS locked_off 6s handles 1/1 blocks [20] (menu only): Let Anudi walk out of a held frame, rain filling in behind\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c16\",\"clip\":{\"moment\":6,\"role\":\"reaction\",\"setup\":\"K\",\"blocks\":[21,22],\"lines\":[\"L22\"],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level, front-on\",\"lens\":\"50mm\",\"technique\":\"slow_creep\",\"why\":\"Kasun’s silent watch pairs with narrator VO (L22) to end the scene\",\"take_s\":8,\"handle_",
+  "result": "c16 now reads:\nc16 [1K-1] moment 6 must reaction MCU slow_creep 8s handles 1/1 blocks [21, 22] lines L22 (menu only): Kasun’s silent watch pairs with narrator VO (L22) to end the scene\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c01\",\"c13\",\"c17\"]}",
+  "result": "Removed c01, c13, c17."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c02\",\"c03\",\"c06\",\"c12\",\"c15\",\"c16\",\"c18\",\"c04\",\"c05\",\"c07\",\"c08\",\"c09\",\"c10\",\"c11\",\"c14\"],\"note\":\"Correct designs: Father (C03) is never on camera—remove any depiction or reflection. Do not stage or show readable screen text anywhere (phones, signs). Keep rain continuity and the specif",
+  "result": "Designed 15 of 15 clips in 5 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "4 blocking fault(s), 7 report(s). Bin: 15 clips (15 designed; 15 must, 0 should, 0 nice).\n(director, report) clock [c12]: c12 needs 8.9 s for what it carries and the take is 8 s: a line is kept whole and never trimmed. Split the exchange into overlapping clips.  [STILL FAILING after your last fix: t"
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c12\",\"clip\":{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[15,16],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level, slight off-axis\",\"lens\":\"85mm\",\"technique\":\"rack_focus\",\"why\":\"Focus shift from phone to eyes as Father’s VO turns her mood\",\"take_s\":8,\"handle_",
+  "result": "c12 now reads:\nc12 [1I-1] moment 5 must reaction CU rack_focus 8s handles 1/1 blocks [15, 16] lines L16 (menu only): Focus shift from phone to eyes as Father’s VO turns her mood\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c18\",\"clip\":{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[17,18],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level, off-axis back toward Kasun\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Hold her fall and last, conflicted look back to Kasun after the call\",\"take",
+  "result": "c18 now reads:\nc18 [1I-2] moment 5 must reaction CU locked_off 6s handles 1/1 blocks [17, 18] (menu only): Hold her fall and last, conflicted look back to Kasun after the call\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c16\",\"clip\":{\"moment\":6,\"role\":\"reaction\",\"setup\":\"K\",\"blocks\":[22],\"lines\":[\"L22\"],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level, front-on\",\"lens\":\"50mm\",\"technique\":\"slow_creep\",\"why\":\"Kasun holds the end beat under the narrator’s VO (L22)\",\"take_s\":8,\"handle_in_s\":1,\"handle",
+  "result": "c16 now reads:\nc16 [1K-1] moment 6 must reaction MCU slow_creep 8s handles 1/1 blocks [22] lines L22 (menu only): Kasun holds the end beat under the narrator’s VO (L22)\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "add_clips",
+  "args": "{\"clips\":[{\"moment\":6,\"role\":\"reaction\",\"setup\":\"K\",\"blocks\":[21],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level, front-on\",\"lens\":\"50mm\",\"technique\":\"locked_off\",\"why\":\"A clean hold on Kasun watching her go, before the narrator VO\",\"take_s\":4,\"handle_in_s\":1,\"handle_out_s\":1,\"p",
+  "result": "Added 1 clips:\nc19 [1K-2] moment 6 must reaction MCU locked_off 4s handles 1/1 blocks [21] (menu only): A clean hold on Kasun watching her go, before the narrator VO"
+ },
+ {
+  "tool": "remove_clips",
+  "args": "{\"clip_ids\":[\"c08\",\"c09\"]}",
+  "result": "Removed c08, c09."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c06\",\"c11\",\"c12\",\"c15\",\"c16\",\"c18\",\"c19\",\"c02\",\"c03\",\"c04\",\"c05\",\"c07\",\"c10\",\"c14\"],\"note\":\"Frame only C01 (Kasun) and C02 (Anudi) in all shots; DO NOT depict Father (C03) anywhere—no reflections, photos or background figures. Defocus or exclude any signage or screen so no readable tex",
+  "result": "Designed 14 of 14 clips in 5 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "11 blocking fault(s), 6 report(s). Bin: 14 clips (14 designed; 14 must, 0 should, 0 nice).\n(director, repair) clock [c12]: c12: its handles (1 s + 1 s) and what it shows do not fit a 8 s take. Take a longer take or shorter handles.\n(director, repair) clock [c19]: c19: its handles (1 s + 1 s) and wha"
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c12\",\"clip\":{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[15,16],\"lines\":[\"L16\"],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level, slight off-axis\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Hold on Anudi as Father’s VO (L16) turns her mood; remove the rack time burden\",\"",
+  "result": "c12 now reads:\nc12 [1I-1] moment 5 must reaction CU locked_off 8s handles 1/1 blocks [15, 16] lines L16 (menu only): Hold on Anudi as Father’s VO (L16) turns her mood; remove the rack time burden\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c19\",\"clip\":{\"moment\":6,\"role\":\"reaction\",\"setup\":\"K\",\"blocks\":[21],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level, front-on\",\"lens\":\"50mm\",\"technique\":\"locked_off\",\"why\":\"A clean hold on Kasun watching her go, before the narrator VO\",\"take_s\":6,\"handle_in_s\":1,\"hand",
+  "result": "c19 now reads:\nc19 [1K-2] moment 6 must reaction MCU locked_off 6s handles 1/1 blocks [21] (menu only): A clean hold on Kasun watching her go, before the narrator VO\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c03\",\"clip\":{\"moment\":2,\"role\":\"establishing\",\"setup\":\"C\",\"blocks\":[4],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"WIDE\",\"angle\":\"low_angle from curb\",\"lens\":\"28mm\",\"technique\":\"enter_held_frame\",\"why\":\"Show only Anudi stepping out, framed against sky/umbrella; excludes any background fi",
+  "result": "c03 now reads:\nc03 [1C-1] moment 2 must establishing WIDE enter_held_frame 6s handles 1/1 blocks [4] (menu only): Show only Anudi stepping out, framed against sky/umbrella; excludes any background figures\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c04\",\"clip\":{\"moment\":2,\"role\":\"insert\",\"setup\":\"D\",\"blocks\":[5],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"INSERT\",\"angle\":\"top-down\",\"lens\":\"50mm\",\"technique\":\"top_down\",\"why\":\"Phone hits near puddle; extreme crop isolates object only—no people\",\"take_s\":4,\"handle_in_s\":1,\"handle_out_",
+  "result": "c04 now reads:\nc04 [1D-1] moment 2 must insert INSERT top_down 4s handles 1/1 blocks [5] (menu only): Phone hits near puddle; extreme crop isolates object only—no people\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c06\",\"clip\":{\"moment\":3,\"role\":\"two_shot\",\"setup\":\"F\",\"blocks\":[7,8,9,10,11,12],\"lines\":[\"L7\",\"L9\",\"L11\"],\"speaks\":true,\"over\":\"\",\"size\":\"TWO\",\"angle\":\"eye level, squared to stall wall\",\"lens\":\"50mm\",\"technique\":\"locked_off\",\"why\":\"Tight two-shot against the stall wall removes background",
+  "result": "c06 now reads:\nc06 [1F-1] moment 3 must two_shot TWO locked_off 8s handles 1/1 blocks [7, 8, 9, 10, 11, 12] lines L7,L9,L11 speaks (menu only): Tight two-shot against the stall wall removes background; carries the early lines cleanly\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c07\",\"clip\":{\"moment\":3,\"role\":\"single\",\"setup\":\"G\",\"blocks\":[7],\"lines\":[\"L7\"],\"speaks\":true,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level, tight\",\"lens\":\"50mm\",\"technique\":\"shallow_isolation\",\"why\":\"Keep only Kasun’s face; remove all background risk\",\"take_s\":4,\"handle_in_s\":1,\"handle_out_s",
+  "result": "c07 now reads:\nc07 [1G-1] moment 3 must single CU shallow_isolation 4s handles 1/1 blocks [7] lines L7 speaks (menu only): Keep only Kasun’s face; remove all background risk\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c11\",\"clip\":{\"moment\":4,\"role\":\"reaction\",\"setup\":\"F\",\"blocks\":[14],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level tight to eyes\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Her smile as a tight CU to exclude any background figures\",\"take_s\":4,\"handle_in_s\":1,\"handl",
+  "result": "c11 now reads:\nc11 [1F-2] moment 4 must reaction CU locked_off 4s handles 1/1 blocks [14] (menu only): Her smile as a tight CU to exclude any background figures\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c14\",\"clip\":{\"moment\":6,\"role\":\"single\",\"setup\":\"H\",\"blocks\":[19],\"lines\":[\"L19\"],\"speaks\":true,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"low_angle under umbrella\",\"lens\":\"50mm\",\"technique\":\"shallow_isolation\",\"why\":\"Angle up into her umbrella to keep sky and background out\",\"take_s\":6,\"handle_in_",
+  "result": "c14 now reads:\nc14 [1H-1] moment 6 must single MCU shallow_isolation 6s handles 1/1 blocks [19] lines L19 speaks (menu only): Angle up into her umbrella to keep sky and background out\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c15\",\"clip\":{\"moment\":6,\"role\":\"clean_exit\",\"setup\":\"M\",\"blocks\":[20],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MS\",\"angle\":\"low_angle to feet and hem\",\"lens\":\"35mm\",\"technique\":\"locked_off\",\"why\":\"Exit on legs/feet so no background or other people enter\",\"take_s\":6,\"handle_in_s\":1,\"ha",
+  "result": "c15 now reads:\nc15 [1M-1] moment 6 must clean_exit MS locked_off 6s handles 1/1 blocks [20] (menu only): Exit on legs/feet so no background or other people enter\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c18\",\"clip\":{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[17,18],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"eye level, off-axis back toward Kasun\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Hold her fall and last, conflicted look back to Kasun after the call\",\"take",
+  "result": "c18 now reads:\nc18 [1I-2] moment 5 must reaction CU locked_off 6s handles 1/1 blocks [17, 18] (menu only): Hold her fall and last, conflicted look back to Kasun after the call\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "write_clips",
+  "args": "{\"clip_ids\":[\"c03\",\"c04\",\"c06\",\"c07\",\"c11\",\"c12\",\"c14\",\"c15\",\"c18\",\"c19\"],\"note\":\"Hard constraint: Only C01 and/or C02 are ever visible; C03 (Father) must never appear in frame, reflection, or background. Exclude background pedestrians. Compose into stall wall or umbrella interior to remove backgrou",
+  "result": "Designed 10 of 10 clips in 4 call(s)."
+ },
+ {
+  "tool": "check",
+  "args": "{}",
+  "result": "7 blocking fault(s), 2 report(s). Bin: 14 clips (14 designed; 14 must, 0 should, 0 nice).\n(director, repair) clock [c12]: c12: its handles (1 s + 1 s) and what it shows do not fit a 8 s take. Take a longer take or shorter handles.  [STILL FAILING after your last fix: try something else]\n(clip_writer"
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c12\",\"clip\":{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[15,16],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"low_angle under umbrella\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"CU on Anudi absorbing the call; umbrella interior removes background entirely\",\"take_s\":",
+  "result": "c12 now reads:\nc12 [1I-1] moment 5 must reaction CU locked_off 8s handles 1/1 blocks [15, 16] (menu only): CU on Anudi absorbing the call; umbrella interior removes background entirely\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c16\",\"clip\":{\"moment\":6,\"role\":\"reaction\",\"setup\":\"K\",\"blocks\":[22],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MCU\",\"angle\":\"eye level, front-on\",\"lens\":\"50mm\",\"technique\":\"slow_creep\",\"why\":\"Kasun holds the end beat under the narrator’s VO (L22)\",\"take_s\":8,\"handle_in_s\":1,\"handle_out_",
+  "result": "c16 now reads:\nc16 [1K-1] moment 6 must reaction MCU slow_creep 8s handles 1/1 blocks [22] (menu only): Kasun holds the end beat under the narrator’s VO (L22)\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c03\",\"clip\":{\"moment\":2,\"role\":\"clean_entry\",\"setup\":\"C\",\"blocks\":[4],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MS\",\"angle\":\"low_angle from curb\",\"lens\":\"28mm\",\"technique\":\"tilt_reveal\",\"why\":\"Reveal from wet curb to Anudi stepping out; frames only car and her—no background\",\"take_s\":6",
+  "result": "c03 now reads:\nc03 [1C-1] moment 2 must clean_entry MS tilt_reveal 6s handles 1/1 blocks [4] (menu only): Reveal from wet curb to Anudi stepping out; frames only car and her—no background\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c11\",\"clip\":{\"moment\":4,\"role\":\"reaction\",\"setup\":\"F\",\"blocks\":[14],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"ECU\",\"angle\":\"eye level tight to eyes\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Anudi’s tiny smile in extreme close-up eliminates any background risk\",\"take_s\":4,\"handle_i",
+  "result": "c11 now reads:\nc11 [1F-2] moment 4 must reaction ECU locked_off 4s handles 1/1 blocks [14] (menu only): Anudi’s tiny smile in extreme close-up eliminates any background risk\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c14\",\"clip\":{\"moment\":6,\"role\":\"single\",\"setup\":\"H\",\"blocks\":[19],\"lines\":[\"L19\"],\"speaks\":true,\"over\":\"\",\"size\":\"CU\",\"angle\":\"low_angle under umbrella\",\"lens\":\"85mm\",\"technique\":\"shallow_isolation\",\"why\":\"Tight under-umbrella CU makes it impossible to include anyone else\",\"take_s\":6,\"ha",
+  "result": "c14 now reads:\nc14 [1H-1] moment 6 must single CU shallow_isolation 6s handles 1/1 blocks [19] lines L19 speaks (menu only): Tight under-umbrella CU makes it impossible to include anyone else\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c15\",\"clip\":{\"moment\":6,\"role\":\"clean_exit\",\"setup\":\"M\",\"blocks\":[20],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"MS\",\"angle\":\"low_angle to feet and hem\",\"lens\":\"35mm\",\"technique\":\"locked_off\",\"why\":\"Exit on legs/feet so no background or other people enter\",\"take_s\":6,\"handle_in_s\":1,\"ha",
+  "result": "c15 now reads:\nc15 [1M-1] moment 6 must clean_exit MS locked_off 6s handles 1/1 blocks [20] (menu only): Exit on legs/feet so no background or other people enter\nIt has no design yet: send it to write_clips."
+ },
+ {
+  "tool": "replace_clip",
+  "args": "{\"clip_id\":\"c18\",\"clip\":{\"moment\":5,\"role\":\"reaction\",\"setup\":\"I\",\"blocks\":[17,18],\"lines\":[],\"speaks\":false,\"over\":\"\",\"size\":\"CU\",\"angle\":\"low_angle under umbrella\",\"lens\":\"85mm\",\"technique\":\"locked_off\",\"why\":\"Under-umbrella CU eliminates background as she takes a last look\",\"take_s\":6,\"handle_in_",
+  "result": "c18 now reads:\nc18 [1I-2] moment 5 must reaction CU locked_off 6s handles 1/1 blocks [17, 18] (menu only): Under-umbrella CU eliminates background as she takes a last look\nIt has no design yet: send it to write_clips."
+ }
+]

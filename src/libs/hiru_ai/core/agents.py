@@ -229,11 +229,37 @@ class Agent:
         agent = create_agent(
             llm.get_llm(call.tier), self.tools(), system_prompt=call.system, response_format=self.output_cls,
             middleware=react.build(m.middleware, tier=m.model, gated=sorted(m.gate), read_tools=self._tool_ids("read"),
-                                   max_tool_calls=m.max_tool_calls, max_model_calls=m.max_model_calls),
+                                   max_tool_calls=m.max_tool_calls, max_model_calls=m.max_model_calls,
+                                   tiering=self._tiering(call, ctx)),
             context_schema=RunContext, name=self.id)
         result: Any = agent.invoke(cast(Any, {"messages": [HumanMessage(call.user)]}), config=cast(Any, call.config),
                                    context=run_ctx)
         return result["structured_response"]
+
+
+    def _tiering(self, call: ModelCall, ctx: RunContext) -> Any:
+        """The `tiering` middleware for this run (plan/2026-11-08 §4.4), or None when the manifest does not tier. The
+        run starts on `call.tier` (the caller's pre-route may have chosen the deep tier); the record lands in
+        `ctx.tiering`; once escalated, the usage rows of later calls carry the deep phase."""
+        m = self.manifest
+        if "tiering" not in m.middleware or not m.deep_model:
+            return None
+        from hiru_ai.core.middleware import tiering
+        from hiru_ai.core.usage import UsageCallback
+
+        usage = [c for c in call.config.get("callbacks", []) if isinstance(c, UsageCallback)]
+        deep_phase = tiering.deep_phase(call.phase)
+
+        def switched(by: str) -> None:
+            for callback in usage:
+                callback.phase = deep_phase
+
+        if call.tier == m.deep_model:
+            switched("route")
+        return tiering.build(agent=self.id.split("_", 1)[0], start=call.tier, deep=m.deep_model,
+                             escalate_tool=m.escalate_tool or "", stage_tools=self._tool_ids("stage"),
+                             signals=m.escalate_on, max_tool_calls=m.max_tool_calls, record=ctx.tiering,
+                             on_escalate=switched)
 
 
 def build(ident: str, registry: Registry | None = None, *, with_tools: bool | None = None) -> Agent:

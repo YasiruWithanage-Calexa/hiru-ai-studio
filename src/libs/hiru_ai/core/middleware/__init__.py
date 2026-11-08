@@ -1,5 +1,5 @@
-"""Middleware a manifest can switch on by name. `hitl`, `retry`, `fallback`, `limits`, `clear_old_results` and
-`tool_retry` (react.py) apply to `react` agents."""
+"""Middleware a manifest can switch on by name. `hitl`, `retry`, `fallback`, `limits`, `clear_old_results`,
+`tool_retry` (react.py) and `tiering` (tiering.py) apply to `react` agents."""
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
@@ -24,7 +24,7 @@ _FACTORIES: dict[str, Callable[[bool], Middleware]] = {
 }
 NAMES = tuple(_FACTORIES)
 # LangChain middleware, built by core.middleware.react (its NAMES; kept here so the registry need not import LangChain)
-REACT_NAMES = ("hitl", "retry", "fallback", "limits", "clear_old_results", "tool_retry")
+REACT_NAMES = ("hitl", "retry", "fallback", "limits", "clear_old_results", "tool_retry", "tiering")
 ALL_NAMES = (*NAMES, *REACT_NAMES)
 
 

@@ -281,10 +281,13 @@ def test_a_tools_concise_answer_to_its_example_is_inside_its_budget(ident: str):
 
 
 def test_no_agent_lists_a_write_tool_today_and_none_lists_more_than_eight():
+    """Eight, unless the manifest's `tool_cap` says more (plan/2026-11-08 §2.3: Sable reads the whole production), and
+    never more than MAX_TOOLS_WIDE."""
     reg = default()
     for ident in reg.ids("agent"):
         manifest = reg.get("agent", ident).manifest
-        assert len(manifest.tools) <= mf.MAX_TOOLS  # type: ignore[union-attr]
+        cap = max(mf.MAX_TOOLS, min(manifest.tool_cap, mf.MAX_TOOLS_WIDE))  # type: ignore[union-attr]
+        assert len(manifest.tools) <= cap  # type: ignore[union-attr]
         assert not [t for t in manifest.tools  # type: ignore[union-attr]
                     if reg.get("tool", t).manifest.effect == "write"], ident  # type: ignore[union-attr]
 
