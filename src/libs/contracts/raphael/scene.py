@@ -15,10 +15,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from itertools import pairwise
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
 from contracts.shotplan import HEARD_MARKS, LEAD_IN_S, TAIL_S, Item, shot_clock
+from contracts.stagemap import SceneStaging
 from contracts.timing import speech_seconds, words_in
 from contracts.veo import VEO_DURATIONS
 
@@ -49,6 +51,7 @@ class BlockS(_Model):
     hold_kind: str = ""
     hold_who: str = ""
     turn: bool = False
+    now: str = ""  # plan/2026-11-09: what the state ledger says changes at this block ("Anudi: phone in left hand")
 
     @classmethod
     def of(cls, item: Item) -> BlockS:
@@ -96,6 +99,10 @@ class SceneS(_Model):
     others: list[str] = []  # names (and nicknames) of the production's other people
     place: PlaceS = PlaceS()
     envelope_s: float | None = Field(None, gt=0)  # the length the script gives: the TARGET (§2.1)
+    # plan/2026-11-09: the state ledger, pinned to these blocks by code (`contracts.raphael.state.attach`)
+    staging: SceneStaging | None = None
+    codes: dict[str, str] = {}  # a person's code in <production> -> their name (the clips' subjects use the code)
+    opening_state: str = ""  # everyone and every prop at the first block
 
     def items(self) -> list[Item]:
         return [b.item() for b in sorted(self.blocks, key=lambda b: b.index)]
@@ -109,6 +116,28 @@ class SceneS(_Model):
 
     def line_block(self, line_id: str) -> BlockS | None:
         return next((b for b in self.lines if b.line_id == line_id), None)
+
+    def name_of(self, ident: str) -> str:
+        """A subject's id (a code from <production>, or a name) -> the person's name, "" when it is no one known."""
+        if ident in self.codes:
+            return self.codes[ident]
+        return next((c for c in self.cast if norm(c) == norm(ident)), "")
+
+
+LEDGER_FIELDS = ("staging", "codes", "opening_state")
+
+
+def scene_dump(scene: SceneS) -> dict[str, Any]:
+    """The scene as data for a hash: a scene with no ledger dumps exactly as it did before the ledger was added (its
+    stored result is still current), a scene with one dumps its map too (a changed map plans again)."""
+    data = scene.model_dump(mode="json")
+    for key in LEDGER_FIELDS:
+        if not data.get(key):
+            data.pop(key, None)
+    for block in data["blocks"]:
+        if not block.get("now"):
+            block.pop("now", None)
+    return data
 
 
 @dataclass(frozen=True)
@@ -234,12 +263,14 @@ def listing(scene: SceneS) -> str:
     seconds = action_s(scene)
     head = [
         f"Present: {', '.join(scene.cast)}" if scene.cast else "",
+        f"At the start: {scene.opening_state}" if scene.opening_state else "",
         f"Place: {scene.place.name}" + (f" (objects: {', '.join(scene.place.objects)})" if scene.place.objects else "")
         if scene.place.name
         else "",
     ]
-    rows = []
+    rows: list[str] = []
     for b in sorted(scene.blocks, key=lambda x: x.index):
+        before = len(rows)
         if b.kind == "dialogue" and b.line_id:
             words, said, take = facts[b.index]
             how = f", {b.delivery}" if b.delivery else ""
@@ -268,4 +299,6 @@ def listing(scene: SceneS) -> str:
             rows.append(f"b{b.index} action{mark} ({when}): {b.text}")
         else:
             rows.append(f"b{b.index} {b.kind}: {b.text}")
+        if b.now and len(rows) > before:  # plan/2026-11-09: the state ledger's change at this block
+            rows[-1] += f" | now: {b.now}"
     return "\n".join([r for r in head if r] + rows)

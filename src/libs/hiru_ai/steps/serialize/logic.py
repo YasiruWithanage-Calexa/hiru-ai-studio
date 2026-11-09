@@ -294,8 +294,17 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
     heard_codes = {c.code for c in shot.heard}
     subjects = [s for s in ir.get("subjects") or [] if isinstance(s, dict) and _clean(s.get("description"))
                 and str(s.get("id") or "") not in heard_codes]  # a voice is not a subject on screen
+    # plan/2026-11-09 (D4, Raphael first): the subject's place in the frame, the state the shot opens and ends in
+    # (the scene's state ledger, by code) and a Story sentence. Every other planner's prompt is as it was.
+    ledger = shot.intent if str(shot.row.get("planner") or "") == "raphael" else None
     described = "; ".join(_bare(s.get("description")) + (f" — {_bare(s.get('action'))}" if s.get("action") else "")
+                          + (f", {_bare(s.get('position'))}" if ledger is not None and _bare(s.get("position"))
+                             else "")
                           for s in subjects)
+    states = [rules.rule(rule).format(state=_bare(text)) for rule, text in
+              (("opens_line", ledger.opens if ledger else ""), ("ends_line", ledger.ends if ledger else ""))
+              if text and rules.rule(rule)]
+    story = rules.rule("story_line").format(story=_bare(ledger.story)) if ledger and ledger.story else ""
     join = "" if shot.camera_link == "cut" else rules.rule(
         "join_continuous" if shot.camera_link == "continuous" else "join_match")
     light = _clean(ir.get("lighting"))
@@ -306,7 +315,9 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
         _section("style", "Style", rules.rule("medium_style"), _clean(ctx.style_note)),
         _section("setting", "Setting", f"{setting.rstrip('.')}." if setting else "",
                  f"Carried over: {ctx.carried}." if ctx.carried and shot.camera_link != "cut" else ""),
-        _section("subjects", "Subjects", f"{described}." if described else "", _heard_text(shot), shot.hands),
+        _section("subjects", "Subjects", f"{described}." if described else "", *states, _heard_text(shot),
+                 shot.hands),
+        _section("story", "Story", story),
         _section("join", "Join", join),
         _section("camera", "Camera", _camera_text(ir, ctx)),
         _section("lighting", "Lighting", f"{light.rstrip('.')}." if light else ""),

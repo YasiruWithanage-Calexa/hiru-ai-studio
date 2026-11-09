@@ -22,6 +22,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from contracts.raphael import checks
+from contracts.raphael import state as ledger_state
 from contracts.raphael.bin import Bin, compact
 from contracts.raphael.scene import Brief
 from contracts.raphael.wire import (
@@ -264,9 +265,17 @@ class Stage1Session:
             + self.report()
         )
 
+    def states(self, clip: Any, moment: int) -> str:
+        """A clip's opening and closing state (plan/2026-11-09 phase 5), only when one moment is asked for: the state
+        Raphael must meet, without it costing every turn. "" with no ledger."""
+        if not moment:
+            return ""
+        opens, ends = ledger_state.opens_ends(self.brief.scene, clip, self.work)
+        return f"\n  opens: {opens}\n  ends: {ends}" if opens or ends else ""
+
     def tool_read_bin(self, args: dict[str, Any]) -> str:
         moment = int(args.get("moment") or 0)
-        rows = [compact(c) for c in self.work.clips if not moment or c.moment == moment]
+        rows = [compact(c) + self.states(c, moment) for c in self.work.clips if not moment or c.moment == moment]
         return f"{len(self.work.clips)} clips. " + ("\n" + "\n".join(rows) if rows else "The bin is empty.")
 
     def tool_finish(self, args: dict[str, Any]) -> str:
@@ -400,7 +409,7 @@ class Stage2Session(Stage1Session):
             if moment and c.moment != moment:
                 continue
             tag = f" CINEMATIC anchor {','.join(c.anchor)} blend {c.blend}" if c.is_extra else " LOCKED"
-            rows.append(compact(c) + tag)
+            rows.append(compact(c) + tag + self.states(c, moment))
         return f"{len(self.work.clips)} clips. " + ("\n" + "\n".join(rows) if rows else "The bin is empty.")
 
     def tool_finish(self, args: dict[str, Any]) -> str:

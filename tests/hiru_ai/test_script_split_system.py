@@ -62,10 +62,12 @@ READING = {
     "subtext": [], "ending": "Nimal at the table.",
     "breath": [{"after_block": 3, "kind": "reaction", "who": "Nimal", "seconds": 1.5, "priority": 1,
                 "why": "the turn at the end"}]}
-STAGING = {"zones": ["door", "stove"], "marks": [
-    {"block": 0, "who": "Kamala", "zone": "stove", "facing": "", "frame_side": "", "holding": ""},
-    {"block": 1, "who": "Nimal", "zone": "door", "facing": "", "frame_side": "", "holding": ""},
-    {"block": 3, "who": "Nimal", "zone": "stove", "facing": "", "frame_side": "", "holding": ""}]}
+# plan/2026-11-09: the stager's answer carries the state ledger's fields too (strict mode: every one, "" allowed)
+LEDGER = {"posture": "", "left_hand": "", "right_hand": "", "condition": "", "wearing": ""}
+STAGING = {"zones": ["door", "stove"], "props": [], "marks": [
+    {"block": 0, "who": "Kamala", "zone": "stove", "facing": "", "frame_side": "", "holding": "", **LEDGER},
+    {"block": 1, "who": "Nimal", "zone": "door", "facing": "", "frame_side": "", "holding": "", **LEDGER},
+    {"block": 3, "who": "Nimal", "zone": "stove", "facing": "", "frame_side": "", "holding": "", **LEDGER}]}
 PLAN = {"shots": [
     {"start": 0, "end": 2, "framing": "WIDE", "title": "Nimal at the door", "sound_mode": "dialogue", "duration": 8,
      "camera_link": "cut"},
@@ -87,7 +89,7 @@ def test_the_models_beats_reading_and_staging_give_the_same_scene_on_both_engine
 def test_an_unusable_reading_or_staging_falls_back_on_both_engines():
     got = same({"scenes": [0]}, {"enabled": True, "replies": {
         "beat_screen": [{"blocks": []}], "scene_reading": [{**READING, "about": "", "units": []}],
-        "scene_staging": [{"zones": [], "marks": []}], "shot_plan": [PLAN], "shot_review": [REVIEW] * 3}})
+        "scene_staging": [{"zones": [], "marks": [], "props": []}], "shot_plan": [PLAN], "shot_review": [REVIEW] * 3}})
     scene = next(iter(got["scene_rows"].values()))
     assert scene["reading"]["by"] == "rules" and "staging" not in scene
 
@@ -173,7 +175,7 @@ def test_the_reading_and_the_map_are_made_and_kept_like_the_legacy_functions(n: 
         got = prep.reading_for(copy.deepcopy(scene), items, lambda its, a=answer: a, cast)
         assert (got[0].model_copy(update={"written_at": None}), got[1]) == (
             want[0].model_copy(update={"written_at": None}), want[1])
-    for answer in (STAGING, {"zones": [], "marks": []}):
+    for answer in (STAGING, {"zones": [], "marks": [], "props": []}):
         want_s = legacy_staging.staging_for(copy.deepcopy(scene), items, lambda s, u, a=answer: a, cast)
         got_s = prep.staging_for(copy.deepcopy(scene), items, lambda its, a=answer: a, cast)
         strip = lambda m: None if m is None else m.model_copy(update={"written_at": None})  # noqa: E731

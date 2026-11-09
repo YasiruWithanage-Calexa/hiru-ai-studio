@@ -57,3 +57,25 @@ def final() -> Bin:
 def stage2_result() -> tuple[list[str], list[ReviewRow]]:
     data = _json("stage2_result.json")
     return list(data["blend_notes"]), [ReviewRow.model_validate(r) for r in data["moment_review"]]
+
+
+def staging_raw() -> dict[str, Any]:
+    """The roadside's state ledger read by hand (plan/2026-11-09 phase 0), in the stager's answer shape."""
+    return dict(_json("staging.json"))
+
+
+def staging():
+    """The gold ledger validated against the gold scene's own blocks (a person's map)."""
+    from contracts import stagemap
+
+    return stagemap.validate(staging_raw(), scene().items(), ["Kasun", "Anudi"], version=1, by="person")
+
+
+def ledger_scene() -> SceneS:
+    """The gold scene with the gold ledger attached (codes as the production gives them)."""
+    from contracts.raphael import state
+
+    return state.attach(scene(), staging(), scene().items(), CODES)
+
+
+CODES = {"C01": "Kasun", "C02": "Anudi"}

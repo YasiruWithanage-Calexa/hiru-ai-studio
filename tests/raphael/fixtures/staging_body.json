@@ -1,0 +1,26 @@
+{
+  "_note": "plan/2026-11-09 phase 0: scene 1 of plan/2026-11-08f, 'Aruni Finds Nimal's Body' (Ekama Sakshiya, EXT. MAHAWEWA CANAL, DAWN, 60 s; the reader's gold transcription), and its ledger read by hand. Nimal is lying, dead, at the canal gate from the block he is first seen (b0), the C-17 key in his fist. Aruni walks the paddy path with her medical bag, kneels by him, and calls Dinu on her phone (b2). The case the person named: alive or dead, standing or lying.",
+  "guide_s": 60,
+  "scene": {
+    "blocks": [
+      {"index": 0, "kind": "action", "text": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels and touches his hand. Inside his fist is a small metal key marked C-17.", "screen": "move", "events": 6},
+      {"index": 1, "kind": "dialogue", "text": "Dinu... oyata meka ahenne nadda?", "speaker": "Aruni", "line_id": "L1"},
+      {"index": 2, "kind": "action", "text": "She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.", "screen": "act", "events": 3}
+    ],
+    "cast": ["Aruni", "Nimal"],
+    "others": ["Dinu"],
+    "place": {"name": "Mahawewa Canal", "objects": []},
+    "envelope_s": 60
+  },
+  "codes": {"C01": "Aruni", "C02": "Nimal"},
+  "staging": {
+    "zones": ["paddy path", "canal gate"],
+    "marks": [
+      {"block": 0, "who": "Nimal", "zone": "canal gate", "facing": "camera", "frame_side": "centre", "holding": "small metal key", "posture": "lying", "left_hand": "", "right_hand": "small metal key", "condition": "dead", "wearing": ""},
+      {"block": 0, "who": "Aruni", "zone": "paddy path", "facing": "right", "frame_side": "left", "holding": "medical bag on her shoulder", "posture": "walking", "left_hand": "", "right_hand": "", "condition": "", "wearing": ""},
+      {"block": 1, "who": "Aruni", "zone": "canal gate", "facing": "right", "frame_side": "left", "holding": "medical bag on her shoulder", "posture": "kneeling", "left_hand": "", "right_hand": "", "condition": "", "wearing": ""},
+      {"block": 2, "who": "Aruni", "zone": "canal gate", "facing": "right", "frame_side": "left", "holding": "medical bag on her shoulder, phone", "posture": "kneeling", "left_hand": "", "right_hand": "phone", "condition": "", "wearing": ""}
+    ],
+    "props": []
+  }
+}

@@ -109,13 +109,21 @@ class Ledger:
 
     changes: list[Change] = field(default_factory=list)
     things: dict[str, Thing] = field(default_factory=dict)  # key → how the planner last wrote it
+    # (block, who, key, left | right): a mark that names the hand (plan/2026-11-09); none for a planner's own marks
+    sides: list[tuple[int, str, str, str]] = field(default_factory=list)
 
     @classmethod
     def of(cls, marks: Iterable[Mapping[str, Any]]) -> Ledger:
+        marks = list(marks)
         rows = [(int(m.get("block") or 0), i, str(m.get("who") or "").strip(), str(m.get("holding") or ""))
                 for i, m in enumerate(marks) if str(m.get("who") or "").strip()]
         rows.sort(key=lambda r: (r[0], r[1]))
         ledger = cls()
+        for block, i, who, _ in rows:
+            for side in ("left", "right"):
+                thing = thing_of(str(marks[i].get(f"{side}_hand") or ""))
+                if thing is not None:
+                    ledger.sides.append((block, who, thing.key, side))
         holder: dict[str, str] = {}  # key → who has it now
         hands: dict[str, set[str]] = {}  # who → keys they hold now
         for block, _, who, holding in rows:
@@ -137,6 +145,7 @@ class Ledger:
                 holder[key] = who
                 mine.add(key)
                 ledger.changes.append(Change(block, key, giver, who, arrives=first and not giver))
+        ledger.changes = _handovers(ledger.changes)
         return ledger
 
     def __bool__(self) -> bool:
@@ -155,11 +164,36 @@ class Ledger:
                 del holder[c.key]
         return {k: (who, self.things[k]) for k, who in holder.items()}
 
+    def side(self, who: str, key: str, block: int) -> str:
+        """The hand (left | right) `who` holds `key` in once block `block` has played: the latest mark that names the
+        hand, since they took it; "" when no mark says."""
+        took = max((c.block for c in self.changes if c.key == key and c.taker.casefold() == who.casefold()
+                    and c.block <= block), default=None)
+        if took is None:
+            return ""
+        said = [(b, s) for b, w, k, s in self.sides
+                if k == key and w.casefold() == who.casefold() and took <= b <= block]
+        return max(said)[1] if said else ""
+
     def during(self, start: int, end: int) -> list[Change]:
         return [c for c in self.changes if start <= c.block < end and not (c.block == start and c.arrives)]
 
     def knows(self, key: str) -> bool:
         return key in self.things
+
+
+def _handovers(changes: list[Change]) -> list[Change]:
+    """One block where the giver's mark comes first ("lets go") and the taker's second ("takes it from nobody") is ONE
+    handover (plan/2026-11-09): the order of two marks at the same block says nothing."""
+    out: list[Change] = []
+    for c in changes:
+        drop = next((i for i, d in enumerate(out) if d.block == c.block and d.key == c.key and d.giver and
+                     not d.taker), None) if c.taker and not c.giver and not c.arrives else None
+        if drop is not None:
+            out[drop] = Change(c.block, c.key, out[drop].giver, c.taker)
+        else:
+            out.append(c)
+    return out
 
 
 def window(block_start: int, block_end: int) -> tuple[int, int]:
@@ -212,6 +246,27 @@ def _say(t: Thing, state: str) -> str:
     return "the " + " ".join(words)
 
 
+def _side_at(ledger: Ledger, now: dict[str, tuple[str, Thing]], key: str, start: int) -> str:
+    """The hand the holder holds `key` in as the shot opens: what a mark says up to the block before it."""
+    who = now.get(key, ("", None))[0]
+    return (ledger.side(who, key, start - 1) or ledger.side(who, key, start)) if who else ""  # or they arrive with it
+
+
+def _hand_words(side: str, default: str) -> str:
+    return f"the {side} hand" if side else default
+
+
+def _two_hands(a: str, b: str) -> tuple[str, str]:
+    """The words for two hands: as the marks say them, else "one hand" and "the other hand" (as before)."""
+    if a and b and a != b:
+        return f"the {a} hand", f"the {b} hand"
+    if a and not b:
+        return f"the {a} hand", "the other hand"
+    if b and not a:
+        return "the other hand", f"the {b} hand"
+    return "one hand", "the other hand"
+
+
 def _either(things: Sequence[str]) -> str:
     if len(things) == 1:
         return things[0]
@@ -245,6 +300,7 @@ def shot_hands(ledger: Ledger | None, *, block_start: int, block_end: int, seen:
         hand_held = [(k, t) for k, t in held if not t.worn]
         worn = [(k, t) for k, t in held if t.worn]
         names = [_say(t, t.state or state_in(k, earlier)) for k, t in hand_held]
+        sides = [_side_at(ledger, now, k, start) for k, _ in hand_held]
         if not hand_held:
             # only what someone else holds right now: an empty hand is not news, a phone in two hands is the error
             others = [f"the {ledger.things[k].text.split()[-1]}" for k, (who, thing) in sorted(now.items())
@@ -253,11 +309,12 @@ def shot_hands(ledger: Ledger | None, *, block_start: int, block_end: int, seen:
                 said.append(f"{person} is not holding {_either(others)}.")
                 expect.append(f"{person} holds none of: {', '.join(others)}")
         elif len(names) == 1:
-            said.append(f"{person} holds {names[0]} in one hand.")
-            expect.append(f"{person} holds {names[0]}")
+            said.append(f"{person} holds {names[0]} in {_hand_words(sides[0], 'one hand')}.")
+            expect.append(f"{person} holds {names[0]}" + (f" in the {sides[0]} hand" if sides[0] else ""))
         else:
             rest = f", and also carries {', '.join(names[2:])}" if len(names) > 2 else ""
-            said.append(f"{person} holds {names[0]} in one hand and {names[1]} in the other hand{rest}; "
+            first, second = _two_hands(sides[0], sides[1])
+            said.append(f"{person} holds {names[0]} in {first} and {names[1]} in {second}{rest}; "
                         "each hand keeps its own, neither is put down.")
             expect.append(f"{person} holds {names[0]} and {names[1]}, one in each hand")
         for _, t in worn:

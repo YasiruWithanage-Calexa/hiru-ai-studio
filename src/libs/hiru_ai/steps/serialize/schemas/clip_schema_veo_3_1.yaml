@@ -57,6 +57,11 @@ render_rules:
   # every shot of the production (the canon card's voice pin), so Veo samples the same voice.
   voice_cast:      'Voice casting — fixed for the whole production, identical in every shot: {voices}'
   voice_speaker:   '{who}: {voice}.'
+  # THE STATE LEDGER (plan/2026-11-09, Raphael's shots first, D4): the state the scene's map gives as the clip opens
+  # and as it ends (who is where, how they stand, which hand holds what, alive or not), and what happens in it.
+  opens_line:      'As the clip opens: {state}.'
+  ends_line:       'By the end of the clip: {state}.'
+  story_line:      'What happens in this clip: {story}.'
 
 # ── top-level IR keys the DP must fill with something ──
 required_keys:

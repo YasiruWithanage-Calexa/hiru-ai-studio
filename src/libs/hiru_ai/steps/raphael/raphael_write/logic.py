@@ -30,11 +30,13 @@ from uuid import uuid4
 
 from contracts import sceneplan
 from contracts.producer import CAMERA_OPTIONS, CameraField
+from contracts.raphael import state as ledger_state
 from contracts.raphael.checks import mentions, strings_of
-from contracts.raphael.scene import norm
+from contracts.raphael.scene import LONGEST_TAKE_S, norm
 from contracts.raphael.stored import StoredRaphael
 from contracts.raphael.wire import FRAMING, Clip
 from contracts.shotplan import Item, shot_clock
+from contracts.stagemap import SceneStaging
 from contracts.staging import heard_marked, voice_source
 from contracts.timing import default_beats, overrun_seconds, shot_word_target, words_in
 from hiru_ai.core import parts
@@ -202,6 +204,9 @@ def intent_of(
     people: dict[str, str],
     line_rows: dict[str, Row],
     codes: dict[str, str] | None = None,
+    *,
+    story: tuple[str, str] = ("", ""),
+    states: tuple[str, str] = ("", ""),
 ) -> Row:
     """The clip as its intent (`contracts.staging.ShotIntent`), written `by = "raphael"`: what it is for, what we see,
     who is
@@ -226,10 +231,10 @@ def intent_of(
     sees = "; ".join(
         str(b.get("action") or "") for b in ir.get("beats") or [] if isinstance(b, dict) and b.get("action")
     )
-    return {
+    out: Row = {
         "purpose": clip.why[:400],
         "what_we_see": (sees or clip.why)[:700],
-        "emotional_beat": "",
+        "emotional_beat": story[1][:200],  # plan/2026-11-09: the moment's feeling (it was saved "")
         "on_screen": on_screen,
         "heard_only": heard,
         "voice_source": source,
@@ -237,6 +242,20 @@ def intent_of(
         "made_for": "",
         "written_at": None,
     }
+    # plan/2026-11-09: what happens (the moment's `what`) and the state the clip opens and ends in (the ledger's, code)
+    for key, value, limit in (("story", story[0], 300), ("opens", states[0], 400), ("ends", states[1], 400)):
+        if value:
+            out[key] = value[:limit]
+    return out
+
+
+def states_text(staging: SceneStaging | None, items: list[Item], clip: Clip, clips: list[Clip]) -> tuple[str, str]:
+    """A clip's opening and closing state as text (plan/2026-11-09 phase 5), from the scene's map; "" without one.
+    Code, never the model: no output tokens."""
+    if staging is None:
+        return "", ""
+    opens, ends = ledger_state.states_of(staging, items, ledger_state.clip_blocks(clip, clips))
+    return opens.text()[: ledger_state.STATE_TEXT_CHARS], ends.text()[: ledger_state.STATE_TEXT_CHARS]
 
 
 def title_of(clip: Clip) -> str:
@@ -279,6 +298,14 @@ def rows_for(
     codes = {str(c["code"]): str(c["id"]) for c in characters if c.get("code")}
     shot_ids = {c.id: str(uuid4()) for c in clips}
     perform = performers(clips)
+    # plan/2026-11-09: the scene's state ledger (a map the system saved with these shots), read by code
+    staging = SceneStaging.of(scene)
+    moments = {m.n: (m.what, m.feeling) for m in (stored.edit.moments if stored.edit else [])}
+    long = {
+        i.index: s
+        for i, s in ((i, shot_clock([i])[1]) for i in items if i.kind == "action")
+        if s > LONGEST_TAKE_S + 1e-9
+    }
     slates = {c.id: c.slate for c in stored.clips}
     shots: list[Row] = []
     facts: list[Row] = []
@@ -326,7 +353,15 @@ def rows_for(
                 "version": 1,
                 "planner": "raphael",
                 "card": card_of(c, {}),
-                "intent": intent_of(c, own, people, by_short, codes),
+                "intent": intent_of(
+                    c,
+                    own,
+                    people,
+                    by_short,
+                    codes,
+                    story=ledger_state.story_of(c, moments, long, clips),
+                    states=states_text(staging, items, c, clips),
+                ),
                 "role": c.role,
                 "priority": c.priority,
                 "slate": c.slate,

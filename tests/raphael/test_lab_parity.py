@@ -33,12 +33,13 @@ ADDED_2026_11_08F = (
     "- FLOOR (plan/2026-11-08f).",
     "- COVERAGE (plan/2026-11-08f).",
     "- LONG ACTIONS (plan/2026-11-08f).",
+    "- STATE (plan/2026-11-09).",
 )
 
 
 def test_stage_1_prompt_is_the_labs_must_only_prompt_plus_the_length_lines_and_nothing_else():
     """plan/2026-11-08f added three lines (the 80 % floor, coverage from the script's own time, long actions over
-    consecutive clips); every other line is the lab's, in the lab's order."""
+    consecutive clips) and plan/2026-11-09 one (the state ledger); every other line is the lab's, in the lab's order."""
     lab, product = lab_text("raphael_must"), product_text("raphael_planner")
     added = [line for line in product.splitlines() if line not in lab.splitlines()]
     assert [a.split(")", 1)[0] + ")." for a in added] == list(ADDED_2026_11_08F)
@@ -48,8 +49,9 @@ def test_stage_1_prompt_is_the_labs_must_only_prompt_plus_the_length_lines_and_n
 def test_stage_2_prompt_is_the_labs_plus_the_variety_lines_and_nothing_else():
     lab, product = lab_text("cinematic"), product_text("raphael_cinematic")
     added = [line for line in product.splitlines() if line not in lab.splitlines()]
-    assert len(added) == 1 and added[0].startswith("- VARIETY (D-V).")
-    assert [line for line in product.splitlines() if line != added[0]] == lab.splitlines()
+    assert len(added) == 2 and added[0].startswith("- VARIETY (D-V).")
+    assert added[1].startswith("- STATE (plan/2026-11-09).")
+    assert [line for line in product.splitlines() if line not in added] == lab.splitlines()
 
 
 @pytest.fixture(scope="module")

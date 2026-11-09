@@ -36,6 +36,7 @@ from contracts.producer import PersonEdits, cast_in, shot_items
 from contracts.production import BlockKind, Framing, ProductionSettings, SceneStatus, ShotStatus
 from contracts.roles import Permission
 from contracts.shotplan import FitResult, allowed_durations, fit, shot_clock
+from contracts.staging import ShotIntent
 from contracts.veo import CameraLink, FrameStrategy, SoundMode
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["scenes"])
@@ -297,6 +298,14 @@ class JonathanPlanRequest(BaseModel):
     note: str = Field(default="", max_length=1000)
 
 
+class ShotStateView(BaseModel):
+    """One Raphael shot's story and the state it opens and ends in (plan/2026-11-09), from its intent."""
+
+    story: str = ""
+    opens: str = ""
+    ends: str = ""
+
+
 class RaphaelView(BaseModel):
     """What Shot Planner Raphael keeps for a scene (plan/2026-11-08e): `result` is None for a scene it never planned."""
 
@@ -308,6 +317,12 @@ class RaphaelView(BaseModel):
     # The length cap the production plans with (a choice, plan §2.1) and the four choices a person may make for a run.
     default_cap: float = 2
     caps: list[float] = Field(default_factory=lambda: [1.5, 2, 2.5, 3])
+    # plan/2026-11-09 phase 8: the scene's state ledger, read by code. Each shot's story and the state it opens and
+    # ends in, by slate (from the shot's intent); the state checks' reports (`result.left` rows with code "state").
+    # Both empty for a scene with no state map.
+    states: dict[str, ShotStateView] = Field(default_factory=dict)
+    state_faults: list[dict[str, Any]] = Field(default_factory=list)
+
 
 
 class RaphaelPlanRequest(BaseModel):
@@ -851,9 +866,16 @@ async def get_raphael(production_id: UUID, scene_id: UUID, access: CanView, repo
     ld = await load(repos, access, scene_id)
     stored = _raphael_result(ld.scene)
     made_by_raphael = any(s.get("planner") == "raphael" for s in ld.shots)
+    states: dict[str, ShotStateView] = {}
+    for shot in ld.shots if made_by_raphael else []:
+        intent = ShotIntent.of(shot)
+        if intent is not None and (intent.story or intent.opens or intent.ends) and shot.get("slate"):
+            states[str(shot["slate"])] = ShotStateView(story=intent.story, opens=intent.opens, ends=intent.ends)
+    faults = [r for r in (stored or {}).get("left") or [] if isinstance(r, dict) and r.get("code") == "state"]
     return RaphaelView(scene_id=scene_id, planner="raphael" if made_by_raphael else "classic",
                        result=stored if made_by_raphael else None,
-                       default_cap=float(ld.settings.raphael_length_cap))
+                       default_cap=float(ld.settings.raphael_length_cap),
+                       states=states, state_faults=faults if made_by_raphael else [])
 
 
 async def _raphael_job(repos: Repos, access: ProductionAccess, scene_id: UUID, kind: JobKind, state: dict[str, Any],

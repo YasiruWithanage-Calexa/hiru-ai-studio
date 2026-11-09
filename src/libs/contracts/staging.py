@@ -25,7 +25,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, SerializationInfo, SerializerFunctionWrapHandler, model_serializer
 
 from contracts.canon import name_key
 from contracts.producer import FRAMING_LABEL, CameraCheck, CameraSettings, PersonEdits, cast_in, pictured_text
@@ -94,6 +94,9 @@ def intent_basis(shot_version: int, script_hash: str) -> str:
     return f"v{int(shot_version)}:{script_hash}"
 
 
+LEDGER_KEYS = ("story", "opens", "ends")  # plan/2026-11-09: left out of a dump when empty
+
+
 class ShotIntent(BaseModel):
     """What a shot is FOR and what the camera SEES (`shots.intent`). Written by the intent agent
     before the camera design (`by` = model | rules), or by a person (`by` = person); an agent never
@@ -111,9 +114,25 @@ class ShotIntent(BaseModel):
     # Advice only: a person decides (the director chat's split operation does the cutting).
     split_after: int | None = None
     split_reason: str = Field(default="", max_length=200)
+    # plan/2026-11-09: what happens in the shot and the state it opens and ends in (Raphael's write step, from the
+    # scene's state ledger). "" for every other planner.
+    story: str = Field(default="", max_length=300)
+    opens: str = Field(default="", max_length=400)
+    ends: str = Field(default="", max_length=400)
     by: IntentBy = ""
     made_for: str = ""  # `intent_basis` when it was written
     written_at: str | None = None
+
+    @model_serializer(mode="wrap")
+    def _without_empty_ledger(self, handler: SerializerFunctionWrapHandler, info: SerializationInfo) -> Any:
+        """An intent with no story or states stores exactly what it stored before they existed (every planner but
+        Raphael writes none), so stored rows and recordings do not move."""
+        data = handler(self)
+        if isinstance(data, dict):
+            for key in LEDGER_KEYS:
+                if not data.get(key):
+                    data.pop(key, None)
+        return data
 
     @classmethod
     def of(cls, shot: Mapping[str, Any] | None) -> ShotIntent | None:
@@ -128,9 +147,14 @@ class ShotIntent(BaseModel):
         return intent if intent.by else None
 
     def stamp(self) -> str:
-        """Changes when what the camera is asked for changes (not when it was written)."""
-        return _stamp([self.purpose, self.what_we_see, self.emotional_beat, sorted(self.on_screen),
-                       sorted(self.heard_only), self.voice_source])
+        """Changes when what the camera is asked for changes (not when it was written). The story and the states are
+        part of it only when a shot has them, so every intent written before them keeps its stamp (no design goes out
+        of date by itself), and a changed ledger marks the design out of date."""
+        parts: list[Any] = [self.purpose, self.what_we_see, self.emotional_beat, sorted(self.on_screen),
+                            sorted(self.heard_only), self.voice_source]
+        if self.story or self.opens or self.ends:
+            parts += [self.story, self.opens, self.ends]
+        return _stamp(parts)
 
     def stale(self, basis: str) -> bool:
         return bool(self.made_for) and self.made_for != basis

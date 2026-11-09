@@ -5,9 +5,73 @@
       - { index: 1, kind: dialogue, text: "You came.", speaker: Kasun, speaker_id: s1, line_id: l1 }
     speaker_names: { s1: Kasun }
     place: "A gate, a tea stall, a bench"
-  reply: { zones: [ gate, bench ], marks: [ { block: 0, who: Kasun, zone: gate, facing: camera, frame_side: left, holding: "" } ] }
+  reply:
+    zones: [ gate, bench ]
+    marks:
+      - { block: 0, who: Kasun, zone: gate, facing: camera, frame_side: left, holding: "", posture: standing,
+          left_hand: "", right_hand: "", condition: "", wearing: "" }
+    props: []
   expect: { zones: [ gate, bench ], marks: [ { block: 0, who: Kasun, zone: gate, facing: camera } ] }
 - name: nothing placed
   input: { items: [ { index: 0, kind: action, text: "It rains.", screen: act } ] }
-  reply: { zones: [ yard, road ], marks: [] }
+  reply: { zones: [ yard, road ], marks: [], props: [] }
   expect: { marks: [] }
+# plan/2026-11-09: the state ledger. The roadside of Episode 1: a dropped phone, a handover, an umbrella in one hand.
+- name: the roadside handover
+  input:
+    items:
+      - { index: 0, kind: action, text: "Kasun stands beside his small three-wheeler, selling tea.", screen: act }
+      - { index: 1, kind: action, text: "Anudi steps out of a car, holding an umbrella.", screen: move }
+      - { index: 2, kind: action, text: "She accidentally drops her phone near Kasun's three-wheeler.", screen: act }
+      - { index: 3, kind: action, text: "Kasun picks it up and runs after her.", screen: move }
+      - { index: 4, kind: dialogue, text: "Miss! Your phone!", speaker: Kasun, speaker_id: s1, line_id: l1 }
+      - { index: 5, kind: dialogue, text: "Oh... thank you.", speaker: Anudi, speaker_id: s2, line_id: l2 }
+    speaker_names: { s1: Kasun, s2: Anudi }
+    place: "A Colombo roadside: Kasun's three-wheeler stall, the pavement, the road"
+  reply:
+    zones: [ stall counter, pavement, family car ]
+    marks:
+      - { block: 0, who: Kasun, zone: stall counter, facing: right, frame_side: left, holding: "", posture: standing,
+          left_hand: "", right_hand: "", condition: "", wearing: "" }
+      - { block: 1, who: Anudi, zone: family car, facing: left, frame_side: right, holding: "umbrella, phone",
+          posture: standing, left_hand: phone, right_hand: umbrella, condition: "", wearing: "" }
+      - { block: 2, who: Anudi, zone: pavement, facing: away, frame_side: right, holding: umbrella, posture: walking,
+          left_hand: "", right_hand: umbrella, condition: "", wearing: "" }
+      - { block: 3, who: Kasun, zone: pavement, facing: right, frame_side: left, holding: phone, posture: running,
+          left_hand: "", right_hand: phone, condition: "", wearing: "" }
+      - { block: 5, who: Anudi, zone: pavement, facing: left, frame_side: right, holding: "umbrella, phone",
+          posture: standing, left_hand: phone, right_hand: umbrella, condition: "", wearing: "" }
+      - { block: 5, who: Kasun, zone: pavement, facing: right, frame_side: left, holding: "", posture: standing,
+          left_hand: "", right_hand: "", condition: "", wearing: "" }
+    props:
+      - { block: 2, prop: phone, where: "on the ground by the three-wheeler", state: "" }
+  expect:
+    marks:
+      - { block: 0, who: Kasun, posture: standing }
+      - { block: 1, who: Anudi, left_hand: phone, right_hand: umbrella }
+      - { block: 2, who: Anudi, holding: umbrella }
+      - { block: 3, who: Kasun, posture: running, right_hand: phone }
+      - { block: 5, who: Anudi, left_hand: phone }
+      - { block: 5, who: Kasun, holding: "" }
+    props: [ { block: 2, prop: phone, where: "on the ground by the three-wheeler" } ]
+# The body scene of plan/2026-11-08f scene 1: a dead man lying from the block he is first seen.
+- name: the body at the canal gate
+  input:
+    items:
+      - { index: 0, kind: action, text: "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She
+          notices a body near the canal gate. It is Nimal. She kneels and touches his hand.", screen: move }
+      - { index: 1, kind: dialogue, text: "Dinu...", speaker: Aruni, speaker_id: s1, line_id: l1 }
+    speaker_names: { s1: Aruni }
+    place: "Mahawewa Canal: a paddy path, the canal gate"
+  reply:
+    zones: [ paddy path, canal gate ]
+    marks:
+      - { block: 0, who: Nimal, zone: canal gate, facing: camera, frame_side: centre, holding: "small metal key",
+          posture: lying, left_hand: "", right_hand: "small metal key", condition: dead, wearing: "" }
+      - { block: 1, who: Aruni, zone: canal gate, facing: right, frame_side: left, holding: "medical bag",
+          posture: kneeling, left_hand: "", right_hand: "", condition: "", wearing: "" }
+    props: []
+  expect:
+    marks:
+      - { block: 0, who: Nimal, posture: lying, condition: dead }
+      - { block: 1, who: Aruni, posture: kneeling }

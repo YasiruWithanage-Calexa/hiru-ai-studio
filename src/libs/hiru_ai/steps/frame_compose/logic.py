@@ -34,10 +34,22 @@ from contracts.producer import (
     shot_canon_ids,
     shot_items,
 )
-from contracts.staging import Staging, shot_cast, source_phrase, staging, unseen_sentence
+from contracts.staging import ShotIntent, Staging, shot_cast, source_phrase, staging, unseen_sentence
 from contracts.veo import ASPECT_RATIO, Orientation
 
 Row = dict[str, Any]
+# plan/2026-11-09 (D4, Raphael first): the first frame is the clip's opening, so it shows the state the clip opens in
+OPENS_LINE = "In this frame, as the clip opens: {state}."
+
+
+def opens_line(shot: Row) -> str:
+    """The state a Raphael shot opens in (its intent's `opens`, from the scene's state ledger), for the still, so the
+    still and the video agree. "" for every other planner and for a shot with no ledger."""
+    if str(shot.get("planner") or "") != "raphael":
+        return ""
+    intent = ShotIntent.of(shot)
+    state = " ".join((intent.opens if intent else "").split()).rstrip(" .;,")
+    return OPENS_LINE.format(state=state) if state else ""
 # The people seen, the place, a second place (the stall) and what they hold; the image model takes up to 16
 MAX_REFERENCES = 6
 ASPECT_OF_SHEET = SHEET_ASPECT
@@ -148,7 +160,7 @@ class World:
                               cast=self.cast(shot, staged.on_screen), references=labels,
                               recommended_framing=recommended.framing,
                               unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
-                              hands=self.hands(shot).sentence)
+                              hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p))
         return prompt, pins.model_dump()
 
     def hands(self, shot: Row) -> Hands:

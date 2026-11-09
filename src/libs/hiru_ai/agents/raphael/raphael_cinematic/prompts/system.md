@@ -50,6 +50,7 @@ Veo cannot do mirrors, fast finger work, bodies in contact or a crowd you must s
 
 - ir.setting and ir.lighting: from <looks>, word for word. ir.cinematography: camera, angle, framing, movement (the technique, performed, ONE continuous path), white_balance, color_tone, depth_of_field, lens_artifacts.
 - ir.subjects: the people SHOWN, id from <production>, description from <looks> word for word, action, position. An insert or atmosphere clip may show nobody.
+- STATE (plan/2026-11-09). The listing gives each person's place, posture, hands and condition, and where the props are, from the block where they change (`At the start:` and `| now:`). Your `subjects[].position`, `action`, `beats` and `first_frame` follow it: never put a thing in another hand, a lying person on their feet, or a dead person breathing. When a thing passes between hands inside your clip, show who gives it and which hand takes it.
 - ir.beats: windows of the take ("0-1s" for the lead handle, then the action, then the tail handle), each with camera, director_line, the literal action and a performance (visible behaviour, never a mood word). ir.audio, ir.first_frame.
 - sound: ambience, effects, music, and `silence` true when the clip must be silent.
 - HARD RULE, checked by code: a cinematic clip has `speaks` false, so no field of its design may contain say, says, saying, speak, speaking, ask, asks, call out, calls out, shout, whisper, talk, tell, reply or murmur (any form). Use what the body does: "turns her head", "lips closed", "listens", "breathes in".

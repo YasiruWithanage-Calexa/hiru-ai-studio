@@ -32,10 +32,11 @@ from contracts import sceneplan
 from contracts.raphael import checks, pack
 from contracts.raphael.bin import Bin
 from contracts.raphael.money import CapReached, Meter, Unpriced, price_of
-from contracts.raphael.scene import BlockS, Brief, PlaceS, SceneS, mark_recorded, norm, plain_name
+from contracts.raphael.scene import BlockS, Brief, PlaceS, SceneS, mark_recorded, norm, plain_name, scene_dump
 from contracts.raphael.stored import Left, Seconds, StoredRaphael
 from contracts.raphael.tools import Stage1Session, Stage2Session
 from contracts.raphael.wire import DEFAULT_CAP, LENGTH_CAPS, Clip, ReviewRow
+from contracts.stagemap import SceneStaging
 from hiru_ai.core import agents
 from hiru_ai.core.agents import Stop
 from hiru_ai.core.context import RunContext
@@ -59,16 +60,28 @@ class Failed(Exception):
 
 
 @dataclass
+class Ledger:
+    """The scene's state map (plan/2026-11-09 phase 3): the one the scene had, or the one the stager just made (saved
+    with the shots, `made`), or none (`note` says why, on the job's events)."""
+
+    staging: SceneStaging | None = None
+    made: bool = False
+    note: str = ""
+
+
+@dataclass
 class Unchanged:
     """A scene whose input is the one its stored result was made from: it is kept as it is."""
 
     stored: StoredRaphael
+    ledger: Ledger = field(default_factory=Ledger)
 
 
 @dataclass
 class Planned:
     stored: StoredRaphael
     log: list[str] = field(default_factory=list)
+    ledger: Ledger = field(default_factory=Ledger)
 
 
 # ── the scene, as Raphael is given it ────────────────────────────────────────────────────────────
@@ -189,9 +202,10 @@ class Planner:
     def input_hash(self) -> str:
         """What Raphael was given, as a hash: a re-plan whose hash is unchanged keeps the stored result. The cap is
         part of
-        it: another cap is another result."""
+        it: another cap is another result. The scene's state map is part of it (plan/2026-11-09): a changed or a
+        person's map plans again; a scene with no map hashes as it did before the map was added."""
         body = json.dumps(
-            {"pack": self.opening1(), "scene": self.scene.model_dump(mode="json"), "cap": self.cap},
+            {"pack": self.opening1(), "scene": scene_dump(self.scene), "cap": self.cap},
             ensure_ascii=False,
             sort_keys=True,
         )
@@ -300,7 +314,7 @@ class Planner:
     # the result ───────────────────────────────────────────────────────────────────────────────
 
     def left_of(self, found: list[checks.Fault]) -> list[Left]:
-        return [Left(code=f.code, sentence=f.sentence, clips=f.clips, fix=f.fix) for f in found]
+        return [Left(code=f.code, sentence=f.sentence, clips=f.clips, fix=f.fix, key=f.key) for f in found]
 
     def seconds_of(self, work: Bin) -> Seconds:
         n = work.counts()

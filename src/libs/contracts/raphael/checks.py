@@ -1,7 +1,7 @@
 """The code that judges a bin (plan/2026-11-08e §3.3, §3.5, phase 2). No model, no network.
 
     check_stage1(brief, bin, allowed)         [Fault]   coverage, length (1.5x), clock, feasibility, designs,
-    consistency
+    consistency, and the state ledger (plan/2026-11-09: hands, handovers, posture, condition, presence, place; report)
     check_stage2(brief, bin, allowed, cap)    [Fault]   every stage 1 check on the whole bin (length: the chosen cap)
     plus
                                                         the cinematic checks of §3.5
@@ -26,6 +26,8 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from contracts import holding as hd
+from contracts import stagemap as sm
 from contracts.raphael.bin import Bin
 from contracts.raphael.scene import (
     LONGEST_TAKE_S,
@@ -36,7 +38,9 @@ from contracts.raphael.scene import (
     is_voice_over,
     long_actions,
     need_s,
+    norm,
     parts_needed,
+    plain_name,
     script_s,
 )
 from contracts.raphael.wire import (
@@ -687,6 +691,7 @@ def check_stage1(brief: Brief, work: Bin, allowed: tuple[str, ...] = TECHNIQUES)
         *consistency(work),
         *length(brief, work, STAGE1_CAP),
         *short(brief, work),
+        *state(scene, work),  # plan/2026-11-09: the state ledger, report only (D2)
     ]
 
 
@@ -858,3 +863,321 @@ def missing_blend_notes(work: Bin, notes: list[str]) -> list[str]:
     return [
         e.id for e in work.extras() if not any(n.startswith(e.id) or f"{e.id} " in n or f"{e.id}:" in n for n in notes)
     ]
+
+
+# ── the state ledger (plan/2026-11-09 phase 6): report only until the lab decides (D2) ───────────────────────────
+
+# A thing in a hand, said in a clause that names it: "phone in right hand", "phone now in left", "holds the phone"
+HAND_SIDE = re.compile(r"\bin (?:her|his|their|the|one)?\s*(left|right)\b", re.IGNORECASE)
+HELD = re.compile(
+    r"\b(holds?|holding|grips?|gripping|clutch\w*|raises?|raised|raising|lifts?|lifted|lifting|offers?|offered|"
+    r"offering|to (?:her|his|their) ear|at (?:her|his|their) ear|in (?:her|his|their|one) hand)\b",
+    re.IGNORECASE,
+)
+CLAUSES = re.compile(r"[,;]|\bthen\b|\band\b|\bwhile\b|\bas\b", re.IGNORECASE)
+# What a posture rules out (the plan's two: a lying person on their feet, a sitting person running)
+NOT_WITH: dict[str, re.Pattern[str]] = {
+    "lying": re.compile(
+        r"\b(stands?|standing|walks?|walking|runs?|running|sits?|sitting|steps?|stepping|gets up|rises)\b",
+        re.IGNORECASE,
+    ),
+    "sitting": re.compile(r"\b(runs?|running|walks?|walking|strides?|striding)\b", re.IGNORECASE),
+}
+STILL = ("dead", "unconscious")  # a condition in which a person does nothing on their own
+ALIVE = re.compile(
+    r"\b(breath\w*|chest (?:rises|rising|heaves|heaving)|blinks?|blinking|speaks?|speaking|talks?|talking|stirs?|"
+    r"stirring|moves? (?:his|her|their)|opens (?:his|her|their) eyes|sits up|stands up|gets up|looks up|"
+    r"turns (?:his|her|their) head|groans?|moans?)\b",
+    re.IGNORECASE,
+)
+NEGATED = re.compile(r"\b(no|not|never|without|n't|nor|cannot)\W+(?:\w+\W+){0,2}$", re.IGNORECASE)
+ZONE_GENERIC = frozenset(
+    {
+        "the",
+        "a",
+        "an",
+        "of",
+        "by",
+        "near",
+        "side",
+        "edge",
+        "area",
+        "place",
+        "spot",
+        "road",
+        "street",
+        "frame",
+        "left",
+        "right",
+        "centre",
+        "center",
+        "front",
+        "back",
+        "corner",
+        "one",
+    }
+)
+
+
+def _subjects(clip: Clip) -> list[dict[str, object]]:
+    return [s for s in (clip.ir or {}).get("subjects") or [] if isinstance(s, dict)]
+
+
+def _who(scene: SceneS, subject: dict[str, object]) -> str:
+    return scene.name_of(str(subject.get("id") or ""))
+
+
+def _subject_text(subject: dict[str, object]) -> str:
+    return " , ".join(str(subject.get(k) or "") for k in ("action", "position"))
+
+
+def _picture_text(clip: Clip, *, beats: bool = True) -> str:
+    """What a clip SHOWS in words (never the look: a description is the clothes, not the moment)."""
+    ir = clip.ir or {}
+    rows = [_subject_text(s) for s in _subjects(clip)]
+    if beats:
+        rows += [
+            str(b.get(k) or "") for b in ir.get("beats") or [] if isinstance(b, dict) for k in ("action", "performance")
+        ]
+    frame = ir.get("first_frame")
+    if isinstance(frame, dict):
+        rows += [str(frame.get("composition") or ""), *strings_of(frame.get("subjects"))]
+    return " \n ".join(r for r in rows if r)
+
+
+def _names(text: str, scene: SceneS, who: str) -> bool:
+    """`text` names this person, by name or by the code the clips use."""
+    codes = [c for c, n in scene.codes.items() if n == who]
+    return any(mentions(text, n) for n in (who, *codes))
+
+
+def _thing_in(text: str, key: str) -> bool:
+    return re.search(rf"(?<!\w){re.escape(key)}s?(?!\w)", text, re.IGNORECASE) is not None
+
+
+def _window_states(scene: SceneS, blocks: list[int]) -> list[sm.SceneState]:
+    """The state as the clip opens, then after each of its blocks."""
+    staging, items = scene.staging, scene.items()
+    opens, _ = sm.clip_state(staging, items, blocks)
+    return [opens, *(sm.state_at(staging, items, b) for b in blocks)]
+
+
+def _zone_words(zone: str) -> list[str]:
+    return [w for w in re.findall(r"[a-z0-9][a-z0-9'’-]*", zone.lower()) if w not in ZONE_GENERIC and len(w) >= 3]
+
+
+def _names_zone(text: str, zone: str) -> bool:
+    return any(mentions(text, w) for w in _zone_words(zone))
+
+
+def _hand_named(text: str, key: str, side: str) -> bool:
+    """The text says which hand holds the thing: "phone in her left hand", "the phone now in left", "left hand"."""
+    if re.search(rf"\b{side}[- ]hand\b", text, re.IGNORECASE):
+        return True
+    for clause in CLAUSES.split(text):
+        m = HAND_SIDE.search(clause)
+        if m and m.group(1).lower() == side and _thing_in(clause, key):
+            return True
+    return False
+
+
+def _alive_word(text: str) -> str:
+    for m in ALIVE.finditer(text):
+        if not NEGATED.search(text[: m.start()]):
+            return m.group(0)
+    return ""
+
+
+def state(scene: SceneS, work: Bin) -> list[Fault]:
+    """Each clip against the scene's state ledger (`scene.staging`, pinned by `contracts.raphael.state.attach`):
+    hands, handovers, posture, condition, presence and place, and the props someone carries that no clip shows.
+    REPORT only (D2): a wrong ledger must not trap Raphael. No ledger, no check."""
+    staging = scene.staging
+    if staging is None or not staging.marks:
+        return []
+    items = scene.items()
+    ledger = sm.ledger_of(staging, items)
+    out: list[Fault] = []
+    zones = staging.zones
+    for c in work.clips:
+        if c.ir is None or not c.blocks:
+            continue
+        blocks = sorted(set(c.blocks))
+        states = _window_states(scene, blocks)
+        first = blocks[0]
+        for s in _subjects(c):
+            who = _who(scene, s)
+            if not who:
+                continue
+            mine = [st.person(who) for st in states]
+            text = _subject_text(s)
+            # hands: a thing in this person's hand that the ledger gives to someone else at these blocks
+            for clause in CLAUSES.split(text):
+                for key, thing in sorted(ledger.things.items()):
+                    if not _thing_in(clause, key) or thing.worn:
+                        continue
+                    side_m = HAND_SIDE.search(clause)
+                    if side_m is None and not HELD.search(clause):
+                        continue
+                    holders = {
+                        st.props[key].holder.casefold() for st in states if key in st.props and st.props[key].holder
+                    }
+                    if not holders:
+                        continue
+                    if who.casefold() not in holders:
+                        holder = next(st.props[key] for st in states if key in st.props and st.props[key].holder)
+                        hand = f" ({holder.hand} hand)" if holder.hand else ""
+                        out.append(
+                            _fault(
+                                "state",
+                                f"{c.id} (b{first}): {who} holds the {thing.text} here, and the state map gives "
+                                f"it to {holder.holder}{hand} at these blocks: follow the map, or show it pass.",
+                                [c.id],
+                                fix="report",
+                                key=f"state:hand:{c.id}:{key}:{who}",
+                            )
+                        )
+                        continue
+                    sides = {p.hand_of(key) for p in mine if p is not None and key in p.keys()} - {""}
+                    said = side_m.group(1).lower() if side_m else ""
+                    if said and sides and said not in sides:
+                        out.append(
+                            _fault(
+                                "state",
+                                f"{c.id} (b{first}): the {thing.text} is in {who}'s {'/'.join(sorted(sides))} "
+                                f"hand by the state map; '{clause.strip()}' puts it in the {said}.",
+                                [c.id],
+                                fix="report",
+                                key=f"state:hand:{c.id}:{key}:{who}:side",
+                            )
+                        )
+            # posture, held through the whole clip
+            postures = {p.posture for p in mine if p is not None}
+            if len(postures) == 1 and (posture := postures.pop()) in NOT_WITH:
+                m = NOT_WITH[posture].search(text)
+                if m:
+                    out.append(
+                        _fault(
+                            "state",
+                            f"{c.id}: {who} is {posture} at b{first} by the state map; '{m.group(0)}' contradicts it.",
+                            [c.id],
+                            fix="report",
+                            key=f"state:posture:{c.id}:{who}",
+                        )
+                    )
+            # condition: a dead or unconscious person does nothing on their own
+            conditions = {p.condition.casefold() for p in mine if p is not None}
+            still = next((x for x in STILL for cond in conditions if x in cond), "")
+            if still and len(conditions) == 1:
+                alone = len(_subjects(c)) == 1
+                word = _alive_word(text + (" \n " + _picture_text(c) if alone else ""))
+                speaks = c.speaks and any(
+                    (b := scene.line_block(ln)) is not None and norm(plain_name(b.speaker)) == norm(who)
+                    for ln in c.lines
+                )
+                if word or speaks:
+                    said = f"'{word}'" if word else "a spoken line"
+                    out.append(
+                        _fault(
+                            "state",
+                            f"{c.id}: {who} is {still} by the state map; {said} contradicts it.",
+                            [c.id],
+                            fix="report",
+                            key=f"state:condition:{c.id}:{who}",
+                        )
+                    )
+            # presence: off for every block of the clip
+            during = [sm.state_at(staging, items, b).person(who) for b in blocks]
+            if during and all(p is not None and p.zone == sm.OFF for p in during):
+                out.append(
+                    _fault(
+                        "state",
+                        f"{c.id}: {who} is off (not in the place) at b{first}-b{blocks[-1]} by the state map: "
+                        "take them out of the picture, or put the clip where they are.",
+                        [c.id],
+                        fix="report",
+                        key=f"state:off:{c.id}:{who}",
+                    )
+                )
+            # place: the position names another of the map's spots
+            here = {p.zone for p in mine if p is not None and p.zone and p.zone != sm.OFF}
+            position = str(s.get("position") or "")
+            if here and not any(_names_zone(position, z) for z in here):
+                other = next((z for z in zones if z not in here and _names_zone(position, z)), "")
+                if other:
+                    now = sorted(here)[0]
+                    out.append(
+                        _fault(
+                            "state",
+                            f"{c.id} (b{first}): {who} is at the {now} by the state map; '{position}' is the "
+                            f"{other}: show them go there, or keep them at the {now}.",
+                            [c.id],
+                            fix="report",
+                            key=f"state:zone:{c.id}:{who}",
+                        )
+                    )
+        # handovers inside the clip: show who gives it and which hand takes it
+        start, end = blocks[0], blocks[-1] + 1
+        shown = _picture_text(c)
+        for change in ledger.during(start, end):
+            if not (change.giver and change.taker) or change.block not in blocks:
+                continue
+            thing = ledger.things[change.key]
+            if not _thing_in(shown, change.key):
+                continue
+            side = ledger.side(change.taker, change.key, change.block)
+            subjects = {_who(scene, s) for s in _subjects(c)}
+            both = all(p in subjects or _names(shown, scene, p) for p in (change.giver, change.taker))
+            named_hand = not side or _hand_named(shown, change.key, side)
+            if not (both and named_hand):
+                taking = f"{change.taker}'s {side} hand" if side else f"{change.taker}'s hand"
+                out.append(
+                    _fault(
+                        "state",
+                        f"{c.id}: the {thing.text} passes from {change.giver} to {change.taker} at "
+                        f"b{change.block}: show {change.giver}'s hand giving it and {taking} taking it.",
+                        [c.id],
+                        fix="report",
+                        key=f"state:handover:{c.id}:{change.key}:{change.block}",
+                    )
+                )
+    out += unplaced(scene, work, ledger)
+    return out
+
+
+def unplaced(scene: SceneS, work: Bin, ledger: hd.Ledger) -> list[Fault]:
+    """A prop someone holds (a handbag) that no clip shows where its holder is seen: once a scene, not once a clip."""
+    staging, items = scene.staging, scene.items()
+    out: list[Fault] = []
+    for key, thing in sorted(ledger.things.items()):
+        taken = next((ch for ch in ledger.changes if ch.key == key and ch.taker), None)
+        if taken is None:
+            continue
+        seen_with: list[Clip] = []
+        for c in work.clips:
+            if c.ir is None:
+                continue
+            for b in sorted(set(c.blocks)):
+                held = sm.state_at(staging, items, b).props.get(key)
+                if (
+                    held is not None
+                    and held.holder
+                    and any(norm(_who(scene, s)) == norm(held.holder) for s in _subjects(c))
+                ):
+                    seen_with.append(c)
+                    break
+        if not seen_with:
+            continue
+        first = (taken.block, taken.taker)
+        if not any(_thing_in(_picture_text(c), key) for c in seen_with):
+            out.append(
+                _fault(
+                    "state",
+                    f"The {thing.text} {first[1]} carries (from b{first[0]}) is in no clip's picture where "
+                    f"{first[1]} is seen, only perhaps in a description: place it (a hand, a shoulder) in at "
+                    "least one.",
+                    fix="report",
+                    key=f"state:unplaced:{key}",
+                )
+            )
+    return out

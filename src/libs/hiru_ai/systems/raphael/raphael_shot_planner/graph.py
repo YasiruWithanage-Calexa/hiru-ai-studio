@@ -37,9 +37,11 @@ from contracts import sceneplan
 from contracts.build import Agent, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
+from contracts.raphael import state as ledger_state
 from contracts.raphael.stored import StoredRaphael
 from contracts.reading import SceneReading
-from hiru_ai.core import llm, parts
+from contracts.stagemap import SceneStaging
+from hiru_ai.core import agents, llm, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -88,6 +90,7 @@ def build(
     job_id, production_id = payload.job_id, payload.production_id
     assert production_id is not None
     write = parts.step("raphael_write", "step")
+    prep = parts.step("scene_prep")  # the stager's map, kept or made the way every planner keeps it (plan/2026-11-09)
     started = time.monotonic()
     limit = TIME_BUDGET_S if budget_s is None else budget_s
     edit: Row = dict(payload.state.get("edit") or {})
@@ -150,6 +153,43 @@ def build(
     def gist(row: Row | None) -> str:
         return " — ".join(p for p in (str((row or {}).get("heading") or ""), str((row or {}).get("title") or "")) if p)
 
+    names = {str(c["id"]): str(c["name"]) for c in characters}
+    codes = {str(c.get("code") or ""): str(c["name"]) for c in characters if c.get("code")}
+    place_notes = prep.location_notes(list(locations.values()))
+
+    # ── the scene's state ledger (plan/2026-11-09 phase 3) ─────────────────────────────────────
+
+    def ledger_of(
+        sc: Row, lines: list[Row], cast: list[str], reading: SceneReading | None, scene_ctx: RunContext
+    ) -> tuple[raphael.Ledger, Any]:
+        """-> (the scene's map, the items it is for). A current stored map or a person's map costs nothing; else ONE
+        stager call (no implied walks for Raphael, D3). A stager failure is not a Raphael failure: the scene is
+        planned without a map, and the job says so."""
+        items = sceneplan.items_for(sc.get("script") or [], lines)
+        place = place_notes.get(str(sc.get("location_id")), "")
+
+        def ask(its: list[Any]) -> Row:
+            out = agents.build("stager").run(
+                {
+                    "items": its,
+                    "speaker_names": names,
+                    "reading_text": reading.text() if reading else "",
+                    "place": place,
+                },
+                scene_ctx,
+            )
+            return dict(out.model_dump(mode="json"))
+
+        staging: SceneStaging | None
+        try:
+            staging, made = prep.staging_for(sc, items, ask, cast)
+        except Exception:  # a broken map is not a broken scene
+            _log.warning("the state map failed for scene %s", sc.get("id"), exc_info=True)
+            staging, made = None, False
+        if staging is None:
+            return raphael.Ledger(note="No state map for this scene; planned without it"), items
+        return raphael.Ledger(staging=staging, made=made), items
+
     # ── planning one scene (in a worker; the writing happens in the main thread) ───────────────
 
     def plan_one(job: Row) -> raphael.Planned | raphael.Unchanged | str:
@@ -170,6 +210,14 @@ def build(
         )
         episode = episode_rows.get(str(sc.get("episode_id"))) or {}
         reading = SceneReading.of(sc)
+        # The scene's id on every usage row of its calls (plan/2026-11-08f §6; written once `usage_scene` is on).
+        scene_ctx = replace(ctx, scene_id=UUID(sid))
+        ledger, items = (
+            ledger_of(sc, lines, cast, reading, scene_ctx)
+            if not cinematic_only
+            else (raphael.Ledger(staging=SceneStaging.of(sc)), sceneplan.items_for(sc.get("script") or [], lines))
+        )
+        script = ledger_state.attach(script, ledger.staging, items, codes)
         note = " ".join(p for p in (str(sc.get("note") or ""), str(edit.get("note") or "")) if p)
         context = {
             "heading": str(sc.get("heading") or ""),
@@ -181,8 +229,7 @@ def build(
             "place": str((((location or {}).get("current") or {}).get("card") or {}).get("look") or ""),
         }
         planner = raphael.Planner(
-            # The scene's id on every usage row of its calls (plan/2026-11-08f §6; written once `usage_scene` is on).
-            replace(ctx, scene_id=UUID(sid)),
+            scene_ctx,
             script,
             number=int(sc.get("number") or 0),
             line_ids=line_ids,
@@ -201,7 +248,9 @@ def build(
             if cinematic_only:
                 if stored is None:
                     return "This scene was not planned by Raphael, so there is no must bin to add to. Plan it first."
-                return planner.more_cinematic(stored, previous=previous, job_id=str(job_id))
+                done = planner.more_cinematic(stored, previous=previous, job_id=str(job_id))
+                done.ledger = ledger
+                return done
             same = stored is not None and stored.input_hash == planner.input_hash()
             if (
                 stored is not None
@@ -210,8 +259,10 @@ def build(
                 and not replan
                 and any(s.get("planner") == "raphael" for s in shots)
             ):
-                return raphael.Unchanged(stored)  # same input, the result a person already saw
-            return planner.plan(previous=previous, job_id=str(job_id))
+                return raphael.Unchanged(stored, ledger)  # same input, the result a person already saw
+            done = planner.plan(previous=previous, job_id=str(job_id))
+            done.ledger = ledger
+            return done
         except raphael.Failed as failure:
             return str(failure)
 
@@ -257,7 +308,15 @@ def build(
                 failed.append({"scene_id": str(sc["id"]), "label": label, "reason": result})
                 jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {result}"}, agent=AGENT)
                 return
+            if result.ledger.note:
+                jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {result.ledger.note}"}, agent=AGENT)
+            made = result.ledger.staging is not None and result.ledger.made
+            if made and result.ledger.staging is not None:  # the map the stager just made goes with the shots
+                sc["staging"] = result.ledger.staging.model_dump(mode="json")
             if isinstance(result, raphael.Unchanged):
+                if made:
+                    # no shot changes: the map alone (save_plan with no shots is the scene's own fields)
+                    scenes_port.save_plan(UUID(str(sc["id"])), [], [], [], {"staging": sc["staging"]})
                 reused += 1
                 jobs.event(
                     job_id,
@@ -281,7 +340,9 @@ def build(
                 failed.append({"scene_id": str(sc["id"]), "label": label, "reason": reason})
                 jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {reason}"}, agent=AGENT)
                 return
-            scenes_port.replace_shots(UUID(str(sc["id"])), out["shots"], out["lines"], out["fields"])
+            fields = {**out["fields"], **({"staging": sc["staging"]} if made else {})}
+            scenes_port.replace_shots(UUID(str(sc["id"])), out["shots"], out["lines"], fields)
+            out["fields"] = fields
             sc.update(out["fields"])
             by_id[str(sc["id"])].update(out["fields"])
             written += 1

@@ -27,6 +27,7 @@ class Left(_Model):
     sentence: str
     clips: list[str] = []
     fix: Literal["repair", "report"] = "report"
+    key: str = ""  # the check's key ("state:handover:c05:phone:9", plan/2026-11-09): what kind of report it is
 
 
 class Seconds(_Model):

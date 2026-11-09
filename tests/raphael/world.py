@@ -12,6 +12,7 @@ from uuid import UUID, uuid4
 
 from langchain_core.messages import AIMessage
 
+from contracts import sceneplan, stagemap
 from contracts.jobs import DispatchPayload, JobKind
 from contracts.raphael.bin import Bin
 from contracts.raphael.stored import StoredRaphael
@@ -72,8 +73,16 @@ class World:
     """One episode with one scene: Episode 1 of the lab, 60 s."""
 
     def __init__(
-        self, *, status: str = "draft", shots: list[dict[str, Any]] | None = None, settings: dict | None = None
+        self,
+        *,
+        status: str = "draft",
+        shots: list[dict[str, Any]] | None = None,
+        settings: dict | None = None,
+        staging: str = "person",
     ):
+        """`staging`: the scene's state map (plan/2026-11-09): "person" is the gold ledger as a person's map (no stager
+        call), "" none (the stager is asked)."""
+        self.staging = staging
         self.production, self.episode = str(uuid4()), str(uuid4())
         self.scene_rows: list[dict[str, Any]] = []
         self.line_rows: list[dict[str, Any]] = []
@@ -123,9 +132,10 @@ class World:
                 "raphael": {},
             }
         )
+        new_lines = []
         for n, b in enumerate(b for b in blocks if b.line_id):
             speaker = b.speaker if b.speaker in PEOPLE else "Narrator"
-            self.line_rows.append(
+            new_lines.append(
                 {
                     "id": ids[b.index],
                     "production_id": self.production,
@@ -137,6 +147,11 @@ class World:
                     "delivery": b.delivery,
                 }
             )
+        self.line_rows += new_lines
+        if self.staging:
+            items = sceneplan.items_for(script, new_lines)
+            made = stagemap.validate(gold.staging_raw(), items, ["Kasun", "Anudi"], version=1, by=self.staging)
+            self.scene_rows[-1]["staging"] = made.model_dump(mode="json")
         return sid
 
     def short_ids(self) -> dict[str, str]:

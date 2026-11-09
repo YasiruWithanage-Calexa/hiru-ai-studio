@@ -145,3 +145,32 @@ def test_the_build_plans_shots_with_the_planner_the_production_chose(
     ready_doc(world)
     assert start(world).status_code == 202
     assert build_fired[0]["pipeline"] == ["canon_extract", "structure_build", last]
+
+
+def test_the_view_gives_each_shot_its_story_and_states_and_the_state_reports(world: World):
+    """plan/2026-11-09 phase 8: by slate, from the shots' intents; the state checks' reports from the stored result."""
+    from contracts.raphael.stored import Left
+
+    s = raphael_scene(world)
+    left = [
+        Left(code="state", sentence="c05: the phone passes from Kasun to Anudi at b9.", clips=["c05"], fix="report"),
+        Left(code="clock", sentence="c02 needs 6.5 s.", clips=["c02"], fix="report"),
+    ]
+    s["scene"]["raphael"] = s["stored"].model_copy(update={"left": left}).data()
+    rows = list(world.repos.shots.rows.values())  # type: ignore[attr-defined]
+    for n, row in enumerate(rows):
+        row["slate"] = f"1A-{n + 1}"
+        row["intent"] = {"by": "raphael", "story": "He gives it back.", "opens": "Kasun: phone in right hand",
+                         "ends": "Anudi: phone in left hand"} if n == 0 else {"by": "raphael"}
+    body = world.client.get(url(world, f"/scenes/{s['scene']['id']}/raphael"),
+                            headers=world.headers(world.reviewer)).json()
+    assert body["states"] == {"1A-1": {"story": "He gives it back.", "opens": "Kasun: phone in right hand",
+                                       "ends": "Anudi: phone in left hand"}}
+    assert [f["code"] for f in body["state_faults"]] == ["state"]
+
+
+def test_a_scene_with_no_state_map_has_no_states(world: World):
+    s = raphael_scene(world)
+    body = world.client.get(url(world, f"/scenes/{s['scene']['id']}/raphael"),
+                            headers=world.headers(world.reviewer)).json()
+    assert body["states"] == {} and body["state_faults"] == []
