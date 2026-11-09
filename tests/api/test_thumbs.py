@@ -9,7 +9,7 @@ from PIL import Image
 from api.services import media_links, media_thumbs
 from api.workers import task_manager
 from tests.api.conftest import World
-from tests.api.test_production import approved_scene, design, shot_url
+from tests.api.test_production import design, open_scene, shot_url
 
 
 @pytest.fixture
@@ -27,7 +27,7 @@ def _png(width: int = 1536, height: int = 1024) -> bytes:
 
 
 def test_a_uploaded_frame_is_stored_with_a_small_copy_and_the_view_links_both(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     big = _png()
     r = world.client.post(shot_url(world, s, 1, "/frames/upload"), files={"file": ("mine.png", big, "image/png")},

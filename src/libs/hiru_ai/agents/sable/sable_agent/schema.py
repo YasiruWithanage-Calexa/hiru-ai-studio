@@ -12,6 +12,7 @@ class Input(BaseModel):
     summary: str = ""  # what the older part of the thread said, summarised once and stored on the thread (§4.5)
     scene: str = ""  # the scene in view, as a person says it ("E1S2"); "" = none (Sable is production-wide)
     role: str = ""  # the person's role in the production ("director", "reviewer", ...): what they may accept
+    mentioned: str = ""  # what the person pointed at with @, one line each, resolved by the API ("" = nothing)
     can_stage: bool = True  # False: the person cannot accept a card (a viewer, D8), so none is proposed
     memory_scope: dict[str, Any] = Field(default_factory=dict)  # {place, people, episode} of the scene in view
 

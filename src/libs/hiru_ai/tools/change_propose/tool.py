@@ -16,7 +16,7 @@ from hiru_ai.core.errors import ToolRefused
 
 
 class Args(BaseModel):
-    ops: list[views.ToolOp] = Field(min_length=1, max_length=8, description="The operations the change is made of")
+    ops: list[views.ToolOp] = Field(min_length=1, max_length=12, description="The operations the change is made of")
     summary: str = Field(min_length=3, max_length=200,
                          description="One sentence for the person: what this does and why")
     scene: str | None = Field(None, description='The scene, like "E1S2". Default: this run\'s scene')
@@ -49,7 +49,8 @@ def run(args: Args, ctx: RunContext) -> Result:
     label = tooling.scene_label(tried.scene)
     card = staging.add({"kind": "change", "scene_id": str(tried.scene["id"]), "scene": label, "summary": args.summary,
                         "ops": tried.applied, "changes": changes, "touched": ripple["touched"],
-                        "in_doubt": ripple["in_doubt"], "by": "change_propose"})
+                        "in_doubt": ripple["in_doubt"], "notes": tried.note_changes(args.ops),
+                        "by": "change_propose"})
     return Result(staged=True, card=card, scene=label, summary=args.summary, changes=changes,
                   timing=tried.timing(), touched=ripple["touched"],
                   next="A person will see this card and choose. Nothing has changed yet.")

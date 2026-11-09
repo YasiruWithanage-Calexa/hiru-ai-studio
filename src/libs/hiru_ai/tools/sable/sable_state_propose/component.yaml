@@ -1,0 +1,24 @@
+id: sable_state_propose
+kind: tool
+version: 1
+summary: "Stages a change to the open scene's state ledger (who lies, who is dead, who stands where from a block on) as a card a person accepts."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes, canon, staging]
+effect: stage
+max_result_tokens: 800
+guide: |
+  For a fact about people that holds from a block on: "Kamal is dead from b12, he lies there", "Anudi sits down at b4",
+  "Kasun moves to the stall". Give `changes`, each `{who, from_block, posture?, condition?, zone?, facing?}`; only what you
+  give changes, the rest is kept from the person's last mark. `from_block` is the block's number as scene_read shows it (0 is
+  the first). `posture` is one of standing, sitting, kneeling, crouching, lying, walking, running. `condition` is a few words:
+  "dead", "unconscious", "injured: left arm", or "well" to end one. `zone` is a spot on the scene's map. A dead or
+  unconscious person with no posture lies, and stays where they fell. Only the scene that is open can change.
+  The card lists who changes, from which block, and the shots that open or end in a different state. Nothing changes until
+  a person accepts it; shots already made are marked out of date, never regenerated. If the scene has no map yet, or the
+  person is not in it, you get a sentence saying so: tell the person.
+  Example: {"summary": "Kamal is dead from the shot, lying where he fell.", "changes": [{"who": "Kamal", "from_block": 12,
+  "condition": "dead"}]}.
+  Do not use it for what one shot shows (a car, a costume: that is a note, change_propose `dop_note.set`), for the canon
+  card, or for the script.

@@ -5,7 +5,7 @@ from __future__ import annotations
 from uuid import uuid4
 
 from tests.api.conftest import World
-from tests.api.test_production import approved_scene, design, fired, shot_url  # noqa: F401
+from tests.api.test_production import design, fired, open_scene, shot_url  # noqa: F401
 from tests.api.test_scenes import seed_scene, url
 
 
@@ -14,7 +14,7 @@ def scene_url(world: World, s: dict, tail: str = "") -> str:
 
 
 def test_the_view_says_who_is_seen_and_flags_a_scene_of_one_size(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     v = world.client.get(scene_url(world, s, "/production"), headers=world.headers(world.reviewer)).json()
     assert v["coverage"] is None and v["shots"][1]["intent"] is None
     assert v["shots"][1]["people"] == [{"id": s["lines"][0]["character_id"], "code": "C02", "name": "Nimal",
@@ -25,7 +25,7 @@ def test_the_view_says_who_is_seen_and_flags_a_scene_of_one_size(world: World):
 
 
 def test_a_person_writes_the_intent_and_can_hand_it_back(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     nimal = s["lines"][0]["character_id"]
     h = world.headers(world.admin)
@@ -54,7 +54,7 @@ def test_a_person_writes_the_intent_and_can_hand_it_back(world: World):
 
 
 def test_changing_the_intent_makes_the_design_out_of_date(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     sid = s["shots"][1]["id"]
     row = world.repos.shots.rows[sid]  # type: ignore[attr-defined]
@@ -71,7 +71,7 @@ def test_changing_the_intent_makes_the_design_out_of_date(world: World):
 
 
 def test_a_person_writes_the_coverage_plan(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     h = world.headers(world.admin)
     r = world.client.patch(scene_url(world, s, "/coverage"), headers=h,
                            json={"axis": "stay on the stove side", "progression": "wide to close"})
@@ -82,18 +82,19 @@ def test_a_person_writes_the_coverage_plan(world: World):
                               json={"reset": True}).json()["coverage"] is None
 
 
-def test_intent_and_coverage_need_an_approved_scene_and_a_role(world: World):
+def test_intent_and_coverage_need_an_unlocked_scene_and_a_role(world: World):
     s = seed_scene(world)
+    s["scene"]["status"] = "approved"  # locked: the picture work is closed
     h = world.headers(world.admin)
     assert world.client.patch(shot_url(world, s, 1, "/intent"), headers=h, json={"purpose": "x"}).status_code == 409
     assert world.client.patch(scene_url(world, s, "/coverage"), headers=h, json={"axis": "x"}).status_code == 409
-    s2 = approved_scene(world)
+    s2 = open_scene(world)
     assert world.client.patch(shot_url(world, s2, 1, "/intent"), headers=world.headers(world.reviewer),
                               json={"purpose": "x"}).status_code == 403
 
 
 def test_a_frames_checks_reach_the_panel(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     fid = str(uuid4())
     world.repos.frames.rows[fid] = {  # type: ignore[attr-defined]

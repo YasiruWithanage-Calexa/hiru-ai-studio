@@ -13,8 +13,11 @@ prompt (PLAN.md §10, §13 Phase 4). Rules in `api/services/production.py`.
     POST  .../shots/{id}/frames/upload    a frame a person made elsewhere
     POST  .../frames/{id}/accept|reject   picking is free; accepting a FINAL unlocks the prompt, accepting a draft only
                                           makes it the reference a final may be painted from
-    POST  .../shots/{id}/prompt           a new prompt version (job), once unlocked
-    POST  .../scenes/{id}/prompts         prompts for every unlocked shot of the scene (job)
+    POST  .../shots/{id}/prompt           a new prompt version (job), once a final frame is accepted
+    POST  .../scenes/{id}/prompts         prompts for every shot whose prompt is open (job)
+
+The scene LOCK (approval) closes the picture work: design, camera, intent, coverage and frames (make, upload,
+accept, reject) need a scene that is NOT approved. Video prompts and videos work whether it is approved or not.
     GET   .../shots/{id}/prompt|prompts   the latest prompt / every version
 
 Frames are streamed through `/files/{ticket}`; no storage URL reaches a browser. No costs are
@@ -34,7 +37,7 @@ from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.services import media_links, media_thumbs
-from api.services.production import NOT_APPROVED, ShotState, camera_checks, scene_states
+from api.services.production import LOCKED, ShotState, camera_checks, scene_states
 from api.workers import task_manager
 from contracts.canon import looks_in_force
 from contracts.jobs import JobKind
@@ -402,9 +405,10 @@ def scene_view(ld: Loaded) -> SceneProductionView:
                                shots=[shot_view(ld, st, checks[st.id]) for st in ld.states])
 
 
-def _require_approved(ld: Loaded) -> None:
-    if not ld.approved:
-        raise HTTPException(status.HTTP_409_CONFLICT, NOT_APPROVED)
+def _require_unlocked(ld: Loaded) -> None:
+    """Picture work (design, camera, frames) is for a scene that is not approved yet: approving locks it."""
+    if ld.approved:
+        raise HTTPException(status.HTTP_409_CONFLICT, LOCKED)
 
 
 async def _audit(repos: Repos, access: ProductionAccess, action: str, entity: str, entity_id: str,
@@ -450,7 +454,7 @@ async def list_prompts(production_id: UUID, shot_id: UUID, access: CanView, repo
 async def design_scene(production_id: UUID, scene_id: UUID, body: DesignRequest, access: CanGenerate,
                        repos: ReposDep) -> Started:
     ld = await load(repos, access, scene_id)
-    _require_approved(ld)
+    _require_unlocked(ld)
     if not ld.states:
         raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no shots yet.")
     job_id = await task_manager.dispatch(JobKind.SHOT_PRODUCE, repos, actor_user_id=access.user.id,
@@ -466,7 +470,7 @@ async def update_camera(production_id: UUID, shot_id: UUID, body: CameraUpdate, 
     """Only the fields sent change. A value equal to the recommendation, or null, clears the
     person's change, so a later re-design can update that field again."""
     ld, st = await load_shot(repos, access, shot_id)
-    _require_approved(ld)
+    _require_unlocked(ld)
     overrides = dict(st.row.get("camera_overrides") or {})
     for key in body.model_fields_set:
         value = getattr(body, key)
@@ -494,7 +498,7 @@ async def update_intent(production_id: UUID, shot_id: UUID, body: IntentUpdate, 
     agent never replaces it). `reset` hands the shot back to the intent agent. Who is seen must be
     people already in the shot; the next design and frames follow it."""
     ld, st = await load_shot(repos, access, shot_id)
-    _require_approved(ld)
+    _require_unlocked(ld)
     if body.reset:
         fields: dict[str, Any] = {}
     else:
@@ -575,7 +579,7 @@ async def update_coverage(production_id: UUID, scene_id: UUID, body: CoverageUpd
                           repos: ReposDep) -> SceneProductionView:
     """A person's coverage plan. `reset` hands it back to the intent agent."""
     ld = await load(repos, access, scene_id)
-    _require_approved(ld)
+    _require_unlocked(ld)
     if body.reset:
         fields: dict[str, Any] = {}
     else:
@@ -639,7 +643,7 @@ def _carried(st: ShotState, ld: Loaded) -> str:
 async def request_frames(production_id: UUID, shot_id: UUID, body: FramesRequest, access: CanGenerate,
                          repos: ReposDep) -> Started:
     ld, st = await load_shot(repos, access, shot_id)
-    _require_approved(ld)
+    _require_unlocked(ld)
     if st.row.get("frame_strategy") == FrameStrategy.CARRY_LAST_FRAME:
         raise HTTPException(status.HTTP_409_CONFLICT, _carried(st, ld))
     if body.from_draft:
@@ -656,7 +660,7 @@ async def request_frames(production_id: UUID, shot_id: UUID, body: FramesRequest
 async def request_scene_frames(production_id: UUID, scene_id: UUID, body: SceneFramesRequest, access: CanGenerate,
                                repos: ReposDep) -> Started:
     ld = await load(repos, access, scene_id)
-    _require_approved(ld)
+    _require_unlocked(ld)
     def has_current_frame(st: ShotState) -> bool:
         return st.accepted is not None and not st.frame_reasons.get(str(st.accepted["id"]))
 
@@ -687,7 +691,7 @@ async def _frame(repos: Repos, production_id: UUID, frame_id: UUID) -> Row:
 async def accept_frame(production_id: UUID, frame_id: UUID, access: CanGenerate, repos: ReposDep) -> ShotProductionView:
     frame = await _frame(repos, production_id, frame_id)
     ld, st = await load_shot(repos, access, UUID(str(frame["shot_id"])))
-    _require_approved(ld)
+    _require_unlocked(ld)
     if frame["status"] != "done":
         raise HTTPException(status.HTTP_409_CONFLICT, "Only a finished frame can be accepted.")
     if st.frame_reasons.get(str(frame_id)):
@@ -709,6 +713,7 @@ async def reject_frame(production_id: UUID, frame_id: UUID, body: RejectRequest,
                        repos: ReposDep) -> ShotProductionView:
     frame = await _frame(repos, production_id, frame_id)
     ld, st = await load_shot(repos, access, UUID(str(frame["shot_id"])))
+    _require_unlocked(ld)
     if frame.get("accepted_at"):
         await repos.frames.unaccept(frame_id)
         if frame_stage(frame) == FrameStage.FINAL and st.row.get("status") == ShotStatus.FRAME:
@@ -743,7 +748,6 @@ async def request_prompt(production_id: UUID, shot_id: UUID, access: CanGenerate
 @router.post("/scenes/{scene_id}/prompts", response_model=Started, status_code=status.HTTP_202_ACCEPTED)
 async def request_scene_prompts(production_id: UUID, scene_id: UUID, access: CanGenerate, repos: ReposDep) -> Started:
     ld = await load(repos, access, scene_id)
-    _require_approved(ld)
     targets = [st for st in ld.states if not st.lock]
     if not targets:
         raise HTTPException(status.HTTP_409_CONFLICT, "No shot is ready for a prompt. Accept first frames first.")
@@ -773,7 +777,7 @@ async def upload_frame(production_id: UUID, shot_id: UUID, file: Annotated[Uploa
     """A first frame a person made elsewhere. It is pinned to the shot as it is now, like a
     painted one, so it goes out of date the same way."""
     ld, st = await load_shot(repos, access, shot_id)
-    _require_approved(ld)
+    _require_unlocked(ld)
     if st.row.get("frame_strategy") == FrameStrategy.CARRY_LAST_FRAME:
         raise HTTPException(status.HTTP_409_CONFLICT, _carried(st, ld))
     data = bytearray()

@@ -18,7 +18,7 @@ from api.workers import task_manager
 from contracts.video_gen import RenderSpec, request_hash
 from tests.api.conftest import World
 from tests.api.test_handoff import FakeAssembler
-from tests.api.test_production import _accept_one, approved_scene, design, shot_url, states, url
+from tests.api.test_production import _accept_one, design, open_scene, shot_url, states, url
 
 PNG = bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) + b"0" * 32
 
@@ -79,7 +79,7 @@ def _sheets(world: World, s: dict) -> dict[str, str]:
 
 
 def ready(world: World, n: int = 1) -> tuple[dict, dict[str, str]]:
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     ids = _sheets(world, s)
     fid = _accept_one(world, s, n)

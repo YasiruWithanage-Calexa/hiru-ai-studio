@@ -55,6 +55,7 @@ STATUS: dict[str, str] = {
     "search_kb": "Searching the documents",
     "shot_read": "Reading the shot{of_scene}",
     "staging_check": "Checking who stands where{in_scene}",
+    "sable_state_propose": "Preparing a change of state for you to accept",
     "technique_lookup": "Looking up the craft",
     "timing_check": "Checking the timing{of_scene}",
     "veo_fit": "Checking what fits a clip",
@@ -71,6 +72,45 @@ def status_text(tool: str, args: dict[str, Any] | None = None) -> str:
                         in_scene=f" in {scene}" if scene else "")
 
 
+RefKind = Literal["scene", "shot", "person", "prop", "place", "block"]
+MAX_REFS = 12
+
+
+class Ref(BaseModel):
+    """What the person pointed at with @ (plan/2026-11-09b phase 4). `id` is the thing's own id (a scene, shot or canon
+    entity uuid); for a `block` it is the block's number in the scene (`scene_id`, default the open scene). The API
+    checks every one is in this production; the browser only ever sends what the picker gave it."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    kind: RefKind
+    id: str = Field(min_length=1, max_length=64)
+    label: str = Field(default="", max_length=80)  # what the chip says ("S04", "Kamal"); the API re-reads it
+    scene_id: UUID | None = None  # a block's scene
+
+
+class Mention(BaseModel):
+    """A `Ref` the API resolved from trusted data. `text` is the line the agent reads under MENTIONED."""
+
+    kind: RefKind
+    id: str
+    label: str
+    scene: str = ""  # "E1S2"
+    outside: bool = False  # a shot, block or scene other than the open one: for reading, never for changing
+    text: str = ""
+
+
+class MentionOption(BaseModel):
+    """One row of the @ picker (`GET …/sable/mentions`): names only, no model."""
+
+    kind: RefKind
+    id: str
+    label: str
+    detail: str = ""
+    scene_id: UUID | None = None
+    scene: str = ""
+
+
 class SableTurnRequest(BaseModel):
     """Browser → API."""
 
@@ -80,6 +120,7 @@ class SableTurnRequest(BaseModel):
     thread_id: UUID | None = None  # None: a new thread, titled from the message
     scene_id: UUID | None = None  # the scene the person is looking at, if any
     replaces: UUID | None = None  # Edit / Ask again: the person's last message, which this one replaces
+    refs: list[Ref] = Field(default_factory=list, max_length=MAX_REFS)  # what @ pointed at
 
 
 class SableTurnPayload(BaseModel):
@@ -97,6 +138,7 @@ class SableTurnPayload(BaseModel):
     user_message_id: UUID
     scene_id: UUID | None = None  # the scene in view, inside the production (checked by the API)
     replaces: UUID | None = None
+    mentions: list[Mention] = Field(default_factory=list, max_length=MAX_REFS)  # `refs`, resolved by the API
     attachments: int = 0  # files sent with the message (none yet; the pre-route's rule is ready for them)
 
 
@@ -112,8 +154,27 @@ class StagedChange(BaseModel):
     ops: list[dict[str, Any]] = Field(default_factory=list)
     changes: list[str] = Field(default_factory=list)
     touched: list[str] = Field(default_factory=list)
+    notes: list[dict[str, Any]] = Field(default_factory=list)  # DoP notes: [{shot, before, after}] (plan/2026-11-09b)
     status: Literal["open", "accepted", "dismissed", "failed"] = "open"
     note: str = ""  # why it failed, in a sentence
+
+
+class StagedState(BaseModel):
+    """A change to the open scene's state ledger Sable proposed (`sable_state_propose`, plan/2026-11-09b): who is where,
+    how they stand and their condition, from a block on. Accepting merges the marks into the scene's map as a person's
+    own (`by: "person"`), by code (`POST …/sable/messages/{id}/cards/{i}/accept`)."""
+
+    kind: Literal["sable_state"] = "sable_state"
+    scene_id: UUID
+    scene: str  # "E1S2"
+    summary: str
+    script_version: int = 0  # the scene's script when proposed: block numbers mean nothing against another script
+    marks: list[dict[str, Any]] = Field(default_factory=list)  # `stagemap.StateMark`s
+    changes: list[str] = Field(default_factory=list)  # "Kamal: lying, dead, from block 12"
+    touched: list[str] = Field(default_factory=list)  # the shots that open or end in a different state
+    in_doubt: list[str] = Field(default_factory=list)  # report only: a shot whose words still contradict the change
+    status: Literal["open", "accepted", "dismissed", "failed"] = "open"
+    note: str = ""
 
 
 class StagedMemory(BaseModel):
@@ -150,7 +211,7 @@ class SableCitation(BaseModel):
     label: str = ""
 
 
-Card = StagedChange | StagedMemory | Handoff
+Card = StagedChange | StagedState | StagedMemory | Handoff
 
 
 class SableMessage(BaseModel):

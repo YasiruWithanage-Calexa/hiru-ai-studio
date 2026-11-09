@@ -5,8 +5,9 @@
   is redone automatically: the panel shows what is out of date and why, and a person decides.
 * The PROMPT LOCK: a shot that opens on a generated frame gets a prompt only once one of its
   frames is accepted and that frame still matches the shot; a shot that carries on from the
-  previous take opens on that take's last frame and needs none. Production work starts when the
-  director has approved the scene (it is locked from then on).
+  previous take opens on that take's last frame and needs none.
+* The SCENE LOCK (approval) means the picture work is done: designs, camera and frames are made while the
+  scene is NOT approved. Video prompts and videos are made whether it is approved or not.
 """
 from __future__ import annotations
 
@@ -32,13 +33,12 @@ from contracts.producer import (
     shot_items,
     stale_reasons,
 )
-from contracts.production import SceneStatus
 from contracts.shotplan import Item
 from contracts.staging import ShotIntent, Staging, coverage_checks, intent_basis, shot_cast, staging, staging_checks
 from contracts.veo import FrameStrategy
 
 Row = dict[str, Any]
-NOT_APPROVED = "Approve this scene in the Director panel first."
+LOCKED = "This scene is approved and locked. Unapprove it to make or change frames."
 
 
 def cast_member(row: Row) -> CastMember:
@@ -100,7 +100,6 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
     characters = [c for c in canon if c["kind"] == "character"]
     members = {str(c["id"]): cast_member(c) for c in canon}
     versions = {k: m.version for k, m in members.items()}
-    approved = scene.get("status") == SceneStatus.APPROVED
     out: list[ShotState] = []
     for shot in sorted(shots, key=lambda s: int(s["number"])):
         own = shot_items(items, int(shot["block_start"]), int(shot["block_end"]))
@@ -153,14 +152,12 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
                 st.prompt_reasons.append("A different first frame is accepted now.")
             if (st.prompt.get("camera") or {}) and st.prompt.get("camera") != st.camera.model_dump():
                 st.prompt_reasons.append("The camera settings changed.")
-        st.lock = _lock(st, approved)
+        st.lock = _lock(st)
         out.append(st)
     return out
 
 
-def _lock(st: ShotState, approved: bool) -> str:
-    if not approved:
-        return NOT_APPROVED
+def _lock(st: ShotState) -> str:
     if st.row.get("frame_strategy") == FrameStrategy.CARRY_LAST_FRAME:
         return ""
     if st.accepted is None:

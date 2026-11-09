@@ -7,7 +7,7 @@ from uuid import UUID, uuid4
 
 import pytest
 
-from api.services.production import NOT_APPROVED, scene_states
+from api.services.production import LOCKED, scene_states
 from api.workers import task_manager
 from tests.api.conftest import World
 from tests.api.test_scenes import seed_scene, url
@@ -25,7 +25,13 @@ def fired(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
     return calls
 
 
-def approved_scene(world: World) -> dict:
+def open_scene(world: World) -> dict:
+    """A scene that is not approved: designs, camera and frames are made now."""
+    return seed_scene(world)
+
+
+def locked_scene(world: World) -> dict:
+    """An approved scene: the picture work is closed, video prompts and videos still run."""
     s = seed_scene(world)
     s["scene"]["status"] = "approved"
     return s
@@ -77,7 +83,7 @@ def test_the_panel_before_anything_is_made(world: World):
     assert shot["code"] == "S02" and shot["design"]["state"] == "missing"
     assert shot["camera"]["recommended"]["framing"] == "Medium shot", "the director's size, before any design"
     assert shot["camera"]["recommended"]["lighting"] == "Dawn, soft ambient"
-    assert shot["prompt_lock"] == {"locked": True, "reason": NOT_APPROVED}
+    assert shot["prompt_lock"] == {"locked": True, "reason": "Accept a first frame to unlock the prompt."}
     assert shot["lines"][0]["speaker"] == "Nimal" and shot["frames"] == [] and shot["prompt"] is None
     assert v["shots"][0]["checks"][0] == {"label": "Establishes axis · Side A", "tone": "pass", "code": "axis",
                                           "waived": False}
@@ -87,13 +93,10 @@ def test_the_panel_before_anything_is_made(world: World):
     assert world.client.get(shot_url(world, s, 0), headers=world.headers(world.outsider)).status_code == 404
 
 
-def test_production_work_needs_an_approved_scene_and_the_right_role(world: World, fired: list[dict]):
-    s = seed_scene(world)
+def test_picture_work_needs_an_unlocked_scene_and_the_right_role(world: World, fired: list[dict]):
+    s = open_scene(world)
     sid = s["scene"]["id"]
     crew = world.headers(world.crew)
-    assert world.client.post(url(world, f"/scenes/{sid}/design"), json={}, headers=crew).status_code == 409
-    assert world.client.post(shot_url(world, s, 0, "/frames"), json={}, headers=crew).json()["detail"] == NOT_APPROVED
-    s["scene"]["status"] = "approved"
     for who in (world.writer, world.reviewer):
         h = world.headers(who)
         assert world.client.post(url(world, f"/scenes/{sid}/design"), json={}, headers=h).status_code == 403
@@ -105,11 +108,35 @@ def test_production_work_needs_an_approved_scene_and_the_right_role(world: World
     assert fired[0]["state"] == {"mode": "design", "scene_ids": [sid], "force": True}
 
 
+def test_a_locked_scene_closes_the_picture_work_but_not_the_video_prompt(world: World, fired: list[dict]):
+    s = open_scene(world)
+    sid = s["scene"]["id"]
+    crew = world.headers(world.crew)
+    design(world, s)
+    _accept_one(world, s, 0)  # the picture work is done, then the scene is approved
+    fired.clear()
+    s["scene"]["status"] = "approved"
+    for call in (
+        world.client.post(url(world, f"/scenes/{sid}/design"), json={}, headers=crew),
+        world.client.post(url(world, f"/scenes/{sid}/frames"), json={}, headers=crew),
+        world.client.post(shot_url(world, s, 0, "/frames"), json={}, headers=crew),
+        world.client.patch(shot_url(world, s, 0, "/camera"), json={"lens": "85mm"}, headers=crew),
+        world.client.patch(url(world, f"/scenes/{sid}/coverage"), json={"axis": "x"}, headers=crew),
+    ):
+        assert call.status_code == 409 and call.json()["detail"] == LOCKED
+    assert not fired, "nothing was started"
+    r = world.client.post(shot_url(world, s, 0, "/prompt"), json={}, headers=crew)
+    assert r.status_code == 202, r.text
+    assert fired[-1]["kind"] == "shot_produce" and fired[-1]["state"]["mode"] == "prompt"
+    r = world.client.post(url(world, f"/scenes/{sid}/prompts"), json={}, headers=crew)
+    assert r.status_code == 202, r.text
+
+
 # ── frames ─────────────────────────────────────────────────────────────────────────────────
 
 
 def test_frames_chain_a_design_when_one_is_missing(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     r = world.client.post(shot_url(world, s, 1, "/frames"), json={"count": 2}, headers=world.headers(world.crew))
     assert r.status_code == 202, r.text
     body = r.json()
@@ -130,7 +157,7 @@ def test_frames_chain_a_design_when_one_is_missing(world: World, fired: list[dic
 
 
 def test_scene_frames_skip_shots_that_have_one_and_carried_shots(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     world.repos.shots.rows[s["shots"][2]["id"]].update(camera_link="continuous",  # type: ignore[attr-defined]
                                                        frame_strategy="carry_last_frame")
@@ -146,7 +173,7 @@ def test_scene_frames_skip_shots_that_have_one_and_carried_shots(world: World, f
 
 
 def test_scene_drafts_skip_shots_that_have_a_current_draft_and_carried_shots(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     world.repos.shots.rows[s["shots"][2]["id"]].update(camera_link="continuous",  # type: ignore[attr-defined]
@@ -163,7 +190,7 @@ def test_scene_drafts_skip_shots_that_have_a_current_draft_and_carried_shots(wor
 
 
 def test_accepting_a_frame_unlocks_the_prompt(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     ids = world.client.post(shot_url(world, s, 1, "/frames"), json={"count": 2}, headers=crew).json()["frame_ids"]
@@ -207,7 +234,7 @@ def _store_prompt(world: World, s: dict, n: int, fid: str | None) -> None:
 
 
 def test_a_shot_edit_flags_frames_and_prompt_out_of_date(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     fid = _accept_one(world, s, 1)
     _store_prompt(world, s, 1, fid)
@@ -227,7 +254,7 @@ def test_a_shot_edit_flags_frames_and_prompt_out_of_date(world: World, fired: li
 
 
 def test_a_new_canon_card_flags_the_shots_it_is_in(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     kamala = s["kamala"]["id"]
     asyncio.run(world.repos.canon.add_version(UUID(kamala), {"entity_id": kamala, "version": 1, "card": {}}))
     design(world, s)
@@ -243,7 +270,7 @@ def test_a_new_canon_card_flags_the_shots_it_is_in(world: World, fired: list[dic
 
 
 def test_a_persons_camera_and_back(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     fid = _accept_one(world, s, 1)
     _store_prompt(world, s, 1, fid)
@@ -265,7 +292,7 @@ def test_a_persons_camera_and_back(world: World, fired: list[dict]):
 
 
 def test_scene_prompts_take_every_unlocked_shot(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     assert world.client.post(url(world, f"/scenes/{s['scene']['id']}/prompts"), headers=crew).status_code == 409
@@ -296,7 +323,7 @@ def test_reference_sheets_are_asked_for_by_canon_editors(world: World, fired: li
 
 
 def test_a_person_uploads_their_own_frame(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     png = b"\x89PNG\r\n\x1a\n" + b"\0" * 64
@@ -346,7 +373,7 @@ def test_canon_chips_follow_what_a_person_added_or_took_out(world: World):
 
 
 def test_a_person_adds_and_removes_canon_for_one_shot(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     house = str(s["house"]["id"])
     kamala = str(s["kamala"]["id"])
@@ -373,7 +400,7 @@ def test_a_person_adds_and_removes_canon_for_one_shot(world: World):
 
 
 def test_a_shot_made_before_a_chip_changed_is_out_of_date(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     assert panel(world, s)[1]["design"]["state"] == "current"
     marks(world, s, 1, cast={"add": [], "remove": [str(s["house"]["id"])]})
@@ -396,7 +423,7 @@ def test_an_ignored_advisory_stays_in_the_list_marked_and_a_pass_cannot_be_ignor
 
 
 def test_the_dop_note_replaces_the_dps_reason_and_clearing_it_brings_it_back(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     v = panel(world, s)[1]["design"]
     assert v["rationale"] == "A slow push builds it." and v["note_by_person"] is False
@@ -426,7 +453,7 @@ def test_damaged_person_edits_read_as_none(world: World):
 
 
 def test_a_draft_is_its_own_stage_and_never_unlocks_the_prompt(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     r = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft", "count": 2}, headers=crew)
@@ -451,7 +478,7 @@ def test_a_draft_is_its_own_stage_and_never_unlocks_the_prompt(world: World, fir
 
 
 def test_a_draft_and_a_final_are_accepted_independently(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     (draft,) = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft"},
@@ -466,7 +493,7 @@ def test_a_draft_and_a_final_are_accepted_independently(world: World, fired: lis
 
 
 def test_a_final_can_be_painted_from_the_accepted_draft_or_without_it(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     rows = world.repos.frames.rows  # type: ignore[attr-defined]
@@ -490,7 +517,7 @@ def test_a_final_can_be_painted_from_the_accepted_draft_or_without_it(world: Wor
 
 
 def test_a_draft_cannot_be_painted_from_a_draft_and_a_stale_draft_is_not_a_reference(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     r = world.client.post(shot_url(world, s, 1, "/frames"), json={"stage": "draft", "from_draft": True}, headers=crew)
@@ -505,7 +532,7 @@ def test_a_draft_cannot_be_painted_from_a_draft_and_a_stale_draft_is_not_a_refer
 
 
 def test_scene_frames_are_finals_and_a_draft_does_not_count_as_having_a_frame(world: World, fired: list[dict]):
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
     (draft,) = world.client.post(shot_url(world, s, 0, "/frames"), json={"stage": "draft"},

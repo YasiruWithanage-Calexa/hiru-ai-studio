@@ -17,7 +17,7 @@ from contracts.costs import (
     with_retry,
 )
 from tests.api.conftest import World
-from tests.api.test_production import approved_scene, design
+from tests.api.test_production import design, open_scene
 from tests.api.test_scenes import seed_scene
 
 OMNI_PER_SECOND = 100_000  # the seeded price: $0.10 a second at 720p
@@ -104,7 +104,7 @@ def test_an_untouched_scene_costs_what_it_will_cost_to_finish_with_the_retry_mar
 
 
 def test_it_becomes_designed_once_every_shot_has_its_design(world: World):
-    s = approved_scene(world)
+    s = open_scene(world)
     assert get(world, s, world.producer)["designed"] is False
     design(world, s)
     assert get(world, s, world.producer)["designed"] is True

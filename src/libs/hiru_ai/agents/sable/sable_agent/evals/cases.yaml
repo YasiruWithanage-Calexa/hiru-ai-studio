@@ -89,3 +89,41 @@
   expect: { text: "Mostly: E1S3 has no shots yet, so it cannot be judged." }
 # A card (change_propose, memory_propose) is drafted again on the deep tier (the `stage` signal), which a one-queue
 # script cannot show: tests/sable/test_tiering.py covers it with two fake models.
+# plan/2026-11-09b: the open scene changed as the person asks, only ever as a card (plan_try here: a staged card makes the turn draft again on the deep tier, which a one-queue script cannot show;
+# tests/sable/test_scene_edits.py covers the cards; the tool tests cover the refusals:
+# a locked length, an approved scene, another scene, a person-only operation).
+- name: a plain framing request becomes a card
+  example: change_propose
+  input: { message: "Make S02 a wide.", scene: E1S2 }
+  tool_calls:
+    - { name: plan_try, args: { ops: [{ op: set, shot: 2, field: framing, value: WS }] }, expect: { applied: 1 } }
+  reply: { text: "I prepared a card: S02 becomes a wide. Nothing changes until you accept it.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: a retime request becomes a card
+  example: change_propose
+  input: { message: "Make S01 four seconds.", scene: E1S2 }
+  tool_calls:
+    - { name: plan_try, args: { ops: [{ op: retime, shot: 1, seconds: 4 }] }, expect: { applied: 1 } }
+  reply: { text: "I prepared a card to cut S01 to four seconds.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: deleting a shot becomes a card
+  example: change_propose
+  input: { message: "Delete S02.", scene: E1S2 }
+  tool_calls:
+    - { name: plan_try, args: { ops: [{ op: remove, shot: 2 }] }, expect: { applied: 1 } }
+  reply: { text: "I prepared a card that removes S02.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: a new shot becomes a card
+  example: change_propose
+  input: { message: "Add a close-up of her hands after S01.", scene: E1S2 }
+  tool_calls:
+    - { name: plan_try, args: { ops: [{ op: insert, after_shot: 1, framing: CU, description: "Close-up of Anudi's hands." }] }, expect: { applied: 1 } }
+  reply: { text: "I prepared a card that adds a close-up of her hands after S01.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }
+- name: a change to what a shot shows is a note for the DoP
+  example: change_propose
+  input: { message: "In S01 the car is a white van.", scene: E1S2 }
+  tool_calls:
+    - { name: plan_try, args: { ops: [{ op: dop_note.set, shot: 1, value: "The car is a white van." }] }, expect: { applied: 1 } }
+  reply: { text: "I prepared a note for the DoP on S01: the car is a white van.", handoff_scene: "", handoff_request: "" }
+  expect: { handoff_scene: "" }

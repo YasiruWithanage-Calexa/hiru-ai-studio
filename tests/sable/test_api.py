@@ -184,3 +184,126 @@ def test_a_new_thread_is_titled_from_its_first_line():
     long = "word " * 30
     assert sable_service.title_of(long).endswith("…") and len(sable_service.title_of(long)) <= 61
     assert sable_service.title_of("   ") == "New chat"
+
+
+# ── plan/2026-11-09b: a state card and a shot note, carried out by code ──────────────────────────────────────────
+
+
+def _mapped_scene(world: World) -> tuple[str, list[Row]]:  # noqa: F811
+    """A seeded scene with a staging map: Kamala at the door from block 0, Nimal in the yard."""
+    sid = str(seed_scene(world)["scene"]["id"])
+    from contracts import sceneplan
+    from contracts import stagemap as sm
+
+    scene = world.repos.scenes.rows[sid]  # type: ignore[attr-defined]
+    lines = [r for r in world.repos.lines.rows.values() if str(r["scene_id"]) == sid]  # type: ignore[attr-defined]
+    items = sceneplan.scene_items(scene, lines)
+    raw = {"zones": ["door", "yard"], "marks": [{"block": 0, "who": "Kamala", "zone": "door"},
+                                                  {"block": 0, "who": "Nimal", "zone": "yard"}]}
+    scene["staging"] = sm.validate(raw, items, ["Kamala", "Nimal"], version=1, by="model").model_dump(mode="json")
+    return sid, [s for s in world.repos.shots.rows.values() if str(s["scene_id"]) == sid]  # type: ignore[attr-defined]
+
+
+def _state_card(sid: str, **over: Any) -> Row:
+    return {"kind": "sable_state", "scene_id": sid, "scene": "E1S1", "summary": "Nimal is dead.", "status": "open",
+            "script_version": 1, "changes": ["Nimal: lying, dead, from block 0"],
+            "marks": [{"who": "Nimal", "from_block": 0, "condition": "dead"}], **over}
+
+
+def test_a_state_card_is_merged_into_the_map_as_a_persons_and_the_shots_go_out_of_date(world: World, fn: Function):  # noqa: F811
+    sid, _ = _mapped_scene(world)
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    mid = _reply(world, tid, [_state_card(sid)])
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
+    assert r.status_code == 200 and r.json()["ok"] is True, r.json()["text"]
+    assert "Applied: Nimal" in r.json()["text"]
+    staging = world.repos.scenes.rows[sid]["staging"]  # type: ignore[attr-defined]
+    assert staging["by"] == "person"
+    nimal = next(m for m in staging["marks"] if m["who"] == "Nimal")
+    assert nimal["condition"] == "dead" and nimal["posture"] == "lying" and nimal["zone"] == "yard"
+    assert any(int(s["version"]) > 1 for s in world.repos.shots.rows.values() if str(s["scene_id"]) == sid)  # type: ignore[attr-defined]
+    assert any(a["action"] == "sable.accept_state" for a in world.repos.audit.entries)  # type: ignore[attr-defined]
+    assert world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"),
+                             headers=world.headers(world.director)).status_code == 409
+
+
+def test_a_state_card_for_a_script_that_changed_is_failed_not_applied(world: World, fn: Function):  # noqa: F811
+    sid, _ = _mapped_scene(world)
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    mid = _reply(world, tid, [_state_card(sid, script_version=7)])
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
+    assert r.json()["ok"] is False and "script changed" in r.json()["text"]
+    assert world.repos.scenes.rows[sid]["staging"]["by"] == "model"  # type: ignore[attr-defined]
+
+
+def test_a_state_card_for_an_approved_scene_is_refused(world: World, fn: Function):  # noqa: F811
+    sid, _ = _mapped_scene(world)
+    world.repos.scenes.rows[sid]["status"] = "approved"  # type: ignore[attr-defined]
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    mid = _reply(world, tid, [_state_card(sid)])
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
+    assert r.status_code == 409
+
+
+def test_an_accepted_note_moves_the_shots_version_so_what_was_made_reads_out_of_date(world: World, fn: Function):  # noqa: F811
+    sid, shots = _mapped_scene(world)
+    shot = sorted(shots, key=lambda s: int(s["number"]))[0]
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    ops = [{"op": "dop_note.set", "shot_id": str(shot["id"]), "value": "The car is a white van."}]
+    mid = _reply(world, tid, [{"kind": "sable_change", "scene_id": sid, "scene": "E1S1", "summary": "Van.",
+                               "ops": ops, "status": "open"}])
+    use(world, Applier())
+    before = int(shot.get("version") or 1)
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
+    assert r.json()["ok"] is True
+    assert int(world.repos.shots.rows[str(shot["id"])]["version"]) == before + 1  # type: ignore[attr-defined]
+
+
+# ── plan/2026-11-09b phase 4: what @ pointed at ───────────────────────────────────────────────────────────────────────
+
+
+def test_refs_are_read_again_from_the_production_and_reach_the_function_as_mentions(world: World, fn: Function):  # noqa: F811
+    sid, shots = _mapped_scene(world)
+    shot = sorted(shots, key=lambda s: int(s["number"]))[0]
+    nimal = next(c for c in world.repos.canon.rows.values() if c["name"] == "Nimal")  # type: ignore[attr-defined]
+    refs = [{"kind": "shot", "id": str(shot["id"]), "label": "whatever the browser said"},
+            {"kind": "person", "id": str(nimal["id"]), "label": "Nimal"},
+            {"kind": "block", "id": "0", "label": "b0"}]
+    assert ask(world, world.director, "make @S01 a van", scene_id=sid, refs=refs).status_code == 200
+    got = fn.turns[-1]["mentions"]
+    assert [m["kind"] for m in got] == ["shot", "person", "block"] and got[0]["label"] == "S01"
+    assert not any(m["outside"] for m in got) and "Nimal = person" in got[1]["text"]
+
+
+def test_a_ref_that_is_not_in_this_production_is_404_and_nothing_runs(world: World, fn: Function):  # noqa: F811
+    sid, _ = _mapped_scene(world)
+    bad = [{"kind": "shot", "id": str(uuid4()), "label": "S09"}]
+    assert ask(world, world.director, "x", scene_id=sid, refs=bad).status_code == 404 and fn.turns == []
+    assert ask(world, world.director, "x", scene_id=sid, refs=[{"kind": "block", "id": "999"}]).status_code == 404
+    too_many = [{"kind": "block", "id": "0"}] * 13
+    assert ask(world, world.director, "x", scene_id=sid, refs=too_many).status_code == 422
+
+
+def test_a_shot_of_another_scene_is_kept_for_reading_and_marked_outside(world: World, fn: Function):  # noqa: F811
+    sid, _ = _mapped_scene(world)
+    episode = world.repos.scenes.rows[sid]["episode_id"]  # type: ignore[attr-defined]
+    other = world.repos.scenes.add(production_id=str(world.production), episode_id=episode,  # type: ignore[attr-defined]
+                                   number=2, heading="INT. HOUSE - DAY", title="", note="", time_of_day="DAY",
+                                   envelope_s=30, status="split", script=[], script_version=1)
+    shot = world.repos.shots.add(production_id=str(world.production), scene_id=other["id"], number=1, title="x")  # type: ignore[attr-defined]
+    ref = [{"kind": "shot", "id": str(shot["id"]), "label": "S01"}]
+    assert ask(world, world.director, "read @S01", scene_id=sid, refs=ref).status_code == 200
+    (m,) = fn.turns[-1]["mentions"]
+    assert m["outside"] is True and m["scene"] == "E1S2" and "read only" in m["text"]
+
+
+def test_the_picker_lists_the_approved_scene_first_then_the_canon_then_other_scenes(world: World, fn: Function):  # noqa: F811
+    sid, _ = _mapped_scene(world)
+    r = world.client.get(url(world, f"/sable/mentions?scene_id={sid}"), headers=world.headers(world.reviewer))
+    kinds = [row["kind"] for row in r.json()]
+    assert r.status_code == 200 and kinds[0] == "shot" and kinds.index("block") < kinds.index("person")
+    only = world.client.get(url(world, f"/sable/mentions?scene_id={sid}&q=nim"), headers=world.headers(world.reviewer))
+    assert ("person", "Nimal") in [(row["kind"], row["label"]) for row in only.json()]  # and his lines, by detail
+    assert all("nim" in (row["label"] + row["detail"]).lower() for row in only.json())
+    assert world.client.get(url(world, f"/sable/mentions?scene_id={uuid4()}"),
+                            headers=world.headers(world.reviewer)).status_code == 404

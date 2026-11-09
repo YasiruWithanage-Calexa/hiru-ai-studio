@@ -13,7 +13,10 @@ guide: |
   if every one would land, it leaves a card for the person (what changes, why, what it touches) and nothing else happens
   until they accept it. If any would be refused nothing is staged and the reasons come back so you can fix the call.
   `summary` is one sentence for the card: what the change does and why. Operations on the script, the cast or the checks are
-  never staged: only a person makes those.
+  never staged: only a person makes those. One exception: `dop_note.set` (a note for the DoP on one shot: what the shot
+  shows that the shot list cannot say, like a white van or how a person lies) is staged for the person to accept. Write
+  the note in plain English, never dialogue; at most 600 characters. At most 12 operations; in Sable's chat only the
+  scene that is open can change.
   Example: {"summary": "Open on a close-up so the smile reads.", "ops": [{"op": "set", "shot": 1, "field": "framing",
   "value": "CU"}]}.
   Do not use it to test an idea (use plan_try first), to remember a rule (use memory_propose), or to change a spoken line.

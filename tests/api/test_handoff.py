@@ -15,8 +15,8 @@ from tests.api.conftest import World
 from tests.api.test_production import (
     _accept_one,
     _store_prompt,
-    approved_scene,
     design,
+    open_scene,
     shot_url,
     url,
 )
@@ -60,7 +60,7 @@ def assembler(world: World) -> FakeAssembler:
 
 
 def _ready_shot(world: World, n: int = 1) -> tuple[dict, str]:
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     fid = _accept_one(world, s, n)
     world.repos.storage.objects[("frames", world.repos.frames.rows[fid]["storage_path"])] = b"\x89PNG"  # type: ignore[attr-defined]

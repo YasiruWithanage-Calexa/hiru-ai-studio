@@ -251,7 +251,7 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
     prefix: str | None = None
     designed = prompts = intents = 0
     skipped: list[str] = []
-    for row, scene in scenes:
+    for _, scene in scenes:
         label = f"Scene {scene.number}"
         wanted_design = [s for s in scene.shots if (targets is None or s.id in targets)]
         if any(force or design_stale(s, prod) for s in wanted_design):
@@ -290,9 +290,6 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
         if mode != "prompt":
             continue
         wanted = [s for s in scene.shots if targets is None or s.id in targets]
-        if row.get("status") != "approved":
-            skipped += [f"{s.code}: the scene is not approved" for s in wanted]
-            continue
         frames = store.accepted_frames([s.id for s in wanted])
         for shot in wanted:
             frame = frames.get(shot.id)

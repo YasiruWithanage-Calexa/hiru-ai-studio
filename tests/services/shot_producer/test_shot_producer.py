@@ -199,11 +199,15 @@ def test_a_persons_camera_wins_in_the_prompt(scene0):
     assert {"label": "Camera changed from the recommendation", "tone": "advisory"} in p["checks"]
 
 
-def test_carried_shots_need_no_frame_and_unapproved_scenes_get_no_prompt():
-    scene, lines, rows = fixture_scene(0, status="split")
-    store = FakeStore(scene, lines, rows)
-    result, jobs = run(store, mode="prompt", scene_ids=[scene["id"]])
-    assert result["prompts"] == 0 and all("not approved" in t for t in jobs.texts("warning"))
+def test_carried_shots_need_no_frame_and_a_prompt_needs_an_accepted_frame_locked_or_not():
+    for status in ("split", "approved"):
+        scene, lines, rows = fixture_scene(0, status=status)
+        store = FakeStore(scene, lines, rows)
+        result, jobs = run(store, mode="prompt", scene_ids=[scene["id"]])
+        assert result["prompts"] == 0 and all("no accepted first frame" in t for t in jobs.texts("warning"))
+        _accept(store, rows[1]["id"])
+        run(store, mode="prompt", shot_ids=[rows[1]["id"]])
+        assert len(store.prompts) == 1, f"a {status} scene gets its prompt"
 
     scene, lines, rows = fixture_scene(0)
     rows[2].update(camera_link="continuous", frame_strategy="carry_last_frame")

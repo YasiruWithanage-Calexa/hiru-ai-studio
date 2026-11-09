@@ -875,22 +875,12 @@ HELD = re.compile(
     re.IGNORECASE,
 )
 CLAUSES = re.compile(r"[,;]|\bthen\b|\band\b|\bwhile\b|\bas\b", re.IGNORECASE)
-# What a posture rules out (the plan's two: a lying person on their feet, a sitting person running)
-NOT_WITH: dict[str, re.Pattern[str]] = {
-    "lying": re.compile(
-        r"\b(stands?|standing|walks?|walking|runs?|running|sits?|sitting|steps?|stepping|gets up|rises)\b",
-        re.IGNORECASE,
-    ),
-    "sitting": re.compile(r"\b(runs?|running|walks?|walking|strides?|striding)\b", re.IGNORECASE),
-}
-STILL = ("dead", "unconscious")  # a condition in which a person does nothing on their own
-ALIVE = re.compile(
-    r"\b(breath\w*|chest (?:rises|rising|heaves|heaving)|blinks?|blinking|speaks?|speaking|talks?|talking|stirs?|"
-    r"stirring|moves? (?:his|her|their)|opens (?:his|her|their) eyes|sits up|stands up|gets up|looks up|"
-    r"turns (?:his|her|their) head|groans?|moans?)\b",
-    re.IGNORECASE,
-)
-NEGATED = re.compile(r"\b(no|not|never|without|n't|nor|cannot)\W+(?:\w+\W+){0,2}$", re.IGNORECASE)
+# What a posture rules out, and what a still person does not do: the words live with the ledger (`stagemap`), so the two
+# state checks read the same rule.
+NOT_WITH = sm.NOT_WITH
+STILL = sm.STILL
+ALIVE = sm.ALIVE
+NEGATED = sm.NEGATED
 ZONE_GENERIC = frozenset(
     {
         "the",
@@ -981,13 +971,6 @@ def _hand_named(text: str, key: str, side: str) -> bool:
     return False
 
 
-def _alive_word(text: str) -> str:
-    for m in ALIVE.finditer(text):
-        if not NEGATED.search(text[: m.start()]):
-            return m.group(0)
-    return ""
-
-
 def state(scene: SceneS, work: Bin) -> list[Fault]:
     """Each clip against the scene's state ledger (`scene.staging`, pinned by `contracts.raphael.state.attach`):
     hands, handovers, posture, condition, presence and place, and the props someone carries that no clip shows.
@@ -1070,7 +1053,7 @@ def state(scene: SceneS, work: Bin) -> list[Fault]:
             still = next((x for x in STILL for cond in conditions if x in cond), "")
             if still and len(conditions) == 1:
                 alone = len(_subjects(c)) == 1
-                word = _alive_word(text + (" \n " + _picture_text(c) if alone else ""))
+                word = sm.alive_word(text + (" \n " + _picture_text(c) if alone else ""))
                 speaks = c.speaks and any(
                     (b := scene.line_block(ln)) is not None and norm(plain_name(b.speaker)) == norm(who)
                     for ln in c.lines

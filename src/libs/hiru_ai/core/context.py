@@ -69,6 +69,9 @@ class RunContext:
     # The scene in scope and the person's own words, from the trusted payload (plan/2026-11-04 §4.4): a tool defaults to
     # this scene and checks dialogue against these words, so a model chooses neither.
     scene_id: UUID | None = None
+    # Sable's rule (plan/2026-11-09b D1): a run that stages cards stages them only for the scene in scope, and a note
+    # on a shot (`dop_note.set`) may be staged for a person to accept. Set by Sable's turn, never by a model.
+    stage_scene_only: bool = False
     said: str = ""  # everything the person wrote that a spoken line may use; "" = nothing (a dialogue op is refused)
     # Add the per-component columns (component, component_version, prompt_hash, tool_calls, tool_result_tokens) to the
     # `token_usage` rows of this run. Off until the database is on schema v10; evals turn it on for their own sink.

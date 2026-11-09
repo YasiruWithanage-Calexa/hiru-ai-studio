@@ -96,7 +96,8 @@ class Turn:
     def __init__(self, req: E.SableTurnPayload, ctx: RunContext, emit: Emit, *,
                  stop: threading.Event | None = None, settings: SableSettings | None = None) -> None:
         self.req, self.emit = req, emit
-        self.ctx = dc_replace(ctx, scene_id=req.scene_id, tiering={}, citations=[], tool_events=[])
+        self.ctx = dc_replace(ctx, scene_id=req.scene_id, tiering={}, citations=[], tool_events=[],
+                              stage_scene_only=True)
         self.stop = stop or threading.Event()
         self.cfg = settings or get_settings().sable
         self.st = State()
@@ -158,7 +159,8 @@ class Turn:
             return
         watch = _Watch(self.emit)
         inp = {"message": req.message, "history": st.transcript, "summary": st.summary, "scene": st.scene_label,
-               "role": req.role, "can_stage": req.can_stage, "memory_scope": st.scope}
+               "mentioned": "\n".join(m.text for m in req.mentions if m.text), "role": req.role,
+               "can_stage": req.can_stage, "memory_scope": st.scope}
         config = {"callbacks": [watch], "tags": ["sable"],
                   "metadata": {"sable_thread": str(req.thread_id), "sable_route": st.rule or "-"}}
         try:
@@ -193,6 +195,10 @@ class Turn:
         if staged and not req.can_stage:
             st.text = f"{st.text} {NO_CARDS}".strip()
         for card in staged if req.can_stage else []:
+            if card.get("scene_id") is not None and str(card["scene_id"]) != str(req.scene_id or ""):
+                _log.warning("sable: a card for another scene was dropped thread=%s", req.thread_id)
+                st.meta.guard.append("card for a scene that is not open")
+                continue
             block = _card(card, self._handles(card))
             if block is not None:
                 st.cards.append(block)
@@ -266,7 +272,7 @@ def _line(m: Row) -> str:
     text = str(m.get("text") or "").strip() or " ".join(
         str(b.get("text") or "") for b in m.get("blocks") or [] if isinstance(b, dict) and b.get("kind") == "text")
     cards = [b for b in m.get("blocks") or [] if isinstance(b, dict) and b.get("kind") in
-             ("sable_change", "sable_memory", "handoff")]
+             ("sable_change", "sable_state", "sable_memory", "handoff")]
     shown = "".join(f" [card: {_card_line(b)}]" for b in cards)
     return f"{m.get('speaker') or m.get('kind')}: {text.strip()}{shown}"
 
@@ -274,7 +280,7 @@ def _line(m: Row) -> str:
 def _card_line(b: Row) -> str:
     if b.get("kind") == "handoff":
         return f"open {b.get('scene')} with “{b.get('request')}”"
-    what = b.get("summary") if b.get("kind") == "sable_change" else f"remember: {b.get('rule')}"
+    what = (b.get("summary") if b.get("kind") in ("sable_change", "sable_state") else f"remember: {b.get('rule')}")
     return f"{what} ({b.get('status', 'open')})"
 
 
@@ -290,7 +296,16 @@ def _card(card: Row, handles: list[str] | None = None) -> Row | None:
             return E.StagedChange(scene_id=card["scene_id"], scene=str(card.get("scene") or ""),
                                   summary=str(card.get("summary") or ""), ops=ops,
                                   changes=[str(c) for c in card.get("changes") or []],
-                                  touched=[str(t) for t in card.get("touched") or []]).model_dump(mode="json")
+                                  touched=[str(t) for t in card.get("touched") or []],
+                                  notes=[dict(n) for n in card.get("notes") or []]).model_dump(mode="json")
+        if kind == "state":
+            return E.StagedState(scene_id=card["scene_id"], scene=str(card.get("scene") or ""),
+                                 summary=str(card.get("summary") or ""),
+                                 script_version=int(card.get("script_version") or 0),
+                                 marks=[dict(m) for m in card.get("marks") or []],
+                                 changes=[str(c) for c in card.get("changes") or []],
+                                 touched=[str(t) for t in card.get("touched") or []],
+                                 in_doubt=[str(d) for d in card.get("in_doubt") or []]).model_dump(mode="json")
         if kind == "memory":
             return E.StagedMemory(rule=str(card.get("rule") or ""), scope=card.get("scope") or "production",
                                   scene_id=card.get("scene_id")).model_dump(mode="json")

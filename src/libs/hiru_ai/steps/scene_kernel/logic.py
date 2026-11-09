@@ -65,6 +65,7 @@ def is_translation(op: dict[str, Any]) -> bool:
         and bool(op.get("translated_to"))
 SCRIPT_LIMITS = {"text": 2000, "speaker": 120, "delivery": 200}  # as `contracts.director.ScriptBlockEdit`
 DOP_NOTE_CHARS = 600
+STAGE = "stage"  # Sable's trial author (core/trial.py): may try a DoP note, nothing else a person alone makes
 SHOT_TEXT_FIELDS = ("title",)
 BEAT_FIELDS = ("camera", "director_line", "action")
 _MAX_TEXT = 300
@@ -282,7 +283,10 @@ class ScenePlanKernel:
                 op = self._normalize(raw)
                 if allowed_ops is not None and op["op"] not in allowed_ops:
                     raise OpError(f"{by} may not use {op['op']}")
-                if op["op"] in PERSON_ONLY and by != "you" and not (by == TRANSLATOR and is_translation(op)):
+                if by == STAGE and op["op"] == "dop_note.set":  # a card's note: a person's words once accepted
+                    if len(" ".join(str(op.get("value") or "").split())) > DOP_NOTE_CHARS:
+                        raise OpError(f"a DoP note is at most {DOP_NOTE_CHARS} characters")
+                elif op["op"] in PERSON_ONLY and by != "you" and not (by == TRANSLATOR and is_translation(op)):
                     raise OpError("only a person's own words can change the script, a shot's cast, checks or note")
                 snap = self._snapshot()
                 normalized, changes = self._dispatch(op, addr, by, respect_locks)

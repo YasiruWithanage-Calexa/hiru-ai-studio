@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 from tests.api.conftest import World
-from tests.api.test_production import approved_scene, design
+from tests.api.test_production import design, open_scene
 from tests.api.test_scenes import url
 
 
 def test_page_answers_what_the_five_routes_answer(world: World) -> None:
-    s = approved_scene(world)
+    s = open_scene(world)
     design(world, s)
     h = world.headers(world.producer)
     scene_id, episode_id = s["scene"]["id"], s["scene"]["episode_id"]
@@ -25,13 +25,13 @@ def test_page_answers_what_the_five_routes_answer(world: World) -> None:
 
 
 def test_page_for_a_scene_that_is_not_here_is_404(world: World) -> None:
-    s = approved_scene(world)
+    s = open_scene(world)
     r = world.client.get(url(world, f"/scenes/{world.admin}/page"), headers=world.headers(world.producer))
     assert r.status_code == 404
     assert s  # the scene exists; this id does not
 
 
 def test_a_stranger_gets_404(world: World) -> None:
-    s = approved_scene(world)
+    s = open_scene(world)
     r = world.client.get(url(world, f"/scenes/{s['scene']['id']}/page"), headers=world.headers(world.outsider))
     assert r.status_code == 404

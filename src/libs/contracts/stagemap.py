@@ -44,6 +44,7 @@ FRAME_SIDES = ("left", "right", "centre")
 FACINGS = ("left", "right", "camera", "away")  # a direction in the frame
 POSTURES = ("standing", "sitting", "kneeling", "crouching", "lying", "walking", "running")
 HANDS = ("left", "right")
+STILL = ("dead", "unconscious")  # a condition in which a person does nothing on their own
 WELL = "well"  # the condition that ends one ("wakes up"): a mark's empty condition keeps the last one
 MAX_ZONES = 6
 MAX_MARKS = 60
@@ -686,3 +687,134 @@ def clip_state(staging: SceneStaging | None, items: Sequence[Item], blocks: Iter
     if not covered:
         return SceneState(), SceneState()
     return state_before(staging, items, covered[0]), state_at(staging, items, covered[-1])
+
+
+# What a posture rules out (the plan's two: a lying person on their feet, a sitting person running)
+NOT_WITH: dict[str, re.Pattern[str]] = {
+    "lying": re.compile(
+        r"\b(stands?|standing|walks?|walking|runs?|running|sits?|sitting|steps?|stepping|gets up|rises)\b",
+        re.IGNORECASE,
+    ),
+    "sitting": re.compile(r"\b(runs?|running|walks?|walking|strides?|striding)\b", re.IGNORECASE),
+}
+ALIVE = re.compile(
+    r"\b(breath\w*|chest (?:rises|rising|heaves|heaving)|blinks?|blinking|speaks?|speaking|talks?|talking|stirs?|"
+    r"stirring|moves? (?:his|her|their)|opens (?:his|her|their) eyes|sits up|stands up|gets up|looks up|"
+    r"turns (?:his|her|their) head|groans?|moans?)\b",
+    re.IGNORECASE,
+)
+NEGATED = re.compile(r"\b(no|not|never|without|n't|nor|cannot)\W+(?:\w+\W+){0,2}$", re.IGNORECASE)
+
+
+def alive_word(text: str) -> str:
+    """The first word of `text` that shows a person alive and doing something ("breathes", "speaks"), unless it is
+    negated ("does not breathe"); "" when there is none."""
+    for m in ALIVE.finditer(text):
+        if not NEGATED.search(text[: m.start()]):
+            return m.group(0)
+    return ""
+
+
+# ── a change to the ledger: "Kamal is dead from block 12" (plan/2026-11-09b phase 3) ───────────────────────────────
+
+
+class StateMark(BaseModel):
+    """`who`, from block `from_block` on, is `posture` / `condition` / in `zone` / facing `facing`. Only what is said
+    changes; everything else is kept from their last mark. A condition of `dead` or `unconscious` with no posture
+    means `lying`, and a person who is dead or unconscious stays where they fell."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    who: str = Field(min_length=1, max_length=120)
+    from_block: int = Field(ge=0)
+    posture: str = ""
+    condition: str = Field(default="", max_length=40)
+    zone: str = Field(default="", max_length=60)
+    facing: str = ""
+
+
+class StateRefused(ValueError):
+    """A change the ledger cannot take, in a sentence a person reads."""
+
+
+def apply_state(staging: SceneStaging | None, items: Sequence[Item], changes: Sequence[StateMark],
+                cast: Iterable[str] = (), *, version: int) -> SceneStaging:
+    """The map with `changes` laid over it, written as a PERSON's map (`by="person"`, so the next plan keeps it).
+
+    Each change makes a mark at its block (copying the person's last mark there: their zone, hands and clothes) and
+    carries what it says onto the same person's LATER marks, so a body does not stand up again at block 14. Marks are
+    checked by `validate` like any other: a person who is not in the scene, a spot that is not on the map or a block
+    that is not there is refused, never repaired. Raises `StateRefused`."""
+    if staging is None or len(staging.zones) < 2:
+        raise StateRefused("This scene has no staging map yet. Plan the scene first, then ask again.")
+    here = rd.present(items, cast)
+    placed = staging.placed(items)
+    rows: list[dict[str, Any]] = []
+    for found in placed.values():
+        rows += [{**m.model_dump(), "block": at} for at, m in found]
+    zones = {z.casefold(): z for z in staging.zones}
+    for change in changes:
+        who = _clean(change.who, 120)
+        if not rd.is_present(who, here):
+            raise StateRefused(f"{who} is not in this scene.")
+        if not 0 <= change.from_block < len(items):
+            raise StateRefused(f"There is no block {change.from_block} in this scene.")
+        posture = _clean(change.posture, 20).casefold()
+        facing = _clean(change.facing, 10).casefold()
+        condition = _clean(change.condition, 40)
+        if posture and posture not in POSTURES:
+            raise StateRefused(f"{posture!r} is not a posture; use one of {', '.join(POSTURES)}.")
+        if facing and facing not in FACINGS:
+            raise StateRefused(f"{facing!r} is not a direction; use one of {', '.join(FACINGS)}.")
+        zone_said = _clean(change.zone, 60).casefold()
+        zone = OFF if zone_said == OFF else zones.get(zone_said, "")
+        if zone_said and not zone:
+            raise StateRefused(f"{change.zone!r} is not a spot on this map ({', '.join(staging.zones)}).")
+        if not (posture or facing or condition or zone):
+            raise StateRefused("Nothing to change: say a posture, a condition, a spot or a direction.")
+        still = condition.casefold().split(":")[0] in STILL
+        posture = posture or ("lying" if still else "")
+        mine = sorted((r for r in rows if r["who"].casefold() == who.casefold()), key=lambda r: r["block"])
+        at_block = next((r for r in mine if r["block"] == change.from_block), None)
+        before = [r for r in mine if r["block"] <= change.from_block]
+        base = at_block or (dict(before[-1]) if before else None)
+        if base is None and not zone:
+            raise StateRefused(f"{who} has no place on the map yet; say which spot they are in.")
+        row = at_block if at_block is not None else {
+            **(base or {"zone": zone, "frame_side": "", "holding": "", "left_hand": "", "right_hand": "",
+                        "wearing": "", "anchor": ""}), "who": mine[0]["who"] if mine else who,
+            "block": change.from_block, "posture": "", "condition": ""}
+        if at_block is None:
+            rows.append(row)
+        row.update({k: v for k, v in (("posture", posture), ("condition", condition), ("zone", zone),
+                                      ("facing", facing)) if v})
+        if still:  # a body stays where it fell, so a later mark cannot walk it off
+            zone = zone or row["zone"]
+        for later in (r for r in mine if r["block"] > change.from_block):
+            if posture and later["posture"]:
+                later["posture"] = posture
+            if condition and later["condition"]:
+                later["condition"] = condition
+            if still and later["zone"] != OFF:
+                later["zone"] = zone
+    props = [{"block": at, "prop": p.prop, "where": p.where, "state": p.state} for at, p in staging.placed_props(items)]
+    made = validate({"zones": staging.zones, "marks": rows, "props": props}, items, cast, version=version,
+                    by="person")
+    kept = {(m.who.casefold(), m.block) for m in made.marks}
+    for change in changes:
+        if (_clean(change.who, 120).casefold(), change.from_block) not in kept:
+            raise StateRefused(f"{change.who} could not be placed at block {change.from_block}.")
+    return made
+
+
+def changed_blocks(before: SceneStaging | None, after: SceneStaging, items: Sequence[Item],
+                   shots: Iterable[tuple[int, int]]) -> list[int]:
+    """The 0-based positions (in `shots`, a list of `(first block, end block)` as stored: end exclusive) whose state
+    as the shot opens, or as it ends, is not the same after the change."""
+    out: list[int] = []
+    for n, (start, end) in enumerate(shots):
+        blocks = range(start, max(end, start + 1))
+        was, now = clip_state(before, items, blocks), clip_state(after, items, blocks)
+        if delta_text(was[0], now[0]) or delta_text(was[1], now[1]):
+            out.append(n)
+    return out

@@ -10,6 +10,7 @@ message first, so a turn that fails still leaves the question in the thread.
     POST   …/sable/threads                         a new, empty thread
     GET    …/sable/threads/{tid}                   the thread and its messages
     DELETE …/sable/threads/{tid}                   the thread and its messages
+    GET    …/sable/mentions?q=&scene_id=           the @ picker's list (names only, no model)
     POST   …/sable/turn                            one turn, streamed (`contracts.sable.events`)
     POST   …/sable/messages/{mid}/cards/{i}/accept a staged change applied (no model), or a rule remembered
     POST   …/sable/messages/{mid}/cards/{i}/dismiss the card set aside
@@ -35,7 +36,13 @@ from api.services import sable as sable_service
 from api.services.ai import UsageContext, get_ai
 from contracts.director import ChoicePayload, MessageKind
 from contracts.roles import Permission
-from contracts.sable.events import SableMessage, SableThread, SableTurnPayload, SableTurnRequest
+from contracts.sable.events import (
+    MentionOption,
+    SableMessage,
+    SableThread,
+    SableTurnPayload,
+    SableTurnRequest,
+)
 
 router = APIRouter(prefix="/v1/productions/{production_id}/sable", tags=["sable"])
 ReposDep = Annotated[Repos, Depends(get_repos)]
@@ -114,6 +121,16 @@ async def delete_thread(production_id: UUID, thread_id: UUID, access: CanAsk, re
                              actor_user_id=access.user.id, production_id=production_id)
 
 
+@router.get("/mentions", response_model=list[MentionOption])
+async def mentions(production_id: UUID, access: CanAsk, repos: ReposDep, q: str = "",
+                   scene_id: UUID | None = None) -> list[MentionOption]:
+    """The @ picker's list: the open scene's shots and blocks first, then the canon, then the other scenes. Names only,
+    no model."""
+    if scene_id is not None and await repos.scenes.get(production_id, scene_id) is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
+    return await sable_service.mention_options(repos, production_id, scene_id, q[:80])
+
+
 @router.post("/turn")
 async def turn(production_id: UUID, body: SableTurnRequest, access: CanAsk, repos: ReposDep,
                streamer: Streamer) -> StreamingResponse:
@@ -123,6 +140,10 @@ async def turn(production_id: UUID, body: SableTurnRequest, access: CanAsk, repo
     if body.scene_id is not None and await repos.scenes.get(production_id, body.scene_id) is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
     text = body.message.strip()
+    try:  # what @ pointed at is read again from this production: a thing that is not here is 404
+        mentioned = await sable_service.resolve_refs(repos, production_id, body.scene_id, body.refs)
+    except sable_service.UnknownRef as exc:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"{exc} was not found in this production.") from exc
     if body.thread_id is not None:
         thread = await _own_thread(repos, access, body.thread_id)
     else:
@@ -143,7 +164,7 @@ async def turn(production_id: UUID, body: SableTurnRequest, access: CanAsk, repo
                                actor_name=access.user.display_name, role=role,
                                can_stage=Permission.DIRECT in access.permissions, message=text,
                                user_message_id=UUID(str(message["id"])), scene_id=body.scene_id,
-                               replaces=body.replaces)
+                               replaces=body.replaces, mentions=mentioned)
     accepted = (await sable_service.view(repos, production_id, message)).model_dump(mode="json")
 
     async def frames() -> AsyncIterator[bytes]:
@@ -201,7 +222,25 @@ async def accept(production_id: UUID, message_id: UUID, index: int, access: CanD
         await repos.audit.record(action="sable.accept_change", entity="scene", entity_id=str(scene_id),
                                  actor_user_id=access.user.id, production_id=production_id,
                                  diff={"message_id": str(message_id), "ops": len(result.applied)})
+        noted = await sable_service.note_shots(repos, production_id, scene_id, list(card.get("ops") or []))
+        await sable_service.mark_out_of_date(repos, noted)  # a note moves neither the script nor the length
         return await _settle(repos, access, row, index, "accepted", "", result.summary)
+    if card["kind"] == "sable_state":
+        scene_id = UUID(str(card["scene_id"]))
+        scene = await repos.scenes.get(production_id, scene_id)
+        if scene is None:
+            return await _settle(repos, access, row, index, "failed", "The scene is gone.", "The scene is gone.")
+        if scene.get("status") == "approved":
+            raise HTTPException(status.HTTP_409_CONFLICT, "This scene is approved and locked. Unapprove it first.")
+        try:
+            changes, touched = await sable_service.apply_state_card(repos, production_id, scene, card)
+        except sable_service.StateRefusedHere as exc:
+            return await _settle(repos, access, row, index, "failed", str(exc), str(exc))
+        await repos.audit.record(action="sable.accept_state", entity="scene", entity_id=str(scene_id),
+                                 actor_user_id=access.user.id, production_id=production_id,
+                                 diff={"message_id": str(message_id), "changes": changes, "shots": touched})
+        text = "Applied: " + "; ".join(changes) + "." + sable_service.shot_words(touched)
+        return await _settle(repos, access, row, index, "accepted", "", text.strip())
     rule = str(card.get("rule") or "").strip()
     scene_id_raw: Any = card.get("scene_id") if card.get("scope") == "scene" else None
     ai = get_ai(request)

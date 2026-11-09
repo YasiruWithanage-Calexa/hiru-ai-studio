@@ -18,6 +18,9 @@ def user_message(inp: Input) -> str:
              f"<person role=\"{inp.role or 'member'}\">can accept cards: {cards}</person>"]
     if inp.summary.strip():
         parts.append(f"<earlier_in_this_chat>\n{inp.summary.strip()}\n</earlier_in_this_chat>")
+    if inp.mentioned.strip():
+        parts.append("<mentioned>\nThe person pointed at these with @; use exactly these, guess nothing:\n"
+                     f"{inp.mentioned.strip()}\n</mentioned>")
     parts.append(f"<recent_chat>\n{inp.history.strip()}\n</recent_chat>")
     parts.append(f"<message>\n{inp.message.strip()}\n</message>")
     return "\n".join(parts)
