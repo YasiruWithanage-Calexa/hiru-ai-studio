@@ -173,7 +173,7 @@ CINEMATIC_ROLES: tuple[str, ...] = (
 )
 
 # The length cap (§2.1, L1): the whole bin may hold the scene's given length x this, in seconds of takes. A choice.
-LENGTH_CAPS: tuple[float, ...] = (1.5, 2, 2.5, 3)
+LENGTH_CAPS: tuple[float, ...] = (1, 1.5, 2, 2.5, 3)
 
 
 def _a_cap(value: float) -> float:

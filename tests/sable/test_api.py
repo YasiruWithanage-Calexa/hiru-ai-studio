@@ -130,7 +130,7 @@ def test_meta_never_reaches_the_browser_and_a_handoff_says_where_it_opens(world:
     assert "sable_deep" not in body and "tier" not in body and "meta" not in body
     messages = world.client.get(url(world, f"/sable/threads/{tid}"), headers=world.headers(world.director)).json()
     handoff = next(b for m in messages["messages"] for b in m["blocks"] if b["kind"] == "handoff")
-    assert handoff["target"] == "classic"  # no Jonathan plan (or Zora off): the classic chat
+    assert handoff["target"] == "zora"  # Zora on: every scene is hers, whoever planned it
 
 
 def test_a_staged_change_is_applied_by_code_once(world: World, fn: Function):  # noqa: F811

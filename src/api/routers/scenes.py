@@ -316,7 +316,7 @@ class RaphaelView(BaseModel):
     result: dict[str, Any] | None = None
     # The length cap the production plans with (a choice, plan §2.1) and the four choices a person may make for a run.
     default_cap: float = 2
-    caps: list[float] = Field(default_factory=lambda: [1.5, 2, 2.5, 3])
+    caps: list[float] = Field(default_factory=lambda: [1, 1.5, 2, 2.5, 3])
     # plan/2026-11-09 phase 8: the scene's state ledger, read by code. Each shot's story and the state it opens and
     # ends in, by slate (from the shot's intent); the state checks' reports (`result.left` rows with code "state").
     # Both empty for a scene with no state map.
@@ -842,7 +842,7 @@ async def remove_jonathan_addition(production_id: UUID, scene_id: UUID, number: 
 
 # ── Shot Planner Raphael (plan/2026-11-08e) ────────────────────────────────────────────────────
 
-RAPHAEL_CAPS = (1.5, 2, 2.5, 3)
+RAPHAEL_CAPS = (1, 1.5, 2, 2.5, 3)
 
 
 def _raphael_result(scene: Row) -> dict[str, Any] | None:

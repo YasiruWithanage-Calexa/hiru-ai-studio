@@ -95,10 +95,10 @@ async def _scene(repos: Repos, production_id: UUID, scene_id: UUID) -> Row:
 
 
 def _why_not(scene: Row) -> str:
-    if not get_settings().zora.enabled:
-        return "Zora is switched off; the classic director chat edits this scene."
-    if not zora_service.has_plan(scene):
-        return "Zora edits a scene Shot Planner Jonathan has planned. Plan it with Jonathan first."
+    """Why Zora cannot take this scene ("" when she can). Any planner's scene is hers (2026-11-09): one without a
+    Jonathan plan is adopted from its shots on her first read (`zora_chat.scene.adopt`)."""
+    if not zora_service.routes_here(scene):
+        return "Zora is switched off on this server; use Sable to change this scene."
     return ""
 
 

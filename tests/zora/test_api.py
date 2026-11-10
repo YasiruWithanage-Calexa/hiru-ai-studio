@@ -60,13 +60,10 @@ def planned(world: World) -> str:  # noqa: F811
     return str(sid)
 
 
-def test_a_scene_jonathan_planned_is_zoras_and_any_other_keeps_the_classic_chat(world: World, fn: Function):  # noqa: F811
+def test_every_scene_is_zoras_whoever_planned_it(world: World, fn: Function):  # noqa: F811
     plain = seed_scene(world)["scene"]["id"]
     got = world.client.get(url(world, f"/scenes/{plain}/zora"), headers=world.headers(world.reviewer)).json()
-    assert got["available"] is False and "Plan it with Jonathan first" in got["reason"]
-    r = world.client.post(url(world, f"/scenes/{plain}/zora/turn"), json={"message": "hi"},
-                          headers=world.headers(world.director))
-    assert r.status_code == 409 and fn.turns == []
+    assert got["available"] is True and got["reason"] == "" and got["locked"] == []
     sid = planned(world)
     got = world.client.get(url(world, f"/scenes/{sid}/zora"), headers=world.headers(world.reviewer)).json()
     assert got["available"] is True and got["locked"] == ["S03.lens"] and got["undo_available"] is False

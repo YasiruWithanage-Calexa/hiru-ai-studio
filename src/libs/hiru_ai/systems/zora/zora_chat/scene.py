@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 from typing import Any
 from uuid import UUID
 
+from contracts import sceneplan
 from hiru_ai.core import parts
 from hiru_ai.core.context import RunContext
 
@@ -48,6 +49,67 @@ class World:
     canon: list[Row]
     shot_rows: list[Row]
     next: Next = field(default_factory=Next)
+
+
+_SIZES = {"EWS", "WIDE", "MWS", "MS", "MCU", "CU", "ECU", "TWO", "OTS", "INSERT", "POV"}
+_SIZE_OF = {"WS": "WIDE", "LS": "WIDE", "EXTREME WIDE": "EWS", "MEDIUM": "MS", "CLOSE": "CU"}
+
+
+def _take(seconds: Any) -> int:
+    """A shot's stored length as a take Veo makes (4 / 6 / 8 s)."""
+    try:
+        s = int(seconds or 0)
+    except (TypeError, ValueError):
+        s = 0
+    return 4 if s <= 4 else 6 if s <= 6 else 8
+
+
+def _obj(value: Any) -> Row:
+    return value if isinstance(value, dict) else {}
+
+
+def adopt(scene_row: Row, shot_rows: list[Row], lines: list[Row]) -> Row | None:
+    """A stored plan in the planner's shape, built from the shots already on a scene another planner (or a person)
+    made, so Zora can edit any scene (2026-11-09). Code only, no model: each shot keeps its number, script blocks,
+    spoken lines, size, length, link and finished camera design; the treatment is empty (Zora's reply says so when
+    asked). Nothing is stored here: the first edit Zora saves writes it. None when the scene has no shots."""
+    if not shot_rows:
+        return None
+    items = sceneplan.scene_items(scene_row, lines)
+    short_of = {str(i.line_id): f"L{i.index}" for i in items if i.is_line}  # the planner's short id: L<block>
+    n_blocks = len(items)
+    rows = sorted(shot_rows, key=lambda r: int(r.get("number") or 0))
+    shots = []
+    for n, row in enumerate(rows, start=1):
+        sid = str(row.get("id"))
+        start, end = int(row.get("block_start") or 0), int(row.get("block_end") or 0)
+        spoken = [short_of[str(ln["id"])] for ln in lines
+                  if str(ln.get("shot_id") or "") == sid and str(ln["id"]) in short_of]
+        ir = _obj(row.get("ir"))
+        cine = _obj(ir.get("cinematography"))
+        card = _obj(row.get("card"))
+        sound = _obj(card.get("sound"))
+        framing = str(row.get("framing") or "MS").upper()
+        size = framing if framing in _SIZES else _SIZE_OF.get(framing, "MS")
+        take = _take(row.get("duration_s"))
+        link = str(row.get("camera_link") or "cut")
+        intent = _obj(row.get("intent"))
+        shots.append({
+            "n": n, "sequence": "A", "blocks": [b for b in range(start, end) if b < n_blocks], "lines": spoken,
+            "over": "", "size": size, "angle": str(cine.get("angle") or "eye level"),
+            "lens": str(cine.get("camera") or ""), "take_s": take, "use_s": take,
+            "link": link if link in ("cut", "continuous", "match") else "cut",
+            "why": str(intent.get("purpose") or row.get("title") or f"Shot {n}"), "ir": dict(ir),
+            "sound": {"ambience": str(sound.get("ambience") or ""), "effects": str(sound.get("effects") or ""),
+                      "music": str(sound.get("music") or ""), "silence": bool(sound.get("silence"))}})
+    plan = {"treatment": {"logline": "", "arc": [], "approach": "", "colour_script": [], "geography": "",
+                          "key_image": "", "advice": []},
+            "sequences": [{"id": "A", "title": "The scene", "purpose": "",
+                           "shots": {"first": 1, "last": len(shots)}}],
+            "shots": shots, "added": [], "staging": {"zones": [], "marks": []},
+            "end_state": {"people": [], "props": [], "time": "", "light": ""}}
+    return {"planner": PLANNER, "plan": plan, "line_ids": {v: k for k, v in short_of.items()},
+            "previous": {"planner": str(rows[0].get("planner") or "classic"), "adopted": True}}
 
 
 def planner_scene(ctx: RunContext, production_id: UUID, scene_row: Row, lines: list[Row], canon: list[Row]) -> Row:
@@ -89,15 +151,15 @@ def read(ctx: RunContext, production_id: UUID, scene_id: UUID) -> World | str:
     row = director.scene(production_id, scene_id)
     if production is None or row is None:
         return "This scene is no longer available."
-    stored = stored_of(row)
-    if stored is None:
-        return ("Zora edits a scene Shot Planner Jonathan has planned. Plan this scene with Jonathan first, or use "
-                "the classic director chat.")
     lines = scenes.lines(scene_id)
+    shot_rows = scenes.shots(scene_id)
+    stored = stored_of(row) or adopt(row, shot_rows, lines)  # any planner's scene: its shots, as the planner's plan
+    if stored is None:
+        return "This scene has no shots yet. Plan its shots first, then Zora can edit them."
     canon = scenes.canon(production_id)
     world = World(production=production, scene_row=row, stored=stored,
                   scene=planner_scene(ctx, production_id, row, lines, canon), lines=lines, canon=canon,
-                  shot_rows=scenes.shots(scene_id))
+                  shot_rows=shot_rows)
     try:
         world.next = next_of(ctx, production_id, row)
     except Exception:  # the seam is a report; a scene list that cannot be read leaves it unchecked

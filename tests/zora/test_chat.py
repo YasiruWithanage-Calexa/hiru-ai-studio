@@ -162,11 +162,24 @@ def test_a_role_that_may_only_comment_changes_nothing():
     assert world.plan() == before
 
 
-def test_a_scene_with_no_planner_plan_is_refused_with_the_way_out():
+def test_a_scene_another_planner_made_is_adopted_from_its_shots_and_edited():
+    world = ChatWorld()
+    world.scenes.scene_rows[0]["jonathan"] = {}  # as a Raphael (or classic) scene: shots, no Jonathan plan
+    lens = {"op": "set", "shot": "S03", "field": "lens", "value": "85mm"}
+    events = run(world, "S03 on an 85", {"zora.conduct": [conductor("edit", [lens])], "zora.reply": ["Done."]})
+    assert not of(events, "error")
+    stored = world.row()["jonathan"]
+    assert stored["previous"]["adopted"] is True
+    assert stored["plan"]["shots"][2]["lens"] == "85mm"
+    assert world.shot_ids() == world.original_ids  # the scene's shots keep their ids: takes and frames stay
+
+
+def test_a_scene_with_no_shots_says_so():
     world = ChatWorld()
     world.scenes.scene_rows[0]["jonathan"] = {}
+    world.scenes.shot_rows.clear()
     events = list(graph.run(world.payload("hi"), world.ctx()))
-    assert of(events, "error") and "Plan this scene with Jonathan first" in of(events, "error")[0]["message"]
+    assert of(events, "error") and "no shots yet" in of(events, "error")[0]["message"]
 
 
 def test_a_save_over_a_plan_someone_changed_meanwhile_is_refused():

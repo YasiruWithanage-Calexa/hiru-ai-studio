@@ -33,9 +33,11 @@ def has_plan(scene: Row) -> bool:
 
 
 def routes_here(scene: Row) -> bool:
-    """§4.10 (D3): a scene whose stored plan the planner made goes to Zora when `ZORA__ENABLED`; any other keeps the
-    classic chat."""
-    return get_settings().zora.enabled and has_plan(scene)
+    """Every scene goes to Zora when `ZORA__ENABLED` (2026-11-09; was: only a scene Jonathan planned). A scene another
+    planner made is adopted from its shots on Zora's first read (`zora_chat.scene.adopt`). `scene` stays in the
+    signature: Sable asks per scene (`api.services.sable`)."""
+    del scene
+    return get_settings().zora.enabled
 
 
 def undo_redo(rows: list[Row]) -> tuple[bool, bool]:

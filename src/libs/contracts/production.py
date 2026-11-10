@@ -93,7 +93,7 @@ class ProductionSettings(_Model):
     @field_validator("raphael_length_cap")
     @classmethod
     def _a_length_cap(cls, v: float) -> float:
-        if v not in (1.5, 2, 2.5, 3):
+        if v not in (1, 1.5, 2, 2.5, 3):
             raise ValueError("raphael_length_cap must be one of 1.5, 2, 2.5, 3")
         return float(v)
 

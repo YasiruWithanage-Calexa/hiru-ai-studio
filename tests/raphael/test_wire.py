@@ -107,8 +107,8 @@ def test_stored_load_is_none_for_a_scene_raphael_never_planned() -> None:
 
 def test_the_length_cap_is_a_setting_with_four_choices() -> None:
     assert ProductionSettings().raphael_length_cap == 2
-    assert LENGTH_CAPS == (1.5, 2, 2.5, 3)
-    for cap in (1.5, 2, 2.5, 3):
+    assert LENGTH_CAPS == (1, 1.5, 2, 2.5, 3)
+    for cap in (1, 1.5, 2, 2.5, 3):
         settings = ProductionSettings.model_validate({"raphael_length_cap": cap, "shot_planner": "raphael"})
         again = ProductionSettings.model_validate(json.loads(settings.model_dump_json()))
         assert again.raphael_length_cap == cap and again.shot_planner == "raphael"

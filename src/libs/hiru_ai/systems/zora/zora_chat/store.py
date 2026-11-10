@@ -40,7 +40,9 @@ class Saver:
         self.ctx, self.world, self.actor, self.kept = ctx, world, actor_user_id, kept
         self.scenes, self.director = ctx.need("scenes"), ctx.need("director")
         self.revisions = ctx.ports.revisions
-        self.read_print = save_logic.fingerprint(world.stored)
+        # What the scene row held, not the plan in use: an adopted scene's plan is built from its shots and the row
+        # holds none until the first save, so "changed meanwhile" compares the row with the row.
+        self.read_print = save_logic.fingerprint(stored_of(world.scene_row))
 
     # ── the revisions ──────────────────────────────────────────────────────────────────────────────────
 
