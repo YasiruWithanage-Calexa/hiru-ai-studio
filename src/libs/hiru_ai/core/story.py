@@ -37,7 +37,7 @@ def save(ctx: RunContext, text_path: str, story: dict[str, Any]) -> None:
     if files is None:
         return
     check = parts.step("story_check")
-    files.upload(BUCKET, check.story_path(text_path), check.dumps(story).encode("utf-8"), "application/json")
+    files.upload(BUCKET, check.story_path(text_path), check.dumps(story).encode("utf-8"), "text/plain; charset=utf-8")
 
 
 def load(ctx: RunContext, text_path: str, text: str) -> dict[str, Any] | None:

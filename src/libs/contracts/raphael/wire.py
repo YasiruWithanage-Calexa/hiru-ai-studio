@@ -331,6 +331,9 @@ class MenuW(_Wire):
     handle_out_s: float  # about 1 s after it ends
     priority: Priority
     editor_note: str  # what the editor can do with it ("" when nothing to add)
+    # what happens in the shot, told the way one person explains the shot to another: who is seen, what they do, what
+    # is said (its meaning in plain English, with the line id; never the script's words re-typed), what is heard
+    summary: str
 
 
 class ClipW(MenuW):
@@ -379,6 +382,7 @@ class Clip(MenuW):
 
     id: str
     slate: str
+    summary: str = ""  # a result saved before clips had a summary still loads
     ir: dict[str, Any] | None = None
     sound: SoundW | None = None
     stage: int = 1

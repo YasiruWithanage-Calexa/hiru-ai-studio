@@ -275,3 +275,26 @@ Spent on this work: **$0** (every test scripts its model; the lab ledger is unch
    yours.
 3. `RAPHAEL_PACKET=true` only after a Raphael comparison on the packet (open decision 5, up to $5 a run).
 4. Still open from §11: long action blocks, extras, S01's story order, `seen: false`.
+
+## Live runs on `ekama_sakshiya_screenplay (clean).pdf` (3 scenes), 2026-11-11, the person's yes each time
+
+Runner: `lab/two_memories/live.py` (the product's own code and agents end to end, memories in files; `--raphael`,
+`--raphael-only <run>`). Shape check: `lab/two_memories/compare_shape.py`.
+
+- **Run 1** (`runs/pipeline_ekama_sakshiya_screenplay_clean/`, $0.2859): S01, S02 complete after one repair each; S03 waited:
+  the episode call pointed spoken lines from the `NAME -` cue (word 0), so each line lost its last words, and the repair
+  could not find them from "6 word(s) in no block".
+- **Fixes:** `checks.words` names the line and the words (`line 60 words 11-12 ('gaththa salli.') in no block`) and a
+  dialogue span that starts at its cue is its own finding; the episode and repair prompts say a cue line's span starts at
+  word 2. Test: `test_a_line_pointed_from_its_cue_names_the_words_it_lost`.
+- **Run 2** (`runs/pipeline_ekama_run2/`, breakdown $0.159 + Raphael $0.602): no repair needed, 3 of 3 packets complete;
+  Raphael on the packet path finished both stages on all three scenes, nothing left.
+- **Clip summary (the person's order: nothing else changes):** `MenuW.summary` (required on the wire, `""` on a stored
+  `Clip` so older results load), one `- SUMMARY (plan/2026-11-11).` line in each Raphael prompt (what a line means, with
+  its id; never the script's words), recorded in `tests/raphael/test_lab_parity.py`; the scripted eval clips carry one.
+  Not in the Veo prompt, the checks or the shots.
+- **Run 3** (`runs/pipeline_ekama_run3/`, Raphael only on run 2's packets, $0.6117): 60 of 60 clips have a summary; the
+  JSON shape equals run 2's except the one added key `result.clips[].summary`.
+
+Schema v21: **applied to the hosted project by the person (2026-11-11).** `BREAKDOWN__ENABLED` and `RAPHAEL_PACKET` are
+still off.

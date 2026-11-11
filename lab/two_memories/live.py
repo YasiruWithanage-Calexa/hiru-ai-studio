@@ -3,9 +3,9 @@ phase 7). The product's own code and agents run end to end (extract text -> spli
 checks -> repair -> stager -> today's columns -> packets -> Raphael's opening); the memories are kept in files, not in
 Supabase (schema v21 is not applied).
 
-    python scripts/breakdown_live.py <pdf>                       dry: the text, the split's message, sizes, no call
+    python lab/two_memories/live.py <pdf>                       dry: the text, the split's message, sizes, no call
     (free)
-    python scripts/breakdown_live.py <pdf> --yes --cap 2.50      the paid run (the person's yes first), hard money cap
+    python lab/two_memories/live.py <pdf> --yes --cap 2.50      the paid run (the person's yes first), hard money cap
     options: --out DIR (default lab/two_memories/runs/pipeline_<pdf name>), --no-stage (skip the stager calls),
              --raphael (then plan every complete packet with Shot Planner Raphael, both stages, on the packet path;
              each scene under Raphael's own meter, RAPHAEL_SCENE_CAP_USD, default $1.00; saved in 12_raphael/)
@@ -30,7 +30,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT / "src" / "libs"), str(ROOT / "src")]
 
 from contracts.breakdown import fill, memory, packet, render, stage  # noqa: E402
@@ -153,7 +153,18 @@ def main() -> None:
     ap.add_argument("--out", default="")
     ap.add_argument("--no-stage", action="store_true")
     ap.add_argument("--raphael", action="store_true")
+    ap.add_argument("--raphael-only", default="", help="a run folder: plan its saved complete packets with Raphael")
     args = ap.parse_args()
+    if args.raphael_only:  # no breakdown calls: the packets the earlier run saved
+        if not args.yes or not args.out:
+            sys.exit("--raphael-only needs --yes and --out (a new folder)")
+        src = Path(args.raphael_only)
+        packets = json.loads((src / "09_packets.json").read_text(encoding="utf-8"))
+        waits = json.loads((src / "09_packets_waits.json").read_text(encoding="utf-8"))
+        out = Path(args.out)
+        out.mkdir(parents=True, exist_ok=True)
+        raphael_all(out, {sid: p for sid, p in packets.items() if not waits.get(sid)})
+        return
     pdf = Path(args.pdf)
     slug = re.sub(r"[^a-z0-9]+", "_", pdf.stem.lower()).strip("_")
     out = Path(args.out) if args.out else ROOT / "lab" / "two_memories" / "runs" / f"pipeline_{slug}"
@@ -327,6 +338,8 @@ def clip_text(sid: str, r: dict[str, Any], packet_: dict[str, Any], ids: dict[st
         ]
         head = f"{c.get('slate', c['id'])} [{', '.join(t for t in tags if t)}]"
         rows.append(head)
+        if c.get("summary"):
+            rows.append(f"    SUMMARY: {c['summary']}")
         for key in ("blocks", "lines"):
             for x in c.get(key) or []:
                 bid = ids.get(f"b{x}" if isinstance(x, int) else str(x), str(x))

@@ -1,0 +1,2029 @@
+{
+ "scene": "E01-S02",
+ "status": "done",
+ "seconds": 272.5,
+ "calls": 7,
+ "dollars": 0.1751,
+ "log": [
+  "stage 1: finished after 4 turns",
+  "stage 2: finished after 3 turns"
+ ],
+ "warnings": [],
+ "ids": {
+  "b0": "E01-S02-B01",
+  "b1": "E01-S02-B02",
+  "b2": "E01-S02-B03",
+  "b3": "E01-S02-B04",
+  "L3": "E01-S02-B04",
+  "b4": "E01-S02-B05",
+  "b5": "E01-S02-B06",
+  "L5": "E01-S02-B06",
+  "b6": "E01-S02-B07"
+ },
+ "result": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "local-E01-S02",
+  "input_hash": "50890e2918e3d6dd",
+  "stage1": "finished",
+  "stage2": "finished",
+  "stopped": "",
+  "cap": 2.0,
+  "breakdown": null,
+  "edit": {
+   "treatment": {
+    "logline": "A cash-van driver carries a private worry through rain-lit Colombo until a business instruction changes his route; a glance at his wrist keeps his reasons unreadable.",
+    "arc": [
+     {
+      "beat": "Work enclosed by the wet city and a personal keepsake",
+      "blocks": {
+       "first": 0,
+       "last": 1
+      },
+      "feeling": "Contained familiarity"
+     },
+     {
+      "beat": "Recorded concern occupies the cab",
+      "blocks": {
+       "first": 2,
+       "last": 3
+      },
+      "feeling": "Private unease"
+     },
+     {
+      "beat": "A live instruction interrupts the private space",
+      "blocks": {
+       "first": 4,
+       "last": 5
+      },
+      "feeling": "External pressure"
+     },
+     {
+      "beat": "The wrist glance precedes a deliberate turn",
+      "blocks": {
+       "first": 6,
+       "last": 6
+      },
+      "feeling": "Unresolved inwardness"
+     }
+    ],
+    "approach": "Restrained handheld interior coverage, tight frames and dense rain-softened street backgrounds. Build a roughly 90-second reference assembly from sustained driving, listening and reactions, not extra events. Only Dinu is physically present. Recorded and live voices remain offscreen. Alternate spatially useful master and listener views where concern and instruction land, without implying a causal connection. The dashboard photograph is a static keepsake, never a living cutaway.",
+    "colour_script": [
+     {
+      "sequence": "S1",
+      "palette": "Cold blue, green and sodium orange",
+      "light": "Rain-filtered sodium street lamps, passing headlights and dim dashboard practicals",
+      "grade": "Naturalistic cool shadows with restrained orange highlights"
+     },
+     {
+      "sequence": "S2",
+      "palette": "Cold blue, green and sodium orange",
+      "light": "Rain-filtered sodium street lamps, passing headlights and dim dashboard practicals",
+      "grade": "Same continuous night exposure; slightly denser negative space"
+     },
+     {
+      "sequence": "S3",
+      "palette": "Cold blue, green and sodium orange",
+      "light": "Rain-filtered sodium street lamps, passing headlights and dim dashboard practicals",
+      "grade": "Maintain the established grade without a symbolic colour change"
+     }
+    ],
+    "geography": "All cameras stay inside the cash van on the passenger side of the driving axis. Dinu stays seated facing the windshield; dashboard and faded photograph lie ahead. Choose right-hand drive and the red thread on his left wrist, both hands normally on the wheel. A front oblique view, passenger-side profile and rear interior master preserve orientation. No other physical occupant is introduced.",
+    "key_image": "His eyes lower toward the red thread while rain-lit road reflections continue beyond the wheel.",
+    "advice": [
+     "Preserve L3 as a single uninterrupted recorded audio event and L5 as a single uninterrupted live-phone audio event; coverage is alternative or held listening material, not repeated messages.",
+     "Hold the photograph long enough to register a shared past but do not animate its figures or connect it to a new event.",
+     "Let the wrist glance precede the steering change; do not turn the thread into an explanation.",
+     "The bin supplies roughly 90 seconds of essential coverage because the scripted events alone occupy only 18 seconds; the assembly may breathe without adding business."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "A working cab and a private memory",
+     "purpose": "Establish the moving van and the dashboard bond.",
+     "shots": {
+      "first": 0,
+      "last": 1
+     }
+    },
+    {
+     "id": "S2",
+     "title": "Two kinds of pressure",
+     "purpose": "Contrast recorded personal concern with a live work instruction through the listener.",
+     "shots": {
+      "first": 2,
+      "last": 5
+     }
+    },
+    {
+     "id": "S3",
+     "title": "A glance and a new direction",
+     "purpose": "Make the wrist attention and subsequent route change readable without explanation.",
+     "shots": {
+      "first": 6,
+      "last": 6
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0
+     ],
+     "what": "Dinu drives steadily through wet sodium-lit Colombo.",
+     "feeling": "Contained, workaday isolation",
+     "cut_uses": "Rear interior master A establishes geography; passenger profile B sustains his concentration against the crowded street blur."
+    },
+    {
+     "n": 2,
+     "sequence": "S1",
+     "blocks": [
+      1
+     ],
+     "what": "The faded dashboard photograph registers inside the continuing journey.",
+     "feeling": "A quiet personal attachment",
+     "cut_uses": "Dashboard detail D is the sole essential photograph view, framed as a physical print rather than a flashback."
+    },
+    {
+     "n": 3,
+     "sequence": "S2",
+     "blocks": [
+      2
+     ],
+     "what": "Recorded playback enters the cab while Dinu continues driving.",
+     "feeling": "Attention begins to divide",
+     "cut_uses": "Oblique single C holds the listening onset without showing a device operation."
+    },
+    {
+     "n": 4,
+     "sequence": "S2",
+     "blocks": [
+      3
+     ],
+     "what": "L3 delivers the absence report and fear; Dinu absorbs it without an answer.",
+     "feeling": "Concern held inward",
+     "cut_uses": "Single C carries intact L3, profile reaction B holds its landing, and rear master A provides sustained listening context. These are one audio event's coverage, not repeated playback."
+    },
+    {
+     "n": 5,
+     "sequence": "S2",
+     "blocks": [
+      4
+     ],
+     "what": "The live connection interrupts the recorded-message space.",
+     "feeling": "Matter-of-fact intrusion",
+     "cut_uses": "Single C registers the incoming ring and the change in attention; no answering gesture is invented."
+    },
+    {
+     "n": 6,
+     "sequence": "S2",
+     "blocks": [
+      5
+     ],
+     "what": "L5 imposes the new destination while Dinu remains contained at the wheel.",
+     "feeling": "Pressure without explanation",
+     "cut_uses": "Single C carries intact L5; profile B and rear master A provide the held reception and its spatial context, without replaying the instruction."
+    },
+    {
+     "n": 7,
+     "sequence": "S3",
+     "blocks": [
+      6
+     ],
+     "what": "Dinu looks at the thread on his wrist, returns attention to the road and steers toward the industrial area.",
+     "feeling": "An unreadable decision",
+     "cut_uses": "Single C makes the glance readable, low passenger two-plane view E reveals the wrist within the same gesture, and master A completes the turn toward industrial frontage. Use overlapping glance views only once in the assembly."
+    }
+   ],
+   "editor_notes": [
+    "The 14 must takes total 90 seconds, including handles and overlapping coverage; this is raw material rather than a timed 90-second assembly. Shape the duration with the held driving and listening beats, not repeated story events.",
+    "Rear master A carries the cab geography and final turn; passenger profile B holds the message and instruction reactions; oblique single C carries the playback, live connection and gaze; low view E makes the wrist glance readable. Dashboard detail D is required by the script and remains a static faded print.",
+    "L3 and L5 are each laid in once, complete and uninterrupted, as offscreen audio. Render the silent listener sources without invented speech and add the recorded-message and live-phone treatments, incoming signal, rain, wipers and engine in post. No music is required.",
+    "Match the wrist glance across 2C-5 and 2E-1: both depict the same gesture, not two glances. Cut to 2A-4 only after the eyes return to the road; match both hands on the wheel and the thread on the left wrist. Match road direction, wiper phase and passing light across the cab angles.",
+    "Right-hand drive, the thread on the left wrist, and Dinu's plain charcoal work shirt are consistent staging choices where the packet does not specify those details. The dashboard photograph stays fixed; its pictured figures are not present as living characters.",
+    "Speed ramp, freeze frame, digital punch-in and split screen are post-only options, not generated camera actions; no speed manipulation is needed for this scene. Clean held sources permit a discretionary digital punch-in.",
+    "Avoid mirrors and reflected faces, detailed finger work, physical contact, invented phone handling or a newly shown caller. Keep any photographic figures static, and do not imply that the personal message caused the route instruction."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "Rear passenger-side eye level",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "A restrained vehicle-bound drift locates the driver inside a working cab rather than a chase.",
+    "take_s": 8,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Opening geography; maintain the forward road axis.",
+    "summary": "From behind the passenger position, Dinu drives steadily through rain-lit Colombo; engine, rain and wipers fill the cab.",
+    "id": "c01",
+    "slate": "2A-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 35mm, f/2.8",
+      "angle": "Rear passenger-side eye level",
+      "framing": "MWS of the seated driver, wheel, dashboard and rain-softened windshield",
+      "movement": "Restrained handheld drift within the rear passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Medium; distant traffic softened into dense points",
+      "lens_artifacts": "Soft windshield reflections, no reflected faces"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Keeps both hands on the wheel and maintains a steady course.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS on driver and windshield",
+       "director_line": "The cab holds steady against the moving city.",
+       "action": "Both hands rest on the wheel as road light slides across the dashboard.",
+       "performance": "His chin stays level and his eyes remain on the road."
+      },
+      {
+       "time": "1-7s",
+       "camera": "MWS with restrained handheld drift",
+       "director_line": "Rain compresses the city beyond his working space.",
+       "action": "He maintains a steady course while the wipers clear the windshield.",
+       "performance": "His shoulders stay low and his gaze tracks the road."
+      },
+      {
+       "time": "7-8s",
+       "camera": "MWS held on the same axis",
+       "director_line": "The journey continues without a punctuation.",
+       "action": "His hands hold their positions on the wheel.",
+       "performance": "His jaw stays relaxed and his eyes remain forward."
+      }
+     ],
+     "audio": "Rain on metal, regular wipers and a low engine bed.",
+     "first_frame": {
+      "composition": "Driver centred beyond the passenger-side foreground with the wet road filling the upper frame.",
+      "subjects": [
+       "Dinu seated facing forward, hands on the wheel."
+      ],
+      "setting": "Right-hand-drive cash van on a wet urban road at night.",
+      "lighting": "Dim dashboard light below passing sodium highlights."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and enclosed vehicle rumble",
+     "effects": "Wipers at a steady interval",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 1,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "Passenger-side profile at eye level",
+    "lens": "65mm",
+    "technique": "handheld",
+    "why": "The profile gives the opening journey a human duration without adding a new event.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Use after geography; no exaggerated steering or sudden traffic action.",
+    "summary": "A passenger-side profile holds Dinu's steady driving against dense wet street lights.",
+    "id": "c02",
+    "slate": "2B-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 65mm, f/2.8",
+      "angle": "Passenger-side profile at eye level",
+      "framing": "MCU of Dinu's profile and upper shoulders",
+      "movement": "Restrained handheld drift from the passenger seat",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Shallow; wet street lights form crowded soft points",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Keeps both hands on the wheel and maintains a steady course.",
+       "position": "Seated in the right-hand driver's seat, frame right facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on profile",
+       "director_line": "The profile isolates the routine of concentration.",
+       "action": "His head stays directed toward the windshield.",
+       "performance": "His lips remain closed and his brow stays smooth."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU with restrained handheld drift",
+       "director_line": "Moving light measures the length of the drive.",
+       "action": "He maintains a steady course while the wipers clear the windshield.",
+       "performance": "His gaze tracks the road with a small natural blink."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on profile",
+       "director_line": "The frame leaves him inside the same task.",
+       "action": "His posture remains unchanged.",
+       "performance": "His chin stays level and his lips remain closed."
+      }
+     ],
+     "audio": "Rain on metal, regular wipers and low engine rumble.",
+     "first_frame": {
+      "composition": "Dinu's profile at right with soft wet street lights behind.",
+      "subjects": [
+       "Dinu upright at the wheel, eyes forward."
+      ],
+      "setting": "Passenger view across the moving cash van.",
+      "lighting": "Green-blue dashboard fill and passing orange edges."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and enclosed vehicle rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "insert",
+    "setup": "D",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "Passenger-side downward oblique",
+    "lens": "85mm",
+    "technique": "handheld",
+    "why": "The physical print establishes the private bond without a flashback or an embodied visitor.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Essential scripted detail. The two figures are tiny static printed images, never live bodies; retain fade and paper texture.",
+    "summary": "A tight dashboard view holds the faded photograph of a couple beside a village bus stop while the van continues moving.",
+    "id": "c03",
+    "slate": "2D-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 85mm, f/4",
+      "angle": "Passenger-side downward oblique",
+      "framing": "INSERT of the faded dashboard photograph, including its paper edges and surrounding dashboard",
+      "movement": "Restrained handheld drift over the fixed dashboard detail",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Medium; whole print legible as an image, background soft",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT on the physical print",
+       "director_line": "A small piece of paper occupies the working dashboard.",
+       "action": "The faded photograph remains fixed on the dashboard.",
+       "performance": ""
+      },
+      {
+       "time": "1-5s",
+       "camera": "INSERT with restrained handheld drift",
+       "director_line": "Paper texture keeps the memory firmly in the present cab.",
+       "action": "The static print shows two small figures near a village bus stop as passing light moves over its faded surface.",
+       "performance": ""
+      },
+      {
+       "time": "5-6s",
+       "camera": "INSERT on the same print",
+       "director_line": "The keepsake remains among the vehicle's ordinary surfaces.",
+       "action": "The photograph remains fixed in place.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain, wipers and enclosed engine vibration.",
+     "first_frame": {
+      "composition": "Faded photograph fills the centre, its edges visibly resting on the dashboard.",
+      "subjects": [
+       "A static faded photographic print with two small figures beside a village bus stop."
+      ],
+      "setting": "Dashboard of the moving cash van.",
+      "lighting": "Dim dashboard spill and a soft sodium edge."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and engine rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "Recorded playback onset; L3 follows in moment 4.",
+    "size": "MCU",
+    "angle": "Front passenger-side oblique at eye level",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "A close listening onset brings recorded presence into the cab without inventing device handling.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Playback texture begins here; no extra vocal material. Dinu never reaches for a device.",
+    "summary": "Dinu's eyes remain on the road as recorded playback enters the cab; the camera is close and oblique from the passenger side.",
+    "id": "c04",
+    "slate": "2C-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 50mm, f/2.8",
+      "angle": "Front passenger-side oblique at eye level",
+      "framing": "MCU of Dinu with upper wheel edge low in frame",
+      "movement": "Restrained handheld drift at the front passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Shallow; dense wet city points behind him",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Listens while keeping both hands on the wheel.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on face",
+       "director_line": "The driver remains enclosed by his routine.",
+       "action": "He keeps his eyes on the road.",
+       "performance": "His lips remain closed and his chin stays level."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU with restrained handheld drift",
+       "director_line": "An unseen recording takes possession of the quiet cab.",
+       "action": "He listens without moving his hands from the wheel.",
+       "performance": "His brow draws slightly together while his eyes remain forward."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on face",
+       "director_line": "His attention stays divided without a visible interruption to driving.",
+       "action": "He maintains his forward posture.",
+       "performance": "His lips remain closed and his brow holds its slight crease."
+      }
+     ],
+     "audio": "Recorded playback onset over rain, wipers and engine; no additional vocal content.",
+     "first_frame": {
+      "composition": "Dinu centred above the lower edge of the wheel, wet city soft behind.",
+      "subjects": [
+       "Dinu upright at the wheel, lips closed."
+      ],
+      "setting": "Front passenger view of the moving cash van.",
+      "lighting": "Cool dashboard fill beneath passing sodium light."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and low engine rumble",
+     "effects": "Playback onset texture and regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "speaks": false,
+    "over": "L3, recorded message; complete and uninterrupted.",
+    "size": "MCU",
+    "angle": "Front passenger-side oblique at eye level",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "The intact recorded line belongs on Dinu's face, where his attention tightens while he drives.",
+    "take_s": 8,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "must",
+    "editor_note": "Lay the complete 6.4-second L3 over the central window; no lip movement and no repeated playback.",
+    "summary": "In a passenger-side single, Dinu drives and listens as L3 reports that Nimal has not returned and conveys fear.",
+    "id": "c05",
+    "slate": "2C-2",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 50mm, f/2.8",
+      "angle": "Front passenger-side oblique at eye level",
+      "framing": "MCU of Dinu with upper wheel edge low in frame",
+      "movement": "Restrained handheld drift at the front passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Shallow; dense wet city points behind him",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Listens while keeping both hands on the wheel.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "MCU on face",
+       "director_line": "A forward gaze anchors the recording in the moving cab.",
+       "action": "He keeps his eyes on the road and both hands on the wheel.",
+       "performance": "His lips remain closed and his face stays still."
+      },
+      {
+       "time": "0.8-7.2s",
+       "camera": "MCU with restrained handheld drift on face",
+       "director_line": "The recording gradually alters the shape of his attention.",
+       "action": "He listens through the complete recorded line while maintaining his course.",
+       "performance": "His brow gathers slowly and his jaw sets while his eyes stay forward."
+      },
+      {
+       "time": "7.2-8s",
+       "camera": "MCU on face",
+       "director_line": "The held expression leaves a space after the recording.",
+       "action": "He maintains his course.",
+       "performance": "His lips remain closed and his jaw stays set."
+      }
+     ],
+     "audio": "L3 as filtered recorded audio over rain, wipers and engine.",
+     "first_frame": {
+      "composition": "Dinu centred above the low wheel edge, wet city soft behind.",
+      "subjects": [
+       "Dinu upright at the wheel, lips closed."
+      ],
+      "setting": "Front passenger view of the moving cash van.",
+      "lighting": "Cool dashboard fill beneath passing sodium light."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and low engine rumble",
+     "effects": "Regular wipers; recorded playback texture",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "reaction",
+    "setup": "B",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "Silent held reaction after L3; do not repeat the recording.",
+    "size": "MCU",
+    "angle": "Passenger-side profile at eye level",
+    "lens": "65mm",
+    "technique": "handheld",
+    "why": "The profile holds the cost of the message after its final word rather than inventing an answer.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Post-line reaction, contiguous with the message; use rain and vehicle tone.",
+    "summary": "Dinu's profile remains at the wheel after L3 lands, his jaw set as wet lights slide behind him.",
+    "id": "c06",
+    "slate": "2B-2",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 65mm, f/2.8",
+      "angle": "Passenger-side profile at eye level",
+      "framing": "MCU of Dinu's profile and upper shoulders",
+      "movement": "Restrained handheld drift from the passenger seat",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Shallow; wet street lights form crowded soft points",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Maintains his course after the recorded line.",
+       "position": "Seated in the right-hand driver's seat, frame right facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on profile",
+       "director_line": "The profile catches the end of his listening.",
+       "action": "He keeps his gaze ahead.",
+       "performance": "His lips remain closed and his jaw stays set."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU with restrained handheld drift",
+       "director_line": "The road continues while the reaction remains private.",
+       "action": "He maintains his course with both hands on the wheel.",
+       "performance": "His brow remains gathered and he blinks once."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on profile",
+       "director_line": "The frame leaves the concern unresolved.",
+       "action": "His posture stays fixed toward the windshield.",
+       "performance": "His lips remain closed and his gaze returns to its steady track."
+      }
+     ],
+     "audio": "Rain, wipers and enclosed engine after the recording.",
+     "first_frame": {
+      "composition": "Dinu's profile at right with soft wet street lights behind.",
+      "subjects": [
+       "Dinu upright at the wheel, jaw set."
+      ],
+      "setting": "Passenger view across the moving cash van.",
+      "lighting": "Green-blue dashboard fill and passing orange edges."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and enclosed vehicle rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "Held driving context following L3; do not repeat the recording.",
+    "size": "MWS",
+    "angle": "Rear passenger-side eye level",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "The enclosed master lets the concern linger in the working space before the interruption.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "A held post-line beat, not a second playback.",
+    "summary": "From the rear of the cab, Dinu continues the journey after L3, alone with the wet road and engine.",
+    "id": "c07",
+    "slate": "2A-2",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 35mm, f/2.8",
+      "angle": "Rear passenger-side eye level",
+      "framing": "MWS of the seated driver, wheel, dashboard and rain-softened windshield",
+      "movement": "Restrained handheld drift within the rear passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Medium; distant traffic softened into dense points",
+      "lens_artifacts": "Soft windshield reflections, no reflected faces"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Maintains his course after the recorded line.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS on driver and windshield",
+       "director_line": "The cab settles back into the road's rhythm.",
+       "action": "Both hands remain on the wheel.",
+       "performance": "His head remains directed ahead."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MWS with restrained handheld drift",
+       "director_line": "The route continues inside a closed space.",
+       "action": "He maintains his course as the wipers clear the windshield.",
+       "performance": "His shoulders stay lowered and his gaze remains fixed ahead."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MWS on the same axis",
+       "director_line": "The working space remains undisturbed.",
+       "action": "His hands hold their positions.",
+       "performance": "His posture stays still."
+      }
+     ],
+     "audio": "Rain, wipers and engine after the recording.",
+     "first_frame": {
+      "composition": "Driver centred beyond passenger-side foreground, wet road above.",
+      "subjects": [
+       "Dinu seated facing forward, hands on the wheel."
+      ],
+      "setting": "Rear passenger view inside the moving cash van.",
+      "lighting": "Dim dashboard light below passing sodium highlights."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and enclosed vehicle rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "Incoming call signal; connection occurs offscreen.",
+    "size": "MCU",
+    "angle": "Front passenger-side oblique at eye level",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "The ring interrupts the held space without forcing a fabricated phone gesture.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Establish incoming contact in sound; no device or hand movement is required.",
+    "summary": "An incoming call interrupts the cab's rain and engine bed while Dinu remains focused on driving.",
+    "id": "c08",
+    "slate": "2C-3",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 50mm, f/2.8",
+      "angle": "Front passenger-side oblique at eye level",
+      "framing": "MCU of Dinu with upper wheel edge low in frame",
+      "movement": "Restrained handheld drift at the front passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Shallow; dense wet city points behind him",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Keeps both hands on the wheel as an incoming signal enters the cab.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on face",
+       "director_line": "The forward gaze continues in the quiet cab.",
+       "action": "He maintains his course.",
+       "performance": "His lips remain closed and his brow remains gathered."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU with restrained handheld drift",
+       "director_line": "A short incoming signal changes his attention.",
+       "action": "He listens while holding the wheel.",
+       "performance": "His eyes sharpen briefly and his chin stays level."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on face",
+       "director_line": "The interruption becomes part of the ongoing drive.",
+       "action": "He remains upright at the wheel.",
+       "performance": "His lips stay closed and his gaze stays forward."
+      }
+     ],
+     "audio": "Brief incoming-call signal, rain, wipers and engine.",
+     "first_frame": {
+      "composition": "Dinu centred above the low wheel edge, wet city soft behind.",
+      "subjects": [
+       "Dinu upright at the wheel, lips closed."
+      ],
+      "setting": "Front passenger view of the moving cash van.",
+      "lighting": "Cool dashboard fill beneath passing sodium light."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and low engine rumble",
+     "effects": "Brief incoming-call signal and regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     5
+    ],
+    "lines": [
+     "L5"
+    ],
+    "speaks": false,
+    "over": "L5, live phone audio; complete and uninterrupted.",
+    "size": "MCU",
+    "angle": "Front passenger-side oblique at eye level",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "The contained listener makes the new order feel intrusive without portraying the remote voice.",
+    "take_s": 6,
+    "handle_in_s": 0.9,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Lay the full 4.1-second L5 over 0.9–5 seconds; no visible lip movement.",
+    "summary": "Dinu listens at the wheel as L5 redirects him to the Old Port warehouse; the camera holds his passenger-side single.",
+    "id": "c09",
+    "slate": "2C-4",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 50mm, f/2.8",
+      "angle": "Front passenger-side oblique at eye level",
+      "framing": "MCU of Dinu with upper wheel edge low in frame",
+      "movement": "Restrained handheld drift at the front passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Shallow; dense wet city points behind him",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Listens while keeping both hands on the wheel.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.9s",
+       "camera": "MCU on face",
+       "director_line": "The driver receives the connection without leaving the road.",
+       "action": "He holds the wheel and faces forward.",
+       "performance": "His lips are closed and his jaw is set."
+      },
+      {
+       "time": "0.9-5s",
+       "camera": "MCU with restrained handheld drift on face",
+       "director_line": "The instruction presses into an otherwise ordinary drive.",
+       "action": "He listens through the complete phone line and maintains his course.",
+       "performance": "His eyes remain ahead and his jaw firms without his lips parting."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on face",
+       "director_line": "A beat remains after the instruction.",
+       "action": "He continues holding the wheel.",
+       "performance": "His lips stay closed and his eyes hold on the road."
+      }
+     ],
+     "audio": "L5 as live filtered phone audio over rain, wipers and engine.",
+     "first_frame": {
+      "composition": "Dinu centred above the low wheel edge, wet city soft behind.",
+      "subjects": [
+       "Dinu upright at the wheel, lips closed."
+      ],
+      "setting": "Front passenger view of the moving cash van.",
+      "lighting": "Cool dashboard fill beneath passing sodium light."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and low engine rumble",
+     "effects": "Live phone filtering and regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "reaction",
+    "setup": "B",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "Held reaction after L5; do not replay the instruction.",
+    "size": "MCU",
+    "angle": "Passenger-side profile at eye level",
+    "lens": "65mm",
+    "technique": "handheld",
+    "why": "The reaction gives the order its weight without adding a verbal response.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "After the instruction; keep his hands and driving continuous.",
+    "summary": "Dinu stays silent in profile after L5, looking ahead while his jaw remains firm.",
+    "id": "c10",
+    "slate": "2B-3",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 65mm, f/2.8",
+      "angle": "Passenger-side profile at eye level",
+      "framing": "MCU of Dinu's profile and upper shoulders",
+      "movement": "Restrained handheld drift from the passenger seat",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Shallow; wet street lights form crowded soft points",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Maintains his course after the phone line.",
+       "position": "Seated in the right-hand driver's seat, frame right facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on profile",
+       "director_line": "His still profile receives the final pressure of the instruction.",
+       "action": "He keeps his gaze ahead.",
+       "performance": "His lips remain closed and his jaw stays firm."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU with restrained handheld drift",
+       "director_line": "The cab gives the instruction room to settle.",
+       "action": "He maintains his course with both hands on the wheel.",
+       "performance": "His brow tightens slightly before his eyes settle forward."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on profile",
+       "director_line": "He remains at work with the order unresolved.",
+       "action": "His posture stays directed toward the windshield.",
+       "performance": "His lips remain closed and his jaw stays firm."
+      }
+     ],
+     "audio": "Rain, wipers and engine after the phone line.",
+     "first_frame": {
+      "composition": "Dinu's profile at right with soft wet street lights behind.",
+      "subjects": [
+       "Dinu upright at the wheel, jaw firm."
+      ],
+      "setting": "Passenger view across the moving cash van.",
+      "lighting": "Green-blue dashboard fill and passing orange edges."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and enclosed vehicle rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "Driving context after L5; do not replay the instruction.",
+    "size": "MWS",
+    "angle": "Rear passenger-side eye level",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "A restrained wide breath restores the cab geography before the wrist glance and route change.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Sustain the held road beat; do not initiate the turn yet.",
+    "summary": "From the rear passenger position, Dinu continues straight after the route instruction, with the wet windshield ahead.",
+    "id": "c11",
+    "slate": "2A-3",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 35mm, f/2.8",
+      "angle": "Rear passenger-side eye level",
+      "framing": "MWS of the seated driver, wheel, dashboard and rain-softened windshield",
+      "movement": "Restrained handheld drift within the rear passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Medium; distant traffic softened into dense points",
+      "lens_artifacts": "Soft windshield reflections, no reflected faces"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Maintains his course after the phone line.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS on driver and windshield",
+       "director_line": "The vehicle holds its path after the instruction.",
+       "action": "Both hands remain on the wheel.",
+       "performance": "His head remains directed ahead."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MWS with restrained handheld drift",
+       "director_line": "A stretch of road separates the instruction from the turn.",
+       "action": "He maintains his course as the wipers clear the windshield.",
+       "performance": "His shoulders stay lowered and his gaze stays ahead."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MWS on the same axis",
+       "director_line": "The frame leaves space for his next glance.",
+       "action": "His hands hold their positions.",
+       "performance": "His posture remains steady."
+      }
+     ],
+     "audio": "Rain, wipers and engine after the phone line.",
+     "first_frame": {
+      "composition": "Driver centred beyond passenger-side foreground, wet road above.",
+      "subjects": [
+       "Dinu seated facing forward, hands on the wheel."
+      ],
+      "setting": "Rear passenger view inside the moving cash van.",
+      "lighting": "Dim dashboard light below passing sodium highlights."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and enclosed vehicle rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "Front passenger-side oblique at eye level",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "The lowered gaze gives the thread a readable, private beat before any steering change.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Match the glance to setup E; use only one complete glance in the cut.",
+    "summary": "Dinu looks down toward the red thread on his left wrist, then returns his eyes to the road.",
+    "id": "c12",
+    "slate": "2C-5",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 50mm, f/2.8",
+      "angle": "Front passenger-side oblique at eye level",
+      "framing": "MCU of Dinu with upper wheel edge and left wrist low in frame",
+      "movement": "Restrained handheld drift at the front passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Medium; face and near wrist readable against soft street points",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Glances at the thread on his left wrist and returns his eyes to the road.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; both hands on the wheel, red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on face with left wrist low",
+       "director_line": "The driver stays oriented toward the road.",
+       "action": "Both hands remain on the wheel.",
+       "performance": "His lips stay closed and his eyes face forward."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU with restrained handheld drift on face and near wrist",
+       "director_line": "A small downward glance gives the thread its beat.",
+       "action": "He glances at the thread on his left wrist and returns his eyes to the road.",
+       "performance": "His eyes lower briefly to his wrist, then lift without his lips parting."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on face with left wrist low",
+       "director_line": "The gaze returns before the wheel changes direction.",
+       "action": "Both hands remain on the wheel.",
+       "performance": "His gaze settles on the road and his jaw stays firm."
+      }
+     ],
+     "audio": "Rain, wipers and steady engine.",
+     "first_frame": {
+      "composition": "Dinu centred above the wheel, left wrist and thread low in frame.",
+      "subjects": [
+       "Dinu facing forward, both hands on the wheel and thread on left wrist."
+      ],
+      "setting": "Front passenger view of the moving cash van.",
+      "lighting": "Cool dashboard fill beneath passing sodium light."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and low engine rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "Low passenger-side oblique toward face and wheel",
+    "lens": "35mm",
+    "technique": "foreground_framing",
+    "why": "The wheel and thread anchor the glance in the same physical driving space, enabling a motivated match.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Overlaps the single's identical glance; match left wrist placement and eye movement, never repeat the gesture.",
+    "summary": "From low beside the passenger seat, the red thread and Dinu's face share the frame as he looks down and back to the road.",
+    "id": "c13",
+    "slate": "2E-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 35mm, f/4",
+      "angle": "Low passenger-side oblique toward face and wheel",
+      "framing": "MS with wheel foreground, left wrist thread and Dinu's face visible together",
+      "movement": "Held handheld frame behind the wheel foreground",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Medium; wrist and face both readable, street softly layered",
+      "lens_artifacts": "None"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Glances at the thread on his left wrist and returns his eyes to the road.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; both hands on the wheel, red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS through wheel foreground on face and left wrist",
+       "director_line": "The wheel encloses his face and wrist in one frame.",
+       "action": "Both hands remain on the wheel.",
+       "performance": "His lips stay closed and his eyes face forward."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MS held through wheel foreground",
+       "director_line": "The thread and the returning gaze share the same physical space.",
+       "action": "He glances at the thread on his left wrist and returns his eyes to the road.",
+       "performance": "His eyes lower briefly to his wrist, then lift without his lips parting."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MS held through wheel foreground",
+       "director_line": "The wrist stays on the wheel as attention returns ahead.",
+       "action": "Both hands remain on the wheel.",
+       "performance": "His gaze settles on the road and his jaw stays firm."
+      }
+     ],
+     "audio": "Rain, wipers and steady engine.",
+     "first_frame": {
+      "composition": "Wheel foreground frames Dinu's face and left wrist with its red thread.",
+      "subjects": [
+       "Dinu facing forward, both hands on the wheel and thread on left wrist."
+      ],
+      "setting": "Low passenger-side view of the moving cash van.",
+      "lighting": "Cool dashboard fill beneath passing sodium light."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and low engine rumble",
+     "effects": "Regular wipers",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "Rear passenger-side eye level",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "The rear master makes the route change legible through wheel and road together, without suggesting a chase.",
+    "take_s": 8,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Follow the completed glance; match the red thread to the left wrist. Industrial frontage is seen through rain, not a new location or destination arrival.",
+    "summary": "From behind the passenger position, Dinu turns the wheel and steers toward the industrial area, the van continuing into rain-lit streets.",
+    "id": "c14",
+    "slate": "2A-4",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "braced handheld, 35mm, f/2.8",
+      "angle": "Rear passenger-side eye level",
+      "framing": "MWS of the seated driver, wheel, dashboard and rain-softened windshield",
+      "movement": "Restrained handheld drift within the rear passenger position",
+      "white_balance": "4300K mixed night practicals",
+      "color_tone": "Cold blue and green shadows with restrained sodium orange highlights",
+      "depth_of_field": "Medium; roadside frontage softened through the wet windshield",
+      "lens_artifacts": "Soft windshield reflections, no reflected faces"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Turns the wheel and steers toward the industrial area.",
+       "position": "Seated in the right-hand driver's seat, centre frame facing the windshield; both hands on the wheel, red thread around left wrist."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS on driver and windshield",
+       "director_line": "The forward gaze and wheel settle before the course changes.",
+       "action": "Both hands rest on the wheel.",
+       "performance": "His head stays directed toward the road."
+      },
+      {
+       "time": "1-7s",
+       "camera": "MWS with restrained handheld drift",
+       "director_line": "The steering change redirects the rain-lit view toward industrial frontage.",
+       "action": "He turns the wheel and steers toward the industrial area.",
+       "performance": "His shoulders follow the controlled steering movement and his gaze tracks the road ahead."
+      },
+      {
+       "time": "7-8s",
+       "camera": "MWS on driver and windshield",
+       "director_line": "The van continues on the new heading.",
+       "action": "He steadies the wheel on the new course.",
+       "performance": "His head remains facing forward and his posture settles."
+      }
+     ],
+     "audio": "Rain, wipers, low engine and a subtle change in road tone through the turn.",
+     "first_frame": {
+      "composition": "Driver centred beyond passenger-side foreground with wheel and wet road above.",
+      "subjects": [
+       "Dinu seated facing forward, hands on the wheel and red thread on left wrist."
+      ],
+      "setting": "Rear passenger view inside the moving cash van.",
+      "lighting": "Dim dashboard light below passing sodium highlights."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and enclosed vehicle rumble",
+     "effects": "Regular wipers and restrained road tone through the turn",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "insert",
+    "setup": "F",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "ECU",
+    "angle": "Low passenger-side detail across the wheel",
+    "lens": "100mm macro",
+    "technique": "shallow_isolation",
+    "why": "Isolates the faded thread and the resting left wrist from the existing two-plane coverage; gives the editor a tactile punctuation within the single glance, not another enactment of it.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Use within the existing glance once; do not repeat the downward look or the steering action.",
+    "summary": "From low on the passenger side, an extreme close-up holds the red thread on Dinu's left wrist while his left hand remains on the wheel. Engine and wet-road sound continue from the master.",
+    "id": "c15",
+    "slate": "2F-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "secured interior camera, 100mm macro, f/2.8",
+      "angle": "Low passenger-side detail across the wheel",
+      "framing": "ECU of red thread and left wrist with a narrow strip of wheel; face outside frame",
+      "movement": "Fixed shallow isolation on the thread throughout",
+      "white_balance": "4300K mixed sodium and dashboard light",
+      "color_tone": "Restrained amber highlights and green-blue shadows, naturalistic contrast",
+      "depth_of_field": "Shallow, road lights dissolve into soft discs",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Keeps his left hand on the wheel, with the red thread visible around his left wrist.",
+       "position": "Seated in the right-hand driver's seat facing the windshield; left wrist at the wheel, right hand remaining on the wheel outside frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "ECU fixed on left wrist and thread",
+       "director_line": "A narrow band of red separates skin from the dark wheel.",
+       "action": "Left hand rests on the wheel.",
+       "performance": "His fingers remain curved around the rim."
+      },
+      {
+       "time": "1-3s",
+       "camera": "ECU holds the same thread plane",
+       "director_line": "Passing amber light briefly reveals the thread's texture.",
+       "action": "The wrist remains at the wheel as moving light crosses it.",
+       "performance": "His grip stays steady without an additional gesture."
+      },
+      {
+       "time": "3-4s",
+       "camera": "ECU holds for the tail",
+       "director_line": "The thread settles back into the dashboard's cool light.",
+       "action": "The hand maintains its position.",
+       "performance": "His fingers hold the same relaxed curve."
+      }
+     ],
+     "audio": "No independent sound; use the anchored cab and road track.",
+     "first_frame": {
+      "composition": "Red thread crosses the centre of a tight left-wrist detail, wheel rim beneath it.",
+      "subjects": [
+       "Dinu's left wrist with red thread and left hand on the wheel"
+      ],
+      "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+      "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab."
+     }
+    },
+    "sound": {
+     "ambience": "None; use anchor track.",
+     "effects": "None.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c12",
+     "c13"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 4,
+    "role": "reaction",
+    "setup": "G",
+    "blocks": [
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "speaks": false,
+    "over": "L3",
+    "size": "ECU",
+    "angle": "Passenger-side front oblique, eye height",
+    "lens": "100mm",
+    "technique": "slow_creep",
+    "why": "The existing handheld profile and medium singles show listening; this near-still eye detail lets the personal message register through a tiny visible change rather than extra activity.",
+    "take_s": 8,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "should",
+    "editor_note": "Lay over the single continuous L3 track from c05; use all or part without restarting playback. Remain on the passenger side of the axis.",
+    "summary": "An extreme close-up slowly approaches Dinu's eyes as he absorbs the absence report and fear in L3. The recorded message remains offscreen, with the original cab audio underneath.",
+    "id": "c16",
+    "slate": "2G-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "short interior slider, 100mm, f/2.8",
+      "angle": "Passenger-side front oblique at eye height",
+      "framing": "ECU of eyes, brow and upper cheek; no reflected figures",
+      "movement": "One very slow three-centimetre creep toward the eyes",
+      "white_balance": "4300K mixed sodium and dashboard light",
+      "color_tone": "Restrained amber highlights and green-blue shadows, naturalistic contrast",
+      "depth_of_field": "Shallow, nearest eye sharp with soft far cheek and cab",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Keeps his eyes on the road, blinks once and draws his brow slightly together.",
+       "position": "Seated in the right-hand driver's seat, facing the windshield; both hands remain on the wheel outside frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "ECU begins its minimal creep toward the eyes",
+       "director_line": "Road light slips over eyes fixed ahead.",
+       "action": "He maintains his forward gaze.",
+       "performance": "His eyelids remain open and his brow stays level."
+      },
+      {
+       "time": "0.8-7.2s",
+       "camera": "ECU continues the same slow creep, focus on the nearest eye",
+       "director_line": "A single blink interrupts the steady roadward gaze before the brow tightens.",
+       "action": "He blinks once and slightly gathers his brow.",
+       "performance": "His eyes return immediately to the road while the brow holds its new crease."
+      },
+      {
+       "time": "7.2-8s",
+       "camera": "ECU completes the creep on the nearest eye",
+       "director_line": "The small crease remains after the changing light passes.",
+       "action": "He holds his gaze ahead.",
+       "performance": "His brow remains gathered without a head turn."
+      }
+     ],
+     "audio": "No independent sound; the continuous L3 and cab track come from c05.",
+     "first_frame": {
+      "composition": "Nearest eye just right of centre, brow above, far cheek soft at the right edge.",
+      "subjects": [
+       "Dinu's eyes and brow, directed toward the windshield"
+      ],
+      "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+      "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab."
+     }
+    },
+    "sound": {
+     "ambience": "None; use anchor track.",
+     "effects": "None.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c05",
+     "c06"
+    ],
+    "blend": "under_line"
+   },
+   {
+    "moment": 6,
+    "role": "insert",
+    "setup": "H",
+    "blocks": [
+     5
+    ],
+    "lines": [
+     "L5"
+    ],
+    "speaks": false,
+    "over": "L5",
+    "size": "INSERT",
+    "angle": "Passenger-side high oblique onto right hand and wheel",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Provides an object-scale counterpoint to the listener coverage during the route instruction, withholding facial interpretation and preserving the thread reveal for the next moment.",
+    "take_s": 6,
+    "handle_in_s": 0.9,
+    "handle_out_s": 0.9,
+    "priority": "should",
+    "editor_note": "Use under part or all of L5 from c09, before the route change. Frame out the left wrist and do not add a grip-tightening cue.",
+    "summary": "A passenger-side insert holds Dinu's right hand steady on the wheel during the destination instruction in L5. The instruction and moving-cab audio continue from c09.",
+    "id": "c17",
+    "slate": "2H-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "secured interior camera, 85mm, f/2.8",
+      "angle": "Passenger-side high oblique onto right hand and wheel",
+      "framing": "INSERT of right hand and a small arc of wheel, left wrist excluded",
+      "movement": "Locked-off throughout",
+      "white_balance": "4300K mixed sodium and dashboard light",
+      "color_tone": "Restrained amber highlights and green-blue shadows, naturalistic contrast",
+      "depth_of_field": "Shallow, right hand sharp against soft instrument light",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Maintains his right hand on the wheel without changing his grip.",
+       "position": "Seated in the right-hand driver's seat facing the windshield; right hand on the wheel in frame, left hand on the wheel outside frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.9s",
+       "camera": "INSERT fixed on right hand and wheel",
+       "director_line": "The hand and rim sit within a narrow pool of instrument light.",
+       "action": "His right hand holds the wheel.",
+       "performance": "His fingers retain an even curve."
+      },
+      {
+       "time": "0.9-5.1s",
+       "camera": "INSERT holds the right-hand plane unchanged",
+       "director_line": "Street light crosses the knuckles while the grip remains ordinary.",
+       "action": "He maintains the same hand position through the van's movement.",
+       "performance": "His fingers neither clench nor lift."
+      },
+      {
+       "time": "5.1-6s",
+       "camera": "INSERT holds for the tail",
+       "director_line": "The amber light leaves the hand in cooler light.",
+       "action": "His hand stays on the rim.",
+       "performance": "His grip remains unchanged."
+      }
+     ],
+     "audio": "No independent sound; the continuous L5 and cab track come from c09.",
+     "first_frame": {
+      "composition": "Right hand and wheel arc fill the lower centre; soft instrument light behind.",
+      "subjects": [
+       "Dinu's right hand resting around the wheel rim"
+      ],
+      "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+      "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab."
+     }
+    },
+    "sound": {
+     "ambience": "None; use anchor track.",
+     "effects": "None.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c09",
+     "c11"
+    ],
+    "blend": "under_line"
+   },
+   {
+    "moment": 5,
+    "role": "reaction",
+    "setup": "I",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "Passenger-side oblique below eye height",
+    "lens": "85mm",
+    "technique": "light_across_face",
+    "why": "Makes the interruption legible as a brief break in facial stillness rather than a device operation; the tighter lower-face view differs from the existing medium single.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Cut in at the incoming ring from c08 and return before L5. No device, reaching or answering action.",
+    "summary": "A tight passenger-side view of Dinu's cheek and closed mouth catches a brief lip press as the incoming ring sounds on c08's track. Passing street light crosses his face.",
+    "id": "c18",
+    "slate": "2I-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "secured interior camera, 85mm, f/2.8",
+      "angle": "Passenger-side oblique below eye height",
+      "framing": "CU of cheek, closed mouth and jaw, eyes near top edge",
+      "movement": "Fixed camera as passing street light travels across the face",
+      "white_balance": "4300K mixed sodium and dashboard light",
+      "color_tone": "Restrained amber highlights and green-blue shadows, naturalistic contrast",
+      "depth_of_field": "Shallow, cheek and mouth sharp against soft cab",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt.",
+       "action": "Briefly presses his closed lips together, then releases them while remaining forward-facing.",
+       "position": "Seated in the right-hand driver's seat facing the windshield; both hands remain on the wheel outside frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU fixed on cheek and closed mouth",
+       "director_line": "Cool dashboard light holds a still lower face.",
+       "action": "His lips remain closed.",
+       "performance": "His jaw rests without movement."
+      },
+      {
+       "time": "1-3s",
+       "camera": "CU unchanged as amber light crosses the cheek",
+       "director_line": "The ring coincides with one small press of the lips.",
+       "action": "He presses his lips together briefly and releases them.",
+       "performance": "His chin stays forward and his head does not turn."
+      },
+      {
+       "time": "3-4s",
+       "camera": "CU unchanged for the tail",
+       "director_line": "The passing light leaves his face still again.",
+       "action": "He maintains his forward-facing posture.",
+       "performance": "His closed mouth settles without a further gesture."
+      }
+     ],
+     "audio": "No independent sound; incoming ring and cab track from c08.",
+     "first_frame": {
+      "composition": "Cheek and closed mouth dominate the frame with eyes near the top edge.",
+      "subjects": [
+       "Dinu facing forward with lips closed"
+      ],
+      "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+      "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab."
+     }
+    },
+    "sound": {
+     "ambience": "None; use anchor track.",
+     "effects": "None.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c08"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 7,
+    "role": "pov",
+    "setup": "J",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "POV",
+    "angle": "Forward from passenger side through windshield",
+    "lens": "40mm",
+    "technique": "locked_off",
+    "why": "Lets the new direction remain onscreen after the gesture, replacing another face beat with the industrial frontage already established by the master.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Place after c14 completes the turn. Continue the same industrial frontage and travel direction; no destination arrival, signage emphasis or additional traffic event.",
+    "summary": "From inside the van on the passenger side, the camera holds the rain-softened road and industrial frontage after the turn. Engine and wet-road sound carry the scene out.",
+    "id": "c19",
+    "slate": "2J-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "secured interior camera, 40mm, f/4",
+      "angle": "Forward from passenger side through windshield",
+      "framing": "POV-like forward road view with a dark dashboard edge below and rain-softened industrial frontage beyond",
+      "movement": "Locked-off relative to the moving cab throughout",
+      "white_balance": "4300K mixed sodium and dashboard light",
+      "color_tone": "Restrained amber highlights and green-blue shadows, naturalistic contrast",
+      "depth_of_field": "Medium, frontage readable in shape through soft rain",
+      "lens_artifacts": "Soft practical bloom through wet glass"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "Forward POV holds industrial frontage beyond windshield",
+       "director_line": "The changed road continues beyond the dark dashboard edge.",
+       "action": "The van advances along the industrial frontage.",
+       "performance": ""
+      },
+      {
+       "time": "1-5s",
+       "camera": "Forward POV unchanged",
+       "director_line": "Wet reflections stretch ahead as the frontage slips toward the frame edges.",
+       "action": "Road reflections and building surfaces move past the moving van.",
+       "performance": ""
+      },
+      {
+       "time": "5-6s",
+       "camera": "Forward POV holds for the tail",
+       "director_line": "The road remains ahead without resolving into an arrival.",
+       "action": "The van continues forward.",
+       "performance": ""
+      }
+     ],
+     "audio": "Continuous engine, rain and wet-road bed from c14; no additional event.",
+     "first_frame": {
+      "composition": "Dark dashboard edge below, wet road central, industrial frontage soft beyond the windshield.",
+      "subjects": [],
+      "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+      "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous engine, rain and wet-road bed matched to c14.",
+     "effects": "None added.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c14"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 1,
+    "role": "atmosphere",
+    "setup": "K",
+    "blocks": [],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "Passenger-side forward view onto wet windshield",
+    "lens": "75mm",
+    "technique": "rack_focus",
+    "why": "Introduces the wet moving environment through optical depth before the spatial master, giving isolation a visual texture without adding an exterior camera or another driving angle.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Open briefly before c01 over its engine and road bed; no new street event or sharp background figures.",
+    "summary": "From the passenger side inside the van, focus shifts from windshield rain to soft sodium reflections on the road. The opening engine and rain bed leads into the rear interior master.",
+    "id": "c20",
+    "slate": "2K-1",
+    "ir": {
+     "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+     "cinematography": {
+      "camera": "secured interior camera, 75mm, f/2.8",
+      "angle": "Passenger-side forward view onto wet windshield",
+      "framing": "CU of rain on glass and sodium road reflections beyond, no people in frame",
+      "movement": "Fixed camera with one slow focus transfer from windshield droplets to the road beyond",
+      "white_balance": "4300K mixed sodium and dashboard light",
+      "color_tone": "Restrained amber highlights and green-blue shadows, naturalistic contrast",
+      "depth_of_field": "Shallow, droplets initially sharp then road reflections softly resolved",
+      "lens_artifacts": "Soft sodium bloom through wet glass"
+     },
+     "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU focused on windshield droplets",
+       "director_line": "Amber road lights dissolve behind the wet glass.",
+       "action": "Rain beads cling to the windshield as road light moves beyond.",
+       "performance": ""
+      },
+      {
+       "time": "1-3s",
+       "camera": "CU with one focus transfer toward road reflections",
+       "director_line": "The glass softens as the moving road emerges behind it.",
+       "action": "Focus travels from droplets to the wet roadway beyond.",
+       "performance": ""
+      },
+      {
+       "time": "3-4s",
+       "camera": "CU holds the road focus",
+       "director_line": "Sodium reflections stretch through the rain-softened forward view.",
+       "action": "The road continues moving beneath the van.",
+       "performance": ""
+      }
+     ],
+     "audio": "Engine, rain and wet-road bed matched to c01.",
+     "first_frame": {
+      "composition": "Windshield droplets sharp across frame with abstract amber road light beyond.",
+      "subjects": [],
+      "setting": "Inside a right-hand-drive cash van moving through rain-lit Colombo at night.",
+      "lighting": "Passing sodium lamps and headlights filter through rain, with dim green-blue dashboard practicals lighting the cab."
+     }
+    },
+    "sound": {
+     "ambience": "Engine, rain and wet-road bed matched to c01.",
+     "effects": "None added.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c01"
+    ],
+    "blend": "open"
+   }
+  ],
+  "line_ids": {
+   "L3": "E01-S02-B04",
+   "L5": "E01-S02-B06"
+  },
+  "editor_notes": [
+   "The 14 must takes total 90 seconds, including handles and overlapping coverage; this is raw material rather than a timed 90-second assembly. Shape the duration with the held driving and listening beats, not repeated story events.",
+   "Rear master A carries the cab geography and final turn; passenger profile B holds the message and instruction reactions; oblique single C carries the playback, live connection and gaze; low view E makes the wrist glance readable. Dashboard detail D is required by the script and remains a static faded print.",
+   "L3 and L5 are each laid in once, complete and uninterrupted, as offscreen audio. Render the silent listener sources without invented speech and add the recorded-message and live-phone treatments, incoming signal, rain, wipers and engine in post. No music is required.",
+   "Match the wrist glance across 2C-5 and 2E-1: both depict the same gesture, not two glances. Cut to 2A-4 only after the eyes return to the road; match both hands on the wheel and the thread on the left wrist. Match road direction, wiper phase and passing light across the cab angles.",
+   "Right-hand drive, the thread on the left wrist, and Dinu's plain charcoal work shirt are consistent staging choices where the packet does not specify those details. The dashboard photograph stays fixed; its pictured figures are not present as living characters.",
+   "Speed ramp, freeze frame, digital punch-in and split screen are post-only options, not generated camera actions; no speed manipulation is needed for this scene. Clean held sources permit a discretionary digital punch-in.",
+   "Avoid mirrors and reflected faces, detailed finger work, physical contact, invented phone handling or a newly shown caller. Keep any photographic figures static, and do not imply that the personal message caused the route instruction."
+  ],
+  "blend_notes": [
+   "c15 — Cut into the single wrist glance in moment 7 from c12 or c13 and return without repeating the gesture; continue Dinu's cab and road audio from the anchor.",
+   "c16 — Lay the eye detail over part of the single continuous L3 event in moment 4; retain Aruni's recorded voice and cab audio from c05 without restarting playback.",
+   "c17 — Lay the steady right-hand detail over part of L5 in moment 6; retain Mudalali's phone voice and cab audio from c09, then return to the listener.",
+   "c18 — Cut in on the ring during c08 in moment 5 and return before L5; retain the incoming ring and Dinu's cab audio from c08.",
+   "c19 — Hold the forward industrial-road view after c14 completes the turn in moment 7; continue Dinu's engine and wet-road audio from c14, with no voice added.",
+   "c20 — Open moment 1 on wet windshield and road light before c01; lead in with Dinu's engine and rain audio matched to c01, with no voice added."
+  ],
+  "review": [
+   {
+    "moment": 1,
+    "earns": true,
+    "why": "A brief interior rain-and-road focus shift introduces the isolation and the moving setting before the spatial master."
+   },
+   {
+    "moment": 2,
+    "earns": false,
+    "why": "The locked dashboard photograph insert already gives the keepsake its essential physical detail; another view would repeat it."
+   },
+   {
+    "moment": 3,
+    "earns": false,
+    "why": "The existing oblique single carries the playback onset cleanly, without inventing a device action or interrupting the developing attention."
+   },
+   {
+    "moment": 4,
+    "earns": true,
+    "why": "A close eye detail offers a restrained held reaction beneath the recorded message, distinct from the existing profile and master."
+   },
+   {
+    "moment": 5,
+    "earns": true,
+    "why": "A tight lower-face reaction marks the incoming ring without inventing a phone gesture."
+   },
+   {
+    "moment": 6,
+    "earns": true,
+    "why": "A steady wheel-grip insert offers a physical counterpoint beneath the instruction while preserving the next moment's thread emphasis."
+   },
+   {
+    "moment": 7,
+    "earns": true,
+    "why": "An isolated thread detail punctuates the single glance, and a forward view holds the changed direction without creating an arrival."
+   }
+  ],
+  "seconds": {
+   "target_s": 90.0,
+   "cap_s": 180.0,
+   "take_s": 122,
+   "must_s": 90,
+   "cinematic_s": 32
+  },
+  "left": [],
+  "report": {
+   "turns": {
+    "stage1": 4,
+    "stage2": 3
+   },
+   "calls": 7,
+   "log": [
+    "stage 1: finished after 4 turns",
+    "stage 2: finished after 3 turns"
+   ],
+   "model": "gpt-6.1-sol"
+  },
+  "previous": {}
+ }
+}

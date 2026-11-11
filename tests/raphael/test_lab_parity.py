@@ -34,6 +34,7 @@ ADDED_2026_11_08F = (
     "- COVERAGE (plan/2026-11-08f).",
     "- LONG ACTIONS (plan/2026-11-08f).",
     "- STATE (plan/2026-11-09).",
+    "- SUMMARY (plan/2026-11-11).",  # each clip's `summary`: the shot told as one person explains it to another
     *("- BREAKDOWN (plan/2026-11-10).",) * 3,  # the director's breakdown: three lines
     "- PHONE (plan/2026-11-10).",  # a name on a phone screen is welcome; phone close-ups are must clips
     *("- PACKET (plan/2026-11-11).",) * 5,  # the scene packet as the first message (contracts.raphael.packet)
@@ -53,11 +54,12 @@ def test_stage_1_prompt_is_the_labs_must_only_prompt_plus_the_length_lines_and_n
 def test_stage_2_prompt_is_the_labs_plus_the_variety_lines_and_nothing_else():
     lab, product = lab_text("cinematic"), product_text("raphael_cinematic")
     added = [line for line in product.splitlines() if line not in lab.splitlines()]
-    assert len(added) == 5 and added[0].startswith("- VARIETY (D-V).")
+    assert len(added) == 6 and added[0].startswith("- VARIETY (D-V).")
     assert added[1].startswith("- STATE (plan/2026-11-09).")
-    assert added[2].startswith("- BREAKDOWN (plan/2026-11-10).")  # one line: the breakdown's shots are in the bin
-    assert added[3].startswith("- PHONE (plan/2026-11-10).")  # the name on a phone screen
-    assert added[4].startswith("- SAFE DEPICTION (plan/2026-11-10b).")  # contracts.safe_depiction
+    assert added[2].startswith("- SUMMARY (plan/2026-11-11).")  # each clip's `summary`
+    assert added[3].startswith("- BREAKDOWN (plan/2026-11-10).")  # one line: the breakdown's shots are in the bin
+    assert added[4].startswith("- PHONE (plan/2026-11-10).")  # the name on a phone screen
+    assert added[5].startswith("- SAFE DEPICTION (plan/2026-11-10b).")  # contracts.safe_depiction
     assert [line for line in product.splitlines() if line not in added] == lab.splitlines()
 
 
@@ -72,6 +74,27 @@ def lab_schema():
         sys.path[:3] = []
 
 
+def with_summary(schema):
+    """The lab's schema plus the one field added on 2026-11-11: every clip's `summary`, a required string written
+    after `editor_note` (the only departure from the lab's clip; `contracts.raphael.wire.MenuW`)."""
+    if isinstance(schema, dict):
+        out = {k: with_summary(v) for k, v in schema.items()}
+        props = out.get("properties")
+        if isinstance(props, dict) and "editor_note" in props and "summary" not in props:
+            keys = list(props)
+            at = keys.index("editor_note") + 1
+            summary = {"summary": {"title": "Summary", "type": "string"}}
+            out["properties"] = {k: props[k] for k in keys[:at]} | summary | {k: props[k] for k in keys[at:]}
+            req = list(out.get("required") or [])
+            if "editor_note" in req:
+                req.insert(req.index("editor_note") + 1, "summary")
+            out["required"] = req
+        return out
+    if isinstance(schema, list):
+        return [with_summary(v) for v in schema]
+    return schema
+
+
 def test_the_schemas_the_tools_are_held_to_are_the_labs(lab_schema):
     """The same fields, order, types and closed lists. A class docstring is not part of it: the lab's schema carried
     one on
@@ -79,8 +102,8 @@ def test_the_schemas_the_tools_are_held_to_are_the_labs(lab_schema):
     plain = wire_schema._plain
 
     assert wire_schema.design_schema(EditPlanW, SCHEMA_EDIT) == plain(lab_schema.edit_schema())
-    assert wire_schema.design_schema(PutW, SCHEMA_PUT) == plain(lab_schema.put_schema())
-    assert wire_schema.design_schema(ExtrasW, SCHEMA_EXTRAS) == plain(lab_schema.extras_schema())
+    assert wire_schema.design_schema(PutW, SCHEMA_PUT) == with_summary(plain(lab_schema.put_schema()))
+    assert wire_schema.design_schema(ExtrasW, SCHEMA_EXTRAS) == with_summary(plain(lab_schema.extras_schema()))
 
 
 def test_the_tools_are_the_labs_by_name_and_by_description():
@@ -93,5 +116,6 @@ def test_the_tools_are_the_labs_by_name_and_by_description():
     mine = {t["function"]["name"]: t["function"] for t in wire_schema.stage1_specs()}
     assert list(lab) == list(mine)
     for name, spec in lab.items():
-        assert mine[name]["description"] == spec["description"] and mine[name]["parameters"] == spec["parameters"]
+        assert mine[name]["description"] == spec["description"]
+        assert mine[name]["parameters"] == with_summary(spec["parameters"])
         assert mine[name]["strict"] is True

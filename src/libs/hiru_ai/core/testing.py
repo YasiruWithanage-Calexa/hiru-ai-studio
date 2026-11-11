@@ -158,6 +158,8 @@ def no_real_models(monkeypatch: Any) -> None:
 
     monkeypatch.setenv("OPENAI__API_KEY", "")
     monkeypatch.setenv("AGENT_TOOLS", "")  # a developer's switch never changes what a test builds
+    monkeypatch.setenv("BREAKDOWN__ENABLED", "false")  # nor the scene breakdown's (plan/2026-11-11)
+    monkeypatch.setenv("RAPHAEL_PACKET", "false")
     get_settings.cache_clear()
 
 

@@ -45,6 +45,7 @@
         handle_out_s: 1
         priority: must
         editor_note: ""
+        summary: A still wide view of the bus stop in the rain; the man waits alone and nobody speaks.
         ir: { setting: A bus stop in the rain, lighting: Grey rain light, subjects: [], beats: [], first_frame: {} }
         sound: { ambience: Rain on the shelter, effects: "", music: "", silence: false }
         stage: 1
@@ -72,6 +73,7 @@
             handle_out_s: 1
             priority: nice
             editor_note: ""
+            summary: A close insert of the rain at the bus stop while the man waits; nobody speaks.
             ir: { setting: A bus stop in the rain, lighting: Grey rain light, subjects: [], beats: [], first_frame: {} }
             sound: { ambience: Rain on the shelter, effects: "", music: "", silence: false }
             anchor: [c01]
@@ -105,6 +107,7 @@
             handle_out_s: 1
             priority: nice
             editor_note: ""
+            summary: A close insert of the rain at the bus stop while the man waits; nobody speaks.
             ir: { setting: x, lighting: y, subjects: [], beats: [], first_frame: {} }
             sound: { ambience: "", effects: "", music: "", silence: false }
             anchor: [c01]

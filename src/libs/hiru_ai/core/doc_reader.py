@@ -70,7 +70,8 @@ def save(ctx: RunContext, text_path: str, reading: Reading) -> str:
     """Keep the reading beside the document's text. -> its path."""
     path = reading_path(text_path)
     files = ctx.need("files")
-    files.upload(BUCKET, path, reading.dumps().encode("utf-8"), "application/json")
+    # the documents bucket allows text/plain (the doc_ingest service saves it so): application/json is refused (415)
+    files.upload(BUCKET, path, reading.dumps().encode("utf-8"), "text/plain; charset=utf-8")
     return path
 
 

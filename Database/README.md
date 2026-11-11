@@ -9,7 +9,7 @@ automated tests.
 | File | What it is |
 |---|---|
 | `schema_v21.sql` | **The newest schema** (everything in v20 plus the scene breakdown, plan/2026-11-11: `source_memories`, `breakdown_memories`, `scene_packets`), whole. Run it once on an empty project. |
-| `upgrade_v20_to_v21.sql` | Moves a project on v20 to v21 (the three tables, RLS on, read policies). No backfill. Safe to re-run. **Not run yet, and not verified against a local stack: applying it is a person's decision.** |
+| `upgrade_v20_to_v21.sql` | Moves a project on v20 to v21 (the three tables, RLS on, read policies). No backfill. Safe to re-run. **Run on the hosted project by the person, 2026-11-11.** |
 | `schema_v19.sql` | **The newest schema** (everything in v18 plus Shot Planner Raphael, plan/2026-11-08e: `scenes.raphael`, `'raphael'` as a shot's planner, and the clip fields on `shots`: `role`, `priority`, `slate`, `handle_in_s`, `handle_out_s`, `stage`, `anchor`, `blend`), whole. Run it once on an empty project. |
 | `upgrade_v18_to_v19.sql` | Moves a project on v18 to v19 (the `scenes.raphael` column, the planner check made again, the eight clip columns with their checks). No backfill: every existing scene and shot keeps the defaults. Run once, only on such a project. Safe to re-run. **Not run yet, and not verified against a local stack: applying it is a person's decision.** |
 | `schema_v18.sql` | Kept for reference (the previous schema) (everything in v17 plus Sable, the production assistant chat, plan/2026-11-08: `chat_threads.chat` / `summary` / `summarised`, per-person read policies on `chat_threads` and `chat_messages`, and the admin-only `chat_turn_meta` table), whole. Run it once on an empty project. |
