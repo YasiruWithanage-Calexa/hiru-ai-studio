@@ -34,6 +34,9 @@ ADDED_2026_11_08F = (
     "- COVERAGE (plan/2026-11-08f).",
     "- LONG ACTIONS (plan/2026-11-08f).",
     "- STATE (plan/2026-11-09).",
+    *("- BREAKDOWN (plan/2026-11-10).",) * 3,  # the director's breakdown: three lines
+    "- PHONE (plan/2026-11-10).",  # a name on a phone screen is welcome; phone close-ups are must clips
+    "- SAFE DEPICTION (plan/2026-11-10b).",  # death and violence shown, never named (contracts.safe_depiction)
 )
 
 
@@ -49,8 +52,11 @@ def test_stage_1_prompt_is_the_labs_must_only_prompt_plus_the_length_lines_and_n
 def test_stage_2_prompt_is_the_labs_plus_the_variety_lines_and_nothing_else():
     lab, product = lab_text("cinematic"), product_text("raphael_cinematic")
     added = [line for line in product.splitlines() if line not in lab.splitlines()]
-    assert len(added) == 2 and added[0].startswith("- VARIETY (D-V).")
+    assert len(added) == 5 and added[0].startswith("- VARIETY (D-V).")
     assert added[1].startswith("- STATE (plan/2026-11-09).")
+    assert added[2].startswith("- BREAKDOWN (plan/2026-11-10).")  # one line: the breakdown's shots are in the bin
+    assert added[3].startswith("- PHONE (plan/2026-11-10).")  # the name on a phone screen
+    assert added[4].startswith("- SAFE DEPICTION (plan/2026-11-10b).")  # contracts.safe_depiction
     assert [line for line in product.splitlines() if line not in added] == lab.splitlines()
 
 

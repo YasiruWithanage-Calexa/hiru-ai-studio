@@ -32,6 +32,7 @@ import time
 
 import httpx
 
+from contracts.safe_depiction import REFUSAL_HINT
 from video_render.engine.transport import ProviderError, RefusedError
 from video_render.engine.transport import post_json as _post
 
@@ -170,7 +171,7 @@ def _refusal_text(said: str) -> str:
     """What the user is told. Their prompt, their problem to fix."""
     detail = f" ({said[:200]})" if said else ""
     return (f"The model declined to generate this{detail}. "
-            f"Try rewording the prompt or removing a reference picture.")
+            f"Try rewording the prompt or removing a reference picture. {REFUSAL_HINT}")  # hint: plan/2026-11-10b
 
 
 def wait(file_name: str, *, api_key: str, base_url: str, interval: float,

@@ -200,6 +200,60 @@ class SoundW(_Wire):
     silence: bool  # the clip asks for silence: Veo must be told, or it invents speech
 
 
+# ── the director's breakdown (plan/2026-11-10 §2) ───────────────────────────────────────────────
+
+ShotKind = Literal["story", "detail"]
+SHOT_KINDS: tuple[str, ...] = ("story", "detail")
+
+
+class DirectionW(_Wire):
+    """The look of the scene in four short lines."""
+
+    palette: str
+    camera: str
+    lens: str
+    sound: str
+
+
+class BreakdownShotW(_Wire):
+    """One shot of the director's breakdown: one action, the blocks and lines it sits on, what must be readable."""
+
+    n: int
+    blocks: list[int]  # the script blocks the shot sits on
+    lines: list[str]  # line ids (L7) said on this shot, never the words
+    kind: ShotKind  # story: carries the script; detail: an insert that earns its place
+    size: Size
+    lens: str
+    move: Technique  # Raphael's camera vocabulary
+    action: str  # ONE action
+    why: str
+    must_read: str  # what the audience must be able to read in the frame
+    about_s: float  # advisory: the `<length>` block and the checks decide
+    # the shot card (the person, 2026-11-10): what the planner, the editor and the person reading need per shot.
+    # All have defaults, so a breakdown stored before them still loads; the prompt asks for every one.
+    takes: list[int] = Field(default_factory=list)  # how it is shot: Veo takes of 4, 6 or 8 s, e.g. [8] or [6, 4]
+    mood: str = ""  # what the audience feels and the tension, in a few words
+    setting: str = ""  # where the shot is, the time, the weather
+    on_screen: list[str] = Field(default_factory=list)  # people the frame shows (never a voice-only person)
+    off_screen: list[str] = Field(default_factory=list)  # people heard or just out of frame
+    blocking: str = ""  # who is where, which way they face, where they look, the direction they move
+    performance: str = ""  # what the face and hands do, from the start of the shot to its end
+    props: str = ""  # what is held, worn, wet, lit or in the way (continuity)
+    light: str = ""  # the light on this shot, its sources
+    sound: str = ""  # what is heard on this shot
+    transition: str = ""  # how it comes in from the shot before and goes out to the next
+    priority: Literal["must", "optional"] = "must"  # optional: the first to go if the length asks for it
+
+
+class BreakdownW(_Wire):
+    """What `raphael_breakdown` writes: a director's shot breakdown of one scene, in English, lines by id."""
+
+    objective: str  # one sentence: what the scene must do
+    direction: DirectionW
+    shots: list[BreakdownShotW]
+    notes: list[str]  # director notes
+
+
 # ── the intended cut (§2) ────────────────────────────────────────────────────────────────────────
 
 

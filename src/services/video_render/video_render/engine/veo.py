@@ -29,6 +29,7 @@ from collections.abc import Callable
 
 import httpx
 
+from contracts.safe_depiction import REFUSAL_HINT
 from video_render.engine.transport import ProviderError, RefusedError, post_json
 
 _logger = logging.getLogger(__name__)
@@ -136,7 +137,8 @@ def video_uri(response: dict) -> str:
 def _refusal_text(said: str) -> str:
     """What the person is told. Their prompt or pictures, their problem to fix."""
     detail = f" ({said[:200]})" if said else ""
-    return f"The model declined to generate this{detail}. Try rewording the prompt or using a different picture."
+    return (f"The model declined to generate this{detail}. Try rewording the prompt or using a different picture. "
+            f"{REFUSAL_HINT}")  # the hint: plan/2026-11-10b
 
 
 def download(uri: str, *, api_key: str, attempts: int) -> bytes:

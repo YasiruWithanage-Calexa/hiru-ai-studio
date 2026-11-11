@@ -1,0 +1,23 @@
+# Raphael's models: which model answers each step, and how hard it thinks (reasoning effort).
+#
+# This is CONFIGURATION, not environment: it is the same on every machine and is changed here, in a commit, so a model
+# change is reviewed and travels with the code. Nothing in `.env` can override it (the old OPENAI__MODEL_RAPHAEL* and
+# OPENAI__EFFORT_RAPHAEL* variables are gone; a copy left in a .env is ignored).
+#
+# Each key is a tier of models.yaml, which keeps the rest of the tier (timeout, retries, Responses API). `model` is an
+# OpenAI model id and must have a price in contracts/raphael/money.py (a model with no price is refused before any call
+# is made). `effort` is the reasoning effort: low, medium or high.
+#
+#   raphael                   stage 1, the first turn: writes the intended cut and the clips
+#   raphael_repair            stage 1, every later turn: fixes the clips from the check report
+#   raphael_breakdown         the director's breakdown, one request before stage 1
+#   raphael_cinematic         stage 2, the first turn: adds the cinematic clips
+#   raphael_cinematic_repair  stage 2, every later turn
+#
+# gpt-5 shuts down on 2026-12-11.
+tiers:
+  raphael:                  { model: gpt-6.1-sol,   effort: medium }
+  raphael_repair:           { model: gpt-6.1-terra, effort: high }
+  raphael_breakdown:        { model: gpt-6.1-sol,   effort: medium }
+  raphael_cinematic:        { model: gpt-6.1-sol,   effort: medium }
+  raphael_cinematic_repair: { model: gpt-6.1-terra, effort: high }

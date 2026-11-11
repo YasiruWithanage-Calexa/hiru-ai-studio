@@ -44,6 +44,20 @@ the scene --> raphael_planner  (one conversation, <= 20 turns)
   interface shows seconds and counts, never money. A model with no price in that table is refused before any call.
 * Nothing is ever trimmed or reworded: a line too long for its take is reported with the way out (overlapping clips).
 
+## The director's breakdown (plan/2026-11-10)
+
+Before stage 1, ONE request with no tools (`agents/raphael/raphael_breakdown`, tier `raphael_breakdown`, the same model and
+effort as stage 1 by default) writes a director's shot breakdown of the scene: objective, direction, shots (one action
+each, the blocks and line ids they sit on, `story` or `detail`) and notes. Code checks it (`checks.breakdown_faults`); on
+faults it is asked once more with them listed, and if it still fails there is no breakdown, the job gets a warning and
+stage 1 runs exactly as before. Stage 1 gets it as `<breakdown>` after `<length>` (its shots, in order, are the intended cut
+and the must clips; a `detail` shot is a must clip too), stage 2 gets the shot list only. A breakdown shot with no must clip
+on its blocks is the report `breakdown:missing` (it never blocks `finish`). The call counts inside `RAPHAEL_SCENE_CAP_USD`.
+Stored in `scenes.raphael.breakdown` (JSON, no schema change); a re-plan with the same input hash reuses it, "More
+cinematic" reads it. Switch: `RAPHAEL_BREAKDOWN` (default true; false is Raphael as it was). The interface shows it as a
+read-only "Breakdown" table at the top of the Raphael tab. Open: D1 approval step, D2 report or block, D3 a stronger model,
+D4 shrinking stage 1's own edit plan.
+
 ## Where things live
 
 `src/libs/contracts/raphael/` (wire, bin, checks, tools, pack, money, stored, scene), `agents/raphael/`,

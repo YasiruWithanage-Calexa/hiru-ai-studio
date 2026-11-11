@@ -1,0 +1,19 @@
+id: raphael_breakdown
+kind: agent
+version: 1
+summary: "Raphael's first step: ONE request, no tools, writes a director's shot breakdown of the scene (objective, direction, shots with one action each, notes) that stage 1 then builds from."
+status: active
+owner: director
+model: raphael_breakdown
+timeout_s: 900
+shape: structured
+phase: raphael.breakdown
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+# plan/2026-11-10 §2: the same memory kinds as raphael_planner
+middleware: [static_first, usage, production_memory]
+memory: [camera, visual, lighting, performance]
+writes_dialogue: false

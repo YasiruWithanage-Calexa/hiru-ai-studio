@@ -10,6 +10,8 @@ Five rules this file keeps, each with a test:
   * ATTACHED == CITED. The citation block is built from the same list that becomes the payload.
   * LABELS ARE WORDS. A code, id, path or hash in a label is drawn by the model as on-screen lettering.
   * CHECKS REPORT, THEY NEVER EDIT. The prose and a person's list are never rewritten to fit.
+  * NO DEATH OR VIOLENCE WORDS IN THE DESCRIPTION. A listed word (`contracts.safe_depiction`) blocks the send before
+    anything is spent; one in a spoken line is advice only (plan/2026-11-10b).
   * A SEED IS RECORDED. Every take carries the seed it was sent with (when the engine takes one).
   * THE MODEL AND SIZE ARE THE PRODUCTION'S. Chosen when it is created, never by a shot or a press; a draft is always
     `DRAFT_ENGINE` at `DRAFT_RESOLUTION` (the person's decision, 2026-11-06).
@@ -27,6 +29,7 @@ from uuid import NAMESPACE_URL, UUID, uuid5
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from contracts import safe_depiction
 from contracts.producer import Check, Pins
 from contracts.veo import VEO_DURATIONS, FrameStrategy
 
@@ -631,6 +634,8 @@ def validate_render(spec: RenderSpec, *, seed_choice: SeedChoice | None = None, 
     out: list[Check] = []
     if not spec.prose.strip():
         out.append(_fail("There is no video prompt for this shot yet."))
+    # The prose only: a negative prompt that says "blood" is how a person keeps it OUT (plan/2026-11-10b).
+    out += [_fail(safe_depiction.video_label(f)) for f in safe_depiction.blocking(spec.prose)]
     if spec.aspect_ratio not in cap.aspects:
         out.append(_fail(f"{spec.aspect_ratio} is not available on {cap.label}; it renders {_or_list(cap.aspects)}."))
     if spec.resolution not in cap.resolutions:
@@ -700,7 +705,8 @@ def _named(prose: str, name: str) -> bool:
 
 def check_render(spec: RenderSpec, facts: RenderFacts) -> list[Check]:
     """Advisory checks on the bound request. Report only: the prose and the list are never edited to fit."""
-    out: list[Check] = []
+    out: list[Check] = [_advisory(safe_depiction.spoken_label(f)) for f in safe_depiction.scan(spec.prose)
+                        if f.spoken]
     plain = references_of(spec.references)
     bound: dict[UUID, int] = {}
     for i, b in enumerate(plain):

@@ -26,6 +26,7 @@ What comes in the user message, in this order: <production> (style, rules, the p
 - If <last_shot> is given, the first shot continues it: the same clothes, the same light, the same hands.
 - A story note or director's note in <scene> is an instruction from the story's owner: obey it. A person's removed additions must not come back.
 - If a plan needs more than the scene's envelope, still write it. Code reports it; it never trims.
+- SAFE DEPICTION (plan/2026-11-10b). Death, crime and injury are shown, never graphic, and the video model refuses the words for them. Write only what the camera sees: "lies still on the floor, eyes closed", "a white sheet over a shape", "a hand pressed to his side". Never write dead, corpse, death, blood, wound, stab, kill, murder or suicide in a description, not even negated ("no blood"): code stops a prompt that has them. Let reactions and what is left behind carry the moment. A spoken line is never changed.
 
 # A worked example
 

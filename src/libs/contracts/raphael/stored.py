@@ -11,7 +11,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from contracts.raphael.wire import DEFAULT_CAP, Clip, EditPlanW, LengthCap, ReviewRow
+from contracts.raphael.wire import DEFAULT_CAP, BreakdownW, Clip, EditPlanW, LengthCap, ReviewRow
 
 STORED_VERSION = 1
 
@@ -51,6 +51,8 @@ class StoredRaphael(_Model):
     stage2: Literal["finished", "stopped", "skipped", "none"] = "none"
     stopped: str = ""  # why a stage stopped early, in a sentence a person reads
     cap: LengthCap = DEFAULT_CAP  # the length cap used for this result (§2.1)
+    # plan/2026-11-10: the director's breakdown stage 1 built from; optional: STORED_VERSION stays 1, no schema change
+    breakdown: BreakdownW | None = None
     edit: EditPlanW | None = None
     clips: list[Clip] = []
     line_ids: dict[str, str] = {}  # the agent-facing id (L4) → the dialogue line's id

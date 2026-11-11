@@ -126,6 +126,10 @@ def _cases() -> dict[str, dict[str, dict[str, Any]]]:
                  "camera_overrides": {"0": {"framing": "Close-up", "lens": "85mm"}}}),
             "refused": case("The image model declines: reported, not raised",
                             {"frames": [0], "painter": {"refuse": True}}),
+            "safe_depiction": case(
+                "A description that names a death is stopped before the image model is paid (plan/2026-11-10b)",
+                {"frames": [0], "painter": {},
+                 "composition": {"0": "Kamala kneels beside her father's corpse, no blood on the floor"}}),
             "failed": case("The provider fails: a safe message, the job still finishes",
                            {"frames": [0], "painter": {"fail": True}}),
             "no_design": case("A shot with no design is reported", {"design": False, "frames": [0], "painter": {}}),

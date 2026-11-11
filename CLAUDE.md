@@ -200,6 +200,19 @@ or margin can leak through the network tab; **nothing stores a money figure**: a
 when the work was made, and prices are added with a `valid_from`, never edited; a model name is priced only if it is a listed
 name or a dated snapshot of it (a bare prefix once billed gpt-5.5 as gpt-5). Read `plan/2026-11-06d/IMPLEMENTED.md` first.
 
+## Safe depiction (plan/2026-11-10b)
+
+Death, crime and injury are SHOWN, never graphic, and never NAMED in a provider prompt: Veo, Omni and the image model
+decline "dead", "blood", "kill" even for a still, bloodless figure. `contracts/safe_depiction.py` holds the word list
+(`TERMS`), the scan, the messages and `PROMPT_LINE`. Rules that must not drift: **a listed word in the description blocks
+the request before anything is spent** (`validate_render` for video; both frame engines for first frames); **a word inside
+a quoted spoken line is advice only** and the line is never changed; **nothing is rewritten automatically**; the negative
+prompt is never scanned (it is how a person keeps blood OUT); **every agent that writes what a shot shows carries
+`PROMPT_LINE` word for word** (`tests/contracts/test_safe_depiction.py` lists them: add a new writer there); the longer
+guidance is `knowledge_bases/rules/sources/safe_depiction.md`. A word joins `TERMS` only after a real refusal and only if
+it has no common harmless use in a shot description ("shot", "body", "gun" stay out). Never add a way to disguise a refused
+picture. Read `plan/2026-11-10b/IMPLEMENTED.md`.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
 - A function under `src/services/<name>/` imports only its own package and `contracts`.

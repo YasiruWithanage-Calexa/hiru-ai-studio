@@ -36,3 +36,7 @@ that commit in the files below.
 8. **Checks on the frame.** `first_frames.checks`: an on-screen person painted without a sheet,
    and a vision model's look at the picture against the shot (`engine/inspect.py`,
    `OPENAI__MODEL_VISION`, "" = off). Advisory only; a failed look never fails the frame.
+9. **Safe depiction (plan/2026-11-10b).** A frame whose description names death or violence
+   (`contracts.safe_depiction.blocking`) is recorded `refused` with the words and a way out, and the
+   image model is never called; the graph's `frame_render` does the same. A provider's refusal
+   ends with `REFUSAL_HINT`.

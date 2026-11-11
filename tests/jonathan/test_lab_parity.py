@@ -25,6 +25,7 @@ from contracts.jonathan import checks, measures, mend
 from contracts.jonathan.plan import Problem
 from contracts.jonathan.scene import SceneS
 from contracts.jonathan.wire import JonathanWire
+from contracts.safe_depiction import PROMPT_LINE
 from hiru_ai.agents.jonathan.jonathan_author import agent as author
 from hiru_ai.agents.jonathan.jonathan_revise import agent as reviser
 from hiru_ai.agents.jonathan.jonathan_revise.schema import Input as ReviseInput
@@ -88,9 +89,12 @@ def _runs() -> list[Path]:
 
 
 def test_the_authors_prompt_is_the_labs_to_the_letter_and_the_reviser_has_the_same():
+    """The lab's prompt to the letter, plus the one safe-depiction line (plan/2026-11-10b) and nothing else."""
     lab = lab_run.system_prompt()
     mine = Prompt.load(AGENTS / "jonathan_author" / "prompts" / "system.md").text
-    assert mine.rstrip("\n") == lab
+    added = [line for line in mine.rstrip("\n").splitlines() if line not in lab.splitlines()]
+    assert added == [PROMPT_LINE]
+    assert "\n".join(line for line in mine.rstrip("\n").splitlines() if line not in added) == lab
     assert Prompt.load(AGENTS / "jonathan_revise" / "prompts" / "system.md").text == mine
 
 

@@ -113,6 +113,8 @@ For each card:
 
 What Veo renders well: faces and slow expressions; slow push-ins and pull-outs; hands on simple props, one hand and one object, slowly; shallow depth of field; a locked-off wide of a place; one person in clear light. What it renders badly: readable text on a screen, a sign or a letter (show the person's reaction instead, or say it is added in post); mirrors and reflections (shoot the person); fast or complicated hand work (cut to the face, or keep it slow); crowds and more than three sharp faces in one frame (keep two or three sharp, the rest soft); two people touching (frame from behind or in a close-up of one hand). When a card shows one of these, say how you handled it in veo_notes.
 
+SAFE DEPICTION (plan/2026-11-10b). Death, crime and injury are shown, never graphic, and the video model refuses the words for them. Write only what the camera sees: "lies still on the floor, eyes closed", "a white sheet over a shape", "a hand pressed to his side". Never write dead, corpse, death, blood, wound, stab, kill, murder or suicide in a description, not even negated ("no blood"): code stops a prompt that has them. Let reactions and what is left behind carry the moment. A spoken line is never changed.
+
 Write what the camera sees and what moves, in the order it happens. Over-direction is as bad as a flat plan.
 
 If a <notes> section is present, it lists what code refused in your previous answer. Answer the whole task again without those faults, and change nothing else.

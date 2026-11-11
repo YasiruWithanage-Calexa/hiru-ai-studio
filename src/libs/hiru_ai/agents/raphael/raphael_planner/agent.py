@@ -27,7 +27,11 @@ def user_message(inp: Input) -> str:
 
 def session(inp: Input) -> Stage1Session:
     return Stage1Session(
-        Brief(inp.scene, inp.guide_s), allowed=tuple(inp.allowed), max_turns=inp.max_turns, scene_no=inp.scene_no
+        Brief(inp.scene, inp.guide_s),
+        allowed=tuple(inp.allowed),
+        max_turns=inp.max_turns,
+        scene_no=inp.scene_no,
+        breakdown=inp.breakdown,
     )
 
 

@@ -1,0 +1,13 @@
+- name: two people at a gate
+  input:
+    opening: "<script>\nPresent: Kasun\nb0 action (2.0 s on screen): Kasun waits at the gate.\nb1 line [L1] Kasun (2 words, 1.1 s, shortest take 4 s): \"...\"\n</script>\n\n<length>\nThe scene is 8 s long.\n</length>"
+  reply:
+    objective: "Kasun waits, and the first word he says is the scene's turn."
+    direction: { palette: "wet grey", camera: "locked, patient", lens: "50 mm", sound: "rain, distant traffic" }
+    shots:
+      - { n: 1, blocks: [0], lines: [], kind: story, size: WIDE, lens: "28 mm", move: locked_off,
+          action: "Kasun stands at the gate.", why: "Place and waiting.", must_read: "He is alone.", about_s: 4 }
+      - { n: 2, blocks: [1], lines: [L1], kind: story, size: CU, lens: "85 mm", move: slow_creep,
+          action: "Kasun speaks.", why: "The line lands on him.", must_read: "His face.", about_s: 4 }
+    notes: [ "He does not raise his voice." ]
+  expect: { shots: [ { n: 1 }, { n: 2 } ] }

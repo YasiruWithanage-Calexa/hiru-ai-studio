@@ -14,6 +14,7 @@ from __future__ import annotations
 import base64
 from typing import Any
 
+from contracts.safe_depiction import REFUSAL_HINT
 from hiru_ai.core import llm
 from hiru_ai.core.ports import ImageFailed, ImageRefused, Picture, Reference
 from hiru_ai.core.settings import AISettings, get_settings
@@ -25,7 +26,7 @@ SIZE_FOR_ASPECT = {"16:9": "1536x1024", "9:16": "1024x1536"}
 _REFUSAL_CODES = {"moderation_blocked", "content_policy_violation", "safety_violation"}
 _REFUSAL_HINTS = ("safety", "moderation", "content policy", "not allowed")
 REFUSAL_TEXT = ("The image model declined to make this frame. Try changing the shot's description or its "
-                "reference images.")
+                f"reference images. {REFUSAL_HINT}")  # the hint: plan/2026-11-10b; the legacy engine says the same
 PHASE = "frame_render.image"  # the `token_usage.phase` the frame function records today
 
 

@@ -23,7 +23,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from langchain_core.messages import AIMessage
@@ -35,16 +35,18 @@ from contracts.raphael.money import CapReached, Meter, Unpriced, price_of
 from contracts.raphael.scene import BlockS, Brief, PlaceS, SceneS, mark_recorded, norm, plain_name, scene_dump
 from contracts.raphael.stored import Left, Seconds, StoredRaphael
 from contracts.raphael.tools import Stage1Session, Stage2Session
-from contracts.raphael.wire import DEFAULT_CAP, LENGTH_CAPS, Clip, ReviewRow
+from contracts.raphael.wire import DEFAULT_CAP, LENGTH_CAPS, BreakdownW, Clip, ReviewRow
 from contracts.stagemap import SceneStaging
 from hiru_ai.core import agents
 from hiru_ai.core.agents import Stop
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.models import resolve
 from hiru_ai.core.settings import get_settings
+from hiru_ai.core.usage import UsageRow
 
 _log = logging.getLogger(__name__)
 Row = dict[str, Any]
+BREAKDOWN_MAX_OUTPUT = 16_000  # charged for a breakdown call when no usage is reported
 NO_MODEL = "Shot Planner Raphael needs the AI model, which is not available. Use the classic planner for this scene."
 STOPPED = {
     "turns": "Raphael used all its turns before it finished.",
@@ -82,6 +84,7 @@ class Planned:
     stored: StoredRaphael
     log: list[str] = field(default_factory=list)
     ledger: Ledger = field(default_factory=Ledger)
+    warnings: list[str] = field(default_factory=list)  # plan/2026-11-10: a breakdown that failed twice, for the job
 
 
 # ── the scene, as Raphael is given it ────────────────────────────────────────────────────────────
@@ -182,6 +185,7 @@ class Planner:
         extra: str = "",
         allowed: tuple[str, ...] | None = None,
         meter: Meter | None = None,
+        use_breakdown: bool | None = None,
     ) -> None:
         self.ctx, self.scene, self.number, self.line_ids = ctx, scene, number, line_ids
         self.production, self.context, self.extra = production, context, extra
@@ -191,13 +195,17 @@ class Planner:
         # One scene's limit for both stages (plan/2026-11-08f §4): the setting, not the lab's $5.
         self.meter = meter or Meter(cap_usd=get_settings().raphael_scene_cap_usd)
         self.log: list[str] = []
+        self.warnings: list[str] = []
         self.turns = {"stage1": 0, "stage2": 0}
         self.model = ""
+        # plan/2026-11-10: the director's breakdown, `RAPHAEL_BREAKDOWN` (false: Raphael as it was before)
+        self.use_breakdown = get_settings().raphael_breakdown if use_breakdown is None else use_breakdown
+        self.breakdown: BreakdownW | None = None
 
     # the agents' input ────────────────────────────────────────────────────────────────────────
 
     def opening1(self) -> str:
-        return pack.opening_stage1(self.production, self.context, self.brief, self.extra)
+        return pack.opening_stage1(self.production, self.context, self.brief, self.extra, self.breakdown)
 
     def input_hash(self) -> str:
         """What Raphael was given, as a hash: a re-plan whose hash is unchanged keeps the stored result. The cap is
@@ -205,7 +213,12 @@ class Planner:
         it: another cap is another result. The scene's state map is part of it (plan/2026-11-09): a changed or a
         person's map plans again; a scene with no map hashes as it did before the map was added."""
         body = json.dumps(
-            {"pack": self.opening1(), "scene": scene_dump(self.scene), "cap": self.cap},
+            # the opening WITHOUT the breakdown: a re-plan of the same input keeps (and reuses) the stored breakdown
+            {
+                "pack": pack.opening_stage1(self.production, self.context, self.brief, self.extra),
+                "scene": scene_dump(self.scene),
+                "cap": self.cap,
+            },
             ensure_ascii=False,
             sort_keys=True,
         )
@@ -269,6 +282,70 @@ class Planner:
                 f"scene."
             ) from exc
 
+    # the director's breakdown (plan/2026-11-10) ───────────────────────────────────────────────
+
+    def ask_breakdown(self, faults: list[str]) -> BreakdownW:
+        """ONE request, no tools, under the run's meter. Raises `Unpriced` / `CapReached` before spending."""
+        agent = agents.build("raphael_breakdown")
+        tier = resolve(agent.manifest.model)
+        price_of(tier.model)
+        self.meter.guard()
+        seen: list[UsageRow] = []
+
+        def tee(row: UsageRow) -> None:
+            seen.append(row)
+            if self.ctx.usage_sink is not None:
+                self.ctx.usage_sink(row)
+
+        inp = {"opening": pack.scene_opening(self.production, self.context, self.brief, self.extra), "faults": faults}
+        out = agent.run(inp, replace(self.ctx, usage_sink=tee))
+        for row in seen:
+            model = str(row.get("model") or "")
+            try:
+                price_of(model)
+            except Unpriced:
+                model = tier.model
+            self.meter.charge(
+                model,
+                int(row.get("input_tokens") or 0),
+                int(row.get("cached_input_tokens") or 0),
+                int(row.get("output_tokens") or 0),
+            )
+        if not seen:  # no usage reported: entered at the worst case, like the conversations
+            self.meter.charge(tier.model, 0, 0, BREAKDOWN_MAX_OUTPUT)
+        return BreakdownW.model_validate(out.model_dump(mode="json"))
+
+    def make_breakdown(self, reuse: BreakdownW | None = None) -> None:
+        """The scene's breakdown: the stored one when the input is the same, else one request, one retry with the
+        faults listed, and when it still fails, none: stage 1 runs as it did before, and the job gets a warning."""
+        self.breakdown = None
+        if not self.use_breakdown:
+            return
+        if reuse is not None:
+            self.breakdown = reuse
+            self.log.append(f"breakdown: kept the stored one ({len(reuse.shots)} shots)")
+            return
+        faults: list[str] = []
+        why = ""
+        for attempt in (1, 2):
+            try:
+                made = self.ask_breakdown(faults)
+            except (CapReached, Unpriced) as exc:
+                why = str(exc)
+                break
+            except Exception as exc:  # a model that fails here must not stop the scene
+                _log.warning("raphael_breakdown failed", exc_info=True)
+                why = f"the request failed ({type(exc).__name__})"
+                continue
+            faults = checks.breakdown_faults(self.brief, made)
+            if not faults:
+                self.breakdown = made
+                self.log.append(f"breakdown: {len(made.shots)} shots (attempt {attempt})")
+                return
+            why = "it had faults: " + " ".join(faults[:3])
+        self.log.append(f"breakdown: none ({why})")
+        self.warnings.append(f"No director's breakdown for this scene, planned without it: {why}")
+
     # stage 1 ──────────────────────────────────────────────────────────────────────────────────
 
     def stage1(self) -> tuple[Stage1Session, agents.Conversation]:
@@ -279,6 +356,8 @@ class Planner:
             "guide_s": self.brief.guide_s,
             "scene_no": str(self.number),
         }
+        if self.breakdown is not None:
+            data["breakdown"] = self.breakdown.model_dump(mode="json")
         if self.allowed is not None:
             data["allowed"] = list(self.allowed)
         inp = agent.input_cls.model_validate(data)
@@ -294,7 +373,9 @@ class Planner:
         assert work.edit is not None
         agent = agents.build("raphael_cinematic")
         data: Row = {
-            "opening": pack.opening_stage2(self.production, self.context, self.brief, work, self.cap, self.extra),
+            "opening": pack.opening_stage2(
+                self.production, self.context, self.brief, work, self.cap, self.extra, self.breakdown
+            ),
             "scene": self.scene.model_dump(mode="json"),
             "guide_s": self.brief.guide_s,
             "scene_no": str(self.number),
@@ -367,6 +448,8 @@ class Planner:
             "log": list(self.log),
             "model": self.model,
         }
+        reported = {f.key for f in found}
+        found = [*found, *(f for f in checks.breakdown_missing(self.breakdown, work) if f.key not in reported)]
         stored = StoredRaphael(
             job_id=job_id,
             input_hash=self.input_hash(),
@@ -383,12 +466,17 @@ class Planner:
             seconds=self.seconds_of(work),
             left=self.left_of(found),
             report=report,
+            breakdown=self.breakdown,
             previous=previous,
         )
-        return Planned(stored, log=list(self.log))
+        return Planned(stored, log=list(self.log), warnings=list(self.warnings))
 
-    def plan(self, *, previous: Row, job_id: str, only_stage1: bool = False) -> Planned:
-        """The whole scene: stage 1, then (S5) stage 2 right after."""
+    def plan(
+        self, *, previous: Row, job_id: str, only_stage1: bool = False, reuse: BreakdownW | None = None
+    ) -> Planned:
+        """The whole scene: the director's breakdown, then stage 1, then (S5) stage 2 right after. `reuse` is the
+        stored breakdown of a scene whose input is unchanged."""
+        self.make_breakdown(reuse)
         run1, done1 = self.stage1()
         work = run1.work
         if not done1.ok:
@@ -492,6 +580,7 @@ class Planner:
             raise Failed(
                 "Stage 1 did not finish for this scene, so there is no must bin to add to. Plan the scene again."
             )
+        self.breakdown = stored.breakdown if self.use_breakdown else None  # "more cinematic" reads the stored one
         work = Bin(scene=str(self.number))
         work.edit = stored.edit
         work.clips = [c.model_copy(deep=True) for c in stored.musts()]

@@ -14,12 +14,15 @@ from hiru_ai.core.errors import ManifestError
 from hiru_ai.core.settings import AISettings, get_settings
 
 MODELS_YAML = Path(__file__).with_name("models.yaml")
+PINS_YAML = Path(__file__).with_name("raphael_models.yaml")  # the model and effort of the tiers that are fixed in code
 
 
 class TierSpec(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    model: str  # name of an OpenAISettings field holding the model id
+    # name of an OpenAISettings field holding the model id. "" = the tier's model and effort are FIXED in
+    # `raphael_models.yaml` (configuration, not environment); `load_models` refuses a tier that has neither.
+    model: str = ""
     effort: str = ""  # name of an OpenAISettings field holding the reasoning effort ("" = none)
     timeout_s: float = 120
     retries: int = Field(2, ge=0)
@@ -27,6 +30,28 @@ class TierSpec(BaseModel):
     # A conversation on this tier goes through the Responses API with `previous_response_id`, so a reasoning
     # model's reasoning carries from turn to turn (plan/2026-11-08f §5). Off: Chat Completions, as before.
     responses: bool = False
+
+
+EFFORTS: tuple[str, ...] = ("minimal", "low", "medium", "high")
+
+
+class Pin(BaseModel):
+    """One fixed tier: the OpenAI model id and the reasoning effort, as written in `raphael_models.yaml`."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    model: str = Field(min_length=1)
+    effort: str
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.effort not in EFFORTS:
+            raise ValueError(f"effort {self.effort!r} is not one of {', '.join(EFFORTS)}")
+
+
+class PinsFile(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    tiers: dict[str, Pin]
 
 
 class EmbedSpec(BaseModel):
@@ -96,7 +121,23 @@ def load_models(path: Path = MODELS_YAML, env: str | None = None) -> ModelsFile:
         for fb in spec.fallbacks:
             if fb not in file.tiers or fb == name:
                 raise ManifestError(f"{path}: tier {name!r} falls back to unknown tier {fb!r}")
+    if path == MODELS_YAML:  # a tier with no settings field must be fixed in the pins file, and only those
+        pins = load_pins()
+        fixed = {n for n, s in file.tiers.items() if not s.model}
+        for name in sorted(fixed - set(pins)):
+            raise ManifestError(f"{path}: tier {name!r} names no setting, so {PINS_YAML.name} must fix its model")
+        for name in sorted(set(pins) - fixed):
+            raise ManifestError(f"{PINS_YAML.name}: {name!r} is not a tier without a setting in models.yaml")
     return file
+
+
+@lru_cache
+def load_pins(path: Path = PINS_YAML) -> dict[str, Pin]:
+    """The tiers whose model and effort are fixed in the repository (`raphael_models.yaml`), not in the environment."""
+    try:
+        return PinsFile.model_validate(yaml.safe_load(path.read_text(encoding="utf-8"))).tiers
+    except (OSError, ValueError) as exc:
+        raise ManifestError(f"{path}: {exc}") from exc
 
 
 def tier_names() -> list[str]:
@@ -115,6 +156,12 @@ def resolve(name: str, settings: AISettings | None = None, models: ModelsFile | 
     if name not in models.tiers:
         raise ManifestError(f"unknown model tier {name!r}; known: {', '.join(models.tiers)}")
     spec = models.tiers[name]
+    if not spec.model:  # fixed in raphael_models.yaml: the environment cannot change it
+        pin = load_pins().get(name)
+        if pin is None:
+            raise ManifestError(f"tier {name!r} names no setting and {PINS_YAML.name} does not fix it")
+        return Tier(name=name, model=pin.model, effort=pin.effort, timeout_s=spec.timeout_s, retries=spec.retries,
+                    fallbacks=tuple(spec.fallbacks), responses=spec.responses)
     return Tier(name=name, model=str(_setting(settings, spec.model)),
                 effort=str(_setting(settings, spec.effort)) if spec.effort else "",
                 timeout_s=spec.timeout_s, retries=spec.retries, fallbacks=tuple(spec.fallbacks),

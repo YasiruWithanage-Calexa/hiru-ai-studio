@@ -16,6 +16,8 @@ import base64
 from dataclasses import dataclass
 from typing import Any
 
+from contracts.safe_depiction import REFUSAL_HINT
+
 # Veo 3.1 renders 16:9 and 9:16; these are the image model's nearest sizes. The frame is
 # handed to Flow, which fits it to the clip.
 SIZE_FOR_ASPECT = {"16:9": "1536x1024", "9:16": "1024x1536"}
@@ -58,7 +60,7 @@ def _refused(exc: Exception) -> bool:
 def refusal_text(exc: Exception | None = None) -> str:
     """What a person is told. Their prompt or references, their decision to change."""
     return ("The image model declined to make this frame. Try changing the shot's description or its "
-            "reference images.")
+            f"reference images. {REFUSAL_HINT}")  # the hint: plan/2026-11-10b; the graph's adapter says the same
 
 
 def generate(client: Any, *, model: str, quality: str, prompt: str, aspect_ratio: str,

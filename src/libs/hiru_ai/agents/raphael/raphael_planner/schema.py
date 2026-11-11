@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 
 from contracts.raphael.scene import SceneS
 from contracts.raphael.tools import STAGE1_TURNS
-from contracts.raphael.wire import TECHNIQUES
+from contracts.raphael.wire import TECHNIQUES, BreakdownW
 
 
 class Input(BaseModel):
@@ -22,6 +22,7 @@ class Input(BaseModel):
     scene_no: str = "1"  # the slate's scene number
     allowed: list[str] = Field(default_factory=lambda: list(TECHNIQUES))  # the production's visual language
     max_turns: int = STAGE1_TURNS  # R1, plan/2026-11-08f §4
+    breakdown: BreakdownW | None = None  # plan/2026-11-10: the director's breakdown (its checks read it)
 
 
 class Output(BaseModel):

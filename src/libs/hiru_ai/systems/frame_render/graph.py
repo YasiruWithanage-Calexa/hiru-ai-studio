@@ -33,6 +33,7 @@ from uuid import UUID
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
+from contracts import safe_depiction
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import DRAFT_LABEL, FrameStage, frame_stage
 from hiru_ai.core import agents, parts
@@ -175,6 +176,11 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
             return "failed"
     composed = _compose("compose", **world, shot=shot, labels=[r.label for r in pictures])
     prompt, pins = composed["prompt"], composed["pins"]
+    found = safe_depiction.blocking(prompt)
+    if found:  # stopped before the image model is paid (plan/2026-11-10b); the legacy pipeline does the same
+        frames.finish_frame(fid, {"status": "refused", "error": safe_depiction.frame_error(found), "prompt": prompt,
+                                  "pins": pins})
+        return "refused"
     aspect = parts.module("step", "frame_compose").production_aspect(scenes.production)
     try:
         picture = paint(prompt, aspect, pictures, draft=draft)

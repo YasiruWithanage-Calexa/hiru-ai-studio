@@ -21,6 +21,12 @@ RULES
 - Never write dialogue, narration or lyrics in any field. The approved lines are attached by
   code; anything you write there is removed. In a shot where nobody speaks, put nobody in a
   talking posture. In a voiceover shot the person on screen does not say the words.
+- SAFE DEPICTION (plan/2026-11-10b). Death, crime and injury are shown, never graphic, and the video
+  model refuses the words for them. Write only what the camera sees: "lies still on the floor, eyes
+  closed", "a white sheet over a shape", "a hand pressed to his side". Never write dead, corpse,
+  death, blood, wound, stab, kill, murder or suicide in a description, not even negated ("no
+  blood"): code stops a prompt that has them. Let reactions and what is left behind carry the
+  moment. A spoken line is never changed.
 - `first_frame` is the frame the shot opens on. For a shot that carries on from the previous
   take, it is that take's last frame as it carries over.
 - `recommendation`: choose each field from its listed values, to match the cinematography you

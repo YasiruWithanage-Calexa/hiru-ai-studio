@@ -160,17 +160,32 @@ def test_the_view_gives_each_shot_its_story_and_states_and_the_state_reports(wor
     rows = list(world.repos.shots.rows.values())  # type: ignore[attr-defined]
     for n, row in enumerate(rows):
         row["slate"] = f"1A-{n + 1}"
-        row["intent"] = {"by": "raphael", "story": "He gives it back.", "opens": "Kasun: phone in right hand",
-                         "ends": "Anudi: phone in left hand"} if n == 0 else {"by": "raphael"}
-    body = world.client.get(url(world, f"/scenes/{s['scene']['id']}/raphael"),
-                            headers=world.headers(world.reviewer)).json()
-    assert body["states"] == {"1A-1": {"story": "He gives it back.", "opens": "Kasun: phone in right hand",
-                                       "ends": "Anudi: phone in left hand"}}
+        row["intent"] = (
+            {
+                "by": "raphael",
+                "story": "He gives it back.",
+                "opens": "Kasun: phone in right hand",
+                "ends": "Anudi: phone in left hand",
+            }
+            if n == 0
+            else {"by": "raphael"}
+        )
+    body = world.client.get(
+        url(world, f"/scenes/{s['scene']['id']}/raphael"), headers=world.headers(world.reviewer)
+    ).json()
+    assert body["states"] == {
+        "1A-1": {
+            "story": "He gives it back.",
+            "opens": "Kasun: phone in right hand",
+            "ends": "Anudi: phone in left hand",
+        }
+    }
     assert [f["code"] for f in body["state_faults"]] == ["state"]
 
 
 def test_a_scene_with_no_state_map_has_no_states(world: World):
     s = raphael_scene(world)
-    body = world.client.get(url(world, f"/scenes/{s['scene']['id']}/raphael"),
-                            headers=world.headers(world.reviewer)).json()
+    body = world.client.get(
+        url(world, f"/scenes/{s['scene']['id']}/raphael"), headers=world.headers(world.reviewer)
+    ).json()
     assert body["states"] == {} and body["state_faults"] == []

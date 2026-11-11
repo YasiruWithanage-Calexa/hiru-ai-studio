@@ -38,3 +38,6 @@ lists what changed upstream since that commit in the files below.
 9. **No ffmpeg.** The stored take has `duration_s = null`; the API probes it when the take is first read (Phase 4).
 10. **Print → logging.** Provider text goes to the log only; a person reads the sentences in `render.py` and the
     providers' `_refusal_text`, which name no cost.
+11. **Safe depiction (plan/2026-11-10b).** A refusal's sentence ends with `contracts.safe_depiction.REFUSAL_HINT` (describe
+    what the camera sees; leave out words like dead, blood or kill), and `validate_render`, which this function re-runs
+    as its backstop, refuses a description that names death or violence before anything is sent.

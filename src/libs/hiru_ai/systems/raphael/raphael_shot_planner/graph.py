@@ -260,7 +260,11 @@ def build(
                 and any(s.get("planner") == "raphael" for s in shots)
             ):
                 return raphael.Unchanged(stored, ledger)  # same input, the result a person already saw
-            done = planner.plan(previous=previous, job_id=str(job_id))
+            done = planner.plan(
+                previous=previous,
+                job_id=str(job_id),
+                reuse=stored.breakdown if stored is not None and same else None,  # same input: the same breakdown
+            )
             done.ledger = ledger
             return done
         except raphael.Failed as failure:
@@ -308,6 +312,8 @@ def build(
                 failed.append({"scene_id": str(sc["id"]), "label": label, "reason": result})
                 jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {result}"}, agent=AGENT)
                 return
+            for warning in getattr(result, "warnings", []):  # plan/2026-11-10: a breakdown that could not be made
+                jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {warning}"}, agent=AGENT)
             if result.ledger.note:
                 jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {result.ledger.note}"}, agent=AGENT)
             made = result.ledger.staging is not None and result.ledger.made

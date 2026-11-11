@@ -2,6 +2,7 @@
 
     opening_stage1(...)   <production>, <scene>, <script>, <voice_only>, <length>, then "Plan this scene."
     opening_stage2(...)   the same, then <intended_cut>, <must_bin>, <looks>, <room>
+    breakdown_block(b)    the director's breakdown (plan/2026-11-10): after <length> in stage 1; its shots in stage 2
 
 The lab's messages (`lab/cinematic/pack.py`, `lab/raphael/agent.py`, `lab/raphael/stage2.py`), ported. Everything the
 agent
@@ -17,7 +18,7 @@ from typing import Any
 from contracts.raphael.bin import Bin
 from contracts.raphael.checks import PER_MOMENT_MAX, SHORT_SHARE, limit_s
 from contracts.raphael.scene import Brief, SceneS, heard_names, listing, long_actions, script_s
-from contracts.raphael.wire import STAGE1_CAP
+from contracts.raphael.wire import STAGE1_CAP, BreakdownW
 
 
 def _words(text: Any) -> str:
@@ -76,9 +77,9 @@ def voice_only(scene: SceneS) -> str:
     return (
         "<voice_only>\n"
         + ", ".join(names)
-        + ": heard and never seen. Never in subjects or first_frame, and never named in any clip's picture text, not "
-        "even "
-        "as the person someone listens to.\n</voice_only>"
+        + ": heard and never seen. Never in subjects or first_frame as a person, and never named in a clip's picture "
+        "text as the person someone listens to. The one exception: their NAME as text on a phone screen (a caller ID, "
+        "a message, a voicemail), which is welcome.\n</voice_only>"
     )
 
 
@@ -115,13 +116,119 @@ def length_block(brief: Brief) -> str:
     )
 
 
-def opening_stage1(production: dict[str, Any], context: dict[str, Any], brief: Brief, extra: str = "") -> str:
+def _shot_row(s: Any) -> str:
+    on = f"b{','.join(str(b) for b in s.blocks)}" + (f" lines {','.join(s.lines)}" if s.lines else "")
+    return f"{s.n}. [{s.kind}] {s.size}, {s.lens}, {s.move}, about {s.about_s:g} s, on {on}: {_words(s.action)}"
+
+
+CARD_FIELDS: tuple[tuple[str, str], ...] = (
+    ("mood", "Mood"),
+    ("setting", "Setting"),
+    ("blocking", "Blocking"),
+    ("performance", "Performance"),
+    ("props", "Props"),
+    ("light", "Light"),
+    ("sound", "Sound"),
+    ("transition", "Transition"),
+)
+
+
+def _card_tail(s: Any) -> str:
+    """The shot card's fields after the row, for stage 1 (empty ones are left out)."""
+    rows = [f" {label}: {_words(getattr(s, key))}." for key, label in CARD_FIELDS if str(getattr(s, key, "")).strip()]
+    if getattr(s, "on_screen", None):
+        rows.append(f" On screen: {', '.join(s.on_screen)}.")
+    if getattr(s, "off_screen", None):
+        rows.append(f" Off screen: {', '.join(s.off_screen)}.")
+    if getattr(s, "takes", None):
+        rows.append(f" Takes: {' + '.join(f'{n} s' for n in s.takes)}.")
+    if getattr(s, "priority", "must") != "must":
+        rows.append(f" Priority: {s.priority}.")
+    return "".join(rows)
+
+
+def shot_cards(b: BreakdownW, scene: SceneS) -> str:
+    """The breakdown as one card per shot for a person to read. The dialogue is looked up by id from the script by
+    code (the model never writes the words), so the card shows exactly what is said and who says it."""
+    out = [f"OBJECTIVE: {_words(b.objective)}", f"DIRECTION: {b.direction.model_dump()}", ""]
+    for s in b.shots:
+        said = []
+        for line in s.lines:
+            blk = scene.line_block(line)
+            if blk is None:
+                said.append(line)
+                continue
+            said.append(f'{line} {blk.speaker}: "{blk.text}"' + (f" ({blk.delivery})" if blk.delivery else ""))
+        script = " | ".join(_words(x.text) for x in scene.blocks if x.index in s.blocks and not x.line_id)
+        takes = " + ".join(f"{n} s" for n in s.takes) or "-"
+        out += [
+            f"SHOT {s.n}  [{s.kind}, {s.priority}]  {s.size}  {s.lens}  {s.move}  about {s.about_s:g} s  takes {takes}",
+            f"  script blocks : b{', b'.join(str(i) for i in s.blocks)}  {script}",
+            f"  dialogue      : {'; '.join(said) if said else '-'}",
+            f"  on screen     : {', '.join(s.on_screen) or '-'}   off screen: {', '.join(s.off_screen) or '-'}",
+            f"  action        : {_words(s.action)}",
+            f"  performance   : {_words(s.performance) or '-'}",
+            f"  blocking      : {_words(s.blocking) or '-'}",
+            f"  mood          : {_words(s.mood) or '-'}",
+            f"  setting       : {_words(s.setting) or '-'}",
+            f"  props         : {_words(s.props) or '-'}",
+            f"  light         : {_words(s.light) or '-'}",
+            f"  sound         : {_words(s.sound) or '-'}",
+            f"  transition    : {_words(s.transition) or '-'}",
+            f"  why / must read: {_words(s.why)} / {_words(s.must_read)}",
+            "",
+        ]
+    out += ["NOTES:"] + [f"  - {_words(n)}" for n in b.notes]
+    return "\n".join(out)
+
+
+def breakdown_block(b: BreakdownW | None, *, full: bool = True) -> str:
+    """The director's breakdown as a block (plan/2026-11-10 §4). `full` (stage 1) gives the objective, the direction,
+    the shots with why and what must read, and the notes; stage 2 gets the shot list only."""
+    if b is None or not b.shots:
+        return ""
+    if not full:
+        rows = "\n".join(_shot_row(s) for s in b.shots)
+        return f"<breakdown>\nThe director's shots, already in the bin:\n{rows}\n</breakdown>"
+    d = b.direction
+    shots = [
+        _shot_row(s)
+        + (f" Why: {_words(s.why)}" if s.why.strip() else "")
+        + (f" Must read: {_words(s.must_read)}" if s.must_read.strip() else "")
+        + _card_tail(s)
+        for s in b.shots
+    ]
+    notes = [f"- {_words(n)}" for n in b.notes if n.strip()]
+    parts = [
+        f"Objective: {_words(b.objective)}",
+        f"Direction: palette: {_words(d.palette)}; camera: {_words(d.camera)}; lens: {_words(d.lens)}; "
+        f"sound: {_words(d.sound)}",
+        "Shots:\n" + "\n".join(shots),
+        ("Director's notes:\n" + "\n".join(notes)) if notes else "",
+        "The seconds are advisory: <length> and the checks decide.",
+    ]
+    return "<breakdown>\n" + "\n".join(p for p in parts if p) + "\n</breakdown>"
+
+
+def scene_opening(production: dict[str, Any], context: dict[str, Any], brief: Brief, extra: str = "") -> str:
+    """What the director's breakdown request and stage 1 both get: the message, `<voice_only>` and `<length>`."""
+    return "\n\n".join(
+        p for p in (message(production, context, brief.scene, extra), voice_only(brief.scene), length_block(brief)) if p
+    )
+
+
+def opening_stage1(
+    production: dict[str, Any],
+    context: dict[str, Any],
+    brief: Brief,
+    extra: str = "",
+    breakdown: BreakdownW | None = None,
+) -> str:
     return "\n\n".join(
         p
         for p in (
-            message(production, context, brief.scene, extra),
-            voice_only(brief.scene),
-            length_block(brief),
+            scene_opening(production, context, brief, extra),
+            breakdown_block(breakdown),
             "Plan this scene. Start with the intended cut.",
         )
         if p
@@ -222,13 +329,20 @@ def room_block(brief: Brief, work: Bin, cap: float) -> str:
 
 
 def opening_stage2(
-    production: dict[str, Any], context: dict[str, Any], brief: Brief, work: Bin, cap: float, extra: str = ""
+    production: dict[str, Any],
+    context: dict[str, Any],
+    brief: Brief,
+    work: Bin,
+    cap: float,
+    extra: str = "",
+    breakdown: BreakdownW | None = None,
 ) -> str:
     return "\n\n".join(
         p
         for p in (
             message(production, context, brief.scene, extra),
             voice_only(brief.scene),
+            breakdown_block(breakdown, full=False),
             cut_block(work),
             "<must_bin>\nStage 1's finished bin: the must clips, LOCKED (you cannot change or remove them).\n"
             + must_table(work)

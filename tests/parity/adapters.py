@@ -303,6 +303,10 @@ def frame_render(inp: dict[str, Any], model: dict[str, Any], engine: str) -> dic
     shots = t.shots(store)
     for n, overrides in (inp.get("camera_overrides") or {}).items():
         shots[int(n)]["camera_overrides"] = overrides
+    for n, text in (inp.get("composition") or {}).items():  # the first frame's words, as a writer left them
+        ir = dict(shots[int(n)]["ir"])
+        ir["first_frame"] = {**(ir.get("first_frame") or {}), "composition": text}
+        shots[int(n)]["ir"] = ir
     store.unreadable.update(inp.get("unreadable", []))
     paint = None if inp.get("painter") is None else FakePainter(**inp["painter"])
     jobs = FakeJobs()

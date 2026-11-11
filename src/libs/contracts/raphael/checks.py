@@ -50,6 +50,7 @@ from contracts.raphael.wire import (
     STAGE1_CAP,
     TECHNIQUES,
     TRANSITION,
+    BreakdownW,
     Clip,
     ReviewRow,
 )
@@ -147,6 +148,19 @@ def _fault(
 def blocking(found: list[Fault]) -> list[Fault]:
     """The faults `finish` refuses to pass: everything but a report."""
     return [f for f in found if f.fix != "report"]
+
+
+# A name on a phone screen is welcome (plan/2026-11-10): the heard person's NAME as text, never their body. A text that
+# names them AND says it is on a screen (caller ID, message, voicemail, notification) is not a person in the picture.
+SCREEN_CUE = re.compile(
+    r"\b(screen|displays?|caller[- ]?id|notification|voicemail|message|handset|incoming call|ringtone)\b",
+    re.IGNORECASE,
+)
+
+
+def mentions_as_person(text: str, name: str) -> bool:
+    """`name` is in `text` as a person, not only as a name written on a phone screen."""
+    return mentions(text, name) and SCREEN_CUE.search(text) is None
 
 
 def mentions(text: str, name: str) -> bool:
@@ -591,7 +605,7 @@ def designs(scene: SceneS, work: Bin) -> list[Fault]:
             continue
         seen = [*strings_of(c.ir.get("subjects")), *strings_of(c.ir.get("first_frame"))]
         for who in heard:
-            if any(mentions(t, who) for t in seen):
+            if any(mentions_as_person(t, who) for t in seen):
                 out.append(
                     _fault(
                         "design",
@@ -679,7 +693,9 @@ def consistency(work: Bin) -> list[Fault]:
 # ── stage 1 ──────────────────────────────────────────────────────────────────────────────────────
 
 
-def check_stage1(brief: Brief, work: Bin, allowed: tuple[str, ...] = TECHNIQUES) -> list[Fault]:
+def check_stage1(
+    brief: Brief, work: Bin, allowed: tuple[str, ...] = TECHNIQUES, breakdown: BreakdownW | None = None
+) -> list[Fault]:
     scene = brief.scene
     return [
         *edit_plan(scene, work),
@@ -692,6 +708,7 @@ def check_stage1(brief: Brief, work: Bin, allowed: tuple[str, ...] = TECHNIQUES)
         *length(brief, work, STAGE1_CAP),
         *short(brief, work),
         *state(scene, work),  # plan/2026-11-09: the state ledger, report only (D2)
+        *breakdown_missing(breakdown, work),  # plan/2026-11-10: report only (D2)
     ]
 
 
@@ -829,7 +846,12 @@ def variety(work: Bin) -> list[Fault]:
     return out
 
 
-def check_stage2(brief: Brief, work: Bin, allowed: tuple[str, ...] = TECHNIQUES, cap: float = 2) -> list[Fault]:
+def check_stage2(
+    brief: Brief,
+    work: Bin,
+    allowed: tuple[str, ...] = TECHNIQUES,
+    cap: float = 2,
+) -> list[Fault]:
     """Stage 1's checks on the whole bin (the 1.5x length fault replaced by the chosen cap) plus the cinematic
     checks."""
     # The must clips are locked in stage 2, so stage 1's length rules (over 1.5x, under 80 %) are not its to meet.
@@ -1161,6 +1183,103 @@ def unplaced(scene: SceneS, work: Bin, ledger: hd.Ledger) -> list[Fault]:
                     "least one.",
                     fix="report",
                     key=f"state:unplaced:{key}",
+                )
+            )
+    return out
+
+
+# ── the director's breakdown (plan/2026-11-10 §3) ────────────────────────────────────────────────
+
+
+def breakdown_faults(brief: Brief, breakdown: BreakdownW) -> list[str]:
+    """What is wrong with a breakdown, one sentence each (it is sent back once; still failing, it is not used).
+
+    Every block is in a shot; shots follow the script's order; every line id exists and sits on exactly one `story`
+    shot; no voice-only person in an `action`; the seconds, added up, are within the floor and stage 1's cap."""
+    scene = brief.scene
+    out: list[str] = []
+    shots = breakdown.shots
+    if not shots:
+        return ["The breakdown has no shots."]
+    known = {b.index for b in scene.blocks}
+    numbers = [s.n for s in shots]
+    if len(set(numbers)) != len(numbers):
+        out.append("Two shots share a number: number the shots 1, 2, 3 ... in order.")
+    covered: set[int] = set()
+    for s in shots:
+        if not s.blocks:
+            out.append(f"Shot {s.n} names no script block: every shot sits on at least one block.")
+        for b in s.blocks:
+            if b not in known:
+                out.append(f"Shot {s.n} names block {b}, which the script does not have.")
+        covered.update(s.blocks)
+        if not s.action.strip():
+            out.append(f"Shot {s.n} has no action: one action per shot.")
+    missing = sorted(known - covered)
+    if missing:
+        out.append(f"Blocks {', '.join(f'b{b}' for b in missing)} are in no shot: every block is in at least one shot.")
+    firsts = [min(s.blocks) for s in shots if s.blocks]
+    if firsts != sorted(firsts):
+        out.append(
+            "The shots are out of the script's order: each shot starts at or after where the one before it starts."
+        )
+    placed: dict[str, list[int]] = {}
+    for s in shots:
+        for line in s.lines:
+            placed.setdefault(line, []).append(s.n)
+    for block in scene.lines:
+        line = block.line_id or ""
+        on = placed.get(line, [])
+        story = [s.n for s in shots if line in s.lines and s.kind == "story"]
+        if not on:
+            out.append(f"Line {line} is on no shot: put it on exactly one story shot.")
+        elif len(on) > 1 or len(story) != 1:
+            out.append(f"Line {line} must sit on exactly one story shot; it is on shot(s) {', '.join(map(str, on))}.")
+    for line in placed:
+        if scene.line_block(line) is None:
+            out.append(f"Line id {line} is not in the script: name lines only by the ids the script gives.")
+    for who in heard_names(scene):
+        for s in shots:
+            if mentions_as_person(s.action, who):
+                out.append(f"Shot {s.n}: {who} is only heard and never seen; leave them out of the action.")
+    for s in shots:
+        if s.move not in TECHNIQUES:
+            out.append(f"Shot {s.n}: `move` {s.move!r} is not in the camera vocabulary.")
+        if any(n not in (4, 6, 8) for n in s.takes):
+            out.append(f"Shot {s.n}: `takes` must be Veo takes of 4, 6 or 8 s, got {s.takes}.")
+        for who in heard_names(scene):
+            if any(mentions(p, who) for p in s.on_screen):
+                out.append(f"Shot {s.n}: {who} is only heard and never seen; use `off_screen`, not `on_screen`.")
+            for field in (s.performance, s.blocking, s.props):
+                if mentions_as_person(field, who):
+                    out.append(f"Shot {s.n}: {who} is only heard; keep them out of performance, blocking, props.")
+    if brief.guide_s:
+        total = sum(s.about_s for s in shots)
+        floor, cap = brief.guide_s * SHORT_SHARE, limit_s(brief, STAGE1_CAP)
+        if total + 1e-9 < floor or total - 1e-9 > cap:
+            out.append(
+                f"The shots add up to {total:g} s; they must come to between {floor:g} s and {cap:g} s "
+                f"(the scene is {brief.guide_s:g} s)."
+            )
+    return out
+
+
+def breakdown_missing(breakdown: BreakdownW | None, work: Bin) -> list[Fault]:
+    """A breakdown shot with no must clip on its blocks. A report: it never blocks `finish`."""
+    if breakdown is None:
+        return []
+    out: list[Fault] = []
+    for s in breakdown.shots:
+        mine = set(s.blocks)
+        if not any(not c.is_extra and mine & set(c.blocks) for c in work.clips):
+            out.append(
+                _fault(
+                    "breakdown",
+                    f"The director's shot {s.n} ({s.size}, {s.action.strip()[:80]}) has no must clip on its blocks "
+                    f"({', '.join(f'b{b}' for b in s.blocks)}): follow the breakdown, or say in the editor notes why "
+                    "not.",
+                    fix="report",
+                    key=f"breakdown:missing:{s.n}",
                 )
             )
     return out

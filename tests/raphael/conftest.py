@@ -15,4 +15,8 @@ from hiru_ai.core.testing import no_real_models
 @pytest.fixture(autouse=True)
 def _no_real_models(monkeypatch: Any) -> Iterator[None]:
     no_real_models(monkeypatch)
+    monkeypatch.setenv("RAPHAEL_BREAKDOWN", "false")  # plan/2026-11-10: a test that wants the breakdown asks for it
+    from hiru_ai.core.settings import get_settings
+
+    get_settings.cache_clear()
     yield

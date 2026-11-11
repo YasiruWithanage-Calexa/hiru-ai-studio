@@ -4,6 +4,7 @@ so a reasoning model's reasoning carries from one turn of a tool conversation to
 
 The real `ChatOpenAI` runs on an httpx mock transport: the requests are checked byte for byte, no socket is opened.
 """
+
 from __future__ import annotations
 
 import json
@@ -16,8 +17,14 @@ from hiru_ai.core import llm as door
 from hiru_ai.core.models import resolve
 from hiru_ai.core.settings import AISettings, OpenAISettings
 
-TOOL = {"type": "function", "function": {"name": "read_bin", "description": "Read the bin.",
-                                         "parameters": {"type": "object", "properties": {}, "required": []}}}
+TOOL = {
+    "type": "function",
+    "function": {
+        "name": "read_bin",
+        "description": "Read the bin.",
+        "parameters": {"type": "object", "properties": {}, "required": []},
+    },
+}
 
 
 def settings() -> AISettings:
@@ -26,12 +33,31 @@ def settings() -> AISettings:
 
 def response(n: int) -> dict[str, Any]:
     return {
-        "id": f"resp_{n}", "object": "response", "created_at": 1, "model": "gpt-5-2025-08-07", "status": "completed",
-        "output": [{"type": "function_call", "id": f"fc_{n}", "call_id": f"call_{n}", "name": "read_bin",
-                    "arguments": "{}", "status": "completed"}],
-        "parallel_tool_calls": True, "tool_choice": "required", "tools": [],
-        "usage": {"input_tokens": 1000, "output_tokens": 300, "total_tokens": 1300,
-                  "input_tokens_details": {"cached_tokens": 800}, "output_tokens_details": {"reasoning_tokens": 250}},
+        "id": f"resp_{n}",
+        "object": "response",
+        "created_at": 1,
+        "model": "gpt-5-2025-08-07",
+        "status": "completed",
+        "output": [
+            {
+                "type": "function_call",
+                "id": f"fc_{n}",
+                "call_id": f"call_{n}",
+                "name": "read_bin",
+                "arguments": "{}",
+                "status": "completed",
+            }
+        ],
+        "parallel_tool_calls": True,
+        "tool_choice": "required",
+        "tools": [],
+        "usage": {
+            "input_tokens": 1000,
+            "output_tokens": 300,
+            "total_tokens": 1300,
+            "input_tokens_details": {"cached_tokens": 800},
+            "output_tokens_details": {"reasoning_tokens": 250},
+        },
     }
 
 
@@ -51,7 +77,10 @@ class Wire:
 def test_raphaels_tiers_use_the_responses_api_and_the_others_do_not() -> None:
     for tier in ("raphael", "raphael_repair", "raphael_cinematic", "raphael_cinematic_repair"):
         t = resolve(tier, settings())
-        assert t.responses and (t.model, t.effort) == ("gpt-5", "high"), tier  # the lab's, until the cost lab
+        from hiru_ai.core.models import load_pins
+
+        pin = load_pins()[tier]  # the model and effort are fixed in raphael_models.yaml
+        assert t.responses and (t.model, t.effort) == (pin.model, pin.effort), tier
         assert t.fallbacks == ()
     assert not resolve("high", settings()).responses and not resolve("jonathan", settings()).responses
 
@@ -68,7 +97,9 @@ def test_the_second_turn_sends_previous_response_id_and_only_the_new_tool_result
 
     one, two = wire.body(0), wire.body(1)
     assert wire.requests[0].url.path.endswith("/responses")
-    assert one["reasoning"] == {"effort": "high"} and one["max_output_tokens"] == 48_000
+    from hiru_ai.core.models import load_pins
+
+    assert one["reasoning"] == {"effort": load_pins()["raphael"].effort} and one["max_output_tokens"] == 48_000
     assert "previous_response_id" not in one
     assert two["previous_response_id"] == "resp_1"
     # only what came after the last reply is sent: the tool's result, not the system prompt or the first message
@@ -79,7 +110,11 @@ def test_the_second_turn_sends_previous_response_id_and_only_the_new_tool_result
 
 def test_the_later_tier_answers_every_turn_after_the_first(monkeypatch: Any) -> None:
     """A repair turn at a lower effort: the first request says high, the second says low."""
-    monkeypatch.setenv("OPENAI__EFFORT_RAPHAEL_REPAIR", "low")
+    from hiru_ai.core import models
+
+    pins = models.load_pins()  # the models are fixed in raphael_models.yaml: the repair tier is set to low here
+    lower = pins["raphael_repair"].model_copy(update={"effort": "low"})
+    monkeypatch.setattr(models, "load_pins", lambda *a: {**pins, "raphael_repair": lower})
     monkeypatch.setenv("OPENAI__API_KEY", "sk-test")
     from hiru_ai.core.settings import get_settings
 
@@ -102,11 +137,15 @@ def test_the_later_tier_answers_every_turn_after_the_first(monkeypatch: Any) -> 
             return "Report: 1 blocking fault(s)."
 
         done = agent.converse(
-            {"opening": "Plan this scene.", "scene": {"blocks": []}}, tools=[TOOL], call_tool=call_tool,
-            finished=lambda: len(calls) >= 2, max_turns=3, later_tier="raphael_repair",
+            {"opening": "Plan this scene.", "scene": {"blocks": []}},
+            tools=[TOOL],
+            call_tool=call_tool,
+            finished=lambda: len(calls) >= 2,
+            max_turns=3,
+            later_tier="raphael_repair",
         )
     finally:
         get_settings.cache_clear()
     assert done.stopped == "finished" and done.turns == 2
-    assert wire.body(0)["reasoning"] == {"effort": "high"}
+    assert wire.body(0)["reasoning"] == {"effort": pins["raphael"].effort}
     assert wire.body(1)["reasoning"] == {"effort": "low"} and wire.body(1)["previous_response_id"] == "resp_1"

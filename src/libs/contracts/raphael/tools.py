@@ -29,6 +29,7 @@ from contracts.raphael.wire import (
     DEFAULT_CAP,
     STAGE1_CAP,
     TECHNIQUES,
+    BreakdownW,
     EditPlanW,
     ExtrasW,
     PutW,
@@ -59,8 +60,10 @@ class Stage1Session:
         allowed: tuple[str, ...] = TECHNIQUES,
         max_turns: int = STAGE1_TURNS,
         scene_no: str = "1",
+        breakdown: BreakdownW | None = None,
     ) -> None:
         self.brief, self.allowed, self.max_turns = brief, allowed, max_turns
+        self.breakdown = breakdown  # plan/2026-11-10: the director's breakdown, when there is one
         self.work = work if work is not None else Bin(scene=scene_no)
         self.editor_notes: list[str] = []
         self.done = False
@@ -94,7 +97,7 @@ class Stage1Session:
     # ── the checks this stage reads ──────────────────────────────────────────────────────────────
 
     def found(self) -> list[checks.Fault]:
-        return checks.check_stage1(self.brief, self.work, self.allowed)
+        return checks.check_stage1(self.brief, self.work, self.allowed, self.breakdown)
 
     def faults(self) -> list[checks.Fault]:
         """What is left now: a stopped run saves this beside its bin."""

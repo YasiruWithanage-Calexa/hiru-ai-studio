@@ -45,8 +45,9 @@ def body_scene() -> SceneS:
     return state.attach(scene, staging, scene.items(), BODY["codes"])
 
 
-def clip(cid: str, blocks: list[int], *subjects: dict[str, Any], beats: list[str] = (), moment: int = 1,
-         **extra: Any) -> Clip:
+def clip(
+    cid: str, blocks: list[int], *subjects: dict[str, Any], beats: list[str] = (), moment: int = 1, **extra: Any
+) -> Clip:
     """A must clip with a design: its subjects ({id, action, position}) and its beats' actions."""
     base = gold.stage1().by_id("c05")
     assert base is not None
@@ -54,8 +55,9 @@ def clip(cid: str, blocks: list[int], *subjects: dict[str, Any], beats: list[str
     ir["subjects"] = [{"description": "as written", **s} for s in subjects]
     ir["beats"] = [{"time": "0-1s", "camera": "", "director_line": "", "action": b, "performance": ""} for b in beats]
     ir["first_frame"] = {"composition": "", "subjects": [], "setting": "", "lighting": ""}
-    return base.model_copy(update={"id": cid, "blocks": blocks, "lines": [], "speaks": False, "moment": moment,
-                                   "ir": ir, **extra})
+    return base.model_copy(
+        update={"id": cid, "blocks": blocks, "lines": [], "speaks": False, "moment": moment, "ir": ir, **extra}
+    )
 
 
 def bin_of(*clips: Clip) -> Bin:
@@ -278,8 +280,15 @@ def test_a_handover_names_both_people_and_the_taking_hand():
     scene = gold.ledger_scene()
     vague = clip("c05", [8, 9], {"id": ANUDI, "action": "accepts the phone", "position": "facing C01"})
     assert "state:handover:c05:phone:9" in keys(scene, vague)
-    shown = clip("c05", [8, 9], {"id": ANUDI, "action": "takes the phone from C01's hand in her left hand",
-                                 "position": "facing C01, umbrella in right hand"})
+    shown = clip(
+        "c05",
+        [8, 9],
+        {
+            "id": ANUDI,
+            "action": "takes the phone from C01's hand in her left hand",
+            "position": "facing C01, umbrella in right hand",
+        },
+    )
     assert not any(k.startswith("state:handover") for k in keys(scene, shown))
 
 
@@ -289,8 +298,15 @@ def test_a_lying_dead_man_neither_stands_nor_breathes():
     assert "state:posture:c01:Nimal" in keys(scene, stands)
     breathes = clip("c01", [0], {"id": NIMAL, "action": "lies still; his chest rises", "position": "at the gate"})
     assert "state:condition:c01:Nimal" in keys(scene, breathes)
-    still = clip("c01", [0], {"id": NIMAL, "action": "lies still, not breathing, the key in his right hand",
-                              "position": "at the canal gate"})
+    still = clip(
+        "c01",
+        [0],
+        {
+            "id": NIMAL,
+            "action": "lies still, not breathing, the key in his right hand",
+            "position": "at the canal gate",
+        },
+    )
     assert keys(scene, still) == set()
 
 
@@ -298,8 +314,9 @@ def test_a_dead_person_who_speaks_is_a_fault():
     scene = body_scene().model_copy()
     blocks = [b.model_copy(update={"speaker": "Nimal"}) if b.line_id else b for b in scene.blocks]
     scene = scene.model_copy(update={"blocks": blocks})
-    talks = clip("c02", [1], {"id": NIMAL, "action": "lies still", "position": "at the canal gate"},
-                 lines=["L1"], speaks=True)
+    talks = clip(
+        "c02", [1], {"id": NIMAL, "action": "lies still", "position": "at the canal gate"}, lines=["L1"], speaks=True
+    )
     assert "state:condition:c02:Nimal" in keys(scene, talks)
 
 
@@ -345,10 +362,15 @@ def test_every_state_fault_is_a_report_that_never_blocks_finish():
 
 def written(w: World) -> dict[str, Any]:
     stored = world.stored_stage1(w)
-    return parts.step("raphael_write", "step").run({
-        "scene": w.row(), "lines": w.line_rows, "stored": stored.data(), "canon": w.scenes.canon_rows,
-        "production": w.scenes.production_row if hasattr(w.scenes, "production_row") else {"id": w.production},
-    })
+    return parts.step("raphael_write", "step").run(
+        {
+            "scene": w.row(),
+            "lines": w.line_rows,
+            "stored": stored.data(),
+            "canon": w.scenes.canon_rows,
+            "production": w.scenes.production_row if hasattr(w.scenes, "production_row") else {"id": w.production},
+        }
+    )
 
 
 def test_the_shot_carries_its_story_feeling_and_the_state_it_opens_and_ends_in():
@@ -378,18 +400,28 @@ def test_the_stamp_of_an_intent_without_the_ledger_is_unchanged():
 
 def prompt_of(w: World, shots: list[dict[str, Any]], lines: list[dict[str, Any]], slate: str) -> str:
     shot = next(s for s in shots if s["slate"] == slate)
-    out = parts.step("serialize", "step").run({
-        "production": {"id": w.production, "settings": {}}, "persona": None, "canon": w.scenes.canon_rows,
-        "scene": w.row(), "shots": shots, "lines": lines, "shot_number": shot["number"], "ir": shot["ir"],
-        "has_frame": False})
+    out = parts.step("serialize", "step").run(
+        {
+            "production": {"id": w.production, "settings": {}},
+            "persona": None,
+            "canon": w.scenes.canon_rows,
+            "scene": w.row(),
+            "shots": shots,
+            "lines": lines,
+            "shot_number": shot["number"],
+            "ir": shot["ir"],
+            "has_frame": False,
+        }
+    )
     return " ".join(seg.get("text") or seg.get("sinhala") or "" for s in out["sections"] for seg in s["segments"])
 
 
 def test_the_veo_prompt_of_a_raphael_shot_carries_position_opens_ends_and_story():
     w = World()
     out = written(w)
-    text = prompt_of(w, out["shots"], out["lines"], next(s["slate"] for s in out["shots"]
-                                                           if (s["intent"] or {}).get("opens")))
+    text = prompt_of(
+        w, out["shots"], out["lines"], next(s["slate"] for s in out["shots"] if (s["intent"] or {}).get("opens"))
+    )
     assert "As the clip opens: " in text and "By the end of the clip: " in text
     assert "What happens in this clip: " in text
 
@@ -419,6 +451,7 @@ def test_the_first_frame_opens_in_the_same_state():
 def test_both_agents_read_the_productions_direction():
     for agent in ("raphael_planner", "raphael_cinematic"):
         manifest = yaml.safe_load(
-            (PACKAGE_ROOT / "agents" / "raphael" / agent / "component.yaml").read_text(encoding="utf-8"))
+            (PACKAGE_ROOT / "agents" / "raphael" / agent / "component.yaml").read_text(encoding="utf-8")
+        )
         assert "production_memory" in manifest["middleware"]
         assert manifest["memory"] == ["camera", "visual", "lighting", "performance"]

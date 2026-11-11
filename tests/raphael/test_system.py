@@ -168,8 +168,12 @@ def test_the_turn_cap_ends_a_conversation_that_does_not_finish() -> None:
 
 
 def test_a_model_with_no_price_is_refused_before_any_call(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("OPENAI__MODEL_RAPHAEL", "gpt-unknown")
+    from hiru_ai.core import models
     from hiru_ai.core.settings import get_settings
+
+    pins = models.load_pins()  # the models are fixed in raphael_models.yaml; the first tier is unpriced here
+    unpriced = pins["raphael"].model_copy(update={"model": "gpt-unknown"})
+    monkeypatch.setattr(models, "load_pins", lambda *a: {**pins, "raphael": unpriced})
 
     get_settings.cache_clear()
     try:

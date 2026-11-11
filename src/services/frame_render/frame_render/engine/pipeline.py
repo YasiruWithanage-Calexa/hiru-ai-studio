@@ -31,7 +31,7 @@ from datetime import UTC, datetime
 from typing import Any, Protocol
 from uuid import UUID
 
-from contracts import sceneplan
+from contracts import safe_depiction, sceneplan
 from contracts.canon import (
     SHEET_ASPECT,
     CanonCard,
@@ -286,6 +286,11 @@ def render_frame(job: FrameJob, frame: Row, paint: Painter | None, inspect: Insp
             job.store.finish_frame(fid, {"status": "failed", "error": NO_DRAFT})
             return "failed"
     prompt, pins = job.compose(shot, [r.label for r in pictures])
+    found = safe_depiction.blocking(prompt)
+    if found:  # stopped before the image model is paid (plan/2026-11-10b); the graph's frame_render does the same
+        job.store.finish_frame(fid, {"status": "refused", "error": safe_depiction.frame_error(found), "prompt": prompt,
+                                     "pins": pins})
+        return "refused"
     try:
         picture = paint(prompt, job.aspect, pictures, draft=draft)
     except RefusedError as exc:

@@ -39,8 +39,14 @@ def clip_over_long(work: Bin, n: int, *, take: int = 8, handle: float = 1.0) -> 
     base = work.by_id("c01")
     assert base is not None
     return base.model_copy(
-        update={"id": f"w{n}", "blocks": [LONG], "lines": [], "take_s": take, "handle_in_s": handle,
-                "handle_out_s": handle}
+        update={
+            "id": f"w{n}",
+            "blocks": [LONG],
+            "lines": [],
+            "take_s": take,
+            "handle_in_s": handle,
+            "handle_out_s": handle,
+        }
     )
 
 
@@ -132,8 +138,10 @@ def test_the_length_block_gives_the_scripts_own_time_and_the_floor() -> None:
 
 def test_a_session_is_stuck_after_reports_that_do_not_cut_its_faults() -> None:
     work = gold.stage1()
-    broken = [c.model_copy(update={"take_s": 4, "handle_in_s": 2.0, "handle_out_s": 2.0}) if c.id == "c01" else c
-              for c in work.clips]
+    broken = [
+        c.model_copy(update={"take_s": 4, "handle_in_s": 2.0, "handle_out_s": 2.0}) if c.id == "c01" else c
+        for c in work.clips
+    ]
     run = Stage1Session(gold.brief(), work)
     run.work.clips = broken
     for _ in range(STUCK_AFTER):

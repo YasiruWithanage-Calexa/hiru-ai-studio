@@ -1,7 +1,7 @@
 id: rules
 kind: knowledge_base
 version: 1
-summary: "Rules the pipeline keeps: camera kinetics, character consistency, physical plausibility, scene flow, orchestration."
+summary: "Rules the pipeline keeps: camera kinetics, character consistency, physical plausibility, scene flow, orchestration, safe depiction."
 status: active
 owner: rag
 corpus: craft              # the chunks corpus; craft, guides and rules share it
@@ -18,3 +18,4 @@ files:
   - { path: character_consistency.md, meta: { specialty: character } }
   - { path: sceen_flow.md, meta: { specialty: editing } }
   - { path: pipeline_orchestration.md, meta: { specialty: cinematography } }
+  - { path: safe_depiction.md, meta: { specialty: cinematography } }   # plan/2026-11-10b
