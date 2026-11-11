@@ -128,6 +128,8 @@ class ShotView(BaseModel):
     stage: int = 0
     anchor: list[str] = []
     blend: str = ""
+    # What happens in the shot, in plain words (the Raphael clip's summary; "" for another planner's shot)
+    summary: str = ""
 
 
 class LineView(BaseModel):
@@ -439,6 +441,8 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
     cast_names = [str(c["name"]) for c in canon_rows if c["kind"] == CanonKind.CHARACTER]
     staging = stagemap.SceneStaging.of(scene)
     by_start = {int(s["block_start"]): s for s in ld.shots}
+    summary_of = {str(c.get("slate")): str(c.get("summary") or "")
+                  for c in ((_raphael_result(scene) or {}).get("clips") or []) if isinstance(c, dict)}
     shot_of_number: dict[int, UUID | None] = {}
     shots: list[ShotView] = []
     for f in result.shots if result else []:
@@ -466,6 +470,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             slate=str(row.get("slate") or ""), role=str(row.get("role") or ""),
             priority=str(row.get("priority") or ""), stage=int(row.get("stage") or 0),
             anchor=[str(a) for a in row.get("anchor") or []], blend=str(row.get("blend") or ""),
+            summary=summary_of.get(str(row.get("slate") or ""), ""),
             version=int(row.get("version") or 1), picture_s=f.picture_s, need_s=f.need_s,
             crowded=f.number in result.crowded if result else False,
             timeline=[TimelineSlot(block=s.index, kind="line" if s.is_line else "picture", start_s=round(s.start_s, 2),

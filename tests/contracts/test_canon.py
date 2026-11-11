@@ -72,10 +72,16 @@ def test_a_man_gets_trunks_and_the_female_word_does_not_match_male():
     assert "Subject: one adult woman" in woman
 
 
-def test_only_a_confirmed_adult_is_shown_bare_armed_in_gym_wear():
-    for card in (CanonCard(age="10", gender="girl"), CanonCard(age="17", gender="male"),
-                 CanonCard(gender="female"), CanonCard(age="teen", gender="female"),
-                 CanonCard(age="30")):
+def test_gender_alone_picks_the_gym_wear_whatever_the_age_says():
+    # Children are not handled yet: every man or woman is an adult on the sheet.
+    for card, subject in ((CanonCard(gender="female"), "woman"), (CanonCard(age="young adult", gender="F woman"), "woman"),
+                          (CanonCard(age="twenties", gender="male"), "man")):
+        text = reference_sheet_prompt(CanonKind.CHARACTER, "X", card)
+        assert f"Subject: one adult {subject}" in text and "gym shorts" in text
+
+
+def test_a_card_without_a_gender_is_shown_in_plain_clothes():
+    for card in (CanonCard(age="30"), CanonCard(age="30", gender="unknown")):
         text = reference_sheet_prompt(CanonKind.CHARACTER, "X", card)
         assert "gym" not in text and "sports bra" not in text and "Subject: one person" in text
         assert "grey t-shirt and fitted grey trousers" in text

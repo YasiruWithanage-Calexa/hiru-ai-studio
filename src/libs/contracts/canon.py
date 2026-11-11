@@ -319,7 +319,7 @@ _SHEET_OUTFIT = {
     "woman": "a plain solid-color fitted sports bra and fitted gym shorts, navy",
     "man": "plain solid-color gym shorts, navy, no shirt",
 }
-# Anyone the card does not confirm as an adult man or woman is shown in plain everyday clothes.
+# A card whose gender is missing or not man/woman is shown in plain everyday clothes.
 _SHEET_OUTFIT_CLOTHED = "a plain fitted grey t-shirt and fitted grey trousers, hair tied back if long"
 
 
@@ -367,13 +367,6 @@ def _sheet_sex(gender: str) -> str:
     return ""
 
 
-def _is_adult(age: str) -> bool:
-    """True only when the card gives an age of 18 or more ("late 20s" reads as 20). No number, no
-    adult: a child, or a card that does not say, is never shown in the bare-skin outfits."""
-    found = re.search(r"\d+", age or "")
-    return found is not None and int(found.group()) >= 18
-
-
 def reference_sheet_prompt(kind: CanonKind, name: str, card: CanonCard, *, aspect_ratio: str = "16:9") -> str:
     """The image prompt for an entity's reference sheet (used by frame_render, Phase 4).
 
@@ -384,10 +377,10 @@ def reference_sheet_prompt(kind: CanonKind, name: str, card: CanonCard, *, aspec
     if kind is CanonKind.CHARACTER:
         head = _SHEET_LAYOUT + _BASE_SHEET_RULES
         sex = _sheet_sex(card.gender)
-        adult = _is_adult(card.age) and bool(sex)
-        facts = [f"Name: {name}", f"Subject: one adult {sex}" if adult else "Subject: one person",
+        # Every character is an adult for now (children are handled later): the gender alone picks the outfit.
+        facts = [f"Name: {name}", f"Subject: one adult {sex}" if sex else "Subject: one person",
                  f"Age: {_clean(card.age)}", f"Appearance: {_clean(card.appearance)}",
-                 f"Outfit in every panel: {_SHEET_OUTFIT[sex] if adult else _SHEET_OUTFIT_CLOTHED}"]
+                 f"Outfit in every panel: {_SHEET_OUTFIT[sex] if sex else _SHEET_OUTFIT_CLOTHED}"]
     elif kind is CanonKind.LOCATION:
         head = ("Location reference plate for a Sri Lankan television drama. Photorealistic, "
                 "wide establishing view at eye level, natural light, no people, no text, no logos.")
