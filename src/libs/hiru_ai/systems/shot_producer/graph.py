@@ -8,7 +8,9 @@ coverage plan; the DoP designs the scene in one call; a REVIEW reads the drafts 
 checks, and at most ONE revision is kept where it fixes more than it breaks. The job opens by naming the scenes' CRAFT
 PROBLEMS, which steer the technique lookup.
 
-    state.mode        "design" (default) | "prompt"
+    state.mode        "design" (default) | "prompt" | "frame_prompt" (plan/2026-11-11c: the prompt writer rewords the
+                      first frame's prompt and stores it on the shot; "prompt" rewords the video prompt it writes, when
+                      `PROMPT_WRITER__ENABLED`)
     state.scene_ids   scenes to work on, or
     state.shot_ids    shots to work on (their scenes are read whole: a scene is designed as one)
     state.force       re-design shots whose design is still current
@@ -37,6 +39,7 @@ from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.rag.embeddings import embed_texts
 from hiru_ai.systems.shot_producer import drafts as drafts_mod
+from hiru_ai.systems.shot_producer import polish as polish_mod
 from hiru_ai.systems.shot_producer.state import State
 
 _log = logging.getLogger(__name__)
@@ -232,21 +235,49 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         prod = model_mod.production_input(production, canon, producer.lead_persona(production_id))
         rows = scenes_port.scenes(production_id, scene_ids) if scene_ids else []
         built = []
+        raw: dict[str, tuple[list[Row], list[Row]]] = {}  # scene id → (its shot rows, its line rows)
         for row in sorted(rows, key=lambda r: int(r.get("number") or 0)):
             sid = str(row["id"])
-            built.append((row, model_mod.scene_input(row, scenes_port.shots(sid), scenes_port.lines(sid), canon, prod,
+            raw[sid] = (scenes_port.shots(sid), scenes_port.lines(sid))
+            built.append((row, model_mod.scene_input(row, raw[sid][0], raw[sid][1], canon, prod,
                                                      producer.neighbours(row))))
+        env["raw"] = raw
         ledger_box.append(continuity.ContinuityLedger(prod.cast))
         env["canon"], env["prod"], env["scenes"] = canon, prod, built
         return {}
+
+    def frame_world(row: Row, canon: list[Row]) -> Row:
+        """The frame_compose world of a scene: what the shot screen and the renderer build a frame's prompt from."""
+        frames = ctx.ports.frames
+        sid = str(row["id"])
+        shot_rows, line_rows = env["raw"].get(sid, ([], []))
+        looks: Row = {}
+        accepted: Row = {}
+        if frames is not None:
+            all_looks = frames.looks(production_id)
+            if all_looks:
+                episode = frames.episode_number(str(row["episode_id"])) if row.get("episode_id") else None
+                looks = parts.module("step", "frame_compose", "step").run(
+                    {"op": "looks", "all_looks": all_looks, "scene_looks": frames.scene_looks(sid),
+                     "episode": episode})["looks"]
+            if any(s.get("slate") for s in shot_rows):
+                accepted = frames.accepted_finals([str(s["id"]) for s in shot_rows])
+        live = {str(s["id"]): s for s in shot_rows}
+        return {"production": production, "canon": canon, "scene": row, "lines": line_rows, "looks": looks,
+                "shots": list(live.values()), "accepted": accepted}
 
     def work(state: State) -> State:
         canon, prod, built = env["canon"], env["prod"], env["scenes"]
         ledger = ledger_box[0]
         prefix: str | None = None
-        designed = prompts = intents = 0
+        designed = prompts = intents = framed = 0
         skipped: list[str] = []
-        for _, scene in built:
+        writer = polish_mod.writer_on()
+        names = [str(c["name"]) for c in canon if c.get("kind") in ("character", "location") and c.get("name")]
+        if mode == "frame_prompt" and not writer:
+            skipped.append("The prompt writer is off (PROMPT_WRITER__ENABLED) or no model is set up: the first-frame "
+                           "prompt stays as code wrote it")
+        for row, scene in built:
             label = f"Scene {scene.number}"
             wanted_design = [s for s in scene.shots if (targets is None or s.id in targets)]
             if any(force or model_mod.design_stale(s, prod) for s in wanted_design):
@@ -282,6 +313,26 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             for shot in scene.shots:
                 ledger.observe(scene.id, shot, shot.row.get("ir") or {})
 
+            if mode == "frame_prompt" and writer:
+                world = frame_world(row, canon)
+                for shot in [s for s in scene.shots if targets is None or s.id in targets]:
+                    if not shot.row.get("ir"):
+                        skipped.append(f"{shot.code}: no camera design yet")
+                        continue
+                    merged = polish_mod.polish_frame(ctx, world, shot.row)
+                    if merged is None:
+                        continue
+                    design = {**(shot.row.get("design") or {}), "frame_polish": merged["record"]}
+                    scenes_port.save_design(shot.id, shot.row["ir"], design)
+                    shot.row = {**shot.row, "design": design}
+                    framed += 1
+                    jobs.event(job_id, JobEventType.PROGRESS,
+                               {"text": f"{shot.code}: first-frame prompt reworded ({len(merged['texts'])} sections)",
+                                "shot_id": shot.id}, agent=AGENT_PROMPT)
+                    for check in merged["checks"]:
+                        if check["tone"] != "pass":
+                            jobs.event(job_id, JobEventType.WARNING, {"text": f"{shot.code}: {check['label']}",
+                                                                      "shot_id": shot.id}, agent=AGENT_PROMPT)
             if mode != "prompt":
                 continue
             wanted = [s for s in scene.shots if targets is None or s.id in targets]
@@ -292,6 +343,8 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
                     skipped.append(f"{shot.code}: no accepted first frame")
                     continue
                 prompt = sz.write_prompt(shot, scene, prod, frame, str(job_id), str(payload.actor_user_id))
+                if writer:
+                    prompt = polish_mod.polish_video(ctx, prompt, names)
                 prompt["version"] = producer.last_prompt_version(shot.id) + 1
                 scenes_port.add_prompt(prompt)
                 prompts += 1
@@ -300,9 +353,11 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         for note in skipped:
             jobs.event(job_id, JobEventType.WARNING, {"text": note}, agent=AGENT_PROMPT)
         result: Row = {"designed": designed, "prompts": prompts, "skipped": len(skipped)}
+        if framed:
+            result["frame_prompts"] = framed
         if intents:
             result["intents"] = intents
-        if designed or prompts:
+        if designed or prompts or framed:
             producer.audit({"production_id": str(production_id), "actor_user_id": str(payload.actor_user_id),
                             "actor_agent": "shot_producer", "action": f"shots.{mode}", "entity": "job",
                             "entity_id": str(job_id), "diff": result})

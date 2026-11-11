@@ -90,25 +90,29 @@ class Scenes:
             episode = frames.episode_number(str(scene["episode_id"])) if scene.get("episode_id") else None
             looks = _compose("looks", all_looks=all_looks, scene_looks=frames.scene_looks(scene_id),
                              episode=episode)["looks"]
+        shots = scenes.shots(scene_id)  # plan/2026-11-11b: the same-setup frame of a later shot of a setup
+        accepted = frames.accepted_finals([str(s["id"]) for s in shots]) if any(s.get("slate") for s in shots) else {}
         world = {"production": self.production, "canon": self.canon, "scene": scene, "lines": scenes.lines(scene_id),
-                 "looks": looks}
+                 "looks": looks, "shots": shots, "accepted": accepted}
         with self._lock:
             self._worlds[scene_id] = world
         return world
 
 
-def _download(ctx: RunContext, path: str) -> bytes:
-    return bytes(ctx.need("files").download("references", path))
+def _download(ctx: RunContext, path: str, bucket: str = "references") -> bytes:
+    return bytes(ctx.need("files").download(bucket, path))
 
 
-def _references(ctx: RunContext, world: Row, shot: Row) -> list[tuple[str, Reference]]:
-    """The sheets of the people the camera SEES, then the place, that exist and can be read, in the order they are
-    attached. One that cannot be read is left out, not guessed at."""
-    out: list[tuple[str, Reference]] = []
+def _references(ctx: RunContext, world: Row, shot: Row) -> list[tuple[str, str, Reference]]:
+    """(id, role, picture) for the sheets of the people the camera SEES, the place, what they hold and the same-setup
+    frame, that exist and can be read, in the order they are attached. One that cannot be read is left out, not guessed
+    at."""
+    out: list[tuple[str, str, Reference]] = []
     for want in _compose("references", **world, shot=shot)["references"]:
         for choice in want["choices"]:
             try:
-                out.append((want["id"], Reference(label=choice["label"], data=_download(ctx, choice["path"]))))
+                data = _download(ctx, choice["path"], str(choice.get("bucket") or "references"))
+                out.append((want["id"], str(want.get("role") or ""), Reference(label=choice["label"], data=data)))
                 break
             except Exception:
                 _log.warning("%s could not be read", choice["label"], exc_info=True)
@@ -165,7 +169,8 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
         return "failed"
     world = scenes.world(str(shot["scene_id"]))
     refs = _references(ctx, world, shot)
-    pictures = [r for _, r in refs]
+    pictures = [r for _, _, r in refs]
+    sheets = [cid for cid, role, _ in refs if role != "setup"]  # `reference_ids` holds canon ids only
     draft = frame_stage(frame) == FrameStage.DRAFT
     if frame.get("draft_id") and not draft:  # a final painted from the shot's accepted draft: it goes in FIRST
         try:
@@ -195,9 +200,9 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
     files.upload("frames", path, picture.data, picture.mime)
     expected = _compose("expected", **world, shot=shot)
     answer = _inspect(ctx, picture.data, picture.mime, expected)
-    checks = _compose("checks", **world, shot=shot, attached=[cid for cid, _ in refs], answer=answer)["checks"]
+    checks = _compose("checks", **world, shot=shot, attached=sheets, answer=answer)["checks"]
     frames.finish_frame(fid, {"status": "done", "storage_path": path, "prompt": prompt, "pins": pins,
-                              "reference_ids": [cid for cid, _ in refs], "error": None, "checks": checks})
+                              "reference_ids": sheets, "error": None, "checks": checks})
     return "done"
 
 

@@ -39,7 +39,18 @@ from api.repositories import Repos, Row
 from api.services import media_links, media_thumbs
 from api.services.production import LOCKED, ShotState, camera_checks, scene_states
 from api.workers import task_manager
-from contracts.canon import looks_in_force
+from contracts.canon import look_wardrobe, looks_in_force
+from contracts.frame_brief import (
+    FrameBrief,
+    PlannedReference,
+    frame_brief,
+    missing_references,
+    opens_line,
+    plan_references,
+    reference_job,
+    setup_frame,
+)
+from contracts.holding import hands_for
 from contracts.jobs import JobKind
 from contracts.producer import (
     CameraCheck,
@@ -51,7 +62,6 @@ from contracts.producer import (
     PersonEdits,
     PromptSection,
     cast_in,
-    frame_prompt,
     frame_stage,
     storyboard_note,
 )
@@ -152,6 +162,29 @@ class PromptView(BaseModel):
     stale_reasons: list[str]
 
 
+class BriefSectionView(BaseModel):
+    """One section of the first frame's brief (plan/2026-11-11b): what it says and where its words came from."""
+
+    key: str
+    title: str
+    text: str
+    sources: list[str]
+
+
+class FrameReferenceView(BaseModel):
+    """One picture the next frame is painted against, in order, with its job; `missing` = wanted but there is none."""
+
+    label: str
+    role: str  # look | character | place | prop | setup
+    name: str
+    job: str
+    missing: bool
+
+
+class SetupFrameUpdate(BaseModel):
+    off: bool  # true: never attach the same-setup frame to this shot
+
+
 class LockView(BaseModel):
     locked: bool
     reason: str
@@ -190,7 +223,12 @@ class ShotProductionView(BaseModel):
     design: DesignView
     camera: CameraView
     checks: list[CameraCheck]
-    frame_prompt: str  # what the next frame will be asked for ("" until designed)
+    frame_prompt: str  # what the next frame will be asked for ("" until designed): the exact text the renderer sends
+    frame_brief: list[BriefSectionView] = Field(default_factory=list)  # the same prompt by section
+    frame_references: list[FrameReferenceView] = Field(default_factory=list)  # the pictures it is painted against
+    frame_missing: list[str] = Field(default_factory=list)  # pictures it wants but has none for, in words
+    setup_frame_off: bool = False  # a person turned off the same-setup frame for this shot
+    frame_polished: bool = False  # some of the frame prompt is in the prompt writer's words (plan/2026-11-11c)
     frames: list[FrameView]  # the finals (uploads and carried frames too)
     accepted_frame_id: UUID | None
     drafts: list[FrameView]  # low-quality drafts, newest last
@@ -338,6 +376,28 @@ def coverage_view(scene: Row) -> CoverageView | None:
                         stale=plan.by != "person" and plan.made_for != int(scene.get("script_version") or 1))
 
 
+def frame_plan(ld: Loaded, st: ShotState) -> tuple[FrameBrief, list[PlannedReference]]:
+    """The next final frame as the renderer will make it (`hiru_ai.steps.frame_compose.World.brief`): the same pictures
+    in the same order, the same people dressed in the looks the scene uses, the same hands and opening state. A draft
+    is attached only when a person paints from it, so it is not part of this preview."""
+    accepted = {s.id: s.accepted for s in ld.states if s.accepted}
+    planned = plan_references(ld.scene, st.row, ld.canon, st.staged.on_screen, ld.looks,
+                              setup=setup_frame(st.row, [s.row for s in ld.states], accepted))
+    labels = [p.label for p in planned if p.choices]
+    seen = [c.model_copy(update={"look": look_wardrobe(ld.looks[c.id])}) if c.id in ld.looks else c for c in st.seen]
+    hands = hands_for(ld.scene, st.row, [c.name for c in st.seen]).sentence
+    brief = frame_brief(ir=st.row.get("ir") or {}, camera=st.camera, aspect_ratio=ld.aspect, cast=seen,
+                        references=labels, recommended=st.recommended,
+                        unseen=unseen_sentence(st.staged, {c.id: c.name for c in st.cast}),
+                        hands=" ".join(p for p in (hands, opens_line(st.row)) if p), scene=ld.scene, shot=st.row)
+    return brief, planned
+
+
+def _polished(brief: FrameBrief | None) -> bool:
+    """Some of the first-frame prompt is in the prompt writer's words, still true to the shot (plan/2026-11-11c)."""
+    return brief is not None and any("prompt_writer" in s["sources"] for s in brief.view())
+
+
 def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProductionView:
     row, design = st.row, st.row.get("design") or {}
     by_line = {str(ln["id"]): ln for ln in ld.lines}
@@ -364,6 +424,7 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
         return views
 
     frames = frame_views(st.frames, "First frame")
+    brief, planned = frame_plan(ld, st) if st.has_design else (None, [])
     state = "missing" if st.design_reasons == ["no design"] else ("stale" if st.design_reasons else "current")
     changed = [CameraField(k) for k, v in st.camera.model_dump().items() if v != getattr(st.recommended, k)]
     return ShotProductionView(
@@ -384,10 +445,14 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
         camera=CameraView(recommended=st.recommended, current=st.camera, changed=changed,
                           storyboard_note=storyboard_note(st.camera)),
         checks=checks,
-        frame_prompt=frame_prompt(ir=row.get("ir") or {}, camera=st.camera, aspect_ratio=ld.aspect, cast=st.seen,
-                                  recommended_framing=st.recommended.framing,
-                                  unseen=unseen_sentence(st.staged, {c.id: c.name for c in st.cast}))
-        if st.has_design else "",
+        frame_prompt=brief.text() if brief else "",
+        frame_brief=[BriefSectionView.model_validate(s) for s in brief.view()] if brief else [],
+        frame_references=[FrameReferenceView(label=p.label or p.name, role=p.role, name=p.name,
+                                             job=reference_job(p.label) if p.choices else "", missing=not p.choices)
+                          for p in planned],
+        frame_missing=missing_references(planned),
+        setup_frame_off=st.edits.setup_frame_off,
+        frame_polished=_polished(brief),
         frames=frames, accepted_frame_id=st.accepted["id"] if st.accepted else None,
         drafts=frame_views(st.drafts, "Draft"),
         accepted_draft_id=st.accepted_draft["id"] if st.accepted_draft else None,
@@ -557,6 +622,22 @@ async def _set_in_shot(repos: Repos, access: ProductionAccess, shot_id: UUID, en
         await _audit(repos, access, "shot.canon_add" if add else "shot.canon_remove", "shot", str(shot_id),
                      {"canon": entity["name"]})
     ld, st = await load_shot(repos, access, shot_id)
+    return shot_view(ld, st, camera_checks(ld.states)[st.id])
+
+
+@router.put("/shots/{shot_id}/setup-frame", response_model=ShotProductionView)
+async def set_setup_frame(production_id: UUID, shot_id: UUID, body: SetupFrameUpdate, access: CanGenerate,
+                          repos: ReposDep) -> ShotProductionView:
+    """Turn the same-setup frame off for this shot, or back on (plan/2026-11-11b §4.4). A person's mark: no agent
+    writes it, and a re-design keeps it."""
+    ld, st = await load_shot(repos, access, shot_id)
+    _require_unlocked(ld)
+    edits = PersonEdits.of(st.row)
+    if edits.setup_frame_off != body.off:
+        edits.setup_frame_off = body.off
+        await repos.shots.update(shot_id, {"person_edits": edits.dump()})
+        await _audit(repos, access, "shot.setup_frame", "shot", str(shot_id), {"off": body.off})
+        ld, st = await load_shot(repos, access, shot_id)
     return shot_view(ld, st, camera_checks(ld.states)[st.id])
 
 
@@ -743,6 +824,53 @@ async def request_prompt(production_id: UUID, shot_id: UUID, access: CanGenerate
     if st.lock:
         raise HTTPException(status.HTTP_409_CONFLICT, st.lock)
     return await _start_prompts(repos, access, ld, [st])
+
+
+@router.post("/shots/{shot_id}/frame-prompt", response_model=Started, status_code=status.HTTP_202_ACCEPTED)
+async def request_frame_prompt(production_id: UUID, shot_id: UUID, access: CanGenerate, repos: ReposDep) -> Started:
+    """Have the prompt writer reword this shot's first-frame prompt (plan/2026-11-11c). Code's prompt stays complete;
+    the writer's words are used section by section where they keep every fact, and the shot screen shows the result.
+    Picture work: refused on an approved scene, and before the shot has a camera design."""
+    ld, st = await load_shot(repos, access, shot_id)
+    _require_unlocked(ld)
+    if not st.has_design:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This shot has no camera design yet. Design the scene first.")
+    return await _start_frame_prompts(repos, access, ld, [st])
+
+
+async def _start_frame_prompts(repos: Repos, access: ProductionAccess, ld: Loaded,
+                               targets: list[ShotState]) -> Started:
+    job_id = await task_manager.dispatch(JobKind.SHOT_PRODUCE, repos, actor_user_id=access.user.id,
+                                         production_id=access.production_id,
+                                         request={"scene_id": str(ld.scene["id"]), "frame_prompts": len(targets)},
+                                         state={"mode": "frame_prompt", "shot_ids": [st.id for st in targets]})
+    if len(targets) == 1:
+        await _audit(repos, access, "frame_prompt.request", "shot", targets[0].id, {"job_id": str(job_id)})
+    else:
+        await _audit(repos, access, "frame_prompts.request", "scene", str(ld.scene["id"]),
+                     {"job_id": str(job_id), "shots": [st.code for st in targets]})
+    return Started(job_id=job_id)
+
+
+class SceneFramePromptsRequest(BaseModel):
+    only_missing: bool = True  # skip shots whose first-frame prompt is already in the writer's words and current
+
+
+@router.post("/scenes/{scene_id}/frame-prompts", response_model=Started, status_code=status.HTTP_202_ACCEPTED)
+async def request_scene_frame_prompts(production_id: UUID, scene_id: UUID, body: SceneFramePromptsRequest,
+                                      access: CanGenerate, repos: ReposDep) -> Started:
+    """The prompt writer for every designed shot of the scene that paints its own first frame, in one job. A shot
+    whose writer's words still fit it is left alone unless `only_missing` is off. Refused on an approved scene."""
+    ld = await load(repos, access, scene_id)
+    _require_unlocked(ld)
+    targets = [st for st in ld.states if st.has_design
+               and st.row.get("frame_strategy") != FrameStrategy.CARRY_LAST_FRAME
+               and not (body.only_missing and _polished(frame_plan(ld, st)[0]))]
+    if not targets:
+        if not any(st.has_design for st in ld.states):
+            raise HTTPException(status.HTTP_409_CONFLICT, "No shot has a camera design yet. Design the scene first.")
+        raise HTTPException(status.HTTP_409_CONFLICT, "Every designed shot's first-frame prompt is already written.")
+    return await _start_frame_prompts(repos, access, ld, targets)
 
 
 @router.post("/scenes/{scene_id}/prompts", response_model=Started, status_code=status.HTTP_202_ACCEPTED)

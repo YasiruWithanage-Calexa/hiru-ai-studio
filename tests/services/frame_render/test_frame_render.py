@@ -40,7 +40,8 @@ def test_frames_are_painted_stored_and_pinned():
     assert call["references"] == ["the character sheet for Kamala", "the location plate for Kamala's house"]
     assert "image 1 is the character sheet for Kamala; image 2 is the location plate" in call["prompt"]
     assert f["reference_ids"][0] == KAMALA
-    assert "Wide shot, eye level, 28mm lens at f/4" in call["prompt"] and "16:9 framing" in call["prompt"]
+    assert "Shot: Wide shot, eye level; 28mm lens at f/4, a wide lens" in call["prompt"]
+    assert "deep focus" in call["prompt"] and "16:9 framing" in call["prompt"]
     assert store.audits[0]["action"] == "frames.render"
 
 
@@ -61,7 +62,7 @@ def test_a_persons_camera_reaches_the_frame_and_an_unreadable_sheet_is_not_named
     paint = FakePainter()
     pipeline.run(payload(frame_ids=[store.add_frame(s1["id"])]), store, FakeJobs(), paint)
     prompt = paint.calls[0]["prompt"]
-    assert "Close-up" in prompt and "85mm" in prompt and "Compose it as a close-up" in prompt
+    assert "Close-up" in prompt and "a long portrait lens" in prompt and "Compose it as a close-up" in prompt
     assert paint.calls[0]["references"] == ["the location plate for Kamala's house"]
     assert "image 1 is the location plate" in prompt and "character sheet" not in prompt
     assert "9:16 vertical framing" in prompt

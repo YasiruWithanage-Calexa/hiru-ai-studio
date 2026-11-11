@@ -22,11 +22,12 @@ from typing import Any
 from uuid import uuid4
 
 from contracts import sceneplan
+from contracts.frame_brief import nearest_option
 from contracts.jonathan.checks import mentions, strings
 from contracts.jonathan.plan import Problem, norm
 from contracts.jonathan.stored import StoredPlan
 from contracts.jonathan.wire import JonathanWire, ShotW, card_size
-from contracts.producer import CAMERA_OPTIONS, CameraField
+from contracts.producer import CameraField
 from contracts.shotplan import Item, shot_clock
 from contracts.staging import heard_marked, voice_source
 from contracts.timing import default_beats, overrun_seconds, shot_word_target, words_in
@@ -82,8 +83,10 @@ def camera_hint(ir: Row) -> Row:
     out: Row = {}
     angle = ("Low angle" if "low" in angle_text else "High angle" if "high" in angle_text
              else "Overhead" if "overhead" in angle_text else "")
-    lens = next((x for x in CAMERA_OPTIONS[CameraField.LENS] if x in rig), "")
-    stop = next((x for x in CAMERA_OPTIONS[CameraField.APERTURE] if x in rig), "")
+    # plan/2026-11-11b §4.5: the panel's nearest lens and stop (65mm → 50mm), not nothing; the brief keeps the
+    # planner's own words for the picture
+    lens = nearest_option(CameraField.LENS, rig)
+    stop = nearest_option(CameraField.APERTURE, rig)
 
     def move_of(text: str) -> str:
         if any(w in text for w in ("push in", "dolly in", "push-in")):

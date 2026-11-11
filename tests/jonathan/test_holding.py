@@ -13,11 +13,12 @@ from typing import Any
 import pytest
 
 from contracts import holding
+from contracts.frame_brief import frame_prompt
 from contracts.holding import Ledger, canon_match, names_place, shot_hands, state_in, thing_of, things_of
 from contracts.jonathan.checks import _holding
 from contracts.jonathan.scene import BlockS, SceneS
 from contracts.jonathan.wire import JonathanWire, StagingW
-from contracts.producer import default_camera, frame_prompt
+from contracts.producer import default_camera
 from contracts.shotplan import Item
 from contracts.staging import ShotIntent, staging
 from hiru_ai.core import parts

@@ -42,6 +42,19 @@ class Store:
     def lines(self, scene_id: str) -> list[Row]:
         return self.rest.select("dialogue_lines", {"scene_id": f"eq.{scene_id}", "select": "*", "order": "ord"})
 
+    def shots(self, scene_id: str) -> list[Row]:
+        return self.rest.select("shots", {"scene_id": f"eq.{scene_id}", "select": "id,slate,number,person_edits",
+                                          "order": "number"})
+
+    def accepted_finals(self, shot_ids: list[str]) -> dict[str, Row]:
+        """shot id → its accepted FINAL frame with a picture: the same-setup frame (plan/2026-11-11b)."""
+        if not shot_ids:
+            return {}
+        rows = self.rest.select("first_frames", {"shot_id": f"in.({','.join(shot_ids)})", "accepted_at": "not.is.null",
+                                                 "stage": "neq.draft", "status": "eq.done",
+                                                 "select": "id,shot_id,storage_path"})
+        return {str(r["shot_id"]): r for r in rows if r.get("storage_path")}
+
     def canon(self, production_id: UUID) -> list[Row]:
         return self.rest.select("canon_entities", {"production_id": f"eq.{production_id}", "order": "code",
                                                    "select": _CANON})

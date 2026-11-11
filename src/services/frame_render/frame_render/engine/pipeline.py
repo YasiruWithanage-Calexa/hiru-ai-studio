@@ -37,14 +37,23 @@ from contracts.canon import (
     CanonCard,
     CanonKind,
     LookFields,
-    look_sheet_path,
     look_sheet_prompt,
     look_wardrobe,
     looks_in_force,
     reference_sheet_aspect,
     reference_sheet_prompt,
 )
-from contracts.holding import Hands, hands_for, references_for
+from contracts.frame_brief import (
+    MAX_REFERENCES,
+    SETUP_LABEL,
+    SetupFrame,
+    expected_frame,
+    frame_prompt,
+    plan_references,
+    setup_frame,
+    sheet_path,
+)
+from contracts.holding import Hands, hands_for
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import (
     DRAFT_LABEL,
@@ -53,11 +62,9 @@ from contracts.producer import (
     FrameStage,
     PersonEdits,
     default_camera,
-    frame_prompt,
     frame_stage,
     identity_line,
     pins_for,
-    shot_canon_ids,
     shot_items,
 )
 from contracts.staging import Staging, shot_cast, source_phrase, staging, unseen_sentence
@@ -68,7 +75,6 @@ from frame_render.engine.inspect import Expected, Inspector, sheet_checks, visio
 _logger = logging.getLogger(__name__)
 AGENT = "frame_render"
 WORKERS = 4
-MAX_REFERENCES = 6  # the people seen, the place, a second place (the stall), what they hold; the model takes 16
 FAILED = "The frame could not be made. Try again in a moment."
 NO_DESIGN = "This shot has no camera design yet. Design the scene first."
 NOT_CONFIGURED = "Image generation is not set up on this server."
@@ -84,6 +90,8 @@ class StoreLike(Protocol):
     def shot(self, shot_id: str) -> Row | None: ...
     def scene(self, scene_id: str) -> Row | None: ...
     def lines(self, scene_id: str) -> list[Row]: ...
+    def shots(self, scene_id: str) -> list[Row]: ...
+    def accepted_finals(self, shot_ids: list[str]) -> dict[str, Row]: ...
     def canon(self, production_id: UUID) -> list[Row]: ...
     def look(self, look_id: str) -> Row | None: ...
     def looks(self, production_id: UUID) -> list[Row]: ...
@@ -121,9 +129,7 @@ def cast_member(row: Row) -> CastMember:
 
 
 def _sheet_path(row: Row) -> str:
-    assets = (row.get("current") or {}).get("reference_assets") or []
-    first = assets[0] if assets else None
-    return str(first.get("path") if isinstance(first, dict) else first or "")
+    return sheet_path(row)
 
 
 class FrameJob:
@@ -139,6 +145,18 @@ class FrameJob:
         self._scenes: dict[str, tuple[Row, list[Row]]] = {}
         self._all_looks: list[Row] | None = None
         self._looks: dict[str, dict[str, Mapping[str, Any]]] = {}
+        self._setups: dict[str, tuple[list[Row], dict[str, Row]]] = {}
+
+    def setup(self, shot: Row) -> SetupFrame | None:
+        """The accepted frame of the first earlier shot of this shot's camera setup (`contracts.frame_brief`)."""
+        scene_id = str(shot["scene_id"])
+        if scene_id not in self._setups:
+            shots = self.store.shots(scene_id)
+            accepted = (self.store.accepted_finals([str(s["id"]) for s in shots])
+                        if any(s.get("slate") for s in shots) else {})
+            self._setups[scene_id] = (shots, accepted)
+        shots, accepted = self._setups[scene_id]
+        return setup_frame(shot, shots, accepted)
 
     def scene(self, scene_id: str) -> tuple[Row, list[Row]]:
         if scene_id not in self._scenes:
@@ -177,27 +195,14 @@ class FrameJob:
         cannot be read, the base sheet. One that cannot be read is left out, not guessed at.
         Someone only heard is never attached: their sheet would put their face in the frame."""
         scene, _, _, staged = self._own(shot)
-        looks = self.looks(str(shot["scene_id"]))
-        edits = PersonEdits.of(shot)
-        seen = {c: self.members[c].name for c in staged.on_screen if c in self.members}
-        planned = references_for(scene, shot, self.canon, shot_canon_ids(scene, staged.on_screen, edits), seen,
-                                 removed=edits.cast.remove, has_sheet=lambda r: bool(_sheet_path(r)))
         out: list[tuple[str, Reference]] = []
-        for cid, note in planned:
-            row = self.by_id.get(cid)
-            if not row or len(out) >= MAX_REFERENCES:
-                continue
-            what = {"location": "the location plate for", "prop": "the reference sheet for"}.get(
-                row["kind"], "the character sheet for")
-            choices = [(f"{what} {row['name']}" + (f" ({note})" if note else ""), _sheet_path(row))]
-            look = looks.get(cid) if row["kind"] == "character" else None
-            if look is not None:
-                choices.insert(0, (f"the look sheet for {row['name']}", look_sheet_path(look)))
-            for label, path in choices:
-                if not path:
-                    continue
+        for planned in plan_references(scene, shot, self.canon, staged.on_screen, self.looks(str(shot["scene_id"])),
+                                       setup=self.setup(shot), limit=MAX_REFERENCES):
+            for label, path in planned.choices:
                 try:
-                    out.append((cid, Reference(label=label, data=self.store.download_reference(path))))
+                    data = (self.store.download_frame(path) if planned.role == "setup"
+                            else self.store.download_reference(path))
+                    out.append((planned.id, Reference(label=label, data=data)))
                     break
                 except Exception:
                     _logger.warning("%s could not be read", label, exc_info=True)
@@ -235,10 +240,9 @@ class FrameJob:
             recommended = default
         camera = recommended.with_overrides(shot.get("camera_overrides") or {})
         prompt = frame_prompt(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
-                              cast=self.cast(shot, staged.on_screen), references=labels,
-                              recommended_framing=recommended.framing,
+                              cast=self.cast(shot, staged.on_screen), references=labels, recommended=recommended,
                               unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
-                              hands=self.hands(shot).sentence)
+                              hands=self.hands(shot).sentence, scene=scene, shot=shot)
         return prompt, pins.model_dump()
 
     def hands(self, shot: Row) -> Hands:
@@ -248,12 +252,8 @@ class FrameJob:
 
     def expected(self, shot: Row) -> Expected:
         """What the vision check compares the picture with."""
-        _, _, _, staged = self._own(shot)
-        raw = (shot.get("ir") or {}).get("first_frame")
-        frame: Mapping[str, Any] = raw if isinstance(raw, Mapping) else {}
-        listed = frame.get("subjects")
-        subjects: list[Any] = listed if isinstance(listed, list) else []
-        text = " ".join([str(frame.get("composition") or ""), *[str(x) for x in subjects]]).strip()
+        scene, _, _, staged = self._own(shot)
+        text = expected_frame(shot.get("ir") or {}, scene)
         return Expected(seen=[identity_line(m) for m in self.cast(shot, staged.on_screen)],
                         unseen=[f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"
                                 for c in staged.heard_only if c in self.members],
@@ -276,6 +276,7 @@ def render_frame(job: FrameJob, frame: Row, paint: Painter | None, inspect: Insp
         job.store.finish_frame(fid, {"status": "failed", "error": NOT_CONFIGURED})
         return "failed"
     refs = job.references(shot)
+    sheets = [cid for cid, r in refs if not r.label.startswith(SETUP_LABEL)]  # `reference_ids` holds canon ids only
     pictures = [r for _, r in refs]
     draft = frame_stage(frame) == FrameStage.DRAFT
     if frame.get("draft_id") and not draft:  # a final painted from the shot's accepted draft: it goes in FIRST
@@ -304,10 +305,10 @@ def render_frame(job: FrameJob, frame: Row, paint: Painter | None, inspect: Insp
     job.store.upload("frames", path, picture.data, picture.mime)
     staged = job.staged(shot)
     seen = {c: job.members[c].name for c in staged.on_screen if c in job.members}
-    checks = sheet_checks(seen, {cid for cid, _ in refs}) + vision_checks(inspect, picture.data, picture.mime,
+    checks = sheet_checks(seen, set(sheets)) + vision_checks(inspect, picture.data, picture.mime,
                                                                           job.expected(shot))
     job.store.finish_frame(fid, {"status": "done", "storage_path": path, "prompt": prompt, "pins": pins,
-                                 "reference_ids": [cid for cid, _ in refs], "error": None, "checks": checks})
+                                 "reference_ids": sheets, "error": None, "checks": checks})
     return "done"
 
 

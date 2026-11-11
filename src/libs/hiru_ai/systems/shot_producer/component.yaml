@@ -1,11 +1,11 @@
 id: shot_producer
 kind: system
 version: 1
-summary: "Designs each shot of a scene together (intent, camera, review) and writes prompt versions in code from the stored design."
+summary: "Designs each shot of a scene together (intent, camera, review), writes prompt versions in code from the stored design, and has the prompt writer reword them."
 status: active
 owner: shot_producer
 job_kind: shot_produce
 panels: [shot_review]
-agents: [shot_intent, craft_articulator, shot_writer, shot_critic]
-steps: [serialize, feeling]
+agents: [shot_intent, craft_articulator, shot_writer, shot_critic, prompt_writer]
+steps: [serialize, feeling, prompt_polish, frame_compose]
 tools: []

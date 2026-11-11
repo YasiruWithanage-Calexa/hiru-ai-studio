@@ -4,6 +4,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
+from contracts.frame_brief import frame_prompt
 from contracts.producer import (
     CAMERA_OPTIONS,
     DRAFT_LABEL,
@@ -17,7 +18,6 @@ from contracts.producer import (
     camera_checks,
     cast_in,
     default_camera,
-    frame_prompt,
     frame_stage,
     lighting_for,
     look_pins,
@@ -107,7 +107,8 @@ def test_the_frame_prompt_names_references_by_position_and_honours_a_persons_fra
                         recommended_framing="Wide shot")
     assert "image 1 is the character sheet for Kamala; image 2 is the location plate" in text
     assert "take clothes from the People line, never from the sheet" in text
-    assert "Close-up, eye level, 85mm lens at f/4" in text and "Compose it as a close-up." in text
+    assert "Shot: Close-up, eye level; 85mm lens at f/4, a long portrait lens" in text
+    assert "Compose it as a close-up." in text, "the panel as it stands: lens and stop as numbers and as their look"
     assert "Kamala: 52, grey hair in a bun; wearing a faded blue saree" in text
     assert text.endswith("no collage, no split panels.") and "9:16 vertical framing" in text
     assert "Night, lamp key" in text, "the preset lights a frame the IR says nothing about"

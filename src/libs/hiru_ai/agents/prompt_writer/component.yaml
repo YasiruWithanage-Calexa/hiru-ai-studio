@@ -1,0 +1,16 @@
+id: prompt_writer
+kind: agent
+version: 1
+summary: "Rewords a prompt's descriptive sections (first frame or video) as film language; code checks no fact was lost and keeps its own words where one was."
+status: active
+owner: shot_producer
+model: medium
+shape: structured
+phase: prompt_writer.polish
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, untrusted_text, absent_safe]
+writes_dialogue: false

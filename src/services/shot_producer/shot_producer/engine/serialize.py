@@ -24,7 +24,8 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment, camera_sentence
+from contracts.camera_words import camera_words, lighting_words
+from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment
 from contracts.staging import source_phrase
 from shot_producer.engine.card import of as card_of
 from shot_producer.engine.card import sound_text as card_sound
@@ -140,21 +141,14 @@ def _line_segments(ln: Line, shot: ShotInput) -> list[PromptSegment]:
 
 
 def _camera_text(ir: Row, ctx: Context) -> str:
-    """The DP's camera, unless a person changed it: then the camera as it stands, in plain words,
-    with only the DP's grade kept (the grade does not depend on the fields people choose)."""
+    """Every field of the camera panel as it stands (`contracts.camera_words`): what a person sees on the camera card
+    is what the video model is told, with the DP's own detail beside each field the person left; then the DP's grade
+    (it does not depend on the fields people choose)."""
     raw = ir.get("cinematography")
     cine: Row = raw if isinstance(raw, dict) else {}
     grade = ", ".join(b for b in (_clean(cine.get("white_balance")), _clean(cine.get("color_tone"))) if b)
     lens = _clean(cine.get("lens_artifacts"))
-    changed = changed_fields(ctx)
-    if changed - {"lighting"} or not cine:
-        out = [f"Camera: {camera_sentence(ctx.camera)}"]
-    else:
-        cam = "; ".join(b for b in (_clean(cine.get("camera")), _clean(cine.get("angle")), _clean(cine.get("framing")),
-                                    _clean(cine.get("movement")), _clean(cine.get("depth_of_field"))) if b)
-        out = [f"Camera: {cam}."]
-    if ctx.camera.axis.startswith("Side B"):
-        out.append("Screen direction: the action plays right to left.")
+    out = [f"Camera: {camera_words(ctx.camera, ctx.recommended, ir, still=False)}"]
     if grade:
         out.append(f"Grade: {grade}.")
     if lens and lens.lower() != "none":
@@ -296,9 +290,7 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
                           for s in subjects)
     join = "" if shot.camera_link == "cut" else rules.rule(
         "join_continuous" if shot.camera_link == "continuous" else "join_match")
-    light = _clean(ir.get("lighting"))
-    if "lighting" in changed_fields(ctx):
-        light = f"{ctx.camera.lighting}." + (f" {light}" if light else "")
+    light = lighting_words(ctx.camera, ctx.recommended, _clean(ir.get("lighting")))  # the panel's lighting leads
     sections = [
         _section("opening", "First frame", opening),
         _section("style", "Style", rules.rule("medium_style"), _clean(ctx.style_note)),

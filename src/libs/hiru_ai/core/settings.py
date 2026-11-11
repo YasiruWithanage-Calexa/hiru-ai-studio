@@ -105,6 +105,13 @@ class BreakdownSettings(BaseModel):
     workers: int = 4  # documents and episode calls at once (plan §10, phase 2)
 
 
+class PromptWriterSettings(BaseModel):
+    """The prompt writer (plan/2026-11-11c): `PROMPT_WRITER__*`. Off until a person turns it on after a live check:
+    with it off, every first-frame and video prompt is the code's own words and no model is called."""
+
+    enabled: bool = False
+
+
 class SupabaseSettings(BaseModel):
     url: str = "http://127.0.0.1:54321"
     service_role_key: SecretStr = SecretStr("")
@@ -157,6 +164,7 @@ class AISettings(BaseSettings):
     reader: ReaderSettings = ReaderSettings()
     breakdown: BreakdownSettings = BreakdownSettings()
     sable: SableSettings = SableSettings()
+    prompt_writer: PromptWriterSettings = PromptWriterSettings()
     # Where traces go (ADR 0008: Langfuse Cloud). Langfuse's own names, as its settings page prints them. Empty keys =
     # no tracing.
     langfuse_public_key: str = ""

@@ -282,7 +282,7 @@ def test_a_persons_camera_and_back(world: World, fired: list[dict]):
     assert v["camera"]["current"]["lens"] == "85mm" and v["camera"]["recommended"]["lens"] == "35mm"
     assert sorted(v["camera"]["changed"]) == ["axis", "lens"]
     assert v["camera"]["storyboard_note"] == "85mm · slow dolly in"
-    assert "85mm lens" in v["frame_prompt"]
+    assert "a long portrait lens" in v["frame_prompt"], "a person's lens reaches the frame, as its look"
     assert v["prompt"]["stale_reasons"] == ["The camera settings changed."]
     assert any(c["label"].startswith("Crosses the axis") for c in v["checks"])
     assert world.client.patch(shot_url(world, s, 1, "/camera"), json={"lens": "300mm"}, headers=crew).status_code == 422
@@ -544,3 +544,68 @@ def test_scene_frames_are_finals_and_a_draft_does_not_count_as_having_a_frame(wo
     rows = world.repos.frames.rows  # type: ignore[attr-defined]
     assert {rows[f]["stage"] for f in r.json()["frame_ids"]} == {"final"}
     assert s["shots"][0]["id"] in {rows[f]["shot_id"] for f in r.json()["frame_ids"]}, "S01 still needs a first frame"
+
+
+# ── the first frame's brief (plan/2026-11-11b) ─────────────────────────────────────────────
+
+
+def test_the_shot_shows_the_frames_brief_its_pictures_and_what_is_missing(world: World):
+    s = open_scene(world)
+    design(world, s)
+    v = world.client.get(shot_url(world, s, 1), headers=world.headers(world.reviewer)).json()
+    keys = [b["key"] for b in v["frame_brief"]]
+    assert keys[0] == "lead" and keys[-1] == "close" and "shot" in keys and "place" in keys
+    assert " ".join(b["text"] for b in v["frame_brief"]) == v["frame_prompt"], "the sections ARE the prompt"
+    named = [r["label"] for r in v["frame_references"] if not r["missing"]]
+    assert all(f"image {n} is {label}" in v["frame_prompt"] for n, label in enumerate(named, start=1)), \
+        "every picture the renderer will attach is named, in order"
+    for r in v["frame_references"]:
+        assert bool(r["job"]) != r["missing"]
+    assert len(v["frame_missing"]) == sum(r["missing"] for r in v["frame_references"])
+    assert v["setup_frame_off"] is False
+
+
+def test_a_later_shot_of_a_setup_shows_the_first_ones_accepted_frame_and_a_person_can_turn_it_off(world: World):
+    s = open_scene(world)
+    design(world, s)
+    first, later = (world.repos.shots.rows[s["shots"][n]["id"]] for n in (0, 1))  # type: ignore[attr-defined]
+    first["slate"], later["slate"] = "1A-1", "1A-2"
+    _accept_one(world, s, 0)
+    crew = world.headers(world.crew)
+    v = world.client.get(shot_url(world, s, 1), headers=crew).json()
+    assert v["frame_references"][-1]["role"] == "setup" and v["frame_references"][-1]["name"] == "1A-1"
+    assert "the accepted frame of shot 1A-1" in v["frame_prompt"]
+    r = world.client.put(shot_url(world, s, 1, "/setup-frame"), json={"off": True}, headers=crew)
+    assert r.status_code == 200, r.text
+    v = r.json()
+    assert v["setup_frame_off"] is True and all(x["role"] != "setup" for x in v["frame_references"])
+    assert world.client.put(shot_url(world, s, 1, "/setup-frame"), json={"off": True},
+                            headers=world.headers(world.reviewer)).status_code == 403
+    v = world.client.put(shot_url(world, s, 1, "/setup-frame"), json={"off": False}, headers=crew).json()
+    assert v["frame_references"][-1]["role"] == "setup"
+
+
+def test_the_prompt_writer_is_asked_for_a_shots_first_frame(world: World, fired: list[dict]):
+    s = open_scene(world)
+    crew = world.headers(world.crew)
+    assert world.client.post(shot_url(world, s, 1, "/frame-prompt"), headers=crew).status_code == 409, "no design"
+    design(world, s)
+    r = world.client.post(shot_url(world, s, 1, "/frame-prompt"), headers=crew)
+    assert r.status_code == 202, r.text
+    assert fired[-1]["state"] == {"mode": "frame_prompt", "shot_ids": [s["shots"][1]["id"]]}
+    assert world.client.post(shot_url(world, s, 1, "/frame-prompt"),
+                             headers=world.headers(world.reviewer)).status_code == 403
+    v = world.client.get(shot_url(world, s, 1), headers=crew).json()
+    assert v["frame_polished"] is False
+
+
+def test_the_prompt_writer_is_asked_for_every_designed_shot_of_a_scene(world: World, fired: list[dict]):
+    s = open_scene(world)
+    crew = world.headers(world.crew)
+    to = url(world, f"/scenes/{s['scene']['id']}/frame-prompts")
+    assert world.client.post(to, json={}, headers=crew).status_code == 409, "no design"
+    design(world, s)
+    r = world.client.post(to, json={}, headers=crew)
+    assert r.status_code == 202, r.text
+    assert fired[-1]["state"] == {"mode": "frame_prompt", "shot_ids": [shot["id"] for shot in s["shots"]]}
+    assert world.client.post(to, json={}, headers=world.headers(world.reviewer)).status_code == 403

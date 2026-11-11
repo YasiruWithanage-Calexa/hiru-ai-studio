@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 from contracts import sceneplan
-from contracts.producer import CameraSettings, default_camera, frame_prompt, shot_items
+from contracts.frame_brief import frame_prompt
+from contracts.producer import CameraSettings, default_camera, shot_items
 from contracts.shotplan import Item
 from contracts.staging import (
     ScenePlan,

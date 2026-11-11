@@ -1,0 +1,8 @@
+id: prompt_polish
+kind: step
+version: 1
+summary: "The code around the prompt_writer agent: which sections it may reword with the words each must keep, and its answer checked section by section."
+status: active
+owner: shot_producer
+entry: step:run
+uses: []

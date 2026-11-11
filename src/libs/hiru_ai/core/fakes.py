@@ -375,6 +375,11 @@ class FakeFrames:
     def episode_number(self, episode_id: str) -> int | None:
         return self.episode
 
+    def accepted_finals(self, shot_ids: list[str]) -> dict[str, Row]:
+        return {str(f["shot_id"]): dict(f) for f in self.frame_rows.values()
+                if str(f.get("shot_id")) in shot_ids and f.get("accepted_at") and f.get("stage") != "draft"
+                and f.get("status") == "done" and f.get("storage_path")}
+
     def claim_frame(self, frame_id: str) -> bool:
         row = self.frame_rows[frame_id]
         if row["status"] != "queued":

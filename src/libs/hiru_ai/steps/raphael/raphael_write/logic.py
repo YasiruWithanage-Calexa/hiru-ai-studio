@@ -29,7 +29,8 @@ from typing import Any
 from uuid import uuid4
 
 from contracts import sceneplan
-from contracts.producer import CAMERA_OPTIONS, CameraField
+from contracts.frame_brief import nearest_option
+from contracts.producer import CameraField
 from contracts.raphael import state as ledger_state
 from contracts.raphael.checks import mentions, strings_of
 from contracts.raphael.scene import LONGEST_TAKE_S, norm
@@ -117,8 +118,10 @@ def camera_hint(ir: Row) -> Row:
         if "overhead" in angle_text
         else ""
     )
-    lens = next((x for x in CAMERA_OPTIONS[CameraField.LENS] if x in rig), "")
-    stop = next((x for x in CAMERA_OPTIONS[CameraField.APERTURE] if x in rig), "")
+    # plan/2026-11-11b §4.5: the panel's nearest lens and stop (65mm → 50mm), not nothing; the brief keeps the
+    # planner's own words for the picture
+    lens = nearest_option(CameraField.LENS, rig)
+    stop = nearest_option(CameraField.APERTURE, rig)
 
     def move_of(text: str) -> str:
         if any(w in text for w in ("push in", "dolly in", "push-in")):

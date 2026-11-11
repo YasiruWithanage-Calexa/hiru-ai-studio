@@ -232,6 +232,10 @@ class FrameStore(Protocol):
     def looks(self, production_id: UUID) -> list[Row]: ...
     def scene_looks(self, scene_id: str) -> list[Row]: ...
     def episode_number(self, episode_id: str) -> int | None: ...
+    def accepted_finals(self, shot_ids: list[str]) -> dict[str, Row]:
+        """shot id → its accepted FINAL frame (`id, shot_id, storage_path`), for the shots that have one: the
+        same-setup frame a later shot of that setup is painted against (plan/2026-11-11b)."""
+
     def claim_frame(self, frame_id: str) -> bool:
         """queued -> running, or False when another delivery already has it: a re-delivered task must not pay for
         the same picture twice."""

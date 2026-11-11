@@ -74,6 +74,14 @@ class FakeStore:
     def lines(self, scene_id: str) -> list[dict]:
         return self.line_rows
 
+    def shots(self, scene_id: str) -> list[dict]:
+        return [s for s in self.shot_rows.values() if str(s.get("scene_id")) == str(scene_id)]
+
+    def accepted_finals(self, shot_ids: list[str]) -> dict[str, dict]:
+        return {str(f["shot_id"]): dict(f) for f in self.frame_rows.values()
+                if str(f["shot_id"]) in shot_ids and f.get("accepted_at") and f.get("stage") != "draft"
+                and f.get("status") == "done" and f.get("storage_path")}
+
     def canon(self, production_id: UUID) -> list[dict]:
         return self.canon_rows
 

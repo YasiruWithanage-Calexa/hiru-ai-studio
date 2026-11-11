@@ -237,6 +237,8 @@ class PersonEdits(BaseModel):
     cast: CastEdits = Field(default_factory=CastEdits)
     waived_checks: list[str] = Field(default_factory=list)  # `Check.code`s
     dop_note: str = Field(default="", max_length=600)  # replaces the DP's own rationale when set
+    # plan/2026-11-11b: a person turned off the same-setup frame for this shot (`contracts.frame_brief.setup_frame`)
+    setup_frame_off: bool = False
 
     @classmethod
     def of(cls, shot: Mapping[str, Any] | None) -> PersonEdits:
@@ -255,6 +257,8 @@ class PersonEdits(BaseModel):
             out["waived_checks"] = self.waived_checks
         if self.dop_note:
             out["dop_note"] = self.dop_note
+        if self.setup_frame_off:
+            out["setup_frame_off"] = True
         return out
 
 
@@ -472,62 +476,7 @@ def frame_stage(row: Mapping[str, Any]) -> FrameStage:
 DRAFT_LABEL = "the approved draft of this frame"
 
 
-def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: str, cast: list[CastMember],
-                 references: list[str] | None = None, recommended_framing: str = "", unseen: str = "",
-                 hands: str = "") -> str:
-    """The image prompt for a shot's first frame, from the DP's IR and the camera as it stands.
-
-    `references` label the images attached to the call, IN ORDER ("Kamala's character sheet"),
-    so the prompt can say which image is which. The framing a person chose wins over the IR's
-    own composition note. Static wording first, the shot's facts after it. `cast` is who the
-    camera SEES; `unseen` says who is only heard (`contracts.staging.unseen_sentence`); `hands` says who holds what
-    (`contracts.holding.hands_for`), so a prop is never in a hand the story has not put it in."""
-    frame = ir.get("first_frame") if isinstance(ir.get("first_frame"), Mapping) else {}
-    subjects = frame.get("subjects") if isinstance(frame, Mapping) else None
-    subject_text = "; ".join(_clean(s) for s in subjects) if isinstance(subjects, list) else _clean(subjects)
-    parts = ["Photorealistic still frame from a Sri Lankan television drama, shot on a cinema camera with "
-             "real optics and natural imperfections."]
-    if references:
-        named = "; ".join(f"image {n} is {label}" for n, label in enumerate(references, start=1))
-        parts.append(f"Reference images, in order: {named}. Match them exactly: the same faces, hair, skin "
-                     "tone and build, the same place. Do not redesign anyone.")
-        if any(label.startswith(DRAFT_LABEL) for label in references):
-            # The draft was painted small to settle the picture: keep what was settled, make it final.
-            parts.append("The approved draft is a rough, low-quality version of this very frame: keep its "
-                         "composition, framing, pose, expression, props and light exactly, and paint it again "
-                         "as the finished frame with full detail and sharpness. The sheets still decide faces, "
-                         "hair and the place.")
-        if any(label.startswith("the look sheet") for label in references):
-            # A look sheet IS the costume of this shot: clothes, hair, makeup and accessories.
-            parts.append("A look sheet shows what that person wears in this shot: dress them exactly as their "
-                         "look sheet shows, the same clothes, hair, makeup and accessories.")
-        if any(label.startswith("the character sheet") for label in references):
-            # A sheet shows a plain reference outfit; the clothes of this shot come from the card.
-            parts.append("A character sheet shows a plain reference outfit: take clothes from the People "
-                         "line, never from the sheet, and if it names none dress them in plain everyday "
-                         "clothes.")
-    parts.append(f"Camera: {camera_sentence(camera)}")
-    if recommended_framing and camera.framing != recommended_framing:
-        parts.append(f"Compose it as a {camera.framing.lower()}.")
-    for text in (_clean(frame.get("composition")) if isinstance(frame, Mapping) else "", subject_text):
-        if text:
-            parts.append(text if text.endswith(".") else f"{text}.")
-    people = [identity_line(c) for c in cast if c.kind == "character"]
-    if people:
-        parts.append("People: " + " | ".join(people) + ".")
-    if hands:
-        parts.append(hands)
-    setting = (_clean(frame.get("setting")) if isinstance(frame, Mapping) else "") or _clean(ir.get("setting"))
-    if setting:
-        parts.append(f"Setting: {setting.rstrip('.')}.")
-    light = (_clean(frame.get("lighting")) if isinstance(frame, Mapping) else "") or _clean(ir.get("lighting"))
-    parts.append(f"Lighting: {(light or camera.lighting).rstrip('.')}.")
-    if unseen:
-        parts.append(unseen)
-    parts.append("The people, place and everyday details are Sri Lankan.")
-    parts.append("9:16 vertical framing." if aspect_ratio == "9:16" else f"{aspect_ratio} framing.")
-    parts.append("A single still frame: no text, no watermark, no captions, no collage, no split panels.")
-    return " ".join(parts)
+# The first frame's prompt is `contracts.frame_brief.frame_prompt` (plan/2026-11-11b).
 
 
 # ── the video prompt ───────────────────────────────────────────────────────────────────────

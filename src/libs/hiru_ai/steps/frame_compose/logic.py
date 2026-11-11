@@ -15,43 +15,40 @@ from contracts.canon import (
     CanonCard,
     CanonKind,
     LookFields,
-    look_sheet_path,
     look_sheet_prompt,
     look_wardrobe,
     looks_in_force,
     reference_sheet_aspect,
     reference_sheet_prompt,
 )
-from contracts.holding import Hands, hands_for, references_for
+from contracts.frame_brief import (
+    MAX_REFERENCES,
+    FrameBrief,
+    PlannedReference,
+    SetupFrame,
+    expected_frame,
+    frame_brief,
+    missing_references,
+    opens_line,
+    plan_references,
+    setup_frame,
+)
+from contracts.frame_brief import OPENS_LINE as OPENS_LINE
+from contracts.frame_brief import sheet_path as sheet_path
+from contracts.holding import Hands, hands_for
 from contracts.producer import (
     CameraSettings,
     CastMember,
     PersonEdits,
     default_camera,
-    frame_prompt,
     identity_line,
     pins_for,
-    shot_canon_ids,
     shot_items,
 )
-from contracts.staging import ShotIntent, Staging, shot_cast, source_phrase, staging, unseen_sentence
+from contracts.staging import Staging, shot_cast, source_phrase, staging, unseen_sentence
 from contracts.veo import ASPECT_RATIO, Orientation
 
 Row = dict[str, Any]
-# plan/2026-11-09 (D4, Raphael first): the first frame is the clip's opening, so it shows the state the clip opens in
-OPENS_LINE = "In this frame, as the clip opens: {state}."
-
-
-def opens_line(shot: Row) -> str:
-    """The state a Raphael shot opens in (its intent's `opens`, from the scene's state ledger), for the still, so the
-    still and the video agree. "" for every other planner and for a shot with no ledger."""
-    if str(shot.get("planner") or "") != "raphael":
-        return ""
-    intent = ShotIntent.of(shot)
-    state = " ".join((intent.opens if intent else "").split()).rstrip(" .;,")
-    return OPENS_LINE.format(state=state) if state else ""
-# The people seen, the place, a second place (the stall) and what they hold; the image model takes up to 16
-MAX_REFERENCES = 6
 ASPECT_OF_SHEET = SHEET_ASPECT
 
 
@@ -62,12 +59,6 @@ def cast_member(row: Row) -> CastMember:
                       version=current.get("version"), wardrobe_anchor=str(current.get("wardrobe_anchor") or ""),
                       voice_pin=str(current.get("voice_pin") or ""), appearance=str(card.get("appearance") or ""),
                       gender=str(card.get("gender") or ""))
-
-
-def sheet_path(row: Row) -> str:
-    assets = (row.get("current") or {}).get("reference_assets") or []
-    first = assets[0] if assets else None
-    return str(first.get("path") if isinstance(first, dict) else first or "")
 
 
 def production_aspect(production: Row) -> str:
@@ -90,6 +81,10 @@ class World:
     scene: Row
     lines: list[Row]
     looks: dict[str, Mapping[str, Any]] = field(default_factory=dict)
+    # plan/2026-11-11b §4.4: the scene's shots and their accepted FINAL frames (shot id → `{id, storage_path}`), for
+    # the same-setup frame. Empty: no same-setup frame is attached.
+    shots: list[Row] = field(default_factory=list)
+    accepted: dict[str, Row] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.aspect = production_aspect(self.production)
@@ -99,7 +94,8 @@ class World:
     @classmethod
     def of(cls, payload: Mapping[str, Any]) -> World:
         return cls(production=payload["production"], canon=payload["canon"], scene=payload["scene"],
-                   lines=payload.get("lines") or [], looks=payload.get("looks") or {})
+                   lines=payload.get("lines") or [], looks=payload.get("looks") or {},
+                   shots=payload.get("shots") or [], accepted=payload.get("accepted") or {})
 
     def _own(self, shot: Row) -> tuple[list[Any], list[str], Staging]:
         items = sceneplan.scene_items(self.scene, self.lines)
@@ -111,43 +107,38 @@ class World:
     def staged(self, shot: Row) -> Staging:
         return self._own(shot)[2]
 
-    def reference_choices(self, shot: Row) -> list[Row]:
-        """For each person the camera SEES, then the place: `{id, choices: [{label, path}]}`, in the order they are
-        attached, at most four. A person wearing a look is offered the look sheet first and the base sheet next; the
-        system takes the first that can be read, and leaves one with none out. Someone only heard is never attached:
-        their sheet would put their face in the frame."""
+    def setup(self, shot: Row) -> SetupFrame | None:
+        """The accepted frame of the first earlier shot of this shot's camera setup (`contracts.frame_brief`)."""
+        return setup_frame(shot, self.shots, self.accepted)
+
+    def planned(self, shot: Row) -> list[PlannedReference]:
+        """The pictures this frame wants, in their fixed order (`contracts.frame_brief.plan_references`)."""
         staged = self._own(shot)[2]
-        edits = PersonEdits.of(shot)
-        seen = {c: self.members[c].name for c in staged.on_screen if c in self.members}
-        planned = references_for(self.scene, shot, self.canon, shot_canon_ids(self.scene, staged.on_screen, edits),
-                                 seen, removed=edits.cast.remove, has_sheet=lambda r: bool(sheet_path(r)))
-        out: list[Row] = []
-        for cid, note in planned:
-            row = self.by_id.get(cid)
-            if not row or len(out) >= MAX_REFERENCES:
-                continue
-            what = {"location": "the location plate for", "prop": "the reference sheet for"}.get(
-                row["kind"], "the character sheet for")
-            choices = [{"label": f"{what} {row['name']}" + (f" ({note})" if note else ""), "path": sheet_path(row)}]
-            look = self.looks.get(cid) if row["kind"] == "character" else None
-            if look is not None:
-                choices.insert(0, {"label": f"the look sheet for {row['name']}", "path": look_sheet_path(look)})
-            out.append({"id": cid, "choices": [c for c in choices if c["path"]]})
-        return out
+        return plan_references(self.scene, shot, self.canon, staged.on_screen, self.looks, setup=self.setup(shot),
+                               limit=MAX_REFERENCES)
+
+    def reference_choices(self, shot: Row) -> list[Row]:
+        """For each picture the frame wants: `{id, role, choices: [{label, path, bucket}]}`, in the order they are
+        attached: the people the camera SEES, the place, another place, what they hold, then the same-setup frame. A
+        person wearing a look is offered the look sheet first and the base sheet next; the system takes the first that
+        can be read, and leaves one with none out. Someone only heard is never attached: their sheet would put their
+        face in the frame."""
+        return [{"id": p.id, "role": p.role,
+                 "choices": [{"label": label, "path": path, "bucket": "frames" if p.role == "setup" else "references"}
+                             for label, path in p.choices]}
+                for p in self.planned(shot)]
+
+    def missing(self, shot: Row) -> list[str]:
+        return missing_references(self.planned(shot))
 
     def cast(self, shot: Row, cast_ids: list[str]) -> list[CastMember]:
         """The people in the shot, each dressed in the look the scene uses, if any."""
         return [self.members[c].model_copy(update={"look": look_wardrobe(self.looks[c])}) if c in self.looks
                 else self.members[c] for c in cast_ids if c in self.members]
 
-    def compose(self, shot: Row, labels: list[str]) -> tuple[str, Row]:
-        """→ (the frame prompt naming exactly `labels` as its attached images, the pins). The pins cover everyone in
-        the shot, heard too (a voice's card is still part of the shot); the People line names only who is seen."""
-        own, cast_ids, staged = self._own(shot)
+    def camera(self, shot: Row) -> tuple[CameraSettings, CameraSettings]:
+        """(the recommendation, the camera as it stands: the recommendation with a person's changes on top)."""
         scene = self.scene
-        pins = pins_for(shot_version=int(shot.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
-                        versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot),
-                        looks=self.looks)
         default = default_camera(str(shot.get("framing") or "MS"), heading=str(scene.get("heading") or ""),
                                  time_of_day=str(scene.get("time_of_day") or ""))
         try:
@@ -155,13 +146,35 @@ class World:
                                                         or default.model_dump())
         except ValueError:
             recommended = default
-        camera = recommended.with_overrides(shot.get("camera_overrides") or {})
-        prompt = frame_prompt(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
-                              cast=self.cast(shot, staged.on_screen), references=labels,
-                              recommended_framing=recommended.framing,
-                              unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
-                              hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p))
-        return prompt, pins.model_dump()
+        return recommended, recommended.with_overrides(shot.get("camera_overrides") or {})
+
+    def brief(self, shot: Row, labels: list[str], *, polished: bool = True) -> FrameBrief:
+        """The first frame's brief naming exactly `labels` as its attached images (`contracts.frame_brief`), in the
+        prompt writer's words where it has polished the shot (`polished=False`: the code's words only)."""
+        staged = self._own(shot)[2]
+        recommended, camera = self.camera(shot)
+        return frame_brief(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
+                           cast=self.cast(shot, staged.on_screen), references=labels, recommended=recommended,
+                           unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
+                           hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p),
+                           scene=self.scene, shot=shot, polished=polished)
+
+    def preview_labels(self, shot: Row) -> list[str]:
+        """The labels the renderer will attach, when every first choice can be read (what the shot screen shows)."""
+        return [p.label for p in self.planned(shot) if p.choices]
+
+    def names(self) -> list[str]:
+        """Every person's and place's name in the production: what a rewrite of a section must still name."""
+        return [str(c["name"]) for c in self.canon if c.get("kind") in ("character", "location") and c.get("name")]
+
+    def compose(self, shot: Row, labels: list[str]) -> tuple[str, Row]:
+        """→ (the frame prompt naming exactly `labels` as its attached images, the pins). The pins cover everyone in
+        the shot, heard too (a voice's card is still part of the shot); the People line names only who is seen."""
+        own, cast_ids, _ = self._own(shot)
+        pins = pins_for(shot_version=int(shot.get("version") or 1), scene=self.scene, items=own, cast_ids=cast_ids,
+                        versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot),
+                        looks=self.looks)
+        return self.brief(shot, labels).text(), pins.model_dump()
 
     def hands(self, shot: Row) -> Hands:
         """Who holds what as the shot opens (`contracts.holding`), for the people the camera sees."""
@@ -171,11 +184,7 @@ class World:
     def expected(self, shot: Row) -> Row:
         """What the vision check compares the picture with: `{seen, unseen, frame}`."""
         staged = self._own(shot)[2]
-        raw = (shot.get("ir") or {}).get("first_frame")
-        frame: Mapping[str, Any] = raw if isinstance(raw, Mapping) else {}
-        listed = frame.get("subjects")
-        subjects: list[Any] = listed if isinstance(listed, list) else []
-        text = " ".join([str(frame.get("composition") or ""), *[str(x) for x in subjects]]).strip()
+        text = expected_frame(shot.get("ir") or {}, self.scene)
         return {"seen": [identity_line(m) for m in self.cast(shot, staged.on_screen)],
                 "unseen": [f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"
                            for c in staged.heard_only if c in self.members],

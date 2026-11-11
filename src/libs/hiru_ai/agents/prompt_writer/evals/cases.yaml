@@ -1,0 +1,37 @@
+# What the agent is asked, what the model is scripted to answer, and what the agent then returns. The merge that checks
+# the answer is code (`contracts.prompt_polish`); its own tests cover a rewrite that drops a fact.
+- name: a still at a market stall
+  input:
+    kind: first_frame
+    sections:
+      - key: light
+        title: Light
+        text: "Lighting: Bare tungsten bulbs hang over the trays; cold blue skylight from the open lagoon side. Colour temperature: 3800K tungsten bulbs against blue pre-dawn."
+        keep: [ "3800K" ]
+      - key: place
+        title: Place and time
+        text: "Setting: A covered fish stall at the Negombo lagoon market. Time: dawn, exterior. Weather: rain."
+        keep: [ "dawn", "exterior", "rain" ]
+  reply:
+    sections:
+      - key: light
+        text: "Bare tungsten bulbs hang low over the ice trays and pool warm 3800K light on the wet steel, while cold blue pre-dawn skylight spills in from the open lagoon side."
+      - key: place
+        text: "A covered fish stall at the Negombo lagoon market at dawn, exterior, a fine rain beading on the tin roof edge."
+  expect:
+    sections:
+      - key: light
+      - key: place
+- name: no model
+  model: unavailable
+  input:
+    kind: video
+    sections:
+      - key: camera
+        title: Camera
+        text: "Camera: braced handheld, 65mm, f/2.8; passenger-side profile at eye level."
+        keep: [ "65mm", "2.8" ]
+  expect:
+    sections:
+      - key: camera
+        text: "Camera: braced handheld, 65mm, f/2.8; passenger-side profile at eye level."

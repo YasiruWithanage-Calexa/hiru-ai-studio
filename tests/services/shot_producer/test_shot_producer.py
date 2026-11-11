@@ -193,7 +193,8 @@ def test_a_persons_camera_wins_in_the_prompt(scene0):
     run(store, mode="prompt", shot_ids=[sid])
     p = store.prompts[0]
     cam = _sections(p)["camera"]["segments"][0]["text"]
-    assert "85mm lens" in cam and "Locked-off, no camera movement" in cam and "slow push in" not in cam
+    assert "85mm lens" in cam and "Static: a steady, locked-off frame" in cam and "slow push in" not in cam
+    assert "Camera on side A of the line of action" in cam, "every field of the panel, the axis too"
     assert "push arrives" not in p["prose"], "the beats' own camera notes go when the move changed"
     assert p["camera"]["lens"] == "85mm"
     assert {"label": "Camera changed from the recommendation", "tone": "advisory"} in p["checks"]
@@ -262,7 +263,7 @@ def test_prompt_wording_has_no_doubled_stops_or_empty_identity_tags(scene0):
     prose = store.prompts[0]["prose"]
     assert ".." not in prose and ". —" not in prose
     assert "(the person)" not in prose and "Nimal says (quietly)" in prose
-    assert "shallow depth of field. Slow dolly in" in prose
+    assert "85mm lens at f/2.8" in prose and "Slow dolly in, one smooth move." in prose
 
 
 def test_a_persons_cast_edits_change_who_is_in_the_shot_and_what_it_is_pinned_to(scene0):

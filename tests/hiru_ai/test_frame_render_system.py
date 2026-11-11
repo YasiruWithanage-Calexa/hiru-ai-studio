@@ -292,3 +292,37 @@ def test_an_unreadable_or_foreign_draft_fails_the_final_on_both_engines():
 
     got = both(setup, painter={})
     assert got["result"]["failed"] == 2 and got["painted"] == []
+
+
+# ── the same-setup frame (plan/2026-11-11b) ────────────────────────────────────────────────
+
+
+def test_a_later_shot_of_a_setup_is_painted_against_the_first_shots_accepted_frame():
+    from contracts.frame_brief import SETUP_LABEL
+
+    def setup(store: FakeStore) -> dict[str, Any]:
+        first, later = shots(store)[0], shots(store)[1]
+        first["slate"], later["slate"] = "1A-1", "1A-2"
+        store.add_frame(first["id"], "done", accepted_at="2026-11-11T00:00:00Z", storage_path="p/1a-1.png")
+        return {"frame_ids": [store.add_frame(later["id"])]}
+
+    got = both(setup, painter={})
+    *labels, _aspect, prompt, pictures = got["painted"][0]
+    assert labels[-1] == f"{SETUP_LABEL} 1A-1", "attached last"
+    assert base64.b64decode(pictures[-1]) == b"frame:p/1a-1.png", "from the frames bucket"
+    assert f"image {len(labels)}: the same camera setup: match its framing, light and grade, not the pose" in prompt
+    frame = next(f for f in got["frames"].values() if f.get("status") == "done" and f.get("prompt"))
+    assert all(r != frame["id"] for r in frame["reference_ids"]) and len(frame["reference_ids"]) == len(labels) - 1, \
+        "`reference_ids` holds canon ids only"
+
+
+def test_a_person_can_turn_the_same_setup_frame_off():
+    def setup(store: FakeStore) -> dict[str, Any]:
+        first, later = shots(store)[0], shots(store)[1]
+        first["slate"], later["slate"] = "1A-1", "1A-2"
+        later["person_edits"] = {"setup_frame_off": True}
+        store.add_frame(first["id"], "done", accepted_at="2026-11-11T00:00:00Z", storage_path="p/1a-1.png")
+        return {"frame_ids": [store.add_frame(later["id"])]}
+
+    got = both(setup, painter={})
+    assert not any("accepted frame of shot" in str(x) for x in got["painted"][0])
