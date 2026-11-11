@@ -36,6 +36,9 @@ tiers:
   # The document reader (plan/2026-11-06f Q1): the author's model reads a whole episode, or its page images, in one
   # answer; its repairer is the same model on the same tier.
   reader:   { model: model_author,   effort: effort_reader,   timeout_s: 900,  retries: 1, fallbacks: [] }
+  # The scene breakdown (plan/2026-11-11 §9): the split, continuity, the episode calls, their repair and the stager on
+  # blocks, all one model at one effort as in the lab (GPT-6.1 Sol, medium). A six-scene episode call is a long answer.
+  breakdown: { model: model_breakdown, effort: effort_breakdown, timeout_s: 900, retries: 1, fallbacks: [] }
   # Sable, the production assistant chat (plan/2026-11-08 §4.4): a turn starts on `sable` (the average model) and moves
   # once, upward, to `sable_deep` when the work needs it (core/middleware/tiering.py). The lab (Phase 4) picks the pair.
   sable:      { model: model_sable,      effort: effort_sable,      timeout_s: 120, retries: 2, fallbacks: [] }

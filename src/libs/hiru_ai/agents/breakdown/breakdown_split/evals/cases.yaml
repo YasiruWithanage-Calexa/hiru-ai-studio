@@ -1,0 +1,87 @@
+# breakdown_split (plan/2026-11-11). Scripted replies test the seams; the live check (phase 7) is a person's.
+- name: one scene with a dash cue
+  input:
+    message: '<document filename="a.pdf">
+
+      1: SCENE 01 - EXT. CANAL - DAWN
+
+      2: Dinu waits.
+
+      3: DINU - Enna.
+
+      </document>'
+  reply:
+    sections:
+    - label: story
+      lines:
+        start: 1
+        end: 3
+      note: ''
+    cards:
+    - kind: person
+      name:
+        line: 3
+        w_from: 0
+        w_to: 1
+      lines:
+        start: 2
+        end: 3
+      fields: []
+      place_kind: null
+      seen: true
+      within: -1
+    rules: []
+    episodes:
+    - number: 0
+      heading: 1
+      scenes:
+      - number: 1
+        heading: 1
+        last: 3
+  expect:
+    episodes:
+    - number: 0
+- name: a direction table row is one rule scoped to all
+  input:
+    message: '<document filename="b.pdf">
+
+      1: VISUAL TREATMENT
+
+      2: Lighting: low-key, practical lamps only.
+
+      3: SCENE 01 - INT. GARAGE - NIGHT
+
+      4: Dinu waits.
+
+      </document>'
+  reply:
+    sections:
+    - label: direction
+      lines:
+        start: 1
+        end: 2
+      note: ''
+    - label: story
+      lines:
+        start: 3
+        end: 4
+      note: ''
+    cards: []
+    rules:
+    - about: lighting
+      lines:
+        start: 2
+        end: 2
+      scope_kind: all
+      scope_card: -1
+      scope_number: 0
+    episodes:
+    - number: 0
+      heading: 3
+      scenes:
+      - number: 1
+        heading: 3
+        last: 4
+  expect:
+    rules:
+    - about: lighting

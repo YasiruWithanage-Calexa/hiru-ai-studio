@@ -1,0 +1,91 @@
+{
+  "zones": ["bus stop", "police jeep", "bus"],
+  "marks": [
+    {
+      "block": 0,
+      "who": "Dinu",
+      "zone": "police jeep",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "",
+      "posture": "sitting"
+    ,
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 1,
+      "who": "Aruni",
+      "zone": "bus stop",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "red thread",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 1,
+      "who": "Dinu",
+      "zone": "police jeep",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "",
+      "posture": "",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": "red thread tied back around wrist"
+    },
+    {
+      "block": 2,
+      "who": "Aruni",
+      "zone": "bus stop",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "",
+      "posture": "",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 4,
+      "who": "Aruni",
+      "zone": "bus",
+      "facing": "away",
+      "frame_side": "",
+      "holding": "",
+      "posture": "walking",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    }
+  ],
+  "props": [
+    {
+      "block": 0,
+      "prop": "cash",
+      "where": "in evidence custody; recipient and exact position unspecified",
+      "state": "handed over as evidence"
+    },
+    {
+      "block": 2,
+      "prop": "red thread",
+      "where": "around Dinu's wrist",
+      "state": "tied back around his wrist"
+    },
+    {
+      "block": 5,
+      "prop": "red thread",
+      "where": "around Dinu's wrist",
+      "state": "rain running over it"
+    }
+  ]
+}

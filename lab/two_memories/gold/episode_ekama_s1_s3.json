@@ -1,0 +1,903 @@
+{
+ "scenes": [
+  {
+   "scene": "E01-S01",
+   "title": "The Canal Discovery",
+   "summary": "C02 discovers C03 dead beside the canal and finds P02 enclosed in his hand. Her attempt to reach C01 receives no response.",
+   "purpose": "Establish the death and the key as a mystery before introducing C01's involvement.",
+   "place": "L03",
+   "mood": [
+    "bleak",
+    "restrained",
+    "ominous"
+   ],
+   "people": [
+    {
+     "person": "C02",
+     "presence": "on_screen",
+     "wants": "Understand what she has found and reach C01.",
+     "feeling_start": "Unalarmed",
+     "feeling_end": "Shocked and isolated",
+     "source": "inferred"
+    },
+    {
+     "person": "C03",
+     "presence": "body",
+     "wants": "",
+     "feeling_start": "",
+     "feeling_end": "",
+     "source": "script"
+    }
+   ],
+   "things": [
+    {
+     "thing": "P01",
+     "role": "used",
+     "holder_start": "C02",
+     "holder_end": "C02",
+     "source": "script"
+    },
+    {
+     "thing": "P02",
+     "role": "hero",
+     "holder_start": "C03",
+     "holder_end": "C03",
+     "source": "script"
+    }
+   ],
+   "blocks": [
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 42,
+       "w_from": 0,
+       "w_to": 13
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C02"
+       ],
+       "things": [
+        "P01"
+       ],
+       "spot": "L12",
+       "speech": false,
+       "visible": true,
+       "change": "C02 approaches along the field with her bag in heavy rainfall.",
+       "function": "setup"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 42,
+       "w_from": 13,
+       "w_to": 20
+      },
+      {
+       "line": 43,
+       "w_from": 0,
+       "w_to": 16
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C02",
+        "C03"
+       ],
+       "things": [],
+       "spot": "L03",
+       "speech": false,
+       "visible": true,
+       "change": "An unidentified shape becomes C03's body; C02 lowers herself beside him and makes contact with his hand without crying out.",
+       "function": "reveal"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 43,
+       "w_from": 16,
+       "w_to": 24
+      },
+      {
+       "line": 44,
+       "w_from": 0,
+       "w_to": 2
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C02",
+        "C03"
+       ],
+       "things": [
+        "P02"
+       ],
+       "spot": "L03",
+       "speech": false,
+       "visible": true,
+       "change": "The key and its identifying mark are revealed within C03's closed hand; no removal is established.",
+       "function": "reveal"
+      }
+     ]
+    },
+    {
+     "kind": "dialogue",
+     "spans": [
+      {
+       "line": 45,
+       "w_from": 2,
+       "w_to": 7
+      }
+     ],
+     "speaker": "C02",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "C01",
+     "heard_by": [],
+     "intent": "Seek a response from C01.",
+     "delivery_hint": "Quiet urgency, with the pause carrying her shock.",
+     "source": "inferred",
+     "events": [
+      {
+       "actors": [
+        "C02"
+       ],
+       "things": [],
+       "spot": "L03",
+       "speech": true,
+       "visible": true,
+       "change": "C02 appeals to C01 without an established reply.",
+       "function": "texture"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 46,
+       "w_from": 0,
+       "w_to": 5
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C02"
+       ],
+       "things": [],
+       "spot": "L03",
+       "speech": false,
+       "visible": true,
+       "change": "C02 attempts a call to C01, but no connection is answered.",
+       "function": "turn"
+      }
+     ]
+    },
+    {
+     "kind": "sound",
+     "spans": [
+      {
+       "line": 46,
+       "w_from": 5,
+       "w_to": 13
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [
+      "C02"
+     ],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [],
+       "things": [],
+       "spot": "L03",
+       "speech": false,
+       "visible": false,
+       "change": "A remote vehicle horn joins the rainfall.",
+       "function": "texture"
+      }
+     ]
+    },
+    {
+     "kind": "transition",
+     "spans": [
+      {
+       "line": 46,
+       "w_from": 13,
+       "w_to": 16
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [],
+       "things": [],
+       "spot": "L03",
+       "speech": false,
+       "visible": true,
+       "change": "The location image gives way to darkness.",
+       "function": "turn"
+      }
+     ]
+    },
+    {
+     "kind": "text",
+     "spans": [
+      {
+       "line": 46,
+       "w_from": 16,
+       "w_to": 19
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [],
+       "things": [],
+       "spot": "L03",
+       "speech": false,
+       "visible": true,
+       "change": "The episode title appears.",
+       "function": "setup"
+      }
+     ]
+    }
+   ],
+   "turns": [
+    1,
+    2,
+    4
+   ],
+   "source": "inferred",
+   "rules_met": [
+    "D01",
+    "D02"
+   ]
+  },
+  {
+   "scene": "E01-S02",
+   "title": "The Route Change",
+   "summary": "C01 drives through Colombo while C02's recorded message expresses concern about C03 and his promised visit. C04 orders a different destination, and C01 redirects the van after looking at P04.",
+   "purpose": "Connect C01's personal obligations with C04's control over his movements.",
+   "place": "L04",
+   "mood": [
+    "uneasy",
+    "intimate",
+    "pressured"
+   ],
+   "people": [
+    {
+     "person": "C01",
+     "presence": "on_screen",
+     "wants": "Continue his journey while responding to competing personal and work demands.",
+     "feeling_start": "Preoccupied",
+     "feeling_end": "Troubled",
+     "source": "inferred"
+    },
+    {
+     "person": "C02",
+     "presence": "voice_message",
+     "wants": "Get reassurance about C03 and C01's arrival.",
+     "feeling_start": "Concerned",
+     "feeling_end": "Afraid",
+     "source": "inferred"
+    },
+    {
+     "person": "C04",
+     "presence": "phone",
+     "wants": "Redirect C01 to L06.",
+     "feeling_start": "Commanding",
+     "feeling_end": "Commanding",
+     "source": "inferred"
+    }
+   ],
+   "things": [
+    {
+     "thing": "P03",
+     "role": "dressing",
+     "holder_start": "L04",
+     "holder_end": "L04",
+     "source": "script"
+    },
+    {
+     "thing": "P04",
+     "role": "worn",
+     "holder_start": "C01",
+     "holder_end": "C01",
+     "source": "script"
+    }
+   ],
+   "blocks": [
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 48,
+       "w_from": 0,
+       "w_to": 13
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C01"
+       ],
+       "things": [],
+       "spot": "L07",
+       "speech": false,
+       "visible": true,
+       "change": "C01 drives L04 through wet streets illuminated by sodium lighting.",
+       "function": "setup"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 48,
+       "w_from": 13,
+       "w_to": 20
+      },
+      {
+       "line": 49,
+       "w_from": 0,
+       "w_to": 9
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [],
+       "things": [
+        "P03"
+       ],
+       "spot": "L04",
+       "speech": false,
+       "visible": true,
+       "change": "A dashboard photograph establishes a shared memory of C01 and C02 at a rural bus stop.",
+       "function": "setup"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 49,
+       "w_from": 9,
+       "w_to": 13
+      }
+     ],
+     "speaker": "",
+     "presence": "voice_message",
+     "device": "",
+     "addressee": "",
+     "heard_by": [
+      "C01"
+     ],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [],
+       "things": [],
+       "spot": "L04",
+       "speech": false,
+       "visible": false,
+       "change": "Playback introduces C02's recorded message.",
+       "function": "setup"
+      }
+     ]
+    },
+    {
+     "kind": "dialogue",
+     "spans": [
+      {
+       "line": 50,
+       "w_from": 2,
+       "w_to": 16
+      }
+     ],
+     "speaker": "C02",
+     "presence": "voice_message",
+     "device": "",
+     "addressee": "C01",
+     "heard_by": [
+      "C01"
+     ],
+     "intent": "Report C03's absence and seek reassurance from C01.",
+     "delivery_hint": "Personal and increasingly anxious rather than accusatory.",
+     "source": "inferred",
+     "events": [
+      {
+       "actors": [
+        "C02"
+       ],
+       "things": [],
+       "spot": "L04",
+       "speech": true,
+       "visible": false,
+       "change": "C01 hears that C03 has not returned and that C02 is frightened while awaiting his visit.",
+       "function": "reveal"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 51,
+       "w_from": 0,
+       "w_to": 2
+      }
+     ],
+     "speaker": "",
+     "presence": "phone",
+     "device": "",
+     "addressee": "",
+     "heard_by": [
+      "C01"
+     ],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C04"
+       ],
+       "things": [],
+       "spot": "L04",
+       "speech": false,
+       "visible": false,
+       "change": "An incoming call brings C04 into the scene remotely.",
+       "function": "setup"
+      }
+     ]
+    },
+    {
+     "kind": "dialogue",
+     "spans": [
+      {
+       "line": 51,
+       "w_from": 2,
+       "w_to": 11
+      }
+     ],
+     "speaker": "C04",
+     "presence": "phone",
+     "device": "",
+     "addressee": "C01",
+     "heard_by": [
+      "C01"
+     ],
+     "intent": "Make C01 abandon his current route and proceed to L06.",
+     "delivery_hint": "Clipped authority, with no invitation to negotiate.",
+     "source": "inferred",
+     "events": [
+      {
+       "actors": [
+        "C04"
+       ],
+       "things": [],
+       "spot": "L04",
+       "speech": true,
+       "visible": false,
+       "change": "C04 supplies a replacement destination at L06.",
+       "function": "turn"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 51,
+       "w_from": 11,
+       "w_to": 20
+      },
+      {
+       "line": 52,
+       "w_from": 0,
+       "w_to": 6
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C01"
+       ],
+       "things": [
+        "P04"
+       ],
+       "spot": "L04",
+       "speech": false,
+       "visible": true,
+       "change": "C01 checks the thread on his wrist, then steers toward the industrial district.",
+       "function": "turn"
+      }
+     ]
+    }
+   ],
+   "turns": [
+    5,
+    6
+   ],
+   "source": "inferred",
+   "rules_met": []
+  },
+  {
+   "scene": "E01-S03",
+   "title": "The Garage Handover",
+   "summary": "Six hours before the van journey, C03 presents evidence and a key linked to money taken from village projects. C01 objects to taking the funds, but C03 pressures him through his relationship with C02 and places P02 in his hand.",
+   "purpose": "Establish the proposed theft, C01's moral resistance, and the earlier transfer of the key without resolving its later return to C03.",
+   "place": "L05",
+   "mood": [
+    "secretive",
+    "conflicted",
+    "pressuring"
+   ],
+   "people": [
+    {
+     "person": "C03",
+     "presence": "on_screen",
+     "wants": "Persuade C01 to participate in taking C04's funds.",
+     "feeling_start": "Determined",
+     "feeling_end": "Insistent",
+     "source": "inferred"
+    },
+    {
+     "person": "C01",
+     "presence": "on_screen",
+     "wants": "Avoid becoming morally equivalent to the people holding the money.",
+     "feeling_start": "Resistant",
+     "feeling_end": "Conflicted",
+     "source": "inferred"
+    }
+   ],
+   "things": [
+    {
+     "thing": "P05",
+     "role": "used",
+     "holder_start": "C03",
+     "holder_end": "C03",
+     "source": "script"
+    },
+    {
+     "thing": "P02",
+     "role": "hero",
+     "holder_start": "P05",
+     "holder_end": "C01",
+     "source": "script"
+    }
+   ],
+   "blocks": [
+    {
+     "kind": "transition",
+     "spans": [
+      {
+       "line": 54,
+       "w_from": 0,
+       "w_to": 3
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [],
+       "things": [],
+       "spot": "L05",
+       "speech": false,
+       "visible": false,
+       "change": "The narrative moves six hours back from the preceding journey.",
+       "function": "setup"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 54,
+       "w_from": 3,
+       "w_to": 16
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C03"
+       ],
+       "things": [
+        "P05",
+        "P02"
+       ],
+       "spot": "L05",
+       "speech": false,
+       "visible": true,
+       "change": "C03 opens the container, exposing photographic and banking material alongside the key.",
+       "function": "reveal"
+      }
+     ]
+    },
+    {
+     "kind": "dialogue",
+     "spans": [
+      {
+       "line": 55,
+       "w_from": 2,
+       "w_to": 13
+      }
+     ],
+     "speaker": "C03",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "C01",
+     "heard_by": [
+      "C01"
+     ],
+     "intent": "Justify taking the funds by identifying their corrupt origin.",
+     "delivery_hint": "Matter-of-fact persuasion, emphasizing the scale and source.",
+     "source": "inferred",
+     "events": [
+      {
+       "actors": [
+        "C03"
+       ],
+       "things": [],
+       "spot": "L05",
+       "speech": true,
+       "visible": true,
+       "change": "C03 identifies C04's holding as three hundred million rupees diverted from village projects.",
+       "function": "reveal"
+      }
+     ]
+    },
+    {
+     "kind": "dialogue",
+     "spans": [
+      {
+       "line": 56,
+       "w_from": 2,
+       "w_to": 9
+      }
+     ],
+     "speaker": "C01",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "C03",
+     "heard_by": [
+      "C03"
+     ],
+     "intent": "Challenge the moral basis of participating.",
+     "delivery_hint": "Firm objection with unease beneath it.",
+     "source": "inferred",
+     "events": [
+      {
+       "actors": [
+        "C01"
+       ],
+       "things": [],
+       "spot": "L05",
+       "speech": true,
+       "visible": true,
+       "change": "C01 argues that taking the money would make them resemble its corrupt holders.",
+       "function": "turn"
+      }
+     ]
+    },
+    {
+     "kind": "dialogue",
+     "spans": [
+      {
+       "line": 57,
+       "w_from": 2,
+       "w_to": 17
+      }
+     ],
+     "speaker": "C03",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "C01",
+     "heard_by": [
+      "C01"
+     ],
+     "intent": "Overcome C01's resistance by invoking his fear of losing C02.",
+     "delivery_hint": "Pointed and intimate, shifting pressure from money to personal courage.",
+     "source": "inferred",
+     "events": [
+      {
+       "actors": [
+        "C03"
+       ],
+       "things": [],
+       "spot": "L05",
+       "speech": true,
+       "visible": true,
+       "change": "C03 claims that C01's fear, rather than his finances, threatens his relationship with C02.",
+       "function": "turn"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 58,
+       "w_from": 0,
+       "w_to": 7
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C03",
+        "C01"
+       ],
+       "things": [
+        "P02"
+       ],
+       "spot": "L05",
+       "speech": false,
+       "visible": true,
+       "change": "C03 transfers the key into C01's hand without an explicit verbal agreement.",
+       "function": "turn"
+      }
+     ]
+    },
+    {
+     "kind": "action",
+     "spans": [
+      {
+       "line": 58,
+       "w_from": 7,
+       "w_to": 17
+      }
+     ],
+     "speaker": "",
+     "presence": "on_screen",
+     "device": "",
+     "addressee": "",
+     "heard_by": [],
+     "intent": "",
+     "delivery_hint": "",
+     "source": "script",
+     "events": [
+      {
+       "actors": [
+        "C01"
+       ],
+       "things": [
+        "P02"
+       ],
+       "spot": "L05",
+       "speech": false,
+       "visible": true,
+       "change": "C01 studies the key while rainfall sounds against the roof.",
+       "function": "texture"
+      }
+     ]
+    }
+   ],
+   "turns": [
+    3,
+    4,
+    5
+   ],
+   "source": "inferred",
+   "rules_met": []
+  }
+ ]
+}

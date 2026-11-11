@@ -1,0 +1,36 @@
+{
+ "n": 9,
+ "slot": "stager",
+ "agent": "breakdown_stager",
+ "scenes": [],
+ "seconds": 8.2,
+ "input_tokens": 1304,
+ "cached_tokens": 1075,
+ "output_tokens": 260,
+ "dollars": 0.0032,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "<place>\nCash Van (vehicle). Dinu drives a cash-transfer van.\n</place>\n\n<people>\n- Dinu: on_screen\n- Aruni: voice_message (NOT in the place: heard only)\n- Mudalali: phone (NOT in the place: heard only)\n</people>\n\nBlocks 0 to 5:\n<script>\n[0] action: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.\n[1] action: On the dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays.\n[2] dialogue Aruni, voice_message: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.\n[3] action: Mudalali calls.\n[4] dialogue Mudalali, phone: Route eka maru karapan. Old Port warehouse ekata yanna.\n[5] action: Dinu looks at the red thread around his wrist and turns toward the industrial area.\n</script>",
+ "answer": {
+  "zones": [
+   "driver's seat",
+   "dashboard"
+  ],
+  "marks": [
+   {
+    "block": 0,
+    "who": "Dinu",
+    "zone": "driver's seat",
+    "facing": "",
+    "frame_side": "",
+    "holding": "",
+    "posture": "sitting",
+    "left_hand": "",
+    "right_hand": "",
+    "condition": "",
+    "wearing": ""
+   }
+  ],
+  "props": []
+ }
+}

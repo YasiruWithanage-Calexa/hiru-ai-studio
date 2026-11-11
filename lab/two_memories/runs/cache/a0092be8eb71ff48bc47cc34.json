@@ -1,0 +1,65 @@
+{
+  "zones": ["entrance", "inside"],
+  "marks": [
+    {
+      "block": 0,
+      "who": "Dinu",
+      "zone": "inside",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "soaked and slightly injured",
+      "wearing": ""
+    },
+    {
+      "block": 0,
+      "who": "Aruni",
+      "zone": "inside",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "phone",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "angry",
+      "wearing": ""
+    },
+    {
+      "block": 2,
+      "who": "Aruni",
+      "zone": "inside",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "phone",
+      "posture": "",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "controlled determination",
+      "wearing": ""
+    },
+    {
+      "block": 5,
+      "who": "Aruni",
+      "zone": "inside",
+      "facing": "away",
+      "frame_side": "right",
+      "holding": "phone",
+      "posture": "",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    }
+  ],
+  "props": [
+    {
+      "block": 0,
+      "prop": "cash bags",
+      "where": "on the floor inside the house",
+      "state": ""
+    }
+  ]
+}

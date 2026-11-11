@@ -36,6 +36,7 @@ ADDED_2026_11_08F = (
     "- STATE (plan/2026-11-09).",
     *("- BREAKDOWN (plan/2026-11-10).",) * 3,  # the director's breakdown: three lines
     "- PHONE (plan/2026-11-10).",  # a name on a phone screen is welcome; phone close-ups are must clips
+    *("- PACKET (plan/2026-11-11).",) * 5,  # the scene packet as the first message (contracts.raphael.packet)
     "- SAFE DEPICTION (plan/2026-11-10b).",  # death and violence shown, never named (contracts.safe_depiction)
 )
 

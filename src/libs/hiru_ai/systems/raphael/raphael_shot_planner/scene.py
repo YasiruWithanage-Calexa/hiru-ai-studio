@@ -156,6 +156,21 @@ def objects_of(props: list[Row], location: Row | None, blocks: list[BlockS]) -> 
     return [str(p["name"]) for p in props if norm(str(p.get("name") or "")) and norm(str(p["name"])) in text]
 
 
+def from_packet(packet: Row, lines: list[Row]) -> tuple[str, SceneS, dict[str, str]] | None:
+    """The packet path (plan/2026-11-11 phase 4): stage 1's opening, the `SceneS` Raphael's code reads, and the map from
+    the short line id (L<block>) to the scene's real `dialogue_lines` row. The breakdown fills one row per spoken block,
+    in block order, so the n-th spoken block is the line of `ord` n; a scene whose count differs is not planned from the
+    packet (None: today's path)."""
+    from contracts.raphael.packet import opening
+
+    text, script, ids = opening(packet)
+    shorts = sorted((k for k in ids if k.startswith("L")), key=lambda k: int(k[1:]))
+    rows = sorted(lines, key=lambda r: int(r.get("ord") or 0))
+    if len(shorts) != len(rows):
+        return None
+    return text, script, {short: str(row["id"]) for short, row in zip(shorts, rows, strict=True)}
+
+
 def a_cap(value: Any, default: float = DEFAULT_CAP) -> float:
     """The length cap asked for, or the default when it is not one of the four choices."""
     try:
@@ -186,6 +201,7 @@ class Planner:
         allowed: tuple[str, ...] | None = None,
         meter: Meter | None = None,
         use_breakdown: bool | None = None,
+        opening: str = "",
     ) -> None:
         self.ctx, self.scene, self.number, self.line_ids = ctx, scene, number, line_ids
         self.production, self.context, self.extra = production, context, extra
@@ -201,10 +217,17 @@ class Planner:
         # plan/2026-11-10: the director's breakdown, `RAPHAEL_BREAKDOWN` (false: Raphael as it was before)
         self.use_breakdown = get_settings().raphael_breakdown if use_breakdown is None else use_breakdown
         self.breakdown: BreakdownW | None = None
+        # plan/2026-11-11 phase 4: the scene packet's opening (`contracts.raphael.packet.opening`). Set, it is stage 1's
+        # first message and there is no director's breakdown (purpose, turns and direction are in the packet, §6).
+        self.packet_opening = opening
+        if opening:
+            self.use_breakdown = False
 
     # the agents' input ────────────────────────────────────────────────────────────────────────
 
     def opening1(self) -> str:
+        if self.packet_opening:
+            return self.packet_opening
         return pack.opening_stage1(self.production, self.context, self.brief, self.extra, self.breakdown)
 
     def input_hash(self) -> str:
@@ -215,7 +238,8 @@ class Planner:
         body = json.dumps(
             # the opening WITHOUT the breakdown: a re-plan of the same input keeps (and reuses) the stored breakdown
             {
-                "pack": pack.opening_stage1(self.production, self.context, self.brief, self.extra),
+                "pack": self.packet_opening
+                or pack.opening_stage1(self.production, self.context, self.brief, self.extra),
                 "scene": scene_dump(self.scene),
                 "cap": self.cap,
             },

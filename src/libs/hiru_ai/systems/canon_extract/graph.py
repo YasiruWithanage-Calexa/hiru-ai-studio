@@ -29,6 +29,7 @@ from contracts.veo import ASPECT_RATIO, Orientation
 from hiru_ai.core import agents, doc_reader, llm, parts, story
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
+from hiru_ai.core.settings import get_settings
 from hiru_ai.systems.canon_extract.state import State
 
 _logger = logging.getLogger(__name__)
@@ -160,6 +161,11 @@ def run(payload: DispatchPayload, ctx: RunContext, checkpointer: BaseCheckpointS
         return {"skipped": "production deleted"}
     settings = ProductionSettings.model_validate(production.get("settings") or {})
     carry = {"build": bool(payload.state.get("build"))}
+    if get_settings().breakdown.enabled:  # plan/2026-11-11 §6: the scene breakdown fills the canon from its cards
+        jobs.stage(job_id, Stage.CANON.value, "done", "The scene breakdown reads the canon from the documents")
+        result_off: dict[str, Any] = {"skipped": "the scene breakdown reads the canon"}
+        jobs.finish(payload, result_off, carry)
+        return result_off
     if carry["build"] and not settings.build.canon:
         jobs.stage(job_id, Stage.CANON.value, "done", "Skipped: canon is not part of this build")
         result: dict[str, Any] = {"skipped": "canon not requested"}

@@ -1,0 +1,143 @@
+<packet>
+SCENE E01-S08: SCENE 08 - INT. OLD RICE MILL - NIGHT - 3 MINUTES
+Title: The mill confrontation
+Summary: Dinu holds off Suren while Aruni broadcasts the evidence and defeats Inspector Ruwan's interference. Public attention, Dinu's restraint and arriving police end Mudalali and Inspector Ruwan's control.
+Purpose (inferred): Resolve the exposure through physical resistance, Aruni's initiative and public witness rather than violence alone.
+Story time: order 8, normal, After the preparations in E01-S07 (measured from E01-S07)
+The scene before it in the story: E01-S07 SCENE 07 - EXT. MAHAWEWA TEMPLE GROUND - NIGHT - 1 MINUTE. It ends with: Me para api dekdenama ekata yamu.
+The scene after it in the story: E01-S09 SCENE 09 - EXT. MAHAWEWA BUS STOP - DAWN - 1.5 MINUTES. It opens with: The cash is handed over as evidence. Dinu is taken away in a police jeep.
+On the page, before it: E01-S07 SCENE 07 - EXT. MAHAWEWA TEMPLE GROUND - NIGHT - 1 MINUTE
+On the page, after it: E01-S09 SCENE 09 - EXT. MAHAWEWA BUS STOP - DAWN - 1.5 MINUTES
+Thread (journey, cash bag): The cash moves from the failed escape into Dinu's custody, then becomes evidence. Here: Mudalali demands the cash at Old Rice Mill. Earlier: E01-S04: Nimal attempts escape with a cash bag; Dinu loads the cash bags into Cash Van and escapes.; E01-S06: Dinu brings the cash bags to Aruni's House.; E01-S07: Dinu takes the cash bags toward Old Rice Mill.. Later: E01-S09: The cash is handed over as evidence at Mahawewa Bus Stop; the recipient is unspecified..
+Thread (journey, Nimal's phone): Dinu has the recording-bearing phone, passes it to Aruni, and Aruni uses it for public exposure. Here: Aruni activates the broadcast; the phone's physical relocation, if any, is not shown. Earlier: E01-S05: Nimal's phone is in Dinu's possession in Cash Van.; E01-S06: Dinu gives Nimal's phone to Aruni.; E01-S07: Aruni connects Nimal's phone to the temple sound system..
+Thread (setup_payoff, Nimal's phone / temple loudspeaker): The private recording and the risk of police suppression lead to a public broadcast that enables exposure and arrests. Here: The recording reaches the village despite Inspector Ruwan's interference; villagers gather and police arrest Mudalali and Inspector Ruwan. Earlier: E01-S05: The recording reveals the network.; E01-S06: Dinu warns of evidence suppression; Aruni looks toward temple loudspeaker.; E01-S07: Aruni prepares the sound-system connection..
+Knowledge: person a group; learns The village hears the recorded voices of Mudalali and Inspector Ruwan, making the evidence public before their arrests.; audience_only False
+Looks: person Dinu; kind injury; note Carry forward the slight injuries established on arrival; the script does not specify wounds or additional lasting damage.
+Looks: person Dinu; kind wardrobe; note red thread is initially around his wrist and is tied back on by Aruni at the end; when or how it came off is unstated.
+Relationship (Dinu and Aruni, as of E01-S03): Nimal characterizes their relationship as endangered by Dinu's fear, not lack of money; this remains Nimal's claim.
+Relationship (Dinu and Aruni, as of E01-S05): Trust is fractured by suspicion of Dinu's complicity; confrontation continues when he arrives with the cash.
+Relationship (Dinu and Aruni, as of E01-S07): The recording shifts them toward a shared plan; Aruni explicitly commits to facing the danger together.
+Relationship (Dinu and Mudalali, as of E01-S04): Route-giving authority becomes overt lethal opposition when Mudalali shoots Nimal and Dinu escapes with the funds.
+Relationship (Mudalali and Inspector Ruwan, as of E01-S08): Their shared involvement in the money trail is recorded, then publicly exposed during their joint attempt to recover the evidence and cash.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C01 Dinu [on_screen] summary: Dinu
+30, Colombo cash-transport driver. Quiet, experienced, violent only when
+cornered.; details: 30, Colombo cash-transport driver. | wants: Protect Aruni and prevent the evidence from being reclaimed. | feels: Resolved -> Restrained after gaining the advantage (inferred)
+- C02 Aruni [on_screen] summary: Aruni
+27, Mahawewa community nurse. Strong, intelligent and emotionally
+controlled.; details: 27, Mahawewa community nurse. | wants: Keep the evidence audible and stop its suppression. | feels: Determined -> Vindicated (inferred)
+- C04 Mudalali [on_screen] summary: Mudalali
+52, businessman laundering illegal money through village development
+projects. | wants: Recover the phone and money and regain control. | feels: Commanding -> Defeated (inferred)
+- C05 Suren [on_screen] summary: Suren
+38, Mudalali's brutal right-hand man.; details: 38, Mudalali's brutal right-hand man. | wants: Subdue Dinu. | feels: Aggressive -> Unresolved (inferred)
+- C06 Inspector Ruwan [on_screen] summary: Inspector Ruwan
+45, corrupt police officer protecting the money trail.; details: 45, corrupt police officer protecting the money trail. | wants: Stop the exposure. | feels: Assertive -> Defeated (inferred)
+
+PLACE: Old Rice Mill (set); zones: mill entrance, mill floor, power controls
+THINGS
+- P08 Nimal's phone [hero] held at the start by: Aruni; at the end: Aruni (inferred)
+- P09 temple loudspeaker [hero] held at the start by: Mahawewa Temple Ground; at the end: Mahawewa Temple Ground (script)
+- P07 cash bag [mentioned] held at the start by: Dinu; at the end: Dinu (inferred)
+- P10 metal bar [used] held at the start by: -; at the end: - (script). Card: summary: Suren attacks. Dinu fights through rice sacks, a metal bar and wet concrete. The fight stays grounded: elbows, body
+weight, short impacts and one continuous handheld take. Aruni activates the temple loudspeaker.; details: Dinu fights through rice sacks, a metal bar and wet concrete.
+- P11 gun [hero] held at the start by: Mudalali; at the end: - (script). Card: summary: Villagers surround the mill. Mudalali raises a gun at Aruni. Headlights blind him. Dinu kicks the weapon away and
+chooses not to kill him. Police arrive and arrest Mudalali and Ruwan.; details: Mudalali raises a gun at Aruni.
+STATE Mudalali: in: zone mill entrance, facing right, frame side left, posture standing; out: zone mill entrance, facing right, frame side left, holding gun, posture standing, condition arrested
+STATE Inspector Ruwan: in: zone mill entrance, facing right, frame side left, posture standing; out: zone power controls, facing right, frame side left, posture standing, condition arrested
+STATE Dinu: in: zone mill floor, facing left, frame side right, posture standing; out: zone mill entrance, facing left, frame side right, posture standing
+STATE Aruni: in: -; out: zone power controls, facing left, frame side right, posture standing
+STATE Suren: in: zone mill entrance, facing right, frame side left, posture standing; out: zone mill floor, facing right, frame side left, posture standing
+NOT PLACED Aruni: no position before block 5 (the script does not say)
+PROP from b9: gun, on the ground at the mill entrance, away from Mudalali, kicked away by Dinu
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S08-B01 action: Mudalali, Suren and Inspector Ruwan arrive. Vehicle headlights turn Dinu into a silhouette.
+    intent (inferred): Stage the opposing forces around Dinu.
+    delivery hint: Use arriving headlights to reduce Dinu to an outline.
+    event E01-S08-B01-e1 (setup; who: Mudalali, Suren, Inspector Ruwan, Dinu; at: Old Rice Mill [L10]): The three opponents arrive; backlighting isolates Dinu.
+    state from here: Mudalali: zone mill entrance, facing right, frame side left, posture standing
+    state from here: Suren: zone mill entrance, facing right, frame side left, posture standing
+    state from here: Inspector Ruwan: zone mill entrance, facing right, frame side left, posture standing
+    state from here: Dinu: zone mill floor, facing left, frame side right, posture standing
+b1 = E01-S08-B02 action: Mudalali demands the phone and the cash.
+    intent (inferred): Establish the assets Mudalali wants reclaimed.
+    delivery hint: Keep the demand focused on the contested evidence and funds.
+    event E01-S08-B02-e1 (setup; who: Mudalali; things: Nimal's phone, cash bag; at: Old Rice Mill [L10]): Mudalali seeks surrender of both contested assets.
+b2 = E01-S08-B03 dialogue Mudalali [on_screen] to Dinu, heard by Dinu, Suren, Inspector Ruwan: Oya driver kenek. Decision ganna oyata baha.
+    intent (inferred): Deny Dinu the right to choose.
+    delivery hint: Dismissive authority.
+    event E01-S08-B03-e1 (texture; who: Mudalali; at: Old Rice Mill [L10]): Mudalali invokes hierarchy to undermine Dinu's resistance.
+b3 = E01-S08-B04 dialogue Dinu [on_screen] to Mudalali, heard by Mudalali, Suren, Inspector Ruwan: Driver kenek thamai. Habai direction eka ada mama decide karanawa.
+    intent (inferred): Claim responsibility for his own course.
+    delivery hint: Controlled, deliberate defiance.
+    event E01-S08-B04-e1 (turn; who: Dinu; at: Old Rice Mill [L10]): Dinu openly rejects Mudalali's authority.
+b4 = E01-S08-B05 action: Suren attacks. Dinu fights through rice sacks, a metal bar and wet concrete. The fight stays grounded: elbows, body weight, short impacts and one continuous handheld take.
+    intent (inferred): Make resistance depend on weight, terrain and limited space.
+    delivery hint: Preserve a single handheld take with readable short-range contact.
+    event E01-S08-B05-e1 (turn; who: Suren, Dinu; things: metal bar; at: Old Rice Mill [L10]): Suren attacks and Dinu fights amid stored sacks, metal and slippery flooring.
+    state from here: Suren: zone mill floor, facing right, frame side left, posture standing
+b5 = E01-S08-B06 action: Aruni activates the temple loudspeaker.
+    intent (inferred): Give Aruni the decisive disclosure action.
+    delivery hint: Make activation clear without inventing a new phone location.
+    event E01-S08-B06-e1 (turn; who: Aruni; things: temple loudspeaker, Nimal's phone): Aruni enables the prepared public playback.
+    state from here: Aruni: zone power controls, facing left, frame side right, posture standing
+b6 = E01-S08-B07 sound: Mudalali and Ruwan's own voices play across the village.
+    intent (inferred): Expose both recorded participants through public playback.
+    delivery hint: Keep the two recorded voices distinguishable across the village soundscape.
+    event E01-S08-B07-e1 (reveal, not visible; who: Mudalali, Inspector Ruwan; things: Nimal's phone, temple loudspeaker; at: Mahawewa village [L02]): The recorded voices of Mudalali and Inspector Ruwan become publicly audible.
+b7 = E01-S08-B08 action: Inspector Ruwan tries to cut the power. Aruni blocks him and switches it back on.
+    intent (inferred): Make Aruni actively defeat the attempted suppression.
+    delivery hint: Clarify the interruption and restoration through the power controls and sound.
+    event E01-S08-B08-e1 (turn; who: Inspector Ruwan, Aruni; things: temple loudspeaker): Inspector Ruwan interferes with the supply; Aruni obstructs him and restores it.
+    state from here: Inspector Ruwan: zone power controls, facing right, frame side left, posture standing
+b8 = E01-S08-B09 dialogue Aruni [on_screen] to Inspector Ruwan, heard by Inspector Ruwan: Uniform eka thiyena nisa aththa maranna puluwan kiyala hituwada?
+    intent (inferred): Reject the use of official status to silence the truth.
+    delivery hint: Firm confrontation without hesitation.
+    event E01-S08-B09-e1 (turn; who: Aruni, Inspector Ruwan): Aruni directly challenges Inspector Ruwan's claimed authority.
+b9 = E01-S08-B10 action: Villagers surround the mill. Mudalali raises a gun at Aruni. Headlights blind him. Dinu kicks the weapon away and chooses not to kill him. Police arrive and arrest Mudalali and Ruwan.
+    intent (inferred): Resolve the threat through public pressure, disarmament and restraint.
+    delivery hint: Keep the headlight advantage and disarming kick clear; do not turn the refusal to kill into an execution attempt.
+    event E01-S08-B10-e1 (turn; at: Old Rice Mill [L10]): A village crowd gathers around the building.
+    event E01-S08-B10-e2 (turn; who: Mudalali, Aruni; things: gun; at: Old Rice Mill [L10]): Mudalali threatens Aruni with a firearm but loses vision in the headlights.
+    event E01-S08-B10-e3 (turn; who: Dinu, Mudalali; things: gun; at: Old Rice Mill [L10]): Dinu kicks the firearm out of play and spares Mudalali.
+    event E01-S08-B10-e4 (turn; who: Mudalali, Inspector Ruwan; at: Old Rice Mill [L10]): Arriving officers take Mudalali and Inspector Ruwan into custody.
+    state from here: Mudalali: zone mill entrance, facing right, frame side left, holding gun, posture standing
+    state from here: Dinu: zone mill entrance, facing left, frame side right, posture standing
+    state from here: Mudalali: zone mill entrance, facing right, frame side left, posture standing, condition arrested
+    state from here: Inspector Ruwan: zone power controls, facing right, frame side left, posture standing, condition arrested
+
+FEELING: besieged, defiant, cathartic; the scene turns at b3, b5, b6, b7, b9
+DIRECTION IN SCOPE
+- D04 [scoped] Mudalali, Suren and Inspector Ruwan arrive. Vehicle headlights turn Dinu into a silhouette. Mudalali demands the phone and the cash. (here: Arriving vehicle headlights silhouette Dinu.)
+- D05 [scoped] Suren attacks. Dinu fights through rice sacks, a metal bar and wet concrete. The fight stays grounded: elbows, body weight, short impacts and one continuous handheld take. Aruni activates the temple loudspeaker. (here: Grounded fight with Suren in one continuous handheld take.)
+- D08 [scoped] Village palette Warm amber and earthy red. Locked-off frames, natural light and longer silences.
+- D10 [the scene meets this rule's condition] Action lenses 24mm for geography, 35mm for movement and 50mm for emotional impact.
+- D11 [general] Lighting Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- D12 [general] Editing Fast cuts only on impact. Let important punches and reactions stay on screen.
+- D13 [general] Sound Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- D14 [general] Slow motion Use only twice: Nimal's key falling and Dinu removing the gun. (here: The second permitted slow-motion moment is Dinu removing gun from the threat by kicking it away.)
+- D15 [general] ACTION DESIGN NOTES The action is mass but not weightless. Every hit has a location, an object or a consequence. Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing. Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone. (here: The climax must preserve Aruni's active role and the recording and village as causes of victory, not violence alone.)
+
+LENGTH: stated 180.0 s; spoken 11.8 s
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 action: 1.5 s on screen
+b2 line [L2] Mudalali: 7 words, 3.2 s, shortest take 6 s
+b3 line [L3] Dinu: 10 words, 4.5 s, shortest take 6 s
+b4 action: 1.5 s on screen
+b5 action: 1.5 s on screen
+b6 action: 1.5 s on screen
+b7 action: 1.5 s on screen
+b8 line [L8] Aruni: 9 words, 4.1 s, shortest take 6 s
+b9 action: 6.0 s on screen
+</timing>
+
+<length>
+The scene is 180 s long. TARGET: a bin of about 180 s of takes. The script itself times at 27 s (its actions and lines on one clock); the other 153 s of the target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a line lands. CAP: 270 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 144 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.

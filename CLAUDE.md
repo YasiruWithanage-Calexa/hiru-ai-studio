@@ -213,6 +213,22 @@ guidance is `knowledge_bases/rules/sources/safe_depiction.md`. A word joins `TER
 it has no common harmless use in a shot description ("shot", "body", "gun" stay out). Never add a way to disguise a refused
 picture. Read `plan/2026-11-10b/IMPLEMENTED.md`.
 
+## The scene breakdown (`breakdown/` folders, plan/2026-11-11)
+
+The uploaded documents are read ONCE into two memories: the source memory (per document, never edited) and the breakdown
+memory (per production, the ONE source today's columns are filled from: canon, episodes, scenes, `dialogue_lines`,
+`production_memory`, `scenes.staging`; D1). Each scene's packet is assembled from it by code and is what a planner reads.
+The rules are code in `contracts/breakdown/` (`run.py` the creation run with its calls passed in, `checks.py`,
+`packet.py`, `fill.py`, `memory.py`); the agents are `agents/breakdown/` (split, continuity, episode, repair, stager; tier
+`breakdown`); the system is `systems/breakdown/breakdown_build` (run by the structure_build function). Rules that must not
+drift: **the model points, code copies** (no model re-types a document's words, not even a name: line and word ranges
+only); **ids, never names** (code assigns every id); **every value says where it came from** (`script` with its lines,
+`inferred` with a reason, `person`); **never invent story**; **planners only read** the memory; **a person's edit is
+theirs** (appended as `person_lines`, the scene's packet stale until the one-scene refresh). Off until
+`BREAKDOWN__ENABLED` (with it on, the story reader, the memory reader and canon_extract are retired); Raphael reads the
+packet only with `RAPHAEL_PACKET`. Needs schema v21 (not applied). Read `plan/2026-11-11/PLAN.md` §13 and
+`IMPLEMENTED.md` first: phases 1 to 6 are built offline; v21, the live check (phase 7) and the switches are a person's.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
 - A function under `src/services/<name>/` imports only its own package and `contracts`.

@@ -1,0 +1,88 @@
+{
+ "cap": 1.5,
+ "spent": 0.159,
+ "calls": [
+  {
+   "n": 1,
+   "slot": "split",
+   "agent": "breakdown_split",
+   "scenes": [],
+   "seconds": 49.6,
+   "input_tokens": 2365,
+   "cached_tokens": 2362,
+   "output_tokens": 3306,
+   "dollars": 0.0333,
+   "status": "done",
+   "model": "gpt-6.1-sol"
+  },
+  {
+   "n": 2,
+   "slot": "continuity",
+   "agent": "breakdown_continuity",
+   "scenes": [],
+   "seconds": 44.1,
+   "input_tokens": 2996,
+   "cached_tokens": 0,
+   "output_tokens": 3494,
+   "dollars": 0.0409,
+   "status": "done",
+   "model": "gpt-6.1-sol"
+  },
+  {
+   "n": 3,
+   "slot": "episode",
+   "agent": "breakdown_episode",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "seconds": 66.3,
+   "input_tokens": 4642,
+   "cached_tokens": 0,
+   "output_tokens": 6281,
+   "dollars": 0.0721,
+   "status": "done",
+   "model": "gpt-6.1-sol"
+  },
+  {
+   "n": 4,
+   "slot": "stager",
+   "agent": "breakdown_stager",
+   "scenes": [],
+   "seconds": 7.2,
+   "input_tokens": 1275,
+   "cached_tokens": 1075,
+   "output_tokens": 344,
+   "dollars": 0.0039,
+   "status": "done",
+   "model": "gpt-6.1-sol"
+  },
+  {
+   "n": 5,
+   "slot": "stager",
+   "agent": "breakdown_stager",
+   "scenes": [],
+   "seconds": 9.5,
+   "input_tokens": 1301,
+   "cached_tokens": 1075,
+   "output_tokens": 318,
+   "dollars": 0.0037,
+   "status": "done",
+   "model": "gpt-6.1-sol"
+  },
+  {
+   "n": 6,
+   "slot": "stager",
+   "agent": "breakdown_stager",
+   "scenes": [],
+   "seconds": 8.8,
+   "input_tokens": 1294,
+   "cached_tokens": 1075,
+   "output_tokens": 446,
+   "dollars": 0.005,
+   "status": "done",
+   "model": "gpt-6.1-sol"
+  }
+ ]
+}

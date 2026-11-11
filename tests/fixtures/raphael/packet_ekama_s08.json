@@ -1,0 +1,1052 @@
+{
+ "ids": {
+  "C01": {
+   "name": "Dinu",
+   "kind": "person"
+  },
+  "C02": {
+   "name": "Aruni",
+   "kind": "person"
+  },
+  "C04": {
+   "name": "Mudalali",
+   "kind": "person"
+  },
+  "C05": {
+   "name": "Suren",
+   "kind": "person"
+  },
+  "C06": {
+   "name": "Inspector Ruwan",
+   "kind": "person"
+  },
+  "L02": {
+   "name": "Mahawewa village",
+   "kind": "place"
+  },
+  "L10": {
+   "name": "Old Rice Mill",
+   "kind": "place"
+  },
+  "P07": {
+   "name": "cash bag",
+   "kind": "thing"
+  },
+  "P08": {
+   "name": "Nimal's phone",
+   "kind": "thing"
+  },
+  "P09": {
+   "name": "temple loudspeaker",
+   "kind": "thing"
+  },
+  "P10": {
+   "name": "metal bar",
+   "kind": "thing"
+  },
+  "P11": {
+   "name": "gun",
+   "kind": "thing"
+  }
+ },
+ "A_scene": {
+  "id": "E01-S08",
+  "heading": "SCENE 08 - INT. OLD RICE MILL - NIGHT - 3 MINUTES",
+  "title": "The mill confrontation",
+  "summary": "Dinu holds off Suren while Aruni broadcasts the evidence and defeats Inspector Ruwan's interference. Public attention, Dinu's restraint and arriving police end Mudalali and Inspector Ruwan's control.",
+  "purpose": "Resolve the exposure through physical resistance, Aruni's initiative and public witness rather than violence alone.",
+  "purpose_source": "inferred",
+  "before_on_page": {
+   "id": "E01-S07",
+   "heading": "SCENE 07 - EXT. MAHAWEWA TEMPLE GROUND - NIGHT - 1 MINUTE"
+  },
+  "after_on_page": {
+   "id": "E01-S09",
+   "heading": "SCENE 09 - EXT. MAHAWEWA BUS STOP - DAWN - 1.5 MINUTES"
+  },
+  "time": {
+   "story_order": 8,
+   "story_day": {
+    "empty": "not stated"
+   },
+   "relative": "After the preparations in E01-S07",
+   "kind": "normal",
+   "anchor": "E01-S07",
+   "source": "script"
+  },
+  "before_in_story": {
+   "id": "E01-S07",
+   "heading": "SCENE 07 - EXT. MAHAWEWA TEMPLE GROUND - NIGHT - 1 MINUTE",
+   "ends_with": "Me para api dekdenama ekata yamu.",
+   "opens_with": "The village festival is filled with drums, rain and torchlight.",
+   "people_at_end": [
+    "Aruni",
+    "Dinu"
+   ]
+  },
+  "after_in_story": {
+   "id": "E01-S09",
+   "heading": "SCENE 09 - EXT. MAHAWEWA BUS STOP - DAWN - 1.5 MINUTES",
+   "ends_with": "Final shot: the red thread on Dinu's wrist as rain runs over it.",
+   "opens_with": "The cash is handed over as evidence. Dinu is taken away in a police jeep.",
+   "people_at_end": [
+    "Dinu",
+    "Aruni"
+   ]
+  },
+  "threads": [
+   {
+    "kind": "journey",
+    "subject": "cash bag",
+    "summary": "The cash moves from the failed escape into Dinu's custody, then becomes evidence.",
+    "source": "script",
+    "earlier": [
+     {
+      "scene": "E01-S04",
+      "note": "Nimal attempts escape with a cash bag; Dinu loads the cash bags into Cash Van and escapes."
+     },
+     {
+      "scene": "E01-S06",
+      "note": "Dinu brings the cash bags to Aruni's House."
+     },
+     {
+      "scene": "E01-S07",
+      "note": "Dinu takes the cash bags toward Old Rice Mill."
+     }
+    ],
+    "this_scene": [
+     "Mudalali demands the cash at Old Rice Mill."
+    ],
+    "later": [
+     {
+      "scene": "E01-S09",
+      "note": "The cash is handed over as evidence at Mahawewa Bus Stop; the recipient is unspecified."
+     }
+    ]
+   },
+   {
+    "kind": "journey",
+    "subject": "Nimal's phone",
+    "summary": "Dinu has the recording-bearing phone, passes it to Aruni, and Aruni uses it for public exposure.",
+    "source": "script",
+    "earlier": [
+     {
+      "scene": "E01-S05",
+      "note": "Nimal's phone is in Dinu's possession in Cash Van."
+     },
+     {
+      "scene": "E01-S06",
+      "note": "Dinu gives Nimal's phone to Aruni."
+     },
+     {
+      "scene": "E01-S07",
+      "note": "Aruni connects Nimal's phone to the temple sound system."
+     }
+    ],
+    "this_scene": [
+     "Aruni activates the broadcast; the phone's physical relocation, if any, is not shown."
+    ],
+    "later": []
+   },
+   {
+    "kind": "setup_payoff",
+    "subject": "Nimal's phone / temple loudspeaker",
+    "summary": "The private recording and the risk of police suppression lead to a public broadcast that enables exposure and arrests.",
+    "source": "script",
+    "earlier": [
+     {
+      "scene": "E01-S05",
+      "note": "The recording reveals the network."
+     },
+     {
+      "scene": "E01-S06",
+      "note": "Dinu warns of evidence suppression; Aruni looks toward temple loudspeaker."
+     },
+     {
+      "scene": "E01-S07",
+      "note": "Aruni prepares the sound-system connection."
+     }
+    ],
+    "this_scene": [
+     "The recording reaches the village despite Inspector Ruwan's interference; villagers gather and police arrest Mudalali and Inspector Ruwan."
+    ],
+    "later": []
+   }
+  ],
+  "irony": {
+   "empty": "none stated"
+  },
+  "knowledge": [
+   {
+    "person": "a group",
+    "learns": "The village hears the recorded voices of Mudalali and Inspector Ruwan, making the evidence public before their arrests.",
+    "audience_only": false,
+    "source": "script"
+   }
+  ],
+  "looks": [
+   {
+    "person": "Dinu",
+    "kind": "injury",
+    "note": "Carry forward the slight injuries established on arrival; the script does not specify wounds or additional lasting damage.",
+    "source": "inferred"
+   },
+   {
+    "person": "Dinu",
+    "kind": "wardrobe",
+    "note": "red thread is initially around his wrist and is tied back on by Aruni at the end; when or how it came off is unstated.",
+    "source": "script"
+   }
+  ],
+  "relationships": [
+   {
+    "between": [
+     "Dinu",
+     "Aruni"
+    ],
+    "state": "Nimal characterizes their relationship as endangered by Dinu's fear, not lack of money; this remains Nimal's claim.",
+    "scene": "E01-S03"
+   },
+   {
+    "between": [
+     "Dinu",
+     "Aruni"
+    ],
+    "state": "Trust is fractured by suspicion of Dinu's complicity; confrontation continues when he arrives with the cash.",
+    "scene": "E01-S05"
+   },
+   {
+    "between": [
+     "Dinu",
+     "Aruni"
+    ],
+    "state": "The recording shifts them toward a shared plan; Aruni explicitly commits to facing the danger together.",
+    "scene": "E01-S07"
+   },
+   {
+    "between": [
+     "Dinu",
+     "Mudalali"
+    ],
+    "state": "Route-giving authority becomes overt lethal opposition when Mudalali shoots Nimal and Dinu escapes with the funds.",
+    "scene": "E01-S04"
+   },
+   {
+    "between": [
+     "Mudalali",
+     "Inspector Ruwan"
+    ],
+    "state": "Their shared involvement in the money trail is recorded, then publicly exposed during their joint attempt to recover the evidence and cash.",
+    "scene": "E01-S08"
+   }
+  ]
+ },
+ "B_people": [
+  {
+   "id": "C01",
+   "name": "Dinu",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Dinu\n30, Colombo cash-transport driver. Quiet, experienced, violent only when\ncornered.",
+     "source": "script"
+    },
+    "details": {
+     "value": "30, Colombo cash-transport driver.",
+     "source": "script"
+    }
+   },
+   "presence": "on_screen",
+   "wants": "Protect Aruni and prevent the evidence from being reclaimed.",
+   "feeling_start": "Resolved",
+   "feeling_end": "Restrained after gaining the advantage",
+   "source": "inferred"
+  },
+  {
+   "id": "C02",
+   "name": "Aruni",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Aruni\n27, Mahawewa community nurse. Strong, intelligent and emotionally\ncontrolled.",
+     "source": "script"
+    },
+    "details": {
+     "value": "27, Mahawewa community nurse.",
+     "source": "script"
+    }
+   },
+   "presence": "on_screen",
+   "wants": "Keep the evidence audible and stop its suppression.",
+   "feeling_start": "Determined",
+   "feeling_end": "Vindicated",
+   "source": "inferred"
+  },
+  {
+   "id": "C04",
+   "name": "Mudalali",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Mudalali\n52, businessman laundering illegal money through village development\nprojects.",
+     "source": "script"
+    }
+   },
+   "presence": "on_screen",
+   "wants": "Recover the phone and money and regain control.",
+   "feeling_start": "Commanding",
+   "feeling_end": "Defeated",
+   "source": "inferred"
+  },
+  {
+   "id": "C05",
+   "name": "Suren",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Suren\n38, Mudalali's brutal right-hand man.",
+     "source": "script"
+    },
+    "details": {
+     "value": "38, Mudalali's brutal right-hand man.",
+     "source": "script"
+    }
+   },
+   "presence": "on_screen",
+   "wants": "Subdue Dinu.",
+   "feeling_start": "Aggressive",
+   "feeling_end": "Unresolved",
+   "source": "inferred"
+  },
+  {
+   "id": "C06",
+   "name": "Inspector Ruwan",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Inspector Ruwan\n45, corrupt police officer protecting the money trail.",
+     "source": "script"
+    },
+    "details": {
+     "value": "45, corrupt police officer protecting the money trail.",
+     "source": "script"
+    }
+   },
+   "presence": "on_screen",
+   "wants": "Stop the exposure.",
+   "feeling_start": "Assertive",
+   "feeling_end": "Defeated",
+   "source": "inferred"
+  }
+ ],
+ "C_place": {
+  "id": "L10",
+  "name": "Old Rice Mill",
+  "kind": "place",
+  "place_kind": "set",
+  "card": {
+   "summary": {
+    "empty": "withheld: the range it was read from is too wide"
+   }
+  }
+ },
+ "D_things": [
+  {
+   "id": "P08",
+   "name": "Nimal's phone",
+   "kind": "thing",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    }
+   },
+   "withheld_other_scenes": 1,
+   "role": "hero",
+   "holder_start": "Aruni",
+   "holder_end": "Aruni",
+   "source": "inferred"
+  },
+  {
+   "id": "P09",
+   "name": "temple loudspeaker",
+   "kind": "thing",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    }
+   },
+   "withheld_other_scenes": 1,
+   "role": "hero",
+   "holder_start": "Mahawewa Temple Ground",
+   "holder_end": "Mahawewa Temple Ground",
+   "source": "script"
+  },
+  {
+   "id": "P07",
+   "name": "cash bag",
+   "kind": "thing",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    }
+   },
+   "withheld_other_scenes": 1,
+   "role": "mentioned",
+   "holder_start": "Dinu",
+   "holder_end": "Dinu",
+   "source": "inferred"
+  },
+  {
+   "id": "P10",
+   "name": "metal bar",
+   "kind": "thing",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Suren attacks. Dinu fights through rice sacks, a metal bar and wet concrete. The fight stays grounded: elbows, body\nweight, short impacts and one continuous handheld take. Aruni activates the temple loudspeaker.",
+     "source": "script"
+    },
+    "details": {
+     "value": "Dinu fights through rice sacks, a metal bar and wet concrete.",
+     "source": "script"
+    }
+   },
+   "role": "used",
+   "holder_start": "",
+   "holder_end": "",
+   "source": "script"
+  },
+  {
+   "id": "P11",
+   "name": "gun",
+   "kind": "thing",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Villagers surround the mill. Mudalali raises a gun at Aruni. Headlights blind him. Dinu kicks the weapon away and\nchooses not to kill him. Police arrive and arrest Mudalali and Ruwan.",
+     "source": "script"
+    },
+    "details": {
+     "value": "Mudalali raises a gun at Aruni.",
+     "source": "script"
+    }
+   },
+   "role": "hero",
+   "holder_start": "Mudalali",
+   "holder_end": "",
+   "source": "script"
+  }
+ ],
+ "E_blocks": [
+  {
+   "id": "E01-S08-B01",
+   "kind": "action",
+   "text": "Mudalali, Suren and Inspector Ruwan arrive. Vehicle headlights turn Dinu into a silhouette.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "Stage the opposing forces around Dinu.",
+   "delivery_hint": "Use arriving headlights to reduce Dinu to an outline.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B01-e1",
+     "actors": [
+      "C04",
+      "C05",
+      "C06",
+      "C01"
+     ],
+     "things": [],
+     "spot": "L10",
+     "speech": false,
+     "visible": true,
+     "change": "The three opponents arrive; backlighting isolates Dinu.",
+     "function": "setup"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B02",
+   "kind": "action",
+   "text": "Mudalali demands the phone and the cash.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "Establish the assets Mudalali wants reclaimed.",
+   "delivery_hint": "Keep the demand focused on the contested evidence and funds.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B02-e1",
+     "actors": [
+      "C04"
+     ],
+     "things": [
+      "P08",
+      "P07"
+     ],
+     "spot": "L10",
+     "speech": false,
+     "visible": true,
+     "change": "Mudalali seeks surrender of both contested assets.",
+     "function": "setup"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B03",
+   "kind": "dialogue",
+   "text": "Oya driver kenek. Decision ganna oyata baha.",
+   "speaker": "C04",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "C01",
+   "heard_by": [
+    "C01",
+    "C05",
+    "C06"
+   ],
+   "intent": "Deny Dinu the right to choose.",
+   "delivery_hint": "Dismissive authority.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B03-e1",
+     "actors": [
+      "C04"
+     ],
+     "things": [],
+     "spot": "L10",
+     "speech": true,
+     "visible": true,
+     "change": "Mudalali invokes hierarchy to undermine Dinu's resistance.",
+     "function": "texture"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B04",
+   "kind": "dialogue",
+   "text": "Driver kenek thamai. Habai direction eka ada mama decide karanawa.",
+   "speaker": "C01",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "C04",
+   "heard_by": [
+    "C04",
+    "C05",
+    "C06"
+   ],
+   "intent": "Claim responsibility for his own course.",
+   "delivery_hint": "Controlled, deliberate defiance.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B04-e1",
+     "actors": [
+      "C01"
+     ],
+     "things": [],
+     "spot": "L10",
+     "speech": true,
+     "visible": true,
+     "change": "Dinu openly rejects Mudalali's authority.",
+     "function": "turn"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B05",
+   "kind": "action",
+   "text": "Suren attacks. Dinu fights through rice sacks, a metal bar and wet concrete. The fight stays grounded: elbows, body weight, short impacts and one continuous handheld take.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "Make resistance depend on weight, terrain and limited space.",
+   "delivery_hint": "Preserve a single handheld take with readable short-range contact.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B05-e1",
+     "actors": [
+      "C05",
+      "C01"
+     ],
+     "things": [
+      "P10"
+     ],
+     "spot": "L10",
+     "speech": false,
+     "visible": true,
+     "change": "Suren attacks and Dinu fights amid stored sacks, metal and slippery flooring.",
+     "function": "turn"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B06",
+   "kind": "action",
+   "text": "Aruni activates the temple loudspeaker.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "Give Aruni the decisive disclosure action.",
+   "delivery_hint": "Make activation clear without inventing a new phone location.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B06-e1",
+     "actors": [
+      "C02"
+     ],
+     "things": [
+      "P09",
+      "P08"
+     ],
+     "spot": "",
+     "speech": false,
+     "visible": true,
+     "change": "Aruni enables the prepared public playback.",
+     "function": "turn"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B07",
+   "kind": "sound",
+   "text": "Mudalali and Ruwan's own voices play across the village.",
+   "speaker": "",
+   "presence": "recording",
+   "device": "P09",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "Expose both recorded participants through public playback.",
+   "delivery_hint": "Keep the two recorded voices distinguishable across the village soundscape.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B07-e1",
+     "actors": [
+      "C04",
+      "C06"
+     ],
+     "things": [
+      "P08",
+      "P09"
+     ],
+     "spot": "L02",
+     "speech": false,
+     "visible": false,
+     "change": "The recorded voices of Mudalali and Inspector Ruwan become publicly audible.",
+     "function": "reveal"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B08",
+   "kind": "action",
+   "text": "Inspector Ruwan tries to cut the power. Aruni blocks him and switches it back on.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "Make Aruni actively defeat the attempted suppression.",
+   "delivery_hint": "Clarify the interruption and restoration through the power controls and sound.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B08-e1",
+     "actors": [
+      "C06",
+      "C02"
+     ],
+     "things": [
+      "P09"
+     ],
+     "spot": "",
+     "speech": false,
+     "visible": true,
+     "change": "Inspector Ruwan interferes with the supply; Aruni obstructs him and restores it.",
+     "function": "turn"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B09",
+   "kind": "dialogue",
+   "text": "Uniform eka thiyena nisa aththa maranna puluwan kiyala hituwada?",
+   "speaker": "C02",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "C06",
+   "heard_by": [
+    "C06"
+   ],
+   "intent": "Reject the use of official status to silence the truth.",
+   "delivery_hint": "Firm confrontation without hesitation.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B09-e1",
+     "actors": [
+      "C02",
+      "C06"
+     ],
+     "things": [],
+     "spot": "",
+     "speech": true,
+     "visible": true,
+     "change": "Aruni directly challenges Inspector Ruwan's claimed authority.",
+     "function": "turn"
+    }
+   ]
+  },
+  {
+   "id": "E01-S08-B10",
+   "kind": "action",
+   "text": "Villagers surround the mill. Mudalali raises a gun at Aruni. Headlights blind him. Dinu kicks the weapon away and chooses not to kill him. Police arrive and arrest Mudalali and Ruwan.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "Resolve the threat through public pressure, disarmament and restraint.",
+   "delivery_hint": "Keep the headlight advantage and disarming kick clear; do not turn the refusal to kill into an execution attempt.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S08-B10-e1",
+     "actors": [],
+     "things": [],
+     "spot": "L10",
+     "speech": false,
+     "visible": true,
+     "change": "A village crowd gathers around the building.",
+     "function": "turn"
+    },
+    {
+     "id": "E01-S08-B10-e2",
+     "actors": [
+      "C04",
+      "C02"
+     ],
+     "things": [
+      "P11"
+     ],
+     "spot": "L10",
+     "speech": false,
+     "visible": true,
+     "change": "Mudalali threatens Aruni with a firearm but loses vision in the headlights.",
+     "function": "turn"
+    },
+    {
+     "id": "E01-S08-B10-e3",
+     "actors": [
+      "C01",
+      "C04"
+     ],
+     "things": [
+      "P11"
+     ],
+     "spot": "L10",
+     "speech": false,
+     "visible": true,
+     "change": "Dinu kicks the firearm out of play and spares Mudalali.",
+     "function": "turn"
+    },
+    {
+     "id": "E01-S08-B10-e4",
+     "actors": [
+      "C04",
+      "C06"
+     ],
+     "things": [],
+     "spot": "L10",
+     "speech": false,
+     "visible": true,
+     "change": "Arriving officers take Mudalali and Inspector Ruwan into custody.",
+     "function": "turn"
+    }
+   ]
+  }
+ ],
+ "F_feeling": {
+  "mood": [
+   "besieged",
+   "defiant",
+   "cathartic"
+  ],
+  "turns": [
+   "E01-S08-B04",
+   "E01-S08-B06",
+   "E01-S08-B07",
+   "E01-S08-B08",
+   "E01-S08-B10"
+  ]
+ },
+ "G_direction": [
+  {
+   "id": "D04",
+   "about": "lighting",
+   "applies": "scoped",
+   "text": " Mudalali, Suren and Inspector Ruwan arrive. Vehicle headlights turn Dinu into a silhouette. Mudalali demands the phone\nand the cash.",
+   "moment_here": "Arriving vehicle headlights silhouette Dinu."
+  },
+  {
+   "id": "D05",
+   "about": "action",
+   "applies": "scoped",
+   "text": "Suren attacks. Dinu fights through rice sacks, a metal bar and wet concrete. The fight stays grounded: elbows, body\nweight, short impacts and one continuous handheld take. Aruni activates the temple loudspeaker.",
+   "moment_here": "Grounded fight with Suren in one continuous handheld take."
+  },
+  {
+   "id": "D08",
+   "about": "palette",
+   "applies": "scoped",
+   "text": "Village palette\nWarm amber and earthy red. Locked-off frames, natural light and longer\nsilences."
+  },
+  {
+   "id": "D10",
+   "about": "lens",
+   "applies": "the scene meets this rule's condition",
+   "text": "Action lenses\n24mm for geography, 35mm for movement and 50mm for emotional impact."
+  },
+  {
+   "id": "D11",
+   "about": "lighting",
+   "applies": "general",
+   "text": "Lighting\nVehicle headlights, sodium lamps, practical bulbs and lightning flashes."
+  },
+  {
+   "id": "D12",
+   "about": "editing",
+   "applies": "general",
+   "text": "Editing\nFast cuts only on impact. Let important punches and reactions stay on screen."
+  },
+  {
+   "id": "D13",
+   "about": "sound",
+   "applies": "general",
+   "text": "Sound\nRain, breathing, metal impacts and footsteps first. Music enters only for hero\nelevation moments."
+  },
+  {
+   "id": "D14",
+   "about": "slow_motion",
+   "applies": "general",
+   "text": "Slow motion\nUse only twice: Nimal's key falling and Dinu removing the gun.",
+   "moment_here": "The second permitted slow-motion moment is Dinu removing gun from the threat by kicking it away."
+  },
+  {
+   "id": "D15",
+   "about": "action",
+   "applies": "general",
+   "text": "ACTION DESIGN NOTES\nThe action is mass but not weightless. Every hit has a location, an object or a consequence. Dinu is not an invincible\nsuperhero; he wins because he knows vehicles, space and timing. Aruni is an active participant in the climax, and the\nfinal victory comes from the recording, the village and their courage - not from violence alone.",
+   "moment_here": "The climax must preserve Aruni's active role and the recording and village as causes of victory, not violence alone."
+  }
+ ],
+ "H_length": {
+  "stated_seconds": 180.0,
+  "spoken_seconds": 11.8
+ },
+ "I_open": {
+  "empty": "no open question"
+ },
+ "stage": {
+  "zones": [
+   "mill entrance",
+   "mill floor",
+   "power controls"
+  ],
+  "not_placed": {
+   "Aruni": "no position before block 5"
+  },
+  "people": {
+   "C04": {
+    "in": {
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    },
+    "out": {
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": "gun",
+     "posture": "standing",
+     "condition": "arrested"
+    }
+   },
+   "C06": {
+    "in": {
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    },
+    "out": {
+     "zone": "power controls",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing",
+     "condition": "arrested"
+    }
+   },
+   "C01": {
+    "in": {
+     "zone": "mill floor",
+     "facing": "left",
+     "frame_side": "right",
+     "posture": "standing"
+    },
+    "out": {
+     "zone": "mill entrance",
+     "facing": "left",
+     "frame_side": "right",
+     "posture": "standing"
+    }
+   },
+   "C02": {
+    "in": {},
+    "out": {
+     "zone": "power controls",
+     "facing": "left",
+     "frame_side": "right",
+     "posture": "standing"
+    }
+   },
+   "C05": {
+    "in": {
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    },
+    "out": {
+     "zone": "mill floor",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    }
+   }
+  },
+  "changes_at": {
+   "E01-S08-B01": [
+    {
+     "person": "Mudalali",
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    },
+    {
+     "person": "Suren",
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    },
+    {
+     "person": "Inspector Ruwan",
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    },
+    {
+     "person": "Dinu",
+     "zone": "mill floor",
+     "facing": "left",
+     "frame_side": "right",
+     "posture": "standing"
+    }
+   ],
+   "E01-S08-B05": [
+    {
+     "person": "Suren",
+     "zone": "mill floor",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    }
+   ],
+   "E01-S08-B06": [
+    {
+     "person": "Aruni",
+     "zone": "power controls",
+     "facing": "left",
+     "frame_side": "right",
+     "posture": "standing"
+    }
+   ],
+   "E01-S08-B08": [
+    {
+     "person": "Inspector Ruwan",
+     "zone": "power controls",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing"
+    }
+   ],
+   "E01-S08-B10": [
+    {
+     "person": "Mudalali",
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": "gun",
+     "posture": "standing"
+    },
+    {
+     "person": "Dinu",
+     "zone": "mill entrance",
+     "facing": "left",
+     "frame_side": "right",
+     "posture": "standing"
+    },
+    {
+     "person": "Mudalali",
+     "zone": "mill entrance",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing",
+     "condition": "arrested"
+    },
+    {
+     "person": "Inspector Ruwan",
+     "zone": "power controls",
+     "facing": "right",
+     "frame_side": "left",
+     "posture": "standing",
+     "condition": "arrested"
+    }
+   ]
+  },
+  "props": [
+   {
+    "block": 9,
+    "prop": "gun",
+    "where": "on the ground at the mill entrance, away from Mudalali",
+    "state": "kicked away by Dinu"
+   }
+  ]
+ }
+}

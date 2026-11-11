@@ -1,0 +1,948 @@
+{
+ "n": 3,
+ "slot": "episode",
+ "agent": "breakdown_episode",
+ "scenes": [
+  "E01-S01",
+  "E01-S02",
+  "E01-S03"
+ ],
+ "seconds": 66.3,
+ "input_tokens": 4642,
+ "cached_tokens": 0,
+ "output_tokens": 6281,
+ "dollars": 0.0721,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "CARDS\nC01 [person] Dinu - age: Dinu - 30, Colombo cash-transport driver.; details: Quiet, experienced, violent only when cornered.\nC02 [person] Aruni - age: Aruni - 27, Mahawewa community nurse.; details: Strong, intelligent and emotionally controlled.\nC03 [person] Nimal - age: Nimal - 34, Aruni's elder brother and Dinu's closest friend.\nC04 [person] Mudalali - age: Mudalali - 52, businessman laundering illegal money through village development projects.\nC05 [person] Suren - age: Suren - 38, Mudalali's brutal right-hand man.\nC06 [person] Inspector Ruwan - age: Inspector Ruwan - 45, corrupt police officer protecting the money trail.\nL01 [place, region] Colombo\nL02 [place, region] Mahawewa village\nL03 [place, set in L02] MAHAWEWA CANAL\nL04 [place, vehicle in L01] CASH VAN\nL05 [place, set in L01] COLOMBO GARAGE\nL06 [place, spot in L03] canal gate\nL07 [place, spot in L03] paddy field\nP01 [thing] C-17 - appearance: Inside his fist is a small metal key marked C-17.\nP02 [thing] small medical bag - appearance: Aruni walks beside a paddy field carrying a small medical bag.\nP03 [thing] red thread\nP04 [thing] metal box\nP05 [thing] Rs. 300 million\nP06 [thing] gun\nP07 [thing] recording\n\nDIRECTION RULES\nD01 [palette, place L01] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\nD02 [palette, place L02] Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.\nD03 [lens, all scenes] Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.\nD04 [lens, all scenes] Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.\nD05 [lighting, all scenes] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.\nD06 [editing, all scenes] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.\nD07 [sound, all scenes] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.\nD08 [slow_motion, all scenes] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\nD09 [action, all scenes] The action is mass but not weightless. Every hit has a location, an object or a consequence.\nD10 [action, all scenes] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.\nD11 [action, all scenes] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.\nD12 [editing, scene 1] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.\n\nCONTINUITY\n{\"synopses\": [{\"episode\": 1, \"text\": \"C03 presents C01 with evidence concerning C04 and P05, then hands him P01. C01 later receives C02's worried message about C03 and follows C04's changed route. The opening discovery shows C03 dead at L03 with P01 in his fist, while C02 cannot reach C01.\"}], \"arcs\": [{\"person\": \"C01\", \"change\": \"Questions taking P05 and receives P01; later follows C04's route change. Whether he accepts C03's proposal remains unresolved.\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S02\"}, {\"source\": \"inferred\", \"person\": \"C02\", \"change\": \"Moves from fearing for the missing C03 to discovering his body and P01.\", \"from_scene\": \"E01-S02\", \"to_scene\": \"E01-S01\"}, {\"person\": \"C03\", \"change\": \"Goes from presenting evidence and handing P01 to C01 to being found dead with P01.\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S01\"}], \"threads\": [{\"kind\": \"journey\", \"subject\": \"P01\", \"summary\": \"P01 passes from P04 through C03 to C01, but is later found in C03's fist. The intervening transfer is not shown.\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 opens P04, which contains P01.\"}, {\"scene\": \"E01-S03\", \"note\": \"C03 places P01 in C01's hand.\"}, {\"scene\": \"E01-S01\", \"note\": \"P01 is in C03's fist when C02 finds him; no removal by C02 is stated.\"}]}, {\"source\": \"inferred\", \"kind\": \"open_question\", \"subject\": \"P01\", \"summary\": \"How does P01 return from C01 to C03, and what does it unlock?\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C01 receives P01.\"}, {\"scene\": \"E01-S01\", \"note\": \"C03 is found holding P01; its function remains unstated.\"}]}, {\"source\": \"inferred\", \"kind\": \"setup_payoff\", \"subject\": \"C03\", \"summary\": \"C02's concern over C03's absence leads to the discovery of his death; how he died remains open.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 reports C03 missing from home.\"}, {\"scene\": \"E01-S01\", \"note\": \"C02 finds C03's body.\"}]}, {\"kind\": \"open_question\", \"subject\": \"P05\", \"summary\": \"Whether C01 takes P05, what becomes of the evidence in P04, and whether C04's route change connects to C03's death remain unresolved.\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 presents evidence concerning P05; C01 objects to taking it.\"}, {\"scene\": \"E01-S02\", \"note\": \"C04 redirects C01; no connection to the proposed taking is established.\"}]}], \"looks\": [{\"person\": \"C03\", \"kind\": \"death\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S01\", \"note\": \"Alive during the exchange with C01; subsequently found dead at L06. Cause, time and injuries are unspecified.\"}], \"relationships\": [{\"source\": \"inferred\", \"a\": \"C01\", \"b\": \"C02\", \"state\": \"An existing romantic attachment is under strain according to C03; its outcome remains unresolved across E01-S03 and E01-S02.\", \"scene\": \"E01-S03\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"C03 entrusts C01 with P01 despite C01's moral objection to taking P05; agreement to the proposal is not shown.\", \"scene\": \"E01-S03\"}], \"timeline\": [{\"scene\": \"E01-S03\", \"story_order\": 1, \"story_day\": 0, \"relative\": \"Six hours earlier\", \"kind\": \"flashback\", \"anchor\": \"E01-S02\"}, {\"scene\": \"E01-S02\", \"story_order\": 2, \"story_day\": 0, \"relative\": \"Night; six hours after E01-S03\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"source\": \"inferred\", \"scene\": \"E01-S01\", \"story_order\": 3, \"story_day\": 0, \"relative\": \"Dawn; apparently after E01-S02\", \"kind\": \"cold_open\", \"anchor\": \"E01-S02\"}], \"knowledge\": [{\"scene\": \"E01-S03\", \"person\": \"C01\", \"learns\": \"C03 identifies P05 as C04's money taken through village projects and presents photographs, bank documents and P01.\", \"audience_only\": false}, {\"scene\": \"E01-S02\", \"person\": \"C01\", \"learns\": \"C02 reports that C03 has not returned home and that she is afraid.\", \"audience_only\": false}, {\"scene\": \"E01-S01\", \"person\": \"C02\", \"learns\": \"C03 is dead at L06 and has P01 in his fist.\", \"audience_only\": false}, {\"source\": \"inferred\", \"scene\": \"E01-S01\", \"person\": \"C01\", \"learns\": \"C03's death and possession of P01 are known to the audience but not shown as known to C01.\", \"audience_only\": true}], \"scopes\": [{\"source\": \"inferred\", \"rule\": \"D01\", \"scenes\": [\"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D02\", \"scenes\": [\"E01-S01\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D05\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D06\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D07\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D08\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"C03's P01 falling and C01 removing P06 have no supplied scene. The handoff in E01-S03 is not a fall.\"}, {\"source\": \"inferred\", \"rule\": \"D09\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D10\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D11\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"No supplied scene shows the climax, P07 or the final victory.\"}, {\"rule\": \"D12\", \"scenes\": [\"E01-S01\"], \"moment_scene\": \"E01-S01\", \"moment_note\": \"C02 calls C01 without an answer; a distant horn mixes with rain before the cut to black and title.\"}]}\n\nEND OF THE EPISODE BEFORE\nnone: this is the first episode\n\nSCENES TO BREAK DOWN\n=== E01-S01 (place card: pick from the cards) ===\n42: SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE\n43: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices\n44: something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels\n45: and touches his hand. Inside his fist is a small metal key marked C-17.\n46: ARUNI - Dinu... oyata meka ahenne nadda?\n47: She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\n48: EKAMA SAKSHIYA.\n\n=== E01-S02 (place card: pick from the cards) ===\n49: SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES\n50: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the\n51: dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message\n52: plays.\n53: ARUNI - Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan\n54: baya hithenawa.\n55: Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the\n56: red thread around his wrist and turns toward the industrial area.\n\n=== E01-S03 (place card: pick from the cards) ===\n57: SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES\n58: Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the\n59: C-17 key.\n60: NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.\n61: DINU - Api meka gaththoth apiuth eyala wage wenawa.\n62: NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa\n63: oyawa atharinnawa.\n64: Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof.",
+ "answer": {
+  "scenes": [
+   {
+    "scene": "E01-S01",
+    "title": "The canal gate",
+    "summary": "Aruni discovers Nimal's body and a marked key enclosed in his hand. Her attempt to reach Dinu goes unanswered.",
+    "purpose": "Establish the death and the key as linked mysteries while leaving Dinu unreachable.",
+    "place": "L03",
+    "mood": [
+     "bereaved",
+     "restrained",
+     "ominous"
+    ],
+    "people": [
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Understand the discovery and reach Dinu.",
+      "feeling_start": "Concerned",
+      "feeling_end": "Shocked and isolated",
+      "source": "inferred"
+     },
+     {
+      "person": "C03",
+      "presence": "body",
+      "wants": "Not applicable",
+      "feeling_start": "Not applicable",
+      "feeling_end": "Not applicable",
+      "source": "script"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P02",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P01",
+      "role": "hero",
+      "holder_start": "C03",
+      "holder_end": "C03",
+      "source": "script"
+     }
+    ],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 43,
+        "w_from": 0,
+        "w_to": 15
+       },
+       {
+        "line": 44,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Move from an ordinary journey to recognition of the dead man.",
+      "delivery_hint": "Allow recognition to register without an abrupt expressive flourish.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L07",
+        "speech": false,
+        "visible": true,
+        "change": "Her progress beside the fields is interrupted by a discovery.",
+        "function": "setup"
+       },
+       {
+        "actors": [
+         "C02",
+         "C03"
+        ],
+        "things": [],
+        "spot": "L06",
+        "speech": false,
+        "visible": true,
+        "change": "The caught body is identified as her brother.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 44,
+        "w_from": 11,
+        "w_to": 17
+       },
+       {
+        "line": 45,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Express distress through contact rather than an outcry.",
+      "delivery_hint": "Keep the physical response small and deliberate.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C03"
+        ],
+        "things": [],
+        "spot": "L06",
+        "speech": false,
+        "visible": true,
+        "change": "Aruni lowers herself beside Nimal and makes contact with his hand.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 45,
+        "w_from": 4,
+        "w_to": 14
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Give the small object evidentiary weight without explaining its use.",
+      "delivery_hint": "Make the marking legible while preserving the stillness.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P01"
+        ],
+        "spot": "L06",
+        "speech": false,
+        "visible": true,
+        "change": "The marked key becomes visible within Nimal's closed hand.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 46,
+        "w_from": 2,
+        "w_to": 7
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Appeal for Dinu's attention.",
+      "delivery_hint": "Quiet urgency, with emotion held back.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L06",
+        "speech": true,
+        "visible": true,
+        "change": "Aruni directs a verbal appeal toward the absent Dinu.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 0,
+        "w_to": 5
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Deny immediate contact or reassurance.",
+      "delivery_hint": "Let the unanswered attempt linger.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L06",
+        "speech": false,
+        "visible": true,
+        "change": "An attempt to contact Dinu produces no response.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "sound",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 5,
+        "w_to": 13
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Leave the surrounding world audible against her isolation.",
+      "delivery_hint": "Keep the remote traffic sound embedded in the weather.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": false,
+        "change": "A remote vehicle signal joins the rain ambience.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "transition",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 13,
+        "w_to": 16
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "End the discovery before any explanation arrives.",
+      "delivery_hint": "A clean visual stop.",
+      "source": "inferred",
+      "events": []
+     },
+     {
+      "kind": "text",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 16,
+        "w_to": 17
+       },
+       {
+        "line": 48,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Present the episode's title after the unanswered appeal.",
+      "delivery_hint": "Keep the title separate from the preceding image.",
+      "source": "inferred",
+      "events": []
+     }
+    ],
+    "turns": [
+     1,
+     3,
+     5
+    ],
+    "source": "inferred",
+    "rules_met": [
+     "D12"
+    ]
+   },
+   {
+    "scene": "E01-S02",
+    "title": "The redirected van",
+    "summary": "Dinu hears Aruni's concern about Nimal while driving. Mudalali then orders a different destination, and Dinu changes course after looking at his wrist thread.",
+    "purpose": "Bring personal concern and an employer's demand into the same journey without establishing a causal link between them.",
+    "place": "L04",
+    "mood": [
+     "uneasy",
+     "private",
+     "pressured"
+    ],
+    "people": [
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Continue his journey while taking in the message and new instructions.",
+      "feeling_start": "Preoccupied",
+      "feeling_end": "Uneasy and inward",
+      "source": "inferred"
+     },
+     {
+      "person": "C02",
+      "presence": "voice_message",
+      "wants": "Alert Dinu to Nimal's absence and obtain reassurance.",
+      "feeling_start": "Worried",
+      "feeling_end": "Fearful",
+      "source": "inferred"
+     },
+     {
+      "person": "C04",
+      "presence": "phone",
+      "wants": "Redirect Dinu's journey.",
+      "feeling_start": "Businesslike",
+      "feeling_end": "Directive",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P03",
+      "role": "worn",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     }
+    ],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 50,
+        "w_from": 0,
+        "w_to": 13
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Establish Dinu at work within the wet city.",
+      "delivery_hint": "Keep the driving contained rather than presenting it as a chase.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L04",
+        "speech": false,
+        "visible": true,
+        "change": "Dinu is established driving through illuminated wet streets.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 50,
+        "w_from": 13,
+        "w_to": 15
+       },
+       {
+        "line": 51,
+        "w_from": 0,
+        "w_to": 14
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Establish an existing personal bond through a keepsake.",
+      "delivery_hint": "Let the photograph register without treating the pictured people as present.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L04",
+        "speech": false,
+        "visible": true,
+        "change": "A dashboard photograph associates Dinu and Aruni with a shared village memory.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "sound",
+      "spans": [
+       {
+        "line": 51,
+        "w_from": 14,
+        "w_to": 17
+       },
+       {
+        "line": 52,
+        "w_from": 0,
+        "w_to": 1
+       }
+      ],
+      "speaker": "",
+      "presence": "voice_message",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Bring Aruni into the journey through recorded audio.",
+      "delivery_hint": "Distinguish playback from a live exchange.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L04",
+        "speech": false,
+        "visible": false,
+        "change": "Aruni becomes audible through message playback.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 53,
+        "w_from": 2,
+        "w_to": 14
+       },
+       {
+        "line": 54,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "C02",
+      "presence": "voice_message",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Report Nimal's continued absence and seek support.",
+      "delivery_hint": "Controlled concern that becomes more openly fearful.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L04",
+        "speech": true,
+        "visible": false,
+        "change": "Dinu learns that Nimal has not returned and that Aruni is afraid.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 55,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "",
+      "presence": "phone",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Interrupt the personal concern with a work demand.",
+      "delivery_hint": "Keep the arrival of the call matter-of-fact.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C04"
+        ],
+        "things": [],
+        "spot": "L04",
+        "speech": false,
+        "visible": false,
+        "change": "Mudalali initiates contact with Dinu.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 55,
+        "w_from": 2,
+        "w_to": 11
+       }
+      ],
+      "speaker": "C04",
+      "presence": "phone",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Order a route change to a different destination.",
+      "delivery_hint": "Brief and authoritative.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C04"
+        ],
+        "things": [],
+        "spot": "L04",
+        "speech": true,
+        "visible": false,
+        "change": "Dinu receives instructions replacing his existing route.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 55,
+        "w_from": 11,
+        "w_to": 15
+       },
+       {
+        "line": 56,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Connect a private moment of attention with the subsequent change of course without explaining the thread.",
+      "delivery_hint": "Give the wrist glance a readable beat before the turn.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P03"
+        ],
+        "spot": "L04",
+        "speech": false,
+        "visible": true,
+        "change": "Dinu glances at the thread and steers toward the industrial district.",
+        "function": "turn"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     4,
+     6,
+     7
+    ],
+    "source": "inferred",
+    "rules_met": []
+   },
+   {
+    "scene": "E01-S03",
+    "title": "The garage handoff",
+    "summary": "Earlier, Nimal presents material concerning Mudalali's money. Dinu objects to taking it, but Nimal presses him through his relationship with Aruni and places the key in his hand.",
+    "purpose": "Establish the key's earlier custody and Dinu's moral resistance without resolving whether he accepts Nimal's proposal.",
+    "place": "L05",
+    "mood": [
+     "secretive",
+     "conflicted",
+     "insistent"
+    ],
+    "people": [
+     {
+      "person": "C03",
+      "presence": "on_screen",
+      "wants": "Persuade Dinu to participate in taking the money.",
+      "feeling_start": "Purposeful",
+      "feeling_end": "Insistent",
+      "source": "inferred"
+     },
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Resist becoming morally equivalent to the men Nimal condemns.",
+      "feeling_start": "Guarded",
+      "feeling_end": "Conflicted",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P04",
+      "role": "used",
+      "holder_start": "C03",
+      "holder_end": "C03",
+      "source": "script"
+     },
+     {
+      "thing": "P01",
+      "role": "hero",
+      "holder_start": "P04",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P05",
+      "role": "mentioned",
+      "holder_start": "C04",
+      "holder_end": "C04",
+      "source": "script"
+     }
+    ],
+    "blocks": [
+     {
+      "kind": "transition",
+      "spans": [
+       {
+        "line": 58,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Move the chronology backward relative to the van journey.",
+      "delivery_hint": "Make the temporal shift clear without adding a new event.",
+      "source": "inferred",
+      "events": []
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 58,
+        "w_from": 3,
+        "w_to": 14
+       },
+       {
+        "line": 59,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Present tangible support for Nimal's proposal.",
+      "delivery_hint": "Make the contents readable without inventing their details.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P04",
+         "P01"
+        ],
+        "spot": "L05",
+        "speech": false,
+        "visible": true,
+        "change": "Opening the container exposes the key alongside photographic and financial material.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 60,
+        "w_from": 2,
+        "w_to": 13
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "Identify the money and justify targeting it through its alleged origin.",
+      "delivery_hint": "Direct and certain.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P05"
+        ],
+        "spot": "L05",
+        "speech": true,
+        "visible": true,
+        "change": "Nimal attributes the money to Mudalali's extraction from village development work.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 61,
+        "w_from": 2,
+        "w_to": 9
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "Reject the moral distinction Nimal uses to support taking the money.",
+      "delivery_hint": "Quiet but firm.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P05"
+        ],
+        "spot": "L05",
+        "speech": true,
+        "visible": true,
+        "change": "Dinu explicitly challenges the proposed taking.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 62,
+        "w_from": 2,
+        "w_to": 15
+       },
+       {
+        "line": 63,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "Shift the argument from money to Dinu's fear and attachment to Aruni.",
+      "delivery_hint": "Personal and pressing rather than reassuring.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L05",
+        "speech": true,
+        "visible": true,
+        "change": "Nimal uses the possibility of losing Aruni to challenge Dinu's hesitation.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 64,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Make the entrustment physical without treating it as agreement.",
+      "delivery_hint": "Show a deliberate handoff at normal speed.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [
+         "P01"
+        ],
+        "spot": "L05",
+        "speech": false,
+        "visible": true,
+        "change": "The key passes from Nimal into Dinu's hand.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 64,
+        "w_from": 7,
+        "w_to": 17
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "Leave Dinu's decision unresolved.",
+      "delivery_hint": "Hold his attention on the object beneath the roof's rain ambience.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P01"
+        ],
+        "spot": "L05",
+        "speech": false,
+        "visible": true,
+        "change": "Dinu studies the key without a stated commitment.",
+        "function": "texture"
+       },
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L05",
+        "speech": false,
+        "visible": false,
+        "change": "Rain remains audible against the roof during the pause.",
+        "function": "texture"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     4,
+     5,
+     6
+    ],
+    "source": "inferred",
+    "rules_met": []
+   }
+  ]
+ }
+}

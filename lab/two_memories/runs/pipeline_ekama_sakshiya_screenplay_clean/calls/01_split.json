@@ -1,0 +1,690 @@
+{
+ "n": 1,
+ "slot": "split",
+ "agent": "breakdown_split",
+ "scenes": [],
+ "seconds": 48.5,
+ "input_tokens": 2365,
+ "cached_tokens": 0,
+ "output_tokens": 3250,
+ "dollars": 0.0372,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "<document filename=\"ekama_sakshiya_screenplay (clean).pdf\">\n1: EKAMA SAKSHIYA\n2: A 4.5-minute crime thriller\n3: Sathya danne ekkenek witharai.\n4: Colombo / Mahawewa\n5: Action | Crime | Love\n6: Evidence: C-17\n7: Original screenplay and visual treatment\n8: OVERVIEW\n9: Genre: Action / Crime Thriller / Love\n10: Setting: Colombo and Mahawewa village\n11: Tone: Grounded South Indian realism with commercial action energy\n12: Tagline: Sathya danne ekkenek witharai.\n13: LOGLINE\n14: A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's\n15: murder, then returns to his village with the woman he loves to expose the corrupt network that\n16: destroyed them.\n17: MAIN CHARACTERS\n18: Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.\n19: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.\n20: Nimal - 34, Aruni's elder brother and Dinu's closest friend.\n21: Mudalali - 52, businessman laundering illegal money through village development projects.\n22: Suren - 38, Mudalali's brutal right-hand man.\n23: Inspector Ruwan - 45, corrupt police officer protecting the money trail.\n24: DIRECTOR / DOP VISUAL TREATMENT\n25: Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\n26: crowded backgrounds.\n27: Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer\n28: silences.\n29: Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.\n30: Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.\n31: Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.\n32: Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.\n33: Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero\n34: elevation moments.\n35: Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n36: ACTION DESIGN NOTES\n37: The action is mass but not weightless. Every hit has a location, an object or a consequence.\n38: Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.\n39: Aruni is an active participant in the climax, and the final victory comes from the recording, the\n40: village and their courage - not from violence alone.\n41: SCREENPLAY\n42: SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE\n43: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices\n44: something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels\n45: and touches his hand. Inside his fist is a small metal key marked C-17.\n46: ARUNI - Dinu... oyata meka ahenne nadda?\n47: She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\n48: EKAMA SAKSHIYA.\n49: SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES\n50: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the\n51: dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message\n52: plays.\n53: ARUNI - Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan\n54: baya hithenawa.\n55: Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the\n56: red thread around his wrist and turns toward the industrial area.\n57: SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES\n58: Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the\n59: C-17 key.\n60: NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.\n61: DINU - Api meka gaththoth apiuth eyala wage wenawa.\n62: NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa\n63: oyawa atharinnawa.\n64: Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof.\n</document>",
+ "answer": {
+  "sections": [
+   {
+    "label": "title_page",
+    "lines": {
+     "start": 1,
+     "end": 7
+    },
+    "note": ""
+   },
+   {
+    "label": "overview",
+    "lines": {
+     "start": 8,
+     "end": 16
+    },
+    "note": ""
+   },
+   {
+    "label": "cast",
+    "lines": {
+     "start": 17,
+     "end": 23
+    },
+    "note": ""
+   },
+   {
+    "label": "direction",
+    "lines": {
+     "start": 24,
+     "end": 40
+    },
+    "note": ""
+   },
+   {
+    "label": "story",
+    "lines": {
+     "start": 41,
+     "end": 64
+    },
+    "note": ""
+   }
+  ],
+  "cards": [
+   {
+    "kind": "person",
+    "name": {
+     "line": 18,
+     "w_from": 0,
+     "w_to": 1
+    },
+    "lines": {
+     "start": 18,
+     "end": 18
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 18,
+       "w_from": 0,
+       "w_to": 6
+      }
+     },
+     {
+      "name": "details",
+      "span": {
+       "line": 18,
+       "w_from": 6,
+       "w_to": 12
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "person",
+    "name": {
+     "line": 19,
+     "w_from": 0,
+     "w_to": 1
+    },
+    "lines": {
+     "start": 19,
+     "end": 19
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 19,
+       "w_from": 0,
+       "w_to": 6
+      }
+     },
+     {
+      "name": "details",
+      "span": {
+       "line": 19,
+       "w_from": 6,
+       "w_to": 11
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "person",
+    "name": {
+     "line": 20,
+     "w_from": 0,
+     "w_to": 1
+    },
+    "lines": {
+     "start": 20,
+     "end": 20
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 20,
+       "w_from": 0,
+       "w_to": 10
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "person",
+    "name": {
+     "line": 21,
+     "w_from": 0,
+     "w_to": 1
+    },
+    "lines": {
+     "start": 21,
+     "end": 21
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 21,
+       "w_from": 0,
+       "w_to": 11
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "person",
+    "name": {
+     "line": 22,
+     "w_from": 0,
+     "w_to": 1
+    },
+    "lines": {
+     "start": 22,
+     "end": 22
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 22,
+       "w_from": 0,
+       "w_to": 7
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "person",
+    "name": {
+     "line": 23,
+     "w_from": 0,
+     "w_to": 2
+    },
+    "lines": {
+     "start": 23,
+     "end": 23
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 23,
+       "w_from": 0,
+       "w_to": 11
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": false,
+    "within": -1
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 10,
+     "w_from": 1,
+     "w_to": 2
+    },
+    "lines": {
+     "start": 10,
+     "end": 10
+    },
+    "fields": [],
+    "place_kind": "region",
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 10,
+     "w_from": 3,
+     "w_to": 5
+    },
+    "lines": {
+     "start": 10,
+     "end": 10
+    },
+    "fields": [],
+    "place_kind": "region",
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 42,
+     "w_from": 4,
+     "w_to": 6
+    },
+    "lines": {
+     "start": 42,
+     "end": 48
+    },
+    "fields": [],
+    "place_kind": "set",
+    "seen": true,
+    "within": 7
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 43,
+     "w_from": 6,
+     "w_to": 8
+    },
+    "lines": {
+     "start": 43,
+     "end": 43
+    },
+    "fields": [],
+    "place_kind": "spot",
+    "seen": true,
+    "within": 8
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 44,
+     "w_from": 4,
+     "w_to": 6
+    },
+    "lines": {
+     "start": 44,
+     "end": 45
+    },
+    "fields": [],
+    "place_kind": "spot",
+    "seen": true,
+    "within": 8
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 49,
+     "w_from": 4,
+     "w_to": 6
+    },
+    "lines": {
+     "start": 49,
+     "end": 56
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 50,
+       "w_from": 8,
+       "w_to": 13
+      }
+     }
+    ],
+    "place_kind": "vehicle",
+    "seen": true,
+    "within": 6
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 51,
+     "w_from": 11,
+     "w_to": 14
+    },
+    "lines": {
+     "start": 51,
+     "end": 51
+    },
+    "fields": [],
+    "place_kind": "set",
+    "seen": false,
+    "within": 7
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 55,
+     "w_from": 6,
+     "w_to": 9
+    },
+    "lines": {
+     "start": 55,
+     "end": 55
+    },
+    "fields": [],
+    "place_kind": "set",
+    "seen": false,
+    "within": 6
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 56,
+     "w_from": 9,
+     "w_to": 11
+    },
+    "lines": {
+     "start": 55,
+     "end": 56
+    },
+    "fields": [],
+    "place_kind": "region",
+    "seen": false,
+    "within": -1
+   },
+   {
+    "kind": "place",
+    "name": {
+     "line": 57,
+     "w_from": 6,
+     "w_to": 8
+    },
+    "lines": {
+     "start": 57,
+     "end": 64
+    },
+    "fields": [],
+    "place_kind": "set",
+    "seen": true,
+    "within": 6
+   },
+   {
+    "kind": "thing",
+    "name": {
+     "line": 43,
+     "w_from": 11,
+     "w_to": 13
+    },
+    "lines": {
+     "start": 43,
+     "end": 43
+    },
+    "fields": [
+     {
+      "name": "details",
+      "span": {
+       "line": 43,
+       "w_from": 2,
+       "w_to": 13
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "thing",
+    "name": {
+     "line": 45,
+     "w_from": 10,
+     "w_to": 12
+    },
+    "lines": {
+     "start": 44,
+     "end": 45
+    },
+    "fields": [
+     {
+      "name": "appearance",
+      "span": {
+       "line": 45,
+       "w_from": 4,
+       "w_to": 14
+      }
+     }
+    ],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "thing",
+    "name": {
+     "line": 51,
+     "w_from": 4,
+     "w_to": 5
+    },
+    "lines": {
+     "start": 50,
+     "end": 52
+    },
+    "fields": [],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "thing",
+    "name": {
+     "line": 56,
+     "w_from": 0,
+     "w_to": 2
+    },
+    "lines": {
+     "start": 55,
+     "end": 56
+    },
+    "fields": [],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "thing",
+    "name": {
+     "line": 58,
+     "w_from": 6,
+     "w_to": 8
+    },
+    "lines": {
+     "start": 58,
+     "end": 59
+    },
+    "fields": [],
+    "place_kind": null,
+    "seen": true,
+    "within": -1
+   },
+   {
+    "kind": "thing",
+    "name": {
+     "line": 14,
+     "w_from": 5,
+     "w_to": 8
+    },
+    "lines": {
+     "start": 14,
+     "end": 16
+    },
+    "fields": [],
+    "place_kind": null,
+    "seen": false,
+    "within": -1
+   },
+   {
+    "kind": "thing",
+    "name": {
+     "line": 35,
+     "w_from": 13,
+     "w_to": 14
+    },
+    "lines": {
+     "start": 35,
+     "end": 35
+    },
+    "fields": [],
+    "place_kind": null,
+    "seen": false,
+    "within": -1
+   }
+  ],
+  "rules": [
+   {
+    "about": "palette",
+    "lines": {
+     "start": 25,
+     "end": 26
+    },
+    "scope_kind": "place",
+    "scope_card": 6,
+    "scope_number": -1
+   },
+   {
+    "about": "palette",
+    "lines": {
+     "start": 27,
+     "end": 28
+    },
+    "scope_kind": "place",
+    "scope_card": 7,
+    "scope_number": -1
+   },
+   {
+    "about": "lens",
+    "lines": {
+     "start": 29,
+     "end": 29
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "lens",
+    "lines": {
+     "start": 30,
+     "end": 30
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "lighting",
+    "lines": {
+     "start": 31,
+     "end": 31
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "editing",
+    "lines": {
+     "start": 32,
+     "end": 32
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "sound",
+    "lines": {
+     "start": 33,
+     "end": 34
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "slow_motion",
+    "lines": {
+     "start": 35,
+     "end": 35
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "action",
+    "lines": {
+     "start": 37,
+     "end": 37
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "action",
+    "lines": {
+     "start": 38,
+     "end": 38
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "action",
+    "lines": {
+     "start": 39,
+     "end": 40
+    },
+    "scope_kind": "all",
+    "scope_card": -1,
+    "scope_number": -1
+   },
+   {
+    "about": "sound",
+    "lines": {
+     "start": 47,
+     "end": 47
+    },
+    "scope_kind": "scene",
+    "scope_card": -1,
+    "scope_number": 1
+   },
+   {
+    "about": "editing",
+    "lines": {
+     "start": 47,
+     "end": 48
+    },
+    "scope_kind": "scene",
+    "scope_card": -1,
+    "scope_number": 1
+   },
+   {
+    "about": "sound",
+    "lines": {
+     "start": 51,
+     "end": 52
+    },
+    "scope_kind": "scene",
+    "scope_card": -1,
+    "scope_number": 2
+   }
+  ],
+  "episodes": [
+   {
+    "number": 0,
+    "heading": 41,
+    "scenes": [
+     {
+      "number": 1,
+      "heading": 42,
+      "last": 48
+     },
+     {
+      "number": 2,
+      "heading": 49,
+      "last": 56
+     },
+     {
+      "number": 3,
+      "heading": 57,
+      "last": 64
+     }
+    ]
+   }
+  ]
+ }
+}

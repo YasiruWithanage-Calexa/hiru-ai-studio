@@ -1,0 +1,815 @@
+{
+  "scenes": [
+    {
+      "scene": "E01-S04",
+      "title": "The warehouse ambush",
+      "summary": "C01 resists C05's assault, witnesses C04 shoot C03, and escapes with the money.",
+      "purpose": "Turn the money operation into a lethal betrayal and make C01 a fugitive witness.",
+      "place": "L06",
+      "mood": ["claustrophobic", "violent", "shocked"],
+      "people": [
+        {"person": "C01", "presence": "on_screen", "wants": "Survive the ambush and get away.", "feeling_start": "Defiant", "feeling_end": "Shocked and urgent", "source": "inferred"},
+        {"person": "C03", "presence": "on_screen", "wants": "Escape with the money.", "feeling_start": "Urgent", "feeling_end": "Not expressed after being shot", "source": "inferred"},
+        {"person": "C05", "presence": "on_screen", "wants": "Overpower C01.", "feeling_start": "Contemptuous", "feeling_end": "Unresolved", "source": "inferred"},
+        {"person": "C04", "presence": "on_screen", "wants": "Enforce control through lethal force.", "feeling_start": "Threatening", "feeling_end": "Coldly assured", "source": "inferred"}
+      ],
+      "things": [
+        {"thing": "L04", "role": "used", "holder_start": "C01", "holder_end": "C01", "source": "script"},
+        {"thing": "P06", "role": "used", "holder_start": "", "holder_end": "", "source": "script"},
+        {"thing": "P07", "role": "hero", "holder_start": "C03", "holder_end": "C01", "source": "script"}
+      ],
+      "blocks": [
+        {
+          "kind": "action",
+          "spans": [{"line": 60, "w_from": 0, "w_to": 22}, {"line": 61, "w_from": 0, "w_to": 9}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Establish the trap around C01.",
+          "delivery_hint": "Let darkness and the encirclement define the danger.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["L04"], "spot": "L06", "speech": false, "visible": true, "change": "The vehicle stops inside; illumination disappears and C01 gets out.", "function": "setup"},
+            {"actors": ["C01", "C03"], "things": [], "spot": "L06", "speech": false, "visible": true, "change": "An encirclement forms and C03 becomes visible.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 62, "w_from": 2, "w_to": 8}],
+          "speaker": "C05",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01", "C03"],
+          "intent": "Belittle C01's resistance.",
+          "delivery_hint": "Taunting and confrontational.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C05"], "things": [], "spot": "L06", "speech": true, "visible": true, "change": "C05 challenges C01's standing.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 63, "w_from": 2, "w_to": 10}],
+          "speaker": "C01",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C05",
+          "heard_by": ["C05", "C03"],
+          "intent": "Assert agency without denying his occupation.",
+          "delivery_hint": "Steady defiance.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": [], "spot": "L06", "speech": true, "visible": true, "change": "C01 refuses the subordinate position offered to him.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 64, "w_from": 0, "w_to": 14}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Make C01's resistance depend on his surroundings.",
+          "delivery_hint": "Keep bodies, vehicle geometry and contact legible.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C05", "C01"], "things": ["L04", "P06"], "spot": "L06", "speech": false, "visible": true, "change": "C05 initiates combat; C01 counters with nearby surfaces and equipment.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 64, "w_from": 14, "w_to": 23}, {"line": 65, "w_from": 0, "w_to": 20}, {"line": 66, "w_from": 0, "w_to": 1}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Make C03's attempted departure become the betrayal's irreversible cost.",
+          "delivery_hint": "Withhold the wound impact; hold C01's reaction and the waterborne trace.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C03"], "things": ["P07"], "spot": "L06", "speech": false, "visible": true, "change": "C03 attempts to leave carrying money.", "function": "setup"},
+            {"actors": ["C04", "C03"], "things": [], "spot": "L06", "speech": false, "visible": false, "change": "C04 shoots C03; the strike itself remains outside the image.", "function": "turn"},
+            {"actors": ["C01"], "things": [], "spot": "L06", "speech": false, "visible": true, "change": "C01's face and a colored trace in the runoff convey the shooting's consequence.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 67, "w_from": 2, "w_to": 7}],
+          "speaker": "C04",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01", "C05"],
+          "intent": "Frame attachment as a vulnerability he can exploit.",
+          "delivery_hint": "Unhurried cruelty.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C04"], "things": [], "spot": "L06", "speech": true, "visible": true, "change": "C04 adds emotional intimidation to the violence.", "function": "texture"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 68, "w_from": 0, "w_to": 18}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Convert the vehicle into C01's means of survival.",
+          "delivery_hint": "Keep the loading, reverse movement and exit geographically clear.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["P07", "L04"], "spot": "L06", "speech": false, "visible": true, "change": "C01 loads the money and breaches the exit in reverse.", "function": "turn"},
+            {"actors": ["C01"], "things": ["L04", "P07"], "spot": "L07", "speech": false, "visible": true, "change": "C01 reaches city traffic with the money.", "function": "turn"}
+          ]
+        }
+      ],
+      "turns": [3, 5, 7],
+      "source": "inferred",
+      "rules_met": ["D03", "D10"]
+    },
+    {
+      "scene": "E01-S05",
+      "title": "The recorded evidence",
+      "summary": "C01 discovers evidence linking C04 and C06, then tells C02 who killed her brother without answering her suspicion about his involvement.",
+      "purpose": "Reveal the wider conspiracy while preserving the fracture between C01 and C02.",
+      "place": "L04",
+      "mood": ["uneasy", "accusatory", "isolated"],
+      "people": [
+        {"person": "C01", "presence": "on_screen", "wants": "Understand the evidence and tell C02 about C03's killer.", "feeling_start": "Searching", "feeling_end": "Unable to answer her accusation", "source": "inferred"},
+        {"person": "C02", "presence": "phone", "wants": "Determine whether C01 was involved.", "feeling_start": "Distressed", "feeling_end": "Suspicious", "source": "inferred"},
+        {"person": "C04", "presence": "recording", "wants": "Have C03 killed.", "feeling_start": "Not established", "feeling_end": "Not established", "source": "script"},
+        {"person": "C06", "presence": "recording", "wants": "Not established beyond discussing the funds.", "feeling_start": "Not established", "feeling_end": "Not established", "source": "script"}
+      ],
+      "things": [
+        {"thing": "P08", "role": "hero", "holder_start": "C01", "holder_end": "C01", "source": "script"},
+        {"thing": "P07", "role": "used", "holder_start": "C01", "holder_end": "C01", "source": "script"}
+      ],
+      "blocks": [
+        {
+          "kind": "action",
+          "spans": [{"line": 70, "w_from": 0, "w_to": 7}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Introduce the phone as an evidence source.",
+          "delivery_hint": "Concentrate attention on C01 and the device.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["P08"], "spot": "L04", "speech": false, "visible": true, "change": "C01 accesses the phone and starts playback.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 70, "w_from": 7, "w_to": 11}],
+          "speaker": "C04",
+          "presence": "recording",
+          "device": "P08",
+          "addressee": "",
+          "heard_by": ["C01"],
+          "intent": "Issue a lethal instruction concerning C03.",
+          "delivery_hint": "Recorded playback; no additional vocal characterization is established.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C04"], "things": ["P08"], "spot": "L04", "speech": true, "visible": false, "change": "The playback supplies evidence of C04's murder order.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 70, "w_from": 11, "w_to": 12}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Link the two portions of evidence.",
+          "delivery_hint": "Maintain playback continuity.",
+          "source": "inferred",
+          "events": []
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 70, "w_from": 12, "w_to": 16}, {"line": 71, "w_from": 0, "w_to": 3}],
+          "speaker": "C06",
+          "presence": "recording",
+          "device": "P08",
+          "addressee": "",
+          "heard_by": ["C01"],
+          "intent": "Discuss the community funds.",
+          "delivery_hint": "Keep the financial subject intelligible.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C06"], "things": ["P08", "P07"], "spot": "L04", "speech": true, "visible": false, "change": "The evidence connects C06 to the money trail.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 71, "w_from": 3, "w_to": 8}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Register C01's comprehension.",
+          "delivery_hint": "Let his reaction carry the realization.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["P08"], "spot": "L04", "speech": false, "visible": false, "change": "C01 understands the connected operation.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 72, "w_from": 2, "w_to": 6}],
+          "speaker": "C01",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C02",
+          "heard_by": ["C02"],
+          "intent": "Identify C03's killer to C02.",
+          "delivery_hint": "Difficult, direct disclosure over the call.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01", "C02"], "things": [], "spot": "L04", "speech": true, "visible": true, "change": "C02 receives C01's identification of C04.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 73, "w_from": 2, "w_to": 9}],
+          "speaker": "C02",
+          "presence": "phone",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01"],
+          "intent": "Challenge C01 about his own complicity.",
+          "delivery_hint": "Wounded suspicion rather than reassurance.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": [], "spot": "", "speech": true, "visible": false, "change": "The conversation turns from the killer's identity to C01's responsibility.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 74, "w_from": 0, "w_to": 10}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Leave the accusation unanswered beside the physical money.",
+          "delivery_hint": "Hold the look without substituting explanatory dialogue.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["P07"], "spot": "L04", "speech": false, "visible": true, "change": "C01 looks toward the money and gives no response.", "function": "turn"}
+          ]
+        }
+      ],
+      "turns": [5, 7, 8],
+      "source": "inferred",
+      "rules_met": []
+    },
+    {
+      "scene": "E01-S06",
+      "title": "The house confrontation",
+      "summary": "C02 confronts the injured C01, hears the murder evidence, and considers a public alternative after he warns that police access is compromised.",
+      "purpose": "Shift their conflict toward a shared evidence strategy without erasing C02's anger.",
+      "place": "L08",
+      "mood": ["raw", "contained", "resolute"],
+      "people": [
+        {"person": "C01", "presence": "on_screen", "wants": "Give C02 the evidence and explain the danger of police suppression.", "feeling_start": "Battered and exposed", "feeling_end": "Urgent", "source": "inferred"},
+        {"person": "C02", "presence": "on_screen", "wants": "Find a way to act on the evidence.", "feeling_start": "Angry", "feeling_end": "Deliberate", "source": "inferred"},
+        {"person": "C04", "presence": "recording", "wants": "Have C03 killed.", "feeling_start": "Not established", "feeling_end": "Not established", "source": "script"}
+      ],
+      "things": [
+        {"thing": "P07", "role": "used", "holder_start": "C01", "holder_end": "L08", "source": "script"},
+        {"thing": "P08", "role": "hero", "holder_start": "C01", "holder_end": "C02", "source": "script"},
+        {"thing": "P09", "role": "mentioned", "holder_start": "", "holder_end": "", "source": "script"}
+      ],
+      "blocks": [
+        {
+          "kind": "action",
+          "spans": [{"line": 76, "w_from": 0, "w_to": 22}, {"line": 77, "w_from": 0, "w_to": 3}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Bring the money, injury and fractured trust into the same room.",
+          "delivery_hint": "Keep the slap and the phone handover distinct.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["P07"], "spot": "L08", "speech": false, "visible": true, "change": "C01 arrives wet and mildly hurt, then puts the money down.", "function": "setup"},
+            {"actors": ["C02", "C01"], "things": [], "spot": "L08", "speech": false, "visible": true, "change": "C02 strikes C01.", "function": "turn"},
+            {"actors": ["C01", "C02"], "things": ["P08"], "spot": "L08", "speech": false, "visible": true, "change": "The phone passes to C02, who listens.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 77, "w_from": 3, "w_to": 6}],
+          "speaker": "C04",
+          "presence": "recording",
+          "device": "P08",
+          "addressee": "",
+          "heard_by": ["C02"],
+          "intent": "Convey the previously established murder order.",
+          "delivery_hint": "Treat this as evidence playback, not a new live exchange.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C04", "C02"], "things": ["P08"], "spot": "L08", "speech": true, "visible": false, "change": "C02 hears the recorded murder evidence.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 77, "w_from": 6, "w_to": 11}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Show anger becoming purposeful.",
+          "delivery_hint": "Favor a restrained change in attention and bearing.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": ["P08"], "spot": "L08", "speech": false, "visible": true, "change": "C02 settles into controlled resolve.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 78, "w_from": 2, "w_to": 8}],
+          "speaker": "C02",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01"],
+          "intent": "Test whether the authorities can receive the evidence.",
+          "delivery_hint": "Practical and probing.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": ["P08"], "spot": "L08", "speech": true, "visible": true, "change": "C02 raises official disclosure as an option.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 79, "w_from": 2, "w_to": 9}],
+          "speaker": "C01",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C02",
+          "heard_by": ["C02"],
+          "intent": "Warn that C06 could suppress the evidence through police connections.",
+          "delivery_hint": "Low, immediate caution.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01", "C02"], "things": ["P08"], "spot": "L08", "speech": true, "visible": true, "change": "C02 learns why a private police handover is unsafe.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 80, "w_from": 0, "w_to": 12}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Plant a public route for the evidence.",
+          "delivery_hint": "Let C02's directed look connect the problem to the festival.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": ["P09"], "spot": "L08", "speech": false, "visible": true, "change": "C02 turns her attention toward the temple amplification as festivities begin.", "function": "turn"}
+          ]
+        }
+      ],
+      "turns": [3, 5, 6],
+      "source": "inferred",
+      "rules_met": []
+    },
+    {
+      "scene": "E01-S07",
+      "title": "The festival preparations",
+      "summary": "C02 prepares the phone for amplification while C01 moves the money toward L10. Their exchange establishes protection and a shared commitment.",
+      "purpose": "Prepare the public exposure and turn a solitary protective gesture into partnership.",
+      "place": "L09",
+      "mood": ["furtive", "tender", "determined"],
+      "people": [
+        {"person": "C02", "presence": "on_screen", "wants": "Prepare the broadcast and face the danger alongside C01.", "feeling_start": "Focused", "feeling_end": "Committed", "source": "inferred"},
+        {"person": "C01", "presence": "on_screen", "wants": "Move the money and protect C02.", "feeling_start": "Purposeful", "feeling_end": "Met by her solidarity", "source": "inferred"}
+      ],
+      "things": [
+        {"thing": "P08", "role": "hero", "holder_start": "C02", "holder_end": "C02", "source": "script"},
+        {"thing": "P09", "role": "used", "holder_start": "L09", "holder_end": "L09", "source": "inferred"},
+        {"thing": "P07", "role": "used", "holder_start": "C01", "holder_end": "C01", "source": "script"}
+      ],
+      "blocks": [
+        {
+          "kind": "action",
+          "spans": [{"line": 82, "w_from": 0, "w_to": 10}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Establish the public occasion surrounding the covert preparation.",
+          "delivery_hint": "Give percussion, weather and flame their own presence.",
+          "source": "inferred",
+          "events": [
+            {"actors": [], "things": [], "spot": "L09", "speech": false, "visible": true, "change": "The festival environment is established.", "function": "texture"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 82, "w_from": 10, "w_to": 18}, {"line": 83, "w_from": 0, "w_to": 11}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Prepare the evidence channel and the money's next destination.",
+          "delivery_hint": "Keep the connection discreet; do not imply an unstated later relocation of the phone.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": ["P08", "P09"], "spot": "L09", "speech": false, "visible": true, "change": "C02 links the phone to the temple audio equipment.", "function": "setup"},
+            {"actors": ["C01"], "things": ["P07"], "spot": "L09", "speech": false, "visible": true, "change": "C01 carries the money toward L10.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 84, "w_from": 2, "w_to": 7}],
+          "speaker": "C02",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01"],
+          "intent": "Ask what he is choosing to protect.",
+          "delivery_hint": "Searching rather than merely accusatory.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": ["P07"], "spot": "L09", "speech": true, "visible": true, "change": "C02 tests the motive behind C01's departure.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 85, "w_from": 2, "w_to": 5}],
+          "speaker": "C01",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C02",
+          "heard_by": ["C02"],
+          "intent": "Make her safety, rather than the money, his stated priority.",
+          "delivery_hint": "Plain and intimate.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": [], "spot": "L09", "speech": true, "visible": true, "change": "C01 declares his protective motive.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 86, "w_from": 2, "w_to": 8}],
+          "speaker": "C02",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01"],
+          "intent": "Insist on facing the danger together.",
+          "delivery_hint": "Quiet certainty; retain her agency.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02", "C01"], "things": [], "spot": "L09", "speech": true, "visible": true, "change": "C02 explicitly commits to a shared course.", "function": "turn"}
+          ]
+        }
+      ],
+      "turns": [4, 5],
+      "source": "inferred",
+      "rules_met": ["D09"]
+    },
+    {
+      "scene": "E01-S08",
+      "title": "The mill confrontation",
+      "summary": "C01 holds off C05 while C02 broadcasts the evidence and defeats C06's interference. Public attention, C01's restraint and arriving police end C04 and C06's control.",
+      "purpose": "Resolve the exposure through physical resistance, C02's initiative and public witness rather than violence alone.",
+      "place": "L10",
+      "mood": ["besieged", "defiant", "cathartic"],
+      "people": [
+        {"person": "C01", "presence": "on_screen", "wants": "Protect C02 and prevent the evidence from being reclaimed.", "feeling_start": "Resolved", "feeling_end": "Restrained after gaining the advantage", "source": "inferred"},
+        {"person": "C02", "presence": "on_screen", "wants": "Keep the evidence audible and stop its suppression.", "feeling_start": "Determined", "feeling_end": "Vindicated", "source": "inferred"},
+        {"person": "C04", "presence": "on_screen", "wants": "Recover the phone and money and regain control.", "feeling_start": "Commanding", "feeling_end": "Defeated", "source": "inferred"},
+        {"person": "C05", "presence": "on_screen", "wants": "Subdue C01.", "feeling_start": "Aggressive", "feeling_end": "Unresolved", "source": "inferred"},
+        {"person": "C06", "presence": "on_screen", "wants": "Stop the exposure.", "feeling_start": "Assertive", "feeling_end": "Defeated", "source": "inferred"}
+      ],
+      "things": [
+        {"thing": "P08", "role": "hero", "holder_start": "C02", "holder_end": "C02", "source": "inferred"},
+        {"thing": "P09", "role": "hero", "holder_start": "L09", "holder_end": "L09", "source": "script"},
+        {"thing": "P07", "role": "mentioned", "holder_start": "C01", "holder_end": "C01", "source": "inferred"},
+        {"thing": "P10", "role": "used", "holder_start": "", "holder_end": "", "source": "script"},
+        {"thing": "P11", "role": "hero", "holder_start": "C04", "holder_end": "", "source": "script"}
+      ],
+      "blocks": [
+        {
+          "kind": "action",
+          "spans": [{"line": 88, "w_from": 0, "w_to": 13}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Stage the opposing forces around C01.",
+          "delivery_hint": "Use arriving headlights to reduce C01 to an outline.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C04", "C05", "C06", "C01"], "things": [], "spot": "L10", "speech": false, "visible": true, "change": "The three opponents arrive; backlighting isolates C01.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 88, "w_from": 13, "w_to": 17}, {"line": 89, "w_from": 0, "w_to": 3}],
+          "speaker": "C04",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01", "C05", "C06"],
+          "intent": "Reclaim the evidence and funds.",
+          "delivery_hint": "Expect obedience.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C04"], "things": ["P08", "P07"], "spot": "L10", "speech": true, "visible": true, "change": "C04 demands surrender of both contested assets.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 90, "w_from": 2, "w_to": 9}],
+          "speaker": "C04",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01", "C05", "C06"],
+          "intent": "Deny C01 the right to choose.",
+          "delivery_hint": "Dismissive authority.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C04"], "things": [], "spot": "L10", "speech": true, "visible": true, "change": "C04 invokes hierarchy to undermine C01's resistance.", "function": "texture"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 91, "w_from": 2, "w_to": 12}],
+          "speaker": "C01",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C04",
+          "heard_by": ["C04", "C05", "C06"],
+          "intent": "Claim responsibility for his own course.",
+          "delivery_hint": "Controlled, deliberate defiance.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": [], "spot": "L10", "speech": true, "visible": true, "change": "C01 openly rejects C04's authority.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 92, "w_from": 0, "w_to": 19}, {"line": 93, "w_from": 0, "w_to": 8}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Make resistance depend on weight, terrain and limited space.",
+          "delivery_hint": "Preserve a single handheld take with readable short-range contact.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C05", "C01"], "things": ["P10"], "spot": "L10", "speech": false, "visible": true, "change": "C05 attacks and C01 fights amid stored sacks, metal and slippery flooring.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 93, "w_from": 8, "w_to": 13}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Give C02 the decisive disclosure action.",
+          "delivery_hint": "Make activation clear without inventing a new phone location.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": ["P09", "P08"], "spot": "", "speech": false, "visible": true, "change": "C02 enables the prepared public playback.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 94, "w_from": 0, "w_to": 1}],
+          "speaker": "C04",
+          "presence": "recording",
+          "device": "P09",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Expose C04 through his recorded participation.",
+          "delivery_hint": "Project the recorded voice into the village soundscape.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C04"], "things": ["P08", "P09"], "spot": "L02", "speech": true, "visible": false, "change": "C04's recorded voice becomes publicly audible.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 94, "w_from": 1, "w_to": 2}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Join the two recorded participants.",
+          "delivery_hint": "Maintain a continuous public playback.",
+          "source": "inferred",
+          "events": []
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 94, "w_from": 2, "w_to": 9}],
+          "speaker": "C06",
+          "presence": "recording",
+          "device": "P09",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Expose C06's participation through the same evidence.",
+          "delivery_hint": "Keep the second recorded voice distinguishable.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C06"], "things": ["P08", "P09"], "spot": "L02", "speech": true, "visible": false, "change": "C06's recorded voice also reaches the village.", "function": "reveal"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 94, "w_from": 9, "w_to": 20}, {"line": 95, "w_from": 0, "w_to": 4}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Make C02 actively defeat the attempted suppression.",
+          "delivery_hint": "Clarify the interruption and restoration through the power controls and sound.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C06", "C02"], "things": ["P09"], "spot": "", "speech": false, "visible": true, "change": "C06 interferes with the supply; C02 obstructs him and restores it.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 96, "w_from": 2, "w_to": 11}],
+          "speaker": "C02",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C06",
+          "heard_by": ["C06"],
+          "intent": "Reject the use of official status to silence the truth.",
+          "delivery_hint": "Firm confrontation without hesitation.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02", "C06"], "things": [], "spot": "", "speech": true, "visible": true, "change": "C02 directly challenges C06's claimed authority.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 97, "w_from": 0, "w_to": 19}, {"line": 98, "w_from": 0, "w_to": 12}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Resolve the threat through public pressure, disarmament and restraint.",
+          "delivery_hint": "Keep the headlight advantage and disarming kick clear; do not turn the refusal to kill into an execution attempt.",
+          "source": "inferred",
+          "events": [
+            {"actors": [], "things": [], "spot": "L10", "speech": false, "visible": true, "change": "A village crowd gathers around the building.", "function": "turn"},
+            {"actors": ["C04", "C02"], "things": ["P11"], "spot": "L10", "speech": false, "visible": true, "change": "C04 threatens C02 with a firearm but loses vision in the headlights.", "function": "turn"},
+            {"actors": ["C01", "C04"], "things": ["P11"], "spot": "L10", "speech": false, "visible": true, "change": "C01 kicks the firearm out of play and spares C04.", "function": "turn"},
+            {"actors": ["C04", "C06"], "things": [], "spot": "L10", "speech": false, "visible": true, "change": "Arriving officers take C04 and C06 into custody.", "function": "turn"}
+          ]
+        }
+      ],
+      "turns": [4, 6, 7, 9, 10, 12],
+      "source": "inferred",
+      "rules_met": ["D04", "D05", "D10"]
+    },
+    {
+      "scene": "E01-S09",
+      "title": "The dawn farewell",
+      "summary": "The money becomes evidence. C02 renews her bond with C01 before they leave separately, and he promises a return without wealth.",
+      "purpose": "Close the money's journey while leaving C01's legal future open and affirming the relationship.",
+      "place": "L11",
+      "mood": ["bittersweet", "quiet", "hopeful"],
+      "people": [
+        {"person": "C01", "presence": "on_screen", "wants": "Reassure C02 that he will return.", "feeling_start": "Resigned to departure", "feeling_end": "Committed", "source": "inferred"},
+        {"person": "C02", "presence": "on_screen", "wants": "Preserve their bond through separation.", "feeling_start": "Uncertain", "feeling_end": "Holding onto hope", "source": "inferred"}
+      ],
+      "things": [
+        {"thing": "P07", "role": "used", "holder_start": "", "holder_end": "", "source": "script"},
+        {"thing": "P04", "role": "hero", "holder_start": "C02", "holder_end": "C01", "source": "inferred"},
+        {"thing": "L13", "role": "used", "holder_start": "", "holder_end": "", "source": "script"},
+        {"thing": "L14", "role": "used", "holder_start": "", "holder_end": "", "source": "script"}
+      ],
+      "blocks": [
+        {
+          "kind": "action",
+          "spans": [{"line": 100, "w_from": 0, "w_to": 15}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Separate the money's evidentiary outcome from C01's unresolved legal outcome.",
+          "delivery_hint": "Do not identify an unstated recipient or imply a verdict.",
+          "source": "inferred",
+          "events": [
+            {"actors": [], "things": ["P07"], "spot": "L11", "speech": false, "visible": true, "change": "The money is surrendered for evidentiary use.", "function": "turn"},
+            {"actors": ["C01"], "things": ["L13"], "spot": "L11", "speech": false, "visible": true, "change": "C01 is placed in police transport.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 100, "w_from": 15, "w_to": 24}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Renew the bond through a physical gesture.",
+          "delivery_hint": "Keep the gesture intimate and unhurried.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02", "C01"], "things": ["P04"], "spot": "L11", "speech": false, "visible": true, "change": "C02 secures the thread around C01's wrist again.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 101, "w_from": 2, "w_to": 4}],
+          "speaker": "C02",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C01",
+          "heard_by": ["C01"],
+          "intent": "Ask for reassurance of his return.",
+          "delivery_hint": "Small and vulnerable.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C02"], "things": [], "spot": "L11", "speech": true, "visible": true, "change": "C02 gives voice to the uncertainty of their separation.", "function": "setup"}
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "spans": [{"line": 102, "w_from": 2, "w_to": 8}],
+          "speaker": "C01",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "C02",
+          "heard_by": ["C02"],
+          "intent": "Promise to return without making money the basis of their future.",
+          "delivery_hint": "Gentle certainty, not a guarantee of legal release.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": [], "spot": "L11", "speech": true, "visible": true, "change": "C01 offers a personal promise detached from wealth.", "function": "turn"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 103, "w_from": 0, "w_to": 21}, {"line": 104, "w_from": 0, "w_to": 1}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "Complete the physical separation while visually connecting their worlds.",
+          "delivery_hint": "Allow the receding landscape to settle.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["L13"], "spot": "L11", "speech": false, "visible": true, "change": "Police transport departs with C01.", "function": "turn"},
+            {"actors": ["C02"], "things": ["L14"], "spot": "L11", "speech": false, "visible": true, "change": "C02 boards the bus.", "function": "turn"},
+            {"actors": [], "things": [], "spot": "", "speech": false, "visible": true, "change": "The rearward view visually joins the rural landscape and the cityward route.", "function": "texture"}
+          ]
+        },
+        {
+          "kind": "action",
+          "spans": [{"line": 104, "w_from": 1, "w_to": 14}],
+          "speaker": "",
+          "presence": "on_screen",
+          "device": "",
+          "addressee": "",
+          "heard_by": [],
+          "intent": "End on the surviving sign of their commitment.",
+          "delivery_hint": "Isolate the wet thread at C01's wrist for the closing image.",
+          "source": "inferred",
+          "events": [
+            {"actors": ["C01"], "things": ["P04"], "spot": "L13", "speech": false, "visible": true, "change": "The closing view rests on the thread under running rain.", "function": "texture"}
+          ]
+        }
+      ],
+      "turns": [1, 2, 4, 5],
+      "source": "inferred",
+      "rules_met": ["D06", "D09"]
+    }
+  ]
+}

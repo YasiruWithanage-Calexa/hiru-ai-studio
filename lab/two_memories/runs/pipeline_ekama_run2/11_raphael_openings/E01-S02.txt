@@ -1,0 +1,91 @@
+<packet>
+SCENE E01-S02: SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+Title: The redirected van
+Summary: Dinu hears Aruni's concern about Nimal while driving. Mudalali then orders a different destination, and Dinu changes course after looking at his wrist thread.
+Purpose (inferred): Bring personal concern and an employer's demand into the same journey without establishing a causal link between them.
+Story time: order 2, normal, Night; six hours after E01-S03
+The scene before it in the story: E01-S03 SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES. It ends with: Dinu looks at it as rain hits the garage roof.
+The scene after it in the story: E01-S01 SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE. It opens with: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices something caught near the canal gate: a body. It is Nimal.
+On the page, before it: E01-S01 SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+On the page, after it: E01-S03 SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES
+Thread (setup_payoff, Nimal): Aruni's concern over Nimal's absence leads to the discovery of his death; how he died remains open. Here: Aruni reports Nimal missing from home. Later: E01-S01: Aruni finds Nimal's body..
+Thread (open_question, Rs. 300 million): Whether Dinu takes Rs. 300 million, what becomes of the evidence in metal box, and whether Mudalali's route change connects to Nimal's death remain unresolved. Here: Mudalali redirects Dinu; no connection to the proposed taking is established. Earlier: E01-S03: Nimal presents evidence concerning Rs. 300 million; Dinu objects to taking it..
+Knowledge: person Dinu; learns Aruni reports that Nimal has not returned home and that she is afraid.; audience_only False
+Relationship (Dinu and Aruni, as of E01-S03): An existing romantic attachment is under strain according to Nimal; its outcome remains unresolved across E01-S03 and E01-S02.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C01 Dinu [on_screen] summary: Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.; age: Dinu - 30, Colombo cash-transport driver.; details: Quiet, experienced, violent only when cornered. | wants: Continue his journey while taking in the message and new instructions. | feels: Preoccupied -> Uneasy and inward (inferred)
+- C02 Aruni [voice_message] summary: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.; age: Aruni - 27, Mahawewa community nurse.; details: Strong, intelligent and emotionally controlled. | wants: Alert Dinu to Nimal's absence and obtain reassurance. | feels: Worried -> Fearful (inferred)
+- C04 Mudalali [phone] summary: Mudalali - 52, businessman laundering illegal money through village development projects.; age: Mudalali - 52, businessman laundering illegal money through village development projects. | wants: Redirect Dinu's journey. | feels: Businesslike -> Directive (inferred)
+
+PLACE: Cash Van (vehicle); zones: driver's seat, dashboard
+THINGS
+- P03 red thread [worn] held at the start by: Dinu; at the end: Dinu (script). Card: summary: Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the
+red thread around his wrist and turns toward the industrial area.
+STATE Dinu: in: zone driver's seat, facing away, frame side centre, posture sitting; out: zone driver's seat, facing away, frame side centre, posture sitting
+PROP from b1: photo of Dinu and Aruni near a village bus stop, on the dashboard, faded
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S02-B01 action: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.
+    intent (inferred): Establish Dinu at work within the wet city.
+    delivery hint: Keep the driving contained rather than presenting it as a chase.
+    event E01-S02-B01-e1 (setup; who: Dinu; at: Cash Van [L04]): Dinu is established driving through illuminated wet streets.
+    state from here: Dinu: zone driver's seat, facing away, frame side centre, posture sitting
+b1 = E01-S02-B02 action: On the dashboard is a faded photo of him and Aruni near a village bus stop.
+    intent (inferred): Establish an existing personal bond through a keepsake.
+    delivery hint: Let the photograph register without treating the pictured people as present.
+    event E01-S02-B02-e1 (reveal; at: Cash Van [L04]): A dashboard photograph associates Dinu and Aruni with a shared village memory.
+b2 = E01-S02-B03 sound: Aruni's voice message plays.
+    intent (inferred): Bring Aruni into the journey through recorded audio.
+    delivery hint: Distinguish playback from a live exchange.
+    event E01-S02-B03-e1 (setup, not visible; who: Aruni; at: Cash Van [L04]): Aruni becomes audible through message playback.
+b3 = E01-S02-B04 dialogue Aruni [voice_message] to Dinu, heard by Dinu: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    intent (inferred): Report Nimal's continued absence and seek support.
+    delivery hint: Controlled concern that becomes more openly fearful.
+    event E01-S02-B04-e1 (reveal, not visible; who: Aruni; at: Cash Van [L04]): Dinu learns that Nimal has not returned and that Aruni is afraid.
+b4 = E01-S02-B05 action: Mudalali calls.
+    intent (inferred): Interrupt the personal concern with a work demand.
+    delivery hint: Keep the arrival of the call matter-of-fact.
+    event E01-S02-B05-e1 (setup, not visible; who: Mudalali; at: Cash Van [L04]): Mudalali initiates contact with Dinu.
+b5 = E01-S02-B06 dialogue Mudalali [phone] to Dinu, heard by Dinu: Route eka maru karapan. Old Port warehouse ekata yanna.
+    intent (inferred): Order a route change to a different destination.
+    delivery hint: Brief and authoritative.
+    event E01-S02-B06-e1 (turn, not visible; who: Mudalali; at: Cash Van [L04]): Dinu receives instructions replacing his existing route.
+b6 = E01-S02-B07 action: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+    intent (inferred): Connect a private moment of attention with the subsequent change of course without explaining the thread.
+    delivery hint: Give the wrist glance a readable beat before the turn.
+    event E01-S02-B07-e1 (turn; who: Dinu; things: red thread; at: Cash Van [L04]): Dinu glances at the thread and steers toward the industrial district.
+
+FEELING: uneasy, private, pressured; the scene turns at b3, b5, b6
+DIRECTION IN SCOPE
+- D01 [scoped] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.
+- D05 [general] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- D06 [general] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- D07 [general] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- D08 [general] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- D09 [general] The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- D10 [general] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- D11 [general] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+
+LENGTH: stated 90.0 s; spoken 10.5 s
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 action: 1.5 s on screen
+b2 action: 1.5 s on screen
+b3 line [L3] Aruni: 14 words, 6.4 s, shortest take 8 s
+b4 action: 1.5 s on screen
+b5 line [L5] Mudalali: 9 words, 4.1 s, shortest take 6 s
+b6 action: 1.5 s on screen
+</timing>
+
+<voice_only>
+Aruni, Mudalali: heard and never seen. Never in subjects or first_frame as a person, and never named in a clip's picture text as the person someone listens to. The one exception: their NAME as text on a phone screen (a caller ID, a message, a voicemail), which is welcome.
+</voice_only>
+
+<length>
+The scene is 90 s long. TARGET: a bin of about 90 s of takes. The script itself times at 18 s (its actions and lines on one clock); the other 72 s of the target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a line lands. CAP: 135 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 72 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.

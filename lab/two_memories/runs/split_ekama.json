@@ -1,0 +1,976 @@
+{
+ "sections": [
+  {
+   "label": "title_page",
+   "lines": {
+    "start": 1,
+    "end": 8
+   },
+   "note": ""
+  },
+  {
+   "label": "overview",
+   "lines": {
+    "start": 9,
+    "end": 21
+   },
+   "note": ""
+  },
+  {
+   "label": "cast",
+   "lines": {
+    "start": 22,
+    "end": 39
+   },
+   "note": ""
+  },
+  {
+   "label": "story",
+   "lines": {
+    "start": 40,
+    "end": 104
+   },
+   "note": ""
+  },
+  {
+   "label": "direction",
+   "lines": {
+    "start": 105,
+    "end": 130
+   },
+   "note": ""
+  },
+  {
+   "label": "other",
+   "lines": {
+    "start": 131,
+    "end": 132
+   },
+   "note": "end_marker"
+  }
+ ],
+ "cards": [
+  {
+   "kind": "person",
+   "name": {
+    "line": 25,
+    "w_from": 0,
+    "w_to": 1
+   },
+   "lines": {
+    "start": 25,
+    "end": 27
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 26,
+      "w_from": 0,
+      "w_to": 4
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "person",
+   "name": {
+    "line": 28,
+    "w_from": 0,
+    "w_to": 1
+   },
+   "lines": {
+    "start": 28,
+    "end": 30
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 29,
+      "w_from": 0,
+      "w_to": 4
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "person",
+   "name": {
+    "line": 31,
+    "w_from": 0,
+    "w_to": 1
+   },
+   "lines": {
+    "start": 31,
+    "end": 32
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 32,
+      "w_from": 0,
+      "w_to": 8
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "person",
+   "name": {
+    "line": 33,
+    "w_from": 0,
+    "w_to": 1
+   },
+   "lines": {
+    "start": 33,
+    "end": 35
+   },
+   "fields": [],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "person",
+   "name": {
+    "line": 36,
+    "w_from": 0,
+    "w_to": 1
+   },
+   "lines": {
+    "start": 36,
+    "end": 37
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 37,
+      "w_from": 0,
+      "w_to": 5
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "person",
+   "name": {
+    "line": 38,
+    "w_from": 0,
+    "w_to": 2
+   },
+   "lines": {
+    "start": 38,
+    "end": 39
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 39,
+      "w_from": 0,
+      "w_to": 8
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 14,
+    "w_from": 0,
+    "w_to": 1
+   },
+   "lines": {
+    "start": 13,
+    "end": 14
+   },
+   "fields": [],
+   "place_kind": "region",
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 14,
+    "w_from": 2,
+    "w_to": 4
+   },
+   "lines": {
+    "start": 13,
+    "end": 14
+   },
+   "fields": [],
+   "place_kind": "region",
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 41,
+    "w_from": 4,
+    "w_to": 6
+   },
+   "lines": {
+    "start": 41,
+    "end": 46
+   },
+   "fields": [],
+   "place_kind": "set",
+   "seen": true,
+   "within": 7
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 47,
+    "w_from": 4,
+    "w_to": 6
+   },
+   "lines": {
+    "start": 47,
+    "end": 74
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 48,
+      "w_from": 8,
+      "w_to": 13
+     }
+    }
+   ],
+   "place_kind": "vehicle",
+   "seen": true,
+   "within": 6
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 53,
+    "w_from": 6,
+    "w_to": 8
+   },
+   "lines": {
+    "start": 53,
+    "end": 58
+   },
+   "fields": [],
+   "place_kind": "set",
+   "seen": true,
+   "within": 6
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 59,
+    "w_from": 4,
+    "w_to": 7
+   },
+   "lines": {
+    "start": 59,
+    "end": 68
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 60,
+      "w_from": 0,
+      "w_to": 8
+     }
+    }
+   ],
+   "place_kind": "set",
+   "seen": true,
+   "within": 6
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 69,
+    "w_from": 7,
+    "w_to": 9
+   },
+   "lines": {
+    "start": 69,
+    "end": 74
+   },
+   "fields": [
+    {
+     "name": "look",
+     "span": {
+      "line": 48,
+      "w_from": 0,
+      "w_to": 8
+     }
+    }
+   ],
+   "place_kind": "set",
+   "seen": true,
+   "within": 6
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 75,
+    "w_from": 4,
+    "w_to": 6
+   },
+   "lines": {
+    "start": 75,
+    "end": 80
+   },
+   "fields": [],
+   "place_kind": "set",
+   "seen": true,
+   "within": 7
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 81,
+    "w_from": 4,
+    "w_to": 7
+   },
+   "lines": {
+    "start": 81,
+    "end": 86
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 82,
+      "w_from": 0,
+      "w_to": 10
+     }
+    }
+   ],
+   "place_kind": "set",
+   "seen": true,
+   "within": 7
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 87,
+    "w_from": 4,
+    "w_to": 7
+   },
+   "lines": {
+    "start": 87,
+    "end": 98
+   },
+   "fields": [],
+   "place_kind": "set",
+   "seen": true,
+   "within": 7
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 99,
+    "w_from": 4,
+    "w_to": 7
+   },
+   "lines": {
+    "start": 99,
+    "end": 104
+   },
+   "fields": [],
+   "place_kind": "set",
+   "seen": true,
+   "within": 7
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 42,
+    "w_from": 6,
+    "w_to": 8
+   },
+   "lines": {
+    "start": 42,
+    "end": 44
+   },
+   "fields": [],
+   "place_kind": "spot",
+   "seen": true,
+   "within": 8
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 42,
+    "w_from": 11,
+    "w_to": 13
+   },
+   "lines": {
+    "start": 42,
+    "end": 42
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 42,
+      "w_from": 2,
+      "w_to": 13
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 43,
+    "w_from": 22,
+    "w_to": 24
+   },
+   "lines": {
+    "start": 43,
+    "end": 58
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 58,
+      "w_from": 0,
+      "w_to": 8
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 48,
+    "w_from": 18,
+    "w_to": 20
+   },
+   "lines": {
+    "start": 48,
+    "end": 49
+   },
+   "fields": [],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 51,
+    "w_from": 15,
+    "w_to": 17
+   },
+   "lines": {
+    "start": 51,
+    "end": 104
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 100,
+      "w_from": 15,
+      "w_to": 24
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 54,
+    "w_from": 6,
+    "w_to": 8
+   },
+   "lines": {
+    "start": 54,
+    "end": 54
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 54,
+      "w_from": 3,
+      "w_to": 16
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 64,
+    "w_from": 11,
+    "w_to": 12
+   },
+   "lines": {
+    "start": 64,
+    "end": 64
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 64,
+      "w_from": 2,
+      "w_to": 14
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 64,
+    "w_from": 20,
+    "w_to": 22
+   },
+   "lines": {
+    "start": 64,
+    "end": 100
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 64,
+      "w_from": 14,
+      "w_to": 22
+     }
+    },
+    {
+     "name": "details",
+     "span": {
+      "line": 76,
+      "w_from": 7,
+      "w_to": 16
+     }
+    },
+    {
+     "name": "details",
+     "span": {
+      "line": 100,
+      "w_from": 0,
+      "w_to": 7
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 70,
+    "w_from": 2,
+    "w_to": 4
+   },
+   "lines": {
+    "start": 70,
+    "end": 95
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 70,
+      "w_from": 0,
+      "w_to": 4
+     }
+    },
+    {
+     "name": "details",
+     "span": {
+      "line": 76,
+      "w_from": 20,
+      "w_to": 25
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 80,
+    "w_from": 5,
+    "w_to": 7
+   },
+   "lines": {
+    "start": 80,
+    "end": 95
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 80,
+      "w_from": 0,
+      "w_to": 7
+     }
+    },
+    {
+     "name": "details",
+     "span": {
+      "line": 93,
+      "w_from": 9,
+      "w_to": 15
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 92,
+    "w_from": 8,
+    "w_to": 10
+   },
+   "lines": {
+    "start": 92,
+    "end": 93
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 92,
+      "w_from": 2,
+      "w_to": 13
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "thing",
+   "name": {
+    "line": 97,
+    "w_from": 7,
+    "w_to": 8
+   },
+   "lines": {
+    "start": 97,
+    "end": 98
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 97,
+      "w_from": 4,
+      "w_to": 10
+     }
+    }
+   ],
+   "place_kind": null,
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 100,
+    "w_from": 13,
+    "w_to": 15
+   },
+   "lines": {
+    "start": 100,
+    "end": 103
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 100,
+      "w_from": 7,
+      "w_to": 15
+     }
+    }
+   ],
+   "place_kind": "vehicle",
+   "seen": true,
+   "within": -1
+  },
+  {
+   "kind": "place",
+   "name": {
+    "line": 103,
+    "w_from": 7,
+    "w_to": 8
+   },
+   "lines": {
+    "start": 103,
+    "end": 104
+   },
+   "fields": [
+    {
+     "name": "details",
+     "span": {
+      "line": 103,
+      "w_from": 4,
+      "w_to": 8
+     }
+    }
+   ],
+   "place_kind": "vehicle",
+   "seen": true,
+   "within": -1
+  }
+ ],
+ "rules": [
+  {
+   "about": "sound",
+   "lines": {
+    "start": 46,
+    "end": 46
+   },
+   "scope_kind": "scene",
+   "scope_card": -1,
+   "scope_number": 1
+  },
+  {
+   "about": "editing",
+   "lines": {
+    "start": 46,
+    "end": 46
+   },
+   "scope_kind": "scene",
+   "scope_card": -1,
+   "scope_number": 1
+  },
+  {
+   "about": "editing",
+   "lines": {
+    "start": 65,
+    "end": 66
+   },
+   "scope_kind": "scene",
+   "scope_card": -1,
+   "scope_number": 4
+  },
+  {
+   "about": "lighting",
+   "lines": {
+    "start": 88,
+    "end": 89
+   },
+   "scope_kind": "scene",
+   "scope_card": -1,
+   "scope_number": 8
+  },
+  {
+   "about": "action",
+   "lines": {
+    "start": 92,
+    "end": 93
+   },
+   "scope_kind": "scene",
+   "scope_card": -1,
+   "scope_number": 8
+  },
+  {
+   "about": "lens",
+   "lines": {
+    "start": 104,
+    "end": 104
+   },
+   "scope_kind": "scene",
+   "scope_card": -1,
+   "scope_number": 9
+  },
+  {
+   "about": "palette",
+   "lines": {
+    "start": 108,
+    "end": 110
+   },
+   "scope_kind": "place",
+   "scope_card": 6,
+   "scope_number": -1
+  },
+  {
+   "about": "palette",
+   "lines": {
+    "start": 111,
+    "end": 113
+   },
+   "scope_kind": "place",
+   "scope_card": 7,
+   "scope_number": -1
+  },
+  {
+   "about": "lens",
+   "lines": {
+    "start": 114,
+    "end": 115
+   },
+   "scope_kind": "all",
+   "scope_card": -1,
+   "scope_number": -1
+  },
+  {
+   "about": "lens",
+   "lines": {
+    "start": 116,
+    "end": 117
+   },
+   "scope_kind": "all",
+   "scope_card": -1,
+   "scope_number": -1
+  },
+  {
+   "about": "lighting",
+   "lines": {
+    "start": 118,
+    "end": 119
+   },
+   "scope_kind": "all",
+   "scope_card": -1,
+   "scope_number": -1
+  },
+  {
+   "about": "editing",
+   "lines": {
+    "start": 120,
+    "end": 121
+   },
+   "scope_kind": "all",
+   "scope_card": -1,
+   "scope_number": -1
+  },
+  {
+   "about": "sound",
+   "lines": {
+    "start": 122,
+    "end": 124
+   },
+   "scope_kind": "all",
+   "scope_card": -1,
+   "scope_number": -1
+  },
+  {
+   "about": "slow_motion",
+   "lines": {
+    "start": 125,
+    "end": 126
+   },
+   "scope_kind": "all",
+   "scope_card": -1,
+   "scope_number": -1
+  },
+  {
+   "about": "action",
+   "lines": {
+    "start": 127,
+    "end": 130
+   },
+   "scope_kind": "all",
+   "scope_card": -1,
+   "scope_number": -1
+  }
+ ],
+ "episodes": [
+  {
+   "number": 0,
+   "heading": 40,
+   "scenes": [
+    {
+     "number": 1,
+     "heading": 41,
+     "last": 46
+    },
+    {
+     "number": 2,
+     "heading": 47,
+     "last": 52
+    },
+    {
+     "number": 3,
+     "heading": 53,
+     "last": 58
+    },
+    {
+     "number": 4,
+     "heading": 59,
+     "last": 68
+    },
+    {
+     "number": 5,
+     "heading": 69,
+     "last": 74
+    },
+    {
+     "number": 6,
+     "heading": 75,
+     "last": 80
+    },
+    {
+     "number": 7,
+     "heading": 81,
+     "last": 86
+    },
+    {
+     "number": 8,
+     "heading": 87,
+     "last": 98
+    },
+    {
+     "number": 9,
+     "heading": 99,
+     "last": 104
+    }
+   ]
+  }
+ ]
+}

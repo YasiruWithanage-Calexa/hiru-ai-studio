@@ -913,6 +913,17 @@ class SupabaseRenders(_Base):
 _USAGE_COLUMNS = "id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at"
 
 
+class SupabasePackets(_Base):
+    async def get(self, production_id: UUID, scene_id: UUID) -> Row | None:
+        try:
+            res = (await self.db.table("scene_packets").select("scene_id,scene_key,packet,waits,script_version")
+                   .eq("scene_id", str(scene_id)).eq("production_id", str(production_id)).limit(1).execute())
+        except Exception:  # the table arrives with schema v21: until then no scene has a packet
+            _logger.warning("scene_packets unavailable", exc_info=True)
+            return None
+        return _first(res.data)
+
+
 class SupabaseCosts(_Base):
     async def prices(self) -> list[Row]:
         try:
@@ -1016,4 +1027,5 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         revisions=SupabaseRevisions(db),
         costs=SupabaseCosts(db),
         sable=SupabaseSable(db),
+        packets=SupabasePackets(db),
     )

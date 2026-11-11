@@ -1,0 +1,475 @@
+{
+ "n": 2,
+ "slot": "continuity",
+ "agent": "breakdown_continuity",
+ "scenes": [],
+ "seconds": 44.1,
+ "input_tokens": 2996,
+ "cached_tokens": 0,
+ "output_tokens": 3494,
+ "dollars": 0.0409,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "CAST, PLACES, THINGS\nC01 [person] Dinu - age: Dinu - 30, Colombo cash-transport driver.; details: Quiet, experienced, violent only when cornered.\nC02 [person] Aruni - age: Aruni - 27, Mahawewa community nurse.; details: Strong, intelligent and emotionally controlled.\nC03 [person] Nimal - age: Nimal - 34, Aruni's elder brother and Dinu's closest friend.\nC04 [person] Mudalali - age: Mudalali - 52, businessman laundering illegal money through village development projects.\nC05 [person] Suren - age: Suren - 38, Mudalali's brutal right-hand man.\nC06 [person] Inspector Ruwan - age: Inspector Ruwan - 45, corrupt police officer protecting the money trail.\nL01 [place, region] Colombo\nL02 [place, region] Mahawewa village\nL03 [place, set in L02] MAHAWEWA CANAL\nL04 [place, vehicle in L01] CASH VAN\nL05 [place, set in L01] COLOMBO GARAGE\nL06 [place, spot in L03] canal gate\nL07 [place, spot in L03] paddy field\nP01 [thing] C-17 - appearance: Inside his fist is a small metal key marked C-17.\nP02 [thing] small medical bag - appearance: Aruni walks beside a paddy field carrying a small medical bag.\nP03 [thing] red thread\nP04 [thing] metal box\nP05 [thing] Rs. 300 million\nP06 [thing] gun\nP07 [thing] recording\n\nDIRECTION RULES\nD01 [palette, place L01] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\nD02 [palette, place L02] Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.\nD03 [lens, all scenes] Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.\nD04 [lens, all scenes] Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.\nD05 [lighting, all scenes] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.\nD06 [editing, all scenes] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.\nD07 [sound, all scenes] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.\nD08 [slow_motion, all scenes] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\nD09 [action, all scenes] The action is mass but not weightless. Every hit has a location, an object or a consequence.\nD10 [action, all scenes] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.\nD11 [action, all scenes] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.\nD12 [editing, scene 1] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.\n\nSTORY\n=== E01-S01 ===\n42: SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE\n43: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices\n44: something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels\n45: and touches his hand. Inside his fist is a small metal key marked C-17.\n46: ARUNI - Dinu... oyata meka ahenne nadda?\n47: She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\n48: EKAMA SAKSHIYA.\n\n=== E01-S02 ===\n49: SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES\n50: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the\n51: dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message\n52: plays.\n53: ARUNI - Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan\n54: baya hithenawa.\n55: Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the\n56: red thread around his wrist and turns toward the industrial area.\n\n=== E01-S03 ===\n57: SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES\n58: Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the\n59: C-17 key.\n60: NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.\n61: DINU - Api meka gaththoth apiuth eyala wage wenawa.\n62: NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa\n63: oyawa atharinnawa.\n64: Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof.",
+ "answer": {
+  "timeline": [
+   {
+    "source": "script",
+    "lines": {
+     "start": 57,
+     "end": 58
+    },
+    "reason": "",
+    "scene": "E01-S03",
+    "story_order": 1,
+    "story_day": 0,
+    "relative": "Six hours earlier",
+    "kind": "flashback",
+    "anchor": "E01-S02"
+   },
+   {
+    "source": "script",
+    "lines": {
+     "start": 49,
+     "end": 58
+    },
+    "reason": "",
+    "scene": "E01-S02",
+    "story_order": 2,
+    "story_day": 0,
+    "relative": "Night; six hours after E01-S03",
+    "kind": "normal",
+    "anchor": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "The dawn discovery appears to follow the nighttime missing-person message; the exact day and interval are unstated.",
+    "scene": "E01-S01",
+    "story_order": 3,
+    "story_day": 0,
+    "relative": "Dawn; apparently after E01-S02",
+    "kind": "cold_open",
+    "anchor": "E01-S02"
+   }
+  ],
+  "synopses": [
+   {
+    "source": "script",
+    "lines": {
+     "start": 42,
+     "end": 64
+    },
+    "reason": "",
+    "episode": 1,
+    "text": "C03 presents C01 with evidence concerning C04 and P05, then hands him P01. C01 later receives C02's worried message about C03 and follows C04's changed route. The opening discovery shows C03 dead at L03 with P01 in his fist, while C02 cannot reach C01."
+   }
+  ],
+  "arcs": [
+   {
+    "source": "script",
+    "lines": {
+     "start": 55,
+     "end": 64
+    },
+    "reason": "",
+    "person": "C01",
+    "change": "Questions taking P05 and receives P01; later follows C04's route change. Whether he accepts C03's proposal remains unresolved.",
+    "from_scene": "E01-S03",
+    "to_scene": "E01-S02"
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "The worried message precedes the apparent aftermath shown in the cold open.",
+    "person": "C02",
+    "change": "Moves from fearing for the missing C03 to discovering his body and P01.",
+    "from_scene": "E01-S02",
+    "to_scene": "E01-S01"
+   },
+   {
+    "source": "script",
+    "lines": {
+     "start": 44,
+     "end": 64
+    },
+    "reason": "",
+    "person": "C03",
+    "change": "Goes from presenting evidence and handing P01 to C01 to being found dead with P01.",
+    "from_scene": "E01-S03",
+    "to_scene": "E01-S01"
+   }
+  ],
+  "knowledge": [
+   {
+    "source": "script",
+    "lines": {
+     "start": 58,
+     "end": 60
+    },
+    "reason": "",
+    "scene": "E01-S03",
+    "person": "C01",
+    "learns": "C03 identifies P05 as C04's money taken through village projects and presents photographs, bank documents and P01.",
+    "audience_only": false
+   },
+   {
+    "source": "script",
+    "lines": {
+     "start": 51,
+     "end": 54
+    },
+    "reason": "",
+    "scene": "E01-S02",
+    "person": "C01",
+    "learns": "C02 reports that C03 has not returned home and that she is afraid.",
+    "audience_only": false
+   },
+   {
+    "source": "script",
+    "lines": {
+     "start": 43,
+     "end": 45
+    },
+    "reason": "",
+    "scene": "E01-S01",
+    "person": "C02",
+    "learns": "C03 is dead at L06 and has P01 in his fist.",
+    "audience_only": false
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "The cold open reveals the death to the audience; C01 is shown receiving only a missing-person message, not news of the death.",
+    "scene": "E01-S01",
+    "person": "C01",
+    "learns": "C03's death and possession of P01 are known to the audience but not shown as known to C01.",
+    "audience_only": true
+   }
+  ],
+  "threads": [
+   {
+    "source": "script",
+    "lines": {
+     "start": 44,
+     "end": 64
+    },
+    "reason": "",
+    "kind": "journey",
+    "subject": "P01",
+    "summary": "P01 passes from P04 through C03 to C01, but is later found in C03's fist. The intervening transfer is not shown.",
+    "beats": [
+     {
+      "source": "script",
+      "lines": {
+       "start": 58,
+       "end": 59
+      },
+      "reason": "",
+      "scene": "E01-S03",
+      "note": "C03 opens P04, which contains P01."
+     },
+     {
+      "source": "script",
+      "lines": {
+       "start": 64,
+       "end": 64
+      },
+      "reason": "",
+      "scene": "E01-S03",
+      "note": "C03 places P01 in C01's hand."
+     },
+     {
+      "source": "script",
+      "lines": {
+       "start": 44,
+       "end": 45
+      },
+      "reason": "",
+      "scene": "E01-S01",
+      "note": "P01 is in C03's fist when C02 finds him; no removal by C02 is stated."
+     }
+    ]
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "The two explicit holders differ across scenes without a connecting transfer.",
+    "kind": "open_question",
+    "subject": "P01",
+    "summary": "How does P01 return from C01 to C03, and what does it unlock?",
+    "beats": [
+     {
+      "source": "script",
+      "lines": {
+       "start": 64,
+       "end": 64
+      },
+      "reason": "",
+      "scene": "E01-S03",
+      "note": "C01 receives P01."
+     },
+     {
+      "source": "script",
+      "lines": {
+       "start": 44,
+       "end": 45
+      },
+      "reason": "",
+      "scene": "E01-S01",
+      "note": "C03 is found holding P01; its function remains unstated."
+     }
+    ]
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "The missing-person concern is answered by the discovery, but no cause or perpetrator is supplied.",
+    "kind": "setup_payoff",
+    "subject": "C03",
+    "summary": "C02's concern over C03's absence leads to the discovery of his death; how he died remains open.",
+    "beats": [
+     {
+      "source": "script",
+      "lines": {
+       "start": 53,
+       "end": 54
+      },
+      "reason": "",
+      "scene": "E01-S02",
+      "note": "C02 reports C03 missing from home."
+     },
+     {
+      "source": "script",
+      "lines": {
+       "start": 43,
+       "end": 45
+      },
+      "reason": "",
+      "scene": "E01-S01",
+      "note": "C02 finds C03's body."
+     }
+    ]
+   },
+   {
+    "source": "script",
+    "lines": {
+     "start": 55,
+     "end": 64
+    },
+    "reason": "",
+    "kind": "open_question",
+    "subject": "P05",
+    "summary": "Whether C01 takes P05, what becomes of the evidence in P04, and whether C04's route change connects to C03's death remain unresolved.",
+    "beats": [
+     {
+      "source": "script",
+      "lines": {
+       "start": 58,
+       "end": 64
+      },
+      "reason": "",
+      "scene": "E01-S03",
+      "note": "C03 presents evidence concerning P05; C01 objects to taking it."
+     },
+     {
+      "source": "script",
+      "lines": {
+       "start": 55,
+       "end": 56
+      },
+      "reason": "",
+      "scene": "E01-S02",
+      "note": "C04 redirects C01; no connection to the proposed taking is established."
+     }
+    ]
+   }
+  ],
+  "looks": [
+   {
+    "source": "script",
+    "lines": {
+     "start": 44,
+     "end": 64
+    },
+    "reason": "",
+    "person": "C03",
+    "kind": "death",
+    "from_scene": "E01-S03",
+    "to_scene": "E01-S01",
+    "note": "Alive during the exchange with C01; subsequently found dead at L06. Cause, time and injuries are unspecified."
+   }
+  ],
+  "relationships": [
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "C03 invokes C02's relationship with C01, and C01 later retains their shared photograph; an actual separation is not established.",
+    "a": "C01",
+    "b": "C02",
+    "state": "An existing romantic attachment is under strain according to C03; its outcome remains unresolved across E01-S03 and E01-S02.",
+    "scene": "E01-S03"
+   },
+   {
+    "source": "script",
+    "lines": {
+     "start": 58,
+     "end": 64
+    },
+    "reason": "",
+    "a": "C01",
+    "b": "C03",
+    "state": "C03 entrusts C01 with P01 despite C01's moral objection to taking P05; agreement to the proposal is not shown.",
+    "scene": "E01-S03"
+   }
+  ],
+  "scopes": [
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "Both scenes are located in L01.",
+    "rule": "D01",
+    "scenes": [
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "L03 is within L02.",
+    "rule": "D02",
+    "scenes": [
+     "E01-S01"
+    ],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "The rule is conditional on love scenes; none of the supplied scenes depicts one.",
+    "rule": "D03",
+    "scenes": [],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "The action-lens rule is conditional; no action sequence is shown in the supplied scenes.",
+    "rule": "D04",
+    "scenes": [],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "D05 is explicitly designated for all scenes.",
+    "rule": "D05",
+    "scenes": [
+     "E01-S01",
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "D06 is explicitly designated for all scenes.",
+    "rule": "D06",
+    "scenes": [
+     "E01-S01",
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "D07 is explicitly designated for all scenes.",
+    "rule": "D07",
+    "scenes": [
+     "E01-S01",
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "D08 restricts slow motion globally, but neither named event occurs in the supplied scenes.",
+    "rule": "D08",
+    "scenes": [
+     "E01-S01",
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": "C03's P01 falling and C01 removing P06 have no supplied scene. The handoff in E01-S03 is not a fall."
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "D09 is a global action constraint; no fight is shown here.",
+    "rule": "D09",
+    "scenes": [
+     "E01-S01",
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "D10 is a global constraint on C01's portrayal; no victory sequence is supplied.",
+    "rule": "D10",
+    "scenes": [
+     "E01-S01",
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": ""
+   },
+   {
+    "source": "inferred",
+    "lines": null,
+    "reason": "D11 is globally designated, but its required climax is absent from the supplied story.",
+    "rule": "D11",
+    "scenes": [
+     "E01-S01",
+     "E01-S02",
+     "E01-S03"
+    ],
+    "moment_scene": "",
+    "moment_note": "No supplied scene shows the climax, P07 or the final victory."
+   },
+   {
+    "source": "script",
+    "lines": {
+     "start": 47,
+     "end": 48
+    },
+    "reason": "",
+    "rule": "D12",
+    "scenes": [
+     "E01-S01"
+    ],
+    "moment_scene": "E01-S01",
+    "moment_note": "C02 calls C01 without an answer; a distant horn mixes with rain before the cut to black and title."
+   }
+  ]
+ }
+}

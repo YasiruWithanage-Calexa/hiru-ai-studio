@@ -1,0 +1,107 @@
+# breakdown_stager (plan/2026-11-11). Scripted replies test the seams; the live check (phase 7) is a person's.
+- name: one person at a gate
+  input:
+    message: '<place>
+
+      Canal (set).
+
+      </place>
+
+
+      <people>
+
+      - Dinu: on_screen
+
+      </people>
+
+
+      Blocks 0 to 0:
+
+      <script>
+
+      [0] action: Dinu waits.
+
+      </script>'
+  reply:
+    zones:
+    - gate
+    - bank
+    marks:
+    - block: 0
+      who: Dinu
+      zone: gate
+      facing: ''
+      frame_side: ''
+      holding: ''
+      posture: standing
+      left_hand: ''
+      right_hand: ''
+      condition: ''
+      wearing: ''
+    props: []
+  expect:
+    zones:
+    - gate
+    - bank
+- name: a kicked gun leaves every hand
+  input:
+    message: '<place>
+
+      Old Rice Mill (set).
+
+      </place>
+
+
+      <people>
+
+      - Mudalali: on_screen
+
+      - Dinu: on_screen
+
+      </people>
+
+
+      Blocks 0 to 1:
+
+      <script>
+
+      [0] action: Mudalali raises a gun.
+
+      [1] action: Dinu kicks the gun away.
+
+      </script>'
+  reply:
+    zones:
+    - sacks
+    - door
+    marks:
+    - block: 0
+      who: Mudalali
+      zone: sacks
+      facing: right
+      frame_side: left
+      holding: gun
+      posture: standing
+      left_hand: ''
+      right_hand: gun
+      condition: ''
+      wearing: ''
+    - block: 0
+      who: Dinu
+      zone: door
+      facing: left
+      frame_side: right
+      holding: ''
+      posture: standing
+      left_hand: ''
+      right_hand: ''
+      condition: ''
+      wearing: ''
+    props:
+    - block: 1
+      prop: gun
+      where: on the floor by the sacks
+      state: ''
+  expect:
+    props:
+    - prop: gun

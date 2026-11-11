@@ -1,0 +1,562 @@
+{
+ "timeline": [
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "The dawn discovery follows the night when C03 is reported missing; the opening presents the later outcome first.",
+   "scene": "E01-S01",
+   "story_order": 3,
+   "story_day": 0,
+   "relative": "Dawn, apparently after E01-S02; no numbered story day is stated.",
+   "kind": "cold_open",
+   "anchor": "E01-S02"
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "The night journey anchors the explicitly earlier flashback and apparently precedes the dawn discovery.",
+   "scene": "E01-S02",
+   "story_order": 2,
+   "story_day": 0,
+   "relative": "Night; six hours after E01-S03. No numbered story day is stated.",
+   "kind": "normal",
+   "anchor": ""
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 57,
+    "end": 64
+   },
+   "reason": "",
+   "scene": "E01-S03",
+   "story_order": 1,
+   "story_day": 0,
+   "relative": "Six hours earlier than E01-S02; no numbered story day is stated.",
+   "kind": "flashback",
+   "anchor": "E01-S02"
+  }
+ ],
+ "synopses": [
+  {
+   "source": "script",
+   "lines": {
+    "start": 42,
+    "end": 64
+   },
+   "reason": "",
+   "episode": 1,
+   "text": "C03 exposes P06 as money taken through village projects and hands P02 to a reluctant C01. Later, C01 receives C02's message that C03 is missing and follows C04's route change toward L08. At dawn, C02 discovers C03 dead at L05 with P02 in his fist; its return to him is unexplained."
+  }
+ ],
+ "arcs": [
+  {
+   "source": "script",
+   "lines": {
+    "start": 43,
+    "end": 54
+   },
+   "reason": "",
+   "person": "C02",
+   "change": "Moves from fearing for the missing C03 to discovering his body.",
+   "from_scene": "E01-S02",
+   "to_scene": "E01-S01"
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 50,
+    "end": 64
+   },
+   "reason": "",
+   "person": "C01",
+   "change": "After objecting to taking the money and receiving P02, learns C03 is missing and follows C04's redirected route.",
+   "from_scene": "E01-S03",
+   "to_scene": "E01-S02"
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 43,
+    "end": 64
+   },
+   "reason": "",
+   "person": "C03",
+   "change": "Goes from alive and disclosing financial evidence to being found dead; intervening events are not shown.",
+   "from_scene": "E01-S03",
+   "to_scene": "E01-S01"
+  }
+ ],
+ "knowledge": [
+  {
+   "source": "script",
+   "lines": {
+    "start": 58,
+    "end": 61
+   },
+   "reason": "",
+   "scene": "E01-S03",
+   "person": "C01",
+   "learns": "C03 identifies P06 as C04's money taken through village projects and displays documents, photographs and P02.",
+   "audience_only": false
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 51,
+    "end": 54
+   },
+   "reason": "",
+   "scene": "E01-S02",
+   "person": "C01",
+   "learns": "C02 reports that C03 has not returned home and that she is afraid.",
+   "audience_only": false
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 55,
+    "end": 56
+   },
+   "reason": "",
+   "scene": "E01-S02",
+   "person": "C01",
+   "learns": "C04 orders a route change to L08.",
+   "audience_only": false
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 43,
+    "end": 45
+   },
+   "reason": "",
+   "scene": "E01-S01",
+   "person": "C02",
+   "learns": "C03 is dead at L05 and has P02 in his fist.",
+   "audience_only": false
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "The opening reveals C03's death to the audience, while C02's attempt to reach C01 receives no answer and no other notification is shown.",
+   "scene": "E01-S01",
+   "person": "C01",
+   "learns": "The audience knows C03 is dead; C01 is not shown learning this.",
+   "audience_only": true
+  }
+ ],
+ "threads": [
+  {
+   "source": "script",
+   "lines": {
+    "start": 43,
+    "end": 64
+   },
+   "reason": "",
+   "kind": "journey",
+   "subject": "P02",
+   "summary": "P02 passes from C03 to C01, but is later found back in C03's fist without a shown return transfer.",
+   "beats": [
+    {
+     "source": "script",
+     "lines": {
+      "start": 58,
+      "end": 59
+     },
+     "reason": "",
+     "scene": "E01-S03",
+     "note": "C03 opens P05 containing P02 at L10."
+    },
+    {
+     "source": "script",
+     "lines": {
+      "start": 64,
+      "end": 64
+     },
+     "reason": "",
+     "scene": "E01-S03",
+     "note": "C03 places P02 in C01's hand."
+    },
+    {
+     "source": "script",
+     "lines": {
+      "start": 44,
+      "end": 45
+     },
+     "reason": "",
+     "scene": "E01-S01",
+     "note": "C02 finds P02 inside C03's fist at L05; removal by C02 is not stated."
+    }
+   ]
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 45,
+    "end": 64
+   },
+   "reason": "",
+   "kind": "open_question",
+   "subject": "P02",
+   "summary": "How does P02 return from C01 to C03, and what does it unlock?",
+   "beats": [
+    {
+     "source": "script",
+     "lines": {
+      "start": 64,
+      "end": 64
+     },
+     "reason": "",
+     "scene": "E01-S03",
+     "note": "C01 receives P02."
+    },
+    {
+     "source": "script",
+     "lines": {
+      "start": 45,
+      "end": 45
+     },
+     "reason": "",
+     "scene": "E01-S01",
+     "note": "P02 is back with C03; its purpose remains unstated."
+    }
+   ]
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 43,
+    "end": 54
+   },
+   "reason": "",
+   "kind": "setup_payoff",
+   "subject": "C03",
+   "summary": "C02's report that C03 is missing leads chronologically to her discovery of his body, although the discovery appears first on the page.",
+   "beats": [
+    {
+     "source": "script",
+     "lines": {
+      "start": 53,
+      "end": 54
+     },
+     "reason": "",
+     "scene": "E01-S02",
+     "note": "C02 reports C03 has not returned home."
+    },
+    {
+     "source": "script",
+     "lines": {
+      "start": 43,
+      "end": 45
+     },
+     "reason": "",
+     "scene": "E01-S01",
+     "note": "C02 finds C03 dead."
+    }
+   ]
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "C03 is alive while disclosing the money trail and dead at the later discovery; neither the cause nor responsibility is shown.",
+   "kind": "open_question",
+   "subject": "C03",
+   "summary": "What happened to C03 after E01-S03, and is his death connected to the financial evidence?",
+   "beats": [
+    {
+     "source": "script",
+     "lines": {
+      "start": 58,
+      "end": 64
+     },
+     "reason": "",
+     "scene": "E01-S03",
+     "note": "C03 discloses C04's connection to P06."
+    },
+    {
+     "source": "script",
+     "lines": {
+      "start": 43,
+      "end": 45
+     },
+     "reason": "",
+     "scene": "E01-S01",
+     "note": "C03 is found dead; no cause or perpetrator is identified."
+    }
+   ]
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 55,
+    "end": 60
+   },
+   "reason": "",
+   "kind": "open_question",
+   "subject": "C04",
+   "summary": "C04's purpose in redirecting C01 to L08, and the outcome of that journey, remain unresolved.",
+   "beats": [
+    {
+     "source": "script",
+     "lines": {
+      "start": 60,
+      "end": 60
+     },
+     "reason": "",
+     "scene": "E01-S03",
+     "note": "C03 identifies C04 as connected to P06."
+    },
+    {
+     "source": "script",
+     "lines": {
+      "start": 55,
+      "end": 56
+     },
+     "reason": "",
+     "scene": "E01-S02",
+     "note": "C04 redirects C01, who turns toward L09; arrival at L08 is not shown."
+    }
+   ]
+  }
+ ],
+ "looks": [
+  {
+   "source": "script",
+   "lines": {
+    "start": 43,
+    "end": 64
+   },
+   "reason": "",
+   "person": "C03",
+   "kind": "death",
+   "from_scene": "E01-S03",
+   "to_scene": "E01-S01",
+   "note": "Alive in E01-S03; found dead in E01-S01. Time, cause and specific injuries are unstated."
+  }
+ ],
+ "relationships": [
+  {
+   "source": "script",
+   "lines": {
+    "start": 60,
+    "end": 64
+   },
+   "reason": "",
+   "a": "C01",
+   "b": "C03",
+   "state": "Share knowledge of the financial evidence but disagree about taking the money; C03 nevertheless entrusts P02 to C01.",
+   "scene": "E01-S03"
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 62,
+    "end": 63
+   },
+   "reason": "",
+   "a": "C01",
+   "b": "C02",
+   "state": "C03 describes their relationship as threatened by C01's fear rather than lack of money; this is C03's assessment, not a confirmed separation.",
+   "scene": "E01-S03"
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 55,
+    "end": 56
+   },
+   "reason": "",
+   "a": "C04",
+   "b": "C01",
+   "state": "C04 gives routing orders and C01 complies, despite having already heard C03's allegation about C04's money.",
+   "scene": "E01-S02"
+  }
+ ],
+ "scopes": [
+  {
+   "source": "script",
+   "lines": {
+    "start": 49,
+    "end": 64
+   },
+   "reason": "",
+   "rule": "D01",
+   "scenes": [
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Location-based palette and camera treatment for L01."
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 42,
+    "end": 48
+   },
+   "reason": "",
+   "rule": "D02",
+   "scenes": [
+    "E01-S01"
+   ],
+   "moment_scene": "",
+   "moment_note": "Location-based palette and camera treatment for L02."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D03 is globally available but conditional on love scenes; none is explicitly identified in the supplied scenes.",
+   "rule": "D03",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Conditional lens rule; no confirmed love-scene application."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D04 governs action throughout, but the supplied scenes contain no identified action set piece.",
+   "rule": "D04",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Conditional action-lens rule."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D05 is explicitly designated for all scenes.",
+   "rule": "D05",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Global lighting guidance."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D06 is explicitly designated for all scenes.",
+   "rule": "D06",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Global cutting and reaction-duration guidance."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D07 is explicitly designated for all scenes.",
+   "rule": "D07",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Global sound priority and music restriction."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D08 restricts slow motion globally, but neither named action occurs in the supplied scenes.",
+   "rule": "D08",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "The fall of P02 associated with C03 and C01's removal of P07 cannot be assigned to a supplied scene; handing over P02 is not its falling."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D09 is a global constraint on action, not evidence that a fight occurs.",
+   "rule": "D09",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Conditional physical-consequence rule."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D10 globally constrains C01's action portrayal; no victory is shown here.",
+   "rule": "D10",
+   "scenes": [
+    "E01-S01",
+    "E01-S02",
+    "E01-S03"
+   ],
+   "moment_scene": "",
+   "moment_note": "Do not treat the direction as an accomplished story event."
+  },
+  {
+   "source": "inferred",
+   "lines": null,
+   "reason": "D11 concerns a climax and final victory absent from the supplied scenes.",
+   "rule": "D11",
+   "scenes": [],
+   "moment_scene": "",
+   "moment_note": "No supplied scene can be identified as the named climax or final victory."
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 47,
+    "end": 48
+   },
+   "reason": "",
+   "rule": "D12",
+   "scenes": [
+    "E01-S01"
+   ],
+   "moment_scene": "E01-S01",
+   "moment_note": "Unanswered call followed by distant bus horn mixed with rain."
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 47,
+    "end": 48
+   },
+   "reason": "",
+   "rule": "D13",
+   "scenes": [
+    "E01-S01"
+   ],
+   "moment_scene": "E01-S01",
+   "moment_note": "Cut to black and title after the unanswered call."
+  },
+  {
+   "source": "script",
+   "lines": {
+    "start": 50,
+    "end": 54
+   },
+   "reason": "",
+   "rule": "D14",
+   "scenes": [
+    "E01-S02"
+   ],
+   "moment_scene": "E01-S02",
+   "moment_note": "C02's voice message plays while P03 is on the dashboard."
+  }
+ ]
+}

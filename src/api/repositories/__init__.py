@@ -319,6 +319,13 @@ class CostsRepo(Protocol):
     async def lines_by_scene(self, production_id: UUID) -> dict[str, int]: ...
 
 
+class PacketsRepo(Protocol):
+    """A scene's packet (plan/2026-11-11 §7, schema v21 `scene_packets`), written by the structure_build function.
+    `None` when the scene has none or the table is missing (a database before v21)."""
+
+    async def get(self, production_id: UUID, scene_id: UUID) -> Row | None: ...
+
+
 @dataclass
 class Repos:
     profiles: ProfilesRepo
@@ -353,3 +360,4 @@ class Repos:
     revisions: RevisionsRepo
     costs: CostsRepo
     sable: SableRepo
+    packets: PacketsRepo

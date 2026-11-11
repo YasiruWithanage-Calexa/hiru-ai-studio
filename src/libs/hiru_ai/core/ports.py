@@ -105,6 +105,32 @@ class MemoryStore(Protocol):
         """A person's entry, new (no `id`) or changed."""
 
 
+class BreakdownStore(Protocol):
+    """The two memories of a production and each scene's packet (plan/2026-11-11 §5, schema v21). The source memory is
+    written once per document and never edited; the breakdown memory is one JSON document per production (D7); a scene's
+    packet is assembled from it by code and kept beside the scene for the planners and the read-only view."""
+
+    def sources(self, production_id: UUID) -> list[Row]:
+        """Each document's source memory, in upload order: `document_id, filename, body`."""
+
+    def save_source(self, production_id: UUID, document_id: str, filename: str, body: Row) -> None:
+        """Written once (decision 7): a document that already has one keeps it."""
+
+    def memory(self, production_id: UUID) -> Row | None:
+        """`body, version` or None (no breakdown yet)."""
+
+    def save_memory(self, production_id: UUID, body: Row, version: int) -> None: ...
+
+    def packet(self, scene_id: str) -> Row | None:
+        """`scene_id, scene_key, packet, waits, script_version, memory_version` or None."""
+
+    def save_packets(self, production_id: UUID, rows: list[Row]) -> None:
+        """Upsert by scene id."""
+
+    def set_staging(self, scene_id: str, staging: Row) -> None:
+        """`scenes.staging`, filled from the breakdown memory's stager map (D1)."""
+
+
 class Search(Protocol):
     """Retrieval over `chunks`. The scope (production, corpora, documents) is the caller's, from trusted data."""
 

@@ -1,0 +1,17 @@
+id: breakdown_continuity
+kind: agent
+version: 1
+summary: "Step 3, continuity: ONE call over every episode for the facts that carry across scenes (story order, synopses, arcs, knowledge, threads, looks, relationships, rule scopes)."
+status: active
+owner: structure_build
+model: breakdown
+timeout_s: 900
+shape: structured
+phase: breakdown.continuity
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

@@ -1,0 +1,376 @@
+{
+ "n": 4,
+ "slot": "repair",
+ "agent": "breakdown_repair",
+ "scenes": [
+  "E01-S01"
+ ],
+ "seconds": 20.4,
+ "input_tokens": 6259,
+ "cached_tokens": 0,
+ "output_tokens": 1889,
+ "dollars": 0.0314,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "CARDS\nC01 [person] Dinu - details: Quiet, experienced, violent only when cornered.\nC02 [person] Aruni - details: Strong, intelligent and emotionally controlled.\nC03 [person] Nimal - details: Nimal - 34, Aruni's elder brother and Dinu's closest friend.\nC04 [person] Mudalali - details: Mudalali - 52, businessman laundering illegal money through village development projects.\nC05 [person] Suren - details: Suren - 38, Mudalali's brutal right-hand man.\nC06 [person] Inspector Ruwan - details: Inspector Ruwan - 45, corrupt police officer protecting the money trail.\nL01 [place, region] Colombo\nL02 [place, region] Mahawewa village\nL03 [place, set in L02] MAHAWEWA CANAL\nL04 [place, spot in L03] paddy field\nL05 [place, spot in L03] canal gate\nL06 [place, vehicle in L01] CASH VAN - details: Dinu drives a cash-transfer van.\nL07 [place, set in L02] village bus stop\nL08 [place, set in L01] Old Port warehouse\nL09 [place, region] industrial area\nL10 [place, set in L01] COLOMBO GARAGE\nP01 [thing] medical bag - details: Aruni walks beside a paddy field carrying a small medical bag.\nP02 [thing] metal key - appearance: Inside his fist is a small metal key marked C-17.\nP03 [thing] photo\nP04 [thing] red thread\nP05 [thing] metal box\nP06 [thing] Rs. 300 million\nP07 [thing] gun\n\nDIRECTION RULES\nD01 [palette, place L01] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\nD02 [palette, place L02] Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.\nD03 [lens, all scenes] Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.\nD04 [lens, all scenes] Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.\nD05 [lighting, all scenes] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.\nD06 [editing, all scenes] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.\nD07 [sound, all scenes] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.\nD08 [slow_motion, all scenes] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\nD09 [action, all scenes] The action is mass but not weightless. Every hit has a location, an object or a consequence.\nD10 [action, all scenes] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.\nD11 [action, all scenes] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.\nD12 [sound, scene 1] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\nD13 [editing, scene 1] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.\nD14 [sound, scene 2] dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays.\n\nCONTINUITY\n{\"synopses\": [{\"episode\": 1, \"text\": \"C03 exposes P06 as money taken through village projects and hands P02 to a reluctant C01. Later, C01 receives C02's message that C03 is missing and follows C04's route change toward L08. At dawn, C02 discovers C03 dead at L05 with P02 in his fist; its return to him is unexplained.\"}], \"arcs\": [{\"person\": \"C02\", \"change\": \"Moves from fearing for the missing C03 to discovering his body.\", \"from_scene\": \"E01-S02\", \"to_scene\": \"E01-S01\"}, {\"person\": \"C01\", \"change\": \"After objecting to taking the money and receiving P02, learns C03 is missing and follows C04's redirected route.\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S02\"}, {\"person\": \"C03\", \"change\": \"Goes from alive and disclosing financial evidence to being found dead; intervening events are not shown.\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S01\"}], \"threads\": [{\"kind\": \"journey\", \"subject\": \"P02\", \"summary\": \"P02 passes from C03 to C01, but is later found back in C03's fist without a shown return transfer.\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 opens P05 containing P02 at L10.\"}, {\"scene\": \"E01-S03\", \"note\": \"C03 places P02 in C01's hand.\"}, {\"scene\": \"E01-S01\", \"note\": \"C02 finds P02 inside C03's fist at L05; removal by C02 is not stated.\"}]}, {\"kind\": \"open_question\", \"subject\": \"P02\", \"summary\": \"How does P02 return from C01 to C03, and what does it unlock?\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C01 receives P02.\"}, {\"scene\": \"E01-S01\", \"note\": \"P02 is back with C03; its purpose remains unstated.\"}]}, {\"kind\": \"setup_payoff\", \"subject\": \"C03\", \"summary\": \"C02's report that C03 is missing leads chronologically to her discovery of his body, although the discovery appears first on the page.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 reports C03 has not returned home.\"}, {\"scene\": \"E01-S01\", \"note\": \"C02 finds C03 dead.\"}]}, {\"source\": \"inferred\", \"kind\": \"open_question\", \"subject\": \"C03\", \"summary\": \"What happened to C03 after E01-S03, and is his death connected to the financial evidence?\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 discloses C04's connection to P06.\"}, {\"scene\": \"E01-S01\", \"note\": \"C03 is found dead; no cause or perpetrator is identified.\"}]}, {\"kind\": \"open_question\", \"subject\": \"C04\", \"summary\": \"C04's purpose in redirecting C01 to L08, and the outcome of that journey, remain unresolved.\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 identifies C04 as connected to P06.\"}, {\"scene\": \"E01-S02\", \"note\": \"C04 redirects C01, who turns toward L09; arrival at L08 is not shown.\"}]}], \"looks\": [{\"person\": \"C03\", \"kind\": \"death\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S01\", \"note\": \"Alive in E01-S03; found dead in E01-S01. Time, cause and specific injuries are unstated.\"}], \"relationships\": [{\"a\": \"C01\", \"b\": \"C03\", \"state\": \"Share knowledge of the financial evidence but disagree about taking the money; C03 nevertheless entrusts P02 to C01.\", \"scene\": \"E01-S03\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"C03 describes their relationship as threatened by C01's fear rather than lack of money; this is C03's assessment, not a confirmed separation.\", \"scene\": \"E01-S03\"}, {\"a\": \"C04\", \"b\": \"C01\", \"state\": \"C04 gives routing orders and C01 complies, despite having already heard C03's allegation about C04's money.\", \"scene\": \"E01-S02\"}], \"timeline\": [{\"source\": \"inferred\", \"scene\": \"E01-S01\", \"story_order\": 3, \"story_day\": 0, \"relative\": \"Dawn, apparently after E01-S02; no numbered story day is stated.\", \"kind\": \"cold_open\", \"anchor\": \"E01-S02\"}, {\"source\": \"inferred\", \"scene\": \"E01-S02\", \"story_order\": 2, \"story_day\": 0, \"relative\": \"Night; six hours after E01-S03. No numbered story day is stated.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S03\", \"story_order\": 1, \"story_day\": 0, \"relative\": \"Six hours earlier than E01-S02; no numbered story day is stated.\", \"kind\": \"flashback\", \"anchor\": \"E01-S02\"}], \"knowledge\": [{\"scene\": \"E01-S01\", \"person\": \"C02\", \"learns\": \"C03 is dead at L05 and has P02 in his fist.\", \"audience_only\": false}, {\"source\": \"inferred\", \"scene\": \"E01-S01\", \"person\": \"C01\", \"learns\": \"The audience knows C03 is dead; C01 is not shown learning this.\", \"audience_only\": true}], \"scopes\": [{\"rule\": \"D02\", \"scenes\": [\"E01-S01\"], \"moment_scene\": \"\", \"moment_note\": \"Location-based palette and camera treatment for L02.\"}, {\"source\": \"inferred\", \"rule\": \"D03\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Conditional lens rule; no confirmed love-scene application.\"}, {\"source\": \"inferred\", \"rule\": \"D04\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Conditional action-lens rule.\"}, {\"source\": \"inferred\", \"rule\": \"D05\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Global lighting guidance.\"}, {\"source\": \"inferred\", \"rule\": \"D06\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Global cutting and reaction-duration guidance.\"}, {\"source\": \"inferred\", \"rule\": \"D07\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Global sound priority and music restriction.\"}, {\"source\": \"inferred\", \"rule\": \"D08\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"The fall of P02 associated with C03 and C01's removal of P07 cannot be assigned to a supplied scene; handing over P02 is not its falling.\"}, {\"source\": \"inferred\", \"rule\": \"D09\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Conditional physical-consequence rule.\"}, {\"source\": \"inferred\", \"rule\": \"D10\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Do not treat the direction as an accomplished story event.\"}, {\"rule\": \"D12\", \"scenes\": [\"E01-S01\"], \"moment_scene\": \"E01-S01\", \"moment_note\": \"Unanswered call followed by distant bus horn mixed with rain.\"}, {\"rule\": \"D13\", \"scenes\": [\"E01-S01\"], \"moment_scene\": \"E01-S01\", \"moment_note\": \"Cut to black and title after the unanswered call.\"}]}\n\nEND OF THE EPISODE BEFORE\nnone: this is the first episode\n\nSCENES TO BREAK DOWN\n=== E01-S01 (place card: pick from the cards) ===\n42: SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE\n43: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices\n44: something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels\n45: and touches his hand. Inside his fist is a small metal key marked C-17.\n46: ARUNI - Dinu... oyata meka ahenne nadda?\n47: She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\n48: EKAMA SAKSHIYA.\n\nYOUR PREVIOUS ANSWER FOR THIS SCENE\n{\"scene\": \"E01-S01\", \"title\": \"The canal discovery\", \"summary\": \"Aruni finds her brother dead beside the water, notices the marked key in his closed hand, and tries unsuccessfully to reach Dinu.\", \"purpose\": \"Open with the death and the unexplained key, withholding the events that brought them together.\", \"place\": \"L03\", \"mood\": [\"sombre\", \"restrained\", \"unsettling\"], \"people\": [{\"person\": \"C02\", \"presence\": \"on_screen\", \"wants\": \"Understand what she has found and reach Dinu.\", \"feeling_start\": \"Composed.\", \"feeling_end\": \"Distressed but outwardly controlled.\", \"source\": \"inferred\"}, {\"person\": \"C03\", \"presence\": \"body\", \"wants\": \"No living objective.\", \"feeling_start\": \"Not applicable.\", \"feeling_end\": \"Not applicable.\", \"source\": \"script\"}], \"things\": [{\"thing\": \"P01\", \"role\": \"used\", \"holder_start\": \"C02\", \"holder_end\": \"C02\", \"source\": \"script\"}, {\"thing\": \"P02\", \"role\": \"hero\", \"holder_start\": \"C03\", \"holder_end\": \"C03\", \"source\": \"script\"}], \"turns\": [2, 4, 6], \"source\": \"inferred\", \"rules_met\": [\"D12\", \"D13\"], \"blocks\": [{\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Establish Aruni's approach through the wet landscape.\", \"delivery_hint\": \"Keep the weather and her unhurried movement prominent.\", \"source\": \"inferred\", \"spans\": [{\"line\": 43, \"w_from\": 0, \"w_to\": 13}], \"events\": [{\"actors\": [\"C02\"], \"things\": [\"P01\"], \"spot\": \"L04\", \"speech\": false, \"visible\": true, \"change\": \"Aruni approaches along the field with her medical supplies.\", \"function\": \"setup\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Resolve an indistinct obstruction into a personal loss.\", \"delivery_hint\": \"Allow recognition to register without embellishment.\", \"source\": \"inferred\", \"spans\": [{\"line\": 43, \"w_from\": 13, \"w_to\": 15}, {\"line\": 44, \"w_from\": 0, \"w_to\": 11}], \"events\": [{\"actors\": [\"C02\", \"C03\"], \"things\": [], \"spot\": \"L05\", \"speech\": false, \"visible\": true, \"change\": \"Aruni recognizes her brother's body at the water control structure.\", \"function\": \"reveal\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Express the shock through controlled physical contact.\", \"delivery_hint\": \"Hold on the quiet response rather than adding an outcry.\", \"source\": \"inferred\", \"spans\": [{\"line\": 44, \"w_from\": 11, \"w_to\": 17}, {\"line\": 45, \"w_from\": 0, \"w_to\": 4}], \"events\": [{\"actors\": [\"C02\", \"C03\"], \"things\": [], \"spot\": \"L05\", \"speech\": false, \"visible\": true, \"change\": \"Aruni lowers herself and makes contact with her brother's hand without crying out.\", \"function\": \"texture\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Introduce the object that links the death to the earlier events.\", \"delivery_hint\": \"Make the marking legible without implying that Aruni takes the object.\", \"source\": \"inferred\", \"spans\": [{\"line\": 45, \"w_from\": 4, \"w_to\": 14}], \"events\": [{\"actors\": [\"C03\"], \"things\": [\"P02\"], \"spot\": \"L05\", \"speech\": false, \"visible\": true, \"change\": \"The marked key becomes visible inside Nimal's closed hand; possession does not change.\", \"function\": \"reveal\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C02\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C01\", \"heard_by\": [\"C02\"], \"intent\": \"Seek a response from Dinu.\", \"delivery_hint\": \"Restrained urgency, with space around the appeal.\", \"source\": \"inferred\", \"spans\": [{\"line\": 46, \"w_from\": 0, \"w_to\": 5}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L05\", \"speech\": true, \"visible\": true, \"change\": \"Aruni appeals to Dinu; his receipt of these words is not established.\", \"function\": \"texture\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Leave her attempt to make contact unresolved.\", \"delivery_hint\": \"Give the lack of response time to register.\", \"source\": \"inferred\", \"spans\": [{\"line\": 47, \"w_from\": 0, \"w_to\": 5}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L05\", \"speech\": false, \"visible\": true, \"change\": \"Aruni attempts a call to Dinu but receives no answer.\", \"function\": \"turn\"}]}, {\"kind\": \"sound\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [\"C02\"], \"intent\": \"Let the surrounding world continue against her isolation.\", \"delivery_hint\": \"Blend the remote traffic signal into the rainfall.\", \"source\": \"inferred\", \"spans\": [{\"line\": 47, \"w_from\": 5, \"w_to\": 13}], \"events\": [{\"actors\": [], \"things\": [], \"spot\": \"L03\", \"speech\": false, \"visible\": false, \"change\": \"A remote vehicle horn joins the continuing weather sound.\", \"function\": \"texture\"}]}, {\"kind\": \"transition\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"End the opening on the unanswered contact.\", \"delivery_hint\": \"Use a direct transition to darkness.\", \"source\": \"inferred\", \"spans\": [{\"line\": 47, \"w_from\": 13, \"w_to\": 16}], \"events\": [{\"actors\": [], \"things\": [], \"spot\": \"L03\", \"speech\": false, \"visible\": true, \"change\": \"The scene image gives way to a black screen.\", \"function\": \"turn\"}]}, {\"kind\": \"text\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Present the work's title after the opening discovery.\", \"delivery_hint\": \"Keep the title separate from spoken material.\", \"source\": \"inferred\", \"spans\": [{\"line\": 47, \"w_from\": 16, \"w_to\": 17}, {\"line\": 48, \"w_from\": 0, \"w_to\": 2}], \"events\": [{\"actors\": [], \"things\": [], \"spot\": \"L03\", \"speech\": false, \"visible\": true, \"change\": \"The title appears.\", \"function\": \"setup\"}]}]}\n\nPROBLEMS\n- 2 word(s) in no block, 0 word(s) in more than one",
+ "answer": {
+  "scenes": [
+   {
+    "scene": "E01-S01",
+    "title": "The canal discovery",
+    "summary": "Aruni finds her brother dead beside the water, notices the marked key in his closed hand, and tries unsuccessfully to reach Dinu.",
+    "purpose": "Open with the death and the unexplained key, withholding the events that brought them together.",
+    "place": "L03",
+    "mood": [
+     "sombre",
+     "restrained",
+     "unsettling"
+    ],
+    "people": [
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Understand what she has found and reach Dinu.",
+      "feeling_start": "Composed.",
+      "feeling_end": "Distressed but outwardly controlled.",
+      "source": "inferred"
+     },
+     {
+      "person": "C03",
+      "presence": "body",
+      "wants": "No living objective.",
+      "feeling_start": "Not applicable.",
+      "feeling_end": "Not applicable.",
+      "source": "script"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P01",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P02",
+      "role": "hero",
+      "holder_start": "C03",
+      "holder_end": "C03",
+      "source": "script"
+     }
+    ],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 43,
+        "w_from": 0,
+        "w_to": 13
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Establish Aruni's approach through the wet landscape.",
+      "delivery_hint": "Keep the weather and her unhurried movement prominent.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P01"
+        ],
+        "spot": "L04",
+        "speech": false,
+        "visible": true,
+        "change": "Aruni approaches along the field with her medical supplies.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 43,
+        "w_from": 13,
+        "w_to": 15
+       },
+       {
+        "line": 44,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Resolve an indistinct obstruction into a personal loss.",
+      "delivery_hint": "Allow recognition to register without embellishment.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C03"
+        ],
+        "things": [],
+        "spot": "L05",
+        "speech": false,
+        "visible": true,
+        "change": "Aruni recognizes her brother's body at the water control structure.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 44,
+        "w_from": 11,
+        "w_to": 17
+       },
+       {
+        "line": 45,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Express the shock through controlled physical contact.",
+      "delivery_hint": "Hold on the quiet response rather than adding an outcry.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C03"
+        ],
+        "things": [],
+        "spot": "L05",
+        "speech": false,
+        "visible": true,
+        "change": "Aruni lowers herself and makes contact with her brother's hand without crying out.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 45,
+        "w_from": 4,
+        "w_to": 14
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Introduce the object that links the death to the earlier events.",
+      "delivery_hint": "Make the marking legible without implying that Aruni takes the object.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L05",
+        "speech": false,
+        "visible": true,
+        "change": "The marked key becomes visible inside Nimal's closed hand; possession does not change.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 46,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Seek a response from Dinu.",
+      "delivery_hint": "Restrained urgency, with space around the appeal.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L05",
+        "speech": true,
+        "visible": true,
+        "change": "Aruni appeals to Dinu; his receipt of these words is not established.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 0,
+        "w_to": 5
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Leave her attempt to make contact unresolved.",
+      "delivery_hint": "Give the lack of response time to register.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L05",
+        "speech": false,
+        "visible": true,
+        "change": "Aruni attempts a call to Dinu but receives no answer.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "sound",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 5,
+        "w_to": 13
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Let the surrounding world continue against her isolation.",
+      "delivery_hint": "Blend the remote traffic signal into the rainfall.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": false,
+        "change": "A remote vehicle horn joins the continuing weather sound.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "transition",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 13,
+        "w_to": 16
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "End the opening on the unanswered contact.",
+      "delivery_hint": "Use a direct transition to darkness.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "The scene image gives way to a black screen.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "text",
+      "spans": [
+       {
+        "line": 47,
+        "w_from": 16,
+        "w_to": 17
+       },
+       {
+        "line": 48,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Present the work's title after the opening discovery.",
+      "delivery_hint": "Keep the title separate from spoken material.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "The title appears.",
+        "function": "setup"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     2,
+     4,
+     6
+    ],
+    "source": "inferred",
+    "rules_met": [
+     "D12",
+     "D13"
+    ]
+   }
+  ]
+ }
+}

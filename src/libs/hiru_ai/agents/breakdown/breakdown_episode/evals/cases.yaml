@@ -1,0 +1,154 @@
+# breakdown_episode (plan/2026-11-11). Scripted replies test the seams; the live check (phase 7) is a person's.
+- name: one scene, one line
+  input:
+    message: 'CARDS
+
+      C01 [person] Dinu
+
+      L01 [place, set] Canal
+
+
+      SCENES TO BREAK DOWN
+
+      === E01-S01 ===
+
+      1: SCENE 01 - EXT. CANAL - DAWN
+
+      2: Dinu waits.
+
+      3: DINU - Enna.'
+  reply:
+    scenes:
+    - scene: E01-S01
+      title: The Wait
+      summary: Dinu waits.
+      purpose: Opens the story.
+      place: L01
+      mood:
+      - still
+      people:
+      - person: C01
+        presence: on_screen
+        wants: ''
+        feeling_start: ''
+        feeling_end: ''
+        source: script
+      things: []
+      blocks:
+      - kind: action
+        spans:
+        - line: 2
+          w_from: 0
+          w_to: 2
+        speaker: ''
+        presence: on_screen
+        device: ''
+        addressee: ''
+        heard_by: &id001 []
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: &id002 []
+      - kind: dialogue
+        spans:
+        - line: 3
+          w_from: 2
+          w_to: 3
+        speaker: C01
+        presence: on_screen
+        device: ''
+        addressee: ''
+        heard_by: *id001
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: *id002
+      turns: []
+      source: inferred
+      rules_met: []
+  expect:
+    scenes:
+    - scene: E01-S01
+- name: a voice message is heard, not seen
+  input:
+    message: 'CARDS
+
+      C01 [person] Dinu
+
+      C02 [person] Aruni
+
+      L01 [place, set] Garage
+
+
+      SCENES TO BREAK DOWN
+
+      === E01-S02 ===
+
+      1: SCENE 02 - INT. GARAGE - NIGHT
+
+      2: Dinu plays a voice message.
+
+      3: ARUNI - Dinu... oyata meka ahenne nadda?'
+  reply:
+    scenes:
+    - scene: E01-S02
+      title: The Voice Message
+      summary: Dinu hears a message.
+      purpose: A turn.
+      place: L01
+      mood:
+      - tense
+      people:
+      - person: C01
+        presence: on_screen
+        wants: ''
+        feeling_start: ''
+        feeling_end: ''
+        source: script
+      - person: C02
+        presence: voice_message
+        wants: ''
+        feeling_start: ''
+        feeling_end: ''
+        source: script
+      things: []
+      blocks:
+      - speaker: ''
+        presence: on_screen
+        device: ''
+        addressee: ''
+        heard_by: []
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: &id003 []
+        kind: action
+        spans:
+        - line: 2
+          w_from: 0
+          w_to: 5
+      - speaker: C02
+        presence: voice_message
+        device: phone
+        addressee: C01
+        heard_by:
+        - C01
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: *id003
+        kind: dialogue
+        spans:
+        - line: 3
+          w_from: 2
+          w_to: 7
+      turns:
+      - 2
+      source: inferred
+      rules_met: []
+  expect:
+    scenes:
+    - people:
+      - person: C01
+      - person: C02
+        presence: voice_message

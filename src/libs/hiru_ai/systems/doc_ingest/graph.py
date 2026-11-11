@@ -135,8 +135,9 @@ def build(ctx: RunContext, payload: DispatchPayload,
 
     def story_node(state: State) -> State:
         """Read the document once for its story (episodes, spoken lines, people) and keep the checked reading beside
-        the text. An extra: a model that is missing or fails leaves no `story.json` and the ingest goes on."""
-        if not llm.models_enabled():
+        the text. An extra: a model that is missing or fails leaves no `story.json` and the ingest goes on. Retired
+        behind BREAKDOWN__ENABLED: the scene breakdown's split reads the story (plan/2026-11-11 §6)."""
+        if not llm.models_enabled() or get_settings().breakdown.enabled:
             return {}
         try:
             reading = story.read(ctx, filename, state["text"])
@@ -158,9 +159,10 @@ def build(ctx: RunContext, payload: DispatchPayload,
         """Read the document once for the direction it gives about how to make the drama (plan/2026-11-05d) and keep
         the checked entries as the document's reader drafts. An extra, like the story: with no model, no memory port or
         no table (the migration is not applied yet) nothing is asked, and a failure leaves the document's earlier
-        entries as they are and the ingest goes on."""
+        entries as they are and the ingest goes on. Retired behind BREAKDOWN__ENABLED: the breakdown's split reads the
+        direction rules and fills the production memory from them (plan/2026-11-11 §6, D1)."""
         port = ctx.ports.memory
-        if port is None or not llm.models_enabled():
+        if port is None or not llm.models_enabled() or get_settings().breakdown.enabled:
             return {}
         production_id = UUID(str(document["production_id"]))
         try:

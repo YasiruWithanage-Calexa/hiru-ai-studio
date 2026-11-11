@@ -1,0 +1,349 @@
+{
+ "n": 6,
+ "slot": "repair",
+ "agent": "breakdown_repair",
+ "scenes": [
+  "E01-S03"
+ ],
+ "seconds": 18.1,
+ "input_tokens": 6060,
+ "cached_tokens": 1641,
+ "output_tokens": 1860,
+ "dollars": 0.0276,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "CARDS\nC01 [person] Dinu - details: Quiet, experienced, violent only when cornered.\nC02 [person] Aruni - details: Strong, intelligent and emotionally controlled.\nC03 [person] Nimal - details: Nimal - 34, Aruni's elder brother and Dinu's closest friend.\nC04 [person] Mudalali - details: Mudalali - 52, businessman laundering illegal money through village development projects.\nC05 [person] Suren - details: Suren - 38, Mudalali's brutal right-hand man.\nC06 [person] Inspector Ruwan - details: Inspector Ruwan - 45, corrupt police officer protecting the money trail.\nL01 [place, region] Colombo\nL02 [place, region] Mahawewa village\nL03 [place, set in L02] MAHAWEWA CANAL\nL04 [place, spot in L03] paddy field\nL05 [place, spot in L03] canal gate\nL06 [place, vehicle in L01] CASH VAN - details: Dinu drives a cash-transfer van.\nL07 [place, set in L02] village bus stop\nL08 [place, set in L01] Old Port warehouse\nL09 [place, region] industrial area\nL10 [place, set in L01] COLOMBO GARAGE\nP01 [thing] medical bag - details: Aruni walks beside a paddy field carrying a small medical bag.\nP02 [thing] metal key - appearance: Inside his fist is a small metal key marked C-17.\nP03 [thing] photo\nP04 [thing] red thread\nP05 [thing] metal box\nP06 [thing] Rs. 300 million\nP07 [thing] gun\n\nDIRECTION RULES\nD01 [palette, place L01] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\nD02 [palette, place L02] Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.\nD03 [lens, all scenes] Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.\nD04 [lens, all scenes] Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.\nD05 [lighting, all scenes] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.\nD06 [editing, all scenes] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.\nD07 [sound, all scenes] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.\nD08 [slow_motion, all scenes] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\nD09 [action, all scenes] The action is mass but not weightless. Every hit has a location, an object or a consequence.\nD10 [action, all scenes] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.\nD11 [action, all scenes] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.\nD12 [sound, scene 1] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\nD13 [editing, scene 1] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.\nD14 [sound, scene 2] dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays.\n\nCONTINUITY\n{\"synopses\": [{\"episode\": 1, \"text\": \"C03 exposes P06 as money taken through village projects and hands P02 to a reluctant C01. Later, C01 receives C02's message that C03 is missing and follows C04's route change toward L08. At dawn, C02 discovers C03 dead at L05 with P02 in his fist; its return to him is unexplained.\"}], \"arcs\": [{\"person\": \"C02\", \"change\": \"Moves from fearing for the missing C03 to discovering his body.\", \"from_scene\": \"E01-S02\", \"to_scene\": \"E01-S01\"}, {\"person\": \"C01\", \"change\": \"After objecting to taking the money and receiving P02, learns C03 is missing and follows C04's redirected route.\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S02\"}, {\"person\": \"C03\", \"change\": \"Goes from alive and disclosing financial evidence to being found dead; intervening events are not shown.\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S01\"}], \"threads\": [{\"kind\": \"journey\", \"subject\": \"P02\", \"summary\": \"P02 passes from C03 to C01, but is later found back in C03's fist without a shown return transfer.\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 opens P05 containing P02 at L10.\"}, {\"scene\": \"E01-S03\", \"note\": \"C03 places P02 in C01's hand.\"}, {\"scene\": \"E01-S01\", \"note\": \"C02 finds P02 inside C03's fist at L05; removal by C02 is not stated.\"}]}, {\"kind\": \"open_question\", \"subject\": \"P02\", \"summary\": \"How does P02 return from C01 to C03, and what does it unlock?\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C01 receives P02.\"}, {\"scene\": \"E01-S01\", \"note\": \"P02 is back with C03; its purpose remains unstated.\"}]}, {\"kind\": \"setup_payoff\", \"subject\": \"C03\", \"summary\": \"C02's report that C03 is missing leads chronologically to her discovery of his body, although the discovery appears first on the page.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 reports C03 has not returned home.\"}, {\"scene\": \"E01-S01\", \"note\": \"C02 finds C03 dead.\"}]}, {\"source\": \"inferred\", \"kind\": \"open_question\", \"subject\": \"C03\", \"summary\": \"What happened to C03 after E01-S03, and is his death connected to the financial evidence?\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 discloses C04's connection to P06.\"}, {\"scene\": \"E01-S01\", \"note\": \"C03 is found dead; no cause or perpetrator is identified.\"}]}, {\"kind\": \"open_question\", \"subject\": \"C04\", \"summary\": \"C04's purpose in redirecting C01 to L08, and the outcome of that journey, remain unresolved.\", \"beats\": [{\"scene\": \"E01-S03\", \"note\": \"C03 identifies C04 as connected to P06.\"}, {\"scene\": \"E01-S02\", \"note\": \"C04 redirects C01, who turns toward L09; arrival at L08 is not shown.\"}]}], \"looks\": [{\"person\": \"C03\", \"kind\": \"death\", \"from_scene\": \"E01-S03\", \"to_scene\": \"E01-S01\", \"note\": \"Alive in E01-S03; found dead in E01-S01. Time, cause and specific injuries are unstated.\"}], \"relationships\": [{\"a\": \"C01\", \"b\": \"C03\", \"state\": \"Share knowledge of the financial evidence but disagree about taking the money; C03 nevertheless entrusts P02 to C01.\", \"scene\": \"E01-S03\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"C03 describes their relationship as threatened by C01's fear rather than lack of money; this is C03's assessment, not a confirmed separation.\", \"scene\": \"E01-S03\"}, {\"a\": \"C04\", \"b\": \"C01\", \"state\": \"C04 gives routing orders and C01 complies, despite having already heard C03's allegation about C04's money.\", \"scene\": \"E01-S02\"}], \"timeline\": [{\"source\": \"inferred\", \"scene\": \"E01-S01\", \"story_order\": 3, \"story_day\": 0, \"relative\": \"Dawn, apparently after E01-S02; no numbered story day is stated.\", \"kind\": \"cold_open\", \"anchor\": \"E01-S02\"}, {\"source\": \"inferred\", \"scene\": \"E01-S02\", \"story_order\": 2, \"story_day\": 0, \"relative\": \"Night; six hours after E01-S03. No numbered story day is stated.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S03\", \"story_order\": 1, \"story_day\": 0, \"relative\": \"Six hours earlier than E01-S02; no numbered story day is stated.\", \"kind\": \"flashback\", \"anchor\": \"E01-S02\"}], \"knowledge\": [{\"scene\": \"E01-S03\", \"person\": \"C01\", \"learns\": \"C03 identifies P06 as C04's money taken through village projects and displays documents, photographs and P02.\", \"audience_only\": false}], \"scopes\": [{\"rule\": \"D01\", \"scenes\": [\"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Location-based palette and camera treatment for L01.\"}, {\"source\": \"inferred\", \"rule\": \"D03\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Conditional lens rule; no confirmed love-scene application.\"}, {\"source\": \"inferred\", \"rule\": \"D04\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Conditional action-lens rule.\"}, {\"source\": \"inferred\", \"rule\": \"D05\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Global lighting guidance.\"}, {\"source\": \"inferred\", \"rule\": \"D06\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Global cutting and reaction-duration guidance.\"}, {\"source\": \"inferred\", \"rule\": \"D07\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Global sound priority and music restriction.\"}, {\"source\": \"inferred\", \"rule\": \"D08\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"The fall of P02 associated with C03 and C01's removal of P07 cannot be assigned to a supplied scene; handing over P02 is not its falling.\"}, {\"source\": \"inferred\", \"rule\": \"D09\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Conditional physical-consequence rule.\"}, {\"source\": \"inferred\", \"rule\": \"D10\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\"], \"moment_scene\": \"\", \"moment_note\": \"Do not treat the direction as an accomplished story event.\"}]}\n\nEND OF THE EPISODE BEFORE\nnone: this is the first episode\n\nSCENES TO BREAK DOWN\n=== E01-S03 (place card: pick from the cards) ===\n57: SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES\n58: Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the\n59: C-17 key.\n60: NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.\n61: DINU - Api meka gaththoth apiuth eyala wage wenawa.\n62: NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa\n63: oyawa atharinnawa.\n64: Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof.\n\nYOUR PREVIOUS ANSWER FOR THIS SCENE\n{\"scene\": \"E01-S03\", \"title\": \"The garage handover\", \"summary\": \"Earlier, Nimal shows Dinu material linking Mudalali to diverted project funds. Dinu objects to taking the money, but Nimal challenges his fear and places the key in his hand.\", \"purpose\": \"Supply the earlier evidence, establish the friends' disagreement, and begin the key's unresolved chain of possession.\", \"place\": \"L10\", \"mood\": [\"confidential\", \"morally tense\", \"pressured\"], \"people\": [{\"person\": \"C03\", \"presence\": \"on_screen\", \"wants\": \"Persuade Dinu to act on the financial discovery and accept the key.\", \"feeling_start\": \"Determined.\", \"feeling_end\": \"Insistent.\", \"source\": \"inferred\"}, {\"person\": \"C01\", \"presence\": \"on_screen\", \"wants\": \"Resist becoming like the people responsible for the money.\", \"feeling_start\": \"Wary.\", \"feeling_end\": \"Conflicted.\", \"source\": \"inferred\"}], \"things\": [{\"thing\": \"P05\", \"role\": \"used\", \"holder_start\": \"L10\", \"holder_end\": \"L10\", \"source\": \"inferred\"}, {\"thing\": \"P02\", \"role\": \"hero\", \"holder_start\": \"P05\", \"holder_end\": \"C01\", \"source\": \"script\"}, {\"thing\": \"P06\", \"role\": \"mentioned\", \"holder_start\": \"\", \"holder_end\": \"\", \"source\": \"script\"}], \"turns\": [3, 4, 5, 6], \"source\": \"inferred\", \"rules_met\": [], \"blocks\": [{\"kind\": \"transition\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Locate this exchange before the van journey.\", \"delivery_hint\": \"Make the backward time shift clear without adding an unstated presentation method.\", \"source\": \"inferred\", \"spans\": [{\"line\": 58, \"w_from\": 0, \"w_to\": 3}], \"events\": [{\"actors\": [], \"things\": [], \"spot\": \"L10\", \"speech\": false, \"visible\": false, \"change\": \"The narrative moves back by six hours.\", \"function\": \"setup\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Expose the evidence and the key together.\", \"delivery_hint\": \"Keep the contents readable as distinct items without inventing their details.\", \"source\": \"inferred\", \"spans\": [{\"line\": 58, \"w_from\": 3, \"w_to\": 14}, {\"line\": 59, \"w_from\": 0, \"w_to\": 2}], \"events\": [{\"actors\": [\"C03\"], \"things\": [\"P05\", \"P02\"], \"spot\": \"L10\", \"speech\": false, \"visible\": true, \"change\": \"Nimal opens the container, exposing images, financial papers, and the marked key.\", \"function\": \"reveal\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C03\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C01\", \"heard_by\": [\"C01\", \"C03\"], \"intent\": \"Identify the money's scale, beneficiary, and alleged source.\", \"delivery_hint\": \"Direct and matter-of-fact, allowing the amount to carry weight.\", \"source\": \"inferred\", \"spans\": [{\"line\": 60, \"w_from\": 0, \"w_to\": 11}], \"events\": [{\"actors\": [\"C03\", \"C01\"], \"things\": [\"P06\"], \"spot\": \"L10\", \"speech\": true, \"visible\": true, \"change\": \"Dinu hears Nimal attribute the funds to Mudalali and identify village projects as their source.\", \"function\": \"reveal\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C01\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C03\", \"heard_by\": [\"C03\", \"C01\"], \"intent\": \"Reject taking the funds on moral grounds.\", \"delivery_hint\": \"Quiet resistance rather than a heated accusation.\", \"source\": \"inferred\", \"spans\": [{\"line\": 61, \"w_from\": 0, \"w_to\": 7}], \"events\": [{\"actors\": [\"C01\", \"C03\"], \"things\": [\"P06\"], \"spot\": \"L10\", \"speech\": true, \"visible\": true, \"change\": \"Dinu argues that taking the money would erase their moral distinction from its holders.\", \"function\": \"turn\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C03\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C01\", \"heard_by\": [\"C01\", \"C03\"], \"intent\": \"Challenge Dinu's reluctance by invoking his relationship with Aruni.\", \"delivery_hint\": \"Personal and pointed, pressing a vulnerability rather than offering reassurance.\", \"source\": \"inferred\", \"spans\": [{\"line\": 62, \"w_from\": 0, \"w_to\": 13}, {\"line\": 63, \"w_from\": 0, \"w_to\": 2}], \"events\": [{\"actors\": [\"C03\", \"C01\"], \"things\": [], \"spot\": \"L10\", \"speech\": true, \"visible\": true, \"change\": \"Nimal frames Dinu's fear, rather than his finances, as the threat to his relationship; this remains Nimal's assessment.\", \"function\": \"turn\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Make the transfer of responsibility physical.\", \"delivery_hint\": \"Show a deliberate handover, not a fall or an unstated slow-motion beat.\", \"source\": \"inferred\", \"spans\": [{\"line\": 64, \"w_from\": 0, \"w_to\": 7}], \"events\": [{\"actors\": [\"C03\", \"C01\"], \"things\": [\"P02\"], \"spot\": \"L10\", \"speech\": false, \"visible\": true, \"change\": \"Nimal puts the key into Dinu's hand, transferring possession.\", \"function\": \"turn\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [\"C01\", \"C03\"], \"intent\": \"End on Dinu confronting the object rather than declaring a decision.\", \"delivery_hint\": \"Hold the look and let the roof's rain sound occupy the pause.\", \"source\": \"inferred\", \"spans\": [{\"line\": 64, \"w_from\": 7, \"w_to\": 17}], \"events\": [{\"actors\": [\"C01\"], \"things\": [\"P02\"], \"spot\": \"L10\", \"speech\": false, \"visible\": true, \"change\": \"Dinu studies the key now in his possession.\", \"function\": \"texture\"}, {\"actors\": [], \"things\": [], \"spot\": \"L10\", \"speech\": false, \"visible\": false, \"change\": \"Rainfall remains audible against the roof.\", \"function\": \"texture\"}]}]}\n\nPROBLEMS\n- 6 word(s) in no block, 0 word(s) in more than one",
+ "answer": {
+  "scenes": [
+   {
+    "scene": "E01-S03",
+    "title": "The garage handover",
+    "summary": "Earlier, Nimal shows Dinu material linking Mudalali to diverted project funds. Dinu objects to taking the money, but Nimal challenges his fear and places the key in his hand.",
+    "purpose": "Supply the earlier evidence, establish the friends' disagreement, and begin the key's unresolved chain of possession.",
+    "place": "L10",
+    "mood": [
+     "confidential",
+     "morally tense",
+     "pressured"
+    ],
+    "people": [
+     {
+      "person": "C03",
+      "presence": "on_screen",
+      "wants": "Persuade Dinu to act on the financial discovery and accept the key.",
+      "feeling_start": "Determined.",
+      "feeling_end": "Insistent.",
+      "source": "inferred"
+     },
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Resist becoming like the people responsible for the money.",
+      "feeling_start": "Wary.",
+      "feeling_end": "Conflicted.",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P05",
+      "role": "used",
+      "holder_start": "L10",
+      "holder_end": "L10",
+      "source": "inferred"
+     },
+     {
+      "thing": "P02",
+      "role": "hero",
+      "holder_start": "P05",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P06",
+      "role": "mentioned",
+      "holder_start": "",
+      "holder_end": "",
+      "source": "script"
+     }
+    ],
+    "blocks": [
+     {
+      "kind": "transition",
+      "spans": [
+       {
+        "line": 57,
+        "w_from": 0,
+        "w_to": 6
+       },
+       {
+        "line": 58,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Locate this exchange before the van journey.",
+      "delivery_hint": "Make the backward time shift clear without adding an unstated presentation method.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L10",
+        "speech": false,
+        "visible": false,
+        "change": "The narrative moves back by six hours.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 58,
+        "w_from": 3,
+        "w_to": 14
+       },
+       {
+        "line": 59,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Expose the evidence and the key together.",
+      "delivery_hint": "Keep the contents readable as distinct items without inventing their details.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P05",
+         "P02"
+        ],
+        "spot": "L10",
+        "speech": false,
+        "visible": true,
+        "change": "Nimal opens the container, exposing images, financial papers, and the marked key.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 60,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "Identify the money's scale, beneficiary, and alleged source.",
+      "delivery_hint": "Direct and matter-of-fact, allowing the amount to carry weight.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [
+         "P06"
+        ],
+        "spot": "L10",
+        "speech": true,
+        "visible": true,
+        "change": "Dinu hears Nimal attribute the funds to Mudalali and identify village projects as their source.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 61,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03",
+       "C01"
+      ],
+      "intent": "Reject taking the funds on moral grounds.",
+      "delivery_hint": "Quiet resistance rather than a heated accusation.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C03"
+        ],
+        "things": [
+         "P06"
+        ],
+        "spot": "L10",
+        "speech": true,
+        "visible": true,
+        "change": "Dinu argues that taking the money would erase their moral distinction from its holders.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 62,
+        "w_from": 0,
+        "w_to": 13
+       },
+       {
+        "line": 63,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "Challenge Dinu's reluctance by invoking his relationship with Aruni.",
+      "delivery_hint": "Personal and pointed, pressing a vulnerability rather than offering reassurance.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [],
+        "spot": "L10",
+        "speech": true,
+        "visible": true,
+        "change": "Nimal frames Dinu's fear, rather than his finances, as the threat to his relationship; this remains Nimal's assessment.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 64,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Make the transfer of responsibility physical.",
+      "delivery_hint": "Show a deliberate handover, not a fall or an unstated slow-motion beat.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L10",
+        "speech": false,
+        "visible": true,
+        "change": "Nimal puts the key into Dinu's hand, transferring possession.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 64,
+        "w_from": 7,
+        "w_to": 17
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "End on Dinu confronting the object rather than declaring a decision.",
+      "delivery_hint": "Hold the look and let the roof's rain sound occupy the pause.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L10",
+        "speech": false,
+        "visible": true,
+        "change": "Dinu studies the key now in his possession.",
+        "function": "texture"
+       },
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L10",
+        "speech": false,
+        "visible": false,
+        "change": "Rainfall remains audible against the roof.",
+        "function": "texture"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     3,
+     4,
+     5,
+     6
+    ],
+    "source": "inferred",
+    "rules_met": []
+   }
+  ]
+ }
+}

@@ -1,0 +1,20 @@
+time,slot,model,effort,input_tokens,cached_tokens,output_tokens,dollars,status,hypothesis
+2026-11-11 14:41:43,split,gpt-6.1-sol,medium,3075,0,5139,0.0575,done,baseline: Sol medium splits Ekama clean into pointers; compare with the hand gold
+2026-11-11 14:47:47,split,gpt-6.1-sol,medium,3046,0,7474,0.0808,done,"names, within and scope as pointers; cleaned text: expect clean names and no out-of-document spans"
+2026-11-11 15:01:10,split,gpt-6.1-sol,medium,3244,0,5086,0.0573,done,"prompt: card criteria (no set dressing, no contents, one card per item), seen:false, one rule per table row, whole-sentence facts; code now widens fields"
+2026-11-11 15:07:31,continuity,gpt-6.1-sol,medium,4167,0,6740,0.0757,done,baseline: one Sol medium continuity call on Ekama with approved cards
+2026-11-11 15:17:57,episode,gpt-6.1-sol,medium,6051,0,5934,0.0714,done,baseline: Sol medium episode call on E01-S01..S03 with approved cards and continuity
+2026-11-11 15:34:40,episode,gpt-6.1-sol,medium,6248,0,6294,0.0754,done,"episode prompt: noun-phrase titles, no inferred prefix (source fields), rules_met for conditional direction rules"
+2026-11-11 15:41:07,episode,gpt-6.1-sol,medium,7057,1222,13068,0.1425,done,baseline for the other six Ekama scenes with the fixed episode prompt
+2026-11-11 15:45:09,repair E01-S07 #1,gpt-6.1-sol,medium,6889,0,1001,0.0238,done,"repair S07 and S08: show the model its own answer and the exact problems, at most two tries"
+2026-11-11 15:45:28,repair E01-S08 #1,gpt-6.1-sol,medium,8603,1395,2059,0.0351,done,"repair S07 and S08: show the model its own answer and the exact problems, at most two tries"
+2026-11-11 16:10:07,stage E01-S08,gpt-6.1-sol,medium,1161,0,1714,0.0195,done,baseline: the existing stager prompt and shape on S08 from the packet's blocks
+2026-11-11 16:14:48,stage E01-S08,gpt-6.1-sol,medium,1327,0,1643,0.0191,done,stager prompt: fill holding when a person uses/raises a thing; mark every on-screen person at first appearance; packet says not_placed
+2026-11-11 16:16:44,stage E01-S01,gpt-6.1-sol,medium,1185,0,511,0.0075,done,stager (fixed prompt) on the other eight Ekama scenes
+2026-11-11 16:16:52,stage E01-S02,gpt-6.1-sol,medium,1219,0,280,0.0052,done,stager (fixed prompt) on the other eight Ekama scenes
+2026-11-11 16:17:06,stage E01-S03,gpt-6.1-sol,medium,1204,0,589,0.0083,done,stager (fixed prompt) on the other eight Ekama scenes
+2026-11-11 16:17:39,stage E01-S04,gpt-6.1-sol,medium,1286,0,1464,0.0172,done,stager (fixed prompt) on the other eight Ekama scenes
+2026-11-11 16:17:49,stage E01-S05,gpt-6.1-sol,medium,1212,0,313,0.0056,done,stager (fixed prompt) on the other eight Ekama scenes
+2026-11-11 16:18:04,stage E01-S06,gpt-6.1-sol,medium,1178,0,614,0.0085,done,stager (fixed prompt) on the other eight Ekama scenes
+2026-11-11 16:18:13,stage E01-S07,gpt-6.1-sol,medium,1175,0,376,0.0061,done,stager (fixed prompt) on the other eight Ekama scenes
+2026-11-11 16:19:02,stage E01-S09,gpt-6.1-sol,medium,1171,1168,1085,0.0110,done,stager (fixed prompt) on the other eight Ekama scenes

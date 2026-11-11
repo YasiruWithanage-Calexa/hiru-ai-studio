@@ -99,6 +99,7 @@ def build(
     # the length cap: this run's choice, else the production's (plan §2.1, L2)
     cap = raphael.a_cap(edit.get("cap") or payload.state.get("cap"), raphael.a_cap(settings.raphael_length_cap))
     cinematic_only = payload.kind.value == "cinematic_scene_raphael" or edit.get("stage") == "cinematic"
+    use_packet = get_settings().raphael_packet  # plan/2026-11-11 phase 4 (off until the live check)
 
     characters = split.characters(production_id)
     canon = scenes_port.canon(production_id)
@@ -192,10 +193,28 @@ def build(
 
     # ── planning one scene (in a worker; the writing happens in the main thread) ───────────────
 
+    def packet_of(sc: Row, lines: list[Row], scene_ctx: RunContext) -> tuple[str, Any, dict[str, str]] | None:
+        """plan/2026-11-11 phase 4: the scene's stored packet when `RAPHAEL_PACKET` is on and the scene has a complete,
+        current one (the stager runs first if the scene has no map). Otherwise None, and the job says why."""
+        if not use_packet:
+            return None
+        try:
+            got, why = parts.module("system", "breakdown_build", "graph").packet_for(scene_ctx, sc)
+        except Exception:  # no breakdown part, or a broken store: today's path
+            _log.warning("the scene packet could not be read for %s", sc.get("id"), exc_info=True)
+            got, why = None, "the breakdown could not be read"
+        made = raphael.from_packet(got, lines) if got is not None else None
+        if made is None:
+            why = why or "the packet's spoken lines do not match the scene's lines"
+            jobs.event(job_id, JobEventType.PROGRESS,
+                       {"text": f"{label_of(sc)}: planned from the script, not the scene packet ({why})."}, agent=AGENT)
+        return made
+
     def plan_one(job: Row) -> raphael.Planned | raphael.Unchanged | str:
         sc, lines = job["scene"], job["lines"]
         sid = str(sc["id"])
         stored = stored_row(sc)
+        from_packet = packet_of(sc, lines, replace(ctx, scene_id=UUID(sid)))
         bare, _ = raphael.script_of(sc, lines, cast=[], others=[], place="", objects=[])
         cast = raphael.present(characters, bare.blocks)
         location = locations.get(str(sc.get("location_id")))
@@ -212,12 +231,17 @@ def build(
         reading = SceneReading.of(sc)
         # The scene's id on every usage row of its calls (plan/2026-11-08f §6; written once `usage_scene` is on).
         scene_ctx = replace(ctx, scene_id=UUID(sid))
-        ledger, items = (
-            ledger_of(sc, lines, cast, reading, scene_ctx)
-            if not cinematic_only
-            else (raphael.Ledger(staging=SceneStaging.of(sc)), sceneplan.items_for(sc.get("script") or [], lines))
-        )
-        script = ledger_state.attach(script, ledger.staging, items, codes)
+        if from_packet is not None:  # the packet carries the state ledger already (its `stage`): no stager call here
+            opening, script, line_ids = from_packet
+            ledger = raphael.Ledger(note="")
+        else:
+            opening = ""
+            ledger, items = (
+                ledger_of(sc, lines, cast, reading, scene_ctx)
+                if not cinematic_only
+                else (raphael.Ledger(staging=SceneStaging.of(sc)), sceneplan.items_for(sc.get("script") or [], lines))
+            )
+            script = ledger_state.attach(script, ledger.staging, items, codes)
         note = " ".join(p for p in (str(sc.get("note") or ""), str(edit.get("note") or "")) if p)
         context = {
             "heading": str(sc.get("heading") or ""),
@@ -241,6 +265,7 @@ def build(
                 if reading is not None and reading.by == "person"
                 else ""
             ),
+            opening=opening,
         )
         try:
             shots = scenes_port.shots(UUID(sid))

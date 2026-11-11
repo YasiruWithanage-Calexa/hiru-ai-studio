@@ -14,6 +14,7 @@ from uuid import UUID
 
 from hiru_ai.core.errors import PortMissing
 from hiru_ai.core.ports import (
+    BreakdownStore,
     CanonStore,
     ChatStore,
     DirectorStore,
@@ -53,6 +54,7 @@ class Ports:
     jobs: Jobs | None = None
     staging: Staging | None = None
     chat: ChatStore | None = None  # a production assistant's thread (Sable, plan/2026-11-08)
+    breakdown: BreakdownStore | None = None  # the two memories and the scene packets (plan/2026-11-11)
 
 
 @dataclass(frozen=True)

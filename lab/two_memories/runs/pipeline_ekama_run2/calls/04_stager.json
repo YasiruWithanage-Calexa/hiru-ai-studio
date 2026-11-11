@@ -1,0 +1,75 @@
+{
+ "n": 4,
+ "slot": "stager",
+ "agent": "breakdown_stager",
+ "scenes": [],
+ "seconds": 7.2,
+ "input_tokens": 1275,
+ "cached_tokens": 1075,
+ "output_tokens": 344,
+ "dollars": 0.0039,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "<place>\nMahawewa Canal (set).\n</place>\n\n<people>\n- Aruni: on_screen\n- Nimal: body\n</people>\n\nBlocks 0 to 7:\n<script>\n[0] action: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices something caught near the canal gate: a body. It is Nimal.\n[1] action: She does not scream. She kneels and touches his hand.\n[2] action: Inside his fist is a small metal key marked C-17.\n[3] dialogue Aruni, on_screen: Dinu... oyata meka ahenne nadda?\n[4] action: She calls Dinu. No answer.\n[5] sound: A distant bus horn mixes with the rain.\n[6] transition: Cut to black.\n[7] text: TITLE: EKAMA SAKSHIYA.\n</script>",
+ "answer": {
+  "zones": [
+   "paddy field edge",
+   "canal gate"
+  ],
+  "marks": [
+   {
+    "block": 0,
+    "who": "Aruni",
+    "zone": "paddy field edge",
+    "facing": "",
+    "frame_side": "",
+    "holding": "small medical bag",
+    "posture": "walking",
+    "left_hand": "",
+    "right_hand": "",
+    "condition": "",
+    "wearing": ""
+   },
+   {
+    "block": 0,
+    "who": "Nimal",
+    "zone": "canal gate",
+    "facing": "",
+    "frame_side": "",
+    "holding": "",
+    "posture": "lying",
+    "left_hand": "",
+    "right_hand": "",
+    "condition": "dead",
+    "wearing": ""
+   },
+   {
+    "block": 1,
+    "who": "Aruni",
+    "zone": "canal gate",
+    "facing": "",
+    "frame_side": "",
+    "holding": "small medical bag",
+    "posture": "kneeling",
+    "left_hand": "",
+    "right_hand": "",
+    "condition": "",
+    "wearing": ""
+   },
+   {
+    "block": 2,
+    "who": "Nimal",
+    "zone": "canal gate",
+    "facing": "",
+    "frame_side": "",
+    "holding": "small metal key marked C-17",
+    "posture": "",
+    "left_hand": "",
+    "right_hand": "",
+    "condition": "",
+    "wearing": ""
+   }
+  ],
+  "props": []
+ }
+}

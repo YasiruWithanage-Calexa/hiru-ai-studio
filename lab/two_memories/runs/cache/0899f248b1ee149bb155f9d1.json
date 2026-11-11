@@ -1,0 +1,123 @@
+{
+  "zones": [
+    "van door",
+    "container",
+    "darkness",
+    "van cab",
+    "metal gate"
+  ],
+  "marks": [
+    {
+      "block": 0,
+      "who": "Dinu",
+      "zone": "van door",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 0,
+      "who": "Masked men",
+      "zone": "van door",
+      "facing": "",
+      "frame_side": "",
+      "holding": "",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": "masks"
+    },
+    {
+      "block": 0,
+      "who": "Nimal",
+      "zone": "container",
+      "facing": "",
+      "frame_side": "",
+      "holding": "",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 1,
+      "who": "Suren",
+      "zone": "van door",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 3,
+      "who": "Dinu",
+      "zone": "van door",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "chain",
+      "posture": "",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 4,
+      "who": "Nimal",
+      "zone": "container",
+      "facing": "",
+      "frame_side": "",
+      "holding": "cash bag",
+      "posture": "walking",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "shot",
+      "wearing": ""
+    },
+    {
+      "block": 4,
+      "who": "Mudalali",
+      "zone": "darkness",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "gun",
+      "posture": "standing",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    },
+    {
+      "block": 6,
+      "who": "Dinu",
+      "zone": "off",
+      "facing": "",
+      "frame_side": "",
+      "holding": "chain",
+      "posture": "sitting",
+      "left_hand": "",
+      "right_hand": "",
+      "condition": "",
+      "wearing": ""
+    }
+  ],
+  "props": [
+    {
+      "block": 6,
+      "prop": "cash bags",
+      "where": "inside the cash van",
+      "state": ""
+    }
+  ]
+}

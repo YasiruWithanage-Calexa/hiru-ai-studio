@@ -44,6 +44,13 @@ def run_graph(payload: DispatchPayload, store: Store) -> dict[str, Any]:
     return graph.run(payload, supabase_rest.build_context(payload, jobs=JobsPort(store)))
 
 
+def _breakdown_on() -> bool:
+    """plan/2026-11-11 §6: with BREAKDOWN__ENABLED the graph runs, where the steps the breakdown absorbs are retired."""
+    from hiru_ai.core.settings import get_settings
+
+    return get_settings().breakdown.enabled
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         payload = DispatchPayload.model_validate(request.get_json(silent=True) or {})
@@ -53,7 +60,7 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
 
     store, llm = build(payload)
     try:
-        if os.environ.get("AI_ENGINE", "legacy") == "graph":
+        if os.environ.get("AI_ENGINE", "legacy") == "graph" or _breakdown_on():
             return run_graph(payload, store), 200
         return pipeline.run(payload, store, llm), 200
     except httpx.TransportError:

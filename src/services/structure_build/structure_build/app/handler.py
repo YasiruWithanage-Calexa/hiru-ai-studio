@@ -31,6 +31,22 @@ def run_graph(payload: DispatchPayload, jobs: Jobs, checkpointer: Any, durable: 
     return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs), checkpointer, durable=durable)
 
 
+def breakdown_on() -> bool:
+    """plan/2026-11-11: with BREAKDOWN__ENABLED the scene breakdown builds the structure (the old build stays behind
+    it)."""
+    from hiru_ai.core.settings import get_settings
+
+    return get_settings().breakdown.enabled
+
+
+def run_breakdown(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
+    """The documents read once into the two memories, today's columns filled from them (`breakdown_build`)."""
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.breakdown.breakdown_build import graph
+
+    return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs))
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         payload = DispatchPayload.model_validate(request.get_json(silent=True) or {})
@@ -49,6 +65,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
                             "actor_user_id": str(payload.actor_user_id)})
 
     try:
+        if payload.state.get("breakdown_refresh") or breakdown_on():
+            return run_breakdown(payload, jobs), 200
         with saver(config.db_url) as (checkpointer, durable):
             if os.environ.get("AI_ENGINE", "legacy") == "graph":
                 return run_graph(payload, jobs, checkpointer, durable), 200

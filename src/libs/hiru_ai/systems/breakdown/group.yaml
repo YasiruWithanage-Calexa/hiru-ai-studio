@@ -1,0 +1,18 @@
+id: breakdown
+version: 1
+summary: "The scene breakdown (plan/2026-11-11): the documents read once into the two memories, today's columns filled from them, and each scene's packet."
+owner: structure_build
+status: active            # disabled switches off every breakdown part in this layer
+# The removal list (`hiru-ai remove --group breakdown`): repo folders that go with the group, beside its folder in each
+# hiru_ai layer. Keep this in step with plan/2026-11-11 §13.
+folders:
+  - src/libs/contracts/breakdown
+  - tests/breakdown
+  - tests/fixtures/breakdown
+  - lab/two_memories
+outside:
+  - "the structure_build handler's one branch on BREAKDOWN__ENABLED, and the breakdown settings and `breakdown` model tier in core"
+  - "the BreakdownStore port, its Supabase adapter and fake (core/ports.py, adapters/supabase_rest.py, core/fakes.py)"
+  - "the shot planners' packet path (each planner group's own packet reader and its setting)"
+  - "the API's packet read and refresh routes (routers/breakdown.py) and the interface's packet view"
+  - "schema v21 (source_memories, breakdown_memories, scene_packets): left in place, the tables stay unused"

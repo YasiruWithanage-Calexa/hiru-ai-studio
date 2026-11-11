@@ -1,0 +1,92 @@
+<packet>
+SCENE E01-S02: SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+Title: The redirected journey
+Summary: While driving through Colombo, Dinu hears Aruni's concern about Nimal's absence. Mudalali then redirects him toward the port warehouse, and Dinu changes course after glancing at his wrist.
+Purpose (inferred): Connect the earlier disappearance to Dinu's journey and introduce an unresolved routing order.
+Story time: order 2, normal, Night; six hours after E01-S03. No numbered story day is stated.
+The scene before it in the story: E01-S03 SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES. It ends with: Dinu looks at it as rain hits the garage roof.
+The scene after it in the story: E01-S01 SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE. It opens with: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.
+On the page, before it: E01-S01 SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+On the page, after it: E01-S03 SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES
+Thread (setup_payoff, Nimal): Aruni's report that Nimal is missing leads chronologically to her discovery of his body, although the discovery appears first on the page. Here: Aruni reports Nimal has not returned home. Later: E01-S01: Aruni finds Nimal dead..
+Thread (open_question, Mudalali): Mudalali's purpose in redirecting Dinu to Old Port warehouse, and the outcome of that journey, remain unresolved. Here: Mudalali redirects Dinu, who turns toward industrial area; arrival at Old Port warehouse is not shown. Earlier: E01-S03: Nimal identifies Mudalali as connected to Rs. 300 million..
+Knowledge: person Dinu; learns Aruni reports that Nimal has not returned home and that she is afraid.; audience_only False
+Knowledge: person Dinu; learns Mudalali orders a route change to Old Port warehouse.; audience_only False
+Relationship (Dinu and Aruni, as of E01-S03): Nimal describes their relationship as threatened by Dinu's fear rather than lack of money; this is Nimal's assessment, not a confirmed separation.
+Relationship (Mudalali and Dinu, as of E01-S02): Mudalali gives routing orders and Dinu complies, despite having already heard Nimal's allegation about Mudalali's money.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C01 Dinu [on_screen] summary: Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.; details: Quiet, experienced, violent only when cornered. | wants: Continue the drive and respond to the routing instruction. | feels: Focused. -> Preoccupied. (inferred)
+- C02 Aruni [voice_message] summary: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.; details: Strong, intelligent and emotionally controlled. | wants: Alert Dinu to Nimal's absence and obtain reassurance. | feels: Worried. -> Afraid. (inferred)
+- C04 Mudalali [phone] summary: Mudalali - 52, businessman laundering illegal money through village development projects.; details: Mudalali - 52, businessman laundering illegal money through village development projects. | wants: Send Dinu to the warehouse. | feels: Businesslike. -> Directive. (inferred)
+
+PLACE: Cash Van (vehicle); zones: driver's seat, dashboard; details: Dinu drives a cash-transfer van.
+THINGS
+- P03 photo [dressing] held at the start by: Cash Van; at the end: Cash Van (script). Card: summary: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the
+dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message
+plays.
+- P04 red thread [worn] held at the start by: Dinu; at the end: Dinu (script). Card: summary: Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the
+red thread around his wrist and turns toward the industrial area.
+STATE Dinu: in: zone driver's seat, posture sitting; out: zone driver's seat, posture sitting
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S02-B01 action: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.
+    intent (inferred): Establish the urban night journey.
+    delivery hint: Keep the wet road and practical street illumination present around Dinu.
+    event E01-S02-B01-e1 (setup; who: Dinu; at: Cash Van [L06]): Dinu drives through the rain-lit city.
+    state from here: Dinu: zone driver's seat, posture sitting
+b1 = E01-S02-B02 action: On the dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays.
+    intent (inferred): Pair a personal keepsake with the arrival of Aruni's recorded voice.
+    delivery hint: Let the photograph supply relationship context without treating its figures as present.
+    event E01-S02-B02-e1 (texture; who: Dinu; things: photo; at: Cash Van [L06]): A weathered image of Dinu with Aruni is established inside the vehicle.
+    event E01-S02-B02-e2 (setup, not visible; who: Aruni; at: Cash Van [L06]): Playback of Aruni's message begins.
+b2 = E01-S02-B03 dialogue Aruni [voice_message] to Dinu, heard by Dinu: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    intent (inferred): Tell Dinu that Nimal remains absent and convey growing fear.
+    delivery hint: Controlled concern that becomes more exposed at the end.
+    event E01-S02-B03-e1 (reveal, not visible; who: Aruni, Dinu; at: Cash Van [L06]): Dinu learns that Nimal has not come home and that Aruni is frightened.
+b3 = E01-S02-B04 action: Mudalali calls.
+    intent (inferred): Introduce a competing demand on Dinu.
+    delivery hint: Keep the incoming contact distinct from the earlier playback.
+    event E01-S02-B04-e1 (setup, not visible; who: Mudalali, Dinu; at: Cash Van [L06]): Mudalali initiates telephone contact.
+b4 = E01-S02-B05 dialogue Mudalali [phone] to Dinu, heard by Dinu: Route eka maru karapan. Old Port warehouse ekata yanna.
+    intent (inferred): Replace Dinu's current route with a warehouse destination.
+    delivery hint: Brief, authoritative, and without explanation.
+    event E01-S02-B05-e1 (turn, not visible; who: Mudalali, Dinu; at: Cash Van [L06]): Dinu is instructed to proceed to Old Port warehouse instead of following his existing route.
+b5 = E01-S02-B06 action: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+    intent (inferred): Link a private visual beat to Dinu's compliance.
+    delivery hint: Preserve the wrist glance without assigning the thread an unstated meaning.
+    event E01-S02-B06-e1 (turn; who: Dinu; things: red thread; at: Cash Van [L06]): Dinu checks the thread he wears and redirects the vehicle toward industrial area; arrival at Old Port warehouse is not shown.
+
+FEELING: uneasy, intimate, foreboding; the scene turns at b2, b4, b5
+DIRECTION IN SCOPE
+- D01 [scoped] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.
+- D05 [general] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- D06 [general] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- D07 [general] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- D08 [general] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- D09 [general] The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- D10 [general] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- D11 [general] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+- D14 [scoped] dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays. (here: Aruni's voice message plays while photo is on the dashboard.)
+
+LENGTH: stated 90.0 s; spoken 10.5 s
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 action: 3.0 s on screen
+b2 line [L2] Aruni: 14 words, 6.4 s, shortest take 8 s
+b3 action: 1.5 s on screen
+b4 line [L4] Mudalali: 9 words, 4.1 s, shortest take 6 s
+b5 action: 1.5 s on screen
+</timing>
+
+<voice_only>
+Aruni, Mudalali: heard and never seen. Never in subjects or first_frame as a person, and never named in a clip's picture text as the person someone listens to. The one exception: their NAME as text on a phone screen (a caller ID, a message, a voicemail), which is welcome.
+</voice_only>
+
+<length>
+The scene is 90 s long. TARGET: a bin of about 90 s of takes. The script itself times at 18 s (its actions and lines on one clock); the other 72 s of the target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a line lands. CAP: 135 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 72 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.

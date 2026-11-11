@@ -1,0 +1,11 @@
+id: breakdown_build
+kind: system
+version: 1
+summary: "The scene breakdown at creation (plan/2026-11-11): the split per document, ONE continuity call, the episode calls four at a time, checks and repair; the two memories stored; today's columns (canon, episodes, scenes, lines, direction) filled from the breakdown memory; each scene's packet kept beside it. Also the one-scene refresh after a person's edit, and the stager before planning."
+status: active
+owner: structure_build
+job_kind: structure_build
+agents: [breakdown_split, breakdown_continuity, breakdown_episode, breakdown_repair, breakdown_stager]
+steps: []
+panels: []
+tools: []  # it reaches `structure_write`'s plan by id (parts.module), as Raphael reaches scene_prep: one owner of how rows are kept

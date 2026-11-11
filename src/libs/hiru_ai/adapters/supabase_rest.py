@@ -659,6 +659,48 @@ class SupabaseMemory:
             self.rest.insert("production_memory", [row])
 
 
+class SupabaseBreakdown:
+    """`BreakdownStore`: `source_memories`, `breakdown_memories`, `scene_packets` (schema v21, plan/2026-11-11). Needs
+    the
+    tables; with them missing the breakdown system fails the job and says the migration is not applied."""
+
+    def __init__(self, rest: Rest) -> None:
+        self.rest = rest
+
+    def sources(self, production_id: UUID) -> list[Row]:
+        return self.rest.select("source_memories", {"production_id": f"eq.{production_id}",
+                                                    "select": "document_id,filename,body",
+                                                    "order": "created_at,document_id"})
+
+    def save_source(self, production_id: UUID, document_id: str, filename: str, body: Row) -> None:
+        if self.rest.first("source_memories", {"document_id": f"eq.{document_id}", "select": "document_id"}):
+            return  # written once (decision 7)
+        self.rest.insert("source_memories", [{"document_id": document_id, "production_id": str(production_id),
+                                              "filename": filename, "body": body}])
+
+    def memory(self, production_id: UUID) -> Row | None:
+        return self.rest.first("breakdown_memories", {"production_id": f"eq.{production_id}", "select": "body,version"})
+
+    def save_memory(self, production_id: UUID, body: Row, version: int) -> None:
+        self.rest.upsert("breakdown_memories", [{"production_id": str(production_id), "body": body, "version": version,
+                                                 "updated_at": datetime.now(UTC).isoformat()}],
+                         on_conflict="production_id")
+
+    def packet(self, scene_id: str) -> Row | None:
+        columns = "scene_id,scene_key,packet,waits,script_version,memory_version"
+        return self.rest.first("scene_packets", {"scene_id": f"eq.{scene_id}", "select": columns})
+
+    def save_packets(self, production_id: UUID, rows: list[Row]) -> None:
+        now = datetime.now(UTC).isoformat()
+        self.rest.upsert("scene_packets", [{"production_id": str(production_id), "updated_at": now,
+                                            **{k: r[k] for k in ("scene_id", "scene_key", "packet", "waits",
+                                                                 "script_version", "memory_version")}} for r in rows],
+                         on_conflict="scene_id")
+
+    def set_staging(self, scene_id: str, staging: Row) -> None:
+        self.rest.patch("scenes", {"id": f"eq.{scene_id}"}, {"staging": staging})
+
+
 class SupabaseSearch:
     """`Search`: `match_chunks` (hybrid keyword + vector) and `match_craft_techniques`."""
 
@@ -744,7 +786,8 @@ def _ports(rest: Rest, jobs: Any = None) -> Ports:
                  docs=SupabaseDocs(rest, files),
                  memory=SupabaseMemory(rest),
                  search=SupabaseSearch(rest),
-                 files=files, jobs=jobs, staging=StagedCards(), chat=SupabaseChat(rest))
+                 files=files, jobs=jobs, staging=StagedCards(), chat=SupabaseChat(rest),
+                 breakdown=SupabaseBreakdown(rest))
 
 
 def build_ports(settings: AISettings | None = None, *, sink: UsageSink | None = None,

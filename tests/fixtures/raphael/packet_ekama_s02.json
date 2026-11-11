@@ -1,0 +1,529 @@
+{
+ "ids": {
+  "C01": {
+   "name": "Dinu",
+   "kind": "person"
+  },
+  "C02": {
+   "name": "Aruni",
+   "kind": "person"
+  },
+  "C04": {
+   "name": "Mudalali",
+   "kind": "person"
+  },
+  "L04": {
+   "name": "Cash Van",
+   "kind": "place"
+  },
+  "L07": {
+   "name": "Colombo Roads",
+   "kind": "place"
+  },
+  "P03": {
+   "name": "faded photo",
+   "kind": "thing"
+  },
+  "P04": {
+   "name": "red thread",
+   "kind": "thing"
+  }
+ },
+ "A_scene": {
+  "id": "E01-S02",
+  "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+  "title": "The Route Change",
+  "summary": "Dinu drives through Colombo while Aruni's recorded message expresses concern about Nimal and his promised visit. Mudalali orders a different destination, and Dinu redirects the van after looking at red thread.",
+  "purpose": "Connect Dinu's personal obligations with Mudalali's control over his movements.",
+  "purpose_source": "inferred",
+  "before_on_page": {
+   "id": "E01-S01",
+   "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE"
+  },
+  "after_on_page": {
+   "id": "E01-S03",
+   "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES"
+  },
+  "time": {
+   "story_order": 2,
+   "story_day": {
+    "empty": "not stated"
+   },
+   "relative": "Night",
+   "kind": "normal",
+   "anchor": null,
+   "source": "script"
+  },
+  "before_in_story": {
+   "id": "E01-S03",
+   "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES",
+   "ends_with": "Dinu looks at it as rain hits the garage roof.",
+   "opens_with": "Six hours earlier.",
+   "people_at_end": [
+    "Nimal",
+    "Dinu"
+   ]
+  },
+  "after_in_story": {
+   "id": "E01-S04",
+   "heading": "SCENE 04 - EXT. OLD PORT WAREHOUSE - NIGHT - 2.5 MINUTES",
+   "ends_with": "Dinu throws the cash bags into the van, reverses through the metal gate and escapes into Colombo traffic.",
+   "opens_with": "The cash van enters an abandoned warehouse. All lights go off. Dinu turns off the engine and steps into the rain. Masked men surround him. Nimal appears from behind a container.",
+   "people_at_end": [
+    "Dinu",
+    "Nimal",
+    "Suren",
+    "Mudalali"
+   ]
+  },
+  "threads": [
+   {
+    "kind": "setup_payoff",
+    "subject": "red thread",
+    "summary": "The wrist thread becomes a visual bridge from Dinu's troubled attachment to the final renewed bond.",
+    "source": "script",
+    "earlier": [],
+    "this_scene": [
+     "Dinu looks at red thread around his wrist before changing route."
+    ],
+    "later": [
+     {
+      "scene": "E01-S09",
+      "note": "Aruni ties red thread back around Dinu's wrist; it remains the final image."
+     }
+    ]
+   }
+  ],
+  "irony": {
+   "empty": "none stated"
+  },
+  "knowledge": {
+   "empty": "none stated"
+  },
+  "looks": [
+   {
+    "person": "Dinu",
+    "kind": "wardrobe",
+    "note": "red thread is initially around his wrist and is tied back on by Aruni at the end; when or how it came off is unstated.",
+    "source": "script"
+   }
+  ],
+  "relationships": [
+   {
+    "between": [
+     "Dinu",
+     "Aruni"
+    ],
+    "state": "Nimal characterizes their relationship as endangered by Dinu's fear, not lack of money; this remains Nimal's claim.",
+    "scene": "E01-S03"
+   }
+  ]
+ },
+ "B_people": [
+  {
+   "id": "C01",
+   "name": "Dinu",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Dinu\n30, Colombo cash-transport driver. Quiet, experienced, violent only when\ncornered.",
+     "source": "script"
+    },
+    "details": {
+     "value": "30, Colombo cash-transport driver.",
+     "source": "script"
+    }
+   },
+   "presence": "on_screen",
+   "wants": "Continue his journey while responding to competing personal and work demands.",
+   "feeling_start": "Preoccupied",
+   "feeling_end": "Troubled",
+   "source": "inferred"
+  },
+  {
+   "id": "C02",
+   "name": "Aruni",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Aruni\n27, Mahawewa community nurse. Strong, intelligent and emotionally\ncontrolled.",
+     "source": "script"
+    },
+    "details": {
+     "value": "27, Mahawewa community nurse.",
+     "source": "script"
+    }
+   },
+   "presence": "voice_message",
+   "wants": "Get reassurance about Nimal and Dinu's arrival.",
+   "feeling_start": "Concerned",
+   "feeling_end": "Afraid",
+   "source": "inferred"
+  },
+  {
+   "id": "C04",
+   "name": "Mudalali",
+   "kind": "person",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": "Mudalali\n52, businessman laundering illegal money through village development\nprojects.",
+     "source": "script"
+    }
+   },
+   "presence": "phone",
+   "wants": "Redirect Dinu to Old Port Warehouse.",
+   "feeling_start": "Commanding",
+   "feeling_end": "Commanding",
+   "source": "inferred"
+  }
+ ],
+ "C_place": {
+  "id": "L04",
+  "name": "Cash Van",
+  "kind": "place",
+  "place_kind": "vehicle",
+  "card": {
+   "summary": {
+    "empty": "withheld: the range it was read from is too wide"
+   },
+   "details": {
+    "value": "Dinu drives a cash-transfer van.",
+    "source": "script"
+   }
+  }
+ },
+ "D_things": [
+  {
+   "id": "P03",
+   "name": "faded photo",
+   "kind": "thing",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "value": " Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the dashboard is a faded photo\nof him and Aruni near a village bus stop. Aruni's voice message plays.",
+     "source": "script"
+    }
+   },
+   "role": "dressing",
+   "holder_start": "Cash Van",
+   "holder_end": "Cash Van",
+   "source": "script"
+  },
+  {
+   "id": "P04",
+   "name": "red thread",
+   "kind": "thing",
+   "place_kind": null,
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    }
+   },
+   "withheld_other_scenes": 1,
+   "role": "worn",
+   "holder_start": "Dinu",
+   "holder_end": "Dinu",
+   "source": "script"
+  }
+ ],
+ "E_blocks": [
+  {
+   "id": "E01-S02-B01",
+   "kind": "action",
+   "text": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "",
+   "delivery_hint": "",
+   "intent_source": "script",
+   "events": [
+    {
+     "id": "E01-S02-B01-e1",
+     "actors": [
+      "C01"
+     ],
+     "things": [],
+     "spot": "L07",
+     "speech": false,
+     "visible": true,
+     "change": "Dinu drives Cash Van through wet streets illuminated by sodium lighting.",
+     "function": "setup"
+    }
+   ]
+  },
+  {
+   "id": "E01-S02-B02",
+   "kind": "action",
+   "text": "On the dashboard is a faded photo of him and Aruni near a village bus stop.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "",
+   "delivery_hint": "",
+   "intent_source": "script",
+   "events": [
+    {
+     "id": "E01-S02-B02-e1",
+     "actors": [],
+     "things": [
+      "P03"
+     ],
+     "spot": "L04",
+     "speech": false,
+     "visible": true,
+     "change": "A dashboard photograph establishes a shared memory of Dinu and Aruni at a rural bus stop.",
+     "function": "setup"
+    }
+   ]
+  },
+  {
+   "id": "E01-S02-B03",
+   "kind": "action",
+   "text": "Aruni's voice message plays.",
+   "speaker": "",
+   "presence": "voice_message",
+   "device": "",
+   "addressee": "",
+   "heard_by": [
+    "C01"
+   ],
+   "intent": "",
+   "delivery_hint": "",
+   "intent_source": "script",
+   "events": [
+    {
+     "id": "E01-S02-B03-e1",
+     "actors": [],
+     "things": [],
+     "spot": "L04",
+     "speech": false,
+     "visible": false,
+     "change": "Playback introduces Aruni's recorded message.",
+     "function": "setup"
+    }
+   ]
+  },
+  {
+   "id": "E01-S02-B04",
+   "kind": "dialogue",
+   "text": "Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.",
+   "speaker": "C02",
+   "presence": "voice_message",
+   "device": "",
+   "addressee": "C01",
+   "heard_by": [
+    "C01"
+   ],
+   "intent": "Report Nimal's absence and seek reassurance from Dinu.",
+   "delivery_hint": "Personal and increasingly anxious rather than accusatory.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S02-B04-e1",
+     "actors": [
+      "C02"
+     ],
+     "things": [],
+     "spot": "L04",
+     "speech": true,
+     "visible": false,
+     "change": "Dinu hears that Nimal has not returned and that Aruni is frightened while awaiting his visit.",
+     "function": "reveal"
+    }
+   ]
+  },
+  {
+   "id": "E01-S02-B05",
+   "kind": "action",
+   "text": "Mudalali calls.",
+   "speaker": "",
+   "presence": "phone",
+   "device": "",
+   "addressee": "",
+   "heard_by": [
+    "C01"
+   ],
+   "intent": "",
+   "delivery_hint": "",
+   "intent_source": "script",
+   "events": [
+    {
+     "id": "E01-S02-B05-e1",
+     "actors": [
+      "C04"
+     ],
+     "things": [],
+     "spot": "L04",
+     "speech": false,
+     "visible": false,
+     "change": "An incoming call brings Mudalali into the scene remotely.",
+     "function": "setup"
+    }
+   ]
+  },
+  {
+   "id": "E01-S02-B06",
+   "kind": "dialogue",
+   "text": "Route eka maru karapan. Old Port warehouse ekata yanna.",
+   "speaker": "C04",
+   "presence": "phone",
+   "device": "",
+   "addressee": "C01",
+   "heard_by": [
+    "C01"
+   ],
+   "intent": "Make Dinu abandon his current route and proceed to Old Port Warehouse.",
+   "delivery_hint": "Clipped authority, with no invitation to negotiate.",
+   "intent_source": "inferred",
+   "events": [
+    {
+     "id": "E01-S02-B06-e1",
+     "actors": [
+      "C04"
+     ],
+     "things": [],
+     "spot": "L04",
+     "speech": true,
+     "visible": false,
+     "change": "Mudalali supplies a replacement destination at Old Port Warehouse.",
+     "function": "turn"
+    }
+   ]
+  },
+  {
+   "id": "E01-S02-B07",
+   "kind": "action",
+   "text": "Dinu looks at the red thread around his wrist and turns toward the industrial area.",
+   "speaker": "",
+   "presence": "on_screen",
+   "device": "",
+   "addressee": "",
+   "heard_by": [],
+   "intent": "",
+   "delivery_hint": "",
+   "intent_source": "script",
+   "events": [
+    {
+     "id": "E01-S02-B07-e1",
+     "actors": [
+      "C01"
+     ],
+     "things": [
+      "P04"
+     ],
+     "spot": "L04",
+     "speech": false,
+     "visible": true,
+     "change": "Dinu checks the thread on his wrist, then steers toward the industrial district.",
+     "function": "turn"
+    }
+   ]
+  }
+ ],
+ "F_feeling": {
+  "mood": [
+   "uneasy",
+   "intimate",
+   "pressured"
+  ],
+  "turns": [
+   "E01-S02-B05",
+   "E01-S02-B06"
+  ]
+ },
+ "G_direction": [
+  {
+   "id": "D07",
+   "about": "palette",
+   "applies": "scoped",
+   "text": "Colombo palette\nCold blue, green and sodium orange. Handheld camera, tight frames and\ncrowded backgrounds."
+  },
+  {
+   "id": "D11",
+   "about": "lighting",
+   "applies": "general",
+   "text": "Lighting\nVehicle headlights, sodium lamps, practical bulbs and lightning flashes."
+  },
+  {
+   "id": "D12",
+   "about": "editing",
+   "applies": "general",
+   "text": "Editing\nFast cuts only on impact. Let important punches and reactions stay on screen."
+  },
+  {
+   "id": "D13",
+   "about": "sound",
+   "applies": "general",
+   "text": "Sound\nRain, breathing, metal impacts and footsteps first. Music enters only for hero\nelevation moments."
+  },
+  {
+   "id": "D14",
+   "about": "slow_motion",
+   "applies": "general",
+   "text": "Slow motion\nUse only twice: Nimal's key falling and Dinu removing the gun."
+  },
+  {
+   "id": "D15",
+   "about": "action",
+   "applies": "general",
+   "text": "ACTION DESIGN NOTES\nThe action is mass but not weightless. Every hit has a location, an object or a consequence. Dinu is not an invincible\nsuperhero; he wins because he knows vehicles, space and timing. Aruni is an active participant in the climax, and the\nfinal victory comes from the recording, the village and their courage - not from violence alone."
+  }
+ ],
+ "H_length": {
+  "stated_seconds": 90.0,
+  "spoken_seconds": 10.5
+ },
+ "I_open": {
+  "empty": "no open question"
+ },
+ "stage": {
+  "zones": [
+   "driver's seat",
+   "dashboard"
+  ],
+  "not_placed": {},
+  "people": {
+   "C01": {
+    "in": {
+     "zone": "driver's seat",
+     "facing": "away",
+     "frame_side": "centre",
+     "posture": "sitting"
+    },
+    "out": {
+     "zone": "driver's seat",
+     "facing": "away",
+     "frame_side": "centre",
+     "posture": "sitting"
+    }
+   }
+  },
+  "changes_at": {
+   "E01-S02-B01": [
+    {
+     "person": "Dinu",
+     "zone": "driver's seat",
+     "facing": "away",
+     "frame_side": "centre",
+     "posture": "sitting"
+    }
+   ]
+  },
+  "props": [
+   {
+    "block": 1,
+    "prop": "photo of Dinu and Aruni near a village bus stop",
+    "where": "on the dashboard",
+    "state": "faded"
+   }
+  ]
+ }
+}

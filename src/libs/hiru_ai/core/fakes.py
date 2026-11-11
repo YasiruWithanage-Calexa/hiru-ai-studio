@@ -470,6 +470,54 @@ class FakeDocs:
         self.chunk_rows = [*kept, *[dict(r) for r in rows]]
 
 
+class FakeBreakdown:
+    """A `BreakdownStore` in memory (plan/2026-11-11): the two memories and the scene packets."""
+
+    def __init__(self) -> None:
+        self.source_rows: list[Row] = []
+        self.memories: dict[str, Row] = {}
+        self.packets: dict[str, Row] = {}
+        self.staging: dict[str, Row] = {}
+        self.broken: Exception | None = None  # tests: the tables are missing (schema v21 not applied)
+
+    def _ok(self) -> None:
+        if self.broken is not None:
+            raise self.broken
+
+    def sources(self, production_id: UUID) -> list[Row]:
+        self._ok()
+        return [dict(r) for r in self.source_rows if r["production_id"] == str(production_id)]
+
+    def save_source(self, production_id: UUID, document_id: str, filename: str, body: Row) -> None:
+        self._ok()
+        if not any(r["document_id"] == document_id for r in self.source_rows):
+            self.source_rows.append({"production_id": str(production_id), "document_id": document_id,
+                                     "filename": filename, "body": body})
+
+    def memory(self, production_id: UUID) -> Row | None:
+        self._ok()
+        got = self.memories.get(str(production_id))
+        return dict(got) if got else None
+
+    def save_memory(self, production_id: UUID, body: Row, version: int) -> None:
+        self._ok()
+        self.memories[str(production_id)] = {"body": body, "version": version}
+
+    def packet(self, scene_id: str) -> Row | None:
+        self._ok()
+        got = self.packets.get(str(scene_id))
+        return dict(got) if got else None
+
+    def save_packets(self, production_id: UUID, rows: list[Row]) -> None:
+        self._ok()
+        for r in rows:
+            self.packets[str(r["scene_id"])] = {**r, "production_id": str(production_id)}
+
+    def set_staging(self, scene_id: str, staging: Row) -> None:
+        self._ok()
+        self.staging[str(scene_id)] = staging
+
+
 class FakeMemory:
     """A `MemoryStore` that keeps its entries in a list, applying `replace_from` the way the real table does."""
 

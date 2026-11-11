@@ -1,0 +1,615 @@
+{
+ "structure": {
+  "episodes": [
+   {
+    "number": 1,
+    "title": "",
+    "synopsis": "C03 exposes P06 as money taken through village projects and hands P02 to a reluctant C01. Later, C01 receives C02's message that C03 is missing and follows C04's route change toward L08. At dawn, C02 discovers C03 dead at L05 with P02 in his fist; its return to him is unexplained.",
+    "doc_ids": [
+     "local-ekama_sakshiya_screenplay_clean"
+    ],
+    "scenes": [
+     {
+      "number": 1,
+      "title": "The canal discovery",
+      "heading": {
+       "raw": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+       "time_of_day": "DAWN"
+      },
+      "location": {
+       "new": "Mahawewa Canal"
+      },
+      "blocks": [
+       {
+        "kind": "action",
+        "text": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag."
+       },
+       {
+        "kind": "action",
+        "text": "She notices something caught near the canal gate: a body. It is Nimal."
+       },
+       {
+        "kind": "action",
+        "text": "She does not scream. She kneels and touches his hand."
+       },
+       {
+        "kind": "action",
+        "text": "Inside his fist is a small metal key marked C-17."
+       },
+       {
+        "kind": "dialogue",
+        "speaker": "Aruni",
+        "character": {
+         "new": "Aruni"
+        },
+        "text": "ARUNI - Dinu... oyata meka ahenne nadda?",
+        "delivery": ""
+       },
+       {
+        "kind": "action",
+        "text": "She calls Dinu. No answer."
+       },
+       {
+        "kind": "sound",
+        "text": "A distant bus horn mixes with the rain."
+       },
+       {
+        "kind": "cut",
+        "text": "Cut to black."
+       },
+       {
+        "kind": "action",
+        "text": "TITLE: EKAMA SAKSHIYA."
+       }
+      ],
+      "envelope_s": 60
+     },
+     {
+      "number": 2,
+      "title": "The redirected journey",
+      "heading": {
+       "raw": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+       "time_of_day": "NIGHT"
+      },
+      "location": {
+       "new": "Cash Van"
+      },
+      "blocks": [
+       {
+        "kind": "action",
+        "text": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van."
+       },
+       {
+        "kind": "action",
+        "text": "On the dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays."
+       },
+       {
+        "kind": "dialogue",
+        "speaker": "Aruni",
+        "character": {
+         "new": "Aruni"
+        },
+        "text": "Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.",
+        "delivery": "voice message"
+       },
+       {
+        "kind": "action",
+        "text": "Mudalali calls."
+       },
+       {
+        "kind": "dialogue",
+        "speaker": "Mudalali",
+        "character": {
+         "new": "Mudalali"
+        },
+        "text": "Route eka maru karapan. Old Port warehouse ekata yanna.",
+        "delivery": "on the phone"
+       },
+       {
+        "kind": "action",
+        "text": "Dinu looks at the red thread around his wrist and turns toward the industrial area."
+       }
+      ],
+      "envelope_s": 90
+     },
+     {
+      "number": 3,
+      "title": "The garage handover",
+      "heading": {
+       "raw": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES",
+       "time_of_day": ""
+      },
+      "location": {
+       "new": "Colombo Garage"
+      },
+      "blocks": [
+       {
+        "kind": "cut",
+        "text": "Six hours earlier."
+       },
+       {
+        "kind": "action",
+        "text": "Nimal opens a metal box containing photographs, bank documents and the C-17 key."
+       },
+       {
+        "kind": "dialogue",
+        "speaker": "Nimal",
+        "character": {
+         "new": "Nimal"
+        },
+        "text": "NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin",
+        "delivery": ""
+       },
+       {
+        "kind": "dialogue",
+        "speaker": "Dinu",
+        "character": {
+         "new": "Dinu"
+        },
+        "text": "DINU - Api meka gaththoth apiuth eyala",
+        "delivery": ""
+       },
+       {
+        "kind": "dialogue",
+        "speaker": "Nimal",
+        "character": {
+         "new": "Nimal"
+        },
+        "text": "NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage oyawa atharinnawa.",
+        "delivery": ""
+       },
+       {
+        "kind": "action",
+        "text": "Nimal places the key in Dinu's hand."
+       },
+       {
+        "kind": "action",
+        "text": "Dinu looks at it as rain hits the garage roof."
+       }
+      ],
+      "envelope_s": 120
+     }
+    ]
+   }
+  ]
+ },
+ "canon": [
+  {
+   "id": "C01",
+   "kind": "character",
+   "name": "Dinu",
+   "card": {
+    "summary": "Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.",
+    "notes": "details: Quiet, experienced, violent only when cornered."
+   }
+  },
+  {
+   "id": "C02",
+   "kind": "character",
+   "name": "Aruni",
+   "card": {
+    "summary": "Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.",
+    "notes": "details: Strong, intelligent and emotionally controlled."
+   }
+  },
+  {
+   "id": "C03",
+   "kind": "character",
+   "name": "Nimal",
+   "card": {
+    "summary": "Nimal - 34, Aruni's elder brother and Dinu's closest friend.",
+    "notes": "details: Nimal - 34, Aruni's elder brother and Dinu's closest friend."
+   }
+  },
+  {
+   "id": "C04",
+   "kind": "character",
+   "name": "Mudalali",
+   "card": {
+    "summary": "Mudalali - 52, businessman laundering illegal money through village development projects.",
+    "notes": "details: Mudalali - 52, businessman laundering illegal money through village development projects."
+   }
+  },
+  {
+   "id": "C05",
+   "kind": "character",
+   "name": "Suren",
+   "card": {
+    "summary": "Suren - 38, Mudalali's brutal right-hand man.",
+    "notes": "details: Suren - 38, Mudalali's brutal right-hand man."
+   }
+  },
+  {
+   "id": "C06",
+   "kind": "character",
+   "name": "Inspector Ruwan",
+   "card": {
+    "summary": "Inspector Ruwan - 45, corrupt police officer protecting the money trail.",
+    "notes": "details: Inspector Ruwan - 45, corrupt police officer protecting the money trail."
+   }
+  },
+  {
+   "id": "L01",
+   "kind": "location",
+   "name": "Colombo",
+   "card": {
+    "summary": "Setting: Colombo and Mahawewa village"
+   }
+  },
+  {
+   "id": "L02",
+   "kind": "location",
+   "name": "Mahawewa village",
+   "card": {
+    "summary": "Setting: Colombo and Mahawewa village"
+   }
+  },
+  {
+   "id": "L03",
+   "kind": "location",
+   "name": "Mahawewa Canal",
+   "card": {
+    "summary": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels and touches his hand. Inside his fist is a small metal key marked C-17. ARUNI - Dinu... oyata meka ahenne nadda? She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA."
+   }
+  },
+  {
+   "id": "L04",
+   "kind": "location",
+   "name": "paddy field",
+   "card": {
+    "summary": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices"
+   }
+  },
+  {
+   "id": "L05",
+   "kind": "location",
+   "name": "canal gate",
+   "card": {
+    "summary": "something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels and touches his hand. Inside his fist is a small metal key marked C-17."
+   }
+  },
+  {
+   "id": "L06",
+   "kind": "location",
+   "name": "Cash Van",
+   "card": {
+    "summary": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays. ARUNI - Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa. Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the red thread around his wrist and turns toward the industrial area.",
+    "notes": "details: Dinu drives a cash-transfer van."
+   }
+  },
+  {
+   "id": "L07",
+   "kind": "location",
+   "name": "village bus stop",
+   "card": {
+    "summary": "dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message"
+   }
+  },
+  {
+   "id": "L08",
+   "kind": "location",
+   "name": "Old Port warehouse",
+   "card": {
+    "summary": "Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the"
+   }
+  },
+  {
+   "id": "L09",
+   "kind": "location",
+   "name": "industrial area",
+   "card": {
+    "summary": "Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the red thread around his wrist and turns toward the industrial area."
+   }
+  },
+  {
+   "id": "L10",
+   "kind": "location",
+   "name": "Colombo Garage",
+   "card": {
+    "summary": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the C-17 key. NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli. DINU - Api meka gaththoth apiuth eyala wage wenawa. NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa oyawa atharinnawa. Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof."
+   }
+  },
+  {
+   "id": "P01",
+   "kind": "prop",
+   "name": "medical bag",
+   "card": {
+    "summary": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices",
+    "details": "Aruni walks beside a paddy field carrying a small medical bag."
+   }
+  },
+  {
+   "id": "P02",
+   "kind": "prop",
+   "name": "metal key",
+   "card": {
+    "summary": "something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels and touches his hand. Inside his fist is a small metal key marked C-17.",
+    "notes": "appearance: Inside his fist is a small metal key marked C-17."
+   }
+  },
+  {
+   "id": "P03",
+   "kind": "prop",
+   "name": "photo",
+   "card": {
+    "summary": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays."
+   }
+  },
+  {
+   "id": "P04",
+   "kind": "prop",
+   "name": "red thread",
+   "card": {
+    "summary": "Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the red thread around his wrist and turns toward the industrial area."
+   }
+  },
+  {
+   "id": "P05",
+   "kind": "prop",
+   "name": "metal box",
+   "card": {
+    "summary": "Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the C-17 key."
+   }
+  },
+  {
+   "id": "P06",
+   "kind": "prop",
+   "name": "Rs. 300 million",
+   "card": {
+    "summary": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's murder, then returns to his village with the woman he loves to expose the corrupt network that destroyed them."
+   }
+  },
+  {
+   "id": "P07",
+   "kind": "prop",
+   "name": "gun",
+   "card": {
+    "summary": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun."
+   }
+  }
+ ],
+ "production_memory": {
+  "local-ekama_sakshiya_screenplay_clean": [
+   {
+    "topic": "palette",
+    "applies_to": "place:Colombo",
+    "says": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.",
+    "quote": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "palette",
+    "applies_to": "place:Mahawewa village",
+    "says": "Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.",
+    "quote": "Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "lens",
+    "applies_to": "production",
+    "says": "Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.",
+    "quote": "Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "lens",
+    "applies_to": "production",
+    "says": "Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.",
+    "quote": "Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "lighting",
+    "applies_to": "production",
+    "says": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.",
+    "quote": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "editing",
+    "applies_to": "production",
+    "says": "Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.",
+    "quote": "Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "sound",
+    "applies_to": "production",
+    "says": "Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.",
+    "quote": "Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "slow motion",
+    "applies_to": "production",
+    "says": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.",
+    "quote": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "action",
+    "applies_to": "production",
+    "says": "The action is mass but not weightless. Every hit has a location, an object or a consequence.",
+    "quote": "The action is mass but not weightless. Every hit has a location, an object or a consequence.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "action",
+    "applies_to": "production",
+    "says": "Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.",
+    "quote": "Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "action",
+    "applies_to": "production",
+    "says": "Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.",
+    "quote": "Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "sound",
+    "applies_to": "when:in scene 1",
+    "says": "She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:",
+    "quote": "She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:",
+    "strength": "prefer"
+   },
+   {
+    "topic": "editing",
+    "applies_to": "when:in scene 1",
+    "says": "She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.",
+    "quote": "She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.",
+    "strength": "prefer"
+   },
+   {
+    "topic": "sound",
+    "applies_to": "when:in scene 2",
+    "says": "dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays.",
+    "quote": "dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays.",
+    "strength": "prefer"
+   }
+  ]
+ },
+ "staging": {
+  "E01-S01": {
+   "zones": [
+    "paddy field",
+    "canal gate"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Aruni",
+     "zone": "paddy field",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": "small medical bag",
+     "posture": "walking",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "",
+     "wearing": ""
+    },
+    {
+     "block": 1,
+     "who": "Nimal",
+     "zone": "canal gate",
+     "facing": "",
+     "frame_side": "right",
+     "holding": "",
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "dead",
+     "wearing": ""
+    },
+    {
+     "block": 2,
+     "who": "Aruni",
+     "zone": "canal gate",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": "small medical bag",
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "",
+     "wearing": ""
+    },
+    {
+     "block": 3,
+     "who": "Nimal",
+     "zone": "canal gate",
+     "facing": "",
+     "frame_side": "right",
+     "holding": "small metal key marked C-17",
+     "posture": "",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "",
+     "wearing": ""
+    }
+   ],
+   "props": [],
+   "by": "model",
+   "for_version": 0,
+   "basis": ""
+  },
+  "E01-S02": {
+   "zones": [
+    "driver's seat",
+    "dashboard"
+   ],
+   "marks": [
+    {
+     "block": 0,
+     "who": "Dinu",
+     "zone": "driver's seat",
+     "facing": "",
+     "frame_side": "",
+     "holding": "",
+     "posture": "sitting",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "",
+     "wearing": ""
+    }
+   ],
+   "props": [],
+   "by": "model",
+   "for_version": 0,
+   "basis": ""
+  },
+  "E01-S03": {
+   "zones": [
+    "metal box",
+    "garage"
+   ],
+   "marks": [
+    {
+     "block": 1,
+     "who": "Nimal",
+     "zone": "metal box",
+     "facing": "right",
+     "frame_side": "left",
+     "holding": "",
+     "posture": "standing",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "",
+     "wearing": ""
+    },
+    {
+     "block": 3,
+     "who": "Dinu",
+     "zone": "metal box",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": "",
+     "posture": "standing",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "",
+     "wearing": ""
+    },
+    {
+     "block": 5,
+     "who": "Dinu",
+     "zone": "metal box",
+     "facing": "left",
+     "frame_side": "right",
+     "holding": "C-17 key",
+     "posture": "",
+     "left_hand": "",
+     "right_hand": "",
+     "condition": "",
+     "wearing": ""
+    }
+   ],
+   "props": [],
+   "by": "model",
+   "for_version": 0,
+   "basis": ""
+  }
+ }
+}

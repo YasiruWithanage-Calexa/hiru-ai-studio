@@ -1,0 +1,577 @@
+{
+  "timeline": [
+    {
+      "source": "script",
+      "lines": {"start": 53, "end": 58},
+      "reason": "",
+      "scene": "E01-S03",
+      "story_order": 1,
+      "story_day": 0,
+      "relative": "Six hours earlier",
+      "kind": "flashback",
+      "anchor": "E01-S02"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 47, "end": 52},
+      "reason": "",
+      "scene": "E01-S02",
+      "story_order": 2,
+      "story_day": 0,
+      "relative": "Night",
+      "kind": "normal",
+      "anchor": ""
+    },
+    {
+      "source": "script",
+      "lines": {"start": 59, "end": 68},
+      "reason": "",
+      "scene": "E01-S04",
+      "story_order": 3,
+      "story_day": 0,
+      "relative": "After E01-S02",
+      "kind": "normal",
+      "anchor": "E01-S02"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 68, "end": 74},
+      "reason": "",
+      "scene": "E01-S05",
+      "story_order": 4,
+      "story_day": 0,
+      "relative": "Night; after escape in E01-S04",
+      "kind": "normal",
+      "anchor": "E01-S04"
+    },
+    {
+      "source": "inferred",
+      "lines": null,
+      "reason": "The discovery follows C03's shooting; placement after the night escape and before the later house meeting is provisional because the dawn/night transition is unexplained.",
+      "scene": "E01-S01",
+      "story_order": 5,
+      "story_day": 0,
+      "relative": "Dawn; exact relation to E01-S05 is unresolved",
+      "kind": "cold_open",
+      "anchor": "E01-S04"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 75, "end": 80},
+      "reason": "",
+      "scene": "E01-S06",
+      "story_order": 6,
+      "story_day": 0,
+      "relative": "Night; after E01-S05",
+      "kind": "normal",
+      "anchor": "E01-S05"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 80, "end": 86},
+      "reason": "",
+      "scene": "E01-S07",
+      "story_order": 7,
+      "story_day": 0,
+      "relative": "Festival night; after E01-S06",
+      "kind": "normal",
+      "anchor": "E01-S06"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 81, "end": 98},
+      "reason": "",
+      "scene": "E01-S08",
+      "story_order": 8,
+      "story_day": 0,
+      "relative": "After the preparations in E01-S07",
+      "kind": "normal",
+      "anchor": "E01-S07"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 99, "end": 104},
+      "reason": "",
+      "scene": "E01-S09",
+      "story_order": 9,
+      "story_day": 0,
+      "relative": "Dawn after E01-S08",
+      "kind": "normal",
+      "anchor": "E01-S08"
+    }
+  ],
+  "synopses": [
+    {
+      "source": "script",
+      "lines": {"start": 41, "end": 104},
+      "reason": "",
+      "episode": 1,
+      "text": "After C04 shoots C03, C01 escapes with stolen project funds and recorded evidence implicating C04 and C06. C02 moves from suspicion to partnership with C01, broadcasting the recording through P09. Public exposure brings arrests; the cash becomes evidence, while C01 is taken away and promises to return."
+    }
+  ],
+  "arcs": [
+    {
+      "source": "script",
+      "lines": {"start": 54, "end": 104},
+      "reason": "",
+      "person": "C01",
+      "change": "Moves from moral hesitation and compromised involvement to protecting C02, exposing the network, refusing to kill C04, and relinquishing the cash as evidence.",
+      "from_scene": "E01-S03",
+      "to_scene": "E01-S09"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 73, "end": 100},
+      "reason": "",
+      "person": "C02",
+      "change": "Moves from suspicion of C01 to evidence-led determination, active partnership in the exposure, and renewed commitment at their separation.",
+      "from_scene": "E01-S05",
+      "to_scene": "E01-S09"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 54, "end": 66},
+      "reason": "",
+      "person": "C03",
+      "change": "Changes from recruiting C01 into taking the funds to being shot while attempting escape with cash.",
+      "from_scene": "E01-S03",
+      "to_scene": "E01-S04"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 51, "end": 98},
+      "reason": "",
+      "person": "C04",
+      "change": "Loses control of C01, the cash and the concealed money trail; public exposure ends in arrest.",
+      "from_scene": "E01-S02",
+      "to_scene": "E01-S08"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 70, "end": 98},
+      "reason": "",
+      "person": "C06",
+      "change": "Changes from a recorded participant in the concealed money trail to publicly exposed obstructionist and arrested suspect.",
+      "from_scene": "E01-S05",
+      "to_scene": "E01-S08"
+    }
+  ],
+  "knowledge": [
+    {
+      "source": "script",
+      "lines": {"start": 54, "end": 57},
+      "reason": "",
+      "scene": "E01-S03",
+      "person": "C01",
+      "learns": "C03 identifies the funds as 300 million taken by C04 from village projects.",
+      "audience_only": false
+    },
+    {
+      "source": "script",
+      "lines": {"start": 64, "end": 66},
+      "reason": "",
+      "scene": "E01-S04",
+      "person": "C01",
+      "learns": "C04 shoots C03.",
+      "audience_only": false
+    },
+    {
+      "source": "script",
+      "lines": {"start": 42, "end": 44},
+      "reason": "",
+      "scene": "E01-S01",
+      "person": "C02",
+      "learns": "C03 is dead at L03 with P02 in his fist.",
+      "audience_only": false
+    },
+    {
+      "source": "script",
+      "lines": {"start": 70, "end": 71},
+      "reason": "",
+      "scene": "E01-S05",
+      "person": "C01",
+      "learns": "P08 contains C04 ordering C03's murder and C06 discussing the project cash, exposing the wider network.",
+      "audience_only": false
+    },
+    {
+      "source": "script",
+      "lines": {"start": 72, "end": 74},
+      "reason": "",
+      "scene": "E01-S05",
+      "person": "C02",
+      "learns": "C01 identifies C04 as C03's killer; C01 does not answer her challenge about his own involvement.",
+      "audience_only": false
+    },
+    {
+      "source": "script",
+      "lines": {"start": 76, "end": 79},
+      "reason": "",
+      "scene": "E01-S06",
+      "person": "C02",
+      "learns": "Hears the murder recording and is told that C06's police connections threaten the evidence.",
+      "audience_only": false
+    },
+    {
+      "source": "script",
+      "lines": {"start": 93, "end": 98},
+      "reason": "",
+      "scene": "E01-S08",
+      "person": "",
+      "learns": "The village hears the recorded voices of C04 and C06, making the evidence public before their arrests.",
+      "audience_only": false
+    },
+    {
+      "source": "inferred",
+      "lines": null,
+      "reason": "The opening reveals the death before the earlier missing-person message is played.",
+      "scene": "E01-S01",
+      "person": "",
+      "learns": "The audience knows C03 is dead while C02 in the earlier E01-S02 message knows only that he has not returned.",
+      "audience_only": true
+    }
+  ],
+  "threads": [
+    {
+      "source": "script",
+      "lines": {"start": 54, "end": 100},
+      "reason": "",
+      "kind": "journey",
+      "subject": "P07",
+      "summary": "The cash moves from the failed escape into C01's custody, then becomes evidence.",
+      "beats": [
+        {"source": "script", "lines": {"start": 64, "end": 68}, "reason": "", "scene": "E01-S04", "note": "C03 attempts escape with a cash bag; C01 loads the cash bags into L04 and escapes."},
+        {"source": "script", "lines": {"start": 74, "end": 76}, "reason": "", "scene": "E01-S06", "note": "C01 brings the cash bags to L08."},
+        {"source": "script", "lines": {"start": 82, "end": 83}, "reason": "", "scene": "E01-S07", "note": "C01 takes the cash bags toward L10."},
+        {"source": "script", "lines": {"start": 88, "end": 89}, "reason": "", "scene": "E01-S08", "note": "C04 demands the cash at L10."},
+        {"source": "script", "lines": {"start": 99, "end": 100}, "reason": "", "scene": "E01-S09", "note": "The cash is handed over as evidence at L11; the recipient is unspecified."}
+      ]
+    },
+    {
+      "source": "script",
+      "lines": {"start": 70, "end": 95},
+      "reason": "",
+      "kind": "journey",
+      "subject": "P08",
+      "summary": "C01 has the recording-bearing phone, passes it to C02, and C02 uses it for public exposure.",
+      "beats": [
+        {"source": "script", "lines": {"start": 70, "end": 71}, "reason": "", "scene": "E01-S05", "note": "P08 is in C01's possession in L04."},
+        {"source": "script", "lines": {"start": 76, "end": 77}, "reason": "", "scene": "E01-S06", "note": "C01 gives P08 to C02."},
+        {"source": "script", "lines": {"start": 82, "end": 83}, "reason": "", "scene": "E01-S07", "note": "C02 connects P08 to the temple sound system."},
+        {"source": "script", "lines": {"start": 93, "end": 95}, "reason": "", "scene": "E01-S08", "note": "C02 activates the broadcast; the phone's physical relocation, if any, is not shown."}
+      ]
+    },
+    {
+      "source": "script",
+      "lines": {"start": 43, "end": 58},
+      "reason": "",
+      "kind": "journey",
+      "subject": "P02",
+      "summary": "Chronologically, P02 goes from P05 through C03 to C01, but is later found in C03's fist.",
+      "beats": [
+        {"source": "script", "lines": {"start": 54, "end": 58}, "reason": "", "scene": "E01-S03", "note": "C03 opens P05 containing P02 and places P02 in C01's hand."},
+        {"source": "script", "lines": {"start": 43, "end": 44}, "reason": "", "scene": "E01-S01", "note": "C02 finds P02 inside C03's fist; removal is not stated."}
+      ]
+    },
+    {
+      "source": "script",
+      "lines": {"start": 70, "end": 98},
+      "reason": "",
+      "kind": "setup_payoff",
+      "subject": "P08 / P09",
+      "summary": "The private recording and the risk of police suppression lead to a public broadcast that enables exposure and arrests.",
+      "beats": [
+        {"source": "script", "lines": {"start": 70, "end": 71}, "reason": "", "scene": "E01-S05", "note": "The recording reveals the network."},
+        {"source": "script", "lines": {"start": 78, "end": 80}, "reason": "", "scene": "E01-S06", "note": "C01 warns of evidence suppression; C02 looks toward P09."},
+        {"source": "script", "lines": {"start": 82, "end": 83}, "reason": "", "scene": "E01-S07", "note": "C02 prepares the sound-system connection."},
+        {"source": "script", "lines": {"start": 93, "end": 98}, "reason": "", "scene": "E01-S08", "note": "The recording reaches the village despite C06's interference; villagers gather and police arrest C04 and C06."}
+      ]
+    },
+    {
+      "source": "script",
+      "lines": {"start": 51, "end": 104},
+      "reason": "",
+      "kind": "setup_payoff",
+      "subject": "P04",
+      "summary": "The wrist thread becomes a visual bridge from C01's troubled attachment to the final renewed bond.",
+      "beats": [
+        {"source": "script", "lines": {"start": 51, "end": 52}, "reason": "", "scene": "E01-S02", "note": "C01 looks at P04 around his wrist before changing route."},
+        {"source": "script", "lines": {"start": 100, "end": 104}, "reason": "", "scene": "E01-S09", "note": "C02 ties P04 back around C01's wrist; it remains the final image."}
+      ]
+    },
+    {
+      "source": "inferred",
+      "lines": null,
+      "reason": "No intervening transfer, body transport or phone acquisition is shown.",
+      "kind": "open_question",
+      "subject": "P02 / P08 / C03",
+      "summary": "How P02 returns from C01 to C03, how C03's body reaches L03 from L06, and how C01 obtains P08 remain unexplained.",
+      "beats": [
+        {"source": "script", "lines": {"start": 58, "end": 58}, "reason": "", "scene": "E01-S03", "note": "P02 is handed to C01."},
+        {"source": "script", "lines": {"start": 64, "end": 68}, "reason": "", "scene": "E01-S04", "note": "C03 is shot at L06; C01 escapes."},
+        {"source": "script", "lines": {"start": 70, "end": 70}, "reason": "", "scene": "E01-S05", "note": "C01 already has P08."},
+        {"source": "script", "lines": {"start": 42, "end": 44}, "reason": "", "scene": "E01-S01", "note": "C03's body is at L03 with P02."}
+      ]
+    },
+    {
+      "source": "inferred",
+      "lines": null,
+      "reason": "The opening dawn and subsequent night scenes have no explicit day transition.",
+      "kind": "open_question",
+      "subject": "E01-S01 / E01-S05 / E01-S06",
+      "summary": "The exact chronological placement of the discovery relative to the phone call and house arrival is not established.",
+      "beats": []
+    },
+    {
+      "source": "script",
+      "lines": {"start": 98, "end": 104},
+      "reason": "",
+      "kind": "open_question",
+      "subject": "C01 / C02 / C05",
+      "summary": "C01's legal outcome and promised return to C02 remain open; C05's fate after the confrontation is not stated.",
+      "beats": []
+    }
+  ],
+  "looks": [
+    {
+      "source": "script",
+      "lines": {"start": 43, "end": 65},
+      "reason": "",
+      "person": "C03",
+      "kind": "death",
+      "from_scene": "E01-S04",
+      "to_scene": "E01-S01",
+      "note": "Shot by C04 at L06 and subsequently discovered dead at L03."
+    },
+    {
+      "source": "inferred",
+      "lines": null,
+      "reason": "C01 arrives slightly injured and no recovery is shown before the ensuing confrontation and departure.",
+      "person": "C01",
+      "kind": "injury",
+      "from_scene": "E01-S06",
+      "to_scene": "E01-S09",
+      "note": "Carry forward the slight injuries established on arrival; the script does not specify wounds or additional lasting damage."
+    },
+    {
+      "source": "script",
+      "lines": {"start": 51, "end": 104},
+      "reason": "",
+      "person": "C01",
+      "kind": "wardrobe",
+      "from_scene": "E01-S02",
+      "to_scene": "E01-S09",
+      "note": "P04 is initially around his wrist and is tied back on by C02 at the end; when or how it came off is unstated."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "script",
+      "lines": {"start": 55, "end": 58},
+      "reason": "",
+      "a": "C01",
+      "b": "C03",
+      "state": "C03 urges participation in taking the funds; C01 objects morally but accepts P02.",
+      "scene": "E01-S03"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 57, "end": 57},
+      "reason": "",
+      "a": "C01",
+      "b": "C02",
+      "state": "C03 characterizes their relationship as endangered by C01's fear, not lack of money; this remains C03's claim.",
+      "scene": "E01-S03"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 72, "end": 77},
+      "reason": "",
+      "a": "C01",
+      "b": "C02",
+      "state": "Trust is fractured by suspicion of C01's complicity; confrontation continues when he arrives with the cash.",
+      "scene": "E01-S05"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 76, "end": 86},
+      "reason": "",
+      "a": "C01",
+      "b": "C02",
+      "state": "The recording shifts them toward a shared plan; C02 explicitly commits to facing the danger together.",
+      "scene": "E01-S07"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 100, "end": 104},
+      "reason": "",
+      "a": "C01",
+      "b": "C02",
+      "state": "Renewed commitment survives their physical separation; C01 promises to return without money.",
+      "scene": "E01-S09"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 51, "end": 68},
+      "reason": "",
+      "a": "C01",
+      "b": "C04",
+      "state": "Route-giving authority becomes overt lethal opposition when C04 shoots C03 and C01 escapes with the funds.",
+      "scene": "E01-S04"
+    },
+    {
+      "source": "script",
+      "lines": {"start": 70, "end": 98},
+      "reason": "",
+      "a": "C04",
+      "b": "C06",
+      "state": "Their shared involvement in the money trail is recorded, then publicly exposed during their joint attempt to recover the evidence and cash.",
+      "scene": "E01-S08"
+    }
+  ],
+  "scopes": [
+    {
+      "source": "script",
+      "lines": {"start": 41, "end": 46},
+      "reason": "",
+      "rule": "D01",
+      "scenes": ["E01-S01"],
+      "moment_scene": "E01-S01",
+      "moment_note": "Unanswered call; distant bus horn mixes with rain."
+    },
+    {
+      "source": "script",
+      "lines": {"start": 41, "end": 46},
+      "reason": "",
+      "rule": "D02",
+      "scenes": ["E01-S01"],
+      "moment_scene": "E01-S01",
+      "moment_note": "Cut to black and title after the unanswered call."
+    },
+    {
+      "source": "script",
+      "lines": {"start": 64, "end": 66},
+      "reason": "",
+      "rule": "D03",
+      "scenes": ["E01-S04"],
+      "moment_scene": "E01-S04",
+      "moment_note": "C03's shooting impact stays offscreen; C01's face and rainwater convey it."
+    },
+    {
+      "source": "script",
+      "lines": {"start": 87, "end": 89},
+      "reason": "",
+      "rule": "D04",
+      "scenes": ["E01-S08"],
+      "moment_scene": "E01-S08",
+      "moment_note": "Arriving vehicle headlights silhouette C01."
+    },
+    {
+      "source": "script",
+      "lines": {"start": 92, "end": 93},
+      "reason": "",
+      "rule": "D05",
+      "scenes": ["E01-S08"],
+      "moment_scene": "E01-S08",
+      "moment_note": "Grounded fight with C05 in one continuous handheld take."
+    },
+    {
+      "source": "script",
+      "lines": {"start": 103, "end": 104},
+      "reason": "",
+      "rule": "D06",
+      "scenes": ["E01-S09"],
+      "moment_scene": "E01-S09",
+      "moment_note": "Final shot of P04 on C01's wrist in the rain."
+    },
+    {
+      "source": "inferred",
+      "lines": null,
+      "reason": "These scenes are set in L01 or its listed locations.",
+      "rule": "D07",
+      "scenes": ["E01-S02", "E01-S03", "E01-S04", "E01-S05"],
+      "moment_scene": "",
+      "moment_note": ""
+    },
+    {
+      "source": "inferred",
+      "lines": null,
+      "reason": "These scenes are set in L02 or its listed locations.",
+      "rule": "D08",
+      "scenes": ["E01-S01", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "",
+      "moment_note": ""
+    },
+    {
+      "source": "script",
+      "lines": null,
+      "reason": "D09 explicitly has all-scene scope, conditional on love material.",
+      "rule": "D09",
+      "scenes": ["E01-S01", "E01-S02", "E01-S03", "E01-S04", "E01-S05", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "",
+      "moment_note": "Apply the prescribed lenses only to love material."
+    },
+    {
+      "source": "script",
+      "lines": null,
+      "reason": "D10 explicitly has all-scene scope, conditional on action material.",
+      "rule": "D10",
+      "scenes": ["E01-S01", "E01-S02", "E01-S03", "E01-S04", "E01-S05", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "",
+      "moment_note": "Action is explicit in E01-S04 and E01-S08."
+    },
+    {
+      "source": "script",
+      "lines": null,
+      "reason": "D11 explicitly applies to all scenes.",
+      "rule": "D11",
+      "scenes": ["E01-S01", "E01-S02", "E01-S03", "E01-S04", "E01-S05", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "",
+      "moment_note": ""
+    },
+    {
+      "source": "script",
+      "lines": null,
+      "reason": "D12 explicitly applies to all scenes.",
+      "rule": "D12",
+      "scenes": ["E01-S01", "E01-S02", "E01-S03", "E01-S04", "E01-S05", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "",
+      "moment_note": "E01-S08 additionally has the continuous-take constraint in D05."
+    },
+    {
+      "source": "script",
+      "lines": null,
+      "reason": "D13 explicitly applies to all scenes.",
+      "rule": "D13",
+      "scenes": ["E01-S01", "E01-S02", "E01-S03", "E01-S04", "E01-S05", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "",
+      "moment_note": ""
+    },
+    {
+      "source": "script",
+      "lines": null,
+      "reason": "D14 globally limits slow motion to two named moments; the P02 fall has no matching scripted action.",
+      "rule": "D14",
+      "scenes": ["E01-S01", "E01-S02", "E01-S03", "E01-S04", "E01-S05", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "",
+      "moment_note": "The named P02 falling moment cannot be assigned to a scene without inventing action."
+    },
+    {
+      "source": "script",
+      "lines": {"start": 97, "end": 98},
+      "reason": "",
+      "rule": "D14",
+      "scenes": ["E01-S08"],
+      "moment_scene": "E01-S08",
+      "moment_note": "The second permitted slow-motion moment is C01 removing P11 from the threat by kicking it away."
+    },
+    {
+      "source": "script",
+      "lines": null,
+      "reason": "D15 explicitly applies to all scenes.",
+      "rule": "D15",
+      "scenes": ["E01-S01", "E01-S02", "E01-S03", "E01-S04", "E01-S05", "E01-S06", "E01-S07", "E01-S08", "E01-S09"],
+      "moment_scene": "E01-S08",
+      "moment_note": "The climax must preserve C02's active role and the recording and village as causes of victory, not violence alone."
+    }
+  ]
+}

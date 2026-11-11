@@ -698,6 +698,15 @@ class FakeCosts:
         return dict(self.lines)
 
 
+class FakePackets:
+    def __init__(self) -> None:
+        self.rows: dict[str, Row] = {}
+
+    async def get(self, production_id: UUID, scene_id: UUID) -> Row | None:
+        row = self.rows.get(str(scene_id))
+        return dict(row) if row and row.get("production_id", str(production_id)) == str(production_id) else None
+
+
 def build_fake_repos() -> Repos:
     profiles = FakeProfiles()
     members = FakeMembers(profiles)
@@ -736,4 +745,5 @@ def build_fake_repos() -> Repos:
         revisions=FakeRevisions(),
         costs=FakeCosts(),
         sable=FakeSable(threads, messages),
+        packets=FakePackets(),
     )

@@ -1,0 +1,172 @@
+# breakdown_repair (plan/2026-11-11). Scripted replies test the seams; the live check (phase 7) is a person's.
+- name: a skipped word
+  input:
+    message: 'CARDS
+
+      C01 [person] Dinu
+
+      L01 [place, set] Canal
+
+
+      SCENES TO BREAK DOWN
+
+      === E01-S01 ===
+
+      1: SCENE 01 - EXT. CANAL - DAWN
+
+      2: Dinu waits.
+
+      3: DINU - Enna.
+
+
+      YOUR PREVIOUS ANSWER FOR THIS SCENE
+
+      {}
+
+
+      PROBLEMS
+
+      - 1 word(s) in no block, 0 word(s) in more than one'
+  reply:
+    scenes:
+    - scene: E01-S01
+      title: The Wait
+      summary: Dinu waits.
+      purpose: Opens the story.
+      place: L01
+      mood:
+      - still
+      people:
+      - person: C01
+        presence: on_screen
+        wants: ''
+        feeling_start: ''
+        feeling_end: ''
+        source: script
+      things: []
+      blocks:
+      - kind: action
+        spans:
+        - line: 2
+          w_from: 0
+          w_to: 2
+        speaker: ''
+        presence: on_screen
+        device: ''
+        addressee: ''
+        heard_by: &id001 []
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: &id002 []
+      - kind: dialogue
+        spans:
+        - line: 3
+          w_from: 2
+          w_to: 3
+        speaker: C01
+        presence: on_screen
+        device: ''
+        addressee: ''
+        heard_by: *id001
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: *id002
+      turns: []
+      source: inferred
+      rules_met: []
+  expect:
+    scenes:
+    - scene: E01-S01
+- name: a call inside an action line becomes its own dialogue block
+  input:
+    message: 'CARDS
+
+      C01 [person] Dinu
+
+      C04 [person] Mudalali
+
+      L01 [place, set] Garage
+
+
+      SCENES TO BREAK DOWN
+
+      === E01-S02 ===
+
+      1: SCENE 02 - INT. GARAGE - NIGHT
+
+      2: Mudalali calls. Route eka maru karapan.
+
+
+      YOUR PREVIOUS ANSWER FOR THIS SCENE
+
+      {}
+
+
+      PROBLEMS
+
+      - E01-S02-B01-e1 is speech but E01-S02-B01 is a action block: cut it into its own dialogue block'
+  reply:
+    scenes:
+    - scene: E01-S02
+      title: The Route Change
+      summary: Dinu hears a message.
+      purpose: A turn.
+      place: L01
+      mood:
+      - tense
+      people:
+      - person: C01
+        presence: on_screen
+        wants: ''
+        feeling_start: ''
+        feeling_end: ''
+        source: script
+      - person: C04
+        presence: phone
+        wants: ''
+        feeling_start: ''
+        feeling_end: ''
+        source: script
+      things: []
+      blocks:
+      - speaker: ''
+        presence: on_screen
+        device: ''
+        addressee: ''
+        heard_by: []
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: &id003 []
+        kind: action
+        spans:
+        - line: 2
+          w_from: 0
+          w_to: 2
+      - speaker: C04
+        presence: phone
+        device: phone
+        addressee: C01
+        heard_by:
+        - C01
+        intent: ''
+        delivery_hint: ''
+        source: script
+        events: *id003
+        kind: dialogue
+        spans:
+        - line: 2
+          w_from: 2
+          w_to: 6
+      turns:
+      - 2
+      source: inferred
+      rules_met: []
+  expect:
+    scenes:
+    - blocks:
+      - kind: action
+      - kind: dialogue
+        presence: phone

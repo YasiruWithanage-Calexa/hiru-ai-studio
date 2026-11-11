@@ -1,0 +1,200 @@
+{
+ "zones": [
+  "mill floor",
+  "rice sacks",
+  "power switch",
+  "mill perimeter"
+ ],
+ "marks": [
+  {
+   "block": 0,
+   "who": "Dinu",
+   "zone": "mill floor",
+   "facing": "right",
+   "frame_side": "left",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 0,
+   "who": "Mudalali",
+   "zone": "mill floor",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 0,
+   "who": "Suren",
+   "zone": "mill floor",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 0,
+   "who": "Inspector Ruwan",
+   "zone": "mill floor",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 4,
+   "who": "Dinu",
+   "zone": "rice sacks",
+   "facing": "right",
+   "frame_side": "left",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 4,
+   "who": "Suren",
+   "zone": "rice sacks",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 5,
+   "who": "Aruni",
+   "zone": "power switch",
+   "facing": "right",
+   "frame_side": "left",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 7,
+   "who": "Inspector Ruwan",
+   "zone": "power switch",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 9,
+   "who": "Villagers",
+   "zone": "mill perimeter",
+   "facing": "",
+   "frame_side": "",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 9,
+   "who": "Mudalali",
+   "zone": "mill floor",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "gun",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 9,
+   "who": "Dinu",
+   "zone": "mill floor",
+   "facing": "right",
+   "frame_side": "left",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 9,
+   "who": "Police",
+   "zone": "mill floor",
+   "facing": "",
+   "frame_side": "",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "",
+   "wearing": ""
+  },
+  {
+   "block": 9,
+   "who": "Mudalali",
+   "zone": "mill floor",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "under arrest",
+   "wearing": ""
+  },
+  {
+   "block": 9,
+   "who": "Inspector Ruwan",
+   "zone": "power switch",
+   "facing": "left",
+   "frame_side": "right",
+   "holding": "",
+   "posture": "standing",
+   "left_hand": "",
+   "right_hand": "",
+   "condition": "under arrest",
+   "wearing": ""
+  }
+ ],
+ "props": [
+  {
+   "block": 9,
+   "prop": "gun",
+   "where": "on the mill floor, kicked away from Mudalali",
+   "state": ""
+  }
+ ]
+}

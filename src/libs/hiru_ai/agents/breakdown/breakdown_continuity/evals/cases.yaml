@@ -1,0 +1,110 @@
+# breakdown_continuity (plan/2026-11-11). Scripted replies test the seams; the live check (phase 7) is a person's.
+- name: one scene
+  input:
+    message: 'CAST, PLACES, THINGS
+
+      C01 [person] Dinu
+
+
+      DIRECTION RULES
+
+
+
+      STORY
+
+      === E01-S01 ===
+
+      1: SCENE 01 - EXT. CANAL - DAWN
+
+      2: Dinu waits.'
+  reply:
+    timeline:
+    - scene: E01-S01
+      story_order: 1
+      story_day: 0
+      relative: ''
+      kind: normal
+      anchor: ''
+      source: script
+      lines:
+        start: 1
+        end: 2
+      reason: ''
+    synopses:
+    - episode: 1
+      text: Dinu waits.
+      source: script
+      lines:
+        start: 1
+        end: 2
+      reason: ''
+    arcs: []
+    knowledge: []
+    threads: []
+    looks: []
+    relationships: []
+    scopes: []
+  expect:
+    timeline:
+    - scene: E01-S01
+- name: a flashback is first in story order
+  input:
+    message: 'CAST, PLACES, THINGS
+
+      C01 [person] Dinu
+
+
+      DIRECTION RULES
+
+
+
+      STORY
+
+      === E01-S01 ===
+
+      1: SCENE 01 - EXT. CANAL - DAWN
+
+      2: Dinu waits.
+
+
+      === E01-S02 ===
+
+      3: SCENE 02 - INT. GARAGE - NIGHT (SIX HOURS EARLIER)
+
+      4: Dinu counts cash.'
+  reply:
+    timeline:
+    - scene: E01-S02
+      story_order: 1
+      story_day: 0
+      relative: Six hours earlier
+      kind: flashback
+      anchor: E01-S01
+      source: script
+      lines:
+        start: 3
+        end: 3
+      reason: ''
+    - scene: E01-S01
+      story_order: 2
+      story_day: 0
+      relative: ''
+      kind: normal
+      anchor: ''
+      source: script
+      lines:
+        start: 1
+        end: 2
+      reason: ''
+    synopses: []
+    arcs: []
+    knowledge: []
+    threads: []
+    looks: []
+    relationships: []
+    scopes: []
+  expect:
+    timeline:
+    - scene: E01-S02
+      kind: flashback
+    - scene: E01-S01

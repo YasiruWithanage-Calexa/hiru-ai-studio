@@ -445,3 +445,16 @@ modules = ["hiru_ai.agents.reader.*"]
 name = "reader steps never import each other"
 type = "independence"
 modules = ["hiru_ai.steps.reader.*"]
+
+# The scene breakdown (plan/2026-11-11): the `breakdown` group, kept apart the same way. Planners reach its system by id
+# (`parts.module`), never by import.
+[[tool.importlinter.contracts]]
+name = "breakdown agents never import each other"
+type = "independence"
+modules = ["hiru_ai.agents.breakdown.*"]
+
+[[tool.importlinter.contracts]]
+name = "no planner imports the breakdown system"
+type = "forbidden"
+source_modules = ["hiru_ai.systems.raphael", "hiru_ai.systems.adam", "hiru_ai.systems.david", "hiru_ai.systems.jonathan"]
+forbidden_modules = ["hiru_ai.systems.breakdown"]

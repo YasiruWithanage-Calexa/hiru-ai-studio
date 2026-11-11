@@ -31,6 +31,10 @@ class OpenAISettings(BaseModel):
     # The document reader (plan/2026-11-06f Q1): the `reader` tier is model_author at this effort. Reading is less
     # creative than planning; the live eval (`scripts/eval_reader.py --yes`) decides.
     effort_reader: str = "medium"
+    # The scene breakdown (plan/2026-11-11 §9): the `breakdown` tier (split, continuity, episodes, repair, stager). The
+    # lab ran every step on GPT-6.1 Sol at medium; whether continuity and episodes need high is for the live check.
+    model_breakdown: str = "gpt-6.1-sol"
+    effort_breakdown: str = "medium"
     # Shot Planner Jonathan (plan/2026-11-06b): the `jonathan` tier, its own model (gpt-5 shuts down 2026-12-11;
     # GPT-6.1 Sol is OpenAI's near-flagship at gpt-5's price class) at the effort the cinematic lab proved (high).
     # An environment change, not a code change.
@@ -93,6 +97,14 @@ class ReaderSettings(BaseModel):
     workers: int = 4  # episode calls at once
 
 
+class BreakdownSettings(BaseModel):
+    """The scene breakdown (plan/2026-11-11): `BREAKDOWN__*`. Off until a person turns it on after the live check
+    (phase 7): with it off, creation builds the structure as before and no planner reads a packet."""
+
+    enabled: bool = False
+    workers: int = 4  # documents and episode calls at once (plan §10, phase 2)
+
+
 class SupabaseSettings(BaseModel):
     url: str = "http://127.0.0.1:54321"
     service_role_key: SecretStr = SecretStr("")
@@ -132,6 +144,9 @@ class AISettings(BaseSettings):
     # plan/2026-11-10: Raphael writes a director's breakdown of the scene first, then builds from it.
     # false = Raphael exactly as it was before the breakdown.
     raphael_breakdown: bool = True
+    # plan/2026-11-11 phase 4: Raphael's first agent reads the stored scene packet (the whole packet is its first
+    # message) when the scene has a complete one. false = today's message. Off until the live check.
+    raphael_packet: bool = False
     # Agents that run as a tool loop (their manifest's `with_tools` form), as a comma-separated list of ids. Empty =
     # none: an agent switches only after a live A/B says it is at least as good (plan/2026-11-04 §8). Going back is
     # removing the id.
@@ -140,6 +155,7 @@ class AISettings(BaseSettings):
     supabase: SupabaseSettings = SupabaseSettings()
     zora: ZoraSettings = ZoraSettings()
     reader: ReaderSettings = ReaderSettings()
+    breakdown: BreakdownSettings = BreakdownSettings()
     sable: SableSettings = SableSettings()
     # Where traces go (ADR 0008: Langfuse Cloud). Langfuse's own names, as its settings page prints them. Empty keys =
     # no tracing.

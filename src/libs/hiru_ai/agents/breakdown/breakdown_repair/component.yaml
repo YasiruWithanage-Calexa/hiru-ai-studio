@@ -1,0 +1,17 @@
+id: breakdown_repair
+kind: agent
+version: 1
+summary: "Step 5: repairs ONE scene the checks stopped, given its own previous answer and the exact problems."
+status: active
+owner: structure_build
+model: breakdown
+timeout_s: 900
+shape: structured
+phase: breakdown.repair
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

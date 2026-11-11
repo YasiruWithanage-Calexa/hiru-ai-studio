@@ -1,0 +1,17 @@
+id: breakdown_stager
+kind: agent
+version: 1
+summary: "Step 6: places the people of one scene on its blocks (zones, marks where something changes, loose props), once before planning."
+status: active
+owner: structure_build
+model: breakdown
+timeout_s: 900
+shape: structured
+phase: breakdown.stager
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

@@ -25,6 +25,15 @@ def user_message(inp: Input) -> str:
     return inp.opening
 
 
+def input_from_packet(packet: dict[str, Any], *, scene_no: str = "1", **kw: Any) -> tuple[Input, dict[str, str]]:
+    """The packet path (plan/2026-11-11): the whole scene packet is the first message and `SceneS` is built from it for
+    the tools and checks. Returns the Input and the map from the tools' ids (b4, L4) to the packet's block ids."""
+    from contracts.raphael.packet import opening
+
+    text, scene, ids = opening(packet)
+    return Input(opening=text, scene=scene, guide_s=float(scene.envelope_s or 0), scene_no=scene_no, **kw), ids
+
+
 def session(inp: Input) -> Stage1Session:
     return Stage1Session(
         Brief(inp.scene, inp.guide_s),
