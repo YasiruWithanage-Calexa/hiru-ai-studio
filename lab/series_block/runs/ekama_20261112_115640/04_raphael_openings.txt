@@ -1,0 +1,327 @@
+##### E01-S01
+
+<packet>
+SERIES (what this drama is; play every scene as part of it)
+Genre: action (main), crime thriller (main), love (thread)  [Genre: Action / Crime Thriller / Love]
+Tone: Ground the characters in South Indian realism while making the action energetic and crowd-pleasing.
+World: The drama moves between Colombo and Mahawewa village. Places: Colombo [L01], Mahawewa village [L02]
+Theme: Only one person knows the truth.
+Premise: A Colombo cash-transfer driver steals corrupt money after witnessing a crime against his closest friend, then returns home with the woman he loves to expose the network.
+This scene: place L03; scoped direction D02, D12, D13; mood ['sombre', 'restrained', 'unsettling']. Read the scene's mood and its scoped direction through the genre and tone: the direction sets the look, the genre sets the tension.
+
+SCENE E01-S01: SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+Title: The canal discovery
+Summary: Aruni finds her brother dead beside the water, notices the marked key in his closed hand, and tries unsuccessfully to reach Dinu.
+Purpose (inferred): Open with the death and the unexplained key, withholding the events that brought them together.
+Story time: order 3, cold_open, Dawn, apparently after E01-S02; no numbered story day is stated. (measured from E01-S02)
+The scene before it in the story: E01-S02 SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES. It ends with: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+On the page, after it: E01-S02 SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+Thread (journey, metal key): metal key passes from Nimal to Dinu, but is later found back in Nimal's fist without a shown return transfer. Here: Aruni finds metal key inside Nimal's fist at canal gate; removal by Aruni is not stated. Earlier: E01-S03: Nimal opens metal box containing metal key at Colombo Garage.; E01-S03: Nimal places metal key in Dinu's hand..
+Thread (open_question, metal key): How does metal key return from Dinu to Nimal, and what does it unlock? Here: metal key is back with Nimal; its purpose remains unstated. Earlier: E01-S03: Dinu receives metal key..
+Thread (setup_payoff, Nimal): Aruni's report that Nimal is missing leads chronologically to her discovery of his body, although the discovery appears first on the page. Here: Aruni finds Nimal dead. Earlier: E01-S02: Aruni reports Nimal has not returned home..
+Thread (open_question, Nimal): What happened to Nimal after E01-S03, and is his death connected to the financial evidence? Here: Nimal is found dead; no cause or perpetrator is identified. Earlier: E01-S03: Nimal discloses Mudalali's connection to Rs. 300 million..
+Irony: person Dinu; learns The audience knows Nimal is dead; Dinu is not shown learning this.; audience_only True
+Knowledge: person Aruni; learns Nimal is dead at canal gate and has metal key in his fist.; audience_only False
+Looks: person Nimal; kind death; note Alive in E01-S03; found dead in E01-S01. Time, cause and specific injuries are unstated.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C02 Aruni [on_screen] summary: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.; details: Strong, intelligent and emotionally controlled. | wants: Understand what she has found and reach Dinu. | feels: Composed. -> Distressed but outwardly controlled. (inferred)
+- C03 Nimal [body] summary: Nimal - 34, Aruni's elder brother and Dinu's closest friend.; details: Nimal - 34, Aruni's elder brother and Dinu's closest friend. | wants: No living objective. | feels: Not applicable. -> Not applicable. (script)
+
+PLACE: Mahawewa Canal (set); zones: paddy field, canal gate
+THINGS
+- P01 medical bag [used] held at the start by: Aruni; at the end: Aruni (script). Card: summary: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices; details: Aruni walks beside a paddy field carrying a small medical bag.
+- P02 metal key [hero] held at the start by: Nimal; at the end: Nimal (script). Card: summary: something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels
+and touches his hand. Inside his fist is a small metal key marked C-17.; appearance: Inside his fist is a small metal key marked C-17.
+STATE Nimal: in: -; out: zone canal gate, frame side right, holding small metal key marked C-17, posture lying, condition dead
+STATE Aruni: in: zone paddy field, facing right, frame side left, holding small medical bag, posture walking; out: zone canal gate, facing right, frame side left, holding small medical bag, posture kneeling
+NOT PLACED Nimal: no position before block 1 (the script does not say)
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S01-B01 action: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.
+    intent (inferred): Establish Aruni's approach through the wet landscape.
+    delivery hint: Keep the weather and her unhurried movement prominent.
+    event E01-S01-B01-e1 (setup; who: Aruni; things: medical bag; at: paddy field [L04]): Aruni approaches along the field with her medical supplies.
+    state from here: Aruni: zone paddy field, facing right, frame side left, holding small medical bag, posture walking
+b1 = E01-S01-B02 action: She notices something caught near the canal gate: a body. It is Nimal.
+    intent (inferred): Resolve an indistinct obstruction into a personal loss.
+    delivery hint: Allow recognition to register without embellishment.
+    event E01-S01-B02-e1 (reveal; who: Aruni, Nimal; at: canal gate [L05]): Aruni recognizes her brother's body at the water control structure.
+    state from here: Nimal: zone canal gate, frame side right, posture lying, condition dead
+b2 = E01-S01-B03 action: She does not scream. She kneels and touches his hand.
+    intent (inferred): Express the shock through controlled physical contact.
+    delivery hint: Hold on the quiet response rather than adding an outcry.
+    event E01-S01-B03-e1 (texture; who: Aruni, Nimal; at: canal gate [L05]): Aruni lowers herself and makes contact with her brother's hand without crying out.
+    state from here: Aruni: zone canal gate, facing right, frame side left, holding small medical bag, posture kneeling
+b3 = E01-S01-B04 action: Inside his fist is a small metal key marked C-17.
+    intent (inferred): Introduce the object that links the death to the earlier events.
+    delivery hint: Make the marking legible without implying that Aruni takes the object.
+    event E01-S01-B04-e1 (reveal; who: Nimal; things: metal key; at: canal gate [L05]): The marked key becomes visible inside Nimal's closed hand; possession does not change.
+    state from here: Nimal: zone canal gate, frame side right, holding small metal key marked C-17
+b4 = E01-S01-B05 dialogue Aruni [on_screen] to Dinu, heard by Aruni: ARUNI - Dinu... oyata meka ahenne nadda?
+    intent (inferred): Seek a response from Dinu.
+    delivery hint: Restrained urgency, with space around the appeal.
+    event E01-S01-B05-e1 (texture; who: Aruni; at: canal gate [L05]): Aruni appeals to Dinu; his receipt of these words is not established.
+b5 = E01-S01-B06 action: She calls Dinu. No answer.
+    intent (inferred): Leave her attempt to make contact unresolved.
+    delivery hint: Give the lack of response time to register.
+    event E01-S01-B06-e1 (turn; who: Aruni; at: canal gate [L05]): Aruni attempts a call to Dinu but receives no answer.
+b6 = E01-S01-B07 sound: A distant bus horn mixes with the rain.
+    intent (inferred): Let the surrounding world continue against her isolation.
+    delivery hint: Blend the remote traffic signal into the rainfall.
+    event E01-S01-B07-e1 (texture, not visible; at: Mahawewa Canal [L03]): A remote vehicle horn joins the continuing weather sound.
+b7 = E01-S01-B08 transition: Cut to black.
+    intent (inferred): End the opening on the unanswered contact.
+    delivery hint: Use a direct transition to darkness.
+    event E01-S01-B08-e1 (turn; at: Mahawewa Canal [L03]): The scene image gives way to a black screen.
+b8 = E01-S01-B09 text: TITLE: EKAMA SAKSHIYA.
+    intent (inferred): Present the work's title after the opening discovery.
+    delivery hint: Keep the title separate from spoken material.
+    event E01-S01-B09-e1 (setup; at: Mahawewa Canal [L03]): The title appears.
+
+FEELING: sombre, restrained, unsettling; the scene turns at b1, b3, b5
+DIRECTION IN SCOPE
+- D02 [scoped] Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.
+- D05 [general] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- D06 [general] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- D07 [general] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- D08 [general] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- D09 [general] The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- D10 [general] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- D11 [general] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+- D12 [scoped] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: (here: Unanswered call followed by distant bus horn mixed with rain.)
+- D13 [scoped] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA. (here: Cut to black and title after the unanswered call.)
+
+LENGTH: stated 60.0 s; spoken 3.2 s
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 action: 1.5 s on screen
+b2 action: 1.5 s on screen
+b3 action: 1.5 s on screen
+b4 line [L4] Aruni: 7 words, 3.2 s, shortest take 6 s
+b5 action: 1.5 s on screen
+b6 action: 1.5 s on screen
+b7 action: 1.5 s on screen
+b8 action: 1.5 s on screen
+</timing>
+
+<length>
+The scene is 60 s long. TARGET: a bin of about 60 s of takes. The script itself times at 15 s (its actions and lines on one clock); the other 45 s of the target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a line lands. CAP: 90 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 48 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.
+
+##### E01-S02
+
+<packet>
+SERIES (what this drama is; play every scene as part of it)
+Genre: action (main), crime thriller (main), love (thread)  [Genre: Action / Crime Thriller / Love]
+Tone: Ground the characters in South Indian realism while making the action energetic and crowd-pleasing.
+World: The drama moves between Colombo and Mahawewa village. Places: Colombo [L01], Mahawewa village [L02]
+Theme: Only one person knows the truth.
+Premise: A Colombo cash-transfer driver steals corrupt money after witnessing a crime against his closest friend, then returns home with the woman he loves to expose the network.
+This scene: place L06; scoped direction D01, D14; mood ['uneasy', 'intimate', 'foreboding']. Read the scene's mood and its scoped direction through the genre and tone: the direction sets the look, the genre sets the tension.
+
+SCENE E01-S02: SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+Title: The redirected journey
+Summary: While driving through Colombo, Dinu hears Aruni's concern about Nimal's absence. Mudalali then redirects him toward the port warehouse, and Dinu changes course after glancing at his wrist.
+Purpose (inferred): Connect the earlier disappearance to Dinu's journey and introduce an unresolved routing order.
+Story time: order 2, normal, Night; six hours after E01-S03. No numbered story day is stated.
+The scene before it in the story: E01-S03 SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES. It ends with: Dinu looks at it as rain hits the garage roof.
+The scene after it in the story: E01-S01 SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE. It opens with: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.
+On the page, before it: E01-S01 SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+On the page, after it: E01-S03 SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES
+Thread (setup_payoff, Nimal): Aruni's report that Nimal is missing leads chronologically to her discovery of his body, although the discovery appears first on the page. Here: Aruni reports Nimal has not returned home. Later: E01-S01: Aruni finds Nimal dead..
+Thread (open_question, Mudalali): Mudalali's purpose in redirecting Dinu to Old Port warehouse, and the outcome of that journey, remain unresolved. Here: Mudalali redirects Dinu, who turns toward industrial area; arrival at Old Port warehouse is not shown. Earlier: E01-S03: Nimal identifies Mudalali as connected to Rs. 300 million..
+Knowledge: person Dinu; learns Aruni reports that Nimal has not returned home and that she is afraid.; audience_only False
+Knowledge: person Dinu; learns Mudalali orders a route change to Old Port warehouse.; audience_only False
+Relationship (Dinu and Aruni, as of E01-S03): Nimal describes their relationship as threatened by Dinu's fear rather than lack of money; this is Nimal's assessment, not a confirmed separation.
+Relationship (Mudalali and Dinu, as of E01-S02): Mudalali gives routing orders and Dinu complies, despite having already heard Nimal's allegation about Mudalali's money.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C01 Dinu [on_screen] summary: Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.; details: Quiet, experienced, violent only when cornered. | wants: Continue the drive and respond to the routing instruction. | feels: Focused. -> Preoccupied. (inferred)
+- C02 Aruni [voice_message] summary: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.; details: Strong, intelligent and emotionally controlled. | wants: Alert Dinu to Nimal's absence and obtain reassurance. | feels: Worried. -> Afraid. (inferred)
+- C04 Mudalali [phone] summary: Mudalali - 52, businessman laundering illegal money through village development projects.; details: Mudalali - 52, businessman laundering illegal money through village development projects. | wants: Send Dinu to the warehouse. | feels: Businesslike. -> Directive. (inferred)
+
+PLACE: Cash Van (vehicle); zones: driver's seat, dashboard; details: Dinu drives a cash-transfer van.
+THINGS
+- P03 photo [dressing] held at the start by: Cash Van; at the end: Cash Van (script). Card: summary: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the
+dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message
+plays.
+- P04 red thread [worn] held at the start by: Dinu; at the end: Dinu (script). Card: summary: Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the
+red thread around his wrist and turns toward the industrial area.
+STATE Dinu: in: zone driver's seat, posture sitting; out: zone driver's seat, posture sitting
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S02-B01 action: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.
+    intent (inferred): Establish the urban night journey.
+    delivery hint: Keep the wet road and practical street illumination present around Dinu.
+    event E01-S02-B01-e1 (setup; who: Dinu; at: Cash Van [L06]): Dinu drives through the rain-lit city.
+    state from here: Dinu: zone driver's seat, posture sitting
+b1 = E01-S02-B02 action: On the dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays.
+    intent (inferred): Pair a personal keepsake with the arrival of Aruni's recorded voice.
+    delivery hint: Let the photograph supply relationship context without treating its figures as present.
+    event E01-S02-B02-e1 (texture; who: Dinu; things: photo; at: Cash Van [L06]): A weathered image of Dinu with Aruni is established inside the vehicle.
+    event E01-S02-B02-e2 (setup, not visible; who: Aruni; at: Cash Van [L06]): Playback of Aruni's message begins.
+b2 = E01-S02-B03 dialogue Aruni [voice_message] to Dinu, heard by Dinu: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    intent (inferred): Tell Dinu that Nimal remains absent and convey growing fear.
+    delivery hint: Controlled concern that becomes more exposed at the end.
+    event E01-S02-B03-e1 (reveal, not visible; who: Aruni, Dinu; at: Cash Van [L06]): Dinu learns that Nimal has not come home and that Aruni is frightened.
+b3 = E01-S02-B04 action: Mudalali calls.
+    intent (inferred): Introduce a competing demand on Dinu.
+    delivery hint: Keep the incoming contact distinct from the earlier playback.
+    event E01-S02-B04-e1 (setup, not visible; who: Mudalali, Dinu; at: Cash Van [L06]): Mudalali initiates telephone contact.
+b4 = E01-S02-B05 dialogue Mudalali [phone] to Dinu, heard by Dinu: Route eka maru karapan. Old Port warehouse ekata yanna.
+    intent (inferred): Replace Dinu's current route with a warehouse destination.
+    delivery hint: Brief, authoritative, and without explanation.
+    event E01-S02-B05-e1 (turn, not visible; who: Mudalali, Dinu; at: Cash Van [L06]): Dinu is instructed to proceed to Old Port warehouse instead of following his existing route.
+b5 = E01-S02-B06 action: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+    intent (inferred): Link a private visual beat to Dinu's compliance.
+    delivery hint: Preserve the wrist glance without assigning the thread an unstated meaning.
+    event E01-S02-B06-e1 (turn; who: Dinu; things: red thread; at: Cash Van [L06]): Dinu checks the thread he wears and redirects the vehicle toward industrial area; arrival at Old Port warehouse is not shown.
+
+FEELING: uneasy, intimate, foreboding; the scene turns at b2, b4, b5
+DIRECTION IN SCOPE
+- D01 [scoped] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.
+- D05 [general] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- D06 [general] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- D07 [general] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- D08 [general] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- D09 [general] The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- D10 [general] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- D11 [general] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+- D14 [scoped] dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message plays. (here: Aruni's voice message plays while photo is on the dashboard.)
+
+LENGTH: stated 90.0 s; spoken 10.5 s
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 action: 3.0 s on screen
+b2 line [L2] Aruni: 14 words, 6.4 s, shortest take 8 s
+b3 action: 1.5 s on screen
+b4 line [L4] Mudalali: 9 words, 4.1 s, shortest take 6 s
+b5 action: 1.5 s on screen
+</timing>
+
+<voice_only>
+Aruni, Mudalali: heard and never seen. Never in subjects or first_frame as a person, and never named in a clip's picture text as the person someone listens to. The one exception: their NAME as text on a phone screen (a caller ID, a message, a voicemail), which is welcome.
+</voice_only>
+
+<length>
+The scene is 90 s long. TARGET: a bin of about 90 s of takes. The script itself times at 18 s (its actions and lines on one clock); the other 72 s of the target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a line lands. CAP: 135 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 72 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.
+
+##### E01-S03
+
+<packet>
+SERIES (what this drama is; play every scene as part of it)
+Genre: action (main), crime thriller (main), love (thread)  [Genre: Action / Crime Thriller / Love]
+Tone: Ground the characters in South Indian realism while making the action energetic and crowd-pleasing.
+World: The drama moves between Colombo and Mahawewa village. Places: Colombo [L01], Mahawewa village [L02]
+Theme: Only one person knows the truth.
+Premise: A Colombo cash-transfer driver steals corrupt money after witnessing a crime against his closest friend, then returns home with the woman he loves to expose the network.
+This scene: place L10; scoped direction D01; mood ['confidential', 'morally tense', 'pressured']. Read the scene's mood and its scoped direction through the genre and tone: the direction sets the look, the genre sets the tension.
+
+SCENE E01-S03: SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES
+Title: The garage handover
+Summary: Earlier, Nimal shows Dinu material linking Mudalali to diverted project funds. Dinu objects to taking the money, but Nimal challenges his fear and places the key in his hand.
+Purpose (inferred): Supply the earlier evidence, establish the friends' disagreement, and begin the key's unresolved chain of possession.
+Story time: order 1, flashback, Six hours earlier than E01-S02; no numbered story day is stated. (measured from E01-S02)
+The scene after it in the story: E01-S02 SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES. It opens with: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.
+On the page, before it: E01-S02 SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+Thread (journey, metal key): metal key passes from Nimal to Dinu, but is later found back in Nimal's fist without a shown return transfer. Here: Nimal opens metal box containing metal key at Colombo Garage. Nimal places metal key in Dinu's hand. Later: E01-S01: Aruni finds metal key inside Nimal's fist at canal gate; removal by Aruni is not stated..
+Thread (open_question, metal key): How does metal key return from Dinu to Nimal, and what does it unlock? Here: Dinu receives metal key. Later: E01-S01: metal key is back with Nimal; its purpose remains unstated..
+Thread (open_question, Nimal): What happened to Nimal after E01-S03, and is his death connected to the financial evidence? Here: Nimal discloses Mudalali's connection to Rs. 300 million. Later: E01-S01: Nimal is found dead; no cause or perpetrator is identified..
+Thread (open_question, Mudalali): Mudalali's purpose in redirecting Dinu to Old Port warehouse, and the outcome of that journey, remain unresolved. Here: Nimal identifies Mudalali as connected to Rs. 300 million. Later: E01-S02: Mudalali redirects Dinu, who turns toward industrial area; arrival at Old Port warehouse is not shown..
+Knowledge: person Dinu; learns Nimal identifies Rs. 300 million as Mudalali's money taken through village projects and displays documents, photographs and metal key.; audience_only False
+Looks: person Nimal; kind death; note Alive in E01-S03; found dead in E01-S01. Time, cause and specific injuries are unstated.
+Relationship (Dinu and Nimal, as of E01-S03): Share knowledge of the financial evidence but disagree about taking the money; Nimal nevertheless entrusts metal key to Dinu.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C03 Nimal [on_screen] summary: Nimal - 34, Aruni's elder brother and Dinu's closest friend.; details: Nimal - 34, Aruni's elder brother and Dinu's closest friend. | wants: Persuade Dinu to act on the financial discovery and accept the key. | feels: Determined. -> Insistent. (inferred)
+- C01 Dinu [on_screen] summary: Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.; details: Quiet, experienced, violent only when cornered. | wants: Resist becoming like the people responsible for the money. | feels: Wary. -> Conflicted. (inferred)
+
+PLACE: Colombo Garage (set); zones: metal box, garage
+THINGS
+- P05 metal box [used] held at the start by: Colombo Garage; at the end: Colombo Garage (inferred). Card: summary: Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the
+C-17 key.
+- P02 metal key [hero] held at the start by: metal box; at the end: Dinu (script). Card: summary: something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels
+and touches his hand. Inside his fist is a small metal key marked C-17.
+- P06 Rs. 300 million [mentioned] held at the start by: -; at the end: - (script). Card: summary: A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's
+murder, then returns to his village with the woman he loves to expose the corrupt network that
+destroyed them.
+STATE Dinu: in: -; out: zone metal box, facing left, frame side right, holding C-17 key, posture standing
+STATE Nimal: in: -; out: zone metal box, facing right, frame side left, posture standing
+NOT PLACED Dinu: no position before block 3 (the script does not say)
+NOT PLACED Nimal: no position before block 1 (the script does not say)
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S03-B01 transition: Six hours earlier.
+    intent (inferred): Locate this exchange before the van journey.
+    delivery hint: Make the backward time shift clear without adding an unstated presentation method.
+    event E01-S03-B01-e1 (setup, not visible; at: Colombo Garage [L10]): The narrative moves back by six hours.
+b1 = E01-S03-B02 action: Nimal opens a metal box containing photographs, bank documents and the C-17 key.
+    intent (inferred): Expose the evidence and the key together.
+    delivery hint: Keep the contents readable as distinct items without inventing their details.
+    event E01-S03-B02-e1 (reveal; who: Nimal; things: metal box, metal key; at: Colombo Garage [L10]): Nimal opens the container, exposing images, financial papers, and the marked key.
+    state from here: Nimal: zone metal box, facing right, frame side left, posture standing
+b2 = E01-S03-B03 dialogue Nimal [on_screen] to Dinu, heard by Dinu, Nimal: NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin
+    intent (inferred): Identify the money's scale, beneficiary, and alleged source.
+    delivery hint: Direct and matter-of-fact, allowing the amount to carry weight.
+    event E01-S03-B03-e1 (reveal; who: Nimal, Dinu; things: Rs. 300 million; at: Colombo Garage [L10]): Dinu hears Nimal attribute the funds to Mudalali and identify village projects as their source.
+b3 = E01-S03-B04 dialogue Dinu [on_screen] to Nimal, heard by Nimal, Dinu: DINU - Api meka gaththoth apiuth eyala
+    intent (inferred): Reject taking the funds on moral grounds.
+    delivery hint: Quiet resistance rather than a heated accusation.
+    event E01-S03-B04-e1 (turn; who: Dinu, Nimal; things: Rs. 300 million; at: Colombo Garage [L10]): Dinu argues that taking the money would erase their moral distinction from its holders.
+    state from here: Dinu: zone metal box, facing left, frame side right, posture standing
+b4 = E01-S03-B05 dialogue Nimal [on_screen] to Dinu, heard by Dinu, Nimal: NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage oyawa atharinnawa.
+    intent (inferred): Challenge Dinu's reluctance by invoking his relationship with Aruni.
+    delivery hint: Personal and pointed, pressing a vulnerability rather than offering reassurance.
+    event E01-S03-B05-e1 (turn; who: Nimal, Dinu; at: Colombo Garage [L10]): Nimal frames Dinu's fear, rather than his finances, as the threat to his relationship; this remains Nimal's assessment.
+b5 = E01-S03-B06 action: Nimal places the key in Dinu's hand.
+    intent (inferred): Make the transfer of responsibility physical.
+    delivery hint: Show a deliberate handover, not a fall or an unstated slow-motion beat.
+    event E01-S03-B06-e1 (turn; who: Nimal, Dinu; things: metal key; at: Colombo Garage [L10]): Nimal puts the key into Dinu's hand, transferring possession.
+    state from here: Dinu: zone metal box, facing left, frame side right, holding C-17 key
+b6 = E01-S03-B07 action: Dinu looks at it as rain hits the garage roof.
+    intent (inferred): End on Dinu confronting the object rather than declaring a decision.
+    delivery hint: Hold the look and let the roof's rain sound occupy the pause.
+    event E01-S03-B07-e1 (texture; who: Dinu; things: metal key; at: Colombo Garage [L10]): Dinu studies the key now in his possession.
+    event E01-S03-B07-e2 (texture, not visible; at: Colombo Garage [L10]): Rainfall remains audible against the roof.
+
+FEELING: confidential, morally tense, pressured; the scene turns at b2, b3, b4, b5
+DIRECTION IN SCOPE
+- D01 [scoped] Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.
+- D05 [general] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- D06 [general] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- D07 [general] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- D08 [general] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- D09 [general] The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- D10 [general] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- D11 [general] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+
+LENGTH: stated 120.0 s; spoken 15.0 s
+OPEN
+- 6 word(s) in no block, 0 word(s) in more than one
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 action: 1.5 s on screen
+b2 line [L2] Nimal: 11 words, 5.0 s, shortest take 6 s
+b3 line [L3] Dinu: 7 words, 3.2 s, shortest take 6 s
+b4 line [L4] Nimal: 15 words, 6.8 s, shortest take 8 s
+b5 action: 1.5 s on screen
+b6 action: 3.0 s on screen
+</timing>
+
+<length>
+The scene is 120 s long. TARGET: a bin of about 120 s of takes. The script itself times at 24 s (its actions and lines on one clock); the other 96 s of the target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a line lands. CAP: 180 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 96 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.

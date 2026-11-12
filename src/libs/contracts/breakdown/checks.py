@@ -279,6 +279,53 @@ def cards(bd: Breakdown) -> list[Finding]:
     return out
 
 
+HEARD_THROUGH = ("phone", "voice_message", "recording")  # presences whose voice comes out of something
+_THING_ID = re.compile(r"\bP\d{2,}\b")
+
+
+def implied(bd: Breakdown) -> list[Finding]:
+    """Report only (plan/2026-11-12 §3.2): an implied thing whose name is not a plain noun of at most three words was
+    not made; the reader may only name a thing, never slip story into a name."""
+    from contracts.breakdown.build import NOUN, implied_name
+
+    return [
+        Finding(
+            code="implied",
+            scene=sc.id,
+            message=f"implied thing {i['name']!r} is not a plain noun of at most three words: it was not recorded",
+        )
+        for sc in bd.scenes
+        for i in (sc.brief or {}).get("implied", [])
+        if not NOUN.match(implied_name(i["name"]))
+    ]
+
+
+def devices(bd: Breakdown) -> list[Finding]:
+    """Report only (plan/2026-11-12 §3.3): a line heard through something names the thing it comes from, and that thing
+    is one of the scene's things. No list of devices: the check asks only whether there is one and whether it exists."""
+    out: list[Finding] = []
+    for sc in bd.scenes:
+        if not sc.brief:
+            continue
+        here = {t["thing"] for t in sc.brief["things"]}
+        for b in sc.blocks:
+            if b["kind"] != "dialogue" or b["presence"] not in HEARD_THROUGH:
+                continue
+            found = _THING_ID.findall(b["device"] or "")
+            if not found or not any(x in here for x in found):
+                out.append(
+                    Finding(
+                        code="device",
+                        scene=sc.id,
+                        message=(
+                            f"{b['id']} is heard as {b['presence']} but names no device among the scene's things: a "
+                            "planner may not show where the voice comes from"
+                        ),
+                    )
+                )
+    return out
+
+
 def run_all(bd: Breakdown, doc: Doc) -> list[Finding]:
     """Runs every check, replaces the memory's findings with the build's own plus these, and returns these."""
     found = [
@@ -290,6 +337,8 @@ def run_all(bd: Breakdown, doc: Doc) -> list[Finding]:
         *direction(bd),
         *length(bd),
         *cards(bd),
+        *implied(bd),
+        *devices(bd),
     ]
     bd.findings = [f for f in bd.findings if f.message.startswith("card ") and f.code == "sources"] + found
     return found

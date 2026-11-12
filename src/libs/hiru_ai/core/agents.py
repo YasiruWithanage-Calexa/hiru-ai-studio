@@ -131,6 +131,7 @@ class Agent:
             lines_before=before(inp) if before else None, lines_after=after,
             fallback=MISSING if answer is None else answer,
             memory_topics=tuple(self.manifest.memory),
+            house_topics=tuple(self.manifest.house_rules),
             memory_scope=scope(inp) if scope and self.manifest.memory else None)
 
     # ── running ───────────────────────────────────────────────────────────────────────────

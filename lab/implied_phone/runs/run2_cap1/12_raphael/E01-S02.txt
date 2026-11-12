@@ -1,0 +1,174 @@
+SCENE E01-S02: stage 1 finished, stage 2 finished
+Seconds: target 90.0, cap 90.0, takes 90 (must 86, cinematic 4)
+
+Logline: A driver enclosed by wet Colombo hears a personal plea, receives a new destination, and lets a glance at his wrist precede an unexplained change of course.
+Approach: An approximately 86-second must bin built from contained handheld vehicle coverage, not exterior spectacle. Twelve clips supply the sustained master, listener singles and essential visible details needed to shape a 90-second scene from sparse scripted time. Repeated coverage of L3 and L5 is editorial choice, not repeated playback in the intended cut. Keep the two remote voices off screen. Establish the faded photograph before recorded audio enters; distinguish the later incoming connection with its phone cue.
+Key Image: Dinu's eyes drop toward the red thread on the hand already at the wheel, then return to the road before the van changes course.
+Geography: Stay inside the driver's compartment of the cash van. Dinu remains seated at the wheel; forward travel stays consistent through the windscreen. Dashboard and photograph remain ahead of him. Choose the red thread on his left wrist and the phone secured in a dashboard cradle within his reach; no hand-held phone operation while driving. Passenger-side camera positions maintain one screen axis. Do not establish an arrival or a specific junction.
+Arc: Work encloses the private life represented on the dashboard. (blocks {'first': 0, 'last': 2}): Isolation and an intimate absence.
+Arc: The recorded message holds Dinu without producing an answer. (blocks {'first': 3, 'last': 3}): Concern with no release.
+Arc: An incoming connection replaces personal urgency with authority. (blocks {'first': 4, 'last': 5}): Pressure entering a confined space.
+Arc: The wrist glance precedes compliance but explains nothing. (blocks {'first': 6, 'last': 6}): Unresolved allegiance.
+
+2A-1 [c01, stage 1, master, must]
+    SUMMARY: From the passenger side, Dinu drives through wet Colombo; rain and engine vibration fill the cabin.
+    block 0 = E01-S02-B01: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.
+    WIDE · 28mm · handheld · Passenger-side eye level, three-quarter forward · take 8 s
+    why: Contained vehicle vibration establishes work and the wet city without leaving the driver.
+    editor: Opening geography and sustained driving bed; no new journey event.
+    framing: WIDE of seated driver, wheel, dashboard and rain-streaked windscreen.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Maintains forward driving with both hands on the wheel and lips closed.
+
+2B-1 [c02, stage 1, single, must]
+    SUMMARY: A closer passenger-side view holds Dinu's forward attention while the van continues through rain.
+    block 0 = E01-S02-B01: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.
+    MCU · 50mm · handheld · Passenger-side eye level · take 8 s
+    why: Establishes the restrained face whose small changes must carry the remote voices later.
+    editor: Baseline single, not a second driving event. Extend the opening only as the scene needs.
+    framing: MCU of Dinu's head and upper chest, wheel edge below.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Maintains forward driving with both hands on the wheel and lips closed.
+
+2C-1 [c03, stage 1, insert, must]
+    SUMMARY: A dashboard detail establishes a faded photograph of two figures near a village bus stop as road reflections move over it.
+    block 1 = E01-S02-B02: On the dashboard is a faded photo of him and Aruni near a village bus stop.
+    INSERT · 65mm · handheld · Dashboard height, oblique passenger-side view · take 6 s
+    why: The photograph is a required visible event and the only material expression of the shared past.
+    editor: Faded printed image only; no animated photograph or cut into its past. Do not require sharp faces or lettering.
+    framing: INSERT of the faded dashboard photograph, with dashboard edges visible.
+    movement: Contained handheld vibration from a fixed dashboard-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+
+2D-1 [c04, stage 1, single, must]
+    SUMMARY: Dinu remains at the wheel as the phone's recorded audio begins, with the faded photograph still at the edge of the frame.
+    block 2 = E01-S02-B03: Aruni's voice message plays.
+    MS · 35mm · handheld · Passenger-side eye level, three-quarter forward · take 6 s
+    why: Keeps the established photograph near the listener as the audio source enters, without inventing a phone gesture.
+    editor: Use the recorded source's lead texture; do not add words or a second message. Bridge into L3.
+    framing: MS of Dinu at the wheel, photograph at lower right and phone cradle near dashboard edge.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Listens while continuing forward driving, lips closed.
+
+2E-1 [c05, stage 1, reaction, must]
+    SUMMARY: In close view, Dinu listens to L3, the recorded report of Nimal's continued absence and growing fear, without answering.
+    block 3 = E01-S02-B04: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    line L3 = E01-S02-B04: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    CU · 75mm · handheld · Passenger-side eye level · take 8 s
+    why: The primary line picture lets a small physical response carry the growing personal concern.
+    editor: L3 occupies 0.8-7.2 seconds. Primary reaction; other moment-4 clips cover this same complete audio, not additional playbacks.
+    framing: CU of Dinu's face with his forward eyeline retained.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Listens to the recorded audio, holding the wheel and keeping his lips closed.
+
+2B-2 [c06, stage 1, single, must]
+    SUMMARY: The established medium-close view covers all of L3 while Dinu holds his road attention and tightens his jaw.
+    block 3 = E01-S02-B04: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    line L3 = E01-S02-B04: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    MCU · 50mm · handheld · Passenger-side eye level · take 8 s
+    why: The established baseline single makes the altered jaw and sustained silence readable without requiring a cut during the line.
+    editor: Full matching coverage of L3; select this or the CU, or cut at the final blink. Audio occurs only once.
+    framing: MCU of Dinu's head and upper chest, wheel edge below.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Listens to the recorded audio, holding the wheel and keeping his lips closed.
+
+2A-2 [c07, stage 1, master, must]
+    SUMMARY: A cabin-wide view covers L3 with Dinu, wheel, photograph and wet road in the same frame.
+    block 3 = E01-S02-B04: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    line L3 = E01-S02-B04: Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.
+    WIDE · 28mm · handheld · Passenger-side eye level, three-quarter forward · take 8 s
+    why: The cabin master preserves the relationship between isolated driver, photograph and road under the entire message.
+    editor: Matching master for the line and its landing; never repeat the message. Useful for a sustained enclosed-space hold.
+    framing: WIDE of seated driver, wheel, dashboard and rain-streaked windscreen.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Listens to the recorded audio, holding the wheel and keeping his lips closed.
+
+2H-1 [c08, stage 1, insert, must]
+    SUMMARY: The secured dashboard phone displays Mudalali as an incoming connection; a brief ringtone separates it from the earlier recorded message.
+    block 4 = E01-S02-B05: Mudalali calls.
+    INSERT · 75mm · handheld · Passenger-side dashboard height · take 6 s
+    why: Makes the change of connection unambiguous without visualising the remote person or adding an answering action.
+    editor: Caller ID is the permitted screen-text exception. Composite the exact name in post if needed. No touch interaction required.
+    framing: INSERT of the phone in its cradle with the incoming screen legible.
+    movement: Contained handheld vibration from a fixed dashboard-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+
+2F-1 [c09, stage 1, reaction, must]
+    SUMMARY: Dinu receives L5, the instruction to change route for the Old Port warehouse, in a close silent reaction.
+    block 5 = E01-S02-B06: Route eka maru karapan. Old Port warehouse ekata yanna.
+    line L5 = E01-S02-B06: Route eka maru karapan. Old Port warehouse ekata yanna.
+    CU · 75mm · handheld · Passenger-side eye level, slightly more frontal than the earlier close view · take 6 s
+    why: A restrained change toward frontal pressure marks the directive without a conspicuous camera move.
+    editor: L5 occupies 0.9-5 seconds. Keep phone filtering distinct from recorded playback. No answering dialogue.
+    framing: CU of Dinu's face, road-facing eyeline intact.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Listens to the phone audio with both hands on the wheel and lips closed.
+
+2D-2 [c10, stage 1, single, must]
+    SUMMARY: The wider listener view covers all of L5 with Dinu's hands still on the wheel and the dashboard phone in place.
+    block 5 = E01-S02-B06: Route eka maru karapan. Old Port warehouse ekata yanna.
+    line L5 = E01-S02-B06: Route eka maru karapan. Old Port warehouse ekata yanna.
+    MS · 35mm · handheld · Passenger-side eye level, three-quarter forward · take 6 s
+    why: Keeps the directive attached to a working driver with visible hands rather than inventing an expressive response.
+    editor: Full matching L5 coverage with visible hands for the approach to the wrist glance. Audio occurs only once.
+    framing: MS of Dinu at the wheel, hands below and dashboard phone near frame edge.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Listens to the phone audio with both hands on the wheel and lips closed.
+
+2G-1 [c11, stage 1, single, must]
+    SUMMARY: Dinu lowers his eyes to the red thread on his left wrist at the wheel, then returns his attention to the road.
+    block 6 = E01-S02-B07: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+    MCU · 40mm · handheld · Passenger-side slightly above wheel height · take 8 s
+    why: A single composition links the eyes and wrist without a symbolic insert or explanatory flashback.
+    editor: Part 1 of b6: the glance only. Hold the pause, then use the following master for the turn; do not repeat the glance.
+    framing: MCU composed diagonally from Dinu's face to his left wrist on the wheel.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Glances down toward the red thread on his left wrist, then returns his eyes to the road.
+
+2A-3 [c12, stage 1, master, must]
+    SUMMARY: In the cabin-wide view, Dinu turns the wheel and changes course toward the industrial area; rain and vehicle sound continue without music.
+    block 6 = E01-S02-B07: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+    WIDE · 28mm · handheld · Passenger-side eye level, three-quarter forward · take 8 s
+    why: The return to cabin geography makes the directional change physical while leaving the reason unresolved.
+    editor: Part 2 of b6: begin after the glance, eyes already forward. Show a modest steer and the wet industrial approach, not an arrival or a named building.
+    framing: WIDE of driver, both hands, dashboard and wet road through the windscreen.
+    movement: Contained handheld vibration from a fixed passenger-side position.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Steers toward the industrial area and settles the wheel on the new course.
+
+2I-1 [c13, stage 2, insert, should, anchor c11,c12]
+    SUMMARY: From the passenger side, a tight detail holds on the red thread around Dinu's left wrist as his hand stays on the wheel. Rain and the vehicle interior remain audible; there is no dialogue or phone operation.
+    block 6 = E01-S02-B07: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+    INSERT · 100mm macro · shallow_isolation · Passenger-side dashboard height, oblique toward the left wrist on the wheel · take 4 s
+    why: Isolates the red thread from the face-and-wrist coverage, giving the editor a tactile pause between the downward glance and the change of course without assigning a motive.
+    editor: Cut from c11 at the downward eyeline to the thread detail, then return to the forward eyeline before c12 begins the steering action. Do not repeat the steering action in this insert.
+    framing: INSERT; the red thread and a small section of Dinu's left wrist fill the center, with the wheel rim crossing diagonally behind.
+    movement: Fixed frame with shallow optical isolation on the thread throughout; only vehicle vibration remains.
+    light: Cold dashboard glow lights Dinu from below while passing sodium lamps and diffuse vehicle headlights filter through rain-streaked glass.
+    C01: Keeps his left hand resting on the wheel; the thread remains visible as the van moves forward.
+
+Review moment 7: earns: The isolated thread gives the private pause tactile weight between the glance and the steering change without supplying a motive.
+Review moment 6: no: The close and medium listener shots already cover the directive and its landing; another reaction would repeat them, and the limited room goes to the final turn.
+Review moment 5: no: The locked phone detail already identifies the incoming connection; another insert would duplicate it.
+Review moment 4: no: The close reaction, listener single and master provide ample sustained coverage of the message and its effect.
+Review moment 3: no: The existing listener shot and playback texture establish the recorded message without an additional picture.
+Review moment 2: no: The held photograph insert already supplies the intimacy of the object.
+Review moment 1: no: The master and single establish the enclosed journey; an exterior spectacle would work against the intended approach.
+Editor note: The 86-second must bin supports the 90-second scene target; its overlapping coverage is raw material, not 86 seconds of unique chronological action. Let the editor shape duration from the held driving and reaction material without repeating either line.
+Editor note: Opening master and baseline single establish the passenger-side axis. The photograph detail is an essential scripted reveal; keep it established before the recorded audio starts.
+Editor note: L3 is complete in c05, c06 and c07 and L5 is complete in c09 and c10. These are matching listener pictures under a single uninterrupted instance of each remote line, not multiple playbacks; use the separate source recordings, appropriately filtered, and do not generate visible speech.
+Editor note: The phone is secured in an assumed dashboard cradle and the thread is assigned to Dinu's left wrist because the packet does not specify their exact placement. Both hands stay on the wheel. Do not invent an on-screen answering action.
+Editor note: The incoming screen detail is c08, setup H. Composite the caller ID if generative text is unreliable; transition to live phone audio editorially without adding dialogue.
+Editor note: In c11 and c12, b6 is divided into consecutive parts: first the glance and return of the eyes to the road, then the steer and settled new course. Match hand positions, wrist thread, forward eyeline, dashboard objects, rain and passing reflections at the cut.
+Editor note: Screen photo is a static faded print; do not animate its figures or attempt a mirror. Keep the road movement credible using restrained cabin vibration and passing light; avoid contact, fast finger work and sharp crowds.
+Editor note: Speed ramps, freeze frames, digital punch-ins and split screens are post-only options, not generated movements; the clean held sources permit them if editorially justified, though none is required by this scene. No slow motion or music is planned.
+Blend note: c13: Cut into the red-thread detail from c11 on Dinu's downward eyeline, return to c11 for his forward eyeline, then use c12 for the directional change. Carry the vehicle and rain ambience from c11 and c12; no dialogue plays over the insert.

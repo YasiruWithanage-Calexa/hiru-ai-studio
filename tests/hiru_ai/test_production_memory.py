@@ -16,7 +16,7 @@ import pytest
 import yaml
 
 from contracts.jobs import DispatchPayload, JobKind
-from hiru_ai.core import agents, llm, manifest, memory, middleware
+from hiru_ai.core import agents, house_rules, llm, manifest, memory, middleware
 from hiru_ai.core.context import Ports, RunContext
 from hiru_ai.core.fakes import FakeCanon, FakeDocs, FakeFiles, FakeJobs, FakeMemory
 from hiru_ai.core.middleware import production_memory as pm
@@ -274,6 +274,7 @@ def test_with_no_entries_every_subscribed_agents_call_is_byte_for_byte_what_it_w
     inp = case_input(ident)
     agent = agents.build(ident)
     system, user = agent.messages(inp)
+    system = house_rules.appended(system, agent.manifest.house_rules)  # plan/2026-11-12: always, memory or not
     broken = FakeMemory()
     broken.broken = RuntimeError("relation does not exist")
     for ctx in (RunContext(), RunContext(production_id=PID), ctx_with([]),

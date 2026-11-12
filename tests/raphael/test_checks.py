@@ -254,3 +254,39 @@ def test_a_clip_menu_round_trips_through_clip_w() -> None:
     clip = gold.stage1().clips[0]
     row = {k: v for k, v in clip.model_dump().items() if k not in ("slate", "stage", "anchor", "blend")}
     assert ClipW.model_validate(row).menu().take_s == clip.take_s
+
+
+# ── plan/2026-11-12: a heard line's device is shown (house rule H-12), report only ────────────────────────────────────
+
+
+def _device_scene():
+    scene = gold.scene().model_copy(deep=True)
+    line = next(b for b in scene.blocks if b.line_id)
+    line.device = "phone"
+    return scene, line
+
+
+def test_a_line_heard_through_a_device_no_clip_shows_is_reported_never_blocking():
+    scene, line = _device_scene()
+    work = copy.deepcopy(gold.stage1())
+    for c in work.clips:
+        c.summary, c.ir = "Dinu drives on.", None
+    found = checks.device_unseen(scene, work)
+    assert [f.key for f in found] == [f"device:{line.line_id}"] and checks.blocking(found) == []
+    assert "house rule H-12" in found[0].sentence
+
+
+def test_a_clip_on_the_line_or_just_before_it_that_shows_the_device_answers_it():
+    scene, line = _device_scene()
+    work = copy.deepcopy(gold.stage1())
+    for c in work.clips:
+        c.summary, c.ir = "Dinu drives on.", None
+    work.clips[0].blocks = [line.index - 1] if line.index else [line.index]
+    work.clips[0].summary = "The phone in its dashboard mount lights up with Aruni's name."
+    assert checks.device_unseen(scene, work) == []
+    work.clips[0].blocks = [line.index + 3]  # the phone shown, but nowhere near the line
+    assert len(checks.device_unseen(scene, work)) == 1
+
+
+def test_a_scene_with_no_device_line_gets_no_device_report():
+    assert checks.device_unseen(gold.scene(), gold.stage1()) == []

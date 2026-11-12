@@ -4,11 +4,23 @@ answer into scene briefs and blocks. Ids are numbered here, text is cut here; no
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from contracts.breakdown import ids
 from contracts.breakdown.lines import Doc, Span, sentence_spans
-from contracts.breakdown.schema import Breakdown, Entity, EpisodeW, Finding, Rule, Scene, SpanW, SplitW, Value
+from contracts.breakdown.schema import (
+    Breakdown,
+    Entity,
+    EpisodeW,
+    Finding,
+    Rule,
+    Scene,
+    SceneBriefW,
+    SpanW,
+    SplitW,
+    Value,
+)
 
 LITERAL = ("age", "gender")  # a fact of one word stays as pointed; every other field is widened to its sentence
 
@@ -119,3 +131,65 @@ def apply_episode(bd: Breakdown, doc: Doc, ep: EpisodeW) -> None:
             blocks.append(d)
         scene.blocks = blocks
         scene.brief = brief.model_dump(exclude={"blocks", "scene"})
+        apply_implied(bd, scene, brief)
+
+
+# A plain noun of one to three words: an implied thing's name is the one name a model writes (plan/2026-11-12 §3.2),
+# so it is held to this; a name that is not one is reported by `checks.implied` and the thing is not made.
+NOUN = re.compile(r"^[a-z][a-z'-]*(?: [a-z][a-z'-]*){0,2}$")
+IMPLIED_REASON = "implied by the script, not named in it (house rule H-12)"
+
+
+def implied_name(name: str) -> str:
+    return " ".join(name.lower().split())
+
+
+def _next_id(bd: Breakdown, prefix: str) -> str:
+    n = max((int(e.id[1:]) for e in bd.entities if e.id[:1] == prefix and e.id[1:].isdigit()), default=0)
+    return f"{prefix}{n + 1:02d}"
+
+
+def apply_implied(bd: Breakdown, scene: Scene, brief: SceneBriefW) -> None:
+    """The scene's implied things (house rule H-12): each becomes a thing of the scene, `source: inferred`, held by the
+    person the reader named (if that person is in the scene), named as the device of the blocks it is the source of, and
+    listed in their events. A thing of the same name that already exists (in canon, or implied by an earlier scene) is
+    reused, so a refresh or a second scene never makes a second phone. Code decides nothing here: it records what the
+    reader judged, in the memory's own form."""
+    if scene.brief is None:
+        return
+    people = {p.person for p in brief.people}
+    things: list[dict[str, Any]] = scene.brief["things"]
+    for imp in brief.implied:
+        name = implied_name(imp.name)
+        if not NOUN.match(name):
+            continue  # reported by checks.implied
+        holder = imp.holder if imp.holder in people else ""
+        e = next((x for x in bd.entities if x.kind == "thing" and x.name.lower() == name), None)
+        if e is None:
+            e = Entity(
+                id=_next_id(bd, "P"), kind="thing", name=name, lines=(scene.heading_line, scene.heading_line)
+            )
+            why, where = " ".join(imp.why.split()), " ".join(imp.where.split())
+            e.card["summary"] = Value(
+                value=f"{name[0].upper()}{name[1:]}: {why}" if why else name,
+                source="inferred",
+                reason=IMPLIED_REASON,
+                owner="episode",
+            )
+            if where:
+                e.card["details"] = Value(value=where, source="inferred", reason=IMPLIED_REASON, owner="episode")
+            bd.entities.append(e)
+        if all(t["thing"] != e.id for t in things):
+            things.append(
+                {"thing": e.id, "role": "used", "holder_start": holder, "holder_end": holder, "source": "inferred"}
+            )
+        label = f"{name} {e.id}"
+        for n in imp.blocks:
+            if not 1 <= n <= len(scene.blocks):
+                continue
+            b = scene.blocks[n - 1]
+            if not b["device"] or implied_name(b["device"]) == name:
+                b["device"] = label
+            for ev in b["events"]:
+                if e.id not in ev["things"]:
+                    ev["things"].append(e.id)

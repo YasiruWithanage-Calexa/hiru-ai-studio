@@ -70,6 +70,7 @@ MAY_NAME_IT = {
     "supabase/migrations/20261108120000_raphael.sql",
     "Database/README.md",
     "Database/schema_v19.sql",
+    "Database/schema_v22.sql",  # plan/2026-11-12: a full schema, Raphael's tables in it
     "Database/upgrade_v18_to_v19.sql",
     "supabase/tests/database/019_raphael.test.sql",
 }

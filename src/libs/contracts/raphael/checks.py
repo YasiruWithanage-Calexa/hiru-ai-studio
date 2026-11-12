@@ -709,7 +709,34 @@ def check_stage1(
         *short(brief, work),
         *state(scene, work),  # plan/2026-11-09: the state ledger, report only (D2)
         *breakdown_missing(breakdown, work),  # plan/2026-11-10: report only (D2)
+        *device_unseen(scene, work),  # plan/2026-11-12: report only
     ]
+
+
+def device_unseen(scene: SceneS, work: Bin) -> list[Fault]:
+    """Report only (plan/2026-11-12 §3.3, house rule H-12): a line heard through a device, and no clip on it or on the
+    block just before it whose picture names that device. A person may agree to play the voice on a face alone."""
+    out: list[Fault] = []
+    for b in scene.blocks:
+        if not b.device or not b.line_id:
+            continue
+        noun = b.device.split()[-1]
+        near = (b.index - 1, b.index)
+        shown = any(
+            any(i in near for i in c.blocks) and _thing_in(f"{_picture_text(c)} \n {c.summary}", noun)
+            for c in work.clips
+        )
+        if not shown:
+            out.append(
+                _fault(
+                    "device",
+                    f"{b.line_id} is heard through the {b.device}, and no clip on it or just before it shows the "
+                    f"{b.device} (house rule H-12).",
+                    fix="report",
+                    key=f"device:{b.line_id}",
+                )
+            )
+    return out
 
 
 # ── stage 2: the cinematic pass (§3.5) ───────────────────────────────────────────────────────────

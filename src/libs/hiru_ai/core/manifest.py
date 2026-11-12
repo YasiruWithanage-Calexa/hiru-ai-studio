@@ -82,6 +82,8 @@ class AgentManifest(_Base):
     # Production memory topics the agent is given (plan/2026-11-05d); `*` = every topic. `fact` and `must` entries
     # reach it whatever the topic. Needs `production_memory` in `middleware`.
     memory: list[str] = []
+    # House rule topics the agent is given (plan/2026-11-12); `*` = every rule. Needs `house_rules` in `middleware`.
+    house_rules: list[str] = []
     writes_dialogue: bool = False  # only approved parts may change a spoken line (language_guard)
     # react: the loop is capped (plan/2026-11-04 D2); `limits` in `middleware` turns the caps on
     max_tool_calls: int = Field(6, ge=1, le=20)  # tool calls in one run

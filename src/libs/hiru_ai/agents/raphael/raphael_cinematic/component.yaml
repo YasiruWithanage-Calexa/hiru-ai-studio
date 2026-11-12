@@ -14,6 +14,7 @@ prompts: { system: prompts/system.md }
 tools: []
 knowledge: []
 # plan/2026-11-09 phase 8: the production's own direction, once, at the end of the cached first message
-middleware: [static_first, usage, production_memory]
+middleware: [static_first, usage, house_rules, production_memory]
+house_rules: [objects, sound]  # plan/2026-11-12: H-12, implied things
 memory: [camera, visual, lighting, performance]
 writes_dialogue: false

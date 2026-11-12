@@ -383,6 +383,7 @@ class Registry:
                                       "(its retries and fallbacks are the tier's, in models.yaml)"))
         out += self._check_agent_tools(where, m)
         out += self._check_memory(where, m)
+        out += self._check_house_rules(where, m)
         if m.knowledge and m.shape == "structured":
             out.append(Problem(where, "lists knowledge bases, but a structured agent is one call and cannot search; "
                                       "make it a react agent or let its system retrieve and pass the passages in"))
@@ -423,6 +424,29 @@ class Registry:
             if "production_memory" not in names:
                 out.append(Problem(where + label, "lists memory topics but not the production_memory middleware that "
                                                   "reads them"))
+        return out
+
+    def _check_house_rules(self, where: str, m: mf.AgentManifest) -> list[Problem]:
+        """`house_rules:` topics need the middleware that gives them (in each form that runs), and each topic must be
+        one some rule has: a misspelt topic would silently give the agent nothing (plan/2026-11-12)."""
+        from hiru_ai.core import house_rules
+
+        out: list[Problem] = []
+        if not m.house_rules:
+            return out
+        try:
+            known = house_rules.topics()
+        except ManifestError as exc:
+            return [Problem(where, str(exc))]
+        if bad := [t for t in m.house_rules if t != house_rules.ALL and t not in known]:
+            out.append(Problem(where, f"house rule topics no rule has: {', '.join(bad)} "
+                                      f"(known: {', '.join(sorted(known))})"))
+        forms = [("", m.middleware)] + ([(" (with_tools)", m.with_tools.middleware)]
+                                        if m.with_tools and m.with_tools.middleware is not None else [])
+        for label, names in forms:
+            if "house_rules" not in names:
+                out.append(Problem(where + label, "lists house rule topics but not the house_rules middleware that "
+                                                  "gives them"))
         return out
 
     def _check_tools_form(self, where: str, comp: Component, m: mf.AgentManifest) -> list[Problem]:

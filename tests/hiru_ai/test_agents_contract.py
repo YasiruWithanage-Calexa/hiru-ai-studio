@@ -15,7 +15,7 @@ import pytest
 import yaml
 from pydantic import BaseModel
 
-from hiru_ai.core import agents, llm
+from hiru_ai.core import agents, house_rules, llm
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.errors import ManifestError, ModelUnavailable
 from hiru_ai.core.middleware.base import MISSING
@@ -133,7 +133,8 @@ def test_an_eval_case_runs_against_a_scripted_model(comp: Component, case: dict[
             kinds = [p["type"] for p in sent_user]
             assert kinds[0] == "text" and kinds[1:] == sorted(kinds[1:], key=["image_url", "file"].index)
             sent_user = sent_user[0]["text"]
-        assert sent[0].content == system and sent_user == user
+        # the system prompt as sent: the agent's own, then the house rules it subscribes to (plan/2026-11-12)
+        assert sent[0].content == house_rules.appended(system, agent.manifest.house_rules) and sent_user == user
     assert isinstance(got, agent.output_cls)
     assert subset(case.get("expect", {}), got.model_dump(mode="json")), f"{case['name']}: {got!r}"
 

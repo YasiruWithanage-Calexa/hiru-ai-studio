@@ -32,11 +32,11 @@ from contracts import reading as scene_reading
 from contracts.canon import CanonKind, name_key
 from contracts.director import BoardMember, ScriptUpdate, ShotUpdate
 from contracts.jobs import JobKind
-from contracts.producer import PersonEdits, cast_in, shot_items
+from contracts.producer import PersonEdits, shot_items
 from contracts.production import BlockKind, Framing, ProductionSettings, SceneStatus, ShotStatus
 from contracts.roles import Permission
 from contracts.shotplan import FitResult, allowed_durations, fit, shot_clock
-from contracts.staging import ShotIntent
+from contracts.staging import ShotIntent, shot_cast
 from contracts.veo import CameraLink, FrameStrategy, SoundMode
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["scenes"])
@@ -403,7 +403,9 @@ def natural_cast(ld: Loaded, canon_rows: list[Row]) -> dict[str, set[str]]:
     characters = [c for c in canon_rows if c["kind"] == CanonKind.CHARACTER.value]
     items = sceneplan.items_for(ld.scene.get("script") or [], ld.lines)
     place = {str(ld.scene["location_id"])} if ld.scene.get("location_id") else set()
-    return {str(s["id"]): set(cast_in(shot_items(items, int(s["block_start"]), int(s["block_end"])), characters))
+    # shot_cast, not cast_in: it also counts who the shot's intent puts on screen, so the scene's canon holds
+    # everyone a shot pins (the interface lists a shot's canon from the scene's).
+    return {str(s["id"]): set(shot_cast(shot_items(items, int(s["block_start"]), int(s["block_end"])), characters, s))
             | place for s in ld.shots}
 
 

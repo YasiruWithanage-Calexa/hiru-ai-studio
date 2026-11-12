@@ -143,6 +143,8 @@ def canon_cards(bd: Breakdown) -> list[dict[str, Any]]:
                 "kind": CANON_KIND[e.kind],
                 "name": _pretty(e.name),
                 "card": {k: v[: CARD_LIMITS[k]] for k, v in card.items()},
+                # plan/2026-11-12: a thing the script implies but does not name; its canon version says `inferred`
+                "inferred": bool(e.card.get("summary")) and e.card["summary"].source == "inferred",
             }
         )
     return out

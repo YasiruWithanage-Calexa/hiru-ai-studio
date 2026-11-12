@@ -134,6 +134,18 @@ class ThingUseW(_W):
     source: Source = "script"
 
 
+class ImpliedW(_W):
+    """A thing the scene needs that the script does not name (house rule H-12, plan/2026-11-12 §3.2): the phone a voice
+    message plays from. Code makes it a thing of the scene (a new P id, or the canon thing of the same name) with
+    source `inferred`; its name is held to a plain noun of at most three words."""
+
+    name: str = Field(description="a plain noun of at most three words: 'phone', 'car radio'")
+    holder: str = Field(default="", description="C id of the person who has it in this scene, or empty")
+    where: str = Field(description="where it is in the scene: 'in a dashboard mount beside the wheel'")
+    blocks: list[int] = Field(default_factory=list, description="the block numbers (1-based) it is the source of")
+    why: str = Field(description="one line: what in the script implies it")
+
+
 class SceneBriefW(_W):
     scene: str  # E01-S01
     title: str
@@ -143,6 +155,7 @@ class SceneBriefW(_W):
     mood: list[str] = Field(default_factory=list)
     people: list[PresenceW]
     things: list[ThingUseW] = Field(default_factory=list)
+    implied: list[ImpliedW] = Field(default_factory=list)  # plan/2026-11-12: things the script implies, not names
     blocks: list[BlockW]
     turns: list[int] = Field(default_factory=list)  # block numbers (1-based)
     source: Source = "inferred"  # of the purpose and the mood

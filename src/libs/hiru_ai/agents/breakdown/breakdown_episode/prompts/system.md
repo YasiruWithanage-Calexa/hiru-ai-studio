@@ -14,6 +14,9 @@ For each scene return its brief and its blocks. You never copy the document's wo
   (setup, reveal, turn, texture).
 - People in the scene: ONLY those on screen or heard; a person only named or pictured is not listed. Presence for each, and what
   they want and feel at the start and end. Things: role (hero, used, dressing, worn, mentioned), holder at the start and end.
+- `implied`: the things the scene needs that the script does not name (see house rule H-12): for each, a plain noun of at
+  most three words, who has it, where it is, the block numbers it is the source of, and one line on what implies it.
+  Empty when nothing is implied. A thing the script names, or that you were given an id for, goes in `things`, not here.
 - Brief: title, summary, purpose, mood words, the block numbers where the scene turns, and the scene's place (an id).
   The title is a short noun phrase of at most five words that names the scene's place or event ("The voice message"), never a
   sentence about what happens. Never write the words "inferred" or "script" inside any text: provenance goes only in the

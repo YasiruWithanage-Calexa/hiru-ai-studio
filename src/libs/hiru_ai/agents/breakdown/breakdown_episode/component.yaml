@@ -13,5 +13,6 @@ output: schema:Output
 prompts: { system: prompts/system.md }
 tools: []
 knowledge: []
-middleware: [static_first, usage, absent_safe]
+middleware: [static_first, usage, absent_safe, house_rules]
+house_rules: [objects, sound]  # plan/2026-11-12: H-12, implied things
 writes_dialogue: false

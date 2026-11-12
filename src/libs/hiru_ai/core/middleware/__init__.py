@@ -7,6 +7,7 @@ from collections.abc import Callable, Sequence
 from hiru_ai.core.errors import ManifestError
 from hiru_ai.core.middleware.absent_safe import AbsentSafe
 from hiru_ai.core.middleware.base import Document, Middleware, ModelCall, Next, run_chain
+from hiru_ai.core.middleware.house_rules import HouseRules
 from hiru_ai.core.middleware.language_guard import LanguageGuard
 from hiru_ai.core.middleware.production_memory import ProductionMemory
 from hiru_ai.core.middleware.static_first import StaticFirst
@@ -21,6 +22,7 @@ _FACTORIES: dict[str, Callable[[bool], Middleware]] = {
     "static_first": lambda writes: StaticFirst(),
     "language_guard": lambda writes: LanguageGuard(writes_dialogue=writes),
     "production_memory": lambda writes: ProductionMemory(),
+    "house_rules": lambda writes: HouseRules(),
 }
 NAMES = tuple(_FACTORIES)
 # LangChain middleware, built by core.middleware.react (its NAMES; kept here so the registry need not import LangChain)

@@ -20,11 +20,13 @@ No model here. Pure functions of the packet dict (`lab/two_memories/packet.py` a
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from contracts.raphael.scene import BlockS, Brief, PlaceS, SceneS, action_s, line_facts
 
 EMPTY = "empty"
+_THING_ID = re.compile(r"\s*\bP\d{2,}\b")  # a block's device is "phone P08": the thing's name, then its id
 # the packet's presence -> the delivery mark Raphael's code reads (contracts.shotplan.HEARD_MARKS, scene.VOICE_OVER)
 DELIVERY = {
     "phone": "on the phone",
@@ -78,6 +80,7 @@ def scene_from_packet(packet: dict[str, Any]) -> tuple[SceneS, dict[str, str]]:
                 events=max(1, len(b.get("events") or [])),
                 turn=b["id"] in turns,
                 now=now,
+                device=_THING_ID.sub("", b.get("device") or "").strip() if line else "",
             )
         )
     opening = "; ".join(

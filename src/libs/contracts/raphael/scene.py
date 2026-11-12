@@ -52,6 +52,7 @@ class BlockS(_Model):
     hold_who: str = ""
     turn: bool = False
     now: str = ""  # plan/2026-11-09: what the state ledger says changes at this block ("Anudi: phone in left hand")
+    device: str = ""  # plan/2026-11-12: the thing a heard line comes out of ("phone"), from the packet
 
     @classmethod
     def of(cls, item: Item) -> BlockS:

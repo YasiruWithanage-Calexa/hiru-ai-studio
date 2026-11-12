@@ -149,7 +149,8 @@ def canon_rows(
             "wardrobe_anchor": wardrobe_anchor(card) if character else "",
             "voice_pin": voice_pin(card) if character else "",
             "reference_prompt": reference_sheet_prompt(kind, c["name"], card, aspect_ratio=aspect_ratio),
-            "source": "extract",
+            # plan/2026-11-12 (schema v22): a thing the script implies is `inferred`, so a person can tell it apart
+            "source": "inferred" if c.get("inferred") else "extract",
             "created_by": actor,
         }
         out.append(
@@ -413,12 +414,37 @@ def refresh(ctx: RunContext, payload: DispatchPayload, scene_row: str) -> Row:
     save(ctx, production_id, bd)
     rows = packet_rows(bd, [sc.id])
     ctx.need("breakdown").save_packets(production_id, rows)
+    made = inferred_canon(ctx, payload, bd)
     return {
         "scene": sc.id,
+        "canon": made,
         "notes": notes,
         "waits": rows[0]["waits"] if rows else ["no packet"],
         "handover": [f.message for f in bd.findings if f.code == "continuity" and "after the edit" in f.message],
     }
+
+
+def inferred_canon(ctx: RunContext, payload: DispatchPayload, bd: Breakdown) -> int:
+    """After a refresh (plan/2026-11-12 §3.2): a thing the reader newly found implied joins the canon, `inferred`, the
+    way the creation build's `fill_columns` adds every card. Only new names: a person's canon entry is never touched."""
+    production_id = payload.production_id
+    assert production_id is not None
+    cards = [c for c in fill.canon_cards(bd) if c["inferred"]]
+    if not cards:
+        return 0
+    canon_port = ctx.need("canon")
+    production = ctx.need("scenes").production(production_id) or {}
+    orientation = production.get("orientation")
+    made = canon_rows(
+        cards,
+        canon_port.entities(production_id),
+        production_id=str(production_id),
+        actor=str(payload.actor_user_id) if payload.actor_user_id else None,
+        aspect_ratio=ASPECT_RATIO[Orientation(orientation)] if orientation else "16:9",
+    )
+    for entity, version in made:
+        canon_port.create_entity(entity, version)
+    return len(made)
 
 
 def packet_for(ctx: RunContext, scene_row: Row) -> tuple[Row | None, str]:
