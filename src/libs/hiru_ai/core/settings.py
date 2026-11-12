@@ -103,6 +103,9 @@ class BreakdownSettings(BaseModel):
 
     enabled: bool = False
     workers: int = 4  # documents and episode calls at once (plan §10, phase 2)
+    # plan/2026-11-12c phase 7: the canon refine runs beside fill in every build (two calls, ~$0.06-0.10 a short
+    # production); off writes the canon as extracted, as before
+    refine: bool = True
 
 
 class PromptWriterSettings(BaseModel):

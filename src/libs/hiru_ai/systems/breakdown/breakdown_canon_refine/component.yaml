@@ -1,0 +1,11 @@
+id: breakdown_canon_refine
+kind: system
+version: 1
+summary: "The canon refine (plan/2026-11-12c): the finished breakdown read by `breakdown_canon` into real canon cards and by `breakdown_looks` into draft looks and scene looks, checked by code with one repair each, and written all at once by `canon_refine_apply` (a locked or hand-written card gets a proposal). Its own job, and the branch of breakdown_build that runs beside fill."
+status: active
+owner: canon_extract
+job_kind: canon_refine
+panels: []
+agents: [breakdown_canon, breakdown_looks]
+steps: []
+tools: []

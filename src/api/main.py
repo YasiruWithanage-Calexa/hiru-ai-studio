@@ -7,8 +7,9 @@ import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from api import traffic
 from api.config import get_settings
@@ -48,7 +49,7 @@ from api.routers import (
     zora,
 )
 from api.services import file_cache
-from api.workers import sweeper
+from api.workers import sweeper, task_manager
 
 _logger = logging.getLogger(__name__)
 
@@ -110,6 +111,12 @@ def create_app(repos: Repos | None = None) -> FastAPI:
         app.add_api_route("/debug/traffic", lambda: traffic.TRAFFIC.snapshot(), methods=["GET"],
                           include_in_schema=False)
     app.add_middleware(RequestLogMiddleware)
+
+    @app.exception_handler(task_manager.Busy)
+    async def busy(_request: Request, exc: task_manager.Busy) -> JSONResponse:
+        """plan/2026-11-12c §3.5: no plan is made against a canon that is being refined, and no refine starts while a
+        plan or a build runs."""
+        return JSONResponse(status_code=409, content={"detail": str(exc)})
 
     @app.get("/healthz", tags=["health"])
     async def healthz() -> dict[str, str]:

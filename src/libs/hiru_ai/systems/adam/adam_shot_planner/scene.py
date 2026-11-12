@@ -56,6 +56,7 @@ from contracts.adam.problems import Problem
 from contracts.adam.screening import drop_moments, remap_sound
 from contracts.adam.stored import Removed, StoredPlan
 from contracts.adam.wire import STANCES
+from contracts.canon import props_in
 from contracts.shotplan import LEAD_IN_S, LINE_GAP_S, TAIL_S
 from contracts.timing import WORDS_PER_SECOND, speech_seconds, words_in
 from contracts.veo import VEO_DURATIONS
@@ -128,11 +129,13 @@ def present(characters: list[Row], blocks: list[Block]) -> list[str]:
     return out
 
 
-def objects_of(props: list[Row], location: Row | None, blocks: list[Block]) -> list[str]:
-    """What the place has that a picture may show: the production's props the script or the location card names."""
-    text = norm(" ".join(b.text for b in blocks) + " " + str(((location or {}).get("current") or {})
-                                                            .get("card", {}).get("look") or ""))
-    return [str(p["name"]) for p in props if norm(str(p.get("name") or "")) and norm(str(p["name"])) in text]
+def objects_of(props: list[Row], location: Row | None, blocks: list[Block],
+               ids: list[str] | None = None) -> list[str]:
+    """What the place has that a picture may show: the scene's things by canon id when it has a breakdown (`ids`,
+    plan/2026-11-12c Track B), else the production's props the script or the location card names as whole words
+    ("photo" no longer matches "photographs")."""
+    look = str((((location or {}).get("current") or {}).get("card") or {}).get("look") or "")
+    return props_in(props, " ".join(b.text for b in blocks) + " " + look, ids)
 
 
 def context_of(scene: Row, episode: Row, before: str, after: str, cards: list[tuple[str, str]]) -> Row:

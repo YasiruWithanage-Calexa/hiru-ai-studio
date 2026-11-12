@@ -33,6 +33,7 @@ class JobKind(StrEnum):
     DOC_INGEST = "doc_ingest"
     STRUCTURE_BUILD = "structure_build"
     CANON_EXTRACT = "canon_extract"
+    CANON_REFINE = "canon_refine"  # plan/2026-11-12c: real canon cards and scene looks from the finished breakdown
     SCRIPT_SPLIT = "script_split"
     SHOT_PRODUCE = "shot_produce"
     FRAME_RENDER = "frame_render"

@@ -104,6 +104,7 @@ class World:
     shots: list[Row] = field(default_factory=list)
     accepted: dict[str, Row] = field(default_factory=dict)
     genre: str = ""  # plan/2026-11-12b: the production's genre phrase (`contracts.memory.genre_of`); "" = general
+    conditions: dict[str, str] = field(default_factory=dict)  # plan/2026-11-12c: character id -> the scene's condition
 
     def __post_init__(self) -> None:
         self.aspect = production_aspect(self.production)
@@ -115,7 +116,7 @@ class World:
         return cls(production=payload["production"], canon=payload["canon"], scene=payload["scene"],
                    lines=payload.get("lines") or [], looks=payload.get("looks") or {},
                    shots=payload.get("shots") or [], accepted=payload.get("accepted") or {},
-                   genre=str(payload.get("genre") or ""))
+                   genre=str(payload.get("genre") or ""), conditions=dict(payload.get("conditions") or {}))
 
     def _own(self, shot: Row) -> tuple[list[Any], list[str], Staging]:
         items = sceneplan.scene_items(self.scene, self.lines)
@@ -158,8 +159,10 @@ class World:
 
     def cast(self, shot: Row, cast_ids: list[str]) -> list[CastMember]:
         """The people in the shot, each dressed in the look the scene uses, if any."""
-        return [self.members[c].model_copy(update={"look": look_wardrobe(self.looks[c])}) if c in self.looks
-                else self.members[c] for c in cast_ids if c in self.members]
+        out = [self.members[c].model_copy(update={"look": look_wardrobe(self.looks[c])}) if c in self.looks
+               else self.members[c] for c in cast_ids if c in self.members]
+        return [m.model_copy(update={"condition": self.conditions[m.id]}) if m.id in self.conditions else m
+                for m in out]
 
     def camera(self, shot: Row) -> tuple[CameraSettings, CameraSettings]:
         """(the recommendation, the camera as it stands: the recommendation with a person's changes on top)."""

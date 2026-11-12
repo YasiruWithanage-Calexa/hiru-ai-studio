@@ -4,6 +4,9 @@
   shot written against version 3 can say so and be flagged when version 4 appears.
 * LOCKED means approved: engines leave it alone, and people must unlock it before changing it.
 * The voice pin and wardrobe anchor are derived from the card unless a person writes them.
+* "Refine canon" (plan/2026-11-12c) starts a job that writes real cards from the breakdown. A card that was extracted
+  switches; a locked or hand-written card gets a PROPOSAL (a newer version that is not current) the person accepts
+  (after unlocking, as for any change) or dismisses. A region, a spot or an unseen place is never painted as a plate.
 """
 from __future__ import annotations
 
@@ -37,6 +40,7 @@ from contracts.canon import (
     voice_pin,
     wardrobe_anchor,
 )
+from contracts.canon_refine import no_plate_reason, plated
 from contracts.documents import SearchRequest
 from contracts.jobs import JobKind
 from contracts.roles import Permission
@@ -169,6 +173,8 @@ def _entity(row: Row) -> CanonEntity:
     path = _sheet_path(current)
     return CanonEntity.model_validate({**row, "current": current,
                                        "current_version": current["version"] if current else None,
+                                       "no_plate": no_plate_reason(row.get("class")) if not plated(row.get("class"))
+                                       else "",
                                        "reference_sheet_url": media_links.url("references", path),
                                        "reference_sheet_thumb_url": media_links.thumb_url("references", path),
                                        "reference_sheet_key": media_links.key("references", path) if path else ""})
@@ -244,6 +250,82 @@ async def draft_canon(production_id: UUID, body: DraftRequest, access: CanEdit, 
         if len(sentences) >= 4:
             break
     return Draft(look=" ".join(sentences[:4]), sources=list(dict.fromkeys(sources)))
+
+
+class Proposal(BaseModel):
+    """A refined card waiting for a person: newer than the current card and not current (plan/2026-11-12c D2)."""
+
+    entity_id: UUID
+    version_id: UUID
+    version: int
+
+
+class RefineStarted(BaseModel):
+    job_id: UUID
+
+
+@router.post("/refine", response_model=RefineStarted, status_code=status.HTTP_202_ACCEPTED)
+async def refine_canon(production_id: UUID, access: CanEdit, repos: ReposDep) -> RefineStarted:
+    """Write real canon cards and draft looks from the finished breakdown (plan/2026-11-12c). Refused (409) while a
+    build or a plan of this production runs; every plan is refused while it runs (`task_manager.refuse_busy`)."""
+    job_id = await task_manager.dispatch(JobKind.CANON_REFINE, repos, actor_user_id=access.user.id,
+                                         production_id=production_id)
+    await repos.audit.record(action="canon.refine", entity="production", entity_id=str(production_id),
+                             actor_user_id=access.user.id, production_id=production_id, diff={"job_id": str(job_id)})
+    return RefineStarted(job_id=job_id)
+
+
+async def proposals_of(repos: Repos, production_id: UUID) -> list[Proposal]:
+    rows = await repos.canon.list(production_id)
+    current = {str(r["id"]): int((r.get("current") or {}).get("version") or 0) for r in rows}
+    current_ids = {str((r.get("current") or {}).get("id")) for r in rows}
+    newest: dict[str, Row] = {}
+    for v in await repos.canon.refined(production_id):
+        eid, number = str(v["entity_id"]), int(v["version"])
+        if eid not in current or str(v["id"]) in current_ids or number <= current[eid]:
+            continue
+        if number > int((newest.get(eid) or {}).get("version") or 0):
+            newest[eid] = v
+    return [Proposal(entity_id=UUID(k), version_id=UUID(str(v["id"])), version=int(v["version"]))
+            for k, v in sorted(newest.items())]
+
+
+@router.get("/proposals", response_model=list[Proposal])
+async def list_proposals(production_id: UUID, _: CanView, repos: ReposDep) -> list[Proposal]:
+    return await proposals_of(repos, production_id)
+
+
+async def _proposal(repos: Repos, production_id: UUID, entity_id: UUID, version_id: UUID) -> Row:
+    row = await _get(repos, production_id, entity_id)
+    found = next((p for p in await proposals_of(repos, production_id)
+                  if p.entity_id == entity_id and p.version_id == version_id), None)
+    if found is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "No such proposal for this item.")
+    return row
+
+
+@router.post("/{entity_id}/versions/{version_id}/accept", response_model=CanonEntity)
+async def accept_proposal(production_id: UUID, entity_id: UUID, version_id: UUID, access: CanEdit,
+                          repos: ReposDep) -> CanonEntity:
+    """The refined card becomes the current one. A locked item is unlocked first, as for any change."""
+    row = await _proposal(repos, production_id, entity_id, version_id)
+    _unlocked(row)
+    await repos.canon.set_current(entity_id, version_id)
+    await repos.audit.record(action="canon.accept_refine", entity="canon_entity", entity_id=str(entity_id),
+                             actor_user_id=access.user.id, production_id=production_id,
+                             diff={"version_id": str(version_id)})
+    return _entity(await _get(repos, production_id, entity_id))
+
+
+@router.post("/{entity_id}/versions/{version_id}/dismiss", status_code=status.HTTP_204_NO_CONTENT)
+async def dismiss_proposal(production_id: UUID, entity_id: UUID, version_id: UUID, access: CanEdit,
+                           repos: ReposDep) -> None:
+    """The refined card is removed; the current card stays (a proposal was never current, so nothing pinned it)."""
+    await _proposal(repos, production_id, entity_id, version_id)
+    await repos.canon.delete_version(version_id)
+    await repos.audit.record(action="canon.dismiss_refine", entity="canon_entity", entity_id=str(entity_id),
+                             actor_user_id=access.user.id, production_id=production_id,
+                             diff={"version_id": str(version_id)})
 
 
 @router.get("/{entity_id}", response_model=CanonDetail)
@@ -349,6 +431,10 @@ async def make_reference_sheet(production_id: UUID, entity_id: UUID, access: Can
     row = await _get(repos, production_id, entity_id)
     if not row.get("current"):
         raise HTTPException(status.HTTP_409_CONFLICT, "This item has no card yet.")
+    if not plated(row.get("class")):
+        raise HTTPException(status.HTTP_409_CONFLICT, no_plate_reason(row.get("class")))
+    if CanonKind(row["kind"]) is CanonKind.LOCATION and not ((row.get("current") or {}).get("card") or {}).get("look"):
+        raise HTTPException(status.HTTP_409_CONFLICT, "This place has no look yet: write one, or refine the canon.")
     job_id = await task_manager.dispatch(JobKind.FRAME_RENDER, repos, actor_user_id=access.user.id,
                                          production_id=production_id, request={"entity_id": str(entity_id)},
                                          state={"reference_entity_id": str(entity_id)})

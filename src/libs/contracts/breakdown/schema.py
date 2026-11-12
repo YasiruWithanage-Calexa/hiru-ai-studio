@@ -303,6 +303,9 @@ class Breakdown(BaseModel):
     # plan/2026-11-12b: what the drama is (genre, tone, world, theme, premise), checked by code (`contracts.breakdown.
     # series.check`); None when the reader was not run or failed
     series: dict[str, Any] | None = None
+    # plan/2026-11-12c Track B: breakdown id -> canon entity id, written by fill, so a renamed canon entry is still the
+    # same entry (names are matched only when the map has no entry)
+    canon_ids: dict[str, str] = Field(default_factory=dict)
     version: int = 1
 
     def entity(self, id_: str) -> Entity | None:

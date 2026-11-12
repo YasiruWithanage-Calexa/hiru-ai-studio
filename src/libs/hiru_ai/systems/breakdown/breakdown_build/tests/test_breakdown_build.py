@@ -205,3 +205,96 @@ def test_the_one_scene_refresh_follows_the_person_s_edit(built, monkeypatch):
     assert texts == ["Dinu waits by the door.", "Hari."]
     bd, _, _ = graph.load(ctx, PID)
     assert bd.scene("E01-S03").line_map == {"E01-S03-B02": line_id} and bd.version == 2
+
+
+# ── plan/2026-11-12c phase 7: the canon refine beside fill ─────────────────────────────────────────────────────────
+
+
+def _generic_answer(message: str) -> object:
+    """A plain valid canon answer for whatever entities the message lists (the refine's real answers are tested in its
+    own system; here only the fork-join's wiring is)."""
+    import json
+
+    from contracts.canon_refine import Answer, Person, Place, Thing, Value
+
+    data = json.loads(message.split("THE BREAKDOWN (JSON)\n", 1)[1])
+
+    def v(text: str) -> Value:
+        return Value(value=text, source="inferred", line=0, reason="from the scenes")
+
+    people, places, things = [], [], []
+    for e in data["entities"]:
+        if e["kind"] == "person":
+            people.append(Person(id=e["id"], gender=v("man"), age=v("30"), appearance=v("lean, short black hair"),
+                                 wardrobe=v("a navy cotton shirt"), voice=v("low and quiet")))
+        elif e["kind"] == "place":
+            places.append(Place(id=e["id"], kind="unseen", parent="", look=v(""), why="only mentioned"))
+        else:
+            things.append(Thing(id=e["id"], kind="prop", details=v("small and worn")))
+    return Answer(people=people, places=places, things=things)
+
+
+def _refine_calls(monkeypatch, canon=_generic_answer, looks=None) -> None:
+    from contracts.scene_looks import LooksAnswer
+    from hiru_ai.core import parts
+
+    mod = parts.module("system", "breakdown_canon_refine", "graph")
+    monkeypatch.setattr(mod, "calls", lambda _ctx: mod.Calls(
+        canon=canon, looks=looks or (lambda _m: LooksAnswer(story=[], looks=[], scenes=[]))))
+
+
+def test_the_build_refines_the_canon_beside_fill_and_writes_after_both(monkeypatch):
+    ctx, payload = _world()
+    scripted = Scripted()
+    monkeypatch.setattr(graph, "calls", lambda _ctx: scripted.calls())
+    _refine_calls(monkeypatch)
+    with use_models(ScriptedChatModel(replies=[])):
+        result = graph.run(payload, ctx)
+    assert result["scenes"] == 9 and result["canon_refine"]["switched"] > 0, result
+    canon = ctx.ports.canon
+    refined = [v for v in canon.versions if v.get("source") == "refine"]
+    assert refined and all(v["card"].get("age") == "30" for v in refined if v["card"].get("gender") == "man")
+    current = {str(e["current_version_id"]) for e in canon.entity_rows}
+    assert {str(v["id"]) for v in refined} <= current  # every card fill made switched: none was a person's
+    assert any("cards refined" in t for t in ctx.ports.jobs.texts())
+
+
+def test_a_failed_refine_is_a_warning_and_the_build_goes_on(monkeypatch):
+    ctx, payload = _world()
+    scripted = Scripted()
+    monkeypatch.setattr(graph, "calls", lambda _ctx: scripted.calls())
+
+    def broken(_message: str) -> object:
+        raise TimeoutError("240 s")
+
+    _refine_calls(monkeypatch, canon=broken)
+    with use_models(ScriptedChatModel(replies=[])):
+        result = graph.run(payload, ctx)
+    assert ctx.ports.jobs.status == "done" and result["scenes"] == 9 and "canon_refine" not in result
+    assert any(graph.REFINE_KEPT in t for t in ctx.ports.jobs.texts("warning"))
+    assert not any(v.get("source") == "refine" for v in ctx.ports.canon.versions)
+
+
+def test_the_refine_can_be_switched_off(monkeypatch):
+    from hiru_ai.core.settings import get_settings
+
+    ctx, payload = _world()
+    scripted = Scripted()
+    monkeypatch.setattr(graph, "calls", lambda _ctx: scripted.calls())
+    monkeypatch.setattr(get_settings().breakdown, "refine", False)
+    _refine_calls(monkeypatch)
+    with use_models(ScriptedChatModel(replies=[])):
+        result = graph.run(payload, ctx)
+    assert "canon_refine" not in result and not any(v.get("source") == "refine" for v in ctx.ports.canon.versions)
+
+
+def test_the_build_keeps_the_canon_map_and_puts_the_scene_s_canon_on_its_packet(built):
+    ctx, _, _, _ = built
+    bd, _, _ = graph.load(ctx, PID)
+    canon = {str(c["id"]): c for c in ctx.ports.canon.entities(PID)}
+    assert bd is not None and bd.canon_ids and set(bd.canon_ids.values()) <= set(canon)
+    for e in bd.entities:
+        kinds = {"person": "character", "place": "location", "thing": "prop"}
+        assert canon[bd.canon_ids[e.id]]["kind"] == kinds[e.kind]
+    packets = [r["packet"] for r in ctx.ports.breakdown.packets.values() if r.get("packet")]
+    assert packets and all(set(p["canon"]) == {"place", "people", "things", "spots"} for p in packets)

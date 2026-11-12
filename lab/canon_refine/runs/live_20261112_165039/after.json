@@ -1,0 +1,1290 @@
+{
+ "versions": [
+  {
+   "id": "bc5f4a8b-5f1e-4449-81e0-0044aa6d3b5d",
+   "entity_id": "91723984-b1d3-4199-9a8d-24c949080bb5",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "30",
+    "look": "",
+    "notes": "details: Quiet, experienced, violent only when cornered.",
+    "voice": "Low, slightly grainy baritone; short, measured Sinhala phrases, quiet delivery and deliberate pauses.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.",
+    "wardrobe": "A faded slate-blue short-sleeved uniform shirt with two breast pockets, dark navy work trousers, a plain black belt and scuffed black lace-up shoes. A thin red thread circles his wrist.",
+    "appearance": "Medium-tall, lean and wiry, with medium-brown skin, a long angular face, deep-set dark eyes, straight brows and short, even stubble. Thick black hair cropped close at the sides and combed sideways on top."
+   },
+   "card_hash": "2adc20a1fcaed1d78af2942383bbe330a68fc242b5e18d10bf835205243f9ff1",
+   "wardrobe_anchor": "A faded slate-blue short-sleeved uniform shirt with two breast pockets, dark navy work trousers, a plain black belt and scuffed black lace-up shoes. A thin red thread circles his wrist",
+   "voice_pin": "Low, slightly grainy baritone; short, measured Sinhala phrases, quiet delivery and deliberate pauses man voice (30), a Sri Lankan (Colombo) accent",
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Dinu\nSubject: one adult man\nAge: 30\nAppearance: Medium-tall, lean and wiry, with medium-brown skin, a long angular face, deep-set dark eyes, straight brows and short, even stubble. Thick black hair cropped close at the sides and combed sideways on top\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "age": {
+     "line": 17,
+     "reason": "",
+     "source": "script"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Dinu is described as quiet and experienced, and his garage dialogue is restrained and questioning.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 48,
+     "reason": "",
+     "source": "script"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Dinu's cash-transport work calls for a present-day private transport uniform under the working-dress rule; the wrist thread is specified at line 53.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Dinu's experienced driving work and restrained manner inform a practical, spare physical presence.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "4cf39646-15de-4116-aa9e-b1759170433d",
+   "entity_id": "6f4d0c91-795b-43de-aa1d-6f2a327d8a41",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "A cramped single-bay Colombo garage with a rain-streaked corrugated metal roof, exposed steel rafters, stained cement floor and rough plaster walls. A battered workbench, crowded tool shelves, stacked tyres and coiled hoses line the edges. Late-afternoon grey light enters through a partly raised roller shutter; a bare practical bulb casts a small amber pool amid cold blue-green shade.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "6433df3408f1566e97e33fbefbaffad13f446002d5c4a3551d9ad242f667e054",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Colombo Garage\nLook: A cramped single-bay Colombo garage with a rain-streaked corrugated metal roof, exposed steel rafters, stained cement floor and rough plaster walls. A battered workbench, crowded tool shelves, stacked tyres and coiled hoses line the edges. Late-afternoon grey light enters through a partly raised roller shutter; a bare practical bulb casts a small amber pool amid cold blue-green shade",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The garage scene specifies rain on the roof and a time six hours before the night drive; workshop dressing and lighting follow the Colombo and practical-light directions.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "e2fec7c7-0700-43df-9e6b-261f54b17650",
+   "entity_id": "b074ffbc-4fa9-4aef-a2c9-3a253b142d99",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "A rust-dark iron sluice panel in concrete guide slots, with a low crossbar, wet silt at its base and rain-slick red earth along the canal edge.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels and touches his hand. Inside his fist is a small metal key marked C-17.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "93f2cfcaa95708c1c8eab1f369620fa31e2e5b30ba314d3f8de69e3fbe151e03",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: canal gate\nLook: A rust-dark iron sluice panel in concrete guide slots, with a low crossbar, wet silt at its base and rain-slick red earth along the canal edge",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The opening scene places the canal gate within the canal; the materials extend its rural irrigation setting.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "1d4f7e04-ce50-440d-90c5-0ffb7c8a12a4",
+   "entity_id": "c9b9e2da-228c-4e88-9b5e-0902fc377946",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "27",
+    "look": "",
+    "notes": "details: Strong, intelligent and emotionally controlled.",
+    "voice": "Clear mid-register voice with an even, firm cadence; precise Sinhala articulation, softer and more closely spaced phrases when anxious.",
+    "accent": "",
+    "gender": "woman",
+    "details": "",
+    "summary": "Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.",
+    "wardrobe": "A clean white short-sleeved nurse's dress with a modest collar, fitted waist and below-knee skirt, white socks and plain white low-heeled nursing shoes.",
+    "appearance": "Average height, compact and straight-backed, with warm medium-brown skin, an oval face, broad dark eyes and a gently rounded nose shared with Nimal. Thick black hair has a centre part and is secured in a neat low bun."
+   },
+   "card_hash": "8df536ab6756ac0db869b269949265f71c05c105e601dfdd23b5d2d353ed6aa1",
+   "wardrobe_anchor": "A clean white short-sleeved nurse's dress with a modest collar, fitted waist and below-knee skirt, white socks and plain white low-heeled nursing shoes",
+   "voice_pin": "Clear mid-register voice with an even, firm cadence; precise Sinhala articulation, softer and more closely spaced phrases when anxious woman voice (27), a Sri Lankan (Colombo) accent",
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Aruni\nSubject: one adult woman\nAge: 27\nAppearance: Average height, compact and straight-backed, with warm medium-brown skin, an oval face, broad dark eyes and a gently rounded nose shared with Nimal. Thick black hair has a centre part and is secured in a neat low bun\nOutfit in every panel: a plain solid-color fitted sports bra and fitted gym shorts, navy",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "age": {
+     "line": 18,
+     "reason": "",
+     "source": "script"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Aruni's emotional control and strength shape her delivery, with audible concern in her message to Dinu.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 40,
+     "reason": "",
+     "source": "script"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Aruni is a village community nurse carrying a medical bag; the working-dress rule calls for a white Sri Lankan nursing uniform.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Aruni's community nursing work and controlled manner inform her practical grooming; her shared features with Nimal establish their sibling relationship.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "e5e36972-c4cf-4d77-bfb4-78a974aa9842",
+   "entity_id": "2567a64c-975c-4126-84b6-ddf8c0d2b473",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "34",
+    "look": "",
+    "notes": "details: Nimal - 34, Aruni's elder brother and Dinu's closest friend.",
+    "voice": "Warm, chesty mid-low voice with a rough edge; direct Sinhala delivery, quickening through persuasive phrases and landing firmly on key words.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "Nimal - 34, Aruni's elder brother and Dinu's closest friend.",
+    "wardrobe": "A faded rust-brown cotton shirt with the sleeves rolled to the forearms, charcoal trousers and worn brown leather sandals.",
+    "appearance": "Average height and broad-shouldered, with sturdy limbs, warm medium-brown skin and a full oval face. Broad dark eyes and a rounded nose resemble Aruni's. A close black moustache, clean-shaven cheeks and thick, slightly wavy hair brushed back from the forehead."
+   },
+   "card_hash": "cc97d8517eb37694464310162f656bd1765a2f03626af6c22306e27c1230b1f1",
+   "wardrobe_anchor": "A faded rust-brown cotton shirt with the sleeves rolled to the forearms, charcoal trousers and worn brown leather sandals",
+   "voice_pin": "Warm, chesty mid-low voice with a rough edge; direct Sinhala delivery, quickening through persuasive phrases and landing firmly on key words man voice (34), a Sri Lankan (Colombo) accent",
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Nimal\nSubject: one adult man\nAge: 34\nAppearance: Average height and broad-shouldered, with sturdy limbs, warm medium-brown skin and a full oval face. Broad dark eyes and a rounded nose resemble Aruni's. A close black moustache, clean-shaven cheeks and thick, slightly wavy hair brushed back from the forehead\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "age": {
+     "line": 19,
+     "reason": "",
+     "source": "script"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Nimal's garage dialogue presses Dinu personally and argues his case with confidence.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 19,
+     "reason": "",
+     "source": "script"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Nimal has no stated occupation; practical everyday clothing suits his garage visit and the village's earthy palette.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Nimal's elder-brother role informs a substantial presence, while shared facial features connect him to Aruni and distinguish him from Dinu.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "bcd5b3d4-05cf-4eee-af8c-c17054ce03b3",
+   "entity_id": "37c94cbe-e6c5-4554-8437-7f34f3121b05",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "52",
+    "look": "",
+    "notes": "details: Mudalali - 52, businessman laundering illegal money through village development projects.",
+    "voice": "Deep, resonant voice with an unhurried cadence; clipped Sinhala instructions, level volume and firmly closed phrase endings.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "Mudalali - 52, businessman laundering illegal money through village development projects.",
+    "wardrobe": "A freshly pressed pale-cream short-sleeved shirt, dark brown tailored trousers, polished brown slip-on shoes and a gold-tone wristwatch.",
+    "appearance": "Medium height and heavyset, with a rounded belly, deep-brown skin, a broad square face, hooded eyes and a thick salt-and-pepper moustache. Short black-and-grey hair is smoothly side-parted over a receding hairline."
+   },
+   "card_hash": "e7e8845a9c4026544f6e094a3714a64d48aeefc57ae93013d9865d1a96ea6868",
+   "wardrobe_anchor": "A freshly pressed pale-cream short-sleeved shirt, dark brown tailored trousers, polished brown slip-on shoes and a gold-tone wristwatch",
+   "voice_pin": "Deep, resonant voice with an unhurried cadence; clipped Sinhala instructions, level volume and firmly closed phrase endings man voice (52), a Sri Lankan (Colombo) accent",
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Mudalali\nSubject: one adult man\nAge: 52\nAppearance: Medium height and heavyset, with a rounded belly, deep-brown skin, a broad square face, hooded eyes and a thick salt-and-pepper moustache. Short black-and-grey hair is smoothly side-parted over a receding hairline\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "age": {
+     "line": 20,
+     "reason": "",
+     "source": "script"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Mudalali's business authority and abrupt route instruction inform a controlled, commanding delivery.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 0,
+     "reason": "Mudalali's masculine title and character presentation inform the casting.",
+     "source": "inferred"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Mudalali's village business role calls for present-day proprietor's dress rather than a formal corporate suit.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Mudalali's age and established business authority inform a mature, carefully groomed appearance.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "9fe1c3b6-3564-41b7-b218-987a9ef3c07b",
+   "entity_id": "063fe24a-8339-4db3-8688-883b8724d640",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "38",
+    "look": "",
+    "notes": "details: Suren - 38, Mudalali's brutal right-hand man.",
+    "voice": "Coarse low-mid voice, terse Sinhala phrases and abrupt consonants; little melodic variation and a hard, close delivery.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "Suren - 38, Mudalali's brutal right-hand man.",
+    "wardrobe": "A dark olive short-sleeved cotton shirt worn untucked, black straight-leg jeans and heavy black lace-up shoes.",
+    "appearance": "Tall and thick-necked, with a muscular upper body, dark-brown skin, a narrow rectangular face, prominent cheekbones and heavy brows. Very short black hair, a close-cropped beard and a flat, unsmiling mouth."
+   },
+   "card_hash": "83ac01b60b58395d2bc72bbc2f99472c16dc1f86cbca78c500921d3a6a4af61d",
+   "wardrobe_anchor": "A dark olive short-sleeved cotton shirt worn untucked, black straight-leg jeans and heavy black lace-up shoes",
+   "voice_pin": "Coarse low-mid voice, terse Sinhala phrases and abrupt consonants; little melodic variation and a hard, close delivery man voice (38), a Sri Lankan (Colombo) accent",
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Suren\nSubject: one adult man\nAge: 38\nAppearance: Tall and thick-necked, with a muscular upper body, dark-brown skin, a narrow rectangular face, prominent cheekbones and heavy brows. Very short black hair, a close-cropped beard and a flat, unsmiling mouth\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "age": {
+     "line": 21,
+     "reason": "",
+     "source": "script"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Suren's stated harshness informs a terse vocal manner; no dialogue is supplied.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 0,
+     "reason": "Suren's name and right-hand-man designation inform the casting.",
+     "source": "inferred"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Suren's informal work for Mudalali calls for mobile, hard-wearing contemporary clothes rather than an official uniform.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Suren's forceful enforcer role informs an imposing silhouette distinct from the other men.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "84d2ab72-5dea-4908-a0eb-5097c3af7252",
+   "entity_id": "5e166abe-8804-451c-bafc-6d1d1991bc69",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "Rs. 300 million.",
+    "summary": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's murder, then returns to his village with the woman he loves to expose the corrupt network that destroyed them.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "adc0496e7cb270b849fc0520d0ec1981177e493ff7a4520d10d04713f0c50750",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: Rs. 300 million\nDetails: Rs. 300 million",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "details": {
+     "line": 57,
+     "reason": "",
+     "source": "script"
+    }
+   }
+  },
+  {
+   "id": "ed461a27-d5bf-41de-ad38-c9b2fe690556",
+   "entity_id": "286f0a4b-f8d4-4c81-979a-8a707abfca61",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "45",
+    "look": "",
+    "notes": "details: Inspector Ruwan - 45, corrupt police officer protecting the money trail.",
+    "voice": "Dry mid-low voice with formal, evenly paced Sinhala phrasing; precise consonants and a controlled downward inflection.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "Inspector Ruwan - 45, corrupt police officer protecting the money trail.",
+    "wardrobe": "A pressed khaki short-sleeved Sri Lankan police uniform with matching trousers, two silver stars on each shoulder strap, a dark leather duty belt, polished black shoes and a khaki peaked cap with police badge.",
+    "appearance": "Medium-tall with a solid, upright build, medium-deep brown skin, a long rectangular face, narrow eyes and a neatly trimmed black moustache. Short regulation-cut hair is greying at the temples; cheeks and jaw are clean-shaven."
+   },
+   "card_hash": "fe4c4b65a8a2fea771887a8242edd8c0495862e7dae013b34a38b98c0183bf03",
+   "wardrobe_anchor": "A pressed khaki short-sleeved Sri Lankan police uniform with matching trousers, two silver stars on each shoulder strap, a dark leather duty belt, polished black shoes and a khaki peaked cap with police badge",
+   "voice_pin": "Dry mid-low voice with formal, evenly paced Sinhala phrasing; precise consonants and a controlled downward inflection man voice (45), a Sri Lankan (Colombo) accent",
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Inspector Ruwan\nSubject: one adult man\nAge: 45\nAppearance: Medium-tall with a solid, upright build, medium-deep brown skin, a long rectangular face, narrow eyes and a neatly trimmed black moustache. Short regulation-cut hair is greying at the temples; cheeks and jaw are clean-shaven\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "age": {
+     "line": 22,
+     "reason": "",
+     "source": "script"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Inspector Ruwan's official authority informs a practiced, measured delivery; no dialogue is supplied.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 0,
+     "reason": "Inspector Ruwan's name and character presentation inform the casting.",
+     "source": "inferred"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Inspector Ruwan's stated rank requires present-day Sri Lankan inspector's working dress and rank insignia under the working-dress rule.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Inspector Ruwan's age and police rank inform disciplined grooming and an established officer's bearing.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "a8ff2c19-6b8c-467e-abf4-6a5b1cc57a0e",
+   "entity_id": "e55b7d5f-4f1c-44fc-8e79-e24d24f9fed3",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 4,
+   "card": {
+    "age": "",
+    "look": "Night time Colombo roads: rain-dark surfaces, dense urban edges and a cold blue-green palette broken by sodium-orange light.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "colombo road",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "372a567c20447b30a152ddecbb31a17abdbd3c6c2834ecb868aed8c1bd7ac6a2",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Colombo\nLook: Night time Colombo roads: rain-dark surfaces, dense urban edges and a cold blue-green palette broken by sodium-orange light",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "Preserves the supplied night time Colombo road look and combines the rainy street description with the Colombo palette direction.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "0cd7fabe-45b9-47aa-b0b3-1f4e9a70ab06",
+   "entity_id": "3cf8f4a3-306b-4eb2-8481-344e1d8fb049",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "Low, open village landscapes in earthy red, muted paddy green and warm amber natural light, subdued beneath rain-heavy skies.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "Setting: Colombo and Mahawewa village",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "2645c2023255cdcf508753a21ab017cb127bb925ca0c9687cffc3637c0d6c37a",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Mahawewa village\nLook: Low, open village landscapes in earthy red, muted paddy green and warm amber natural light, subdued beneath rain-heavy skies",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The village palette direction supplies amber and earthy red; the canal scene supplies paddy fields, dawn and heavy rain.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "13158275-5489-4ba3-9731-a240f4463a78",
+   "entity_id": "a672459b-37ed-4669-bec1-b5aa426dc8e5",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 3,
+   "card": {
+    "age": "",
+    "look": "An exterior village irrigation canal beside a broad paddy field, with a narrow red-earth embankment, weathered concrete channel edges and a small iron sluice gate between concrete piers. Muddy water, soaked grass and low vegetation fill the banks. Heavy dawn rain softens the distance; dim natural light falls across earthy red banks, muted green rice and faint amber reflections.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "Mahawewa Canal",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "e19b9a105cffe88f649b22a430b580a6788d10d62833b9b801e2891ef89be3d8",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Mahawewa Canal\nLook: An exterior village irrigation canal beside a broad paddy field, with a narrow red-earth embankment, weathered concrete channel edges and a small iron sluice gate between concrete piers. Muddy water, soaked grass and low vegetation fill the banks. Heavy dawn rain softens the distance; dim natural light falls across earthy red banks, muted green rice and faint amber reflections",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The canal, adjoining paddy, gate, dawn and heavy rain are specified in the opening scene; construction and dressing extend these within the village palette.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "6c9f45d3-ebbd-4833-8208-c01dcc39a441",
+   "entity_id": "520c7471-90ef-4b89-b3ca-5f4b0190def6",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 3,
+   "card": {
+    "age": "",
+    "look": "A Sri Lankan cash van with a compact right-hand-drive cab, grey moulded dashboard, worn dark-vinyl seats, rubber floor mats and a solid steel partition behind the cab. A small faded photograph rests on the dashboard. Rain beads across the windscreen; green instrument light, cold blue spill and sodium-orange streetlight illuminate the cramped night interior.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "6d8d45560106a3b6f2b0da006bd8f1b3e4e92f6105a1ffb9e61f19e90b1be5d6",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: Cash Van\nLook: A Sri Lankan cash van with a compact right-hand-drive cab, grey moulded dashboard, worn dark-vinyl seats, rubber floor mats and a solid steel partition behind the cab. A small faded photograph rests on the dashboard. Rain beads across the windscreen; green instrument light, cold blue spill and sodium-orange streetlight illuminate the cramped night interior",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "Preserves the supplied Sri Lankan cash van look; the driving scene establishes the dashboard photograph, rainy night and sodium light, with additional colour from the Colombo direction.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "c4c19c79-2044-4142-83b5-64cc98bb7da2",
+   "entity_id": "2ea777e9-8525-4d0a-bc5b-8e7f7603fcf8",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "Shallow flooded rice plots with short green growth, low red-earth bunds and rain-dimpled water immediately beside the canal path.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "a086f649d055eb697aefbf6e335adb24fbddb1db121b78c40b6ac35775dd4331",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 16:9.\nLocation: paddy field\nLook: Shallow flooded rice plots with short green growth, low red-earth bunds and rain-dimpled water immediately beside the canal path",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The opening scene places a paddy field beside the rainy canal path; the colours follow the village direction.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "33f237ef-7bff-4d29-b9c7-3677b6eb6c13",
+   "entity_id": "adecf3b5-635a-486a-a55e-aea9b6b9ad9a",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 3,
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A small medical bag, approximately 30 centimetres wide, in dark navy wipe-clean fabric with black piping, a zipped top, two short handles and lightly scuffed lower corners.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "fff25528829b56fc91d66fa7e66c66e8e57c0df27bef2802c4e9c44925f57a00",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: medical bag\nDetails: A small medical bag, approximately 30 centimetres wide, in dark navy wipe-clean fabric with black piping, a zipped top, two short handles and lightly scuffed lower corners",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "Preserves the supplied small medical bag description; Aruni's community nursing rounds and rainy village setting inform its portable, practical construction.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "a0ecb328-634d-48bb-93aa-551ed2e4aae2",
+   "entity_id": "8adda871-bc5e-44a0-b117-1adaaf2b0be3",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "appearance: Inside his fist is a small metal key marked C-17.",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A small metal key marked C-17.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "a388a1567e2761cfa229e04d03cf6f7c27fc512331b9c5d879ef93d98115a9d3",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: key\nDetails: A small metal key marked C-17",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "details": {
+     "line": 42,
+     "reason": "",
+     "source": "script"
+    }
+   }
+  },
+  {
+   "id": "d195f4a0-f7ea-4036-a714-3d29be6bb27e",
+   "entity_id": "54a9166f-b6ba-493a-b148-4bccedb9d2fa",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A faded, palm-sized colour print of Dinu and Aruni near a village bus stop, with softened contrast, slightly curled corners and a narrow white border.",
+    "summary": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "10eac4feb3b111b30bf161c1749384895b070b9324dcf62b62eddec0b83dda8b",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: photo\nDetails: A faded, palm-sized colour print of Dinu and Aruni near a village bus stop, with softened contrast, slightly curled corners and a narrow white border",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The dashboard photograph and its subjects are specified at line 48; size and wear make a consistent physical print.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "e0de5d46-1a3e-4830-bee4-45b310049a27",
+   "entity_id": "c1b83064-621e-41ab-b21f-e3dce19acb38",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A thin red cotton thread tied around Dinu's wrist, with a small knot and two short, softly frayed ends.",
+    "summary": "Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the red thread around his wrist and turns toward the industrial area.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "695dccc0415d290e259bc1859e9e9c7e5582eae303f36a4cc5ae85931fba2ca8",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: red thread\nDetails: A thin red cotton thread tied around Dinu's wrist, with a small knot and two short, softly frayed ends",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The red wrist thread is specified at line 53; cotton, knot and wear define its repeatable close-up appearance.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "989060ee-fb93-4413-9e7f-ad9aef63ab44",
+   "entity_id": "6e4d1b5d-c274-43eb-9ddb-39092896f17b",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A small rectangular dull-grey steel box with a hinged lid, a simple front clasp, scratched corners and scattered patches of surface oxidation.",
+    "summary": "Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the C-17 key.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "73f811ac959eb880c68c20d0dbcee60990c3c1a7b7ef74091ce6274fa58fad16",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: metal box\nDetails: A small rectangular dull-grey steel box with a hinged lid, a simple front clasp, scratched corners and scattered patches of surface oxidation",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The garage scene specifies an opening metal box holding photographs, bank documents and the key; a portable document-sized steel box fits that use.",
+     "source": "inferred"
+    }
+   }
+  },
+  {
+   "id": "fb0a7e8c-f49a-450b-99f5-94159b2f420a",
+   "entity_id": "559b5109-0ed1-44af-98a0-ef475b4b8c63",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "version": 2,
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A compact matte-black semiautomatic pistol with a dark textured grip and lightly worn metal edges.",
+    "summary": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "card_hash": "2bce1ba01fd459d732d67f24c4af97ba214836a4e7dc684f18ceebc866289b3a",
+   "wardrobe_anchor": "",
+   "voice_pin": "",
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 16:9.\nProp: gun\nDetails: A compact matte-black semiautomatic pistol with a dark textured grip and lightly worn metal edges",
+   "reference_assets": [],
+   "source": "refine",
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The slow-motion direction names a gun but supplies no model; a plain contemporary handgun provides a restrained design reference.",
+     "source": "inferred"
+    }
+   }
+  }
+ ],
+ "canon": [
+  {
+   "id": "c9b9e2da-228c-4e88-9b5e-0902fc377946",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "character",
+   "code": "C02",
+   "name": "Aruni",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T15:07:00.657579+00:00",
+   "current_version_id": "964537fe-1f2b-4c49-9dc9-8b56273ec0db",
+   "created_at": "2026-11-11T14:24:38.075913+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": null,
+   "parent_id": null
+  },
+  {
+   "id": "37c94cbe-e6c5-4554-8437-7f34f3121b05",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "character",
+   "code": "C04",
+   "name": "Mudalali",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "bcd5b3d4-05cf-4eee-af8c-c17054ce03b3",
+   "created_at": "2026-11-11T14:24:38.656138+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": null,
+   "parent_id": null
+  },
+  {
+   "id": "3cf8f4a3-306b-4eb2-8481-344e1d8fb049",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L02",
+   "name": "Mahawewa village",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "0cd7fabe-45b9-47aa-b0b3-1f4e9a70ab06",
+   "created_at": "2026-11-11T14:24:39.499211+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "region",
+   "parent_id": null
+  },
+  {
+   "id": "6f4d0c91-795b-43de-aa1d-6f2a327d8a41",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L05",
+   "name": "Colombo Garage",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "4cf39646-15de-4116-aa9e-b1759170433d",
+   "created_at": "2026-11-11T14:24:40.117601+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "set",
+   "parent_id": "e55b7d5f-4f1c-44fc-8e79-e24d24f9fed3"
+  },
+  {
+   "id": "c1b83064-621e-41ab-b21f-e3dce19acb38",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "prop",
+   "code": "P04",
+   "name": "red thread",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "e0de5d46-1a3e-4830-bee4-45b310049a27",
+   "created_at": "2026-11-11T14:24:41.642327+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "prop",
+   "parent_id": null
+  },
+  {
+   "id": "5e166abe-8804-451c-bafc-6d1d1991bc69",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "prop",
+   "code": "P07",
+   "name": "Rs. 300 million",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "84d2ab72-5dea-4908-a0eb-5097c3af7252",
+   "created_at": "2026-11-11T14:24:42.206385+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "mentioned",
+   "parent_id": null
+  },
+  {
+   "id": "2567a64c-975c-4126-84b6-ddf8c0d2b473",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "character",
+   "code": "C03",
+   "name": "Nimal",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T14:59:43.178425+00:00",
+   "current_version_id": "586178e0-0913-4993-a8cf-39095b70f876",
+   "created_at": "2026-11-11T14:24:38.409755+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": null,
+   "parent_id": null
+  },
+  {
+   "id": "a672459b-37ed-4669-bec1-b5aa426dc8e5",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L03",
+   "name": "Mahawewa Canal",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T15:08:50.552863+00:00",
+   "current_version_id": "c8af82ca-ff2f-4c84-9e3b-832f0d8509af",
+   "created_at": "2026-11-11T14:24:39.735283+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "set",
+   "parent_id": "3cf8f4a3-306b-4eb2-8481-344e1d8fb049"
+  },
+  {
+   "id": "2ea777e9-8525-4d0a-bc5b-8e7f7603fcf8",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L07",
+   "name": "paddy field",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "c4c19c79-2044-4142-83b5-64cc98bb7da2",
+   "created_at": "2026-11-11T14:24:40.524834+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "spot",
+   "parent_id": "a672459b-37ed-4669-bec1-b5aa426dc8e5"
+  },
+  {
+   "id": "559b5109-0ed1-44af-98a0-ef475b4b8c63",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "prop",
+   "code": "P06",
+   "name": "gun",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "fb0a7e8c-f49a-450b-99f5-94159b2f420a",
+   "created_at": "2026-11-11T14:24:41.984412+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "mentioned",
+   "parent_id": null
+  },
+  {
+   "id": "adecf3b5-635a-486a-a55e-aea9b6b9ad9a",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "prop",
+   "code": "P01",
+   "name": "medical bag",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T15:04:18.270636+00:00",
+   "current_version_id": "c7ea3526-f5d9-4683-9d13-56ed0d89e373",
+   "created_at": "2026-11-11T14:24:41.074858+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "prop",
+   "parent_id": null
+  },
+  {
+   "id": "063fe24a-8339-4db3-8688-883b8724d640",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "character",
+   "code": "C05",
+   "name": "Suren",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "9fe1c3b6-3564-41b7-b218-987a9ef3c07b",
+   "created_at": "2026-11-11T14:24:38.823292+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": null,
+   "parent_id": null
+  },
+  {
+   "id": "8adda871-bc5e-44a0-b117-1adaaf2b0be3",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "prop",
+   "code": "P02",
+   "name": "key",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T14:52:50.275516+00:00",
+   "current_version_id": "9a411c96-c469-47dd-89f7-dd5c8659ac0b",
+   "created_at": "2026-11-11T14:24:41.270383+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "prop",
+   "parent_id": null
+  },
+  {
+   "id": "286f0a4b-f8d4-4c81-979a-8a707abfca61",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "character",
+   "code": "C06",
+   "name": "Inspector Ruwan",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "ed461a27-d5bf-41de-ad38-c9b2fe690556",
+   "created_at": "2026-11-11T14:24:39.015469+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": null,
+   "parent_id": null
+  },
+  {
+   "id": "b3109628-3866-4567-852c-c44ef33bd037",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L08",
+   "name": "Old Port warehouse",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "b08e6a02-f646-4bf4-8529-da2744c8a424",
+   "created_at": "2026-11-11T14:24:40.715483+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "unseen",
+   "parent_id": "e55b7d5f-4f1c-44fc-8e79-e24d24f9fed3"
+  },
+  {
+   "id": "e55b7d5f-4f1c-44fc-8e79-e24d24f9fed3",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L01",
+   "name": "Colombo",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T15:03:08.782749+00:00",
+   "current_version_id": "1f75bc2e-7450-43f7-8e5b-8c4892338d67",
+   "created_at": "2026-11-11T14:24:39.263203+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "region",
+   "parent_id": null
+  },
+  {
+   "id": "7a459827-396b-480b-8b5b-99faf5c8eac4",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L09",
+   "name": "village bus stop",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "0814575b-7379-47a8-944a-e4804bde14f8",
+   "created_at": "2026-11-11T14:24:40.887505+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "unseen",
+   "parent_id": "3cf8f4a3-306b-4eb2-8481-344e1d8fb049"
+  },
+  {
+   "id": "54a9166f-b6ba-493a-b148-4bccedb9d2fa",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "prop",
+   "code": "P03",
+   "name": "photo",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "d195f4a0-f7ea-4036-a714-3d29be6bb27e",
+   "created_at": "2026-11-11T14:24:41.432637+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "prop",
+   "parent_id": null
+  },
+  {
+   "id": "6e4d1b5d-c274-43eb-9ddb-39092896f17b",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "prop",
+   "code": "P05",
+   "name": "metal box",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "989060ee-fb93-4413-9e7f-ad9aef63ab44",
+   "created_at": "2026-11-11T14:24:41.80569+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "prop",
+   "parent_id": null
+  },
+  {
+   "id": "520c7471-90ef-4b89-b3ca-5f4b0190def6",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L04",
+   "name": "Cash Van",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T15:03:34.224391+00:00",
+   "current_version_id": "a7e6426f-e3ee-40cc-91d6-7a24874d6977",
+   "created_at": "2026-11-11T14:24:39.916763+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "vehicle",
+   "parent_id": "e55b7d5f-4f1c-44fc-8e79-e24d24f9fed3"
+  },
+  {
+   "id": "b074ffbc-4fa9-4aef-a2c9-3a253b142d99",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "location",
+   "code": "L06",
+   "name": "canal gate",
+   "aliases": [],
+   "core": false,
+   "locked": false,
+   "locked_by": null,
+   "locked_at": null,
+   "current_version_id": "e2fec7c7-0700-43df-9e6b-261f54b17650",
+   "created_at": "2026-11-11T14:24:40.301378+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": "spot",
+   "parent_id": "a672459b-37ed-4669-bec1-b5aa426dc8e5"
+  },
+  {
+   "id": "91723984-b1d3-4199-9a8d-24c949080bb5",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "kind": "character",
+   "code": "C01",
+   "name": "Dinu",
+   "aliases": [],
+   "core": false,
+   "locked": true,
+   "locked_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "locked_at": "2026-11-11T14:47:38.837865+00:00",
+   "current_version_id": "68275940-7d18-44f2-b237-9306a440f8ed",
+   "created_at": "2026-11-11T14:24:37.696587+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "class": null,
+   "parent_id": null
+  }
+ ],
+ "looks": [
+  {
+   "id": "e593892b-3b05-43d4-949b-1bb7c2132798",
+   "entity_id": "91723984-b1d3-4199-9a8d-24c949080bb5",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "name": "Dinu — work uniform",
+   "ranges": [
+    {
+     "to": 1,
+     "from": 1
+    }
+   ],
+   "outfit": "A faded slate-blue short-sleeved uniform shirt with two breast pockets, dark navy work trousers, a plain black belt and scuffed black lace-up shoes.",
+   "hair": "Thick black hair cropped close at the sides and combed sideways on top.",
+   "makeup": "Natural medium-brown complexion with short, even stubble.",
+   "accessories": "A thin red thread around his wrist.",
+   "status": "draft",
+   "sheet_assets": [],
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "origin": "refine"
+  },
+  {
+   "id": "73560dbf-4d0b-46b1-a2cb-3fbb21548879",
+   "entity_id": "c9b9e2da-228c-4e88-9b5e-0902fc377946",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "name": "Aruni — nursing dress",
+   "ranges": [
+    {
+     "to": 1,
+     "from": 1
+    }
+   ],
+   "outfit": "A white short-sleeved nurse's dress with a modest collar, fitted waist and below-knee skirt, white socks and plain white low-heeled nursing shoes.",
+   "hair": "Centre-parted black hair secured in a neat low bun.",
+   "makeup": "Minimal natural makeup.",
+   "accessories": "A small medical bag.",
+   "status": "draft",
+   "sheet_assets": [],
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "origin": "refine"
+  },
+  {
+   "id": "9a2f880c-4fde-4699-8538-167ae22a02e0",
+   "entity_id": "2567a64c-975c-4126-84b6-ddf8c0d2b473",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "name": "Nimal — rust-brown shirt",
+   "ranges": [
+    {
+     "to": 1,
+     "from": 1
+    }
+   ],
+   "outfit": "A faded rust-brown long-sleeved cotton shirt, charcoal trousers and worn brown leather sandals.",
+   "hair": "Thick, slightly wavy black hair brushed back from the forehead.",
+   "makeup": "Natural warm medium-brown complexion, a close black moustache and clean-shaven cheeks.",
+   "accessories": "None.",
+   "status": "draft",
+   "sheet_assets": [],
+   "created_by": "fcc5d069-6e35-4c42-84c4-9a1e73255baa",
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "origin": "refine"
+  }
+ ],
+ "scene_looks": [
+  {
+   "scene_id": "25a8708f-19a8-47c2-a0ee-193d035f4a23",
+   "entity_id": "c9b9e2da-228c-4e88-9b5e-0902fc377946",
+   "look_id": "73560dbf-4d0b-46b1-a2cb-3fbb21548879",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "chosen_by": null,
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "condition": "Dress soaked by heavy rain; shoes and socks wet. Hair wet and flattened around the bun. Kneels beside the canal and touches Nimal's hand.",
+   "why": "First on-screen appearance, at dawn with her medical bag; uses her base nursing dress.",
+   "origin": "refine"
+  },
+  {
+   "scene_id": "25a8708f-19a8-47c2-a0ee-193d035f4a23",
+   "entity_id": "2567a64c-975c-4126-84b6-ddf8c0d2b473",
+   "look_id": "9a2f880c-4fde-4699-8538-167ae22a02e0",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "chosen_by": null,
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "condition": "Lies still near the canal gate, eyes closed. Shirt and trousers soaked, sleeves rolled to the forearms; hair wet and flattened. One fist holds a small metal key marked C-17.",
+   "why": "Same outfit as his last appearance in the garage; the intervening events provide no clothing change.",
+   "origin": "refine"
+  },
+  {
+   "scene_id": "3e9cf0ad-6316-4834-bf93-12791682f44c",
+   "entity_id": "91723984-b1d3-4199-9a8d-24c949080bb5",
+   "look_id": "e593892b-3b05-43d4-949b-1bb7c2132798",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "chosen_by": null,
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "condition": "",
+   "why": "Same story day, six hours after the garage meeting; retains his work uniform while driving the cash-transfer van.",
+   "origin": "refine"
+  },
+  {
+   "scene_id": "0e057515-d7dc-4fb9-902a-4f134fa6949c",
+   "entity_id": "2567a64c-975c-4126-84b6-ddf8c0d2b473",
+   "look_id": "9a2f880c-4fde-4699-8538-167ae22a02e0",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "chosen_by": null,
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "condition": "Shirt sleeves rolled to the forearms.",
+   "why": "Earliest story appearance; establishes his base outfit, retained at the canal.",
+   "origin": "refine"
+  },
+  {
+   "scene_id": "0e057515-d7dc-4fb9-902a-4f134fa6949c",
+   "entity_id": "91723984-b1d3-4199-9a8d-24c949080bb5",
+   "look_id": "e593892b-3b05-43d4-949b-1bb7c2132798",
+   "production_id": "96c4a5b7-b00e-44e1-acb8-f3ec75241a23",
+   "chosen_by": null,
+   "created_at": "2026-11-12T11:22:42.21123+00:00",
+   "updated_at": "2026-11-12T11:22:42.21123+00:00",
+   "condition": "",
+   "why": "Earliest story appearance; wears the same work uniform used for the driving shift six hours later.",
+   "origin": "refine"
+  }
+ ]
+}

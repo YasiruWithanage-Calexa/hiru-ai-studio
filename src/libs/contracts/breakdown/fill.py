@@ -21,7 +21,7 @@ import re
 from typing import Any
 
 from contracts.breakdown import series
-from contracts.breakdown.packet import _pretty
+from contracts.breakdown.packet import SUMMARY_MAX_LINES, _pretty
 from contracts.breakdown.schema import Breakdown, Scene
 from contracts.screenplay import parse_heading
 
@@ -130,7 +130,10 @@ def canon_cards(bd: Breakdown) -> list[dict[str, Any]]:
             if not text:
                 continue
             if k == "summary":
-                card["summary"] = text
+                # plan/2026-11-12c: never a whole scene (the packet's rule): a wide range is the documents' words, not
+                # a card; the canon refine writes the real card
+                if e.lines[1] - e.lines[0] + 1 <= SUMMARY_MAX_LINES or v.source == "inferred":
+                    card["summary"] = text
             elif k in CARD_FIELDS[e.kind]:
                 card[k] = text
             elif k == "look" and e.kind == "person":

@@ -1,0 +1,18 @@
+id: breakdown_looks
+kind: agent
+version: 1
+summary: "Scene looks (plan/2026-11-12c): ONE call reads the scenes in page order and the refined cast for story time, the looks (one outfit each) and who wears which look in every scene with the scene's condition kept apart from the outfit; code checks it."
+status: active
+owner: canon_extract
+model: breakdown
+timeout_s: 240
+shape: structured
+phase: breakdown.looks
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe, house_rules]
+house_rules: [wardrobe]  # plan/2026-11-12c: H-14, working dress
+writes_dialogue: false

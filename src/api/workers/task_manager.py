@@ -42,6 +42,8 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
     JobKind.SCRIPT_SPLIT: FunctionSpec("hiru-script-split", 8203, 900),
     JobKind.STRUCTURE_BUILD: FunctionSpec("hiru-structure-build", 8204, 900),
     JobKind.CANON_EXTRACT: FunctionSpec("hiru-canon-extract", 8205, 600),
+    # plan/2026-11-12c: the canon refine is served by the same function (two kinds, as Raphael's two)
+    JobKind.CANON_REFINE: FunctionSpec("hiru-canon-extract", 8205, 600),
     JobKind.SHOT_PRODUCE: FunctionSpec("hiru-shot-producer", 8207, 900),
     JobKind.FRAME_RENDER: FunctionSpec("hiru-frame-render", 8208, 600),
     JobKind.PLAN_SCENE_ADAM: FunctionSpec("hiru-shot-planner-adam", 8209, 1800),
@@ -58,6 +60,32 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
 DIRECTOR_CHAT = FunctionSpec("hiru-director-chat", 8206, 300)
 ZORA_CHAT = FunctionSpec("hiru-zora-chat", 8213, 300)  # Zora, the director chat over Jonathan's plan (plan/2026-11-06e)
 SABLE_CHAT = FunctionSpec("hiru-sable-chat", 8214, 300)  # Sable, the production assistant chat (plan/2026-11-08)
+
+
+# plan/2026-11-12c §3.5: the kinds that plan shots against the canon. No plan is made while the canon is being refined
+# (a plan would mix old and new cards), and no refine starts while one of these or a build runs.
+PLANNING = frozenset({
+    JobKind.SCRIPT_SPLIT, JobKind.SHOT_PRODUCE, JobKind.PLAN_SCENE_ADAM, JobKind.PLAN_SCENE_DAVID,
+    JobKind.PLAN_SCENE_JONATHAN, JobKind.PLAN_SCENE_RAPHAEL, JobKind.CINEMATIC_SCENE_RAPHAEL,
+})
+REFINING = "Canon is being refined. Plan again when it is done."
+BUSY_FOR_REFINE = "A build or a plan is running for this production. Refine the canon when it is done."
+
+
+class Busy(Exception):
+    """The production is busy with work this job must not overlap (answered 409 by the API)."""
+
+
+async def refuse_busy(kind: JobKind, repos: Repos, production_id: UUID | None) -> None:
+    if production_id is None or (kind not in PLANNING and kind not in (JobKind.STRUCTURE_BUILD, JobKind.CANON_REFINE)):
+        return
+    active = {str(r.get("kind")) for r in await repos.jobs.live(production_id, None)
+              if r.get("status") in ("pending", "running")}
+    if kind is JobKind.CANON_REFINE:
+        if active & {k.value for k in (*PLANNING, JobKind.STRUCTURE_BUILD, JobKind.CANON_REFINE)}:
+            raise Busy(BUSY_FOR_REFINE)
+    elif JobKind.CANON_REFINE.value in active:
+        raise Busy(REFINING)
 
 
 def function_url(spec: FunctionSpec, settings: Settings) -> str:
@@ -87,6 +115,7 @@ async def dispatch(
     for hop in hops:
         if hop not in FUNCTIONS:
             raise ValueError(f"no function registered for job kind {hop}")
+    await refuse_busy(kind, repos, production_id)
     job_id = uuid4()
     await repos.jobs.create({
         "id": str(job_id), "kind": kind.value, "status": JobStatus.PENDING.value,

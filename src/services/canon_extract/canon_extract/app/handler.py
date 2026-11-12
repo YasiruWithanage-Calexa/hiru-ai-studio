@@ -18,7 +18,7 @@ from canon_extract.runtime.jobs import Jobs
 from canon_extract.runtime.llm import LLM
 from canon_extract.runtime.rest import Rest
 from canon_extract.runtime.store import Store
-from contracts.jobs import DispatchPayload
+from contracts.jobs import DispatchPayload, JobKind
 
 _logger = logging.getLogger(__name__)
 
@@ -29,6 +29,14 @@ def run_graph(payload: DispatchPayload, jobs: Jobs, checkpointer: Any) -> dict[s
     from hiru_ai.systems.canon_extract import graph
 
     return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs), checkpointer)
+
+
+def run_refine(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
+    """plan/2026-11-12c: the canon refine (`JobKind.CANON_REFINE`), served by this function beside canon_extract."""
+    from hiru_ai.adapters import supabase_rest
+    from hiru_ai.systems.breakdown.breakdown_canon_refine import graph
+
+    return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs))
 
 
 def _breakdown_on() -> bool:
@@ -56,6 +64,8 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
                             "actor_user_id": str(payload.actor_user_id)})
 
     try:
+        if payload.kind is JobKind.CANON_REFINE:
+            return run_refine(payload, jobs), 200
         with saver(config.db_url) as (checkpointer, _durable):
             if os.environ.get("AI_ENGINE", "legacy") == "graph" or _breakdown_on():
                 return run_graph(payload, jobs, checkpointer), 200
@@ -65,5 +75,6 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
         return {"error": "retry"}, 500
     except Exception:
         _logger.exception("canon_extract failed job=%s", payload.job_id)
-        jobs.fail(payload.job_id, "Extracting the canon failed.")
+        jobs.fail(payload.job_id, "Refining the canon failed. The canon is as it was."
+                  if payload.kind is JobKind.CANON_REFINE else "Extracting the canon failed.")
         return {"error": "failed"}, 200

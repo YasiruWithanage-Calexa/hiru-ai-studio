@@ -505,6 +505,16 @@ class FakeCanon(_Table):
         self.rows[str(entity_id)]["current_version_id"] = row["id"]
         return row
 
+    async def refined(self, production_id: UUID) -> list[Row]:
+        return [v for v in self.version_rows.values()
+                if v.get("production_id") == str(production_id) and v.get("source") == "refine"]
+
+    async def set_current(self, entity_id: UUID, version_id: UUID) -> None:
+        self.rows[str(entity_id)]["current_version_id"] = str(version_id)
+
+    async def delete_version(self, version_id: UUID) -> None:
+        self.version_rows.pop(str(version_id), None)
+
 
 class FakeLooks(_Table):
     async def list(self, entity_id: UUID) -> list[Row]:
@@ -541,6 +551,12 @@ class FakeSceneLooks:
 
     async def clear(self, scene_id: UUID, entity_id: UUID) -> None:
         self.rows.pop((str(scene_id), str(entity_id)), None)
+
+    async def set_condition(self, scene_id: UUID, entity_id: UUID, condition: str) -> Row | None:
+        row = self.rows.get((str(scene_id), str(entity_id)))
+        if row is not None:
+            row["condition"] = condition
+        return row
 
 
 class FakeQuestions(_Table):

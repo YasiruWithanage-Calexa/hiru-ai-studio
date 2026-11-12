@@ -67,7 +67,7 @@ class Store:
                                                 "order": "created_at"})
 
     def scene_looks(self, scene_id: str) -> list[Row]:
-        return self.rest.select("scene_looks", {"scene_id": f"eq.{scene_id}", "select": "entity_id,look_id"})
+        return self.rest.select("scene_looks", {"scene_id": f"eq.{scene_id}", "select": "*"})
 
     def episode_number(self, episode_id: str) -> int | None:
         row = self.rest.first("episodes", {"id": f"eq.{episode_id}", "select": "number"})

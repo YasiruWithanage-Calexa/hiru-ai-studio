@@ -6,6 +6,8 @@ from tests.api.conftest import World
 from tests.api.test_canon import add_entity
 from tests.api.test_looks import make_look
 
+NO_CONDITION = {"condition": "", "why": "", "origin": "person"}  # plan/2026-11-12c: a person's pick, no condition
+
 
 def add_scene(world: World) -> str:
     pid = str(world.production)
@@ -31,9 +33,9 @@ def test_a_director_picks_the_look_a_scene_uses_and_everyone_reads_it(world: Wor
     assert world.client.get(url(world, scene), headers=world.headers(world.reviewer)).json() == {"looks": []}
     put = world.client.put(url(world, scene, f"/{eid}"), json={"look_id": look["id"]},
                            headers=world.headers(world.director))
-    assert put.status_code == 200 and put.json() == {"entity_id": eid, "look_id": look["id"]}
+    assert put.status_code == 200 and put.json() == {"entity_id": eid, "look_id": look["id"], **NO_CONDITION}
     seen = world.client.get(url(world, scene), headers=world.headers(world.reviewer)).json()
-    assert seen == {"looks": [{"entity_id": eid, "look_id": look["id"]}]}
+    assert seen == {"looks": [{"entity_id": eid, "look_id": look["id"], **NO_CONDITION}]}
     assert world.client.get(url(world, scene), headers=world.headers(world.outsider)).status_code == 404
 
 

@@ -502,6 +502,9 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
         position = _clean(subject.get("position"))
         if position:
             bits.append(position.rstrip("."))
+        condition = _clean(c.condition).rstrip(".")
+        if condition and not _has("; ".join(bits), condition):  # plan/2026-11-12c: the scene's, never the outfit's
+            bits.append(f"in this scene: {condition}")
         lines.append("; ".join(bits))
     if lines:
         people.add("People: " + " | ".join(lines), "cast cards + ir.subjects")

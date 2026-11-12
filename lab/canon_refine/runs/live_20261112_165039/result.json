@@ -1,0 +1,58 @@
+{
+ "result": {
+  "looks": 3,
+  "proposed": 8,
+  "switched": 12,
+  "unchanged": 2,
+  "scene_looks": 5,
+  "skipped_changed": 0,
+  "refined": 22,
+  "review": [
+   "Nimal wears C03-1 on day 1 (E01-S03) and again on day 2 (E01-S01)"
+  ],
+  "story": [
+   {
+    "scene": "E01-S01",
+    "story_day": 2,
+    "part_of_day": "dawn",
+    "continuous_with": "",
+    "why": "The supplied timeline places this opening scene after the night drive, at the following dawn."
+   },
+   {
+    "scene": "E01-S02",
+    "story_day": 1,
+    "part_of_day": "night",
+    "continuous_with": "",
+    "why": "Six hours after the garage meeting. The elapsed interval is a gap, but gives no reason for Dinu to change clothes."
+   },
+   {
+    "scene": "E01-S03",
+    "story_day": 1,
+    "part_of_day": "day",
+    "continuous_with": "",
+    "why": "The earliest event in the supplied timeline, six hours before the night drive; daytime is inferred. Timeline day zero is treated as an unnumbered placeholder and normalized to story day one."
+   }
+  ]
+ },
+ "spent": 0.0688,
+ "seconds": 108,
+ "calls": [
+  {
+   "phase": "breakdown.canon",
+   "model": "gpt-6.1-sol",
+   "in": 4905,
+   "cached": 0,
+   "out": 4055,
+   "dollars": 0.0504
+  },
+  {
+   "phase": "breakdown.looks",
+   "model": "gpt-6.1-sol",
+   "in": 3219,
+   "cached": 0,
+   "out": 1200,
+   "dollars": 0.0184
+  }
+ ],
+ "job_id": "3723b5f2-1478-4f9f-87e7-b2ae49a9f6d5"
+}

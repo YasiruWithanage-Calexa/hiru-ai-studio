@@ -41,7 +41,7 @@ from contracts.raphael import state as ledger_state
 from contracts.raphael.stored import StoredRaphael
 from contracts.reading import SceneReading
 from contracts.stagemap import SceneStaging
-from hiru_ai.core import agents, llm, parts
+from hiru_ai.core import agents, llm, packets, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -230,7 +230,7 @@ def build(
             cast=cast,
             others=raphael.others_of(characters, cast),
             place=place,
-            objects=raphael.objects_of(props, location, bare.blocks),
+            objects=raphael.objects_of(props, location, bare.blocks, packets.canon_things(ctx, sc)),
         )
         episode = episode_rows.get(str(sc.get("episode_id"))) or {}
         reading = SceneReading.of(sc)

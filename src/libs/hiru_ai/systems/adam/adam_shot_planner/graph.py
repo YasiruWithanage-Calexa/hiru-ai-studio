@@ -37,7 +37,7 @@ from contracts.adam.stored import StoredPlan
 from contracts.build import Agent, Stage
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
-from hiru_ai.core import llm, memory, parts
+from hiru_ai.core import llm, memory, packets, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -110,7 +110,8 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
         location = locations.get(str(scene.get("location_id")))
         place = str((location or {}).get("name") or scene.get("heading") or "")
         script, line_ids = adam.script_of(scene, lines, cast=cast, place=place,
-                                          objects=adam.objects_of(props, location, bare.blocks))
+                                          objects=adam.objects_of(props, location, bare.blocks,
+                                                                  packets.canon_things(ctx, scene)))
         before, after = surrounding(scene)
         context = adam.context_of(scene, episode_rows.get(str(scene.get("episode_id"))) or {}, before, after,
                                   [(n, cards.get(n, "")) for n in cast])

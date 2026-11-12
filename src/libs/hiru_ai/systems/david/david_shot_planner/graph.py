@@ -39,7 +39,7 @@ from contracts.david.stored import Link, StoredPlan
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.reading import SceneReading
-from hiru_ai.core import llm, parts
+from hiru_ai.core import llm, packets, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -156,7 +156,8 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row, *,
         location = locations.get(str(sc.get("location_id")))
         place = str((location or {}).get("name") or sc.get("heading") or "")
         script, line_ids = david.script_of(sc, lines, cast=cast, others=david.others_of(characters, cast), place=place,
-                                           objects=david.objects_of(props, location, bare.blocks))
+                                           objects=david.objects_of(props, location, bare.blocks,
+                                                                    packets.canon_things(ctx, sc)))
         kind = links.get(sid, "")
         prev = before_of(sid)
         before_stored = fresh.get(str(prev["id"])) if prev else None

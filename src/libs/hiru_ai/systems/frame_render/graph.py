@@ -34,6 +34,7 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
 from contracts import safe_depiction
+from contracts.canon import scene_conditions
 from contracts.frame_brief import BLACK_PLATE
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
@@ -98,18 +99,19 @@ class Scenes:
         frames, scenes = self.ctx.need("frames"), self.ctx.need("scenes")
         scene = frames.scene(scene_id) or {}
         looks: dict[str, Any] = {}
+        picks = frames.scene_looks(scene_id)
         with self._lock:
             if self._all_looks is None:
                 self._all_looks = frames.looks(self.production_id)
             all_looks = self._all_looks
         if all_looks:
             episode = frames.episode_number(str(scene["episode_id"])) if scene.get("episode_id") else None
-            looks = _compose("looks", all_looks=all_looks, scene_looks=frames.scene_looks(scene_id),
-                             episode=episode)["looks"]
+            looks = _compose("looks", all_looks=all_looks, scene_looks=picks, episode=episode)["looks"]
         shots = scenes.shots(scene_id)  # plan/2026-11-11b: the same-setup frame of a later shot of a setup
         accepted = frames.accepted_finals([str(s["id"]) for s in shots]) if any(s.get("slate") for s in shots) else {}
         world = {"production": self.production, "canon": self.canon, "scene": scene, "lines": scenes.lines(scene_id),
-                 "looks": looks, "shots": shots, "accepted": accepted, "genre": self.genre}
+                 "looks": looks, "shots": shots, "accepted": accepted, "genre": self.genre,
+                 "conditions": scene_conditions(picks)}
         with self._lock:
             self._worlds[scene_id] = world
         return world

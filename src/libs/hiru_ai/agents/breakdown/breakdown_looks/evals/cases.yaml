@@ -1,0 +1,264 @@
+# breakdown_looks (plan/2026-11-12c). Scripted replies test the seams; the reply is the real answer of the paid lab
+# call (lab/canon_refine looks1_ekama, 2026-11-12). The message is built by contracts.scene_looks.
+- name: Ekama Sakshiya, three scenes with a flashback (the 2026-11-12 lab answer, looks1)
+  input:
+    message: |-
+      THE PRODUCTION (JSON)
+      {
+       "episodes": [
+        {
+         "episode": 1,
+         "text": "Nimal reveals evidence concerning Mudalali and Rs. 300 million, then gives key to a morally resistant Dinu. Six hours later, Aruni reports Nimal missing while Mudalali redirects Dinu toward Old Port warehouse. The opening dawn discovery reveals Nimal dead at Mahawewa Canal with key in his fist."
+        }
+       ],
+       "people": [
+        {
+         "id": "C01",
+         "name": "Dinu",
+         "appearance": "Medium-tall, lean and wiry, with strong forearms and medium-deep brown skin. A narrow rectangular face, deep-set dark brown eyes, straight nose and short, even stubble. Thick black hair cropped close at the sides, slightly longer and brushed forward on top. Economical movements and a steady, guarded gaze.",
+         "base_wardrobe": "A faded navy short-sleeved cotton work shirt, charcoal straight-leg work trousers and scuffed black closed shoes. Shirt tucked in, collar open, sleeves close around the upper arms. A red thread around one wrist."
+        },
+        {
+         "id": "C02",
+         "name": "Aruni",
+         "appearance": "Medium height, compact build and medium-brown skin. An oval face with broad cheekbones, dark almond-shaped eyes, full straight brows and a softly squared chin. Long, thick black hair with a centre part, secured in a low bun. Aruni and Nimal share their broad cheekbones and dark, level brows.",
+         "base_wardrobe": "A plain white short-sleeved nursing dress with a modest collar, fitted waist and below-knee hem, white ankle socks and practical white closed shoes. Neatly secured hair and minimal jewellery."
+        },
+        {
+         "id": "C03",
+         "name": "Nimal",
+         "appearance": "Average height, broad-shouldered and solidly built, with medium-brown skin. A broad oval face, pronounced cheekbones, dark level brows and a rounded nose. A neat black moustache with otherwise clean-shaven cheeks. Short, slightly wavy black hair combed to one side. Nimal shares Aruni's cheekbones and brow shape.",
+         "base_wardrobe": "A faded brick-red cotton shirt with the sleeves rolled to the elbows, dark brown trousers and worn brown rubber-soled sandals. Open collar and a slightly loose, untucked shirt."
+        },
+        {
+         "id": "C04",
+         "name": "Mudalali",
+         "appearance": "Average height with a heavy torso, rounded shoulders and medium warm-brown skin. A broad round face, heavy eyelids, fleshy cheeks and a close-trimmed salt-and-pepper moustache. Black-and-grey hair combed neatly back from a receding hairline.",
+         "base_wardrobe": "A crisp cream short-sleeved shirt with an open collar, dark taupe tailored trousers and polished brown leather sandals. A substantial gold-tone wristwatch."
+        },
+        {
+         "id": "C05",
+         "name": "Suren",
+         "appearance": "Tall and thick-set, with a powerful neck, broad chest and deep brown skin. A square face, blunt nose, close-set dark eyes and dense, short black beard. Black hair cut very close all over. A forward-set stance and heavy, deliberate movements.",
+         "base_wardrobe": "A dark olive short-sleeved shirt worn open at the neck, black straight-leg jeans and heavy black lace-up shoes. Sleeves fitted closely around the upper arms."
+        },
+        {
+         "id": "C06",
+         "name": "Inspector Ruwan",
+         "appearance": "Medium-tall and upright, with a trim build and medium tan-brown skin. A long angular face, high forehead, thin lips and a sharply trimmed black moustache. Short side-parted black hair, greying at the temples, with clean edges above the ears.",
+         "base_wardrobe": "A pressed khaki Sri Lankan police inspector's uniform: short-sleeved shirt with epaulettes and three silver-coloured stars on each shoulder, matching trousers, dark brown leather belt and polished dark brown shoes."
+        }
+       ],
+       "scenes": [
+        {
+         "id": "E01-S01",
+         "episode": 1,
+         "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+         "place": "Mahawewa Canal",
+         "people": [
+          {
+           "person": "C02 Aruni",
+           "presence": "on_screen"
+          },
+          {
+           "person": "C03 Nimal",
+           "presence": "body"
+          }
+         ],
+         "script": [
+          "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.",
+          "She notices something caught near the canal gate: a body. It is Nimal.",
+          "She does not scream. She kneels and touches his hand.",
+          "Inside his fist is a small metal key marked C-17.",
+          "Aruni: Dinu... oyata meka ahenne nadda?",
+          "She calls Dinu. No answer.",
+          "A distant bus horn mixes with the rain.",
+          "Cut to black.",
+          "TITLE: EKAMA SAKSHIYA."
+         ]
+        },
+        {
+         "id": "E01-S02",
+         "episode": 1,
+         "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+         "place": "Cash Van",
+         "people": [
+          {
+           "person": "C01 Dinu",
+           "presence": "on_screen"
+          },
+          {
+           "person": "C02 Aruni",
+           "presence": "voice_message"
+          },
+          {
+           "person": "C04 Mudalali",
+           "presence": "phone"
+          }
+         ],
+         "script": [
+          "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.",
+          "On the dashboard is a faded photo of him and Aruni near a village bus stop.",
+          "Aruni's voice message plays.",
+          "Aruni (voice message): Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.",
+          "Mudalali calls.",
+          "Mudalali (phone): Route eka maru karapan. Old Port warehouse ekata yanna.",
+          "Dinu looks at the red thread around his wrist and turns toward the industrial area."
+         ]
+        },
+        {
+         "id": "E01-S03",
+         "episode": 1,
+         "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES",
+         "place": "Colombo Garage",
+         "people": [
+          {
+           "person": "C03 Nimal",
+           "presence": "on_screen"
+          },
+          {
+           "person": "C01 Dinu",
+           "presence": "on_screen"
+          }
+         ],
+         "script": [
+          "Six hours earlier.",
+          "Nimal opens a metal box containing photographs, bank documents and the C-17 key.",
+          "Nimal: Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.",
+          "Dinu: Api meka gaththoth apiuth eyala wage wenawa.",
+          "Nimal: Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa oyawa atharinnawa.",
+          "Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof."
+         ]
+        }
+       ],
+       "timeline": [
+        {
+         "scene": "E01-S03",
+         "story_order": 1,
+         "story_day": 0,
+         "relative": "Six hours earlier",
+         "kind": "flashback",
+         "anchor": "E01-S02"
+        },
+        {
+         "scene": "E01-S02",
+         "story_order": 2,
+         "story_day": 0,
+         "relative": "Night; six hours after E01-S03",
+         "kind": "normal",
+         "anchor": "E01-S03"
+        },
+        {
+         "scene": "E01-S01",
+         "story_order": 3,
+         "story_day": 0,
+         "relative": "Dawn, apparently following E01-S02; no numbered story day is stated",
+         "kind": "cold_open",
+         "anchor": "E01-S02"
+        }
+       ]
+      }
+  reply:
+    story:
+    - scene: E01-S01
+      story_day: 2
+      part_of_day: dawn
+      continuous_with: ''
+      why: The dawn discovery follows the night drive. The supplied timeline uses unnumbered day-zero placeholders; this is
+        the second story day.
+    - scene: E01-S02
+      story_day: 1
+      part_of_day: night
+      continuous_with: ''
+      why: Six hours after the garage scene, on the first story day. The elapsed interval is not direct scene continuity.
+    - scene: E01-S03
+      story_day: 1
+      part_of_day: day
+      continuous_with: ''
+      why: The earliest event shown. Daytime is inferred from the explicit six-hour interval before the night drive.
+    looks:
+    - id: C01-1
+      person: C01
+      name: Dinu's work clothes
+      outfit: A faded navy short-sleeved cotton work shirt, tucked into charcoal straight-leg work trousers, with an open
+        collar and scuffed black closed shoes.
+      hair: Black hair cropped close at the sides, slightly longer and brushed forward on top.
+      makeup: Natural finish with short, even stubble.
+      accessories: A red thread around one wrist.
+      why: Uses Dinu's base work wardrobe for the garage encounter and the cash-van shift six hours later. No change is indicated.
+    - id: C02-1
+      person: C02
+      name: Aruni's nursing dress
+      outfit: A plain white short-sleeved nursing dress with a modest collar, fitted waist and below-knee hem, white ankle
+        socks and practical white closed shoes.
+      hair: Long black hair centre-parted and secured in a neat low bun.
+      makeup: Minimal natural makeup.
+      accessories: Small plain stud earrings and a small dark medical bag.
+      why: Aruni's base nursing wardrobe and the medical bag support her dawn journey beside the paddy field.
+    - id: C03-1
+      person: C03
+      name: Nimal's brick-red shirt
+      outfit: A faded brick-red long-sleeved cotton shirt with an open collar, worn loose and untucked, dark brown straight-leg
+        trousers and worn brown rubber-soled sandals.
+      hair: Short, slightly wavy black hair combed to one side.
+      makeup: Natural finish, neat black moustache and clean-shaven cheeks.
+      accessories: None.
+      why: Uses Nimal's base wardrobe at the garage and retains the same clothing at the canal.
+    scenes:
+    - scene: E01-S01
+      on_screen:
+      - person: C02
+        look: C02-1
+        condition: Dress soaked by heavy rain, with muddy splashes around the hem; socks and shoes wet. Hair slicked by rain
+          but still secured in its bun. Kneels beside the canal and touches Nimal's hand.
+        why: First on-screen appearance, at dawn with her medical bag; retain her base nursing clothes.
+      - person: C03
+        look: C03-1
+        condition: Lies still beside the canal gate, eyes closed. Shirt and trousers soaked and marked with canal silt; sleeves
+          remain rolled to the elbows. Hair wet and flattened. One fist closed around a small metal key.
+        why: Retains the clothes last seen at the garage, despite the overnight interval.
+    - scene: E01-S02
+      on_screen:
+      - person: C01
+        look: C01-1
+        condition: ''
+        why: Same story day, six hours after the garage encounter; reuses his work outfit for the cash-van shift.
+    - scene: E01-S03
+      on_screen:
+      - person: C03
+        look: C03-1
+        condition: Shirt sleeves rolled to the elbows.
+        why: Earliest appearance; establishes his base outfit, which is retained at the canal.
+      - person: C01
+        look: C01-1
+        condition: ''
+        why: Earliest appearance; establishes the work outfit he also wears during the night drive.
+- name: one driver in one scene (a small hand-made case)
+  input:
+    message: 'THE PRODUCTION (JSON)
+
+      {"people": [{"id": "C01", "name": "Kasun", "base_wardrobe": "a pale blue depot shirt"}], "scenes": [{"id": "E01-S01",
+      "heading": "INT. BUS - NIGHT", "script": ["Kasun turns the key."]}]}'
+  reply:
+    story:
+    - scene: E01-S01
+      story_day: 1
+      part_of_day: night
+      continuous_with: ''
+      why: the heading says night
+    looks:
+    - id: C01-1
+      person: C01
+      name: Depot shift
+      outfit: a pale blue depot shirt, navy trousers, black shoes
+      hair: short, combed back
+      makeup: none
+      accessories: a steel wristwatch
+      why: his work
+    scenes:
+    - scene: E01-S01
+      on_screen:
+      - person: C01
+        look: C01-1
+        condition: tired, sleeves rolled
+        why: at work, night shift

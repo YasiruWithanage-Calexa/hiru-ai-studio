@@ -8,7 +8,7 @@ scene), so a test can run a tool and then read what is stored. `ports_from(fixtu
 from __future__ import annotations
 
 from typing import Any
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from hiru_ai.core.context import Ports
 from hiru_ai.core.ports import Picture, Reference, Row
@@ -93,6 +93,8 @@ class FakeCanon:
         self.entity_rows = [dict(r) for r in entities or []]
         self.versions: list[Row] = []
         self.look_rows = [dict(r) for r in looks or []]
+        self.scene_look_rows: list[Row] = []
+        self.broken: Exception | None = None  # tests: canon_refine_apply is missing (schema v23 not applied)
 
     def entities(self, production_id: UUID) -> list[Row]:
         """Each entity with its current version joined in as `current`, as the real query returns it."""
@@ -113,6 +115,72 @@ class FakeCanon:
 
     def looks(self, production_id: UUID) -> list[Row]:
         return [dict(r) for r in self.look_rows]
+
+    def refine_apply(self, production_id: UUID, payload: Row) -> Row:
+        """`canon_refine_apply` (schema v23) in memory, rule for rule: see the SQL function's notes."""
+        if self.broken is not None:
+            raise self.broken
+        counts = dict.fromkeys(("switched", "proposed", "skipped_changed", "unchanged", "looks", "scene_looks"), 0)
+        entities = {str(e["id"]): e for e in self.entity_rows}
+        for v in payload.get("versions") or []:
+            ent = entities.get(str(v["entity_id"]))
+            if ent is None:
+                continue
+            mine = [x for x in self.versions if str(x["entity_id"]) == str(ent["id"])]
+            same = next((x for x in sorted(mine, key=lambda x: -int(x.get("version") or 0))
+                         if x.get("card_hash") == v["card_hash"]), None)
+            if same is None:
+                same = {"id": str(uuid4()), "entity_id": str(ent["id"]), "production_id": str(production_id),
+                        "version": max([int(x.get("version") or 0) for x in mine], default=0) + 1,
+                        "card": v.get("card") or {}, "card_hash": v["card_hash"],
+                        "wardrobe_anchor": v.get("wardrobe_anchor") or "", "voice_pin": v.get("voice_pin") or "",
+                        "reference_prompt": v.get("reference_prompt") or "", "source": "refine",
+                        "provenance": v.get("provenance") or {}, "created_by": payload.get("actor")}
+                self.versions.append(same)
+            current = str(ent.get("current_version_id") or "")
+            if current == str(same["id"]):
+                counts["unchanged"] += 1
+            elif current != str(v.get("expected_version_id") or ""):
+                counts["skipped_changed"] += 1
+            else:
+                cur = next((x for x in self.versions if str(x["id"]) == current), {})
+                if not ent.get("locked") and (cur.get("source") or "extract") in ("extract", "inferred", "refine"):
+                    ent["current_version_id"] = same["id"]
+                    counts["switched"] += 1
+                else:
+                    counts["proposed"] += 1
+            if "class" in v and (not ent.get("locked") or not ent.get("class")):
+                parent = str(v.get("parent_id") or "")
+                ent["class"] = v.get("class") or None
+                ent["parent_id"] = parent if parent in entities and parent != str(ent["id"]) else None
+        for lk in payload.get("looks") or []:
+            ent = entities.get(str(lk["entity_id"]))
+            if ent is None or ent.get("kind") != "character":
+                continue
+            if any(str(x["entity_id"]) == str(ent["id"]) and str(x["name"]).lower() == str(lk["name"]).lower()
+                   for x in self.look_rows):
+                continue
+            self.look_rows.append({"id": str(uuid4()), "production_id": str(production_id), "status": "draft",
+                                   "origin": "refine", **{k: lk.get(k) for k in
+                                   ("entity_id", "name", "ranges", "outfit", "hair", "makeup", "accessories")}})
+            counts["looks"] += 1
+        for sl in payload.get("scene_looks") or []:
+            look = next((x for x in self.look_rows if str(x["entity_id"]) == str(sl["entity_id"])
+                         and str(x["name"]).lower() == str(sl["look_name"]).lower()), None)
+            if look is None:
+                continue
+            have = next((x for x in self.scene_look_rows if x["scene_id"] == sl["scene_id"]
+                         and x["entity_id"] == sl["entity_id"]), None)
+            row = {"scene_id": sl["scene_id"], "entity_id": sl["entity_id"], "look_id": look["id"],
+                   "condition": sl.get("condition") or "", "why": sl.get("why") or "", "origin": "refine"}
+            if have is None:
+                self.scene_look_rows.append(row)
+            elif have.get("origin", "person") == "refine":
+                have.update(row)
+            else:
+                continue
+            counts["scene_looks"] += 1
+        return counts
 
 
 class FakeStructure:

@@ -29,6 +29,7 @@ from typing import Any
 from langchain_core.messages import AIMessage
 
 from contracts import sceneplan
+from contracts.canon import props_in
 from contracts.raphael import checks, pack
 from contracts.raphael.bin import Bin
 from contracts.raphael.money import CapReached, Meter, Unpriced, price_of
@@ -149,11 +150,13 @@ def others_of(characters: list[Row], cast: list[str]) -> list[str]:
     return out
 
 
-def objects_of(props: list[Row], location: Row | None, blocks: list[BlockS]) -> list[str]:
-    """What the place has that a picture may show: the production's props the script or the location card names."""
+def objects_of(props: list[Row], location: Row | None, blocks: list[BlockS],
+               ids: list[str] | None = None) -> list[str]:
+    """What the place has that a picture may show: the scene's things by canon id when it has a breakdown (`ids`,
+    plan/2026-11-12c Track B), else the production's props the script or the location card names as whole words
+    ("photo" no longer matches "photographs")."""
     look = str((((location or {}).get("current") or {}).get("card") or {}).get("look") or "")
-    text = norm(" ".join(b.text for b in blocks) + " " + look)
-    return [str(p["name"]) for p in props if norm(str(p.get("name") or "")) and norm(str(p["name"])) in text]
+    return props_in(props, " ".join(b.text for b in blocks) + " " + look, ids)
 
 
 def from_packet(packet: Row, lines: list[Row]) -> tuple[str, SceneS, dict[str, str]] | None:

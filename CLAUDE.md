@@ -229,6 +229,22 @@ theirs** (appended as `person_lines`, the scene's packet stale until the one-sce
 packet only with `RAPHAEL_PACKET`. Needs schema v21 (not applied). Read `plan/2026-11-11/PLAN.md` §13 and
 `IMPLEMENTED.md` first: phases 1 to 6 are built offline; v21, the live check (phase 7) and the switches are a person's.
 
+## Canon refine (plan/2026-11-12c)
+
+The breakdown copies documents' words into canon cards (an age that is a cast-list sentence, a place card that is a
+whole scene). `breakdown_canon` reads the finished breakdown and writes real cards (gender, age, appearance, base
+wardrobe, voice; a place's class, parent and empty-plate look; a thing's class), every value `script` + line or
+`inferred` + reason; `breakdown_looks` drafts looks and who wears what per scene, with the scene's CONDITION kept out of
+the outfit. The rules are `contracts/canon_refine.py` and `contracts/scene_looks.py`; the system is
+`systems/breakdown/breakdown_canon_refine` (job `canon_refine`, served by `hiru-canon-extract`; and the fork–join branch
+of `breakdown_build`, `BREAKDOWN__REFINE`). Rules that must not drift: **one write, all at once**
+(`canon_refine_apply`, schema v23): a card switches only if it is the one read, came from extract/inferred/refine and is
+not locked, else it is a **proposal** a person accepts (after unlocking) or dismisses; a person's look and scene look are
+never replaced; **the refine never fails a build** (a warning, "Canon kept as extracted"); **no plan while a refine runs
+and no refine while a plan or build runs** (`task_manager.refuse_busy`, 409); a region, spot or unseen place is never
+painted. Read `plan/2026-11-12c/IMPLEMENTED.md`: phases 1–7 and Track B built offline; v23 applied by the person 2026-11-12; phase 8 (the
+live check) is the person's.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
 - A function under `src/services/<name>/` imports only its own package and `contracts`.

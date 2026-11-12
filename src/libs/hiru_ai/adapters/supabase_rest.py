@@ -215,6 +215,12 @@ class SupabaseCanon:
                                                 "select": "id,entity_id,name,ranges,outfit,hair,makeup,accessories,"
                                                           "status"})
 
+    def refine_apply(self, production_id: UUID, payload: Row) -> Row:
+        r = self.rest.client.post(f"{self.rest.rest}/rpc/canon_refine_apply", headers=self.rest.headers,
+                                  json={"p_production": str(production_id), "p_payload": payload})
+        _ok(r)
+        return dict(r.json() or {})
+
 
 class SupabaseStructure:
     """`StructureStore`: episodes and scenes as the structure build writes them."""
@@ -525,7 +531,7 @@ class SupabaseFrames:
                                                 "order": "created_at"})
 
     def scene_looks(self, scene_id: str) -> list[Row]:
-        return self.rest.select("scene_looks", {"scene_id": f"eq.{scene_id}", "select": "entity_id,look_id"})
+        return self.rest.select("scene_looks", {"scene_id": f"eq.{scene_id}", "select": "*"})
 
     def episode_number(self, episode_id: str) -> int | None:
         row = self.rest.first("episodes", {"id": f"eq.{episode_id}", "select": "number"})

@@ -1,0 +1,18 @@
+id: breakdown_canon
+kind: agent
+version: 1
+summary: "The canon refine (plan/2026-11-12c): ONE call reads the finished breakdown and writes real canon cards (each person's gender, age, appearance, base wardrobe and voice; each place's class, parent and empty-plate look; each thing's class and details), every value `script` with its line or `inferred` with a reason; code checks it."
+status: active
+owner: canon_extract
+model: breakdown
+timeout_s: 240
+shape: structured
+phase: breakdown.canon
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe, house_rules]
+house_rules: [wardrobe]  # plan/2026-11-12c: H-14, working dress
+writes_dialogue: false

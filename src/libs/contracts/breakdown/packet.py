@@ -324,6 +324,29 @@ def assemble(bd: Breakdown, scene_id: str, cont: dict[str, Any] | None = None) -
     return packet
 
 
+SEEN_THINGS = ("hero", "used", "worn", "dressing")  # a thing only `mentioned` is not in the picture
+
+
+def canon_of(bd: Breakdown, scene_id: str) -> dict[str, Any]:
+    """plan/2026-11-12c Track B: the scene's canon by canon entity id, through the memory's map (`bd.canon_ids`): its
+    place, the people on screen (not only speakers) and the things the brief gives a role a camera sees. Empty when
+    the memory has no map yet."""
+    sc = bd.scene(scene_id)
+    if sc is None or sc.brief is None or not bd.canon_ids:
+        return {}
+    b, ids = sc.brief, bd.canon_ids
+    people = [ids[p["person"]] for p in b.get("people", []) if p.get("presence") in ("on_screen", "body")
+              and p.get("person") in ids]
+    things = [ids[t["thing"]] for t in b.get("things", []) if t.get("role") in SEEN_THINGS and t.get("thing") in ids]
+    spots = {str(ev.get("spot")) for blk in sc.blocks for ev in blk.get("events", []) or [] if ev.get("spot")}
+    return {
+        "place": ids.get(str(b.get("place") or ""), ""),
+        "people": list(dict.fromkeys(people)),
+        "things": list(dict.fromkeys(things)),
+        "spots": [ids[s] for s in sorted(spots) if s in ids],
+    }
+
+
 def incomplete(bd: Breakdown, packet: dict[str, Any]) -> list[str]:
     """§7: if this lists anything, planning that scene waits."""
     out: list[str] = [

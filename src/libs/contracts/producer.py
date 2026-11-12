@@ -279,6 +279,8 @@ class CastMember(BaseModel):
     # The wardrobe of the look this person wears in the shot (`contracts.canon.look_wardrobe`);
     # "" = no look, the card's wardrobe anchor applies.
     look: str = ""
+    # plan/2026-11-12c: the person's state in this scene only (`scene_looks.condition`: wet from the rain, lying still)
+    condition: str = ""
 
 
 def camera_checks(*, index: int, cameras: list[CameraSettings], framing: str, sound_mode: str,

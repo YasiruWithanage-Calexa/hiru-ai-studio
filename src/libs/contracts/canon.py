@@ -25,7 +25,7 @@ from enum import StrEnum
 from typing import Any, Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, model_validator
 
 
 class CanonKind(StrEnum):
@@ -86,7 +86,9 @@ class CanonVersion(BaseModel):
     wardrobe_anchor: str = ""
     voice_pin: str = ""
     reference_prompt: str = ""
-    source: str = ""  # "extract" | "user"
+    source: str = ""  # "extract" | "user" | "inferred" | "refine"
+    # plan/2026-11-12c: field -> {source: script|inferred, line, reason} for a refined card ({} otherwise)
+    provenance: dict[str, Any] = Field(default_factory=dict)
     created_by: UUID | None = None
     created_at: datetime
 
@@ -104,6 +106,11 @@ class CanonEntity(BaseModel):
     locked: bool = False
     current_version: int | None = None
     current: CanonVersion | None = None
+    # plan/2026-11-12c (schema v23): a place set|vehicle|region|spot|unseen, a thing prop|mentioned (None: not classed);
+    # a spot's set; and why there is no reference plate for this class ("" when there may be one)
+    canon_class: str | None = Field(default=None, validation_alias=AliasChoices("canon_class", "class"))
+    parent_id: UUID | None = None
+    no_plate: str = ""
     # The current card's reference sheet, through /files/{ticket} ("" when there is none).
     reference_sheet_url: str = ""
     reference_sheet_thumb_url: str = ""  # its 640 px WebP, for cards (may 404 for an older sheet: use the full one)
@@ -187,6 +194,7 @@ class CanonLook(LookFields):
     id: UUID
     entity_id: UUID
     status: Literal["draft", "ready"] = "draft"
+    origin: Literal["person", "refine"] = "person"  # plan/2026-11-12c: "refine" = drafted by the canon refine
     # The newest look sheet, through /files/{ticket} ("" until one is made).
     sheet_url: str = ""
     sheet_thumb_url: str = ""
@@ -215,6 +223,17 @@ class SceneLook(BaseModel):
 
     entity_id: UUID
     look_id: UUID
+    # plan/2026-11-12c (schema v23): the person's state in this scene only (wet, lying still), why this look, and who
+    # chose it ("refine": drafted by the canon refine; a person's choice is never replaced)
+    condition: str = ""
+    why: str = ""
+    origin: str = "person"
+
+
+class SceneConditionUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    condition: str = Field(max_length=300)
 
 
 class SceneLooksView(BaseModel):
@@ -264,6 +283,13 @@ def look_sheet_path(look: Mapping[str, Any]) -> str:
     assets = look.get("sheet_assets") or []
     first = assets[0] if isinstance(assets, list) and assets else None
     return str((first.get("path") if isinstance(first, dict) else first) or "")
+
+
+def scene_conditions(picks: Sequence[Mapping[str, Any]]) -> dict[str, str]:
+    """character id -> the scene's condition for them (`scene_looks.condition`, schema v23, plan/2026-11-12c): wet from
+    the rain, lying still. It holds whatever look applies, ready or not: it is the scene's, not the outfit's."""
+    found = {str(p["entity_id"]): _clean(str(p.get("condition") or "")) for p in picks}
+    return {k: v for k, v in found.items() if v}
 
 
 def look_wardrobe(look: Mapping[str, Any]) -> str:
@@ -384,7 +410,8 @@ def reference_sheet_prompt(kind: CanonKind, name: str, card: CanonCard, *, aspec
     elif kind is CanonKind.LOCATION:
         head = ("Location reference plate for a Sri Lankan television drama. Photorealistic, "
                 "wide establishing view at eye level, natural light, no people, no text, no logos.")
-        facts = [f"Location: {name}", f"Look: {_clean(card.look) or _clean(card.summary)}"]
+        # never the summary (plan/2026-11-12c): a summary is the documents' words, often a whole scene with its people
+        facts = [f"Location: {name}", f"Look: {_clean(card.look)}"]
     else:
         head = ("Prop reference sheet for a Sri Lankan television drama. Photorealistic, the "
                 "object alone on a neutral background, two angles, soft even light, no text, no logos.")
@@ -402,6 +429,22 @@ def look_sheet_prompt(character: str, look: LookFields) -> str:
              f"Accessories: {_clean(look.accessories)}"]
     body = "\n".join(f for f in facts if not f.endswith(": "))
     return f"{_SHEET_LAYOUT}{_LOOK_SHEET_RULES}\nAspect ratio {SHEET_ASPECT}.\n{body}"
+
+
+def named_in(name: str, text: str) -> bool:
+    """`name` appears in `text` as whole words ("photo" is not in "photographs"; plan/2026-11-12c Track B). Both are
+    compared as `name_key`s."""
+    key, hay = name_key(name), name_key(text)
+    return bool(key) and re.search(rf"(?<!\w){re.escape(key)}(?!\w)", hay) is not None
+
+
+def props_in(props: Sequence[Mapping[str, Any]], text: str, ids: Sequence[str] | None = None) -> list[str]:
+    """The names of the production's props a scene has: by canon id when the scene has a breakdown (`ids`, the
+    things its brief gives a role: hero, used, worn or dressing), else the props `text` names as whole words."""
+    if ids is not None:
+        wanted = {str(i) for i in ids}
+        return [str(p["name"]) for p in props if str(p.get("id")) in wanted]
+    return [str(p["name"]) for p in props if named_in(str(p.get("name") or ""), text)]
 
 
 def name_key(name: str) -> str:

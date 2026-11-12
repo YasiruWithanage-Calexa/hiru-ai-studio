@@ -627,6 +627,20 @@ class SupabaseCanon(_Base):
         self._cache: AsyncTTLCache[list[Row]] = AsyncTTLCache(CANON_TTL_S)
         clear_after_job(self._cache)
 
+    async def refined(self, production_id: UUID) -> list[Row]:
+        res = (await self.db.table("canon_versions").select("id,entity_id,version,created_at")
+               .eq("production_id", str(production_id)).eq("source", "refine").execute())
+        return _rows(res.data)
+
+    async def set_current(self, entity_id: UUID, version_id: UUID) -> None:
+        await self.db.table("canon_entities").update({"current_version_id": str(version_id)}).eq(
+            "id", str(entity_id)).execute()
+        self._cache.clear()
+
+    async def delete_version(self, version_id: UUID) -> None:
+        await self.db.table("canon_versions").delete().eq("id", str(version_id)).execute()
+        self._cache.clear()
+
     async def create(self, fields: Row) -> Row:
         res = await self.db.table("canon_entities").insert(fields).execute()
         self._cache.clear()
@@ -663,6 +677,7 @@ class SupabaseCanon(_Base):
         res = await self.db.table("canon_entities").select(_CANON).eq("production_id", str(production_id)).order(
             "code").execute()
         return _rows(res.data) or None  # an empty canon is read again: a first card may land any moment
+
 
 
 class SupabaseLooks(_Base):
@@ -717,6 +732,11 @@ class SupabaseSceneLooks(_Base):
     async def clear(self, scene_id: UUID, entity_id: UUID) -> None:
         await self.db.table("scene_looks").delete().eq("scene_id", str(scene_id)).eq(
             "entity_id", str(entity_id)).execute()
+
+    async def set_condition(self, scene_id: UUID, entity_id: UUID, condition: str) -> Row | None:
+        res = (await self.db.table("scene_looks").update({"condition": condition}).eq("scene_id", str(scene_id))
+               .eq("entity_id", str(entity_id)).execute())
+        return _first(res.data)
 
 
 class SupabaseQuestions(_Base):

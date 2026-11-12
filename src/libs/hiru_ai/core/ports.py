@@ -49,6 +49,12 @@ class CanonStore(Protocol):
         """Every look of the production's characters (`canon_looks`): name, episode ranges, outfit, hair, makeup,
         accessories, status. The sheets' storage paths are for the painter; a reader asks `FrameStore.frame_status`."""
 
+    def refine_apply(self, production_id: UUID, payload: Row) -> Row:
+        """One canon refine's answer written in one transaction (`canon_refine_apply`, schema v23, plan/2026-11-12c
+        §3.4): new versions switch only where the card read is still current, came from extract, inferred or refine and
+        is not locked (else a proposal); draft looks never replace a person's; a person's scene look wins. Returns the
+        counts: switched, proposed, skipped_changed, unchanged, looks, scene_looks."""
+
 
 class StructureStore(Protocol):
     """Episodes and scenes as the structure build writes them, the questions it asks, and the looks it drafts."""

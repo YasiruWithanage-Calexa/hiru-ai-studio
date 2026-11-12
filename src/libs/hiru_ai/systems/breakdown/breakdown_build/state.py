@@ -10,3 +10,4 @@ class State(TypedDict, total=False):
     memory: dict[str, Any]  # the breakdown memory (contracts.breakdown.schema.Breakdown), dumped
     failed: str  # why there is no memory at all
     report: dict[str, Any]
+    refined: dict[str, Any]  # plan/2026-11-12c: the canon refine's checked answers (`breakdown_canon_refine.Answers`)

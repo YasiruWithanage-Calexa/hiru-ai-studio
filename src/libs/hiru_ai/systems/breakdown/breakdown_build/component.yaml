@@ -5,7 +5,7 @@ summary: "The scene breakdown at creation (plan/2026-11-11): the split per docum
 status: active
 owner: structure_build
 job_kind: structure_build
-agents: [breakdown_split, breakdown_continuity, breakdown_series, breakdown_episode, breakdown_repair, breakdown_stager]
+agents: [breakdown_split, breakdown_continuity, breakdown_series, breakdown_episode, breakdown_repair, breakdown_stager, breakdown_canon, breakdown_looks]  # the last two through breakdown_canon_refine (plan/2026-11-12c phase 7)
 steps: []
 panels: []
 tools: []  # it reaches `structure_write`'s plan by id (parts.module), as Raphael reaches scene_prep: one owner of how rows are kept

@@ -16,7 +16,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response, status
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos
-from contracts.canon import CanonKind, SceneLook, SceneLookChoice, SceneLooksView
+from contracts.canon import CanonKind, SceneConditionUpdate, SceneLook, SceneLookChoice, SceneLooksView
 from contracts.roles import Permission
 
 router = APIRouter(prefix="/v1/productions/{production_id}/scenes/{scene_id}/looks", tags=["looks"])
@@ -50,9 +50,11 @@ async def choose_scene_look(production_id: UUID, scene_id: UUID, entity_id: UUID
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Look not found.")
     if look.get("status") != "ready":
         raise HTTPException(status.HTTP_409_CONFLICT, "Only a ready look can be used in a scene.")
-    row = await repos.scene_looks.choose({
-        "scene_id": str(scene_id), "entity_id": str(entity_id), "look_id": str(body.look_id),
-        "production_id": str(production_id), "chosen_by": str(access.user.id)})
+    fields = {"scene_id": str(scene_id), "entity_id": str(entity_id), "look_id": str(body.look_id),
+              "production_id": str(production_id), "chosen_by": str(access.user.id)}
+    if any("origin" in r for r in await repos.scene_looks.list(scene_id)):  # schema v23: a person's pick is theirs
+        fields["origin"] = "person"
+    row = await repos.scene_looks.choose(fields)
     await repos.audit.record(action="scene.look_choose", entity="scene", entity_id=str(scene_id),
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={"character": entity["name"], "look": look["name"]})
@@ -69,3 +71,17 @@ async def clear_scene_look(production_id: UUID, scene_id: UUID, entity_id: UUID,
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={"character": str(entity_id)})
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.patch("/{entity_id}/condition", response_model=SceneLook)
+async def set_scene_condition(production_id: UUID, scene_id: UUID, entity_id: UUID, body: SceneConditionUpdate,
+                              access: CanEdit, repos: ReposDep) -> SceneLook:
+    """The person's state in this scene (plan/2026-11-12c): wet from the rain, lying still. Never part of the look."""
+    await _scene(repos, production_id, scene_id)
+    row = await repos.scene_looks.set_condition(scene_id, entity_id, " ".join(body.condition.split()))
+    if row is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "This scene has no look for that character.")
+    await repos.audit.record(action="scene.look_condition", entity="scene", entity_id=str(scene_id),
+                             actor_user_id=access.user.id, production_id=production_id,
+                             diff={"character": str(entity_id), "condition": body.condition})
+    return SceneLook.model_validate(row)

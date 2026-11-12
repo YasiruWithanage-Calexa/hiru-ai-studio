@@ -8,11 +8,16 @@ graph TD;
 	read(read)
 	breakdown(breakdown)
 	fill(fill)
+	refine(refine)
+	refine_apply(refine_apply)
 	__end__([<p>__end__</p>]):::last
 	__start__ --> read;
 	breakdown --> fill;
+	breakdown --> refine;
+	fill --> refine_apply;
 	read --> breakdown;
-	fill --> __end__;
+	refine --> refine_apply;
+	refine_apply --> __end__;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0
 	classDef last fill:#bfb6fc

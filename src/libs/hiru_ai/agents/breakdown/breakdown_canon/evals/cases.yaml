@@ -1,0 +1,881 @@
+# breakdown_canon (plan/2026-11-12c). Scripted replies test the seams; the reply is the real answer of the paid lab
+# call (lab/canon_refine run2, 2026-11-12), in the product's wire shape. The message is built by contracts.canon_refine.
+- name: Ekama Sakshiya, the whole breakdown (the 2026-11-12 lab answer, run2 after its repair)
+  input:
+    message: |-
+      THE DOCUMENTS (numbered lines)
+         9| Setting: Colombo and Mahawewa village
+          …
+        13| A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's
+        14| murder, then returns to his village with the woman he loves to expose the corrupt network that
+        15| destroyed them.
+          …
+        17| Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.
+        18| Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.
+        19| Nimal - 34, Aruni's elder brother and Dinu's closest friend.
+        20| Mudalali - 52, businessman laundering illegal money through village development projects.
+        21| Suren - 38, Mudalali's brutal right-hand man.
+        22| Inspector Ruwan - 45, corrupt police officer protecting the money trail.
+          …
+        34| Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+          …
+        39| SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+        40| Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices
+        41| something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels
+        42| and touches his hand. Inside his fist is a small metal key marked C-17.
+        43| ARUNI - Dinu... oyata meka ahenne nadda?
+        44| She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:
+        45| EKAMA SAKSHIYA.
+        46| SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+        47| Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the
+        48| dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message
+        49| plays.
+        50| ARUNI - Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan
+        51| baya hithenawa.
+        52| Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the
+        53| red thread around his wrist and turns toward the industrial area.
+        54| SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES
+        55| Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the
+        56| C-17 key.
+        57| NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.
+        58| DINU - Api meka gaththoth apiuth eyala wage wenawa.
+        59| NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa
+        60| oyawa atharinnawa.
+        61| Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof.
+
+      THE BREAKDOWN (JSON)
+      {
+       "entities": [
+        {
+         "id": "C01",
+         "kind": "person",
+         "name": "Dinu",
+         "card_lines": [
+          17,
+          17
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S02",
+          "E01-S03"
+         ]
+        },
+        {
+         "id": "C02",
+         "kind": "person",
+         "name": "Aruni",
+         "card_lines": [
+          18,
+          18
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S01",
+          "E01-S02"
+         ]
+        },
+        {
+         "id": "C03",
+         "kind": "person",
+         "name": "Nimal",
+         "card_lines": [
+          19,
+          19
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S01",
+          "E01-S03"
+         ]
+        },
+        {
+         "id": "C04",
+         "kind": "person",
+         "name": "Mudalali",
+         "card_lines": [
+          20,
+          20
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S02"
+         ]
+        },
+        {
+         "id": "C05",
+         "kind": "person",
+         "name": "Suren",
+         "card_lines": [
+          21,
+          21
+         ],
+         "seen": true,
+         "scenes": []
+        },
+        {
+         "id": "C06",
+         "kind": "person",
+         "name": "Inspector Ruwan",
+         "card_lines": [
+          22,
+          22
+         ],
+         "seen": true,
+         "scenes": []
+        },
+        {
+         "id": "L01",
+         "kind": "place",
+         "name": "Colombo",
+         "card_lines": [
+          9,
+          9
+         ],
+         "seen": true,
+         "scenes": [],
+         "place_kind": "region",
+         "within": "",
+         "a_person_wrote": {
+          "look": "night time",
+          "summary": "colombo road"
+         }
+        },
+        {
+         "id": "L02",
+         "kind": "place",
+         "name": "Mahawewa village",
+         "card_lines": [
+          9,
+          9
+         ],
+         "seen": true,
+         "scenes": [],
+         "place_kind": "region",
+         "within": ""
+        },
+        {
+         "id": "L03",
+         "kind": "place",
+         "name": "Mahawewa Canal",
+         "card_lines": [
+          39,
+          45
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S01"
+         ],
+         "place_kind": "set",
+         "within": "L02 Mahawewa village",
+         "a_person_wrote": {
+          "summary": "Mahawewa Canal"
+         }
+        },
+        {
+         "id": "L04",
+         "kind": "place",
+         "name": "Cash Van",
+         "card_lines": [
+          46,
+          53
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S02"
+         ],
+         "place_kind": "vehicle",
+         "within": "L01 Colombo",
+         "a_person_wrote": {
+          "look": "cash van sri lanka"
+         }
+        },
+        {
+         "id": "L05",
+         "kind": "place",
+         "name": "Colombo Garage",
+         "card_lines": [
+          54,
+          61
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S03"
+         ],
+         "place_kind": "set",
+         "within": "L01 Colombo"
+        },
+        {
+         "id": "L06",
+         "kind": "place",
+         "name": "canal gate",
+         "card_lines": [
+          41,
+          42
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S01"
+         ],
+         "place_kind": "spot",
+         "within": "L03 Mahawewa Canal"
+        },
+        {
+         "id": "L07",
+         "kind": "place",
+         "name": "paddy field",
+         "card_lines": [
+          40,
+          40
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S01"
+         ],
+         "place_kind": "spot",
+         "within": "L03 Mahawewa Canal"
+        },
+        {
+         "id": "L08",
+         "kind": "place",
+         "name": "Old Port warehouse",
+         "card_lines": [
+          52,
+          52
+         ],
+         "seen": false,
+         "scenes": [],
+         "place_kind": "set",
+         "within": "L01 Colombo"
+        },
+        {
+         "id": "L09",
+         "kind": "place",
+         "name": "village bus stop",
+         "card_lines": [
+          48,
+          48
+         ],
+         "seen": false,
+         "scenes": [],
+         "place_kind": "set",
+         "within": "L02 Mahawewa village"
+        },
+        {
+         "id": "P01",
+         "kind": "thing",
+         "name": "medical bag",
+         "card_lines": [
+          40,
+          40
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S01"
+         ],
+         "a_person_wrote": {
+          "details": " small medical bag."
+         }
+        },
+        {
+         "id": "P02",
+         "kind": "thing",
+         "name": "key",
+         "card_lines": [
+          42,
+          61
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S01",
+          "E01-S03"
+         ]
+        },
+        {
+         "id": "P03",
+         "kind": "thing",
+         "name": "photo",
+         "card_lines": [
+          47,
+          48
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S02"
+         ]
+        },
+        {
+         "id": "P04",
+         "kind": "thing",
+         "name": "red thread",
+         "card_lines": [
+          52,
+          53
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S02"
+         ]
+        },
+        {
+         "id": "P05",
+         "kind": "thing",
+         "name": "metal box",
+         "card_lines": [
+          55,
+          56
+         ],
+         "seen": true,
+         "scenes": [
+          "E01-S03"
+         ]
+        },
+        {
+         "id": "P06",
+         "kind": "thing",
+         "name": "gun",
+         "card_lines": [
+          34,
+          34
+         ],
+         "seen": false,
+         "scenes": []
+        },
+        {
+         "id": "P07",
+         "kind": "thing",
+         "name": "Rs. 300 million",
+         "card_lines": [
+          13,
+          15
+         ],
+         "seen": false,
+         "scenes": [
+          "E01-S03"
+         ]
+        }
+       ],
+       "scenes": [
+        {
+         "id": "E01-S01",
+         "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+         "lines": [
+          39,
+          45
+         ],
+         "place": "L03",
+         "mood": [
+          "bleak",
+          "restrained",
+          "ominous"
+         ],
+         "people": [
+          "C02",
+          "C03"
+         ],
+         "things": [
+          "P01 (used)",
+          "P02 (hero)"
+         ]
+        },
+        {
+         "id": "E01-S02",
+         "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+         "lines": [
+          46,
+          53
+         ],
+         "place": "L04",
+         "mood": [
+          "uneasy",
+          "isolated",
+          "pressured"
+         ],
+         "people": [
+          "C01",
+          "C02",
+          "C04"
+         ],
+         "things": [
+          "P03 (dressing)",
+          "P04 (worn)"
+         ]
+        },
+        {
+         "id": "E01-S03",
+         "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES",
+         "lines": [
+          54,
+          61
+         ],
+         "place": "L05",
+         "mood": [
+          "secretive",
+          "tense",
+          "morally conflicted"
+         ],
+         "people": [
+          "C03",
+          "C01"
+         ],
+         "things": [
+          "P05 (used)",
+          "P02 (hero)",
+          "P07 (mentioned)"
+         ]
+        }
+       ],
+       "direction_rules": [
+        {
+         "id": "D01",
+         "about": "palette",
+         "text": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\ncrowded backgrounds.",
+         "applies_to": "Colombo"
+        },
+        {
+         "id": "D02",
+         "about": "palette",
+         "text": "Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer\nsilences.",
+         "applies_to": "Mahawewa village"
+        },
+        {
+         "id": "D05",
+         "about": "lighting",
+         "text": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.",
+         "applies_to": "all"
+        }
+       ],
+       "continuity": {
+        "looks": [
+         {
+          "kind": "death",
+          "note": "Alive in E01-S03; found dead at L06 in E01-S01. No cause of death or specific injury is established.",
+          "lines": {
+           "end": 61,
+           "start": 41
+          },
+          "person": "C03",
+          "reason": "",
+          "source": "script",
+          "to_scene": "E01-S01",
+          "from_scene": "E01-S03"
+         }
+        ],
+        "timeline": [
+         {
+          "scene": "E01-S03",
+          "story_order": 1,
+          "kind": "flashback",
+          "relative": "Six hours earlier"
+         },
+         {
+          "scene": "E01-S02",
+          "story_order": 2,
+          "kind": "normal",
+          "relative": "Night; six hours after E01-S03"
+         },
+         {
+          "scene": "E01-S01",
+          "story_order": 3,
+          "kind": "cold_open",
+          "relative": "Dawn, apparently following E01-S02; no numbered story day is stated"
+         }
+        ]
+       }
+      }
+  reply:
+    people:
+    - id: C01
+      gender:
+        value: Male
+        source: script
+        line: 13
+        reason: ''
+      age:
+        value: '30'
+        source: script
+        line: 17
+        reason: ''
+      appearance:
+        value: Medium-tall, lean and wiry, with strong forearms and medium-deep brown skin. A narrow rectangular face, deep-set
+          dark brown eyes, straight nose and short, even stubble. Thick black hair cropped close at the sides, slightly longer
+          and brushed forward on top. Economical movements and a steady, guarded gaze.
+        source: inferred
+        line: 0
+        reason: Drawn from Dinu's experienced driving work, restrained manner and practical physicality in the character and
+          action notes.
+      wardrobe:
+        value: A faded navy short-sleeved cotton work shirt, charcoal straight-leg work trousers and scuffed black closed
+          shoes. Shirt tucked in, collar open, sleeves close around the upper arms. A red thread around one wrist.
+        source: inferred
+        line: 0
+        reason: Practical present-day Colombo cash-transport workwear, retaining the wrist thread specified at lines 52–53.
+      voice:
+        value: Low mid-register, dry and slightly rough; quiet conversational Sinhala, short phrases and deliberate pauses,
+          with a firmer edge under pressure.
+        source: inferred
+        line: 0
+        reason: Based on Dinu's quiet character description and his restrained objection in the garage dialogue.
+    - id: C02
+      gender:
+        value: Female
+        source: inferred
+        line: 0
+        reason: Aruni is presented as the woman Dinu loves in the logline and character relationships.
+      age:
+        value: '27'
+        source: script
+        line: 18
+        reason: ''
+      appearance:
+        value: Medium height, compact build and medium-brown skin. An oval face with broad cheekbones, dark almond-shaped
+          eyes, full straight brows and a softly squared chin. Long, thick black hair with a centre part, secured in a low
+          bun. Aruni and Nimal share their broad cheekbones and dark, level brows.
+        source: inferred
+        line: 0
+        reason: Designed around Aruni's practical community nursing role, controlled bearing and sibling relationship with
+          Nimal.
+      wardrobe:
+        value: A plain white short-sleeved nursing dress with a modest collar, fitted waist and below-knee hem, white ankle
+          socks and practical white closed shoes. Neatly secured hair and minimal jewellery.
+        source: inferred
+        line: 0
+        reason: A locally grounded nursing work look for a Mahawewa community nurse carrying a medical bag on her rounds.
+      voice:
+        value: Clear mid-register with a warm, firm centre; precise Sinhala diction, measured pacing and controlled breath.
+          Worry enters through shortened phrases rather than raised volume.
+        source: inferred
+        line: 0
+        reason: Based on Aruni's emotionally controlled character description, restrained canal response and anxious voice
+          message.
+    - id: C03
+      gender:
+        value: Male
+        source: script
+        line: 19
+        reason: ''
+      age:
+        value: '34'
+        source: script
+        line: 19
+        reason: ''
+      appearance:
+        value: Average height, broad-shouldered and solidly built, with medium-brown skin. A broad oval face, pronounced cheekbones,
+          dark level brows and a rounded nose. A neat black moustache with otherwise clean-shaven cheeks. Short, slightly
+          wavy black hair combed to one side. Nimal shares Aruni's cheekbones and brow shape.
+        source: inferred
+        line: 0
+        reason: A distinct older-brother silhouette, with visible family resemblance to Aruni and a clear contrast to Dinu's
+          lean face.
+      wardrobe:
+        value: A faded brick-red cotton shirt with the sleeves rolled to the elbows, dark brown trousers and worn brown rubber-soled
+          sandals. Open collar and a slightly loose, untucked shirt.
+        source: inferred
+        line: 0
+        reason: Everyday village-to-Colombo clothing suited to the garage meeting, with an earthy colour that remains identifiable
+          in the canal sequence.
+      voice:
+        value: Rounded, resonant mid-low voice with a lightly grainy edge; direct conversational Sinhala, faster than Dinu,
+          with pointed stresses and familiar, intimate phrasing.
+        source: inferred
+        line: 0
+        reason: Based on Nimal's blunt explanation of the money and personal challenge to his closest friend in the garage.
+    - id: C04
+      gender:
+        value: Male
+        source: inferred
+        line: 0
+        reason: The businessman role and Mudalali's presentation in the character list establish a masculine casting.
+      age:
+        value: '52'
+        source: script
+        line: 20
+        reason: ''
+      appearance:
+        value: Average height with a heavy torso, rounded shoulders and medium warm-brown skin. A broad round face, heavy
+          eyelids, fleshy cheeks and a close-trimmed salt-and-pepper moustache. Black-and-grey hair combed neatly back from
+          a receding hairline.
+        source: inferred
+        line: 0
+        reason: A settled, prosperous businessman silhouette distinct from the younger physical enforcers and working men.
+      wardrobe:
+        value: A crisp cream short-sleeved shirt with an open collar, dark taupe tailored trousers and polished brown leather
+          sandals. A substantial gold-tone wristwatch.
+        source: inferred
+        line: 0
+        reason: Present-day Sri Lankan provincial business dress suited to Mudalali's wealth and village development dealings.
+      voice:
+        value: Low, rounded and unhurried, with slightly nasal resonance; clipped Sinhala instructions, little change in volume
+          and firm downward endings.
+        source: inferred
+        line: 0
+        reason: Based on Mudalali's authority over the transport route and his terse instruction during the call.
+    - id: C05
+      gender:
+        value: Male
+        source: script
+        line: 21
+        reason: ''
+      age:
+        value: '38'
+        source: script
+        line: 21
+        reason: ''
+      appearance:
+        value: Tall and thick-set, with a powerful neck, broad chest and deep brown skin. A square face, blunt nose, close-set
+          dark eyes and dense, short black beard. Black hair cut very close all over. A forward-set stance and heavy, deliberate
+          movements.
+        source: inferred
+        line: 0
+        reason: Built from Suren's physical right-hand-man role, with a silhouette unlike Dinu, Nimal or Mudalali.
+      wardrobe:
+        value: A dark olive short-sleeved shirt worn open at the neck, black straight-leg jeans and heavy black lace-up shoes.
+          Sleeves fitted closely around the upper arms.
+        source: inferred
+        line: 0
+        reason: Practical contemporary clothing for Mudalali's physically imposing associate, grounded in the treatment's
+          restrained realism.
+      voice:
+        value: Coarse bass-baritone with a chesty rasp; blunt, compressed Sinhala phrases, abrupt starts and little conversational
+          softness.
+        source: inferred
+        line: 0
+        reason: Inferred from Suren's forceful right-hand-man character description; no dialogue is supplied.
+    - id: C06
+      gender:
+        value: Male
+        source: inferred
+        line: 0
+        reason: Masculine casting inferred from Inspector Ruwan's name and character presentation.
+      age:
+        value: '45'
+        source: script
+        line: 22
+        reason: ''
+      appearance:
+        value: Medium-tall and upright, with a trim build and medium tan-brown skin. A long angular face, high forehead, thin
+          lips and a sharply trimmed black moustache. Short side-parted black hair, greying at the temples, with clean edges
+          above the ears.
+        source: inferred
+        line: 0
+        reason: A disciplined police-officer appearance, distinct from Mudalali's rounded features and Suren's heavy build.
+      wardrobe:
+        value: 'A pressed khaki Sri Lankan police inspector''s uniform: short-sleeved shirt with epaulettes and three silver-coloured
+          stars on each shoulder, matching trousers, dark brown leather belt and polished dark brown shoes.'
+        source: inferred
+        line: 0
+        reason: Locally grounded on-duty uniform for the stated police rank.
+      voice:
+        value: Dry mid-register with precise consonants; formal Sinhala, evenly paced questions and clipped final syllables,
+          with little audible warmth.
+        source: inferred
+        line: 0
+        reason: Inferred from Inspector Ruwan's official authority and controlled role in protecting the money trail; no dialogue
+          is supplied.
+    places:
+    - id: L01
+      kind: region
+      parent: ''
+      look:
+        value: 'Colombo at night: rain-glossed roads, cold blue and green tones broken by sodium-orange light, dense urban
+          edges and industrial textures.'
+        source: inferred
+        line: 0
+        reason: Retains the supplied night-time Colombo road treatment and combines the palette at line 24 with the wet streets
+          at line 47.
+      why: Regional style reference for the Colombo locations, not a single reference plate.
+    - id: L02
+      kind: region
+      parent: ''
+      look:
+        value: Mahawewa village in natural light, with warm amber and earthy-red tones and a quiet rural atmosphere.
+        source: inferred
+        line: 0
+        reason: Drawn from the village setting at line 9 and the warm amber, earthy red, natural light and longer silences
+          prescribed at lines 26–27.
+      why: Regional palette and light reference for the village locations.
+    - id: L03
+      kind: set
+      parent: L02
+      look:
+        value: Exterior of a narrow rural irrigation canal beside low paddy land. Wet red-earth banks, a narrow raised footpath,
+          rough concrete canal edges and a small weathered sluice structure. Clouded brown water, rain-ringed puddles and
+          dense wet green growth. Heavy dawn rain beneath a pale grey sky; muted amber light on exposed earth and subdued
+          earthy-red accents.
+        source: inferred
+        line: 0
+        reason: Builds the canal, adjacent paddy field and gate at lines 39–42 into a Mahawewa reference plate, retaining
+          the village palette under rainy dawn light.
+      why: The canal is the principal visible setting of the dawn scene.
+    - id: L04
+      kind: vehicle
+      parent: L01
+      look:
+        value: Interior of a right-hand-drive Sri Lankan cash-transfer van, with a compact two-seat cab, worn charcoal vinyl
+          seats, a grey moulded dashboard and a steel security partition behind the seats. A small faded photographic print
+          rests on the dashboard. Rain beads across the windscreen; green-blue instrument light and bands of sodium orange
+          illuminate the dark cabin at night.
+        source: inferred
+        line: 0
+        reason: Retains the supplied Sri Lankan cash-van treatment and develops the night interior, dashboard photo and rain
+          at lines 46–48 using the Colombo palette.
+      why: The scene takes place inside the van rather than on a separate street set.
+    - id: L05
+      kind: set
+      parent: L01
+      look:
+        value: Interior of a modest single-bay Colombo garage, with stained concrete flooring, rough rendered block walls
+          and a low corrugated-metal roof on exposed steel beams. A shallow workbench, open shelving, stacked tyres and grease-darkened
+          hand tools line the edges. Rainwater tracks down the entrance threshold. Weak overcast light at the opening mixes
+          with a greenish practical tube and a small warm utility bulb; cold blue-grey, dirty green and restrained orange
+          tones.
+        source: inferred
+        line: 0
+        reason: Developed from the garage heading and rain on the roof at lines 54–61, using practical lighting and the prescribed
+          Colombo colours without assigning an unstated time of day.
+      why: The garage requires its own empty reference plate for the earlier meeting.
+    - id: L06
+      kind: spot
+      parent: L03
+      look:
+        value: A narrow rust-brown metal sluice gate between rough concrete cheeks, with a wet concrete lip just above the
+          canal water.
+        source: inferred
+        line: 0
+        reason: A practical irrigation-gate design for the canal gate named at line 41.
+      why: A distinct position within the canal set, not a separate location.
+    - id: L07
+      kind: spot
+      parent: L03
+      look:
+        value: A low, waterlogged paddy plot beside the canal footpath, with short green rice plants and narrow red-brown
+          earthen bunds beneath heavy rain.
+        source: inferred
+        line: 0
+        reason: Develops the paddy field beside Aruni's route at line 40 within the rainy canal setting.
+      why: The paddy field forms an adjoining portion of the canal scene.
+    - id: L08
+      kind: unseen
+      parent: L01
+      look:
+        value: ''
+        source: script
+        line: 52
+        reason: ''
+      why: Old Port warehouse is named as a destination but is not visited in the supplied scenes.
+    - id: L09
+      kind: unseen
+      parent: L02
+      look:
+        value: ''
+        source: script
+        line: 48
+        reason: ''
+      why: The village bus stop appears only within the dashboard photo; no separate location plate is needed.
+    things:
+    - id: P01
+      kind: prop
+      details:
+        value: A small medical bag in dark navy wipe-clean fabric, with a rectangular soft-sided body, short carrying handles,
+          a black zip and lightly worn corners.
+        source: inferred
+        line: 0
+        reason: Retains the supplied small medical bag and gives it a practical portable finish for Aruni's rural nursing
+          work in rain.
+    - id: P02
+      kind: prop
+      details:
+        value: A small metal key marked C-17.
+        source: script
+        line: 42
+        reason: ''
+    - id: P03
+      kind: prop
+      details:
+        value: A faded photograph of Dinu and Aruni near a village bus stop, displayed on the cash van dashboard.
+        source: script
+        line: 48
+        reason: ''
+    - id: P04
+      kind: prop
+      details:
+        value: A red thread around Dinu's wrist.
+        source: script
+        line: 53
+        reason: ''
+    - id: P05
+      kind: prop
+      details:
+        value: A compact rectangular metal box in dull grey steel, with a hinged lid, rubbed edges and small surface scratches.
+          Inside are loose photographs, bank documents and the small metal key marked C-17.
+        source: inferred
+        line: 0
+        reason: The metal box and contents are specified at lines 55–56; its size, finish and wear are practical design choices
+          for handling on the garage work surface.
+    - id: P06
+      kind: mentioned
+      details:
+        value: A compact handgun with a matte charcoal metal finish, a dark textured grip and lightly rubbed edges.
+        source: inferred
+        line: 0
+        reason: The gun appears only in the slow-motion direction note at line 34; a restrained contemporary design matches
+          the grounded visual treatment.
+    - id: P07
+      kind: mentioned
+      details:
+        value: Rs. 300 million; denomination, packaging and visible arrangement unspecified.
+        source: script
+        line: 57
+        reason: ''
+- name: one driver, one van, one key (a small hand-made case)
+  input:
+    message: "THE DOCUMENTS (numbered lines)\n   1| KASUN - 41, bus driver.\n   2| INT. BUS - NIGHT\n   3| Kasun turns the\
+      \ key.\n\nTHE BREAKDOWN (JSON)\n{\"entities\": [{\"id\": \"C01\", \"kind\": \"person\", \"name\": \"Kasun\"}, {\"id\"\
+      : \"L01\", \"kind\": \"place\", \"name\": \"Bus\", \"place_kind\": \"vehicle\"}, {\"id\": \"P01\", \"kind\": \"thing\"\
+      , \"name\": \"key\"}]}"
+  reply:
+    people:
+    - id: C01
+      gender:
+        value: man
+        source: script
+        line: 1
+        reason: ''
+      age:
+        value: '41'
+        source: script
+        line: 1
+        reason: ''
+      appearance:
+        value: stocky, short grey hair, a thin moustache
+        source: inferred
+        line: 0
+        reason: from the scene
+      wardrobe:
+        value: a pale blue depot shirt and navy trousers
+        source: inferred
+        line: 0
+        reason: from the scene
+      voice:
+        value: low and calm
+        source: inferred
+        line: 0
+        reason: from the scene
+    places:
+    - id: L01
+      kind: vehicle
+      parent: ''
+      look:
+        value: the inside of an old red Sri Lankan passenger bus at night, worn green vinyl seats, chrome rails, a dim strip
+          light
+        source: inferred
+        line: 0
+        reason: from the scene
+      why: a scene happens in it
+    things:
+    - id: P01
+      kind: prop
+      details:
+        value: a small brass ignition key on a frayed string
+        source: inferred
+        line: 0
+        reason: from the scene

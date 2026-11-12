@@ -409,13 +409,25 @@ def natural_cast(ld: Loaded, canon_rows: list[Row]) -> dict[str, set[str]]:
             | place for s in ld.shots}
 
 
-def scene_canon_ids(ld: Loaded, canon_rows: list[Row]) -> list[str]:
+def briefed_ids(packet_row: Row | None, scene: Row) -> list[str]:
+    """plan/2026-11-12c Track B: the scene's canon by id from its packet (the breakdown's brief through the memory's
+    map): the people on screen, not only speakers, and the things a camera sees. [] without a current packet."""
+    if not packet_row or int(packet_row.get("script_version") or 0) != int(scene.get("script_version") or 1):
+        return []
+    canon = (packet_row.get("packet") or {}).get("canon") or {}
+    return [str(i) for i in [*(canon.get("people") or []), *(canon.get("things") or [])] if i]
+
+
+def scene_canon_ids(ld: Loaded, canon_rows: list[Row], briefed: list[str] | None = None) -> list[str]:
     """The canon the scene uses, in order: its place, then who speaks in it, then what a person added
-    to any of its shots. Whoever is in none of its shots any more (taken out by hand) is left out."""
+    to any of its shots. Whoever is in none of its shots any more (taken out by hand) is left out. `briefed`: what
+    the scene's breakdown brief adds by id (plan/2026-11-12c Track B), after the rest and kept even when no shot names
+    it (a silent person on screen, a prop no line names)."""
     base = [str(ld.scene["location_id"])] if ld.scene.get("location_id") else []
     base += [str(ln["character_id"]) for ln in ld.lines if ln.get("character_id")]
+    extra = [i for i in briefed or [] if i not in base]
     if not ld.shots:
-        return list(dict.fromkeys(base))
+        return list(dict.fromkeys([*base, *extra]))
     natural = natural_cast(ld, canon_rows)
     present: set[str] = set()
     added: list[str] = []
@@ -423,12 +435,15 @@ def scene_canon_ids(ld: Loaded, canon_rows: list[Row]) -> list[str]:
         edits = PersonEdits.of(shot)
         present |= (natural[str(shot["id"])] | set(edits.cast.add)) - set(edits.cast.remove)
         added += edits.cast.add
-    return [cid for cid in dict.fromkeys([*base, *added]) if cid in present]
+    kept = [cid for cid in dict.fromkeys([*base, *added]) if cid in present]
+    removed = {r for shot in ld.shots for r in PersonEdits.of(shot).cast.remove}
+    return [*kept, *(i for i in dict.fromkeys(extra) if i not in kept and i not in removed)]
 
 
 async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneView:
     production_id = access.production_id
-    ld, canon_rows = await asyncio.gather(load(repos, access, scene_id), repos.canon.list(production_id))
+    ld, canon_rows, packet_row = await asyncio.gather(load(repos, access, scene_id), repos.canon.list(production_id),
+                                                      repos.packets.get(production_id, scene_id))
     scene = ld.scene
     episode_id = UUID(str(scene["episode_id"]))
     episode, siblings = await asyncio.gather(repos.episodes.get(production_id, episode_id),
@@ -509,7 +524,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             implied=bool(item and item.implied), bridge=item.bridge if item else ""))
 
     canon_refs = []
-    for cid in scene_canon_ids(ld, canon_rows):
+    for cid in scene_canon_ids(ld, canon_rows, briefed_ids(packet_row, scene)):
         c = canon.get(cid)
         if c:
             current = c.get("current") or {}

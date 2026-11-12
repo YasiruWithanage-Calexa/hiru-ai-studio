@@ -42,6 +42,7 @@ from contracts.canon import (
     looks_in_force,
     reference_sheet_aspect,
     reference_sheet_prompt,
+    scene_conditions,
 )
 from contracts.frame_brief import (
     MAX_REFERENCES,
@@ -220,8 +221,10 @@ class FrameJob:
     def cast(self, shot: Row, cast_ids: list[str]) -> list[CastMember]:
         """The people in the shot, each dressed in the look the scene uses, if any."""
         looks = self.looks(str(shot["scene_id"]))
-        return [self.members[c].model_copy(update={"look": look_wardrobe(looks[c])}) if c in looks
-                else self.members[c] for c in cast_ids if c in self.members]
+        conditions = scene_conditions(self.store.scene_looks(str(shot["scene_id"])))  # plan/2026-11-12c
+        out = [self.members[c].model_copy(update={"look": look_wardrobe(looks[c])}) if c in looks
+               else self.members[c] for c in cast_ids if c in self.members]
+        return [m.model_copy(update={"condition": conditions[m.id]}) if m.id in conditions else m for m in out]
 
     def compose(self, shot: Row, labels: list[str]) -> tuple[str, Row]:
         """→ (the frame prompt naming exactly `labels` as its attached images, the pins). The

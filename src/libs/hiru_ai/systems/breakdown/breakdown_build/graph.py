@@ -9,6 +9,10 @@
     fill      D1: canon cards, `episodes` / `scenes` / `dialogue_lines` through `structure_write`'s plan, the direction
               rules as `production_memory` drafts, and the creation questions (defaulted: the earlier document wins)
     packets   each scene's packet, assembled by code, kept beside the scene with what it waits for
+    refine    plan/2026-11-12c phase 7, the fork-join: beside fill, the canon refine's two calls
+              (`breakdown_canon_refine`, reached by id) read the finished memory; `refine_apply` waits for both
+              branches, maps the answers to the canon fill left and writes them all at once. Every error there is a
+              warning ("Canon kept as extracted"): the refine never fails a build. Then the graph ends and PLAN starts.
 
 The structure_build function runs this instead of its own build when `BREAKDOWN__ENABLED` (the absorbed steps retire
 behind that switch; the old path stays until the live check). A delivery whose state names `breakdown_refresh` (a scene
@@ -58,6 +62,7 @@ _SAVING = threading.Lock()  # one memory save at a time in this process (the sta
 AGENT = Agent.ARCHITECT.value
 Row = dict[str, Any]
 STORY_ROLES = ("script", "outline", "bible", "canon_index", "notes")  # every document a person uploaded for the story
+REFINE_KEPT = "Canon kept as extracted"  # plan/2026-11-12c: a refine error is a warning, never a failed build
 NO_MODEL = (
     "The scene breakdown needs the AI model, which is not available. Turn BREAKDOWN__ENABLED off to build as before."
 )
@@ -106,6 +111,8 @@ def packet_rows(bd: Breakdown, scene_ids: list[str] | None = None) -> list[Row]:
         else:
             got = packet.assemble(bd, sc.id)
             waits = packet.incomplete(bd, got)
+            if canon := packet.canon_of(bd, sc.id):  # plan/2026-11-12c Track B: the scene's canon by id
+                got["canon"] = canon
         rows.append(
             {
                 "scene_id": sc.row_id,
@@ -169,6 +176,16 @@ def canon_rows(
             )
         )
     return out
+
+
+def canon_map(bd: Breakdown, canon: list[Row]) -> None:
+    """plan/2026-11-12c Track B: breakdown id -> canon entity id on the memory, so a renamed canon entry is still the
+    same entry. A mapped entity that was deleted is dropped; the rest are matched by kind and name once."""
+    from contracts.canon_refine import canon_map as match
+
+    alive = {str(c["id"]) for c in canon}
+    kept = {k: v for k, v in bd.canon_ids.items() if v in alive}
+    bd.canon_ids = {**match(bd, canon, kept), **kept}
 
 
 def question_rows(job_id: UUID, production_id: UUID, questions: list[str]) -> list[Row]:
@@ -255,6 +272,7 @@ def fill_columns(
         )
         if sc is not None and not sc.row_id and str(h["id"]) not in written:
             sc.row_id, sc.script_version = str(h["id"]), int(h.get("script_version") or 1)
+    canon_map(bd, canon_port.entities(production_id))
     mem = ctx.ports.memory
     rules = fill.memory_rows(bd)
     if mem is not None:
@@ -369,13 +387,60 @@ def build(
         jobs.stage(job_id, Stage.SCENES.value, "done", f"{report['scenes']} scenes")
         return {"report": {**report, "ready": ready}}
 
+    def kept(why: str) -> None:
+        jobs.event(job_id, JobEventType.WARNING, {"text": f"{REFINE_KEPT} ({why})."}, agent=AGENT)
+
+    def refine_node(state: State) -> State:
+        """The refine branch's two calls, beside fill. Nothing is written here."""
+        if state.get("failed") or not get_settings().breakdown.refine:
+            return {}
+        try:
+            mod = parts.module("system", "breakdown_canon_refine", "graph")
+            bd = Breakdown.model_validate(state["memory"])
+            store = ctx.need("breakdown")
+            sources = [SourceMemory.model_validate(r["body"]) for r in store.sources(production_id)]
+            lines = memory.doc(sources, bd.person_lines).lines
+            got = mod.answers(bd, lines, ctx.need("canon").entities(production_id), calls=mod.calls(ctx), progress=say)
+        except Exception as exc:
+            _log.warning("the canon refine's calls failed", exc_info=True)
+            kept(type(exc).__name__)
+            return {}
+        return {"refined": got.dump()}
+
+    def refine_apply(state: State) -> State:
+        """The join: fill has written the canon and the scene rows; the answers are mapped to them and written."""
+        if not state.get("refined") or state.get("failed"):
+            return {}
+        try:
+            mod = parts.module("system", "breakdown_canon_refine", "graph")
+            bd, _, _ = load(ctx, production_id)  # as fill saved it: the scene rows and the canon map are in it
+            if bd is None:
+                return {}
+            canon = ctx.need("canon").entities(production_id)
+            res = mod.payload_of(mod.Answers.load(state["refined"]), bd, canon, aspect_ratio=aspect_ratio,
+                                 actor=str(payload.actor_user_id) if payload.actor_user_id else None)
+            for note in res.notes:
+                jobs.event(job_id, JobEventType.WARNING, {"text": note}, agent=AGENT)
+            done = mod.apply(ctx, production_id, res)
+        except Exception as exc:
+            _log.warning("the canon refine could not be written", exc_info=True)
+            kept(type(exc).__name__)
+            return {}
+        jobs.event(job_id, JobEventType.AGENT_STEP, {"text": mod.summary(done)}, agent=AGENT)
+        counts = {k: done.get(k, 0) for k in ("switched", "proposed", "skipped_changed", "looks", "scene_looks")}
+        return {"report": {**dict(state.get("report") or {}), "canon_refine": {**counts, "review": len(done.get(
+            "review") or [])}}}
+
     g: Any = StateGraph(State)
-    for name, fn in (("read", read), ("breakdown", breakdown), ("fill", fill_node)):
+    for name, fn in (("read", read), ("breakdown", breakdown), ("fill", fill_node), ("refine", refine_node),
+                     ("refine_apply", refine_apply)):
         g.add_node(name, fn)
     g.add_edge(START, "read")
     g.add_edge("read", "breakdown")
     g.add_edge("breakdown", "fill")
-    g.add_edge("fill", END)
+    g.add_edge("breakdown", "refine")  # plan/2026-11-12c: the fork
+    g.add_edge(["fill", "refine"], "refine_apply")  # the join: planning waits for both
+    g.add_edge("refine_apply", END)
     return g.compile()
 
 
