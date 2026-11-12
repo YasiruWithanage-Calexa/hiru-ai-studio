@@ -1,0 +1,408 @@
+{
+ "people": [
+  {
+   "id": "C01",
+   "gender": {
+    "value": "Male",
+    "source": "script",
+    "line": 48,
+    "reason": ""
+   },
+   "age": {
+    "value": "30",
+    "source": "script",
+    "line": 17,
+    "reason": ""
+   },
+   "appearance": {
+    "value": "Medium-tall, lean and wiry, with work-hardened forearms and medium-deep brown skin. Long rectangular face, straight nose, deep-set dark eyes and short, even stubble. Dense black hair cropped close at the sides, with a short, slightly wavy top.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His experienced driving work and practical physical resourcefulness suggest a compact, capable build rather than a bodybuilder silhouette."
+   },
+   "wardrobe": {
+    "value": "Faded slate-blue short-sleeved cotton work shirt, charcoal work trousers, plain black belt and worn black lace-up shoes. A red thread stays around his wrist.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Practical Colombo cash-transport workwear follows his occupation; the wrist thread is specified at line 53."
+   },
+   "voice": {
+    "value": "Low, slightly grainy baritone; economical conversational Sinhala, with measured pauses and a restrained, firm delivery.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His quiet temperament and morally cautious reply in the garage support an understated voice."
+   }
+  },
+  {
+   "id": "C02",
+   "gender": {
+    "value": "Female",
+    "source": "script",
+    "line": 40,
+    "reason": ""
+   },
+   "age": {
+    "value": "27",
+    "source": "script",
+    "line": 18,
+    "reason": ""
+   },
+   "appearance": {
+    "value": "Average height, slim but sturdy, with warm medium-brown skin. Oval face, broad expressive eyebrows, dark almond-shaped eyes and a softly squared chin. Thick black hair, lightly wavy and reaching below the shoulders, usually secured in a low bun. Shares a broad brow and eye shape with C03.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Her active nursing work suggests practical grooming; shared facial features establish the sibling relationship with C03."
+   },
+   "wardrobe": {
+    "value": "Plain pale-blue cotton blouse with elbow-length sleeves, a dark navy ankle-length skirt and black flat rubber-soled shoes; neat, modest community-visit clothing.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Village community nursing and walking beside wet paddy land call for modest, washable clothes and practical footwear."
+   },
+   "voice": {
+    "value": "Clear mid-register voice with a warm, firm centre; precise Sinhala phrasing, controlled breath and little outward tremor even when worried.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Her emotional control, nursing role and concerned voice message support clarity without theatrical distress."
+   }
+  },
+  {
+   "id": "C03",
+   "gender": {
+    "value": "Male",
+    "source": "script",
+    "line": 19,
+    "reason": ""
+   },
+   "age": {
+    "value": "34",
+    "source": "script",
+    "line": 19,
+    "reason": ""
+   },
+   "appearance": {
+    "value": "Medium height, broad-shouldered and solidly built, with warm medium-brown skin. Broad oval face, strong brows, dark almond-shaped eyes and a rounded nose. Thick black moustache, otherwise clean-shaven; short wavy black hair swept to one side. Shares C02's brow and eye shape.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The sibling resemblance anchors the family, while his stockier build and moustache distinguish him clearly from C01."
+   },
+   "wardrobe": {
+    "value": "Faded rust-brown short-sleeved checked cotton shirt, untucked over dark olive trousers, with worn brown leather sandals.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His village ties and informal garage meeting suggest ordinary practical clothing, with rust tones linking him to the village palette."
+   },
+   "voice": {
+    "value": "Full, chesty mid-low voice with a slightly rough edge; familiar, direct Sinhala delivered faster than C01, pressing important words with urgency.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His blunt explanation and personal challenge in lines 57–60 suggest a forceful, emotionally familiar delivery."
+   }
+  },
+  {
+   "id": "C04",
+   "gender": {
+    "value": "Male",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The businessman description and Mudalali title support male casting."
+   },
+   "age": {
+    "value": "52",
+    "source": "script",
+    "line": 20,
+    "reason": ""
+   },
+   "appearance": {
+    "value": "Average height with a heavy torso, soft waist and medium-brown skin. Broad round face, hooded eyes, fleshy cheeks and a carefully trimmed moustache. Short black hair combed neatly back, visibly grey at the temples.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "An established village-project businessman suggests comfortable prosperity and deliberately maintained respectability."
+   },
+   "wardrobe": {
+    "value": "Crisp ivory short-sleeved shirt, pressed beige trousers and polished dark-brown slip-on shoes; a substantial gold-tone wristwatch.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His local business status calls for respectable, affluent Sri Lankan daywear rather than conspicuous formal suiting."
+   },
+   "voice": {
+    "value": "Rounded low baritone, smooth and unhurried; short instructions delivered as settled decisions, with a clipped finish when challenged.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His route-change instruction and position over the driver suggest habitual, understated authority."
+   }
+  },
+  {
+   "id": "C05",
+   "gender": {
+    "value": "Male",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The name and right-hand-man character description support male casting."
+   },
+   "age": {
+    "value": "38",
+    "source": "script",
+    "line": 21,
+    "reason": ""
+   },
+   "appearance": {
+    "value": "Tall, thick-necked and powerfully built, with deep brown skin. Square face, heavy jaw, flat straight brows and closely set dark eyes. Black hair clipped almost to the scalp and coarse, close-cropped beard.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His intimidating enforcer role suggests a physically imposing silhouette distinct from the driver and businessman."
+   },
+   "wardrobe": {
+    "value": "Dark charcoal short-sleeved polo shirt, black straight-cut jeans and heavy black lace-up boots; plain, close-fitting clothes without bright decoration.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The right-hand man's physical role calls for unobtrusive contemporary clothing with freedom of movement."
+   },
+   "voice": {
+    "value": "Rough bass with a dry rasp; terse phrases, blunt consonants and little melodic variation.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His forceful enforcer characterization supports a spare, intimidating delivery."
+   }
+  },
+  {
+   "id": "C06",
+   "gender": {
+    "value": "Male",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The name and police-inspector characterization support male casting."
+   },
+   "age": {
+    "value": "45",
+    "source": "script",
+    "line": 22,
+    "reason": ""
+   },
+   "appearance": {
+    "value": "Tall and lean with an upright bearing and medium tan-brown skin. Narrow angular face, high forehead, thin lips and watchful dark eyes. Neatly edged narrow moustache; short side-parted black hair with a receding hairline and scattered grey.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "A senior police role suggests controlled grooming and posture; the narrow silhouette separates him from C04 and C05."
+   },
+   "wardrobe": {
+    "value": "Pressed Sri Lankan police khaki short-sleeved uniform shirt and matching trousers, inspector-rank shoulder insignia, dark leather duty belt and polished black shoes.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His stated inspector role grounds the base look in present-day Sri Lankan police dress."
+   },
+   "voice": {
+    "value": "Dry, clear mid-low register with formal diction; evenly paced questions and quiet, pointed emphasis rather than shouting.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "His institutional authority and discreet protection of financial dealings suggest controlled, procedural speech."
+   }
+  }
+ ],
+ "places": [
+  {
+   "id": "L01",
+   "kind": "region",
+   "parent": "",
+   "look": {
+    "value": "Night time Colombo roads: rain-polished urban density in cold blue, green and sodium orange.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Preserves the supplied night-time road concept and combines the Colombo palette with the rainy street description."
+   },
+   "why": "Regional style reference containing the urban sets, not a single reference plate."
+  },
+  {
+   "id": "L02",
+   "kind": "region",
+   "parent": "",
+   "look": {
+    "value": "Low-lying village landscape with earthy-red soil, warm amber natural light and subdued paddy greens, softened to muted tones in dawn rain.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Combines the village palette with the paddy-field setting and rainy dawn scene."
+   },
+   "why": "Regional style reference for the village locations."
+  },
+  {
+   "id": "L03",
+   "kind": "set",
+   "parent": "L02",
+   "look": {
+    "value": "Exterior rural irrigation canal beside flat paddy land, with a narrow red-earth footpath along its bank. Low weathered concrete retaining edges lead to a small metal sluice gate. Brown rain-swollen water, saturated grass and slick mud; open, low horizon under heavy dawn rain. Diffuse natural grey light mutes the earthy reds and amber undertones.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Builds the specified canal, field, gate and rainy dawn into a coherent empty plate using the village palette."
+   },
+   "why": "The visible exterior setting of E01-S01."
+  },
+  {
+   "id": "L04",
+   "kind": "vehicle",
+   "parent": "L01",
+   "look": {
+    "value": "Present-day Sri Lankan cash van with a right-hand-drive cab, plain off-white exterior and reinforced rear compartment. Tight interior with charcoal vinyl seats, scuffed grey plastic dashboard, black rubber floor and a solid steel partition behind the seats. A small faded photographic print is fixed to the dashboard. Rain beads across the windscreen; green-blue instrument light and sodium-orange road reflections provide the night palette.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Preserves the supplied Sri Lankan cash-van concept and develops the scripted dashboard photograph, rainy night and Colombo lighting."
+   },
+   "why": "The camera is inside this vehicle in E01-S02."
+  },
+  {
+   "id": "L05",
+   "kind": "set",
+   "parent": "L01",
+   "look": {
+    "value": "Modest single-bay urban repair garage, enclosed by stained plaster and exposed concrete beneath a corrugated-metal roof. Oil-darkened concrete floor, battered metal workbench, open tool shelving and stacked worn tyres. Rain streaks the entrance and dampens the threshold. Cool green-blue practical light mixes with a small amber work bulb; weak overcast light at the opening avoids fixing an unstated hour.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The garage heading and rain on its roof support a utilitarian repair space; the lighting follows the Colombo treatment without imposing a night heading."
+   },
+   "why": "The visible interior setting of E01-S03."
+  },
+  {
+   "id": "L06",
+   "kind": "spot",
+   "parent": "L03",
+   "look": {
+    "value": "A rust-darkened metal sluice panel between low concrete cheeks, with a narrow muddy ledge at the waterline.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The canal gate needs a clearly legible waterside edge for the close framing in E01-S01."
+   },
+   "why": "A localized part of the canal set, not a separate scene location."
+  },
+  {
+   "id": "L07",
+   "kind": "spot",
+   "parent": "L03",
+   "look": {
+    "value": "Flat flooded paddy plots bordering the canal path, with short green rice shoots, low red-brown earthen bunds and rain-dimpled water.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The scripted paddy field beside the canal is developed using the village's earthy palette and heavy rain."
+   },
+   "why": "An adjacent visible portion of the canal setting."
+  },
+  {
+   "id": "L08",
+   "kind": "unseen",
+   "parent": "L01",
+   "look": {
+    "value": "",
+    "source": "script",
+    "line": 52,
+    "reason": ""
+   },
+   "why": "Only given as a destination; no supplied scene takes place there."
+  },
+  {
+   "id": "L09",
+   "kind": "unseen",
+   "parent": "L02",
+   "look": {
+    "value": "",
+    "source": "script",
+    "line": 48,
+    "reason": ""
+   },
+   "why": "Visible only within a dashboard photograph; no standalone location plate is needed."
+  }
+ ],
+ "things": [
+  {
+   "id": "P01",
+   "kind": "prop",
+   "details": {
+    "value": "Small medical bag in dark navy coated canvas, approximately 30 centimetres wide, with short carry handles, a zip closure and lightly scuffed black reinforced corners.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "Retains the supplied small medical bag and gives a village nurse a portable, rain-resistant working bag."
+   }
+  },
+  {
+   "id": "P02",
+   "kind": "prop",
+   "details": {
+    "value": "Small metal key marked C-17.",
+    "source": "script",
+    "line": 42,
+    "reason": ""
+   }
+  },
+  {
+   "id": "P03",
+   "kind": "prop",
+   "details": {
+    "value": "Faded, palm-sized landscape photographic print showing C01 and C02 near L09; slightly yellowed edges and softened colours, fixed to the dashboard.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The dashboard photograph and its subjects are specified at line 48; modest print size and wear make it readable as a long-kept personal object."
+   }
+  },
+  {
+   "id": "P04",
+   "kind": "prop",
+   "details": {
+    "value": "Red thread around C01's wrist.",
+    "source": "script",
+    "line": 53,
+    "reason": ""
+   }
+  },
+  {
+   "id": "P05",
+   "kind": "prop",
+   "details": {
+    "value": "Small rectangular dull-grey steel box, approximately 30 by 22 centimetres, with a hinged lid, simple clasp and scuffed corners; sized for flat photographs and bank documents with the small key.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The metal box and its contents are specified at lines 55–56; its dimensions and finish support a practical, portable container."
+   }
+  },
+  {
+   "id": "P06",
+   "kind": "mentioned",
+   "details": {
+    "value": "Compact matte-black handgun with a plain dark grip and lightly worn metal edges.",
+    "source": "inferred",
+    "line": 0,
+    "reason": "The direction note mentions a gun without specifying a type; a compact contemporary design suits the grounded transport setting."
+   }
+  },
+  {
+   "id": "P07",
+   "kind": "mentioned",
+   "details": {
+    "value": "Rs. 300 million.",
+    "source": "script",
+    "line": 13,
+    "reason": ""
+   }
+  }
+ ],
+ "looks": [
+  {
+   "person": "C02",
+   "name": "Rain-soaked dawn",
+   "from_scene": "E01-S01",
+   "to_scene": "E01-S01",
+   "outfit": "Base pale-blue blouse and navy skirt visibly rain-darkened, with wet hems and mud on the black shoes.",
+   "hair": "Low bun saturated with rain; loose wet strands lie against the temples and neck.",
+   "makeup": "Natural skin finish with visible rain droplets and restrained under-eye fatigue.",
+   "accessories": "P01 carried by its handles.",
+   "why": "Heavy rain and the walk beside the paddy field require a wet-weather variation of her base look."
+  },
+  {
+   "person": "C03",
+   "name": "Still at the canal gate",
+   "from_scene": "E01-S01",
+   "to_scene": "E01-S01",
+   "outfit": "Same rust-brown checked shirt, dark olive trousers and brown sandals as E01-S03, now saturated, creased and marked with canal silt.",
+   "hair": "Wet black hair flattened irregularly against the scalp.",
+   "makeup": "Lies still at the canal edge, eyes closed; relaxed face with a cool, subdued complexion and rain droplets.",
+   "accessories": "P02 held inside one closed fist.",
+   "why": "Maintains the earlier garage outfit through the story timeline while reflecting the supplied stillness at the gate and heavy dawn rain."
+  }
+ ]
+}

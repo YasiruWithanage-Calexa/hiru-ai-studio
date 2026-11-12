@@ -1,0 +1,177 @@
+# breakdown_series (plan/2026-11-12b). Scripted replies test the seams; the first reply is the real answer of the
+# paid lab call (lab/series_block, 2026-11-12), in the product's wire shape.
+- name: Ekama Sakshiya overview (the 2026-11-12 lab answer)
+  input:
+    message: '<document filename="ekama_sakshiya_screenplay (clean).pdf">
+
+      1: EKAMA SAKSHIYA
+
+      2: A 4.5-minute crime thriller
+
+      3: Sathya danne ekkenek witharai.
+
+      4: Colombo / Mahawewa
+
+      5: Action | Crime | Love
+
+      6: Evidence: C-17
+
+      7: Original screenplay and visual treatment
+
+      8: OVERVIEW
+
+      9: Genre: Action / Crime Thriller / Love
+
+      10: Setting: Colombo and Mahawewa village
+
+      11: Tone: Grounded South Indian realism with commercial action energy
+
+      12: Tagline: Sathya danne ekkenek witharai.
+
+      13: LOGLINE
+
+      14: A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend''s
+
+      15: murder, then returns to his village with the woman he loves to expose the corrupt network that
+
+      16: destroyed them.
+
+      17: MAIN CHARACTERS
+
+      18: Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.
+
+      19: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.
+
+      20: Nimal - 34, Aruni''s elder brother and Dinu''s closest friend.
+
+      21: Mudalali - 52, businessman laundering illegal money through village development projects.
+
+      22: Suren - 38, Mudalali''s brutal right-hand man.
+
+      23: Inspector Ruwan - 45, corrupt police officer protecting the money trail.
+
+      24: DIRECTOR / DOP VISUAL TREATMENT
+
+      </document>'
+  reply:
+    genre:
+      found: true
+      says: An action-driven crime thriller with a love thread.
+      quote: 'Genre: Action / Crime Thriller / Love'
+      facets:
+      - name: Action
+        weight: main
+      - name: Crime Thriller
+        weight: main
+      - name: Love
+        weight: thread
+      lines:
+        start: 9
+        end: 9
+    tone:
+      found: true
+      says: Ground the characters in South Indian realism while making the action energetic and crowd-pleasing.
+      quote: 'Tone: Grounded South Indian realism with commercial action energy'
+      lines:
+        start: 11
+        end: 11
+    world:
+      found: true
+      says: The drama moves between Colombo and Mahawewa village.
+      quote: 'Setting: Colombo and Mahawewa village'
+      places:
+      - Colombo
+      - Mahawewa village
+      lines:
+        start: 10
+        end: 10
+    theme:
+      found: true
+      says: Only one person knows the truth.
+      quote: 'Tagline: Sathya danne ekkenek witharai.'
+      language: si-Latn
+      lines:
+        start: 12
+        end: 12
+    premise:
+      found: true
+      says: A Colombo cash-transfer driver steals corrupt money after witnessing a crime against his closest friend, then
+        returns home with the woman he loves to expose the network.
+      quote: 'A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend''s
+
+        murder, then returns to his village with the woman he loves to expose the corrupt network that
+
+        destroyed them.'
+      lines:
+        start: 14
+        end: 16
+    left_out:
+    - quote: A 4.5-minute crime thriller
+      why: Running time; genre said again in the fuller overview.
+      lines:
+        start: 2
+        end: 2
+    - quote: Sathya danne ekkenek witharai.
+      why: said again
+      lines:
+        start: 3
+        end: 3
+    - quote: Colombo / Mahawewa
+      why: said again
+      lines:
+        start: 4
+        end: 4
+    - quote: Action | Crime | Love
+      why: said again
+      lines:
+        start: 5
+        end: 5
+    - quote: 'Evidence: C-17'
+      why: Evidence label and story clue, not drama identity.
+      lines:
+        start: 6
+        end: 6
+- name: a document that says nothing about the drama
+  input:
+    message: '<document filename="notes.txt">
+
+      1: Shoot day 3 call sheet.
+
+      </document>'
+  reply:
+    genre:
+      found: false
+      says: ''
+      quote: ''
+      lines:
+        start: 1
+        end: 1
+    tone:
+      found: false
+      says: ''
+      quote: ''
+      lines:
+        start: 1
+        end: 1
+    world:
+      found: false
+      says: ''
+      quote: ''
+      lines:
+        start: 1
+        end: 1
+    theme:
+      found: false
+      says: ''
+      quote: ''
+      lines:
+        start: 1
+        end: 1
+    premise:
+      found: false
+      says: ''
+      quote: ''
+      lines:
+        start: 1
+        end: 1
+    left_out: []

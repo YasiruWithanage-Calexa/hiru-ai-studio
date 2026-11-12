@@ -1,0 +1,2135 @@
+{
+ "E01-S01": {
+  "ids": {
+   "C01": {
+    "name": "Dinu",
+    "kind": "person"
+   },
+   "C02": {
+    "name": "Aruni",
+    "kind": "person"
+   },
+   "C03": {
+    "name": "Nimal",
+    "kind": "person"
+   },
+   "L03": {
+    "name": "Mahawewa Canal",
+    "kind": "place"
+   },
+   "L06": {
+    "name": "paddy field",
+    "kind": "place"
+   },
+   "L07": {
+    "name": "canal gate",
+    "kind": "place"
+   },
+   "P01": {
+    "name": "medical bag",
+    "kind": "thing"
+   },
+   "P02": {
+    "name": "C-17",
+    "kind": "thing"
+   },
+   "P09": {
+    "name": "phone",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E01-S01",
+   "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+   "title": "The canal discovery",
+   "summary": "Aruni finds her brother dead beside the sluice, notices the marked key in his grasp and tries unsuccessfully to reach Dinu.",
+   "purpose": "Establish the death and the key as a mystery before returning to earlier events.",
+   "purpose_source": "inferred",
+   "before_on_page": {
+    "empty": "first scene"
+   },
+   "after_on_page": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES"
+   },
+   "time": {
+    "story_order": 3,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": "Dawn, apparently after E01-S02",
+    "kind": "cold_open",
+    "anchor": "E01-S02",
+    "source": "inferred"
+   },
+   "before_in_story": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+    "ends_with": "Dinu looks at the red thread around his wrist and turns toward the industrial area.",
+    "opens_with": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.",
+    "people_at_end": [
+     "Dinu"
+    ]
+   },
+   "after_in_story": {
+    "empty": "last in story order"
+   },
+   "threads": [
+    {
+     "kind": "journey",
+     "subject": "C-17",
+     "summary": "Passes from Nimal to Dinu, then appears back in Nimal's fist; the intervening transfer is not shown.",
+     "source": "script",
+     "earlier": [
+      {
+       "scene": "E01-S03",
+       "note": "Initially inside metal box, which Nimal opens."
+      },
+      {
+       "scene": "E01-S03",
+       "note": "Nimal places C-17 in Dinu's hand."
+      }
+     ],
+     "this_scene": [
+      "Aruni discovers C-17 inside Nimal's fist; no removal is shown."
+     ],
+     "later": []
+    },
+    {
+     "kind": "open_question",
+     "subject": "C-17",
+     "summary": "How did C-17 return from Dinu to Nimal, and what does it unlock?",
+     "source": "inferred",
+     "earlier": [
+      {
+       "scene": "E01-S03",
+       "note": "Last shown with Dinu before the discovery."
+      }
+     ],
+     "this_scene": [
+      "Found with Nimal; no explanation of its function or return."
+     ],
+     "later": []
+    },
+    {
+     "kind": "setup_payoff",
+     "subject": "Nimal",
+     "summary": "Aruni's report that Nimal has not returned resolves into discovery of his body.",
+     "source": "script",
+     "earlier": [
+      {
+       "scene": "E01-S02",
+       "note": "Aruni reports Nimal missing."
+      }
+     ],
+     "this_scene": [
+      "Aruni finds Nimal dead."
+     ],
+     "later": []
+    },
+    {
+     "kind": "open_question",
+     "subject": "Nimal",
+     "summary": "How and why did Nimal die, and how did his body reach canal gate?",
+     "source": "inferred",
+     "earlier": [
+      {
+       "scene": "E01-S03",
+       "note": "Alive while disclosing evidence about Mudalali and Rs. 300 million."
+      }
+     ],
+     "this_scene": [
+      "Body discovered at canal gate."
+     ],
+     "later": []
+    }
+   ],
+   "irony": [
+    {
+     "person": "Dinu",
+     "learns": "The audience knows of Nimal's death and C-17's location; Dinu is not shown receiving this information.",
+     "audience_only": true,
+     "source": "inferred"
+    }
+   ],
+   "knowledge": [
+    {
+     "person": "Aruni",
+     "learns": "Nimal is dead at canal gate and has C-17 in his fist.",
+     "audience_only": false,
+     "source": "script"
+    }
+   ],
+   "looks": [
+    {
+     "person": "Nimal",
+     "kind": "death",
+     "note": "Alive in the flashback, dead when found at canal gate; cause and time of death are unstated.",
+     "source": "script"
+    }
+   ],
+   "relationships": {
+    "empty": "none stated"
+   }
+  },
+  "B_people": [
+   {
+    "id": "C02",
+    "name": "Aruni",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.",
+      "source": "script"
+     },
+     "age": {
+      "value": "Aruni - 27, Mahawewa community nurse.",
+      "source": "script"
+     },
+     "details": {
+      "value": "Strong, intelligent and emotionally controlled.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Understand what she has found and reach Dinu.",
+    "feeling_start": "Composed",
+    "feeling_end": "Distressed but controlled",
+    "source": "inferred"
+   },
+   {
+    "id": "C03",
+    "name": "Nimal",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Nimal - 34, Aruni's elder brother and Dinu's closest friend.",
+      "source": "script"
+     },
+     "age": {
+      "value": "Nimal - 34, Aruni's elder brother and Dinu's closest friend.",
+      "source": "script"
+     },
+     "details": {
+      "value": "It is Nimal.",
+      "source": "script"
+     }
+    },
+    "presence": "body",
+    "wants": "Not applicable; deceased.",
+    "feeling_start": "Not applicable",
+    "feeling_end": "Not applicable",
+    "source": "script"
+   }
+  ],
+  "C_place": {
+   "id": "L03",
+   "name": "Mahawewa Canal",
+   "kind": "place",
+   "place_kind": "set",
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    },
+    "details": {
+     "value": "MAHAWEWA CANAL - DAWN - 1 MINUTE Heavy rain.",
+     "source": "script"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "P01",
+    "name": "medical bag",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices",
+      "source": "script"
+     },
+     "details": {
+      "value": "Aruni walks beside a paddy field carrying a small medical bag.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Aruni",
+    "holder_end": "Aruni",
+    "source": "script"
+   },
+   {
+    "id": "P02",
+    "name": "C-17",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "appearance": {
+      "value": "Inside his fist is a small metal key marked C-17.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "hero",
+    "holder_start": "Nimal",
+    "holder_end": "Nimal",
+    "source": "script"
+   },
+   {
+    "id": "P09",
+    "name": "phone",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Phone: The attempt to contact Dinu requires a handset; show her initiating the call.",
+      "source": "inferred"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Aruni",
+    "holder_end": "Aruni",
+    "source": "inferred"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E01-S01-B01",
+    "kind": "action",
+    "text": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Establish Aruni's approach through the wet landscape.",
+    "delivery_hint": "Hold the wider surroundings before directing attention toward the gate.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B01-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P01"
+      ],
+      "spot": "L06",
+      "speech": false,
+      "visible": true,
+      "change": "Aruni advances alongside the cultivated land with her bag.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B02",
+    "kind": "action",
+    "text": "She notices something caught near the canal gate: a body. It is Nimal.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Resolve an indistinct obstruction into a personal loss.",
+    "delivery_hint": "Let recognition register without an abrupt cut away.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B02-e1",
+      "actors": [
+       "C02",
+       "C03"
+      ],
+      "things": [],
+      "spot": "L07",
+      "speech": false,
+      "visible": true,
+      "change": "Aruni identifies the body as her brother.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B03",
+    "kind": "action",
+    "text": "She does not scream. She kneels and touches his hand.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Express shock through physical restraint rather than an outburst.",
+    "delivery_hint": "Stay with her lowered posture and contact with his hand.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B03-e1",
+      "actors": [
+       "C02",
+       "C03"
+      ],
+      "things": [],
+      "spot": "L07",
+      "speech": false,
+      "visible": true,
+      "change": "Aruni lowers herself beside him and makes contact without crying out.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B04",
+    "kind": "action",
+    "text": "Inside his fist is a small metal key marked C-17.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Make the identifying mark on the key readable.",
+    "delivery_hint": "Use a close view of the closed hand and exposed object; do not add a removal.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B04-e1",
+      "actors": [
+       "C03"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L07",
+      "speech": false,
+      "visible": true,
+      "change": "The key and its identifying mark become apparent in Nimal's grasp.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B05",
+    "kind": "dialogue",
+    "text": "Dinu... oyata meka ahenne nadda?",
+    "speaker": "C02",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [],
+    "intent": "Appeal to the absent Dinu for a response.",
+    "delivery_hint": "Quiet urgency, with the appeal left unanswered; do not establish a connected call.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B05-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [],
+      "spot": "L07",
+      "speech": true,
+      "visible": true,
+      "change": "Aruni voices an appeal toward Dinu.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B06",
+    "kind": "action",
+    "text": "She calls Dinu. No answer.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "phone P09",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Leave Aruni without contact or reassurance.",
+    "delivery_hint": "Show the handset and the small action initiating the attempt, then allow the unanswered pause.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B06-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P09"
+      ],
+      "spot": "L07",
+      "speech": false,
+      "visible": true,
+      "change": "Aruni attempts to reach Dinu but receives no response.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B07",
+    "kind": "sound",
+    "text": "A distant bus horn mixes with the rain.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [
+     "C02"
+    ],
+    "intent": "Extend the isolation through the surrounding soundscape.",
+    "delivery_hint": "Keep the remote traffic signal beneath the rainfall rather than introducing music.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B07-e1",
+      "actors": [],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": false,
+      "change": "A remote horn joins the continuing weather sound.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B08",
+    "kind": "transition",
+    "text": "Cut to black.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "End the discovery on an unresolved absence.",
+    "delivery_hint": "Make a clean transition to darkness.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B08-e1",
+      "actors": [],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "The location image disappears.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B09",
+    "kind": "text",
+    "text": "TITLE: EKAMA SAKSHIYA.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Present the opening title.",
+    "delivery_hint": "Keep the title isolated against the dark field.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B09-e1",
+      "actors": [],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "The title appears after the discovery.",
+      "function": "setup"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "bleak",
+    "restrained",
+    "ominous"
+   ],
+   "turns": [
+    "E01-S01-B02",
+    "E01-S01-B04",
+    "E01-S01-B06"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D02",
+    "about": "palette",
+    "applies": "scoped",
+    "text": "Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer\nsilences."
+   },
+   {
+    "id": "D05",
+    "about": "lighting",
+    "applies": "general",
+    "text": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes."
+   },
+   {
+    "id": "D06",
+    "about": "editing",
+    "applies": "general",
+    "text": "Editing - Fast cuts only on impact. Let important punches and reactions stay on screen."
+   },
+   {
+    "id": "D07",
+    "about": "sound",
+    "applies": "general",
+    "text": "Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero\nelevation moments."
+   },
+   {
+    "id": "D08",
+    "about": "slow_motion",
+    "applies": "general",
+    "text": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun."
+   },
+   {
+    "id": "D09",
+    "about": "action",
+    "applies": "general",
+    "text": "The action is mass but not weightless. Every hit has a location, an object or a consequence."
+   },
+   {
+    "id": "D10",
+    "about": "action",
+    "applies": "general",
+    "text": "Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing."
+   },
+   {
+    "id": "D11",
+    "about": "action",
+    "applies": "general",
+    "text": "Aruni is an active participant in the climax, and the final victory comes from the recording, the\nvillage and their courage - not from violence alone."
+   },
+   {
+    "id": "D12",
+    "about": "sound",
+    "applies": "scoped",
+    "text": "She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:",
+    "moment_here": "Unanswered call, distant bus horn and rain."
+   },
+   {
+    "id": "D13",
+    "about": "editing",
+    "applies": "scoped",
+    "text": "She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\nEKAMA SAKSHIYA.",
+    "moment_here": "Cut to black and title after the unanswered call."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 60.0,
+   "spoken_seconds": 2.3
+  },
+  "I_open": [
+   "episode call: Aruni ends the scene with phone; the stager's last state has Aruni holding 'small medical bag'"
+  ],
+  "stage": {
+   "zones": [
+    "paddy field",
+    "canal gate"
+   ],
+   "not_placed": {
+    "Nimal": "no position before block 1"
+   },
+   "people": {
+    "C02": {
+     "in": {
+      "zone": "paddy field",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "small medical bag",
+      "posture": "walking"
+     },
+     "out": {
+      "zone": "canal gate",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "small medical bag",
+      "posture": "kneeling"
+     }
+    },
+    "C03": {
+     "in": {},
+     "out": {
+      "zone": "canal gate",
+      "frame_side": "right",
+      "holding": "small metal key marked C-17",
+      "posture": "lying",
+      "condition": "dead"
+     }
+    }
+   },
+   "changes_at": {
+    "E01-S01-B01": [
+     {
+      "person": "Aruni",
+      "zone": "paddy field",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "small medical bag",
+      "posture": "walking"
+     }
+    ],
+    "E01-S01-B02": [
+     {
+      "person": "Nimal",
+      "zone": "canal gate",
+      "frame_side": "right",
+      "posture": "lying",
+      "condition": "dead"
+     }
+    ],
+    "E01-S01-B03": [
+     {
+      "person": "Aruni",
+      "zone": "canal gate",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "small medical bag",
+      "posture": "kneeling"
+     }
+    ],
+    "E01-S01-B04": [
+     {
+      "person": "Nimal",
+      "zone": "canal gate",
+      "frame_side": "right",
+      "holding": "small metal key marked C-17"
+     }
+    ]
+   },
+   "props": []
+  },
+  "J_series": {
+   "genre": {
+    "says": "An action-driven crime thriller with a love thread.",
+    "quote": "Genre: Action / Crime Thriller / Love",
+    "lines": [
+     9,
+     9
+    ],
+    "source": "script",
+    "facets": [
+     {
+      "name": "action",
+      "weight": "main"
+     },
+     {
+      "name": "crime thriller",
+      "weight": "main"
+     },
+     {
+      "name": "love",
+      "weight": "thread"
+     }
+    ]
+   },
+   "tone": {
+    "says": "Keep performances grounded in South Indian realism while giving the action commercial energy.",
+    "quote": "Tone: Grounded South Indian realism with commercial action energy",
+    "lines": [
+     11,
+     11
+    ],
+    "source": "script"
+   },
+   "world": {
+    "says": "The story moves between Colombo and Mahawewa village.",
+    "quote": "Setting: Colombo and Mahawewa village",
+    "lines": [
+     10,
+     10
+    ],
+    "source": "script",
+    "places": [
+     {
+      "name": "Colombo",
+      "id": "L01"
+     },
+     {
+      "name": "Mahawewa village",
+      "id": "L02"
+     }
+    ]
+   },
+   "theme": {
+    "says": "Only one person knows the truth.",
+    "quote": "Tagline: Sathya danne ekkenek witharai.",
+    "lines": [
+     12,
+     12
+    ],
+    "source": "script",
+    "language": "si-Latn"
+   },
+   "premise": {
+    "says": "A Colombo cash-transfer driver steals money after witnessing a crime against his closest friend, then returns to his village with his lover to expose a corrupt network.",
+    "quote": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's murder, then returns to his village with the woman he loves to expose the corrupt network that destroyed them.",
+    "lines": [
+     14,
+     16
+    ],
+    "source": "script",
+    "planner_only": true
+   },
+   "this_scene": {
+    "place": "L03",
+    "place_name": "MAHAWEWA CANAL",
+    "region": "L02",
+    "region_name": "Mahawewa village",
+    "scoped_rules": [
+     "D02",
+     "D12",
+     "D13"
+    ],
+    "mood": [
+     "bleak",
+     "restrained",
+     "ominous"
+    ]
+   }
+  }
+ },
+ "E01-S02": {
+  "ids": {
+   "C01": {
+    "name": "Dinu",
+    "kind": "person"
+   },
+   "C02": {
+    "name": "Aruni",
+    "kind": "person"
+   },
+   "C04": {
+    "name": "Mudalali",
+    "kind": "person"
+   },
+   "L04": {
+    "name": "Cash Van",
+    "kind": "place"
+   },
+   "P03": {
+    "name": "photo",
+    "kind": "thing"
+   },
+   "P04": {
+    "name": "red thread",
+    "kind": "thing"
+   },
+   "P09": {
+    "name": "phone",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E01-S02",
+   "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+   "title": "The redirected van",
+   "summary": "While driving through Colombo, Dinu hears Aruni's worried message about Nimal. Mudalali then orders a different destination, and Dinu steers toward the industrial district.",
+   "purpose": "Connect private concern to a potentially dangerous work instruction while preserving the uncertainty around Nimal.",
+   "purpose_source": "inferred",
+   "before_on_page": {
+    "id": "E01-S01",
+    "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE"
+   },
+   "after_on_page": {
+    "id": "E01-S03",
+    "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES"
+   },
+   "time": {
+    "story_order": 2,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": "Night; six hours after E01-S03",
+    "kind": "normal",
+    "anchor": null,
+    "source": "script"
+   },
+   "before_in_story": {
+    "id": "E01-S03",
+    "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES",
+    "ends_with": "Dinu looks at it as rain hits the garage roof.",
+    "opens_with": "Six hours earlier.",
+    "people_at_end": [
+     "Nimal",
+     "Dinu"
+    ]
+   },
+   "after_in_story": {
+    "id": "E01-S01",
+    "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+    "ends_with": "TITLE: EKAMA SAKSHIYA.",
+    "opens_with": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.",
+    "people_at_end": [
+     "Aruni"
+    ]
+   },
+   "threads": [
+    {
+     "kind": "setup_payoff",
+     "subject": "Nimal",
+     "summary": "Aruni's report that Nimal has not returned resolves into discovery of his body.",
+     "source": "script",
+     "earlier": [],
+     "this_scene": [
+      "Aruni reports Nimal missing."
+     ],
+     "later": [
+      {
+       "scene": "E01-S01",
+       "note": "Aruni finds Nimal dead."
+      }
+     ]
+    },
+    {
+     "kind": "open_question",
+     "subject": "Mudalali",
+     "summary": "The connection between Nimal's evidence about Rs. 300 million and Mudalali's rerouting of Dinu remains unexplained; arrival at Old Port warehouse is not shown.",
+     "source": "script",
+     "earlier": [
+      {
+       "scene": "E01-S03",
+       "note": "Nimal identifies Mudalali's connection to Rs. 300 million."
+      }
+     ],
+     "this_scene": [
+      "Mudalali redirects Dinu to Old Port warehouse; Dinu turns toward industrial area."
+     ],
+     "later": []
+    }
+   ],
+   "irony": {
+    "empty": "none stated"
+   },
+   "knowledge": [
+    {
+     "person": "Dinu",
+     "learns": "Aruni reports that Nimal has not returned and that she is afraid.",
+     "audience_only": false,
+     "source": "script"
+    },
+    {
+     "person": "Dinu",
+     "learns": "Mudalali orders a route change to Old Port warehouse.",
+     "audience_only": false,
+     "source": "script"
+    }
+   ],
+   "looks": {
+    "empty": "no lasting condition changes here"
+   },
+   "relationships": [
+    {
+     "between": [
+      "Dinu",
+      "Aruni"
+     ],
+     "state": "Nimal claims Dinu wants to leave with Aruni and that Dinu's fear, rather than money, threatens their relationship; this is Nimal's account, not confirmed by Aruni.",
+     "scene": "E01-S03"
+    },
+    {
+     "between": [
+      "Dinu",
+      "Aruni"
+     ],
+     "state": "photo preserves their shared past at village bus stop; Aruni turns to Dinu over Nimal's absence.",
+     "scene": "E01-S02"
+    }
+   ]
+  },
+  "B_people": [
+   {
+    "id": "C01",
+    "name": "Dinu",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.",
+      "source": "script"
+     },
+     "age": {
+      "value": "Dinu - 30, Colombo cash-transport driver.",
+      "source": "script"
+     },
+     "details": {
+      "value": "Quiet, experienced, violent only when cornered.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Continue his journey while taking in the message and new instructions.",
+    "feeling_start": "Contained",
+    "feeling_end": "Preoccupied",
+    "source": "inferred"
+   },
+   {
+    "id": "C02",
+    "name": "Aruni",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.",
+      "source": "script"
+     },
+     "age": {
+      "value": "Aruni - 27, Mahawewa community nurse.",
+      "source": "script"
+     },
+     "details": {
+      "value": "Strong, intelligent and emotionally controlled.",
+      "source": "script"
+     }
+    },
+    "presence": "voice_message",
+    "wants": "Get reassurance and contact from Dinu about Nimal's absence.",
+    "feeling_start": "Worried",
+    "feeling_end": "Afraid",
+    "source": "inferred"
+   },
+   {
+    "id": "C04",
+    "name": "Mudalali",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Mudalali - 52, businessman laundering illegal money through village development projects.",
+      "source": "script"
+     },
+     "age": {
+      "value": "Mudalali - 52, businessman laundering illegal money through village development projects.",
+      "source": "script"
+     },
+     "details": {
+      "value": "Mudalali - 52, businessman laundering illegal money through village development projects.",
+      "source": "script"
+     }
+    },
+    "presence": "phone",
+    "wants": "Send Dinu to a different destination.",
+    "feeling_start": "Businesslike",
+    "feeling_end": "Directive",
+    "source": "inferred"
+   }
+  ],
+  "C_place": {
+   "id": "L04",
+   "name": "Cash Van",
+   "kind": "place",
+   "place_kind": "vehicle",
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    },
+    "details": {
+     "value": "Dinu drives a cash-transfer van.",
+     "source": "script"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "P03",
+    "name": "photo",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the\ndashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message\nplays.",
+      "source": "script"
+     }
+    },
+    "role": "dressing",
+    "holder_start": "Dinu",
+    "holder_end": "Dinu",
+    "source": "script"
+   },
+   {
+    "id": "P04",
+    "name": "red thread",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the\nred thread around his wrist and turns toward the industrial area.",
+      "source": "script"
+     }
+    },
+    "role": "worn",
+    "holder_start": "Dinu",
+    "holder_end": "Dinu",
+    "source": "script"
+   },
+   {
+    "id": "P09",
+    "name": "phone",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Phone: The attempt to contact Dinu requires a handset; show her initiating the call.",
+      "source": "inferred"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Dinu",
+    "holder_end": "Dinu",
+    "source": "inferred"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E01-S02-B01",
+    "kind": "action",
+    "text": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Establish the working journey through the wet city.",
+    "delivery_hint": "Keep Dinu enclosed by tight framing with city light moving beyond him.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B01-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L04",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu proceeds through illuminated, rain-soaked streets.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B02",
+    "kind": "action",
+    "text": "On the dashboard is a faded photo of him and Aruni near a village bus stop.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Establish the personal history carried inside the working vehicle.",
+    "delivery_hint": "Let the dashboard image read without treating its pictured people as present.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B02-e1",
+      "actors": [],
+      "things": [
+       "P03"
+      ],
+      "spot": "L04",
+      "speech": false,
+      "visible": true,
+      "change": "A worn photograph establishes Dinu and Aruni's shared past.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B03",
+    "kind": "sound",
+    "text": "Aruni's voice message plays.",
+    "speaker": "",
+    "presence": "voice_message",
+    "device": "phone P09",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Introduce the recorded communication from Aruni.",
+    "delivery_hint": "Show the mounted device and playback initiation before the recorded voice begins.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B03-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P09"
+      ],
+      "spot": "L04",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu starts playback on the established device.",
+      "function": "setup"
+     },
+     {
+      "id": "E01-S02-B03-e2",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P09"
+      ],
+      "spot": "L04",
+      "speech": false,
+      "visible": false,
+      "change": "Aruni's recorded voice becomes audible inside the vehicle.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B04",
+    "kind": "dialogue",
+    "text": "Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.",
+    "speaker": "C02",
+    "presence": "voice_message",
+    "device": "phone P09",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Report Nimal's continued absence and seek reassurance from Dinu.",
+    "delivery_hint": "Controlled at first, with anxiety becoming more exposed by the end.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B04-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P09"
+      ],
+      "spot": "L04",
+      "speech": true,
+      "visible": false,
+      "change": "Dinu receives Aruni's concern about her missing brother.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B05",
+    "kind": "action",
+    "text": "Mudalali calls.",
+    "speaker": "",
+    "presence": "phone",
+    "device": "phone P09",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Interrupt personal concern with a work demand.",
+    "delivery_hint": "Use the already established handset to identify and accept the incoming call before its voice is heard.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B05-e1",
+      "actors": [
+       "C04",
+       "C01"
+      ],
+      "things": [
+       "P09"
+      ],
+      "spot": "L04",
+      "speech": false,
+      "visible": true,
+      "change": "An incoming call from Mudalali takes over the device.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B06",
+    "kind": "dialogue",
+    "text": "Route eka maru karapan. Old Port warehouse ekata yanna.",
+    "speaker": "C04",
+    "presence": "phone",
+    "device": "phone P09",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Replace Dinu's current route with an instruction to go to Old Port warehouse.",
+    "delivery_hint": "Brief and authoritative, without added explanation.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B06-e1",
+      "actors": [
+       "C04"
+      ],
+      "things": [
+       "P09"
+      ],
+      "spot": "L04",
+      "speech": true,
+      "visible": false,
+      "change": "Dinu is ordered to head for a different destination.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B07",
+    "kind": "action",
+    "text": "Dinu looks at the red thread around his wrist and turns toward the industrial area.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Link Dinu's private reaction to his change of course without explaining the wrist thread.",
+    "delivery_hint": "Hold the glance briefly, then show the directional change without heightened action cutting.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B07-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P04"
+      ],
+      "spot": "L04",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu studies the thread he wears and redirects the vehicle toward industrial area.",
+      "function": "turn"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "uneasy",
+    "intimate",
+    "foreboding"
+   ],
+   "turns": [
+    "E01-S02-B04",
+    "E01-S02-B06",
+    "E01-S02-B07"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D01",
+    "about": "palette",
+    "applies": "scoped",
+    "text": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\ncrowded backgrounds."
+   },
+   {
+    "id": "D05",
+    "about": "lighting",
+    "applies": "general",
+    "text": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes."
+   },
+   {
+    "id": "D06",
+    "about": "editing",
+    "applies": "general",
+    "text": "Editing - Fast cuts only on impact. Let important punches and reactions stay on screen."
+   },
+   {
+    "id": "D07",
+    "about": "sound",
+    "applies": "general",
+    "text": "Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero\nelevation moments."
+   },
+   {
+    "id": "D08",
+    "about": "slow_motion",
+    "applies": "general",
+    "text": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun."
+   },
+   {
+    "id": "D09",
+    "about": "action",
+    "applies": "general",
+    "text": "The action is mass but not weightless. Every hit has a location, an object or a consequence."
+   },
+   {
+    "id": "D10",
+    "about": "action",
+    "applies": "general",
+    "text": "Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing."
+   },
+   {
+    "id": "D11",
+    "about": "action",
+    "applies": "general",
+    "text": "Aruni is an active participant in the climax, and the final victory comes from the recording, the\nvillage and their courage - not from violence alone."
+   },
+   {
+    "id": "D14",
+    "about": "sound",
+    "applies": "scoped",
+    "text": "dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message\nplays.",
+    "moment_here": "Aruni's voice message plays with photo on the dashboard."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 90.0,
+   "spoken_seconds": 10.5
+  },
+  "I_open": [
+   "P09 ends E01-S01 with C02 but starts E01-S02 with C01"
+  ],
+  "J_series": {
+   "genre": {
+    "says": "An action-driven crime thriller with a love thread.",
+    "quote": "Genre: Action / Crime Thriller / Love",
+    "lines": [
+     9,
+     9
+    ],
+    "source": "script",
+    "facets": [
+     {
+      "name": "action",
+      "weight": "main"
+     },
+     {
+      "name": "crime thriller",
+      "weight": "main"
+     },
+     {
+      "name": "love",
+      "weight": "thread"
+     }
+    ]
+   },
+   "tone": {
+    "says": "Keep performances grounded in South Indian realism while giving the action commercial energy.",
+    "quote": "Tone: Grounded South Indian realism with commercial action energy",
+    "lines": [
+     11,
+     11
+    ],
+    "source": "script"
+   },
+   "world": {
+    "says": "The story moves between Colombo and Mahawewa village.",
+    "quote": "Setting: Colombo and Mahawewa village",
+    "lines": [
+     10,
+     10
+    ],
+    "source": "script",
+    "places": [
+     {
+      "name": "Colombo",
+      "id": "L01"
+     },
+     {
+      "name": "Mahawewa village",
+      "id": "L02"
+     }
+    ]
+   },
+   "theme": {
+    "says": "Only one person knows the truth.",
+    "quote": "Tagline: Sathya danne ekkenek witharai.",
+    "lines": [
+     12,
+     12
+    ],
+    "source": "script",
+    "language": "si-Latn"
+   },
+   "premise": {
+    "says": "A Colombo cash-transfer driver steals money after witnessing a crime against his closest friend, then returns to his village with his lover to expose a corrupt network.",
+    "quote": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's murder, then returns to his village with the woman he loves to expose the corrupt network that destroyed them.",
+    "lines": [
+     14,
+     16
+    ],
+    "source": "script",
+    "planner_only": true
+   },
+   "this_scene": {
+    "place": "L04",
+    "place_name": "CASH VAN",
+    "region": "L01",
+    "region_name": "Colombo",
+    "scoped_rules": [
+     "D01",
+     "D14"
+    ],
+    "mood": [
+     "uneasy",
+     "intimate",
+     "foreboding"
+    ]
+   }
+  }
+ },
+ "E01-S03": {
+  "ids": {
+   "C01": {
+    "name": "Dinu",
+    "kind": "person"
+   },
+   "C03": {
+    "name": "Nimal",
+    "kind": "person"
+   },
+   "L05": {
+    "name": "Colombo Garage",
+    "kind": "place"
+   },
+   "P02": {
+    "name": "C-17",
+    "kind": "thing"
+   },
+   "P05": {
+    "name": "metal box",
+    "kind": "thing"
+   },
+   "P06": {
+    "name": "Rs. 300 million",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E01-S03",
+   "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES",
+   "title": "The garage handover",
+   "summary": "Earlier, Nimal exposes evidence of diverted project money. Dinu objects to taking it, but Nimal pressures him through his relationship with Aruni and gives him the key.",
+   "purpose": "Reveal the moral conflict behind Dinu's involvement and establish the key's earlier possession without explaining its later return.",
+   "purpose_source": "inferred",
+   "before_on_page": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES"
+   },
+   "after_on_page": {
+    "empty": "last scene"
+   },
+   "time": {
+    "story_order": 1,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": "Six hours earlier",
+    "kind": "flashback",
+    "anchor": "E01-S02",
+    "source": "script"
+   },
+   "before_in_story": {
+    "empty": "first in story order"
+   },
+   "after_in_story": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+    "ends_with": "Dinu looks at the red thread around his wrist and turns toward the industrial area.",
+    "opens_with": "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.",
+    "people_at_end": [
+     "Dinu"
+    ]
+   },
+   "threads": [
+    {
+     "kind": "journey",
+     "subject": "C-17",
+     "summary": "Passes from Nimal to Dinu, then appears back in Nimal's fist; the intervening transfer is not shown.",
+     "source": "script",
+     "earlier": [],
+     "this_scene": [
+      "Initially inside metal box, which Nimal opens.",
+      "Nimal places C-17 in Dinu's hand."
+     ],
+     "later": [
+      {
+       "scene": "E01-S01",
+       "note": "Aruni discovers C-17 inside Nimal's fist; no removal is shown."
+      }
+     ]
+    },
+    {
+     "kind": "open_question",
+     "subject": "C-17",
+     "summary": "How did C-17 return from Dinu to Nimal, and what does it unlock?",
+     "source": "inferred",
+     "earlier": [],
+     "this_scene": [
+      "Last shown with Dinu before the discovery."
+     ],
+     "later": [
+      {
+       "scene": "E01-S01",
+       "note": "Found with Nimal; no explanation of its function or return."
+      }
+     ]
+    },
+    {
+     "kind": "open_question",
+     "subject": "Nimal",
+     "summary": "How and why did Nimal die, and how did his body reach canal gate?",
+     "source": "inferred",
+     "earlier": [],
+     "this_scene": [
+      "Alive while disclosing evidence about Mudalali and Rs. 300 million."
+     ],
+     "later": [
+      {
+       "scene": "E01-S01",
+       "note": "Body discovered at canal gate."
+      }
+     ]
+    },
+    {
+     "kind": "open_question",
+     "subject": "Mudalali",
+     "summary": "The connection between Nimal's evidence about Rs. 300 million and Mudalali's rerouting of Dinu remains unexplained; arrival at Old Port warehouse is not shown.",
+     "source": "script",
+     "earlier": [],
+     "this_scene": [
+      "Nimal identifies Mudalali's connection to Rs. 300 million."
+     ],
+     "later": [
+      {
+       "scene": "E01-S02",
+       "note": "Mudalali redirects Dinu to Old Port warehouse; Dinu turns toward industrial area."
+      }
+     ]
+    }
+   ],
+   "irony": {
+    "empty": "none stated"
+   },
+   "knowledge": [
+    {
+     "person": "Dinu",
+     "learns": "Nimal identifies Rs. 300 million as Mudalali's money taken through village projects and presents documents, photographs and C-17.",
+     "audience_only": false,
+     "source": "script"
+    }
+   ],
+   "looks": [
+    {
+     "person": "Nimal",
+     "kind": "death",
+     "note": "Alive in the flashback, dead when found at canal gate; cause and time of death are unstated.",
+     "source": "script"
+    }
+   ],
+   "relationships": [
+    {
+     "between": [
+      "Dinu",
+      "Nimal"
+     ],
+     "state": "Dinu morally resists taking Rs. 300 million; Nimal presses him using his relationship with Aruni and entrusts him with C-17.",
+     "scene": "E01-S03"
+    }
+   ]
+  },
+  "B_people": [
+   {
+    "id": "C03",
+    "name": "Nimal",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Nimal - 34, Aruni's elder brother and Dinu's closest friend.",
+      "source": "script"
+     },
+     "age": {
+      "value": "Nimal - 34, Aruni's elder brother and Dinu's closest friend.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "presence": "on_screen",
+    "wants": "Persuade Dinu to act on the evidence and accept the key.",
+    "feeling_start": "Determined",
+    "feeling_end": "Insistent",
+    "source": "inferred"
+   },
+   {
+    "id": "C01",
+    "name": "Dinu",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.",
+      "source": "script"
+     },
+     "age": {
+      "value": "Dinu - 30, Colombo cash-transport driver.",
+      "source": "script"
+     },
+     "details": {
+      "value": "Quiet, experienced, violent only when cornered.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Avoid becoming like the people responsible for the stolen money.",
+    "feeling_start": "Resistant",
+    "feeling_end": "Conflicted",
+    "source": "inferred"
+   }
+  ],
+  "C_place": {
+   "id": "L05",
+   "name": "Colombo Garage",
+   "kind": "place",
+   "place_kind": "set",
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    },
+    "details": {
+     "value": "Dinu looks at it as rain hits the garage roof.",
+     "source": "script"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "P05",
+    "name": "metal box",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the\nC-17 key.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Nimal",
+    "holder_end": "Nimal",
+    "source": "script"
+   },
+   {
+    "id": "P02",
+    "name": "C-17",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "Nimal places the key in Dinu's hand.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "hero",
+    "holder_start": "Nimal",
+    "holder_end": "Dinu",
+    "source": "script"
+   },
+   {
+    "id": "P06",
+    "name": "Rs. 300 million",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's\nmurder, then returns to his village with the woman he loves to expose the corrupt network that\ndestroyed them.",
+      "source": "script"
+     }
+    },
+    "role": "mentioned",
+    "holder_start": "",
+    "holder_end": "",
+    "source": "script"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E01-S03-B01",
+    "kind": "transition",
+    "text": "Six hours earlier.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Locate the exchange before the nighttime journey.",
+    "delivery_hint": "Make the temporal shift clear without adding a new event.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B01-e1",
+      "actors": [],
+      "things": [],
+      "spot": "L05",
+      "speech": false,
+      "visible": false,
+      "change": "The narrative moves back six hours.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B02",
+    "kind": "action",
+    "text": "Nimal opens a metal box containing photographs, bank documents and the C-17 key.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Expose the collected evidence and the key together.",
+    "delivery_hint": "Show the container opening and allow its contents to be legible.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B02-e1",
+      "actors": [
+       "C03"
+      ],
+      "things": [
+       "P05",
+       "P02"
+      ],
+      "spot": "L05",
+      "speech": false,
+      "visible": true,
+      "change": "Nimal opens the container, exposing images, financial papers and the marked key.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B03",
+    "kind": "dialogue",
+    "text": "Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.",
+    "speaker": "C03",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Identify the money's owner, scale and connection to village projects.",
+    "delivery_hint": "Direct and concrete, treating the evidence as something Dinu must confront.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B03-e1",
+      "actors": [
+       "C03"
+      ],
+      "things": [
+       "P06"
+      ],
+      "spot": "L05",
+      "speech": true,
+      "visible": true,
+      "change": "Nimal attributes the diverted funds to Mudalali.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B04",
+    "kind": "dialogue",
+    "text": "Api meka gaththoth apiuth eyala wage wenawa.",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C03",
+    "heard_by": [
+     "C03"
+    ],
+    "intent": "Reject taking the money on moral grounds.",
+    "delivery_hint": "Quiet firmness rather than an aggressive challenge.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B04-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P06"
+      ],
+      "spot": "L05",
+      "speech": true,
+      "visible": true,
+      "change": "Dinu challenges the proposed act as morally compromising.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B05",
+    "kind": "dialogue",
+    "text": "Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa oyawa atharinnawa.",
+    "speaker": "C03",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Use Dinu's hopes about Aruni to overcome his resistance.",
+    "delivery_hint": "Personal and pressing; keep the claims about Aruni clearly Nimal's assertions.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B05-e1",
+      "actors": [
+       "C03"
+      ],
+      "things": [],
+      "spot": "L05",
+      "speech": true,
+      "visible": true,
+      "change": "Nimal shifts the argument from money to Dinu's fear and relationship.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B06",
+    "kind": "action",
+    "text": "Nimal places the key in Dinu's hand.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Make the transfer of responsibility tangible.",
+    "delivery_hint": "Show the hand-to-hand transfer at ordinary speed, without implying a fall.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B06-e1",
+      "actors": [
+       "C03",
+       "C01"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L05",
+      "speech": false,
+      "visible": true,
+      "change": "The key passes from Nimal into Dinu's hand.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B07",
+    "kind": "action",
+    "text": "Dinu looks at it as rain hits the garage roof.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [
+     "C01",
+     "C03"
+    ],
+    "intent": "Leave Dinu's response unresolved after the handover.",
+    "delivery_hint": "Hold his attention on the object while roof rainfall carries the pause.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B07-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L05",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu studies the key without stating a decision.",
+      "function": "texture"
+     },
+     {
+      "id": "E01-S03-B07-e2",
+      "actors": [],
+      "things": [],
+      "spot": "L05",
+      "speech": false,
+      "visible": false,
+      "change": "Rainfall remains audible against the building overhead.",
+      "function": "texture"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "secretive",
+    "pressured",
+    "morally uneasy"
+   ],
+   "turns": [
+    "E01-S03-B04",
+    "E01-S03-B05",
+    "E01-S03-B06"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D01",
+    "about": "palette",
+    "applies": "scoped",
+    "text": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\ncrowded backgrounds."
+   },
+   {
+    "id": "D05",
+    "about": "lighting",
+    "applies": "general",
+    "text": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes."
+   },
+   {
+    "id": "D06",
+    "about": "editing",
+    "applies": "general",
+    "text": "Editing - Fast cuts only on impact. Let important punches and reactions stay on screen."
+   },
+   {
+    "id": "D07",
+    "about": "sound",
+    "applies": "general",
+    "text": "Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero\nelevation moments."
+   },
+   {
+    "id": "D08",
+    "about": "slow_motion",
+    "applies": "general",
+    "text": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun."
+   },
+   {
+    "id": "D09",
+    "about": "action",
+    "applies": "general",
+    "text": "The action is mass but not weightless. Every hit has a location, an object or a consequence."
+   },
+   {
+    "id": "D10",
+    "about": "action",
+    "applies": "general",
+    "text": "Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing."
+   },
+   {
+    "id": "D11",
+    "about": "action",
+    "applies": "general",
+    "text": "Aruni is an active participant in the climax, and the final victory comes from the recording, the\nvillage and their courage - not from violence alone."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 120.0,
+   "spoken_seconds": 15.0
+  },
+  "I_open": {
+   "empty": "no open question"
+  },
+  "J_series": {
+   "genre": {
+    "says": "An action-driven crime thriller with a love thread.",
+    "quote": "Genre: Action / Crime Thriller / Love",
+    "lines": [
+     9,
+     9
+    ],
+    "source": "script",
+    "facets": [
+     {
+      "name": "action",
+      "weight": "main"
+     },
+     {
+      "name": "crime thriller",
+      "weight": "main"
+     },
+     {
+      "name": "love",
+      "weight": "thread"
+     }
+    ]
+   },
+   "tone": {
+    "says": "Keep performances grounded in South Indian realism while giving the action commercial energy.",
+    "quote": "Tone: Grounded South Indian realism with commercial action energy",
+    "lines": [
+     11,
+     11
+    ],
+    "source": "script"
+   },
+   "world": {
+    "says": "The story moves between Colombo and Mahawewa village.",
+    "quote": "Setting: Colombo and Mahawewa village",
+    "lines": [
+     10,
+     10
+    ],
+    "source": "script",
+    "places": [
+     {
+      "name": "Colombo",
+      "id": "L01"
+     },
+     {
+      "name": "Mahawewa village",
+      "id": "L02"
+     }
+    ]
+   },
+   "theme": {
+    "says": "Only one person knows the truth.",
+    "quote": "Tagline: Sathya danne ekkenek witharai.",
+    "lines": [
+     12,
+     12
+    ],
+    "source": "script",
+    "language": "si-Latn"
+   },
+   "premise": {
+    "says": "A Colombo cash-transfer driver steals money after witnessing a crime against his closest friend, then returns to his village with his lover to expose a corrupt network.",
+    "quote": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's murder, then returns to his village with the woman he loves to expose the corrupt network that destroyed them.",
+    "lines": [
+     14,
+     16
+    ],
+    "source": "script",
+    "planner_only": true
+   },
+   "this_scene": {
+    "place": "L05",
+    "place_name": "COLOMBO GARAGE",
+    "region": "L01",
+    "region_name": "Colombo",
+    "scoped_rules": [
+     "D01"
+    ],
+    "mood": [
+     "secretive",
+     "pressured",
+     "morally uneasy"
+    ]
+   }
+  }
+ }
+}

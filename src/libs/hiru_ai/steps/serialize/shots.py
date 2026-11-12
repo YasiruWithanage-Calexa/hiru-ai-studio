@@ -82,7 +82,7 @@ def production_block(prod: ProductionInput) -> str:
                                                if identity_line(c) != c.name else "")
                      for c in prod.cast) or "- none identified"
     parts = [f"PRODUCTION: {prod.title or 'untitled'}",
-             f"FORMAT: Sri Lankan television drama, live action, {prod.aspect_ratio}.",
+             f"FORMAT: Sri Lankan {prod.genre or 'television drama'}, live action, {prod.aspect_ratio}.",
              "MARKET: Sri Lanka. Places, casting, wardrobe, vehicles, architecture and props belong there.",
              f"CAST (these people and no others; keep them identical shot to shot):\n{cast}"]
     if prod.style_note:

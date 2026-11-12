@@ -473,6 +473,9 @@ class FakeDirection(_Table):
         return super().add(**{"topic": "camera", "applies_to": "production", "quote": "", "strength": "prefer",
                               "document_id": None, "status": "draft", "source": "reader", **item})
 
+    async def series(self, production_id: UUID) -> list[Row]:
+        return [r for r in self._scoped(production_id) if r["topic"] == "series" and r["status"] != "rejected"]
+
 
 class FakeCanon(_Table):
     def __init__(self) -> None:

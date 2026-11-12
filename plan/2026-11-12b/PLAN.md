@@ -1,7 +1,8 @@
 # The drama's identity reaches every scene: genre, tone, world, theme (plan/2026-11-12b)
 
-Revision 1 (2026-11-12). Phase 0 (the lab) is done and paid ($0.0204, one call). Phases 1 to 6 are offline. Phase 7 is a
-paid live check, the person's yes first. Nothing is built yet.
+Revision 2 (2026-11-12, afternoon). Phase 0 (the lab) is done and paid ($0.0204, one call). Phases 1 to 6 are built
+offline, both repos, uncommitted: see [IMPLEMENTED.md](IMPLEMENTED.md), which also records one change to D1 (the prompts
+read the genre from the production-memory rows). Phase 7 is a paid live check, the person's yes first.
 
 **Read §1, §2 and §3 first if you are a new chat picking this up.** This plan shares files with
 [plan/2026-11-12](../2026-11-12/PLAN.md) (house rules), which is being built now: see §6.

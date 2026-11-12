@@ -7,7 +7,8 @@ title,
                          script blocks, envelope) and `dialogue_lines` (each spoken line verbatim, its speaker, its
                          delivery)
 - `canon_cards(bd)`      every person, place and thing as a canon card (name, kind, the card facts the documents give)
-- `memory_rows(bd)`      each direction rule as a `production_memory` entry (quote = the document's words)
+- `memory_rows(bd)`      each direction rule as a `production_memory` entry (quote = the document's words), and what
+                         the drama is as `series` facts (plan/2026-11-12b)
 - `staging(bd, scene)`   the stager's map in `scenes.staging`'s shape
 - `line_map(scene, rows)` which `dialogue_lines` row each dialogue block became (so Raphael's line ids are real rows)
 
@@ -19,6 +20,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from contracts.breakdown import series
 from contracts.breakdown.packet import _pretty
 from contracts.breakdown.schema import Breakdown, Scene
 from contracts.screenplay import parse_heading
@@ -181,6 +183,8 @@ def memory_rows(bd: Breakdown) -> dict[str, list[dict[str, Any]]]:
                     "strength": "prefer",
                 }
             )
+    for doc, rows in series.memory_rows(bd).items():  # plan/2026-11-12b: what the drama is, as `series` facts
+        by_doc.setdefault(doc, []).extend(rows)
     return by_doc
 
 

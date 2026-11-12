@@ -1,0 +1,138 @@
+{
+ "n": 3,
+ "slot": "series",
+ "agent": "breakdown_series",
+ "scenes": [],
+ "seconds": 23.9,
+ "input_tokens": 2479,
+ "cached_tokens": 0,
+ "output_tokens": 1350,
+ "dollars": 0.0185,
+ "status": "done",
+ "model": "gpt-6.1-sol",
+ "message": "<document filename=\"ekama_sakshiya_screenplay (clean).pdf\">\n1: EKAMA SAKSHIYA\n2: A 4.5-minute crime thriller\n3: Sathya danne ekkenek witharai.\n4: Colombo / Mahawewa\n5: Action | Crime | Love\n6: Evidence: C-17\n7: Original screenplay and visual treatment\n8: OVERVIEW\n9: Genre: Action / Crime Thriller / Love\n10: Setting: Colombo and Mahawewa village\n11: Tone: Grounded South Indian realism with commercial action energy\n12: Tagline: Sathya danne ekkenek witharai.\n13: LOGLINE\n14: A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's\n15: murder, then returns to his village with the woman he loves to expose the corrupt network that\n16: destroyed them.\n17: MAIN CHARACTERS\n18: Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.\n19: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.\n20: Nimal - 34, Aruni's elder brother and Dinu's closest friend.\n21: Mudalali - 52, businessman laundering illegal money through village development projects.\n22: Suren - 38, Mudalali's brutal right-hand man.\n23: Inspector Ruwan - 45, corrupt police officer protecting the money trail.\n24: DIRECTOR / DOP VISUAL TREATMENT\n25: Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\n26: crowded backgrounds.\n27: Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer\n28: silences.\n29: Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.\n30: Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.\n31: Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.\n32: Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.\n33: Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero\n34: elevation moments.\n35: Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n36: ACTION DESIGN NOTES\n37: The action is mass but not weightless. Every hit has a location, an object or a consequence.\n38: Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.\n39: Aruni is an active participant in the climax, and the final victory comes from the recording, the\n40: village and their courage - not from violence alone.\n41: SCREENPLAY\n42: SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE\n43: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices\n44: something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels\n45: and touches his hand. Inside his fist is a small metal key marked C-17.\n46: ARUNI - Dinu... oyata meka ahenne nadda?\n47: She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:\n48: EKAMA SAKSHIYA.\n49: SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES\n50: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the\n51: dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message\n52: plays.\n53: ARUNI - Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan\n54: baya hithenawa.\n55: Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the\n56: red thread around his wrist and turns toward the industrial area.\n57: SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES\n58: Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the\n59: C-17 key.\n60: NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.\n</document>",
+ "answer": {
+  "genre": {
+   "found": true,
+   "says": "An action-driven crime thriller with a love thread.",
+   "quote": "Genre: Action / Crime Thriller / Love",
+   "lines": {
+    "start": 9,
+    "end": 9
+   },
+   "facets": [
+    {
+     "name": "Action",
+     "weight": "main"
+    },
+    {
+     "name": "Crime Thriller",
+     "weight": "main"
+    },
+    {
+     "name": "Love",
+     "weight": "thread"
+    }
+   ]
+  },
+  "tone": {
+   "found": true,
+   "says": "Keep performances grounded in South Indian realism while giving the action commercial energy.",
+   "quote": "Tone: Grounded South Indian realism with commercial action energy",
+   "lines": {
+    "start": 11,
+    "end": 11
+   }
+  },
+  "world": {
+   "found": true,
+   "says": "The story moves between Colombo and Mahawewa village.",
+   "quote": "Setting: Colombo and Mahawewa village",
+   "lines": {
+    "start": 10,
+    "end": 10
+   },
+   "places": [
+    "Colombo",
+    "Mahawewa village"
+   ]
+  },
+  "theme": {
+   "found": true,
+   "says": "Only one person knows the truth.",
+   "quote": "Tagline: Sathya danne ekkenek witharai.",
+   "lines": {
+    "start": 12,
+    "end": 12
+   },
+   "language": "si-Latn"
+  },
+  "premise": {
+   "found": true,
+   "says": "A Colombo cash-transfer driver steals money after witnessing a crime against his closest friend, then returns to his village with his lover to expose a corrupt network.",
+   "quote": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's\nmurder, then returns to his village with the woman he loves to expose the corrupt network that\ndestroyed them.",
+   "lines": {
+    "start": 14,
+    "end": 16
+   }
+  },
+  "left_out": [
+   {
+    "quote": "A 4.5-minute crime thriller",
+    "lines": {
+     "start": 2,
+     "end": 2
+    },
+    "why": "Running time is not identity; genre is said again in the fuller overview."
+   },
+   {
+    "quote": "Sathya danne ekkenek witharai.",
+    "lines": {
+     "start": 3,
+     "end": 3
+    },
+    "why": "said again"
+   },
+   {
+    "quote": "Colombo / Mahawewa",
+    "lines": {
+     "start": 4,
+     "end": 4
+    },
+    "why": "said again"
+   },
+   {
+    "quote": "Action | Crime | Love",
+    "lines": {
+     "start": 5,
+     "end": 5
+    },
+    "why": "said again"
+   },
+   {
+    "quote": "Evidence: C-17",
+    "lines": {
+     "start": 6,
+     "end": 6
+    },
+    "why": "Evidence label and story clue, not drama identity."
+   },
+   {
+    "quote": "Original screenplay and visual treatment",
+    "lines": {
+     "start": 7,
+     "end": 7
+    },
+    "why": "Document label."
+   },
+   {
+    "quote": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\ncrowded backgrounds.\nVillage palette - Warm amber and earthy red. Locked-off frames, natural light and longer\nsilences.\nLove scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.\nAction lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.\nLighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.\nEditing - Fast cuts only on impact. Let important punches and reactions stay on screen.\nSound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero\nelevation moments.\nSlow motion - Use only twice: Nimal's key falling and Dinu removing the gun.",
+    "lines": {
+     "start": 25,
+     "end": 35
+    },
+    "why": "Production directions for palette, framing, lenses, lighting, editing, sound and slow motion belong to the shooting reader."
+   }
+  ]
+ }
+}

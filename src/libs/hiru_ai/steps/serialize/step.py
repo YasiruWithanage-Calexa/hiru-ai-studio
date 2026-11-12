@@ -25,7 +25,8 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
     previous = next((s for s in scene.shots if s.number == number - 1), None)
     ir = dict(payload.get("ir") or shot.row.get("ir") or {})
     ctx = Context(aspect_ratio=prod.aspect_ratio, camera=shot.camera(scene), recommended=shot.recommended(scene),
-                  style_note=prod.style_note, previous_code=previous.code if previous else "",
+                  style_note=prod.style_note, genre=str(payload.get("genre") or ""),
+                  previous_code=previous.code if previous else "",
                   carried=str(payload.get("carried") or ""), has_frame=bool(payload.get("has_frame")))
     sections = build_sections(shot, ir, ctx)
     return {"sections": [s.model_dump(exclude_none=True) for s in sections],

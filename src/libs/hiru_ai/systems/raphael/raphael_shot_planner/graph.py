@@ -193,6 +193,8 @@ def build(
 
     # ── planning one scene (in a worker; the writing happens in the main thread) ───────────────
 
+    moods: dict[str, tuple[str, ...]] = {}  # scene id -> the packet's mood words (plan/2026-11-12b D7)
+
     def packet_of(sc: Row, lines: list[Row], scene_ctx: RunContext) -> tuple[str, Any, dict[str, str]] | None:
         """plan/2026-11-11 phase 4: the scene's stored packet when `RAPHAEL_PACKET` is on and the scene has a complete,
         current one (the stager runs first if the scene has no map). Otherwise None, and the job says why."""
@@ -204,6 +206,9 @@ def build(
             _log.warning("the scene packet could not be read for %s", sc.get("id"), exc_info=True)
             got, why = None, "the breakdown could not be read"
         made = raphael.from_packet(got, lines) if got is not None else None
+        if made is not None:  # plan/2026-11-12b D7: the packet's mood words travel with the plan to the first frame
+            feeling = got.get("F_feeling") if isinstance(got.get("F_feeling"), dict) else {}
+            moods[str(sc["id"])] = tuple(str(m) for m in feeling.get("mood") or [] if isinstance(m, str))
         if made is None:
             why = why or "the packet's spoken lines do not match the scene's lines"
             jobs.event(job_id, JobEventType.PROGRESS,
@@ -266,6 +271,7 @@ def build(
                 else ""
             ),
             opening=opening,
+            mood=moods.get(sid, ()) if from_packet is not None else (),
         )
         try:
             shots = scenes_port.shots(UUID(sid))

@@ -1,0 +1,209 @@
+THE PRODUCTION (JSON)
+{
+ "episodes": [
+  {
+   "episode": 1,
+   "title": "The First Meeting",
+   "text": "In heavy rain on Colombo Road, Kasun sells homemade short eats and tea from his small three-wheeler, his clothes simple and his eyes full of ambition. Across the road, elegantly dressed Anudi steps out of a family car with an umbrella, walks away, and Kasun watches her leave."
+  },
+  {
+   "episode": 2,
+   "title": "The Difference",
+   "text": "Over a few weeks, Anudi visits Kasun's food three-wheeler each evening and they fall in love, until Anudi's Father sees them and confronts her that night. Kasun works day and night and begins supplying three small shops. A major supermarket calls with a huge order, but he needs Rs. 2 million to expand and doesn't have the money."
+  },
+  {
+   "episode": 3,
+   "title": "The Choice",
+   "text": "Kasun tries everything, but nobody believes in his small business. Anudi's Father meets him, places a cheque on the table, and Kasun pushes it back and walks away. Later, a large sign reading KASUN'S — SRI LANKAN FOOD & COFFEE is unveiled; Anudi's Father approaches, shakes Kasun's hand, and Anudi smiles as they stand together beneath it."
+  }
+ ],
+ "people": [
+  {
+   "id": "C01",
+   "name": "Kasun",
+   "appearance": "Sri Lankan male; medium brown skin; short black hair; light stubble; slim/athletic build; friendly but serious eyes.",
+   "base_wardrobe": "Early: simple plain T‑shirts or casual shirts; dark jeans; simple sandals or sneakers. Later: clean smart‑casual clothing.",
+   "notes": "Maintain the same facial appearance, hairstyle, and body type throughout. Wardrobe progresses from simple/poor to more polished as his business succeeds."
+  },
+  {
+   "id": "C02",
+   "name": "Anudi",
+   "appearance": "Sri Lankan woman; medium/light brown skin; long dark black hair; elegant natural makeup; attractive but realistic appearance.",
+   "base_wardrobe": "Modern casual dresses; elegant blouse and trousers; simple jewelry; stylish handbag. Later: slightly more sophisticated outfits.",
+   "notes": "Maintain the same facial appearance, hairstyle, and body type throughout."
+  },
+  {
+   "id": "C03",
+   "name": "Anudi's Father",
+   "appearance": "Sri Lankan businessman; well-groomed; short black/grey hair; mature appearance.",
+   "base_wardrobe": "Polo shirts; formal trousers; smart casual shirts. Later: formal shirt and trousers.",
+   "notes": "Maintains the same appearance throughout."
+  }
+ ],
+ "scenes": [
+  {
+   "id": "E01-S01",
+   "heading": "EXT. Colombo Road - DAY",
+   "title": "Heavy Rain On Colombo Road",
+   "place": "Colombo Road",
+   "script": [
+    "It rains heavily."
+   ]
+  },
+  {
+   "id": "E01-S02",
+   "heading": "EXT. Kasun's Food Three-Wheeler - DAY",
+   "title": "Kasun Sells As Anudi Arrives",
+   "place": "Kasun's Food Three-Wheeler",
+   "script": [
+    "Kasun stands beside his small three-wheeler.",
+    "He sells homemade short eats to office workers.",
+    "He sells tea to office workers.",
+    "His clothes are simple.",
+    "His eyes are full of ambition.",
+    "Kasun: One day… I'll have my own restaurant,",
+    "A comfortable family car is across the road.",
+    "Anudi steps out of the family car.",
+    "She is dressed elegantly.",
+    "She holds an umbrella.",
+    "She accidentally drops her phone near Kasun's three-wheeler.",
+    "Kasun picks up the phone.",
+    "He runs after her.",
+    "Kasun: Miss! Your phone!",
+    "Anudi turns around.",
+    "Anudi: Oh… thank you.",
+    "She looks at his little business.",
+    "Anudi: You made all this yourself?",
+    "Kasun smiles.",
+    "Kasun: Started with Rs. 5,000. I'm trying to make it bigger.",
+    "Anudi smiles back.",
+    "Her phone rings.",
+    "Anudi's Father: Anudi, where are you? Come home. We need to talk about your marriage.",
+    "Her smile disappears.",
+    "She looks at Kasun one more time.",
+    "Anudi: Maybe… I'll see you again."
+   ]
+  },
+  {
+   "id": "E01-S03",
+   "heading": "EXT. Colombo Road - DAY",
+   "title": "Anudi Walks With Umbrella",
+   "place": "Colombo Road",
+   "script": [
+    "She walks away.",
+    "She holds her umbrella as she goes."
+   ]
+  },
+  {
+   "id": "E01-S04",
+   "heading": "EXT. Kasun's Food Three-Wheeler - DAY",
+   "title": "Kasun Watches Her Leave",
+   "place": "Kasun's Food Three-Wheeler",
+   "script": [
+    "Kasun watches her leave."
+   ]
+  },
+  {
+   "id": "E02-S01",
+   "heading": "EXT. Kasun's Food Three-Wheeler - EVENING",
+   "title": "Anudi and Kasun Grow Close",
+   "place": "Kasun's Food Three-Wheeler",
+   "script": [
+    "A few weeks pass.",
+    "Anudi starts visiting Kasun's small business every evening.",
+    "They talk.",
+    "They laugh.",
+    "They slowly fall in love.",
+    "Anudi's Father sees them together one evening."
+   ]
+  },
+  {
+   "id": "E02-S02",
+   "heading": "INT. Anudi's Family Home - NIGHT",
+   "title": "Anudi's Father Confronts Her",
+   "place": "Anudi's Family Home",
+   "script": [
+    "That night, he confronts her at home.",
+    "Anudi's Father: That boy? He has nothing!",
+    "Anudi: He has a dream.",
+    "Anudi's Father: Dreams don't build a family. Money does."
+   ]
+  },
+  {
+   "id": "E02-S03",
+   "heading": "INT. Kasun's Small Workspace - DAY",
+   "title": "Kasun Supplies Three Shops",
+   "place": "Kasun's Small Workspace",
+   "script": [
+    "Kasun works day and night.",
+    "He has started supplying his food to three small shops."
+   ]
+  },
+  {
+   "id": "E02-S04",
+   "heading": "INT. Kasun's Small Workspace - EVENING",
+   "title": "Supermarket Order, Funds Needed",
+   "place": "Kasun's Small Workspace",
+   "script": [
+    "One evening, Anudi visits him at his small workspace.",
+    "Anudi: Why are you working this hard?",
+    "Kasun looks at her.",
+    "Kasun: Because I don't want your family to ever say I'm not good enough for you.",
+    "Anudi holds his hand.",
+    "Anudi: I don't care about your money.",
+    "Kasun smiles.",
+    "Kasun: But I care.",
+    "Suddenly, his phone rings.",
+    "A major supermarket chain calls to place a huge order.",
+    "Kasun can't believe it.",
+    "Then the reality hits him.",
+    "He needs Rs. 2 million to expand.",
+    "He has nowhere near that amount."
+   ]
+  },
+  {
+   "id": "E03-S01",
+   "heading": "INT. Kasun's Small Workspace - DAY",
+   "title": "Kasun Refuses Anudi's Father's Cheque",
+   "place": "Kasun's Small Workspace",
+   "script": [
+    "Kasun tries everything.",
+    "Nobody believes in his small business.",
+    "Anudi's Father comes to meet Kasun.",
+    "Anudi's Father places a cheque on the table.",
+    "Anudi's Father: Rs. 2 million.",
+    "Anudi's Father: Take it. Build your business.",
+    "Kasun: Thank you, sir.",
+    "Anudi's Father: There is one condition.",
+    "Anudi's Father: Leave my daughter.",
+    "Kasun looks down at the cheque.",
+    "Kasun slowly pushes the cheque back.",
+    "Kasun: Sir… I want your daughter.",
+    "Kasun stands up.",
+    "Kasun: But I don't want to buy my future with your money.",
+    "Kasun walks away."
+   ]
+  },
+  {
+   "id": "E03-S02",
+   "heading": "EXT. Successful Restaurant - DAY",
+   "title": "Handshake Beneath Kasun's Sign",
+   "place": "Successful Restaurant",
+   "script": [
+    "A large sign is unveiled.",
+    "On screen: KASUN'S — SRI LANKAN FOOD & COFFEE",
+    "Anudi's Father watches from a distance.",
+    "Anudi's Father walks toward them.",
+    "Anudi's Father: I was wrong.",
+    "Anudi's Father: You didn't need my money to become successful.",
+    "Anudi's Father holds out his hand.",
+    "Anudi's Father: You just needed someone to believe in you.",
+    "Kasun shakes his hand.",
+    "Anudi smiles.",
+    "The three of them stand together beneath the restaurant sign.",
+    "On screen: Sometimes love doesn't need money. It just needs someone who believes in your dream."
+   ]
+  }
+ ],
+ "timeline": null
+}

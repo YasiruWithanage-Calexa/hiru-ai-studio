@@ -549,6 +549,20 @@ def test_scene_frames_are_finals_and_a_draft_does_not_count_as_having_a_frame(wo
 # ── the first frame's brief (plan/2026-11-11b) ─────────────────────────────────────────────
 
 
+def test_the_frame_prompt_names_the_productions_genre_from_its_memory(world: World):
+    """plan/2026-11-12b: the genre row of production memory (a person's edit first) reaches the lead."""
+    s = open_scene(world)
+    design(world, s)
+    reviewer = world.headers(world.reviewer)
+    before = world.client.get(shot_url(world, s, 1), headers=reviewer).json()["frame_prompt"]
+    assert before.startswith("Photorealistic still frame from a Sri Lankan television drama,")
+    world.repos.direction.add_row({"production_id": str(world.production), "topic": "series",  # type: ignore[attr-defined]
+                                   "says": "Genre: action, crime thriller; love as a thread.", "strength": "fact"})
+    after = world.client.get(shot_url(world, s, 1), headers=reviewer).json()["frame_prompt"]
+    assert after.startswith("Photorealistic still frame from a Sri Lankan action and crime thriller,")
+    assert after.split(",", 1)[1] == before.split(",", 1)[1], "only the lead changed"
+
+
 def test_the_shot_shows_the_frames_brief_its_pictures_and_what_is_missing(world: World):
     s = open_scene(world)
     design(world, s)

@@ -207,6 +207,8 @@ class DirectionRepo(Protocol):
 
     async def get(self, production_id: UUID, entry_id: UUID) -> Row | None: ...  # None also when the table is missing
     async def update(self, entry_id: UUID, fields: Row) -> Row: ...
+    # plan/2026-11-12b: the production's `series` facts (genre, tone ...); [] when the table is missing
+    async def series(self, production_id: UUID) -> list[Row]: ...
 
 
 class CanonRepo(Protocol):

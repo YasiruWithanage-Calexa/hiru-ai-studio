@@ -30,12 +30,14 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
         return {"prompt": prompt, "aspect": aspect}
     if op == "look_sheet":
         return {"prompt": logic.look_sheet(payload["entity"], payload["look"]), "aspect": logic.ASPECT_OF_SHEET}
-    if op not in ("references", "compose", "expected", "checks", "brief"):
+    if op not in ("references", "compose", "expected", "checks", "brief", "plate"):
         raise ValueError(f"unknown op {op!r}")
     world = logic.World.of(payload)
     shot = payload["shot"]
     if op == "references":
         return {"references": world.reference_choices(shot)}
+    if op == "plate":  # plan/2026-11-12b: a black plate is made by code, never painted
+        return {"plate": world.plate(shot)}
     if op == "compose":
         prompt, pins = world.compose(shot, list(payload["labels"]))
         return {"prompt": prompt, "pins": pins}

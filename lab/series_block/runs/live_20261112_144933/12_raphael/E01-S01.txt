@@ -1,0 +1,209 @@
+SCENE E01-S01: stage 1 finished, stage 2 finished
+Seconds: target 60.0, cap 120.0, takes 72 (must 58, cinematic 14)
+
+Logline: At a rain-lashed village sluice, Aruni recognises her brother, discovers a marked key still in his grasp, and fails to reach the one person she needs.
+Approach: Play the crime-thriller facet as an ominous discovery, not an action spectacle. Scoped village direction governs: locked frames, amber and earthy red within directional dawn light, deep wet shadows and restrained colour. Length comes from recognition, examination and the unanswered wait, not invented events. Essential master, restrained singles and the two readable objects form the intended cut; no decorative coverage.
+Key Image: The exposed C-17 marking in a still fist while rain stipples the metal.
+Geography: The paddy path runs left to right toward the canal gate. Aruni remains frame left facing right; Nimal lies frame right beside the gate from the first frame in which he is visible. Keep the camera on the field side of that axis. Choose his right fist for C-17. Aruni retains the medical bag in her left hand; her right hand approaches his hand, then withdraws and retrieves her phone from her right pocket. Neither key nor bag changes ownership.
+Arc: An ordinary walk becomes recognition (blocks {'first': 0, 'last': 1}): Bleak space contracts into personal shock.
+Arc: Restraint gives way to a concrete mystery (blocks {'first': 2, 'last': 3}): Tenderness held back; attention catches on the key.
+Arc: An appeal meets absence (blocks {'first': 4, 'last': 6}): Urgency without release, surrounded by indifferent rain.
+Arc: Darkness withholds an answer (blocks {'first': 7, 'last': 8}): An unresolved question carries into the title.
+
+1A-1 [c01, stage 1, master, must]
+    SUMMARY: From the field side, a wide frame holds Aruni walking right beside the paddy with her medical bag; heavy rain dominates.
+    block 0 = E01-S01-B01: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.
+    WIDE · 35mm · locked_off · Eye level, field side · take 6 s
+    why: The unmoving landscape makes her small and exposed before the discovery.
+    editor: Use the full walk rather than decorative landscape coverage.
+    framing: WIDE; Aruni small in the left half with the path extending right
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Walks steadily right along the paddy path with the medical bag in her left hand.
+
+1B-1 [c02, stage 1, master, must]
+    SUMMARY: A field-side wide shows Aruni stop at left as she notices Nimal lying still at the gate on the right.
+    block 1 = E01-S01-B02: She notices something caught near the canal gate: a body. It is Nimal.
+    WIDE · 40mm · locked_off · Eye level, field side of path-to-gate axis · take 4 s
+    why: A held shared frame allows the still figure and her recognition to coexist.
+    editor: Recognition begins here and completes in the single; do not accelerate the reveal.
+    framing: WIDE; Aruni at left and Nimal lying at right beside the sluice
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Stops and fixes her gaze downward to the right.
+    C03: Lies entirely still with his right fist retaining the small marked metal key.
+
+1C-1 [c03, stage 1, reaction, must]
+    SUMMARY: An eye-level close single holds Aruni recognising the figure below her; rain continues without a cry.
+    block 1 = E01-S01-B02: She notices something caught near the canal gate: a body. It is Nimal.
+    MCU · 75mm · locked_off · Eye level, looking toward frame right · take 4 s
+    why: Holding her face gives recognition duration without an exaggerated camera move.
+    editor: Continue recognition after the master; retain the final held gaze.
+    framing: MCU; Aruni fills the left two thirds, gaze down right
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Holds her downward gaze as recognition settles.
+
+1D-1 [c04, stage 1, two_shot, must]
+    SUMMARY: At the gate, a low two-shot holds Aruni lowering herself beside Nimal, reaching his hand with her right hand while retaining her bag in her left; he remains entirely still.
+    block 2 = E01-S01-B03: She does not scream. She kneels and touches his hand.
+    TWO · 40mm · locked_off · Low field-side angle · take 6 s
+    why: The shared low frame keeps her descent and his stillness in the same physical space.
+    editor: Occlude the instant of hand contact behind her forearm; no generated hand-to-hand contact.
+    framing: TWO; Aruni at left and Nimal lying low at right
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Lowers herself to her knees and reaches toward Nimal's hand, with the meeting hidden by her forearm.
+    C03: Lies entirely still with his right fist retaining the small marked metal key.
+
+1E-1 [c05, stage 1, single, must]
+    SUMMARY: A low close single holds Aruni kneeling beside Nimal with her gaze lowered and her right hand out of frame at his hand.
+    block 2 = E01-S01-B03: She does not scream. She kneels and touches his hand.
+    MCU · 65mm · locked_off · Low eye level, field side · take 4 s
+    why: Her held expression lets the contact land without needing to show difficult hand mechanics.
+    editor: Use after the low master has established the occluded contact.
+    framing: MCU; kneeling Aruni fills left and centre, gaze down right
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Stays kneeling with her right hand at Nimal's hand, below frame, and keeps looking down.
+
+1F-1 [c06, stage 1, insert, must]
+    SUMMARY: A close view shows C-17 exposed in Nimal's still right fist as rain strikes the metal; the key stays in his grasp.
+    block 3 = E01-S01-B04: Inside his fist is a small metal key marked C-17.
+    INSERT · 85mm macro · locked_off · Low oblique view of the fist · take 4 s
+    why: A still close detail makes the key's mark readable without implying it changes hands.
+    editor: C-17 must be legible; if generated text fails, replace the mark in post. No removal.
+    framing: INSERT; still right fist fills most of frame with C-17 exposed
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C03: His right fist remains entirely still around the key.
+
+1E-2 [c07, stage 1, reaction, must]
+    SUMMARY: Aruni studies the key in Nimal's fist from her kneeling position, her face held in a low close frame.
+    block 3 = E01-S01-B04: Inside his fist is a small metal key marked C-17.
+    MCU · 65mm · locked_off · Low eye level, field side · take 4 s
+    why: Her response fixes the discovery as a mystery rather than an isolated object shot.
+    editor: Match the lowered eyeline from the preceding settled single.
+    framing: MCU; Aruni fills left and centre, gaze down right
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Studies the fist below frame without taking the key.
+
+1E-3 [c08, stage 1, single, must]
+    SUMMARY: Kneeling beside Nimal, Aruni voices the unanswered appeal L4 to Dinu in a close single; only rain answers.
+    block 4 = E01-S01-B05: Dinu... oyata meka ahenne nadda?
+    line L4 = E01-S01-B05: Dinu... oyata meka ahenne nadda?
+    MCU · 65mm · locked_off · Low eye level, field side · take 4 s
+    why: An unbroken intimate single carries the entire appeal without forcing a reaction elsewhere.
+    editor: Perform complete L4 in 2.3 seconds; retain lead and tail. The phone has not yet been retrieved.
+    framing: MCU; Aruni fills left and centre, gaze down right
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Her lips move to L4, then close.
+
+1G-1 [c09, stage 1, insert, must]
+    SUMMARY: From a close field-side view, kneeling Aruni takes her phone from her right pocket, reveals the Dinu contact screen and initiates an unanswered attempt with one press.
+    block 5 = E01-S01-B06: She calls Dinu. No answer.
+    INSERT · 65mm · locked_off · Low oblique field-side angle · take 6 s
+    why: The device and intended contact are visible before the initiation, so the unanswered attempt is clear.
+    editor: One deliberate press only; screen shows Dinu and an outgoing attempt, never a connected call. Replace screen lettering in post if necessary.
+    framing: INSERT; Aruni's right pocket, right hand and phone fill the frame
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Withdraws her right hand from the hand area, takes the phone from her right pocket and presses once after the contact screen is visible.
+
+1H-1 [c10, stage 1, single, must]
+    SUMMARY: Aruni waits kneeling with the phone in her right hand and the bag in her left; no answer comes.
+    block 5 = E01-S01-B06: She calls Dinu. No answer.
+    MS · 50mm · locked_off · Low eye level, field side · take 4 s
+    why: The unanswered wait needs a sustained human frame after the screen establishes the attempt.
+    editor: Phone stays in right hand and bag in left; no connected call or remote voice.
+    framing: MS; kneeling Aruni fills frame left, phone and bag visible
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Waits with the phone in her right hand, watching its screen.
+
+1H-2 [c11, stage 1, single, must]
+    SUMMARY: Aruni remains kneeling with her phone and medical bag as a distant bus horn mixes with the rain; no bus appears.
+    block 6 = E01-S01-B07: A distant bus horn mixes with the rain.
+    MS · 50mm · locked_off · Low eye level, field side · take 4 s
+    why: Holding the same framing lets the distant horn extend the unanswered pause rather than introducing a new image.
+    editor: Match the preceding held single exactly; add the distant bus horn beneath rain in sound post.
+    framing: MS; kneeling Aruni fills frame left, phone and bag visible
+    movement: Locked-off on sticks
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Remains kneeling, holding the phone and bag, her gaze lowered.
+
+1I-1 [c12, stage 1, master, must]
+    SUMMARY: The image is entirely black following the discovery; rain may continue into the cut in sound post.
+    block 7 = E01-S01-B08: Cut to black.
+    WIDE · 50mm · locked_off · Head-on · take 4 s
+    why: An unchanging black source lets editorial make the scripted clean cut without an invented visual transition.
+    editor: Use as a black plate or substitute editorial black; cut directly from the rain image.
+    framing: WIDE; uniform black across the whole frame
+    movement: Locked-off frame
+    light: No visible light; the frame is uniformly black.
+
+1I-2 [c13, stage 1, master, must]
+    SUMMARY: A clean black field provides the source for the opening title, which is added in post.
+    block 8 = E01-S01-B09: TITLE: EKAMA SAKSHIYA.
+    WIDE · 50mm · locked_off · Head-on · take 4 s
+    why: A clean black plate gives post a stable field for a legible, isolated title.
+    editor: Composite the exact scripted title in post; do not generate typography in Veo.
+    framing: WIDE; uniform black across the whole frame
+    movement: Locked-off frame
+    light: No visible light; the frame is uniformly black.
+
+1J-1 [c14, stage 2, reaction, should, anchor c10]
+    SUMMARY: A locked oblique close-up holds Aruni's face during the unanswered attempt to reach Dinu. Her eyes remain lowered, lift briefly, then settle again; rain continues.
+    block 5 = E01-S01-B06: She calls Dinu. No answer.
+    CU · 100mm · locked_off · Oblique eye level from the field side of the established axis · take 6 s
+    why: The existing medium single preserves posture and props; this tighter oblique face isolates the tiny eye movement during the unanswered interval without repeating the phone insert.
+    editor: After c09 and within c10's wait; retain continuous rain and established device audio. No additional phone operation.
+    framing: CU of Aruni's face, left of centre with dark space to the right; hands remain below frame
+    movement: locked-off on sticks throughout
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Holds her kneeling posture with lips closed; her lowered eyes lift briefly and settle again.
+
+1K-1 [c15, stage 2, insert, should, anchor c08]
+    SUMMARY: A low locked insert shows Aruni's left hand tightening once around the medical bag handle while L4 continues from c08 over the rain.
+    block 4 = E01-S01-B05: Dinu... oyata meka ahenne nadda?
+    line L4 = E01-S01-B05: Dinu... oyata meka ahenne nadda?
+    INSERT · 85mm · locked_off · Low oblique field-side view of Aruni's left hand · take 4 s
+    why: The face performance holds urgency close; the sustained grip on the medical bag reveals its physical cost while the complete L4 remains on the anchor soundtrack.
+    editor: Use a brief section beneath L4, not the entire line if that would hide its facial turn. The bag remains in her left hand; no object transfer.
+    framing: INSERT of the left hand around the small medical bag handle beside her dark skirt; face and right hand excluded
+    movement: locked-off on sticks throughout
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+    C02: Retains the medical bag in her left hand and slowly tightens her existing grip once.
+
+1L-1 [c16, stage 2, atmosphere, nice, anchor c11]
+    SUMMARY: A locked close detail holds rain striking canal water beside the gate. The distant bus horn continues from c11 over the rain; nobody enters the frame before the cut to black.
+    INSERT · 65mm · locked_off · Low field-side view toward the canal gate waterline · take 4 s
+    why: A brief nonhuman endpoint gives the distant horn room and makes the continuing weather indifferent to the discovery; it bridges the held figure to abrupt black without showing a bus or inventing activity.
+    editor: Use after a portion of c11, carrying its distant horn and uninterrupted rain into this water detail, then hard cut to c12. No dissolve or extra horn.
+    framing: INSERT of rain-struck canal water with a narrow edge of the existing gate; no people visible
+    movement: locked-off on sticks throughout
+    light: Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.
+
+Review moment 1: no: The locked wide already gives the exposed approach and geography; another view would dilute its restraint.
+Review moment 2: no: The geography master and held recognition reaction already preserve the uninterrupted reveal and its first change.
+Review moment 3: no: The descent and settled single supply the necessary restraint while keeping contact occluded.
+Review moment 4: no: The readable C-17 fist detail and Aruni's eyeline reaction already deliver the central discovery without a redundant insert.
+Review moment 5: earns: The left-hand bag-grip insert gives contained physical strain under L4 while preserving the locked performance.
+Review moment 6: earns: The tighter oblique held reaction isolates Aruni's eyes during the unanswered wait, complementing the existing phone insert and medium single.
+Review moment 7: earns: A short rain-struck canal detail carries the existing distant horn and provides an indifferent endpoint before black without showing a bus.
+Review moment 8: no: The clean hard cut to black needs no generated transition or embellishment.
+Review moment 9: no: The supplied title belongs alone on the clean black source, composited in post.
+Editor note: The bin contains 13 must takes totalling 58 seconds, including handles and two black sources; this is raw material, not a locked 58-second assembly. Hold recognition, the key reaction and the unanswered wait to shape the scene toward the stated 60 seconds.
+Editor note: The path master establishes geography; the gate master and recognition single establish the still figure and Aruni's response. Match her left-to-right eyeline and the rain between them.
+Editor note: The kneeling two-shot establishes her reach with the meeting of hands occluded. Cut to the settled single; avoid generating or showing hand-to-hand contact mechanics. Nimal remains entirely still, with C-17 in his right fist.
+Editor note: The key detail and reaction are essential to the mystery. Keep the key in the fist and replace the C-17 marking in post if generated lettering is unstable.
+Editor note: L4 is performed in full in the close single; keep its lead and tail, with no answering voice. The phone appears only after the appeal; the close view establishes the Dinu contact screen before one deliberate activation. Replace the screen text in post if necessary; never show a connected call.
+Editor note: Match the two locked kneeling singles on bag in left hand, phone in right, eyeline and rain. Add the distant bus horn under rain only in the latter, then cut directly to black.
+Editor note: Silent-source takes should receive the continuous rain bed, footsteps, fabric, breathing and the distant horn in sound post as appropriate; no music. The black plates can be substituted with editorial black; composite EKAMA SAKSHIYA as a clean title.
+Editor note: Speed ramps, freeze frames, digital punch-ins and split screens are post-only options, not generated moves; no such effects are required here. The locked sources remain clean. Avoid slow motion, mirrors, rapid finger work and generated typography.
+Editor note: Nimal's pre-discovery position is chosen at the canal gate, outside the opening path frame; the phone starts in Aruni's right pocket. The left-hand medical bag remains with her through the end.
+Blend note: c14 — Cut into c10 during Aruni's unanswered wait, then return to the held single; carry c10's rain and established device audio.
+Blend note: c15 — Cut beneath a brief portion of L4 from c08, carrying Aruni's original line and rain; return to her face for the line's turn.
+Blend note: c16 — Follow c11 with the rain-struck canal detail, carrying c11's distant horn and rain; hard cut to c12's black.

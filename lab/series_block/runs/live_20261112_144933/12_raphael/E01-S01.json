@@ -1,0 +1,1715 @@
+{
+ "scene": "E01-S01",
+ "status": "done",
+ "seconds": 345.3,
+ "calls": 7,
+ "dollars": 0.1707,
+ "log": [
+  "stage 1: finished after 5 turns",
+  "stage 2: finished after 2 turns"
+ ],
+ "warnings": [],
+ "ids": {
+  "b0": "E01-S01-B01",
+  "b1": "E01-S01-B02",
+  "b2": "E01-S01-B03",
+  "b3": "E01-S01-B04",
+  "b4": "E01-S01-B05",
+  "L4": "E01-S01-B05",
+  "b5": "E01-S01-B06",
+  "b6": "E01-S01-B07",
+  "b7": "E01-S01-B08",
+  "b8": "E01-S01-B09"
+ },
+ "result": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "local-E01-S01",
+  "input_hash": "281acbfe12a3f749",
+  "stage1": "finished",
+  "stage2": "finished",
+  "stopped": "",
+  "cap": 2.0,
+  "breakdown": null,
+  "mood": [],
+  "edit": {
+   "treatment": {
+    "logline": "At a rain-lashed village sluice, Aruni recognises her brother, discovers a marked key still in his grasp, and fails to reach the one person she needs.",
+    "arc": [
+     {
+      "beat": "An ordinary walk becomes recognition",
+      "blocks": {
+       "first": 0,
+       "last": 1
+      },
+      "feeling": "Bleak space contracts into personal shock."
+     },
+     {
+      "beat": "Restraint gives way to a concrete mystery",
+      "blocks": {
+       "first": 2,
+       "last": 3
+      },
+      "feeling": "Tenderness held back; attention catches on the key."
+     },
+     {
+      "beat": "An appeal meets absence",
+      "blocks": {
+       "first": 4,
+       "last": 6
+      },
+      "feeling": "Urgency without release, surrounded by indifferent rain."
+     },
+     {
+      "beat": "Darkness withholds an answer",
+      "blocks": {
+       "first": 7,
+       "last": 8
+      },
+      "feeling": "An unresolved question carries into the title."
+     }
+    ],
+    "approach": "Play the crime-thriller facet as an ominous discovery, not an action spectacle. Scoped village direction governs: locked frames, amber and earthy red within directional dawn light, deep wet shadows and restrained colour. Length comes from recognition, examination and the unanswered wait, not invented events. Essential master, restrained singles and the two readable objects form the intended cut; no decorative coverage.",
+    "colour_script": [
+     {
+      "sequence": "S1",
+      "palette": "Earthy red soil, muted foliage, restrained amber skin",
+      "light": "Overcast dawn from the open field side, gate recess held dark through natural occlusion",
+      "grade": "Controlled saturation, deep blacks, small wet highlights"
+     },
+     {
+      "sequence": "S2",
+      "palette": "Amber skin against earthy red and dark wet concrete",
+      "light": "Same rain-softened directional dawn with strong falloff beneath the gate",
+      "grade": "Warm village palette retained within ominous contrast"
+     },
+     {
+      "sequence": "S3",
+      "palette": "Black field and warm ivory title",
+      "light": "Editorial black, then flat graphic title",
+      "grade": "Clean blacks; no generated lettering"
+     }
+    ],
+    "geography": "The paddy path runs left to right toward the canal gate. Aruni remains frame left facing right; Nimal lies frame right beside the gate from the first frame in which he is visible. Keep the camera on the field side of that axis. Choose his right fist for C-17. Aruni retains the medical bag in her left hand; her right hand approaches his hand, then withdraws and retrieves her phone from her right pocket. Neither key nor bag changes ownership.",
+    "key_image": "The exposed C-17 marking in a still fist while rain stipples the metal.",
+    "advice": [
+     "Keep Nimal completely still in every frame; rain supplies movement.",
+     "Conceal the actual hand contact behind Aruni's forearm; cut between approach and settled contact rather than generating contact mechanics.",
+     "Show the handset and its readable Dinu contact screen before initiating the attempt; no connected-call imagery or answering voice.",
+     "Make black and the title in post from clean black source plates; title wording is supplied only in editorial instructions.",
+     "Sustain rain without music, with the distant horn only after the unanswered attempt."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "Approach and recognition",
+     "purpose": "Establish the path and let Aruni recognise Nimal in an uninterrupted spatial reveal.",
+     "shots": {
+      "first": 0,
+      "last": 1
+     }
+    },
+    {
+     "id": "S2",
+     "title": "Hand, key, unanswered appeal",
+     "purpose": "Hold restraint, reveal C-17 and leave the attempt at contact unresolved.",
+     "shots": {
+      "first": 2,
+      "last": 6
+     }
+    },
+    {
+     "id": "S3",
+     "title": "Black and title",
+     "purpose": "Close the discovery without explanation.",
+     "shots": {
+      "first": 7,
+      "last": 8
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0
+     ],
+     "what": "Aruni advances along the paddy path carrying her medical bag.",
+     "feeling": "An exposed figure in indifferent weather.",
+     "cut_uses": "Locked wide master at field-side angle; hold the surroundings as she advances."
+    },
+    {
+     "n": 2,
+     "sequence": "S1",
+     "blocks": [
+      1
+     ],
+     "what": "Aruni notices Nimal beside the canal gate and recognises him.",
+     "feeling": "Recognition arrests her without an outburst.",
+     "cut_uses": "Locked geography master reveals the still figure, followed by a held eye-level single for recognition; do not cut away at its first flicker."
+    },
+    {
+     "n": 3,
+     "sequence": "S2",
+     "blocks": [
+      2
+     ],
+     "what": "Aruni kneels and reaches his hand without crying out.",
+     "feeling": "Practical restraint barely contains the impact.",
+     "cut_uses": "Low locked two-shot for the descent, then a closer single of the settled posture; contact is occluded rather than generated."
+    },
+    {
+     "n": 4,
+     "sequence": "S2",
+     "blocks": [
+      3
+     ],
+     "what": "C-17 is visible in Nimal's fist and stays there.",
+     "feeling": "A specific mystery interrupts grief.",
+     "cut_uses": "Locked hand detail with readable mark, followed by Aruni's eyeline reaction; this story-essential detail is not optional decoration."
+    },
+    {
+     "n": 5,
+     "sequence": "S2",
+     "blocks": [
+      4
+     ],
+     "what": "Aruni makes the quiet appeal identified as L4.",
+     "feeling": "Urgency held close.",
+     "cut_uses": "Eye-level locked MCU performs the complete L4 with clean handles; no remote voice."
+    },
+    {
+     "n": 6,
+     "sequence": "S2",
+     "blocks": [
+      5
+     ],
+     "what": "Aruni retrieves her phone, initiates an attempt to reach Dinu and waits without an answer.",
+     "feeling": "The pause becomes isolation.",
+     "cut_uses": "Locked close view includes handset retrieval and readable Dinu screen with one simple activation; cut to her held kneeling single for the unanswered wait."
+    },
+    {
+     "n": 7,
+     "sequence": "S2",
+     "blocks": [
+      6
+     ],
+     "what": "A distant bus horn enters the continuing rainfall.",
+     "feeling": "The world continues at a distance.",
+     "cut_uses": "Hold the same locked kneeling single; no bus image or new event."
+    },
+    {
+     "n": 8,
+     "sequence": "S3",
+     "blocks": [
+      7
+     ],
+     "what": "The location image cuts cleanly to black.",
+     "feeling": "Abrupt absence.",
+     "cut_uses": "Clean black source, with the actual hard cut made in the edit."
+    },
+    {
+     "n": 9,
+     "sequence": "S3",
+     "blocks": [
+      8
+     ],
+     "what": "The opening title appears alone on black.",
+     "feeling": "The mystery is named, not answered.",
+     "cut_uses": "Clean black title source; composite the supplied title in post, without generated text."
+    }
+   ],
+   "editor_notes": [
+    "The bin contains 13 must takes totalling 58 seconds, including handles and two black sources; this is raw material, not a locked 58-second assembly. Hold recognition, the key reaction and the unanswered wait to shape the scene toward the stated 60 seconds.",
+    "The path master establishes geography; the gate master and recognition single establish the still figure and Aruni's response. Match her left-to-right eyeline and the rain between them.",
+    "The kneeling two-shot establishes her reach with the meeting of hands occluded. Cut to the settled single; avoid generating or showing hand-to-hand contact mechanics. Nimal remains entirely still, with C-17 in his right fist.",
+    "The key detail and reaction are essential to the mystery. Keep the key in the fist and replace the C-17 marking in post if generated lettering is unstable.",
+    "L4 is performed in full in the close single; keep its lead and tail, with no answering voice. The phone appears only after the appeal; the close view establishes the Dinu contact screen before one deliberate activation. Replace the screen text in post if necessary; never show a connected call.",
+    "Match the two locked kneeling singles on bag in left hand, phone in right, eyeline and rain. Add the distant bus horn under rain only in the latter, then cut directly to black.",
+    "Silent-source takes should receive the continuous rain bed, footsteps, fabric, breathing and the distant horn in sound post as appropriate; no music. The black plates can be substituted with editorial black; composite EKAMA SAKSHIYA as a clean title.",
+    "Speed ramps, freeze frames, digital punch-ins and split screens are post-only options, not generated moves; no such effects are required here. The locked sources remain clean. Avoid slow motion, mirrors, rapid finger work and generated typography.",
+    "Nimal's pre-discovery position is chosen at the canal gate, outside the opening path frame; the phone starts in Aruni's right pocket. The left-hand medical bag remains with her through the end."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "Eye level, field side",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "The unmoving landscape makes her small and exposed before the discovery.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Use the full walk rather than decorative landscape coverage.",
+    "summary": "From the field side, a wide frame holds Aruni walking right beside the paddy with her medical bag; heavy rain dominates.",
+    "id": "c01",
+    "slate": "1A-1",
+    "ir": {
+     "setting": "A rain-lashed paddy path approaches the Mahawewa canal gate at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 35mm, f/5.6",
+      "angle": "Eye level, field side",
+      "framing": "WIDE; Aruni small in the left half with the path extending right",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, muted greens, amber skin, deep controlled blacks",
+      "depth_of_field": "Deep; paddy and path legible with little bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Walks steadily right along the paddy path with the medical bag in her left hand.",
+       "position": "Frame left on the paddy path, facing right, upright, left hand holding the small medical bag, phone concealed in right pocket."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE held on Aruni and the path",
+       "director_line": "The landscape holds her inside the rain.",
+       "action": "Aruni maintains her walking pace.",
+       "performance": "Her chin stays level and her eyes follow the path."
+      },
+      {
+       "time": "1-5s",
+       "camera": "WIDE held on Aruni and the path",
+       "director_line": "She advances without drawing attention to herself.",
+       "action": "Aruni takes several steady steps right with the bag in her left hand.",
+       "performance": "She keeps her shoulders compact against the rain and her gaze ahead."
+      },
+      {
+       "time": "5-6s",
+       "camera": "WIDE held on Aruni and the path",
+       "director_line": "Rain continues across the unchanged frame.",
+       "action": "Aruni maintains the same walking pace.",
+       "performance": "Her eyes remain fixed along the path."
+      }
+     ],
+     "audio": "Heavy rain on paddy water and damp footsteps; no vocal sound.",
+     "first_frame": {
+      "composition": "Path crosses left to right below the paddy horizon; Aruni occupies the left third.",
+      "subjects": [
+       "Aruni walking right with a small medical bag in her left hand"
+      ],
+      "setting": "Wet paddy path with the canal gate beyond the right edge.",
+      "lighting": "Directional rain-softened dawn from left; deep background shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain across fields and water",
+     "effects": "Damp footsteps",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "master",
+    "setup": "B",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "Eye level, field side of path-to-gate axis",
+    "lens": "40mm",
+    "technique": "locked_off",
+    "why": "A held shared frame allows the still figure and her recognition to coexist.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Recognition begins here and completes in the single; do not accelerate the reveal.",
+    "summary": "A field-side wide shows Aruni stop at left as she notices Nimal lying still at the gate on the right.",
+    "id": "c02",
+    "slate": "1B-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni stands left of Nimal beside the wet paddy path at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 40mm, f/5.6",
+      "angle": "Eye level, field side",
+      "framing": "WIDE; Aruni at left and Nimal lying at right beside the sluice",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, muted greens, amber skin, deep controlled blacks",
+      "depth_of_field": "Deep; both figures legible with restrained bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Stops and fixes her gaze downward to the right.",
+       "position": "Frame left at the canal gate, facing right, upright, bag in left hand, right hand free."
+      },
+      {
+       "id": "C03",
+       "description": "Nimal, 34, a Sri Lankan man in a plain dark work shirt and trousers, rain-soaked, eyes closed, entirely still.",
+       "action": "Lies entirely still with his right fist retaining the small marked metal key.",
+       "position": "Frame right beside the canal gate, lying on his back with head toward the gate, right fist resting beside his hip."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE held on both figures",
+       "director_line": "The still figure occupies the end of her route.",
+       "action": "Aruni reaches the end of her walking movement while Nimal remains still.",
+       "performance": "Aruni's gaze drops toward the figure."
+      },
+      {
+       "time": "1-3s",
+       "camera": "WIDE held on both figures",
+       "director_line": "Her forward movement ends before the sluice.",
+       "action": "Aruni stops and fixes her gaze downward to the right; Nimal remains still.",
+       "performance": "Her shoulders stop moving and her lips part slightly without sound."
+      },
+      {
+       "time": "3-4s",
+       "camera": "WIDE held on both figures",
+       "director_line": "The distance between them becomes fixed.",
+       "action": "Aruni holds her position; Nimal remains still.",
+       "performance": "Her gaze stays on his face."
+      }
+     ],
+     "audio": "Heavy rain and canal water; no vocal sound.",
+     "first_frame": {
+      "composition": "Aruni stands in the left third facing the still figure low in the right third.",
+      "subjects": [
+       "Aruni upright with bag in left hand",
+       "Nimal lying still with eyes closed and right fist beside his hip"
+      ],
+      "setting": "Wet concrete beside the sluice and paddy path.",
+      "lighting": "Dawn from left with the sluice background held dark."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Last damp footstep",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "reaction",
+    "setup": "C",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "Eye level, looking toward frame right",
+    "lens": "75mm",
+    "technique": "locked_off",
+    "why": "Holding her face gives recognition duration without an exaggerated camera move.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Continue recognition after the master; retain the final held gaze.",
+    "summary": "An eye-level close single holds Aruni recognising the figure below her; rain continues without a cry.",
+    "id": "c03",
+    "slate": "1C-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni stands left of Nimal beside the wet paddy path at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 75mm, f/2.8",
+      "angle": "Eye level, field side",
+      "framing": "MCU; Aruni fills the left two thirds, gaze down right",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, muted greens, amber skin, deep controlled blacks",
+      "depth_of_field": "Shallow; dark gate softly blurred",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Holds her downward gaze as recognition settles.",
+       "position": "Frame left at the canal gate, facing right, upright, bag in left hand below frame, right hand free."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU held on Aruni's eyes",
+       "director_line": "The gaze from the wide is held closer.",
+       "action": "Aruni remains motionless looking down right.",
+       "performance": "Her lips remain slightly parted."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MCU held on Aruni's eyes",
+       "director_line": "Recognition registers without release.",
+       "action": "Aruni closes her lips and holds her gaze.",
+       "performance": "Her jaw tightens once and her eyelids lower a fraction."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MCU held on Aruni's eyes",
+       "director_line": "She remains inside the same held look.",
+       "action": "Aruni keeps her head lowered.",
+       "performance": "Her lips stay closed and her eyes remain fixed."
+      }
+     ],
+     "audio": "Heavy rain and canal water; no vocal sound.",
+     "first_frame": {
+      "composition": "Aruni's wet face at left with look room down right.",
+      "subjects": [
+       "Aruni looking down right, lips slightly parted"
+      ],
+      "setting": "Dark sluice recess blurred behind Aruni.",
+      "lighting": "Left side of her face lit by dawn; opposite cheek falls into shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Quiet breathing",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "two_shot",
+    "setup": "D",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "TWO",
+    "angle": "Low field-side angle",
+    "lens": "40mm",
+    "technique": "locked_off",
+    "why": "The shared low frame keeps her descent and his stillness in the same physical space.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Occlude the instant of hand contact behind her forearm; no generated hand-to-hand contact.",
+    "summary": "At the gate, a low two-shot holds Aruni lowering herself beside Nimal, reaching his hand with her right hand while retaining her bag in her left; he remains entirely still.",
+    "id": "c04",
+    "slate": "1D-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni lowers herself on the left beside Nimal on the right at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 40mm, f/4",
+      "angle": "Low field-side angle",
+      "framing": "TWO; Aruni at left and Nimal lying low at right",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, muted greens, amber skin, deep controlled blacks",
+      "depth_of_field": "Medium; both figures readable against softened gate",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Lowers herself to her knees and reaches toward Nimal's hand, with the meeting hidden by her forearm.",
+       "position": "Frame left at the gate, facing right, upright at opening, small medical bag in left hand and right hand free."
+      },
+      {
+       "id": "C03",
+       "description": "Nimal, 34, a Sri Lankan man in a plain dark work shirt and trousers, rain-soaked, eyes closed, entirely still.",
+       "action": "Lies entirely still with his right fist retaining the small marked metal key.",
+       "position": "Frame right beside the gate, lying on his back, right fist beside his hip."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "TWO held on both figures",
+       "director_line": "Aruni stands beside the still figure.",
+       "action": "Aruni holds her position; Nimal remains entirely still.",
+       "performance": "Her gaze remains on his face and her lips stay closed."
+      },
+      {
+       "time": "1-5s",
+       "camera": "TWO held on both figures",
+       "director_line": "She lowers into the wet space beside him.",
+       "action": "Aruni kneels with the bag in her left hand and extends her right hand to his hand; her forearm hides the meeting while Nimal remains still.",
+       "performance": "She moves carefully and keeps her jaw set."
+      },
+      {
+       "time": "5-6s",
+       "camera": "TWO held on both figures",
+       "director_line": "The low frame settles with her beside him.",
+       "action": "Aruni stays kneeling with her right hand at his hand, the meeting hidden; Nimal remains still.",
+       "performance": "She keeps her gaze lowered and lips closed."
+      }
+     ],
+     "audio": "Heavy rain and water; no vocal sound.",
+     "first_frame": {
+      "composition": "Aruni upright at frame left, Nimal low at frame right; forearm will screen the hand area.",
+      "subjects": [
+       "Aruni holding the bag in her left hand",
+       "Nimal lying entirely still with eyes closed"
+      ],
+      "setting": "Wet concrete and the dark canal gate.",
+      "lighting": "Dawn from the open left side; deep shadow in the gate recess."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Fabric settling on wet ground",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "Low eye level, field side",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "Her held expression lets the contact land without needing to show difficult hand mechanics.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Use after the low master has established the occluded contact.",
+    "summary": "A low close single holds Aruni kneeling beside Nimal with her gaze lowered and her right hand out of frame at his hand.",
+    "id": "c05",
+    "slate": "1E-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni lowers herself on the left beside Nimal on the right at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 65mm, f/2.8",
+      "angle": "Low eye level, field side",
+      "framing": "MCU; kneeling Aruni fills left and centre, gaze down right",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, muted greens, amber skin, deep controlled blacks",
+      "depth_of_field": "Shallow; wet concrete soft behind her",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Stays kneeling with her right hand at Nimal's hand, below frame, and keeps looking down.",
+       "position": "Frame left at the gate, facing right, kneeling, bag in left hand below frame, right hand at his hand below frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU held on Aruni",
+       "director_line": "Her lowered face fills the frame.",
+       "action": "Aruni remains kneeling and looking down.",
+       "performance": "Her lips stay pressed together."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MCU held on Aruni",
+       "director_line": "She holds the position beside him.",
+       "action": "Aruni keeps her right arm extended below frame.",
+       "performance": "Her eyes linger, then shift a little lower toward his hand."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MCU held on Aruni",
+       "director_line": "The frame holds on her lowered gaze.",
+       "action": "Aruni stays kneeling.",
+       "performance": "She keeps her jaw steady and lips closed."
+      }
+     ],
+     "audio": "Heavy rain and canal water; no vocal sound.",
+     "first_frame": {
+      "composition": "Aruni's lowered face on the left with space toward her downward gaze.",
+      "subjects": [
+       "Aruni kneeling, eyes lowered, lips closed"
+      ],
+      "setting": "Wet gate concrete softened behind her.",
+      "lighting": "Side-lit by dawn from the field, with the far side of her face shaded."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Quiet breathing",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "insert",
+    "setup": "F",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "Low oblique view of the fist",
+    "lens": "85mm macro",
+    "technique": "locked_off",
+    "why": "A still close detail makes the key's mark readable without implying it changes hands.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "C-17 must be legible; if generated text fails, replace the mark in post. No removal.",
+    "summary": "A close view shows C-17 exposed in Nimal's still right fist as rain strikes the metal; the key stays in his grasp.",
+    "id": "c06",
+    "slate": "1F-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Nimal's right fist rests beside his hip at dawn.",
+     "cinematography": {
+      "camera": "locked-off macro rig, 85mm, f/5.6",
+      "angle": "Low oblique field-side view",
+      "framing": "INSERT; still right fist fills most of frame with C-17 exposed",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red concrete, muted metal, deep controlled blacks",
+      "depth_of_field": "Medium; mark and grasp sharp, background soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C03",
+       "description": "Nimal, 34, a Sri Lankan man in a plain dark work shirt and trousers, rain-soaked, eyes closed, entirely still.",
+       "action": "His right fist remains entirely still around the key.",
+       "position": "Frame right beside the gate, lying on his back outside the close frame, right fist resting beside his hip."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT held on fist and exposed key",
+       "director_line": "Rain gathers on the stationary metal.",
+       "action": "The fist and key remain still.",
+       "performance": "The visible hand remains entirely still."
+      },
+      {
+       "time": "1-3s",
+       "camera": "INSERT held on fist and exposed key",
+       "director_line": "The mark C-17 remains readable within the grip.",
+       "action": "Rain falls across the motionless fist and key.",
+       "performance": "The visible hand remains entirely still."
+      },
+      {
+       "time": "3-4s",
+       "camera": "INSERT held on fist and exposed key",
+       "director_line": "The key remains where it was found.",
+       "action": "The fist and key remain still.",
+       "performance": "The visible hand remains entirely still."
+      }
+     ],
+     "audio": "Heavy rain close against wet concrete and metal; no vocal sound.",
+     "first_frame": {
+      "composition": "Right fist across the frame, the exposed key face and C-17 mark in focus.",
+      "subjects": [
+       "Nimal's entirely still right fist holding the marked key"
+      ],
+      "setting": "Wet concrete at the canal gate.",
+      "lighting": "A small side-lit highlight on the metal against deep wet shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Rain against metal",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "reaction",
+    "setup": "E",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "Low eye level, field side",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "Her response fixes the discovery as a mystery rather than an isolated object shot.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Match the lowered eyeline from the preceding settled single.",
+    "summary": "Aruni studies the key in Nimal's fist from her kneeling position, her face held in a low close frame.",
+    "id": "c07",
+    "slate": "1E-2",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Nimal's right fist rests beside his hip at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 65mm, f/2.8",
+      "angle": "Low eye level, field side",
+      "framing": "MCU; Aruni fills left and centre, gaze down right",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, muted greens, amber skin, deep controlled blacks",
+      "depth_of_field": "Shallow; wet gate softly blurred",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Studies the fist below frame without taking the key.",
+       "position": "Frame left at the gate, facing right, kneeling, bag in left hand below frame, right hand at his hand below frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU held on Aruni's eyes",
+       "director_line": "Her gaze remains low.",
+       "action": "Aruni stays kneeling and looks down right.",
+       "performance": "Her lips remain closed and her eyes stay fixed."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MCU held on Aruni's eyes",
+       "director_line": "She studies what rests inside the fist.",
+       "action": "Aruni inclines her head slightly toward the hand below frame.",
+       "performance": "Her eyes narrow slightly before settling again."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MCU held on Aruni's eyes",
+       "director_line": "Her attention remains on the hand.",
+       "action": "Aruni holds the slight inclination.",
+       "performance": "Her jaw stays set and her lips closed."
+      }
+     ],
+     "audio": "Heavy rain and canal water; no vocal sound.",
+     "first_frame": {
+      "composition": "Aruni kneels at left and looks below the right edge.",
+      "subjects": [
+       "Aruni kneeling with lowered eyes"
+      ],
+      "setting": "Dark wet gate behind her.",
+      "lighting": "Dawn side light and a deeply shaded far cheek."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Quiet breathing",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     4
+    ],
+    "lines": [
+     "L4"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "Low eye level, field side",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "An unbroken intimate single carries the entire appeal without forcing a reaction elsewhere.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Perform complete L4 in 2.3 seconds; retain lead and tail. The phone has not yet been retrieved.",
+    "summary": "Kneeling beside Nimal, Aruni voices the unanswered appeal L4 to Dinu in a close single; only rain answers.",
+    "id": "c08",
+    "slate": "1E-3",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni kneels beside Nimal at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 65mm, f/2.8",
+      "angle": "Low eye level, field side",
+      "framing": "MCU; Aruni fills left and centre, gaze down right",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, muted greens, amber skin, deep controlled blacks",
+      "depth_of_field": "Shallow; dark wet sluice softly blurred",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Her lips move to L4, then close.",
+       "position": "Frame left at the gate, facing right, kneeling, bag in left hand below frame, right hand near Nimal's hand below frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MCU held on Aruni's face",
+       "director_line": "The close frame holds her lowered gaze.",
+       "action": "Aruni holds still.",
+       "performance": "Her lips remain closed and her eyes stay low."
+      },
+      {
+       "time": "0.5-2.8s",
+       "camera": "MCU held on Aruni's face",
+       "director_line": "The appeal is contained in her face.",
+       "action": "Her lips move to L4.",
+       "performance": "She lifts her eyes slightly and keeps her voice restrained."
+      },
+      {
+       "time": "2.8-4s",
+       "camera": "MCU held on Aruni's face",
+       "director_line": "Nothing interrupts the held frame.",
+       "action": "Her lips close and she remains kneeling.",
+       "performance": "Her eyes remain fixed and her jaw tightens slightly."
+      }
+     ],
+     "audio": "Aruni performs L4 over heavy rain and canal water; no other voice or music.",
+     "first_frame": {
+      "composition": "Aruni's face occupies the left side with look room to the right.",
+      "subjects": [
+       "Aruni kneeling with lips closed and eyes lowered"
+      ],
+      "setting": "Dark wet sluice behind her.",
+      "lighting": "Field-side dawn lights one cheek; the other falls into shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Quiet breathing",
+     "music": "None",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "insert",
+    "setup": "G",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "Low oblique field-side angle",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "The device and intended contact are visible before the initiation, so the unanswered attempt is clear.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "One deliberate press only; screen shows Dinu and an outgoing attempt, never a connected call. Replace screen lettering in post if necessary.",
+    "summary": "From a close field-side view, kneeling Aruni takes her phone from her right pocket, reveals the Dinu contact screen and initiates an unanswered attempt with one press.",
+    "id": "c09",
+    "slate": "1G-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni kneels on the left with her phone and medical bag at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 65mm, f/4",
+      "angle": "Low oblique field-side angle",
+      "framing": "INSERT; Aruni's right pocket, right hand and phone fill the frame",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red fabric, dark phone, small controlled screen highlight",
+      "depth_of_field": "Medium; hand and screen sharp, surroundings soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Withdraws her right hand from the hand area, takes the phone from her right pocket and presses once after the contact screen is visible.",
+       "position": "Frame left at the gate, facing right, kneeling, medical bag held in left hand outside close frame, right hand near right pocket."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT held on pocket and free right hand",
+       "director_line": "Her hand settles near the pocket.",
+       "action": "Aruni holds her right hand near her pocket.",
+       "performance": "Her hand pauses before moving."
+      },
+      {
+       "time": "1-5s",
+       "camera": "INSERT held on pocket, hand and screen",
+       "director_line": "The handset appears before the attempt begins.",
+       "action": "Aruni takes the phone from her right pocket in her right hand, turns its Dinu contact screen toward camera, then presses once to initiate the outgoing attempt.",
+       "performance": "Her hand pauses on the visible screen before the single deliberate press."
+      },
+      {
+       "time": "5-6s",
+       "camera": "INSERT held on phone screen",
+       "director_line": "The unanswered attempt remains on the screen.",
+       "action": "Aruni holds the handset still; the screen shows an outgoing attempt, not a connection.",
+       "performance": "Her hand holds steady."
+      }
+     ],
+     "audio": "Heavy rain and canal water; no answering voice, ringback or music.",
+     "first_frame": {
+      "composition": "Aruni's right pocket and resting right hand in the close frame; phone still concealed.",
+      "subjects": [
+       "Aruni's right hand beside her pocket"
+      ],
+      "setting": "Rain-wet clothing and concrete by the gate.",
+      "lighting": "Directional dawn with a small highlight on wet fabric."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Soft cloth movement",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "single",
+    "setup": "H",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "Low eye level, field side",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "The unanswered wait needs a sustained human frame after the screen establishes the attempt.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Phone stays in right hand and bag in left; no connected call or remote voice.",
+    "summary": "Aruni waits kneeling with the phone in her right hand and the bag in her left; no answer comes.",
+    "id": "c10",
+    "slate": "1H-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni kneels on the left with her phone and medical bag at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "angle": "Low eye level, field side",
+      "framing": "MS; kneeling Aruni fills frame left, phone and bag visible",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, amber skin, dark recess, controlled wet highlights",
+      "depth_of_field": "Medium; Aruni and handset clear against soft gate",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Waits with the phone in her right hand, watching its screen.",
+       "position": "Frame left at the gate, facing right, kneeling, medical bag in left hand, phone in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS held on Aruni and phone",
+       "director_line": "The handset remains in her right hand.",
+       "action": "Aruni holds the phone and bag steady.",
+       "performance": "Her eyes stay on the screen."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MS held on Aruni and phone",
+       "director_line": "The wait lengthens in the rain.",
+       "action": "Aruni remains kneeling without receiving an answer.",
+       "performance": "She watches the screen and presses her lips together."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MS held on Aruni and phone",
+       "director_line": "Nothing breaks her stillness.",
+       "action": "Aruni holds the phone and bag in their respective hands.",
+       "performance": "Her gaze remains on the phone."
+      }
+     ],
+     "audio": "Heavy rain and canal water; no answering voice or music.",
+     "first_frame": {
+      "composition": "Aruni kneels in the left half, phone in right hand and medical bag in left.",
+      "subjects": [
+       "Aruni watching the phone in her right hand while holding the bag in her left"
+      ],
+      "setting": "Wet concrete and a dark sluice recess.",
+      "lighting": "Side-lit dawn across her face with the background falling into shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "Quiet breathing",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "single",
+    "setup": "H",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "Low eye level, field side",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "Holding the same framing lets the distant horn extend the unanswered pause rather than introducing a new image.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Match the preceding held single exactly; add the distant bus horn beneath rain in sound post.",
+    "summary": "Aruni remains kneeling with her phone and medical bag as a distant bus horn mixes with the rain; no bus appears.",
+    "id": "c11",
+    "slate": "1H-2",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni kneels on the left with her phone and medical bag at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/2.8",
+      "angle": "Low eye level, field side",
+      "framing": "MS; kneeling Aruni fills frame left, phone and bag visible",
+      "movement": "Locked-off on sticks",
+      "white_balance": "4800K dawn with restrained amber skin",
+      "color_tone": "Earthy red soil, amber skin, dark recess, controlled wet highlights",
+      "depth_of_field": "Medium; Aruni and handset clear against soft gate",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Remains kneeling, holding the phone and bag, her gaze lowered.",
+       "position": "Frame left at the gate, facing right, kneeling, medical bag in left hand, phone in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS held on Aruni and phone",
+       "director_line": "The same frame continues without interruption.",
+       "action": "Aruni holds the phone and bag steady.",
+       "performance": "Her eyes remain on the screen."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MS held on Aruni and phone",
+       "director_line": "A distant horn passes beneath the rain.",
+       "action": "Aruni remains kneeling as the rain falls.",
+       "performance": "Her gaze stays lowered and her lips remain closed."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MS held on Aruni and phone",
+       "director_line": "The frame holds after the remote sound.",
+       "action": "Aruni keeps both objects in the same hands.",
+       "performance": "Her shoulders remain still and her lips stay closed."
+      }
+     ],
+     "audio": "A distant bus horn mixes beneath heavy rain and canal water; no voice or music.",
+     "first_frame": {
+      "composition": "Aruni kneels in the left half, phone in right hand and medical bag in left.",
+      "subjects": [
+       "Aruni watching the phone in her right hand while holding the bag in her left"
+      ],
+      "setting": "Wet concrete and a dark sluice recess.",
+      "lighting": "Side-lit dawn across her face with the background falling into shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Heavy rain and canal water",
+     "effects": "One distant bus horn under rain",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 8,
+    "role": "master",
+    "setup": "I",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "Head-on",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "An unchanging black source lets editorial make the scripted clean cut without an invented visual transition.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Use as a black plate or substitute editorial black; cut directly from the rain image.",
+    "summary": "The image is entirely black following the discovery; rain may continue into the cut in sound post.",
+    "id": "c12",
+    "slate": "1I-1",
+    "ir": {
+     "setting": "A uniform black field fills the frame.",
+     "cinematography": {
+      "camera": "locked-off digital frame, 50mm equivalent, f/4",
+      "angle": "Head-on",
+      "framing": "WIDE; uniform black across the whole frame",
+      "movement": "Locked-off frame",
+      "white_balance": "neutral",
+      "color_tone": "Pure black",
+      "depth_of_field": "Deep; no visible objects or bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "No visible light; the frame is uniformly black.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE held on uniform black",
+       "director_line": "The frame is black from its first instant.",
+       "action": "The black field holds.",
+       "performance": ""
+      },
+      {
+       "time": "1-3s",
+       "camera": "WIDE held on uniform black",
+       "director_line": "Darkness continues without a visible object.",
+       "action": "The black field holds.",
+       "performance": ""
+      },
+      {
+       "time": "3-4s",
+       "camera": "WIDE held on uniform black",
+       "director_line": "The black field remains unchanged.",
+       "action": "The black field holds.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain tail may be placed in editorial; no voice or music.",
+     "first_frame": {
+      "composition": "Uniform black edge to edge.",
+      "subjects": [],
+      "setting": "Black field.",
+      "lighting": "No visible light."
+     }
+    },
+    "sound": {
+     "ambience": "Rain tail in post",
+     "effects": "None",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 9,
+    "role": "master",
+    "setup": "I",
+    "blocks": [
+     8
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "Head-on",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "A clean black plate gives post a stable field for a legible, isolated title.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Composite the exact scripted title in post; do not generate typography in Veo.",
+    "summary": "A clean black field provides the source for the opening title, which is added in post.",
+    "id": "c13",
+    "slate": "1I-2",
+    "ir": {
+     "setting": "A uniform black field fills the frame.",
+     "cinematography": {
+      "camera": "locked-off digital frame, 50mm equivalent, f/4",
+      "angle": "Head-on",
+      "framing": "WIDE; uniform black across the whole frame",
+      "movement": "Locked-off frame",
+      "white_balance": "neutral",
+      "color_tone": "Pure black",
+      "depth_of_field": "Deep; no visible objects or bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "No visible light; the frame is uniformly black.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE held on uniform black",
+       "director_line": "The clean source opens on black.",
+       "action": "The black field holds.",
+       "performance": ""
+      },
+      {
+       "time": "1-3s",
+       "camera": "WIDE held on uniform black",
+       "director_line": "The clean source remains free of generated lettering.",
+       "action": "The black field holds for the editorial title.",
+       "performance": ""
+      },
+      {
+       "time": "3-4s",
+       "camera": "WIDE held on uniform black",
+       "director_line": "The clean source remains black.",
+       "action": "The black field holds.",
+       "performance": ""
+      }
+     ],
+     "audio": "No voice or music; any rain tail is placed in editorial.",
+     "first_frame": {
+      "composition": "Uniform black edge to edge.",
+      "subjects": [],
+      "setting": "Black field.",
+      "lighting": "No visible light."
+     }
+    },
+    "sound": {
+     "ambience": "Optional rain tail in post",
+     "effects": "None",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "reaction",
+    "setup": "J",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "Oblique eye level from the field side of the established axis",
+    "lens": "100mm",
+    "technique": "locked_off",
+    "why": "The existing medium single preserves posture and props; this tighter oblique face isolates the tiny eye movement during the unanswered interval without repeating the phone insert.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "After c09 and within c10's wait; retain continuous rain and established device audio. No additional phone operation.",
+    "summary": "A locked oblique close-up holds Aruni's face during the unanswered attempt to reach Dinu. Her eyes remain lowered, lift briefly, then settle again; rain continues.",
+    "id": "c14",
+    "slate": "1J-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni kneels on the left with her phone and medical bag at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 100mm, f/2.8",
+      "angle": "Oblique eye level from the field side, preserving her rightward orientation",
+      "framing": "CU of Aruni's face, left of centre with dark space to the right; hands remain below frame",
+      "movement": "locked-off on sticks throughout",
+      "white_balance": "Dawn balanced at 4800K with restrained amber highlights",
+      "color_tone": "Controlled amber and earthy red, deep wet blacks, subdued saturation and small highlights",
+      "depth_of_field": "Shallow, gate recess dissolving into dark bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Holds her kneeling posture with lips closed; her lowered eyes lift briefly and settle again.",
+       "position": "Kneeling at the canal gate, frame left facing right; phone retained in her right hand and medical bag in her left, both below the crop."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU fixed on her lowered eyes and face",
+       "director_line": "Rain catches a narrow edge of her cheek against the dark gate recess.",
+       "action": "Aruni holds still with lips closed.",
+       "performance": "Her gaze stays lowered and her jaw remains set."
+      },
+      {
+       "time": "1-5s",
+       "camera": "CU unchanged, eyes remain the focus",
+       "director_line": "A small upward eye movement becomes the only interruption in the held frame.",
+       "action": "Her eyes lift briefly, then lower again without a head turn.",
+       "performance": "She presses her lips together once and keeps her shoulders steady."
+      },
+      {
+       "time": "5-6s",
+       "camera": "CU unchanged",
+       "director_line": "The frame remains after the eye movement has ended.",
+       "action": "She maintains the kneeling position.",
+       "performance": "Her gaze stays down and her lips remain closed."
+      }
+     ],
+     "audio": "Continuous heavy rain; established device audio supplied from the anchor, with no new alert.",
+     "first_frame": {
+      "composition": "Aruni's face occupies the left two thirds in oblique profile, with dark negative space at right; no hands visible.",
+      "subjects": [
+       "Aruni with rain-soaked hair drawn back, eyes lowered and lips closed."
+      ],
+      "setting": "The canal gate recess is defocused behind her at dawn.",
+      "lighting": "Directional dawn from camera left edges her cheek while the far side falls into deep shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous heavy rainfall matching c10.",
+     "effects": "Only the device sound already established in the anchor, retained in the edit.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c10"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 5,
+    "role": "insert",
+    "setup": "K",
+    "blocks": [
+     4
+    ],
+    "lines": [
+     "L4"
+    ],
+    "speaks": false,
+    "over": "L4 from c08",
+    "size": "INSERT",
+    "angle": "Low oblique field-side view of Aruni's left hand",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "The face performance holds urgency close; the sustained grip on the medical bag reveals its physical cost while the complete L4 remains on the anchor soundtrack.",
+    "take_s": 4,
+    "handle_in_s": 0.75,
+    "handle_out_s": 0.75,
+    "priority": "should",
+    "editor_note": "Use a brief section beneath L4, not the entire line if that would hide its facial turn. The bag remains in her left hand; no object transfer.",
+    "summary": "A low locked insert shows Aruni's left hand tightening once around the medical bag handle while L4 continues from c08 over the rain.",
+    "id": "c15",
+    "slate": "1K-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni kneels beside Nimal at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/4",
+      "angle": "Low oblique view from the field side of the axis",
+      "framing": "INSERT of the left hand around the small medical bag handle beside her dark skirt; face and right hand excluded",
+      "movement": "locked-off on sticks throughout",
+      "white_balance": "Dawn balanced at 4800K with restrained amber highlights",
+      "color_tone": "Controlled amber and earthy red, deep wet blacks, subdued saturation and small highlights",
+      "depth_of_field": "Shallow, hand and handle clear against a soft wet background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Aruni, 27, a strong young Sri Lankan woman in a plain muted-earth blouse and dark skirt, rain-soaked hair drawn back.",
+       "action": "Retains the medical bag in her left hand and slowly tightens her existing grip once.",
+       "position": "Kneeling frame left facing right beside the canal gate; left hand holds the bag beside her left knee, right hand outside the crop."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.75s",
+       "camera": "INSERT fixed on the left hand and bag handle",
+       "director_line": "Wet highlights define the hand against the dark skirt.",
+       "action": "The left hand maintains its existing hold on the bag.",
+       "performance": "Her fingers remain curved around the handle."
+      },
+      {
+       "time": "0.75-3.25s",
+       "camera": "INSERT unchanged, focus on knuckles and handle",
+       "director_line": "A single slow contraction carries the strain outside the face frame.",
+       "action": "Her grip tightens once without lifting or transferring the bag.",
+       "performance": "Her knuckles become more pronounced and her wrist holds steady."
+      },
+      {
+       "time": "3.25-4s",
+       "camera": "INSERT unchanged",
+       "director_line": "The tightened grip remains as rain crosses the frame.",
+       "action": "She retains the bag in the same left-hand hold.",
+       "performance": "The fingers maintain their pressure without another movement."
+      }
+     ],
+     "audio": "Rainfall only in the source; L4 supplied from c08 in the edit.",
+     "first_frame": {
+      "composition": "Left hand and medical bag handle occupy the centre, dark skirt behind; no face or second hand in frame.",
+      "subjects": [
+       "Aruni's left hand around the medical bag handle beside her kneeling posture."
+      ],
+      "setting": "A tight field-side view beside the rain-lashed canal gate at dawn.",
+      "lighting": "Camera-left dawn catches small wet edges on the hand and handle against deep shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Rain bed supplied from c08.",
+     "effects": "none",
+     "music": "none",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c08"
+    ],
+    "blend": "under_line"
+   },
+   {
+    "moment": 7,
+    "role": "atmosphere",
+    "setup": "L",
+    "blocks": [],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "Low field-side view toward the canal gate waterline",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "A brief nonhuman endpoint gives the distant horn room and makes the continuing weather indifferent to the discovery; it bridges the held figure to abrupt black without showing a bus or inventing activity.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Use after a portion of c11, carrying its distant horn and uninterrupted rain into this water detail, then hard cut to c12. No dissolve or extra horn.",
+    "summary": "A locked close detail holds rain striking canal water beside the gate. The distant bus horn continues from c11 over the rain; nobody enters the frame before the cut to black.",
+    "id": "c16",
+    "slate": "1L-1",
+    "ir": {
+     "setting": "At the rain-lashed Mahawewa canal gate, Aruni kneels on the left with her phone and medical bag at dawn.",
+     "cinematography": {
+      "camera": "locked-off sticks, 65mm, f/4",
+      "angle": "Low field-side angle toward the waterline, excluding both banks where people are positioned",
+      "framing": "INSERT of rain-struck canal water with a narrow edge of the existing gate; no people visible",
+      "movement": "locked-off on sticks throughout",
+      "white_balance": "Dawn balanced at 4800K with restrained amber highlights",
+      "color_tone": "Controlled amber and earthy red, deep wet blacks, subdued saturation and small highlights",
+      "depth_of_field": "Medium, nearby rain impacts clear and the gate recess softly resolved",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Rain-softened dawn enters from the open field at camera left, falling sharply into the dark gate recess with small wet highlights.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT fixed on canal water beside the gate edge",
+       "director_line": "Small bright rain impacts break the dark water beneath the gate.",
+       "action": "Rain strikes the canal surface continuously.",
+       "performance": ""
+      },
+      {
+       "time": "1-3s",
+       "camera": "INSERT unchanged",
+       "director_line": "The distant horn hangs over a surface that continues without interruption.",
+       "action": "Overlapping rain rings spread and disappear in the moving water.",
+       "performance": ""
+      },
+      {
+       "time": "3-4s",
+       "camera": "INSERT unchanged",
+       "director_line": "The water remains in motion until the edit removes the image.",
+       "action": "Rain continues striking the water; nothing enters the frame.",
+       "performance": ""
+      }
+     ],
+     "audio": "Continuous heavy rain with the distant bus horn carried from c11; no visible source and no additional horn.",
+     "first_frame": {
+      "composition": "Dark canal water fills the frame with a narrow gate edge at right; people and their positions remain outside the crop.",
+      "subjects": [
+       "Rain impacts and overlapping ripples on the canal surface."
+      ],
+      "setting": "The waterline beside the Mahawewa canal gate at dawn.",
+      "lighting": "Small camera-left dawn reflections punctuate deep wet shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous heavy rain matching c11.",
+     "effects": "Carry the existing distant bus horn from c11, without repetition.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c11"
+    ],
+    "blend": "close"
+   }
+  ],
+  "line_ids": {
+   "L4": "E01-S01-B05"
+  },
+  "editor_notes": [
+   "The bin contains 13 must takes totalling 58 seconds, including handles and two black sources; this is raw material, not a locked 58-second assembly. Hold recognition, the key reaction and the unanswered wait to shape the scene toward the stated 60 seconds.",
+   "The path master establishes geography; the gate master and recognition single establish the still figure and Aruni's response. Match her left-to-right eyeline and the rain between them.",
+   "The kneeling two-shot establishes her reach with the meeting of hands occluded. Cut to the settled single; avoid generating or showing hand-to-hand contact mechanics. Nimal remains entirely still, with C-17 in his right fist.",
+   "The key detail and reaction are essential to the mystery. Keep the key in the fist and replace the C-17 marking in post if generated lettering is unstable.",
+   "L4 is performed in full in the close single; keep its lead and tail, with no answering voice. The phone appears only after the appeal; the close view establishes the Dinu contact screen before one deliberate activation. Replace the screen text in post if necessary; never show a connected call.",
+   "Match the two locked kneeling singles on bag in left hand, phone in right, eyeline and rain. Add the distant bus horn under rain only in the latter, then cut directly to black.",
+   "Silent-source takes should receive the continuous rain bed, footsteps, fabric, breathing and the distant horn in sound post as appropriate; no music. The black plates can be substituted with editorial black; composite EKAMA SAKSHIYA as a clean title.",
+   "Speed ramps, freeze frames, digital punch-ins and split screens are post-only options, not generated moves; no such effects are required here. The locked sources remain clean. Avoid slow motion, mirrors, rapid finger work and generated typography.",
+   "Nimal's pre-discovery position is chosen at the canal gate, outside the opening path frame; the phone starts in Aruni's right pocket. The left-hand medical bag remains with her through the end."
+  ],
+  "blend_notes": [
+   "c14 — Cut into c10 during Aruni's unanswered wait, then return to the held single; carry c10's rain and established device audio.",
+   "c15 — Cut beneath a brief portion of L4 from c08, carrying Aruni's original line and rain; return to her face for the line's turn.",
+   "c16 — Follow c11 with the rain-struck canal detail, carrying c11's distant horn and rain; hard cut to c12's black."
+  ],
+  "review": [
+   {
+    "moment": 1,
+    "earns": false,
+    "why": "The locked wide already gives the exposed approach and geography; another view would dilute its restraint."
+   },
+   {
+    "moment": 2,
+    "earns": false,
+    "why": "The geography master and held recognition reaction already preserve the uninterrupted reveal and its first change."
+   },
+   {
+    "moment": 3,
+    "earns": false,
+    "why": "The descent and settled single supply the necessary restraint while keeping contact occluded."
+   },
+   {
+    "moment": 4,
+    "earns": false,
+    "why": "The readable C-17 fist detail and Aruni's eyeline reaction already deliver the central discovery without a redundant insert."
+   },
+   {
+    "moment": 5,
+    "earns": true,
+    "why": "The left-hand bag-grip insert gives contained physical strain under L4 while preserving the locked performance."
+   },
+   {
+    "moment": 6,
+    "earns": true,
+    "why": "The tighter oblique held reaction isolates Aruni's eyes during the unanswered wait, complementing the existing phone insert and medium single."
+   },
+   {
+    "moment": 7,
+    "earns": true,
+    "why": "A short rain-struck canal detail carries the existing distant horn and provides an indifferent endpoint before black without showing a bus."
+   },
+   {
+    "moment": 8,
+    "earns": false,
+    "why": "The clean hard cut to black needs no generated transition or embellishment."
+   },
+   {
+    "moment": 9,
+    "earns": false,
+    "why": "The supplied title belongs alone on the clean black source, composited in post."
+   }
+  ],
+  "seconds": {
+   "target_s": 60.0,
+   "cap_s": 120.0,
+   "take_s": 72,
+   "must_s": 58,
+   "cinematic_s": 14
+  },
+  "left": [],
+  "report": {
+   "turns": {
+    "stage1": 5,
+    "stage2": 2
+   },
+   "calls": 7,
+   "log": [
+    "stage 1: finished after 5 turns",
+    "stage 2: finished after 2 turns"
+   ],
+   "model": "gpt-6.1-sol"
+  },
+  "previous": {}
+ }
+}

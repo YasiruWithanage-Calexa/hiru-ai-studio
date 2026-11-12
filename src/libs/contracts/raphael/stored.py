@@ -53,6 +53,9 @@ class StoredRaphael(_Model):
     cap: LengthCap = DEFAULT_CAP  # the length cap used for this result (§2.1)
     # plan/2026-11-10: the director's breakdown stage 1 built from; optional: STORED_VERSION stays 1, no schema change
     breakdown: BreakdownW | None = None
+    # plan/2026-11-12b (D7): the scene packet's mood words ("bleak, restrained, ominous"), for the first frame's Mood
+    # line; [] when the scene was not planned from a packet
+    mood: list[str] = []
     edit: EditPlanW | None = None
     clips: list[Clip] = []
     line_ids: dict[str, str] = {}  # the agent-facing id (L4) → the dialogue line's id

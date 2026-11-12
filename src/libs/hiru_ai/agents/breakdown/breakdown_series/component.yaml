@@ -1,0 +1,17 @@
+id: breakdown_series
+kind: agent
+version: 1
+summary: "The series reader (plan/2026-11-12b): ONE call per build over the documents' title pages and overviews for what the drama IS (genre with weighted facets, tone, world, theme, premise), judged not copied; code checks every quote."
+status: active
+owner: structure_build
+model: breakdown
+timeout_s: 300
+shape: structured
+phase: breakdown.series
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

@@ -15,6 +15,6 @@ tools: []
 knowledge: []
 # plan/2026-11-09 phase 8: the production's own direction, once, at the end of the cached first message
 middleware: [static_first, usage, house_rules, production_memory]
-house_rules: [objects, sound]  # plan/2026-11-12: H-12, implied things
+house_rules: [objects, sound, genre]  # plan/2026-11-12: H-12, implied things; plan/2026-11-12b: H-13, genre lens
 memory: [camera, visual, lighting, performance]
 writes_dialogue: false

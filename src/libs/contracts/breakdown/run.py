@@ -29,8 +29,18 @@ from typing import Any
 
 from contracts.breakdown import build as build_mod
 from contracts.breakdown import checks, inputs, memory
+from contracts.breakdown import series as series_mod
 from contracts.breakdown.lines import Doc
-from contracts.breakdown.schema import Breakdown, ContinuityW, EpisodeW, Finding, Scene, SourceMemory, SplitW
+from contracts.breakdown.schema import (
+    Breakdown,
+    ContinuityW,
+    EpisodeW,
+    Finding,
+    Scene,
+    SeriesW,
+    SourceMemory,
+    SplitW,
+)
 
 _logger = logging.getLogger(__name__)
 WORKERS = 4  # episodes are read four at a time (plan §10, phase 2)
@@ -48,6 +58,8 @@ class Calls:
     continuity: Callable[[str], ContinuityW]
     episode: Callable[[str], EpisodeW]
     repair: Callable[[str], EpisodeW]
+    # plan/2026-11-12b: what the drama is (genre, tone, world, theme, premise); None = not read (the block stays empty)
+    series: Callable[[str], SeriesW] | None = None
 
 
 @dataclass
@@ -216,6 +228,26 @@ def _unbroken(bd: Breakdown) -> list[Finding]:
     ]
 
 
+def read_series(bd: Breakdown, d: Doc, answer: Callable[[], SeriesW], say: Callable[[str], None]) -> list[str]:
+    """The series reader's answer, checked by code, onto `bd.series` (plan/2026-11-12b). A failed call or an answer with
+    nothing kept leaves `bd.series` None and every prompt as it was; a dropped field is a non-blocking finding.
+    -> the notes for a person."""
+    try:
+        got = answer()
+    except Exception as exc:
+        _logger.warning("breakdown series call failed", exc_info=True)
+        why = type(exc).__name__
+        return [f"the drama's genre and tone could not be read ({why}); prompts keep the general wording"]
+    block, found = series_mod.check(got, d, bd)
+    bd.findings += found
+    if not any("says" in (block.get(k) or {}) for k in series_mod.FIELDS):
+        return ["the documents do not say the drama's genre or tone; prompts keep the general wording"]
+    bd.series = block
+    main = series_mod.facets(block)
+    say("Read what the drama is" + (f": {', '.join(main)}" if main else ""))
+    return []
+
+
 def create(
     uploads: list[Upload],
     calls: Calls,
@@ -263,6 +295,12 @@ def create(
         f"{len(bd.scenes)} scenes"
     )
 
+    # the series reader runs beside the continuity call (plan/2026-11-12b §3.1); it never stops the build
+    reading = None
+    if calls.series is not None:
+        pool = ThreadPoolExecutor(max_workers=1)
+        reading = pool.submit(contextvars.copy_context().run, calls.series, series_mod.message(sources))
+        pool.shutdown(wait=False)
     try:
         cont = calls.continuity(inputs.continuity_user(bd, d)).model_dump(mode="json")
         say(
@@ -274,6 +312,8 @@ def create(
         cont = dict(EMPTY_CONTINUITY)
         notes.append(f"the story across episodes could not be read ({type(exc).__name__}): no story order or threads")
     bd.continuity = cont
+    if reading is not None:
+        notes += read_series(bd, d, reading.result, say)
 
     notes += _episodes(bd, d, cont, calls, groups(bd), workers, say)
     checks.run_all(bd, d)

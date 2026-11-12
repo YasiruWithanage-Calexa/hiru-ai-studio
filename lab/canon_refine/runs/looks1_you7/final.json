@@ -1,0 +1,319 @@
+{
+ "story": [
+  {
+   "scene": "E01-S01",
+   "story_day": 1,
+   "part_of_day": "day",
+   "continuous_with": "",
+   "why": "Rain establishes the setting immediately before the first meeting."
+  },
+  {
+   "scene": "E01-S02",
+   "story_day": 1,
+   "part_of_day": "day",
+   "continuous_with": "E01-S01",
+   "why": "The first meeting takes place during the established rain."
+  },
+  {
+   "scene": "E01-S03",
+   "story_day": 1,
+   "part_of_day": "day",
+   "continuous_with": "E01-S02",
+   "why": "Anudi walks away immediately after their conversation."
+  },
+  {
+   "scene": "E01-S04",
+   "story_day": 1,
+   "part_of_day": "day",
+   "continuous_with": "E01-S03",
+   "why": "The reverse view shows Kasun watching the same departure."
+  },
+  {
+   "scene": "E02-S01",
+   "story_day": 2,
+   "part_of_day": "evening",
+   "continuous_with": "",
+   "why": "The recurring evening visits span several weeks and receive one montage day number. The father's observation is the final evening of this sequence."
+  },
+  {
+   "scene": "E02-S02",
+   "story_day": 2,
+   "part_of_day": "night",
+   "continuous_with": "E02-S01",
+   "why": "The confrontation follows the father's observation that evening; retain Anudi's and her father's clothes."
+  },
+  {
+   "scene": "E02-S03",
+   "story_day": 3,
+   "part_of_day": "day",
+   "continuous_with": "",
+   "why": "A subsequent work montage establishes Kasun supplying three shops. The heading anchors its principal action in daytime."
+  },
+  {
+   "scene": "E02-S04",
+   "story_day": 4,
+   "part_of_day": "evening",
+   "continuous_with": "",
+   "why": "One evening introduces a particular later visit after the work montage, rather than explicitly continuing its final shot."
+  },
+  {
+   "scene": "E03-S01",
+   "story_day": 5,
+   "part_of_day": "day",
+   "continuous_with": "",
+   "why": "Kasun's unsuccessful attempts to obtain support precede the father's visit, establishing a later day."
+  },
+  {
+   "scene": "E03-S02",
+   "story_day": 6,
+   "part_of_day": "day",
+   "continuous_with": "",
+   "why": "An unspecified substantial time jump leads to the successful restaurant unveiling."
+  }
+ ],
+ "looks": [
+  {
+   "id": "C01-1",
+   "person": "C01",
+   "name": "Kasun — roadside vendor",
+   "outfit": "A faded slate-blue cotton crew-neck T-shirt, straight dark-indigo jeans and plain black rubber sandals.",
+   "hair": "Short black hair with a simple natural shape.",
+   "makeup": "Natural medium-brown complexion and light stubble.",
+   "accessories": "None.",
+   "why": "Simple inexpensive clothing establishes Kasun's starting circumstances."
+  },
+  {
+   "id": "C01-2",
+   "person": "C01",
+   "name": "Kasun — everyday casual shirt",
+   "outfit": "A plain muted-olive cotton short-sleeved shirt, worn untucked over dark-indigo straight-leg jeans, with black rubber sandals.",
+   "hair": "Short black hair with the same natural shape.",
+   "makeup": "Natural medium-brown complexion and light stubble.",
+   "accessories": "None.",
+   "why": "An affordable recurring outfit for the evening visits, also suitable to rewear for the later meeting at his workspace."
+  },
+  {
+   "id": "C01-3",
+   "person": "C01",
+   "name": "Kasun — food preparation workwear",
+   "outfit": "A plain light-grey cotton crew-neck T-shirt, dark charcoal straight-leg trousers, a navy cotton bib apron and inexpensive black closed-toe canvas shoes.",
+   "hair": "Short black hair kept neat and close to the head.",
+   "makeup": "Natural medium-brown complexion and light stubble.",
+   "accessories": "None.",
+   "why": "The apron and closed shoes support the move into regular food production; the outfit can recur across working days."
+  },
+  {
+   "id": "C01-4",
+   "person": "C01",
+   "name": "Kasun — restaurant unveiling",
+   "outfit": "A pale-blue long-sleeved cotton shirt tucked into tailored navy trousers, with a dark-brown leather belt and dark-brown leather loafers.",
+   "hair": "The same short black haircut, neatly combed.",
+   "makeup": "Natural medium-brown complexion with neatly maintained light stubble.",
+   "accessories": "A modest stainless-steel wristwatch.",
+   "why": "The restaurant's success motivates a polished smart-casual outfit without changing Kasun's established appearance."
+  },
+  {
+   "id": "C02-1",
+   "person": "C02",
+   "name": "Anudi — first meeting",
+   "outfit": "An ivory crepe blouse with elbow-length sleeves, tailored beige ankle-length trousers and tan leather low block-heel sandals.",
+   "hair": "Long black hair worn loose with a neat side part.",
+   "makeup": "Elegant natural makeup with softly defined eyes and muted rose lips.",
+   "accessories": "Small gold stud earrings, a fine gold chain, a structured tan leather handbag and a navy umbrella.",
+   "why": "Elegant modern daywear distinguishes Anudi's circumstances at the first meeting."
+  },
+  {
+   "id": "C02-2",
+   "person": "C02",
+   "name": "Anudi — recurring evening visits",
+   "outfit": "A dusty-rose cotton midi dress with short sleeves, a softly fitted waist and a gently flared skirt, with tan flat leather sandals.",
+   "hair": "Long black hair in a low ponytail with a clean side part.",
+   "makeup": "Natural makeup with softly defined eyes and muted rose lips.",
+   "accessories": "Small gold stud earrings, a fine gold chain and a small tan leather crossbody bag.",
+   "why": "A relaxed but elegant recurring outfit for the visits. Rewearing it at the later workspace visit avoids an unnecessary additional look."
+  },
+  {
+   "id": "C02-3",
+   "person": "C02",
+   "name": "Anudi — restaurant unveiling",
+   "outfit": "A deep-teal crepe midi dress with elbow-length sleeves, a fitted waist and an A-line skirt, with nude low block-heel sandals.",
+   "hair": "Long black hair arranged in a smooth low bun.",
+   "makeup": "Polished natural makeup with softly defined eyes and rose lips.",
+   "accessories": "Small gold drop earrings, a fine gold bracelet and a structured cream handbag.",
+   "why": "The celebratory unveiling calls for a slightly more sophisticated version of Anudi's established style."
+  },
+  {
+   "id": "C03-1",
+   "person": "C03",
+   "name": "Anudi's Father — evening smart casual",
+   "outfit": "A burgundy cotton polo shirt tucked into charcoal formal trousers, with a black leather belt and black leather loafers.",
+   "hair": "Short black-and-grey hair neatly combed with a side part.",
+   "makeup": "Natural mature complexion and a clean-shaven finish.",
+   "accessories": "A silver wristwatch.",
+   "why": "Established businessman smart casual, retained from observing the couple through the confrontation at home."
+  },
+  {
+   "id": "C03-2",
+   "person": "C03",
+   "name": "Anudi's Father — formal daytime",
+   "outfit": "A crisp white long-sleeved cotton shirt tucked into tailored charcoal trousers, with a black leather belt and polished black leather shoes.",
+   "hair": "The same short black-and-grey hair, neatly side-parted.",
+   "makeup": "Natural mature complexion and a clean-shaven finish.",
+   "accessories": "A silver wristwatch.",
+   "why": "Formal daywear suits the deliberate businesslike meeting and can be reworn for the later restaurant unveiling."
+  }
+ ],
+ "scenes": [
+  {
+   "scene": "E01-S01",
+   "on_screen": []
+  },
+  {
+   "scene": "E01-S02",
+   "on_screen": [
+    {
+     "person": "C01",
+     "look": "C01-1",
+     "condition": "Hair and T-shirt shoulders wet from the rain; darker damp patches across the upper back. Jeans hems and sandals wet.",
+     "why": "First story day, working at the roadside three-wheeler."
+    },
+    {
+     "person": "C02",
+     "look": "C02-1",
+     "condition": "Umbrella open and beaded with rain; trouser hems and sandals lightly wet, with upper clothing sheltered.",
+     "why": "First story day, arriving from the family car. Her father is heard by phone only."
+    }
+   ]
+  },
+  {
+   "scene": "E01-S03",
+   "on_screen": [
+    {
+     "person": "C02",
+     "look": "C02-1",
+     "condition": "Umbrella remains open and beaded with rain; trouser hems and sandals remain lightly wet.",
+     "why": "Same moment, continues E01-S02 as Anudi walks away."
+    }
+   ]
+  },
+  {
+   "scene": "E01-S04",
+   "on_screen": [
+    {
+     "person": "C01",
+     "look": "C01-1",
+     "condition": "Hair and T-shirt shoulders remain wet; damp patches across the upper back and wet jeans hems and sandals match the preceding exchange.",
+     "why": "Same moment, continues E01-S03 from Kasun's viewpoint."
+    }
+   ]
+  },
+  {
+   "scene": "E02-S01",
+   "on_screen": [
+    {
+     "person": "C01",
+     "look": "C01-2",
+     "condition": "",
+     "why": "Weeks-long evening montage. This is a recurring outfit across selected visits, not a claim that all visits occur on one evening."
+    },
+    {
+     "person": "C02",
+     "look": "C02-2",
+     "condition": "",
+     "why": "Recurring evening-visit outfit across the montage; retain it for the final evening observed by her father."
+    },
+    {
+     "person": "C03",
+     "look": "C03-1",
+     "condition": "",
+     "why": "Present on screen observing the couple on the montage's final evening."
+    }
+   ]
+  },
+  {
+   "scene": "E02-S02",
+   "on_screen": [
+    {
+     "person": "C02",
+     "look": "C02-2",
+     "condition": "Crossbody bag removed; dress, sandals, hair and jewelry unchanged.",
+     "why": "Same evening into night, continues E02-S01 at home without a wardrobe change."
+    },
+    {
+     "person": "C03",
+     "look": "C03-1",
+     "condition": "",
+     "why": "Same evening into night, continues E02-S01 after seeing the couple."
+    }
+   ]
+  },
+  {
+   "scene": "E02-S03",
+   "on_screen": [
+    {
+     "person": "C01",
+     "look": "C01-3",
+     "condition": "Apron lightly dusted with flour; slight perspiration at the temples and an increasingly tired expression in later work beats.",
+     "why": "New work montage and expanded food preparation justify practical workwear. The same work outfit recurs across the montage."
+    }
+   ]
+  },
+  {
+   "scene": "E02-S04",
+   "on_screen": [
+    {
+     "person": "C01",
+     "look": "C01-3",
+     "condition": "Apron lightly dusted with flour; slight perspiration at the temples and a tired expression.",
+     "why": "A later working evening; Kasun rewears his established preparation outfit."
+    },
+    {
+     "person": "C02",
+     "look": "C02-2",
+     "condition": "",
+     "why": "A later evening visit; Anudi rewears her established casual dress."
+    }
+   ]
+  },
+  {
+   "scene": "E03-S01",
+   "on_screen": [
+    {
+     "person": "C01",
+     "look": "C01-2",
+     "condition": "Tired eyes; shirt lightly creased.",
+     "why": "Later day after attempts to find support. Kasun rewears his casual shirt outfit for the conversation rather than food preparation."
+    },
+    {
+     "person": "C03",
+     "look": "C03-2",
+     "condition": "",
+     "why": "New day and a deliberate financial meeting justify formal daytime clothes."
+    }
+   ]
+  },
+  {
+   "scene": "E03-S02",
+   "on_screen": [
+    {
+     "person": "C01",
+     "look": "C01-4",
+     "condition": "",
+     "why": "Later restaurant unveiling; business success motivates the move to polished smart casual."
+    },
+    {
+     "person": "C02",
+     "look": "C02-3",
+     "condition": "",
+     "why": "Later celebratory occasion calls for a more sophisticated dress and hairstyle."
+    },
+    {
+     "person": "C03",
+     "look": "C03-2",
+     "condition": "",
+     "why": "Later day; he rewears his formal daytime outfit for the restaurant unveiling."
+    }
+   ]
+  }
+ ]
+}

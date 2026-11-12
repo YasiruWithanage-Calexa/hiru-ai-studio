@@ -5,12 +5,15 @@ from __future__ import annotations
 from typing import Any
 
 from contracts.frame_brief import (
+    LEAD,
     PROMPT_CAP,
     SETUP_LABEL,
     SetupFrame,
+    black_plate,
     expected_frame,
     frame_brief,
     frame_prompt,
+    lead_line,
     missing_references,
     nearest_option,
     plan_references,
@@ -252,3 +255,44 @@ def test_a_stored_polish_is_used_only_while_the_code_words_are_the_ones_it_was_w
     assert plain.text() == brief().text()
     stale = brief(camera=camera(lighting="Day, open sun"), shot={"slate": "4C-2", "design": {"frame_polish": record}})
     assert "Warm 3800K bulbs" not in stale.text(), "a person changed the light: the polish no longer applies"
+
+
+# ── the production's genre (plan/2026-11-12b) ───────────────────────────────────────────────────────────────────────
+
+
+def test_the_lead_names_the_productions_genre_and_stays_fixed():
+    brief = frame_brief(ir=IR, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=SCENE,
+                        genre="action and crime thriller")
+    lead = brief.view()[0]
+    assert lead["key"] == "lead" and lead["sources"] == ["fixed"]
+    assert brief.text().startswith("Photorealistic still frame from a Sri Lankan action and crime thriller, shot on")
+
+
+def test_without_a_genre_the_lead_is_byte_for_byte_as_before():
+    assert lead_line("") == lead_line("   ") == LEAD
+    plain = frame_prompt(ir=IR, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=SCENE)
+    assert plain == frame_brief(ir=IR, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=SCENE,
+                                genre="").text()
+    assert plain.startswith(LEAD)
+
+
+def test_the_prompt_writer_never_rewords_the_lead():
+    from contracts.prompt_polish import POLISHABLE
+
+    assert "lead" not in POLISHABLE["first_frame"]
+
+
+def test_a_cut_to_black_or_a_title_card_is_a_black_plate():
+    assert black_plate(["Cut to black."]) and black_plate(["TITLE: EKAMA SAKSHIYA."])
+    assert black_plate(["FADE TO BLACK.", "Title: Episode one"]) and black_plate(["Black."])
+    assert not black_plate([]) and not black_plate(["She calls Dinu. No answer.", "Cut to black."])
+    assert not black_plate(["The black van turns into the yard."])
+
+
+def test_the_scene_mood_from_the_packet_is_in_the_prompt_and_never_cut():
+    scene = {**SCENE, "raphael": {**SCENE["raphael"], "mood": ["bleak", "restrained", "ominous"]}}
+    brief = frame_brief(ir=IR, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=scene,
+                        shot={"slate": "4C-2"}, cap=400)
+    assert "Scene mood: bleak, restrained, ominous." in brief.text() and "mood" in brief.cut
+    assert "Scene mood" not in frame_prompt(ir=IR, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=SCENE,
+                                            shot={"slate": "4C-2"})

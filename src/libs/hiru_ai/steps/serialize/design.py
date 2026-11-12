@@ -53,7 +53,7 @@ def write_prompt(shot: ShotInput, scene: SceneInput, prod: ProductionInput, fram
     carried_state = parts.step("serialize", "continuity").carried_state
     previous = next((s for s in scene.shots if s.number == shot.number - 1), None)
     ctx = serialize.Context(aspect_ratio=prod.aspect_ratio, camera=shot.camera(scene),
-                            recommended=shot.recommended(scene), style_note=prod.style_note,
+                            recommended=shot.recommended(scene), style_note=prod.style_note, genre=prod.genre,
                             previous_code=previous.code if previous else "",
                             carried=carried_state(previous.code, previous.row.get("ir"),
                                                   positions_text(previous.feeling.end)) if previous else "",

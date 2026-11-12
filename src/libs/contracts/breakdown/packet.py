@@ -23,6 +23,7 @@ from typing import Any
 
 from contracts.breakdown.checks import _MINUTES, WPS
 from contracts.breakdown.schema import Breakdown, Entity, Scene
+from contracts.breakdown.series import packet_part as series_part
 
 EMPTY = "empty"
 SUMMARY_MAX_LINES = 6
@@ -317,6 +318,9 @@ def assemble(bd: Breakdown, scene_id: str, cont: dict[str, Any] | None = None) -
                 for r in packet["G_direction"]:
                     if r["id"] == s["rule"]:
                         r["moment_here"] = n.text(s["moment_note"])
+    series = series_part(bd, packet)  # plan/2026-11-12b: what the drama is; never something a packet waits for
+    if series is not None:
+        packet["J_series"] = series
     return packet
 
 

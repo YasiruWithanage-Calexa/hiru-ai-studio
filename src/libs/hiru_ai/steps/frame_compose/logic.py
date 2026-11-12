@@ -5,6 +5,8 @@ The legacy `FrameJob` read the scene, its lines, the canon and the looks as it n
 """
 from __future__ import annotations
 
+import struct
+import zlib
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
@@ -26,6 +28,7 @@ from contracts.frame_brief import (
     FrameBrief,
     PlannedReference,
     SetupFrame,
+    black_plate,
     expected_frame,
     frame_brief,
     missing_references,
@@ -61,6 +64,21 @@ def cast_member(row: Row) -> CastMember:
                       gender=str(card.get("gender") or ""))
 
 
+PLATE_SIZE = {"16:9": (1536, 1024), "9:16": (1024, 1536)}  # the painter's sizes (`adapters.images.SIZE_FOR_ASPECT`)
+
+
+def black_png(aspect: str) -> bytes:
+    """A black PNG of the painter's size for this aspect (plan/2026-11-12b): what a black plate is, made by code."""
+    w, h = PLATE_SIZE.get(aspect, PLATE_SIZE["16:9"])
+    raw = (b"\x00" + b"\x00" * (w * 3)) * h
+
+    def chunk(tag: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
+
+    head = struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0)
+    return b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", head) + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b"")
+
+
 def production_aspect(production: Row) -> str:
     return ASPECT_RATIO[Orientation(production.get("orientation") or "horizontal")]
 
@@ -85,6 +103,7 @@ class World:
     # the same-setup frame. Empty: no same-setup frame is attached.
     shots: list[Row] = field(default_factory=list)
     accepted: dict[str, Row] = field(default_factory=dict)
+    genre: str = ""  # plan/2026-11-12b: the production's genre phrase (`contracts.memory.genre_of`); "" = general
 
     def __post_init__(self) -> None:
         self.aspect = production_aspect(self.production)
@@ -95,7 +114,8 @@ class World:
     def of(cls, payload: Mapping[str, Any]) -> World:
         return cls(production=payload["production"], canon=payload["canon"], scene=payload["scene"],
                    lines=payload.get("lines") or [], looks=payload.get("looks") or {},
-                   shots=payload.get("shots") or [], accepted=payload.get("accepted") or {})
+                   shots=payload.get("shots") or [], accepted=payload.get("accepted") or {},
+                   genre=str(payload.get("genre") or ""))
 
     def _own(self, shot: Row) -> tuple[list[Any], list[str], Staging]:
         items = sceneplan.scene_items(self.scene, self.lines)
@@ -103,6 +123,11 @@ class World:
         characters = [c for c in self.canon if c["kind"] == "character"]
         cast_ids = shot_cast(own, characters, shot)
         return own, cast_ids, staging(own, characters, shot, cast_ids=cast_ids)
+
+    def plate(self, shot: Row) -> bool:
+        """plan/2026-11-12b: a cut to black or a title card, with no one in it, is a black plate made by code."""
+        own, cast_ids, _ = self._own(shot)
+        return not cast_ids and not any(i.kind == "dialogue" for i in own) and black_plate(i.text for i in own)
 
     def staged(self, shot: Row) -> Staging:
         return self._own(shot)[2]
@@ -157,7 +182,7 @@ class World:
                            cast=self.cast(shot, staged.on_screen), references=labels, recommended=recommended,
                            unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
                            hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p),
-                           scene=self.scene, shot=shot, polished=polished)
+                           scene=self.scene, shot=shot, polished=polished, genre=self.genre)
 
     def preview_labels(self, shot: Row) -> list[str]:
         """The labels the renderer will attach, when every first choice can be read (what the shot screen shows)."""

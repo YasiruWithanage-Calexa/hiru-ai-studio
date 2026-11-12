@@ -91,6 +91,13 @@ def who_clause(c: CastMember | None) -> str:
     return f"the {noun}" if noun != "person" else ""
 
 
+def medium_style(rules: Any, genre: str) -> str:
+    """The Style section's first sentence: the production's genre when its documents give one (plan/2026-11-12b), else
+    the general `medium_style` byte for byte."""
+    template = rules.rule("medium_style_genre") if genre.strip() else ""
+    return template.format(genre=" ".join(genre.split())) if template else rules.rule("medium_style")
+
+
 @dataclass
 class Context:
     """Everything a prompt is written from besides the shot itself."""
@@ -99,6 +106,7 @@ class Context:
     camera: CameraSettings  # as it stands now
     recommended: CameraSettings
     style_note: str = ""
+    genre: str = ""  # plan/2026-11-12b: the production's genre phrase (`contracts.memory.genre_of`); "" = general
     previous_code: str = ""
     carried: str = ""  # what a joined shot carries over from the previous one
     has_frame: bool = False  # an accepted first frame is attached
@@ -304,7 +312,7 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
     light = lighting_words(ctx.camera, ctx.recommended, _clean(ir.get("lighting")))  # the panel's lighting leads
     sections = [
         _section("opening", "First frame", opening),
-        _section("style", "Style", rules.rule("medium_style"), _clean(ctx.style_note)),
+        _section("style", "Style", medium_style(rules, ctx.genre), _clean(ctx.style_note)),
         _section("setting", "Setting", f"{setting.rstrip('.')}." if setting else "",
                  f"Carried over: {ctx.carried}." if ctx.carried and shot.camera_link != "cut" else ""),
         _section("subjects", "Subjects", f"{described}." if described else "", *states, _heard_text(shot),

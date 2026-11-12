@@ -32,6 +32,7 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
+from contracts.memory import genre_of
 from contracts.producer import CameraSettings
 from contracts.staging import AUTHORED
 from hiru_ai.core import agents, llm, memory, parts
@@ -233,6 +234,7 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         scene_ids = [str(s) for s in state_in.get("scene_ids") or []] or producer.shot_scenes(production_id, shot_ids)
         canon = scenes_port.canon(production_id)
         prod = model_mod.production_input(production, canon, producer.lead_persona(production_id))
+        prod.genre = genre_of(memory.entries(ctx))  # plan/2026-11-12b: the FORMAT line and the video Style
         rows = scenes_port.scenes(production_id, scene_ids) if scene_ids else []
         built = []
         raw: dict[str, tuple[list[Row], list[Row]]] = {}  # scene id → (its shot rows, its line rows)

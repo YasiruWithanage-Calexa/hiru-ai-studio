@@ -1,0 +1,114 @@
+<packet>
+SERIES (what this drama is; play every scene as part of it)
+Genre: action (main), crime thriller (main), love (thread). An action-driven crime thriller with a love thread.
+Tone: Keep performances grounded in South Indian realism while giving the action commercial energy.
+World: The story moves between Colombo and Mahawewa village. Places: Colombo [L01], Mahawewa village [L02]
+Theme: Only one person knows the truth.
+Premise: A Colombo cash-transfer driver steals money after witnessing a crime against his closest friend, then returns to his village with his lover to expose a corrupt network.
+This scene: place MAHAWEWA CANAL [L03] in Mahawewa village [L02]; scoped direction D02, D12, D13; mood bleak, restrained, ominous.
+
+SCENE E01-S01: SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+Title: The canal discovery
+Summary: Aruni finds her brother dead beside the sluice, notices the marked key in his grasp and tries unsuccessfully to reach Dinu.
+Purpose (inferred): Establish the death and the key as a mystery before returning to earlier events.
+Story time: order 3, cold_open, Dawn, apparently after E01-S02 (measured from E01-S02)
+The scene before it in the story: E01-S02 SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES. It ends with: Dinu looks at the red thread around his wrist and turns toward the industrial area.
+On the page, after it: E01-S02 SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+Thread (journey, C-17): Passes from Nimal to Dinu, then appears back in Nimal's fist; the intervening transfer is not shown. Here: Aruni discovers C-17 inside Nimal's fist; no removal is shown. Earlier: E01-S03: Initially inside metal box, which Nimal opens.; E01-S03: Nimal places C-17 in Dinu's hand..
+Thread (open_question, C-17): How did C-17 return from Dinu to Nimal, and what does it unlock? Here: Found with Nimal; no explanation of its function or return. Earlier: E01-S03: Last shown with Dinu before the discovery..
+Thread (setup_payoff, Nimal): Aruni's report that Nimal has not returned resolves into discovery of his body. Here: Aruni finds Nimal dead. Earlier: E01-S02: Aruni reports Nimal missing..
+Thread (open_question, Nimal): How and why did Nimal die, and how did his body reach canal gate? Here: Body discovered at canal gate. Earlier: E01-S03: Alive while disclosing evidence about Mudalali and Rs. 300 million..
+Irony: person Dinu; learns The audience knows of Nimal's death and C-17's location; Dinu is not shown receiving this information.; audience_only True
+Knowledge: person Aruni; learns Nimal is dead at canal gate and has C-17 in his fist.; audience_only False
+Looks: person Nimal; kind death; note Alive in the flashback, dead when found at canal gate; cause and time of death are unstated.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C02 Aruni [on_screen] summary: Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.; age: Aruni - 27, Mahawewa community nurse.; details: Strong, intelligent and emotionally controlled. | wants: Understand what she has found and reach Dinu. | feels: Composed -> Distressed but controlled (inferred)
+- C03 Nimal [body] summary: Nimal - 34, Aruni's elder brother and Dinu's closest friend.; age: Nimal - 34, Aruni's elder brother and Dinu's closest friend.; details: It is Nimal. | wants: Not applicable; deceased. | feels: Not applicable -> Not applicable (script)
+
+PLACE: Mahawewa Canal (set); zones: paddy field, canal gate; details: MAHAWEWA CANAL - DAWN - 1 MINUTE Heavy rain.
+THINGS
+- P01 medical bag [used] held at the start by: Aruni; at the end: Aruni (script). Card: summary: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices; details: Aruni walks beside a paddy field carrying a small medical bag.
+- P02 C-17 [hero] held at the start by: Nimal; at the end: Nimal (script). Card: appearance: Inside his fist is a small metal key marked C-17.
+- P09 phone [used] held at the start by: Aruni; at the end: Aruni (inferred). Card: summary: Phone: The attempt to contact Dinu requires a handset; show her initiating the call.
+STATE Aruni: in: zone paddy field, facing right, frame side left, holding small medical bag, posture walking; out: zone canal gate, facing right, frame side left, holding small medical bag, posture kneeling
+STATE Nimal: in: -; out: zone canal gate, frame side right, holding small metal key marked C-17, posture lying, condition dead
+NOT PLACED Nimal: no position before block 1 (the script does not say)
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S01-B01 action: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.
+    intent (inferred): Establish Aruni's approach through the wet landscape.
+    delivery hint: Hold the wider surroundings before directing attention toward the gate.
+    event E01-S01-B01-e1 (setup; who: Aruni; things: medical bag; at: paddy field [L06]): Aruni advances alongside the cultivated land with her bag.
+    state from here: Aruni: zone paddy field, facing right, frame side left, holding small medical bag, posture walking
+b1 = E01-S01-B02 action: She notices something caught near the canal gate: a body. It is Nimal.
+    intent (inferred): Resolve an indistinct obstruction into a personal loss.
+    delivery hint: Let recognition register without an abrupt cut away.
+    event E01-S01-B02-e1 (reveal; who: Aruni, Nimal; at: canal gate [L07]): Aruni identifies the body as her brother.
+    state from here: Nimal: zone canal gate, frame side right, posture lying, condition dead
+b2 = E01-S01-B03 action: She does not scream. She kneels and touches his hand.
+    intent (inferred): Express shock through physical restraint rather than an outburst.
+    delivery hint: Stay with her lowered posture and contact with his hand.
+    event E01-S01-B03-e1 (texture; who: Aruni, Nimal; at: canal gate [L07]): Aruni lowers herself beside him and makes contact without crying out.
+    state from here: Aruni: zone canal gate, facing right, frame side left, holding small medical bag, posture kneeling
+b3 = E01-S01-B04 action: Inside his fist is a small metal key marked C-17.
+    intent (inferred): Make the identifying mark on the key readable.
+    delivery hint: Use a close view of the closed hand and exposed object; do not add a removal.
+    event E01-S01-B04-e1 (reveal; who: Nimal; things: C-17; at: canal gate [L07]): The key and its identifying mark become apparent in Nimal's grasp.
+    state from here: Nimal: zone canal gate, frame side right, holding small metal key marked C-17
+b4 = E01-S01-B05 dialogue Aruni [on_screen] to Dinu: Dinu... oyata meka ahenne nadda?
+    intent (inferred): Appeal to the absent Dinu for a response.
+    delivery hint: Quiet urgency, with the appeal left unanswered; do not establish a connected call.
+    event E01-S01-B05-e1 (texture; who: Aruni; at: canal gate [L07]): Aruni voices an appeal toward Dinu.
+b5 = E01-S01-B06 action: She calls Dinu. No answer.
+    intent (inferred): Leave Aruni without contact or reassurance.
+    delivery hint: Show the handset and the small action initiating the attempt, then allow the unanswered pause.
+    event E01-S01-B06-e1 (turn; who: Aruni; things: phone; at: canal gate [L07]): Aruni attempts to reach Dinu but receives no response.
+b6 = E01-S01-B07 sound: A distant bus horn mixes with the rain.
+    intent (inferred): Extend the isolation through the surrounding soundscape.
+    delivery hint: Keep the remote traffic signal beneath the rainfall rather than introducing music.
+    event E01-S01-B07-e1 (texture, not visible; at: Mahawewa Canal [L03]): A remote horn joins the continuing weather sound.
+b7 = E01-S01-B08 transition: Cut to black.
+    intent (inferred): End the discovery on an unresolved absence.
+    delivery hint: Make a clean transition to darkness.
+    event E01-S01-B08-e1 (turn; at: Mahawewa Canal [L03]): The location image disappears.
+b8 = E01-S01-B09 text: TITLE: EKAMA SAKSHIYA.
+    intent (inferred): Present the opening title.
+    delivery hint: Keep the title isolated against the dark field.
+    event E01-S01-B09-e1 (setup; at: Mahawewa Canal [L03]): The title appears after the discovery.
+
+FEELING: bleak, restrained, ominous; the scene turns at b1, b3, b5
+DIRECTION IN SCOPE
+- D02 [scoped] Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.
+- D05 [general] Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- D06 [general] Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- D07 [general] Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- D08 [general] Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- D09 [general] The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- D10 [general] Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- D11 [general] Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+- D12 [scoped] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: (here: Unanswered call, distant bus horn and rain.)
+- D13 [scoped] She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA. (here: Cut to black and title after the unanswered call.)
+
+LENGTH: stated 60.0 s; spoken 2.3 s
+OPEN
+- episode call: Aruni ends the scene with phone; the stager's last state has Aruni holding 'small medical bag'
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 action: 1.5 s on screen
+b2 action: 1.5 s on screen
+b3 action: 1.5 s on screen
+b4 line [L4] Aruni: 5 words, 2.3 s, shortest take 4 s
+b5 action: 1.5 s on screen
+b6 action: 1.5 s on screen
+b7 action: 1.5 s on screen
+b8 action: 1.5 s on screen
+</timing>
+
+<length>
+The scene is 60 s long. TARGET: a bin of about 60 s of takes. The script itself times at 14 s (its actions and lines on one clock); the other 46 s of the target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a line lands. CAP: 90 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 48 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.

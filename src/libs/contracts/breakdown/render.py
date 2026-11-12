@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from contracts.breakdown.series import render_lines
+
 EMPTY = "empty"
 
 
@@ -15,7 +17,9 @@ def _v(x: Any) -> str:
 
 def render(p: dict[str, Any]) -> str:
     a = p["A_scene"]
+    series = render_lines(p.get("J_series"))  # plan/2026-11-12b
     out = [
+        *([*series, ""] if series else []),
         f"SCENE {a['id']}: {a['heading']}",
         f"Title: {a['title']}",
         f"Summary: {a['summary']}",

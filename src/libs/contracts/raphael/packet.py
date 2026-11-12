@@ -23,6 +23,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from contracts.breakdown.series import render_lines as render_series
 from contracts.raphael.scene import BlockS, Brief, PlaceS, SceneS, action_s, line_facts
 
 EMPTY = "empty"
@@ -105,7 +106,9 @@ def render(packet: dict[str, Any], ids: dict[str, str]) -> str:
     """Every section of the packet as text. Blocks carry both ids (`b4 = E01-S08-B05`)."""
     short = {v: k for k, v in ids.items() if k.startswith("b")}
     a = packet["A_scene"]
+    series = render_series(packet.get("J_series"))  # plan/2026-11-12b: what the drama is, read before the scene
     out = [
+        *([*series, ""] if series else []),
         f"SCENE {a['id']}: {a['heading']}",
         f"Title: {a['title']}",
         f"Summary: {a['summary']}",

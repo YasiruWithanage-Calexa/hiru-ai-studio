@@ -862,6 +862,15 @@ class SupabaseDirection(_Base):
                .update({**fields, "updated_at": datetime.now(UTC).isoformat()}).eq("id", str(entry_id)).execute())
         return _one(res.data)
 
+    async def series(self, production_id: UUID) -> list[Row]:
+        try:
+            res = (await self.db.table("production_memory").select("topic,applies_to,says,quote,status,source")
+                   .eq("production_id", str(production_id)).eq("topic", "series").neq("status", "rejected")
+                   .execute())
+        except Exception:  # a database not yet on schema v12 has no such table: no genre, never an error
+            return []
+        return _rows(res.data)
+
 
 class SupabaseRevisions(_Base):
     async def list(self, scene_id: UUID) -> list[Row]:

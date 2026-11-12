@@ -202,6 +202,7 @@ class Planner:
         meter: Meter | None = None,
         use_breakdown: bool | None = None,
         opening: str = "",
+        mood: tuple[str, ...] = (),
     ) -> None:
         self.ctx, self.scene, self.number, self.line_ids = ctx, scene, number, line_ids
         self.production, self.context, self.extra = production, context, extra
@@ -220,6 +221,7 @@ class Planner:
         # plan/2026-11-11 phase 4: the scene packet's opening (`contracts.raphael.packet.opening`). Set, it is stage 1's
         # first message and there is no director's breakdown (purpose, turns and direction are in the packet, §6).
         self.packet_opening = opening
+        self.mood = [" ".join(str(m).split()) for m in mood if str(m).strip()]  # plan/2026-11-12b D7: the packet's
         if opening:
             self.use_breakdown = False
 
@@ -491,6 +493,7 @@ class Planner:
             left=self.left_of(found),
             report=report,
             breakdown=self.breakdown,
+            mood=list(self.mood),
             previous=previous,
         )
         return Planned(stored, log=list(self.log), warnings=list(self.warnings))

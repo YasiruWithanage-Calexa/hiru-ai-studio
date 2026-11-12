@@ -340,5 +340,7 @@ def run_all(bd: Breakdown, doc: Doc) -> list[Finding]:
         *implied(bd),
         *devices(bd),
     ]
-    bd.findings = [f for f in bd.findings if f.message.startswith("card ") and f.code == "sources"] + found
+    kept = [f for f in bd.findings if (f.message.startswith("card ") and f.code == "sources")
+            or f.code == "series"]  # the build's card findings and the series reader's (plan/2026-11-12b): not re-run
+    bd.findings = kept + found
     return found

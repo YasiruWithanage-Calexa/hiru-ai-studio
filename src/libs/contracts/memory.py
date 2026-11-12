@@ -6,8 +6,9 @@ no empty slots for what they did not.
 """
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
@@ -70,3 +71,32 @@ def target_text(applies_to: str) -> str:
         return ""
     kind, value = parsed
     return kind if kind == "production" else f"{kind}:{value}"
+
+
+def _genre_rank(row: Mapping[str, Any]) -> int:
+    """A person's own row first, then an approved one, then a reader's draft."""
+    if row.get("source") == "person":
+        return 0
+    return 1 if row.get("status") == "approved" else 2
+
+
+def genre_of(rows: Iterable[Mapping[str, Any]]) -> str:
+    """The production's genre as a short phrase a picture prompt can carry ("action and crime thriller"), from its
+    `series` facts (plan/2026-11-12b): the genre row a person wrote or approved first, else the reader's draft; never a
+    rejected row. The row says `Genre: action, crime thriller; love as a thread. ...` (`contracts.breakdown.series.
+    genre_line`): the facets before the first `;` or `.` are kept, at most two. A person may write just "family drama".
+    "" when there is none, or it holds a number or a gated word: the prompts then keep their general wording."""
+    from contracts.breakdown.series import phrase
+
+    found = [r for r in rows if topic_key(str(r.get("topic") or "")) == "series" and r.get("status") != "rejected"
+             and target_text(str(r.get("applies_to") or "")) == "production"
+             and "genre" in f"{r.get('says') or ''} {r.get('quote') or ''}".casefold()]
+    for row in sorted(found, key=_genre_rank):
+        says = " ".join(str(row.get("says") or "").split())
+        head, colon, rest = says.partition(":")
+        text = rest if colon and head.strip().casefold() == "genre" else says
+        text = text.split(";", 1)[0].split(".", 1)[0]
+        got = phrase([f.strip().casefold() for f in text.split(",")])
+        if got:
+            return got
+    return ""

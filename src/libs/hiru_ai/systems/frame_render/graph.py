@@ -34,7 +34,9 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
 from contracts import safe_depiction
+from contracts.frame_brief import BLACK_PLATE
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
+from contracts.memory import genre_of
 from contracts.producer import DRAFT_LABEL, FrameStage, frame_stage
 from hiru_ai.core import agents, parts
 from hiru_ai.core.context import RunContext
@@ -61,6 +63,19 @@ def _compose(op: str, **payload: Any) -> Row:
     return parts.module("step", "frame_compose", "step").run({"op": op, **payload})
 
 
+def _genre(ctx: RunContext, production_id: UUID) -> str:
+    """The production's genre phrase for the frame's lead (plan/2026-11-12b), from its `series` facts; "" when it has
+    none or the memory cannot be read (the lead then stays general)."""
+    port = ctx.ports.memory
+    if port is None:
+        return ""
+    try:
+        return genre_of(port.entries(production_id))
+    except Exception:
+        _log.warning("production memory could not be read for the genre; the general lead is used", exc_info=True)
+        return ""
+
+
 class Scenes:
     """The reads every frame of one job shares (a scene's shots share the scene, its lines and the looks it uses).
     Loaded the first time a scene is asked for; the worker threads may race to load one, which costs a read, no more."""
@@ -69,6 +84,7 @@ class Scenes:
         self.ctx, self.production = ctx, production
         self.production_id = UUID(str(production["id"]))
         self.canon: list[Row] = ctx.need("scenes").canon(self.production_id)
+        self.genre = _genre(ctx, self.production_id)
         self._worlds: dict[str, Row] = {}
         self._all_looks: list[Row] | None = None
         self._lock = threading.Lock()
@@ -93,7 +109,7 @@ class Scenes:
         shots = scenes.shots(scene_id)  # plan/2026-11-11b: the same-setup frame of a later shot of a setup
         accepted = frames.accepted_finals([str(s["id"]) for s in shots]) if any(s.get("slate") for s in shots) else {}
         world = {"production": self.production, "canon": self.canon, "scene": scene, "lines": scenes.lines(scene_id),
-                 "looks": looks, "shots": shots, "accepted": accepted}
+                 "looks": looks, "shots": shots, "accepted": accepted, "genre": self.genre}
         with self._lock:
             self._worlds[scene_id] = world
         return world
@@ -168,6 +184,8 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
         frames.finish_frame(fid, {"status": "failed", "error": NOT_CONFIGURED})
         return "failed"
     world = scenes.world(str(shot["scene_id"]))
+    if _compose("plate", **world, shot=shot)["plate"]:  # plan/2026-11-12b: a cut to black or a title card
+        return black_plate(ctx, scenes, frame, shot)
     refs = _references(ctx, world, shot)
     pictures = [r for _, _, r in refs]
     sheets = [cid for cid, role, _ in refs if role != "setup"]  # `reference_ids` holds canon ids only
@@ -203,6 +221,18 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
     checks = _compose("checks", **world, shot=shot, attached=sheets, answer=answer)["checks"]
     frames.finish_frame(fid, {"status": "done", "storage_path": path, "prompt": prompt, "pins": pins,
                               "reference_ids": sheets, "error": None, "checks": checks})
+    return "done"
+
+
+def black_plate(ctx: RunContext, scenes: Scenes, frame: Row, shot: Row) -> str:
+    """A black plate, made by code and stored like a painted frame (plan/2026-11-12b): no model, no references."""
+    frames, files = ctx.need("frames"), ctx.need("files")
+    compose = parts.module("step", "frame_compose")
+    fid = str(frame["id"])
+    path = f"{scenes.production_id}/{shot['id']}/{fid}.png"
+    files.upload("frames", path, compose.black_png(compose.production_aspect(scenes.production)), "image/png")
+    frames.finish_frame(fid, {"status": "done", "storage_path": path, "prompt": BLACK_PLATE, "pins": {},
+                              "reference_ids": [], "error": None, "checks": []})
     return "done"
 
 

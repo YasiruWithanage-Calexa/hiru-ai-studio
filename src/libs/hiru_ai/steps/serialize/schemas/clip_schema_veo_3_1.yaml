@@ -20,6 +20,8 @@ fixed_values:
     deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
   frame_hygiene: "Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay."
   medium_style: "Photorealistic live-action television drama footage, real optics and natural imperfections."
+  # plan/2026-11-12b: when the production's documents give a genre ("action and crime thriller")
+  medium_style_genre: "Photorealistic live-action footage of a Sri Lankan {genre}, real optics and natural imperfections."
   language_line: >-
     All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not
     translated, not accented English.

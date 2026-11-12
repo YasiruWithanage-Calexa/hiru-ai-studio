@@ -1,0 +1,7 @@
+id: H-13
+topics: [genre]
+kind: default
+why: A scene planned without its drama's genre is played as a generic scene; a body found at dawn in a crime thriller looked like a calm rural morning (plan/2026-11-12b). Version 2 because, with the genre named, the plan still kept soft, flat light and the frames did not change (live check 2026-11-12).
+version: 2
+---
+Genre lens. The production's genre and tone (the packet's SERIES section) are the lens for every scene. A scoped direction (a place's palette, a love-scene lens) sets the colours and the camera's manner; the genre sets the tension, and the tension must be visible in the picture, not only in what the cut withholds. Decide which facet of the genre this scene plays and say it in the treatment's approach. Then write it into the light and the grade: in a thriller or crime scene, light with direction and contrast (a hard side or top key, deep shadow, faces partly unlit, the background held darker than the subject, highlights kept small), and a grade that keeps blacks deep and colour controlled. "Natural light" means a believable source in the place, such as an overcast sky, a doorway or rain light, shaped to fall off into shadow; it never means soft, flat, even light. Keep the scoped palette's colours inside that light. Do not play a scene's mood softer than the packet gives it. When the packet has no SERIES section, plan the scene as before.

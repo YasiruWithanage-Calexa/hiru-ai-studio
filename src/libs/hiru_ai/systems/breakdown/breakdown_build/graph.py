@@ -74,6 +74,7 @@ def calls(ctx: RunContext) -> brun.Calls:
         continuity=_ask("breakdown_continuity", ctx),
         episode=_ask("breakdown_episode", ctx),
         repair=_ask("breakdown_repair", ctx),
+        series=_ask("breakdown_series", ctx),  # plan/2026-11-12b: what the drama is
     )
 
 

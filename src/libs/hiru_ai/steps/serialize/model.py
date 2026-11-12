@@ -163,6 +163,7 @@ class ProductionInput:
     style_note: str = ""
     charter: str = ""
     techniques: str = ""
+    genre: str = ""  # plan/2026-11-12b: the production's genre phrase (`contracts.memory.genre_of`)
 
 
 def cast_member(row: Row) -> CastMember:

@@ -1,0 +1,502 @@
+THE DOCUMENTS (numbered lines)
+   1| EKAMA SAKSHIYA
+   2| A 4.5-minute crime thriller
+   3| Sathya danne ekkenek witharai.
+   4| Colombo / Mahawewa
+   5| Action | Crime | Love
+   6| Evidence: C-17
+   7| Original screenplay and visual treatmentOVERVIEW
+   8| Genre: Action / Crime Thriller / Love
+   9| Setting: Colombo and Mahawewa village
+  10| Tone: Grounded South Indian realism with commercial action energy
+  11| Tagline: Sathya danne ekkenek witharai.
+  12| LOGLINE
+  13| A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's
+  14| murder, then returns to his village with the woman he loves to expose the corrupt network that
+  15| destroyed them.
+  16| MAIN CHARACTERS
+  17| Dinu - 30, Colombo cash-transport driver. Quiet, experienced, violent only when cornered.
+  18| Aruni - 27, Mahawewa community nurse. Strong, intelligent and emotionally controlled.
+  19| Nimal - 34, Aruni's elder brother and Dinu's closest friend.
+  20| Mudalali - 52, businessman laundering illegal money through village development projects.
+  21| Suren - 38, Mudalali's brutal right-hand man.
+  22| Inspector Ruwan - 45, corrupt police officer protecting the money trail.
+  23| DIRECTOR / DOP VISUAL TREATMENT
+  24| Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and
+  25| crowded backgrounds.
+  26| Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer
+  27| silences.
+  28| Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement.
+  29| Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact.
+  30| Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+  31| Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+  32| Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero
+  33| elevation moments.
+  34| Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+  35| ACTION DESIGN NOTESThe action is mass but not weightless. Every hit has a location, an object or a consequence.
+  36| Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+  37| Aruni is an active participant in the climax, and the final victory comes from the recording, the
+  38| village and their courage - not from violence alone.SCREENPLAY
+  39| SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE
+  40| Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices
+  41| something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels
+  42| and touches his hand. Inside his fist is a small metal key marked C-17.
+  43| ARUNI - Dinu... oyata meka ahenne nadda?
+  44| She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE:
+  45| EKAMA SAKSHIYA.
+  46| SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES
+  47| Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. On the
+  48| dashboard is a faded photo of him and Aruni near a village bus stop. Aruni's voice message
+  49| plays.
+  50| ARUNI - Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan
+  51| baya hithenawa.
+  52| Mudalali calls. Route eka maru karapan. Old Port warehouse ekata yanna. Dinu looks at the
+  53| red thread around his wrist and turns toward the industrial area.
+  54| SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES
+  55| Six hours earlier. Nimal opens a metal box containing photographs, bank documents and the
+  56| C-17 key.
+  57| NIMAL - Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli.
+  58| DINU - Api meka gaththoth apiuth eyala wage wenawa.
+  59| NIMAL - Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa
+  60| oyawa atharinnawa.
+  61| Nimal places the key in Dinu's hand. Dinu looks at it as rain hits the garage roof.
+
+THE BREAKDOWN (JSON)
+{
+ "entities": [
+  {
+   "id": "C01",
+   "kind": "person",
+   "name": "Dinu",
+   "card_lines": [
+    17,
+    17
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S02",
+    "E01-S03"
+   ]
+  },
+  {
+   "id": "C02",
+   "kind": "person",
+   "name": "Aruni",
+   "card_lines": [
+    18,
+    18
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S01",
+    "E01-S02"
+   ]
+  },
+  {
+   "id": "C03",
+   "kind": "person",
+   "name": "Nimal",
+   "card_lines": [
+    19,
+    19
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S01",
+    "E01-S03"
+   ]
+  },
+  {
+   "id": "C04",
+   "kind": "person",
+   "name": "Mudalali",
+   "card_lines": [
+    20,
+    20
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S02"
+   ]
+  },
+  {
+   "id": "C05",
+   "kind": "person",
+   "name": "Suren",
+   "card_lines": [
+    21,
+    21
+   ],
+   "seen": true,
+   "scenes": []
+  },
+  {
+   "id": "C06",
+   "kind": "person",
+   "name": "Inspector Ruwan",
+   "card_lines": [
+    22,
+    22
+   ],
+   "seen": true,
+   "scenes": []
+  },
+  {
+   "id": "L01",
+   "kind": "place",
+   "name": "Colombo",
+   "card_lines": [
+    9,
+    9
+   ],
+   "seen": true,
+   "scenes": [],
+   "place_kind": "region",
+   "within": "",
+   "a_person_wrote": {
+    "look": "night time",
+    "summary": "colombo road"
+   }
+  },
+  {
+   "id": "L02",
+   "kind": "place",
+   "name": "Mahawewa village",
+   "card_lines": [
+    9,
+    9
+   ],
+   "seen": true,
+   "scenes": [],
+   "place_kind": "region",
+   "within": ""
+  },
+  {
+   "id": "L03",
+   "kind": "place",
+   "name": "MAHAWEWA CANAL",
+   "card_lines": [
+    39,
+    45
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S01"
+   ],
+   "place_kind": "set",
+   "within": "L02 Mahawewa village",
+   "a_person_wrote": {
+    "summary": "Mahawewa Canal"
+   }
+  },
+  {
+   "id": "L04",
+   "kind": "place",
+   "name": "CASH VAN",
+   "card_lines": [
+    46,
+    53
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S02"
+   ],
+   "place_kind": "vehicle",
+   "within": "L01 Colombo",
+   "a_person_wrote": {
+    "look": "cash van sri lanka"
+   }
+  },
+  {
+   "id": "L05",
+   "kind": "place",
+   "name": "COLOMBO GARAGE",
+   "card_lines": [
+    54,
+    61
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S03"
+   ],
+   "place_kind": "set",
+   "within": "L01 Colombo"
+  },
+  {
+   "id": "L06",
+   "kind": "place",
+   "name": "canal gate",
+   "card_lines": [
+    41,
+    42
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S01"
+   ],
+   "place_kind": "spot",
+   "within": "L03 MAHAWEWA CANAL"
+  },
+  {
+   "id": "L07",
+   "kind": "place",
+   "name": "paddy field",
+   "card_lines": [
+    40,
+    40
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S01"
+   ],
+   "place_kind": "spot",
+   "within": "L03 MAHAWEWA CANAL"
+  },
+  {
+   "id": "L08",
+   "kind": "place",
+   "name": "Old Port warehouse",
+   "card_lines": [
+    52,
+    52
+   ],
+   "seen": false,
+   "scenes": [],
+   "place_kind": "set",
+   "within": "L01 Colombo"
+  },
+  {
+   "id": "L09",
+   "kind": "place",
+   "name": "village bus stop",
+   "card_lines": [
+    48,
+    48
+   ],
+   "seen": false,
+   "scenes": [],
+   "place_kind": "set",
+   "within": "L02 Mahawewa village"
+  },
+  {
+   "id": "P01",
+   "kind": "thing",
+   "name": "medical bag",
+   "card_lines": [
+    40,
+    40
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S01"
+   ],
+   "a_person_wrote": {
+    "details": " small medical bag."
+   }
+  },
+  {
+   "id": "P02",
+   "kind": "thing",
+   "name": "key",
+   "card_lines": [
+    42,
+    61
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S01",
+    "E01-S03"
+   ]
+  },
+  {
+   "id": "P03",
+   "kind": "thing",
+   "name": "photo",
+   "card_lines": [
+    47,
+    48
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S02"
+   ]
+  },
+  {
+   "id": "P04",
+   "kind": "thing",
+   "name": "red thread",
+   "card_lines": [
+    52,
+    53
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S02"
+   ]
+  },
+  {
+   "id": "P05",
+   "kind": "thing",
+   "name": "metal box",
+   "card_lines": [
+    55,
+    56
+   ],
+   "seen": true,
+   "scenes": [
+    "E01-S03"
+   ]
+  },
+  {
+   "id": "P06",
+   "kind": "thing",
+   "name": "gun",
+   "card_lines": [
+    34,
+    34
+   ],
+   "seen": false,
+   "scenes": []
+  },
+  {
+   "id": "P07",
+   "kind": "thing",
+   "name": "Rs. 300 million",
+   "card_lines": [
+    13,
+    15
+   ],
+   "seen": false,
+   "scenes": [
+    "E01-S03"
+   ]
+  }
+ ],
+ "scenes": [
+  {
+   "id": "E01-S01",
+   "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+   "lines": [
+    39,
+    45
+   ],
+   "place": "L03",
+   "mood": [
+    "bleak",
+    "restrained",
+    "ominous"
+   ],
+   "people": [
+    "C02",
+    "C03"
+   ],
+   "things": [
+    "P01 (used)",
+    "P02 (hero)"
+   ]
+  },
+  {
+   "id": "E01-S02",
+   "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+   "lines": [
+    46,
+    53
+   ],
+   "place": "L04",
+   "mood": [
+    "uneasy",
+    "isolated",
+    "pressured"
+   ],
+   "people": [
+    "C01",
+    "C02",
+    "C04"
+   ],
+   "things": [
+    "P03 (dressing)",
+    "P04 (worn)"
+   ]
+  },
+  {
+   "id": "E01-S03",
+   "heading": "SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES",
+   "lines": [
+    54,
+    61
+   ],
+   "place": "L05",
+   "mood": [
+    "secretive",
+    "tense",
+    "morally conflicted"
+   ],
+   "people": [
+    "C03",
+    "C01"
+   ],
+   "things": [
+    "P05 (used)",
+    "P02 (hero)",
+    "P07 (mentioned)"
+   ]
+  }
+ ],
+ "direction_rules": [
+  {
+   "id": "D01",
+   "about": "palette",
+   "text": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\ncrowded backgrounds.",
+   "applies_to": "Colombo"
+  },
+  {
+   "id": "D02",
+   "about": "palette",
+   "text": "Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer\nsilences.",
+   "applies_to": "Mahawewa village"
+  },
+  {
+   "id": "D05",
+   "about": "lighting",
+   "text": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.",
+   "applies_to": "all"
+  }
+ ],
+ "continuity": {
+  "looks": [
+   {
+    "kind": "death",
+    "note": "Alive in E01-S03; found dead at L06 in E01-S01. No cause of death or specific injury is established.",
+    "lines": {
+     "end": 61,
+     "start": 41
+    },
+    "person": "C03",
+    "reason": "",
+    "source": "script",
+    "to_scene": "E01-S01",
+    "from_scene": "E01-S03"
+   }
+  ],
+  "timeline": [
+   {
+    "scene": "E01-S03",
+    "story_order": 1,
+    "kind": "flashback",
+    "relative": "Six hours earlier"
+   },
+   {
+    "scene": "E01-S02",
+    "story_order": 2,
+    "kind": "normal",
+    "relative": "Night; six hours after E01-S03"
+   },
+   {
+    "scene": "E01-S01",
+    "story_order": 3,
+    "kind": "cold_open",
+    "relative": "Dawn, apparently following E01-S02; no numbered story day is stated"
+   }
+  ]
+ }
+}

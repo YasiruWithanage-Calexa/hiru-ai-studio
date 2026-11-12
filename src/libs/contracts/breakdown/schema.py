@@ -168,6 +168,51 @@ class EpisodeW(_W):
     scenes: list[SceneBriefW]
 
 
+# --- the series reader: what the drama IS (plan/2026-11-12b §3.1)
+# ------------------------------------------------------------------
+
+
+class SeriesFieldW(_W):
+    """One part of the drama's identity. The reader judges what a line means; code checks the quote (§3.2)."""
+
+    found: bool
+    says: str = Field(default="", description="your plain words, at most 30; no number, no running time")
+    quote: str = Field(default="", description="the document's words, copied exactly, inside `lines`")
+    lines: RangeW
+
+
+class FacetW(_W):
+    name: str = Field(description="one genre facet in the document's own words: 'crime thriller'")
+    weight: Literal["main", "thread"]
+
+
+class GenreW(SeriesFieldW):
+    facets: list[FacetW] = Field(default_factory=list)
+
+
+class WorldW(SeriesFieldW):
+    places: list[str] = Field(default_factory=list, description="the places by the names the document uses")
+
+
+class ThemeW(SeriesFieldW):
+    language: str = Field(default="", description="the quote's language and script: en, si, si-Latn ...")
+
+
+class LeftOutW(_W):
+    quote: str
+    lines: RangeW
+    why: str
+
+
+class SeriesW(_W):
+    genre: GenreW
+    tone: SeriesFieldW
+    world: WorldW
+    theme: ThemeW
+    premise: SeriesFieldW
+    left_out: list[LeftOutW] = Field(default_factory=list)
+
+
 # --- stored: the breakdown memory (§5)
 # ---------------------------------------------------------------------------------------------
 
@@ -255,6 +300,9 @@ class Breakdown(BaseModel):
     documents: list[DocPart] = Field(default_factory=list)
     person_lines: list[str] = Field(default_factory=list)
     continuity: dict[str, Any] | None = None  # step 3's answer (ContinuityW, dumped)
+    # plan/2026-11-12b: what the drama is (genre, tone, world, theme, premise), checked by code (`contracts.breakdown.
+    # series.check`); None when the reader was not run or failed
+    series: dict[str, Any] | None = None
     version: int = 1
 
     def entity(self, id_: str) -> Entity | None:

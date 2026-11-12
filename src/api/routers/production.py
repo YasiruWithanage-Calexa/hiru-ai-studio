@@ -52,6 +52,7 @@ from contracts.frame_brief import (
 )
 from contracts.holding import hands_for
 from contracts.jobs import JobKind
+from contracts.memory import genre_of
 from contracts.producer import (
     CameraCheck,
     CameraField,
@@ -289,10 +290,12 @@ class RejectRequest(BaseModel):
 
 class Loaded:
     def __init__(self, production: Row, scene: Row, states: list[ShotState], lines: list[Row],
-                 canon: list[Row] | None = None, looks: Mapping[str, Mapping[str, Any]] | None = None) -> None:
+                 canon: list[Row] | None = None, looks: Mapping[str, Mapping[str, Any]] | None = None,
+                 genre: str = "") -> None:
         self.production, self.scene, self.states, self.lines = production, scene, states, lines
         self.canon: list[Row] = canon or []  # the production's cards, as read for these states
         self.looks: Mapping[str, Mapping[str, Any]] = looks or {}  # character id → the look the scene uses
+        self.genre = genre  # plan/2026-11-12b: the production's genre phrase (`contracts.memory.genre_of`)
 
     @property
     def aspect(self) -> str:
@@ -314,13 +317,14 @@ async def load(repos: Repos, access: ProductionAccess, scene_id: UUID) -> Loaded
     if scene is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Scene not found.")
     ids = [str(s["id"]) for s in shots]
-    frames, prompts, episode, all_looks, picks = await asyncio.gather(
+    frames, prompts, episode, all_looks, picks, series = await asyncio.gather(
         repos.frames.list_for_shots(ids), repos.prompts.latest_for_shots(ids),
         repos.episodes.get(production_id, UUID(str(scene["episode_id"]))),
-        repos.looks.list_for_production(production_id), repos.scene_looks.list(scene_id))
+        repos.looks.list_for_production(production_id), repos.scene_looks.list(scene_id),
+        repos.direction.series(production_id))
     looks = looks_in_force(all_looks, picks, int(episode["number"]) if episode else None)
     states = scene_states(scene, shots, lines, canon, frames, prompts, looks)
-    return Loaded(access.production, scene, states, lines, canon, looks)
+    return Loaded(access.production, scene, states, lines, canon, looks, genre_of(series))
 
 
 async def load_shot(repos: Repos, access: ProductionAccess, shot_id: UUID) -> tuple[Loaded, ShotState]:
@@ -389,7 +393,8 @@ def frame_plan(ld: Loaded, st: ShotState) -> tuple[FrameBrief, list[PlannedRefer
     brief = frame_brief(ir=st.row.get("ir") or {}, camera=st.camera, aspect_ratio=ld.aspect, cast=seen,
                         references=labels, recommended=st.recommended,
                         unseen=unseen_sentence(st.staged, {c.id: c.name for c in st.cast}),
-                        hands=" ".join(p for p in (hands, opens_line(st.row)) if p), scene=ld.scene, shot=st.row)
+                        hands=" ".join(p for p in (hands, opens_line(st.row)) if p), scene=ld.scene, shot=st.row,
+                        genre=ld.genre)
     return brief, planned
 
 

@@ -50,6 +50,26 @@ SETUP_LABEL = "the accepted frame of shot"
 
 LEAD = ("Photorealistic still frame from a Sri Lankan television drama, shot on a cinema camera with real optics and "
         "natural imperfections.")
+GENERAL_GENRE = "television drama"
+# plan/2026-11-12b: a shot whose script is only a cut to black or a title card is a black plate made by code, never
+# painted (an image model given a place plate and a genre paints a scene into it)
+BLACK_PLATE = ("A black plate, made by code: a cut to black or a title card is never painted; the title is added in "
+               "post.")
+_BLACK = re.compile(r"^\s*((smash\s+)?cut|fade(\s+out)?)\s+to\s+black\b|^\s*(black|black screen|darkness)\s*\.?\s*$"
+                    r"|^\s*(main\s+)?(title|super|card|caption)\s*:", re.IGNORECASE)
+
+
+def black_plate(texts: Iterable[str]) -> bool:
+    """Every block a shot covers is a cut to black or a title card ("Cut to black.", "TITLE: EKAMA SAKSHIYA.")."""
+    found = [t for t in texts if str(t).strip()]
+    return bool(found) and all(_BLACK.search(str(t)) for t in found)
+
+
+def lead_line(genre: str = "") -> str:
+    """The prompt's first sentence. `genre` is the production's genre phrase (`contracts.memory.genre_of`,
+    plan/2026-11-12b: "action and crime thriller"); none keeps LEAD byte for byte."""
+    genre = " ".join(genre.split())
+    return LEAD.replace(GENERAL_GENRE, genre, 1) if genre else LEAD
 CLOSE_PLACE = "The people, place and everyday details are Sri Lankan."
 CLOSE_SINGLE = "A single still frame: no text, no watermark, no captions, no collage, no split panels."
 
@@ -146,6 +166,7 @@ class ShotLook:
     grade: str = ""
     feeling: str = ""
     ambience: str = ""
+    mood: str = ""  # plan/2026-11-12b D7: the scene packet's mood words, "bleak, restrained, ominous"
 
 
 def shot_look(scene: Mapping[str, Any] | None, slate: str) -> ShotLook:
@@ -166,7 +187,8 @@ def shot_look(scene: Mapping[str, Any] | None, slate: str) -> ShotLook:
     sound = clip.get("sound") if isinstance(clip.get("sound"), Mapping) else {}
     return ShotLook(palette=_clean(colour.get("palette")), light=_clean(colour.get("light")),
                     grade=_clean(colour.get("grade")), feeling=_clean(moment.get("feeling")),
-                    ambience=" ".join(_clean((sound or {}).get(k)) for k in ("ambience", "effects")).strip())
+                    ambience=" ".join(_clean((sound or {}).get(k)) for k in ("ambience", "effects")).strip(),
+                    mood=", ".join(_clean(m) for m in plan.get("mood") or [] if isinstance(m, str) and _clean(m)))
 
 
 # ── place, time and weather ─────────────────────────────────────────────────────────────────
@@ -440,7 +462,7 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
                 references: list[str] | None = None, recommended: CameraSettings | None = None,
                 recommended_framing: str = "", unseen: str = "", hands: str = "",
                 scene: Mapping[str, Any] | None = None, shot: Mapping[str, Any] | None = None,
-                cap: int = PROMPT_CAP, polished: bool = True) -> FrameBrief:
+                cap: int = PROMPT_CAP, polished: bool = True, genre: str = "") -> FrameBrief:
     """The first frame's brief, from the shot's IR, the camera as it stands, the people the camera SEES (`cast`), the
     labels of the pictures attached IN ORDER (`references`), who is only heard (`unseen`,
     `contracts.staging.unseen_sentence`), who holds what (`hands`), and the scene row (heading, time of day, the
@@ -455,7 +477,7 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
     look = shot_look(scene, str((shot or {}).get("slate") or ""))
     sections = {k: BriefSection(k) for k in TITLES}
 
-    sections["lead"].add(LEAD, "fixed")
+    sections["lead"].add(lead_line(genre), "fixed")
     for line in references_block(list(references or [])):
         sections["references"].add(line, "attached images")
     sections["shot"].add(shot_section(ir, camera, recommended), "camera + ir.cinematography")
@@ -530,6 +552,8 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
     if look.grade:
         colour.add(f"Grade: {look.grade}", "treatment.colour_script", cut="grade_script")
 
+    if look.mood:  # plan/2026-11-12b D7: the scene's mood from its packet; short, so never cut
+        sections["mood"].add(f"Scene mood: {look.mood}.", "packet.mood")
     if look.feeling:
         sections["mood"].add(f"Mood: {look.feeling}", "edit.moments.feeling", cut="mood")
     if unseen:
@@ -550,11 +574,11 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
 def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: str, cast: list[CastMember],
                  references: list[str] | None = None, recommended_framing: str = "", unseen: str = "",
                  hands: str = "", recommended: CameraSettings | None = None, scene: Mapping[str, Any] | None = None,
-                 shot: Mapping[str, Any] | None = None) -> str:
+                 shot: Mapping[str, Any] | None = None, genre: str = "") -> str:
     """The image prompt for a shot's first frame: `frame_brief(...).text()`."""
     return frame_brief(ir=ir, camera=camera, aspect_ratio=aspect_ratio, cast=cast, references=references,
                        recommended=recommended, recommended_framing=recommended_framing, unseen=unseen, hands=hands,
-                       scene=scene, shot=shot).text()
+                       scene=scene, shot=shot, genre=genre).text()
 
 
 def expected_frame(ir: Mapping[str, Any], scene: Mapping[str, Any] | None) -> str:

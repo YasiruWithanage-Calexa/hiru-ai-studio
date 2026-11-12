@@ -1,0 +1,134 @@
+{
+ "series": {
+  "genre": {
+   "says": "An action-driven crime thriller with a love thread.",
+   "quote": "Genre: Action / Crime Thriller / Love",
+   "lines": [
+    9,
+    9
+   ],
+   "source": "script",
+   "facets": [
+    {
+     "name": "action",
+     "weight": "main"
+    },
+    {
+     "name": "crime thriller",
+     "weight": "main"
+    },
+    {
+     "name": "love",
+     "weight": "thread"
+    }
+   ]
+  },
+  "tone": {
+   "says": "Keep performances grounded in South Indian realism while giving the action commercial energy.",
+   "quote": "Tone: Grounded South Indian realism with commercial action energy",
+   "lines": [
+    11,
+    11
+   ],
+   "source": "script"
+  },
+  "world": {
+   "says": "The story moves between Colombo and Mahawewa village.",
+   "quote": "Setting: Colombo and Mahawewa village",
+   "lines": [
+    10,
+    10
+   ],
+   "source": "script",
+   "places": [
+    {
+     "name": "Colombo",
+     "id": "L01"
+    },
+    {
+     "name": "Mahawewa village",
+     "id": "L02"
+    }
+   ]
+  },
+  "theme": {
+   "says": "Only one person knows the truth.",
+   "quote": "Tagline: Sathya danne ekkenek witharai.",
+   "lines": [
+    12,
+    12
+   ],
+   "source": "script",
+   "language": "si-Latn"
+  },
+  "premise": {
+   "says": "A Colombo cash-transfer driver steals money after witnessing a crime against his closest friend, then returns to his village with his lover to expose a corrupt network.",
+   "quote": "A Colombo cash-transfer driver steals Rs. 300 million after witnessing his closest friend's murder, then returns to his village with the woman he loves to expose the corrupt network that destroyed them.",
+   "lines": [
+    14,
+    16
+   ],
+   "source": "script",
+   "planner_only": true
+  },
+  "left_out": [
+   {
+    "quote": "A 4.5-minute crime thriller",
+    "lines": [
+     2,
+     2
+    ],
+    "why": "Running time is not identity; genre is said again in the fuller overview."
+   },
+   {
+    "quote": "Sathya danne ekkenek witharai.",
+    "lines": [
+     3,
+     3
+    ],
+    "why": "said again"
+   },
+   {
+    "quote": "Colombo / Mahawewa",
+    "lines": [
+     4,
+     4
+    ],
+    "why": "said again"
+   },
+   {
+    "quote": "Action | Crime | Love",
+    "lines": [
+     5,
+     5
+    ],
+    "why": "said again"
+   },
+   {
+    "quote": "Evidence: C-17",
+    "lines": [
+     6,
+     6
+    ],
+    "why": "Evidence label and story clue, not drama identity."
+   },
+   {
+    "quote": "Original screenplay and visual treatment",
+    "lines": [
+     7,
+     7
+    ],
+    "why": "Document label."
+   },
+   {
+    "quote": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds. Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences. Love scenes - 50mm and 85mm lenses, shallow focus and minimal camera movement. Action lenses - 24mm for geography, 35mm for movement and 50mm for emotional impact. Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes. Editing - Fast cuts only on impact. Let important punches and reactions stay on screen. Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments. Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.",
+    "lines": [
+     25,
+     35
+    ],
+    "why": "Production directions for palette, framing, lenses, lighting, editing, sound and slow motion belong to the shooting reader."
+   }
+  ]
+ },
+ "findings": []
+}
