@@ -685,10 +685,13 @@ class FakeImages:
         self.error = error
         self.calls: list[tuple[str, str, list[Reference]]] = []
         self.drafts: list[bool] = []  # per call: was it painted as a draft
+        self.sheets: list[bool] = []  # per call: was it painted as a canon or look sheet
 
-    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False) -> Picture:
+    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
+                 sheet: bool = False) -> Picture:
         self.calls.append((prompt, aspect, list(references)))
         self.drafts.append(draft)
+        self.sheets.append(sheet)
         if self.error is not None:
             raise self.error
         return Picture(data=b"\x89PNG-fake", mime="image/png", input_tokens=120, output_tokens=1056)

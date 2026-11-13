@@ -69,6 +69,7 @@ class ImageSpec(BaseModel):
     model: str
     quality: str = ""
     draft_quality: str = ""  # name of the setting holding the quality of a draft ("" = the same as `quality`)
+    sheet_quality: str = ""  # name of the setting holding the quality of a canon or look sheet ("" = `quality`)
 
 
 class ModelsFile(BaseModel):

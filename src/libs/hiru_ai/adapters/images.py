@@ -43,13 +43,15 @@ class OpenAIImages:
     """`ImageGen`: paints one picture and records its tokens as a `token_usage` row (when given a sink)."""
 
     def __init__(self, client: Any, *, model: str, quality: str, sink: UsageSink | None = None,
-                 phase: str = PHASE, draft_quality: str = "") -> None:
+                 phase: str = PHASE, draft_quality: str = "", sheet_quality: str = "") -> None:
         self.client, self.model, self.quality, self.sink, self.phase = client, model, quality, sink, phase
         self.draft_quality = draft_quality or quality
+        self.sheet_quality = sheet_quality or quality
 
-    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False) -> Picture:
+    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
+                 sheet: bool = False) -> Picture:
         size = SIZE_FOR_ASPECT.get(aspect, "1536x1024")
-        quality = self.draft_quality if draft else self.quality
+        quality = self.sheet_quality if sheet else self.draft_quality if draft else self.quality
         try:
             if references:
                 files = [(f"reference-{n}.png", ref.data, ref.mime) for n, ref in enumerate(references, start=1)]
@@ -78,4 +80,5 @@ def build(settings: AISettings | None = None, *, sink: UsageSink | None = None, 
     settings = settings or get_settings()
     model, quality = llm.image_model(settings)
     return OpenAIImages(client or llm.openai_client(settings), model=model, quality=quality, sink=sink,
-                        draft_quality=llm.image_draft_quality(settings))
+                        draft_quality=llm.image_draft_quality(settings),
+                        sheet_quality=llm.image_sheet_quality(settings))

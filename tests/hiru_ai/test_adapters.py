@@ -383,3 +383,12 @@ def test_a_draft_is_painted_at_the_draft_quality_and_a_final_at_the_usual_one():
     sdk = Images()  # without a draft quality a draft is painted like any frame
     images.OpenAIImages(SimpleNamespace(images=sdk), model="m", quality="medium")("p", "16:9", [], draft=True)
     assert sdk.calls[0][1]["quality"] == "medium"
+
+
+def test_a_canon_or_look_sheet_is_painted_at_the_sheet_quality():
+    sdk = Images()
+    paint = images.OpenAIImages(SimpleNamespace(images=sdk), model="gpt-image-2", quality="medium", sheet_quality="low")
+    paint("Kamala", "16:9", [], sheet=True)
+    paint("Kamala in a saree", "16:9", [Reference("base", b"1")], sheet=True)
+    paint("a harbour", "16:9", [])
+    assert [kw["quality"] for _, kw in sdk.calls] == ["low", "low", "medium"]

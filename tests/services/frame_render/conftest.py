@@ -135,12 +135,15 @@ class FakePainter:
     def __init__(self, refuse: bool = False, fail: bool = False) -> None:
         self.calls: list[dict] = []
         self.drafts: list[bool] = []  # per call: was it painted as a draft (low quality)
+        self.sheets: list[bool] = []  # per call: was it painted as a canon or look sheet (low quality)
         self.refuse, self.fail = refuse, fail
 
-    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False) -> Picture:
+    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
+                 sheet: bool = False) -> Picture:
         self.calls.append({"prompt": prompt, "aspect": aspect, "references": [r.label for r in references],
                            "pictures": [r.data for r in references]})
         self.drafts.append(draft)
+        self.sheets.append(sheet)
         if self.refuse:
             raise RefusedError("The image model declined to make this frame.")
         if self.fail:

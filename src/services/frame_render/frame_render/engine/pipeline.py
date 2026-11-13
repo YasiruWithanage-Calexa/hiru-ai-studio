@@ -333,7 +333,7 @@ def render_reference(store: StoreLike, production: Row, entity_id: str, paint: P
     prompt = reference_sheet_prompt(kind, str(row["name"]), CanonCard.model_validate(current.get("card") or {}),
                                     aspect_ratio=aspect)
     try:
-        picture = paint(prompt, aspect, [])
+        picture = paint(prompt, aspect, [], sheet=True)
     except RefusedError as exc:
         return {"status": "refused", "error": str(exc)}
     except Exception:
@@ -370,7 +370,8 @@ def render_look(store: StoreLike, production: Row, look_id: str, paint: Painter 
     prompt = look_sheet_prompt(str(row["name"]), fields)
     try:
         picture = paint(prompt, SHEET_ASPECT,
-                        [Reference(label=f"the base character sheet for {row['name']}", data=base_sheet)])
+                        [Reference(label=f"the base character sheet for {row['name']}", data=base_sheet)],
+                        sheet=True)
     except RefusedError as exc:
         return {"status": "refused", "error": str(exc)}
     except Exception:

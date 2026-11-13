@@ -32,9 +32,10 @@ def painter(config: Config, payload: DispatchPayload, store: Store, client: Any 
 
         client = OpenAI(api_key=config.openai_api_key, timeout=240.0, max_retries=1)
 
-    def paint(prompt: str, aspect: str, references: list[image.Reference], *, draft: bool = False) -> image.Picture:
-        picture = image.generate(client, model=config.image_model,
-                                 quality=config.image_quality_draft if draft else config.image_quality, prompt=prompt,
+    def paint(prompt: str, aspect: str, references: list[image.Reference], *, draft: bool = False,
+              sheet: bool = False) -> image.Picture:
+        quality = config.image_quality_sheet if sheet else config.image_quality_draft if draft else config.image_quality
+        picture = image.generate(client, model=config.image_model, quality=quality, prompt=prompt,
                                  aspect_ratio=aspect, references=references)
         store.record_usage({"job_id": str(payload.job_id), "production_id": str(payload.production_id),
                             "actor_user_id": str(payload.actor_user_id), "phase": "frame_render.image",

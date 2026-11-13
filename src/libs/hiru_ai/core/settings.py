@@ -62,6 +62,7 @@ class OpenAISettings(BaseModel):
     model_image: str = "gpt-image-2"
     image_quality: str = "medium"  # a final first frame
     image_quality_draft: str = "low"  # a draft first frame: cheap, to settle the picture before the final is painted
+    image_quality_sheet: str = "low"  # a canon reference sheet or a look sheet
     embedding_model: str = "text-embedding-3-large"
     embedding_dimensions: int = 1536  # must match chunks.embedding vector(1536)
 

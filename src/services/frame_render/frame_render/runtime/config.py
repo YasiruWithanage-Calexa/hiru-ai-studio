@@ -20,6 +20,8 @@ class Config:
     vision_model: str = ""
     # A DRAFT first frame is painted at this (cheap) quality; a final at `image_quality`.
     image_quality_draft: str = "low"
+    # A canon reference sheet or a look sheet is painted at this quality.
+    image_quality_sheet: str = "low"
 
     @property
     def images_enabled(self) -> bool:
@@ -39,4 +41,5 @@ def get_config() -> Config:
         internal_secret=env("API__INTERNAL_SECRET", ""),
         vision_model=env("OPENAI__MODEL_VISION", "gpt-5-mini"),
         image_quality_draft=env("OPENAI__IMAGE_QUALITY_DRAFT", "low"),
+        image_quality_sheet=env("OPENAI__IMAGE_QUALITY_SHEET", "low"),
     )
