@@ -14,8 +14,9 @@ from supabase import AsyncClient, acreate_client
 
 from api.cache import AsyncTTLCache, clear_after_job
 from api.config import get_settings
-from api.observability import count_db_call
-from api.repositories import Repos, Row, Rows
+from api.observability import count_db_call, time_db_call
+from api.repositories import SCENE_LIGHT, SHOT_LIGHT, Repos, Row, Rows
+from api.repositories.memo import MemoRepo
 from api.services import file_cache
 
 _logger = logging.getLogger(__name__)
@@ -363,6 +364,7 @@ class SupabaseDocuments(_Base):
 class SupabaseStorage(_Base):
     async def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None:
         await self.db.storage.from_(bucket).upload(path, data, {"content-type": content_type})
+        file_cache.forget_missing(bucket, path)
 
     async def remove(self, bucket: str, path: str) -> None:
         await self.db.storage.from_(bucket).remove([path])
@@ -400,18 +402,39 @@ class SupabaseSearch(_Base):
         return _rows(res.data)
 
 
+# plan/2026-11-13b phase 7: the month sum and budget are read on every page (`/v1/usage`, a month-long sum each
+# time). Only finished model work moves the sum, so it is cleared when a job ends (`api.cache.job_ended()`) and
+# when this process records a call; the budget is cleared by `set_budget`. A percentage is all that is ever shown.
+USAGE_TTL_S = 60.0
+
+
 class SupabaseUsage(_Base):
+    def __init__(self, db: AsyncClient) -> None:
+        super().__init__(db)
+        self._tokens: AsyncTTLCache[int] = AsyncTTLCache(USAGE_TTL_S)
+        self._budgets: AsyncTTLCache[int] = AsyncTTLCache(USAGE_TTL_S)
+        clear_after_job(self._tokens)
+        clear_after_job(self._budgets)
+
     async def record(self, row: Row) -> None:
         try:
             await self.db.table("token_usage").insert(row).execute()
         except Exception:
             _logger.exception("token usage write failed phase=%s", row.get("phase"))
+        self._tokens.clear()
 
     async def tokens_since(self, since: datetime) -> int:
+        found = await self._tokens.get(since.isoformat(), lambda: self._tokens_since(since))
+        return found if found is not None else 0
+
+    async def _tokens_since(self, since: datetime) -> int:
         res = await self.db.rpc("token_usage_since", {"since": since.isoformat()}).execute()
         return int(cast(int, res.data or 0))
 
     async def budget(self, month: str) -> int | None:
+        return await self._budgets.get(month, lambda: self._budget(month))
+
+    async def _budget(self, month: str) -> int | None:
         try:
             res = await self.db.table("usage_budget").select("budget_tokens").eq("month", month).limit(1).execute()
         except Exception:  # the table arrives with schema v4; before that the setting applies
@@ -421,8 +444,10 @@ class SupabaseUsage(_Base):
         return int(row["budget_tokens"]) if row else None
 
     async def set_budget(self, month: str, tokens: int, user_id: UUID) -> None:
+        self._budgets.clear()
         await self.db.table("usage_budget").upsert({"month": month, "budget_tokens": tokens,
                                                     "set_by": str(user_id)}, on_conflict="month").execute()
+        self._budgets.clear()
 
 
 class SupabaseEpisodes(_Base):
@@ -448,6 +473,12 @@ class SupabaseScenes(_Base):
             q = q.eq("episode_id", str(episode_id))
         res = await q.order("number").execute()
         return _rows(res.data)
+
+    async def list_light(self, production_id: UUID, episode_id: UUID | None = None) -> builtins.list[Row]:
+        q = self.db.table("scenes").select(",".join(SCENE_LIGHT)).eq("production_id", str(production_id))
+        if episode_id is not None:
+            q = q.eq("episode_id", str(episode_id))
+        return _rows((await q.order("number").execute()).data)
 
     async def get(self, production_id: UUID, scene_id: UUID) -> Row | None:
         res = (await self.db.table("scenes").select("*").eq("id", str(scene_id))
@@ -481,6 +512,16 @@ class SupabaseShots(_Base):
             q = q.eq("scene_id", str(scene_id))
         res = await q.order("number").execute()
         return _rows(res.data)
+
+    async def list_light(self, production_id: UUID) -> builtins.list[Row]:
+        res = await (self.db.table("shots").select(",".join(SHOT_LIGHT)).eq("production_id", str(production_id))
+                     .order("number").execute())
+        return _rows(res.data)
+
+    async def list_pinned(self, production_id: UUID) -> builtins.list[Row]:
+        res = await (self.db.table("shots").select("id,scene_id,pins:design->pins")
+                     .eq("production_id", str(production_id)).execute())
+        return [{"id": r["id"], "scene_id": r["scene_id"], "design": {"pins": r.get("pins")}} for r in _rows(res.data)]
 
     async def counts_for_scenes(self, scene_ids: Sequence[UUID]) -> builtins.list[Row]:
         if not scene_ids:
@@ -981,17 +1022,34 @@ class SupabasePackets(_Base):
         return _first(res.data)
 
 
+# plan/2026-11-13b phase 6. Prices are append-only with a `valid_from`, so the rows are safe to hold briefly; the
+# cross-production usage history only feeds an ESTIMATE while a production has none of its own. No money is cached.
+PRICES_TTL_S = 60.0
+HISTORY_TTL_S = 600.0
+
+
 class SupabaseCosts(_Base):
+    def __init__(self, db: AsyncClient) -> None:
+        super().__init__(db)
+        self._prices: AsyncTTLCache[list[Row]] = AsyncTTLCache(PRICES_TTL_S)
+        self._history: AsyncTTLCache[list[Row]] = AsyncTTLCache(HISTORY_TTL_S)
+
     async def prices(self) -> list[Row]:
+        rows = await self._prices.get("all", self._prices_from_db)
+        return copy.deepcopy(rows) if rows is not None else []
+
+    async def _prices_from_db(self) -> list[Row] | None:
         try:
             res = await self.db.table("prices").select("*").order("valid_from", desc=True).execute()
         except Exception:  # the table arrives with schema v17: until then the prices in code apply
             _logger.warning("prices unavailable", exc_info=True)
-            return []
+            return None  # not kept: a failed read must not hold the in-code prices for a minute
         return _rows(res.data)
 
     async def add_price(self, row: Row) -> Row:
+        self._prices.clear()
         res = await self.db.table("prices").insert(row).execute()
+        self._prices.clear()
         return _one(res.data)
 
     async def scene_usage(self, production_id: UUID, scene_id: UUID) -> list[Row]:
@@ -1032,6 +1090,12 @@ class SupabaseCosts(_Base):
         return [r for r in rows if str(r.get("job_id") or "") not in scoped]
 
     async def recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]:
+        if production_id is not None:
+            return await self._recent_usage(production_id, prefix, limit)
+        rows = await self._history.get((prefix, limit), lambda: self._recent_usage(None, prefix, limit))
+        return copy.deepcopy(rows) if rows is not None else []
+
+    async def _recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]:
         query = self.db.table("token_usage").select(_USAGE_COLUMNS).like("phase", f"{prefix}*")
         if production_id is not None:
             query = query.eq("production_id", str(production_id))
@@ -1051,7 +1115,8 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
     db = await acreate_client(url, service_role_key)
     # Count REST calls per API request (see api/observability.py).
     db.postgrest.session.event_hooks.setdefault("request", []).append(count_db_call)
-    return Repos(
+    db.postgrest.session.event_hooks.setdefault("response", []).append(time_db_call)
+    repos = Repos(
         profiles=SupabaseProfiles(db),
         productions=SupabaseProductions(db),
         members=SupabaseMembers(db),
@@ -1086,3 +1151,5 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         sable=SupabaseSable(db),
         packets=SupabasePackets(db),
     )
+    # Inside a request each scene loader reads the scene, shots, lines and episode once (plan/2026-11-13b phase 1).
+    return Repos(**{name: cast(Any, MemoRepo(repo, name)) for name, repo in vars(repos).items()})

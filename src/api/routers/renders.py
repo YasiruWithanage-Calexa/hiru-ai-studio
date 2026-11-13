@@ -102,6 +102,23 @@ async def render_plan(production_id: UUID, shot_id: UUID, access: CanView, repos
     return svc.plan_view(sid, plan, settings)
 
 
+class PlanPair(BaseModel):
+    take: svc.PlanView
+    draft: svc.PlanView
+
+
+@router.get("/shots/{shot_id}/render-plans", response_model=PlanPair)
+async def render_plans(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep,
+                       settings: SettingsDep) -> PlanPair:
+    """The take's plan and the draft's from ONE load of the shot (plan/2026-11-13b phase 5): the Generate card used to
+    make two requests that each loaded the whole scene. Same builder as `render-plan`, so they cannot disagree."""
+    ld, st = await load_shot(repos, access, shot_id)
+    handoff = handoff_checks(ld, st)
+    take = await svc.build_plan(repos, settings, ld, st, handoff=handoff)
+    draft = await svc.build_plan(repos, settings, ld, st, handoff=handoff, draft=True)
+    return PlanPair(take=svc.plan_view(UUID(st.id), take, settings), draft=svc.plan_view(UUID(st.id), draft, settings))
+
+
 @router.put("/shots/{shot_id}/video-settings", response_model=svc.PlanView)
 async def save_video_settings(production_id: UUID, shot_id: UUID, body: SaveSettings, access: CanRender,
                               repos: ReposDep, settings: SettingsDep) -> svc.PlanView:

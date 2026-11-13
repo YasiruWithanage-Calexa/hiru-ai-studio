@@ -26,6 +26,7 @@ from pathlib import Path
 
 import httpx
 
+from api.cache import clear_after_job
 from api.config import Settings
 
 _logger = logging.getLogger(__name__)
@@ -91,6 +92,38 @@ def _media_type(file: Path, path: str) -> str:
     return mimetypes.guess_type(path)[0] or "application/octet-stream"
 
 
+# plan/2026-11-13b phase 9: a file Supabase does not have (a take's still that was never made) is not asked for again on
+# every view. Remembered for 10 minutes, per process; forgotten when this process stores that path, and when a job ends
+# (a worker may have just written it).
+MISS_TTL_S = 600.0
+
+
+class _Misses:
+    def __init__(self) -> None:
+        self.until: dict[tuple[str, str], float] = {}
+
+    def has(self, key: tuple[str, str]) -> bool:
+        stop = self.until.get(key)
+        if stop is None:
+            return False
+        if stop <= time.monotonic():
+            del self.until[key]
+            return False
+        return True
+
+    def add(self, key: tuple[str, str]) -> None:
+        if len(self.until) >= 4096:
+            self.until.clear()
+        self.until[key] = time.monotonic() + MISS_TTL_S
+
+    def clear(self) -> None:
+        self.until.clear()
+
+
+MISSES = _Misses()
+clear_after_job(MISSES)
+
+
 class FileCache:
     """One per process (`get_cache`). Safe to share across requests: all state is on disk or in `_flights`."""
 
@@ -120,6 +153,8 @@ class FileCache:
         if hit is not None:
             return hit
         key = (bucket, path)
+        if MISSES.has(key):
+            raise NotFound
         task = self._flights.get(key)
         if task is None:
             task = asyncio.ensure_future(self._download(bucket, path))
@@ -159,6 +194,8 @@ class FileCache:
             async with httpx.AsyncClient(timeout=_TIMEOUT) as client, client.stream(
                     "GET", url, headers={"Authorization": f"Bearer {key}"}) as resp:
                 if resp.status_code >= 400:
+                    if resp.status_code == 404:
+                        MISSES.add((bucket, path))
                     raise NotFound
                 media_type = resp.headers.get("content-type", "").split(";")[0].strip()
                 if int(resp.headers.get("content-length") or 0) > cap:
@@ -221,6 +258,11 @@ def get_cache(settings: Settings) -> FileCache:
     if _cache is None or _cache.settings is not settings:
         _cache = FileCache(settings)
     return _cache
+
+
+def forget_missing(bucket: str, path: str) -> None:
+    """This process just stored `path`: a remembered 404 for it is over."""
+    MISSES.until.pop((bucket, path), None)
 
 
 def evict(settings: Settings, bucket: str, path: str) -> None:

@@ -120,6 +120,7 @@ class Settings(BaseSettings):
 
     environment: Literal["local", "test", "staging", "prod"] = "local"
     debug_traffic: bool = False  # plan/2026-11-08c phase 0: log calls, queries and bytes per route each minute
+    debug_traffic_log: str = ""  # with debug_traffic: a JSONL file of every request and the queries it made
     local_functions: bool = True
     supabase: SupabaseSettings = SupabaseSettings()
     api: ApiSettings = ApiSettings()

@@ -108,8 +108,8 @@ async def usage_by_entity(repos: Repos, production_id: UUID) -> dict[str, Usage]
     """Which shots each entity is in (its lines, its scenes, the people a design pinned), and how
     many were designed against an older card. Read on demand; nothing is stored."""
     canon_rows, scene_rows, episode_rows, line_rows, shot_rows = await asyncio.gather(
-        repos.canon.list(production_id), repos.scenes.list(production_id), repos.episodes.list(production_id),
-        repos.lines.list_for_production(production_id), repos.shots.list(production_id))
+        repos.canon.list(production_id), repos.scenes.list_light(production_id), repos.episodes.list(production_id),
+        repos.lines.list_for_production(production_id), repos.shots.list_pinned(production_id))
     canon = {str(c["id"]): c for c in canon_rows}
     current = {k: int((c.get("current") or {}).get("version") or 0) for k, c in canon.items()}
     scenes = {str(s["id"]): s for s in scene_rows}

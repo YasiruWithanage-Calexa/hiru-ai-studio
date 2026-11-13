@@ -6,12 +6,13 @@ import contextlib
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from api import traffic
+from api import observability, traffic
 from api.config import get_settings
 from api.deps.auth import warm_jwks
 from api.logging_config import configure_logging
@@ -55,6 +56,7 @@ _logger = logging.getLogger(__name__)
 
 
 def _warn_on_repeat(key: str) -> None:
+    observability.note_trace("FILE", key)
     if traffic.TRAFFIC.note_upstream(key):
         _logger.warning("file fetched from Supabase more than %d times in an hour: %s", traffic.UPSTREAM_WARN, key)
 
@@ -107,6 +109,9 @@ def create_app(repos: Repos | None = None) -> FastAPI:
     if settings.debug_traffic and settings.environment in ("local", "test"):
         # Inside RequestLogMiddleware: it opens the per-request database count this reads.
         app.add_middleware(traffic.TrafficMiddleware)
+        if settings.debug_traffic_log:
+            observability.TRACE_PATH = Path(settings.debug_traffic_log)
+            observability.TRACE_PATH.parent.mkdir(parents=True, exist_ok=True)
         file_cache.ON_UPSTREAM = _warn_on_repeat
         app.add_api_route("/debug/traffic", lambda: traffic.TRAFFIC.snapshot(), methods=["GET"],
                           include_in_schema=False)

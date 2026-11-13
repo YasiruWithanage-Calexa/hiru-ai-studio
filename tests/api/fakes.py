@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from api.repositories import Repos, Row
+from api.repositories import SCENE_LIGHT, SHOT_LIGHT, Repos, Row
 
 
 def _now() -> str:
@@ -327,6 +327,9 @@ class FakeEpisodes(_Table):
 
 
 class FakeScenes(_Table):
+    async def list_light(self, production_id: UUID, episode_id: UUID | None = None) -> list[Row]:
+        return [{k: r.get(k) for k in SCENE_LIGHT} for r in await self.list(production_id, episode_id)]
+
     async def list(self, production_id: UUID, episode_id: UUID | None = None) -> list[Row]:
         rows = [r for r in self._scoped(production_id) if episode_id is None or r["episode_id"] == str(episode_id)]
         return sorted(rows, key=lambda r: r["number"])
@@ -336,6 +339,13 @@ class FakeShots(_Table):
     async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
         rows = [r for r in self._scoped(production_id) if scene_id is None or r["scene_id"] == str(scene_id)]
         return sorted(rows, key=lambda r: r["number"])
+
+    async def list_light(self, production_id: UUID) -> list[Row]:
+        return [{k: r.get(k) for k in SHOT_LIGHT} for r in await self.list(production_id)]
+
+    async def list_pinned(self, production_id: UUID) -> list[Row]:
+        return [{"id": r["id"], "scene_id": r["scene_id"], "design": {"pins": (r.get("design") or {}).get("pins")}}
+                for r in await self.list(production_id)]
 
     async def counts_for_scenes(self, scene_ids: list[UUID]) -> list[Row]:
         wanted = {str(s) for s in scene_ids}

@@ -108,7 +108,8 @@ def structure_of(episodes: list[Row], scenes: list[Row], shots: list[Row], canon
 
 async def _structure(repos: Repos, production_id: UUID) -> list[EpisodeDetail]:
     shots, scenes, episodes = await asyncio.gather(
-        repos.shots.list(production_id), repos.scenes.list(production_id), repos.episodes.list(production_id))
+        repos.shots.list_light(production_id), repos.scenes.list_light(production_id),
+        repos.episodes.list(production_id))
     return episodes_of(episodes, scenes, shots)
 
 
@@ -121,7 +122,7 @@ async def list_episodes(production_id: UUID, _: CanView, repos: ReposDep) -> lis
 @router.get("/episodes/{episode_id}", response_model=EpisodeDetail)
 async def get_episode(production_id: UUID, episode_id: UUID, _: CanView, repos: ReposDep) -> EpisodeDetail:
     ep, scene_rows = await asyncio.gather(
-        repos.episodes.get(production_id, episode_id), repos.scenes.list(production_id, episode_id))
+        repos.episodes.get(production_id, episode_id), repos.scenes.list_light(production_id, episode_id))
     if ep is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Episode not found.")
     # Only this episode's shots, and only the columns its counts use (not the whole production's rows).
@@ -134,6 +135,6 @@ async def get_episode(production_id: UUID, episode_id: UUID, _: CanView, repos: 
 async def get_structure(production_id: UUID, _: CanView, repos: ReposDep) -> Structure:
     """Everything the 0b tree and the screen 1 sidebar draw, in one read."""
     episodes, scenes, shots, canon = await asyncio.gather(
-        repos.episodes.list(production_id), repos.scenes.list(production_id), repos.shots.list(production_id),
-        repos.canon.list(production_id))
+        repos.episodes.list(production_id), repos.scenes.list_light(production_id),
+        repos.shots.list_light(production_id), repos.canon.list(production_id))
     return structure_of(episodes, scenes, shots, canon)

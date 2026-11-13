@@ -40,7 +40,8 @@ class Overview(BaseModel):
 @router.get("/overview", response_model=Overview)
 async def get_overview(production_id: UUID, access: CanView, repos: ReposDep) -> Overview:
     episodes, scenes, shots, canon, open_q = await asyncio.gather(
-        repos.episodes.list(production_id), repos.scenes.list(production_id), repos.shots.list(production_id),
+        repos.episodes.list(production_id), repos.scenes.list_light(production_id),
+        repos.shots.list_light(production_id),
         repos.canon.list(production_id), repos.questions.list(production_id, QuestionStatus.OPEN.value))
     return Overview(production=_production(access.production, access.role),
                     structure=structure_of(episodes, scenes, shots, canon),
