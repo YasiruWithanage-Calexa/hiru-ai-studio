@@ -120,11 +120,12 @@ async def list_episodes(production_id: UUID, _: CanView, repos: ReposDep) -> lis
 
 @router.get("/episodes/{episode_id}", response_model=EpisodeDetail)
 async def get_episode(production_id: UUID, episode_id: UUID, _: CanView, repos: ReposDep) -> EpisodeDetail:
-    ep, shots, scene_rows = await asyncio.gather(
-        repos.episodes.get(production_id, episode_id), repos.shots.list(production_id),
-        repos.scenes.list(production_id, episode_id))
+    ep, scene_rows = await asyncio.gather(
+        repos.episodes.get(production_id, episode_id), repos.scenes.list(production_id, episode_id))
     if ep is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Episode not found.")
+    # Only this episode's shots, and only the columns its counts use (not the whole production's rows).
+    shots = await repos.shots.counts_for_scenes([UUID(str(s["id"])) for s in scene_rows])
     scenes = _scenes(scene_rows, shots).get(str(episode_id), [])
     return _episode(ep, scenes, shots)
 

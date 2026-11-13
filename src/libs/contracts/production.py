@@ -158,6 +158,12 @@ class ProductionMember(_Model):
     role: ProductionRole
 
 
+class ProductionListItem(Production):
+    """A production on the list page, with the people on it, so the page needs ONE request, not one per card."""
+
+    crew: list[ProductionMember] = Field(default_factory=list)
+
+
 # ── episode / scene / shot (Phase 2) ───────────────────────────────────────────────────────
 
 
