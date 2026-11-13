@@ -18,6 +18,7 @@ from api.schemas import MyAccess, ProductionMemberSet
 from contracts.production import (
     Production,
     ProductionCreate,
+    ProductionListItem,
     ProductionMember,
     ProductionSettings,
     ProductionUpdate,
@@ -41,14 +42,26 @@ def _production(row: Row, my_role: str | None) -> Production:
     )
 
 
-@router.get("", response_model=list[Production])
-async def list_productions(user: User, repos: ReposDep) -> list[Production]:
-    """Every production for an admin; the ones they are on for everyone else. Newest first."""
+@router.get("", response_model=list[ProductionListItem])
+async def list_productions(user: User, repos: ReposDep) -> list[ProductionListItem]:
+    """Every production for an admin; the ones they are on for everyone else. Newest first. Each carries its crew
+    (one query for all of them), so the list page never asks for members production by production."""
     mine = await repos.productions.list_for_member(user.id)
-    if not user.is_admin:
-        return [_production(row, role) for row, role in mine]
-    roles = {row["id"]: role for row, role in mine}
-    return [_production(row, roles.get(row["id"])) for row in await repos.productions.list_all()]
+    if user.is_admin:
+        roles = {row["id"]: role for row, role in mine}
+        pairs = [(row, roles.get(row["id"])) for row in await repos.productions.list_all()]
+    else:
+        pairs = list(mine)
+    crews = await repos.members.list_for_productions([row["id"] for row, _ in pairs])
+    return [
+        ProductionListItem(
+            **_production(row, role).model_dump(),
+            crew=[ProductionMember(user_id=m["user_id"], display_name=m["display_name"],
+                                   email=m["email"], role=m["role"])
+                  for m in crews.get(str(row["id"]), [])],
+        )
+        for row, role in pairs
+    ]
 
 
 @router.post("", response_model=Production, status_code=status.HTTP_201_CREATED)
