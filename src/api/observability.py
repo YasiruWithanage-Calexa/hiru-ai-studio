@@ -27,6 +27,7 @@ _logger = logging.getLogger("api.request")
 @dataclass
 class _Stats:
     db_calls: int = 0
+    out_bytes: int = 0  # response body bytes (the trace's "bytes")
     # Filled only when a trace file is set (`DEBUG_TRAFFIC_LOG`): every query this request made, in order.
     queries: list[dict[str, object]] = field(default_factory=list)
 
@@ -98,6 +99,8 @@ class RequestLogMiddleware:
                 headers = MutableHeaders(scope=message)
                 headers.append("X-Request-ID", request_id)
                 headers.append("Server-Timing", f'app;dur={elapsed:.1f}, db;desc="{stats.db_calls} calls"')
+            elif message["type"] == "http.response.body":
+                stats.out_bytes += len(message.get("body", b""))
             await send(message)
 
         try:
@@ -119,7 +122,7 @@ def _write_trace(scope: Scope, status: int, elapsed: float, request_id: str, sta
     route = getattr(scope.get("route"), "path", None)
     line = {"at": time.time(), "rid": request_id, "method": scope.get("method", ""), "path": scope.get("path", ""),
             "route": route, "query": scope.get("query_string", b"").decode("latin-1"), "status": status,
-            "ms": round(elapsed, 1), "db": stats.db_calls, "queries": stats.queries,
+            "ms": round(elapsed, 1), "db": stats.db_calls, "bytes": stats.out_bytes, "queries": stats.queries,
             "page": headers.get(b"referer", b"").decode("latin-1")}
     try:
         assert TRACE_PATH is not None

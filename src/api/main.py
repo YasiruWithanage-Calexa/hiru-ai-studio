@@ -29,6 +29,7 @@ from api.routers import (
     documents,
     files,
     handoff,
+    home,
     internal,
     jobs,
     live,
@@ -45,6 +46,7 @@ from api.routers import (
     scene_looks,
     scenes,
     search,
+    shot_panel,
     structure,
     usage,
     zora,
@@ -79,6 +81,13 @@ def create_app(repos: Repos | None = None) -> FastAPI:
             app.state.repos = await build_supabase_repos(settings.supabase.url, key)
             await warm_jwks(settings)
         _logger.info("api started environment=%s", settings.environment)
+        # The pushed status stream's hub (plan/2026-11-13d phase 5): it listens to Realtime only while a stream is open.
+        from api.live.hub import LiveHub, NullSource, RealtimeSource
+
+        live_key = settings.supabase.service_role_key.get_secret_value()
+        app.state.live_hub = LiveHub(
+            (lambda: RealtimeSource(settings.supabase.url, live_key)) if repos is None else NullSource,
+            app.state.repos, per_person=settings.live.per_person, queue=settings.live.queue)
         # Stuck jobs end (plan/2026-11-08c phase 5). Tests inject their own repos and call `sweep` directly.
         sweep_task = asyncio.create_task(sweeper.run_forever(app.state.repos)) if repos is None else None
         flush_task = asyncio.create_task(traffic.flush_forever()) if settings.debug_traffic else None
@@ -128,8 +137,8 @@ def create_app(repos: Repos | None = None) -> FastAPI:
         return {"status": "ok"}
 
     for module in (me, members, productions, overview, documents, search, build, structure, canon, looks, scene_looks,
-                   scene_canon, scenes, production, page, handoff, renders, costs, director, zora, sable, activity,
-                   live, breakdown,
+                   scene_canon, scenes, production, page, home, handoff, renders, shot_panel, costs, director,
+                   zora, sable, activity, live, breakdown,
                    ask, jobs, usage, files, internal):
         app.include_router(module.router)
     app.include_router(looks.drafts)  # production-wide: /productions/{id}/looks/draft

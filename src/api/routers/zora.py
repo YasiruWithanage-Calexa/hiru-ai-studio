@@ -15,6 +15,10 @@ stores the person's message first, so a turn that fails still leaves the questio
 """
 from __future__ import annotations
 
+import asyncio
+import codecs
+import json
+import logging
 from collections.abc import AsyncIterator
 from typing import Annotated, Any
 from uuid import UUID, uuid4
@@ -27,6 +31,9 @@ from api.config import get_settings
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
+from api.repositories.memo import forget
+from api.routers import production as production_router
+from api.routers import scenes as scenes_router
 from api.services import director as director_service
 from api.services import zora as zora_service
 from api.workers import task_manager
@@ -36,6 +43,7 @@ from contracts.producer import PersonEdits
 from contracts.production import ProductionSettings
 from contracts.roles import Permission
 
+_logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["zora"])
 ReposDep = Annotated[Repos, Depends(get_repos)]
 CanView = Annotated[ProductionAccess, Depends(require_permission(Permission.VIEW))]
@@ -142,11 +150,51 @@ def locked_of(shots: list[Row]) -> list[str]:
     return out
 
 
+class _PlanWatch:
+    """Reads the function's frames as they pass through (never changes them): did this turn change the plan? The same
+    test the panel makes: a `plan` frame, or `done` with a revision or an undo / redo."""
+
+    def __init__(self) -> None:
+        self._text = codecs.getincrementaldecoder("utf-8")(errors="replace")
+        self._buffer = ""
+        self.changed = False
+
+    def feed(self, chunk: bytes) -> None:
+        self._buffer += self._text.decode(chunk)
+        *frames, self._buffer = self._buffer.split("\n\n")
+        for frame in frames:
+            lines = frame.splitlines()
+            event = next((line[7:] for line in lines if line.startswith("event: ")), "")
+            if event == "plan":
+                self.changed = True
+            elif event == "done":
+                try:
+                    body = json.loads(next((line[6:] for line in lines if line.startswith("data: ")), "{}"))
+                except ValueError:
+                    continue
+                if int(body.get("revision") or 0) > 0 or body.get("lane") in ("undo", "redo"):
+                    self.changed = True
+
+
+async def _views_frame(repos: Repos, access: ProductionAccess, scene_id: UUID) -> bytes | None:
+    """The two views the scene page would read after the turn (plan/2026-11-13d phase 4, F10), so it reads neither."""
+    forget()  # the function wrote the scene: nothing this request read before the turn may be reused
+    try:
+        scene_view, loaded = await asyncio.gather(scenes_router.view(repos, access, scene_id),
+                                                  production_router.load(repos, access, scene_id))
+    except Exception:  # the panel then reads the two views itself, as before
+        _logger.warning("could not draw the scene after a Zora turn scene=%s", scene_id, exc_info=True)
+        return None
+    return director_service.sse("views", {"scene": scene_view.model_dump(mode="json"),
+                                          "production": production_router.scene_view(loaded).model_dump(mode="json")})
+
+
 @router.post("/scenes/{scene_id}/zora/turn")
 async def turn(production_id: UUID, scene_id: UUID, body: TurnRequest, access: CanComment, repos: ReposDep,
                streamer: Streamer) -> StreamingResponse:
     """One Zora turn, streamed as server-sent events: first `accepted` {thread_id, message} with the stored message,
-    then the function's frames."""
+    then the function's frames, then, when the turn changed the plan, `views` {scene, production}: the scene's two
+    views as `GET .../scenes/{id}` and `.../production` answer them."""
     _zora_scene(await _scene(repos, production_id, scene_id))
     if body.thread_id is not None:
         thread = await repos.threads.get(production_id, body.thread_id)
@@ -176,8 +224,12 @@ async def turn(production_id: UUID, scene_id: UUID, body: TurnRequest, access: C
 
     async def frames() -> AsyncIterator[bytes]:
         yield director_service.sse("accepted", {"thread_id": str(thread_id), "message": accepted})
+        watch = _PlanWatch()
         async for chunk in streamer(payload.model_dump(mode="json")):
+            watch.feed(chunk)
             yield chunk
+        if watch.changed and (views := await _views_frame(repos, access, scene_id)) is not None:
+            yield views
 
     return StreamingResponse(frames(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})

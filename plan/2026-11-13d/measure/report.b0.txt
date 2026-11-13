@@ -1,0 +1,116 @@
+# Creation walk 'b0': per stretch
+
+step                secs  api browser options   db     kb  top routes
+login                  8    6       0       0    7    0.0  /v1/productionsx2, /v1/mex2, /v1/usagex2
+build-start            1    0       0       0    0    0.0  
+build-running         92  116      29      29  504    0.0  /buildx58, /questionsx29, /overviewx29
+build-settled         15    4       1       1   18    0.0  /buildx2, /questionsx1, /overviewx1
+end                    5    0       0       0    0    0.0  
+TOTAL                     126      30      30  529    0.0
+
+# Routes: calls, DB queries per call (min/avg/max), bytes per call
+
+  GET /build                                                               60x  db 6/6.1/7  0.0 kb
+  GET /overview                                                            30x  db 4/4.1/6  0.0 kb
+  GET /questions                                                           30x  db 1/1.0/1  0.0 kb
+  GET /v1/productions                                                       2x  db 2/2.5/3  0.0 kb
+  GET /v1/usage                                                             2x  db 0/1.0/2  0.0 kb
+  GET /v1/me                                                                2x  db 0/0.0/0  0.0 kb
+  OPTIONS /build                                                           30x  db 0/0.0/0  0.0 kb
+
+# OPTIONS preflights per URL (a browser with a working preflight cache sends one per URL per 10 min)
+
+   30x /build
+
+# Errors
+
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build-settled] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl

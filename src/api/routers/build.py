@@ -89,6 +89,10 @@ class BuildView(BaseModel):
     messages: list[MessageView]
     open_questions: int
     summary: Summary
+    # The newest event this view was drawn from (0: none). `/live` carries the job's own; the page reads again only
+    # when that one is newer (plan/2026-11-13d phase 2).
+    seq: int = 0
+    last_agent: str | None = None  # the agent heard last; with `status` it sets every agent's status
 
 
 class AnswerResult(BaseModel):
@@ -103,51 +107,94 @@ def _label(agent: str | None) -> str:
         return (agent or "").replace("_", " ").capitalize()
 
 
-def view(job: Row | None, events: list[Row], open_questions: int, summary: Summary) -> BuildView:
-    stages = {s: StageView(stage=s, label=STAGE_LABEL[s], state="pending") for s in Stage}
-    agents: dict[str, AgentView] = {}
+class StageChange(BaseModel):
+    stage: Stage
+    state: str  # "done" | "active"
+    text: str = ""  # the stage's new detail; empty keeps the one it had
+
+
+class AgentChange(BaseModel):
+    agent: str
+    label: str
+    detail: str = ""
+
+
+class BuildDelta(BaseModel):
+    """What happened to the build after `after_seq` (plan/2026-11-13d phase 3): the changes in event order, the job's
+    status and the open questions count. Applied in order to the view the caller holds, it gives the same view
+    `GET /build` would draw from every event (the interface's `applyBuildDelta`; `tests/api/test_build_delta.py`)."""
+
+    job_id: UUID | None
+    status: JobStatus | None
+    error: str | None = None
+    open_questions: int
+    seq: int  # the newest event number (`after_seq` when nothing is new)
+    last_agent: str | None = None  # the agent of the newest new event that has one; None: none of them has
+    stages: list[StageChange] = []
+    agents: list[AgentChange] = []
     messages: list[MessageView] = []
+
+
+def fold(events: list[Row]) -> tuple[list[StageChange], list[AgentChange], list[MessageView], str | None]:
+    """The events as changes, in order: what a stage, an agent and the chat each gained, and the last agent heard."""
+    stages: list[StageChange] = []
+    agents: list[AgentChange] = []
+    messages: list[MessageView] = []
+    last: str | None = None
     for e in events:
         payload: dict[str, Any] = e.get("payload") or {}
         agent = e.get("agent")
         if e["type"] == JobEventType.STAGE:
             try:
-                st = stages[Stage(str(payload.get("stage")))]
+                stage = Stage(str(payload.get("stage")))
             except ValueError:
                 continue
-            st.state = "done" if payload.get("state") == "done" else "active"
-            st.detail = str(payload.get("text") or st.detail)
+            stages.append(StageChange(stage=stage, state="done" if payload.get("state") == "done" else "active",
+                                      text=str(payload.get("text") or "")))
         if agent:
-            agents[agent] = AgentView(agent=agent, label=_label(agent), status="working",
-                                      detail=str(payload.get("text") or ""))
+            agents.append(AgentChange(agent=agent, label=_label(agent), detail=str(payload.get("text") or "")))
+            last = agent
         if e["type"] in (JobEventType.AGENT_STEP, JobEventType.WARNING, JobEventType.QUESTION):
             kind = {"agent_step": "agent", "warning": "warning", "question": "question"}[e["type"]]
             messages.append(MessageView(seq=e["seq"], kind=kind, agent=agent, agent_label=_label(agent),
                                         text=str(payload.get("text") or ""), chips=list(payload.get("chips") or []),
                                         at=e.get("created_at")))
+    return stages, agents, messages, last
+
+
+def agent_status(state: JobStatus | None, agent: str, last: str | None) -> str:
+    """Every agent but the one that spoke last has finished its part; a stop or an end settles them all."""
+    if state in (JobStatus.DONE, JobStatus.FAILED, JobStatus.CANCELLED):
+        return "done"
+    if state is JobStatus.WAITING_INPUT:
+        return "waiting"
+    if state in (JobStatus.RUNNING, JobStatus.PENDING):
+        return "working" if agent == last else "done"
+    return "working"
+
+
+def view(job: Row | None, events: list[Row], open_questions: int, summary: Summary) -> BuildView:
+    stages = {s: StageView(stage=s, label=STAGE_LABEL[s], state="pending") for s in Stage}
+    agents: dict[str, AgentView] = {}
+    stage_changes, agent_changes, messages, last = fold(events)
+    for c in stage_changes:
+        stages[c.stage].state = c.state
+        stages[c.stage].detail = c.text or stages[c.stage].detail
+    for a in agent_changes:
+        agents[a.agent] = AgentView(agent=a.agent, label=a.label, status="working", detail=a.detail)
     state = JobStatus(job["status"]) if job else None
-    for a in agents.values():
-        if state in (JobStatus.DONE, JobStatus.FAILED, JobStatus.CANCELLED):
-            a.status = "done"
-        elif state is JobStatus.WAITING_INPUT:
-            a.status = "waiting"
-    # Every agent but the one that spoke last has finished its part.
-    if state in (JobStatus.RUNNING, JobStatus.PENDING) and agents:
-        last = next((e.get("agent") for e in reversed(events) if e.get("agent")), None)
-        for a in agents.values():
-            if a.agent != last:
-                a.status = "done"
+    for v in agents.values():
+        v.status = agent_status(state, v.agent, last)
     if state is JobStatus.DONE:
         stages[Stage.REVIEW].state = "active"
     return BuildView(job_id=job["id"] if job else None, status=state, error=job.get("error") if job else None,
                      stages=list(stages.values()), agents=list(agents.values()), messages=messages,
-                     open_questions=open_questions, summary=summary)
+                     open_questions=open_questions, summary=summary,
+                     seq=max((int(e["seq"]) for e in events), default=0), last_agent=last)
 
 
 async def _summary(repos: Repos, production_id: UUID) -> Summary:
-    episodes, scenes, shots = await asyncio.gather(
-        repos.episodes.list(production_id), repos.scenes.list(production_id), repos.shots.list(production_id))
-    return Summary(episodes=len(episodes), scenes=len(scenes), shots=len(shots))
+    return Summary(**await repos.episodes.count_structure(production_id))
 
 
 @router.post("/build", response_model=BuildStarted, status_code=status.HTTP_202_ACCEPTED)
@@ -179,9 +226,26 @@ async def start_build(production_id: UUID, access: CanBuild, repos: ReposDep) ->
 async def get_build(production_id: UUID, _: CanView, repos: ReposDep) -> BuildView:
     job, open_q, summary = await asyncio.gather(
         repos.jobs.latest(production_id, JobKind.STRUCTURE_BUILD.value),
-        repos.questions.list(production_id, QuestionStatus.OPEN.value), _summary(repos, production_id))
+        repos.questions.count_open(production_id), _summary(repos, production_id))
     events = await repos.jobs.events(UUID(str(job["id"]))) if job else []
-    return view(job, events, len(open_q), summary)
+    return view(job, events, open_q, summary)
+
+
+@router.get("/build/events", response_model=BuildDelta)
+async def get_build_events(production_id: UUID, _: CanView, repos: ReposDep,
+                           after_seq: Annotated[int, Query(ge=0)] = 0) -> BuildDelta:
+    """The build page's poll answer (plan/2026-11-13d phase 3): the latest build job once, its events after `after_seq`
+    only, and how many questions are open. A different `job_id` than the caller's means a new build: read `/build`."""
+    job = await repos.jobs.latest(production_id, JobKind.STRUCTURE_BUILD.value)
+    if job is None:
+        return BuildDelta(job_id=None, status=None, open_questions=await repos.questions.count_open(production_id),
+                          seq=after_seq)
+    events, open_q = await asyncio.gather(repos.jobs.events(UUID(str(job["id"])), after_seq),
+                                          repos.questions.count_open(production_id))
+    stages, agents, messages, last = fold(events)
+    return BuildDelta(job_id=job["id"], status=JobStatus(job["status"]), error=job.get("error"), open_questions=open_q,
+                      seq=max((int(e["seq"]) for e in events), default=after_seq), last_agent=last,
+                      stages=stages, agents=agents, messages=messages)
 
 
 @router.get("/questions", response_model=list[Question])

@@ -150,6 +150,7 @@ class FakeAudit:
 
 class FakeJobs:
     live_queries = 0
+    seq_queries = 0
 
     def __init__(self) -> None:
         self.rows: dict[str, Row] = {}
@@ -202,6 +203,17 @@ class FakeJobs:
     async def last_event_at(self, job_id: UUID) -> datetime | None:
         times = [_when(e["created_at"]) for e in self.event_rows if e["job_id"] == str(job_id)]
         return max(times) if times else None
+
+    # None: like a database before schema v25. A test that wants the one-query path sets `live_items_from`.
+    live_items_from: Any = None
+
+    async def live_items(self, production_id: UUID, since: datetime | None) -> list[Row] | None:
+        return None if self.live_items_from is None else await self.live_items_from(production_id, since)
+
+    async def last_seq(self, job_id: UUID) -> int | None:
+        self.seq_queries += 1
+        seqs = [int(e["seq"]) for e in self.event_rows if e["job_id"] == str(job_id)]
+        return max(seqs) if seqs else None
 
     def add_event(self, job_id: str, type_: str, payload: Row, agent: str | None = None) -> None:
         self.event_rows.append({"job_id": job_id, "seq": len(self.event_rows) + 1, "type": type_,
@@ -322,8 +334,18 @@ class _Table:
 
 
 class FakeEpisodes(_Table):
+    structure: tuple[Any, Any] | None = None  # (scenes, shots), set by build_fake_repos
+    count_queries = 0
+
     async def list(self, production_id: UUID) -> list[Row]:
         return sorted(self._scoped(production_id), key=lambda r: r["number"])
+
+    async def count_structure(self, production_id: UUID) -> dict[str, int]:
+        self.count_queries += 1
+        scenes, shots = self.structure or (None, None)
+        return {"episodes": len(self._scoped(production_id)),
+                "scenes": len(scenes._scoped(production_id)) if scenes else 0,
+                "shots": len(shots._scoped(production_id)) if shots else 0}
 
 
 class FakeScenes(_Table):
@@ -590,6 +612,9 @@ class FakeQuestions(_Table):
     async def open_count(self, job_id: UUID) -> int:
         return sum(1 for r in self.rows.values() if r.get("job_id") == str(job_id) and r["status"] == "open")
 
+    async def count_open(self, production_id: UUID) -> int:
+        return sum(1 for r in self._scoped(production_id) if r["status"] == "open")
+
 
 class FakeFrames(_Table):
     async def create_many(self, rows: list[Row]) -> None:
@@ -748,6 +773,8 @@ def build_fake_repos() -> Repos:
     members = FakeMembers(profiles)
     personas = FakePersonas()
     threads, messages = FakeThreads(), FakeMessages()
+    episodes, scenes, shots = FakeEpisodes(), FakeScenes(), FakeShots()
+    episodes.structure = (scenes, shots)
     return Repos(
         profiles=profiles,
         productions=FakeProductions(members),
@@ -760,9 +787,9 @@ def build_fake_repos() -> Repos:
         storage=FakeStorage(),
         search=FakeSearch(),
         usage=FakeUsage(),
-        episodes=FakeEpisodes(),
-        scenes=FakeScenes(),
-        shots=FakeShots(),
+        episodes=episodes,
+        scenes=scenes,
+        shots=shots,
         lines=FakeLines(),
         canon=FakeCanon(),
         looks=FakeLooks(),

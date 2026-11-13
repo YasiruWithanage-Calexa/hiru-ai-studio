@@ -1,0 +1,100 @@
+# Creation walk 'p0': per stretch
+
+step                secs  api browser options   db     kb  top routes
+login                  9    6       0       0    7    4.0  /v1/productionsx2, /v1/mex2, /v1/usagex2
+productions-list       8    3       0       0    3    2.0  /v1/productionsx1, /v1/mex1, /v1/usagex1
+landing                7    4       1       1    7    1.1  /v1/mex1, /v1/usagex1, /overviewx1, /sablex1
+documents              4    9       1       1   10    4.4  /v1/mex1, /accessx1, x1, /v1/director-personasx1, /documentsx1
+upload-and-read       11   11      11      11   28    7.3  /documentsx7, /livex4
+build                601  215     189     189 1285  412.5  /buildx197, /questionsx8, /overviewx8, /internal/pipeline/advancex2
+build-settled         10    3       3       3   20    5.3  /buildx3
+overview-after         6    4       1       1    7   15.6  /v1/mex1, /overviewx1, /v1/usagex1, /sablex1
+episode                5    3       0       0    5   15.5  /v1/mex1, /v1/usagex1, /overviewx1
+scene-director         8    8       0       0   33   30.9  /v1/mex1, /v1/usagex1, /canonx1, /accessx1, /scenes/{id}/packetx1
+shot                   8    5       0       0   44   17.9  /v1/mex1, /v1/usagex1, /scenes/{id}/pagex1, /accessx1, /scenes/{id}/costx1
+idle                  30    0       0       0    0    0.0  
+end                    5    0       0       0    0    0.0  
+TOTAL                     271     206     206 1449  516.6
+
+# Routes: calls, DB queries per call (min/avg/max), bytes per call
+
+  GET /build                                                              199x  db 6/6.3/8  1.7 kb
+  GET /overview                                                            12x  db 4/4.8/6  10.1 kb
+  GET /scenes/{id}/page                                                     2x  db 22/22.0/22  17.4 kb
+  GET /scenes/{id}/cost                                                     1x  db 21/21.0/21  0.1 kb
+  GET /live                                                                 4x  db 4/4.0/4  0.3 kb
+  GET /v1/usage                                                             9x  db 0/1.1/2  0.0 kb
+  GET /documents                                                            7x  db 1/1.3/2  0.7 kb
+  GET /questions                                                            8x  db 1/1.0/1  0.0 kb
+  GET /v1/productions                                                       3x  db 2/2.3/3  1.9 kb
+  POST /build                                                               1x  db 5/5.0/5  0.1 kb
+  POST /documents                                                           1x  db 4/4.0/4  0.9 kb
+  POST /internal/pipeline/advance                                           2x  db 2/2.0/2  0.0 kb
+  GET /canon/usage                                                          1x  db 4/4.0/4  0.5 kb
+  GET /scenes/{id}/packet                                                   1x  db 3/3.0/3  0.0 kb
+  GET /scenes/{id}/zora                                                     1x  db 3/3.0/3  0.2 kb
+  GET /director-board                                                       1x  db 2/2.0/2  0.4 kb
+  GET /v1/director-personas                                                 1x  db 1/1.0/1  1.9 kb
+  GET /v1/me                                                                9x  db 0/0.0/0  0.1 kb
+  OPTIONS /sable                                                            3x  db 0/0.0/0  0.0 kb
+  GET /sable                                                                3x  db 0/0.0/0  0.0 kb
+  GET /access                                                               3x  db 0/0.0/0  0.2 kb
+  GET                                                                       1x  db 0/0.0/0  0.8 kb
+  OPTIONS /documents                                                        7x  db 0/0.0/0  0.0 kb
+  OPTIONS /live                                                             4x  db 0/0.0/0  0.0 kb
+  OPTIONS /build                                                          192x  db 0/0.0/0  0.0 kb
+  GET /canon                                                                1x  db 0/0.0/0  12.4 kb
+
+# OPTIONS preflights per URL (a browser with a working preflight cache sends one per URL per 10 min)
+
+  192x /build
+    7x /documents
+    4x /live
+    3x /sable
+
+# Errors
+
+  404 GET /scenes/{id}/packet step=scene-director
+  [landing] console: Error: Route "/productions/[productionId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at r
+  [documents] console: Error: Route "/productions/[productionId]/documents": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only avai
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] console: Error: Route "/productions/[productionId]/build": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only availabl
+  [build] timeout: /Build finished|Build failed|Waiting for your answers|Build stopped/
+  [overview-after] console: Error: Route "/productions/[productionId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at r
+  [episode] console: Error: Route "/productions/[productionId]/episodes/[episodeId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value i
+  [scene-director] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/director": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks preren
+  [shot] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/production": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+T

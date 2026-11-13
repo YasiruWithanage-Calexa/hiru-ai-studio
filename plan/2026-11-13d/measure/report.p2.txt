@@ -1,0 +1,34 @@
+# Creation walk 'p2': per stretch
+
+step                secs  api browser options   db     kb  top routes
+login                  8    6       0       0    7    4.0  /v1/productionsx2, /v1/mex2, /v1/usagex2
+build-start            1    0       0       0    0    0.0  
+build-running         92   69      63      63  369  206.4  /buildx30, /livex29, /overviewx8, /questionsx2
+build-settled         15    3       3       3   17   20.0  /livex1, /buildx1, /overviewx1
+end                    5    0       0       0    0    0.0  
+TOTAL                      78      66      66  393  230.5
+
+# Routes: calls, DB queries per call (min/avg/max), bytes per call
+
+  GET /build                                                               31x  db 6/6.0/6  2.6 kb
+  GET /live                                                                30x  db 5/5.3/6  0.2 kb
+  GET /overview                                                             9x  db 4/4.4/6  15.4 kb
+  GET /v1/productions                                                       2x  db 2/2.5/3  1.9 kb
+  GET /v1/usage                                                             2x  db 0/1.0/2  0.0 kb
+  GET /questions                                                            2x  db 1/1.0/1  0.0 kb
+  GET /v1/me                                                                2x  db 0/0.0/0  0.1 kb
+  OPTIONS /live                                                            30x  db 0/0.0/0  0.0 kb
+  OPTIONS /build                                                           29x  db 0/0.0/0  0.0 kb
+  OPTIONS /overview                                                         7x  db 0/0.0/0  0.0 kb
+
+# OPTIONS preflights per URL (a browser with a working preflight cache sends one per URL per 10 min)
+
+   30x /live
+   29x /build
+    7x /overview
+
+# Errors
+
+  [build-running] console: Error: Route "/productions/[productionId]/build": Next.js encountered the unstable value `Date.now()` while prerendering.
+
+This value can change between renders, so it must be either prerendered or co

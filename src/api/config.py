@@ -113,6 +113,19 @@ class FilesSettings(BaseModel):
     cache_max_gb: float = 5.0
 
 
+class LiveSettings(BaseModel):
+    """How the browser hears about work in progress (plan/2026-11-13d phase 5): `poll` (`GET /live` every 3 s while
+    something runs) or `stream` (`GET /stream`, pushed from Supabase Realtime). `poll` until the person's check (D4);
+    with `poll` the stream route answers 404, which tells the browser to poll."""
+
+    transport: Literal["poll", "stream"] = "poll"
+    max_s: float = 270  # a stream ends by itself after this (Cloud Run allows 300 s, D2); the browser reconnects
+    idle_s: float = 120  # ... or once nothing of its production has been active for this long
+    keepalive_s: float = 20  # a comment line this often keeps proxies from closing it
+    per_person: int = 3  # open streams per person per production; a new one closes the oldest
+    queue: int = 200  # messages waiting for one stream; a slower client is closed and catches up on reconnect
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", env_nested_delimiter="__", extra="ignore", case_sensitive=False
@@ -133,6 +146,7 @@ class Settings(BaseSettings):
     zora: ZoraSettings = ZoraSettings()
     sable: SableSettings = SableSettings()
     files: FilesSettings = FilesSettings()
+    live: LiveSettings = LiveSettings()
 
     @property
     def video_available(self) -> bool:

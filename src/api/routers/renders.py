@@ -25,9 +25,10 @@ from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.routers.handoff import handoff_checks
-from api.routers.production import load_shot
+from api.routers.production import Loaded, load_shot
 from api.services import media_links, media_thumbs
 from api.services import renders as svc
+from api.services.production import ShotState
 from contracts.producer import Check
 from contracts.roles import Permission
 from contracts.video_gen import (
@@ -113,6 +114,11 @@ async def render_plans(production_id: UUID, shot_id: UUID, access: CanView, repo
     """The take's plan and the draft's from ONE load of the shot (plan/2026-11-13b phase 5): the Generate card used to
     make two requests that each loaded the whole scene. Same builder as `render-plan`, so they cannot disagree."""
     ld, st = await load_shot(repos, access, shot_id)
+    return await plans_for(repos, settings, ld, st)
+
+
+async def plans_for(repos: Repos, settings: Settings, ld: Loaded, st: ShotState) -> PlanPair:
+    """Both plans for a shot already loaded (also `GET .../shots/{id}/panel`, plan/2026-11-13d phase 4)."""
     handoff = handoff_checks(ld, st)
     take = await svc.build_plan(repos, settings, ld, st, handoff=handoff)
     draft = await svc.build_plan(repos, settings, ld, st, handoff=handoff, draft=True)
