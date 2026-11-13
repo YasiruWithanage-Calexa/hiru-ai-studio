@@ -1,7 +1,8 @@
 # plan/2026-11-13: what was built (2026-11-13)
 
-Phases 1 to 7 are built offline, uncommitted, in both repos. Phase 8 (Sable through the row kernel) is NOT built: it
-is split out (D-D). Phase 9 (live check) is the person's. No model was called and nothing touched the database.
+Phases 1 to 8 are built offline, uncommitted, in both repos (phase 8 on 2026-11-13, after the person said "complete
+the plan"). Phase 9 (live check) is the person's: it spends money and needs their yes. No model was called and nothing
+touched the database.
 
 Decisions taken as recommended: D-A (take → `duration_locked`, other fields → `person_edits.zora_locks`), D-B (the
 silent shot: found by code every turn, offered as a one-click card, never fixed silently; asked by message, saved at
@@ -49,9 +50,35 @@ Backend: ruff clean on every file this plan touched (4 long lines remain in file
 `features/raphael/components/raphael-panel.test.tsx`, not touched here; prettier flags 43 files, none in
 `features/zora`.
 
+## Phase 8: Sable's change cards through the row kernel
+
+| Where | What |
+|---|---|
+| `contracts/coverage/scene.py`, `ledger.py`, `checks.py` | `Clip.note` = `person_edits.dop_note` (read, written back, in the fingerprint, in "what changed", in the unsafe-word check). |
+| `steps/coverage_kernel/logic.py` | op `note {shot, value}` (≤ 600 characters, "" clears). |
+| `hiru_ai/core/row_trial.py` (new) | `RowOp`, `run` (the open scene only; tried as `author`: a person's lock is refused, nothing is locked), `view`; the trial's changes, problems and risk reasons. |
+| `tools/sable/sable_shot_try` (new, read) | no ops: the scene's blocks with line codes and its clips; with ops: applied / refused with why, changes, new problems, why a person must OK it. |
+| `tools/sable/sable_shot_change` (new, stage) | all ops land or nothing is staged; the card holds `[{op, by: "author"}]`, `made_on` (the rows' fingerprint), changes, touched, `in_doubt`, `risks`. |
+| `agents/sable/sable_agent` | tools: `plan_try` / `change_propose` out, `sable_shot_try` / `sable_shot_change` in (still 25); prompt, hook, evals updated; `dop_note.set` is now `note`. |
+| `hiru_ai/core/coverage_rows.py` (new) | Zora's reader (`World`, `read`, `coverage_of`) and save (`Saver`, `Stack`, revisions) moved here unchanged so Sable saves the same way; `Saver(chat=)` names the audit (`scene.sable_use`). `systems/zora/zora_chat/scene.py` and `store.py` re-export it. |
+| `systems/sable/sable_chat/actions.py` (new), `graph.act`, function handler | `SableAction` (`"action": true`): replay as `author`, all or nothing, refused when the rows changed since `made_on`, saved in place as a `use` revision (Zora's undo can step back over it). No model. |
+| `api/routers/sable.py`, `api/services/sable.py` | Accept of a `sable_change` goes to the Sable function's action (`sable_service.get_actor`), no longer the director function. A card stored before phase 8 (`engine` not `rows`) is failed with a sentence, never applied. `note_shots` removed. |
+| `contracts/sable/events.py` | `StagedChange.engine / made_on / in_doubt / risks`; `SableAction`, `SableActionResult`; status words for the new tools. |
+| Sable turn (`sable_chat/turn.py`) | a change card is kept only when it is the row kernel's; the classic `pin` import is gone. |
+| Interface `features/sable` | the change card shows "Needs your OK: it …" and a "To check after" list (+ test). |
+
+Sable still reaches no Zora module (`tests/sable/test_zora_untouched.py` holds): both chats share `core.coverage_rows`
+and the `coverage_kernel` step (`tools/sable/group.yaml` lists it under `shared`). `change_propose` and `plan_try` stay
+for the classic director chat and the options writer, which still use them.
+
+Tests: `tests/sable/test_scene_edits.py` (rewritten: boundary, twelve ops, try view, risks, refusals, the note, a locked
+length, Accept saved in place with versions moved and no lock, a stale card, a card claiming a person's writes),
+`tests/sable/test_chat.py` (the stored card), `tests/sable/test_api.py` (Accept through the action, refused, a pre-phase-8
+card, an approved scene); `tests/zora/test_removal.py` allow-list + `core/coverage_rows.py` and the Sable test (they
+name `zora_locks` / Zora's audit names).
+
 ## Open
 
-- Phase 8 (Sable's change cards through the row kernel): its own plan. Sable's cards carry the classic kernel's
-  operations (`change_propose`, `plan_try`, the director function); porting them is more than a day.
-- Phase 9 (live, the person's yes, cap $0.50).
+- Phase 9 (live, the person's yes, cap $0.50): a scene of "test" re-planned with Raphael first; the twelve lab turns
+  and the silent-shot fix in Zora; for phase 8, one Sable card ("make S02 a wide") accepted and then undone in Zora.
 - `lab/zora_rows/coverage.py` has an uncommitted `from_data` helper that is not from this build.
