@@ -52,6 +52,7 @@ class ModelCall:
     memory_topics: tuple[str, ...] = ()  # the production memory topics the agent is given (manifest `memory`)
     memory_scope: Mapping[str, Any] | None = None  # what the call is about: place, people, episode (production_memory)
     house_topics: tuple[str, ...] = ()  # the house rule topics the agent is given (manifest `house_rules`)
+    max_output: int | None = None  # the output tokens this call may spend (a caller's budget: plan/2026-11-13 §3.8)
 
 
 Next = Callable[[ModelCall], Any]

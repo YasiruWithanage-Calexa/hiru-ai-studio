@@ -1,23 +1,23 @@
-# Scripted: the author gets the turn's tasks (what it may write, on which shots, what it must change) and answers
-# operations. LIVE, a case holds it only to what any good answer shares.
-- name: a_colder_approach_rewrites_the_approach
+# Scripted: the author gets the turn's tasks (the kinds it may change, on which shots) and answers row operations.
+# LIVE, a case holds it only to what any good answer shares (plan/2026-11-13).
+- name: tension_is_camera_and_timing
   input:
-    plan: "Treatment: approach: Warm and close ..."
-    tasks: [{instruction: "make the approach colder", allowed: [treatment.approach, shot.lens], "on": any shot, must: [treatment.approach]}]
+    scene: "S10 [3B-2] should reaction MCU 6s cut ..."
+    tasks: [{instruction: "make the argument tenser", writes: [camera, timing], "on": "S10"}]
   reply:
-    notes: "The approach is now cold and observational."
-    ops: [{op: treatment.set, field: approach, value: "Cold, observed from a distance; long lenses."}]
+    notes: "Closer and shorter on Nimal as the objection lands."
+    ops: [{op: set, shot: S10, field: size, value: CU}, {op: retime, shot: S10, take_s: 4}]
     asks: []
     variants: []
-  expect: {notes: "The approach is now cold and observational."}
+  expect: {notes: "Closer and shorter on Nimal as the objection lands."}
 - name: options_come_as_variants
   input:
-    plan: "S01 WIDE ..."
-    tasks: [{instruction: "two openings", allowed: [shot.size], "on": "S01, S02", must: [shot.size]}]
+    scene: "S18 ... S21 ..."
+    tasks: [{instruction: "two ways to end the scene", writes: [camera, timing, order], "on": any shot}]
     variants: 2
   reply:
-    notes: "Two openings."
+    notes: ""
     ops: []
     asks: []
-    variants: [{label: "Close first", ops: [{op: set, shot: S01, field: size, value: CU}]}, {label: "Wide first", ops: []}]
-  expect: {notes: "Two openings."}
+    variants: [{label: "Hold on Dinu", ops: [{op: retime, shot: S18, take_s: 8}]}, {label: "Wide end", ops: []}]
+  expect: {notes: ""}

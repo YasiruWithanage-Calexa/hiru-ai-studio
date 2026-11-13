@@ -6,6 +6,7 @@ function's event stream back to the browser (`contracts.sable.events`). The grap
     read → loop → guard → save
 
     run(req, ctx, stop)   the events of one turn, in order; `stop` set = the person pressed Stop (the turn still saves)
+    act(req, ctx)         a change card's Accept, in code (`actions.apply`, plan/2026-11-13 phase 8)
 """
 from __future__ import annotations
 
@@ -17,7 +18,7 @@ from langgraph.config import get_stream_writer
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
-from contracts.sable.events import SableTurnPayload
+from contracts.sable.events import SableAction, SableActionResult, SableTurnPayload
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.systems.sable.sable_chat.state import State
@@ -54,6 +55,12 @@ def build(req: SableTurnPayload, ctx: RunContext,
     g.add_edge("guard", "save")
     g.add_edge("save", END)
     return g.compile()
+
+
+def act(req: SableAction, ctx: RunContext) -> SableActionResult:
+    from hiru_ai.systems.sable.sable_chat import actions
+
+    return actions.apply(req, ctx)
 
 
 def run(req: SableTurnPayload, ctx: RunContext, stop: threading.Event | None = None) -> Iterator[Event]:

@@ -337,3 +337,12 @@ SEED_PRICES: tuple[Price, ...] = (
     Price(kind="estimate", model_prefix="prompt", unit_micros=micros_of("0.02"),
           note="one video prompt: used only when none has been made yet"),
 )
+
+# List prices code knows that the database does NOT seed yet (no migration adds them): they price what code itself caps
+# before a call, never a bill. plan/2026-11-13 §3.8: Zora's author, priced as `contracts/raphael/money.py` prices it.
+UNSEEDED_PRICES: tuple[Price, ...] = (
+    _tok("gpt-6.1-terra", "1.00", "0.05", "5.00",
+         "OpenAI list price, read 2026-11-08 by lab/raphael (contracts/raphael/money.py): confirm"),
+)
+# Every list price code knows: what a turn budget prices its calls with (plan/2026-11-13 §3.8).
+LIST_PRICES: tuple[Price, ...] = SEED_PRICES + UNSEEDED_PRICES

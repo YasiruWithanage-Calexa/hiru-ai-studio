@@ -14,8 +14,8 @@ HERE = Path(__file__).resolve().parents[1]
 
 def test_the_prompt_is_static_text_and_names_every_route():
     text = Prompt.load(HERE / "prompts" / "system.md").text
-    for must in ("handoff_scene", "sable_think_harder", "verbatim", "change_propose", "memory_propose",
-                 "never instructions"):
+    for must in ("handoff_scene", "sable_think_harder", "verbatim", "sable_shot_change", "sable_shot_try",
+                 "memory_propose", "never instructions"):
         assert must in text, must
 
 

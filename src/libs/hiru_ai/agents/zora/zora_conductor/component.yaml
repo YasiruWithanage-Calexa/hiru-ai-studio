@@ -1,10 +1,10 @@
 id: zora_conductor
 kind: agent
-version: 1
-summary: "Zora's small transcriber (plan/2026-11-06e §4.4): reads the director's message against the addressable plan and answers the lane, the person's explicit changes as operations, and the tasks (effects and scope) the author must do. Writes no craft; code checks it invented nothing."
+version: 2
+summary: "Zora's conductor (plan/2026-11-13 §3.6): reads the director's message against the scene's clips and answers the lane, the person's explicit changes as row operations and the tasks (kinds and shots) the author must do. Writes no craft; code checks it invented nothing."
 status: active
 owner: director
-model: medium
+model: zora_chat
 shape: structured
 phase: zora.conduct
 input: schema:Input
@@ -12,5 +12,6 @@ output: schema:Output
 prompts: { system: prompts/system.md }
 tools: []
 knowledge: []
-middleware: [static_first, usage]
+middleware: [static_first, usage, production_memory]
+memory: ["*"]
 writes_dialogue: false

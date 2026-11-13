@@ -196,14 +196,14 @@ def test_a_long_thread_folds_its_older_messages_into_the_stored_summary_once():
     assert "Dee asked twenty long questions." in sent and "Dee: 7 word" not in sent and "Dee: 8 word" in sent
 
 
-def test_a_staged_change_is_stored_pinned_to_its_shots_ids():
+def test_a_staged_change_is_stored_with_the_row_kernels_ops_and_the_rows_fingerprint():
+    """plan/2026-11-13 phase 8: the card is pinned to the rows as they were (`made_on`), not to shot ids."""
     ctx = ctx_with()
-    op = {"op": "set", "shot": 1, "field": "framing", "value": "CU"}
-    with two_models([tool("change_propose", summary="Open close.", ops=[op])],
-                    [tool("change_propose", summary="Open on a close-up so the smile reads.", ops=[op]),
+    op = {"op": "set", "shot": 1, "field": "size", "value": "CU"}
+    with two_models([tool("sable_shot_change", summary="Open close.", ops=[op])],
+                    [tool("sable_shot_change", summary="Open on a close-up so the smile reads.", ops=[op]),
                      answer("A card.")]):
         turn(payload("Make S01 a close-up, exactly that."), ctx)
     card = next(b for b in saved(ctx)["blocks"] if b["kind"] == "sable_change")
-    first = sorted((s for s in world()["fixtures"]["shots"]), key=lambda s: s["number"])[0]
-    assert card["scene"] == "E1S2" and card["status"] == "open"
-    assert card["ops"][0]["shot_id"] == str(first["id"]) and "shot" not in card["ops"][0]
+    assert card["scene"] == "E1S2" and card["status"] == "open" and card["engine"] == "rows" and card["made_on"]
+    assert card["ops"] == [{"op": op, "by": "author"}] and card["changes"] == ["S01 · size: MCU → CU"]

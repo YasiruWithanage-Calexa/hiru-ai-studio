@@ -1,20 +1,19 @@
-"""zora_chat: one synchronous, STREAMED Zora turn over a scene's stored Jonathan plan (plan/2026-11-06e §3, Phase 4).
+"""zora_chat: one synchronous, STREAMED Zora turn over a scene's shot rows (plan/2026-11-13 §3.6).
 
 Not a job, like the classic director chat: the API checks who is asking, stores their message, and proxies this
 function's event stream back to the browser (`contracts.zora.events`). The graph is the turn's shape:
 
-    read → in_code ─┬─ undo | redo | confirm ───────────────────────────────────────────────┐
-                    ├─ a suggestion (a button: no router) → edit ───────────────────────────┤
-                    └─ conduct → [ chat | clarify | cannot | translate | shape | nomodel ] ──┤
-                                 [ edit | craft | options ] → edit ─────────────────────────┤
-                                                                         settle → reply ←───┘
+    read → in_code ─┬─ undo | redo (a revision, no model) ──────────────────────────────────┐
+                    └─ conduct ─┬─ chat | clarify | cannot | nomodel | role ──────────────┤
+                       (quick() │                                                        │
+                       or the   └─ edit | craft | options → work ──────────────────────────┤
+                       conductor)                                               reply ←───┘
 
-`edit` is the kernel, the dependency graph, the re-cut guard, the author (variants on `options`), the board and the
-delivery check; `settle` the planner's gate with its repair passes and the save; `reply` the ledger, the events and the
-reply written from them.
+`work` is the kernel, code's tasks, the author (variants on `options`), the board, the delivery check, the checks with
+one repair, the risk rule and the save (or the card); `reply` the facts, the events and the reply written from them.
 
     run(req, ctx)      the events of one turn, in order
-    act(req, ctx)      a person's click (use a proposal, undo, redo, lock, unlock): plain data in and out, no model
+    act(req, ctx)      a person's click (accept, reject, use, undo, redo, lock, unlock): plain data in and out
 """
 from __future__ import annotations
 
@@ -27,22 +26,19 @@ from langgraph.graph.state import CompiledStateGraph
 
 from contracts.director import TurnPayload
 from contracts.zora.events import ZoraAction, ZoraActionResult
+from contracts.zora.wire import WRITING_LANES
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.systems.zora.zora_chat import actions
 from hiru_ai.systems.zora.zora_chat.state import State
 from hiru_ai.systems.zora.zora_chat.turn import Event, Turn
 
-QUIET = ("chat", "clarify", "cannot", "translate", "shape", "nomodel")
-WRITING = ("edit", "craft", "options")
-IN_CODE = ("undo", "redo", "confirm")
 
-
-def build(req: TurnPayload, ctx: RunContext) -> CompiledStateGraph[Any, Any, Any, Any]:
+def build(req: TurnPayload, ctx: RunContext, **seams: Any) -> CompiledStateGraph[Any, Any, Any, Any]:
     def emit(event: str, data: dict[str, Any]) -> None:
         get_stream_writer()((event, data))
 
-    turn = Turn(req, ctx, emit)
+    turn = Turn(req, ctx, emit, **seams)
 
     def node(fn: Callable[[], None]) -> Callable[[State], State]:
         def run_node(state: State) -> State:
@@ -56,48 +52,34 @@ def build(req: TurnPayload, ctx: RunContext) -> CompiledStateGraph[Any, Any, Any
 
     def in_code(state: State) -> State:
         route = turn.in_code()
-        turn.st.lane = route
+        turn.rec.lane = route
         return {"route": route}
 
     def conduct(state: State) -> State:
         return {"route": turn.conduct()}
-
-    def quiet(state: State) -> State:
-        lane = turn.st.lane
-        if lane == "cannot":
-            turn.cannot()
-        elif lane == "translate":
-            turn.translate()
-        elif lane == "shape":
-            turn.shape()
-        return {}
 
     g: Any = StateGraph(State)
     g.add_node("read", read)
     g.add_node("in_code", in_code)
     g.add_node("conduct", conduct)
     g.add_node("restore", node(turn.restore))
-    g.add_node("confirm", node(turn.confirm))
-    g.add_node("quiet", quiet)
-    g.add_node("edit", node(turn.edit))
-    g.add_node("settle", node(turn.settle))
+    g.add_node("quiet", node(turn.quiet))
+    g.add_node("work", node(turn.work))
     g.add_node("reply", node(turn.reply))
     g.add_edge(START, "read")
     g.add_conditional_edges("read", lambda s: END if s["route"] == "gone" else "in_code", ["in_code", END])
-    g.add_conditional_edges("in_code", lambda s: {"undo": "restore", "redo": "restore", "confirm": "confirm",
-                                                  "suggested": "edit"}.get(s["route"], "conduct"),
-                            ["restore", "confirm", "conduct", "edit"])
-    g.add_conditional_edges("conduct", lambda s: "edit" if s["route"] in WRITING else "quiet", ["edit", "quiet"])
-    for name in ("restore", "confirm", "quiet"):
+    g.add_conditional_edges("in_code", lambda s: "restore" if s["route"] in ("undo", "redo") else "conduct",
+                            ["restore", "conduct"])
+    g.add_conditional_edges("conduct", lambda s: "work" if s["route"] in WRITING_LANES else "quiet", ["work", "quiet"])
+    for name in ("restore", "quiet", "work"):
         g.add_edge(name, "reply")
-    g.add_edge("edit", "settle")
-    g.add_edge("settle", "reply")
     g.add_edge("reply", END)
     return g.compile()
 
 
-def run(req: TurnPayload, ctx: RunContext) -> Iterator[Event]:
-    for item in build(req, ctx).stream({}, stream_mode="custom"):
+def run(req: TurnPayload, ctx: RunContext, **seams: Any) -> Iterator[Event]:
+    """The turn's events. `seams` (`ask`, `say`) stand in for the models in tests (recorded answers)."""
+    for item in build(req, ctx, **seams).stream({}, stream_mode="custom"):
         event, data = cast(tuple[str, dict[str, Any]], item)
         yield event, data
 

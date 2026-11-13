@@ -1,31 +1,29 @@
-# Scripted: the conductor reads the addressable plan and the person's message and answers the lane, the person's own
-# changes as operations and the author's tasks. Taken from tests/eval/zora/cases.json (the recorded answers).
+# Scripted: the conductor reads the scene's clips and the person's message and answers the lane, the person's own
+# changes as row operations and the author's tasks (plan/2026-11-13; the lab's lab/zora_rows run 6).
 - name: a_value_the_person_named_is_an_op
   input:
-    plan: "S01 WIDE 6s ... S03 MCU lens 50mm ..."
-    message: S03 on an 85
+    scene: "S01 [3A-1] must master MS 4s cut · b0,b1 · on screen: Nimal, Dinu ..."
+    message: Make S01 a wide.
     transcript: []
   reply:
     lane: edit
     confidence: 0.9
-    ops: [{op: set, shot: S03, field: lens, value: 85mm}]
+    ops: [{op: set, shot: S01, field: size, value: WIDE}]
     tasks: []
     variants: 0
-    translate: null
     cannot: null
     memory: ""
   expect: {lane: edit}
 - name: a_feeling_is_a_task_not_an_op
   input:
-    plan: "Treatment: approach: Warm and close ..."
-    message: make the approach colder
+    scene: "S08 ... S13 ..."
+    message: The argument from S08 to S13 drags. Make it tenser.
   reply:
     lane: craft
     confidence: 0.8
     ops: []
-    tasks: [{writes: [treatment.approach, shot.lens], scope: [], instruction: "make the approach colder"}]
+    tasks: [{writes: [camera, timing, sound], shots: [8, 9, 10, 11, 12, 13], instruction: "make the argument tenser"}]
     variants: 0
-    translate: null
     cannot: null
     memory: ""
   expect: {lane: craft}

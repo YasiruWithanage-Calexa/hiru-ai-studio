@@ -34,7 +34,6 @@ from hiru_ai.core.errors import ModelUnavailable, ToolRefused
 from hiru_ai.core.settings import SableSettings, get_settings
 from hiru_ai.core.tokens import tokens_of
 from hiru_ai.steps.sable.sable_route import step as route_step
-from hiru_ai.steps.scene_kernel.turn_logic import pin
 from hiru_ai.systems.sable.sable_chat import guard
 
 _log = logging.getLogger(__name__)
@@ -199,7 +198,7 @@ class Turn:
                 _log.warning("sable: a card for another scene was dropped thread=%s", req.thread_id)
                 st.meta.guard.append("card for a scene that is not open")
                 continue
-            block = _card(card, self._handles(card))
+            block = _card(card)
             if block is not None:
                 st.cards.append(block)
         if st.handoff is not None:
@@ -212,17 +211,6 @@ class Turn:
             if key not in seen:
                 seen.add(key)
                 st.citations.append({"chunk_id": str(c.get("chunk_id") or ""), "label": str(c.get("label") or "")})
-
-    def _handles(self, card: Row) -> list[str] | None:
-        """The shot ids of a change card's scene in shot order: its operations are stored by id, not number, as the
-        classic chat stores an option's (numbers move as the scene changes)."""
-        if card.get("kind") != "change":
-            return None
-        try:
-            shots = self.ctx.need("scenes", "SceneStore").shots(card["scene_id"])
-        except Exception:
-            return None
-        return [str(s["id"]) for s in sorted(shots, key=lambda s: int(s.get("number") or 0))]
 
     def _handoff(self, handoff: Row) -> Row | None:
         """The scene the edit is for, inside this production; one Sable cannot find is no card (the text says why)."""
@@ -284,20 +272,22 @@ def _card_line(b: Row) -> str:
     return f"{what} ({b.get('status', 'open')})"
 
 
-def _card(card: Row, handles: list[str] | None = None) -> Row | None:
-    """A staged card as a stored block, or None when it cannot be carried out later (an operation on a shot made this
-    turn, or no shots to pin to)."""
+def _card(card: Row) -> Row | None:
+    """A staged card as a stored block, or None when it cannot be carried out later (no operations, or not the row
+    kernel's: plan/2026-11-13 phase 8). A change is pinned to the rows by their fingerprint (`made_on`), not by ids."""
     kind = card.get("kind")
     try:
         if kind == "change":
-            ops = [pin(o, handles or []) for o in card.get("ops") or []]
-            if not ops or not all(ops):
+            ops = [dict(o) for o in card.get("ops") or []]
+            if not ops or card.get("engine") != "rows" or not card.get("made_on"):
                 return None
             return E.StagedChange(scene_id=card["scene_id"], scene=str(card.get("scene") or ""),
-                                  summary=str(card.get("summary") or ""), ops=ops,
+                                  summary=str(card.get("summary") or ""), ops=ops, engine="rows",
+                                  made_on=str(card["made_on"]),
                                   changes=[str(c) for c in card.get("changes") or []],
                                   touched=[str(t) for t in card.get("touched") or []],
-                                  notes=[dict(n) for n in card.get("notes") or []]).model_dump(mode="json")
+                                  in_doubt=[str(d) for d in card.get("in_doubt") or []],
+                                  risks=[str(r) for r in card.get("risks") or []]).model_dump(mode="json")
         if kind == "state":
             return E.StagedState(scene_id=card["scene_id"], scene=str(card.get("scene") or ""),
                                  summary=str(card.get("summary") or ""),

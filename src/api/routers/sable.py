@@ -34,7 +34,7 @@ from api.repositories import Repos, Row
 from api.services import director as director_service
 from api.services import sable as sable_service
 from api.services.ai import UsageContext, get_ai
-from contracts.director import ChoicePayload, MessageKind
+from contracts.director import MessageKind
 from contracts.roles import Permission
 from contracts.sable.events import (
     MentionOption,
@@ -49,7 +49,9 @@ ReposDep = Annotated[Repos, Depends(get_repos)]
 CanAsk = Annotated[ProductionAccess, Depends(require_permission(Permission.USE_SABLE))]
 CanDirect = Annotated[ProductionAccess, Depends(require_permission(Permission.DIRECT))]
 Streamer = Annotated[sable_service.SableStreamer, Depends(sable_service.get_streamer)]
-Applier = Annotated[director_service.ChoiceApplier, Depends(director_service.get_choice_applier)]
+Applier = Annotated[sable_service.SableActor, Depends(sable_service.get_actor)]  # a change card, carried out in code
+BEFORE_ROWS = ("This card was made before Sable's change cards were updated, so it can't be applied. Ask Sable "
+               "again.")
 OFF = "Sable is switched off."
 
 
@@ -200,9 +202,9 @@ async def _settle(repos: Repos, access: ProductionAccess, row: Row, index: int, 
 @router.post("/messages/{message_id}/cards/{index}/accept", response_model=CardResult)
 async def accept(production_id: UUID, message_id: UUID, index: int, access: CanDirect, repos: ReposDep,
                  applier: Applier, request: Request) -> CardResult:
-    """A card is carried out by code, never a model: a change's operations (stored when the kernel confirmed they land)
-    are applied by the director function as a button press is, and refused if the scene changed since; a rule becomes
-    a remembered decision of the production."""
+    """A card is carried out by code, never a model: a change's row-kernel operations (stored when they were confirmed
+    to land) are replayed in the function and saved in place as a revision (plan/2026-11-13 phase 8), refused if the
+    shots changed since; a rule becomes a remembered decision of the production."""
     row, card = await _card(repos, access, message_id, index)
     if card["kind"] == "sable_change":
         scene_id = UUID(str(card["scene_id"]))
@@ -211,20 +213,20 @@ async def accept(production_id: UUID, message_id: UUID, index: int, access: CanD
             return await _settle(repos, access, row, index, "failed", "The scene is gone.", "The scene is gone.")
         if scene.get("status") == "approved":
             raise HTTPException(status.HTTP_409_CONFLICT, "This scene is approved and locked. Unapprove it first.")
-        try:
-            result = await applier(ChoicePayload(production_id=production_id, scene_id=scene_id,
-                                                 actor_user_id=access.user.id, ops=list(card.get("ops") or []),
-                                                 intent=str(card.get("summary") or ""), can_edit_script=False))
-        except director_service.DirectorUnavailable as exc:
-            raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
-        if not result.applied:
-            return await _settle(repos, access, row, index, "failed", result.summary, result.summary)
+        if card.get("engine") != "rows":
+            return await _settle(repos, access, row, index, "failed", BEFORE_ROWS, BEFORE_ROWS)
+        out = await applier({"kind": "apply", "production_id": str(production_id), "scene_id": str(scene_id),
+                             "actor_user_id": str(access.user.id), "message_id": str(message_id),
+                             "ops": list(card.get("ops") or []), "made_on": str(card.get("made_on") or ""),
+                             "summary": str(card.get("summary") or "")})
+        text = str(out.get("text") or "")
+        if not out.get("ok"):
+            return await _settle(repos, access, row, index, "failed", text, text)
         await repos.audit.record(action="sable.accept_change", entity="scene", entity_id=str(scene_id),
                                  actor_user_id=access.user.id, production_id=production_id,
-                                 diff={"message_id": str(message_id), "ops": len(result.applied)})
-        noted = await sable_service.note_shots(repos, production_id, scene_id, list(card.get("ops") or []))
-        await sable_service.mark_out_of_date(repos, noted)  # a note moves neither the script nor the length
-        return await _settle(repos, access, row, index, "accepted", "", result.summary)
+                                 diff={"message_id": str(message_id), "ops": len(card.get("ops") or []),
+                                       "revision": int(out.get("revision") or 0)})
+        return await _settle(repos, access, row, index, "accepted", "", text)
     if card["kind"] == "sable_state":
         scene_id = UUID(str(card["scene_id"]))
         scene = await repos.scenes.get(production_id, scene_id)

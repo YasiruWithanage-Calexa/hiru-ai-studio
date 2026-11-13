@@ -91,9 +91,10 @@ def _chat(tier: Tier, settings: AISettings, callbacks: list[BaseCallbackHandler]
 
 
 def get_llm(tier: str, *, settings: AISettings | None = None, callbacks: list[BaseCallbackHandler] | None = None,
-            http_client: Any = None, timeout_s: float | None = None) -> BaseChatModel:
+            http_client: Any = None, timeout_s: float | None = None, max_tokens: int | None = None) -> BaseChatModel:
     """The chat model for a tier. Raises `ModelUnavailable` without a key. `timeout_s` replaces the tier's timeout for
-    this model (an agent whose answer is long says so in its manifest: plan/2026-11-05 R2)."""
+    this model (an agent whose answer is long says so in its manifest: plan/2026-11-05 R2). `max_tokens` caps the
+    answer's output tokens (a caller's budget: plan/2026-11-13 §3.8; a test's fake model ignores it)."""
     settings = settings or get_settings()
     resolved = resolve(tier, settings)
     if timeout_s:
@@ -103,12 +104,15 @@ def get_llm(tier: str, *, settings: AISettings | None = None, callbacks: list[Ba
         return fake(resolved)
     if not settings.openai.enabled:
         raise ModelUnavailable("OPENAI__API_KEY is not set")
-    return _chat(resolved, settings, callbacks, http_client)
+    model = _chat(resolved, settings, callbacks, http_client)
+    if max_tokens:
+        model.max_tokens = max_tokens  # type: ignore[attr-defined]
+    return model
 
 
 def get_structured(tier: str, schema: Any, *, settings: AISettings | None = None,
                    callbacks: list[BaseCallbackHandler] | None = None, http_client: Any = None,
-                   timeout_s: float | None = None) -> Runnable[Any, Any]:
+                   timeout_s: float | None = None, max_tokens: int | None = None) -> Runnable[Any, Any]:
     """A runnable that answers with `schema` (a pydantic class; strict JSON-schema output).
 
     The tier's `fallbacks` (models.yaml) are tried in order after the model fails.
@@ -116,7 +120,8 @@ def get_structured(tier: str, schema: Any, *, settings: AISettings | None = None
     settings = settings or get_settings()
 
     def build(name: str) -> Runnable[Any, Any]:
-        model = get_llm(name, settings=settings, callbacks=callbacks, http_client=http_client, timeout_s=timeout_s)
+        model = get_llm(name, settings=settings, callbacks=callbacks, http_client=http_client, timeout_s=timeout_s,
+                        max_tokens=max_tokens)
         return model.with_structured_output(schema, method="json_schema", strict=True)
 
     primary = build(tier)

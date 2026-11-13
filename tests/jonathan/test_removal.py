@@ -59,12 +59,7 @@ MAY_NAME_IT = {
     "supabase/migrations/20261106120000_jonathan.sql", "Database/README.md", "Database/schema_v13.sql",
     "Database/upgrade_v12_to_v13.sql", "scripts/jonathan_spike.py", "scripts/jonathan_compare.py",
     "supabase/tests/database/014_jonathan.test.sql",
-    # Zora (plan/2026-11-06e) edits the plans Jonathan stores and runs Jonathan's checks by id, from these two files
-    "src/libs/hiru_ai/steps/zora/zora_kernel/step.py", "src/libs/hiru_ai/steps/zora/zora_board/gate.py",
-    "src/libs/hiru_ai/steps/zora/zora_save/step.py",  # Zora stores its edits through Jonathan's write path, by id
-    "src/libs/hiru_ai/systems/zora/zora_chat/scene.py",  # and reads the scene through Jonathan's scene builder, by id
-    "src/libs/hiru_ai/agents/zora/zora_author/tests/test_agent_zora_author.py",  # its prompt starts with Jonathan's
-    "tests/zora/test_api.py", "src/api/routers/zora.py",  # "Plan shots from this treatment" is a Jonathan job
+    # Zora no longer depends on Jonathan (plan/2026-11-13 §3.11): no Zora file is on this list
     "Database/schema_v14.sql",  # a whole schema, so it holds v13's Jonathan column (plan/2026-11-06c)
     "Database/schema_v15.sql", "Database/schema_v16.sql",  # whole schemas: v14 + first frames, + the reader
     "Database/schema_v17.sql",  # + a scene's cost

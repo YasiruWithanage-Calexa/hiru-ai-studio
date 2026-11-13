@@ -10,7 +10,7 @@ from hiru_ai.core.registry import PACKAGE_ROOT, Registry
 REPO = PACKAGE_ROOT.parents[2]
 
 THE_PLAN_REMOVES = {
-    *(f"src/libs/hiru_ai/{layer}/zora" for layer in ("agents", "steps", "systems")),
+    *(f"src/libs/hiru_ai/{layer}/zora" for layer in ("agents", "systems")),  # its steps are shared now (coverage)
     "src/libs/contracts/zora",
     "src/services/zora_chat",
     "tests/zora",
@@ -26,13 +26,22 @@ MAY_NAME_IT = {"pyproject.toml", "docs/AI_CATALOG.md", "CLAUDE.md", "tests/jonat
                ".env.example",
                ".github/workflows/deploy-functions.yml", "scripts/start-functions.ps1", "src/api/routers/zora.py",
                "src/api/services/zora.py", "src/api/repositories/__init__.py", "src/api/main.py",
+               # plan/2026-11-13 §3.5: a person's locks set through Zora live on the shot row
+               "src/libs/contracts/producer.py",
+               # plan/2026-11-13: the shared coverage contract and kernel cite their lab; the tiers' test
+               "src/libs/contracts/coverage/__init__.py", "src/libs/contracts/coverage/ledger.py",
+               "src/libs/contracts/coverage/scene.py", "src/libs/hiru_ai/steps/coverage_kernel/logic.py",
+               "tests/hiru_ai/test_core.py",
                "src/api/workers/task_manager.py", "src/api/config.py", "src/libs/contracts/director.py",
                "Database/schema_v14.sql", "Database/upgrade_v13_to_v14.sql", "Database/README.md",
                "Database/schema_v15.sql", "Database/schema_v16.sql",  # whole schemas after v14
                "Database/schema_v17.sql",  # + a scene's cost
                "Database/schema_v18.sql", "Database/schema_v19.sql",  # whole schemas: + Sable, + Raphael
                "supabase/migrations/20261106185010_zora_revisions.sql",
-               "supabase/tests/database/016_scene_plan_revisions.test.sql"}
+               "supabase/tests/database/016_scene_plan_revisions.test.sql",
+               # plan/2026-11-13 phase 8: the shared row save (Zora's revisions, `scene.zora_*` audits) and Sable's
+               # test of a person's lock (`person_edits.zora_locks`)
+               "src/libs/hiru_ai/core/coverage_rows.py", "tests/sable/test_scene_edits.py"}
 
 
 def test_the_removal_list_is_the_plans_list():

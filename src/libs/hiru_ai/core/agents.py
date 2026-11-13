@@ -137,7 +137,7 @@ class Agent:
     # ── running ───────────────────────────────────────────────────────────────────────────
 
     def run(self, inp: BaseModel | dict[str, Any], ctx: RunContext | None = None, *,
-            config: dict[str, Any] | None = None, tier: str | None = None) -> Any:
+            config: dict[str, Any] | None = None, tier: str | None = None, max_output: int | None = None) -> Any:
         """The agent's Output. `ctx` carries the usage sink and the ports; without one the agent still runs. `tier`
         runs this call on another model tier than the manifest's (the fixer ladder picks one per problem)."""
         inp, ctx = self._input(inp), ctx or RunContext()
@@ -145,6 +145,7 @@ class Agent:
         call.config = {"run_name": self.component, **(config or {})}  # the agent's name in a trace, not the chain's
         if tier:
             call.tier = tier
+        call.max_output = max_output  # a caller's budget (plan/2026-11-13 §3.8): the answer's output tokens
         chain = middleware.build(self.manifest.middleware, writes_dialogue=self.manifest.writes_dialogue)
         if self.manifest.shape == "loop":
             raise ManifestError(f"{self.id} is a loop agent: run it with Agent.converse, which takes the code tools")
@@ -161,13 +162,13 @@ class Agent:
         return middleware.run_chain(chain, call, ctx, terminal)
 
     def stream(self, inp: BaseModel | dict[str, Any], ctx: RunContext | None = None, *,
-               messages: list[BaseMessage] | None = None) -> Iterator[str]:
+               messages: list[BaseMessage] | None = None, max_output: int | None = None) -> Iterator[str]:
         """The reply as it is written, chunk by chunk. `messages` continues a conversation already started (tool
         results); the system prompt and the user message are this agent's own. A failure surfaces while iterating."""
         ctx = ctx or RunContext()
 
         def go(call: ModelCall) -> Iterator[str]:
-            model = llm.get_llm(call.tier)
+            model = llm.get_llm(call.tier, max_tokens=max_output)
             thread = messages if messages is not None else [SystemMessage(call.system), HumanMessage(call.user)]
             for chunk in model.stream(thread, config=cast(Any, call.config)):
                 text = chunk.content
@@ -295,7 +296,8 @@ class Agent:
         return hook() if hook else self.output_cls
 
     def _structured(self, call: ModelCall, ctx: RunContext) -> Any:
-        runnable = llm.get_structured(call.tier, self.wire_schema(), timeout_s=call.timeout_s)
+        runnable = llm.get_structured(call.tier, self.wire_schema(), timeout_s=call.timeout_s,
+                                      max_tokens=call.max_output)
         user: Any = call.user
         if call.images or call.files:  # the text, then each picture at low detail, then each PDF (its pages' text and
             # images reach the model: OpenAI's file input)
@@ -309,7 +311,8 @@ class Agent:
 
     def _text(self, call: ModelCall, ctx: RunContext) -> Any:
         """The whole reply as one `Output(text=...)` (a streamed reply is read with `stream`)."""
-        reply = llm.get_llm(call.tier).invoke([SystemMessage(call.system), HumanMessage(call.user)],
+        model = llm.get_llm(call.tier, max_tokens=call.max_output)
+        reply = model.invoke([SystemMessage(call.system), HumanMessage(call.user)],
                                               config=cast(Any, call.config))
         return self.output_cls.model_validate({"text": str(reply.content or "")})
 

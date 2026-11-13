@@ -1,0 +1,20 @@
+id: sable_shot_try
+kind: tool
+version: 1
+summary: "Shows the open scene's shot rows as the row kernel numbers them, or tries row-kernel operations on a copy and says what would land, change and need a person's OK; nothing is saved."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes]
+uses: [coverage_kernel]
+effect: read
+max_result_tokens: 2500
+guide: |
+  With no ops: the open scene's blocks (each spoken line's code, "L5" for the line in b5) and its clips in cut order, one
+  line each (number, size, take, the blocks it shows, the lines it performs, who is on screen, what is locked). Use it
+  before proposing a change so the shot numbers and line codes are right.
+  With ops (the same operations as sable_shot_change, at most 12): applies them to a copy and returns, for each, applied
+  or refused with the reason; what would change; the problems it leaves (report only); and why a person would be asked
+  first. Nothing is saved or staged.
+  Example: {"ops": [{"op": "retime", "shot": 2, "take_s": 8}]}.
+  Do not use it to ask for the change to be made (sable_shot_change tries it again and stages a card).

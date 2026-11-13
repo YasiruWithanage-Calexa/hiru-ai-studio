@@ -1,11 +1,13 @@
-"""What import-linter cannot say about the `zora` folders (plan/2026-11-06e §2 rule 2, §4.0), read from the source.
+"""What import-linter cannot say about the `zora` folders (plan/2026-11-06e §2 rule 2, §4.0; plan/2026-11-13 §3.11),
+read from the source.
 
 * a module under `hiru_ai.<layer>.zora` imports, from this package, only its own `zora` folder, a LOWER layer's `zora`
   folder, `hiru_ai.core`, `hiru_ai.rag` and `contracts`; never a planner's group, the old director chat, `api` or a
   service. It reaches the planner's checks BY ID (`core.parts`), so removing either group never breaks the other's
   imports;
 * nothing outside a `zora` folder imports one (Zora's own lab is the exception);
-* `contracts.zora` imports only the standard library, pydantic and itself.
+* `contracts.zora` imports only the standard library, pydantic and itself;
+* no Zora file imports or names a planner as a code identifier (plan/2026-11-13: "the planner plans, Zora edits").
 """
 from __future__ import annotations
 
@@ -27,7 +29,7 @@ BELOW: dict[str, set[str]] = {
 }
 ALWAYS = ("hiru_ai.core", "hiru_ai.rag", "contracts")
 # the planners' groups, written so that their removal checks find no mention here
-PLANNERS = ("ad" + "am", "da" + "vid", "jona" + "than")
+PLANNERS = ("ad" + "am", "da" + "vid", "jona" + "than", "raph" + "ael", "clas" + "sic")
 OLD_CHAT = ("director_chat", "scene_kernel")  # the old chat: Zora copies its guards, never imports them
 NOT_FROM_A_PART = ("api", "hiru_ai.adapters", "hiru_ai.cli", *(f"contracts.{p}" for p in PLANNERS),
                    *(f"hiru_ai.{layer}.{p}" for p in PLANNERS for layer in mf.LAYERS.values()))
@@ -125,7 +127,53 @@ def test_the_scanner_refuses_a_planner_the_old_chat_and_a_higher_layer():
 
 
 def test_the_scanner_allows_what_a_zora_module_may_import():
-    assert breaks_inside("steps", src("from hiru_ai.core import parts", "from contracts.zora.ops import code")) == []
-    assert breaks_inside("systems", src("from hiru_ai.steps.zora.zora_board import gate")) == []
+    assert breaks_inside("steps", src("from hiru_ai.core import parts", "from contracts.zora.wire import to_op")) == []
+    assert breaks_inside("systems", src("from contracts.coverage.scene import Coverage")) == []
     assert contracts_breaks(src("from hiru_ai.core import parts")) == ["hiru_ai.core", "hiru_ai.core.parts"]
     assert contracts_breaks(src("from pydantic import BaseModel", "from typing import Any")) == []
+
+
+# ── no planner (plan/2026-11-13 §3.11) ──────────────────────────────────────────────────────────
+
+
+def identifiers(source: str) -> set[str]:
+    """Every name the code uses: variables, attributes, functions, classes, arguments, imported modules."""
+    out: set[str] = set()
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Name):
+            out.add(node.id)
+        elif isinstance(node, ast.Attribute):
+            out.add(node.attr)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            out.add(node.name)
+        elif isinstance(node, ast.arg):
+            out.add(node.arg)
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            out.update(a.name for a in node.names)
+            if isinstance(node, ast.ImportFrom) and node.module:
+                out.update(node.module.split("."))
+    return out
+
+
+def names_a_planner(source: str) -> list[str]:
+    return sorted(n for n in identifiers(source) for p in PLANNERS if p in n.lower())
+
+
+def test_no_zora_file_imports_or_names_a_planner():
+    folders = [*(PACKAGE_ROOT / layer / GROUP for layer in mf.LAYERS.values()), CONTRACTS_ZORA,
+               SRC / "services" / "zora_chat", SRC / "api" / "routers" / "zora.py",
+               SRC / "api" / "services" / "zora.py"]
+    seen = 0
+    for base in folders:
+        for path in ([base] if base.is_file() else sorted(base.rglob("*.py"))):
+            seen += 1
+            text = path.read_text(encoding="utf-8")
+            bad = names_a_planner(text)
+            assert not bad, f"{path.relative_to(ROOT)} names {bad}"
+            assert not [n for n in imported(text) if any(p in n for p in PLANNERS)], path
+    assert seen >= 10
+
+
+def test_the_planner_scanner_refuses_a_name():
+    assert names_a_planner(src(f"PLANNER = '{PLANNERS[2]}'")) == []  # a string is not a name
+    assert names_a_planner(src(f"def {PLANNERS[3]}_check(): pass")) == [f"{PLANNERS[3]}_check"]

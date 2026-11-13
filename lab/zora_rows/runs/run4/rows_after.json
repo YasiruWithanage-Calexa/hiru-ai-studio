@@ -1,0 +1,3380 @@
+[
+ {
+  "id": "c2990f76-0540-4cc0-b3e4-539f34531c75",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 1,
+  "title": "Restrained handheld presence locates a private encounter without",
+  "framing": "WIDE",
+  "duration_s": 6,
+  "start_s": 0,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 2,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 4,
+    "action": "",
+    "camera": "",
+    "start_s": 2,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 0,
+  "block_end": 1,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Steady roof rain and close breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-2s",
+     "action": "Both men hold position with the closed box between them.",
+     "camera": "MWS, both men and the closed box in focus",
+     "performance": "Nimal holds his chin level; Dinu keeps his eyes on the box, lips closed.",
+     "director_line": "The held spacing makes the garage feel private."
+    },
+    {
+     "time": "2-4s",
+     "action": "Both men remain in place; the box stays closed.",
+     "camera": "MWS, the same restrained handheld composition",
+     "performance": "Dinu keeps his shoulders still while Nimal maintains his gaze toward him.",
+     "director_line": "The frame leaves room for an editorial time reference."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Holds the closed metal box steady on his left hand and forearm, right hand resting on its lid.",
+     "position": "Standing frame left facing right; closed box supported at waist height by left hand and forearm.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Watches the box with empty hands relaxed at his sides.",
+     "position": "Standing frame right facing left, hands empty at his sides.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Garage interior beneath a metal roof, entrance-side view.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal supports the closed metal box on his left forearm with his right hand on the lid.",
+     "Dinu faces him with empty hands at his sides."
+    ],
+    "composition": "Nimal left, Dinu right, closed box low in the centre; clear upper area for an editorial title."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 35mm, f/4",
+    "framing": "MWS of both standing men, closed box visible between them",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, both men legible against softly layered garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "6d3c556efb63a5f1",
+    "shot_version": 1
+   },
+   "intent": "ec7fb8df3699",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "Restrained handheld presence locates a private encounter without making the flashback a spectacle.",
+   "designed_at": "2026-11-12T07:20:49.429442+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "The two men stand inside the garage; the earlier time reference is supplied in post.",
+   "purpose": "Restrained handheld presence locates a private encounter without making the flashback a spectacle.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Both men hold position with the closed box between them.; Both men remain in place; the box stays closed.; Both men retain the same positions and prop state.",
+   "voice_source": "",
+   "emotional_beat": "A private meeting already in progress."
+  },
+  "card": {
+   "size": "WIDE",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing and cloth movement.",
+    "silence": true,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "master",
+  "priority": "must",
+  "slate": "3A-1",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "8481505e-df5a-4920-a42b-992e1b659249",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 2,
+  "title": "Keep the evidence physically between the men as",
+  "framing": "MS",
+  "duration_s": 6,
+  "start_s": 4,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 1,
+  "block_end": 2,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Roof rain, a small lid hinge sound and breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Nimal lifts the lid with his right hand over 1.5 seconds, revealing photographs, bank documents and the C-17 key inside.",
+     "camera": "MWS, same framing on the opening box",
+     "performance": "Nimal keeps the box steady; Dinu lowers his eyes toward the exposed contents.",
+     "director_line": "The evidence appears between them without flourish."
+    },
+    {
+     "time": "3-6s",
+     "action": "Nimal holds the box open; all contents remain inside.",
+     "camera": "MWS, open box retained in the composition",
+     "performance": "Dinu fixes his gaze on the contents, lips closed; Nimal watches for his response.",
+     "director_line": "The reveal is given time to register."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Opens the lid with his right hand while his left hand and forearm support the box, then holds it open.",
+     "position": "Standing frame left facing right, closed box at waist height in left hand and forearm, right hand on lid.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Keeps his empty hands at his sides and watches the contents appear.",
+     "position": "Standing frame right facing left, hands empty at his sides.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Garage interior beneath a metal roof, entrance-side view.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal supports the closed box with his left hand and forearm, right hand on lid.",
+     "Dinu watches with empty hands at his sides."
+    ],
+    "composition": "Nimal left and Dinu right with the closed box at the lower centre."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 35mm, f/4",
+    "framing": "MWS of both men and Nimal's waist-high box",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, both men and box legible",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "39feb076a6a62f11",
+    "shot_version": 1
+   },
+   "intent": "622bea59a70c",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "Keep the evidence physically between the men as Nimal exposes it.",
+   "designed_at": "2026-11-12T07:20:49.431156+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal opens the box, exposing photographs, bank documents and the C-17 key.",
+   "purpose": "Keep the evidence physically between the men as Nimal exposes it.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal holds the closed box level with his right hand on the lid.; Nimal lifts the lid with his right hand over 1.5 seconds, revealing photographs, bank documents and the C-17 key inside.; Nimal holds the box open; all contents remain inside.; Both men hold position with the box open.",
+   "voice_source": "",
+   "emotional_beat": "Evidence acquires tangible weight."
+  },
+  "card": {
+   "size": "MS",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Soft metal lid movement at 1-2.5s, close breathing.",
+    "silence": true,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "master",
+  "priority": "must",
+  "slate": "3A-2",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "3f8ec466-7bbc-4caa-b6a6-0689c7a096a9",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 3,
+  "title": "Essential evidence detail makes the photographs, financial documents",
+  "framing": "INSERT",
+  "duration_s": 4,
+  "start_s": 10,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 2,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 4,
+    "action": "",
+    "camera": "",
+    "start_s": 2,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 1,
+  "block_end": 2,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Roof rain and a small lid hinge sound; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-2s",
+     "action": "Nimal holds the closed box level with his right hand on the lid.",
+     "camera": "INSERT, closed box and supporting hands sharp",
+     "performance": "His supporting forearm stays level and his right hand rests without fidgeting.",
+     "director_line": "The sealed surface conceals the entire case."
+    },
+    {
+     "time": "2-4s",
+     "action": "The open box, photographs, documents and key remain still.",
+     "camera": "INSERT, same open-box composition",
+     "performance": "His supporting arm stays level.",
+     "director_line": "The evidence remains readable in the settled tail."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Opens the lid with his right hand while his left hand and forearm support the box, then holds it open.",
+     "position": "Standing left of the box facing right; only torso, left supporting forearm and right hand on lid are framed.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Oblique view of the box inside the garage.",
+    "lighting": "Soft greenish overhead light with cool fill and warm metal edge highlights.",
+    "subjects": [
+     "Nimal's charcoal-shirted torso and hands support the closed box."
+    ],
+    "composition": "Closed metal box fills the frame, left forearm underneath and right hand on the lid."
+   },
+   "cinematography": {
+    "angle": "High oblique from the entrance side",
+    "camera": "Handheld compact rig, 50mm, f/5.6",
+    "framing": "INSERT filling the frame with the supported box, its lid and Nimal's hands",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Deep across the box contents and key marking",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "39feb076a6a62f11",
+    "shot_version": 1
+   },
+   "intent": "9bb2fd364e4f",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "rationale": "Essential evidence detail makes the photographs, financial documents and C-17 marking readable rather than merely asserted.",
+   "designed_at": "2026-11-12T07:20:49.432176+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "High angle",
+    "speed": "Slow",
+    "framing": "Insert",
+    "aperture": "f/5.6",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal opens the box, exposing photographs, bank documents and the C-17 key.",
+   "purpose": "Essential evidence detail makes the photographs, financial documents and C-17 marking readable rather than merely asserted.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal holds the closed box level with his right hand on the lid.; Nimal lifts the lid with his right hand over 1.5 seconds, revealing photographs, bank documents and the C-17 key inside.; Nimal holds the box open; all contents remain inside.; The open box, photographs, documents and key remain still.",
+   "voice_source": "",
+   "emotional_beat": "Evidence acquires tangible weight."
+  },
+  "card": {
+   "size": "INSERT",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Soft metal lid movement at 1-2.5s.",
+    "silence": true,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 4,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 4
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "insert",
+  "priority": "must",
+  "slate": "3D-1",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "1395a73b-efa4-46bd-abeb-2387041af6d1",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 4,
+  "title": "Give the evidence an immediate human recipient without",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 14,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 1,
+  "block_end": 2,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Roof rain, offscreen metal lid movement at 1-2.5s and close breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu lowers his eyes toward the exposed contents as the lid opens below frame over 1.5 seconds.",
+     "camera": "MCU, unchanged on Dinu's eye line",
+     "performance": "His gaze drops a little further; his mouth remains closed.",
+     "director_line": "The unseen opening registers through the direction of his eyes."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu continues looking at the open box below frame.",
+     "camera": "MCU, same held composition",
+     "performance": "He keeps his shoulders still and his eyes fixed downward.",
+     "director_line": "He studies before offering any response."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Keeps his empty hands at his sides and watches the contents appear below frame.",
+     "position": "Standing frame right facing left, hands empty at his sides below frame.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Dinu beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Dinu faces left, chin slightly lowered, hands empty below frame."
+    ],
+    "composition": "Dinu at frame right with negative space along his leftward eye line."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 65mm, f/2.8",
+    "framing": "MCU of Dinu at frame right looking down-left",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Dinu's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "39feb076a6a62f11",
+    "shot_version": 1
+   },
+   "intent": "1df2147bdab9",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "Give the evidence an immediate human recipient without adding another action.",
+   "designed_at": "2026-11-12T07:20:49.433162+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal opens the box, exposing photographs, bank documents and the C-17 key.",
+   "purpose": "Give the evidence an immediate human recipient without adding another action.",
+   "made_for": "",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Dinu watches the closed box below frame.; Dinu lowers his eyes toward the exposed contents as the lid opens below frame over 1.5 seconds.; Dinu continues looking at the open box below frame.; Dinu retains the same posture and empty hands.",
+   "voice_source": "",
+   "emotional_beat": "Evidence acquires tangible weight."
+  },
+  "card": {
+   "size": "MCU",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Offscreen lid movement at 1-2.5s and quiet breathing.",
+    "silence": true,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "reaction",
+  "priority": "must",
+  "slate": "3C-1",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "456bcd72-8de2-4758-bb26-017191ba861a",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 5,
+  "title": "The shared frame keeps the evidence and Dinu's",
+  "framing": "MS",
+  "duration_s": 6,
+  "start_s": 20,
+  "sound_mode": "dialogue",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": "01d65a2c-fd06-487a-96c7-fee79483017c",
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 2,
+  "block_end": 3,
+  "word_target": 13,
+  "words": 11,
+  "ir": {
+   "audio": "L2 performed on camera over steady roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Nimal's lips move to L2 while he supports the open box; Dinu listens.",
+     "camera": "MWS, focus favours Nimal",
+     "performance": "Nimal keeps his gaze level and his delivery firm; Dinu holds his eyes on him without nodding.",
+     "director_line": "The factual case is made within the shared frame."
+    },
+    {
+     "time": "3-6s",
+     "action": "Nimal's lips move to L2 while he supports the open box; Dinu listens.",
+     "camera": "MWS, focus favours Nimal",
+     "performance": "Nimal keeps his gaze level and his delivery firm; Dinu holds his eyes on him without nodding.",
+     "director_line": "The factual case is made within the shared frame."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Supports the open box on his left hand and forearm and moves his lips to L2.",
+     "position": "Standing frame left facing right; open box supported at waist height by left hand and forearm, right hand holding the lid open.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Listens with his empty hands at his sides.",
+     "position": "Standing frame right facing left, hands empty at his sides.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Garage interior beneath a metal roof, entrance-side view.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal supports the open metal box on his left forearm and holds the lid open with his right hand.",
+     "Dinu faces Nimal with empty hands at his sides."
+    ],
+    "composition": "Nimal left, Dinu right, open box between them at waist height."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 35mm, f/4",
+    "framing": "MWS of both men and the open box at waist height",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, both faces and the box legible",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "abb96a36b1376a7c",
+    "shot_version": 1
+   },
+   "intent": "f4e4bec638fd",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The shared frame keeps the evidence and Dinu's response in the same space as Nimal's argument.",
+   "designed_at": "2026-11-12T07:20:49.434192+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal identifies the amount, its owner and the source of the funds in L2.",
+   "purpose": "The shared frame keeps the evidence and Dinu's response in the same space as Nimal's argument.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal holds the open box; Dinu faces him.; Nimal's lips move to L2 while he supports the open box; Dinu listens.; Both retain their positions and the box stays open.",
+   "voice_source": "",
+   "emotional_beat": "A firm case that has not yet won assent."
+  },
+  "card": {
+   "size": "MS",
+   "lines": [
+    {
+     "line_id": "L2",
+     "on_speaker": true,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "master",
+  "priority": "must",
+  "slate": "3A-3",
+  "handle_in_s": "0.50",
+  "handle_out_s": "0.50",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "b68ac88b-a338-4f2e-bd53-894099989b70",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 6,
+  "title": "The restrained single gives the amount and its",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 26,
+  "sound_mode": "ambient",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": "01d65a2c-fd06-487a-96c7-fee79483017c",
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 2,
+  "block_end": 3,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "L2 performed on camera over steady roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "His lips move to L2, with the open box supported below frame.",
+     "camera": "MCU, focus on Nimal",
+     "performance": "He keeps his gaze on Dinu and gives firm, factual emphasis to the amount and source.",
+     "director_line": "The financial case is delivered without flourish."
+    },
+    {
+     "time": "3-6s",
+     "action": "His lips move to L2, with the open box supported below frame.",
+     "camera": "MCU, focus on Nimal",
+     "performance": "He keeps his gaze on Dinu and gives firm, factual emphasis to the amount and source.",
+     "director_line": "The financial case is delivered without flourish."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Supports the open box below frame and moves his lips to L2.",
+     "position": "Standing frame left facing right, open box supported by left hand and forearm below frame, right hand holding its lid open.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Nimal beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal faces Dinu with the open box supported below frame."
+    ],
+    "composition": "Nimal at frame left, looking right across the axis."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Nimal",
+    "camera": "Handheld shoulder rig, 65mm, f/2.8",
+    "framing": "MCU of Nimal at frame left looking right",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Nimal's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "abb96a36b1376a7c",
+    "shot_version": 1
+   },
+   "intent": "778492743b6a",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The restrained single gives the amount and its origin clear, factual weight.",
+   "designed_at": "2026-11-12T07:20:49.435164+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal identifies the amount, its owner and the source of the funds in L2.",
+   "purpose": "The restrained single gives the amount and its origin clear, factual weight.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "He holds the open box below frame.; His lips move to L2, with the open box supported below frame.; He keeps the box open below frame.",
+   "voice_source": "",
+   "emotional_beat": "A firm case that has not yet won assent."
+  },
+  "card": {
+   "size": "MCU",
+   "lines": [
+    {
+     "line_id": "L2",
+     "on_speaker": false,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "single",
+  "priority": "must",
+  "slate": "3B-1",
+  "handle_in_s": "0.50",
+  "handle_out_s": "0.50",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "e9565525-6ea9-48d2-b79a-c334d8bb08fe",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 7,
+  "title": "The whole line can land on the listener",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 32,
+  "sound_mode": "ambient",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 2,
+  "block_end": 3,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "L2 from the selected performance over roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu listens to L2 without changing position.",
+     "camera": "MCU, unchanged",
+     "performance": "His eyes stay on Nimal; his lips remain closed and he gives no nod.",
+     "director_line": "The entire claim can play against his stillness."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu listens to L2 without changing position.",
+     "camera": "MCU, unchanged",
+     "performance": "His eyes stay on Nimal; his lips remain closed and he gives no nod.",
+     "director_line": "The entire claim can play against his stillness."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Listens to L2 with empty hands at his sides below frame.",
+     "position": "Standing frame right facing left, hands empty at his sides below frame.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Dinu beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Dinu faces left, lips closed, empty hands below frame."
+    ],
+    "composition": "Dinu at frame right looking left with negative space on his eye line."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Dinu",
+    "camera": "Handheld shoulder rig, 65mm, f/2.8",
+    "framing": "MCU of Dinu at frame right looking left",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Dinu's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "abb96a36b1376a7c",
+    "shot_version": 1
+   },
+   "intent": "077d48e3c715",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The whole line can land on the listener without breaking the factual argument.",
+   "designed_at": "2026-11-12T07:20:49.436176+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal identifies the amount, its owner and the source of the funds in L2.",
+   "purpose": "The whole line can land on the listener without breaking the factual argument.",
+   "made_for": "",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "written_at": null,
+   "what_we_see": "Dinu looks left.; Dinu listens to L2 without changing position.; Dinu remains in place.",
+   "voice_source": "off_screen",
+   "emotional_beat": "A firm case that has not yet won assent."
+  },
+  "card": {
+   "size": "MCU",
+   "lines": [
+    {
+     "line_id": "L2",
+     "on_speaker": false,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "reaction",
+  "priority": "must",
+  "slate": "3C-2",
+  "handle_in_s": "0.50",
+  "handle_out_s": "0.50",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "eb917f09-eeea-48b6-9313-739a3502b18b",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 8,
+  "title": "The ethical disagreement registers in the space separating",
+  "framing": "MS",
+  "duration_s": 6,
+  "start_s": 38,
+  "sound_mode": "dialogue",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": "05eca9eb-f95b-42f8-bf6b-efb45093aac1",
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 3,
+  "block_end": 4,
+  "word_target": 13,
+  "words": 7,
+  "ir": {
+   "audio": "L3 performed on camera over steady roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu's lips move to L3; Nimal listens and keeps the box steady.",
+     "camera": "MWS, focus favours Dinu",
+     "performance": "Dinu keeps his voice restrained and his gaze level; Nimal does not interrupt.",
+     "director_line": "The objection stays quiet inside the shared frame."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu's lips move to L3; Nimal listens and keeps the box steady.",
+     "camera": "MWS, focus favours Dinu",
+     "performance": "Dinu keeps his voice restrained and his gaze level; Nimal does not interrupt.",
+     "director_line": "The objection stays quiet inside the shared frame."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Holds the open box steady and listens.",
+     "position": "Standing frame left facing right; open box supported at waist height by left hand and forearm, right hand holding the lid open.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Moves his lips to L3 with empty hands at his sides.",
+     "position": "Standing frame right facing left, hands empty at his sides.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Garage interior beneath a metal roof, entrance-side view.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal supports the open box with his left forearm and holds its lid with his right hand.",
+     "Dinu stands facing left with hands empty."
+    ],
+    "composition": "Nimal left with open box, Dinu right facing him."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 35mm, f/4",
+    "framing": "MWS of both men with open box between them",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, both men and box legible",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "a05315d777d62c1d",
+    "shot_version": 1
+   },
+   "intent": "12a3b67becdf",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The ethical disagreement registers in the space separating their bodies.",
+   "designed_at": "2026-11-12T07:20:49.436693+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Dinu raises the moral objection in L3.",
+   "purpose": "The ethical disagreement registers in the space separating their bodies.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal supports the open box; Dinu stands opposite.; Dinu's lips move to L3; Nimal listens and keeps the box steady.; Both hold their positions.; The box remains open in Nimal's support.",
+   "voice_source": "",
+   "emotional_beat": "Quiet resistance stops the momentum."
+  },
+  "card": {
+   "size": "MS",
+   "lines": [
+    {
+     "line_id": "L3",
+     "on_speaker": true,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "master",
+  "priority": "must",
+  "slate": "3A-4",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "5a3553eb-f856-4a08-b91e-686e9884f907",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 9,
+  "title": "A level single protects the quiet moral turn",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 44,
+  "sound_mode": "ambient",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": "05eca9eb-f95b-42f8-bf6b-efb45093aac1",
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 3,
+  "block_end": 4,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "L3 performed on camera over steady roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu's lips move to L3.",
+     "camera": "MCU, unchanged",
+     "performance": "He keeps his gaze on Nimal and delivers the line quietly, without raising his chin.",
+     "director_line": "His resistance is direct and restrained."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu's lips move to L3.",
+     "camera": "MCU, unchanged",
+     "performance": "He keeps his gaze on Nimal and delivers the line quietly, without raising his chin.",
+     "director_line": "His resistance is direct and restrained."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Moves his lips to L3 with empty hands at his sides below frame.",
+     "position": "Standing frame right facing left, hands empty at his sides below frame.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Dinu beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Dinu faces left, empty hands at his sides below frame."
+    ],
+    "composition": "Dinu at frame right looking left across the axis."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Dinu",
+    "camera": "Handheld shoulder rig, 65mm, f/2.8",
+    "framing": "MCU of Dinu at frame right looking left",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Dinu's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "a05315d777d62c1d",
+    "shot_version": 1
+   },
+   "intent": "c5e92dc1c7d7",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "A level single protects the quiet moral turn from melodrama.",
+   "designed_at": "2026-11-12T07:20:49.436693+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Dinu raises the moral objection in L3.",
+   "purpose": "A level single protects the quiet moral turn from melodrama.",
+   "made_for": "",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Dinu looks left toward Nimal.; Dinu's lips move to L3.; Dinu closes his lips and holds position.; Dinu remains in place.",
+   "voice_source": "",
+   "emotional_beat": "Quiet resistance stops the momentum."
+  },
+  "card": {
+   "size": "MCU",
+   "lines": [
+    {
+     "line_id": "L3",
+     "on_speaker": false,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "single",
+  "priority": "must",
+  "slate": "3C-3",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "4b161c54-8c1a-4c30-b1ea-6034b36c305c",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 10,
+  "title": "Hold the consequence of Dinu's objection on the",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 50,
+  "sound_mode": "ambient",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 3,
+  "block_end": 4,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "L3 from the selected performance over roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Nimal listens to L3 with the box supported below frame.",
+     "camera": "MCU, unchanged",
+     "performance": "He watches Dinu without nodding, lips closed.",
+     "director_line": "He receives the objection without breaking the eye line."
+    },
+    {
+     "time": "3-6s",
+     "action": "Nimal listens to L3 with the box supported below frame.",
+     "camera": "MCU, unchanged",
+     "performance": "He watches Dinu without nodding, lips closed.",
+     "director_line": "He receives the objection without breaking the eye line."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Listens to L3 while supporting the open box below frame.",
+     "position": "Standing frame left facing right, open box supported by left hand and forearm below frame, right hand holding its lid open.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Nimal beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal holds the open box below frame and keeps his lips closed."
+    ],
+    "composition": "Nimal at frame left looking right across the axis."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Nimal",
+    "camera": "Handheld shoulder rig, 65mm, f/2.8",
+    "framing": "MCU of Nimal at frame left looking right",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Nimal's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "a05315d777d62c1d",
+    "shot_version": 1
+   },
+   "intent": "c91118b75f18",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "rationale": "Hold the consequence of Dinu's objection on the man whose proposal has met resistance.",
+   "designed_at": "2026-11-12T07:20:49.438500+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Dinu raises the moral objection in L3.",
+   "purpose": "Hold the consequence of Dinu's objection on the man whose proposal has met resistance.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "heard_only": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "written_at": null,
+   "what_we_see": "Nimal looks right and supports the box.; Nimal listens to L3 with the box supported below frame.; Nimal retains the same posture.; The open box remains supported below frame.",
+   "voice_source": "off_screen",
+   "emotional_beat": "Quiet resistance stops the momentum."
+  },
+  "card": {
+   "size": "MCU",
+   "lines": [
+    {
+     "line_id": "L3",
+     "on_speaker": false,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "reaction",
+  "priority": "must",
+  "slate": "3B-2",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "46a0088e-62bd-46f7-8ad1-4d2be5e417e1",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 11,
+  "title": "The two-shot makes Nimal's personal pressure visible against",
+  "framing": "TWO",
+  "duration_s": 8,
+  "start_s": 56,
+  "sound_mode": "dialogue",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": "01d65a2c-fd06-487a-96c7-fee79483017c",
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 8,
+    "action": "",
+    "camera": "",
+    "start_s": 6,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 4,
+  "block_end": 5,
+  "word_target": 17,
+  "words": 15,
+  "ir": {
+   "audio": "L4 performed on camera over steady roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Nimal's lips move to L4 while Dinu listens.",
+     "camera": "TWO, focus favours Nimal",
+     "performance": "Nimal keeps his eyes on Dinu with pointed restraint; Dinu stays still and does not nod.",
+     "director_line": "The argument turns from the money to personal leverage."
+    },
+    {
+     "time": "3-6s",
+     "action": "Nimal's lips move to L4 while Dinu listens.",
+     "camera": "TWO, focus favours Nimal",
+     "performance": "Nimal keeps his eyes on Dinu with pointed restraint; Dinu stays still and does not nod.",
+     "director_line": "The argument turns from the money to personal leverage."
+    },
+    {
+     "time": "6-8s",
+     "action": "Nimal's lips move to L4 while Dinu listens.",
+     "camera": "TWO, focus favours Nimal",
+     "performance": "Nimal keeps his eyes on Dinu with pointed restraint; Dinu stays still and does not nod.",
+     "director_line": "The argument turns from the money to personal leverage."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Supports the open box and moves his lips to L4.",
+     "position": "Standing frame left facing right; open box supported at waist height by left hand and forearm, right hand holding the lid open.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Listens with empty hands at his sides.",
+     "position": "Standing frame right facing left, hands empty at his sides.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Garage interior beneath a metal roof, entrance-side view.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal supports the open box on his left forearm and holds the lid with his right hand.",
+     "Dinu faces him with empty hands."
+    ],
+    "composition": "Nimal left, Dinu right, open box low between them."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 35mm, f/4",
+    "framing": "TWO, both men tightly framed with the open box low between them",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, both faces legible",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "6d94a14c0ee22b59",
+    "shot_version": 1
+   },
+   "intent": "79fcef4d7b81",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The two-shot makes Nimal's personal pressure visible against Dinu's refusal to move.",
+   "designed_at": "2026-11-12T07:20:49.439537+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Two-shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal invokes Aruni in L4 and makes the pressure personal.",
+   "purpose": "The two-shot makes Nimal's personal pressure visible against Dinu's refusal to move.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal supports the open box; Dinu faces him.; Nimal's lips move to L4 while Dinu listens.; Nimal closes his lips; the open box stays level.; Both retain their positions.",
+   "voice_source": "",
+   "emotional_beat": "The intimacy of friendship becomes leverage."
+  },
+  "card": {
+   "size": "TWO",
+   "lines": [
+    {
+     "line_id": "L4",
+     "on_speaker": true,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 8,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 8
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "two_shot",
+  "priority": "must",
+  "slate": "3A-5",
+  "handle_in_s": "0.50",
+  "handle_out_s": "0.50",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "c23c18ed-8e21-46c9-a7bc-f3b3d68907ad",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 12,
+  "title": "A tighter face brings the move from public",
+  "framing": "CU",
+  "duration_s": 8,
+  "start_s": 64,
+  "sound_mode": "ambient",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": "01d65a2c-fd06-487a-96c7-fee79483017c",
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 8,
+    "action": "",
+    "camera": "",
+    "start_s": 6,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 4,
+  "block_end": 5,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "L4 performed on camera over steady roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "His lips move to L4 while the open box remains supported below frame.",
+     "camera": "CU, unchanged on Nimal",
+     "performance": "He keeps his gaze fixed on Dinu and gives the personal challenge pointed restraint.",
+     "director_line": "His personal challenge stays close and unbroken."
+    },
+    {
+     "time": "3-6s",
+     "action": "His lips move to L4 while the open box remains supported below frame.",
+     "camera": "CU, unchanged on Nimal",
+     "performance": "He keeps his gaze fixed on Dinu and gives the personal challenge pointed restraint.",
+     "director_line": "His personal challenge stays close and unbroken."
+    },
+    {
+     "time": "6-8s",
+     "action": "His lips move to L4 while the open box remains supported below frame.",
+     "camera": "CU, unchanged on Nimal",
+     "performance": "He keeps his gaze fixed on Dinu and gives the personal challenge pointed restraint.",
+     "director_line": "His personal challenge stays close and unbroken."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Supports the open box below frame and moves his lips to L4.",
+     "position": "Standing frame left facing right, open box supported by left hand and forearm below frame, right hand holding its lid open.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Nimal beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal faces right and supports the open box below frame."
+    ],
+    "composition": "Nimal's face fills the left of the frame, looking right."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Nimal",
+    "camera": "Handheld shoulder rig, 85mm, f/2.8",
+    "framing": "CU of Nimal's face at frame left looking right",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Nimal's eyes and mouth sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "6d94a14c0ee22b59",
+    "shot_version": 1
+   },
+   "intent": "e397e43fdb11",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "rationale": "A tighter face brings the move from public evidence to intimate pressure uncomfortably close.",
+   "designed_at": "2026-11-12T07:20:49.440538+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "85mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal invokes Aruni in L4 and makes the pressure personal.",
+   "purpose": "A tighter face brings the move from public evidence to intimate pressure uncomfortably close.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "He supports the open box below frame.; His lips move to L4 while the open box remains supported below frame.; His lips close; he keeps holding the box.; Nimal retains his position.",
+   "voice_source": "",
+   "emotional_beat": "The intimacy of friendship becomes leverage."
+  },
+  "card": {
+   "size": "CU",
+   "lines": [
+    {
+     "line_id": "L4",
+     "on_speaker": false,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 8,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 8
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "single",
+  "priority": "must",
+  "slate": "3E-1",
+  "handle_in_s": "0.50",
+  "handle_out_s": "0.50",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "a87ebb2c-cc16-452b-b78c-3c3f7b93c9d2",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 13,
+  "title": "The full listener hold makes the personal appeal's",
+  "framing": "CU",
+  "duration_s": 8,
+  "start_s": 72,
+  "sound_mode": "ambient",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 8,
+    "action": "",
+    "camera": "",
+    "start_s": 6,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 4,
+  "block_end": 5,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "L4 from the selected performance over roof rain and breathing.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu listens to L4 without changing position.",
+     "camera": "CU, unchanged",
+     "performance": "He holds Nimal's eye line, briefly lowers his eyes and returns them, keeping his lips closed and avoiding a nod.",
+     "director_line": "The personal turn lands in a sustained look."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu listens to L4 without changing position.",
+     "camera": "CU, unchanged",
+     "performance": "He holds Nimal's eye line, briefly lowers his eyes and returns them, keeping his lips closed and avoiding a nod.",
+     "director_line": "The personal turn lands in a sustained look."
+    },
+    {
+     "time": "6-8s",
+     "action": "Dinu listens to L4 without changing position.",
+     "camera": "CU, unchanged",
+     "performance": "He holds Nimal's eye line, briefly lowers his eyes and returns them, keeping his lips closed and avoiding a nod.",
+     "director_line": "The personal turn lands in a sustained look."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Listens to L4 with empty hands at his sides below frame.",
+     "position": "Standing frame right facing left, hands empty at his sides below frame.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Dinu beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Dinu faces left with lips closed and empty hands below frame."
+    ],
+    "composition": "Dinu's face fills the right of the frame, looking left."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Dinu",
+    "camera": "Handheld shoulder rig, 85mm, f/2.8",
+    "framing": "CU of Dinu's face at frame right looking left",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Dinu's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "6d94a14c0ee22b59",
+    "shot_version": 1
+   },
+   "intent": "f9417f7e8301",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The full listener hold makes the personal appeal's impact legible without asserting consent.",
+   "designed_at": "2026-11-12T07:20:49.442025+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "85mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal invokes Aruni in L4 and makes the pressure personal.",
+   "purpose": "The full listener hold makes the personal appeal's impact legible without asserting consent.",
+   "made_for": "",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "written_at": null,
+   "what_we_see": "Dinu looks left.; Dinu listens to L4 without changing position.; Dinu keeps his hands at his sides below frame.; Dinu remains in place.",
+   "voice_source": "off_screen",
+   "emotional_beat": "The intimacy of friendship becomes leverage."
+  },
+  "card": {
+   "size": "CU",
+   "lines": [
+    {
+     "line_id": "L4",
+     "on_speaker": false,
+     "over_whom": ""
+    }
+   ],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": false,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 8,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 8
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "reaction",
+  "priority": "must",
+  "slate": "3F-1",
+  "handle_in_s": "0.50",
+  "handle_out_s": "0.50",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "292659a7-74ca-4015-a085-512baa637787",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 14,
+  "title": "The shared frame makes the transfer a choice",
+  "framing": "TWO",
+  "duration_s": 6,
+  "start_s": 80,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 5,
+  "block_end": 6,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Rain on the roof, light metal contact and breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Nimal releases the hinge-supported open lid, lifts the key from the box with his right hand and places it in Dinu's raised right palm; their hands do not touch.",
+     "camera": "TWO, unchanged on their hands and faces",
+     "performance": "Nimal makes the placement deliberately; Dinu follows it with his eyes and keeps his lips closed.",
+     "director_line": "Custody changes in one deliberate movement."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu holds the key in his right palm; Nimal withdraws his right hand and keeps the box open on his left forearm.",
+     "camera": "TWO, the key and both faces remain visible",
+     "performance": "Dinu looks at the key without nodding; Nimal watches him.",
+     "director_line": "The transfer lands without a declaration."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Supports the open box on his left forearm, releases its hinge-supported lid, lifts the key with his right hand and places it in Dinu's right palm without touching his hand.",
+     "position": "Standing frame left facing right; open box at waist height on left hand and forearm, right hand on the lid, key inside the box.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Raises his empty right hand palm up, receives the key without hand contact and keeps it in his palm.",
+     "position": "Standing frame right facing left, both hands empty at his sides.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Garage interior beneath a metal roof, entrance-side view.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal supports the open box in his left arm with his right hand on its lid; the key is inside.",
+     "Dinu stands opposite with both hands empty."
+    ],
+    "composition": "Nimal left with the open box, Dinu right with his empty hands at his sides."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 35mm, f/4",
+    "framing": "TWO of both men and their hands around the open box",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, faces and hands legible",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "078e34ddb757895e",
+    "shot_version": 1
+   },
+   "intent": "049d13ca9869",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The shared frame makes the transfer a choice within the relationship, not an abstract object shot.",
+   "designed_at": "2026-11-12T07:20:49.442552+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Two-shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal lifts the key from the box and deliberately places it in Dinu's right palm.",
+   "purpose": "The shared frame makes the transfer a choice within the relationship, not an abstract object shot.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal supports the open box with his left hand and forearm, right hand on its lid; Dinu's hands are empty at his sides.; Nimal releases the hinge-supported open lid, lifts the key from the box with his right hand and places it in Dinu's raised right palm; their hands do not touch.; Dinu holds the key in his right palm; Nimal withdraws his right hand and keeps the box open on his left forearm.; Dinu retains the key; Nimal retains the open box.",
+   "voice_source": "",
+   "emotional_beat": "The object moves further than Dinu's stated willingness."
+  },
+  "card": {
+   "size": "TWO",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet metal contact as the key is lifted and placed, close breathing.",
+    "silence": true,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "two_shot",
+  "priority": "must",
+  "slate": "3A-6",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "670d5a36-5573-4f68-88c6-558d6b01b27c",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 15,
+  "title": "The essential detail makes the exact transfer and",
+  "framing": "INSERT",
+  "duration_s": 6,
+  "start_s": 86,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 5,
+  "block_end": 6,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Rain on the roof and light metal contact; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Nimal releases the hinge-supported open lid, lifts the key from the box with his right hand and places it in Dinu's raised right palm; their hands do not touch.",
+     "camera": "INSERT, same oblique composition across box and palm",
+     "performance": "Nimal's fingers release the key deliberately above Dinu's still, open palm.",
+     "director_line": "The key bridges the gap between the men's separated hands."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu holds the key in his right palm; Nimal withdraws his right hand and keeps the box open on his left forearm.",
+     "camera": "INSERT, key in Dinu's palm sharp",
+     "performance": "Dinu keeps his palm level while Nimal's supporting arm remains steady.",
+     "director_line": "The new custodian is visible in the settled frame."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Supports the open box on his left forearm, releases its hinge-supported lid, lifts the key with his right hand and places it in Dinu's right palm without touching his hand.",
+     "position": "Standing left of the box facing right; left forearm supports the box, right hand rests on its lid, key inside.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Raises his empty right hand palm up, receives the key without hand contact and keeps it in his palm.",
+     "position": "Standing to the right of the box facing left, empty right hand initially at his side just outside frame.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "High oblique view of the open box inside the garage.",
+    "lighting": "Soft greenish overhead light with cool fill and warm metal edge highlights.",
+    "subjects": [
+     "Nimal's charcoal-shirted torso and hands support the open box.",
+     "Dinu stands to the right with his empty hand initially outside the frame."
+    ],
+    "composition": "Open box at left with key inside; Nimal's left forearm underneath and right hand on lid; open space at right for the receiving hand."
+   },
+   "cinematography": {
+    "angle": "High oblique from the entrance side",
+    "camera": "Handheld compact rig, 50mm, f/5.6",
+    "framing": "INSERT of the open box and both men's hands, filling the frame",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Deep across the key, box and receiving palm",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "078e34ddb757895e",
+    "shot_version": 1
+   },
+   "intent": "d5f10bc539f5",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The essential detail makes the exact transfer and the recipient's possession unmistakable despite avoiding body contact.",
+   "designed_at": "2026-11-12T07:20:49.443574+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "High angle",
+    "speed": "Slow",
+    "framing": "Insert",
+    "aperture": "f/5.6",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal lifts the key from the box and deliberately places it in Dinu's right palm.",
+   "purpose": "The essential detail makes the exact transfer and the recipient's possession unmistakable despite avoiding body contact.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal supports the open box with his left hand and forearm, right hand on its lid; Dinu's hands are empty at his sides.; Nimal releases the hinge-supported open lid, lifts the key from the box with his right hand and places it in Dinu's raised right palm; their hands do not touch.; Dinu holds the key in his right palm; Nimal withdraws his right hand and keeps the box open on his left forearm.; Dinu retains the key; Nimal retains the open box.",
+   "voice_source": "",
+   "emotional_beat": "The object moves further than Dinu's stated willingness."
+  },
+  "card": {
+   "size": "INSERT",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet metal contact as the key is lifted and placed.",
+    "silence": true,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "insert",
+  "priority": "must",
+  "slate": "3G-1",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "4e3cbc2f-8fdb-4777-9ed0-8d844b964d31",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 16,
+  "title": "The receiving face lands the pressure of the",
+  "framing": "CU",
+  "duration_s": 6,
+  "start_s": 92,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 5,
+  "block_end": 6,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Rain on the roof, offscreen light metal contact and breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu raises his empty right palm below frame and receives the key without hand contact.",
+     "camera": "CU, unchanged",
+     "performance": "His eyes follow the key down into his palm; his lips remain closed.",
+     "director_line": "The transfer registers in the path of his eyes."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu holds the key in his right palm below frame.",
+     "camera": "CU, unchanged",
+     "performance": "He keeps looking downward without a nod.",
+     "director_line": "The small object holds his attention."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Raises his empty right hand palm up below frame, receives the key without hand contact and keeps it in his palm.",
+     "position": "Standing frame right facing left, both hands empty at his sides below frame.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Dinu beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Dinu looks down with lips closed and both empty hands at his sides below frame."
+    ],
+    "composition": "Dinu's face at frame right, eyes directed down-left toward the open box."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Dinu",
+    "camera": "Handheld shoulder rig, 85mm, f/2.8",
+    "framing": "CU of Dinu's face at frame right, hands below frame",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Dinu's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "078e34ddb757895e",
+    "shot_version": 1
+   },
+   "intent": "8c43f7781cff",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The receiving face lands the pressure of the transfer without depicting agreement.",
+   "designed_at": "2026-11-12T07:20:49.444574+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "85mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Nimal lifts the key from the box and deliberately places it in Dinu's right palm.",
+   "purpose": "The receiving face lands the pressure of the transfer without depicting agreement.",
+   "made_for": "",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Dinu's hands are empty at his sides below frame.; Dinu raises his empty right palm below frame and receives the key without hand contact.; Dinu holds the key in his right palm below frame.; Dinu retains the key below frame.",
+   "voice_source": "",
+   "emotional_beat": "The object moves further than Dinu's stated willingness."
+  },
+  "card": {
+   "size": "CU",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Offscreen quiet metal contact and close breathing.",
+    "silence": true,
+    "ambience": "Rain on the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "reaction",
+  "priority": "must",
+  "slate": "3F-2",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "8f0c1c0d-344d-4bd9-96ad-1cdcbafe9667",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 17,
+  "title": "A sustained unforced look lets the physical key",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 98,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 6,
+  "block_end": 7,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Rain strikes the garage roof with close breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu studies the key in his right palm for three seconds.",
+     "camera": "MCU, unchanged on Dinu and key",
+     "performance": "He keeps his gaze on the key and his mouth closed, without nodding.",
+     "director_line": "Rain carries the three-second pause."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu studies the key in his right palm for three seconds.",
+     "camera": "MCU, unchanged on Dinu and key",
+     "performance": "He keeps his gaze on the key and his mouth closed, without nodding.",
+     "director_line": "Rain carries the three-second pause."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Looks at the key held in his right palm, without a nod.",
+     "position": "Standing frame right facing left, C-17 key in his open right palm at waist height; left hand at his side.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Dinu beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Dinu holds the key in his right palm and looks down at it."
+    ],
+    "composition": "Dinu at frame right, lowered gaze leading to the key in his open right palm at the bottom edge."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Dinu",
+    "camera": "Handheld shoulder rig, 65mm, f/4",
+    "framing": "MCU of Dinu with lowered face and key in his right palm at the bottom of frame",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, Dinu's eyes and key readable with soft garage background",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "c2d732ec1b44a732",
+    "shot_version": 1
+   },
+   "intent": "d4d5fbf01be6",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "A sustained unforced look lets the physical key coexist with unresolved commitment.",
+   "designed_at": "2026-11-12T07:20:49.447309+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium close-up",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Dinu studies the key while rain strikes the roof.",
+   "purpose": "A sustained unforced look lets the physical key coexist with unresolved commitment.",
+   "made_for": "",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Dinu holds the key in his open right palm.; Dinu studies the key in his right palm for three seconds.; He continues holding the key in his right palm.; Dinu retains the key.",
+   "voice_source": "",
+   "emotional_beat": "No answer; responsibility is now physically present."
+  },
+  "card": {
+   "size": "MCU",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": true,
+    "ambience": "Rain striking the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "single",
+  "priority": "must",
+  "slate": "3C-4",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "2e96719b-d63e-41fc-a53b-4400ad1155f8",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 18,
+  "title": "Nimal's waiting face supplies pressure over the same",
+  "framing": "MCU",
+  "duration_s": 6,
+  "start_s": 110,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 6,
+  "block_end": 7,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Rain strikes the garage roof with close breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Nimal remains opposite while Dinu studies the key in his right palm for three seconds below frame.",
+     "camera": "MCU, unchanged",
+     "performance": "Nimal watches without nodding or changing his stance, lips closed.",
+     "director_line": "His waiting face holds over the three-second study below frame."
+    },
+    {
+     "time": "3-6s",
+     "action": "Nimal remains opposite while Dinu studies the key in his right palm for three seconds below frame.",
+     "camera": "MCU, unchanged",
+     "performance": "Nimal watches without nodding or changing his stance, lips closed.",
+     "director_line": "His waiting face holds over the three-second study below frame."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Holds the open box below frame and watches Dinu without moving toward him.",
+     "position": "Standing frame left facing right, open box supported by left hand and forearm below frame, right hand beside the box.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Soft garage structure behind Nimal beneath the metal roof.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal faces right with the open box supported below frame, lips closed."
+    ],
+    "composition": "Nimal at frame left looking right across the axis."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side looking toward Nimal",
+    "camera": "Handheld shoulder rig, 65mm, f/2.8",
+    "framing": "MCU of Nimal at frame left looking right",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Shallow, Nimal's eyes sharp against soft garage structure",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "c2d732ec1b44a732",
+    "shot_version": 1
+   },
+   "intent": "60b2b7bcfa7f",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "rationale": "Nimal's waiting face supplies pressure over the same unresolved pause without a new appeal.",
+   "designed_at": "2026-11-12T07:20:49.449305+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Medium close-up",
+    "aperture": "f/2.8",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Dinu studies the key while rain strikes the roof.",
+   "purpose": "Nimal's waiting face supplies pressure over the same unresolved pause without a new appeal.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Nimal supports the open box below frame and looks right.; Nimal remains opposite while Dinu studies the key in his right palm for three seconds below frame.; Nimal keeps the open box supported below frame.; Nimal remains in place with the open box.",
+   "voice_source": "",
+   "emotional_beat": "No answer; responsibility is now physically present."
+  },
+  "card": {
+   "size": "MCU",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": true,
+    "ambience": "Rain striking the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "reaction",
+  "priority": "must",
+  "slate": "3B-3",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "dd4fbb72-e8f5-4ba9-aa81-02db8e41b7de",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 19,
+  "title": "The ending can retain Nimal's waiting presence without",
+  "framing": "TWO",
+  "duration_s": 6,
+  "start_s": 104,
+  "sound_mode": "silent",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 3,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 6,
+    "action": "",
+    "camera": "",
+    "start_s": 3,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 6,
+  "block_end": 7,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Rain strikes the garage roof with close breathing; no vocal sound.",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Dinu studies the key in his right palm for three seconds; Nimal remains opposite holding the box.",
+     "camera": "TWO, unchanged on both men",
+     "performance": "Dinu keeps his gaze on the key without nodding; Nimal waits with his lips closed.",
+     "director_line": "Rain fills the space around Dinu's study."
+    },
+    {
+     "time": "3-6s",
+     "action": "Dinu studies the key in his right palm for three seconds; Nimal remains opposite holding the box.",
+     "camera": "TWO, unchanged on both men",
+     "performance": "Dinu keeps his gaze on the key without nodding; Nimal waits with his lips closed.",
+     "director_line": "Rain fills the space around Dinu's study."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Holds the open box and watches Dinu without moving toward him.",
+     "position": "Standing frame left facing right, open box supported by left hand and forearm, right hand beside the box.",
+     "description": "Nimal, 34, in a plain charcoal shirt and dark trousers."
+    },
+    {
+     "id": "C01",
+     "action": "Looks at the key held in his right palm, without a nod.",
+     "position": "Standing frame right facing left, C-17 key in his open right palm at waist height; left hand at his side.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Garage interior beneath a metal roof, entrance-side view.",
+    "lighting": "Greenish overhead practical, cool facial fill and sodium edge light.",
+    "subjects": [
+     "Nimal supports the open box with his left forearm, right hand beside it.",
+     "Dinu holds the key in his open right palm and looks down."
+    ],
+    "composition": "Nimal left with open box, Dinu right looking at the key in his open right palm."
+   },
+   "cinematography": {
+    "angle": "Eye level, entrance side of the axis",
+    "camera": "Handheld shoulder rig, 35mm, f/4",
+    "framing": "TWO of both men, Dinu's right palm and Nimal's open box",
+    "movement": "Restrained handheld drift within the same composition",
+    "color_tone": "Cold blue-green, sodium-orange edges, restrained saturation and readable skin",
+    "white_balance": "4300K, retaining cool spill and warm sodium edges",
+    "depth_of_field": "Medium, both men and the key legible",
+    "lens_artifacts": "None"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "01d65a2c-fd06-487a-96c7-fee79483017c": 1,
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "c2d732ec1b44a732",
+    "shot_version": 1
+   },
+   "intent": "cc6560ecd8f9",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The ending can retain Nimal's waiting presence without adding a response or movement.",
+   "designed_at": "2026-11-12T07:20:49.448305+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Eye level",
+    "speed": "Slow",
+    "framing": "Two-shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Handheld"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Dinu studies the key while rain strikes the roof.",
+   "purpose": "The ending can retain Nimal's waiting presence without adding a response or movement.",
+   "made_for": "",
+   "on_screen": [
+    "01d65a2c-fd06-487a-96c7-fee79483017c",
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Dinu holds the key in his open right palm; Nimal supports the open box.; Dinu studies the key in his right palm for three seconds; Nimal remains opposite holding the box.; Both hold their positions and props.; Dinu retains the key; Nimal retains the open box.",
+   "voice_source": "",
+   "emotional_beat": "No answer; responsibility is now physically present."
+  },
+  "card": {
+   "size": "TWO",
+   "lines": [],
+   "sound": {
+    "music": "None.",
+    "effects": "Quiet breathing.",
+    "silence": true,
+    "ambience": "Rain striking the garage roof."
+   },
+   "use_s": 6,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 6
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "two_shot",
+  "priority": "must",
+  "slate": "3A-7",
+  "handle_in_s": "1.00",
+  "handle_out_s": "1.00",
+  "stage": 1,
+  "anchor": [],
+  "blend": ""
+ },
+ {
+  "id": "97d87e39-d4be-4507-8a73-be4053379cff",
+  "production_id": "1d401663-f73d-4493-94dc-7865323d4fbd",
+  "scene_id": "0f4ba0fd-db0b-4722-8feb-e89586b06f24",
+  "number": 20,
+  "title": "The locked ending favours faces and the shared",
+  "framing": "INSERT",
+  "duration_s": 4,
+  "start_s": 116,
+  "sound_mode": "ambient",
+  "camera_link": "cut",
+  "frame_strategy": "generate",
+  "speaker_id": null,
+  "beats": [
+   {
+    "end_s": 2,
+    "action": "",
+    "camera": "",
+    "start_s": 0,
+    "performance": "",
+    "director_line": ""
+   },
+   {
+    "end_s": 4,
+    "action": "",
+    "camera": "",
+    "start_s": 2,
+    "performance": "",
+    "director_line": ""
+   }
+  ],
+  "block_start": 6,
+  "block_end": 7,
+  "word_target": 0,
+  "words": 0,
+  "ir": {
+   "audio": "Continuous rain striking the metal garage roof with low interior room tone; no dialogue.",
+   "beats": [
+    {
+     "time": "0-2s",
+     "action": "The key remains stationary on his palm as his hand stays at the same height.",
+     "camera": "Fixed INSERT, identical framing and focus",
+     "performance": "His fingers remain loose and his wrist stays level.",
+     "director_line": "The frame holds the object without turning possession into agreement."
+    },
+    {
+     "time": "2-4s",
+     "action": "The key remains stationary on his palm as his hand stays at the same height.",
+     "camera": "Fixed INSERT, identical framing and focus",
+     "performance": "His fingers remain loose and his wrist stays level.",
+     "director_line": "The frame holds the object without turning possession into agreement."
+    }
+   ],
+   "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+   "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Keeps his right palm open beneath the settled C-17 key; fingers remain relaxed and do not close.",
+     "position": "Standing frame right facing left in the garage; only his open right palm and a soft portion of his navy shirt are visible, with the key already resting in his palm.",
+     "description": "Dinu, 30, in a plain navy work shirt and dark trousers."
+    }
+   ],
+   "first_frame": {
+    "setting": "Inside the Colombo garage, Nimal stands left facing Dinu at right beneath a rain-struck metal roof.",
+    "lighting": "A greenish practical bulb gives soft overhead light, cool entrance spill fills faces, and a sodium lamp rims the entrance-side edges with steady contrast.",
+    "subjects": [
+     "Dinu's right palm, open beneath the settled C-17 key",
+     "A soft portion of Dinu's navy work shirt"
+    ],
+    "composition": "Dinu's open right palm crosses the lower centre diagonally, with the entire C-17 key in focus and his navy shirt soft behind it; faces and Nimal's box are outside the crop."
+   },
+   "cinematography": {
+    "angle": "High oblique from the entrance side of the established axis",
+    "camera": "locked-off tripod, 100mm macro, f/4",
+    "framing": "INSERT of Dinu's open right palm with the entire C-17 key sharp; navy shirt falls soft behind it",
+    "movement": "Fixed frame with shallow optical isolation throughout",
+    "color_tone": "Naturalistic restrained contrast, cool shadows and warm edge highlights",
+    "white_balance": "4300K preserving green practical light, cool entrance fill and sodium edge warmth",
+    "depth_of_field": "Shallow; key and supporting palm sharp, shirt and garage softly dissolved",
+    "lens_artifacts": "none"
+   }
+  },
+  "status": "draft",
+  "version": 1,
+  "created_at": "2026-11-12 07:21:01.286903+00:00",
+  "updated_at": "2026-11-12 07:21:01.286903+00:00",
+  "duration_locked": false,
+  "design": {
+   "pins": {
+    "canon": {
+     "05eca9eb-f95b-42f8-bf6b-efb45093aac1": 1,
+     "ef1b35a7-c759-4fc3-8f09-5d8038996a71": 1
+    },
+    "looks": {},
+    "script_hash": "c2d732ec1b44a732",
+    "shot_version": 1
+   },
+   "intent": "feb8fb51cad0",
+   "job_id": "4def4973-f897-40b3-884d-f158b9a097be",
+   "missing": [],
+   "planner": "raphael",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "rationale": "The locked ending favours faces and the shared space; isolating the settled key makes custody tangible without repeating the transfer or implying consent.",
+   "designed_at": "2026-11-12T07:20:49.449305+00:00",
+   "recommended": {
+    "axis": "Side A · left to right",
+    "lens": "85mm",
+    "angle": "High angle",
+    "speed": "None",
+    "framing": "Insert",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "movement": "Static"
+   }
+  },
+  "camera_overrides": {},
+  "person_edits": {},
+  "intent": {
+   "by": "raphael",
+   "story": "Dinu studies the key while rain strikes the roof.",
+   "purpose": "The locked ending favours faces and the shared space; isolating the settled key makes custody tangible without repeating the transfer or implying consent.",
+   "made_for": "",
+   "on_screen": [
+    "05eca9eb-f95b-42f8-bf6b-efb45093aac1"
+   ],
+   "heard_only": [],
+   "written_at": null,
+   "what_we_see": "Dinu holds the key in his open right palm.; The key remains stationary on his palm as his hand stays at the same height.; Dinu continues to hold his palm open with the key resting on it.",
+   "voice_source": "",
+   "emotional_beat": "No answer; responsibility is now physically present."
+  },
+  "card": {
+   "size": "INSERT",
+   "lines": [],
+   "sound": {
+    "music": "none",
+    "effects": "none",
+    "silence": false,
+    "ambience": "Continuous rain on the metal garage roof and subdued interior room tone"
+   },
+   "use_s": 4,
+   "cut_in": {
+    "link": "cut"
+   },
+   "take_s": 4
+  },
+  "planner": "raphael",
+  "video_settings": {},
+  "role": "insert",
+  "priority": "should",
+  "slate": "3H-1",
+  "handle_in_s": "0.50",
+  "handle_out_s": "0.50",
+  "stage": 2,
+  "anchor": [
+   "3C-4",
+   "3A-7"
+  ],
+  "blend": "close"
+ }
+]

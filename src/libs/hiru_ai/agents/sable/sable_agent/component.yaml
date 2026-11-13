@@ -13,13 +13,14 @@ phase: sable.turn             # a deep call is `sable.deep`
 input: schema:Input
 output: schema:Output
 prompts: { system: prompts/system.md }
-# 19 read tools + 3 stage tools (change_propose, memory_propose, sable_state_propose) + Sable's 3 (§4.3). Fixed and sorted by the builder, so the list is part of the cached
+# 18 read tools + 3 stage tools (sable_shot_change, memory_propose, sable_state_propose) + Sable's 4 (§4.3; plan/2026-11-13
+# phase 8: the shot rows through the row kernel, sable_shot_try / sable_shot_change, not plan_try / change_propose). Fixed and sorted by the builder, so the list is part of the cached
 # prefix. No write tool (validate). Left out on purpose: plan_score, dialogue_check and every write tool.
 tool_cap: 25
-tools: [canon_find, canon_read, change_propose, continuity_check, dialogue_read, episode_read, frame_read,
-        glossary_read, memory_propose, memory_search, plan_try, prompt_check, questions_read, sable_overview,
-        sable_scene_find, sable_think_harder, scene_read, scene_reading_read, search_kb, shot_read, staging_check,
-        sable_state_propose, technique_lookup, timing_check, veo_fit]
+tools: [canon_find, canon_read, continuity_check, dialogue_read, episode_read, frame_read,
+        glossary_read, memory_propose, memory_search, prompt_check, questions_read, sable_overview,
+        sable_scene_find, sable_shot_change, sable_shot_try, sable_think_harder, scene_read, scene_reading_read,
+        search_kb, shot_read, staging_check, sable_state_propose, technique_lookup, timing_check, veo_fit]
 knowledge: [production_docs, cinematography, craft, techniques]
 middleware: [static_first, usage, absent_safe, untrusted_text, production_memory,
              tiering, limits, retry, fallback, clear_old_results, tool_retry]

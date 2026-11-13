@@ -30,9 +30,11 @@ tiers:
   raphael_breakdown:        { timeout_s: 900, retries: 1, fallbacks: [] }
   raphael_cinematic:        { timeout_s: 900, retries: 1, fallbacks: [], responses: true }
   raphael_cinematic_repair: { timeout_s: 900, retries: 1, fallbacks: [], responses: true }
-  # Zora, the director chat (plan/2026-11-06e D7): its one author per turn is Jonathan's model at a lower effort (the
-  # lab's arm A), so the chat's craft is the planner's. Edits are small, so a shorter timeout than a whole plan's.
-  zora:     { model: model_jonathan, effort: effort_zora,     timeout_s: 600,  retries: 1, fallbacks: [] }
+  # Zora, the director chat on the shot rows (plan/2026-11-13 §3.9, D9 of plan/2026-11-12d, lab/zora_rows run 6): the
+  # conductor and every reply on a small fast model, the author's craft on its own model; a turn is capped at $0.02 in
+  # code (zora_chat/budget.py).
+  zora_chat:   { model: model_zora_chat,   effort: effort_zora_chat,   timeout_s: 60,  retries: 1, fallbacks: [] }
+  zora_author: { model: model_zora_author, effort: effort_zora_author, timeout_s: 120, retries: 1, fallbacks: [] }
   # The document reader (plan/2026-11-06f Q1): the author's model reads a whole episode, or its page images, in one
   # answer; its repairer is the same model on the same tier.
   reader:   { model: model_author,   effort: effort_reader,   timeout_s: 900,  retries: 1, fallbacks: [] }

@@ -12,7 +12,7 @@ import pytest
 from api.services import director as director_service
 from api.services import sable as sable_service
 from tests.api.conftest import World, _settings, world  # noqa: F401  (the API's own fixtures)
-from tests.api.test_director import Applier, frames, use
+from tests.api.test_director import frames
 from tests.api.test_scenes import seed_scene, url
 
 Row = dict[str, Any]
@@ -43,6 +43,32 @@ def fn(world: World) -> Function:  # noqa: F811
     f = Function()
     world.client.app.dependency_overrides[sable_service.get_streamer] = lambda: f.stream  # type: ignore[attr-defined]
     return f
+
+
+class Actor:
+    """Stands in for the sable_chat function's card action: records it and answers `ok` (or the sentence given)."""
+
+    def __init__(self, refused: str = "") -> None:
+        self.actions: list[Row] = []
+        self.refused = refused
+
+    async def act(self, payload: Row) -> Row:
+        self.actions.append(payload)
+        if self.refused:
+            return {"ok": False, "text": self.refused, "revision": 0}
+        return {"ok": True, "text": f"Applied: {payload.get('summary')} · revision 4.", "revision": 4}
+
+
+def actor(world: World, refused: str = "") -> Actor:  # noqa: F811
+    a = Actor(refused)
+    world.client.app.dependency_overrides[sable_service.get_actor] = lambda: a.act  # type: ignore[attr-defined]
+    return a
+
+
+def row_card(sid: Any, **over: Any) -> Row:
+    return {"kind": "sable_change", "scene_id": str(sid), "scene": "E1S1", "summary": "Open close.", "engine": "rows",
+            "made_on": "abc123", "ops": [{"op": {"op": "set", "shot": 1, "field": "size", "value": "CU"},
+                                          "by": "author"}], "status": "open", **over}
 
 
 def ask(world: World, who: Any, message: str = "How far along is episode 1?", **body: Any) -> Any:  # noqa: F811
@@ -133,19 +159,20 @@ def test_meta_never_reaches_the_browser_and_a_handoff_says_where_it_opens(world:
     assert handoff["target"] == "zora"  # Zora on: every scene is hers, whoever planned it
 
 
-def test_a_staged_change_is_applied_by_code_once(world: World, fn: Function):  # noqa: F811
+def test_a_staged_change_is_carried_out_by_code_once(world: World, fn: Function):  # noqa: F811
+    """plan/2026-11-13 phase 8: the row kernel's operations go to the function's `apply` with the rows' fingerprint."""
     sid = seed_scene(world)["scene"]["id"]
     tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
-    ops = [{"op": "set", "shot_id": str(uuid4()), "field": "framing", "value": "CU"}]
-    mid = _reply(world, tid, [{"kind": "text", "text": "A card."},
-                              {"kind": "sable_change", "scene_id": str(sid), "scene": "E1S1", "summary": "Open close.",
-                               "ops": ops, "status": "open"}])
-    applier = use(world, Applier())
+    card = row_card(sid)
+    mid = _reply(world, tid, [{"kind": "text", "text": "A card."}, card])
+    z = actor(world)
     path = url(world, f"/sable/messages/{mid}/cards/1/accept")
     assert world.client.post(path, headers=world.headers(world.writer)).status_code == 403  # no DIRECT
     r = world.client.post(path, headers=world.headers(world.director))
-    assert r.status_code == 200 and r.json()["ok"] is True
-    assert applier.payloads[0].ops == ops and str(applier.payloads[0].scene_id) == str(sid)
+    assert r.status_code == 200 and r.json()["ok"] is True and r.json()["text"] == "Applied: Open close. · revision 4."
+    (sent,) = z.actions
+    assert sent["kind"] == "apply" and sent["scene_id"] == str(sid) and sent["ops"] == card["ops"]
+    assert sent["made_on"] == "abc123" and sent["actor_user_id"] == str(world.director)
     assert r.json()["message"]["blocks"][1]["status"] == "accepted"
     assert world.client.post(path, headers=world.headers(world.director)).status_code == 409  # once
     assert world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"),
@@ -153,16 +180,24 @@ def test_a_staged_change_is_applied_by_code_once(world: World, fn: Function):  #
 
 
 def test_a_change_the_scene_refuses_now_is_marked_failed_with_the_reason(world: World, fn: Function):  # noqa: F811
-    from contracts.director import ChoiceResult
-
     sid = seed_scene(world)["scene"]["id"]
     tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
-    mid = _reply(world, tid, [{"kind": "sable_change", "scene_id": str(sid), "scene": "E1S1", "summary": "x",
-                               "ops": [{"op": "set"}], "status": "open"}])
-    use(world, Applier(ChoiceResult(applied=[], summary="That shot no longer exists.")))
+    mid = _reply(world, tid, [row_card(sid)])
+    actor(world, refused="The shots changed since this card was made, so nothing was applied. Ask me again.")
     r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
     assert r.json()["ok"] is False and r.json()["message"]["blocks"][0]["status"] == "failed"
-    assert r.json()["text"] == "That shot no longer exists."
+    assert r.json()["text"].startswith("The shots changed since this card was made")
+
+
+def test_a_card_from_before_the_row_kernel_is_failed_and_nothing_is_sent(world: World, fn: Function):  # noqa: F811
+    sid = seed_scene(world)["scene"]["id"]
+    tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
+    old = {"kind": "sable_change", "scene_id": str(sid), "scene": "E1S1", "summary": "x",
+           "ops": [{"op": "set", "shot_id": str(uuid4()), "field": "framing", "value": "CU"}], "status": "open"}
+    mid = _reply(world, tid, [old])
+    z = actor(world)
+    r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
+    assert r.json()["ok"] is False and "Ask Sable again" in r.json()["text"] and z.actions == []
 
 
 def test_a_rule_accepted_is_remembered_and_a_dismissed_card_is_set_aside(world: World, fn: Function):  # noqa: F811
@@ -245,18 +280,14 @@ def test_a_state_card_for_an_approved_scene_is_refused(world: World, fn: Functio
     assert r.status_code == 409
 
 
-def test_an_accepted_note_moves_the_shots_version_so_what_was_made_reads_out_of_date(world: World, fn: Function):  # noqa: F811
-    sid, shots = _mapped_scene(world)
-    shot = sorted(shots, key=lambda s: int(s["number"]))[0]
+def test_a_change_card_for_an_approved_scene_is_refused(world: World, fn: Function):  # noqa: F811
+    sid = seed_scene(world)["scene"]["id"]
+    world.repos.scenes.rows[str(sid)]["status"] = "approved"  # type: ignore[attr-defined]
     tid = frames(ask(world, world.director).text)[0][1]["thread_id"]
-    ops = [{"op": "dop_note.set", "shot_id": str(shot["id"]), "value": "The car is a white van."}]
-    mid = _reply(world, tid, [{"kind": "sable_change", "scene_id": sid, "scene": "E1S1", "summary": "Van.",
-                               "ops": ops, "status": "open"}])
-    use(world, Applier())
-    before = int(shot.get("version") or 1)
+    mid = _reply(world, tid, [row_card(sid)])
+    z = actor(world)
     r = world.client.post(url(world, f"/sable/messages/{mid}/cards/0/accept"), headers=world.headers(world.director))
-    assert r.json()["ok"] is True
-    assert int(world.repos.shots.rows[str(shot["id"])]["version"]) == before + 1  # type: ignore[attr-defined]
+    assert r.status_code == 409 and z.actions == []
 
 
 # ── plan/2026-11-09b phase 4: what @ pointed at ───────────────────────────────────────────────────────────────────────

@@ -1,8 +1,0 @@
-id: zora_kernel
-kind: step
-version: 1
-summary: "Applies Zora's closed set of operations to one scene's stored plan (treatment, sequences, shots, staging, end state) on stable handles: exact undo, removals whole or not at all, locks, lines bound by code."
-status: active
-owner: director
-entry: step:run
-uses: []

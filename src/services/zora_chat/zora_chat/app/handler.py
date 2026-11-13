@@ -1,8 +1,8 @@
-"""`hiru-zora-chat`: Zora, the director chat over Shot Planner Jonathan's plan (plan/2026-11-06e §4.10, Phase 7).
+"""`hiru-zora-chat`: Zora, the director chat on a scene's shot rows (plan/2026-11-06e §4.10; plan/2026-11-13).
 
 Like `hiru-director-chat`, not a job: the API checks who is asking, stores their message and proxies this function's
 event stream straight back to the browser (`contracts.zora.events`). A body with `"action": true` is a person's click
-(use a proposal, undo, redo, lock, unlock): plain JSON in and out, no model.
+(accept or reject a card, use a proposal, undo, redo, lock, unlock): plain JSON in and out, no model.
 
 Zora has no legacy engine: the function is a thin handler that builds the run's context with the real adapters and
 hands over to the `zora_chat` system. An error event carries a sentence for the person, never an exception's text.

@@ -1,0 +1,759 @@
+{
+  "notes": "I shortened the intervening holds while preserving the full takes for L3 and L4. The framing tightens toward the personal challenge, then settles on Dinu; closer breathing and a more insistent roof-rain texture sharpen the exchange without changing the physical light.",
+  "ops": [
+    {
+      "op": "set",
+      "shot": "S08",
+      "field": "movement",
+      "value": "Hold the shared frame steady, suppressing handheld drift so Dinu's objection meets Nimal without visual release."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "sound",
+      "shot": "S08",
+      "field": "effects",
+      "value": "Restrained breathing close beneath L3; no added accent."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "retime",
+      "shot": "S09",
+      "field": null,
+      "value": null,
+      "take_s": 4
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S09",
+      "field": "sees",
+      "value": "Dinu holds Nimal's eye line after L3, lips closed and chin level. He neither nods nor looks away."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S09",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Dinu holds Nimal's eye line with lips closed after L3.\",\"camera\":\"MCU, locked off\",\"performance\":\"Keep the objection present in the eyes; no nod or release.\",\"director_line\":\"A short, unresolved hold rather than another delivery.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S09",
+      "field": "subjects",
+      "value": "[{\"id\":\"C01\",\"action\":\"Holds Nimal's eye line with lips closed after L3.\",\"position\":\"Standing frame right facing left, hands empty at his sides below frame.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S09",
+      "field": "audio",
+      "value": "No repeated delivery of L3. Roof rain and Dinu's close, restrained breathing carry the hold."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S09",
+      "field": "movement",
+      "value": "Locked off; let Dinu's refusal to look away supply the pressure."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "retime",
+      "shot": "S10",
+      "field": null,
+      "value": null,
+      "take_s": 4
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S10",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Nimal receives the objection, lips closed, the open box supported below frame.\",\"camera\":\"MCU, locked off\",\"performance\":\"Keep his gaze fixed on Dinu; no nod and no softening before L4.\",\"director_line\":\"Cut away before the resistance resolves.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S10",
+      "field": "movement",
+      "value": "Locked off; meet Dinu's stillness with Nimal's equally fixed gaze."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "sound",
+      "shot": "S10",
+      "field": "ambience",
+      "value": "Continuous roof rain, with the hard metal-roof texture slightly more forward in the mix; the rainfall itself does not change."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S11",
+      "field": "movement",
+      "value": "A slow, controlled advance tightens the two-shot as L4 turns personal, retaining both faces and the established axis; no lateral drift."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S11",
+      "field": "beats",
+      "value": "[{\"time\":\"0-3s\",\"action\":\"Nimal performs L4 while supporting the open box; Dinu listens.\",\"camera\":\"TWO, begin a restrained forward move, focus favouring Nimal\",\"performance\":\"Nimal stays pointed and quiet; Dinu does not nod.\",\"director_line\":\"The personal pressure begins to close the shared space.\"},{\"time\":\"3-6s\",\"action\":\"Nimal continues L4 without changing position.\",\"camera\":\"Continue the slow advance, retaining both faces\",\"performance\":\"Keep the delivery direct, without a compensating gesture.\",\"director_line\":\"Tighten through the challenge, not through raised volume.\"},{\"time\":\"6-8s\",\"action\":\"Nimal completes L4; Dinu remains facing him.\",\"camera\":\"Settle into the tighter two-shot\",\"performance\":\"Allow no reassuring release between them.\",\"director_line\":\"Preserve the whole line and cut into its consequence.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "sound",
+      "shot": "S11",
+      "field": "ambience",
+      "value": "Keep roof rain continuous but lower it slightly beneath the full L4 delivery, making Nimal's quiet voice feel closer rather than louder."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "retime",
+      "shot": "S12",
+      "field": null,
+      "value": null,
+      "take_s": 4
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S12",
+      "field": "sees",
+      "value": "Nimal holds Dinu's eye line after L4, lips closed, supporting the open box below frame. The tight face offers no release from the challenge."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S12",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Nimal holds his gaze after L4, lips closed and open box supported below frame.\",\"camera\":\"CU, locked off\",\"performance\":\"No smile, nod or renewed delivery; sustain the personal challenge in the eyes.\",\"director_line\":\"A brief hard hold before the listener receives the frame.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S12",
+      "field": "subjects",
+      "value": "[{\"id\":\"C03\",\"action\":\"Holds Dinu's eye line with lips closed after L4, supporting the open box below frame.\",\"position\":\"Standing frame left facing right, open box supported by left hand and forearm below frame, right hand holding its lid open.\",\"description\":\"Nimal, 34, in a plain charcoal shirt and dark trousers.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S12",
+      "field": "audio",
+      "value": "No repeated delivery of L4. Close breathing against the continuous roof rain."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S12",
+      "field": "movement",
+      "value": "Locked off at close range; the pressure comes from Nimal holding the look, not camera agitation."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "sound",
+      "shot": "S12",
+      "field": "ambience",
+      "value": "Bring the same roof rain back forward after L4, favouring its hard metallic texture without increasing the actual rainfall."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "retime",
+      "shot": "S13",
+      "field": null,
+      "value": null,
+      "take_s": 6
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S13",
+      "field": "movement",
+      "value": "Locked off in the close-up; give Dinu no visual escape after the preceding advance and shorter cuts."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S13",
+      "field": "beats",
+      "value": "[{\"time\":\"0-3s\",\"action\":\"Dinu holds Nimal's eye line, lips closed.\",\"camera\":\"CU, locked off\",\"performance\":\"Receive the personal challenge without a nod.\",\"director_line\":\"The accelerating exchange stops on its consequence.\"},{\"time\":\"3-6s\",\"action\":\"Dinu briefly lowers his eyes and returns them to Nimal.\",\"camera\":\"Maintain the same close frame\",\"performance\":\"Make the glance small and singular; hands remain at his sides below frame.\",\"director_line\":\"Let the pressure register without implying agreement.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S13",
+      "field": "audio",
+      "value": "The aftermath of L4, without repeating it: continuous metallic roof rain and Dinu's close breathing. No musical release."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "sound",
+      "shot": "S13",
+      "field": "ambience",
+      "value": "Sustain the forward metallic roof-rain texture from S12; no weather change or dramatic sound accent."
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    }
+  ],
+  "asks": [],
+  "variants": []
+}

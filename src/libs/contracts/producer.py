@@ -239,6 +239,9 @@ class PersonEdits(BaseModel):
     dop_note: str = Field(default="", max_length=600)  # replaces the DP's own rationale when set
     # plan/2026-11-11b: a person turned off the same-setup frame for this shot (`contracts.frame_brief.setup_frame`)
     setup_frame_off: bool = False
+    # plan/2026-11-13 §3.5 (D-A): the fields a person set through Zora ("size", "lens", "sees" ...): no model may write
+    # them. The take is `shots.duration_locked`, not here.
+    zora_locks: list[str] = Field(default_factory=list)
 
     @classmethod
     def of(cls, shot: Mapping[str, Any] | None) -> PersonEdits:
@@ -259,6 +262,8 @@ class PersonEdits(BaseModel):
             out["dop_note"] = self.dop_note
         if self.setup_frame_off:
             out["setup_frame_off"] = True
+        if self.zora_locks:
+            out["zora_locks"] = list(self.zora_locks)
         return out
 
 

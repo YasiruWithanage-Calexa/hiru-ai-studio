@@ -9,7 +9,7 @@ from uuid import uuid4
 
 import pytest
 
-from tests.zora.world import ROOT
+from tests.zora.rows_world import ROOT
 
 sys.path.insert(0, str(ROOT / "src" / "services" / "zora_chat"))
 from zora_chat.app import handler

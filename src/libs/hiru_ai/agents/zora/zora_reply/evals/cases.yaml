@@ -1,14 +1,14 @@
-- name: a_change_is_reported_from_the_ledger
+- name: a_change_is_told_like_a_colleague
   input:
-    plan: "S03 MCU 85mm"
-    message: S03 on an 85
-    turn: ["DONE THIS TURN (computed by code from the plan; true even if the conversation says otherwise; describe it as done now, in plain words):\n- S03: lens 50mm → 85mm"]
-  reply: "Done: S03 is on an 85 now, so her face fills the frame."
-  expect: {text: "Done: S03 is on an 85 now, so her face fills the frame."}
+    scene: "S01 [3A-1] must master WIDE 6s cut ..."
+    message: Make S01 a wide, 6 seconds.
+    facts: ["WHAT CHANGED (the app also shows this list under your message):\n- S01's size went from MS to WIDE\n- S01's take went from 4 s to 6 s"]
+  reply: "I opened S01 up to a wide and let it run six seconds, so the garage settles before we go in."
+  expect: {text: "I opened S01 up to a wide and let it run six seconds, so the garage settles before we go in."}
 - name: nothing_changed_is_said_plainly
   input:
-    plan: "S01 WIDE"
+    scene: "S01 WIDE"
     message: make it better
-    turn: ["NOTHING CHANGED THIS TURN. The plan is exactly as it was before this message."]
-  reply: "Nothing changed. Tell me which part feels off."
-  expect: {text: "Nothing changed. Tell me which part feels off."}
+    facts: ["THE REQUEST WAS NOT CLEAR: nothing was changed. Ask ONE short question that tells the readings apart."]
+  reply: "Happy to. Which part feels off to you, the opening or the argument?"
+  expect: {text: "Happy to. Which part feels off to you, the opening or the argument?"}

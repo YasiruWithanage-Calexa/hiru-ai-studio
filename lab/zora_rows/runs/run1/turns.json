@@ -1,0 +1,1911 @@
+[
+ {
+  "message": "Why is S01 only a medium shot? It's the first image of the flashback.",
+  "slot": "t01",
+  "lane": "chat",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [],
+  "before_s": 120,
+  "conductor": {
+   "lane": "chat",
+   "confidence": 0.9,
+   "ops": [],
+   "tasks": [],
+   "variants": 0,
+   "cannot": null,
+   "memory": ""
+  },
+  "reply": "Nothing changed: not one field was written this turn. The scene remains as previously specified.",
+  "after_s": 120,
+  "revision": 0,
+  "calls": [
+   {
+    "slot": "t01.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.001,
+    "seconds": 15.3,
+    "input_tokens": 2225,
+    "cached_tokens": 0,
+    "output_tokens": 221
+   },
+   {
+    "slot": "t01.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0039,
+    "seconds": 7.4,
+    "input_tokens": 12655,
+    "cached_tokens": 0,
+    "output_tokens": 366
+   }
+  ],
+  "dollars": 0.0049
+ },
+ {
+  "message": "Make S01 a wide, 6 seconds.",
+  "slot": "t02",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "S01 · size: MS → WIDE",
+   "S01 · take: 4 s → 6 s"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [],
+  "before_s": 120,
+  "conductor": {
+   "lane": "edit",
+   "confidence": 0.9,
+   "ops": [
+    {
+     "op": "set",
+     "shot": "S01",
+     "field": "size",
+     "value": "WIDE"
+    },
+    {
+     "op": "retime",
+     "shot": "S01",
+     "take_s": 6
+    }
+   ],
+   "tasks": [],
+   "variants": 1,
+   "cannot": null,
+   "memory": ""
+  },
+  "tasks": [],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S01 · size: MS → WIDE"
+   },
+   {
+    "by": "conductor",
+    "text": "S01 · take: 4 s → 6 s"
+   }
+  ],
+  "reply": "S01 is now a WIDE instead of MS, and its runtime is extended from 4s to 6s. This opens the frame to fully locate the flashback in the garage and reinforces the restrained handheld presence noted in the why—giving the edit more room to cut to inserts and reaction shots while preserving the private, anchored opening.",
+  "after_s": 122,
+  "revision": 1,
+  "calls": [
+   {
+    "slot": "t02.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0012,
+    "seconds": 5.0,
+    "input_tokens": 2254,
+    "cached_tokens": 0,
+    "output_tokens": 302
+   },
+   {
+    "slot": "t02.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0008,
+    "seconds": 3.3,
+    "input_tokens": 1974,
+    "cached_tokens": 0,
+    "output_tokens": 166
+   }
+  ],
+  "dollars": 0.002
+ },
+ {
+  "message": "The argument from S08 to S13 drags. Make it tenser.",
+  "slot": "t03",
+  "lane": "craft",
+  "saved": true,
+  "done": [
+   "S08 · size: MS → MCU",
+   "S08 · take: 6 s → 4 s",
+   "S08 · angle: Eye level, entrance side of the axis → Eye level from the entrance side; favour Dinu at frame right, with Ni…",
+   "S08 · beats rewritten",
+   "S08 · sound music: None. → Introduce a very low sustained tonal rumble beneath the roof rain; ke…",
+   "S09 · size: MCU → CU",
+   "S09 · take: 6 s → 4 s",
+   "S09 · what we see: Dinu looks left toward Nimal.; Dinu's lips move to L3.; Dinu closes h… → Dinu faces left toward Nimal with lips closed and empty hands below f…",
+   "S09 · audio: L3 performed on camera over steady roof rain and breathing. → Silent on-screen hold; any L3 overlap comes only from S08, over conti…",
+   "S09 · beats rewritten",
+   "S09 · subjects rewritten",
+   "S09 · sound music: None. → Carry the low sustained rumble from S08 without an accent at the cut.",
+   "S10 · size: MCU → CU",
+   "S10 · take: 6 s → 4 s",
+   "S10 · beats rewritten",
+   "S10 · sound ambience: Rain on the garage roof. → Carry roof rain continuously across the cut, subtly favouring the har…",
+   "S11 · size: TWO → MCU",
+   "S11 · take: 8 s → 6 s",
+   "S11 · angle: Eye level, entrance side of the axis → Eye level, entrance side, favouring Nimal at frame left; Dinu's navy …",
+   "S11 · beats rewritten",
+   "S11 · sound music: None. → Carry the low rumble beneath L4, slightly more present than under L3 …",
+   "S12 · take: 8 s → 6 s",
+   "S12 · what we see: He supports the open box below frame.; His lips move to L4 while the … → Nimal faces right with lips closed, holding Dinu's eye line; the open…",
+   "S12 · movement: Restrained handheld drift within the same composition → Almost imperceptible forward creep within the CU, reducing headroom a…",
+   "S12 · audio: L4 performed on camera over steady roof rain and breathing. → Silent on-screen hold; any L4 overlap comes only from S11 over contin…",
+   "S12 · beats rewritten",
+   "S12 · subjects rewritten",
+   "S12 · sound music: None. → Sustain the same low rumble as S11 without restarting it at the cut.",
+   "S13 · take: 8 s → 6 s",
+   "S13 · movement: Restrained handheld drift within the same composition → Slow, minimal push within the CU as Dinu receives the personal challe…",
+   "S13 · beats rewritten",
+   "S13 · sound music: None. → Thin the sustained rumble to near silence over the final two seconds,…"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [
+   "Tightened S08–S13 around closer faces and quicker reaction holds, with a restrained low rumble beneath the roof rain. L3 retains four seconds and L4 six seconds for full delivery; the physical lighting stays unchanged."
+  ],
+  "undelivered": [],
+  "reported": [
+   "L4 needs about 6.8 s and S11 is 6 s: re-time it to 8 s. The line is never trimmed."
+  ],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [
+   {
+    "notes": "Tightened S08–S13 around closer faces and quicker reaction holds, with a restrained low rumble beneath the roof rain. L3 retains four seconds and L4 six seconds for full delivery; the physical lighting stays unchanged.",
+    "ops": [
+     {
+      "op": "retime",
+      "shot": "S08",
+      "take_s": 4
+     },
+     {
+      "op": "set",
+      "shot": "S08",
+      "field": "size",
+      "value": "MCU"
+     },
+     {
+      "op": "set",
+      "shot": "S08",
+      "field": "angle",
+      "value": "Eye level from the entrance side; favour Dinu at frame right, with Nimal's charcoal shoulder soft at the left edge. Preserve their established eye line."
+     },
+     {
+      "op": "set",
+      "shot": "S08",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Dinu performs L3 in full; Nimal listens with the open box steady below frame.\",\"camera\":\"MCU favouring Dinu; restrained handheld presence without reframing.\",\"performance\":\"Dinu holds Nimal's gaze and delivers the objection without pauses for emphasis.\",\"director_line\":\"Enter directly on the resistance; cut without a settling tail.\"}]"
+     },
+     {
+      "op": "sound",
+      "shot": "S08",
+      "field": "music",
+      "value": "Introduce a very low sustained tonal rumble beneath the roof rain; keep L3 fully intelligible."
+     },
+     {
+      "op": "retime",
+      "shot": "S09",
+      "take_s": 4
+     },
+     {
+      "op": "set",
+      "shot": "S09",
+      "field": "size",
+      "value": "CU"
+     },
+     {
+      "op": "set",
+      "shot": "S09",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Dinu holds his gaze toward Nimal, lips closed; L3 belongs to S08.\",\"camera\":\"CU with little headroom, entrance side of the established axis.\",\"performance\":\"Keep the jaw contained and the gaze level; no nod.\",\"director_line\":\"A compressed silent hold, not another delivery.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S09",
+      "field": "audio",
+      "value": "Silent on-screen hold; any L3 overlap comes only from S08, over continuous roof rain."
+     },
+     {
+      "op": "set",
+      "shot": "S09",
+      "field": "sees",
+      "value": "Dinu faces left toward Nimal with lips closed and empty hands below frame; his gaze stays level throughout the hold."
+     },
+     {
+      "op": "set",
+      "shot": "S09",
+      "field": "subjects",
+      "value": "[{\"id\":\"C01\",\"action\":\"Holds Nimal's gaze with lips closed.\",\"position\":\"Standing frame right facing left, empty hands at his sides below frame.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+     },
+     {
+      "op": "sound",
+      "shot": "S09",
+      "field": "music",
+      "value": "Carry the low sustained rumble from S08 without an accent at the cut."
+     },
+     {
+      "op": "retime",
+      "shot": "S10",
+      "take_s": 4
+     },
+     {
+      "op": "set",
+      "shot": "S10",
+      "field": "size",
+      "value": "CU"
+     },
+     {
+      "op": "set",
+      "shot": "S10",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Nimal receives Dinu's objection, supporting the open box below frame.\",\"camera\":\"CU, locked composition with restricted look room toward frame right.\",\"performance\":\"Lips closed; no nod or release of the stare.\",\"director_line\":\"Cut into the withheld response and leave before it relaxes.\"}]"
+     },
+     {
+      "op": "sound",
+      "shot": "S10",
+      "field": "ambience",
+      "value": "Carry roof rain continuously across the cut, subtly favouring the harder metal-roof impacts without adding a new weather event."
+     },
+     {
+      "op": "retime",
+      "shot": "S11",
+      "take_s": 6
+     },
+     {
+      "op": "set",
+      "shot": "S11",
+      "field": "size",
+      "value": "MCU"
+     },
+     {
+      "op": "set",
+      "shot": "S11",
+      "field": "angle",
+      "value": "Eye level, entrance side, favouring Nimal at frame left; Dinu's navy shoulder occupies the soft right foreground. The open box remains supported below frame."
+     },
+     {
+      "op": "set",
+      "shot": "S11",
+      "field": "beats",
+      "value": "[{\"time\":\"0-6s\",\"action\":\"Nimal performs L4 in full while Dinu listens; the open box stays supported below frame.\",\"camera\":\"MCU favouring Nimal, with Dinu's shoulder pressing into the foreground edge.\",\"performance\":\"Pointed restraint at a continuous conversational pace; no added pauses and no clipped words.\",\"director_line\":\"The personal pressure arrives without the release of a wider frame.\"}]"
+     },
+     {
+      "op": "sound",
+      "shot": "S11",
+      "field": "music",
+      "value": "Carry the low rumble beneath L4, slightly more present than under L3 but always below speech; no rhythmic pulse or sting."
+     },
+     {
+      "op": "retime",
+      "shot": "S12",
+      "take_s": 6
+     },
+     {
+      "op": "set",
+      "shot": "S12",
+      "field": "movement",
+      "value": "Almost imperceptible forward creep within the CU, reducing headroom as Nimal's stare holds; stay on the entrance side of the axis."
+     },
+     {
+      "op": "set",
+      "shot": "S12",
+      "field": "beats",
+      "value": "[{\"time\":\"0-3s\",\"action\":\"Nimal holds Dinu's eye line with lips closed; the open box remains supported below frame.\",\"camera\":\"CU begins a nearly imperceptible forward creep.\",\"performance\":\"Keep the stare steady without a nod.\",\"director_line\":\"Pressure continues without a second delivery of L4.\"},{\"time\":\"3-6s\",\"action\":\"Nimal maintains the same position and closed lips.\",\"camera\":\"Finish fractionally tighter with less headroom.\",\"performance\":\"Do not soften the gaze.\",\"director_line\":\"Withhold release.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S12",
+      "field": "sees",
+      "value": "Nimal faces right with lips closed, holding Dinu's eye line; the open box stays supported below frame throughout."
+     },
+     {
+      "op": "set",
+      "shot": "S12",
+      "field": "subjects",
+      "value": "[{\"id\":\"C03\",\"action\":\"Holds Dinu's eye line with lips closed, supporting the open box below frame.\",\"position\":\"Standing frame left facing right, open box supported by left hand and forearm below frame, right hand holding its lid open.\",\"description\":\"Nimal, 34, in a plain charcoal shirt and dark trousers.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S12",
+      "field": "audio",
+      "value": "Silent on-screen hold; any L4 overlap comes only from S11 over continuous roof rain and the low rumble."
+     },
+     {
+      "op": "sound",
+      "shot": "S12",
+      "field": "music",
+      "value": "Sustain the same low rumble as S11 without restarting it at the cut."
+     },
+     {
+      "op": "retime",
+      "shot": "S13",
+      "take_s": 6
+     },
+     {
+      "op": "set",
+      "shot": "S13",
+      "field": "movement",
+      "value": "Slow, minimal push within the CU as Dinu receives the personal challenge; finish tighter on his eyes and closed mouth without crossing the axis."
+     },
+     {
+      "op": "set",
+      "shot": "S13",
+      "field": "beats",
+      "value": "[{\"time\":\"0-3s\",\"action\":\"Dinu receives L4 with lips closed and hands at his sides below frame.\",\"camera\":\"CU, beginning a minimal push.\",\"performance\":\"Hold Nimal's eye line; no nod.\",\"director_line\":\"Let the listener carry the pressure.\"},{\"time\":\"3-6s\",\"action\":\"Dinu briefly lowers his eyes and returns them toward Nimal.\",\"camera\":\"Finish tighter and stop; no corrective drift.\",\"performance\":\"One contained glance only, without signalling agreement.\",\"director_line\":\"End on unresolved resistance.\"}]"
+     },
+     {
+      "op": "sound",
+      "shot": "S13",
+      "field": "music",
+      "value": "Thin the sustained rumble to near silence over the final two seconds, exposing the existing roof rain rather than adding a sting."
+     }
+    ],
+    "asks": [],
+    "variants": []
+   }
+  ],
+  "before_s": 122,
+  "conductor": {
+   "lane": "craft",
+   "confidence": 0.72,
+   "ops": [],
+   "tasks": [
+    {
+     "writes": [
+      "picture",
+      "camera",
+      "timing",
+      "sound",
+      "light",
+      "order"
+     ],
+     "shots": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+     ],
+     "instruction": "Make the exchange from S08–S13 tenser: tighten beats, increase visual pressure on the speakers, and raise audio tension. Specific ideas for the author to try (choose and combine as needed):\n- Timing: shorten some takes (e.g., reduce S08 and S11 from 6/8s to 4–6s, tighten reaction shots S09/S10/S12/S13 to snappier 4–6s) so lines and reactions cut faster against each other.\n- Picture/camera: add or favor closer framings and more aggressive framings—push coverage toward CU/MCU on faces at key beats (especially S12/S13) and introduce slight push-ins or handheld micro-tilts to increase unease.\n- Order: consider inserting a brief cutaway/insert (a small object or hands) between L3 and L4 to break rhythm and raise stakes; or swap one master with a closer single to reduce wide breathing room.\n- Sound: bring up rain/ambient roof hits subtly, add a low, sustained underscored rumble under L3–L4, and tighten room tone so reaction cuts feel immediate.\n- Light: deepen contrast on Nimal’s face during L4; use a sharper key or a cooler fill to make Dinu’s reactions more stark.\nDeliverables: for each shot (S08–S13) propose one concrete change in timing and framing, and one sound or light adjustment to test in the cut."
+    }
+   ],
+   "variants": 1,
+   "cannot": null,
+   "memory": ""
+  },
+  "tasks": [
+   {
+    "writes": [
+     "picture",
+     "camera",
+     "timing",
+     "sound",
+     "light",
+     "order"
+    ],
+    "scope": [
+     "S08",
+     "S09",
+     "S10",
+     "S11",
+     "S12",
+     "S13"
+    ],
+    "instruction": "Make the exchange from S08–S13 tenser: tighten beats, increase visual pressure on the speakers, and raise audio tension. Specific ideas for the author to try (choose and combine as needed):\n- Timing: shorten some takes (e.g., reduce S08 and S11 from 6/8s to 4–6s, tighten reaction shots S09/S10/S12/S13 to snappier 4–6s) so lines and reactions cut faster against each other.\n- Picture/camera: add or favor closer framings and more aggressive framings—push coverage toward CU/MCU on faces at key beats (especially S12/S13) and introduce slight push-ins or handheld micro-tilts to increase unease.\n- Order: consider inserting a brief cutaway/insert (a small object or hands) between L3 and L4 to break rhythm and raise stakes; or swap one master with a closer single to reduce wide breathing room.\n- Sound: bring up rain/ambient roof hits subtly, add a low, sustained underscored rumble under L3–L4, and tighten room tone so reaction cuts feel immediate.\n- Light: deepen contrast on Nimal’s face during L4; use a sharper key or a cooler fill to make Dinu’s reactions more stark.\nDeliverables: for each shot (S08–S13) propose one concrete change in timing and framing, and one sound or light adjustment to test in the cut."
+   }
+  ],
+  "applied": [
+   {
+    "by": "author",
+    "text": "S08 · take: 6 s → 4 s"
+   },
+   {
+    "by": "author",
+    "text": "S08 · size: MS → MCU"
+   },
+   {
+    "by": "author",
+    "text": "S08 · angle: Eye level, entrance side of the axis → Eye level from the entrance side; favour Dinu at frame righ…"
+   },
+   {
+    "by": "author",
+    "text": "S08 · beats: (was set) → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S08 · music: None. → Introduce a very low sustained tonal rumble beneath the roo…"
+   },
+   {
+    "by": "author",
+    "text": "S09 · take: 6 s → 4 s"
+   },
+   {
+    "by": "author",
+    "text": "S09 · size: MCU → CU"
+   },
+   {
+    "by": "author",
+    "text": "S09 · beats: (was set) → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S09 · audio: L3 performed on camera over steady roof rain and breathing. → Silent on-screen hold; any L3 overlap comes only from S08, …"
+   },
+   {
+    "by": "author",
+    "text": "S09 · sees: Dinu looks left toward Nimal.; Dinu's lips move to L3.; Din… → Dinu faces left toward Nimal with lips closed and empty han…"
+   },
+   {
+    "by": "author",
+    "text": "S09 · subjects: (was set) → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S09 · music: None. → Carry the low sustained rumble from S08 without an accent a…"
+   },
+   {
+    "by": "author",
+    "text": "S10 · take: 6 s → 4 s"
+   },
+   {
+    "by": "author",
+    "text": "S10 · size: MCU → CU"
+   },
+   {
+    "by": "author",
+    "text": "S10 · beats: (was set) → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S10 · ambience: Rain on the garage roof. → Carry roof rain continuously across the cut, subtly favouri…"
+   },
+   {
+    "by": "author",
+    "text": "S11 · take: 8 s → 6 s"
+   },
+   {
+    "by": "author",
+    "text": "S11 · size: TWO → MCU"
+   },
+   {
+    "by": "author",
+    "text": "S11 · angle: Eye level, entrance side of the axis → Eye level, entrance side, favouring Nimal at frame left; Di…"
+   },
+   {
+    "by": "author",
+    "text": "S11 · beats: (was set) → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S11 · music: None. → Carry the low rumble beneath L4, slightly more present than…"
+   },
+   {
+    "by": "author",
+    "text": "S12 · take: 8 s → 6 s"
+   },
+   {
+    "by": "author",
+    "text": "S12 · movement: Restrained handheld drift within the same composition → Almost imperceptible forward creep within the CU, reducing …"
+   },
+   {
+    "by": "author",
+    "text": "S12 · beats: (was set) → (2 written)"
+   },
+   {
+    "by": "author",
+    "text": "S12 · sees: He supports the open box below frame.; His lips move to L4 … → Nimal faces right with lips closed, holding Dinu's eye line…"
+   },
+   {
+    "by": "author",
+    "text": "S12 · subjects: (was set) → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S12 · audio: L4 performed on camera over steady roof rain and breathing. → Silent on-screen hold; any L4 overlap comes only from S11 o…"
+   },
+   {
+    "by": "author",
+    "text": "S12 · music: None. → Sustain the same low rumble as S11 without restarting it at…"
+   },
+   {
+    "by": "author",
+    "text": "S13 · take: 8 s → 6 s"
+   },
+   {
+    "by": "author",
+    "text": "S13 · movement: Restrained handheld drift within the same composition → Slow, minimal push within the CU as Dinu receives the perso…"
+   },
+   {
+    "by": "author",
+    "text": "S13 · beats: (was set) → (2 written)"
+   },
+   {
+    "by": "author",
+    "text": "S13 · music: None. → Thin the sustained rumble to near silence over the final tw…"
+   }
+  ],
+  "reply": "I tightened S08–S13 into closer framings and shorter holds (MS→MCU/CU and several takes reduced) and introduced a low sustained rumble under the roof rain; the edit now favors faster reaction cuts and claustrophobic faces to increase pressure. This preserves full deliveries for L3 (4s) and L4 (6s) while making the argument feel tenser through compressed coverage and quicker pacing. Reported: L4 actually needs about 6.8s but S11 is only 6s — the way out is to re-time S11 to 8s (the line is never trimmed).",
+  "after_s": 110,
+  "revision": 2,
+  "calls": [
+   {
+    "slot": "t03.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0016,
+    "seconds": 7.0,
+    "input_tokens": 2352,
+    "cached_tokens": 0,
+    "output_tokens": 501
+   },
+   {
+    "slot": "t03.author",
+    "role": "author",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "dollars": 0.0471,
+    "seconds": 45.4,
+    "input_tokens": 6286,
+    "cached_tokens": 0,
+    "output_tokens": 3453
+   },
+   {
+    "slot": "t03.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0019,
+    "seconds": 4.6,
+    "input_tokens": 5138,
+    "cached_tokens": 0,
+    "output_tokens": 323
+   }
+  ],
+  "dollars": 0.0506
+ },
+ {
+  "message": "Drop S08.",
+  "slot": "t04",
+  "lane": "edit",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [
+   "L3 is already assigned to S08; I corrected its silent-hold picture instructions to show Dinu delivering it. Both close shots remain at 4 seconds, preserving the full delivery and a tight reaction cut before L4."
+  ],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [
+   "L3 (Dinu's line) moves to the single CU [3C-3], which shows Dinu"
+  ],
+  "card": {
+   "reasons": [
+    "removes S08, a must clip",
+    "removes the clip that performs L3"
+   ],
+   "lines": [
+    "S08 · what we see: Dinu faces left toward Nimal with lips closed and empty hands below f… → Dinu delivers L3 facing left toward Nimal, his gaze level and his emp…",
+    "S08 · beats rewritten",
+    "S08 · subjects rewritten",
+    "S08 [3A-4] removed (must master MCU)",
+    "L3 (Dinu) now performed by S08 [3C-3] single CU (was S08 [3A-4] master MCU)",
+    "L3 (Dinu's line) moves to the single CU [3C-3], which shows Dinu",
+    "Takes in the scene: 110 s → 106 s",
+    "Checks after the change: no new problem"
+   ]
+  },
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [
+   {
+    "notes": "L3 is already assigned to S08; I corrected its silent-hold picture instructions to show Dinu delivering it. Both close shots remain at 4 seconds, preserving the full delivery and a tight reaction cut before L4.",
+    "ops": [
+     {
+      "op": "set",
+      "shot": "S08",
+      "field": "sees",
+      "value": "Dinu delivers L3 facing left toward Nimal, his gaze level and his empty hands below frame. His jaw settles as the delivery ends; he does not nod."
+     },
+     {
+      "op": "set",
+      "shot": "S08",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Dinu performs L3 in full, looking left toward Nimal with empty hands below frame.\",\"camera\":\"CU with little headroom, entrance side of the established axis; keep the restrained drift contained.\",\"performance\":\"Deliver with a level gaze and contained resolve, without a nod or added pause.\",\"director_line\":\"Preserve the full delivery, then cut to Nimal receiving it in S09.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S08",
+      "field": "subjects",
+      "value": "[{\"id\":\"C01\",\"action\":\"Delivers L3 while holding Nimal's gaze.\",\"position\":\"Standing frame right facing left, empty hands at his sides below frame.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+     }
+    ],
+    "asks": [],
+    "variants": []
+   }
+  ],
+  "before_s": 110,
+  "conductor": {
+   "lane": "edit",
+   "confidence": 0.8,
+   "ops": [
+    {
+     "op": "remove",
+     "shot": "S08"
+    }
+   ],
+   "tasks": [
+    {
+     "writes": [
+      "picture",
+      "camera",
+      "timing",
+      "order"
+     ],
+     "shots": [
+      8,
+      9
+     ],
+     "instruction": "S08 (the original master performing L3) is removed — ensure L3 is still performed: assign the spoken line L3 to an existing close shot over the same block (preferably the current close on-Dinu shot now renumbered to S08, or the next CU now S09). Adjust framing and camera (move to MCU/CU as needed), set the take length to preserve the 4s delivery, and tighten timing to maintain the argument’s increased tension. If necessary, reorder or slight-retime adjacent reaction shots so L3 cuts cleanly into L4."
+    }
+   ],
+   "variants": 0,
+   "cannot": null,
+   "memory": ""
+  },
+  "tasks": [
+   {
+    "writes": [
+     "picture",
+     "camera",
+     "timing",
+     "order"
+    ],
+    "scope": [
+     "S08",
+     "S09"
+    ],
+    "instruction": "S08 (the original master performing L3) is removed — ensure L3 is still performed: assign the spoken line L3 to an existing close shot over the same block (preferably the current close on-Dinu shot now renumbered to S08, or the next CU now S09). Adjust framing and camera (move to MCU/CU as needed), set the take length to preserve the 4s delivery, and tighten timing to maintain the argument’s increased tension. If necessary, reorder or slight-retime adjacent reaction shots so L3 cuts cleanly into L4."
+   }
+  ],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S08 removed (must master MCU, b3)"
+   },
+   {
+    "by": "author",
+    "text": "S08 · sees: Dinu faces left toward Nimal with lips closed and empty han… → Dinu delivers L3 facing left toward Nimal, his gaze level a…"
+   },
+   {
+    "by": "author",
+    "text": "S08 · beats: (was set) → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S08 · subjects: (was set) → (1 written)"
+   }
+  ],
+  "would": [
+   "S08 · what we see: Dinu faces left toward Nimal with lips closed and empty hands below f… → Dinu delivers L3 facing left toward Nimal, his gaze level and his emp…",
+   "S08 · beats rewritten",
+   "S08 · subjects rewritten",
+   "S08 [3A-4] removed (must master MCU)",
+   "L3 (Dinu) now performed by S08 [3C-3] single CU (was S08 [3A-4] master MCU)"
+  ],
+  "reply": "This change removes the must master MCU (S08) and moves L3 onto the existing CU (previously S09), keeping the close coverage so the objection still plays full and tight before L4. The card below has Accept and Reject.",
+  "after_s": 110,
+  "revision": 2,
+  "calls": [
+   {
+    "slot": "t04.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0021,
+    "seconds": 8.8,
+    "input_tokens": 2448,
+    "cached_tokens": 0,
+    "output_tokens": 768
+   },
+   {
+    "slot": "t04.author",
+    "role": "author",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "dollars": 0.0123,
+    "seconds": 17.2,
+    "input_tokens": 3775,
+    "cached_tokens": 1589,
+    "output_tokens": 773
+   },
+   {
+    "slot": "t04.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0009,
+    "seconds": 3.4,
+    "input_tokens": 2333,
+    "cached_tokens": 0,
+    "output_tokens": 156
+   }
+  ],
+  "dollars": 0.0153
+ },
+ {
+  "message": "[Accept]",
+  "slot": "t05",
+  "lane": "action",
+  "saved": true,
+  "done": [
+   "S08 · what we see: Dinu faces left toward Nimal with lips closed and empty hands below f… → Dinu delivers L3 facing left toward Nimal, his gaze level and his emp…",
+   "S08 · beats rewritten",
+   "S08 · subjects rewritten",
+   "S08 [3A-4] removed (must master MCU)",
+   "L3 (Dinu) now performed by S08 [3C-3] single CU (was S08 [3A-4] master MCU)"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [
+   "L3 (Dinu's line) moves to the single CU [3C-3], which shows Dinu"
+  ],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [],
+  "before_s": 110,
+  "reply": "Accepted · revision 3",
+  "after_s": 106,
+  "revision": 3,
+  "calls": [],
+  "dollars": 0
+ },
+ {
+  "message": "Undo that.",
+  "slot": "t06",
+  "lane": "undo",
+  "saved": true,
+  "done": [
+   "restored S08: must master MCU 4 s over b3 — The ethical disagreement registers in the space separating their bodi…",
+   "S09 · what we see: Dinu delivers L3 facing left toward Nimal, his gaze level and his emp… → Dinu faces left toward Nimal with lips closed and empty hands below f…",
+   "S09 · beats rewritten",
+   "S09 · subjects rewritten",
+   "L3 (Dinu) now performed by S08 [3A-4] master MCU (was S08 [3C-3] single CU)"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [],
+  "before_s": 106,
+  "reply": "Undone: the scene is back to how it was before the last change.",
+  "after_s": 110,
+  "revision": 4,
+  "calls": [],
+  "dollars": 0
+ },
+ {
+  "message": "Remove S05, we don't need the master there.",
+  "slot": "t07",
+  "lane": "edit",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [
+   "the team's set size on S06: outside this turn's task (camera)",
+   "the team's line : there is no shot None"
+  ],
+  "notes": [
+   "L2 moves to S06, reframed as a two-shot with Nimal clearly speaking and Dinu receiving the claim in silence. Roof rain stays beneath the dialogue, with no music."
+  ],
+  "undelivered": [
+   "Replace the removed master that performed L2: either assign line L2 to one of the existing clips covering b2 (S06 or S07) or insert a new clip that performs L2. Make sure the chosen clip shows the speaking subject clearly (picture), that the line is audible and mixed correctly (sound), and adjust clip order or add/remove clips as needed so L2 reads naturally in the cut."
+  ],
+  "reported": [],
+  "kernel_notes": [
+   "L2 (Nimal's line) moves to the single MCU [3B-1], which shows Nimal"
+  ],
+  "card": {
+   "reasons": [
+    "removes S05, a must clip",
+    "removes the clip that performs L2"
+   ],
+   "lines": [
+    "S05 [3A-3] removed (must master MS)",
+    "L2 (Nimal) now performed by S05 [3B-1] single MCU (was S05 [3A-3] master MS)",
+    "L2 (Nimal's line) moves to the single MCU [3B-1], which shows Nimal",
+    "Takes in the scene: 110 s → 104 s",
+    "Checks after the change: no new problem"
+   ]
+  },
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [
+   {
+    "notes": "L2 moves to S06, reframed as a two-shot with Nimal clearly speaking and Dinu receiving the claim in silence. Roof rain stays beneath the dialogue, with no music.",
+    "ops": [
+     {
+      "op": "line",
+      "to_shot": "S06",
+      "line": "L2"
+     },
+     {
+      "op": "set",
+      "shot": "S06",
+      "field": "size",
+      "value": "TWO qualified"
+     }
+    ],
+    "asks": [],
+    "variants": []
+   }
+  ],
+  "before_s": 110,
+  "conductor": {
+   "lane": "edit",
+   "confidence": 0.79,
+   "ops": [
+    {
+     "op": "remove",
+     "shot": "S05"
+    }
+   ],
+   "tasks": [
+    {
+     "writes": [
+      "order",
+      "picture",
+      "sound"
+     ],
+     "shots": [
+      6,
+      7
+     ],
+     "instruction": "Replace the removed master that performed L2: either assign line L2 to one of the existing clips covering b2 (S06 or S07) or insert a new clip that performs L2. Make sure the chosen clip shows the speaking subject clearly (picture), that the line is audible and mixed correctly (sound), and adjust clip order or add/remove clips as needed so L2 reads naturally in the cut."
+    }
+   ],
+   "variants": 0,
+   "cannot": null,
+   "memory": ""
+  },
+  "tasks": [
+   {
+    "writes": [
+     "order",
+     "picture",
+     "sound"
+    ],
+    "scope": [
+     "S06",
+     "S07"
+    ],
+    "instruction": "Replace the removed master that performed L2: either assign line L2 to one of the existing clips covering b2 (S06 or S07) or insert a new clip that performs L2. Make sure the chosen clip shows the speaking subject clearly (picture), that the line is audible and mixed correctly (sound), and adjust clip order or add/remove clips as needed so L2 reads naturally in the cut."
+   }
+  ],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S05 removed (must master MS, b2)"
+   }
+  ],
+  "would": [
+   "S05 [3A-3] removed (must master MS)",
+   "L2 (Nimal) now performed by S05 [3B-1] single MCU (was S05 [3A-3] master MS)"
+  ],
+  "reply": "This change removes the must-master MS (S05) and moves L2 onto S06 reframed as a two-shot so Nimal still speaks on camera over the rain; the card below has Accept and Reject.",
+  "after_s": 110,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "t07.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0017,
+    "seconds": 11.0,
+    "input_tokens": 2260,
+    "cached_tokens": 0,
+    "output_tokens": 552
+   },
+   {
+    "slot": "t07.author",
+    "role": "author",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "dollars": 0.0077,
+    "seconds": 11.1,
+    "input_tokens": 3695,
+    "cached_tokens": 1589,
+    "output_tokens": 329
+   },
+   {
+    "slot": "t07.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.001,
+    "seconds": 4.3,
+    "input_tokens": 2284,
+    "cached_tokens": 0,
+    "output_tokens": 238
+   }
+  ],
+  "dollars": 0.0104
+ },
+ {
+  "message": "[Reject]",
+  "slot": "t08",
+  "lane": "action",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [],
+  "before_s": 110,
+  "reply": "Rejected · nothing changed.",
+  "after_s": 110,
+  "revision": 4,
+  "calls": [],
+  "dollars": 0
+ },
+ {
+  "message": "Change Nimal's line in S11 to say 400 million.",
+  "slot": "t09",
+  "lane": "cannot",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "NOT POSSIBLE HERE: Changing the spoken text of a line (script content) is outside the scope of shot-level edits in this scene. Line assignments and the script copy are managed on the script card, not via shot operations here. Route: Make this change on the script (script card or script editor) so the actor/Nimal and the clip that performs L4 (S11) reflect the new dialogue. After the script is updated, you may request timing or performance edits for S11 here.",
+  "author": [],
+  "before_s": 110,
+  "conductor": {
+   "lane": "cannot",
+   "confidence": 0.81,
+   "ops": [],
+   "tasks": [],
+   "variants": 0,
+   "cannot": {
+    "reason": "Changing the spoken text of a line (script content) is outside the scope of shot-level edits in this scene. Line assignments and the script copy are managed on the script card, not via shot operations here.",
+    "route": "Make this change on the script (script card or script editor) so the actor/Nimal and the clip that performs L4 (S11) reflect the new dialogue. After the script is updated, you may request timing or performance edits for S11 here."
+   },
+   "memory": ""
+  },
+  "reply": "Not possible here: changing the words of L4 is a script-level edit, not a shot/coverage change. Update the script card or script editor so L4 reads 400 million, then return and I can adjust S11’s performance or timing to match. Nothing changed in the scene as a result of this request.",
+  "after_s": 110,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "t09.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0011,
+    "seconds": 4.6,
+    "input_tokens": 2328,
+    "cached_tokens": 0,
+    "output_tokens": 239
+   },
+   {
+    "slot": "t09.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0035,
+    "seconds": 4.0,
+    "input_tokens": 12539,
+    "cached_tokens": 0,
+    "output_tokens": 197
+   }
+  ],
+  "dollars": 0.0046
+ },
+ {
+  "message": "Add a close-up insert of the key in Dinu's palm after S15.",
+  "slot": "t10",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "new S16: should must MS 4 s over b5 — Let the key's arrival register through Dinu's stillness between the h…"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [
+   "S16 now holds on Dinu with the key already in his open palm, giving the handover a quiet aftermath without repeating contact. The garage rain carries the pause."
+  ],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [
+   {
+    "notes": "S16 now holds on Dinu with the key already in his open palm, giving the handover a quiet aftermath without repeating contact. The garage rain carries the pause.",
+    "ops": [
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "why",
+      "value": "Let the key's arrival register through Dinu's stillness between the handover coverage and his closer reaction."
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "sees",
+      "value": "Dinu in a medium frame, his face and open palm both visible. The C-17 key rests in his palm after the handover; its markings need not be legible. Hold on his stillness without repeating the exchange."
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "angle",
+      "value": "Three-quarter view of Dinu from the established side of the handover axis; frame his face above the open palm."
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "lens",
+      "value": "50mm equivalent; sufficient depth to retain both Dinu's face and the key in his palm."
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "movement",
+      "value": "Locked off: the pause after the exchange supplies the tension."
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "beats",
+      "value": "[{\"time\":\"0–2s\",\"action\":\"Begin after the exchange, with the key resting in Dinu's open palm.\"},{\"time\":\"2–4s\",\"action\":\"Hold Dinu and the key together in stillness; leave the closer facial response to S17.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "subjects",
+      "value": "[\"Dinu\"]"
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "first_frame",
+      "value": "{\"description\":\"Medium three-quarter view of Dinu in the established Colombo garage position, wearing the same clothes as the adjoining clips. His face and open palm share the frame; the C-17 key already rests in his palm. Match the existing garage light and background, with no visible hand contact.\"}"
+     },
+     {
+      "op": "sound",
+      "shot": "S16",
+      "field": "ambience",
+      "value": "Rain on the garage roof, continuous with the adjoining coverage."
+     },
+     {
+      "op": "sound",
+      "shot": "S16",
+      "field": "music",
+      "value": "No music in this hold; let the roof rain carry the pause."
+     }
+    ],
+    "asks": [],
+    "variants": []
+   }
+  ],
+  "before_s": 110,
+  "conductor": {
+   "lane": "edit",
+   "confidence": 0.63,
+   "ops": [
+    {
+     "op": "insert",
+     "take_s": 4,
+     "role": "must",
+     "after": "S15",
+     "first_block": 5,
+     "last_block": 5,
+     "who": [
+      "Dinu"
+     ],
+     "what": "close-up of the C-17 key in Dinu's palm (visual insert)"
+    }
+   ],
+   "tasks": [],
+   "variants": 0,
+   "cannot": null,
+   "memory": ""
+  },
+  "tasks": [
+   {
+    "writes": [
+     "picture",
+     "camera",
+     "light",
+     "sound"
+    ],
+    "scope": [
+     "S16"
+    ],
+    "instruction": "write this new or re-cut clip whole: why, what we see, camera, beats, subjects, first frame, sound, in the scene's continuity",
+    "code": true
+   }
+  ],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "new S16: MS must, b5-b5, 4 s (its picture needs writing)"
+   },
+   {
+    "by": "author",
+    "text": "S16 · why: - → Let the key's arrival register through Dinu's stillness bet…"
+   },
+   {
+    "by": "author",
+    "text": "S16 · sees: close-up of the C-17 key in Dinu's palm (visual insert) → Dinu in a medium frame, his face and open palm both visible…"
+   },
+   {
+    "by": "author",
+    "text": "S16 · angle: - → Three-quarter view of Dinu from the established side of the…"
+   },
+   {
+    "by": "author",
+    "text": "S16 · lens: - → 50mm equivalent; sufficient depth to retain both Dinu's fac…"
+   },
+   {
+    "by": "author",
+    "text": "S16 · movement: - → Locked off: the pause after the exchange supplies the tensi…"
+   },
+   {
+    "by": "author",
+    "text": "S16 · beats: - → (2 written)"
+   },
+   {
+    "by": "author",
+    "text": "S16 · subjects: - → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S16 · first_frame: - → (1 written)"
+   },
+   {
+    "by": "author",
+    "text": "S16 · ambience: - → Rain on the garage roof, continuous with the adjoining cove…"
+   },
+   {
+    "by": "author",
+    "text": "S16 · music: - → No music in this hold; let the roof rain carry the pause."
+   }
+  ],
+  "reply": "Added S16: a 4s medium MS hold on Dinu with the C-17 key already resting in his open palm after the handover. This gives the handoff a quiet aftermath—the stillness and rain let the moment register without repeating the exchange, tightening emotional pacing before we cut to his closer reaction. The card below has Accept and Reject.",
+  "after_s": 114,
+  "revision": 5,
+  "calls": [
+   {
+    "slot": "t10.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0014,
+    "seconds": 7.0,
+    "input_tokens": 2356,
+    "cached_tokens": 0,
+    "output_tokens": 422
+   },
+   {
+    "slot": "t10.author",
+    "role": "author",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "dollars": 0.0192,
+    "seconds": 21.8,
+    "input_tokens": 2777,
+    "cached_tokens": 1589,
+    "output_tokens": 1668
+   },
+   {
+    "slot": "t10.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0007,
+    "seconds": 3.1,
+    "input_tokens": 1902,
+    "cached_tokens": 0,
+    "output_tokens": 131
+   }
+  ],
+  "dollars": 0.0213
+ },
+ {
+  "message": "Give me two ways to end the scene.",
+  "slot": "t11",
+  "lane": "options",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [
+   "Both cuts retain S01–S15 unchanged: A finishes S16 8s → S17 4s → S18 8s (102s total; alternate ending timing 6/4/8s, 100s total), while B finishes S19 4s → S20 4s → S17 4s (94s total; alternate ending timing 4/4/6s, 96s total). A lengthens S16/S18 and shortens S17 for a rain-led aftermath; B reorders and shortens the remaining ending coverage, tightens Nimal to CU, and ends on Dinu with rising roof rain."
+  ],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [
+   {
+    "label": "A — Quiet aftermath",
+    "ops": [
+     {
+      "op": "remove",
+      "shot": "S19"
+     },
+     {
+      "op": "remove",
+      "shot": "S20"
+     },
+     {
+      "op": "remove",
+      "shot": "S21"
+     },
+     {
+      "op": "retime",
+      "shot": "S16",
+      "take_s": 8
+     },
+     {
+      "op": "retime",
+      "shot": "S17",
+      "take_s": 4
+     },
+     {
+      "op": "retime",
+      "shot": "S18",
+      "take_s": 8
+     },
+     {
+      "op": "set",
+      "shot": "S16",
+      "field": "beats",
+      "value": "[{\"time\":\"0–4s\",\"action\":\"The key already rests in Dinu's open right palm; hold face and palm together.\"},{\"time\":\"4–8s\",\"action\":\"Continue the still hold without repeating the exchange; rain fills the pause.\"}]"
+     },
+     {
+      "op": "sound",
+      "shot": "S16",
+      "field": "ambience",
+      "value": "Bring the continuous roof rain gently forward across the cut from S15; sustain it throughout the eight-second hold."
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "sees",
+      "value": "Dinu looks down at the key already resting in his open right palm below frame. His lips stay closed; the exchange is complete."
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "beats",
+      "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu keeps looking down at the key already in his right palm below frame.\",\"camera\":\"Hold the existing CU without reframing.\",\"performance\":\"Lips closed, no nod; do not repeat the receiving gesture.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "subjects",
+      "value": "[{\"id\":\"C01\",\"action\":\"Looks down at the key already resting in his right palm below frame, without nodding.\",\"position\":\"Standing frame right facing left; open right palm holding the key at waist height below frame, left hand at his side.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "first_frame",
+      "value": "{\"setting\":\"Soft garage structure behind Dinu beneath the metal roof.\",\"lighting\":\"Greenish overhead practical, cool facial fill and sodium edge light.\",\"subjects\":[\"Dinu looks down at the key already in his open right palm below frame, lips closed.\"],\"composition\":\"Dinu's face at frame right, gaze lowered toward his palm.\"}"
+     },
+     {
+      "op": "sound",
+      "shot": "S17",
+      "field": "effects",
+      "value": "Only quiet breathing; omit the transfer's metal contact because the key is already settled."
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "audio",
+      "value": "Continuous roof rain and quiet breathing; no dialogue, music or repeated transfer sound."
+     },
+     {
+      "op": "set",
+      "shot": "S18",
+      "field": "beats",
+      "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu studies the key in his open right palm.\",\"performance\":\"Keep his gaze lowered and lips closed, without nodding.\"},{\"time\":\"4–8s\",\"action\":\"Continue holding the key at the same height; leave the response unresolved.\",\"performance\":\"No added gesture.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S18",
+      "field": "movement",
+      "value": "Locked off for the final eight-second hold; stillness lets the key and lowered gaze share the frame."
+     },
+     {
+      "op": "sound",
+      "shot": "S18",
+      "field": "ambience",
+      "value": "Carry the roof rain continuously from S17, then gently fade it over the final two seconds; no dialogue or musical resolution."
+     }
+    ],
+    "lines": [
+     "S16 · take: 4 s → 8 s",
+     "S16 · beats rewritten",
+     "S16 · sound ambience: Rain on the garage roof, continuous with the adjoining coverage. → Bring the continuous roof rain gently forward across the cut from S15…",
+     "S17 · take: 6 s → 4 s",
+     "S17 · what we see: Dinu's hands are empty at his sides below frame.; Dinu raises his emp… → Dinu looks down at the key already resting in his open right palm bel…",
+     "S17 · audio: Rain on the roof, offscreen light metal contact and breathing; no voc… → Continuous roof rain and quiet breathing; no dialogue, music or repea…",
+     "S17 · beats rewritten",
+     "S17 · subjects rewritten",
+     "S17 · first_frame rewritten",
+     "S17 · sound effects: Offscreen quiet metal contact and close breathing. → Only quiet breathing; omit the transfer's metal contact because the k…",
+     "S18 · take: 6 s → 8 s",
+     "S18 · movement: Restrained handheld drift within the same composition → Locked off for the final eight-second hold; stillness lets the key an…",
+     "S18 · beats rewritten",
+     "S18 · sound ambience: Rain striking the garage roof. → Carry the roof rain continuously from S17, then gently fade it over t…",
+     "S19 [3A-7] removed (must two_shot TWO)",
+     "S20 [3B-3] removed (must reaction MCU)",
+     "S21 [3H-1] removed (should insert INSERT)"
+    ],
+    "refused": [],
+    "problems": [],
+    "risky": [
+     "removes S19, a must clip",
+     "removes S20, a must clip"
+    ]
+   },
+   {
+    "label": "B — Tense ambiguity",
+    "ops": [
+     {
+      "op": "remove",
+      "shot": "S16"
+     },
+     {
+      "op": "remove",
+      "shot": "S18"
+     },
+     {
+      "op": "remove",
+      "shot": "S21"
+     },
+     {
+      "op": "move",
+      "shot": "S19",
+      "after": "S15"
+     },
+     {
+      "op": "move",
+      "shot": "S20",
+      "after": "S19"
+     },
+     {
+      "op": "retime",
+      "shot": "S19",
+      "take_s": 4
+     },
+     {
+      "op": "retime",
+      "shot": "S20",
+      "take_s": 4
+     },
+     {
+      "op": "retime",
+      "shot": "S17",
+      "take_s": 4
+     },
+     {
+      "op": "set",
+      "shot": "S19",
+      "field": "beats",
+      "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu studies the key already in his open right palm while Nimal holds the open box opposite him.\",\"camera\":\"Retain the established two-shot and axis; cut directly to Nimal after four seconds.\",\"performance\":\"Neither nods or moves toward the other.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S20",
+      "field": "size",
+      "value": "CU"
+     },
+     {
+      "op": "set",
+      "shot": "S20",
+      "field": "lens",
+      "value": "85mm equivalent, f/2.8; tighten on Nimal's face from the established entrance side, keeping the box below frame."
+     },
+     {
+      "op": "set",
+      "shot": "S20",
+      "field": "beats",
+      "value": "[{\"time\":\"0–4s\",\"action\":\"Nimal holds the open box below frame and watches Dinu.\",\"camera\":\"CU; cut to Dinu after four seconds without a push-in.\",\"performance\":\"Lips closed, unchanged stance; his waiting supplies the pressure.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "sees",
+      "value": "Dinu looks down at the key already resting in his open right palm below frame. His lips stay closed; the exchange is complete."
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "beats",
+      "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu holds the key in his open right palm below frame, gaze lowered.\",\"camera\":\"Retain the tight CU; end before any answering gesture.\",\"performance\":\"Lips closed, no nod or repeated receiving gesture.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "subjects",
+      "value": "[{\"id\":\"C01\",\"action\":\"Looks down at the key already resting in his right palm below frame, without nodding.\",\"position\":\"Standing frame right facing left; open right palm holding the key at waist height below frame, left hand at his side.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "first_frame",
+      "value": "{\"setting\":\"Soft garage structure behind Dinu beneath the metal roof.\",\"lighting\":\"Greenish overhead practical, cool facial fill and sodium edge light.\",\"subjects\":[\"Dinu looks down at the key already in his open right palm below frame, lips closed.\"],\"composition\":\"Dinu's face at frame right, gaze lowered toward his palm.\"}"
+     },
+     {
+      "op": "sound",
+      "shot": "S17",
+      "field": "effects",
+      "value": "Quiet breathing only; omit repeated metal contact."
+     },
+     {
+      "op": "sound",
+      "shot": "S17",
+      "field": "ambience",
+      "value": "Maintain continuous roof rain through the preceding cuts; subtly lift its existing rhythmic impacts over the final two seconds, ending without a reassuring fade."
+     },
+     {
+      "op": "set",
+      "shot": "S17",
+      "field": "audio",
+      "value": "Roof rain and close breathing only; the rain's rhythmic impacts rise slightly in the final two seconds. No dialogue, music or repeated transfer sound."
+     }
+    ],
+    "lines": [
+     "S16 · take: 6 s → 4 s",
+     "S16 · beats rewritten",
+     "S19 moved to S16",
+     "S17 · size: MCU → CU",
+     "S17 · take: 6 s → 4 s",
+     "S17 · lens: - → 85mm equivalent, f/2.8; tighten on Nimal's face from the established …",
+     "S17 · beats rewritten",
+     "S20 moved to S17",
+     "S18 · take: 6 s → 4 s",
+     "S18 · what we see: Dinu's hands are empty at his sides below frame.; Dinu raises his emp… → Dinu looks down at the key already resting in his open right palm bel…",
+     "S18 · audio: Rain on the roof, offscreen light metal contact and breathing; no voc… → Roof rain and close breathing only; the rain's rhythmic impacts rise …",
+     "S18 · beats rewritten",
+     "S18 · subjects rewritten",
+     "S18 · first_frame rewritten",
+     "S18 · sound ambience: Rain on the garage roof. → Maintain continuous roof rain through the preceding cuts; subtly lift…",
+     "S18 · sound effects: Offscreen quiet metal contact and close breathing. → Quiet breathing only; omit repeated metal contact.",
+     "S17 moved to S18",
+     "S16 [] removed (should must MS)",
+     "S18 [3C-4] removed (must single MCU)",
+     "S21 [3H-1] removed (should insert INSERT)"
+    ],
+    "refused": [],
+    "problems": [],
+    "risky": [
+     "removes S18, a must clip"
+    ]
+   }
+  ],
+  "repair": null,
+  "fact": "",
+  "author": [
+   {
+    "notes": "Both cuts retain S01–S15 unchanged: A finishes S16 8s → S17 4s → S18 8s (102s total; alternate ending timing 6/4/8s, 100s total), while B finishes S19 4s → S20 4s → S17 4s (94s total; alternate ending timing 4/4/6s, 96s total). A lengthens S16/S18 and shortens S17 for a rain-led aftermath; B reorders and shortens the remaining ending coverage, tightens Nimal to CU, and ends on Dinu with rising roof rain.",
+    "ops": [],
+    "asks": [],
+    "variants": [
+     {
+      "label": "A — Quiet aftermath",
+      "ops": [
+       {
+        "op": "remove",
+        "shot": "S19"
+       },
+       {
+        "op": "remove",
+        "shot": "S20"
+       },
+       {
+        "op": "remove",
+        "shot": "S21"
+       },
+       {
+        "op": "retime",
+        "shot": "S16",
+        "take_s": 8
+       },
+       {
+        "op": "retime",
+        "shot": "S17",
+        "take_s": 4
+       },
+       {
+        "op": "retime",
+        "shot": "S18",
+        "take_s": 8
+       },
+       {
+        "op": "set",
+        "shot": "S16",
+        "field": "beats",
+        "value": "[{\"time\":\"0–4s\",\"action\":\"The key already rests in Dinu's open right palm; hold face and palm together.\"},{\"time\":\"4–8s\",\"action\":\"Continue the still hold without repeating the exchange; rain fills the pause.\"}]"
+       },
+       {
+        "op": "sound",
+        "shot": "S16",
+        "field": "ambience",
+        "value": "Bring the continuous roof rain gently forward across the cut from S15; sustain it throughout the eight-second hold."
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "sees",
+        "value": "Dinu looks down at the key already resting in his open right palm below frame. His lips stay closed; the exchange is complete."
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "beats",
+        "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu keeps looking down at the key already in his right palm below frame.\",\"camera\":\"Hold the existing CU without reframing.\",\"performance\":\"Lips closed, no nod; do not repeat the receiving gesture.\"}]"
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "subjects",
+        "value": "[{\"id\":\"C01\",\"action\":\"Looks down at the key already resting in his right palm below frame, without nodding.\",\"position\":\"Standing frame right facing left; open right palm holding the key at waist height below frame, left hand at his side.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "first_frame",
+        "value": "{\"setting\":\"Soft garage structure behind Dinu beneath the metal roof.\",\"lighting\":\"Greenish overhead practical, cool facial fill and sodium edge light.\",\"subjects\":[\"Dinu looks down at the key already in his open right palm below frame, lips closed.\"],\"composition\":\"Dinu's face at frame right, gaze lowered toward his palm.\"}"
+       },
+       {
+        "op": "sound",
+        "shot": "S17",
+        "field": "effects",
+        "value": "Only quiet breathing; omit the transfer's metal contact because the key is already settled."
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "audio",
+        "value": "Continuous roof rain and quiet breathing; no dialogue, music or repeated transfer sound."
+       },
+       {
+        "op": "set",
+        "shot": "S18",
+        "field": "beats",
+        "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu studies the key in his open right palm.\",\"performance\":\"Keep his gaze lowered and lips closed, without nodding.\"},{\"time\":\"4–8s\",\"action\":\"Continue holding the key at the same height; leave the response unresolved.\",\"performance\":\"No added gesture.\"}]"
+       },
+       {
+        "op": "set",
+        "shot": "S18",
+        "field": "movement",
+        "value": "Locked off for the final eight-second hold; stillness lets the key and lowered gaze share the frame."
+       },
+       {
+        "op": "sound",
+        "shot": "S18",
+        "field": "ambience",
+        "value": "Carry the roof rain continuously from S17, then gently fade it over the final two seconds; no dialogue or musical resolution."
+       }
+      ]
+     },
+     {
+      "label": "B — Tense ambiguity",
+      "ops": [
+       {
+        "op": "remove",
+        "shot": "S16"
+       },
+       {
+        "op": "remove",
+        "shot": "S18"
+       },
+       {
+        "op": "remove",
+        "shot": "S21"
+       },
+       {
+        "op": "move",
+        "shot": "S19",
+        "after": "S15"
+       },
+       {
+        "op": "move",
+        "shot": "S20",
+        "after": "S19"
+       },
+       {
+        "op": "retime",
+        "shot": "S19",
+        "take_s": 4
+       },
+       {
+        "op": "retime",
+        "shot": "S20",
+        "take_s": 4
+       },
+       {
+        "op": "retime",
+        "shot": "S17",
+        "take_s": 4
+       },
+       {
+        "op": "set",
+        "shot": "S19",
+        "field": "beats",
+        "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu studies the key already in his open right palm while Nimal holds the open box opposite him.\",\"camera\":\"Retain the established two-shot and axis; cut directly to Nimal after four seconds.\",\"performance\":\"Neither nods or moves toward the other.\"}]"
+       },
+       {
+        "op": "set",
+        "shot": "S20",
+        "field": "size",
+        "value": "CU"
+       },
+       {
+        "op": "set",
+        "shot": "S20",
+        "field": "lens",
+        "value": "85mm equivalent, f/2.8; tighten on Nimal's face from the established entrance side, keeping the box below frame."
+       },
+       {
+        "op": "set",
+        "shot": "S20",
+        "field": "beats",
+        "value": "[{\"time\":\"0–4s\",\"action\":\"Nimal holds the open box below frame and watches Dinu.\",\"camera\":\"CU; cut to Dinu after four seconds without a push-in.\",\"performance\":\"Lips closed, unchanged stance; his waiting supplies the pressure.\"}]"
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "sees",
+        "value": "Dinu looks down at the key already resting in his open right palm below frame. His lips stay closed; the exchange is complete."
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "beats",
+        "value": "[{\"time\":\"0–4s\",\"action\":\"Dinu holds the key in his open right palm below frame, gaze lowered.\",\"camera\":\"Retain the tight CU; end before any answering gesture.\",\"performance\":\"Lips closed, no nod or repeated receiving gesture.\"}]"
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "subjects",
+        "value": "[{\"id\":\"C01\",\"action\":\"Looks down at the key already resting in his right palm below frame, without nodding.\",\"position\":\"Standing frame right facing left; open right palm holding the key at waist height below frame, left hand at his side.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "first_frame",
+        "value": "{\"setting\":\"Soft garage structure behind Dinu beneath the metal roof.\",\"lighting\":\"Greenish overhead practical, cool facial fill and sodium edge light.\",\"subjects\":[\"Dinu looks down at the key already in his open right palm below frame, lips closed.\"],\"composition\":\"Dinu's face at frame right, gaze lowered toward his palm.\"}"
+       },
+       {
+        "op": "sound",
+        "shot": "S17",
+        "field": "effects",
+        "value": "Quiet breathing only; omit repeated metal contact."
+       },
+       {
+        "op": "sound",
+        "shot": "S17",
+        "field": "ambience",
+        "value": "Maintain continuous roof rain through the preceding cuts; subtly lift its existing rhythmic impacts over the final two seconds, ending without a reassuring fade."
+       },
+       {
+        "op": "set",
+        "shot": "S17",
+        "field": "audio",
+        "value": "Roof rain and close breathing only; the rain's rhythmic impacts rise slightly in the final two seconds. No dialogue, music or repeated transfer sound."
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "before_s": 114,
+  "conductor": {
+   "lane": "options",
+   "confidence": 0.85,
+   "ops": [],
+   "tasks": [
+    {
+     "writes": [
+      "picture",
+      "camera",
+      "timing",
+      "sound",
+      "order"
+     ],
+     "shots": [
+      18,
+      19,
+      20,
+      21,
+      16,
+      17
+     ],
+     "instruction": "Create two alternative endings for the scene using the existing coverage (focus on blocks b5–b6 and the inserts S16–S21). Deliver two cut variants: \n\nVariant A — Quiet aftermath: emphasize the hand/key aftermath and rain. Use S16 (insert MS of the key in Dinu's palm) as a held picture after the handoff, then cut to S17 (Dinu CU reaction) and S18 (MCU on Dinu as rain hits). Trim or extend takes as needed to let silence and ambience register (longer holds on S16 and S18). Keep sound minimal: raise ambience (rain) under the S16 hold, minimal dialogue under. End on S18 or S21 (the close insert) with a gentle audio fade on rain.\n\nVariant B — Tense ambiguity: emphasize interpersonal tension and uncertainty about the deal. Skip or shorten the S16 still insert; instead cut from S15/S14 into S19 (two-shot of both) to show their shared complicity, then to S20 (Nimal reaction CU) to underline threat/pressure, then finish on S17 or S21 as a tight, unresolved close on Dinu. Timing should be tighter (shorter holds) to create urgency; add a slight increase in diegetic sound (rain rhythm or a metallic creak) under the final frames to heighten unease.\n\nFor both variants: provide one-cut timings and an alternate timing map (take lengths for final cut), show which shots are lengthened/shortened and any re-ordering (order). Also supply camera notes if a tighter close or a faster cut is suggested (camera). Deliver two finished cut lists (shot order + take lengths) and a short audio plan (sound) for each variant."
+    }
+   ],
+   "variants": 2,
+   "cannot": null,
+   "memory": ""
+  },
+  "tasks": [
+   {
+    "writes": [
+     "picture",
+     "camera",
+     "timing",
+     "sound",
+     "order"
+    ],
+    "scope": [
+     "S18",
+     "S19",
+     "S20",
+     "S21",
+     "S16",
+     "S17"
+    ],
+    "instruction": "Create two alternative endings for the scene using the existing coverage (focus on blocks b5–b6 and the inserts S16–S21). Deliver two cut variants: \n\nVariant A — Quiet aftermath: emphasize the hand/key aftermath and rain. Use S16 (insert MS of the key in Dinu's palm) as a held picture after the handoff, then cut to S17 (Dinu CU reaction) and S18 (MCU on Dinu as rain hits). Trim or extend takes as needed to let silence and ambience register (longer holds on S16 and S18). Keep sound minimal: raise ambience (rain) under the S16 hold, minimal dialogue under. End on S18 or S21 (the close insert) with a gentle audio fade on rain.\n\nVariant B — Tense ambiguity: emphasize interpersonal tension and uncertainty about the deal. Skip or shorten the S16 still insert; instead cut from S15/S14 into S19 (two-shot of both) to show their shared complicity, then to S20 (Nimal reaction CU) to underline threat/pressure, then finish on S17 or S21 as a tight, unresolved close on Dinu. Timing should be tighter (shorter holds) to create urgency; add a slight increase in diegetic sound (rain rhythm or a metallic creak) under the final frames to heighten unease.\n\nFor both variants: provide one-cut timings and an alternate timing map (take lengths for final cut), show which shots are lengthened/shortened and any re-ordering (order). Also supply camera notes if a tighter close or a faster cut is suggested (camera). Deliver two finished cut lists (shot order + take lengths) and a short audio plan (sound) for each variant."
+   }
+  ],
+  "reply": "A — Quiet aftermath: extend the new MS S16 into a longer, contemplative hold, then a shorter S17 and an extended S18 to let rain and stillness carry the emotional tail; the card below has Use this.\n\nB — Tense ambiguity: tighten and reorder to S19 → S20 → S17 with shorter durations, closing on Dinu while the roof rain rises to underline unresolved pressure; the card below has Use this.",
+  "after_s": 114,
+  "revision": 5,
+  "calls": [
+   {
+    "slot": "t11.conductor",
+    "role": "conductor",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0022,
+    "seconds": 8.5,
+    "input_tokens": 2450,
+    "cached_tokens": 0,
+    "output_tokens": 778
+   },
+   {
+    "slot": "t11.author",
+    "role": "author",
+    "model": "gpt-6.1-sol",
+    "effort": "low",
+    "dollars": 0.0483,
+    "seconds": 43.7,
+    "input_tokens": 6223,
+    "cached_tokens": 1589,
+    "output_tokens": 3886
+   },
+   {
+    "slot": "t11.reply",
+    "role": "reply",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0037,
+    "seconds": 3.7,
+    "input_tokens": 13024,
+    "cached_tokens": 0,
+    "output_tokens": 229
+   }
+  ],
+  "dollars": 0.0542
+ },
+ {
+  "message": "[Use 1]",
+  "slot": "t12",
+  "lane": "action",
+  "saved": true,
+  "done": [
+   "S16 · take: 4 s → 8 s",
+   "S16 · beats rewritten",
+   "S16 · sound ambience: Rain on the garage roof, continuous with the adjoining coverage. → Bring the continuous roof rain gently forward across the cut from S15…",
+   "S17 · take: 6 s → 4 s",
+   "S17 · what we see: Dinu's hands are empty at his sides below frame.; Dinu raises his emp… → Dinu looks down at the key already resting in his open right palm bel…",
+   "S17 · audio: Rain on the roof, offscreen light metal contact and breathing; no voc… → Continuous roof rain and quiet breathing; no dialogue, music or repea…",
+   "S17 · beats rewritten",
+   "S17 · subjects rewritten",
+   "S17 · first_frame rewritten",
+   "S17 · sound effects: Offscreen quiet metal contact and close breathing. → Only quiet breathing; omit the transfer's metal contact because the k…",
+   "S18 · take: 6 s → 8 s",
+   "S18 · movement: Restrained handheld drift within the same composition → Locked off for the final eight-second hold; stillness lets the key an…",
+   "S18 · beats rewritten",
+   "S18 · sound ambience: Rain striking the garage roof. → Carry the roof rain continuously from S17, then gently fade it over t…",
+   "S19 [3A-7] removed (must two_shot TWO)",
+   "S21 [3H-1] removed (should insert INSERT)"
+  ],
+  "refused": [
+   "there is no shot S21"
+  ],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "repair": null,
+  "fact": "",
+  "author": [],
+  "before_s": 114,
+  "reply": "Used: A — Quiet aftermath · revision 6",
+  "after_s": 108,
+  "revision": 6,
+  "calls": [],
+  "dollars": 0
+ }
+]

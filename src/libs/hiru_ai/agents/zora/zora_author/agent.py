@@ -1,8 +1,7 @@
-"""zora_author hooks (plan/2026-11-06e §4.5; the lab's `author_message`, Phase 3, arm A).
+"""zora_author hooks (plan/2026-11-13 §3.6, §3.9; the lab's `turn._author_user`).
 
-The system prompt is Shot Planner Jonathan's author prompt to the letter, then Zora's charter (`prompts/system.md`; a
-test compares the head with the planner's file), so the chat's craft is the planner's craft. The user message is the
-lab's, byte for byte, for the same input. No fallback: a turn whose author cannot answer says so in its ledger.
+The system prompt is Zora's own (the lab's `prompts/author.md` with the safe-depiction line), not a planner's: Zora
+edits any planner's scene. The user message is the lab's layout. No fallback: a turn whose author cannot answer says so.
 """
 from __future__ import annotations
 
@@ -23,15 +22,15 @@ def memory_scope(inp: Input) -> dict[str, Any]:
 
 
 def user_message(inp: Input) -> str:
-    lines = ["CONVERSATION (recent):\n" + ("\n".join(inp.transcript[-TRANSCRIPT:]) or "(none)"), "", inp.plan, ""]
+    lines = ["CONVERSATION (recent):\n" + ("\n".join(inp.transcript[-TRANSCRIPT:]) or "(none)"), "", inp.scene, ""]
     lines.append("ALREADY DONE THIS TURN:\n" + ("\n".join(f"- {d}" for d in inp.done) or "- nothing yet"))
     lines.append("\nTASKS THIS TURN:")
     for i, t in enumerate(inp.tasks, start=1):
-        lines.append(f"{i}. {t.instruction}\n   YOU MAY WRITE ONLY: " + ", ".join(t.allowed)
-                     + f"\n   ON: {t.on}\n   MUST CHANGE: " + ", ".join(t.must))
+        lines.append(f"{i}. {t.instruction}\n   YOU MAY CHANGE: {', '.join(t.writes)}\n   ON: {t.on}")
     if inp.variants:
-        lines.append(f"\nGive {inp.variants} VARIANTS (each a label and its own operations); leave `ops` empty.")
+        lines.append(f"\nGive {inp.variants} VARIANTS (each a short label and its own operations, at most 6 operations "
+                     "with short values); leave `ops` empty.")
     if inp.faults:
-        lines.append("\nAFTER YOUR EDIT THE PLANNER'S CHECKS FOUND (fix exactly these; change nothing else):\n"
+        lines.append("\nAFTER THE EDIT THE CHECKS FOUND (fix exactly these; change nothing else):\n"
                      + "\n".join(f"- {f}" for f in inp.faults))
     return "\n".join(lines)

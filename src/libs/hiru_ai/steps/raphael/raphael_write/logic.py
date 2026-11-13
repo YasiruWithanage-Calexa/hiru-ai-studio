@@ -48,10 +48,9 @@ SPOKEN = "dialogue"
 
 def sound_mode_of(clip: Clip, performs: bool, heard_line: bool) -> str:
     """How a clip carries its sound (`contracts.veo.SoundMode`): a line on its speaker is dialogue; a line that is
-    heard and
-    not seen is voiced off screen; no words and a call for silence is silent (Veo must be told, or it invents speech);
-    music
-    alone is music only; else ambient."""
+    heard and not seen (marked so, or bound to this clip while its speaker is not in it) is voiced off screen; no words
+    and a call for silence is silent (Veo must be told, or it invents speech); music alone is music only; else
+    ambient."""
     if performs:
         return SPOKEN
     if heard_line and clip.lines:
@@ -322,7 +321,10 @@ def rows_for(
         block_start, block_end = (min(c.blocks), max(c.blocks) + 1) if c.blocks else (0, 0)
         mine = [ln for ln in c.lines if perform.get(ln) == c.id]
         spoken = [by_short[ln] for ln in c.lines if ln in by_short]
-        heard_line = any(
+        # A line bound to this clip whose speaker is not seen in it is heard here, whatever its delivery says: the
+        # script often leaves a recording or a call unmarked ("Aruni's voice message plays." then a bare line), and a
+        # clip with words must never be written silent (the prompt would say "nobody speaks" over a spoken line).
+        heard_line = (bool(mine) and not c.speaks) or any(
             (blk := next((i for i in own if i.line_id == stored.line_ids.get(ln)), None)) is not None
             and heard_marked(blk)
             for ln in c.lines

@@ -396,15 +396,8 @@ type = "independence"
 modules = ["hiru_ai.knowledge_bases.raphael.*"]
 
 
-# plan/2026-11-06e §4.0: Zora's parts live in a `zora` folder inside each layer, kept apart the same way. The steps reach
-# each other (and the planner's checks) by id through `core.parts`, never by import.
-
-[[tool.importlinter.contracts]]
-name = "zora steps never import each other"
-type = "independence"
-modules = ["hiru_ai.steps.zora.zora_kernel", "hiru_ai.steps.zora.zora_deps", "hiru_ai.steps.zora.zora_board",
-           "hiru_ai.steps.zora.zora_deliver", "hiru_ai.steps.zora.zora_ledger", "hiru_ai.steps.zora.zora_guard",
-           "hiru_ai.steps.zora.zora_save"]
+# plan/2026-11-06e §4.0: Zora's parts live in a `zora` folder inside each layer, kept apart the same way. Since
+# plan/2026-11-13 Zora has no steps of its own: it reaches the shared row kernel (`coverage_kernel`) by id.
 
 [[tool.importlinter.contracts]]
 name = "zora agents never import each other"
@@ -432,8 +425,7 @@ name = "sable systems never import zora (plan/2026-11-08 rule 10)"
 type = "forbidden"
 source_modules = ["hiru_ai.agents.sable", "hiru_ai.steps.sable", "hiru_ai.tools.sable", "hiru_ai.systems.sable",
                   "contracts.sable", "sable_chat"]
-forbidden_modules = ["hiru_ai.agents.zora", "hiru_ai.steps.zora", "hiru_ai.systems.zora", "contracts.zora",
-                     "zora_chat"]
+forbidden_modules = ["hiru_ai.agents.zora", "hiru_ai.systems.zora", "contracts.zora", "zora_chat"]
 
 # The document reader (plan/2026-11-06f): the `reader` group.
 [[tool.importlinter.contracts]]

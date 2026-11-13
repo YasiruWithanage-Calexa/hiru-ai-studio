@@ -42,8 +42,12 @@ class OpenAISettings(BaseModel):
     effort_jonathan: str = "high"
     # Raphael's models are NOT settings: the model and effort of its five tiers are fixed in raphael_models.yaml
     # (configuration, reviewed in a commit; nothing in the environment changes them).
-    # Zora's author (plan/2026-11-06e D7): the `zora` tier is model_jonathan at this effort; the lab sets it.
-    effort_zora: str = "low"
+    # Zora (plan/2026-11-13 §3.9; lab/zora_rows run 6): the conductor and the reply on `zora_chat`, the craft on
+    # `zora_author`. gpt-5-nano misread the messages (run 4); gpt-5 as the reply does not fit the $0.02 turn.
+    model_zora_chat: str = "gpt-5-mini"
+    effort_zora_chat: str = "minimal"
+    model_zora_author: str = "gpt-6.1-terra"
+    effort_zora_author: str = "low"
     # Sable (plan/2026-11-08 §4.4, D2): the average tier and the deep tier a turn may move up to once. Until the lab
     # picks the pair: gpt-5-mini at low, and gpt-5 at medium. An environment change, not a code change.
     model_sable: str = "gpt-5-mini"
@@ -67,16 +71,11 @@ class OpenAISettings(BaseModel):
 
 
 class ZoraSettings(BaseModel):
-    """Zora, the director chat over Jonathan's plan (plan/2026-11-06e Phase 4): `ZORA__*`. Off until a person turns it
-    on (D3); the numbers are the plan's."""
+    """Zora, the director chat on a scene's shot rows (plan/2026-11-13): `ZORA__*`. Off until a person turns it on."""
 
     enabled: bool = False
-    max_repairs: int = 2  # repair passes after the planner's checks (§4.6 step 4)
-    delivery_passes: int = 1  # re-tasks for declared effects that did not change (§4.6 step 5)
-    reshape_dirty_ratio: float = 0.5  # an edit that rewrites more than this share of the shots is offered as a re-plan
-    reshape_min_shots: int = 3
-    variants_max: int = 3
-    author_tool_calls: int = 6  # the author's read tools, when it has a `with_tools` form (none in v1)
+    turn_cap_usd: float = 0.02  # every model call of one turn together (the person's target, 2026-11-13)
+    variants_max: int = 2
     transcript_messages: int = 4
     revisions_kept: int = 30  # undo depth per scene (D4)
 

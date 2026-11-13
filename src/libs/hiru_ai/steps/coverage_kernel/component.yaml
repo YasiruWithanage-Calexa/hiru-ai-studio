@@ -1,0 +1,8 @@
+id: coverage_kernel
+kind: step
+version: 1
+summary: "Applies typed edits to a scene's shot rows read as coverage (plan/2026-11-13 §3.2): numbers read at the start of a batch, each edit rolled back alone, removals all or none, a person's fields locked against a model, a line voiced by the clip that performs it. No model, no planner."
+status: active
+owner: director
+entry: step:run
+uses: []

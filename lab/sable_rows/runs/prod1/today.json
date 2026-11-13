@@ -1,0 +1,430 @@
+[
+ {
+  "slot": "p01",
+  "message": "What do we know about Dilini so far?",
+  "reply": "Dilini (C04): appears in E2S2 and E2S4 (EXT. TEA SHOP - DAY). From E2S2 script: she packs her anatomy textbooks into a cloth bag (action b0) and speaks three lines verbatim: “අම්මා කෝ?” (b2), “අපි හෙට යමු.” (b4) and “මට බයයි.” (b6). The canon card exists but has no look, wardrobe or voice details recorded. Sources: the scene script (E2S2) and the canon card for C04.",
+  "cards": [],
+  "statuses": [
+   "Reading your message",
+   "Looking through the canon",
+   "Reading the canon",
+   "Finding the scenes",
+   "Reading E2S2"
+  ],
+  "error": "",
+  "calls": [
+   {
+    "slot": "p01",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11212,
+    "cached_tokens": 10752,
+    "output_tokens": 44,
+    "dollars": 0.00047
+   },
+   {
+    "slot": "p01",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11307,
+    "cached_tokens": 11008,
+    "output_tokens": 31,
+    "dollars": 0.00041
+   },
+   {
+    "slot": "p01",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11398,
+    "cached_tokens": 11136,
+    "output_tokens": 59,
+    "dollars": 0.00046
+   },
+   {
+    "slot": "p01",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11573,
+    "cached_tokens": 11264,
+    "output_tokens": 46,
+    "dollars": 0.00045
+   },
+   {
+    "slot": "p01",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 12327,
+    "cached_tokens": 11392,
+    "output_tokens": 342,
+    "dollars": 0.0012
+   }
+  ],
+  "dollars": 0.00299,
+  "seconds": 15.0
+ },
+ {
+  "slot": "p02",
+  "message": "Which scenes is Sahan in?",
+  "reply": "Sahan appears in six scenes: E1S2, E1S4, E2S2, E2S4, E3S2 and E3S4 (all EXT. TEA SHOP - DAY) — in each he speaks.",
+  "cards": [],
+  "statuses": [
+   "Reading your message",
+   "Finding the scenes"
+  ],
+  "error": "",
+  "calls": [
+   {
+    "slot": "p02",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11349,
+    "cached_tokens": 10752,
+    "output_tokens": 59,
+    "dollars": 0.00054
+   },
+   {
+    "slot": "p02",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11668,
+    "cached_tokens": 11136,
+    "output_tokens": 71,
+    "dollars": 0.00055
+   }
+  ],
+  "dollars": 0.00109,
+  "seconds": 4.3
+ },
+ {
+  "slot": "p03",
+  "message": "How many shots does E1S3 have, and who speaks in them?",
+  "reply": "E1S3 has 6 shots. Speakers by shot: S01 — Nimal; S02 — Kumari; S03 — Nimal; S04 — Kumari; S05 — Nimal; S06 — Kumari. (Source: E1S3 script and shot plan.)",
+  "cards": [],
+  "statuses": [
+   "Reading your message",
+   "Reading E1S3"
+  ],
+  "error": "",
+  "calls": [
+   {
+    "slot": "p03",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11422,
+    "cached_tokens": 10752,
+    "output_tokens": 57,
+    "dollars": 0.00055
+   },
+   {
+    "slot": "p03",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 12113,
+    "cached_tokens": 11264,
+    "output_tokens": 156,
+    "dollars": 0.00081
+   }
+  ],
+  "dollars": 0.00136,
+  "seconds": 5.0
+ },
+ {
+  "slot": "p04",
+  "message": "Make S01 a wide.",
+  "reply": "Refused: I tried making S01 a WIDE but the kernel refused because that change would not let the plan cover the script exactly once. Current timing (from the try): S01 start 0s / length 8s / words 3 (word target for that block 17); scene total 34s of 48s envelope. Options: 1) lengthen S01 so the wide can cover its block (increase S01 duration), or 2) shift coverage into S02 (shorten or retime adjacent shots), or 3) keep S01 framing as-is. Tell me which and I will stage the change (a card) to apply it.",
+  "cards": [],
+  "statuses": [
+   "Reading your message",
+   "Trying the change on a copy of E2S2"
+  ],
+  "error": "",
+  "calls": [
+   {
+    "slot": "p04",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11494,
+    "cached_tokens": 10752,
+    "output_tokens": 176,
+    "dollars": 0.00081
+   },
+   {
+    "slot": "p04",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11862,
+    "cached_tokens": 11264,
+    "output_tokens": 420,
+    "dollars": 0.00127
+   }
+  ],
+  "dollars": 0.00208,
+  "seconds": 9.7
+ },
+ {
+  "slot": "p05",
+  "message": "Add a 4-second insert after S02 of Dilini's engineering faculty admission letter.",
+  "reply": "I can’t add a standalone insert shot after S02 — the kernel refuses because it would break the “cover the script exactly once” rule for E2S2. The workable path is to show it as a cutaway within S02: a 4‑second close-up of Dilini’s engineering faculty admission letter (her name visible), with ambient room tone, then return to the two‑shot. Shall I drop a card adding that DoP note to S02 now? If you prefer a separate numbered insert, we’d need to rework coverage around block 2 first.",
+  "cards": [],
+  "statuses": [
+   "Reading your message",
+   "Looking through the canon",
+   "Looking through the canon",
+   "Reading E2S2",
+   "Trying the change on a copy of E2S2",
+   "Trying the change on a copy of E2S2",
+   "Thinking this through",
+   "Trying the change on a copy of E2S2",
+   "Reading the shot of E2S2"
+  ],
+  "error": "",
+  "calls": [
+   {
+    "slot": "p05",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11656,
+    "cached_tokens": 10752,
+    "output_tokens": 171,
+    "dollars": 0.00084
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11724,
+    "cached_tokens": 11520,
+    "output_tokens": 38,
+    "dollars": 0.00042
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11793,
+    "cached_tokens": 11520,
+    "output_tokens": 42,
+    "dollars": 0.00044
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 12542,
+    "cached_tokens": 11648,
+    "output_tokens": 243,
+    "dollars": 0.001
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 12912,
+    "cached_tokens": 12416,
+    "output_tokens": 224,
+    "dollars": 0.00088
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 12912,
+    "cached_tokens": 0,
+    "output_tokens": 1178,
+    "dollars": 0.02792
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 13443,
+    "cached_tokens": 12800,
+    "output_tokens": 3975,
+    "dollars": 0.04215
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 13550,
+    "cached_tokens": 13312,
+    "output_tokens": 2184,
+    "dollars": 0.0238
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 13965,
+    "cached_tokens": 13440,
+    "output_tokens": 2982,
+    "dollars": 0.03216
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 14114,
+    "cached_tokens": 13824,
+    "output_tokens": 2629,
+    "dollars": 0.02838
+   },
+   {
+    "slot": "p05",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 14331,
+    "cached_tokens": 13952,
+    "output_tokens": 2191,
+    "dollars": 0.02413
+   }
+  ],
+  "dollars": 0.18212,
+  "seconds": 297.0
+ },
+ {
+  "slot": "p06",
+  "message": "[Accept]",
+  "skipped": "a button in the product (the API applies the card with the classic director function), not a Sable turn"
+ },
+ {
+  "slot": "p07",
+  "message": "Undo that.",
+  "reply": "I can’t undo anything yet — nothing was changed or staged. Do you mean: 1) cancel the plan to make S01 a WIDE, 2) cancel the suggested DoP note to show the admission letter in S02, or 3) something else? Reply with 1, 2 or describe what to undo.",
+  "cards": [],
+  "statuses": [
+   "Reading your message"
+  ],
+  "error": "",
+  "calls": [
+   {
+    "slot": "p07",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11782,
+    "cached_tokens": 10752,
+    "output_tokens": 222,
+    "dollars": 0.00097
+   }
+  ],
+  "dollars": 0.00097,
+  "seconds": 3.3
+ },
+ {
+  "slot": "p08",
+  "message": "Add a 4-second insert after S03 of Dilini's anatomy textbook.",
+  "reply": "I can’t add a separate 4‑second insert after S03 — the kernel refuses because it would break the “cover the script exactly once” rule. The workable path is to show it as a cutaway within S03: a 4‑second close‑up of Dilini’s anatomy textbook (cover/title visible) with ambient room tone, then return to the main shot. Shall I drop a card adding that DoP note to S03 now? If you prefer a separate numbered insert, we’ll need to rework coverage around S03 first.",
+  "cards": [],
+  "statuses": [
+   "Reading your message",
+   "Trying the change on a copy of E2S2",
+   "Reading the shot of E2S2",
+   "Reading the shot of E2S2",
+   "Preparing a change for you to accept",
+   "Reading E2S2",
+   "Trying the change on a copy of E2S2",
+   "Trying the change on a copy of E2S2",
+   "Trying the change on a copy of E2S2"
+  ],
+  "error": "",
+  "calls": [
+   {
+    "slot": "p08",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 11872,
+    "cached_tokens": 11648,
+    "output_tokens": 198,
+    "dollars": 0.00074
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 12283,
+    "cached_tokens": 11648,
+    "output_tokens": 166,
+    "dollars": 0.00078
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.turn",
+    "model": "gpt-5-mini-2025-08-07",
+    "input_tokens": 12431,
+    "cached_tokens": 12160,
+    "output_tokens": 328,
+    "dollars": 0.00103
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 12431,
+    "cached_tokens": 11392,
+    "output_tokens": 806,
+    "dollars": 0.01078
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 12626,
+    "cached_tokens": 12288,
+    "output_tokens": 2607,
+    "dollars": 0.02803
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 12956,
+    "cached_tokens": 12416,
+    "output_tokens": 1134,
+    "dollars": 0.01357
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 13705,
+    "cached_tokens": 12800,
+    "output_tokens": 2192,
+    "dollars": 0.02465
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 13993,
+    "cached_tokens": 0,
+    "output_tokens": 2385,
+    "dollars": 0.04134
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 14281,
+    "cached_tokens": 13824,
+    "output_tokens": 1795,
+    "dollars": 0.02025
+   },
+   {
+    "slot": "p08",
+    "phase": "sable.deep",
+    "model": "gpt-5-2025-08-07",
+    "input_tokens": 13343,
+    "cached_tokens": 11776,
+    "output_tokens": 1930,
+    "dollars": 0.02273
+   }
+  ],
+  "dollars": 0.1639,
+  "seconds": 227.7
+ },
+ {
+  "slot": "p09",
+  "message": "In S05, show Dilini wearing jeans and a t-shirt.",
+  "stopped": "Refused before the turn: $0.7147 spent, a turn could cost $0.30, the lab cap is $1.00."
+ }
+]

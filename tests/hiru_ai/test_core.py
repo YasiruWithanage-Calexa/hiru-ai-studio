@@ -44,7 +44,8 @@ def test_the_default_tiers_are_the_ones_the_engines_use_today():
                    "fixer": ("gpt-5", "low"),  # the big rung of Adam's fixer ladder (plan/2026-11-05)
                    "author": ("gpt-5", "medium"), "repair": ("gpt-5", "low"),  # Shot Planner David (plan/2026-11-05e)
                    "jonathan": ("gpt-6.1-sol", "high"),  # Shot Planner Jonathan (plan/2026-11-06b)
-                   "zora": ("gpt-6.1-sol", "low"),  # Zora: Jonathan's model at a lower effort (plan/2026-11-06e D7)
+                   # Zora (plan/2026-11-13 §3.9): conductor and reply small, the craft on its own model
+                   "zora_chat": ("gpt-5-mini", "minimal"), "zora_author": ("gpt-6.1-terra", "low"),
                    "reader": ("gpt-5", "medium"),  # the document reader: the author's model (plan/2026-11-06f Q1)
                    "breakdown": ("gpt-6.1-sol", "medium"),  # the scene breakdown, as the lab ran (plan/2026-11-11 §9)
                    # Sable (plan/2026-11-08 §4.4): the average tier and the deep one a turn may move up to once

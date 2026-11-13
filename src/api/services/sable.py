@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from collections.abc import AsyncIterator, Callable
+from collections.abc import AsyncIterator, Awaitable, Callable
 from typing import Any
 from uuid import UUID
 
@@ -30,6 +30,7 @@ from contracts.sable.events import UNAVAILABLE, Mention, MentionOption, Ref, Sab
 _logger = logging.getLogger(__name__)
 CARD_KINDS = ("sable_change", "sable_state", "sable_memory")
 SableStreamer = Callable[[dict[str, Any]], AsyncIterator[bytes]]
+SableActor = Callable[[dict[str, Any]], Awaitable[Row]]
 
 
 async def _headers(url: str) -> dict[str, str]:
@@ -63,6 +64,25 @@ async def stream_turn(payload: dict[str, Any]) -> AsyncIterator[bytes]:
 def get_streamer() -> SableStreamer:
     """A dependency, so tests can stand in for the function."""
     return stream_turn
+
+
+async def act(payload: dict[str, Any]) -> Row:
+    """A change card's Accept through the function (`contracts.sable.events.SableAction`, plan/2026-11-13 phase 8):
+    `SableActionResult` as JSON. A function that cannot be reached answers a refused action, never an error page."""
+    spec = task_manager.SABLE_CHAT
+    url = task_manager.function_url(spec, get_settings())
+    try:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(120.0, connect=10.0)) as client:
+            resp = await client.post(url, json={**payload, "action": True}, headers=await _headers(url))
+        resp.raise_for_status()
+        return dict(resp.json())
+    except Exception:
+        _logger.exception("sable action failed scene=%s", payload.get("scene_id"))
+        return {"ok": False, "text": UNAVAILABLE}
+
+
+def get_actor() -> SableActor:
+    return act
 
 
 def title_of(message: str) -> str:
@@ -128,12 +148,6 @@ async def mark_out_of_date(repos: Repos, shots: list[Row]) -> None:
     length, so nothing else would say so (phase 6)."""
     for shot in shots:
         await repos.shots.update(UUID(str(shot["id"])), {"version": int(shot.get("version") or 1) + 1})
-
-
-async def note_shots(repos: Repos, production_id: UUID, scene_id: UUID, ops: list[Row]) -> list[Row]:
-    """The shots of a scene a DoP note was set on, by the ids the stored operations carry."""
-    ids = {str(o.get("shot_id")) for o in ops if o.get("op") == "dop_note.set" and o.get("shot_id")}
-    return [s for s in await repos.shots.list(production_id, scene_id) if str(s["id"]) in ids]
 
 
 class StateRefusedHere(Exception):

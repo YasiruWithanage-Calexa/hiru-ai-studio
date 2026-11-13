@@ -1,0 +1,645 @@
+[
+ {
+  "message": "What do we know about Dilini so far?",
+  "slot": "p01",
+  "lane": "answer",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "Dilini is 21, daughter of Nimal and Kumari. She’s been accepted to the Colombo Medical Faculty (this is established in E1) and will leave the village for medical school in episode 2. In the canon she wears a saree and appears in the tea-shop scenes with Sahan (E1S2, E2S2 open scene, and later E3 scenes). In this open scene she’s packing her anatomy textbooks into a cloth bag (b0), speaks three short lines here (L2, L4, L6), and ends looking at Sahan in silence (b7). Her character beats: eager/committed to study, but anxious about leaving (she says she’s afraid), and family ties to Nimal and Kumari are important to her story.",
+  "before_s": 34,
+  "light": {
+   "lane": "answer",
+   "confidence": 0.76,
+   "lookup": "",
+   "ops": [],
+   "answer": "Dilini is 21, daughter of Nimal and Kumari. She’s been accepted to the Colombo Medical Faculty (this is established in E1) and will leave the village for medical school in episode 2. In the canon she wears a saree and appears in the tea-shop scenes with Sahan (E1S2, E2S2 open scene, and later E3 scenes). In this open scene she’s packing her anatomy textbooks into a cloth bag (b0), speaks three short lines here (L2, L4, L6), and ends looking at Sahan in silence (b7). Her character beats: eager/committed to study, but anxious about leaving (she says she’s afraid), and family ties to Nimal and Kumari are important to her story."
+  },
+  "guard_cut": [],
+  "after_s": 34,
+  "revision": 0,
+  "calls": [
+   {
+    "slot": "p01.light",
+    "role": "light",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.00129,
+    "seconds": 10.6,
+    "max_out": 2224,
+    "input_tokens": 2661,
+    "cached_tokens": 0,
+    "output_tokens": 313
+   }
+  ],
+  "dollars": 0.00129
+ },
+ {
+  "message": "Which scenes is Sahan in?",
+  "slot": "p02",
+  "lane": "answer",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "Sahan appears in these scenes: E1S2, E1S4, E2S2 (this open scene), E2S4, E3S2, and E3S4.",
+  "before_s": 34,
+  "light": {
+   "lane": "answer",
+   "confidence": 0.88,
+   "lookup": "",
+   "ops": [],
+   "answer": "Sahan appears in these scenes: E1S2, E1S4, E2S2 (this open scene), E2S4, E3S2, and E3S4."
+  },
+  "guard_cut": [],
+  "after_s": 34,
+  "revision": 0,
+  "calls": [
+   {
+    "slot": "p02.light",
+    "role": "light",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.0005,
+    "seconds": 5.6,
+    "max_out": 2203,
+    "input_tokens": 2832,
+    "cached_tokens": 2560,
+    "output_tokens": 185
+   }
+  ],
+  "dollars": 0.0005
+ },
+ {
+  "message": "How many shots does E1S3 have, and who speaks in them?",
+  "slot": "p03",
+  "lane": "answer",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "E1S3 has 6 shots. S01: Nimal, S02: Kumari, S03: Nimal, S04: Kumari, S05: Nimal, S06: Kumari.",
+  "before_s": 34,
+  "light": {
+   "lane": "answer",
+   "confidence": 0.87,
+   "lookup": "",
+   "ops": [],
+   "answer": "E1S3 has 6 shots. S01: Nimal, S02: Kumari, S03: Nimal, S04: Kumari, S05: Nimal, S06: Kumari."
+  },
+  "guard_cut": [],
+  "after_s": 34,
+  "revision": 0,
+  "calls": [
+   {
+    "slot": "p03.light",
+    "role": "light",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.00089,
+    "seconds": 4.6,
+    "max_out": 2155,
+    "input_tokens": 3353,
+    "cached_tokens": 1792,
+    "output_tokens": 226
+   }
+  ],
+  "dollars": 0.00089
+ },
+ {
+  "message": "Make S01 a wide.",
+  "slot": "p04",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "S01 · size: CU → WIDE"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "I changed S01 from a close-up to a wide — so the opening now frames both characters and the tea shop context more clearly.",
+  "before_s": 34,
+  "by_code": true,
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S01 · size: CU → WIDE"
+   }
+  ],
+  "guard_cut": [
+   "WHAT HAPPENED THIS TURN\n- I only changed S01's size from CU to WIDE as listed. Nothing else was altered.",
+   "There's a card waiting: dropping S01 as a CU and using it as a WIDE instead would widen the visual scope of the scene but slightly reduces Dilini's facial detail in that opening beat.",
+   "It's just a proposal, waiting for your Accept or Reject on the card."
+  ],
+  "after_s": 34,
+  "revision": 1,
+  "calls": [
+   {
+    "slot": "p04.reply",
+    "role": "reply_small",
+    "model": "gpt-5-mini",
+    "effort": "minimal",
+    "dollars": 0.00056,
+    "seconds": 3.3,
+    "max_out": 1500,
+    "input_tokens": 1202,
+    "cached_tokens": 0,
+    "output_tokens": 129
+   }
+  ],
+  "dollars": 0.00056
+ },
+ {
+  "message": "Add a 4-second insert after S02 of Dilini's engineering faculty admission letter.",
+  "slot": "p05",
+  "lane": "edit",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [
+   "S03 has no reason yet: its picture still needs drawing (Zora can draw it)."
+  ],
+  "kernel_notes": [],
+  "card": {
+   "reasons": [
+    "may contradict E1S2: Dilini was accepted to the Colombo Medical Faculty.",
+    "may contradict Dilini's card: Dilini leaves the village for medical school in episode 2."
+   ],
+   "lines": [
+    "new S03: should insert INSERT 4 s over b2",
+    "Takes in the scene: 34 s → 38 s",
+    "Checks after the change: no new problem"
+   ]
+  },
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "Heads-up: the story says Dilini was accepted to the Colombo Medical Faculty (E1S2), but this shows an engineering faculty admission letter on screen for Dilini, contradicting the established medical faculty acceptance. Heads-up: the story says Dilini leaves the village for medical school in episode 2 (Dilini's card), but this shows an engineering faculty admission letter, which conflicts with the character's established plan to attend medical school. It's your call. If you accept: new S03: should insert INSERT 4 s over b2. Nothing is saved until you press Accept; Reject leaves the scene as it is.",
+  "before_s": 34,
+  "by_code": true,
+  "story_check": [
+   {
+    "fact": "Dilini was accepted to the Colombo Medical Faculty.",
+    "source": "E1S2",
+    "why": "this shows an engineering faculty admission letter on screen for Dilini, contradicting the established medical faculty acceptance."
+   },
+   {
+    "fact": "Dilini leaves the village for medical school in episode 2.",
+    "source": "Dilini's card",
+    "why": "this shows an engineering faculty admission letter, which conflicts with the character's established plan to attend medical school."
+   }
+  ],
+  "conflicts": [
+   {
+    "fact": "Dilini was accepted to the Colombo Medical Faculty.",
+    "source": "E1S2",
+    "why": "this shows an engineering faculty admission letter on screen for Dilini, contradicting the established medical faculty acceptance."
+   },
+   {
+    "fact": "Dilini leaves the village for medical school in episode 2.",
+    "source": "Dilini's card",
+    "why": "this shows an engineering faculty admission letter, which conflicts with the character's established plan to attend medical school."
+   }
+  ],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "new S03: INSERT insert, b2-b2, 4 s (its picture needs writing)"
+   }
+  ],
+  "would": [
+   "new S03: should insert INSERT 4 s over b2"
+  ],
+  "after_s": 34,
+  "revision": 1,
+  "calls": [
+   {
+    "slot": "p05.check",
+    "role": "check",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.00044,
+    "seconds": 4.0,
+    "max_out": 1853,
+    "input_tokens": 1277,
+    "cached_tokens": 1152,
+    "output_tokens": 188
+   }
+  ],
+  "dollars": 0.00044
+ },
+ {
+  "message": "[Accept]",
+  "slot": "p06",
+  "lane": "action",
+  "saved": true,
+  "done": [
+   "new S03: should insert INSERT 4 s over b2"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [
+   "S03 has no reason yet: write its why, beats, subjects and first frame."
+  ],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "THE PERSON PRESSED ACCEPTED: the change is now saved (revision 2; they can undo it).",
+  "author": [],
+  "reply": "I added a new 4s insert (S03) over b2 showing Dilini — it’s now saved as the scene’s revision 2 after you accepted. It costs the scene 4s of screen time (included in the saved timeline). The insert still needs a purpose line — its reason, beats, subjects and first frame are missing (the app flagged that). I couldn’t write that in for you because the change you accepted only created the clip. Suggestion: I can propose a short “why” for S03 (e.g., emotional closeup on Dilini reading the letter) if you want — say so and I’ll add it.",
+  "before_s": 34,
+  "status": "Accepted · revision 2",
+  "override": [
+   "may contradict E1S2: Dilini was accepted to the Colombo Medical Faculty.",
+   "may contradict Dilini's card: Dilini leaves the village for medical school in episode 2."
+  ],
+  "guard_cut": [
+   "Dropping nothing here; the card was accepted so the insert is in place and waits in the edit."
+  ],
+  "after_s": 38,
+  "revision": 2,
+  "calls": [
+   {
+    "slot": "p06.reply",
+    "role": "reply_small",
+    "model": "gpt-5-mini",
+    "effort": "minimal",
+    "dollars": 0.00066,
+    "seconds": 4.7,
+    "max_out": 1500,
+    "input_tokens": 1247,
+    "cached_tokens": 0,
+    "output_tokens": 172
+   }
+  ],
+  "dollars": 0.00066
+ },
+ {
+  "message": "Undo that.",
+  "slot": "p07",
+  "lane": "undo",
+  "saved": true,
+  "done": [
+   "S03 [] removed (should insert INSERT)"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "THE PERSON ASKED TO UNDO: the scene is back to how it was before the last change (saved as revision 3; they can redo).",
+  "author": [],
+  "reply": "Okay — I put the scene back to how it was before that insert. S03 (the 4s insert) was removed and the timeline is saved as revision 3. Nothing else changed. Suggestion: if we bring it back, I can propose a short purpose line for S03 so the app won't flag it.",
+  "before_s": 38,
+  "status": "Undone · revision 3",
+  "guard_cut": [
+   "WHAT HAPPENED THIS TURN\nI only undid the last change: S03 (the 4s insert) was removed. COULD NOT BE DONE: I did not recreate the insert because you asked to undo.",
+   "There’s a card waiting if you want to re-add that insert later."
+  ],
+  "after_s": 34,
+  "revision": 3,
+  "calls": [
+   {
+    "slot": "p07.reply",
+    "role": "reply_small",
+    "model": "gpt-5-mini",
+    "effort": "minimal",
+    "dollars": 0.00061,
+    "seconds": 3.1,
+    "max_out": 1500,
+    "input_tokens": 1260,
+    "cached_tokens": 0,
+    "output_tokens": 146
+   }
+  ],
+  "dollars": 0.00061
+ },
+ {
+  "message": "Add a 4-second insert after S03 of Dilini's anatomy textbook.",
+  "slot": "p08",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "new S04: should insert INSERT 4 s over b3"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [
+   "S04 has no reason yet: its picture still needs drawing (Zora can draw it)."
+  ],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "The insert still needs its purpose line and a picture — the picture still needs drawing (Zora can draw it). I couldn’t create the reason here because the change only made the clip. Suggestion: I can draft a short purpose line for S04 (e.g., close study of the textbook to show Dilini’s fear/resolve) if you want.",
+  "before_s": 34,
+  "by_code": true,
+  "story_check": [],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "new S04: INSERT insert, b3-b3, 4 s (its picture needs writing)"
+   }
+  ],
+  "guard_cut": [
+   "WHAT HAPPENED THIS TURN\n- I created new S04: should insert INSERT 4 s over b3.\nHEADS-UP\n- S04 has no reason yet and its picture still needs drawing (Zora can draw it).",
+   "I added a proposed 4s insert (S04) after S03 showing Dilini with the anatomy textbook — it’s waiting on the card for your OK.",
+   "Dropping S04 would keep the scene at the current takes; accepting it would add 4s over b3 and is not saved until you press Accept on the card."
+  ],
+  "after_s": 38,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "p08.check",
+    "role": "check",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.00027,
+    "seconds": 3.0,
+    "max_out": 1853,
+    "input_tokens": 1275,
+    "cached_tokens": 1152,
+    "output_tokens": 107
+   },
+   {
+    "slot": "p08.reply",
+    "role": "reply_small",
+    "model": "gpt-5-mini",
+    "effort": "minimal",
+    "dollars": 0.00075,
+    "seconds": 3.8,
+    "max_out": 1500,
+    "input_tokens": 1349,
+    "cached_tokens": 0,
+    "output_tokens": 207
+   }
+  ],
+  "dollars": 0.00102
+ },
+ {
+  "message": "In S05, show Dilini wearing jeans and a t-shirt.",
+  "slot": "p09",
+  "lane": "edit",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": {
+   "reasons": [
+    "may contradict Dilini's card: Dilini wears a saree."
+   ],
+   "lines": [
+    "S05 · what we see: - → Dilini wearing jeans and a t-shirt",
+    "Checks after the change: no new problem"
+   ]
+  },
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "Heads-up: the story says Dilini wears a saree (Dilini's card), but this shows her wearing jeans and a t-shirt in E2S2 (the open scene), which contradicts the canon wardrobe that she wears a saree. It's your call. If you accept: S05's what we see is now Dilini wearing jeans and a t-shirt. Nothing is saved until you press Accept; Reject leaves the scene as it is.",
+  "before_s": 38,
+  "by_code": true,
+  "story_check": [
+   {
+    "fact": "Dilini wears a saree.",
+    "source": "Dilini's card",
+    "why": "this shows her wearing jeans and a t-shirt in E2S2 (the open scene), which contradicts the canon wardrobe that she wears a saree."
+   }
+  ],
+  "conflicts": [
+   {
+    "fact": "Dilini wears a saree.",
+    "source": "Dilini's card",
+    "why": "this shows her wearing jeans and a t-shirt in E2S2 (the open scene), which contradicts the canon wardrobe that she wears a saree."
+   }
+  ],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S05 · sees: - → Dilini wearing jeans and a t-shirt"
+   }
+  ],
+  "would": [
+   "S05 · what we see: - → Dilini wearing jeans and a t-shirt"
+  ],
+  "after_s": 38,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "p09.check",
+    "role": "check",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.00051,
+    "seconds": 3.7,
+    "max_out": 1854,
+    "input_tokens": 1267,
+    "cached_tokens": 1152,
+    "output_tokens": 227
+   }
+  ],
+  "dollars": 0.00051
+ },
+ {
+  "message": "[Reject]",
+  "slot": "p10",
+  "lane": "action",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "THE PERSON PRESSED REJECT on the card (may contradict Dilini's card: Dilini wears a saree.): nothing changed, and Zora will not offer it again in this thread.",
+  "author": [],
+  "reply": "Zora won’t offer that insert again in this thread. Suggestion: if you want that insert later, I can draft a short purpose line for it so the app accepts it next time.",
+  "before_s": 38,
+  "status": "Rejected · nothing changed",
+  "guard_cut": [
+   "Okay — I left the scene as it was; the proposed S04 insert (4s of Dilini’s anatomy textbook) was rejected on the card, so nothing changed and the timeline stays the same."
+  ],
+  "after_s": 38,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "p10.reply",
+    "role": "reply_small",
+    "model": "gpt-5-mini",
+    "effort": "minimal",
+    "dollars": 0.0005,
+    "seconds": 2.3,
+    "max_out": 1500,
+    "input_tokens": 1239,
+    "cached_tokens": 0,
+    "output_tokens": 97
+   }
+  ],
+  "dollars": 0.0005
+ },
+ {
+  "message": "Add a shot after S06 of Sahan handing Dilini a stethoscope.",
+  "slot": "p11",
+  "lane": "edit",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [
+   "S07 has no reason yet: its picture still needs drawing (Zora can draw it)."
+  ],
+  "kernel_notes": [],
+  "card": {
+   "reasons": [
+    "may contradict E2S4: Sahan gives Dilini a stethoscope wrapped in newspaper."
+   ],
+   "lines": [
+    "new S07: should single MS 4 s over b5",
+    "Takes in the scene: 38 s → 42 s",
+    "Checks after the change: no new problem"
+   ]
+  },
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "Heads-up: the story says Sahan gives Dilini a stethoscope wrapped in newspaper (E2S4), but this new clip shows Sahan handing Dilini a stethoscope in the open scene E2S2, which places the gift before the story lists it happening in E2S4. It's your call. If you accept: new S07: should single MS 4 s over b5. Nothing is saved until you press Accept; Reject leaves the scene as it is.",
+  "before_s": 38,
+  "by_code": true,
+  "story_check": [
+   {
+    "fact": "Sahan gives Dilini a stethoscope wrapped in newspaper.",
+    "source": "E2S4",
+    "why": "this new clip shows Sahan handing Dilini a stethoscope in the open scene E2S2, which places the gift before the story lists it happening in E2S4."
+   }
+  ],
+  "conflicts": [
+   {
+    "fact": "Sahan gives Dilini a stethoscope wrapped in newspaper.",
+    "source": "E2S4",
+    "why": "this new clip shows Sahan handing Dilini a stethoscope in the open scene E2S2, which places the gift before the story lists it happening in E2S4."
+   }
+  ],
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "new S07: MS single, b5-b5, 4 s (its picture needs writing)"
+   }
+  ],
+  "would": [
+   "new S07: should single MS 4 s over b5"
+  ],
+  "after_s": 38,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "p11.check",
+    "role": "check",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.00076,
+    "seconds": 5.2,
+    "max_out": 1853,
+    "input_tokens": 1282,
+    "cached_tokens": 1152,
+    "output_tokens": 349
+   }
+  ],
+  "dollars": 0.00076
+ },
+ {
+  "message": "Change the tea shop in E2S4 to a bus stop.",
+  "slot": "p12",
+  "lane": "cannot",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "I can only change the OPEN scene (E2S2) in this chat. You asked to change the tea shop in E2S4 to a bus stop — please open E2S4 and request that edit there so I can make it.",
+  "before_s": 38,
+  "light": {
+   "lane": "cannot",
+   "confidence": 0.78,
+   "lookup": "",
+   "ops": [],
+   "answer": "I can only change the OPEN scene (E2S2) in this chat. You asked to change the tea shop in E2S4 to a bus stop — please open E2S4 and request that edit there so I can make it."
+  },
+  "guard_cut": [],
+  "after_s": 38,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "p12.light",
+    "role": "light",
+    "model": "gpt-5-mini",
+    "effort": "low",
+    "dollars": 0.00081,
+    "seconds": 3.6,
+    "max_out": 2141,
+    "input_tokens": 3460,
+    "cached_tokens": 1792,
+    "output_tokens": 176
+   }
+  ],
+  "dollars": 0.00081
+ }
+]

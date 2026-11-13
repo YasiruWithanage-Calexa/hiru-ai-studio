@@ -1,0 +1,29 @@
+id: sable_shot_change
+kind: tool
+version: 1
+summary: "Stages a change to the open scene's shot rows (the shared row kernel) as a card a person accepts, after confirming every operation would land."
+status: active
+owner: director
+entry: tool:run
+ports: [scenes, staging]
+uses: [coverage_kernel]
+effect: stage
+max_result_tokens: 1200
+guide: |
+  The only way you ask for the open scene's shots to change. It tries your operations on a copy exactly as sable_shot_try
+  does; if every one would land, it leaves a card for the person (what changes, what to check after, why it needs their
+  OK) and nothing else happens until they accept it. If any would be refused nothing is staged and the reasons come back.
+  Shots are numbered as sable_shot_try shows them now, and every number in one call means the shot as it was before the
+  call. Operations (only the fields each uses):
+  set {shot, field, value} field: size (WIDE, MS, MCU, CU, TWO, OTS, INSERT), link (cut, match, continuous), why, sees,
+  angle, lens, movement, setting, lighting, audio. retime {shot, take_s: 4|6|8}. sound {shot, field: ambience|effects|
+  music|silence, value}. sound_mode {shot, value: dialogue|voiceover|sung|ambient|music_only|silent}. role {shot, role,
+  priority}. insert {after: a shot number or "start", size, take_s, first_block, last_block, who: [names], what, role,
+  priority}. remove {shot}. split {shot, at_block}. merge {shot, to_shot}. move {shot, after}. line {line: "L5",
+  to_shot}: the clip that performs a spoken line. note {shot, value}: the DoP note, what the shot shows that its fields
+  cannot say (a car, a costume, how a person lies), plain English, never dialogue, at most 600 characters.
+  A field a person locked is refused: say it is locked. At most 12 operations; only the scene that is open can change.
+  Example: {"summary": "Open on a close-up so the smile reads.", "ops": [{"op": "set", "shot": 1, "field": "size",
+  "value": "CU"}]}.
+  Do not use it to test an idea (sable_shot_try), to remember a rule (memory_propose), for a person's state from a block
+  on (sable_state_propose), or to change a spoken line or the script.

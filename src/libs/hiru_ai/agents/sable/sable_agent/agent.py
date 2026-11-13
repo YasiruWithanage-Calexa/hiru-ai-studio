@@ -13,7 +13,7 @@ from hiru_ai.agents.sable.sable_agent.schema import Input, Output
 
 def user_message(inp: Input) -> str:
     scene = inp.scene or "none (the person is not looking at a scene)"
-    cards = "yes" if inp.can_stage else "no: answer, and do not propose a card (change_propose, memory_propose)"
+    cards = "yes" if inp.can_stage else "no: answer, and do not propose a card (sable_shot_change, memory_propose)"
     parts = [f"<scene_in_view>{scene}</scene_in_view>",
              f"<person role=\"{inp.role or 'member'}\">can accept cards: {cards}</person>"]
     if inp.summary.strip():

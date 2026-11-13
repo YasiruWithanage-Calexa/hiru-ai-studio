@@ -1,0 +1,91 @@
+{
+  "notes": "L3 is already assigned to S08; I corrected its silent-hold picture instructions to show Dinu delivering it. Both close shots remain at 4 seconds, preserving the full delivery and a tight reaction cut before L4.",
+  "ops": [
+    {
+      "op": "set",
+      "shot": "S08",
+      "field": "sees",
+      "value": "Dinu delivers L3 facing left toward Nimal, his gaze level and his empty hands below frame. His jaw settles as the delivery ends; he does not nod."
+   ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S08",
+      "field": "beats",
+      "value": "[{\"time\":\"0-4s\",\"action\":\"Dinu performs L3 in full, looking left toward Nimal with empty hands below frame.\",\"camera\":\"CU with little headroom, entrance side of the established axis; keep the restrained drift contained.\",\"performance\":\"Deliver with a level gaze and contained resolve, without a nod or added pause.\",\"director_line\":\"Preserve the full delivery, then cut to Nimal receiving it in S09.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    },
+    {
+      "op": "set",
+      "shot": "S08",
+      "field": "subjects",
+      "value": "[{\"id\":\"C01\",\"action\":\"Delivers L3 while holding Nimal's gaze.\",\"position\":\"Standing frame right facing left, empty hands at his sides below frame.\",\"description\":\"Dinu, 30, in a plain navy work shirt and dark trousers.\"}]"
+    ,
+      "take_s": null
+    ,
+      "role": null
+    ,
+      "priority": null
+    ,
+      "after": null
+    ,
+      "first_block": null
+    ,
+      "last_block": null
+    ,
+      "who": null
+    ,
+      "what": null
+    ,
+      "at_block": null
+    ,
+      "to_shot": null
+    ,
+      "line": null
+    }
+  ],
+  "asks": [],
+  "variants": []
+}

@@ -20,5 +20,5 @@ guide: |
   person is not in it, you get a sentence saying so: tell the person.
   Example: {"summary": "Kamal is dead from the shot, lying where he fell.", "changes": [{"who": "Kamal", "from_block": 12,
   "condition": "dead"}]}.
-  Do not use it for what one shot shows (a car, a costume: that is a note, change_propose `dop_note.set`), for the canon
+  Do not use it for what one shot shows (a car, a costume: that is a note, sable_shot_change `note`), for the canon
   card, or for the script.

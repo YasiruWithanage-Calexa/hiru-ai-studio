@@ -1,0 +1,564 @@
+[
+ {
+  "message": "How many shots does this scene have, and which ones carry dialogue?",
+  "slot": "m01",
+  "lane": "answer",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "Twenty clips; S05, S08 and S11 carry the lines.",
+  "before_s": 120,
+  "light": {
+   "lane": "answer",
+   "confidence": 0.9,
+   "ops": [],
+   "answer": "Twenty clips; S05, S08 and S11 carry the lines."
+  },
+  "guard_cut": [],
+  "after_s": 120,
+  "revision": 0,
+  "calls": [
+   {
+    "slot": "m01.light",
+    "role": "light",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Who is on screen in S07?",
+  "slot": "m02",
+  "lane": "answer",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "Just Dinu, reacting to Nimal's case.",
+  "before_s": 120,
+  "light": {
+   "lane": "answer",
+   "confidence": 0.9,
+   "ops": [],
+   "answer": "Just Dinu, reacting to Nimal's case."
+  },
+  "guard_cut": [],
+  "after_s": 120,
+  "revision": 0,
+  "calls": [
+   {
+    "slot": "m02.light",
+    "role": "light",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Make S01 a wide, 6 seconds.",
+  "slot": "m03",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "S01 · size: MS → WIDE",
+   "S01 · take: 4 s → 6 s"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "(rehearsal reply)",
+  "before_s": 120,
+  "by_code": true,
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S01 · size: MS → WIDE"
+   },
+   {
+    "by": "conductor",
+    "text": "S01 · take: 4 s → 6 s"
+   }
+  ],
+  "guard_cut": [
+   "WHAT CHANGED (the app also shows this list under your message): - S01's size went from MS to WIDE - S01's take went from 4 s to 6 s"
+  ],
+  "after_s": 122,
+  "revision": 1,
+  "calls": [
+   {
+    "slot": "m03.reply",
+    "role": "reply_small",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Shorten S13 to 6 seconds.",
+  "slot": "m04",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "S13 · take: 8 s → 6 s"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "(rehearsal reply)",
+  "before_s": 122,
+  "light": {
+   "lane": "edit",
+   "confidence": 0.9,
+   "ops": [
+    {
+     "shot": "S13",
+     "take_s": 6,
+     "op": "retime"
+    }
+   ],
+   "answer": ""
+  },
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S13 · take: 8 s → 6 s"
+   }
+  ],
+  "guard_cut": [
+   "WHAT CHANGED (the app also shows this list under your message): - S13's take went from 8 s to 6 s"
+  ],
+  "after_s": 120,
+  "revision": 2,
+  "calls": [
+   {
+    "slot": "m04.light",
+    "role": "light",
+    "model": "rehearsal",
+    "dollars": 0.0
+   },
+   {
+    "slot": "m04.reply",
+    "role": "reply_small",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Make S10 a close-up and S12 an MCU.",
+  "slot": "m05",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "S10 · size: MCU → CU",
+   "S12 · size: CU → MCU"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "(rehearsal reply)",
+  "before_s": 120,
+  "light": {
+   "lane": "edit",
+   "confidence": 0.9,
+   "answer": "",
+   "ops": [
+    {
+     "shot": "S10",
+     "field": "size",
+     "value": "CU",
+     "op": "set"
+    },
+    {
+     "shot": "S12",
+     "field": "size",
+     "value": "MCU",
+     "op": "set"
+    }
+   ]
+  },
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S10 · size: MCU → CU"
+   },
+   {
+    "by": "conductor",
+    "text": "S12 · size: CU → MCU"
+   }
+  ],
+  "guard_cut": [
+   "WHAT CHANGED (the app also shows this list under your message): - S10's size went from MCU to CU - S12's size went from CU to MCU"
+  ],
+  "after_s": 120,
+  "revision": 3,
+  "calls": [
+   {
+    "slot": "m05.light",
+    "role": "light",
+    "model": "rehearsal",
+    "dollars": 0.0
+   },
+   {
+    "slot": "m05.reply",
+    "role": "reply_small",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Move S15 before S14.",
+  "slot": "m06",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "S15 moved to S14",
+   "S14 moved to S15"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "(rehearsal reply)",
+  "before_s": 120,
+  "by_code": true,
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S15 moved to S14"
+   }
+  ],
+  "guard_cut": [
+   "WHAT CHANGED (the app also shows this list under your message): - S15 moved to S14 - S14 moved to S15"
+  ],
+  "after_s": 120,
+  "revision": 4,
+  "calls": [
+   {
+    "slot": "m06.reply",
+    "role": "reply_small",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Drop S08.",
+  "slot": "m07",
+  "lane": "edit",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [
+   "L3 (Dinu's line) moves to the single MCU [3C-3], which shows Dinu"
+  ],
+  "card": {
+   "reasons": [
+    "removes S08, a must clip",
+    "removes the clip that performs L3"
+   ],
+   "lines": [
+    "S08 [3A-4] removed (must master MS)",
+    "L3 (Dinu) now performed by S08 [3C-3] single MCU (was S08 [3A-4] master MS)",
+    "L3 (Dinu's line) moves to the single MCU [3C-3], which shows Dinu",
+    "Takes in the scene: 120 s → 114 s",
+    "Checks after the change: no new problem"
+   ]
+  },
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "This one needs your OK first, because it removes S08, a must clip and removes the clip that performs L3. If you accept: S08 [3A-4] removed (must master MS); L3 (Dinu) now performed by S08 [3C-3] single MCU (was S08 [3A-4] master MS). Nothing is saved until you press Accept; Reject leaves the scene as it is.",
+  "before_s": 120,
+  "by_code": true,
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "S08 removed (must master MS, b3)"
+   }
+  ],
+  "would": [
+   "S08 [3A-4] removed (must master MS)",
+   "L3 (Dinu) now performed by S08 [3C-3] single MCU (was S08 [3A-4] master MS)"
+  ],
+  "after_s": 120,
+  "revision": 4,
+  "calls": [],
+  "dollars": 0
+ },
+ {
+  "message": "[Accept]",
+  "slot": "m08",
+  "lane": "action",
+  "saved": true,
+  "done": [
+   "S08 [3A-4] removed (must master MS)",
+   "L3 (Dinu) now performed by S08 [3C-3] single MCU (was S08 [3A-4] master MS)"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [
+   "L3 (Dinu's line) moves to the single MCU [3C-3], which shows Dinu"
+  ],
+  "card": null,
+  "proposals": [],
+  "fact": "THE PERSON PRESSED ACCEPTED: the change is now saved (revision 5; they can undo it).",
+  "author": [],
+  "reply": "(rehearsal reply)",
+  "before_s": 120,
+  "status": "Accepted · revision 5",
+  "override": [],
+  "guard_cut": [
+   "THE PERSON PRESSED ACCEPTED: the change is now saved (revision 5; they can undo it).  WHAT CHANGED (the app also shows this list under your message): - S08 [3A-4] removed (must master MS) - L3 (Dinu) now performed by S08 [3C-3] single MCU (was S08 [3A-4] master MS)"
+  ],
+  "after_s": 114,
+  "revision": 5,
+  "calls": [
+   {
+    "slot": "m08.reply",
+    "role": "reply_small",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Undo that.",
+  "slot": "m09",
+  "lane": "undo",
+  "saved": true,
+  "done": [
+   "restored S08: must master MS 6 s over b3 — The ethical disagreement registers in the space separating their bodi…",
+   "L3 (Dinu) now performed by S08 [3A-4] master MS (was S08 [3C-3] single MCU)"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "THE PERSON ASKED TO UNDO: the scene is back to how it was before the last change (saved as revision 6; they can redo).",
+  "author": [],
+  "reply": "(rehearsal reply)",
+  "before_s": 114,
+  "status": "Undone · revision 6",
+  "guard_cut": [
+   "THE PERSON ASKED TO UNDO: the scene is back to how it was before the last change (saved as revision 6; they can redo).  WHAT CHANGED (the app also shows this list under your message): - restored S08: must master MS 6 s over b3 — The ethical disagreement registers in the space separating their bodi… - L3 (Dinu) now performed by S08 [3A-4] master MS (was S08 [3C-3] single MCU)"
+  ],
+  "after_s": 120,
+  "revision": 6,
+  "calls": [
+   {
+    "slot": "m09.reply",
+    "role": "reply_small",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Add an insert of the key in Dinu's palm after S15.",
+  "slot": "m10",
+  "lane": "edit",
+  "saved": true,
+  "done": [
+   "new S16: should insert INSERT 4 s over b5"
+  ],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [
+   "S16 has no reason yet: its picture still needs drawing (Zora can draw it)."
+  ],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "(rehearsal reply)",
+  "before_s": 120,
+  "light": {
+   "lane": "edit",
+   "confidence": 0.9,
+   "answer": "",
+   "ops": [
+    {
+     "take_s": 4,
+     "role": "insert",
+     "after": "S15",
+     "first_block": 5,
+     "last_block": 5,
+     "who": [
+      "Dinu"
+     ],
+     "what": "the key in Dinu's palm",
+     "op": "insert",
+     "size": "INSERT"
+    }
+   ]
+  },
+  "applied": [
+   {
+    "by": "conductor",
+    "text": "new S16: INSERT insert, b5-b5, 4 s (its picture needs writing)"
+   }
+  ],
+  "guard_cut": [
+   "WHAT CHANGED (the app also shows this list under your message): - new S16: should insert INSERT 4 s over b5  HEADS-UP (reported, never trimmed): - S16 has no reason yet: its picture still needs drawing (Zora can draw it)."
+  ],
+  "after_s": 124,
+  "revision": 7,
+  "calls": [
+   {
+    "slot": "m10.light",
+    "role": "light",
+    "model": "rehearsal",
+    "dollars": 0.0
+   },
+   {
+    "slot": "m10.reply",
+    "role": "reply_small",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Make the argument from S08 to S13 tenser.",
+  "slot": "m11",
+  "lane": "zora",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "That's craft work for Zora.",
+  "before_s": 124,
+  "light": {
+   "lane": "zora",
+   "confidence": 0.9,
+   "ops": [],
+   "answer": "That's craft work for Zora."
+  },
+  "guard_cut": [],
+  "after_s": 124,
+  "revision": 7,
+  "calls": [
+   {
+    "slot": "m11.light",
+    "role": "light",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ },
+ {
+  "message": "Are any shots silent but carrying a line?",
+  "slot": "m12",
+  "lane": "answer",
+  "saved": false,
+  "done": [],
+  "refused": [],
+  "team_refused": [],
+  "notes": [],
+  "undelivered": [],
+  "reported": [],
+  "kernel_notes": [],
+  "card": null,
+  "proposals": [],
+  "fact": "",
+  "author": [],
+  "reply": "No: every line is on a speaking clip.",
+  "before_s": 124,
+  "light": {
+   "lane": "answer",
+   "confidence": 0.9,
+   "ops": [],
+   "answer": "No: every line is on a speaking clip."
+  },
+  "guard_cut": [],
+  "after_s": 124,
+  "revision": 7,
+  "calls": [
+   {
+    "slot": "m12.light",
+    "role": "light",
+    "model": "rehearsal",
+    "dollars": 0.0
+   }
+  ],
+  "dollars": 0.0
+ }
+]

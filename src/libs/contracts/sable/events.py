@@ -36,7 +36,6 @@ STOPPED = "Stopped."
 STATUS: dict[str, str] = {
     "canon_find": "Looking through the canon",
     "canon_read": "Reading the canon",
-    "change_propose": "Preparing a change for you to accept",
     "continuity_check": "Checking continuity{in_scene}",
     "dialogue_read": "Reading the lines{of_scene}",
     "episode_read": "Reading the episode",
@@ -44,10 +43,11 @@ STATUS: dict[str, str] = {
     "glossary_read": "Checking names and spellings",
     "memory_propose": "Preparing a rule for you to accept",
     "memory_search": "Looking through what the team decided",
-    "plan_try": "Trying the change on a copy{of_scene}",
     "prompt_check": "Checking the prompts{of_scene}",
     "questions_read": "Reading the open questions",
     "sable_overview": "Looking over the production",
+    "sable_shot_change": "Preparing a change for you to accept",
+    "sable_shot_try": "Trying the change on a copy{of_scene}",
     "sable_scene_find": "Finding the scenes",
     "sable_think_harder": "Thinking this through",
     "scene_read": "Reading {scene}",
@@ -143,9 +143,11 @@ class SableTurnPayload(BaseModel):
 
 
 class StagedChange(BaseModel):
-    """A change to a scene's shot list Sable proposed (`change_propose`): the operations the kernel confirmed land.
-    Accepting applies them through the director function, as a button press does
-    (`POST …/sable/messages/{id}/cards/{i}/accept`)."""
+    """A change to a scene's shot rows Sable proposed (`sable_shot_change`): the row kernel's operations, each with its
+    writer, confirmed to land on the rows as they were (`made_on`, their fingerprint). Accepting has Zora's save replay
+    them (`POST …/sable/messages/{id}/cards/{i}/accept`, plan/2026-11-13 phase 8): refused when the shots changed since,
+    and saved as a revision Zora can undo. A card stored before phase 8 carries the classic kernel's operations
+    (`engine` "classic"): it is refused with a sentence, never applied."""
 
     kind: Literal["sable_change"] = "sable_change"
     scene_id: UUID
@@ -155,6 +157,10 @@ class StagedChange(BaseModel):
     changes: list[str] = Field(default_factory=list)
     touched: list[str] = Field(default_factory=list)
     notes: list[dict[str, Any]] = Field(default_factory=list)  # DoP notes: [{shot, before, after}] (plan/2026-11-09b)
+    engine: Literal["rows", "classic"] = "classic"  # "rows": the row kernel's operations (plan/2026-11-13 phase 8)
+    made_on: str = ""  # the rows' fingerprint when proposed
+    in_doubt: list[str] = Field(default_factory=list)  # report only: problems the change would leave
+    risks: list[str] = Field(default_factory=list)  # why Zora would ask first ("removes S08, a must clip")
     status: Literal["open", "accepted", "dismissed", "failed"] = "open"
     note: str = ""  # why it failed, in a sentence
 
@@ -186,6 +192,30 @@ class StagedMemory(BaseModel):
     scene_id: UUID | None = None
     status: Literal["open", "accepted", "dismissed", "failed"] = "open"
     note: str = ""
+
+
+class SableAction(BaseModel):
+    """API -> sable_chat: a change card's Accept (plan/2026-11-13 phase 8), carried out by code in the function. The API
+    decides who, whether they may (Permission.DIRECT) and that the scene is not approved; the card supplies the
+    operations and the fingerprint of the rows they were tried on."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    kind: Literal["apply"] = "apply"
+    production_id: UUID
+    scene_id: UUID
+    actor_user_id: UUID
+    message_id: UUID | None = None
+    ops: list[dict[str, Any]] = Field(min_length=1, max_length=24)  # [{op, by}] as staged
+    made_on: str = Field(min_length=1, max_length=64)
+    summary: str = Field(default="", max_length=200)
+
+
+class SableActionResult(BaseModel):
+    ok: bool
+    text: str  # what happened, in a sentence for the person
+    revision: int = 0  # the revision saved (0 = none, or no revisions table)
+    changes: list[str] = Field(default_factory=list)
 
 
 class Handoff(BaseModel):

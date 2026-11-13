@@ -1,15 +1,16 @@
-"""Zora, the director chat over Shot Planner Jonathan's plan (plan/2026-11-06e §4.10, Phase 7).
+"""Zora, the director chat on a scene's shot rows (plan/2026-11-06e §4.10; plan/2026-11-13 §3.10).
 
 The turn runs in the `zora_chat` function. The API decides, from trusted data, everything the function may not decide
-for itself: who is asking, whether they may change the plan (Permission.DIRECT), which scene and thread, and whether
-the scene is Zora's at all (`ZORA__ENABLED` and a stored Jonathan plan; any other scene keeps the classic chat). It
+for itself: who is asking, whether they may change the shots (Permission.DIRECT), which scene and thread, and whether
+Zora is on (`ZORA__ENABLED`). Any scene with shot rows is editable, whoever planned it: Zora depends on no planner. It
 stores the person's message first, so a turn that fails still leaves the question in the thread.
 
-    GET  …/scenes/{id}/zora              is this scene Zora's, can it undo or redo, the revisions
+    GET  …/scenes/{id}/zora              is Zora on, can it undo or redo, the revisions, the person's locks
     POST …/scenes/{id}/zora/turn         one turn, streamed (`contracts.zora.events`)
+    POST …/scenes/{id}/zora/accept | reject   a card's Accept or Reject (the change is code, no model)
     POST …/scenes/{id}/zora/undo | redo  a revision restored in code (no model)
     POST …/scenes/{id}/zora/lock | unlock   a field a person set: no model may write it
-    POST …/scenes/{id}/zora/plan-shots   "Plan shots from this treatment": a Jonathan job with the treatment pinned
+    POST …/scenes/{id}/zora/plan-shots   "Re-plan the scene": a job of the production's `shot_planner`
     POST …/messages/{id}/use             a proposal's operations applied (no model)
 """
 from __future__ import annotations
@@ -29,8 +30,10 @@ from api.repositories import Repos, Row
 from api.services import director as director_service
 from api.services import zora as zora_service
 from api.workers import task_manager
+from contracts.build import build_pipeline
 from contracts.director import ChatMessage, MessageKind, TurnPayload, TurnRequest
-from contracts.jobs import JobKind
+from contracts.producer import PersonEdits
+from contracts.production import ProductionSettings
 from contracts.roles import Permission
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["zora"])
@@ -53,15 +56,15 @@ class RevisionView(BaseModel):
 
 class ZoraStatus(BaseModel):
     enabled: bool  # ZORA__ENABLED
-    available: bool  # this scene is Zora's (enabled and Jonathan planned it); False: the classic chat
+    available: bool  # this scene is Zora's (Zora is on); False: the classic chat
     reason: str = ""  # why not, in a sentence
     undo_available: bool  # the database has the revisions table and this scene has revisions
     can_undo: bool = False
     can_redo: bool = False
     revisions: list[RevisionView] = Field(default_factory=list)
-    locked: list[str] = Field(default_factory=list)
-    settled: list[str] = Field(default_factory=list)
-    sequences: list[str] = Field(default_factory=list)  # the plan's sequence ids, for "@" in the composer
+    locked: list[str] = Field(default_factory=list)  # "S03.size": fields a person set (no model writes them)
+    settled: list[str] = Field(default_factory=list)  # kept for the panel; Zora has no treatment to settle
+    sequences: list[str] = Field(default_factory=list)  # kept for the panel; the shot rows have no sequences
 
 
 class ActionResult(BaseModel):
@@ -72,6 +75,12 @@ class ActionResult(BaseModel):
     gate: dict[str, Any] = Field(default_factory=dict)
     can_undo: bool = False
     can_redo: bool = False
+    message: dict[str, Any] | None = None  # Zora's reply to the click, as stored in the thread
+
+
+class CardRequest(BaseModel):
+    message_id: UUID  # the director message that carries the card
+    block: int = Field(ge=0)  # the card's index in its blocks
 
 
 class LockRequest(BaseModel):
@@ -95,8 +104,8 @@ async def _scene(repos: Repos, production_id: UUID, scene_id: UUID) -> Row:
 
 
 def _why_not(scene: Row) -> str:
-    """Why Zora cannot take this scene ("" when she can). Any planner's scene is hers (2026-11-09): one without a
-    Jonathan plan is adopted from its shots on her first read (`zora_chat.scene.adopt`)."""
+    """Why Zora cannot take this scene ("" when she can). Any scene is hers, whoever planned it (plan/2026-11-13): she
+    edits its shot rows."""
     if not zora_service.routes_here(scene):
         return "Zora is switched off on this server; use Sable to change this scene."
     return ""
@@ -115,16 +124,22 @@ async def get_status(production_id: UUID, scene_id: UUID, _: CanView, repos: Rep
     scene = await _scene(repos, production_id, scene_id)
     rows = await repos.revisions.list(scene_id)
     can_undo, can_redo = zora_service.undo_redo(rows)
-    stored = scene.get(zora_service.PLANNER) or {}
-    person = stored.get("person") or {}
-    sequences = [str(q.get("id")) for q in (stored.get("plan") or {}).get("sequences") or [] if q.get("id")]
+    shots = await repos.shots.list(production_id, scene_id)
     reason = _why_not(scene)
     return ZoraStatus(enabled=get_settings().zora.enabled, available=not reason, reason=reason,
                       undo_available=bool(rows), can_undo=can_undo, can_redo=can_redo,
                       revisions=[RevisionView.model_validate({**r, "created_at": str(r.get("created_at") or "")})
                                  for r in rows][-30:],
-                      locked=list(person.get("locked") or []), settled=list(person.get("settled") or []),
-                      sequences=sequences)
+                      locked=locked_of(shots))
+
+
+def locked_of(shots: list[Row]) -> list[str]:
+    """The fields a person set, as "S03.size": the take (`duration_locked`) and `person_edits.zora_locks`."""
+    out: list[str] = []
+    for n, shot in enumerate(sorted(shots, key=lambda r: int(r.get("number") or 0)), start=1):
+        keys = (["take_s"] if shot.get("duration_locked") else []) + PersonEdits.of(shot).zora_locks
+        out += [f"S{n:02d}.{k}" for k in keys]
+    return out
 
 
 @router.post("/scenes/{scene_id}/zora/turn")
@@ -185,6 +200,34 @@ async def _act(repos: Repos, access: ProductionAccess, actor: zora_service.ZoraA
     return result
 
 
+@router.post("/scenes/{scene_id}/zora/accept", response_model=ActionResult)
+async def accept(production_id: UUID, scene_id: UUID, body: CardRequest, access: CanDirect, repos: ReposDep,
+                 actor: Actor) -> ActionResult:
+    """A card's Accept: its operations replayed in code in the batches they landed in, checked and saved (a revision);
+    refused when the shots changed since the card was made."""
+    thread_id = await _card_thread(repos, production_id, scene_id, body.message_id)
+    return await _act(repos, access, actor, scene_id, "accept", message_id=str(body.message_id), block=body.block,
+                      thread_id=thread_id)
+
+
+@router.post("/scenes/{scene_id}/zora/reject", response_model=ActionResult)
+async def reject(production_id: UUID, scene_id: UUID, body: CardRequest, access: CanDirect, repos: ReposDep,
+                 actor: Actor) -> ActionResult:
+    """A card's Reject: nothing changes, and Zora does not offer it again in this thread."""
+    thread_id = await _card_thread(repos, production_id, scene_id, body.message_id)
+    return await _act(repos, access, actor, scene_id, "reject", message_id=str(body.message_id), block=body.block,
+                      thread_id=thread_id)
+
+
+async def _card_thread(repos: Repos, production_id: UUID, scene_id: UUID, message_id: UUID) -> str:
+    """The thread of the message that carries a card, which must be this scene's (404 otherwise)."""
+    row = await repos.messages.get(production_id, message_id)
+    thread = await repos.threads.get(production_id, UUID(str(row["thread_id"]))) if row else None
+    if row is None or thread is None or str(thread.get("scene_id")) != str(scene_id):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Message not found.")
+    return str(thread["id"])
+
+
 @router.post("/scenes/{scene_id}/zora/undo", response_model=ActionResult)
 async def undo(production_id: UUID, scene_id: UUID, access: CanDirect, repos: ReposDep, actor: Actor) -> ActionResult:
     return await _act(repos, access, actor, scene_id, "undo")
@@ -224,16 +267,18 @@ async def use(production_id: UUID, message_id: UUID, body: UseRequest, access: C
 
 @router.post("/scenes/{scene_id}/zora/plan-shots", response_model=PlanStarted, status_code=status.HTTP_202_ACCEPTED)
 async def plan_shots(production_id: UUID, scene_id: UUID, access: CanDirect, repos: ReposDep) -> PlanStarted:
-    """"Plan shots from this treatment" (plan §4.9, D5): Shot Planner Jonathan plans the scene's shots with the
-    treatment as it stands PINNED: its pack prints it as fixed and its check reports a plan that drifts from it."""
+    """"Re-plan the scene" (plan/2026-11-13 §3.10, D-E): a job of the production's `shot_planner` setting (as the build
+    chooses one), for this scene only. Zora plans nothing itself and names no planner."""
     scene = _zora_scene(await _scene(repos, production_id, scene_id))
     if scene.get("status") == "approved":
         raise HTTPException(status.HTTP_409_CONFLICT, "This scene is approved and locked. Unapprove it first.")
-    treatment = dict((scene[zora_service.PLANNER].get("plan") or {}).get("treatment") or {})
-    job_id = await task_manager.dispatch(JobKind.PLAN_SCENE_JONATHAN, repos, actor_user_id=access.user.id,
-                                         production_id=production_id, request={"scene_id": str(scene_id)},
-                                         state={"scene_ids": [str(scene_id)], "replan": True,
-                                                "pinned": {str(scene_id): treatment}})
+    if not scene.get("script"):
+        raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no script to plan shots from.")
+    planner = ProductionSettings.model_validate(access.production.get("settings") or {}).shot_planner
+    kind = build_pipeline(planner)[-1]  # the job that plans a scene's shots
+    job_id = await task_manager.dispatch(kind, repos, actor_user_id=access.user.id, production_id=production_id,
+                                         request={"scene_id": str(scene_id)},
+                                         state={"scene_ids": [str(scene_id)], "replan": True})
     await repos.audit.record(action="scene.zora_plan_shots", entity="scene", entity_id=str(scene_id),
                              actor_user_id=access.user.id, production_id=production_id, diff={"job_id": str(job_id)})
     return PlanStarted(job_id=job_id)

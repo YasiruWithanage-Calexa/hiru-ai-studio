@@ -21,21 +21,14 @@ from api.workers import task_manager
 
 _logger = logging.getLogger(__name__)
 UNAVAILABLE = "Zora is not available right now. Please try again in a moment."
-PLANNER = "jonathan"  # the planner whose stored plan Zora edits
 
 ZoraStreamer = Callable[[dict[str, Any]], AsyncIterator[bytes]]
 ZoraActor = Callable[[dict[str, Any]], Awaitable[Row]]
 
 
-def has_plan(scene: Row) -> bool:
-    raw = scene.get(PLANNER)
-    return isinstance(raw, dict) and raw.get("planner") == PLANNER and isinstance(raw.get("plan"), dict)
-
-
 def routes_here(scene: Row) -> bool:
-    """Every scene goes to Zora when `ZORA__ENABLED` (2026-11-09; was: only a scene Jonathan planned). A scene another
-    planner made is adopted from its shots on Zora's first read (`zora_chat.scene.adopt`). `scene` stays in the
-    signature: Sable asks per scene (`api.services.sable`)."""
+    """Every scene goes to Zora when `ZORA__ENABLED`: she edits its shot rows, whoever planned them (plan/2026-11-13).
+    `scene` stays in the signature: Sable asks per scene (`api.services.sable`)."""
     del scene
     return get_settings().zora.enabled
 
@@ -86,7 +79,8 @@ async def stream_turn(payload: dict[str, Any]) -> AsyncIterator[bytes]:
 
 
 async def act(payload: dict[str, Any]) -> Row:
-    """An action (use, undo, redo, lock, unlock) through the function: `ZoraActionResult` as JSON. A function that
+    """An action (accept, reject, use, undo, redo, lock, unlock) through the function: `ZoraActionResult` as JSON. A
+    function that
     cannot be reached answers a refused action, never an error page."""
     spec = task_manager.ZORA_CHAT
     url = task_manager.function_url(spec, get_settings())

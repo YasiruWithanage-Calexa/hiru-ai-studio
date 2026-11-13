@@ -1,8 +1,0 @@
-id: zora_deps
-kind: step
-version: 1
-summary: "Zora's dependency graph: from what an edit changed (proved by code, never read from the message), the parts of the plan now stale, the author tasks that follow, and the re-cut guard that offers a re-plan instead of a too-big edit."
-status: active
-owner: director
-entry: step:run
-uses: [zora_kernel]
