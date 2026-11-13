@@ -1,0 +1,422 @@
+# Per step: browser->API requests, DB queries made by them
+
+step                          api dupAPI   db  ms(sum)  top routes
+login                           6      0    8     1490  /v1/productionsx2, /v1/mex2, /v1/usagex2
+productions-list                3      0    3      234  /v1/productionsx1, /v1/mex1, /v1/usagex1
+production-overview             5      0    7      578  /v1/mex1, /v1/usagex1, /sablex1, /sablex1
+episode                         5      0    5      320  /v1/mex1, /v1/usagex1, /overviewx1, /sablex1
+scene-director                 11      0   29     2148  /canonx1, /accessx1, /canon/usagex1, /scenes/{id}/zorax1
+shot-workspace                 19      0   60     2674  /canonx1, /accessx1, /canon/usagex1, /scenes/{id}/zorax1
+shot-production                11      0   53     1986  /scenes/{id}/pagex1, /accessx1, /v1/mex1, /v1/usagex1
+shot-handoff                    6      0   27     1139  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /v1/usagex1
+canon                           8      0   12     1540  /v1/mex1, /accessx1, /canonx1, /v1/usagex1
+canon-entity                    9      0   16     1098  /accessx1, /overviewx1, /canon/{id}/usagex1, /canon/{id}x1
+documents                      10      0   11     1338  /v1/mex1, /v1/director-personasx1, /accessx1, x1
+members                         7      0    6      471  /accessx1, /v1/mex1, /membersx1, /v1/usagex1
+activity                        6      0    9      905  /v1/mex1, /v1/usagex1, /overviewx1, /activityx1
+questions                       7      0    6      312  /v1/mex1, /accessx1, /v1/usagex1, /questionsx1
+handoff-walk-open               6      0   29     1297  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /v1/usagex1
+handoff-walk-click-3            6      0   28     1190  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /v1/usagex1
+handoff-walk-click-4            6      0   28     1215  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /v1/usagex1
+handoff-walk-click-5            6      0   27     1306  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /v1/usagex1
+handoff-walk-click-6            6      0   26     1684  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /v1/usagex1
+episode-again                   5      0    5     4950  /v1/mex1, /sablex1, /sablex1, /v1/usagex1
+episode-click-scene-2           9      0   28    10736  /accessx1, /canonx1, /canon/usagex1, /scenes/{id}/zorax1
+episode-click-scene-3           9      0   27     2938  /canonx1, /accessx1, /canon/usagex1, /scenes/{id}/zorax1
+episode-click-scene-4           9      0   27     1903  /canonx1, /accessx1, /canon/usagex1, /scenes/{id}/zorax1
+idle-shot-handoff               6      0   27     1264  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /sablex1
+idle-scene-director            11      0   31     3155  /accessx1, /canonx1, /scenes/{id}/zorax1, /canon/usagex1
+idle-overview                   5      0    9     2411  /sablex1, /v1/mex1, /sablex1, /v1/usagex1
+reload-shot-handoff             6      0   30     2129  /shots/{id}/handoffx1, /scenes/{id}/pagex1, /v1/mex1, /v1/usagex1
+end                             0      0    0        0  
+
+# Same API URL requested more than once inside one step (redundant fetches)
+
+
+# Routes: calls, DB queries per call (min/avg/max), time
+
+route                                                                          calls   db min/avg/max  avg ms
+GET /v1/productions/{id}/scenes/{id}/page                                         15   14/ 15.7/  18     884
+GET /v1/productions/{id}/shots/{id}/handoff                                       10   10/ 10.8/  11     568
+GET /v1/productions/{id}/overview                                                 10    4/  4.6/   6     538
+GET /v1/usage                                                                     28    1/  1.4/   3     214
+GET /v1/productions/{id}/scenes/{id}/cost                                          2   16/ 17.5/  19     518
+GET /v1/productions/{id}/canon/usage                                               7    4/  4.0/   4     633
+GET /v1/productions/{id}/shots/{id}/render-plans                                   2    8/  8.0/   8     349
+GET /v1/productions/{id}/scenes/{id}/raphael                                       5    3/  3.0/   3      95
+GET /v1/productions/{id}/scenes/{id}/zora                                          6    2/  2.3/   3     726
+GET /v1/productions/{id}/scenes/{id}/packet                                        5    2/  2.0/   2     169
+GET /v1/productions                                                                3    2/  2.3/   3     406
+GET /v1/productions/{id}/canon/{id}/usage                                          1    5/  5.0/   5     273
+GET /v1/productions/{id}/canon/{id}                                                1    3/  3.0/   3     314
+GET /v1/productions/{id}/canon/{id}/looks                                          1    3/  3.0/   3     213
+GET /v1/productions/{id}/activity                                                  1    3/  3.0/   3     326
+GET /v1/productions/{id}/director-board                                            1    2/  2.0/   2     275
+GET /v1/productions/{id}/canon                                                     7    0/  0.1/   1     498
+GET /v1/productions/{id}/access                                                   12    0/  0.1/   1     160
+GET /v1/director-personas                                                          1    1/  1.0/   1     132
+GET /v1/productions/{id}/documents                                                 1    1/  1.0/   1     232
+GET /v1/productions/{id}/members                                                   1    1/  1.0/   1     132
+GET /v1/productions/{id}/questions                                                 1    1/  1.0/   1      90
+GET /v1/me                                                                        28    0/  0.0/   0      36
+OPTIONS /v1/productions/{id}/sable                                                22    0/  0.0/   0       1
+GET /v1/productions/{id}/sable                                                    22    0/  0.0/   0      18
+GET /files/AOe3wtf7BKdfec_QCuGeHWvblBP4rLrfS5ZB2C2t4kfMiMg2ohQJZ3Nq_kCRzgp_3Hg     1    0/  0.0/   0      20
+GET /files/3xafGG_t0TiNWmb4uGN_0itKPpojpPgfciCxmFbjF6TkCUCNQ7aPI_K_3EZFS1S6gH0     1    0/  0.0/   0      22
+GET /files/GlzDk_IoQksGxmC23ueCveGW0BlLH-SKcGxemoP0jasxQou_VFG_fps2PBnPgvrnErC     1    0/  0.0/   0      20
+GET /files/MlKKMTrWWzgmKXIt3-ixDgOFH_KPk4_LB-gf7ARZo9ya6FcERANsboOhPK6oRrOjEJy     1    0/  0.0/   0      27
+GET /files/gc2c-v4GiwKEHy14UTEbDgKa6qwPXqQEBrgTgQpsXJPLrcAsEW15xIPZGnZEW7nAvmh     1    0/  0.0/   0      22
+OPTIONS /v1/productions/{id}/shots/{id}/render-plans                               2    0/  0.0/   0       1
+OPTIONS /v1/productions/{id}/shots/{id}/handoff                                    2    0/  0.0/   0       1
+GET /v1/productions/{id}                                                           1    0/  0.0/   0     139
+
+# Identical DB query repeated INSIDE one request (route: query xN)
+
+
+# Tables hit per request (same table read several times in one request)
+
+  GET /v1/productions/{id}/scenes/{id}/cost  (1 req): token_usagex6
+  GET /v1/productions/{id}/scenes/{id}/cost  (1 req): token_usagex4
+
+# Every request's query sequence, one example per route
+
+## GET /v1/productions  db=3 ms=312.8
+   GET   profiles                     select=*&id=eq.{id}&limit=1  104.9ms 0-0/*
+   GET   production_members           select=role,productions(*)&user_id=eq.{id}  69.3ms 0-0/*
+   GET   production_members           select=production_id,user_id,role,profiles!production_members_user_id_fkey(display_name,email,active)&production_id=in.({id})  87.0ms 0-0/*
+## GET /v1/me  db=0 ms=6.6
+## GET /v1/usage  db=2 ms=366.2
+   POST  rpc/token_usage_since          74.4ms 0-0/*
+   GET   usage_budget                 select=budget_tokens&month=eq.2026-11-01&limit=1  72.9ms */*
+## OPTIONS /v1/productions/{id}/sable  db=0 ms=0.9
+## GET /v1/productions/{id}/sable  db=0 ms=3.6
+## GET /v1/productions/{id}/overview  db=6 ms=436.1
+   GET   productions                  select=*,production_members(role)&id=eq.{id}&production_members.user_id=eq.{id}&limit=1  238.6ms 0-0/*
+   GET   episodes                     select=*&production_id=eq.{id}&order=number.asc  66.6ms 0-2/*
+   GET   scenes                       select=*&production_id=eq.{id}&order=number.asc  180.6ms 0-11/*
+   GET   shots                        select=*&production_id=eq.{id}&order=number.asc  89.5ms 0-71/*
+   GET   canon_entities               select=*,current:canon_versions!canon_entities_current_version_fkey(id,entity_id,version,card,wardrobe_anchor,voice_pin,reference_prompt,reference_ass  156.5ms 0-5/*
+   GET   questions                    select=*&production_id=eq.{id}&status=eq.open&order=created_at.asc  89.8ms */*
+## GET /v1/productions/{id}/canon  db=0 ms=112.1
+## GET /v1/productions/{id}/access  db=0 ms=112.5
+## GET /v1/productions/{id}/canon/usage  db=4 ms=285.9
+   GET   scenes                       select=*&production_id=eq.{id}&order=number.asc  87.1ms 0-11/*
+   GET   episodes                     select=*&production_id=eq.{id}&order=number.asc  166.6ms 0-2/*
+   GET   dialogue_lines               select=id,scene_id,shot_id,character_id&production_id=eq.{id}  103.5ms 0-71/*
+   GET   shots                        select=*&production_id=eq.{id}&order=number.asc  79.0ms 0-71/*
+## GET /v1/productions/{id}/scenes/{id}/zora  db=2 ms=355.4
+   GET   scenes                       select=*&id=eq.{id}&production_id=eq.{id}&limit=1  164.3ms 0-0/*
+   GET   scene_plan_revisions         select=revision,kind,restores,made_by,message_id,created_at&scene_id=eq.{id}&order=revision.asc  73.3ms 0-0/*
+## GET /v1/productions/{id}/scenes/{id}/page  db=16 ms=710.6
+   GET   productions                  select=*,production_members(role)&id=eq.{id}&production_members.user_id=eq.{id}&limit=1  96.9ms 0-0/*
+   GET   scenes                       select=*&id=eq.{id}&production_id=eq.{id}&limit=1  170.5ms 0-0/*
+   GET   shots                        select=*&production_id=eq.{id}&scene_id=eq.{id}&order=number.asc  85.6ms 0-5/*
+   GET   dialogue_lines               select=*&scene_id=eq.{id}&order=ord.asc  109.5ms 0-5/*
+   GET   first_frames                 select=*&shot_id=in.({id},{id},{id},{id},{id},{id})&order=created_at.asc  72.7ms 0-9/*
+   GET   video_prompts                select=id,production_id,shot_id,version,sections,prose,model,camera,checks,frame_id,pins,created_at&shot_id=in.({id},{id},{id},{id},{id},{id})&order=v  84.5ms 0-4/*
+   GET   episodes                     select=*&id=eq.{id}&production_id=eq.{id}&limit=1  76.9ms 0-0/*
+   GET   canon_looks                  select=*&production_id=eq.{id}&order=created_at.asc  89.1ms */*
+   GET   scene_looks                  select=*&scene_id=eq.{id}  74.0ms */*
+   GET   chat_threads                 select=*&production_id=eq.{id}&scene_id=eq.{id}&order=created_at.asc  72.3ms 0-0/*
+   GET   scenes                       select=*&production_id=eq.{id}&episode_id=eq.{id}&order=number.asc  62.5ms 0-3/*
+   GET   shots                        select=id,scene_id,number,duration_s,status&scene_id=in.({id},{id},{id},{id})&order=number.asc  64.9ms 0-23/*
+   GET   production_director_board    select=seat,persona_id,created_at,persona:director_personas(id,slug,name,initials,color,specialty,traits,style_note,charter,active)&production_id=eq.{  71.4ms */*
+   GET   director_personas            select=id,slug,name,initials,color,specialty,traits,style_note,charter,active&active=eq.true&order=name.asc  57.6ms 0-4/*
+   GET   chat_messages                select=*&thread_id=eq.{id}&order=created_at.desc&limit=100  66.3ms 0-3/*
+   GET   episodes                     select=*&production_id=eq.{id}&order=number.asc  62.1ms 0-2/*
+## GET /v1/productions/{id}/scenes/{id}/raphael  db=3 ms=140.1
+   GET   scenes                       select=*&id=eq.{id}&production_id=eq.{id}&limit=1  69.8ms 0-0/*
+   GET   shots                        select=*&production_id=eq.{id}&scene_id=eq.{id}&order=number.asc  90.4ms 0-5/*
+   GET   dialogue_lines               select=*&scene_id=eq.{id}&order=ord.asc  77.0ms 0-5/*
+## GET /v1/productions/{id}/scenes/{id}/packet  db=2 ms=199.4
+   GET   scenes                       select=*&id=eq.{id}&production_id=eq.{id}&limit=1  81.1ms 0-0/*
+   GET   scene_packets                select=scene_id,scene_key,packet,waits,script_version&scene_id=eq.{id}&production_id=eq.{id}&limit=1  71.8ms */*
+## GET /files/AOe3wtf7BKdfec_QCuGeHWvblBP4rLrfS5ZB2C2t4kfMiMg2ohQJZ3Nq_kCRzgp_3Hg8WAL4Bqxj9v_PTTOYfo81pPh1nDijunp7c3lF6mihDLquuO-CesUnXDsy4q6QB42bQ-bfJ7Tx0QD86u0SPditaO4wF6N4D6AewcjheOC71tZADygaIPTQm6yVN5FGjzoissJGZ7W_ZLqvItzuDZhFG3WikurZLLt4PwJF1bftswsvaP1_9I9G0NC5  db=0 ms=20.1
+## GET /files/3xafGG_t0TiNWmb4uGN_0itKPpojpPgfciCxmFbjF6TkCUCNQ7aPI_K_3EZFS1S6gH0ttn3jSrn4nm2NRl9YcOf5HSqvWpw_eNxC9x2iOHQ1RtrQ9D_OPLZegp82nLy9sClZAryZKw-k8ifu9-1Q2waXkSwHCkcnWK3IW0YpGiN52MgHeezyvd__n0TeISiwahOtR0MOrsz9Tf_OTB5Gz8QepTVeIp4wjW3OYKJx5I3GyaoX1MMHfxzDX8Ou  db=0 ms=21.5
+## GET /files/GlzDk_IoQksGxmC23ueCveGW0BlLH-SKcGxemoP0jasxQou_VFG_fps2PBnPgvrnErCp2-JFzDWpT3fMIMn3nVopphD3mY0v9d1mcRBM-XocJLbX_6Ea7JqqHzWOUMJ2YP2Z6bEhGGBDkh9pcpscaUWhbu0eXAHWOnFK118e57TqrMxw1uE9dpeGDcG3HAz6NpP6vM94eCFrHAPLIIIdAfFtDx4LChz9qMIKeyc4SW8qHMHu6HXi3D6ibzm0  db=0 ms=20.5
+## GET /files/MlKKMTrWWzgmKXIt3-ixDgOFH_KPk4_LB-gf7ARZo9ya6FcERANsboOhPK6oRrOjEJypaJhws5AZb2RIww4ylrgpFnzpWfCl5WqVu862x2ETAcBBc9NDtJIl9XC6aga58rXwEoM7GlSQxwInvyipPNOtXKYRajRHeNJzmGfqWBbSfuaHwPJkYNB0_R_xwA2Cf1RIgU78TJOfYplyzVdCzvVFAlhe6zztz_0wqmZsr4u-A3QGboStBIA8OP5j  db=0 ms=27.0
+## GET /files/gc2c-v4GiwKEHy14UTEbDgKa6qwPXqQEBrgTgQpsXJPLrcAsEW15xIPZGnZEW7nAvmhRX-yWgojMHers3Q6u17uPabu-3WkAWKYpRryV_R7WFvC6-P8cb5j2mlYpjLQ2AU-_HemoIUn5vu7R4Qaf0lf0RQwGqYVdAZKwqSc_77tPT_f-yLQcDtQ0b2_TpmXQV_VoLGO7LRJulX2mNapPuFKFnv9Ykia8rt57Ia6TbSnXpUQXLSDBZ-Abtvi1  db=0 ms=21.5
+## GET /v1/productions/{id}/scenes/{id}/cost  db=19 ms=569.8
+   GET   scenes                       select=*&id=eq.{id}&production_id=eq.{id}&limit=1  59.1ms 0-0/*
+   GET   shots                        select=*&production_id=eq.{id}&scene_id=eq.{id}&order=number.asc  79.3ms 0-5/*
+   GET   dialogue_lines               select=*&scene_id=eq.{id}&order=ord.asc  73.9ms 0-5/*
+   GET   first_frames                 select=*&shot_id=in.({id},{id},{id},{id},{id},{id})&order=created_at.asc  133.2ms 0-9/*
+   GET   video_prompts                select=id,production_id,shot_id,version,sections,prose,model,camera,checks,frame_id,pins,created_at&shot_id=in.({id},{id},{id},{id},{id},{id})&order=v  96.6ms 0-4/*
+   GET   episodes                     select=*&id=eq.{id}&production_id=eq.{id}&limit=1  65.8ms 0-0/*
+   GET   canon_looks                  select=*&production_id=eq.{id}&order=created_at.asc  61.1ms */*
+   GET   scene_looks                  select=*&scene_id=eq.{id}  73.2ms */*
+   GET   prices                       select=*&order=valid_from.desc  75.9ms 0-14/*
+   GET   token_usage                  select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&scene_id=eq.{id}  79.9ms */*
+   GET   token_usage                  select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&production_id=eq.{id}&scene_id=is.null&or=(phase.like.script_sp  80.7ms */*
+   GET   dialogue_lines               select=scene_id&production_id=eq.{id}  90.2ms 0-71/*
+   GET   video_renders                select=*&shot_id=in.({id},{id},{id},{id},{id},{id})&order=created_at.asc  83.2ms */*
+   GET   takes                        select=*&shot_id=in.({id},{id},{id},{id},{id},{id})&order=created_at.asc  85.5ms 0-5/*
+   GET   jobs                         select=id&production_id=eq.{id}&request->>scene_id=eq.{id}  73.1ms */*
+   GET   token_usage                  select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&phase=like.frame_render.*&production_id=eq.{id}&order=created_a  67.1ms */*
+   GET   token_usage                  select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&phase=like.shot_producer.craft*&production_id=eq.{id}&order=cre  58.5ms */*
+   GET   token_usage                  select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&phase=like.frame_render.*&order=created_at.desc&limit=400  63.0ms */*
+   GET   token_usage                  select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&phase=like.shot_producer.craft*&order=created_at.desc&limit=400  56.1ms */*
+## OPTIONS /v1/productions/{id}/shots/{id}/render-plans  db=0 ms=0.6
+## OPTIONS /v1/productions/{id}/shots/{id}/handoff  db=0 ms=0.8
+## GET /v1/productions/{id}/shots/{id}/render-plans  db=8 ms=322.0
+   GET   shots                        select=*&id=eq.{id}&production_id=eq.{id}&limit=1  77.2ms 0-0/*
+   GET   scenes                       select=*&id=eq.{id}&production_id=eq.{id}&limit=1  59.4ms 0-0/*
+   GET   shots                        select=*&production_id=eq.{id}&scene_id=eq.{id}&order=number.asc  68.2ms 0-5/*
+   GET   dialogue_lines               select=*&scene_id=eq.{id}&order=ord.asc  68.0ms 0-5/*
+   GET   first_frames                 select=*&shot_id=in.({id},{id},{id},{id},{id},{id})&order=created_at.asc  65.9ms 0-9/*
+   GET   video_prompts                select=id,production_id,shot_id,version,sections,prose,model,camera,checks,frame_id,pins,created_at&shot_id=in.({id},{id},{id},{id},{id},{id})&order=v  81.9ms 0-4/*
+   GET   episodes                     select=*&id=eq.{id}&production_id=eq.{id}&limit=1  64.2ms 0-0/*
+   GET   scene_looks                  select=*&scene_id=eq.{id}  83.0ms */*
+## GET /v1/productions/{id}/shots/{id}/handoff  db=11 ms=402.5
+   GET   shots                        select=*&id=eq.{id}&production_id=eq.{id}&limit=1  65.1ms 0-0/*
+   GET   scenes                       select=*&id=eq.{id}&production_id=eq.{id}&limit=1  71.8ms 0-0/*
+   GET   shots                        select=*&production_id=eq.{id}&scene_id=eq.{id}&order=number.asc  81.5ms 0-5/*
+   GET   dialogue_lines               select=*&scene_id=eq.{id}&order=ord.asc  63.6ms 0-5/*
+   GET   first_frames                 select=*&shot_id=in.({id},{id},{id},{id},{id},{id})&order=created_at.asc  78.3ms 0-9/*
+   GET   video_prompts                select=id,production_id,shot_id,version,sections,prose,model,camera,checks,frame_id,pins,created_at&shot_id=in.({id},{id},{id},{id},{id},{id})&order=v  69.8ms 0-4/*
+   GET   episodes                     select=*&id=eq.{id}&production_id=eq.{id}&limit=1  70.2ms 0-0/*
+   GET   canon_looks                  select=*&production_id=eq.{id}&order=created_at.asc  87.6ms */*
+   GET   scene_looks                  select=*&scene_id=eq.{id}  74.2ms */*
+   GET   takes                        select=*&shot_id=in.({id})&order=created_at.asc  88.9ms 0-1/*
+   GET   video_renders                select=*&shot_id=in.({id})&order=created_at.asc  62.1ms */*
+## GET /v1/productions/{id}/canon/{id}/usage  db=5 ms=272.8
+   GET   canon_entities               select=*,current:canon_versions!canon_entities_current_version_fkey(id,entity_id,version,card,wardrobe_anchor,voice_pin,reference_prompt,reference_ass  154.0ms 0-0/*
+   GET   scenes                       select=*&production_id=eq.{id}&order=number.asc  92.4ms 0-11/*
+   GET   episodes                     select=*&production_id=eq.{id}&order=number.asc  90.5ms 0-2/*
+   GET   dialogue_lines               select=id,scene_id,shot_id,character_id&production_id=eq.{id}  100.4ms 0-71/*
+   GET   shots                        select=*&production_id=eq.{id}&order=number.asc  77.9ms 0-71/*
+## GET /v1/productions/{id}/canon/{id}  db=3 ms=313.6
+   GET   canon_entities               select=*,current:canon_versions!canon_entities_current_version_fkey(id,entity_id,version,card,wardrobe_anchor,voice_pin,reference_prompt,reference_ass  122.9ms 0-0/*
+   GET   profiles                     select=*&order=display_name.asc  74.5ms 0-1/*
+   GET   canon_versions               select=*&entity_id=eq.{id}&order=version.desc  62.2ms 0-0/*
+## GET /v1/productions/{id}/canon/{id}/looks  db=3 ms=213.0
+   GET   canon_entities               select=*,current:canon_versions!canon_entities_current_version_fkey(id,entity_id,version,card,wardrobe_anchor,voice_pin,reference_prompt,reference_ass  75.8ms 0-0/*
+   GET   episodes                     select=*&production_id=eq.{id}&order=number.asc  55.2ms 0-2/*
+   GET   canon_looks                  select=*&entity_id=eq.{id}&order=created_at.asc  75.9ms */*
+## GET /v1/director-personas  db=1 ms=132.4
+   GET   director_personas            select=id,slug,name,initials,color,specialty,traits,style_note,charter,active&active=eq.true&order=name.asc  115.2ms 0-4/*
+## GET /v1/productions/{id}  db=0 ms=139.2
+## GET /v1/productions/{id}/documents  db=1 ms=231.6
+   GET   documents                    select=*&production_id=eq.{id}&order=created_at.desc  92.2ms */*
+## GET /v1/productions/{id}/director-board  db=2 ms=274.8
+   GET   production_director_board    select=seat,persona_id,created_at,persona:director_personas(id,slug,name,initials,color,specialty,traits,style_note,charter,active)&production_id=eq.{  72.0ms */*
+   GET   director_personas            select=id,slug,name,initials,color,specialty,traits,style_note,charter,active&active=eq.true&order=name.asc  62.9ms 0-4/*
+## GET /v1/productions/{id}/members  db=1 ms=131.6
+   GET   production_members           select=user_id,role,profiles!production_members_user_id_fkey(display_name,email,active)&production_id=eq.{id}  118.1ms 0-0/*
+## GET /v1/productions/{id}/activity  db=3 ms=325.8
+   GET   productions                  select=*,production_members(role)&id=eq.{id}&production_members.user_id=eq.{id}&limit=1  84.2ms 0-0/*
+   GET   audit_log                    select=*&production_id=eq.{id}&order=created_at.desc,id.desc&limit=200  75.4ms 0-0/*
+   GET   profiles                     select=*&order=display_name.asc  55.4ms 0-1/*
+## GET /v1/productions/{id}/questions  db=1 ms=89.7
+   GET   questions                    select=*&production_id=eq.{id}&order=created_at.asc  77.5ms */*
+
+# Query patterns across the whole run (table + filter shape)
+
+     45 GET   scenes                   select=*&id=eq.?&production_id=eq.?&limit=1
+     34 GET   episodes                 select=*&production_id=eq.?&order=number.?
+     34 GET   shots                    select=*&production_id=eq.?&scene_id=eq.?&order=number.?
+     34 GET   dialogue_lines           select=*&scene_id=eq.?&order=ord.?
+     29 GET   first_frames             select=*&shot_id=in.?&order=created_at.asc
+     29 GET   video_prompts            select=id,production_id,shot_id,version,sections,prose,model,camera,checks,frame_id,pins,created_at&shot_id=in.?&order=version.?
+     29 GET   episodes                 select=*&id=eq.?&production_id=eq.?&limit=1
+     29 GET   scene_looks              select=*&scene_id=eq.?
+     28 GET   usage_budget             select=budget_tokens&month=eq.?&limit=1
+     24 GET   canon_looks              select=*&production_id=eq.?&order=created_at.asc
+     18 GET   scenes                   select=*&production_id=eq.?&order=number.?
+     18 GET   shots                    select=*&production_id=eq.?&order=number.?
+     17 GET   director_personas        select=id,slug,name,initials,color,specialty,traits,style_note,charter,active&active=eq.?&order=name.?
+     16 GET   production_director_board select=seat,persona_id,created_at,persona:director_personas(id,slug,name,initials,color,specialty,traits,style_note,charter,active)&production_id=eq.?
+     15 GET   chat_threads             select=*&production_id=eq.?&scene_id=eq.?&order=created_at.asc
+     15 GET   scenes                   select=*&production_id=eq.?&episode_id=eq.?&order=number.?
+     15 GET   shots                    select=id,scene_id,number,duration_s,status&scene_id=in.?&order=number.?
+     13 GET   productions              select=*,production_members(role)&id=eq.?&production_members.user_id=eq.?&limit=1
+     12 GET   chat_messages            select=*&thread_id=eq.?&order=created_at.desc&limit=100
+     12 GET   video_renders            select=*&shot_id=in.?&order=created_at.asc
+     12 GET   takes                    select=*&shot_id=in.?&order=created_at.asc
+     12 GET   shots                    select=*&id=eq.?&production_id=eq.?&limit=1
+     11 GET   canon_entities           select=*,current:canon_versions!canon_entities_current_version_fkey(id,entity_id,version,card,wardrobe_anchor,voice_pin,reference_prompt,reference_ass
+     10 GET   questions                select=*&production_id=eq.?&status=eq.?&order=created_at.asc
+      9 GET   profiles                 select=*&id=eq.?&limit=1
+      8 GET   dialogue_lines           select=id,scene_id,shot_id,character_id&production_id=eq.?
+      6 POST  rpc/token_usage_since    
+      6 GET   scene_plan_revisions     select=revision,kind,restores,made_by,message_id,created_at&scene_id=eq.?&order=revision.?
+      5 GET   scene_packets            select=scene_id,scene_key,packet,waits,script_version&scene_id=eq.?&production_id=eq.?&limit=1
+      4 GET   token_usage              select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&phase=like.?&production_id=eq.?&order=created_at.desc&limit=400
+      3 GET   production_members       select=role,productions(*)&user_id=eq.?
+      3 GET   production_members       select=production_id,user_id,role,profiles!production_members_user_id_fkey(display_name,email,active)&production_id=in.?
+      2 GET   token_usage              select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&scene_id=eq.?
+      2 GET   token_usage              select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&production_id=eq.?&scene_id=is.?&or=(phase.like.script_split.*,
+      2 GET   dialogue_lines           select=scene_id&production_id=eq.?
+      2 GET   jobs                     select=id&production_id=eq.?&request->>scene_id=eq.?
+      2 GET   token_usage              select=id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at&phase=like.?&order=created_at.desc&limit=400
+      2 GET   profiles                 select=*&order=display_name.asc
+      1 GET   prices                   select=*&order=valid_from.desc
+      1 GET   canon_versions           select=*&entity_id=eq.?&order=version.?
+
+# Errors / non-2xx
+
+  404 GET /v1/productions/bac48f6d-e702-499b-9983-7ca73bf02ba8/scenes/57907fdd-ef68-4645-ae0c-1326db8f3f18/packet step=scene-director
+  404 GET /v1/productions/bac48f6d-e702-499b-9983-7ca73bf02ba8/scenes/9a94732c-5011-474d-9859-fe62ad2d91bf/packet step=episode-click-scene-2
+  404 GET /v1/productions/bac48f6d-e702-499b-9983-7ca73bf02ba8/scenes/cbb266b7-a4d6-4cda-a930-8dac826e6c2c/packet step=episode-click-scene-3
+  404 GET /v1/productions/bac48f6d-e702-499b-9983-7ca73bf02ba8/scenes/b33d19d9-1fc4-4994-a25a-3613ebfdce81/packet step=episode-click-scene-4
+  404 GET /v1/productions/bac48f6d-e702-499b-9983-7ca73bf02ba8/scenes/57907fdd-ef68-4645-ae0c-1326db8f3f18/packet step=idle-scene-director
+  [production-overview] console: Error: Route "/productions/[productionId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={...}>` so the hoo
+  [episode] console: Error: Route "/productions/[productionId]/episodes/[episodeId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallba
+  [scene-director] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/director": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the comp
+  [shot-workspace] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/workspace": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [strea
+  [shot-production] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/production": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stre
+  [shot-handoff] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+  [canon] console: Error: Route "/productions/[productionId]/canon": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={...}>` so t
+  [canon-entity] console: Error: Route "/productions/[productionId]/canon/[entityId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={
+  [documents] console: Error: Route "/productions/[productionId]/documents": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={...}>` 
+  [members] console: Error: Route "/productions/[productionId]/members": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={...}>` so
+  [activity] console: Error: Route "/productions/[productionId]/activity": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={...}>` s
+  [questions] console: Error: Route "/productions/[productionId]/questions": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={...}>` 
+  [handoff-walk-open] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+  [handoff-walk-click-3] no-link: e978de81-20a9-4632-9f65-2f3a49c4efc9
+  [handoff-walk-click-3] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+  [handoff-walk-click-4] no-link: df1250bb-dfcb-4a00-b389-7c71eac306c5
+  [handoff-walk-click-4] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+  [handoff-walk-click-5] no-link: 86f035ea-6a82-485d-9c92-475fd328480e
+  [handoff-walk-click-5] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+  [handoff-walk-click-6] no-link: 5f252069-1dcd-4133-a82c-d6acadef363b
+  [handoff-walk-click-6] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+  [episode-again] console: Error: Route "/productions/[productionId]/episodes/[episodeId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallba
+  [episode-click-scene-2] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/director": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the comp
+  [episode-click-scene-3] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/director": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the comp
+  [episode-click-scene-4] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/director": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the comp
+  [idle-shot-handoff] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+  [idle-scene-director] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/director": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the comp
+  [idle-overview] console: Error: Route "/productions/[productionId]": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream] Wrap the component in `<Suspense fallback={...}>` so the hoo
+  [reload-shot-handoff] console: Error: Route "/productions/[productionId]/episodes/[episodeId]/scenes/[sceneId]/shots/[shotId]/handoff": Next.js encountered URL data `useParams()` in a Client Component outside of `<Suspense>`.
+
+This blocks prerendering because the value is only available at runtime.
+
+Ways to fix this:
+  - [stream]
+
+# Browser -> Supabase directly
+
+  1x ('login', 'POST', 'SB/auth/v1/token?grant_type=password')
+
+TOTAL api requests=203 db queries=574

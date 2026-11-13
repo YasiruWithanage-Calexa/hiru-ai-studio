@@ -12,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import time
 from collections.abc import Awaitable, Callable, Hashable
+from typing import Any
 
 
 class AsyncTTLCache[T]:
@@ -56,11 +57,11 @@ class AsyncTTLCache[T]:
 
 # Caches whose rows other processes (the workers) also write. When the API learns that a job ended, it clears
 # them, so a person who sees "done" never reads the old copy (plan/2026-11-08c phase 4).
-_after_job: list[AsyncTTLCache] = []
+_after_job: list[Any] = []
 
 
-def clear_after_job(cache: AsyncTTLCache) -> None:
-    """Register `cache` to be cleared by `job_ended()`."""
+def clear_after_job(cache: Any) -> None:
+    """Register `cache` (anything with `clear()`) to be cleared by `job_ended()`."""
     _after_job.append(cache)
 
 

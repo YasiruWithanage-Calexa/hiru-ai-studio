@@ -2,7 +2,7 @@
 
     python scripts/backfill_thumbs.py            # count what is missing; downloads nothing
     python scripts/backfill_thumbs.py --apply    # download each missing one ONCE, write <path>.thumb.webp beside it
-    python scripts/backfill_thumbs.py --apply --posters   # also take stills (<take>.poster.webp) via assemble
+    python scripts/backfill_thumbs.py --apply --posters   # also take stills, recorded on the takes (schema v24)
 
 A picture that already has its small copy is skipped, so a second run costs only the existence checks. About 0.18 GB
 is downloaded in total on the hosted project. Reads SUPABASE__URL / SUPABASE__SERVICE_ROLE_KEY (and ASSEMBLE__* for
@@ -91,10 +91,10 @@ def _posters(rest: _common.Rest, apply: bool) -> None:
     if not base:
         sys.exit("ASSEMBLE__URL is not set: posters are made by the assemble service.")
     todo = []
-    for row in rest.get("takes", select="storage_path"):
+    for row in rest.get("takes", select="storage_path,poster_path"):
         path = str(row["storage_path"])
         poster = path.rpartition(".")[0] + ".poster.webp"
-        if not exists(rest, "takes", poster):
+        if not row.get("poster_path") or not exists(rest, "takes", poster):
             todo.append((path, poster))
     print(f"{len(todo)} take(s) have no still.")
     if not apply:
@@ -105,6 +105,9 @@ def _posters(rest: _common.Rest, apply: bool) -> None:
                         headers={"X-Assemble-Secret": secret}, timeout=180.0)
         if r.status_code == 200 and not r.json().get("error"):
             made += 1
+            # Record it (schema v24): the card shows a still only when the row says it exists.
+            rest.c.patch(f"{rest.rest}/takes", headers=rest.h, params={"storage_path": f"eq.{path}"},
+                         json={"poster_path": poster}).raise_for_status()
         else:
             print(f"  skipped {path}: {r.text[:120]}")
     print(f"made {made} still(s).")

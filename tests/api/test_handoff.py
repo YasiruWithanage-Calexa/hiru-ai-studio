@@ -155,3 +155,13 @@ def test_the_usage_budget_is_admin_set_and_members_see_a_percentage(world: World
     assert r.status_code == 200 and r.json()["source"] == "budget"
     assert world.client.get("/v1/usage", headers=world.headers(world.crew)).json() == {"percent": 50}
     assert UUID(str(world.admin))
+
+
+def test_a_take_shows_a_still_only_when_its_row_says_it_exists() -> None:
+    """plan/2026-11-13b phase 9: no link to a file that was never made."""
+    from api.routers.handoff import _take_view
+
+    base = {"id": "00000000-0000-0000-0000-000000000001", "status": "uploaded", "storage_path": "p/s/t.mp4",
+            "created_at": "2026-11-13T00:00:00Z"}
+    assert _take_view(base, 1, 8).poster_url == ""
+    assert _take_view({**base, "poster_path": "p/s/t.poster.webp"}, 1, 8).poster_url != ""

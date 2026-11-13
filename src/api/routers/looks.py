@@ -57,6 +57,10 @@ def _look(row: Row) -> CanonLook:
                                      "sheet_key": media_links.key("references", path) if path else ""})
 
 
+# Public name for `/page`, which answers a scene's cast looks in the same shape (plan/2026-11-13b phase 3).
+look_view = _look
+
+
 def _ranges(ranges: list[EpisodeRange]) -> list[dict[str, int]]:
     return [r.model_dump(by_alias=True) for r in ranges]
 

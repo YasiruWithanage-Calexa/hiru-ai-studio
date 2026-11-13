@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v23.sql` | **The newest schema** (everything in v22 plus the canon refine, plan/2026-11-12c: `canon_versions.source` may be `'refine'`, `canon_versions.provenance`, `canon_entities.class` / `parent_id`, `canon_looks.origin`, `scene_looks.condition` / `why` / `origin`, and `canon_refine_apply()`), whole. Run it once on an empty project. |
+| `schema_v24.sql` | **The newest schema** (everything in v23 plus take posters, plan/2026-11-13b phase 9: `takes.poster_path` and `image/webp` allowed in the `takes` bucket), whole. Run it once on an empty project. |
+| `upgrade_v23_to_v24.sql` | Moves a project on v23 to v24 (the column, its comment, the bucket's types). No backfill: `scripts/backfill_thumbs.py --apply --posters` makes and records the missing stills. Safe to re-run. Not run on the hosted project yet. |
+| `schema_v23.sql` | Kept for reference (everything in v22 plus the canon refine, plan/2026-11-12c: `canon_versions.source` may be `'refine'`, `canon_versions.provenance`, `canon_entities.class` / `parent_id`, `canon_looks.origin`, `scene_looks.condition` / `why` / `origin`, and `canon_refine_apply()`), whole. Run it once on an empty project. |
 | `upgrade_v22_to_v23.sql` | Moves a project on v22 to v23 (the columns and checks above, the function, service role only). No backfill: existing looks and scene looks are a person's. Safe to re-run. **Run on the hosted project by the person, 2026-11-12** (not verified against a local stack: Docker was not running). |
 | `schema_v22.sql` | Kept for reference (everything in v21 plus `'inferred'` as a canon version's source, plan/2026-11-12). |
 | `schema_v21.sql` | Kept for reference (everything in v20 plus the scene breakdown, plan/2026-11-11: `source_memories`, `breakdown_memories`, `scene_packets`), whole. Run it once on an empty project. |

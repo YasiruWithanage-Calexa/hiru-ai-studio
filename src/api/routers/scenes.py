@@ -447,7 +447,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
     scene = ld.scene
     episode_id = UUID(str(scene["episode_id"]))
     episode, siblings = await asyncio.gather(repos.episodes.get(production_id, episode_id),
-                                             repos.scenes.list(production_id, episode_id))
+                                             repos.scenes.list_light(production_id, episode_id))
     assert episode is not None
     at = next(i for i, s in enumerate(siblings) if str(s["id"]) == str(scene_id))
     canon = {str(c["id"]): c for c in canon_rows}
