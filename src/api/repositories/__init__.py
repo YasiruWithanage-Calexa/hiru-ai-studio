@@ -9,6 +9,8 @@ tables; routers turn them into `contracts` models.
 """
 from __future__ import annotations
 
+import builtins
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Protocol
@@ -39,6 +41,8 @@ class ProductionsRepo(Protocol):
 class MembersRepo(Protocol):
     async def role_of(self, production_id: UUID, user_id: UUID) -> str | None: ...
     async def list(self, production_id: UUID) -> list[Row]: ...
+    # Every listed production's members in ONE read: production id -> rows shaped like `list`'s.
+    async def list_for_productions(self, production_ids: Sequence[UUID]) -> dict[str, builtins.list[Row]]: ...
     async def upsert(self, production_id: UUID, user_id: UUID, role: str, added_by: UUID) -> Row: ...
     async def delete(self, production_id: UUID, user_id: UUID) -> bool: ...
 
@@ -148,6 +152,8 @@ class ShotsRepo(Protocol):
     # again at the end of the statement, so one upsert may renumber).
     async def save_plan(self, shots: list[Row], removed: list[str]) -> None: ...
     async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]: ...
+    # Only what an episode's counts need, for just these scenes' shots: id, scene_id, number, duration_s, status.
+    async def counts_for_scenes(self, scene_ids: Sequence[UUID]) -> builtins.list[Row]: ...
 
 
 class LinesRepo(Protocol):

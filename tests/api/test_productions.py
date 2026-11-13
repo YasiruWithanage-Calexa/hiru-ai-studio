@@ -17,6 +17,13 @@ def test_member_sees_only_their_production_with_their_role(world: World):
     assert [(p["title"], p["my_role"]) for p in body] == [("Production One", "writer")]
 
 
+def test_the_list_carries_each_productions_crew_so_the_page_needs_one_request(world: World):
+    body = world.client.get("/v1/productions", headers=world.headers(world.admin)).json()
+    for p in body:
+        listed = world.client.get(f"/v1/productions/{p['id']}/members", headers=world.headers(world.admin)).json()
+        assert p["crew"] == listed
+
+
 def test_outsider_sees_none(world: World):
     assert world.client.get("/v1/productions", headers=world.headers(world.outsider)).json() == []
 

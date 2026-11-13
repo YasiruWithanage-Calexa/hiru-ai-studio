@@ -1,9 +1,11 @@
 """Supabase-backed repositories (supabase-py async client, service role)."""
 from __future__ import annotations
 
+import builtins
 import copy
 import hashlib
 import logging
+from collections.abc import Sequence
 from datetime import UTC, datetime
 from typing import Any, cast
 from uuid import UUID
@@ -165,6 +167,25 @@ class SupabaseMembers(_Base):
             out.append({"user_id": r["user_id"], "role": r["role"],
                         "display_name": p.get("display_name", ""), "email": p.get("email", ""),
                         "active": p.get("active", False)})
+        return out
+
+    async def list_for_productions(self, production_ids: Sequence[UUID]) -> dict[str, builtins.list[Row]]:
+        if not production_ids:
+            return {}
+        res = (
+            await self.db.table("production_members")
+            .select("production_id, user_id, role, "
+                    "profiles!production_members_user_id_fkey(display_name, email, active)")
+            .in_("production_id", [str(p) for p in production_ids])
+            .execute()
+        )
+        out: dict[str, builtins.list[Row]] = {}
+        for r in _rows(res.data):
+            p = r.get("profiles") or {}
+            out.setdefault(str(r["production_id"]), []).append(
+                {"user_id": r["user_id"], "role": r["role"],
+                 "display_name": p.get("display_name", ""), "email": p.get("email", ""),
+                 "active": p.get("active", False)})
         return out
 
     async def upsert(self, production_id: UUID, user_id: UUID, role: str, added_by: UUID) -> Row:
@@ -459,6 +480,13 @@ class SupabaseShots(_Base):
         if scene_id is not None:
             q = q.eq("scene_id", str(scene_id))
         res = await q.order("number").execute()
+        return _rows(res.data)
+
+    async def counts_for_scenes(self, scene_ids: Sequence[UUID]) -> builtins.list[Row]:
+        if not scene_ids:
+            return []
+        res = (await self.db.table("shots").select("id, scene_id, number, duration_s, status")
+               .in_("scene_id", [str(s) for s in scene_ids]).order("number").execute())
         return _rows(res.data)
 
 

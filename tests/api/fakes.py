@@ -95,6 +95,9 @@ class FakeMembers:
                             "email": prof["email"], "active": prof["active"]})
         return out
 
+    async def list_for_productions(self, production_ids: list[UUID]) -> dict[str, list[Row]]:
+        return {str(p): rows for p in production_ids if (rows := await self.list(p))}
+
     async def upsert(self, production_id: UUID, user_id: UUID, role: str, added_by: UUID) -> Row:
         self.roles[(str(production_id), str(user_id))] = role
         return {"production_id": str(production_id), "user_id": str(user_id), "role": role}
@@ -333,6 +336,10 @@ class FakeShots(_Table):
     async def list(self, production_id: UUID, scene_id: UUID | None = None) -> list[Row]:
         rows = [r for r in self._scoped(production_id) if scene_id is None or r["scene_id"] == str(scene_id)]
         return sorted(rows, key=lambda r: r["number"])
+
+    async def counts_for_scenes(self, scene_ids: list[UUID]) -> list[Row]:
+        wanted = {str(s) for s in scene_ids}
+        return sorted((r for r in self.rows.values() if r["scene_id"] in wanted), key=lambda r: r["number"])
 
     async def save_plan(self, shots: list[Row], removed: list[str]) -> None:
         for sid in removed:
