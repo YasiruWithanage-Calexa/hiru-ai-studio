@@ -35,3 +35,64 @@ def test_a_stranger_gets_404(world: World) -> None:
     s = open_scene(world)
     r = world.client.get(url(world, f"/scenes/{s['scene']['id']}/page"), headers=world.headers(world.outsider))
     assert r.status_code == 404
+
+
+def test_page_reads_the_scene_rows_once(world: World) -> None:
+    """plan/2026-11-13b phase 1: the loaders under /page share one read of the scene, shots, lines and episode."""
+    from typing import Any
+
+    from api.repositories.memo import MEMOISED, MemoRepo
+
+    s = open_scene(world)
+    design(world, s)
+    calls: dict[str, int] = {}
+
+    class Spy:
+        def __init__(self, inner: Any, name: str) -> None:
+            self.inner, self.name = inner, name
+
+        def __getattr__(self, attr: str) -> Any:
+            target = getattr(self.inner, attr)
+            if attr not in MEMOISED[self.name]:
+                return target
+
+            async def counted(*a: Any, **k: Any) -> Any:
+                key = f"{self.name}.{attr}"
+                calls[key] = calls.get(key, 0) + 1
+                return await target(*a, **k)
+
+            return counted
+
+    for name in MEMOISED:
+        setattr(world.repos, name, MemoRepo(Spy(getattr(world.repos, name), name), name))
+    scene_id = s["scene"]["id"]
+    r = world.client.get(url(world, f"/scenes/{scene_id}/page"), headers=world.headers(world.producer))
+    assert r.status_code == 200, r.text
+    assert calls["scenes.get"] == 1
+    assert calls["shots.list"] == 1
+    assert calls["lines.list"] == 1
+    assert calls["episodes.get"] == 1
+    assert calls["canon.list"] == 1
+
+
+def test_page_carries_the_planner_and_the_cast_looks(world: World) -> None:
+    """plan/2026-11-13b phases 2 and 3: what the director page used to ask for in 4 + 1 + N requests."""
+    s = open_scene(world)
+    design(world, s)
+    scene_id = s["scene"]["id"]
+    h = world.headers(world.producer)
+    body = world.client.get(url(world, f"/scenes/{scene_id}/page"), headers=h).json()
+    assert body["shot_planner"] in {"classic", "adam", "david", "jonathan", "raphael"}
+    assert set(body["planners_with_plans"]) <= {"adam", "david", "jonathan", "raphael"}
+    cast = [c["id"] for c in body["view"]["canon"] if c["kind"] == "character"]
+    assert set(body["cast_looks"]) == set(cast)
+    for cid, looks in body["cast_looks"].items():
+        assert looks == world.client.get(url(world, f"/canon/{cid}/looks"), headers=h).json()
+    assert body["scene_looks"] == world.client.get(url(world, f"/scenes/{scene_id}/looks"), headers=h).json()
+
+
+def test_planners_with_plans_counts_only_a_plan_its_own_planner_wrote() -> None:
+    from api.routers.page import planners_with_plans
+
+    scene = {"adam": {}, "david": {"planner": "david"}, "jonathan": {"planner": "adam"}, "raphael": None}
+    assert planners_with_plans(scene) == ["david"]

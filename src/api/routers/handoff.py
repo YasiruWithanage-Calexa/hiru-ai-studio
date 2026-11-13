@@ -138,7 +138,9 @@ def _take_view(take: Row, index: int, shot_seconds: int, render: Row | None = No
     return TakeView(id=take["id"], label=f"Take {index}", prompt_version=take.get("prompt_version"),
                     status=TakeStatus(take["status"]), reason=take.get("reason"),
                     url=media_links.url("takes", str(take["storage_path"])),
-                    poster_url=media_links.url("takes", poster_path(str(take["storage_path"]))),
+                    # Only when the still is known to exist (`takes.poster_path`, schema v24): a link to a file that was
+                    # never made answered 404 on every view.
+                    poster_url=media_links.url("takes", str(take["poster_path"])) if take.get("poster_path") else "",
                     file_key=media_links.key("takes", str(take["storage_path"])),
                     duration_s=float(duration) if duration is not None else None, duration_note=note,
                     created_at=str(take["created_at"]), origin=str(take.get("origin") or "upload"),
@@ -221,12 +223,13 @@ async def upload_take(production_id: UUID, shot_id: UUID, file: Annotated[Upload
     path = f"{production_id}/{shot_id}/{take_id}.{ext}"
     await repos.storage.upload("takes", path, bytes(data), mime)
     probe = await assembler.probe("takes", path)
-    await assembler.poster("takes", path, poster_path(path))  # best effort: no still just means no poster
+    poster = await assembler.poster("takes", path, poster_path(path))  # best effort: no still just means no poster
     await repos.takes.create({
         "id": take_id, "production_id": str(production_id), "shot_id": str(shot_id),
         "prompt_id": str(st.prompt["id"]) if st.prompt else None,
         "prompt_version": int(st.prompt["version"]) if st.prompt else None, "storage_path": path, "mime": mime,
-        "bytes": len(data), "duration_s": probe.duration_s if probe else None, "uploaded_by": str(access.user.id)})
+        "bytes": len(data), "duration_s": probe.duration_s if probe else None, "uploaded_by": str(access.user.id),
+        **({"poster_path": poster} if poster else {})})  # a column from schema v24: sent only when there is a still
     await _audit(repos, access, "take.upload", take_id, {"shot_id": str(shot_id), "bytes": len(data)})
     return await _view(repos, access, shot_id)
 

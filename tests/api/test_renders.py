@@ -691,3 +691,15 @@ def test_the_model_and_size_are_chosen_when_the_production_is_created_and_never_
     same = {**video, "seed": {"mode": "fixed", "value": 9}}
     r = world.client.patch(f"/v1/productions/{pid}", json={"settings": {"video": same}}, headers=admin)
     assert r.status_code == 200 and r.json()["settings"]["video"]["seed"]["value"] == 9
+
+
+def test_render_plans_is_the_take_and_the_draft_from_one_load(world: World, video: Settings):
+    """plan/2026-11-13b phase 5: one request answers what two did, and each equals its single route."""
+    s, _ = ready(world)
+    r = world.client.get(shot_url(world, s, 1, "/render-plans"), headers=world.headers(world.reviewer))
+    assert r.status_code == 200, r.text
+    both = r.json()
+    assert both["take"] == plan(world, s)
+    assert both["draft"] == plan(world, s, query="?draft=true")
+    out = world.client.get(shot_url(world, s, 1, "/render-plans"), headers=world.headers(world.outsider))
+    assert out.status_code == 404
