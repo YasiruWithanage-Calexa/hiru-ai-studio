@@ -317,9 +317,11 @@ class ImageFailed(Exception):
 
 class ImageGen(Protocol):
     """Paint one picture from a prompt and labelled reference images, sent in the order the prompt numbers them.
-    `draft` paints it at the draft quality (low): the cheap try a person settles the picture with."""
+    `draft` paints it at the draft quality (low): the cheap try a person settles the picture with. `sheet` paints a
+    canon reference sheet or a look sheet at the sheet quality (low)."""
 
-    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False) -> Picture: ...
+    def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
+                 sheet: bool = False) -> Picture: ...
 
 
 class Jobs(Protocol):

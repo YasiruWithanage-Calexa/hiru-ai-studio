@@ -251,7 +251,7 @@ def render_reference(ctx: RunContext, scenes: Scenes, entity_id: str, job_id: st
         return {"status": "failed", "error": NOT_CONFIGURED}
     made = _compose("reference_sheet", production=production, entity=row)
     try:
-        picture = paint(made["prompt"], made["aspect"], [])
+        picture = paint(made["prompt"], made["aspect"], [], sheet=True)
     except ImageRefused as exc:
         return {"status": "refused", "error": str(exc)}
     except Exception:
@@ -287,7 +287,8 @@ def render_look(ctx: RunContext, scenes: Scenes, look_id: str, job_id: str) -> R
     made = _compose("look_sheet", entity=row, look=look)
     try:
         picture = paint(made["prompt"], made["aspect"],
-                        [Reference(label=f"the base character sheet for {row['name']}", data=base_sheet)])
+                        [Reference(label=f"the base character sheet for {row['name']}", data=base_sheet)],
+                        sheet=True)
     except ImageRefused as exc:
         return {"status": "refused", "error": str(exc)}
     except Exception:

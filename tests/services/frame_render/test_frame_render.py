@@ -112,6 +112,7 @@ def test_a_reference_sheet_for_the_current_card():
     _, assets = store.asset_writes[0]
     assert assets[0]["path"].startswith(f"{PID}/{KAMALA}/") and assets[1] == {"path": "p/kamala.png"}
     assert ("references", assets[0]["path"]) in store.uploads
+    assert paint.sheets == [True], "a canon sheet is painted at the sheet quality"
 
 
 def test_the_openai_painter_uses_edit_with_references_and_records_usage():
@@ -189,6 +190,7 @@ def test_a_look_sheet_is_painted_from_the_base_sheet_and_goes_back_to_draft():
     assert assets[0]["kind"] == "look" and ("references", assets[0]["path"]) in store.uploads
     assert store.look_rows[lid]["status"] == "draft", "a new sheet is not the one a person approved"
     assert store.audits[0]["action"] == "canon.look_sheet_made"
+    assert paint.sheets == [True], "a look sheet is painted at the sheet quality"
 
 
 def test_a_look_sheet_without_a_base_sheet_or_a_look_is_reported_not_painted():
@@ -303,6 +305,23 @@ def test_the_painter_uses_the_draft_quality_only_for_a_draft():
     paint("a harbour", "16:9", [], draft=True)
     paint("a harbour", "16:9", [])
     assert asked == ["low", "medium"]
+
+
+def test_the_painter_paints_a_canon_or_look_sheet_at_the_sheet_quality():
+    asked: list[str] = []
+
+    class Images:
+        def generate(self, **kw):
+            asked.append(kw["quality"])
+            return SimpleNamespace(data=[SimpleNamespace(b64_json="UE5H")], usage=None)
+
+    config = Config(supabase_url="", service_role_key="", openai_api_key="k", image_model="m", image_quality="high",
+                    api_internal_url="", internal_secret="", image_quality_draft="medium", image_quality_sheet="low")
+    usage = SimpleNamespace(record_usage=lambda row: None)
+    paint = painter(config, payload(), usage, client=SimpleNamespace(images=Images()))
+    paint("Kamala", "16:9", [], sheet=True)
+    paint("a harbour", "16:9", [])
+    assert asked == ["low", "high"]
 
 
 def test_a_final_from_a_draft_attaches_the_draft_first_and_names_it():

@@ -37,9 +37,10 @@ def run_graph(store: FakeStore, p: Any, jobs: FakeJobs, paint: FakePainter | Non
         def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
             store.upload(bucket, path, data, mime)
 
-    def images(prompt: str, aspect: str, references: list[Any], *, draft: bool = False) -> Any:
+    def images(prompt: str, aspect: str, references: list[Any], *, draft: bool = False,
+               sheet: bool = False) -> Any:
         try:
-            return paint(prompt, aspect, references, draft=draft)  # type: ignore[misc]
+            return paint(prompt, aspect, references, draft=draft, sheet=sheet)  # type: ignore[misc]
         except RefusedError as exc:
             raise ImageRefused(str(exc)) from exc
 
