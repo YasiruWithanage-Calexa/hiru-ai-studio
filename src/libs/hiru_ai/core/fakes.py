@@ -421,6 +421,7 @@ class FakeFrames:
         self.asset_writes: list[tuple[str, list[Any]]] = []
         self.look_writes: list[tuple[str, list[Any]]] = []
         self.audits: list[Row] = []
+        self.board_rows: dict[str, Row] = {}  # the Scene board (plan/2026-11-14)
 
     def frames(self, production_id: UUID, frame_ids: list[str]) -> list[Row]:
         return [dict(self.frame_rows[f]) for f in frame_ids if f in self.frame_rows]
@@ -467,6 +468,29 @@ class FakeFrames:
 
     def audit(self, row: Row) -> None:
         self.audits.append(row)
+
+    # The Scene board (plan/2026-11-14)
+    def board(self, board_id: str) -> Row | None:
+        row = self.board_rows.get(board_id)
+        return dict(row) if row else None
+
+    def boards(self, scene_id: str) -> list[Row]:
+        return sorted((dict(r) for r in self.board_rows.values() if str(r.get("scene_id")) == str(scene_id)),
+                      key=lambda r: (int(r.get("version") or 1), int(r.get("part") or 1)))
+
+    def create_boards(self, rows: list[Row]) -> None:
+        for r in rows:
+            self.board_rows[str(r["id"])] = {"status": "queued", "cells": [], "writer": {}, "colours": {}, **r}
+
+    def claim_board(self, board_id: str) -> bool:
+        row = self.board_rows[board_id]
+        if row["status"] != "queued":
+            return False
+        row["status"] = "running"
+        return True
+
+    def save_board(self, board_id: str, fields: Row) -> None:
+        self.board_rows[board_id].update(fields)
 
     def frame_status(self, production_id: UUID, shot_ids: list[str] | None = None,
                      codes: list[str] | None = None) -> Row:
@@ -686,15 +710,20 @@ class FakeImages:
         self.calls: list[tuple[str, str, list[Reference]]] = []
         self.drafts: list[bool] = []  # per call: was it painted as a draft
         self.sheets: list[bool] = []  # per call: was it painted as a canon or look sheet
+        self.qualities: list[str] = []  # per call: the quality named outright ("" = the default for the kind)
+        self.masks: list[bytes | None] = []  # per call: the edit mask, if any
+        self.picture = b"\x89PNG-fake"  # what is painted (a test that crops the picture sets a real PNG)
 
     def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
-                 sheet: bool = False) -> Picture:
+                 sheet: bool = False, quality: str = "", mask: bytes | None = None) -> Picture:
         self.calls.append((prompt, aspect, list(references)))
         self.drafts.append(draft)
         self.sheets.append(sheet)
+        self.qualities.append(quality)
+        self.masks.append(mask)
         if self.error is not None:
             raise self.error
-        return Picture(data=b"\x89PNG-fake", mime="image/png", input_tokens=120, output_tokens=1056)
+        return Picture(data=self.picture, mime="image/png", input_tokens=120, output_tokens=1056)
 
 
 class FakeJobs:

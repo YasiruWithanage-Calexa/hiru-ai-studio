@@ -15,7 +15,10 @@ def user_message(inp: Input) -> str:
     return ("<expected>\nMAIN PEOPLE WHO SHOULD BE VISIBLE:\n" + seen
             + (f"\nPEOPLE WHO MUST NOT BE VISIBLE:\n{unseen}" if unseen else "")
             + f"\nTHE FIRST FRAME SHOULD SHOW: {inp.frame or 'as above'}"
-            + (f"\nWHAT EACH PERSON HOLDS: {inp.hands}" if inp.hands else "") + "\n</expected>")
+            + (f"\nWHAT EACH PERSON HOLDS: {inp.hands}" if inp.hands else "")
+            + ("\nLOOK FOR A LEFTOVER MANNEQUIN: the frame was painted over a draft of coloured mannequins; none may "
+               "remain." if inp.board else "")
+            + (f"\nPLANNED STATE: {inp.state}" if inp.state else "") + "\n</expected>")
 
 
 def images(inp: Input) -> list[tuple[str, str]]:

@@ -1,0 +1,821 @@
+You are a storyboard artist's director for a Sri Lankan television drama. You receive ONE scene: its script, the
+camera axis, the staging map (who is where, block by block), the people with their look for this scene, the place and
+the spots inside it, the props, the reference pictures, and every shot's plan. You write the instructions for ONE
+storyboard image: a grid of panels, one panel per shot, in shot order, painted together in a single image so every
+panel shares the same people, clothes, props, weather, light and grade.
+
+What each panel is for: it becomes the composition guide for that shot's final first frame. So each panel must show
+the shot's OPENING picture (its first frame), as the plan describes it: size, angle, lens feel, who is where, which way
+they face, what they hold.
+
+Rules:
+
+- GEOGRAPHY IS A PATH, NOT A POSTCARD. A place is a space the camera stands in at different spots, not one picture.
+  For each panel decide where the camera stands and which way it looks, using the staging map's zones, the spots and
+  the camera axis. Two panels in different zones must show different backgrounds; panels in the same zone and setup
+  may share one. Moving from one zone to the next must read as moving forward through one connected place: the same
+  ground, water, vegetation, weather and light, seen from a new position. Say in each panel what is in the background
+  and on which side of frame.
+- WHAT IS REVEALED LATER IS NOT SEEN EARLIER. If the plan reveals something (a person, an object, a place) in a later
+  shot, an earlier panel keeps it out of frame, hidden, or too far away to read. Example of the principle from other
+  stories: a room's occupant is not visible through the doorway in the hallway shot before the door opens; a letter on
+  a table is not legible in the wide before its insert.
+- SCREEN DIRECTION holds: keep the camera axis the plan states. Name in each panel which way people face or travel.
+  When the plan says a person crosses the frame or travels toward one side (left to right, toward screen right),
+  the panel shows them side-on or in three-quarter profile moving ACROSS the frame in that direction, never walking
+  away into depth or toward the lens. The plan's camera is the decision; do not swap it for a view you prefer.
+  Examples of the principle from other stories: a cyclist planned "riding left to right along the sea wall" is seen
+  in profile with the sea wall running across the frame; a man planned "approaching the gate, screen right" is seen
+  from the side moving right, not from behind.
+- CARRY ONE LANDMARK ACROSS A MOVE. When the story moves from one zone to the next, the panels on both sides of the
+  move show the same recognisable feature of the place (a stretch of water, a wall, a road, a line of trees), on the
+  side of frame that the direction of travel keeps it on. Weather and ground alone are not enough to say "same place".
+  Examples from other stories: a woman walking a riverside path toward a jetty has the river on frame left in the walk
+  and still on frame left, now with the jetty, in the arrival; a boy running down a lane toward a shop has the same
+  blue boundary wall along the lane in both panels.
+- SAME SIZE, DIFFERENT MOMENT, DIFFERENT PICTURE. Two panels of the same size that show a person at different moments
+  (standing then kneeling, before then after a discovery) must not look alike. The camera height follows the eyes: a
+  standing person is filmed from standing eye height with the far background behind them; a kneeling or seated person
+  is filmed from low, with the near ground, the surface they kneel on, or the object beside them behind or around
+  them. Name the camera height in each close panel. Examples from other stories: a father's standing close-up has the
+  street and sky behind him, his close-up kneeling by a fallen bicycle has the road surface and the wheel behind him; a
+  clerk's close-up at the counter has the shelves behind, her close-up sitting on the floor has the counter's wooden
+  side behind.
+- WHO IS SPEAKING. A shot's `spoken` lists the lines said in it and who says them. In that panel the speaker's face is
+  turned so the camera can read it (unless the plan hides it on purpose) and the mouth is mid-word; listeners are not
+  speaking. The words themselves are never drawn or written into a panel.
+- The reference pictures decide faces, hair, clothes, props and the KIND of place (its materials, water, plants,
+  structures). The location plate is ONE view of the place; it is not the view of every panel. Never tell a panel to
+  copy the plate's framing unless the plan's camera stands exactly there.
+- Close-ups and inserts are panels too: describe them at their size (a face filling the panel, a hand and object
+  filling the panel). Lettering on an object is described as present but never spelled out, because the board is small.
+- Each panel describes only what is in that frame: no camera-move instructions, no sound, no story explanation.
+- If two parts of the input disagree (for example a clothing colour in a shot plan against the look), the look and the
+  reference pictures win; report the disagreement in `conflicts`.
+- No text of any kind is drawn: no panel numbers, no captions, no titles, no timestamps, no arrows.
+- SAFE DEPICTION (plan/2026-11-10b). Death, crime and injury are shown, never graphic, and the video model refuses the
+  words for them. Write only what the camera sees: "lies still on the floor, eyes closed", "a white sheet over a
+  shape", "a hand pressed to his side". Never write dead, corpse, death, blood, wound, stab, kill, murder or suicide in
+  a description, not even negated ("no blood"): code stops a prompt that has them. Let reactions and what is left
+  behind carry the moment. A spoken line is never changed.
+
+Write plain, concrete English. Each panel's `picture` is 2 to 4 sentences. `world` is the ONE paragraph every panel
+shares (weather, time, light, grade, the people's clothes and condition, the props). `geography` is ONE paragraph that
+lays out the place as a path: where each zone sits relative to the others and which way the story moves through it.
+
+
+=====
+
+<scene>
+{
+ "scene": {
+  "id": "8f7f085e-4eef-447b-9f64-8e5f7d2b00c2",
+  "heading": "SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES",
+  "title": "The route change",
+  "time_of_day": "night",
+  "script": [
+   "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van.",
+   "On the dashboard is a faded photo of him and Aruni near a village bus stop.",
+   "Aruni's voice message plays.",
+   "Mudalali calls.",
+   "Dinu looks at the red thread around his wrist and turns toward the industrial area."
+  ],
+  "mood": [
+   "uneasy",
+   "contained",
+   "foreboding"
+  ],
+  "axis": "Right-hand-drive van. Dinu stays seated frame right in the cabin master, facing forward. Wheel directly ahead; faded photograph on the central dashboard; the same phone secured on the dashboard within left-hand reach throughout. Red thread on his left wrist. Left hand returns to the wheel after each",
+  "staging": [
+   {
+    "who": "Dinu",
+    "zone": "driver's seat",
+    "posture": "sitting"
+   }
+  ]
+ },
+ "people": [
+  {
+   "name": "Dinu",
+   "appearance": "Medium-tall, lean and wiry, with medium-brown skin, a narrow angular face, deep-set dark eyes, a straight nose and short, even stubble. Thick black hair cut short at the sides, slightly longer and loosely swept across the top. Long, work-roughened hands.",
+   "outfit": "Plain dark navy short-sleeved uniform shirt with a left chest pocket, charcoal work trousers, a black belt and worn black closed work shoes.",
+   "hair": "Thick black hair cut short at the sides, with the longer top loosely swept across.",
+   "accessories": "A red thread around one wrist.",
+   "scene_condition": ""
+  }
+ ],
+ "place": {
+  "name": "Cash Van",
+  "look": "Interior of a compact right-hand-drive cash-transfer van. Dark grey moulded dashboard, worn black vinyl front seats, rubber floor mats and a solid steel partition behind the cab. A small faded photograph is fixed to the dashboard. Rain beads across the windscreen; green-blue instrument light and passing sodium-orange light fall across the cramped cabin at night.",
+  "spots": []
+ },
+ "props": [
+  {
+   "name": "red thread",
+   "details": "Red thread around Dinu's wrist."
+  },
+  {
+   "name": "phone",
+   "details": "Palm-sized black smartphone with a plain dark protective case, slightly scuffed corners and a clear glass touchscreen with a simple call interface."
+  }
+ ],
+ "shots": [
+  {
+   "number": 1,
+   "slate": "2A-1",
+   "role": "master",
+   "size": "MS",
+   "duration_s": 6,
+   "script_lines": [
+    "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van."
+   ],
+   "spoken": [],
+   "story": "Dinu drives through wet Colombo; sustained master and tight driving singles establish enclosure.",
+   "purpose": "Cabin vibration makes the contained journey physical without spectacle.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver right, wheel low centre, wet windshield and dashboard left.",
+   "opening_picture": [
+    "Dinu seated with both hands on the wheel"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Maintains the wheel with both hands while looking forward.",
+     "position": "Seated frame right at the wheel, facing the road; both hands on the wheel."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side three-quarter eye level",
+    "camera": "braced handheld, 35mm, f/2.8",
+    "framing": "MWS of seated driver with wheel and dashboard",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; wet city lights remain dense soft shapes",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He maintains the van's course through the city.",
+    "He maintains the van's course through the city."
+   ]
+  },
+  {
+   "number": 2,
+   "slate": "2B-1",
+   "role": "single",
+   "size": "MCU",
+   "duration_s": 6,
+   "script_lines": [
+    "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van."
+   ],
+   "spoken": [],
+   "story": "Dinu drives through wet Colombo; sustained master and tight driving singles establish enclosure.",
+   "purpose": "Tighten confinement while maintaining the moving vehicle's physical texture.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Face centre-right; upper wheel low in frame; dense rain lights behind.",
+   "opening_picture": [
+    "Dinu in driving posture"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Maintains the wheel with both hands while looking forward.",
+     "position": "Seated centre-right at the wheel, facing the road; both hands on the wheel below the frame edge."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side oblique eye level",
+    "camera": "braced handheld, 65mm, f/2.8",
+    "framing": "MCU of driver, upper wheel at lower edge",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; crowded wet lights blur behind the face",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He continues driving without a change of direction.",
+    "He continues driving without a change of direction."
+   ]
+  },
+  {
+   "number": 3,
+   "slate": "2C-1",
+   "role": "single",
+   "size": "CU",
+   "duration_s": 6,
+   "script_lines": [
+    "Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van."
+   ],
+   "spoken": [],
+   "story": "Dinu drives through wet Colombo; sustained master and tight driving singles establish enclosure.",
+   "purpose": "Let vigilance occupy time rather than add an invented incident.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver's face fills the centre with a strip of wet window behind.",
+   "opening_picture": [
+    "Dinu looking forward"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Maintains the wheel with both hands while looking forward.",
+     "position": "Seated centre frame facing the road, hands on wheel below frame."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side near-frontal eye level",
+    "camera": "braced handheld, 85mm, f/2.8",
+    "framing": "CU of driver's face and shoulder",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; window lights become small crowded bokeh",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He maintains a steady driving posture.",
+    "He maintains a steady driving posture."
+   ]
+  },
+  {
+   "number": 4,
+   "slate": "2D-1",
+   "role": "insert",
+   "size": "INSERT",
+   "duration_s": 4,
+   "script_lines": [
+    "On the dashboard is a faded photo of him and Aruni near a village bus stop."
+   ],
+   "spoken": [],
+   "story": "The faded dashboard photograph registers as a personal anchor.",
+   "purpose": "The scripted keepsake must register as a printed object in the working cabin.",
+   "on_screen": [],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Faded photograph central, secured phone edge to its left, wet windshield above.",
+   "opening_picture": [
+    "Static faded two-person photograph beside a village bus stop"
+   ],
+   "subjects": [],
+   "cinematography": {
+    "angle": "Dashboard-level oblique",
+    "camera": "braced handheld, 75mm, f/4",
+    "framing": "INSERT of faded photograph with phone edge nearby",
+    "movement": "Restrained handheld vibration from a fixed dashboard-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; printed photograph legible, windshield lights soft",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "The photograph remains fixed on the dashboard.",
+    "The static photograph vibrates slightly with the van."
+   ]
+  },
+  {
+   "number": 5,
+   "slate": "2A-2",
+   "role": "single",
+   "size": "MS",
+   "duration_s": 4,
+   "script_lines": [
+    "On the dashboard is a faded photo of him and Aruni near a village bus stop."
+   ],
+   "spoken": [],
+   "story": "The faded dashboard photograph registers as a personal anchor.",
+   "purpose": "Reconnect the personal prop to the driver without inventing a sentimental glance.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver right, wheel centre, faded printed photograph low left.",
+   "opening_picture": [
+    "Dinu at the wheel",
+    "Faded printed photograph on dashboard"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Continues driving with both hands on the wheel.",
+     "position": "Seated frame right facing forward; photograph remains on central dashboard low left."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side three-quarter eye level",
+    "camera": "braced handheld, 35mm, f/2.8",
+    "framing": "MS of driver with faded photograph low left",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; foreground print identifiable, driver favoured",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "Both hands remain on the wheel.",
+    "He continues along the road."
+   ]
+  },
+  {
+   "number": 6,
+   "slate": "2D-2",
+   "role": "insert",
+   "size": "INSERT",
+   "duration_s": 6,
+   "script_lines": [
+    "Aruni's voice message plays."
+   ],
+   "spoken": [],
+   "story": "The established dashboard phone is activated for recorded playback.",
+   "purpose": "Establish the recorded voice's physical source before its sound.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Secured phone fills centre, faded photograph edge left, left hand on wheel at right edge.",
+   "opening_picture": [
+    "Dinu's left hand with red wrist thread",
+    "Secured phone with large playback control"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Moves his left hand slowly from the wheel to the large playback control, rests it there in one sustained press, then returns it to the wheel.",
+     "position": "Seated off frame right; left hand begins on wheel at right frame edge, phone secured on central dashboard."
+    }
+   ],
+   "cinematography": {
+    "angle": "Dashboard-level oblique",
+    "camera": "braced handheld, 75mm, f/4",
+    "framing": "INSERT of secured phone and left hand",
+    "movement": "Restrained handheld vibration from a fixed dashboard-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; phone interface and wrist clear",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "His left hand moves to the large playback control for one sustained press, then returns to the wheel.",
+    "His left hand moves to the large playback control for one sustained press, then returns to the wheel."
+   ]
+  },
+  {
+   "number": 7,
+   "slate": "2C-2",
+   "role": "single",
+   "size": "CU",
+   "duration_s": 8,
+   "script_lines": [
+    ""
+   ],
+   "spoken": [
+    {
+     "speaker": "Aruni",
+     "text": "Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa.",
+     "delivery": "voice message"
+    }
+   ],
+   "story": "Dinu receives L3 and stays with its implications.",
+   "purpose": "Hold the message on the only face present so concern lands without dramatization.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Face centre, windshield reflections compressed behind.",
+   "opening_picture": [
+    "Dinu driving with his mouth closed"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Drives and listens to the recording with his lips closed.",
+     "position": "Seated centre frame facing the road, both hands on the wheel below frame."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side near-frontal eye level",
+    "camera": "braced handheld, 85mm, f/2.8",
+    "framing": "CU of driver's face and shoulder",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; wet city lights form crowded soft shapes",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He listens through the complete L3 and maintains the wheel.",
+    "He listens through the complete L3 and maintains the wheel.",
+    "He listens through the complete L3 and maintains the wheel."
+   ]
+  },
+  {
+   "number": 8,
+   "slate": "2B-2",
+   "role": "reaction",
+   "size": "MCU",
+   "duration_s": 8,
+   "script_lines": [
+    ""
+   ],
+   "spoken": [],
+   "story": "Dinu receives L3 and stays with its implications.",
+   "purpose": "A slightly wider listener angle offers a grounded cut point while preserving the full recorded line.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver centre-right, wheel edge low, wet window behind.",
+   "opening_picture": [
+    "Dinu driving with his mouth closed"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Drives and listens to the recording with his lips closed.",
+     "position": "Seated centre-right facing the road; both hands on the wheel at the lower frame edge."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side oblique eye level",
+    "camera": "braced handheld, 65mm, f/2.8",
+    "framing": "MCU of driver, wheel edge low in frame",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; wet city lights form crowded soft shapes",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He listens through the complete L3 and maintains the wheel.",
+    "He listens through the complete L3 and maintains the wheel.",
+    "He listens through the complete L3 and maintains the wheel."
+   ]
+  },
+  {
+   "number": 9,
+   "slate": "2C-3",
+   "role": "reaction",
+   "size": "CU",
+   "duration_s": 6,
+   "script_lines": [
+    ""
+   ],
+   "spoken": [],
+   "story": "Dinu receives L3 and stays with its implications.",
+   "purpose": "Give the report a quiet landing before the next interruption.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver's face fills the frame, rain lights soft behind.",
+   "opening_picture": [
+    "Dinu looking forward, lips closed"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Continues driving after the recording.",
+     "position": "Seated centre frame facing the road, both hands on the wheel below frame."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side near-frontal eye level",
+    "camera": "braced handheld, 85mm, f/2.8",
+    "framing": "CU of driver's face and shoulder",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; wet lights blur behind him",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He continues driving.",
+    "He continues driving."
+   ]
+  },
+  {
+   "number": 10,
+   "slate": "2D-3",
+   "role": "insert",
+   "size": "INSERT",
+   "duration_s": 4,
+   "script_lines": [
+    "Mudalali calls."
+   ],
+   "spoken": [],
+   "story": "An incoming call appears on the same phone and Dinu accepts it.",
+   "purpose": "Identify the incoming caller on the established handset before the connected voice.",
+   "on_screen": [],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Dashboard-level oblique INSERT: phone screen central, with a post-production caller-ID graphic reading ‘Mudalali’ centered on it in large, clean white sans-serif type over a softly backlit dark screen.",
+   "opening_picture": [
+    "Secured phone on the dashboard"
+   ],
+   "subjects": [],
+   "cinematography": {
+    "angle": "Dashboard-level oblique",
+    "camera": "braced handheld, 75mm, f/4",
+    "framing": "INSERT of secured phone displaying incoming caller ID",
+    "movement": "Restrained handheld vibration from a fixed dashboard-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; caller ID legible, window reflections soft",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "The secured phone already displays the incoming caller ID Mudalali beside the photograph.",
+    "The incoming-call screen remains visible."
+   ]
+  },
+  {
+   "number": 11,
+   "slate": "2A-3",
+   "role": "two_shot",
+   "size": "MS",
+   "duration_s": 6,
+   "script_lines": [
+    "Mudalali calls."
+   ],
+   "spoken": [],
+   "story": "An incoming call appears on the same phone and Dinu accepts it.",
+   "purpose": "Show the driver and the established source together as the call is accepted.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver right, wheel centre and lit phone left.",
+   "opening_picture": [
+    "Dinu with both hands on wheel",
+    "Secured phone with incoming screen"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Keeps his right hand on the wheel, presses the phone's answer control once with his left hand and returns it to the wheel.",
+     "position": "Seated frame right facing forward; left and right hands begin on wheel, phone fixed on central dashboard frame left."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side three-quarter eye level",
+    "camera": "braced handheld, 35mm, f/2.8",
+    "framing": "MS of driver and dashboard phone",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; driver and phone discernible",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "His left hand presses the answer control once, then returns to the wheel; his right hand remains on the wheel.",
+    "His left hand presses the answer control once, then returns to the wheel; his right hand remains on the wheel."
+   ]
+  },
+  {
+   "number": 12,
+   "slate": "2C-4",
+   "role": "single",
+   "size": "CU",
+   "duration_s": 6,
+   "script_lines": [
+    ""
+   ],
+   "spoken": [
+    {
+     "speaker": "Mudalali",
+     "text": "Route eka maru karapan. Old Port warehouse ekata yanna.",
+     "delivery": "on the phone"
+    }
+   ],
+   "story": "Dinu receives L5, an order redirecting him to Old Port warehouse.",
+   "purpose": "The order lands on Dinu's held face instead of visualizing the absent caller.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver's face fills centre with small rain lights behind.",
+   "opening_picture": [
+    "Dinu looking forward with closed lips"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Drives and listens to the connected phone with lips closed.",
+     "position": "Seated centre frame facing the road, both hands on the wheel below frame."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side near-frontal eye level",
+    "camera": "braced handheld, 85mm, f/2.8",
+    "framing": "CU of driver's face and shoulder",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; rain-lit background compressed",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He listens through complete L5 while maintaining the wheel.",
+    "He listens through complete L5 while maintaining the wheel."
+   ]
+  },
+  {
+   "number": 13,
+   "slate": "2B-3",
+   "role": "reaction",
+   "size": "MCU",
+   "duration_s": 6,
+   "script_lines": [
+    ""
+   ],
+   "spoken": [],
+   "story": "Dinu receives L5, an order redirecting him to Old Port warehouse.",
+   "purpose": "Keep a second angle on the operational turn for the precise point the instruction lands.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver centre-right, wheel edge low and wet window behind.",
+   "opening_picture": [
+    "Dinu looking forward with closed lips"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Drives and listens to the connected phone with lips closed.",
+     "position": "Seated centre-right facing the road, both hands on wheel at lower frame edge."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side oblique eye level",
+    "camera": "braced handheld, 65mm, f/2.8",
+    "framing": "MCU of driver with wheel edge",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; rain-lit background compressed",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He listens through complete L5 while maintaining the wheel.",
+    "He listens through complete L5 while maintaining the wheel."
+   ]
+  },
+  {
+   "number": 14,
+   "slate": "2B-4",
+   "role": "single",
+   "size": "MS",
+   "duration_s": 6,
+   "script_lines": [
+    "Dinu looks at the red thread around his wrist and turns toward the industrial area."
+   ],
+   "spoken": [],
+   "story": "Dinu looks at the red thread, then steers toward the industrial area.",
+   "purpose": "Include face, wrist and wheel together so the glance is observable without inventing a meaning.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver right, wheel and left wrist low centre, rain-streaked window behind.",
+   "opening_picture": [
+    "Dinu driving, red thread on left wrist"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Maintains both hands on the wheel, looks down at the thread on his left wrist, then looks forward.",
+     "position": "Seated centre-right facing forward; both hands on wheel, red thread on left wrist visible low centre."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side oblique eye level",
+    "camera": "braced handheld, 50mm, f/2.8",
+    "framing": "MS of driver, both hands and upper wheel",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; face and wrist clear against soft wet lights",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He looks down at the red thread on his left wrist, then returns his eyes to the road.",
+    "He looks down at the red thread on his left wrist, then returns his eyes to the road."
+   ]
+  },
+  {
+   "number": 15,
+   "slate": "2A-4",
+   "role": "master",
+   "size": "MS",
+   "duration_s": 4,
+   "script_lines": [
+    "Dinu looks at the red thread around his wrist and turns toward the industrial area."
+   ],
+   "spoken": [],
+   "story": "Dinu looks at the red thread, then steers toward the industrial area.",
+   "purpose": "Keep the physical steering and changing exterior direction in one grounded cabin view.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver frame right, wheel centre and wet road ahead; photograph and phone on central dashboard.",
+   "opening_picture": [
+    "Dinu with both hands on the wheel"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Turns the wheel with both hands toward the industrial area and settles into the new course.",
+     "position": "Seated frame right facing forward; both hands on wheel, thread on left wrist."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side three-quarter eye level",
+    "camera": "braced handheld, 35mm, f/2.8",
+    "framing": "MWS of driver, wheel, dashboard and wet road ahead",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Medium; driver and wheel clear, distant industrial shapes soft",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "Both hands hold the wheel on the original course.",
+    "He turns the wheel toward the industrial area and brings it onto the new course."
+   ]
+  },
+  {
+   "number": 16,
+   "slate": "2C-5",
+   "role": "reaction",
+   "size": "CU",
+   "duration_s": 6,
+   "script_lines": [
+    "Dinu looks at the red thread around his wrist and turns toward the industrial area."
+   ],
+   "spoken": [],
+   "story": "Dinu looks at the red thread, then steers toward the industrial area.",
+   "purpose": "End on consequence in the driver's face, not a manufactured reveal.",
+   "on_screen": [
+    "Dinu"
+   ],
+   "setting": "Inside the right-hand-drive cash van moving through rain-lit Colombo at night.",
+   "composition": "Driver's face fills centre, wet city lights soft behind.",
+   "opening_picture": [
+    "Dinu looking forward with closed lips"
+   ],
+   "subjects": [
+    {
+     "id": "C01",
+     "action": "Drives on the new course with both hands on the wheel.",
+     "position": "Seated centre frame facing the road, both hands on the wheel below frame."
+    }
+   ],
+   "cinematography": {
+    "angle": "Passenger-side near-frontal eye level",
+    "camera": "braced handheld, 85mm, f/2.8",
+    "framing": "CU of driver's face and shoulder",
+    "movement": "Restrained handheld vibration from a fixed passenger-side position",
+    "color_tone": "Cold blue-green shadows, controlled sodium orange, deep blacks",
+    "white_balance": "4300K mixed practical light",
+    "depth_of_field": "Shallow; wet industrial lights fall into small bokeh",
+    "lens_artifacts": "none"
+   },
+   "lighting": "Narrow sodium light enters from the driver's side over cool blue-green dashboard spill, leaving the far cheek and cabin background in deep shadow.",
+   "beats": [
+    "He continues on the new course.",
+    "He continues on the new course."
+   ]
+  }
+ ],
+ "reference_pictures": [
+  "image 1: the look sheet for Dinu",
+  "image 2: the location plate for Cash Van",
+  "image 3: the reference sheet for phone"
+ ]
+}
+</scene>
+
+Write the storyboard: 16 panels, one per shot in shot order, laid out 4 across and 4 down. The reference pictures follow, in the same order as `reference_pictures`.

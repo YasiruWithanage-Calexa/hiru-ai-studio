@@ -1,0 +1,30 @@
+{
+  "run": "run_007",
+  "hypothesis": "with a face sheet first (look sheet = clothes only, no face words) the board's Dinu matches his portrait in all 16 panels",
+  "writer": {
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "usage": null,
+    "usd": 0.0,
+    "reused_from": "run_004"
+  },
+  "image": {
+    "model": "gpt-image-2",
+    "quality": "medium",
+    "input_fidelity": "default (low)",
+    "size": "1536x1024",
+    "usage": {
+      "input": 8946,
+      "output": 1372
+    },
+    "usd": 0.1443
+  },
+  "run_usd": 0.1443,
+  "ledger_usd": 2.0519,
+  "references": [
+    "the face sheet for Dinu",
+    "the look sheet for Dinu",
+    "the location plate for Cash Van",
+    "the reference sheet for phone"
+  ]
+}

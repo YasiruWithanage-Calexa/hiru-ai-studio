@@ -1,0 +1,29 @@
+{
+  "run": "run_015",
+  "from": "run_014",
+  "shot": 4,
+  "quality": "medium",
+  "hypothesis": "two mannequins map to two real people: blue -> Aruni, red -> Nimal, each with their own face and clothes",
+  "frames": [
+    {
+      "variant": "panel",
+      "labels": [
+        "the face sheet for Aruni",
+        "the face sheet for Nimal",
+        "the look sheet for Nimal",
+        "the look sheet for Aruni",
+        "the location plate for Mahawewa Canal",
+        "the reference sheet for phone",
+        "the reference sheet for C-17",
+        "the reference sheet for medical bag",
+        "the approved draft of this frame"
+      ],
+      "usage": {
+        "input": 13833,
+        "output": 1372
+      },
+      "usd": 0.1932
+    }
+  ],
+  "ledger_usd": 3.0369
+}

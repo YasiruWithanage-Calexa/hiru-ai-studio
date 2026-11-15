@@ -176,7 +176,8 @@ class World:
             recommended = default
         return recommended, recommended.with_overrides(shot.get("camera_overrides") or {})
 
-    def brief(self, shot: Row, labels: list[str], *, polished: bool = True) -> FrameBrief:
+    def brief(self, shot: Row, labels: list[str], *, polished: bool = True, board: list[str] | None = None
+              ) -> FrameBrief:
         """The first frame's brief naming exactly `labels` as its attached images (`contracts.frame_brief`), in the
         prompt writer's words where it has polished the shot (`polished=False`: the code's words only)."""
         staged = self._own(shot)[2]
@@ -185,7 +186,7 @@ class World:
                            cast=self.cast(shot, staged.on_screen), references=labels, recommended=recommended,
                            unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
                            hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p),
-                           scene=self.scene, shot=shot, polished=polished, genre=self.genre)
+                           scene=self.scene, shot=shot, polished=polished, genre=self.genre, board=board or ())
 
     def preview_labels(self, shot: Row) -> list[str]:
         """The labels the renderer will attach, when every first choice can be read (what the shot screen shows)."""
@@ -195,28 +196,30 @@ class World:
         """Every person's and place's name in the production: what a rewrite of a section must still name."""
         return [str(c["name"]) for c in self.canon if c.get("kind") in ("character", "location") and c.get("name")]
 
-    def compose(self, shot: Row, labels: list[str]) -> tuple[str, Row]:
+    def compose(self, shot: Row, labels: list[str], board: list[str] | None = None) -> tuple[str, Row]:
         """→ (the frame prompt naming exactly `labels` as its attached images, the pins). The pins cover everyone in
         the shot, heard too (a voice's card is still part of the shot); the People line names only who is seen."""
         own, cast_ids, _ = self._own(shot)
         pins = pins_for(shot_version=int(shot.get("version") or 1), scene=self.scene, items=own, cast_ids=cast_ids,
                         versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot),
                         looks=self.looks)
-        return self.brief(shot, labels).text(), pins.model_dump()
+        return self.brief(shot, labels, board=board).text(), pins.model_dump()
 
     def hands(self, shot: Row) -> Hands:
         """Who holds what as the shot opens (`contracts.holding`), for the people the camera sees."""
         staged = self._own(shot)[2]
         return hands_for(self.scene, shot, [self.members[c].name for c in staged.on_screen if c in self.members])
 
-    def expected(self, shot: Row) -> Row:
-        """What the vision check compares the picture with: `{seen, unseen, frame}`."""
+    def expected(self, shot: Row, board: list[str] | None = None) -> Row:
+        """What the vision check compares the picture with: `{seen, unseen, frame}`. A frame painted from its Scene
+        board panel (`board`, plan/2026-11-14 §3.5) is also checked for a leftover mannequin and the planned state."""
         staged = self._own(shot)[2]
         text = expected_frame(shot.get("ir") or {}, self.scene)
+        state = next((x for x in board or [] if x.startswith("Each person at the opening")), "")
         return {"seen": [identity_line(m) for m in self.cast(shot, staged.on_screen)],
                 "unseen": [f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"
                            for c in staged.heard_only if c in self.members],
-                "frame": text, "hands": self.hands(shot).expect}
+                "frame": text, "hands": self.hands(shot).expect, "board": bool(board), "state": state}
 
     def seen_names(self, shot: Row) -> dict[str, str]:
         staged = self.staged(shot)
@@ -245,6 +248,11 @@ def vision_checks(answer: Row | None, expected: Row) -> list[Row]:
     if expected.get("hands") and answer.get("hands_match") is False:
         what = " ".join(str(answer.get("hands_problem") or "").split())[:120]
         checks.append({"label": f"Hands · {what or 'not holding what the shot says'}", "tone": "advisory"})
+    if expected.get("board") and answer.get("mannequin") is True:  # plan/2026-11-14 §3.5
+        checks.append({"label": "A mannequin or solid-colour figure is left in the frame", "tone": "advisory"})
+    if expected.get("state") and answer.get("state_match") is False:
+        what = " ".join(str(answer.get("state_problem") or "").split())[:120]
+        checks.append({"label": f"State · {what or 'not as planned'}", "tone": "advisory"})
     if answer.get("matches") is False:
         problems = [" ".join(str(p).split())[:120] for p in answer.get("problems") or [] if str(p).strip()][:2]
         checks += [{"label": f"Differs · {p}", "tone": "advisory"} for p in problems] or [

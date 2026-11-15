@@ -1,0 +1,35 @@
+{
+  "run": "run_014",
+  "hypothesis": "two colour-coded mannequins (Nimal red, Aruni blue) keep blocking, place and screen direction consistent; close-ups three-quarter; landmark side held per setup",
+  "writer": {
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "usage": {
+      "input": 9674,
+      "output": 5568,
+      "cached": 0,
+      "reasoning": 3106
+    },
+    "usd": 0.075,
+    "reused_from": null
+  },
+  "image": {
+    "model": "gpt-image-2",
+    "quality": "low",
+    "input_fidelity": "default (low)",
+    "size": "1536x1024",
+    "usage": {
+      "input": 8699,
+      "output": 158
+    },
+    "usd": 0.0933
+  },
+  "run_usd": 0.1683,
+  "ledger_usd": 2.8437,
+  "references": [
+    "the location plate for Mahawewa Canal",
+    "the reference sheet for phone",
+    "the reference sheet for C-17",
+    "the reference sheet for medical bag"
+  ]
+}

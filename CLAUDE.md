@@ -262,6 +262,16 @@ live check) is the person's.
   `supabase/tests/database/`. Don't name a SQL function after an enum type (it parses as a cast).
 - Roles are read from the DB on every request, not from JWT claims.
 
+## The Scene board (plan/2026-11-14)
+
+One mannequin storyboard per scene, painted before any first frame (`docs/scene_board/README.md`). Pure rules in
+`contracts/board.py`; the writer is the `board_writer` agent (tier `board`); the job, face sheets and frames from a panel
+live in the `hiru_ai` frame_render system (`board.py`, `faces.py`) and run there whatever `AI_ENGINE` says. Rules that must
+not drift: **an approved, current board is required for a first frame of a painted shot** (D3; black plates excepted);
+boards paint at LOW, MEDIUM as a setting, **never HIGH** (the person's image rule), face sheets and frames at MEDIUM; a
+board is **never repainted by itself** (out of date is reported); a locked panel is never repainted; each frame gets only
+its own panel (D8). Schema v25 is not applied; the paid phases 0 and 7 are the person's (`plan/2026-11-14/IMPLEMENTED.md`).
+
 ## Jobs
 - `task_manager.dispatch()` writes the `jobs` row, then enqueues. Register each new function in
   `FUNCTIONS` (name, local port, deadline = deploy timeout), in `deploy-functions.yml`'s list and

@@ -49,14 +49,15 @@ class OpenAIImages:
         self.sheet_quality = sheet_quality or quality
 
     def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
-                 sheet: bool = False) -> Picture:
+                 sheet: bool = False, quality: str = "", mask: bytes | None = None) -> Picture:
         size = SIZE_FOR_ASPECT.get(aspect, "1536x1024")
-        quality = self.sheet_quality if sheet else self.draft_quality if draft else self.quality
+        quality = quality or (self.sheet_quality if sheet else self.draft_quality if draft else self.quality)
         try:
             if references:
                 files = [(f"reference-{n}.png", ref.data, ref.mime) for n, ref in enumerate(references, start=1)]
+                extra: dict[str, Any] = {"mask": ("mask.png", mask, "image/png")} if mask else {}
                 resp = self.client.images.edit(model=self.model, image=files, prompt=prompt, size=size,
-                                               quality=quality)
+                                               quality=quality, **extra)
             else:
                 resp = self.client.images.generate(model=self.model, prompt=prompt, size=size,
                                                    quality=quality, n=1)

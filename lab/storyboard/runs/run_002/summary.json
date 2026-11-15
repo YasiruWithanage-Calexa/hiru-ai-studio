@@ -1,0 +1,35 @@
+{
+  "run": "run_002",
+  "hypothesis": "with dialogue, a screen-direction rule, one landmark carried across the move and camera height that follows the eyes, shot 1 shows Aruni side-on walking left to right with the canal visible, linking the paddy path to the gate, and standing vs kneeling close-ups read as different moments",
+  "writer": {
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "usage": {
+      "input": 9070,
+      "output": 4556,
+      "cached": 0,
+      "reasoning": 2070
+    },
+    "usd": 0.0637
+  },
+  "image": {
+    "model": "gpt-image-2",
+    "quality": "high",
+    "size": "1536x1024",
+    "usage": {
+      "input": 11584,
+      "output": 5488
+    },
+    "usd": 0.3354
+  },
+  "run_usd": 0.3991,
+  "ledger_usd": 0.7938,
+  "references": [
+    "the look sheet for Nimal",
+    "the look sheet for Aruni",
+    "the location plate for Mahawewa Canal",
+    "the reference sheet for phone",
+    "the reference sheet for C-17",
+    "the reference sheet for medical bag"
+  ]
+}

@@ -40,3 +40,8 @@ that commit in the files below.
    (`contracts.safe_depiction.blocking`) is recorded `refused` with the words and a way out, and the
    image model is never called; the graph's `frame_render` does the same. A provider's refusal
    ends with `REFUSAL_HINT`.
+10. **The Scene board, face sheets and frames from a board panel (plan/2026-11-14)** are built in
+   the `hiru_ai` frame_render system only (`systems/frame_render/board.py`, `faces.py`). The handler
+   sends a job with `state.board_id`, `state.reference_kind = "face"` or `state.from_board` to the
+   graph whatever `AI_ENGINE` says (as canon_extract does for the refine). This pipeline keeps its
+   own paths; it only keeps a character's face sheet when it paints a new base sheet (`keep_assets`).

@@ -77,6 +77,8 @@ length, Accept saved in place with versions moved and no lock, a stale card, a c
 card, an approved scene); `tests/zora/test_removal.py` allow-list + `core/coverage_rows.py` and the Sable test (they
 name `zora_locks` / Zora's audit names).
 
+After phase 8 (same day): full `pytest` 5631 passed, 28 failed, 3 errors: the same 31 as before, none new. ruff, mypy, validate, catalog, import-linter as above. Interface: typecheck clean; Sable and Zora tests 37 passed; prettier clean on both features.
+
 ## Open
 
 - Phase 9 (live, the person's yes, cap $0.50): a scene of "test" re-planned with Raphael first; the twelve lab turns

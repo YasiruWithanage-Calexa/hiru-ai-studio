@@ -1,0 +1,39 @@
+# Recorded answer: the lab's run_014 writer output (scene 01, Mahawewa canal, two people), cut to two panels.
+- name: two-person mannequin board
+  input:
+    message: "<scene>{}</scene> Write the storyboard: 2 panels."
+    pictures: []
+  reply:
+    world: "Heavy dawn rain, opaque brown canal water, wet red earth, green rice plants, algae-stained concrete and rust-brown gate metal. Diffuse grey light from the canal side."
+    geography: "The muddy near-bank path runs across the picture from screen left toward the sluice gate at screen right."
+    panels:
+      - shot: 1
+        zone: "Paddy-field approach"
+        camera: "Wide, 35mm lens feel, standing-height camera on the landward bank."
+        background: "Waterlogged rice rows fill the left distance; the gate is outside the right edge."
+        picture: "The blue mannequin walks in the left third, chest screen right, the navy bag in its left hand."
+        people: [ { name: "Aruni", state: "" } ]
+      - shot: 2
+        zone: "Canal-gate arrival"
+        camera: "Wide, 40mm lens feel, standing-height camera on the near bank."
+        background: "The same canal at frame left meets the sluice; the gate at right."
+        picture: "The blue mannequin stands at left, head inclined toward the red mannequin lying across the lower right."
+        people: [ { name: "Aruni", state: "" }, { name: "Nimal", state: "lies still, eyes closed" } ]
+    conflicts: [ "The clip IR puts Aruni's phone in a trouser pocket; her look is a nurse's dress." ]
+  expect: { world: "Heavy dawn rain, opaque brown canal water, wet red earth, green rice plants, algae-stained concrete and rust-brown gate metal. Diffuse grey light from the canal side." }
+- name: a repaint of one panel with the person's note
+  input:
+    message: "<scene>{}</scene> Write the storyboard: 1 panels. REPAINT. - shot 1: side-on, walking right"
+    pictures: []
+  reply:
+    world: "Dusk on a village lane after rain; wet laterite, a blue boundary wall."
+    geography: "The lane runs from screen left to the shop at screen right."
+    panels:
+      - shot: 1
+        zone: "Lane"
+        camera: "Wide, side-on from the far verge, standing height."
+        background: "The blue boundary wall runs across the frame behind the figure."
+        picture: "The red mannequin walks side-on toward screen right, both arms swinging."
+        people: [ { name: "Kasun", state: "" } ]
+    conflicts: []
+  expect: { geography: "The lane runs from screen left to the shop at screen right." }

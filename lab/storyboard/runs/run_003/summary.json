@@ -1,0 +1,31 @@
+{
+  "run": "run_003",
+  "hypothesis": "low quality keeps the board readable as a numbered storyboard of every shot at a fraction of the cost",
+  "writer": {
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "usage": null,
+    "usd": 0.0,
+    "reused_from": "run_002"
+  },
+  "image": {
+    "model": "gpt-image-2",
+    "quality": "low",
+    "size": "1536x1024",
+    "usage": {
+      "input": 11584,
+      "output": 158
+    },
+    "usd": 0.1222
+  },
+  "run_usd": 0.1222,
+  "ledger_usd": 0.916,
+  "references": [
+    "the look sheet for Nimal",
+    "the look sheet for Aruni",
+    "the location plate for Mahawewa Canal",
+    "the reference sheet for phone",
+    "the reference sheet for C-17",
+    "the reference sheet for medical bag"
+  ]
+}

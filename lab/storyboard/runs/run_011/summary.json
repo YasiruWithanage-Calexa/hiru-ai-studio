@@ -1,0 +1,25 @@
+{
+  "run": "run_011",
+  "from": "run_009",
+  "shot": 7,
+  "quality": "medium",
+  "hypothesis": "a close-up first frame from a mannequin panel gets Dinu's face right from the face sheet when the head fills the frame",
+  "frames": [
+    {
+      "variant": "panel",
+      "labels": [
+        "the face sheet for Dinu",
+        "the look sheet for Dinu",
+        "the location plate for Cash Van",
+        "the reference sheet for phone",
+        "the approved draft of this frame"
+      ],
+      "usage": {
+        "input": 7181,
+        "output": 1372
+      },
+      "usd": 0.1267
+    }
+  ],
+  "ledger_usd": 2.5521
+}

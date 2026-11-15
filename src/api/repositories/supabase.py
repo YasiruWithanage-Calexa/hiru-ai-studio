@@ -881,6 +881,46 @@ class SupabaseFrames(_Base):
             "id", str(frame_id)).execute()
 
 
+class SupabaseSceneBoards(_Base):
+    """`scene_boards` (schema v25, plan/2026-11-14)."""
+
+    async def list(self, scene_id: UUID) -> list[Row]:
+        try:
+            res = (await self.db.table("scene_boards").select("*").eq("scene_id", str(scene_id))
+                   .order("version").order("part").execute())
+        except Exception:  # a database before v25: no board yet, never an error on the scene screen
+            _logger.warning("scene_boards could not be read (schema v25 not applied?)", exc_info=True)
+            return []
+        return _rows(res.data)
+
+    async def get(self, production_id: UUID, board_id: UUID) -> Row | None:
+        res = (await self.db.table("scene_boards").select("*").eq("id", str(board_id))
+               .eq("production_id", str(production_id)).limit(1).execute())
+        return _first(res.data)
+
+    async def create(self, row: Row) -> Row:
+        res = await self.db.table("scene_boards").insert(row).execute()
+        return _first(res.data) or row
+
+    async def update(self, board_id: UUID, fields: Row) -> Row | None:
+        res = await self.db.table("scene_boards").update(fields).eq("id", str(board_id)).execute()
+        return _first(res.data)
+
+    async def approve(self, scene_id: UUID, part: int, board_id: UUID, user_id: UUID) -> bool:
+        # Clear the old approval first: one approved board per scene and part is a unique index.
+        await (self.db.table("scene_boards").update({"approved_at": None, "approved_by": None})
+               .eq("scene_id", str(scene_id)).eq("part", part).neq("id", str(board_id))
+               .not_.is_("approved_at", "null").execute())
+        try:
+            res = await (self.db.table("scene_boards").update({"approved_at": datetime.now(UTC).isoformat(),
+                                                               "approved_by": str(user_id)})
+                         .eq("id", str(board_id)).eq("status", "done").execute())
+        except Exception:
+            _logger.warning("board approve raced scene=%s board=%s", scene_id, board_id, exc_info=True)
+            return False
+        return bool(_rows(res.data))
+
+
 # The scene loader needs a prompt's text, checks, pins and camera, never the IR it was written from
 # (plan/2026-11-08c phase 4).
 _PROMPT_COLUMNS = "id,production_id,shot_id,version,sections,prose,model,camera,checks,frame_id,pins,created_at"
@@ -1150,6 +1190,7 @@ async def build_supabase_repos(url: str, service_role_key: str) -> Repos:
         costs=SupabaseCosts(db),
         sable=SupabaseSable(db),
         packets=SupabasePackets(db),
+        scene_boards=SupabaseSceneBoards(db),
     )
     # Inside a request each scene loader reads the scene, shots, lines and episode once (plan/2026-11-13b phase 1).
     return Repos(**{name: cast(Any, MemoRepo(repo, name)) for name, repo in vars(repos).items()})

@@ -3,9 +3,10 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from typing import Any
-from uuid import UUID, uuid4
+from uuid import NAMESPACE_URL, UUID, uuid4, uuid5
 
 from api.repositories import SCENE_LIGHT, SHOT_LIGHT, Repos, Row
+from contracts.board import plan_pin
 
 
 def _now() -> str:
@@ -630,6 +631,60 @@ class FakeFrames(_Table):
                 and _when(r["updated_at"]) < before]
 
 
+class FakeSceneBoards(_Table):
+    """`scene_boards` (plan/2026-11-14).
+
+    `auto` (the default for the tests written before the Scene board): a scene with no board row answers an approved
+    board that is current for every shot as it stands, so a test about frames is not a test about boards. The board
+    tests set `auto = False` and make their own rows."""
+
+    def __init__(self, shots: FakeShots | None = None) -> None:
+        super().__init__()
+        self.shots = shots
+        self.auto = True
+
+    async def list(self, scene_id: UUID) -> list[Row]:
+        rows = sorted((r for r in self.rows.values() if r["scene_id"] == str(scene_id)),
+                      key=lambda r: (int(r.get("version") or 1), int(r.get("part") or 1)))
+        if rows or not self.auto or self.shots is None:
+            return rows
+        shots = sorted((s for s in self.shots.rows.values() if s["scene_id"] == str(scene_id)),
+                       key=lambda s: s["number"])
+        cells = [{"shot_id": s["id"], "number": s["number"], "kind": "painted", "panel": i + 1, "box": [0, 0, 1, 1],
+                  "path": f"auto/boards/{scene_id}/cell_{s['number']:03d}.png", "pin": plan_pin(s), "locked": False,
+                  "note": "", "text": ""} for i, s in enumerate(shots)]
+        if not shots:
+            return []
+        return [{"id": str(uuid5(NAMESPACE_URL, f"board/{scene_id}")), "production_id": shots[0]["production_id"],
+                 "scene_id": str(scene_id), "version": 1, "part": 1, "parts": 1, "status": "done", "quality": "low",
+                 "cells": cells, "writer": {}, "colours": {}, "approved_at": _now(), "approved_by": None,
+                 "storage_path": "auto/board.png", "sheet_path": "auto/sheet.png", "error": None,
+                 "created_at": _now(), "updated_at": _now()}]
+
+    async def create(self, row: Row) -> Row:
+        full = {"created_at": _now(), "updated_at": _now(), "status": "queued", "quality": "low", "cells": [],
+                "writer": {}, "colours": {}, "approved_at": None, "approved_by": None, "storage_path": None,
+                "sheet_path": None, "error": None, "part": 1, "parts": 1, **row}
+        self.rows[full["id"]] = full
+        return full
+
+    async def update(self, board_id: UUID, fields: Row) -> Row | None:
+        row = self.rows.get(str(board_id))
+        if row is not None:
+            row.update(fields)
+        return row
+
+    async def approve(self, scene_id: UUID, part: int, board_id: UUID, user_id: UUID) -> bool:
+        row = self.rows.get(str(board_id))
+        if row is None or row["status"] != "done":
+            return False
+        for other in self.rows.values():
+            if other["scene_id"] == str(scene_id) and int(other.get("part") or 1) == part:
+                other.update(approved_at=None, approved_by=None)
+        row.update(approved_at=_now(), approved_by=str(user_id))
+        return True
+
+
 class FakePrompts(_Table):
     async def latest_for_shots(self, shot_ids: list[str]) -> dict[str, Row]:
         out: dict[str, Row] = {}
@@ -748,6 +803,7 @@ def build_fake_repos() -> Repos:
     members = FakeMembers(profiles)
     personas = FakePersonas()
     threads, messages = FakeThreads(), FakeMessages()
+    shots = FakeShots()
     return Repos(
         profiles=profiles,
         productions=FakeProductions(members),
@@ -762,7 +818,7 @@ def build_fake_repos() -> Repos:
         usage=FakeUsage(),
         episodes=FakeEpisodes(),
         scenes=FakeScenes(),
-        shots=FakeShots(),
+        shots=shots,
         lines=FakeLines(),
         canon=FakeCanon(),
         looks=FakeLooks(),
@@ -782,4 +838,5 @@ def build_fake_repos() -> Repos:
         costs=FakeCosts(),
         sable=FakeSable(threads, messages),
         packets=FakePackets(),
+        scene_boards=FakeSceneBoards(shots),
     )

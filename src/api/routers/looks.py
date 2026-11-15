@@ -21,7 +21,16 @@ from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.services import media_links
 from api.workers import task_manager
-from contracts.canon import CanonKind, CanonLook, EpisodeRange, LookCreate, LooksView, LookUpdate, name_key
+from contracts.canon import (
+    CanonKind,
+    CanonLook,
+    EpisodeRange,
+    LookCreate,
+    LooksView,
+    LookUpdate,
+    name_key,
+    sheet_assets,
+)
 from contracts.jobs import JobKind
 from contracts.lookdraft import by_rules, look_row
 from contracts.roles import Permission
@@ -177,7 +186,7 @@ async def make_look_sheet(production_id: UUID, entity_id: UUID, look_id: UUID, a
     the only picture sent; the clothes, hair, makeup and accessories are the look's words."""
     entity = await _character(repos, production_id, entity_id)
     row = await _get(repos, entity_id, look_id)
-    if not _asset_path((entity.get("current") or {}).get("reference_assets")):
+    if not _asset_path(sheet_assets((entity.get("current") or {}).get("reference_assets"))):
         raise HTTPException(status.HTTP_409_CONFLICT, f"Paint {entity['name']}'s base sheet first.")
     if not any(str(row.get(k) or "").strip() for k in _WARDROBE):
         raise HTTPException(status.HTTP_409_CONFLICT, "Describe what they wear first.")

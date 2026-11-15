@@ -58,6 +58,9 @@ class OpenAISettings(BaseModel):
     effort_medium: str = "low"
     model_low: str = "gpt-5-nano"
     effort_low: str = "minimal"
+    # The Scene board writer (plan/2026-11-14): the `board` tier, the storyboard lab's model and effort.
+    model_board: str = "gpt-6.1-sol"
+    effort_board: str = "high"
     model_vision: str = "gpt-5-mini"  # looks at pictures (the frame check); no reasoning effort
     model_image: str = "gpt-image-2"
     image_quality: str = "medium"  # a final first frame

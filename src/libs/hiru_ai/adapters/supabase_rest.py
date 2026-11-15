@@ -602,6 +602,24 @@ class SupabaseFrames:
         except httpx.HTTPError:
             pass
 
+    # The Scene board (plan/2026-11-14, schema v25)
+    def board(self, board_id: str) -> Row | None:
+        return self.rest.first("scene_boards", {"id": f"eq.{board_id}", "select": "*"})
+
+    def boards(self, scene_id: str) -> list[Row]:
+        return self.rest.select("scene_boards", {"scene_id": f"eq.{scene_id}", "select": "*",
+                                                 "order": "version,part"})
+
+    def create_boards(self, rows: list[Row]) -> None:
+        self.rest.insert("scene_boards", rows)
+
+    def claim_board(self, board_id: str) -> bool:
+        return bool(self.rest.claim("scene_boards", {"id": f"eq.{board_id}", "status": "eq.queued"},
+                                    {"status": "running"}))
+
+    def save_board(self, board_id: str, fields: Row) -> None:
+        self.rest.patch("scene_boards", {"id": f"eq.{board_id}"}, fields)
+
 
 class SupabaseDocs:
     """`DocStore`: ready documents and the text extracted from them."""

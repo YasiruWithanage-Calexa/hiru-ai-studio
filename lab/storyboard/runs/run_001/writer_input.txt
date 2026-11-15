@@ -1,0 +1,557 @@
+You are a storyboard artist's director for a Sri Lankan television drama. You receive ONE scene: its script, the
+camera axis, the staging map (who is where, block by block), the people with their look for this scene, the place and
+the spots inside it, the props, the reference pictures, and every shot's plan. You write the instructions for ONE
+storyboard image: a grid of panels, one panel per shot, in shot order, painted together in a single image so every
+panel shares the same people, clothes, props, weather, light and grade.
+
+What each panel is for: it becomes the composition guide for that shot's final first frame. So each panel must show
+the shot's OPENING picture (its first frame), as the plan describes it: size, angle, lens feel, who is where, which way
+they face, what they hold.
+
+Rules:
+
+- GEOGRAPHY IS A PATH, NOT A POSTCARD. A place is a space the camera stands in at different spots, not one picture.
+  For each panel decide where the camera stands and which way it looks, using the staging map's zones, the spots and
+  the camera axis. Two panels in different zones must show different backgrounds; panels in the same zone and setup
+  may share one. Moving from one zone to the next must read as moving forward through one connected place: the same
+  ground, water, vegetation, weather and light, seen from a new position. Say in each panel what is in the background
+  and on which side of frame.
+- WHAT IS REVEALED LATER IS NOT SEEN EARLIER. If the plan reveals something (a person, an object, a place) in a later
+  shot, an earlier panel keeps it out of frame, hidden, or too far away to read. Example of the principle from other
+  stories: a room's occupant is not visible through the doorway in the hallway shot before the door opens; a letter on
+  a table is not legible in the wide before its insert.
+- SCREEN DIRECTION holds: keep the camera axis the plan states. Name in each panel which way people face or travel.
+- The reference pictures decide faces, hair, clothes, props and the KIND of place (its materials, water, plants,
+  structures). The location plate is ONE view of the place; it is not the view of every panel. Never tell a panel to
+  copy the plate's framing unless the plan's camera stands exactly there.
+- Close-ups and inserts are panels too: describe them at their size (a face filling the panel, a hand and object
+  filling the panel). Lettering on an object is described as present but never spelled out, because the board is small.
+- Each panel describes only what is in that frame: no camera-move instructions, no sound, no story explanation.
+- If two parts of the input disagree (for example a clothing colour in a shot plan against the look), the look and the
+  reference pictures win; report the disagreement in `conflicts`.
+- No text of any kind is drawn: no panel numbers, no captions, no titles, no timestamps, no arrows.
+- SAFE DEPICTION (plan/2026-11-10b). Death, crime and injury are shown, never graphic, and the video model refuses the
+  words for them. Write only what the camera sees: "lies still on the floor, eyes closed", "a white sheet over a
+  shape", "a hand pressed to his side". Never write dead, corpse, death, blood, wound, stab, kill, murder or suicide in
+  a description, not even negated ("no blood"): code stops a prompt that has them. Let reactions and what is left
+  behind carry the moment. A spoken line is never changed.
+
+Write plain, concrete English. Each panel's `picture` is 2 to 4 sentences. `world` is the ONE paragraph every panel
+shares (weather, time, light, grade, the people's clothes and condition, the props). `geography` is ONE paragraph that
+lays out the place as a path: where each zone sits relative to the others and which way the story moves through it.
+
+
+=====
+
+<scene>
+{
+ "scene": {
+  "id": "29a9bd1c-3917-4af6-a02f-09c660a24bc8",
+  "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+  "title": "The canal discovery",
+  "time_of_day": "dawn",
+  "script": [
+   "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag.",
+   "She notices something caught near the canal gate: a body. It is Nimal.",
+   "She does not scream. She kneels and touches his hand.",
+   "Inside his fist is a small metal key marked C-17.",
+   "She calls Dinu. No answer.",
+   "A distant bus horn mixes with the rain.",
+   "Cut to black.",
+   "TITLE: EKAMA SAKSHIYA."
+  ],
+  "mood": [
+   "bleak",
+   "restrained",
+   "ominous"
+  ],
+  "axis": "The field-edge path runs screen left to right toward the gate. Nimal lies at the near bank against the gate, head on the bank at screen right and feet toward the water at screen left. Aruni approaches from left and kneels on the bank side of his right hand. Keep cameras on this bank side. The bag st",
+  "staging": [
+   {
+    "who": "Aruni",
+    "zone": "paddy field",
+    "posture": "walking",
+    "holding": "small medical bag"
+   },
+   {
+    "who": "Nimal",
+    "zone": "canal gate",
+    "block": 1,
+    "posture": "lying"
+   },
+   {
+    "who": "Aruni",
+    "zone": "canal gate",
+    "block": 2,
+    "posture": "kneeling",
+    "holding": "small medical bag"
+   },
+   {
+    "who": "Nimal",
+    "zone": "canal gate",
+    "block": 3,
+    "holding": "small metal key marked C-17"
+   }
+  ]
+ },
+ "people": [
+  {
+   "name": "Nimal",
+   "appearance": "Average height, broad-shouldered and solidly built, with warm medium-brown skin. Broad cheekbones and a softly squared chin shared with Aruni; wider face, thick brows, slightly rounded nose and a neat black moustache. Short, dense, wavy black hair with a low side part.",
+   "outfit": "Faded rust-brown cotton shirt, dark brown trousers, a worn black belt and dark rubber-soled sandals.",
+   "hair": "Short, dense, wavy black hair with a low side part.",
+   "accessories": "",
+   "scene_condition": "Lies still beside the canal gate, eyes closed, one fist closed around a small metal key. Shirt sleeves rolled to the forearms; clothes rain-soaked, with darkened hems and flattened wet hair."
+  },
+  {
+   "name": "Aruni",
+   "appearance": "Average height with a compact, sturdy build and warm medium-brown skin. Oval face, broad cheekbones, straight dark brows and large, steady dark eyes. Thick black hair, centre-parted and secured in a low bun. Aruni and Nimal share broad cheekbones and a softly squared chin.",
+   "outfit": "White short-sleeved nurse's uniform dress with a neat collar, below-knee hem and white waist belt; plain white low-heeled closed shoes.",
+   "hair": "Thick black hair centre-parted and secured in a low bun.",
+   "accessories": "Small silver ear studs and a small medical bag.",
+   "scene_condition": "Uniform and hair wet from heavy rain; kneels beside the canal gate and touches Nimal's hand."
+  }
+ ],
+ "place": {
+  "name": "Mahawewa Canal",
+  "look": "Exterior village irrigation canal at dawn in heavy rain. A narrow channel of opaque brown water runs between red-earth banks, with a muddy footpath beside green paddy and a weathered concrete sluice structure. Wet grasses edge the channel; exposed concrete is stained dark with damp and algae. Diffuse grey dawn light, muted earthy reds and faint amber along the horizon.",
+  "spots": [
+   {
+    "name": "paddy field",
+    "look": "A low, waterlogged paddy plot beside the canal footpath, with short green rice rows, red-brown earthen bunds and rain-dimpled standing water."
+   },
+   {
+    "name": "canal gate",
+    "look": "A small rust-brown steel sluice gate in a stained concrete throat, with a vertical lifting spindle, wet ledges and grass caught along the waterline."
+   }
+  ]
+ },
+ "props": [
+  {
+   "name": "phone",
+   "details": "Palm-sized black smartphone with a plain dark protective case, slightly scuffed corners and a clear glass touchscreen with a simple call interface."
+  },
+  {
+   "name": "C-17",
+   "details": "Small metal key marked C-17."
+  },
+  {
+   "name": "medical bag",
+   "details": "Small rectangular navy medical bag in wipe-clean coated fabric, with black piping, two short carrying handles, a zippered top and lightly scuffed lower corners."
+  }
+ ],
+ "shots": [
+  {
+   "number": 1,
+   "slate": "1A-1",
+   "role": "master",
+   "size": "WIDE",
+   "duration_s": 8,
+   "script_lines": [
+    "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag."
+   ],
+   "story": "Aruni walks along the field edge carrying her medical bag.",
+   "purpose": "An unmoving landscape makes her small approach feel exposed and establishes left-to-right travel.",
+   "on_screen": [
+    "Aruni"
+   ],
+   "setting": "At dawn in heavy rain, the paddy-field path leads toward the Mahawewa canal gate.",
+   "composition": "Field fills the left distance; the narrow path leads diagonally toward the right edge with Aruni in the left third.",
+   "opening_picture": [
+    "Aruni upright on the path, medical bag hanging from her left hand."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Walks along the field edge carrying the small medical bag in her left hand.",
+     "position": "Left third, upright and facing screen right along the path; small medical bag in left hand, right hand empty, phone in right trouser pocket."
+    }
+   ],
+   "cinematography": {
+    "angle": "back-facing",
+    "camera": "locked-off tripod, 35mm, f/5.6",
+    "framing": "WIDE, Aruni occupies one quarter of the frame against the field edge.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Deep, field edge readable without sharp distant detail.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni walks along the field edge carrying the small medical bag in her left hand.",
+    "Aruni walks along the field edge carrying the small medical bag in her left hand.",
+    "Aruni walks along the field edge carrying the small medical bag in her left hand."
+   ]
+  },
+  {
+   "number": 2,
+   "slate": "1B-1",
+   "role": "master",
+   "size": "WIDE",
+   "duration_s": 6,
+   "script_lines": [
+    "She notices something caught near the canal gate: a body. It is Nimal."
+   ],
+   "story": "The gate-side figure becomes recognisable as Nimal; Aruni stops and registers him.",
+   "purpose": "A shared frame makes the spatial discovery immediate while leaving recognition to her behaviour.",
+   "on_screen": [
+    "Aruni",
+    "Nimal"
+   ],
+   "setting": "At dawn in heavy rain, Aruni stands on the bank beside Nimal at the Mahawewa canal gate.",
+   "composition": "Aruni occupies the left third, the gate frames Nimal low at right, and the bank runs between them.",
+   "opening_picture": [
+    "Aruni upright with bag in left hand, looking toward the gate.",
+    "Nimal lying entirely still, head right and feet left, right fist closed around the key."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Aruni stops, fixes her gaze on the figure and holds it.",
+     "position": "Left third on the bank, upright facing right toward Nimal; small medical bag in left hand, right hand empty, phone in right trouser pocket."
+    },
+    {
+     "id": "C03",
+     "action": "Remains entirely still with the small metal key held in his right fist.",
+     "position": "Lower right beside the gate, lying with head on the bank at screen right and feet toward the water at screen left; right fist rests beside his torso holding the key."
+    }
+   ],
+   "cinematography": {
+    "angle": "Eye level from the bank side",
+    "camera": "locked-off tripod, 40mm, f/5.6",
+    "framing": "WIDE, Aruni at left and Nimal lying across the lower right with the gate behind.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Deep, both figures and the gate remain readable.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni stops, fixes her gaze on the figure and holds it.",
+    "Aruni stops, fixes her gaze on the figure and holds it."
+   ]
+  },
+  {
+   "number": 3,
+   "slate": "1D-1",
+   "role": "reaction",
+   "size": "CU",
+   "duration_s": 6,
+   "script_lines": [
+    "She notices something caught near the canal gate: a body. It is Nimal."
+   ],
+   "story": "The gate-side figure becomes recognisable as Nimal; Aruni stops and registers him.",
+   "purpose": "A sustained face makes the recognition personal without theatrical movement.",
+   "on_screen": [
+    "Aruni"
+   ],
+   "setting": "At dawn in heavy rain, Aruni stands on the bank beside Nimal at the Mahawewa canal gate.",
+   "composition": "Aruni's face sits left of centre with dark looking room low at right.",
+   "opening_picture": [
+    "Aruni upright, wet hair tied low, lips closed, gaze dropping right."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Aruni stops, fixes her gaze on the figure and holds it.",
+     "position": "Standing on the bank, face turned down and screen right; small medical bag in left hand below frame, right hand empty, phone in right trouser pocket."
+    }
+   ],
+   "cinematography": {
+    "angle": "Eye level from the bank side",
+    "camera": "locked-off tripod, 85mm, f/2.8",
+    "framing": "CU, Aruni's face fills the frame, looking down and screen right.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Shallow, gate and water dissolve into dark bokeh.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni stops, fixes her gaze on the figure and holds it.",
+    "Aruni stops, fixes her gaze on the figure and holds it."
+   ]
+  },
+  {
+   "number": 4,
+   "slate": "1C-1",
+   "role": "two_shot",
+   "size": "TWO",
+   "duration_s": 6,
+   "script_lines": [
+    "She does not scream. She kneels and touches his hand."
+   ],
+   "story": "Aruni kneels and reaches to his hand, the actual contact concealed by foreground gate metal.",
+   "purpose": "A held two-shot preserves the descent while foreground gate metal conceals the exact contact point.",
+   "on_screen": [
+    "Aruni",
+    "Nimal"
+   ],
+   "setting": "At dawn in heavy rain, Aruni lowers herself beside Nimal on the bank at the Mahawewa canal gate.",
+   "composition": "A soft gate bar crosses the lower centre, Aruni stands at left and Nimal's face lies low at right.",
+   "opening_picture": [
+    "Aruni upright at left with bag in left hand and right hand empty.",
+    "Nimal lying entirely still with eyes closed and his right fist obscured by the bar."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Lowers to her knees and extends her right hand toward his hand behind the foreground gate bar.",
+     "position": "Left of Nimal on the bank, initially upright at frame left; small medical bag in left hand throughout, right hand empty, phone in right trouser pocket."
+    },
+    {
+     "id": "C03",
+     "action": "Remains entirely still with the key in his right fist.",
+     "position": "Lower right, lying with head on the bank at screen right and feet toward the water at screen left; right fist beside his torso masked by the foreground bar."
+    }
+   ],
+   "cinematography": {
+    "angle": "Low bank-side three-quarter angle",
+    "camera": "locked-off tripod, 50mm, f/4",
+    "framing": "TWO, Aruni from waist upward after kneeling and Nimal's face and upper torso low at right; a gate bar masks their hands.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Medium, both faces readable and foreground bar soft.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni lowers to her knees and extends her right hand toward his hand behind the foreground gate bar; the point of contact is fully occluded.",
+    "Aruni lowers to her knees and extends her right hand toward his hand behind the foreground gate bar; the point of contact is fully occluded."
+   ]
+  },
+  {
+   "number": 5,
+   "slate": "1F-1",
+   "role": "insert",
+   "size": "INSERT",
+   "duration_s": 6,
+   "script_lines": [
+    "Inside his fist is a small metal key marked C-17."
+   ],
+   "story": "The marked key is visible in the closed fist and remains there.",
+   "purpose": "The clue requires legibility and stillness, not a flourish; its position within the fist must be unambiguous.",
+   "on_screen": [
+    "Nimal"
+   ],
+   "setting": "At dawn in heavy rain, Nimal's right fist rests beside his torso at the Mahawewa canal gate.",
+   "composition": "Closed right fist sits diagonally across the frame, the projecting key head centred with C-17 readable.",
+   "opening_picture": [
+    "Nimal's unmoving right fist and faded sand cuff; small metal key retained inside the curled fingers."
+   ],
+   "subjects": [
+    {
+     "id": "C03",
+     "action": "Remains entirely still with the small metal key held in his closed right fist.",
+     "position": "Lying beside the gate, right fist resting beside his torso; only fist and sand-coloured cuff visible, key head projecting from curled fingers with C-17 toward camera."
+    }
+   ],
+   "cinematography": {
+    "angle": "Downward from the bank side",
+    "camera": "locked-off tripod, 100mm macro, f/5.6",
+    "framing": "INSERT, closed right fist and exposed key head fill the frame with C-17 facing camera.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Medium, key marking and knuckles sharp, bank softly receding.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Rain beads on the exposed metal key head marked C-17 inside the closed right fist.",
+    "Rain beads on the exposed metal key head marked C-17 inside the closed right fist."
+   ]
+  },
+  {
+   "number": 6,
+   "slate": "1E-1",
+   "role": "single",
+   "size": "CU",
+   "duration_s": 4,
+   "script_lines": [
+    ""
+   ],
+   "story": "Aruni makes the subdued appeal L4 before an established connection.",
+   "purpose": "The full subdued appeal belongs to her face; stillness avoids turning restraint into melodrama.",
+   "on_screen": [
+    "Aruni"
+   ],
+   "setting": "At dawn in heavy rain, Aruni kneels beside Nimal at the Mahawewa canal gate before using her phone.",
+   "composition": "Aruni's face left of centre with dark negative space low at right.",
+   "opening_picture": [
+    "Aruni kneeling, rain running down her face, lips closed before L4."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Her lips move to L4, then close.",
+     "position": "Kneeling bank-side, face angled down and screen right; bag in left hand beside left knee, right hand empty near right thigh below frame, phone in right trouser pocket."
+    }
+   ],
+   "cinematography": {
+    "angle": "Eye level with kneeling Aruni from the bank side",
+    "camera": "locked-off tripod, 85mm, f/2.8",
+    "framing": "CU, Aruni's face fills the frame with looking room down and screen right.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Shallow, gate and water become dark bokeh.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni's lips move to L4 in full.",
+    "Aruni's lips move to L4 in full."
+   ]
+  },
+  {
+   "number": 7,
+   "slate": "1G-1",
+   "role": "insert",
+   "size": "INSERT",
+   "duration_s": 4,
+   "script_lines": [
+    "She calls Dinu. No answer."
+   ],
+   "story": "Aruni initiates the attempt on her phone and waits without an answer.",
+   "purpose": "Show the source before its tone and make initiation unmistakable with one simple tap.",
+   "on_screen": [
+    "Aruni"
+   ],
+   "setting": "At dawn in heavy rain, Aruni kneels beside Nimal at the Mahawewa canal gate with her phone in her right hand.",
+   "composition": "Phone fills the centre, screen facing camera, Dinu readable; right thumb rests clear of the outgoing control and the bag edge is visible at left.",
+   "opening_picture": [
+    "Aruni's right hand holding the phone above her right thigh.",
+    "Aruni's left hand retaining the small medical bag at the left edge."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Holds the phone in her right hand and presses the outgoing control once with her right thumb.",
+     "position": "Kneeling on the bank; right hand holds the phone above right thigh, left hand retains the small medical bag beside left knee."
+    }
+   ],
+   "cinematography": {
+    "angle": "Downward over Aruni's right forearm from the bank side",
+    "camera": "locked-off tripod, 75mm, f/4",
+    "framing": "INSERT, phone and right hand fill the centre; left hand and medical bag appear at the far left edge.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Medium, phone surface sharp with bank softly receding.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni holds the phone steady with Dinu displayed as the selected contact.",
+    "The phone remains in the same right-hand position."
+   ]
+  },
+  {
+   "number": 8,
+   "slate": "1E-2",
+   "role": "reaction",
+   "size": "CU",
+   "duration_s": 6,
+   "script_lines": [
+    "She calls Dinu. No answer."
+   ],
+   "story": "Aruni initiates the attempt on her phone and waits without an answer.",
+   "purpose": "Hold the failed route to help on her face rather than manufacturing a new action.",
+   "on_screen": [
+    "Aruni"
+   ],
+   "setting": "At dawn in heavy rain, Aruni kneels beside Nimal at the Mahawewa canal gate with her phone in her right hand.",
+   "composition": "Aruni's face left of centre, dark looking room low at right, matching the earlier kneeling single.",
+   "opening_picture": [
+    "Aruni kneeling with lips closed and gaze lowered; phone held low in right hand and bag retained in left below frame."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Keeps her lips closed and listens, holding the phone low in her right hand.",
+     "position": "Kneeling on the bank, face angled down and screen right; phone in right hand above right thigh below frame, bag in left hand beside left knee."
+    }
+   ],
+   "cinematography": {
+    "angle": "Eye level with kneeling Aruni from the bank side",
+    "camera": "locked-off tripod, 85mm, f/2.8",
+    "framing": "CU, Aruni's face fills the frame with looking room down and screen right.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Shallow, gate and water become dark bokeh.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni keeps the phone low in her right hand and listens through the outgoing tones.",
+    "Aruni keeps the phone low in her right hand and listens through the outgoing tones."
+   ]
+  },
+  {
+   "number": 9,
+   "slate": "1B-2",
+   "role": "master",
+   "size": "WIDE",
+   "duration_s": 6,
+   "script_lines": [
+    "A distant bus horn mixes with the rain."
+   ],
+   "story": "The distant horn enters the rain around Aruni and Nimal.",
+   "purpose": "Returning to the geography makes the remote horn belong to a world beyond her immediate reach.",
+   "on_screen": [
+    "Aruni",
+    "Nimal"
+   ],
+   "setting": "At dawn in heavy rain, Aruni kneels beside Nimal at the Mahawewa canal gate as a distant horn enters the rain.",
+   "composition": "Match the reveal wide: Aruni at left now kneeling, Nimal low at right and gate behind.",
+   "opening_picture": [
+    "Aruni kneeling with phone in right hand and medical bag in left.",
+    "Nimal lying entirely still, right fist retaining the key."
+   ],
+   "subjects": [
+    {
+     "id": "C02",
+     "action": "Remains kneeling with the phone held low in her right hand and bag in her left.",
+     "position": "Left third on the bank beside Nimal's right side, kneeling facing down and screen right; phone above right thigh, bag beside left knee."
+    },
+    {
+     "id": "C03",
+     "action": "Remains entirely still with the small metal key in his right fist.",
+     "position": "Lower right beside the gate, lying with head on the bank at screen right and feet toward the water at screen left; right fist rests beside torso retaining the key."
+    }
+   ],
+   "cinematography": {
+    "angle": "Eye level from the bank side",
+    "camera": "locked-off tripod, 40mm, f/5.6",
+    "framing": "WIDE, kneeling Aruni at left and Nimal lying across the lower right with the gate behind.",
+    "movement": "Locked-off throughout.",
+    "color_tone": "Earthy reds and browns, subdued greens, deep blacks and small wet highlights.",
+    "white_balance": "4800K dawn with restrained amber bias",
+    "depth_of_field": "Deep, both figures and the gate remain readable.",
+    "lens_artifacts": "None."
+   },
+   "lighting": "Directional dawn skylight from the canal side catches wet edges while the bank and gate keep near-side faces and backgrounds in deep shadow under continuous heavy rain.",
+   "beats": [
+    "Aruni remains kneeling with phone and bag retained while rain falls across the gate.",
+    "Aruni remains kneeling with phone and bag retained while rain falls across the gate."
+   ]
+  }
+ ],
+ "reference_pictures": [
+  "image 1: the look sheet for Nimal",
+  "image 2: the look sheet for Aruni",
+  "image 3: the location plate for Mahawewa Canal",
+  "image 4: the reference sheet for phone",
+  "image 5: the reference sheet for C-17",
+  "image 6: the reference sheet for medical bag"
+ ]
+}
+</scene>
+
+Write the storyboard: 9 panels, one per shot in shot order, laid out 3 across and 3 down. The reference pictures follow, in the same order as `reference_pictures`.

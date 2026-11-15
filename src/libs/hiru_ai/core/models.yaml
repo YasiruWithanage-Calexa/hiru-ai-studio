@@ -45,6 +45,9 @@ tiers:
   # once, upward, to `sable_deep` when the work needs it (core/middleware/tiering.py). The lab (Phase 4) picks the pair.
   sable:      { model: model_sable,      effort: effort_sable,      timeout_s: 120, retries: 2, fallbacks: [] }
   sable_deep: { model: model_sable_deep, effort: effort_sable_deep, timeout_s: 300, retries: 1, fallbacks: [] }
+  # The Scene board writer (plan/2026-11-14 §3.2): one scene's board in one answer, as the storyboard lab ran it
+  # (GPT-6.1 Sol, high; run_001 took 4,341 output tokens). The caller caps the answer at 10,000 tokens.
+  board:  { model: model_board, effort: effort_board, timeout_s: 600, retries: 1, fallbacks: [] }
   vision: { model: model_vision,                        timeout_s: 120, retries: 1, fallbacks: [] }  # the frame check
 embed:
   model: embedding_model

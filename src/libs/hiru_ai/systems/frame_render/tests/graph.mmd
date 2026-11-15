@@ -8,10 +8,16 @@ graph TD;
 	frames(frames)
 	reference(reference)
 	look(look)
+	face(face)
+	board(board)
 	__end__([<p>__end__</p>]):::last
+	__start__ -.-> board;
+	__start__ -.-> face;
 	__start__ -.-> frames;
 	__start__ -.-> look;
 	__start__ -.-> reference;
+	board --> __end__;
+	face --> __end__;
 	frames --> __end__;
 	look --> __end__;
 	reference --> __end__;

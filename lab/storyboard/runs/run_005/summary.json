@@ -1,0 +1,39 @@
+{
+  "run": "run_005",
+  "from": "run_004",
+  "shot": 7,
+  "quality": "high",
+  "hypothesis": "a first frame painted from its storyboard panel (approved-draft wording) matches the board; adding the whole board keeps it more consistent with the scene",
+  "frames": [
+    {
+      "variant": "panel",
+      "labels": [
+        "the look sheet for Dinu",
+        "the location plate for Cash Van",
+        "the reference sheet for phone",
+        "the approved draft of this frame"
+      ],
+      "usage": {
+        "input": 5565,
+        "output": 5488
+      },
+      "usd": 0.2752
+    },
+    {
+      "variant": "board",
+      "labels": [
+        "the look sheet for Dinu",
+        "the location plate for Cash Van",
+        "the reference sheet for phone",
+        "the approved draft of this frame",
+        "the storyboard of this scene"
+      ],
+      "usage": {
+        "input": 7195,
+        "output": 5488
+      },
+      "usd": 0.2915
+    }
+  ],
+  "ledger_usd": 1.6814
+}
