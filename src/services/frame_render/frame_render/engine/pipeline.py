@@ -37,6 +37,7 @@ from contracts.canon import (
     CanonCard,
     CanonKind,
     LookFields,
+    keep_assets,
     look_sheet_prompt,
     look_wardrobe,
     looks_in_force,
@@ -343,7 +344,7 @@ def render_reference(store: StoreLike, production: Row, entity_id: str, paint: P
     store.upload("references", path, picture.data, picture.mime)
     assets = [{"path": path, "kind": "sheet", "version": current.get("version"), "job_id": job_id,
                "created_at": _now()}, *(current.get("reference_assets") or [])]
-    store.add_reference_asset(str(current["id"]), assets[:5])
+    store.add_reference_asset(str(current["id"]), keep_assets(assets))  # a face sheet is kept (plan/2026-11-14)
     return {"status": "done", "entity_id": entity_id, "version": current.get("version")}
 
 

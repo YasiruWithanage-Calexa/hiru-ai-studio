@@ -56,6 +56,7 @@ from contracts.video_gen import (
     spec_for,
     tags_of,
     validate_render,
+    version_problem,
     wire_order,
 )
 
@@ -118,6 +119,7 @@ class EngineView(BaseModel):
     options: dict[str, dict[str, Any]]
     verified: bool
     notes: str
+    versions: list[dict[str, str]] = []  # [{"label": "1.1", "model": "gemini-omni-1.1-flash"}, ...]; [] = none to pick
 
 
 class RequestView(BaseModel):
@@ -171,7 +173,8 @@ def engine_view(cap: EngineCapability) -> EngineView:
         resolutions=list(cap.resolutions), max_refs=cap.max_refs, first_frame=cap.first_frame,
         last_frame=cap.last_frame, refs_with_first_frame=cap.refs_with_first_frame, seed=cap.seed,
         seed_note=seed_note(cap.key), negative_prompt=cap.negative_prompt,
-        options={k: v.model_dump(mode="json") for k, v in cap.options.items()}, verified=cap.verified, notes=cap.notes)
+        options={k: v.model_dump(mode="json") for k, v in cap.options.items()}, verified=cap.verified, notes=cap.notes,
+        versions=[{"label": label, "model": model} for label, model in cap.versions])
 
 
 # ── pictures: the catalog a shot may use ───────────────────────────────────────────────────────────────────────
@@ -321,6 +324,10 @@ async def build_plan(repos: Repos, settings: Settings, ld: Loaded, st: ShotState
                               tone="fail"))
         resolved = resolved.model_copy(update={"engine": DEFAULT_ENGINE})
     cap = ENGINE_CAPABILITIES[resolved.engine]
+    if resolved.sources.get("model") in ("shot", "run"):
+        wrong = version_problem(resolved.engine, resolved.model)
+        if wrong:
+            problems.append(Check(label=wrong, tone="fail"))
 
     pictures, carried = await gather(repos, ld, st, state)
     accepted = (RefSource(kind="accepted_frame", id=UUID(str(st.accepted["id"])), path=str(st.accepted["storage_path"]),

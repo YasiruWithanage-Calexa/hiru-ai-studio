@@ -10,7 +10,7 @@ from contracts.breakdown.lines import Doc
 from contracts.breakdown.schema import Breakdown, Finding, Scene
 
 WPS = 2.2  # Veo words per second (src/lib/veo/timing.ts)
-_MINUTES = re.compile(r"(\d+(?:\.\d+)?)\s*MINUTES?\s*$")
+LABEL_WORDS = 5  # a speaker's label before the spoken words: "Father (over the phone):" is four
 
 
 def _speaks_a_name(bd: Breakdown, sc: Scene) -> list[Finding]:
@@ -88,11 +88,20 @@ def words(bd: Breakdown, doc: Doc) -> list[Finding]:
                     )
         missing: list[tuple[int, int]] = []
         overlap: list[tuple[int, int]] = []
-        cues = {b["spans"][0][0] for b in sc.blocks if b["kind"] == "dialogue" and b["spans"]}
+        # plan/2026-11-15: the words BEFORE a dialogue block's span on its first line are the speaker's label, whatever
+        # its style ("Kasun:", "KASUN", "ARUNI -", "Father (over the phone):"); the speaker is the block's field. Read
+        # from the model's spans, not from a pattern over the document; a label is at most LABEL_WORDS words.
+        cues: dict[int, int] = {}
+        for b in sc.blocks:
+            if b["kind"] == "dialogue" and b["spans"] and 0 < b["spans"][0][1] <= LABEL_WORDS:
+                line, a, _ = b["spans"][0]
+                cues[line] = max(cues.get(line, 0), a)
+        facts = set(sc.facts)  # the reading's lines that hold no story words (where the place and length were read)
         for line in range(sc.first, sc.last + 1):
+            if line in facts:
+                continue
             ws = doc.words(line)
-            # "ARUNI -": the speaker's cue is the speaker field
-            skip = 2 if line in cues and len(ws) > 1 and ws[1] == "-" else 0
+            skip = cues.get(line, 0)
             for w in range(skip, len(ws)):
                 n = seen.get((line, w), 0)
                 if n == 0:
@@ -225,14 +234,13 @@ def direction(bd: Breakdown) -> list[Finding]:
 
 
 def length(bd: Breakdown) -> list[Finding]:
-    """Reported, never trimmed."""
+    """Reported, never trimmed. The stated length is the reading's (plan/2026-11-15), never a pattern on the heading."""
     out: list[Finding] = []
     for sc in bd.scenes:
-        m = _MINUTES.search(sc.heading)
-        if not m or not sc.blocks:
+        if not sc.stated_s or not sc.blocks:
             continue
         spoken = sum(len(b["text"].split()) for b in sc.blocks if b["kind"] == "dialogue") / WPS
-        stated = float(m.group(1)) * 60
+        stated = sc.stated_s
         if spoken > stated:
             out.append(
                 Finding(code="length", scene=sc.id, message=f"spoken {spoken:.0f} s is over the stated {stated:.0f} s")

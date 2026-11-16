@@ -30,6 +30,7 @@ from api.services import media_links, media_thumbs
 from api.services import renders as svc
 from api.services.production import ShotState
 from contracts.producer import Check
+from contracts.production import ProductionSettings
 from contracts.roles import Permission
 from contracts.video_gen import (
     ENGINE_CAPABILITIES,
@@ -45,6 +46,7 @@ from contracts.video_gen import (
     request_hash,
     seed_phrase,
     validate_render,
+    version_problem,
 )
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["renders"])
@@ -110,18 +112,29 @@ class PlanPair(BaseModel):
 
 @router.get("/shots/{shot_id}/render-plans", response_model=PlanPair)
 async def render_plans(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep,
-                       settings: SettingsDep) -> PlanPair:
+                       settings: SettingsDep,
+                       model: Annotated[str | None, Query(max_length=100)] = None) -> PlanPair:
     """The take's plan and the draft's from ONE load of the shot (plan/2026-11-13b phase 5): the Generate card used to
-    make two requests that each loaded the whole scene. Same builder as `render-plan`, so they cannot disagree."""
+    make two requests that each loaded the whole scene. Same builder as `render-plan`, so they cannot disagree.
+    `model`: the version picked on the card (Omni Flash 1.1 / 1.2). The draft is always Omni Flash, so it takes it;
+    the take takes it only when the production's engine offers that version (a Veo take stays the production's)."""
+    try:
+        run = VideoOverrides(model=model) if model else None
+    except ValidationError:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "That model could not be read.") from None
     ld, st = await load_shot(repos, access, shot_id)
-    return await plans_for(repos, settings, ld, st)
+    return await plans_for(repos, settings, ld, st, run=run, model=model)
 
 
-async def plans_for(repos: Repos, settings: Settings, ld: Loaded, st: ShotState) -> PlanPair:
-    """Both plans for a shot already loaded (also `GET .../shots/{id}/panel`, plan/2026-11-13d phase 4)."""
+async def plans_for(repos: Repos, settings: Settings, ld: Loaded, st: ShotState, *,
+                    run: VideoOverrides | None = None, model: str | None = None) -> PlanPair:
+    """Both plans for a shot already loaded (also `GET .../shots/{id}/panel`, plan/2026-11-13d phase 4, which reads
+    the default version's: no `run`). `run` / `model`: the version picked on the card, as `render-plans` takes it."""
     handoff = handoff_checks(ld, st)
-    take = await svc.build_plan(repos, settings, ld, st, handoff=handoff)
-    draft = await svc.build_plan(repos, settings, ld, st, handoff=handoff, draft=True)
+    engine = ProductionSettings.model_validate(ld.production.get("settings") or {}).video.engine
+    take_run = run if run and engine in ENGINE_CAPABILITIES and version_problem(engine, model) is None else None
+    take = await svc.build_plan(repos, settings, ld, st, run=take_run, handoff=handoff)
+    draft = await svc.build_plan(repos, settings, ld, st, run=run, handoff=handoff, draft=True)
     return PlanPair(take=svc.plan_view(UUID(st.id), take, settings), draft=svc.plan_view(UUID(st.id), draft, settings))
 
 
@@ -129,6 +142,11 @@ async def plans_for(repos: Repos, settings: Settings, ld: Loaded, st: ShotState)
 async def save_video_settings(production_id: UUID, shot_id: UUID, body: SaveSettings, access: CanRender,
                               repos: ReposDep, settings: SettingsDep) -> svc.PlanView:
     ld, st = await load_shot(repos, access, shot_id)
+    if body.settings is not None and body.settings.model is not None:
+        engine = ProductionSettings.model_validate(ld.production.get("settings") or {}).video.engine
+        wrong = version_problem(engine, body.settings.model) if engine in ENGINE_CAPABILITIES else "Unknown model."
+        if wrong:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, wrong)
     state = svc.shot_state(st)
     if body.reset:
         state = ShotVideoState(uploads=state.uploads)

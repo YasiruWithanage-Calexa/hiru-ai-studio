@@ -1,0 +1,25 @@
+{
+  "run": "run_010",
+  "from": "run_009",
+  "shot": 1,
+  "quality": "medium",
+  "hypothesis": "a mannequin panel + face sheet + look sheet gives a natural first frame: real Dinu in the mannequin's pose, no red left",
+  "frames": [
+    {
+      "variant": "panel",
+      "labels": [
+        "the face sheet for Dinu",
+        "the look sheet for Dinu",
+        "the location plate for Cash Van",
+        "the reference sheet for phone",
+        "the approved draft of this frame"
+      ],
+      "usage": {
+        "input": 7198,
+        "output": 1372
+      },
+      "usd": 0.1269
+    }
+  ],
+  "ledger_usd": 2.4254
+}

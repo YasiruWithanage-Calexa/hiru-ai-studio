@@ -1,0 +1,45 @@
+{
+  "kind": "story_script",
+  "kind_why": "Scene headings such as “SCENE 03 — THE UNEXPECTED ENCOUNTER” combine performed action (“He quickly picks it up and runs after her.”) with character-labelled dialogue.",
+  "language_of_dialogue": "Sinhala, with occasional English words and phrases.",
+  "text_quality": {
+    "readable": false,
+    "problems": [
+      {
+        "where": {
+          "line": 56,
+          "quote": "ෙවන්න"
+        },
+        "what": "The Sinhala vowel sign precedes its consonant in extracted character order; this should be “වෙන්න”."
+      },
+      {
+        "where": {
+          "line": 48,
+          "quote": "ඔයාෙ ෙෆන්"
+        },
+        "what": "Letters and vowel components are missing or displaced: intended “ඔයාගේ ෆෝන්”."
+      },
+      {
+        "where": {
+          "line": 60,
+          "quote": "හැමෙම"
+        },
+        "what": "Missing consonant and damaged vowel sequence; intended “හැමදේම”."
+      },
+      {
+        "where": {
+          "line": 206,
+          "quote": "ෙකෙනක්ෙගන්වත්"
+        },
+        "what": "Sinhala vowel signs appear before the consonants they belong to; intended “කෙනෙක්ගෙන්වත්”."
+      },
+      {
+        "where": {
+          "line": 249,
+          "quote": "මෙ වාපාරය"
+        },
+        "what": "Missing letters: “මෙ” has lost “ග” from “මගේ”, and “වාපාරය” has lost the conjunct in “ව්‍යාපාරය”."
+      }
+    ]
+  }
+}

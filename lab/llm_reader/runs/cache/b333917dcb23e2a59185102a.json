@@ -1,0 +1,45 @@
+{
+  "kind": "story_script",
+  "kind_why": "Scene headings such as “SCENE 03 — THE UNEXPECTED ENCOUNTER” frame acted events and character-labelled dialogue (“Kasun:”, “Anudi:”).",
+  "language_of_dialogue": "Sinhala, with occasional English words and phrases.",
+  "text_quality": {
+    "readable": false,
+    "problems": [
+      {
+        "where": {
+          "line": 55,
+          "quote": "අෙන්"
+        },
+        "what": "Sinhala vowel sign is placed before its consonant; should be “අනේ”."
+      },
+      {
+        "where": {
+          "line": 56,
+          "quote": "ෙවන්න"
+        },
+        "what": "Sinhala vowel sign precedes the consonant it belongs to; should be “වෙන්න”."
+      },
+      {
+        "where": {
+          "line": 58,
+          "quote": "ඔයාෙ"
+        },
+        "what": "Missing consonant ග and displaced vowel sign; should be “ඔයාගේ”."
+      },
+      {
+        "where": {
+          "line": 206,
+          "quote": "ෙකෙනක්ෙගන්වත්"
+        },
+        "what": "Multiple Sinhala vowel signs precede their consonants; should be “කෙනෙක්ගෙන්වත්”."
+      },
+      {
+        "where": {
+          "line": 249,
+          "quote": "වාපාරය"
+        },
+        "what": "Missing ය්‍ය letters from “ව්‍යාපාරය”."
+      }
+    ]
+  }
+}

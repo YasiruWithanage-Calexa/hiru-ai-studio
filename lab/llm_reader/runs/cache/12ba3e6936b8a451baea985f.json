@@ -1,0 +1,45 @@
+{
+  "kind": "story_script",
+  "kind_why": "Scene headings such as “SCENE 03 — THE UNEXPECTED ENCOUNTER,” acted action, and named dialogue (“Kasun:”, “Anudi:”) tell a dramatized story.",
+  "language_of_dialogue": "Sinhala, with occasional English words and phrases.",
+  "text_quality": {
+    "readable": false,
+    "problems": [
+      {
+        "where": {
+          "line": 48,
+          "quote": "ඔයාෙ ෙෆන් එක"
+        },
+        "what": "Sinhala characters are missing in the possessive and the word for phone; a vowel sign is also placed before its consonant."
+      },
+      {
+        "where": {
+          "line": 56,
+          "quote": "ෙවන්න"
+        },
+        "what": "The vowel sign precedes its consonant; correct character order is “වෙන්න”."
+      },
+      {
+        "where": {
+          "line": 206,
+          "quote": "ෙකෙනක්ෙගන්වත්"
+        },
+        "what": "Multiple Sinhala vowel signs precede their consonants; this should be “කෙනෙක්ගෙන්වත්”."
+      },
+      {
+        "where": {
+          "line": 232,
+          "quote": "ෙකාන්ෙසියක්"
+        },
+        "what": "The word has misplaced vowel signs and missing consonants; the intended word is “කොන්දේසියක්”."
+      },
+      {
+        "where": {
+          "line": 249,
+          "quote": "මෙ වාපාරය"
+        },
+        "what": "Letters are missing: the possessive “මගේ” and the consonant cluster in “ව්‍යාපාරය” are damaged."
+      }
+    ]
+  }
+}

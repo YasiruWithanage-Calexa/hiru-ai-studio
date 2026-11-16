@@ -1,0 +1,29 @@
+# breakdown_probe (plan/2026-11-15). Scripted replies test the seams; lab/llm_reader ran the live reads (run3-run5).
+- name: a clean Sinhala script
+  input:
+    message: "<document filename=\"a.pdf\" lines=\"3\">\nL0001 | SCENE 01 — KASUN'S EVERYDAY LIFE\nL0002 | Kasun smiles.\nL0003 | Kasun: \"මගේම රෙස්ටුරන්ට් එකක්.\"\n</document>"
+  reply:
+    kind: story_script
+    kind_why: "A scene heading, action and a spoken line (L0001-L0003)."
+    language_of_dialogue: Sinhala
+    text_quality: { readable: true, problems: [] }
+- name: damaged Sinhala letters
+  input:
+    message: "<document filename=\"b.pdf\" lines=\"2\">\nL0001 | Api ෙදන්නා\nL0002 | Kasun: \" මිස් ! ඔයාෙ ෙෆන් එක !\"\n</document>"
+  reply:
+    kind: story_script
+    kind_why: "A spoken line attributed to Kasun (L0002)."
+    language_of_dialogue: Sinhala
+    text_quality:
+      readable: false
+      problems:
+        - where: { line: 1, quote: "ෙදන්නා" }
+          what: "The vowel sign comes before its consonant."
+- name: a cast list, no story
+  input:
+    message: "<document filename=\"c.pdf\" lines=\"2\">\nL0001 | CAST & CREW NOTES\nL0002 | Kasun — 28. Casting: TBC\n</document>"
+  reply:
+    kind: cast_or_crew_list
+    kind_why: "Only cast notes (L0001-L0002)."
+    language_of_dialogue: ""
+    text_quality: { readable: true, problems: [] }

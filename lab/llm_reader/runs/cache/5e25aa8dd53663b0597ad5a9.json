@@ -1,0 +1,24 @@
+{
+  "kind": "story_script",
+  "kind_why": "Scene headings, performed action and character-labelled dialogue tell the story: “SCENE 03 — THE UNEXPECTED ENCOUNTER” and “Kasun: \"මිස්! මිස්! ඔයාගේ ෆෝන් එක!\"”.",
+  "language_of_dialogue": "Sinhala, with occasional English code-switching.",
+  "text_quality": {
+    "readable": false,
+    "problems": [
+      {
+        "where": {
+          "line": 137,
+          "quote": "Her father remains seated, convinced that he is protecting his daughter.SCENE 04 — KASUN'S DETERMINATION AND THE BIG OPPORTUNITY"
+        },
+        "what": "The next scene heading is glued to the preceding action sentence; a separating line break is missing."
+      },
+      {
+        "where": {
+          "line": 236,
+          "quote": "He looks at the cheque and then at Anudi's father.SCENE 04 — THE CHOICE"
+        },
+        "what": "The next scene heading is glued to the preceding action sentence; a separating line break is missing."
+      }
+    ]
+  }
+}

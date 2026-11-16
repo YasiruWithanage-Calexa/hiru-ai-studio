@@ -1,0 +1,758 @@
+{
+ "kind": "story_script",
+ "kind_why": "A scene-by-scene dramatic script combining action descriptions and attributed dialogue; identified on line 2 as \"Revised Cinematic Story & Scene Breakdown\".",
+ "language_of_dialogue": "Sinhala, with occasional English words and phrases.",
+ "text_quality": {
+  "readable": false,
+  "problems": [
+   {
+    "where": {
+     "line": 25,
+     "quote": "ෙරස්ටුරන්ට්"
+    },
+    "what": "Sinhala vowel signs appear before their consonants, damaging the copied dialogue."
+   },
+   {
+    "where": {
+     "line": 48,
+     "quote": "ඔයාෙ ෙෆන්"
+    },
+    "what": "The possessive and the word for phone have missing or displaced Sinhala characters."
+   },
+   {
+    "where": {
+     "line": 55,
+     "quote": "අෙන්"
+    },
+    "what": "The Sinhala vowel sign is displaced before its consonant."
+   },
+   {
+    "where": {
+     "line": 60,
+     "quote": "හැමෙම"
+    },
+    "what": "The dialogue contains a damaged word with missing or incorrect Sinhala characters."
+   },
+   {
+    "where": {
+     "line": 206,
+     "quote": "ෙකෙනක්ෙගන්වත්"
+    },
+    "what": "Multiple Sinhala vowel signs are displaced before the consonants to which they belong."
+   }
+  ]
+ },
+ "declared": {
+  "episodes": 3,
+  "source": {
+   "line": 6,
+   "quote": "Episodes: 3"
+  }
+ },
+ "episodes": [
+  {
+   "number": 1,
+   "title": "THE FIRST MEETING",
+   "heading": {
+    "line": 11,
+    "quote": "EPISODE 01 — THE FIRST MEETING"
+   },
+   "length": {
+    "stated": false,
+    "low_seconds": 0.0,
+    "high_seconds": 0.0,
+    "source": {
+     "line": 0,
+     "quote": ""
+    }
+   }
+  },
+  {
+   "number": 2,
+   "title": "THE DIFFERENCE",
+   "heading": {
+    "line": 80,
+    "quote": "EPISODE 02 — THE DIFFERENCE"
+   },
+   "length": {
+    "stated": false,
+    "low_seconds": 0.0,
+    "high_seconds": 0.0,
+    "source": {
+     "line": 0,
+     "quote": ""
+    }
+   }
+  },
+  {
+   "number": 3,
+   "title": "THE CHOICE",
+   "heading": {
+    "line": 179,
+    "quote": "EPISODE 03 — THE CHOICE"
+   },
+   "length": {
+    "stated": false,
+    "low_seconds": 0.0,
+    "high_seconds": 0.0,
+    "source": {
+     "line": 0,
+     "quote": ""
+    }
+   }
+  }
+ ],
+ "scenes": [
+  {
+   "episode": 1,
+   "number": 1,
+   "heading": {
+    "line": 13,
+    "quote": "SCENE 01 — KASUN'S EVERYDAY LIFE"
+   },
+   "title": "KASUN'S EVERYDAY LIFE",
+   "place": "Colombo roadside – Food three-wheeler",
+   "place_source": {
+    "line": 14,
+    "quote": "Colombo roadside – Food three-wheeler"
+   },
+   "time_of_day": "Early morning",
+   "length": {
+    "stated": true,
+    "low_seconds": 27.6,
+    "high_seconds": 27.6,
+    "source": {
+     "line": 15,
+     "quote": "Duration: 0.46 minutes"
+    }
+   },
+   "first_line": 13,
+   "last_line": 26,
+   "speakers": [
+    "Kasun"
+   ],
+   "spoken_lines": [
+    25
+   ]
+  },
+  {
+   "episode": 1,
+   "number": 2,
+   "heading": {
+    "line": 27,
+    "quote": "SCENE 02 — ANUDI ARRIVES"
+   },
+   "title": "ANUDI ARRIVES",
+   "place": "Colombo road – Family car and roadside",
+   "place_source": {
+    "line": 28,
+    "quote": "Colombo road – Family car and roadside"
+   },
+   "time_of_day": "",
+   "length": {
+    "stated": true,
+    "low_seconds": 22.8,
+    "high_seconds": 22.8,
+    "source": {
+     "line": 29,
+     "quote": "Duration: 0.38 minutes"
+    }
+   },
+   "first_line": 27,
+   "last_line": 37,
+   "speakers": [],
+   "spoken_lines": []
+  },
+  {
+   "episode": 1,
+   "number": 3,
+   "heading": {
+    "line": 38,
+    "quote": "SCENE 03 — THE UNEXPECTED ENCOUNTER"
+   },
+   "title": "THE UNEXPECTED ENCOUNTER",
+   "place": "Colombo roadside – Near Kasun's food three-wheeler",
+   "place_source": {
+    "line": 39,
+    "quote": "Colombo roadside – Near Kasun's food three-wheeler"
+   },
+   "time_of_day": "",
+   "length": {
+    "stated": true,
+    "low_seconds": 17.4,
+    "high_seconds": 17.4,
+    "source": {
+     "line": 40,
+     "quote": "Duration: 0.29 minutes"
+    }
+   },
+   "first_line": 38,
+   "last_line": 50,
+   "speakers": [
+    "Kasun"
+   ],
+   "spoken_lines": [
+    48
+   ]
+  },
+  {
+   "episode": 1,
+   "number": 4,
+   "heading": {
+    "line": 51,
+    "quote": "SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING"
+   },
+   "title": "A CONVERSATION THAT CHANGES EVERYTHING",
+   "place": "Colombo roadside – Near Kasun's food three-wheeler",
+   "place_source": {
+    "line": 52,
+    "quote": "Colombo roadside – Near Kasun's food three-wheeler"
+   },
+   "time_of_day": "",
+   "length": {
+    "stated": true,
+    "low_seconds": 45.0,
+    "high_seconds": 45.0,
+    "source": {
+     "line": 53,
+     "quote": "Duration: 0.75 minutes"
+    }
+   },
+   "first_line": 51,
+   "last_line": 78,
+   "speakers": [
+    "Anudi",
+    "Kasun",
+    "Anudi's father"
+   ],
+   "spoken_lines": [
+    55,
+    56,
+    58,
+    59,
+    60,
+    61,
+    62,
+    66,
+    67,
+    68,
+    70,
+    74,
+    75
+   ]
+  },
+  {
+   "episode": 2,
+   "number": 1,
+   "heading": {
+    "line": 83,
+    "quote": "SCENE 01 — A FAMILIAR FACE"
+   },
+   "title": "A FAMILIAR FACE",
+   "place": "Kasun's food three-wheeler",
+   "place_source": {
+    "line": 84,
+    "quote": "Kasun's food three-wheeler"
+   },
+   "time_of_day": "Different evenings",
+   "length": {
+    "stated": true,
+    "low_seconds": 32.4,
+    "high_seconds": 32.4,
+    "source": {
+     "line": 85,
+     "quote": "Duration: 0.54 minutes"
+    }
+   },
+   "first_line": 83,
+   "last_line": 102,
+   "speakers": [
+    "Anudi",
+    "Kasun"
+   ],
+   "spoken_lines": [
+    89,
+    91
+   ]
+  },
+  {
+   "episode": 2,
+   "number": 2,
+   "heading": {
+    "line": 103,
+    "quote": "SCENE 02 — THE FATHER NOTICES"
+   },
+   "title": "THE FATHER NOTICES",
+   "place": "Colombo roadside",
+   "place_source": {
+    "line": 104,
+    "quote": "Colombo roadside"
+   },
+   "time_of_day": "Evening",
+   "length": {
+    "stated": true,
+    "low_seconds": 22.8,
+    "high_seconds": 22.8,
+    "source": {
+     "line": 105,
+     "quote": "Duration: 0.38 minutes"
+    }
+   },
+   "first_line": 103,
+   "last_line": 113,
+   "speakers": [],
+   "spoken_lines": []
+  },
+  {
+   "episode": 2,
+   "number": 3,
+   "heading": {
+    "line": 114,
+    "quote": "SCENE 03 — THE CONFRONTATION"
+   },
+   "title": "THE CONFRONTATION",
+   "place": "Anudi's family home – Living room",
+   "place_source": {
+    "line": 115,
+    "quote": "Anudi's family home – Living room"
+   },
+   "time_of_day": "That night.",
+   "length": {
+    "stated": true,
+    "low_seconds": 37.8,
+    "high_seconds": 37.8,
+    "source": {
+     "line": 116,
+     "quote": "Duration: 0.63 minutes"
+    }
+   },
+   "first_line": 114,
+   "last_line": 137,
+   "speakers": [
+    "Anudi's father",
+    "Anudi"
+   ],
+   "spoken_lines": [
+    121,
+    123,
+    124,
+    126,
+    127,
+    128,
+    130,
+    132,
+    133
+   ]
+  },
+  {
+   "episode": 2,
+   "number": 4,
+   "heading": {
+    "line": 138,
+    "quote": "SCENE 04 — KASUN'S DETERMINATION AND THE BIG OPPORTUNITY"
+   },
+   "title": "KASUN'S DETERMINATION AND THE BIG OPPORTUNITY",
+   "place": "Kasun's small food preparation workspace",
+   "place_source": {
+    "line": 139,
+    "quote": "Kasun's small food preparation workspace"
+   },
+   "time_of_day": "Late at night.",
+   "length": {
+    "stated": true,
+    "low_seconds": 60.0,
+    "high_seconds": 60.0,
+    "source": {
+     "line": 140,
+     "quote": "Duration: 1 minute"
+    }
+   },
+   "first_line": 138,
+   "last_line": 177,
+   "speakers": [
+    "Anudi",
+    "Kasun",
+    "Representative"
+   ],
+   "spoken_lines": [
+    149,
+    151,
+    152,
+    154,
+    156,
+    159,
+    161,
+    162,
+    164,
+    167,
+    169
+   ]
+  },
+  {
+   "episode": 3,
+   "number": 1,
+   "heading": {
+    "line": 182,
+    "quote": "SCENE 01 — THE STRUGGLE"
+   },
+   "title": "THE STRUGGLE",
+   "place": "Kasun's workspace and Colombo – Different locations",
+   "place_source": {
+    "line": 183,
+    "quote": "Kasun's workspace and Colombo – Different locations"
+   },
+   "time_of_day": "late at night",
+   "length": {
+    "stated": true,
+    "low_seconds": 32.4,
+    "high_seconds": 32.4,
+    "source": {
+     "line": 184,
+     "quote": "Duration: 0.54 minutes"
+    }
+   },
+   "first_line": 182,
+   "last_line": 197,
+   "speakers": [],
+   "spoken_lines": []
+  },
+  {
+   "episode": 3,
+   "number": 2,
+   "heading": {
+    "line": 198,
+    "quote": "SCENE 02 — ANUDI'S SUPPORT"
+   },
+   "title": "ANUDI'S SUPPORT",
+   "place": "Anudi's family home – Bedroom",
+   "place_source": {
+    "line": 199,
+    "quote": "Anudi's family home – Bedroom"
+   },
+   "time_of_day": "",
+   "length": {
+    "stated": true,
+    "low_seconds": 22.8,
+    "high_seconds": 22.8,
+    "source": {
+     "line": 200,
+     "quote": "Duration: 0.38 minutes"
+    }
+   },
+   "first_line": 198,
+   "last_line": 213,
+   "speakers": [
+    "Anudi",
+    "Kasun"
+   ],
+   "spoken_lines": [
+    205,
+    206,
+    207,
+    209,
+    211
+   ]
+  },
+  {
+   "episode": 3,
+   "number": 3,
+   "heading": {
+    "line": 214,
+    "quote": "SCENE 03 — AN UNEXPECTED OFFER"
+   },
+   "title": "AN UNEXPECTED OFFER",
+   "place": "Kasun's small workspace",
+   "place_source": {
+    "line": 215,
+    "quote": "Kasun's small workspace"
+   },
+   "time_of_day": "",
+   "length": {
+    "stated": true,
+    "low_seconds": 37.8,
+    "high_seconds": 37.8,
+    "source": {
+     "line": 216,
+     "quote": "Duration: 0.63 minutes"
+    }
+   },
+   "first_line": 214,
+   "last_line": 237,
+   "speakers": [
+    "Kasun",
+    "Anudi's father"
+   ],
+   "spoken_lines": [
+    221,
+    227,
+    230,
+    232,
+    234
+   ]
+  },
+  {
+   "episode": 3,
+   "number": 4,
+   "heading": {
+    "line": 238,
+    "quote": "SCENE 04 — THE CHOICE"
+   },
+   "title": "THE CHOICE",
+   "place": "Same workspace",
+   "place_source": {
+    "line": 239,
+    "quote": "Same workspace"
+   },
+   "time_of_day": "",
+   "length": {
+    "stated": true,
+    "low_seconds": 32.4,
+    "high_seconds": 32.4,
+    "source": {
+     "line": 240,
+     "quote": "Duration: 0.54 minutes"
+    }
+   },
+   "first_line": 238,
+   "last_line": 256,
+   "speakers": [
+    "Kasun"
+   ],
+   "spoken_lines": [
+    246,
+    249,
+    250,
+    252
+   ]
+  },
+  {
+   "episode": 3,
+   "number": 5,
+   "heading": {
+    "line": 257,
+    "quote": "SCENE 05 — A DREAM COMES TRUE"
+   },
+   "title": "A DREAM COMES TRUE",
+   "place": "KASUN'S Restaurant",
+   "place_source": {
+    "line": 258,
+    "quote": "KASUN'S Restaurant"
+   },
+   "time_of_day": "Day",
+   "length": {
+    "stated": true,
+    "low_seconds": 49.8,
+    "high_seconds": 49.8,
+    "source": {
+     "line": 259,
+     "quote": "Duration: 0.83 minutes"
+    }
+   },
+   "first_line": 257,
+   "last_line": 288,
+   "speakers": [
+    "Anudi",
+    "Kasun",
+    "Anudi's father"
+   ],
+   "spoken_lines": [
+    270,
+    272,
+    277,
+    279,
+    280
+   ]
+  }
+ ],
+ "people": [
+  {
+   "name": "Kasun",
+   "aliases": [
+    "කසුන්"
+   ],
+   "main": true,
+   "why": "His business ambition and romance drive the story; line 18 introduces \"Kasun prepares his small three-wheeler food business.\"",
+   "first_seen": {
+    "line": 18,
+    "quote": "Kasun prepares his small three-wheeler food business."
+   }
+  },
+  {
+   "name": "Anudi",
+   "aliases": [
+    "අනුදි"
+   ],
+   "main": true,
+   "why": "The central romantic partner, whose support culminates in line 272: \"Kasun: \" ඔයා මාව විශ්වාස කළ නිසා .\"\"",
+   "first_seen": {
+    "line": 31,
+    "quote": "Anudi sits in the back seat, looking at her smartphone."
+   }
+  },
+  {
+   "name": "Anudi's father",
+   "aliases": [
+    "Father",
+    "Father (over the phone)",
+    "Her father",
+    "The father"
+   ],
+   "main": true,
+   "why": "His opposition creates the central choice; line 234 states \"Father: \" ඔයා මෙ දුවෙගන් ඈත් ෙවන්න ඕෙන් .\"\"",
+   "first_seen": {
+    "line": 65,
+    "quote": "She checks the screen. It's her father."
+   }
+  },
+  {
+   "name": "Office worker",
+   "aliases": [
+    "customer"
+   ],
+   "main": false,
+   "why": "A brief customer establishing Kasun's daily work, introduced on line 20.",
+   "first_seen": {
+    "line": 20,
+    "quote": "An office worker approaches and orders tea."
+   }
+  },
+  {
+   "name": "Anudi's driver",
+   "aliases": [],
+   "main": false,
+   "why": "A minor transport role; line 32 says \"The driver stops near an office building.\"",
+   "first_seen": {
+    "line": 32,
+    "quote": "The driver stops near an office building."
+   }
+  },
+  {
+   "name": "Father's driver",
+   "aliases": [],
+   "main": false,
+   "why": "A minor transport role, mentioned when the father observes the couple on line 109.",
+   "first_seen": {
+    "line": 109,
+    "quote": "He asks the driver to slow down."
+   }
+  },
+  {
+   "name": "Representative",
+   "aliases": [
+    "Representative (over the phone)",
+    "A representative from a major supermarket chain"
+   ],
+   "main": false,
+   "why": "A supporting phone role offering the business opportunity; identified on line 160.",
+   "first_seen": {
+    "line": 160,
+    "quote": "A representative from a major supermarket chain is on the other end."
+   }
+  },
+  {
+   "name": "Potential investor",
+   "aliases": [
+    "The investor"
+   ],
+   "main": false,
+   "why": "A minor participant in the fundraising montage, introduced on line 188.",
+   "first_seen": {
+    "line": 188,
+    "quote": "He sits with a potential investor and explains his business plan."
+   }
+  },
+  {
+   "name": "Kasun's friends",
+   "aliases": [
+    "His friends"
+   ],
+   "main": false,
+   "why": "Unnamed contacts in the fundraising montage; line 189 describes calls asking them for support.",
+   "first_seen": {
+    "line": 189,
+    "quote": "He makes phone calls to friends asking for financial support."
+   }
+  },
+  {
+   "name": "Background office workers",
+   "aliases": [],
+   "main": false,
+   "why": "Collective background people establishing the city on line 17.",
+   "first_seen": {
+    "line": 17,
+    "quote": "office workers fill the streets."
+   }
+  },
+  {
+   "name": "Customers",
+   "aliases": [],
+   "main": false,
+   "why": "Unnamed background patrons at the food business and restaurant; line 87 says \"Kasun is serving customers as usual.\"",
+   "first_seen": {
+    "line": 87,
+    "quote": "Kasun is serving customers as usual."
+   }
+  },
+  {
+   "name": "Restaurant staff",
+   "aliases": [
+    "Staff members"
+   ],
+   "main": false,
+   "why": "Collective background restaurant employees introduced on line 265.",
+   "first_seen": {
+    "line": 265,
+    "quote": "Staff members are serving customers."
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "first": 1,
+   "last": 10,
+   "kind": "title_page"
+  },
+  {
+   "first": 12,
+   "last": 12,
+   "kind": "other"
+  },
+  {
+   "first": 79,
+   "last": 79,
+   "kind": "end_marker"
+  },
+  {
+   "first": 81,
+   "last": 82,
+   "kind": "other"
+  },
+  {
+   "first": 178,
+   "last": 178,
+   "kind": "end_marker"
+  },
+  {
+   "first": 180,
+   "last": 181,
+   "kind": "other"
+  },
+  {
+   "first": 289,
+   "last": 289,
+   "kind": "end_marker"
+  },
+  {
+   "first": 290,
+   "last": 301,
+   "kind": "production_notes"
+  }
+ ],
+ "doubts": [
+  "The drivers on lines 32 (\"The driver stops near an office building.\") and 109 (\"He asks the driver to slow down.\") may be the same person; the document does not establish this, so they are listed as separate roles.",
+  "Some speech is summarized without giving its words, such as line 20 (\"An office worker approaches and orders tea.\"), line 34 (\"She thanks the driver and walks toward the building.\") and line 109 (\"He asks the driver to slow down.\"); spoken_lines records actual supplied dialogue, not these summaries.",
+  "Episode 3, scene 1 spans several moments; \"late at night\" on line 190 applies specifically to reviewing documents, not necessarily to the whole scene.",
+  "The unnamed customers, friends, staff and background office workers are collective entries because the document does not distinguish individuals.",
+  "The final message is explicitly introduced by line 286, \"FINAL TEXT ON SCREEN:\", so lines 287–288 remain story content but are not counted as speech."
+ ]
+}

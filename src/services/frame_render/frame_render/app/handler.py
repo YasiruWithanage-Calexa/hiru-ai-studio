@@ -86,6 +86,15 @@ def run_graph(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
     return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs, images=True))
 
 
+def graph_only(payload: DispatchPayload) -> bool:
+    """Work only the `hiru_ai` system does, whatever `AI_ENGINE` says (plan/2026-11-14, like canon_extract's refine): a
+    Scene board, a face sheet, first frames painted from a board panel (the API marks those `from_board`), and first
+    frames at a quality a person picked (`quality`: the legacy painter has no per-job quality)."""
+    state = payload.state
+    return bool(state.get("board_id") or state.get("reference_kind") == "face" or state.get("from_board")
+                or state.get("quality"))
+
+
 def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         payload = DispatchPayload.model_validate(request.get_json(silent=True) or {})
@@ -99,7 +108,7 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
     store = Store(rest)
     jobs = Jobs(rest, config.api_internal_url, config.internal_secret)
     try:
-        if os.environ.get("AI_ENGINE", "legacy") == "graph":
+        if os.environ.get("AI_ENGINE", "legacy") == "graph" or graph_only(payload):
             return run_graph(payload, jobs), 200
         return pipeline.run(payload, store, jobs, painter(config, payload, store),
                             inspector(config, payload, store)), 200

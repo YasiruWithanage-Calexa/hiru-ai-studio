@@ -1,0 +1,17 @@
+id: breakdown_probe
+kind: agent
+version: 1
+summary: "Gates 0 and 1 (plan/2026-11-15): the cheap first look at ONE uploaded document, before the reading is paid for: what it is (a story or not), and whether its letters can be copied as they are."
+status: active
+owner: structure_build
+model: breakdown_probe
+timeout_s: 300
+shape: structured
+phase: breakdown.probe
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

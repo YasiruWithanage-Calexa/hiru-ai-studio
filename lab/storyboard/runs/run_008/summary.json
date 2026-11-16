@@ -1,0 +1,30 @@
+{
+  "run": "run_008",
+  "hypothesis": "a general Bodies line (body faces the task, only the head turns, no posing, head and eyes together) makes the driver sit behind the wheel and look naturally",
+  "writer": {
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "usage": null,
+    "usd": 0.0,
+    "reused_from": "run_004"
+  },
+  "image": {
+    "model": "gpt-image-2",
+    "quality": "low",
+    "input_fidelity": "default (low)",
+    "size": "1536x1024",
+    "usage": {
+      "input": 9095,
+      "output": 158
+    },
+    "usd": 0.0973
+  },
+  "run_usd": 0.0973,
+  "ledger_usd": 2.1491,
+  "references": [
+    "the face sheet for Dinu",
+    "the look sheet for Dinu",
+    "the location plate for Cash Van",
+    "the reference sheet for phone"
+  ]
+}

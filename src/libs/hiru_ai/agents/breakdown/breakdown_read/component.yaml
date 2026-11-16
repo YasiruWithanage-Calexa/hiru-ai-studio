@@ -1,0 +1,17 @@
+id: breakdown_read
+kind: agent
+version: 1
+summary: "The reading (plan/2026-11-15): reads ONE uploaded document whole and reports every fact with the words it came from: episodes, scenes (word-level start and end), titles, places, stated lengths, people and their roles, the lines that are not story."
+status: active
+owner: structure_build
+model: breakdown
+timeout_s: 900
+shape: structured
+phase: breakdown.read
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

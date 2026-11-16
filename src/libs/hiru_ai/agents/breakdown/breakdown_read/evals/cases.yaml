@@ -1,0 +1,161 @@
+# breakdown_read (plan/2026-11-15). Scripted replies test the seams; lab/llm_reader ran the live reads on seven layouts
+# (run5). Case 1: a length on its own line, a speaker label, a heading glued to the sentence before it. `lines` is the
+# document; `input.message` is reading.numbered() of it.
+- name: two scenes, the second heading glued
+  lines:
+  - EPISODE 01 — THE FIRST MEETING
+  - SCENE 01 — KASUN'S EVERYDAY LIFE
+  - 'Location: Colombo roadside'
+  - 'Duration: 0.5 minutes'
+  - Kasun smiles.
+  - 'Kasun: "මගේම රෙස්ටුරන්ට් එකක්."'
+  - He returns to work.SCENE 02 — ANUDI ARRIVES
+  - 'Location: Colombo road'
+  - Anudi walks past.
+  reply:
+    kind: story_script
+    kind_why: Scene headings, action and a spoken line.
+    language_of_dialogue: Sinhala
+    text_quality:
+      readable: true
+      problems: []
+    declared:
+      episodes: 0
+      source:
+        line: 0
+        quote: ''
+    episodes:
+    - number: 1
+      title: THE FIRST MEETING
+      heading:
+        line: 1
+        quote: EPISODE 01 — THE FIRST MEETING
+      length:
+        stated: false
+        low_seconds: 0
+        high_seconds: 0
+        source:
+          line: 0
+          quote: ''
+    scenes:
+    - episode: 1
+      number: 1
+      heading:
+        line: 2
+        quote: SCENE 01 — KASUN'S EVERYDAY LIFE
+      end:
+        line: 7
+        quote: He returns to work.
+      title: KASUN'S EVERYDAY LIFE
+      place: Colombo roadside
+      place_refers_back: false
+      place_source:
+        line: 3
+        quote: Colombo roadside
+      time_of_day: ''
+      length:
+        stated: true
+        low_seconds: 30
+        high_seconds: 30
+        source:
+          line: 4
+          quote: 'Duration: 0.5 minutes'
+      speakers:
+      - Kasun
+      spoken_lines:
+      - 6
+    - episode: 1
+      number: 2
+      heading:
+        line: 7
+        quote: SCENE 02 — ANUDI ARRIVES
+      end:
+        line: 9
+        quote: Anudi walks past.
+      title: ANUDI ARRIVES
+      place: Colombo road
+      place_refers_back: false
+      place_source:
+        line: 8
+        quote: Colombo road
+      time_of_day: ''
+      length:
+        stated: false
+        low_seconds: 0
+        high_seconds: 0
+        source:
+          line: 0
+          quote: ''
+      speakers: []
+      spoken_lines: []
+    people:
+    - name: Kasun
+      aliases: []
+      role: lead
+      why: The story follows him.
+      first_seen:
+        line: 5
+        quote: Kasun
+    - name: Anudi
+      aliases: []
+      role: lead
+      why: The story follows her.
+      first_seen:
+        line: 9
+        quote: Anudi
+    skipped: []
+    doubts: []
+  input:
+    message: '<document filename="a.pdf" lines="9">
+
+      L0001 | EPISODE 01 — THE FIRST MEETING
+
+      L0002 | SCENE 01 — KASUN''S EVERYDAY LIFE
+
+      L0003 | Location: Colombo roadside
+
+      L0004 | Duration: 0.5 minutes
+
+      L0005 | Kasun smiles.
+
+      L0006 | Kasun: "මගේම රෙස්ටුරන්ට් එකක්."
+
+      L0007 | He returns to work.SCENE 02 — ANUDI ARRIVES
+
+      L0008 | Location: Colombo road
+
+      L0009 | Anudi walks past.
+
+      </document>'
+- name: 'a cast list: no story, no scenes'
+  lines:
+  - CAST & CREW NOTES
+  - 'Kasun — 28. Casting: TBC'
+  input:
+    message: '<document filename="c.pdf" lines="2">
+
+      L0001 | CAST & CREW NOTES
+
+      L0002 | Kasun — 28. Casting: TBC
+
+      </document>'
+  reply:
+    kind: cast_or_crew_list
+    kind_why: Only cast notes (L0001-L0002).
+    language_of_dialogue: ''
+    text_quality:
+      readable: true
+      problems: []
+    declared:
+      episodes: 0
+      source:
+        line: 0
+        quote: ''
+    episodes: []
+    scenes: []
+    people: []
+    skipped:
+    - first: 1
+      last: 2
+      kind: other
+    doubts: []

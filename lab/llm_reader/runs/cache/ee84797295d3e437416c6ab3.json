@@ -1,0 +1,53 @@
+{
+  "kind": "other_not_story",
+  "kind_why": "The document contains project metadata, cast and crew notes, and a draft budget, but no story action or dialogue. Its sections include “CAST & CREW NOTES” (line 11) and “BUDGET (draft)” (line 16).",
+  "language_of_dialogue": "No dialogue is present; the intended language is stated as Sinhala in “Language: Sinhala” (line 5).",
+  "text_quality": {
+    "readable": false,
+    "problems": [
+      {
+        "where": {
+          "line": 1,
+          "quote": "ෙදන්නා"
+        },
+        "what": "The Sinhala vowel sign precedes its consonant; the expected spelling is දෙන්නා."
+      }
+    ]
+  },
+  "declared": {
+    "episodes": 3,
+    "source": {
+      "line": 6,
+      "quote": "Episodes: 3"
+    }
+  },
+  "episodes": [],
+  "scenes": [],
+  "people": [],
+  "skipped": [
+    {
+      "first": 1,
+      "last": 6,
+      "kind": "title_page"
+    },
+    {
+      "first": 7,
+      "last": 10,
+      "kind": "production_notes"
+    },
+    {
+      "first": 11,
+      "last": 15,
+      "kind": "other"
+    },
+    {
+      "first": 16,
+      "last": 21,
+      "kind": "production_notes"
+    }
+  ],
+  "doubts": [
+    "Three episodes are declared, but no individual episodes or scenes are supplied.",
+    "The names in lines 12–15 occur only in casting notes; no people appear or speak in story content."
+  ]
+}

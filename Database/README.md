@@ -8,7 +8,9 @@ automated tests.
 
 | File | What it is |
 |---|---|
-| `schema_v25.sql` | **The newest schema** (everything in v24 plus `live_items()`, plan/2026-11-13d phase 3: `/live` in one query, service role only), whole. Run it once on an empty project. |
+| `schema_v26.sql` | **The newest schema** (everything in v25 plus the Scene board, plan/2026-11-14: `scene_boards`, one mannequin storyboard per scene and version in parts, one approved per scene and part; `first_frames.board_id`, never with `draft_id`), whole. Run it once on an empty project. |
+| `upgrade_v25_to_v26.sql` | Moves a project on v25 to v26 (the table, its indexes, RLS read policy and realtime; the column and its check). No backfill. Safe to re-run. **Not run on the hosted project yet: applying it is the person's.** Until it is applied the API refuses new first frames of painted shots ("Paint and approve the scene board first"). |
+| `schema_v25.sql` | Kept for reference (everything in v24 plus `live_items()`, plan/2026-11-13d phase 3: `/live` in one query, service role only), whole. Run it once on an empty project. |
 | `upgrade_v24_to_v25.sql` | Moves a project on v24 to v25 (the function). Nothing to backfill; the API reads the four tables until it exists. Safe to re-run. Not run on the hosted project yet; not verified against a local stack (Docker was not running). |
 | `schema_v24.sql` | Kept for reference (everything in v23 plus take posters, plan/2026-11-13b phase 9: `takes.poster_path` and `image/webp` allowed in the `takes` bucket), whole. Run it once on an empty project. |
 | `upgrade_v23_to_v24.sql` | Moves a project on v23 to v24 (the column, its comment, the bucket's types). No backfill: `scripts/backfill_thumbs.py --apply --posters` makes and records the missing stills. Safe to re-run. Not run on the hosted project yet. |

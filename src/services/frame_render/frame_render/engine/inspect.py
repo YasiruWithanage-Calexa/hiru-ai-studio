@@ -33,7 +33,8 @@ listed as not visible is visible."""
 
 SCHEMA: dict[str, Any] = {
     "type": "object", "additionalProperties": False,
-    "required": ["main_people", "unexpected_person", "matches", "problems", "hands_match", "hands_problem"],
+    "required": ["main_people", "unexpected_person", "matches", "problems", "hands_match", "hands_problem", "mannequin",
+                 "state_match", "state_problem"],
     "properties": {
         "main_people": {"type": "integer", "description": "How many main people are visible."},
         "unexpected_person": {"type": "boolean",
@@ -44,6 +45,12 @@ SCHEMA: dict[str, Any] = {
         "hands_match": {"type": "boolean", "description": "Each person holds what WHAT EACH PERSON HOLDS says; true "
                         "when that part is absent."},
         "hands_problem": {"type": "string", "description": "When hands_match is false: who holds what wrongly."},
+        # plan/2026-11-14: a frame painted from a Scene board panel (the hiru_ai engine asks; here they stay absent)
+        "mannequin": {"type": "boolean", "description": "A mannequin, a plastic figure or a person-shaped figure in "
+                      "one solid colour is visible. False when the LOOK FOR A LEFTOVER MANNEQUIN part is absent."},
+        "state_match": {"type": "boolean", "description": "Each person's eyes, posture and condition match PLANNED "
+                        "STATE. True when that part is absent."},
+        "state_problem": {"type": "string", "description": "When state_match is false: who differs and how."},
     },
 }
 

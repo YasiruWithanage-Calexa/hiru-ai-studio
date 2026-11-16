@@ -69,6 +69,8 @@ def build(ctx: RunContext, payload: DispatchPayload,
         return {"extracted": extracted, "text": found.text, "text_path": text_path, "rejected": False}
 
     def role(state: State) -> State:
+        if get_settings().breakdown.enabled:  # plan/2026-11-15 phase 8: the model reads what the document is
+            return model_role(state)
         roles = parts.step("document_role")
         guess = roles.detect_by_rules(filename, state["text"])
         verdict = {"role": guess.role.value, "confidence": guess.confidence, "reason": guess.reason,
@@ -79,6 +81,25 @@ def build(ctx: RunContext, payload: DispatchPayload,
                 verdict = {"role": out.role, "confidence": out.confidence, "reason": out.reason, "source": "model"}
             except Exception:
                 _logger.warning("role model failed; keeping the rules' guess", exc_info=True)
+        return chose(verdict)
+
+    def model_role(state: State) -> State:
+        """The model's role, every time: no pattern reads the document (decision D4: no rules stand in). A failed call
+        leaves the document 'other' with a warning, so a build has no story from it and stops at its gate."""
+        verdict: dict[str, Any] = {"role": "other", "confidence": 0.0, "source": "model",
+                                   "reason": "the model could not say what this document is"}
+        if llm.models_enabled():
+            try:
+                out = agents.build("role_classifier").run({"filename": filename, "text": state["text"]}, ctx)
+                verdict = {"role": out.role, "confidence": out.confidence, "reason": out.reason, "source": "model"}
+            except Exception:
+                _logger.warning("role model failed; the document stays 'other'", exc_info=True)
+        if verdict["confidence"] == 0.0:
+            jobs.event(job_id, JobEventType.WARNING, {"text": f"{filename}: {verdict['reason']}; confirm its role."},
+                       agent=rules.AGENT)
+        return chose(verdict)
+
+    def chose(verdict: dict[str, Any]) -> State:
         chosen = str(document["confirmed_role"]) if document.get("confirmed_role") else verdict["role"]
         label = parts.step("chunk_headers").ROLE_LABEL[verdict["role"]]
         progress(f"{filename} looks like a {label}", role=verdict["role"], confidence=verdict["confidence"])

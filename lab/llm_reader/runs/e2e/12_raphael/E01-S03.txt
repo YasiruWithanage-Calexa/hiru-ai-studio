@@ -1,0 +1,108 @@
+SCENE E01-S03: stage 1 finished, stage 2 finished
+Seconds: target 17.0, cap 34.0, takes 32 (must 18, cinematic 14)
+
+Logline: A small roadside mishap brings a preoccupied pedestrian face to face with the attentive food vendor who retrieves her phone.
+Approach: Grounded Sri Lankan drama: ordinary physical awkwardness becomes a kindly first encounter. Four economical setups carry continuous action; the opening master includes the phone loss, followed by retrieval, Kasun's projected L3, and the answering turn and offer. Rain and restrained location sound remain, with no score; scoped silence is treated as musical silence, preserving the scripted line. No romantic embellishment or exaggerated chase.
+Key Image: Kasun's outstretched phone bridges the space between him and Anudi's umbrella, without a handover.
+Geography: Three-wheeler anchors screen left. Anudi travels left to right on the roadside, handbag on her right shoulder, umbrella in her left hand and phone initially in her right. Kasun starts beside the vehicle and follows rightward, retrieving the phone with his right hand. Anudi finally turns left; Kasun remains screen left facing her. Stay on the same roadside side of their travel axis.
+Arc: Occupied hands and an unnoticed loss (blocks {'first': 0, 'last': 1}): Everyday distraction becomes a small vulnerability.
+Arc: An immediate helpful response (blocks {'first': 2, 'last': 3}): Brisk concern, without spectacle.
+Arc: First direct recognition (blocks {'first': 4, 'last': 4}): Alertness softens into attention.
+
+3A-1 [c01, stage 1, master, must]
+    SUMMARY: From a fixed roadside wide, Anudi passes Kasun's food three-wheeler under her umbrella, misses her handbag pocket with the phone and continues as it falls onto the road. Rain and a small landing sound accompany the action.
+    block 0 = E01-S03-B01: Anudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.
+    block 1 = E01-S03-B02: As she slips the phone into the bag, it accidentally slips from her hand and falls onto the roadside. Anudi doesn't notice and continues walking.
+    WIDE · 35mm · locked_off · Eye-level side view from the roadside · take 6 s
+    why: A stable shared frame makes the missed pocket and unnoticed fall legible without editorial trickery.
+    editor: Preserve the full fall and her continuing stride. Phone remains on the road at the end; do not extend to a new action.
+    framing: WIDE full-body composition, three-wheeler and Kasun on the left, Anudi and clear road space on the right; phone trajectory remains within frame.
+    movement: Locked-off on sticks throughout.
+    light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+    C02: Walks right under the umbrella, moves the phone toward the handbag's outer pocket, lets it slip past the pocket and continues without looking down.
+    C01: Remains beside the three-wheeler with hands free.
+
+3B-1 [c02, stage 1, master, must]
+    SUMMARY: In a medium-wide side view, Kasun notices the phone on the road, bends to retrieve it in his right hand and hurries right after Anudi; the camera tracks briefly with him through rain.
+    block 2 = E01-S03-B03: Kasun notices the phone lying on the ground. He quickly picks it up and runs after her.
+    MWS · 40mm · tracking · Slightly low side view on the same side of the travel axis · take 4 s
+    why: A short rightward track keeps the retrieval and immediate pursuit in one practical movement.
+    editor: Start with the phone on the same road patch established in A. Right hand retrieves it; do not add inspection or cleaning.
+    framing: MWS, Kasun from head to below his knees with the phone on the road included at the bottom of frame.
+    movement: One continuous short rightward track following Kasun from the retrieval into his first hurried strides.
+    light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+    C01: Notices the phone, bends, lifts it in his right hand and hurries right.
+
+3C-1 [c03, stage 1, single, must]
+    SUMMARY: An eye-level medium single shows Kasun slowing his hurried steps, holding the recovered phone and projecting L3 to alert Anudi that she has dropped it. Rain remains beneath the line.
+    block 3 = E01-S03-B04: "මිස්! මිස්! ඔයාගේ ෆෝන් එක!"
+    line L3 = E01-S03-B04: "මිස්! මිස්! ඔයාගේ ෆෝන් එක!"
+    MS · 50mm · locked_off · Three-quarter frontal at eye level, same side of travel axis · take 4 s
+    why: A steady single gives his clear practical appeal the full line without turning the pursuit into spectacle.
+    editor: Use the entire L3. Keep phone in right hand and eyeline screen right toward Anudi; no new action between this and the closing two-shot.
+    framing: MS, Kasun from waist up, right hand and phone inside the frame, looking screen right.
+    movement: Locked-off on sticks throughout.
+    light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+    C01: Slows his hurried steps and projects L3 with lips moving, holding the phone in his right hand.
+
+3D-1 [c04, stage 1, two_shot, must]
+    SUMMARY: A fixed medium-wide two-shot shows Anudi turn left under her umbrella. Kasun approaches from the left and extends the phone in his right hand, stopping the scene before she accepts it.
+    block 4 = E01-S03-B05: Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+    MWS · 40mm · locked_off · Eye-level side two-shot on established side of axis · take 4 s
+    why: Holding both people in one frame lets her turn motivate his approach and preserves the untouched space before the next scene's handover.
+    editor: Her turn must finish before the phone extends. End with phone still in Kasun's right hand, not in contact with Anudi.
+    framing: MWS two-shot with Kasun left, Anudi right, umbrella canopy and both people's hands visible.
+    movement: Locked-off on sticks throughout.
+    light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+    C02: Turns left toward Kasun and comes to a standstill, retaining umbrella and handbag.
+    C01: Approaches from the left after her turn and extends the phone in his right hand.
+
+3E-1 [c05, stage 2, reaction, should, anchor c04]
+    SUMMARY: A stationary close view holds Anudi beneath her umbrella after she has turned left. Her eyes settle toward Kasun and then dip toward the offered phone; rain remains audible.
+    block 4 = E01-S03-B05: Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+    MCU · 85mm · shallow_isolation · eye level from the same roadside side of the axis · take 4 s
+    why: Separates Anudi's first sustained attention from the practical geography of the two-shot, letting the encounter register without romantic emphasis.
+    editor: Use after the turn in c04; preserve the umbrella in her left hand and omit any handover.
+    framing: MCU of Anudi on frame right facing left, umbrella edge above her head; Kasun remains outside the image.
+    movement: Stationary shallow isolation of Anudi beneath the umbrella throughout.
+    light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+    C02: Holds her umbrella in her left hand, keeps her lips closed and brings her gaze from Kasun's face down toward the offered phone.
+
+3F-1 [c06, stage 2, insert, should, anchor c04]
+    SUMMARY: A waist-height insert isolates the phone in Kasun's extended right hand, pointing toward Anudi at screen right. His hand settles and holds; rain continues.
+    block 4 = E01-S03-B05: Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+    INSERT · 75mm · locked_off · waist height from the established roadside side · take 4 s
+    why: Makes the offered phone a visible bridge across the space between the two people, a detail the wider coverage cannot emphasize.
+    editor: Cut inside c04 only after Anudi has turned and Kasun has begun the offer; return to the two-shot or the reaction. No transfer.
+    framing: INSERT of Kasun's right forearm and phone extending from frame left into open space toward frame right; no faces.
+    movement: Locked-off on the offered phone throughout.
+    light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+    C01: Extends his right hand holding the recovered smartphone and keeps it in his grip.
+    C02: Remains still beyond the offered phone without reaching.
+
+3G-1 [c07, stage 2, insert, should, anchor c01]
+    SUMMARY: A low stationary insert shows Anudi's right hand beside her handbag pocket. The phone slips past the pocket onto the wet road as she continues rightward without pausing; a small impact is heard.
+    block 1 = E01-S03-B02: As she slips the phone into the bag, it accidentally slips from her hand and falls onto the roadside. Anudi doesn't notice and continues walking.
+    INSERT · 50mm · locked_off · low roadside angle on the handbag and ground · take 6 s
+    why: Gives the missed pocket a concrete visual punctuation and lets the audience retain the phone's location while Anudi continues unaware.
+    editor: Insert into c01 at the missed pocket, matching rightward travel. Use one phone fall only; replace rather than repeat the master's fall.
+    framing: INSERT encompassing the handbag side pocket, Anudi's right hand and the patch of roadside immediately below; face outside frame.
+    movement: Locked-off as the phone falls through the composition and Anudi continues rightward.
+    light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+    C02: Moves rightward as the smartphone slips from her right hand beside the side pocket and falls onto the roadside; she continues without pausing.
+
+Review moment 4: earns: Anudi's held reaction registers her change of attention, while the phone insert emphasizes Kasun's offer without inventing a handover.
+Review moment 1: earns: A low insert makes the missed pocket and unattended phone clear without repeating the fall.
+Review moment 2: no: The locked medium-wide already includes the full pickup and rightward follow, giving the practical kindness its necessary geography.
+Review moment 3: no: The locked single gives L3 direct, uninterrupted attention; another angle would add little to this brief interruption.
+Editor note: The intended cut is approximately 17 seconds; the four raw takes total 18 seconds including handles, not a locked final duration.
+Editor note: 3A-1 establishes the continuous walk, pocket attempt and fall; retain a clear view of the phone landing. Match its resting position to the opening of 3B-1.
+Editor note: 3B-1 carries the practical retrieval and initial pursuit. Match the phone in Kasun's right hand, his rightward direction and pace into the complete L3 performance in 3C-1.
+Editor note: 3D-1 answers the line with Anudi's turn before Kasun's approach and offer. Cut before any handover; the next scene begins with Anudi taking the phone.
+Editor note: Anudi retains her handbag on her right shoulder and umbrella in her left hand. Kasun starts standing with empty hands beside the three-wheeler; the exact initial posture and hand assignment are staging choices. Confirm wardrobe and faces against adjoining-scene references.
+Editor note: Scoped silence is interpreted as no score, not removal of the scripted line. Silent source takes can receive matching rain, traffic and practical effects in post; keep all background voices indistinct.
+Editor note: Speed ramp, freeze frame, digital punch-in and split screen are post-only options, not baked into the sources; none is required for this naturalistic cut.
+Editor note: Avoid fast pocket manipulation and bodily contact: stage the miss as a simple release, keep the retrieval readable, and leave clear space between the offered phone and Anudi. No mirrors or sharply rendered crowd are needed.
+Blend note: c05: Hold after c04's completed offer as a close to moment 4; carry the roadside rain and traffic from c04, with no dialogue or score.
+Blend note: c06: Cut into c04 as Kasun extends the phone, then return to the two-shot or c05; carry c04's rain and traffic, with no dialogue or score. Do not show a handover.
+Blend note: c07: Cut into c01 for the missed pocket and phone fall, then return to the master as Anudi continues right; carry c01's rain and traffic and use only one phone impact, with no dialogue or score.

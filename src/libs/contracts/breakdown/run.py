@@ -28,7 +28,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from contracts.breakdown import build as build_mod
-from contracts.breakdown import checks, inputs, memory
+from contracts.breakdown import checks, inputs, memory, reading
 from contracts.breakdown import series as series_mod
 from contracts.breakdown.lines import Doc
 from contracts.breakdown.schema import (
@@ -60,6 +60,10 @@ class Calls:
     repair: Callable[[str], EpisodeW]
     # plan/2026-11-12b: what the drama is (genre, tone, world, theme, premise); None = not read (the block stays empty)
     series: Callable[[str], SeriesW] | None = None
+    # plan/2026-11-15: the model reads every fact of each document first (`reading`), and the gates decide whether the
+    # build goes on. The product always gives both; None = the split's own cuts (kept for the older tests only).
+    probe: Callable[[str], reading.ProbeW] | None = None
+    read: Callable[[str], reading.ReadingW] | None = None
 
 
 @dataclass
@@ -79,6 +83,71 @@ class Result:
     sources: list[SourceMemory] = field(default_factory=list)
     failed: str = ""  # why there is no memory at all
     notes: list[str] = field(default_factory=list)  # what a person should know (a document left out, a failed call)
+    # plan/2026-11-15: the gates. `failed` holds a stop's words; `questions` are what a person must answer before the
+    # build goes on (nothing past the reading was paid for); `warnings` never hold the build.
+    questions: list[reading.Question] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+
+
+@dataclass
+class _Read:
+    """One document after the reading: its lines (a glued heading cut onto its own line) and the checked reading."""
+
+    upload: Upload
+    lines: list[str]
+    answer: reading.ReadingW | None = None
+    gates: list[reading.Gate] = field(default_factory=list)
+
+
+def read_document(u: Upload, calls: Calls, *, default_s: int, answers: dict[str, dict[str, Any]]) -> _Read:
+    """plan/2026-11-15: probe -> gates 0/1 -> read -> check -> at most one repair -> gates 2-4. A failed call raises
+    (decision D4: no rules read the document instead)."""
+    assert calls.probe is not None and calls.read is not None
+    lines = memory.clean_lines(u.text)
+    while lines and not lines[-1].strip():
+        lines.pop()
+    msg = reading.numbered(u.filename, lines)
+    first = reading.probe_gates(calls.probe(msg))
+    if reading.verdict(first) == "stop":
+        return _Read(u, lines, None, first)
+    got = calls.read(msg)
+    found = reading.check(got, lines)
+    if found:
+        got = calls.read(reading.repair_message(u.filename, lines, got, found))
+        found = reading.check(got, lines)
+    if found:
+        why = "; ".join(f.message for f in found[:3])
+        return _Read(u, lines, None, [*first, reading.Gate(
+            "stop", "2 structure", f"{u.filename} could not be read reliably: {why}.")])
+    lines, got = reading.unglue(lines, got)
+    return _Read(u, lines, got, [*first, *reading.gates(got, lines, doc=doc_key(u), default_s=default_s,
+                                                         answers=answers)])
+
+
+def doc_key(u: Upload) -> str:
+    """A document's part of a question's key: stable across builds of the same document."""
+    return u.document_id.replace("-", "")[:8]
+
+
+def apply_reading(bd: Breakdown, sources: list[SourceMemory], answers: dict[str, dict[str, Any]]) -> None:
+    """The reading's heading words, title, stated length (or a person's answer) and fact lines on the breakdown's
+    scenes, matched by their heading line in the production's numbered lines (decision D1: a range gives its top)."""
+    by_line = {sc.heading_line: sc for sc in bd.scenes}
+    for part, src in zip(memory.parts(sources), sources, strict=True):
+        if not src.reading:
+            continue
+        r = reading.ReadingW.model_validate(src.reading)
+        off = part.first - 1
+        for s in r.scenes:
+            sc = by_line.get(off + s.heading.line)
+            if sc is None:
+                continue
+            sc.heading = s.heading.quote
+            sc.title_doc = s.title
+            given = reading.seconds_answer(answers.get(
+                f"breakdown:length:{part.document_id.replace('-', '')[:8]}:{reading.tag(s)}"))
+            sc.stated_s = reading.envelope(s) or (given if given else None)
+            sc.facts = [off + n for n in reading.fact_lines(r, s)]
 
 
 def split_message(filename: str, d: Doc) -> str:
@@ -248,6 +317,35 @@ def read_series(bd: Breakdown, d: Doc, answer: Callable[[], SeriesW], say: Calla
     return []
 
 
+def reading_phase(uploads: list[Upload], calls: Calls, *, default_s: int, answers: dict[str, dict[str, Any]],
+                  workers: int, say: Callable[[str], None]) -> tuple[list[_Read], Result | None]:
+    """plan/2026-11-15: every document read and gated before anything else is paid for. -> the readings, and a Result
+    when the build must stop or wait for a person."""
+
+    def one(u: Upload) -> _Read | Exception:
+        try:
+            return read_document(u, calls, default_s=default_s, answers=answers)
+        except Exception as exc:  # D4: a failed reading stops the build, no rules read it instead
+            _logger.warning("the reading failed for %s", u.filename, exc_info=True)
+            return exc
+
+    done: list[_Read] = []
+    for u, r in zip(uploads, _pool(one, uploads, workers), strict=True):
+        if isinstance(r, Exception):
+            return done, Result(None, [], f"{u.filename} could not be read by the model ({type(r).__name__})")
+        done.append(r)
+        if r.answer is not None:
+            say(f"Read {u.filename}: {len(r.answer.episodes)} episodes, {len(r.answer.scenes)} scenes")
+    stops = [f"{r.upload.filename}: {g.message}" for r in done for g in r.gates if g.level == "stop"]
+    if stops:
+        return done, Result(None, [], " ".join(stops))
+    warnings = [f"{r.upload.filename}: {g.message}" for r in done for g in r.gates if g.level == "warn"]
+    asks = [q for r in done for g in r.gates if g.level == "needs_input" for q in g.questions]
+    if asks:
+        return done, Result(None, [], "", questions=asks, warnings=warnings)
+    return done, None
+
+
 def create(
     uploads: list[Upload],
     calls: Calls,
@@ -255,14 +353,31 @@ def create(
     production: str = "",
     workers: int = WORKERS,
     progress: Callable[[str], None] | None = None,
+    default_s: int = 60,
+    answers: dict[str, dict[str, Any]] | None = None,
 ) -> Result:
     say = progress or (lambda _: None)
     notes: list[str] = []
+    answers = answers or {}
+    warnings: list[str] = []
+    readings: dict[str, _Read] = {}
+    if calls.read is not None:
+        done, held = reading_phase(uploads, calls, default_s=default_s, answers=answers, workers=workers, say=say)
+        if held is not None:
+            return held
+        readings = {r.upload.document_id: r for r in done}
+        warnings = [f"{r.upload.filename}: {g.message}" for r in done for g in r.gates if g.level == "warn"]
 
     def read(u: Upload) -> tuple[Upload, list[str], SplitW | None, str]:
-        lines = memory.strip_furniture(memory.clean_lines(u.text))
+        r = readings.get(u.document_id)
+        # with a reading, its lines (a glued heading on its own line) and no page-furniture rule: the reading marked
+        # those lines as not story (plan/2026-11-15)
+        lines = r.lines if r is not None else memory.strip_furniture(memory.clean_lines(u.text))
         try:
-            return u, lines, calls.split(split_message(u.filename, Doc(lines))), ""
+            got = calls.split(split_message(u.filename, Doc(lines)))
+            if r is not None and r.answer is not None:
+                got = got.model_copy(update={"episodes": reading.cuts(r.answer)})  # the reading's scene cuts
+            return u, lines, got, ""
         except Exception as exc:
             _logger.warning("breakdown split failed for %s", u.filename, exc_info=True)
             return u, lines, None, type(exc).__name__
@@ -272,6 +387,7 @@ def create(
         if got is None:
             notes.append(f"{u.filename} could not be read ({why}); it is left out of the breakdown")
             continue
+        r = readings.get(u.document_id)
         sources.append(
             SourceMemory(
                 document_id=u.document_id,
@@ -279,6 +395,7 @@ def create(
                 lines=lines,
                 split=got,
                 read_from="pages" if u.read_from == "pages" else "text",
+                reading=r.answer.model_dump(mode="json") if r is not None and r.answer is not None else None,
             )
         )
         say(f"Read {u.filename}: {len(got.cards)} cards, {sum(len(e.scenes) for e in got.episodes)} scenes")
@@ -287,6 +404,7 @@ def create(
 
     split, d, questions = memory.merge(sources)
     bd = memory.stamp(build_mod.build(split, d, production), sources, questions)
+    apply_reading(bd, sources, answers)  # plan/2026-11-15: heading words, title, length and fact lines from the reading
     if not bd.scenes:
         notes.append("no scenes were found in the documents")
         return Result(bd, sources, "", notes)
@@ -296,10 +414,10 @@ def create(
     )
 
     # the series reader runs beside the continuity call (plan/2026-11-12b §3.1); it never stops the build
-    reading = None
+    series_call = None
     if calls.series is not None:
         pool = ThreadPoolExecutor(max_workers=1)
-        reading = pool.submit(contextvars.copy_context().run, calls.series, series_mod.message(sources))
+        series_call = pool.submit(contextvars.copy_context().run, calls.series, series_mod.message(sources))
         pool.shutdown(wait=False)
     try:
         cont = calls.continuity(inputs.continuity_user(bd, d)).model_dump(mode="json")
@@ -312,8 +430,8 @@ def create(
         cont = dict(EMPTY_CONTINUITY)
         notes.append(f"the story across episodes could not be read ({type(exc).__name__}): no story order or threads")
     bd.continuity = cont
-    if reading is not None:
-        notes += read_series(bd, d, reading.result, say)
+    if series_call is not None:
+        notes += read_series(bd, d, series_call.result, say)
 
     notes += _episodes(bd, d, cont, calls, groups(bd), workers, say)
     checks.run_all(bd, d)
@@ -321,7 +439,7 @@ def create(
     notes += repair(bd, d, cont, calls, failing, say)
     checks.run_all(bd, d)
     bd.findings += _unbroken(bd)
-    return Result(bd, sources, "", notes)
+    return Result(bd, sources, "", notes, warnings=warnings)
 
 
 def stage_message(bd: Breakdown, scene_id: str) -> str:

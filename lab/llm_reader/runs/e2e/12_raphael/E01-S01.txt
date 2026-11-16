@@ -1,0 +1,144 @@
+SCENE E01-S01: stage 1 finished, stage 2 finished
+Seconds: target 28.0, cap 56.0, takes 54 (must 32, cinematic 22)
+
+Logline: A modest Colombo tea seller measures his cramped livelihood against the restaurant he intends to build, then returns to work.
+Approach: Grounded Sri Lankan everyday drama: modest scale, unforced behaviour and believable early-morning daylight. No SERIES genre is supplied; the scene plays hopeful rather than ominous. Use a street-to-counter progression, then isolate Kasun only when his ambition becomes explicit. Six essential shots total 32 seconds including handles; the editor can arrive near 28 seconds without compressing L6. D03 and D04 describe later sequences, not events to import into this scene.
+Key Image: Kasun beside his cramped counter, flask in hand, looking out toward a larger world rather than down at his limitations.
+Geography: Vehicle and Kasun remain screen-left; customer approaches from screen-right and faces left. Road lies to the right. Kasun holds the flask in his left hand once preparation concludes. Customer collects the cup with his right hand from the counter, avoiding a hand-to-hand transfer. All counter angles stay on the road-facing side of the service axis.
+Arc: The working city and a carefully prepared livelihood (blocks {'first': 0, 'last': 1}): Ordinary bustle, practical pride
+Arc: An unremarkable transaction reveals warmth (blocks {'first': 2, 'last': 3}): Easy human connection
+Arc: The cramped business becomes the measure of a larger ambition (blocks {'first': 4, 'last': 6}): Clear-eyed limitation opening into hope
+Arc: The dream returns to daily effort (blocks {'first': 7, 'last': 7}): Quiet resolve
+
+1A-1 [c01, stage 1, master, must]
+    SUMMARY: A fixed wide view establishes morning Colombo traffic and distant office-bound pedestrians, with Kasun's small green food vehicle at the left edge. Engines and the waking street are heard.
+    block 0 = E01-S01-B01: Early morning in Colombo. The city is waking up. Buses, tuk-tuks, motorcycles and office workers fill the streets.
+    WIDE · 28mm · locked_off · eye-level oblique roadside view · take 4 s
+    why: The little vehicle belongs to a working city before it belongs to a dream.
+    editor: Use the central road movement as the opening; pedestrians remain distant and unfeatured.
+    framing: WIDE, road fills most of the frame and the vehicle occupies the left quarter
+    movement: locked-off on sticks
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+
+1B-1 [c02, stage 1, master, must]
+    SUMMARY: From the road side, Kasun arranges short eats, fills the flask in his left hand from a preparation vessel, and wipes the counter. Traffic continues behind the camera.
+    block 1 = E01-S01-B02: Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea flask and cleans his small counter.
+    MS · 40mm · locked_off · eye-level from road side of counter · take 6 s
+    why: An uninterrupted working frame makes care and cramped scale equally visible.
+    editor: Keep all three preparation tasks visible without fine finger choreography; a broad wipe is sufficient.
+    framing: MS of Kasun on frame-left with counter, flask and preparation implements visible at waist level
+    movement: locked-off on sticks
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Keeps the flask in his left hand; uses his right hand to arrange short eats, pour tea from the preparation vessel into the flask, set the vessel down and wipe the counter with a cloth.
+
+1C-1 [c03, stage 1, two_shot, must]
+    SUMMARY: A lateral two-shot holds the office worker approaching from the right and indicating the cup. Kasun smiles, pours tea and sets the cup forward; the worker lifts it in his right hand.
+    block 2 = E01-S01-B03: An office worker approaches and orders tea.
+    block 3 = E01-S01-B04: Kasun smiles and serves him.
+    TWO · 40mm · locked_off · eye-level lateral view across the counter · take 6 s
+    why: The shared frame makes everyday friendliness and the counter-mediated cup transfer readable without contact.
+    editor: Order is a cup-directed gesture, not invented dialogue. Show cup resting on the counter before collection; hands never meet.
+    framing: TWO, Kasun left and customer right, both faces and counter cup visible
+    movement: locked-off on sticks
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Smiles, pours from the flask in his left hand into the cup on the counter and uses his right hand to slide the cup forward before withdrawing it.
+    C04: Approaches the counter, indicates the cup with a small right-hand gesture, then lifts the served cup in his right hand.
+
+1D-1 [c04, stage 1, master, must]
+    SUMMARY: The worker leaves frame-right with tea in his right hand. Kasun turns away from the road and surveys the small counter and worn fittings, retaining the flask in his left hand.
+    block 4 = E01-S01-B05: After the customer leaves, Kasun looks at his small business. He notices the limited space and old equipment but doesn't lose hope.
+    MWS · 35mm · locked_off · eye-level oblique view into the cramped service area · take 6 s
+    why: The customer leaves open space in the frame while the vehicle's tight fittings remain around Kasun.
+    editor: Preserve the full 4.5-second departure and appraisal. Do not reduce this to a reaction unrelated to the surrounding space.
+    framing: MWS, Kasun frame-left within tight vehicle fittings and departing worker at right edge
+    movement: locked-off on sticks
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Waits as the customer leaves, then turns away from the road and surveys the counter and worn fittings with the flask in his left hand.
+    C04: Turns toward the road and walks out frame-right carrying the cup in his right hand.
+
+1E-1 [c05, stage 1, single, must]
+    SUMMARY: An eye-level close single follows Kasun's gaze toward the busy road. He quietly affirms his wish to establish his own restaurant in L6; the roadside remains audible.
+    block 5 = E01-S01-B06: He looks toward the busy road and quietly speaks to himself.
+    block 6 = E01-S01-B07: "දවසක මගේම රෙස්ටුරන්ට් එකක් පටන් ගන්නවා."
+    line L6 = E01-S01-B07: "දවසක මගේම රෙස්ටුරන්ට් එකක් පටන් ගන්නවා."
+    MCU · 65mm · locked_off · eye-level three-quarter profile toward the road · take 6 s
+    why: The first intimate single gives the ambition to Kasun's face without magnifying the declaration through camera movement.
+    editor: L6 runs intact from 2-4.7s, after the 1.5-second outward turn. Quiet delivery, not a public announcement.
+    framing: MCU, Kasun fills the left two-thirds with looking room to the right
+    movement: locked-off on sticks
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Turns his head toward the road and quietly performs L6 with lips moving; keeps the flask in his left hand below frame.
+
+1B-2 [c06, stage 1, master, must]
+    SUMMARY: Back in the medium counter view, Kasun smiles and turns inward to continue tending the short eats with his right hand, keeping the flask in his left. Morning traffic carries on.
+    block 7 = E01-S01-B08: He smiles and continues working.
+    MS · 40mm · locked_off · eye-level from road side of counter · take 4 s
+    why: Returning to the preparation frame connects aspiration directly to continued effort.
+    editor: End on resumed work, not a held heroic portrait; flask stays left throughout.
+    framing: MS of Kasun on frame-left with counter and flask visible at waist level
+    movement: locked-off on sticks
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Smiles, turns away into the vehicle and resumes tending the short eats with his right hand while keeping the flask in his left hand.
+
+1F-1 [c07, stage 2, reaction, should, anchor c05]
+    SUMMARY: In a tight profile from the road-facing side, Kasun holds his gaze toward the road after L6. The camera inches closer while morning traffic continues off frame.
+    block 6 = E01-S01-B07: "දවසක මගේම රෙස්ටුරන්ට් එකක් පටන් ගන්නවා."
+    CU · 85mm · slow_creep · Eye-level road-facing profile, remaining on the service side of the axis · take 4 s
+    why: Lets the resolve following L6 register in a tighter profile without replacing or interrupting the complete performance in the essential single.
+    editor: Use after L6 has finished, before the return to work; lips remain closed throughout.
+    framing: CU, Kasun at left with clear looking room toward frame-right
+    movement: A very slow straight creep toward the profile throughout the take.
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Holds his roadward gaze with lips closed and chin level; the flask remains in his left hand below frame.
+
+1G-1 [c08, stage 2, insert, should, anchor c04]
+    SUMMARY: A close view through the edge of the food vehicle shows Kasun's left hand holding the old flask beside the narrow counter and short eats. His hand settles while the morning road remains audible.
+    block 4 = E01-S01-B05: After the customer leaves, Kasun looks at his small business. He notices the limited space and old equipment but doesn't lose hope.
+    INSERT · 65mm close focus · foreground_framing · Oblique downward view from the road-facing side · take 8 s
+    why: Gives the equipment and limited working surface their own visual weight where the essential master can only show their relation to Kasun.
+    editor: Cut into c04 only after the customer has cleared frame and Kasun has turned inward; retain the flask in his left hand. Use only the portion needed in the edit.
+    framing: INSERT of left hand and flask beside the narrow counter, vehicle fitting soft at the near edge
+    movement: Locked frame through a soft foreground vehicle edge.
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Keeps the tea flask in his left hand beside the narrow working surface; only his hand and a section of shirt are visible.
+
+1H-1 [c09, stage 2, clean_exit, nice, anchor c06]
+    SUMMARY: From the road-facing side, a gently rising wide view leaves Kasun small beside his food vehicle as he resumes tending the counter, flask still in his left hand. Ordinary street traffic continues.
+    block 7 = E01-S01-B08: He smiles and continues working.
+    WIDE · 32mm · crane · Road-facing oblique view, rising gently above eye level · take 6 s
+    why: Returns the private ambition to the scale of the working street, leaving effort rather than a posed face as the scene's last image.
+    editor: Extend c06 after Kasun turns inward. Begin with his back already toward camera; no repetition of the smile or turn.
+    framing: WIDE with vehicle and Kasun on the left and the road opening to the right
+    movement: One gentle continuous crane rise, keeping the food vehicle on frame-left.
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Continues tending the counter with his right hand while keeping the flask in his left.
+
+1I-1 [c10, stage 2, insert, should, anchor c03]
+    SUMMARY: At counter height, the office worker's right hand closes around the tea cup and lifts it from the counter. Kasun's left hand and flask remain at the left edge as street ambience continues.
+    block 3 = E01-S01-B04: Kasun smiles and serves him.
+    INSERT · 85mm close focus · shallow_isolation · Counter-height oblique view from the road-facing side · take 4 s
+    why: Makes the small act of service tangible through the cup's departure, adding a tactile punctuation absent from the essential two-shot.
+    editor: Replace only the cup collection inside c03. Cup starts on counter; worker's right hand collects it. No hand-to-hand transfer.
+    framing: INSERT, tea cup central with worker's right hand entering from frame-right and Kasun's left hand and flask at far left
+    movement: Locked-off shallow isolation of the cup and collecting hand.
+    light: Early morning sunlight enters from road-right, with the vehicle roof shading the counter and warm reflected daylight lifting the faces.
+    C01: Keeps the flask in his left hand, visible at the left edge; his right hand remains clear of the cup.
+    C04: Collects the tea cup from the counter with his right hand and retains it.
+
+Review moment 1: no: The locked roadside wide already locates the city and vehicle together; another establishment would repeat that information.
+Review moment 2: no: The preparation master holds the economical work in one continuous gesture; an additional detail would interrupt its practical rhythm.
+Review moment 3: earns: The cup insert gives the routine service tactile emphasis while preserving the counter-mediated collection.
+Review moment 4: earns: The flask and narrow-counter insert makes the constraints of Kasun's equipment tangible during his assessment.
+Review moment 5: earns: A close, silent profile after L6 holds Kasun's conviction without breaking up the complete line.
+Review moment 6: earns: The gentle crane rise places his return to work within the larger street and gives the ending room to breathe.
+Editor note: The six must clips are the intended cut, not a locked edit: roadside master for context, counter master for preparation and return, two-shot for the transaction, medium-wide for departure and appraisal, and the single for the turn and L6. The 32 seconds include handles; target an approximately 28-second scene while keeping L6 and the 4.5-second departure/appraisal intact.
+Editor note: Kasun starts behind the counter at frame-left; the office worker starts off to the road side at frame-right and enters at b2. Preserve the service axis and the same modest green vehicle and early wardrobe throughout.
+Editor note: For the cut from the two-shot to the departure master, match the cup in the worker's right hand and the flask in Kasun's left. The cup rests on the counter between their separate hand movements; do not construct a direct hand-to-hand transfer. Match Kasun's facing-away appraisal into the roadward turn, then match his roadward gaze into the return to work.
+Editor note: The empty cup, preparation vessel and cloth are implied practical objects; the food stays on the counter. The customer's order has no supplied wording and is conveyed by gesture, with no invented dialogue.
+Editor note: Silent non-dialogue source clips prevent invented speech. Build continuous morning traffic, footsteps, pour and counter sounds as post sound where needed; keep L6 quiet, intact and unobscured.
+Editor note: Speed ramp, freeze frame, digital punch-in and split screen are post-only options, not intended effects here. The locked source shots are clean if post later elects to use them; do not generate these techniques in camera.
+Editor note: Avoid mirrors, fast finger detail, body contact, sharply featured crowds and decorative inserts. Background pedestrians remain distant and indistinct; the scripted traffic and ordinary activity remain present.
+Blend note: c07 — After L6 in c05, hold the silent roadward profile over the tail of Kasun's scene audio and the morning traffic; do not interrupt L6.
+Blend note: c08 — Cut into c04 after the worker has left and Kasun has turned inward, then return to c04; carry c04's road ambience underneath.
+Blend note: c09 — After c06, extend the ending with the rising wide view over c06's traffic and counter-work ambience; no dialogue.
+Blend note: c10 — Cut into c03 as the worker collects the cup, then return to the two-shot; carry c03's exchange and street ambience underneath.

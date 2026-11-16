@@ -479,6 +479,19 @@ def frame_stage(row: Mapping[str, Any]) -> FrameStage:
     return FrameStage.DRAFT if row.get("stage") == FrameStage.DRAFT else FrameStage.FINAL
 
 
+# The image quality a person may pick for a first frame (2026-11-14): low or medium, never high for now. Not picked =
+# the configured final quality (`OPENAI__IMAGE_QUALITY`, medium).
+FrameQuality = Literal["low", "medium"]
+FRAME_QUALITIES: tuple[str, ...] = ("low", "medium")
+
+
+def frame_quality(state: Mapping[str, Any]) -> str:
+    """The quality a job's state names for its first frames, or "" (the configured default). Anything else, high
+    included, is ignored."""
+    quality = str(state.get("quality") or "")
+    return quality if quality in FRAME_QUALITIES else ""
+
+
 # The label the draft goes by when it is attached to a final. The prompt keys on its start, as it does for sheets.
 DRAFT_LABEL = "the approved draft of this frame"
 

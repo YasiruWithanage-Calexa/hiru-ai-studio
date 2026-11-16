@@ -1,0 +1,2930 @@
+{
+ "E01-S01": {
+  "ids": {
+   "C01": {
+    "name": "Kasun",
+    "kind": "person"
+   },
+   "C04": {
+    "name": "office worker",
+    "kind": "person"
+   },
+   "L02": {
+    "name": "Colombo roadside",
+    "kind": "place"
+   },
+   "L03": {
+    "name": "Food three-wheeler",
+    "kind": "place"
+   },
+   "P01": {
+    "name": "flask",
+    "kind": "thing"
+   },
+   "P14": {
+    "name": "short eats",
+    "kind": "thing"
+   },
+   "P15": {
+    "name": "small counter",
+    "kind": "thing"
+   },
+   "P16": {
+    "name": "tea cup",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E01-S01",
+   "heading": "SCENE 01 — KASUN'S EVERYDAY LIFE",
+   "title": "KASUN'S EVERYDAY LIFE",
+   "summary": "Kasun serves a morning customer at his modest food vehicle, then privately expresses his ambition to own a restaurant.",
+   "purpose": "Establish Kasun's livelihood, limited resources and determination before his encounter with Anudi.",
+   "purpose_source": "inferred",
+   "before_on_page": {
+    "empty": "first scene"
+   },
+   "after_on_page": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 — ANUDI ARRIVES"
+   },
+   "time": {
+    "story_order": 1,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": "Early morning; calendar day unspecified.",
+    "kind": "normal",
+    "anchor": null,
+    "source": "script"
+   },
+   "before_in_story": {
+    "empty": "first in story order"
+   },
+   "after_in_story": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 — ANUDI ARRIVES",
+    "ends_with": "Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.",
+    "opens_with": "A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.",
+    "people_at_end": [
+     "Anudi",
+     "driver"
+    ]
+   },
+   "threads": [
+    {
+     "kind": "setup_payoff",
+     "subject": "Kasun",
+     "summary": "The restaurant ambition is realized as KASUN'S Restaurant.",
+     "source": "script",
+     "earlier": [],
+     "this_scene": [
+      "Kasun voices his ambition despite the limitations of Food three-wheeler."
+     ],
+     "later": [
+      {
+       "scene": "E03-S05",
+       "note": "Kasun stands at KASUN'S Restaurant; Anudi explicitly recognizes the fulfilled dream."
+      }
+     ]
+    }
+   ],
+   "irony": {
+    "empty": "none stated"
+   },
+   "knowledge": {
+    "empty": "none stated"
+   },
+   "looks": [
+    {
+     "person": "Kasun",
+     "kind": "wardrobe",
+     "note": "D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at KASUN'S Restaurant. Earlier individual outfits are unspecified.",
+     "source": "script"
+    }
+   ],
+   "relationships": {
+    "empty": "none stated"
+   }
+  },
+  "B_people": [
+   {
+    "id": "C01",
+    "name": "Kasun",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "wardrobe": {
+      "value": "His clothing gradually becomes more polished as the business grows.",
+      "source": "script"
+     },
+     "appearance": {
+      "value": "DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "presence": "on_screen",
+    "wants": "Run his business and eventually expand into a restaurant.",
+    "feeling_start": "Focused on the morning routine.",
+    "feeling_end": "Hopeful despite his limitations.",
+    "source": "inferred"
+   },
+   {
+    "id": "C04",
+    "name": "office worker",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "An office worker approaches and orders tea.\nKasun smiles and serves him.\nAfter the customer leaves, Kasun looks at his small business. He notices the limited space",
+      "source": "script"
+     },
+     "details": {
+      "value": "An office worker approaches and orders tea.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Buy tea.",
+    "feeling_start": "Businesslike.",
+    "feeling_end": "Ready to continue on his way.",
+    "source": "inferred"
+   }
+  ],
+  "C_place": {
+   "id": "L03",
+   "name": "Food three-wheeler",
+   "kind": "place",
+   "place_kind": "vehicle",
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    },
+    "details": {
+     "value": "Kasun's three-wheeler remains the same vehicle.",
+     "source": "script"
+    },
+    "look": {
+     "value": "His early food business remains small and humble.",
+     "source": "script"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "L03",
+    "name": "Food three-wheeler",
+    "kind": "place",
+    "place_kind": "vehicle",
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "Kasun's three-wheeler remains the same vehicle.",
+      "source": "script"
+     },
+     "look": {
+      "value": "His early food business remains small and humble.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "script"
+   },
+   {
+    "id": "P14",
+    "name": "short eats",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     }
+    },
+    "role": "used",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "script"
+   },
+   {
+    "id": "P01",
+    "name": "flask",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea\nflask and cleans his small counter.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "script"
+   },
+   {
+    "id": "P15",
+    "name": "small counter",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea\nflask and cleans his small counter.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "script"
+   },
+   {
+    "id": "P16",
+    "name": "tea cup",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Tea cup: Serving the ordered tea requires a drinking vessel.",
+      "source": "inferred"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "inferred"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E01-S01-B01",
+    "kind": "action",
+    "text": "Early morning in Colombo. The city is waking up. Buses, tuk-tuks, motorcycles and office workers fill the streets.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Establish the working city's morning rhythm.",
+    "delivery_hint": "Observe the street bustle without making it feel staged.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B01-e1",
+      "actors": [],
+      "things": [],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Morning traffic and pedestrian activity establish the surroundings.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B02",
+    "kind": "action",
+    "text": "Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea flask and cleans his small counter.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Introduce Kasun through practical care for his small operation.",
+    "delivery_hint": "Keep the preparation economical and familiar.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B02-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "L03",
+       "P14",
+       "P01",
+       "P15"
+      ],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "Kasun gets the food display, tea supply and serving surface ready.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B03",
+    "kind": "action",
+    "text": "An office worker approaches and orders tea.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Introduce an ordinary customer transaction.",
+    "delivery_hint": "Keep the order routine; no particular wording is supplied.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B03-e1",
+      "actors": [
+       "C04"
+      ],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "A worker comes to the stall to purchase tea.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B04",
+    "kind": "action",
+    "text": "Kasun smiles and serves him.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "tea cup P16",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Show Kasun's welcoming manner.",
+    "delivery_hint": "Let the friendliness remain easy and unforced.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B04-e1",
+      "actors": [
+       "C01",
+       "C04"
+      ],
+      "things": [
+       "P15",
+       "P16"
+      ],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "Kasun serves the customer's tea with a friendly expression.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B05",
+    "kind": "action",
+    "text": "After the customer leaves, Kasun looks at his small business. He notices the limited space and old equipment but doesn't lose hope.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Contrast the business's limitations with Kasun's resilience.",
+    "delivery_hint": "Hold his appraisal without turning it into self-pity.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B05-e1",
+      "actors": [
+       "C04"
+      ],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "The customer departs.",
+      "function": "texture"
+     },
+     {
+      "id": "E01-S01-B05-e2",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "L03"
+      ],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "Kasun surveys the cramped operation and its worn fittings.",
+      "function": "reveal"
+     },
+     {
+      "id": "E01-S01-B05-e3",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": false,
+      "change": "His awareness of the limitations does not extinguish his optimism.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B06",
+    "kind": "action",
+    "text": "He looks toward the busy road and quietly speaks to himself.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Prepare a private expression of ambition.",
+    "delivery_hint": "Shift his attention outward while keeping the moment intimate.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B06-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "Kasun turns his gaze toward the passing traffic before speaking.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B07",
+    "kind": "dialogue",
+    "text": "\"දවසක මගේම රෙස්ටුරන්ට් එකක් පටන් ගන්නවා.\"",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Affirm his ambition to establish his own restaurant.",
+    "delivery_hint": "Quiet conviction rather than a grand declaration.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B07-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L03",
+      "speech": true,
+      "visible": true,
+      "change": "His restaurant ambition becomes explicit.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S01-B08",
+    "kind": "action",
+    "text": "He smiles and continues working.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Return aspiration to everyday effort.",
+    "delivery_hint": "A small smile is enough before the work resumes.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S01-B08-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "L03"
+      ],
+      "spot": "L03",
+      "speech": false,
+      "visible": true,
+      "change": "Kasun returns to his tasks with renewed warmth.",
+      "function": "texture"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "ordinary",
+    "hopeful",
+    "modest"
+   ],
+   "turns": [
+    "E01-S01-B07"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D01",
+    "about": "other",
+    "applies": "general",
+    "text": "Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments\nand emotionally grounded performances."
+   },
+   {
+    "id": "D02",
+    "about": "editing",
+    "applies": "general",
+    "text": "Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic\naction."
+   },
+   {
+    "id": "D03",
+    "about": "editing",
+    "applies": "scoped",
+    "text": "A romantic montage follows:\nAnudi visits Kasun after work.\nKasun prepares her favourite tea.\nThey spend time talking and laughing.\nAnudi helps him arrange food containers.\nKasun walks with her to her car.\nThey exchange smiles before saying goodbye."
+   },
+   {
+    "id": "D04",
+    "about": "editing",
+    "applies": "scoped",
+    "text": "A sequence of connected moments shows his struggle.\nHe visits a bank and discusses a business loan.\nHe sits with a potential investor and explains his business plan.\nHe makes phone calls to friends asking for financial support.\nHe reviews his business documents and calculations late at night.\nEach attempt ends in disappointment.\nThe bank cannot offer the required support.\nThe investor doesn't believe the small business can handle such a large order.\nHis friends are unable to help."
+   },
+   {
+    "id": "D09",
+    "about": "other",
+    "applies": "general",
+    "text": "Kasun maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D10",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D11",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi's father maintains the same appearance throughout."
+   },
+   {
+    "id": "D12",
+    "about": "other",
+    "applies": "scoped",
+    "text": "Kasun's three-wheeler remains the same vehicle."
+   },
+   {
+    "id": "D13",
+    "about": "other",
+    "applies": "scoped",
+    "text": "His early food business remains small and humble."
+   },
+   {
+    "id": "D14",
+    "about": "other",
+    "applies": "general",
+    "text": "His clothing gradually becomes more polished as the business grows."
+   },
+   {
+    "id": "D16",
+    "about": "other",
+    "applies": "general",
+    "text": "Maintain authentic Colombo streets, vehicles, homes and environments."
+   },
+   {
+    "id": "D17",
+    "about": "action",
+    "applies": "general",
+    "text": "Keep performances natural and avoid exaggerated melodrama."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 28,
+   "spoken_seconds": 2.7
+  },
+  "I_open": [
+   "episode call: Kasun ends the scene with Food three-wheeler; the stager's last state has Kasun holding 'tea flask'",
+   "episode call: Kasun ends the scene with short eats; the stager's last state has Kasun holding 'tea flask'",
+   "episode call: Kasun ends the scene with small counter; the stager's last state has Kasun holding 'tea flask'",
+   "episode call: Kasun ends the scene with tea cup; the stager's last state has Kasun holding 'tea flask'"
+  ],
+  "stage": {
+   "zones": [
+    "counter",
+    "road"
+   ],
+   "not_placed": {
+    "Kasun": "no position before block 1",
+    "office worker": "no position before block 2"
+   },
+   "people": {
+    "C01": {
+     "in": {},
+     "out": {
+      "zone": "counter",
+      "facing": "away",
+      "frame_side": "left",
+      "holding": "tea flask",
+      "posture": "standing"
+     }
+    },
+    "C04": {
+     "in": {},
+     "out": {
+      "zone": "off",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "tea",
+      "posture": "standing"
+     }
+    }
+   },
+   "changes_at": {
+    "E01-S01-B02": [
+     {
+      "person": "Kasun",
+      "zone": "counter",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "tea flask",
+      "posture": "standing"
+     }
+    ],
+    "E01-S01-B03": [
+     {
+      "person": "office worker",
+      "zone": "counter",
+      "facing": "left",
+      "frame_side": "right",
+      "posture": "standing"
+     }
+    ],
+    "E01-S01-B04": [
+     {
+      "person": "office worker",
+      "zone": "counter",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "tea",
+      "posture": "standing"
+     }
+    ],
+    "E01-S01-B05": [
+     {
+      "person": "office worker",
+      "zone": "off",
+      "holding": "tea"
+     },
+     {
+      "person": "Kasun",
+      "zone": "counter",
+      "facing": "away",
+      "frame_side": "left",
+      "holding": "tea flask",
+      "posture": "standing"
+     }
+    ],
+    "E01-S01-B06": [
+     {
+      "person": "Kasun",
+      "zone": "counter",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "tea flask",
+      "posture": "standing"
+     }
+    ],
+    "E01-S01-B08": [
+     {
+      "person": "Kasun",
+      "zone": "counter",
+      "facing": "away",
+      "frame_side": "left",
+      "holding": "tea flask",
+      "posture": "standing"
+     }
+    ]
+   },
+   "props": [
+    {
+     "block": 1,
+     "prop": "short eats",
+     "where": "on the three-wheeler counter",
+     "state": "arranged"
+    }
+   ]
+  }
+ },
+ "E01-S02": {
+  "ids": {
+   "C02": {
+    "name": "Anudi",
+    "kind": "person"
+   },
+   "C05": {
+    "name": "driver",
+    "kind": "person"
+   },
+   "L02": {
+    "name": "Colombo roadside",
+    "kind": "place"
+   },
+   "L03": {
+    "name": "Food three-wheeler",
+    "kind": "place"
+   },
+   "L04": {
+    "name": "Family car",
+    "kind": "place"
+   },
+   "P02": {
+    "name": "smartphone",
+    "kind": "thing"
+   },
+   "P03": {
+    "name": "handbag",
+    "kind": "thing"
+   },
+   "P04": {
+    "name": "umbrella",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E01-S02",
+   "heading": "SCENE 02 — ANUDI ARRIVES",
+   "title": "ANUDI ARRIVES",
+   "summary": "Anudi leaves the family car near an office building. Rain starts as she continues past Kasun's food vehicle.",
+   "purpose": "Bring Anudi into Kasun's surroundings and establish the belongings involved in their encounter.",
+   "purpose_source": "inferred",
+   "before_on_page": {
+    "id": "E01-S01",
+    "heading": "SCENE 01 — KASUN'S EVERYDAY LIFE"
+   },
+   "after_on_page": {
+    "id": "E01-S03",
+    "heading": "SCENE 03 — THE UNEXPECTED ENCOUNTER"
+   },
+   "time": {
+    "story_order": 2,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": {
+     "empty": "none"
+    },
+    "kind": "normal",
+    "anchor": null,
+    "source": "script"
+   },
+   "before_in_story": {
+    "id": "E01-S01",
+    "heading": "SCENE 01 — KASUN'S EVERYDAY LIFE",
+    "ends_with": "He smiles and continues working.",
+    "opens_with": "Early morning in Colombo. The city is waking up. Buses, tuk-tuks, motorcycles and office workers fill the streets.",
+    "people_at_end": [
+     "Kasun",
+     "office worker"
+    ]
+   },
+   "after_in_story": {
+    "id": "E01-S03",
+    "heading": "SCENE 03 — THE UNEXPECTED ENCOUNTER",
+    "ends_with": "Anudi hears him and turns around. Kasun approaches her, holding out the phone.",
+    "opens_with": "Anudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.",
+    "people_at_end": [
+     "Anudi",
+     "Kasun"
+    ]
+   },
+   "threads": [
+    {
+     "kind": "journey",
+     "subject": "smartphone",
+     "summary": "Anudi carries smartphone, loses it unnoticed, and receives it back from Kasun.",
+     "source": "script",
+     "earlier": [],
+     "this_scene": [
+      "With Anudi in Family car before she gets out."
+     ],
+     "later": [
+      {
+       "scene": "E01-S03",
+       "note": "Falls beside Food three-wheeler; Kasun picks it up and offers it to Anudi."
+      },
+      {
+       "scene": "E01-S04",
+       "note": "Anudi takes it back and subsequently receives Father's call."
+      }
+     ]
+    },
+    {
+     "kind": "journey",
+     "subject": "handbag",
+     "summary": "handbag remains with Anudi from leaving Family car to the encounter beside Food three-wheeler.",
+     "source": "script",
+     "earlier": [],
+     "this_scene": [
+      "Anudi carries handbag out of Family car."
+     ],
+     "later": [
+      {
+       "scene": "E01-S03",
+       "note": "Anudi attempts to put smartphone in handbag."
+      }
+     ]
+    },
+    {
+     "kind": "journey",
+     "subject": "umbrella",
+     "summary": "Anudi carries and opens umbrella, retaining it while passing Food three-wheeler.",
+     "source": "script",
+     "earlier": [],
+     "this_scene": [
+      "Anudi carries umbrella from Family car and opens it in the rain."
+     ],
+     "later": [
+      {
+       "scene": "E01-S03",
+       "note": "Still held by Anudi beside Food three-wheeler."
+      }
+     ]
+    }
+   ],
+   "irony": {
+    "empty": "none stated"
+   },
+   "knowledge": {
+    "empty": "none stated"
+   },
+   "looks": {
+    "empty": "no lasting condition changes here"
+   },
+   "relationships": {
+    "empty": "none stated"
+   }
+  },
+  "B_people": [
+   {
+    "id": "C02",
+    "name": "Anudi",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "Anudi sits in the back seat, looking at her smartphone.",
+      "source": "script"
+     },
+     "appearance": {
+      "value": "Anudi maintains the same facial appearance, hairstyle and body type throughout.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Reach the nearby building.",
+    "feeling_start": "Absorbed in her phone.",
+    "feeling_end": "Occupied with getting through the rain.",
+    "source": "inferred"
+   },
+   {
+    "id": "C05",
+    "name": "driver",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "The driver stops near an office building.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Drop Anudi near her destination.",
+    "feeling_start": "Attentive to driving.",
+    "feeling_end": "Task completed.",
+    "source": "inferred"
+   }
+  ],
+  "C_place": {
+   "id": "L04",
+   "name": "Family car",
+   "kind": "place",
+   "place_kind": "vehicle",
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    },
+    "look": {
+     "value": "Location: Colombo road – Family car and roadside Duration: 0.38 minutes A comfortable family car moves through Colombo traffic.",
+     "source": "script"
+    },
+    "details": {
+     "value": "Anudi sits in the back seat, looking at her smartphone.",
+     "source": "script"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "L04",
+    "name": "Family car",
+    "kind": "place",
+    "place_kind": "vehicle",
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "look": {
+      "value": "Location: Colombo road – Family car and roadside Duration: 0.38 minutes A comfortable family car moves through Colombo traffic.",
+      "source": "script"
+     },
+     "details": {
+      "value": "Anudi sits in the back seat, looking at her smartphone.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "driver",
+    "holder_end": "driver",
+    "source": "script"
+   },
+   {
+    "id": "P02",
+    "name": "smartphone",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Anudi",
+    "holder_end": "Anudi",
+    "source": "script"
+   },
+   {
+    "id": "P03",
+    "name": "handbag",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Anudi",
+    "holder_end": "Anudi",
+    "source": "script"
+   },
+   {
+    "id": "P04",
+    "name": "umbrella",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "Anudi gets out, carrying her handbag and umbrella.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Anudi",
+    "holder_end": "Anudi",
+    "source": "script"
+   },
+   {
+    "id": "L03",
+    "name": "Food three-wheeler",
+    "kind": "place",
+    "place_kind": "vehicle",
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "Kasun's three-wheeler remains the same vehicle.",
+      "source": "script"
+     },
+     "look": {
+      "value": "His early food business remains small and humble.",
+      "source": "script"
+     }
+    },
+    "role": "dressing",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "inferred"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E01-S02-B01",
+    "kind": "action",
+    "text": "A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Introduce Anudi within her comfortable daily routine.",
+    "delivery_hint": "Keep her attention naturally on the screen.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B01-e1",
+      "actors": [
+       "C02",
+       "C05"
+      ],
+      "things": [
+       "L04",
+       "P02"
+      ],
+      "spot": "L04",
+      "speech": false,
+      "visible": true,
+      "change": "The car travels through the city while Anudi uses her phone in the rear seat.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B02",
+    "kind": "action",
+    "text": "The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Move Anudi from the car onto the roadside.",
+    "delivery_hint": "Treat her acknowledgment of the driver as a passing courtesy; no exact words are supplied.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B02-e1",
+      "actors": [
+       "C05"
+      ],
+      "things": [
+       "L04"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "The driver brings the car to a stop near the office.",
+      "function": "setup"
+     },
+     {
+      "id": "E01-S02-B02-e2",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P03",
+       "P04",
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi exits with her belongings, acknowledges the driver and heads toward the building.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S02-B03",
+    "kind": "action",
+    "text": "Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Use the weather to bring Anudi past the food vehicle with her hands occupied.",
+    "delivery_hint": "Maintain a continuous walking action as she opens the umbrella.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S02-B03-e1",
+      "actors": [],
+      "things": [],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Rain starts.",
+      "function": "turn"
+     },
+     {
+      "id": "E01-S02-B03-e2",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P04",
+       "P03",
+       "P02",
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi raises her umbrella and walks past Kasun's vehicle.",
+      "function": "setup"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "everyday",
+    "transitional",
+    "rainy"
+   ],
+   "turns": [
+    "E01-S02-B03"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D01",
+    "about": "other",
+    "applies": "general",
+    "text": "Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments\nand emotionally grounded performances."
+   },
+   {
+    "id": "D02",
+    "about": "editing",
+    "applies": "general",
+    "text": "Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic\naction."
+   },
+   {
+    "id": "D09",
+    "about": "other",
+    "applies": "general",
+    "text": "Kasun maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D10",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D11",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi's father maintains the same appearance throughout."
+   },
+   {
+    "id": "D14",
+    "about": "other",
+    "applies": "general",
+    "text": "His clothing gradually becomes more polished as the business grows."
+   },
+   {
+    "id": "D16",
+    "about": "other",
+    "applies": "general",
+    "text": "Maintain authentic Colombo streets, vehicles, homes and environments."
+   },
+   {
+    "id": "D17",
+    "about": "action",
+    "applies": "general",
+    "text": "Keep performances natural and avoid exaggerated melodrama."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 23,
+   "spoken_seconds": 0.0
+  },
+  "I_open": {
+   "empty": "no open question"
+  },
+  "stage": {
+   "zones": [
+    "back seat",
+    "driver's seat",
+    "roadside"
+   ],
+   "not_placed": {},
+   "people": {
+    "C05": {
+     "in": {
+      "zone": "driver's seat",
+      "posture": "sitting"
+     },
+     "out": {
+      "zone": "driver's seat",
+      "posture": "sitting"
+     }
+    },
+    "C02": {
+     "in": {
+      "zone": "back seat",
+      "holding": "smartphone",
+      "posture": "sitting"
+     },
+     "out": {
+      "zone": "roadside",
+      "holding": "smartphone, handbag, open umbrella",
+      "posture": "walking"
+     }
+    }
+   },
+   "changes_at": {
+    "E01-S02-B01": [
+     {
+      "person": "Anudi",
+      "zone": "back seat",
+      "holding": "smartphone",
+      "posture": "sitting"
+     },
+     {
+      "person": "driver",
+      "zone": "driver's seat",
+      "posture": "sitting"
+     }
+    ],
+    "E01-S02-B02": [
+     {
+      "person": "Anudi",
+      "zone": "roadside",
+      "holding": "smartphone, handbag, umbrella",
+      "posture": "walking"
+     }
+    ],
+    "E01-S02-B03": [
+     {
+      "person": "Anudi",
+      "zone": "roadside",
+      "holding": "smartphone, handbag, open umbrella"
+     }
+    ]
+   },
+   "props": []
+  }
+ },
+ "E01-S03": {
+  "ids": {
+   "C01": {
+    "name": "Kasun",
+    "kind": "person"
+   },
+   "C02": {
+    "name": "Anudi",
+    "kind": "person"
+   },
+   "L02": {
+    "name": "Colombo roadside",
+    "kind": "place"
+   },
+   "L03": {
+    "name": "Food three-wheeler",
+    "kind": "place"
+   },
+   "P02": {
+    "name": "smartphone",
+    "kind": "thing"
+   },
+   "P03": {
+    "name": "handbag",
+    "kind": "thing"
+   },
+   "P04": {
+    "name": "umbrella",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E01-S03",
+   "heading": "SCENE 03 — THE UNEXPECTED ENCOUNTER",
+   "title": "THE UNEXPECTED ENCOUNTER",
+   "summary": "Anudi drops her phone without noticing. Kasun retrieves it, calls after her and offers it back.",
+   "purpose": "Create their first direct contact through Kasun's helpful response.",
+   "purpose_source": "inferred",
+   "before_on_page": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 — ANUDI ARRIVES"
+   },
+   "after_on_page": {
+    "id": "E01-S04",
+    "heading": "SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING"
+   },
+   "time": {
+    "story_order": 3,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": "Continues E01-S02.",
+    "kind": "normal",
+    "anchor": "E01-S02",
+    "source": "script"
+   },
+   "before_in_story": {
+    "id": "E01-S02",
+    "heading": "SCENE 02 — ANUDI ARRIVES",
+    "ends_with": "Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.",
+    "opens_with": "A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.",
+    "people_at_end": [
+     "Anudi",
+     "driver"
+    ]
+   },
+   "after_in_story": {
+    "id": "E01-S04",
+    "heading": "SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING",
+    "ends_with": "Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else.",
+    "opens_with": "Anudi takes her phone from Kasun.",
+    "people_at_end": [
+     "Anudi",
+     "Kasun"
+    ]
+   },
+   "threads": [
+    {
+     "kind": "journey",
+     "subject": "smartphone",
+     "summary": "Anudi carries smartphone, loses it unnoticed, and receives it back from Kasun.",
+     "source": "script",
+     "earlier": [
+      {
+       "scene": "E01-S02",
+       "note": "With Anudi in Family car before she gets out."
+      }
+     ],
+     "this_scene": [
+      "Falls beside Food three-wheeler; Kasun picks it up and offers it to Anudi."
+     ],
+     "later": [
+      {
+       "scene": "E01-S04",
+       "note": "Anudi takes it back and subsequently receives Father's call."
+      }
+     ]
+    },
+    {
+     "kind": "journey",
+     "subject": "handbag",
+     "summary": "handbag remains with Anudi from leaving Family car to the encounter beside Food three-wheeler.",
+     "source": "script",
+     "earlier": [
+      {
+       "scene": "E01-S02",
+       "note": "Anudi carries handbag out of Family car."
+      }
+     ],
+     "this_scene": [
+      "Anudi attempts to put smartphone in handbag."
+     ],
+     "later": []
+    },
+    {
+     "kind": "journey",
+     "subject": "umbrella",
+     "summary": "Anudi carries and opens umbrella, retaining it while passing Food three-wheeler.",
+     "source": "script",
+     "earlier": [
+      {
+       "scene": "E01-S02",
+       "note": "Anudi carries umbrella from Family car and opens it in the rain."
+      }
+     ],
+     "this_scene": [
+      "Still held by Anudi beside Food three-wheeler."
+     ],
+     "later": []
+    }
+   ],
+   "irony": {
+    "empty": "none stated"
+   },
+   "knowledge": {
+    "empty": "none stated"
+   },
+   "looks": [
+    {
+     "person": "Kasun",
+     "kind": "wardrobe",
+     "note": "D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at KASUN'S Restaurant. Earlier individual outfits are unspecified.",
+     "source": "script"
+    }
+   ],
+   "relationships": {
+    "empty": "none stated"
+   }
+  },
+  "B_people": [
+   {
+    "id": "C02",
+    "name": "Anudi",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "appearance": {
+      "value": "Anudi maintains the same facial appearance, hairstyle and body type throughout.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "presence": "on_screen",
+    "wants": "Continue toward her destination while putting her phone away.",
+    "feeling_start": "Preoccupied.",
+    "feeling_end": "Alert to Kasun's call.",
+    "source": "inferred"
+   },
+   {
+    "id": "C01",
+    "name": "Kasun",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "wardrobe": {
+      "value": "His clothing gradually becomes more polished as the business grows.",
+      "source": "script"
+     },
+     "appearance": {
+      "value": "DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "presence": "on_screen",
+    "wants": "Return the dropped phone to its owner.",
+    "feeling_start": "Observant.",
+    "feeling_end": "Intent on helping her.",
+    "source": "inferred"
+   }
+  ],
+  "C_place": {
+   "id": "L02",
+   "name": "Colombo roadside",
+   "kind": "place",
+   "place_kind": "set",
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "P02",
+    "name": "smartphone",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "She tries to put her smartphone into the side pocket of her handbag.",
+      "source": "script"
+     }
+    },
+    "role": "hero",
+    "holder_start": "Anudi",
+    "holder_end": "Kasun",
+    "source": "script"
+   },
+   {
+    "id": "P03",
+    "name": "handbag",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "She tries to put her smartphone into the side pocket of her handbag.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Anudi",
+    "holder_end": "Anudi",
+    "source": "script"
+   },
+   {
+    "id": "P04",
+    "name": "umbrella",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Anudi",
+    "holder_end": "Anudi",
+    "source": "script"
+   },
+   {
+    "id": "L03",
+    "name": "Food three-wheeler",
+    "kind": "place",
+    "place_kind": "vehicle",
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "Kasun's three-wheeler remains the same vehicle.",
+      "source": "script"
+     },
+     "look": {
+      "value": "His early food business remains small and humble.",
+      "source": "script"
+     }
+    },
+    "role": "dressing",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "inferred"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E01-S03-B01",
+    "kind": "action",
+    "text": "Anudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Establish the awkward handling that precedes the loss.",
+    "delivery_hint": "Keep the umbrella, bag and phone positions readable.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B01-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02",
+       "P03",
+       "P04",
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Passing the stall under her umbrella, Anudi attempts to stow the phone in her bag's outer pocket.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B02",
+    "kind": "action",
+    "text": "As she slips the phone into the bag, it accidentally slips from her hand and falls onto the roadside. Anudi doesn't notice and continues walking.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Separate Anudi from her phone without her awareness.",
+    "delivery_hint": "Make the fall clear while allowing her walk to continue uninterrupted.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B02-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02",
+       "P03"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "The phone misses the pocket and lands on the roadside as Anudi keeps moving.",
+      "function": "turn"
+     },
+     {
+      "id": "E01-S03-B02-e2",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": false,
+      "change": "Anudi remains unaware that she has lost the phone.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B03",
+    "kind": "action",
+    "text": "Kasun notices the phone lying on the ground. He quickly picks it up and runs after her.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Show Kasun acting immediately to help.",
+    "delivery_hint": "Use practical urgency rather than an exaggerated chase.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B03-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Kasun spots the fallen phone, retrieves it and hurries after Anudi.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B04",
+    "kind": "dialogue",
+    "text": "\"මිස්! මිස්! ඔයාගේ ෆෝන් එක!\"",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C02",
+    "heard_by": [
+     "C02"
+    ],
+    "intent": "Get her attention and identify what she has dropped.",
+    "delivery_hint": "Project enough to reach her through the roadside noise.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B04-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Kasun calls Anudi back about her phone.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S03-B05",
+    "kind": "action",
+    "text": "Anudi hears him and turns around. Kasun approaches her, holding out the phone.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Bring the two into a face-to-face exchange.",
+    "delivery_hint": "Let her turn answer his call before he offers the phone.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S03-B05-e1",
+      "actors": [
+       "C02",
+       "C01"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi turns toward Kasun, who reaches her and extends the recovered phone.",
+      "function": "setup"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "accidental",
+    "brisk",
+    "kindly"
+   ],
+   "turns": [
+    "E01-S03-B02",
+    "E01-S03-B03",
+    "E01-S03-B04"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D01",
+    "about": "other",
+    "applies": "general",
+    "text": "Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments\nand emotionally grounded performances."
+   },
+   {
+    "id": "D02",
+    "about": "editing",
+    "applies": "general",
+    "text": "Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic\naction."
+   },
+   {
+    "id": "D05",
+    "about": "sound",
+    "applies": "scoped",
+    "text": "Silence."
+   },
+   {
+    "id": "D09",
+    "about": "other",
+    "applies": "general",
+    "text": "Kasun maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D10",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D11",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi's father maintains the same appearance throughout."
+   },
+   {
+    "id": "D14",
+    "about": "other",
+    "applies": "general",
+    "text": "His clothing gradually becomes more polished as the business grows."
+   },
+   {
+    "id": "D16",
+    "about": "other",
+    "applies": "general",
+    "text": "Maintain authentic Colombo streets, vehicles, homes and environments."
+   },
+   {
+    "id": "D17",
+    "about": "action",
+    "applies": "general",
+    "text": "Keep performances natural and avoid exaggerated melodrama."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 17,
+   "spoken_seconds": 2.3
+  },
+  "I_open": [
+   "episode call: Anudi ends the scene with handbag; the stager's last state has Anudi holding 'umbrella'"
+  ],
+  "stage": {
+   "zones": [
+    "three-wheeler",
+    "roadside"
+   ],
+   "not_placed": {},
+   "people": {
+    "C01": {
+     "in": {
+      "zone": "three-wheeler",
+      "frame_side": "left"
+     },
+     "out": {
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "smartphone, held out toward Anudi",
+      "posture": "walking"
+     }
+    },
+    "C02": {
+     "in": {
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "right",
+      "holding": "umbrella, smartphone",
+      "posture": "walking"
+     },
+     "out": {
+      "zone": "roadside",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "umbrella",
+      "posture": "standing"
+     }
+    }
+   },
+   "changes_at": {
+    "E01-S03-B01": [
+     {
+      "person": "Anudi",
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "right",
+      "holding": "umbrella, smartphone",
+      "posture": "walking"
+     },
+     {
+      "person": "Kasun",
+      "zone": "three-wheeler",
+      "frame_side": "left"
+     }
+    ],
+    "E01-S03-B02": [
+     {
+      "person": "Anudi",
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "right",
+      "holding": "umbrella",
+      "posture": "walking"
+     }
+    ],
+    "E01-S03-B03": [
+     {
+      "person": "Kasun",
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "smartphone",
+      "posture": "running"
+     }
+    ],
+    "E01-S03-B05": [
+     {
+      "person": "Anudi",
+      "zone": "roadside",
+      "facing": "left",
+      "frame_side": "right",
+      "holding": "umbrella",
+      "posture": "standing"
+     },
+     {
+      "person": "Kasun",
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "smartphone, held out toward Anudi",
+      "posture": "walking"
+     }
+    ]
+   },
+   "props": [
+    {
+     "block": 1,
+     "prop": "smartphone",
+     "where": "on the roadside where Anudi dropped it",
+     "state": ""
+    }
+   ]
+  }
+ },
+ "E01-S04": {
+  "ids": {
+   "C01": {
+    "name": "Kasun",
+    "kind": "person"
+   },
+   "C02": {
+    "name": "Anudi",
+    "kind": "person"
+   },
+   "C03": {
+    "name": "Father",
+    "kind": "person"
+   },
+   "L02": {
+    "name": "Colombo roadside",
+    "kind": "place"
+   },
+   "L03": {
+    "name": "Food three-wheeler",
+    "kind": "place"
+   },
+   "P02": {
+    "name": "smartphone",
+    "kind": "thing"
+   },
+   "P03": {
+    "name": "handbag",
+    "kind": "thing"
+   },
+   "P04": {
+    "name": "umbrella",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E01-S04",
+   "heading": "SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING",
+   "title": "A CONVERSATION THAT CHANGES EVERYTHING",
+   "summary": "Returning the phone leads to a warm exchange about Kasun's business. Her father's call about marriage changes Anudi's mood and ends the meeting.",
+   "purpose": "Establish mutual interest and Kasun's ambition while introducing the family pressure that interrupts their connection.",
+   "purpose_source": "inferred",
+   "before_on_page": {
+    "id": "E01-S03",
+    "heading": "SCENE 03 — THE UNEXPECTED ENCOUNTER"
+   },
+   "after_on_page": {
+    "id": "E02-S01",
+    "heading": "SCENE 01 — A FAMILIAR FACE"
+   },
+   "time": {
+    "story_order": 4,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": "Continues E01-S03.",
+    "kind": "normal",
+    "anchor": "E01-S03",
+    "source": "script"
+   },
+   "before_in_story": {
+    "id": "E01-S03",
+    "heading": "SCENE 03 — THE UNEXPECTED ENCOUNTER",
+    "ends_with": "Anudi hears him and turns around. Kasun approaches her, holding out the phone.",
+    "opens_with": "Anudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.",
+    "people_at_end": [
+     "Anudi",
+     "Kasun"
+    ]
+   },
+   "after_in_story": {
+    "id": "E02-S01",
+    "heading": "SCENE 01 — A FAMILIAR FACE",
+    "ends_with": "Kasun walks with her to her car. They exchange smiles before saying goodbye. Over these repeated meetings, their friendship gradually develops into love.",
+    "opens_with": "A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar voice interrupts him.",
+    "people_at_end": [
+     "Kasun",
+     "Anudi",
+     "customers"
+    ]
+   },
+   "threads": [
+    {
+     "kind": "journey",
+     "subject": "smartphone",
+     "summary": "Anudi carries smartphone, loses it unnoticed, and receives it back from Kasun.",
+     "source": "script",
+     "earlier": [
+      {
+       "scene": "E01-S02",
+       "note": "With Anudi in Family car before she gets out."
+      },
+      {
+       "scene": "E01-S03",
+       "note": "Falls beside Food three-wheeler; Kasun picks it up and offers it to Anudi."
+      }
+     ],
+     "this_scene": [
+      "Anudi takes it back and subsequently receives Father's call."
+     ],
+     "later": []
+    }
+   ],
+   "irony": {
+    "empty": "none stated"
+   },
+   "knowledge": [
+    {
+     "person": "Anudi",
+     "learns": "Kasun owns the business, works alone, began with Rs. 5,000 and hopes to expand.",
+     "audience_only": false,
+     "source": "script"
+    },
+    {
+     "person": "Anudi",
+     "learns": "Father wants her home to discuss her marriage.",
+     "audience_only": false,
+     "source": "script"
+    }
+   ],
+   "looks": [
+    {
+     "person": "Kasun",
+     "kind": "wardrobe",
+     "note": "D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at KASUN'S Restaurant. Earlier individual outfits are unspecified.",
+     "source": "script"
+    }
+   ],
+   "relationships": [
+    {
+     "between": [
+      "Kasun",
+      "Anudi"
+     ],
+     "state": "New acquaintances with mutual interest following smartphone's return.",
+     "scene": "E01-S04"
+    }
+   ]
+  },
+  "B_people": [
+   {
+    "id": "C02",
+    "name": "Anudi",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "appearance": {
+      "value": "Anudi maintains the same facial appearance, hairstyle and body type throughout.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "presence": "on_screen",
+    "wants": "Thank Kasun and learn about him, then respond to her father's demand.",
+    "feeling_start": "Grateful and receptive.",
+    "feeling_end": "Subdued but open to meeting Kasun again.",
+    "source": "inferred"
+   },
+   {
+    "id": "C01",
+    "name": "Kasun",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "wardrobe": {
+      "value": "His clothing gradually becomes more polished as the business grows.",
+      "source": "script"
+     },
+     "appearance": {
+      "value": "DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "presence": "on_screen",
+    "wants": "Return her phone and answer her interest in his work.",
+    "feeling_start": "Friendly and helpful.",
+    "feeling_end": "Distracted by the encounter and her change in mood.",
+    "source": "inferred"
+   },
+   {
+    "id": "C03",
+    "name": "Father",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "appearance": {
+      "value": "Anudi's father maintains the same appearance throughout.",
+      "source": "script"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "presence": "phone",
+    "wants": "Have Anudi return home for a discussion about her marriage.",
+    "feeling_start": "Urgent and directive.",
+    "feeling_end": "Expecting her return.",
+    "source": "inferred"
+   }
+  ],
+  "C_place": {
+   "id": "L02",
+   "name": "Colombo roadside",
+   "kind": "place",
+   "place_kind": "set",
+   "card": {
+    "summary": {
+     "empty": "withheld: the range it was read from is too wide"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "P02",
+    "name": "smartphone",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "hero",
+    "holder_start": "Kasun",
+    "holder_end": "Anudi",
+    "source": "script"
+   },
+   {
+    "id": "P03",
+    "name": "handbag",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Anudi",
+    "holder_end": "Anudi",
+    "source": "inferred"
+   },
+   {
+    "id": "P04",
+    "name": "umbrella",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     }
+    },
+    "withheld_other_scenes": 1,
+    "role": "used",
+    "holder_start": "Anudi",
+    "holder_end": "Anudi",
+    "source": "inferred"
+   },
+   {
+    "id": "L03",
+    "name": "Food three-wheeler",
+    "kind": "place",
+    "place_kind": "vehicle",
+    "card": {
+     "summary": {
+      "empty": "withheld: the range it was read from is too wide"
+     },
+     "details": {
+      "value": "Kasun's three-wheeler remains the same vehicle.",
+      "source": "script"
+     },
+     "look": {
+      "value": "His early food business remains small and humble.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Kasun",
+    "holder_end": "Kasun",
+    "source": "script"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E01-S04-B01",
+    "kind": "action",
+    "text": "Anudi takes her phone from Kasun.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Complete the return that initiates their conversation.",
+    "delivery_hint": "Keep the handover simple and clearly visible.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B01-e1",
+      "actors": [
+       "C02",
+       "C01"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "The phone passes from Kasun back to Anudi.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B02",
+    "kind": "dialogue",
+    "text": "\"අනේ, Thank you! මම දැක්කෙවත් නෑ.\"",
+    "speaker": "C02",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Thank him and acknowledge that she missed the accident.",
+    "delivery_hint": "Genuine gratitude with mild surprise.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B02-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Anudi responds warmly to his help.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B03",
+    "kind": "dialogue",
+    "text": "\"වැස්ස නිසා වෙන්න ඇති.\"",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C02",
+    "heard_by": [
+     "C02"
+    ],
+    "intent": "Put her at ease by attributing the mishap to the weather.",
+    "delivery_hint": "Gentle and matter-of-fact.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B03-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Kasun offers an undemanding explanation for the accident.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B04",
+    "kind": "action",
+    "text": "Anudi smiles and looks at his small food business.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Shift her attention from the returned phone to Kasun's livelihood.",
+    "delivery_hint": "Let the smile lead into an interested look toward the stall.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B04-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi notices the business with friendly curiosity.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B05",
+    "kind": "dialogue",
+    "text": "\"මේ ඔයාගේ බිස්නස් එකද?\"",
+    "speaker": "C02",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Find out whether the business belongs to him.",
+    "delivery_hint": "Open curiosity without condescension.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B05-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "The exchange becomes a personal conversation about his work.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B06",
+    "kind": "dialogue",
+    "text": "\"ඔව්. පොඩියට පටන් ගත්තේ.\"",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C02",
+    "heard_by": [
+     "C02"
+    ],
+    "intent": "Confirm ownership while acknowledging the modest beginning.",
+    "delivery_hint": "Unembarrassed and modest.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B06-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Anudi learns that Kasun owns the small operation.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B07",
+    "kind": "dialogue",
+    "text": "\"තනියමද මේ හැමදේම කරන්නේ?\"",
+    "speaker": "C02",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Learn whether he manages all the work himself.",
+    "delivery_hint": "Interest deepens rather than becoming an interrogation.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B07-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Anudi asks about his responsibility for the operation.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B08",
+    "kind": "dialogue",
+    "text": "\"ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව.\"",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C02",
+    "heard_by": [
+     "C02"
+    ],
+    "intent": "Explain his independent start with five thousand rupees and his wish to grow.",
+    "delivery_hint": "Honest pride, with hope stronger than self-promotion.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B08-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Anudi learns his starting resources, solitary workload and ambition.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B09",
+    "kind": "action",
+    "text": "Anudi looks impressed.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Register her admiration before the interruption.",
+    "delivery_hint": "A restrained reaction rather than an emphatic display.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B09-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi's response shows that his account has impressed her.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B10",
+    "kind": "action",
+    "text": "Before she can continue the conversation, her phone suddenly rings. She checks the screen. It's her father.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Interrupt the growing connection with family demands.",
+    "delivery_hint": "The already established phone rings; give its caller display a readable moment.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B10-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "An incoming call interrupts Anudi, and she identifies her father on the display.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B11",
+    "kind": "dialogue",
+    "text": "\"හෙලෝ තාත්තේ.\"",
+    "speaker": "C02",
+    "presence": "on_screen",
+    "device": "P02",
+    "addressee": "C03",
+    "heard_by": [
+     "C03",
+     "C01"
+    ],
+    "intent": "Answer her father.",
+    "delivery_hint": "An ordinary greeting before she knows the reason for the call.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B11-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Anudi begins the phone conversation.",
+      "function": "setup"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B12",
+    "kind": "dialogue",
+    "text": "\"අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා.\"",
+    "speaker": "C03",
+    "presence": "phone",
+    "device": "P02",
+    "addressee": "C02",
+    "heard_by": [
+     "C02"
+    ],
+    "intent": "Locate Anudi and summon her home to discuss her marriage.",
+    "delivery_hint": "Direct and authoritative without shouting.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B12-e1",
+      "actors": [
+       "C03"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "",
+      "speech": true,
+      "visible": false,
+      "change": "Anudi learns that her father expects an urgent discussion about marriage.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B13",
+    "kind": "action",
+    "text": "Anudi's smile slowly disappears.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Show the emotional cost of the call.",
+    "delivery_hint": "Let the warmth drain gradually from her expression.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B13-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi's earlier smile fades.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B14",
+    "kind": "dialogue",
+    "text": "\"හරි තාත්තේ. මම එන්නම්.\"",
+    "speaker": "C02",
+    "presence": "on_screen",
+    "device": "P02",
+    "addressee": "C03",
+    "heard_by": [
+     "C03",
+     "C01"
+    ],
+    "intent": "Agree to return.",
+    "delivery_hint": "Subdued compliance, contrasting with her earlier ease.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B14-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Anudi tells her father that she will come.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B15",
+    "kind": "action",
+    "text": "She ends the call. Kasun notices her changed expression. Anudi looks at him again.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Return to their shared space with the interruption still affecting her.",
+    "delivery_hint": "Allow a brief, observant pause without suggesting Kasun knows the unheard details.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B15-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [
+       "P02"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi disconnects and turns her attention back to Kasun.",
+      "function": "setup"
+     },
+     {
+      "id": "E01-S04-B15-e2",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Kasun registers the difference in her expression.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B16",
+    "kind": "dialogue",
+    "text": "\"එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු.\"",
+    "speaker": "C02",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Take her leave while keeping open the possibility of another meeting.",
+    "delivery_hint": "Retain a little warmth beneath the changed mood.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B16-e1",
+      "actors": [
+       "C02"
+      ],
+      "things": [],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Anudi ends the encounter with an invitation to meet again.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B17",
+    "kind": "dialogue",
+    "text": "\"හරි. පරිස්සමින් යන්න.\"",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C02",
+    "heard_by": [
+     "C02"
+    ],
+    "intent": "Accept her departure and wish her well.",
+    "delivery_hint": "Simple, considerate warmth.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B17-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L02",
+      "speech": true,
+      "visible": true,
+      "change": "Kasun responds with a caring farewell.",
+      "function": "texture"
+     }
+    ]
+   },
+   {
+    "id": "E01-S04-B18",
+    "kind": "action",
+    "text": "Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Leave the encounter resonating after Anudi departs.",
+    "delivery_hint": "Let Kasun linger before returning to work; avoid specifying the content of his thoughts.",
+    "intent_source": "inferred",
+    "events": [
+     {
+      "id": "E01-S04-B18-e1",
+      "actors": [
+       "C02",
+       "C01"
+      ],
+      "things": [
+       "P02",
+       "P03",
+       "P04",
+       "L03"
+      ],
+      "spot": "L02",
+      "speech": false,
+      "visible": true,
+      "change": "Anudi walks away while Kasun watches, then he returns to the stall.",
+      "function": "texture"
+     },
+     {
+      "id": "E01-S04-B18-e2",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L03",
+      "speech": false,
+      "visible": false,
+      "change": "Kasun remains mentally distracted after resuming his routine.",
+      "function": "reveal"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "warm",
+    "curious",
+    "interrupted",
+    "reflective"
+   ],
+   "turns": [
+    "E01-S04-B05",
+    "E01-S04-B10",
+    "E01-S04-B12",
+    "E01-S04-B14",
+    "E01-S04-B16"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D01",
+    "about": "other",
+    "applies": "general",
+    "text": "Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments\nand emotionally grounded performances."
+   },
+   {
+    "id": "D02",
+    "about": "editing",
+    "applies": "general",
+    "text": "Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic\naction."
+   },
+   {
+    "id": "D09",
+    "about": "other",
+    "applies": "general",
+    "text": "Kasun maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D10",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi maintains the same facial appearance, hairstyle and body type throughout."
+   },
+   {
+    "id": "D11",
+    "about": "other",
+    "applies": "general",
+    "text": "Anudi's father maintains the same appearance throughout."
+   },
+   {
+    "id": "D14",
+    "about": "other",
+    "applies": "general",
+    "text": "His clothing gradually becomes more polished as the business grows."
+   },
+   {
+    "id": "D16",
+    "about": "other",
+    "applies": "general",
+    "text": "Maintain authentic Colombo streets, vehicles, homes and environments."
+   },
+   {
+    "id": "D17",
+    "about": "action",
+    "applies": "general",
+    "text": "Keep performances natural and avoid exaggerated melodrama."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 45,
+   "spoken_seconds": 27.3
+  },
+  "I_open": [
+   "episode call: Anudi ends the scene with smartphone; the stager's last state has Anudi holding 'her phone'",
+   "episode call: Anudi ends the scene with handbag; the stager's last state has Anudi holding 'her phone'",
+   "episode call: Anudi ends the scene with umbrella; the stager's last state has Anudi holding 'her phone'"
+  ],
+  "stage": {
+   "zones": [
+    "roadside",
+    "food business"
+   ],
+   "not_placed": {},
+   "people": {
+    "C01": {
+     "in": {
+      "zone": "roadside",
+      "facing": "left",
+      "frame_side": "right",
+      "posture": "standing"
+     },
+     "out": {
+      "zone": "food business",
+      "facing": "away",
+      "frame_side": "right",
+      "posture": "walking"
+     }
+    },
+    "C02": {
+     "in": {
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "her phone",
+      "posture": "standing"
+     },
+     "out": {
+      "zone": "roadside",
+      "facing": "away",
+      "frame_side": "left",
+      "holding": "her phone",
+      "posture": "walking"
+     }
+    }
+   },
+   "changes_at": {
+    "E01-S04-B01": [
+     {
+      "person": "Anudi",
+      "zone": "roadside",
+      "facing": "right",
+      "frame_side": "left",
+      "holding": "her phone",
+      "posture": "standing"
+     },
+     {
+      "person": "Kasun",
+      "zone": "roadside",
+      "facing": "left",
+      "frame_side": "right",
+      "posture": "standing"
+     }
+    ],
+    "E01-S04-B18": [
+     {
+      "person": "Anudi",
+      "zone": "roadside",
+      "facing": "away",
+      "frame_side": "left",
+      "holding": "her phone",
+      "posture": "walking"
+     },
+     {
+      "person": "Kasun",
+      "zone": "food business",
+      "facing": "away",
+      "frame_side": "right",
+      "posture": "walking"
+     }
+    ]
+   },
+   "props": []
+  }
+ }
+}

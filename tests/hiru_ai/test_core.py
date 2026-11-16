@@ -40,7 +40,7 @@ def test_the_default_tiers_are_the_ones_the_engines_use_today():
     got = {n: (t.model, t.effort) for n in models_mod.tier_names()
            if not n.startswith("raphael") and (t := models_mod.resolve(n, s))}
     assert got == {"ultra": ("gpt-5", "high"), "high": ("gpt-5", "medium"), "medium": ("gpt-5-mini", "low"),
-                   "low": ("gpt-5-nano", "minimal"), "vision": ("gpt-5-mini", ""),
+                   "low": ("gpt-5-nano", "minimal"), "vision": ("gpt-5-mini", ""), "board": ("gpt-6.1-sol", "high"),
                    "fixer": ("gpt-5", "low"),  # the big rung of Adam's fixer ladder (plan/2026-11-05)
                    "author": ("gpt-5", "medium"), "repair": ("gpt-5", "low"),  # Shot Planner David (plan/2026-11-05e)
                    "jonathan": ("gpt-6.1-sol", "high"),  # Shot Planner Jonathan (plan/2026-11-06b)
@@ -48,6 +48,7 @@ def test_the_default_tiers_are_the_ones_the_engines_use_today():
                    "zora_chat": ("gpt-5-mini", "minimal"), "zora_author": ("gpt-6.1-terra", "low"),
                    "reader": ("gpt-5", "medium"),  # the document reader: the author's model (plan/2026-11-06f Q1)
                    "breakdown": ("gpt-6.1-sol", "medium"),  # the scene breakdown, as the lab ran (plan/2026-11-11 §9)
+                   "breakdown_probe": ("gpt-6.1-sol", "low"),  # the reading's first look (plan/2026-11-15)
                    # Sable (plan/2026-11-08 §4.4): the average tier and the deep one a turn may move up to once
                    "sable": ("gpt-5-mini", "low"), "sable_deep": ("gpt-5", "medium")}
     assert all(models_mod.resolve(n, s).fallbacks == () for n in got)  # today's behaviour: no fallback tiers

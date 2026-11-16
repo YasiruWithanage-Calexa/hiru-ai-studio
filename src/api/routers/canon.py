@@ -34,9 +34,11 @@ from contracts.canon import (
     CanonKind,
     CanonVersion,
     CanonVersionCreate,
+    face_sheet_path,
     name_key,
     next_code,
     reference_sheet_prompt,
+    sheet_assets,
     voice_pin,
     wardrobe_anchor,
 )
@@ -162,7 +164,7 @@ def _version_row(entity: Row, card: CanonCard, production: Row, user_id: UUID, n
 
 
 def _sheet_path(current: Row | None) -> str:
-    assets = (current or {}).get("reference_assets") or []
+    assets = sheet_assets((current or {}).get("reference_assets"))  # a face sheet is not the sheet (plan/2026-11-14)
     first = assets[0] if assets else None
     path = first.get("path") if isinstance(first, dict) else first
     return str(path) if path else ""
@@ -171,13 +173,17 @@ def _sheet_path(current: Row | None) -> str:
 def _entity(row: Row) -> CanonEntity:
     current = row.get("current")
     path = _sheet_path(current)
+    face = face_sheet_path(row)
     return CanonEntity.model_validate({**row, "current": current,
                                        "current_version": current["version"] if current else None,
                                        "no_plate": no_plate_reason(row.get("class")) if not plated(row.get("class"))
                                        else "",
                                        "reference_sheet_url": media_links.url("references", path),
                                        "reference_sheet_thumb_url": media_links.thumb_url("references", path),
-                                       "reference_sheet_key": media_links.key("references", path) if path else ""})
+                                       "reference_sheet_key": media_links.key("references", path) if path else "",
+                                       "face_sheet_url": media_links.url("references", face),
+                                       "face_sheet_thumb_url": media_links.thumb_url("references", face),
+                                       "face_sheet_key": media_links.key("references", face) if face else ""})
 
 
 async def _get(repos: Repos, production_id: UUID, entity_id: UUID) -> Row:
@@ -441,4 +447,24 @@ async def make_reference_sheet(production_id: UUID, entity_id: UUID, access: Can
     await repos.audit.record(action="canon.reference_sheet", entity="canon_entity", entity_id=str(entity_id),
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={"job_id": str(job_id)})
+    return SheetStarted(job_id=job_id)
+
+
+@router.post("/{entity_id}/face-sheet", response_model=SheetStarted, status_code=status.HTTP_202_ACCEPTED)
+async def make_face_sheet(production_id: UUID, entity_id: UUID, access: CanEdit, repos: ReposDep) -> SheetStarted:
+    """Paint (or paint again) a character's face sheet (plan/2026-11-14 §3.1): six head-and-shoulder views of the face
+    on their base sheet, at medium quality. Every first frame that shows them attaches it first. A Scene board and a
+    frame from the board make a missing one by themselves (D4); this is for redoing one."""
+    row = await _get(repos, production_id, entity_id)
+    if CanonKind(row["kind"]) is not CanonKind.CHARACTER:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Only a character has a face sheet.")
+    if not _sheet_path(row.get("current")):
+        raise HTTPException(status.HTTP_409_CONFLICT, f"Paint {row['name']}'s base sheet first: the face sheet is "
+                                                      "made from its portrait.")
+    job_id = await task_manager.dispatch(JobKind.FRAME_RENDER, repos, actor_user_id=access.user.id,
+                                         production_id=production_id, request={"entity_id": str(entity_id),
+                                                                               "face": True},
+                                         state={"reference_entity_id": str(entity_id), "reference_kind": "face"})
+    await repos.audit.record(action="canon.face_sheet", entity="canon_entity", entity_id=str(entity_id),
+                             actor_user_id=access.user.id, production_id=production_id, diff={"job_id": str(job_id)})
     return SheetStarted(job_id=job_id)

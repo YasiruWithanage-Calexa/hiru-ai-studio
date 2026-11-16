@@ -35,6 +35,8 @@ class OpenAISettings(BaseModel):
     # lab ran every step on GPT-6.1 Sol at medium; whether continuity and episodes need high is for the live check.
     model_breakdown: str = "gpt-6.1-sol"
     effort_breakdown: str = "medium"
+    # plan/2026-11-15: the probe (gates 0 and 1) is the breakdown model at this effort; the lab ran it at low ($0.012).
+    effort_breakdown_probe: str = "low"
     # Shot Planner Jonathan (plan/2026-11-06b): the `jonathan` tier, its own model (gpt-5 shuts down 2026-12-11;
     # GPT-6.1 Sol is OpenAI's near-flagship at gpt-5's price class) at the effort the cinematic lab proved (high).
     # An environment change, not a code change.
@@ -58,6 +60,9 @@ class OpenAISettings(BaseModel):
     effort_medium: str = "low"
     model_low: str = "gpt-5-nano"
     effort_low: str = "minimal"
+    # The Scene board writer (plan/2026-11-14): the `board` tier, the storyboard lab's model and effort.
+    model_board: str = "gpt-6.1-sol"
+    effort_board: str = "high"
     model_vision: str = "gpt-5-mini"  # looks at pictures (the frame check); no reasoning effort
     model_image: str = "gpt-image-2"
     image_quality: str = "medium"  # a final first frame

@@ -1,0 +1,33 @@
+{
+  "run": "run_009",
+  "hypothesis": "a mannequin board (writer describes poses only, with the camera-and-body rule) gives natural seated poses and a consistent cabin without any face to drift",
+  "writer": {
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "usage": {
+      "input": 10282,
+      "output": 6154,
+      "cached": 0,
+      "reasoning": 3106
+    },
+    "usd": 0.0821,
+    "reused_from": null
+  },
+  "image": {
+    "model": "gpt-image-2",
+    "quality": "low",
+    "input_fidelity": "default (low)",
+    "size": "1536x1024",
+    "usage": {
+      "input": 6101,
+      "output": 158
+    },
+    "usd": 0.0673
+  },
+  "run_usd": 0.1494,
+  "ledger_usd": 2.2986,
+  "references": [
+    "the location plate for Cash Van",
+    "the reference sheet for phone"
+  ]
+}

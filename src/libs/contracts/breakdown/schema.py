@@ -266,6 +266,12 @@ class Scene(BaseModel):
     script_version: int = 0
     stale: str = ""
     edited: bool = False  # a person edited the script: its lines are the memory's `person_lines`, not a document's
+    # plan/2026-11-15, from the reading: the length the document states (decision D1: a range's top) or a person gave
+    # (None: neither, the production's default applies); the document's own title; the lines inside the scene that
+    # hold no story words (where its place and length were read from, page furniture), which the word check skips
+    stated_s: float | None = None
+    title_doc: str = ""
+    facts: list[int] = Field(default_factory=list)
 
 
 class Finding(BaseModel):
@@ -414,6 +420,7 @@ class SourceMemory(BaseModel):
     lines: list[str]
     split: SplitW
     read_from: Literal["text", "pages"] = "text"
+    reading: dict[str, Any] | None = None  # plan/2026-11-15: the checked `reading.ReadingW` the scene cuts came from
 
     def sections(self) -> list[dict[str, Any]]:
         """The labelled stretches with their text (what search chunks are built from)."""

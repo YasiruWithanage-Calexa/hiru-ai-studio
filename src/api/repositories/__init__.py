@@ -359,6 +359,18 @@ class PacketsRepo(Protocol):
     async def get(self, production_id: UUID, scene_id: UUID) -> Row | None: ...
 
 
+class SceneBoardsRepo(Protocol):
+    """The Scene board (plan/2026-11-14, schema v26 `scene_boards`): one row per scene, version and part. A database
+    before v25 has no table: `list` answers [] and a write raises (the router says to apply v25)."""
+
+    async def list(self, scene_id: UUID) -> list[Row]: ...  # every version and part, oldest version first
+    async def get(self, production_id: UUID, board_id: UUID) -> Row | None: ...
+    async def create(self, row: Row) -> Row: ...
+    async def update(self, board_id: UUID, fields: Row) -> Row | None: ...
+    # Moves the scene's one approved board OF THAT PART to `board_id` (False: it is not done, or someone else moved it).
+    async def approve(self, scene_id: UUID, part: int, board_id: UUID, user_id: UUID) -> bool: ...
+
+
 @dataclass
 class Repos:
     profiles: ProfilesRepo
@@ -394,3 +406,4 @@ class Repos:
     costs: CostsRepo
     sable: SableRepo
     packets: PacketsRepo
+    scene_boards: SceneBoardsRepo

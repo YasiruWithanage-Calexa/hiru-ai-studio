@@ -115,6 +115,10 @@ class CanonEntity(BaseModel):
     reference_sheet_url: str = ""
     reference_sheet_thumb_url: str = ""  # its 640 px WebP, for cards (may 404 for an older sheet: use the full one)
     reference_sheet_key: str = ""  # names the sheet's file for ever; the URLs change every hour
+    # plan/2026-11-14 §3.1: a character's face sheet (six views), through /files/{ticket} ("" when there is none)
+    face_sheet_url: str = ""
+    face_sheet_thumb_url: str = ""
+    face_sheet_key: str = ""
     created_at: datetime
     updated_at: datetime
 
@@ -429,6 +433,68 @@ def look_sheet_prompt(character: str, look: LookFields) -> str:
              f"Accessories: {_clean(look.accessories)}"]
     body = "\n".join(f for f in facts if not f.endswith(": "))
     return f"{_SHEET_LAYOUT}{_LOOK_SHEET_RULES}\nAspect ratio {SHEET_ASPECT}.\n{body}"
+
+
+# ── face sheets (plan/2026-11-14 §3.1) ──────────────────────────────────────────────────────
+
+# Every base and look sheet holds ONE face (front, smiling, studio light). A face sheet gives the image model the same
+# face at six angles and two expressions, so a shot that needs the person turned, serious or at night does not invent
+# it. Painted from the portrait cut out of the base sheet (the face does not change with a look). Word for word the
+# lab's gender-neutral prompt (lab/storyboard/faces.py, run_012/013).
+FACE_SHEET_KIND = "face"
+FACE_SHEET_QUALITY = "medium"  # the person's image rule (2026-11-14): never high
+PORTRAIT_SHARE = 0.265  # the base sheet's right-hand portrait panel: its right 26.5 % (lab faces.py)
+
+
+def face_sheet_prompt() -> str:
+    """The image prompt for a face sheet. Image 1 is the portrait cut from the base sheet (`portrait_crop`)."""
+    return (
+        "A face reference sheet for a Sri Lankan television drama: the SAME person as image 1, photographed six times "
+        "in one image, laid out 3 across and 2 down, each a head-and-shoulders photograph on the same plain mid-grey "
+        "studio backdrop, separated by thin white gutters. Top row: (1) facing the camera, neutral relaxed expression, "
+        "mouth closed; (2) three-quarter view, head turned toward the left of the picture, neutral; (3) three-quarter "
+        "view, head turned toward the right of the picture, neutral. Bottom row: (4) full profile facing the left of "
+        "the picture; (5) full profile facing the right of the picture; (6) facing the camera, serious and worried, "
+        "brows slightly drawn, mouth closed. "
+        "Exactly the person in image 1 in every photograph: the same face shape, age, skin tone, eyes, nose, lips, "
+        "ears, hairline, hair and facial hair. Do not age them, do not make them heavier or more weathered. Only the "
+        "head angle and the expression change. The same top as in image 1. Soft, even studio light from the front in "
+        "every photograph. Photorealistic. No text, no numbers, no labels.")
+
+
+def _asset_kind(asset: Any) -> str:
+    return str(asset.get("kind") or "sheet") if isinstance(asset, Mapping) else "sheet"
+
+
+def _asset_path(asset: Any) -> str:
+    return str((asset.get("path") if isinstance(asset, Mapping) else asset) or "")
+
+
+def sheet_assets(assets: Any) -> list[Any]:
+    """A version's `reference_assets` without its face sheets: the base sheets (or plates), newest first."""
+    return [a for a in (assets if isinstance(assets, list) else []) if _asset_kind(a) != FACE_SHEET_KIND]
+
+
+def face_sheet_path(row: Mapping[str, Any]) -> str:
+    """The newest face sheet of a character's current card ("" when none is made)."""
+    assets = (row.get("current") or {}).get("reference_assets") or []
+    return next((_asset_path(a) for a in assets if _asset_kind(a) == FACE_SHEET_KIND and _asset_path(a)), "")
+
+
+def keep_assets(assets: Sequence[Any], sheets: int = 5, faces: int = 2) -> list[Any]:
+    """The `reference_assets` a version keeps, newest first: up to `sheets` sheets and `faces` face sheets, so a new
+    base sheet never pushes the face sheet out (and the reverse)."""
+    out, n_sheets, n_faces = [], 0, 0
+    for a in assets:
+        if _asset_kind(a) == FACE_SHEET_KIND:
+            n_faces += 1
+            if n_faces <= faces:
+                out.append(a)
+        else:
+            n_sheets += 1
+            if n_sheets <= sheets:
+                out.append(a)
+    return out
 
 
 def named_in(name: str, text: str) -> bool:

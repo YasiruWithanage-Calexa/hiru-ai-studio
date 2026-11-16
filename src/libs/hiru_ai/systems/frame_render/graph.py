@@ -5,6 +5,14 @@ agent, both found by id.
     state.frame_ids             frames the API created `queued` (one row per picture asked for)
     state.reference_entity_id   instead: a reference sheet for this canon entity's current card
     state.look_id               instead: a look sheet for this look
+    state.reference_kind        "face" with reference_entity_id: a face sheet for that character (plan/2026-11-14)
+    state.board_id              instead: a Scene board for a scene (plan/2026-11-14, `board.py`)
+    state.quality               with frame_ids: the quality a person picked for the finals (low | medium, never high);
+                                absent = the configured final quality
+
+A frame whose row names a `board_id` is painted from its shot's panel of that approved board: the panel goes in LAST as
+the approved draft, the prompt gains the mannequin paragraph, the planned state and the panel's words, and every person
+the camera sees gets a face sheet first (D4), made by this job when missing.
 
 Each frame is claim -> paint -> store -> record:
 
@@ -33,17 +41,20 @@ from uuid import UUID
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
+from contracts import board as kit
 from contracts import safe_depiction
-from contracts.canon import scene_conditions
+from contracts.canon import face_sheet_path, keep_assets, scene_conditions
 from contracts.frame_brief import BLACK_PLATE
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
-from contracts.producer import DRAFT_LABEL, FrameStage, frame_stage
+from contracts.producer import DRAFT_LABEL, FrameStage, frame_quality, frame_stage
 from hiru_ai.core import agents, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.ports import ImageRefused, Reference
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
+from hiru_ai.systems.frame_render import board as boards
+from hiru_ai.systems.frame_render.faces import ensure_faces, render_face
 from hiru_ai.systems.frame_render.state import State
 
 _log = logging.getLogger(__name__)
@@ -53,6 +64,7 @@ FAILED = "The frame could not be made. Try again in a moment."
 NO_DESIGN = "This shot has no camera design yet. Design the scene first."
 NOT_CONFIGURED = "Image generation is not set up on this server."
 NO_DRAFT = "The accepted draft could not be read. Accept a draft again, or paint the final without one."
+NO_PANEL = "The scene board's panel for this shot could not be read. Paint the scene board again."
 Row = dict[str, Any]
 
 
@@ -148,6 +160,32 @@ def _draft_picture(ctx: RunContext, scenes: Scenes, draft_id: str, shot_id: str)
     return Reference(label=DRAFT_LABEL, data=bytes(ctx.need("files").download("frames", str(row["storage_path"]))))
 
 
+def _board_panel(ctx: RunContext, scenes: Scenes, board_id: str, shot: Row) -> tuple[Reference, Row]:
+    """(the shot's panel of the board, as the approved draft; what the frame's prompt adds from the board). Raises
+    when the board or its panel cannot be read: a frame the person asked to paint from the board is never painted
+    without it."""
+    row = ctx.need("frames").board(board_id)
+    if row is None:
+        raise LookupError(board_id)
+    cell = next((c for c in row.get("cells") or [] if str(c.get("shot_id")) == str(shot["id"]) and c.get("path")),
+                None)
+    if cell is None:
+        raise LookupError(f"{board_id}/{shot['id']}")
+    data = bytes(ctx.need("files").download("frames", str(cell["path"])))
+    world = parts.module("step", "frame_compose").World.of(scenes.world(str(shot["scene_id"])))
+    seen = world.seen_names(shot)
+    colour_of = row.get("colours") or {}
+    colours = {name: str(colour_of[cid]) for cid, name in seen.items() if cid in colour_of}
+    faced = [name for cid, name in seen.items() if face_sheet_path(world.by_id.get(cid) or {})]
+    ir = shot.get("ir") if isinstance(shot.get("ir"), dict) else {}
+    first = (ir or {}).get("first_frame") if isinstance((ir or {}).get("first_frame"), dict) else {}
+    raw = (first or {}).get("subjects")
+    opening = [str(x) for x in raw] if isinstance(raw, list) else ([str(raw)] if raw else [])
+    sections = kit.frame_sections(kit.Writer.of(row.get("writer") or {}), int(cell.get("number") or 0), colours,
+                                  opening, faced)
+    return Reference(label=DRAFT_LABEL, data=data), {"sections": sections, "board_id": board_id}
+
+
 def _vision_enabled() -> bool:
     return bool(get_settings().openai.model_vision)
 
@@ -162,15 +200,17 @@ def _inspect(ctx: RunContext, picture_data: bytes, mime: str, expected: Row) -> 
     try:
         out = agents.build("frame_inspector").run(
             {"image_b64": base64.b64encode(picture_data).decode(), "mime": mime, "seen": expected["seen"],
-             "unseen": expected["unseen"], "frame": expected["frame"], "hands": expected.get("hands") or ""}, ctx)
+             "unseen": expected["unseen"], "frame": expected["frame"], "hands": expected.get("hands") or "",
+             "board": bool(expected.get("board")), "state": expected.get("state") or ""}, ctx)
     except Exception:
         _log.warning("the frame could not be inspected", exc_info=True)
         return None
     return dict(out.model_dump())
 
 
-def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
-    """One frame, claim to record. -> its final status."""
+def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "") -> str:
+    """One frame, claim to record. -> its final status. `quality` (low | medium) is the one a person picked for a
+    final; "" paints it at the configured quality. A draft is always painted at the draft quality."""
     frames, files, paint = ctx.need("frames"), ctx.need("files"), ctx.ports.images
     fid = str(frame["id"])
     if not frames.claim_frame(fid):
@@ -192,14 +232,24 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
     pictures = [r for _, _, r in refs]
     sheets = [cid for cid, role, _ in refs if role != "setup"]  # `reference_ids` holds canon ids only
     draft = frame_stage(frame) == FrameStage.DRAFT
-    if frame.get("draft_id") and not draft:  # a final painted from the shot's accepted draft: it goes in FIRST
+    board: Row | None = None
+    if frame.get("board_id") and not draft:  # plan/2026-11-14 §3.5: the shot's panel of the approved board, LAST
+        try:
+            panel, board = _board_panel(ctx, scenes, str(frame["board_id"]), shot)
+            pictures.append(panel)
+        except Exception:
+            _log.warning("board %s of frame %s could not be read", frame["board_id"], fid, exc_info=True)
+            frames.finish_frame(fid, {"status": "failed", "error": NO_PANEL})
+            return "failed"
+    elif frame.get("draft_id") and not draft:  # a final painted from the shot's accepted draft: it goes in FIRST
         try:
             pictures.insert(0, _draft_picture(ctx, scenes, str(frame["draft_id"]), str(shot["id"])))
         except Exception:
             _log.warning("draft %s of frame %s could not be read", frame["draft_id"], fid, exc_info=True)
             frames.finish_frame(fid, {"status": "failed", "error": NO_DRAFT})
             return "failed"
-    composed = _compose("compose", **world, shot=shot, labels=[r.label for r in pictures])
+    extra: Row = {"board": board["sections"]} if board else {}
+    composed = _compose("compose", **world, shot=shot, labels=[r.label for r in pictures], **extra)
     prompt, pins = composed["prompt"], composed["pins"]
     found = safe_depiction.blocking(prompt)
     if found:  # stopped before the image model is paid (plan/2026-11-10b); the legacy pipeline does the same
@@ -208,7 +258,7 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
         return "refused"
     aspect = parts.module("step", "frame_compose").production_aspect(scenes.production)
     try:
-        picture = paint(prompt, aspect, pictures, draft=draft)
+        picture = paint(prompt, aspect, pictures, draft=draft, quality="" if draft else quality)
     except ImageRefused as exc:
         frames.finish_frame(fid, {"status": "refused", "error": str(exc), "prompt": prompt, "pins": pins})
         return "refused"
@@ -218,9 +268,9 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row) -> str:
         return "failed"
     path = f"{scenes.production_id}/{shot['id']}/{fid}.png"
     files.upload("frames", path, picture.data, picture.mime)
-    expected = _compose("expected", **world, shot=shot)
+    expected = _compose("expected", **world, shot=shot, **extra)
     answer = _inspect(ctx, picture.data, picture.mime, expected)
-    checks = _compose("checks", **world, shot=shot, attached=sheets, answer=answer)["checks"]
+    checks = _compose("checks", **world, shot=shot, attached=sheets, answer=answer, **extra)["checks"]
     frames.finish_frame(fid, {"status": "done", "storage_path": path, "prompt": prompt, "pins": pins,
                               "reference_ids": sheets, "error": None, "checks": checks})
     return "done"
@@ -261,7 +311,7 @@ def render_reference(ctx: RunContext, scenes: Scenes, entity_id: str, job_id: st
     files.upload("references", path, picture.data, picture.mime)
     assets = [{"path": path, "kind": "sheet", "version": current.get("version"), "job_id": job_id,
                "created_at": _now()}, *(current.get("reference_assets") or [])]
-    frames.add_reference_asset(str(current["id"]), assets[:5])
+    frames.add_reference_asset(str(current["id"]), keep_assets(assets))  # a face sheet is kept (plan/2026-11-14)
     return {"status": "done", "entity_id": entity_id, "version": current.get("version")}
 
 
@@ -330,14 +380,31 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
 
         return node
 
+    def warn(text: str) -> None:
+        jobs.event(job_id, JobEventType.WARNING, {"text": text}, agent=AGENT)
+
     def paint_frames(state: State) -> State:
         rows = frames.frames(production_id, [str(f) for f in payload.state.get("frame_ids") or []])
+        quality = frame_quality(payload.state)  # the person's pick: low or medium ("" = the configured one)
         job = loaded()
         counts = {"done": 0, "failed": 0, "refused": 0, "skipped": 0}
+        # D4 (plan/2026-11-14): the face sheet of every person a board frame shows, made once, before the frames are
+        # painted in parallel (two threads must not pay for the same person's sheet)
+        seen: list[str] = []
+        for f in rows:
+            shot = frames.shot(str(f["shot_id"])) if f.get("board_id") and f.get("status") == "queued" else None
+            if shot:
+                try:
+                    world = parts.module("step", "frame_compose").World.of(job.world(str(shot["scene_id"])))
+                    seen += [c for c in world.seen_names(shot) if c not in seen]
+                except Exception:
+                    _log.warning("who shot %s shows could not be read", shot.get("id"), exc_info=True)
+        if seen and ctx.ports.images is not None:
+            ensure_faces(ctx, production, job.canon, seen, str(job_id), warn)
 
         def one(frame: Row) -> tuple[Row, str]:
             try:
-                return frame, render_frame(ctx, job, frame)
+                return frame, render_frame(ctx, job, frame, quality)
             except Exception:
                 _log.exception("frame %s crashed", frame.get("id"))
                 frames.finish_frame(str(frame["id"]), {"status": "failed", "error": FAILED})
@@ -357,9 +424,32 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             audit("frames.render", "job", str(job_id), counts)
         return {"result": counts}
 
+    def face(state: State) -> State:
+        entity = str(payload.state["reference_entity_id"])
+        result = render_face(ctx, production, loaded().canon, entity, str(job_id))
+        jobs.event(job_id, JobEventType.PROGRESS if result["status"] == "done" else JobEventType.WARNING,
+                   {"text": "Face sheet ready" if result["status"] == "done" else result["error"]}, agent=AGENT)
+        if result["status"] == "done":
+            audit("canon.face_sheet", "canon", entity, {"job_id": str(job_id)})
+        return {"result": result}
+
+    def board(state: State) -> State:
+        job = loaded()
+        result = boards.run(ctx, production, job.world, dict(payload.state), str(job_id), warn)
+        if result.get("status") != "skipped":
+            ok = result.get("status") == "done"
+            jobs.event(job_id, JobEventType.PROGRESS if ok else JobEventType.WARNING,
+                       {"text": "Scene board ready" if ok else str(result.get("error") or "Part of the board failed"),
+                        "board_id": str(payload.state["board_id"])}, agent=AGENT)
+            if ok:
+                audit("board.paint", "scene_board", str(payload.state["board_id"]), {"job_id": str(job_id)})
+        return {"result": result}
+
     def route(state: State) -> str:
+        if payload.state.get("board_id"):
+            return "board"
         if payload.state.get("reference_entity_id"):
-            return "reference"
+            return "face" if payload.state.get("reference_kind") == "face" else "reference"
         return "look" if payload.state.get("look_id") else "frames"
 
     g: Any = StateGraph(State)
@@ -367,8 +457,10 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
     g.add_node("reference", sheet("Reference sheet ready", "canon.reference_sheet", "canon", "reference_entity_id",
                                   render_reference))
     g.add_node("look", sheet("Look sheet ready", "canon.look_sheet_made", "canon_look", "look_id", render_look))
-    g.add_conditional_edges(START, route, ["frames", "reference", "look"])
-    for node in ("frames", "reference", "look"):
+    g.add_node("face", face)
+    g.add_node("board", board)
+    g.add_conditional_edges(START, route, ["frames", "reference", "look", "face", "board"])
+    for node in ("frames", "reference", "look", "face", "board"):
         g.add_edge(node, END)
     return g.compile()
 

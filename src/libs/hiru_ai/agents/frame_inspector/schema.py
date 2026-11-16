@@ -11,6 +11,8 @@ class Input(BaseModel):
     unseen: list[str] = []  # who must NOT be visible (a voice on a phone)
     frame: str = ""  # the DoP's first frame: composition and subjects
     hands: str = ""  # who holds what ("Anudi holds the open umbrella and the phone, one in each hand"), "" = no check
+    board: bool = False  # painted from a Scene board panel of mannequins (plan/2026-11-14): look for a leftover one
+    state: str = ""  # each person's planned state at the opening ("Nimal lies still, eyes closed"), "" = no check
 
 
 class Output(BaseModel):
@@ -23,3 +25,9 @@ class Output(BaseModel):
         "Each person holds what WHAT EACH PERSON HOLDS says (and nothing listed as not visible is visible). True "
         "when that part is absent."))
     hands_problem: str = Field(default="", description="When hands_match is false: who holds what wrongly, short.")
+    mannequin: bool = Field(default=False, description=(
+        "A mannequin, a plastic figure or a person-shaped figure in one solid colour is visible. False when the "
+        "LOOK FOR A LEFTOVER MANNEQUIN part is absent."))
+    state_match: bool = Field(default=True, description=(
+        "Each person's eyes, posture and condition match PLANNED STATE. True when that part is absent."))
+    state_problem: str = Field(default="", description="When state_match is false: who differs and how, short.")

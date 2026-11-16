@@ -49,6 +49,17 @@ DEFAULT_RESOLUTION = "720p"
 LOCKED_VIDEO_FIELDS = ("engine", "model", "resolution")
 
 
+def version_problem(engine: str, model: str | None) -> str | None:
+    """Why a model a shot or a press picked cannot go with this engine, or None."""
+    cap = capability(engine)
+    ids = [m for _, m in cap.versions]
+    if model is None or model in ids:
+        return None
+    if not ids:
+        return f"{cap.label} has no versions to choose from; its model is the production's."
+    return f"{model} is not a version of {cap.label}. Choose {_or_list(tuple(label for label, _ in cap.versions))}."
+
+
 def final_resolutions(engine: str) -> tuple[str, ...]:
     """The sizes a production on this engine may choose: the engine's, less the draft size."""
     return tuple(r for r in capability(engine).resolutions if r != DRAFT_RESOLUTION)
@@ -106,6 +117,9 @@ class EngineCapability(_Model):
     options: dict[str, OptionSpec] = Field(default_factory=dict)
     verified: bool = False  # True only after one real take on our key (Phase 6)
     notes: str = ""
+    # The versions a person may pick for one press, as (label, model id); the first is `model`. Empty: the model is
+    # the production's alone (Veo).
+    versions: tuple[tuple[str, str], ...] = ()
 
 
 _VEO_OPTIONS = {
@@ -120,6 +134,7 @@ _VEO_OPTIONS = {
 ENGINE_CAPABILITIES: dict[str, EngineCapability] = {
     "omni_flash": EngineCapability(
         key="omni_flash", label="Omni Flash", model="gemini-omni-1.1-flash", api="interactions",
+        versions=(("1.1", "gemini-omni-1.1-flash"), ("1.2", "gemini-omni-1.2-flash")),
         durations=VEO_DURATIONS, aspects=("9:16", "16:9"), resolutions=("360p", "720p", "1080p"), max_refs=10,
         first_frame=True, last_frame=True, refs_with_first_frame=False, seed="none",
         notes="A start frame (and an end frame) OR up to 10 reference pictures cited as <IMAGE_REF_n>, not both."),
@@ -224,15 +239,19 @@ class VideoSettings(_Model):
 
 
 class VideoOverrides(_Model):
-    """A shot's or a run's one-off overrides: only the fields set are used. The model and size are not here: they are
-    the production's (`LOCKED_VIDEO_FIELDS`), so a shot or a press that names one is refused."""
+    """A shot's or a run's one-off overrides: only the fields set are used. The engine and size are not here: they are
+    the production's (`LOCKED_VIDEO_FIELDS`), so a shot or a press that names one is refused. `model` is one of the
+    engine's `versions` (Omni Flash 1.1 / 1.2); any other is a blocking check, never a silent swap."""
 
+    model: str | None = None
     aspect_ratio: str | None = None
     duration_s: int | None = None
     takes: int | None = Field(default=None, ge=1, le=MAX_TAKES_PER_PRESS)
     seed: SeedChoice | None = None
     negative_prompt: str | None = Field(default=None, max_length=2000)
     options: dict[str, OptionValue] = Field(default_factory=dict)
+
+    _check_model = field_validator("model")(lambda cls, v: _model_id(v))
 
 
 class ResolvedSettings(_Model):
@@ -254,9 +273,10 @@ def resolve(production: VideoSettings, shot: VideoOverrides | None, run: VideoOv
     """Merge production → shot → run, field by field, and say where each value came from. Code never moves a
     person's value: one the chosen engine cannot take is a blocking check in `validate_render`, not a silent snap.
 
-    The model and size come from the production alone. A `draft` is `DRAFT_ENGINE` at `DRAFT_RESOLUTION`; when that is
-    another engine than the production's, the production's negative prompt and engine options are not carried over
-    (they belong to its own engine)."""
+    The size comes from the production alone; the model too, unless the shot or the press picks a version (it is
+    applied after the draft's engine, so a draft takes it as well). A `draft` is `DRAFT_ENGINE` at `DRAFT_RESOLUTION`;
+    when that is another engine than the production's, the production's negative prompt and engine options are not
+    carried over (they belong to its own engine)."""
     layers: list[tuple[Source, Any]] = [("production", production)]
     if shot is not None:
         layers.append(("shot", shot))
@@ -288,6 +308,9 @@ def resolve(production: VideoSettings, shot: VideoOverrides | None, run: VideoOv
             sources["negative_prompt"] = "draft"
         values["engine"], values["resolution"] = DRAFT_ENGINE, DRAFT_RESOLUTION
         sources["engine"] = sources["resolution"] = "draft"
+    for src, lay in layers[1:]:
+        if lay.model is not None:
+            values["model"], sources["model"] = lay.model, src
     return ResolvedSettings(options=options, sources=sources, draft=draft, **values)
 
 
@@ -573,9 +596,13 @@ def tags_of(spec: RenderSpec) -> list[str]:
 
 
 def describe_spec(spec: RenderSpec) -> str:
-    """The settings in words, for a take's card: "Omni Flash · 720p · 16:9 · 8 s · 3 pictures · seed 1234"."""
+    """The settings in words, for a take's card: "Omni Flash 1.2 · 720p · 16:9 · 8 s · 3 pictures · seed 1234"."""
     try:
-        label = capability(spec.engine).label
+        cap = capability(spec.engine)
+        label = cap.label
+        version = next((v for v, m in cap.versions if m == spec.model), "")
+        if version:
+            label = f"{label} {version}"
     except ValueError:
         label = spec.engine
     parts = [label, spec.resolution, spec.aspect_ratio, f"{spec.duration_s} s"]

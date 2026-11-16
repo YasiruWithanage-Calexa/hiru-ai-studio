@@ -1,0 +1,33 @@
+{
+  "run": "run_004",
+  "hypothesis": "one storyboard of all 16 shots of an interior scene at medium quality keeps the driver, the van and the phone consistent, numbered per shot",
+  "writer": {
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "usage": {
+      "input": 9932,
+      "output": 5360,
+      "cached": 1592,
+      "reasoning": 2439
+    },
+    "usd": 0.0704,
+    "reused_from": null
+  },
+  "image": {
+    "model": "gpt-image-2",
+    "quality": "medium",
+    "size": "1536x1024",
+    "usage": {
+      "input": 7341,
+      "output": 1372
+    },
+    "usd": 0.1283
+  },
+  "run_usd": 0.1987,
+  "ledger_usd": 1.1147,
+  "references": [
+    "the look sheet for Dinu",
+    "the location plate for Cash Van",
+    "the reference sheet for phone"
+  ]
+}

@@ -198,7 +198,14 @@ def test_the_model_and_size_are_the_productions_and_a_shot_or_a_press_cannot_cha
     assert v["settings"]["resolution"] == "1080p" and v["settings"]["takes"] == 1
 
     director = world.headers(world.director)
-    for locked in ({"engine": "omni_flash"}, {"resolution": "720p"}, {"model": "veo-3.1-generate-002"}):
+    picked = {"model": "veo-3.1-generate-002"}  # Veo has no versions to pick: refused at save, blocking at send
+    assert world.client.put(shot_url(world, s, 1, "/video-settings"), json={"settings": picked},
+                            headers=director).status_code == 422
+    v = plan(world, s, query="?overrides=" + json.dumps(picked))
+    assert not v["ready"] and any("no versions" in c for c in labels(v["checks"], "fail"))
+    assert world.client.post(shot_url(world, s, 1, "/renders"), json={"overrides": picked},
+                             headers=director).status_code == 422
+    for locked in ({"engine": "omni_flash"}, {"resolution": "720p"}):
         assert world.client.put(shot_url(world, s, 1, "/video-settings"), json={"settings": locked},
                                 headers=director).status_code == 422
         assert world.client.get(shot_url(world, s, 1, "/render-plan?overrides=" + json.dumps(locked)),
@@ -249,7 +256,7 @@ def test_a_draft_is_omni_flash_at_360p_whatever_the_productions_model(world: Wor
     (row,) = world.repos.renders.rows.values()  # type: ignore[attr-defined]
     assert row["engine"] == "omni_flash" and row["spec"]["resolution"] == "360p" and row["spec"]["draft"] is True
     assert row["request_hash"] == request_hash(RenderSpec.model_validate(row["spec"]))
-    assert r.json()["renders"][0]["settings_text"].startswith("Draft · Omni Flash · 360p")
+    assert r.json()["renders"][0]["settings_text"].startswith("Draft · Omni Flash 1.1 · 360p")
     assert any(a["action"] == "video.draft" for a in world.repos.audit.entries)  # type: ignore[attr-defined]
     assert len(fired) == 1
 
@@ -717,3 +724,36 @@ def test_the_shot_panel_is_both_plans_and_the_handoff_from_one_load(world: World
     assert panel["handoff"] == world.client.get(shot_url(world, s, 1, "/handoff"), headers=h).json()
     assert world.client.get(shot_url(world, s, 1, "/panel"),
                             headers=world.headers(world.outsider)).status_code == 404
+
+
+def test_the_card_picks_omni_flash_1_2_for_the_take_and_the_draft(world: World, video: Settings, fired: list[dict]):
+    s, _ = ready(world)
+    url = shot_url(world, s, 1, "/render-plans?model=gemini-omni-1.2-flash")
+    both = world.client.get(url, headers=world.headers(world.reviewer)).json()
+    for kind in ("take", "draft"):
+        assert both[kind]["settings"]["model"] == "gemini-omni-1.2-flash", kind
+        assert both[kind]["settings"]["sources"]["model"] == "run" and both[kind]["ready"], kind
+    omni = next(e for e in both["take"]["engines"] if e["key"] == "omni_flash")
+    assert [v["label"] for v in omni["versions"]] == ["1.1", "1.2"]
+
+    r = world.client.post(shot_url(world, s, 1, "/renders"),
+                          json={"overrides": {"model": "gemini-omni-1.2-flash"},
+                                "request_hash": both["take"]["request_hash"]},
+                          headers=world.headers(world.director))
+    assert r.status_code == 202, r.text
+    (row,) = world.repos.renders.rows.values()  # type: ignore[attr-defined]
+    assert row["model"] == row["spec"]["model"] == "gemini-omni-1.2-flash"
+    assert r.json()["renders"][0]["settings_text"].startswith("Omni Flash 1.2 · ")
+
+    bad = world.client.get(shot_url(world, s, 1, "/render-plans?model=gemini-omni-9"),
+                           headers=world.headers(world.reviewer)).json()
+    assert not bad["draft"]["ready"] and any("Choose 1.1 or 1.2" in c for c in labels(bad["draft"]["checks"], "fail"))
+
+
+def test_on_a_veo_production_the_pick_moves_the_draft_only(world: World, video: Settings, fired: list[dict]):
+    s, _ = ready(world)
+    on(world, engine="veo_3_1", resolution="720p")
+    both = world.client.get(shot_url(world, s, 1, "/render-plans?model=gemini-omni-1.2-flash"),
+                            headers=world.headers(world.reviewer)).json()
+    assert both["take"]["settings"]["engine"] == "veo_3_1" and both["take"]["settings"]["sources"]["model"] != "run"
+    assert both["draft"]["settings"]["model"] == "gemini-omni-1.2-flash"

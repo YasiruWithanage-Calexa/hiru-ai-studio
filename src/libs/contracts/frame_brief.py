@@ -23,7 +23,7 @@ from typing import Any
 
 from contracts.camera_words import camera_words, lens_look, lighting_words
 from contracts.camera_words import changed as _changed
-from contracts.canon import look_sheet_path
+from contracts.canon import face_sheet_path, look_sheet_path, sheet_assets
 from contracts.holding import references_for
 from contracts.producer import (
     CAMERA_OPTIONS,
@@ -225,8 +225,9 @@ def weather_phrase(*texts: str) -> str:
 
 
 def sheet_path(row: Mapping[str, Any]) -> str:
-    """The newest reference sheet of a canon entity's current card ("" when none is made)."""
-    assets = (row.get("current") or {}).get("reference_assets") or []
+    """The newest reference sheet of a canon entity's current card ("" when none is made). A face sheet
+    (plan/2026-11-14) is not a reference sheet: `face_sheet_path` finds it."""
+    assets = sheet_assets((row.get("current") or {}).get("reference_assets"))
     first = assets[0] if assets else None
     return str(first.get("path") if isinstance(first, dict) else first or "")
 
@@ -235,10 +236,30 @@ def _label_name(label: str, prefix: str) -> str:
     return re.sub(r"\s*\(.*\)$", "", label[len(prefix):]).strip()
 
 
-def reference_job(label: str) -> str:
+FACE_LABEL = "the face sheet for "
+
+
+def reference_job(label: str, labels: Sequence[str] = (), hair_from_look: Iterable[str] = ()) -> str:
     """What the image model takes from one attached picture, from its label: the faces from a sheet but not its light,
     the place from a plate but not its time of day, the framing and grade from the same-setup frame but not the pose.
-    "" for the approved draft (its own paragraph says what to keep) and for a label this does not know."""
+    "" for the approved draft (its own paragraph says what to keep) and for a label this does not know.
+
+    plan/2026-11-14 §3.1: when a person's face sheet is among `labels`, the face comes ONLY from it and their look sheet
+    gives the clothes alone. Hair (D6) comes from the look when it sets hair (the person's name in `hair_from_look`),
+    else from the face sheet."""
+    faced = {_label_name(x, FACE_LABEL) for x in labels if x.startswith(FACE_LABEL)}
+    hair = set(hair_from_look)
+    if label.startswith(FACE_LABEL):
+        n = _label_name(label, FACE_LABEL)
+        what = "face and age" if n in hair else "face, age and hair"
+        return f"{n}'s {what} at every angle and expression: {n}'s face comes ONLY from this sheet"
+    for prefix in ("the look sheet for ", "the character sheet for "):
+        if label.startswith(prefix) and _label_name(label, prefix) in faced:
+            n = _label_name(label, prefix)
+            if prefix == "the character sheet for ":
+                return f"{n}'s build and body, not the face, clothes, light or backdrop"
+            extra = " and hair" if n in hair else ""
+            return f"{n}'s clothes, shoes and accessories{extra} in this scene, not the face, light or backdrop"
     for prefix, job in (
         ("the look sheet for ", "{n}'s face, body and clothes, not its light or backdrop"),
         ("the character sheet for ", "{n}'s face and body, not its light or backdrop"),
@@ -307,12 +328,16 @@ def setup_frame(shot: Mapping[str, Any], shots: Iterable[Mapping[str, Any]],
 
 def plan_references(scene: Mapping[str, Any], shot: Mapping[str, Any], canon: Sequence[Mapping[str, Any]],
                     on_screen: Sequence[str], looks: Mapping[str, Mapping[str, Any]],
-                    *, setup: SetupFrame | None = None, limit: int = MAX_REFERENCES) -> list[PlannedReference]:
+                    *, setup: SetupFrame | None = None, limit: int = MAX_REFERENCES,
+                    faces: bool = True) -> list[PlannedReference]:
     """The pictures a frame is painted against, in their fixed order: the people the camera SEES, the scene's place,
     another place, what they hold (`contracts.holding.references_for`), then the same-setup frame. A person wearing a
     look is offered the look sheet first, the base sheet next. Someone only heard is never here: their sheet would put
     their face in the frame. Over `limit`, the last ones drop, so the same-setup frame goes before a prop and a prop
-    before a person. An entry with no choices is wanted but has no picture (`missing_references`)."""
+    before a person. An entry with no choices is wanted but has no picture (`missing_references`).
+
+    plan/2026-11-14 §3.1: the face sheet of each person the camera SEES goes FIRST, when one exists (`faces`), on top of
+    `limit`. Someone only heard never gets one."""
     by_id = {str(c["id"]): c for c in canon}
     names = {str(c["id"]): str(c.get("name") or "") for c in canon}
     edits = PersonEdits.of(shot)
@@ -338,7 +363,16 @@ def plan_references(scene: Mapping[str, Any], shot: Mapping[str, Any], canon: Se
     if setup is not None and len(out) < limit:
         out.append(PlannedReference(id=setup.frame_id, role="setup", name=setup.slate,
                                     choices=((f"{SETUP_LABEL} {setup.slate}", setup.path),)))
-    return out
+    if not faces:
+        return out
+    face_refs = []
+    for cid in seen:
+        row = by_id.get(cid)
+        path = face_sheet_path(row) if row and row.get("kind") == "character" else ""
+        if path and cid not in set(edits.cast.remove):
+            face_refs.append(PlannedReference(id=cid, role="face", name=str(row["name"]) if row else "",
+                                              choices=((f"{FACE_LABEL}{row['name'] if row else ''}", path),)))
+    return face_refs + out
 
 
 def missing_references(planned: Sequence[PlannedReference]) -> list[str]:
@@ -356,16 +390,18 @@ def missing_references(planned: Sequence[PlannedReference]) -> list[str]:
     return out
 
 
-def references_block(labels: Sequence[str]) -> list[str]:
+def references_block(labels: Sequence[str], hair_from_look: Iterable[str] = ()) -> list[str]:
     """The sentences that name every attached picture, in order, and say what each is for. Built from the same list
     that is attached, so an attached picture is never left unnamed (it would still steer the frame, with no
-    instruction)."""
+    instruction). `hair_from_look`: the people whose look sets their hair (D6 of plan/2026-11-14)."""
+    hair = list(hair_from_look)
     if not labels:
         return []
     named = "; ".join(f"image {n} is {label}" for n, label in enumerate(labels, start=1))
     parts = [f"Reference images, in order: {named}. Match them exactly: the same faces, hair, skin tone and build, "
              "the same place. Do not redesign anyone."]
-    jobs = [f"image {n}: {job}" for n, label in enumerate(labels, start=1) if (job := reference_job(label))]
+    jobs = [f"image {n}: {job}" for n, label in enumerate(labels, start=1)
+            if (job := reference_job(label, labels, hair))]
     if jobs:
         parts.append("Take from " + "; ".join(jobs) + ".")
     if any(label.startswith(DRAFT_LABEL) for label in labels):
@@ -373,7 +409,14 @@ def references_block(labels: Sequence[str]) -> list[str]:
         parts.append("The approved draft is a rough, low-quality version of this very frame: keep its composition, "
                      "framing, pose, expression, props and light exactly, and paint it again as the finished frame "
                      "with full detail and sharpness. The sheets still decide faces, hair and the place.")
-    if any(label.startswith("the look sheet") for label in labels):
+    faced = any(label.startswith(FACE_LABEL) for label in labels)
+    if faced:  # plan/2026-11-14 §3.1: the face sheet owns the face; the look sheet only dresses the person
+        parts.append("A face sheet shows that person's face at every angle: paint their face, age and features ONLY "
+                     "from it, at this shot's angle and expression, never from a look or character sheet.")
+    if any(label.startswith("the look sheet") for label in labels) and faced:
+        parts.append("A look sheet shows what that person wears in this shot: dress them exactly as their look sheet "
+                     "shows, the same clothes and accessories.")
+    elif any(label.startswith("the look sheet") for label in labels):
         # A look sheet IS the costume of this shot: clothes, hair, makeup and accessories.
         parts.append("A look sheet shows what that person wears in this shot: dress them exactly as their look sheet "
                      "shows, the same clothes, hair, makeup and accessories.")
@@ -388,7 +431,8 @@ def references_block(labels: Sequence[str]) -> list[str]:
 
 # Cut first when the prompt is over `PROMPT_CAP` (D5). Never cut: references, shot, people, place and time, unseen.
 CUT_ORDER = ("mood", "layers", "frame_light", "grade_script")
-TITLES = {"lead": "Lead", "references": "Reference images", "shot": "Shot", "composition": "Composition",
+TITLES = {"lead": "Lead", "references": "Reference images", "board": "Scene board", "shot": "Shot",
+          "composition": "Composition",
           "people": "People", "place": "Place and time", "light": "Light", "colour": "Colour and grade",
           "mood": "Mood", "unseen": "Heard, not seen", "close": "Format"}
 
@@ -462,7 +506,8 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
                 references: list[str] | None = None, recommended: CameraSettings | None = None,
                 recommended_framing: str = "", unseen: str = "", hands: str = "",
                 scene: Mapping[str, Any] | None = None, shot: Mapping[str, Any] | None = None,
-                cap: int = PROMPT_CAP, polished: bool = True, genre: str = "") -> FrameBrief:
+                cap: int = PROMPT_CAP, polished: bool = True, genre: str = "",
+                board: Sequence[str] = ()) -> FrameBrief:
     """The first frame's brief, from the shot's IR, the camera as it stands, the people the camera SEES (`cast`), the
     labels of the pictures attached IN ORDER (`references`), who is only heard (`unseen`,
     `contracts.staging.unseen_sentence`), who holds what (`hands`), and the scene row (heading, time of day, the
@@ -470,7 +515,11 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
     `recommended_framing` is the older way of saying the same for the size alone.
 
     `polished`: use the `prompt_writer`'s wording stored on the shot (`design.frame_polish`) for each section whose code
-    text is still the one it was written from (`contracts.prompt_polish.usable`); False = the code's words only."""
+    text is still the one it was written from (`contracts.prompt_polish.usable`); False = the code's words only.
+
+    `board` (plan/2026-11-14 §3.5): the paragraphs of a frame painted from its Scene board panel
+    (`contracts.board.frame_sections`: the mannequins, the planned state, the scene's world, the panel), right after the
+    references; never cut."""
     if recommended is None and recommended_framing and recommended_framing != camera.framing:
         recommended = camera.model_copy(update={"framing": recommended_framing})
     frame, cine = _frame(ir), _cine(ir)
@@ -478,8 +527,11 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
     sections = {k: BriefSection(k) for k in TITLES}
 
     sections["lead"].add(lead_line(genre), "fixed")
-    for line in references_block(list(references or [])):
+    hair = [c.name for c in cast if re.search(r"(^|; )hair ", c.look or "")]  # D6: the look sets their hair
+    for line in references_block(list(references or []), hair):
         sections["references"].add(line, "attached images")
+    for line in board:
+        sections["board"].add(line, "scene board")
     sections["shot"].add(shot_section(ir, camera, recommended), "camera + ir.cinematography")
 
     composition = sections["composition"]

@@ -168,7 +168,9 @@ def _render(store: Any, cfg: Config, row: Row, *, job_id: str, actor: str, resum
 
     cap = capability(spec.engine)
     built = build_request(spec)
-    if spec.model == cap.model:  # the person did not choose a model: the deploy may (VIDEO__MODELS)
+    # The person did not choose a model: the deploy may (VIDEO__MODELS). An engine with versions (Omni Flash 1.1 / 1.2)
+    # is picked on the card, so its default is a choice too and the deploy never swaps it.
+    if spec.model == cap.model and not cap.versions:
         built["model"] = cfg.models.get(spec.engine, built["model"])
     provider = PROVIDERS[spec.engine]
 

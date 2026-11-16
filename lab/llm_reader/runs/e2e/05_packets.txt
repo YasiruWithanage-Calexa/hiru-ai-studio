@@ -1,0 +1,282 @@
+SCENE E01-S01: SCENE 01 — KASUN'S EVERYDAY LIFE
+Title: KASUN'S EVERYDAY LIFE
+Summary: Kasun serves a morning customer at his modest food vehicle, then privately expresses his ambition to own a restaurant.
+Purpose: Establish Kasun's livelihood, limited resources and determination before his encounter with Anudi.
+Story time: order 1, normal, Early morning; calendar day unspecified.
+After it in the story: E01-S02, opens: A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.
+Thread (setup_payoff): The restaurant ambition is realized as KASUN'S Restaurant. Later: E03-S05: Kasun stands at KASUN'S Restaurant; Anudi explicitly recognizes the fulfilled dream.
+Looks: person Kasun; kind wardrobe; note D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at KASUN'S Restaurant. Earlier individual outfits are unspecified.
+
+PEOPLE
+- Kasun [on_screen] His clothing gradually becomes more polished as the business grows. DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout. | wants: Run his business and eventually expand into a restaurant. | feels: Focused on the morning routine. -> Hopeful despite his limitations.
+- office worker [on_screen] An office worker approaches and orders tea. | wants: Buy tea. | feels: Businesslike. -> Ready to continue on his way.
+
+PLACE: Food three-wheeler (vehicle), zones: counter, road
+THINGS
+- Food three-wheeler [used] start: Kasun end: Kasun
+- short eats [used] start: Kasun end: Kasun
+- flask [used] start: Kasun end: Kasun
+- small counter [used] start: Kasun end: Kasun
+- tea cup [used] start: Kasun end: Kasun
+
+BLOCKS
+E01-S01-B01 action: Early morning in Colombo. The city is waking up. Buses, tuk-tuks, motorcycles and office workers fill the streets.
+    intent: Establish the working city's morning rhythm.
+    event (setup): Morning traffic and pedestrian activity establish the surroundings.
+E01-S01-B02 action: Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea flask and cleans his small counter.
+    intent: Introduce Kasun through practical care for his small operation.
+    event (setup): Kasun gets the food display, tea supply and serving surface ready.
+    stage: person Kasun, zone counter, facing right, frame_side left, holding tea flask, posture standing
+E01-S01-B03 action: An office worker approaches and orders tea.
+    intent: Introduce an ordinary customer transaction.
+    event (texture): A worker comes to the stall to purchase tea.
+    stage: person office worker, zone counter, facing left, frame_side right, posture standing
+E01-S01-B04 action: Kasun smiles and serves him.
+    intent: Show Kasun's welcoming manner.
+    event (texture): Kasun serves the customer's tea with a friendly expression.
+    stage: person office worker, zone counter, facing left, frame_side right, holding tea, posture standing
+E01-S01-B05 action: After the customer leaves, Kasun looks at his small business. He notices the limited space and old equipment but doesn't lose hope.
+    intent: Contrast the business's limitations with Kasun's resilience.
+    event (texture): The customer departs.
+    event (reveal): Kasun surveys the cramped operation and its worn fittings.
+    event (reveal, not visible): His awareness of the limitations does not extinguish his optimism.
+    stage: person office worker, zone off, holding tea
+    stage: person Kasun, zone counter, facing away, frame_side left, holding tea flask, posture standing
+E01-S01-B06 action: He looks toward the busy road and quietly speaks to himself.
+    intent: Prepare a private expression of ambition.
+    event (setup): Kasun turns his gaze toward the passing traffic before speaking.
+    stage: person Kasun, zone counter, facing right, frame_side left, holding tea flask, posture standing
+E01-S01-B07 dialogue Kasun (on_screen): "දවසක මගේම රෙස්ටුරන්ට් එකක් පටන් ගන්නවා."
+    intent: Affirm his ambition to establish his own restaurant.
+    event (reveal): His restaurant ambition becomes explicit.
+E01-S01-B08 action: He smiles and continues working.
+    intent: Return aspiration to everyday effort.
+    event (texture): Kasun returns to his tasks with renewed warmth.
+    stage: person Kasun, zone counter, facing away, frame_side left, holding tea flask, posture standing
+
+FEELING: ordinary, hopeful, modest; turns at E01-S01-B07
+DIRECTION IN SCOPE
+- D01 [general] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.
+- D02 [general] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.
+- D03 [scoped] A romantic montage follows: Anudi visits Kasun after work. Kasun prepares her favourite tea. They spend time talking and laughing. Anudi helps him arrange food containers. Kasun walks with her to her car. They exchange smiles before saying goodbye.
+- D04 [scoped] A sequence of connected moments shows his struggle. He visits a bank and discusses a business loan. He sits with a potential investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required support. The investor doesn't believe the small business can handle such a large order. His friends are unable to help.
+- D09 [general] Kasun maintains the same facial appearance, hairstyle and body type throughout.
+- D10 [general] Anudi maintains the same facial appearance, hairstyle and body type throughout.
+- D11 [general] Anudi's father maintains the same appearance throughout.
+- D12 [scoped] Kasun's three-wheeler remains the same vehicle.
+- D13 [scoped] His early food business remains small and humble.
+- D14 [general] His clothing gradually becomes more polished as the business grows.
+- D16 [general] Maintain authentic Colombo streets, vehicles, homes and environments.
+- D17 [general] Keep performances natural and avoid exaggerated melodrama.
+NOT PLACED: Kasun (no position before block 1); office worker (no position before block 2)
+
+====================================================================================================
+
+SCENE E01-S02: SCENE 02 — ANUDI ARRIVES
+Title: ANUDI ARRIVES
+Summary: Anudi leaves the family car near an office building. Rain starts as she continues past Kasun's food vehicle.
+Purpose: Bring Anudi into Kasun's surroundings and establish the belongings involved in their encounter.
+Story time: order 2, normal
+Before it in the story: E01-S01, ends: He smiles and continues working.
+After it in the story: E01-S03, opens: Anudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.
+Thread (journey): Anudi carries smartphone, loses it unnoticed, and receives it back from Kasun. Later: E01-S03: Falls beside Food three-wheeler; Kasun picks it up and offers it to Anudi.; E01-S04: Anudi takes it back and subsequently receives Father's call.
+Thread (journey): handbag remains with Anudi from leaving Family car to the encounter beside Food three-wheeler. Later: E01-S03: Anudi attempts to put smartphone in handbag.
+Thread (journey): Anudi carries and opens umbrella, retaining it while passing Food three-wheeler. Later: E01-S03: Still held by Anudi beside Food three-wheeler.
+
+PEOPLE
+- Anudi [on_screen] Anudi sits in the back seat, looking at her smartphone. Anudi maintains the same facial appearance, hairstyle and body type throughout. | wants: Reach the nearby building. | feels: Absorbed in her phone. -> Occupied with getting through the rain.
+- driver [on_screen] The driver stops near an office building. | wants: Drop Anudi near her destination. | feels: Attentive to driving. -> Task completed.
+
+PLACE: Family car (vehicle), zones: back seat, driver's seat, roadside
+THINGS
+- Family car [used] start: driver end: driver
+- smartphone [used] start: Anudi end: Anudi
+- handbag [used] start: Anudi end: Anudi
+- umbrella [used] start: Anudi end: Anudi
+- Food three-wheeler [dressing] start: Kasun end: Kasun
+
+BLOCKS
+E01-S02-B01 action: A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.
+    intent: Introduce Anudi within her comfortable daily routine.
+    event (setup): The car travels through the city while Anudi uses her phone in the rear seat.
+    stage: person Anudi, zone back seat, holding smartphone, posture sitting
+    stage: person driver, zone driver's seat, posture sitting
+E01-S02-B02 action: The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building.
+    intent: Move Anudi from the car onto the roadside.
+    event (setup): The driver brings the car to a stop near the office.
+    event (setup): Anudi exits with her belongings, acknowledges the driver and heads toward the building.
+    stage: person Anudi, zone roadside, holding smartphone, handbag, umbrella, posture walking
+E01-S02-B03 action: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.
+    intent: Use the weather to bring Anudi past the food vehicle with her hands occupied.
+    event (turn): Rain starts.
+    event (setup): Anudi raises her umbrella and walks past Kasun's vehicle.
+    stage: person Anudi, zone roadside, holding smartphone, handbag, open umbrella
+
+FEELING: everyday, transitional, rainy; turns at E01-S02-B03
+DIRECTION IN SCOPE
+- D01 [general] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.
+- D02 [general] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.
+- D09 [general] Kasun maintains the same facial appearance, hairstyle and body type throughout.
+- D10 [general] Anudi maintains the same facial appearance, hairstyle and body type throughout.
+- D11 [general] Anudi's father maintains the same appearance throughout.
+- D14 [general] His clothing gradually becomes more polished as the business grows.
+- D16 [general] Maintain authentic Colombo streets, vehicles, homes and environments.
+- D17 [general] Keep performances natural and avoid exaggerated melodrama.
+
+====================================================================================================
+
+SCENE E01-S03: SCENE 03 — THE UNEXPECTED ENCOUNTER
+Title: THE UNEXPECTED ENCOUNTER
+Summary: Anudi drops her phone without noticing. Kasun retrieves it, calls after her and offers it back.
+Purpose: Create their first direct contact through Kasun's helpful response.
+Story time: order 3, normal, Continues E01-S02. (from E01-S02)
+Before it in the story: E01-S02, ends: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.
+After it in the story: E01-S04, opens: Anudi takes her phone from Kasun.
+Thread (journey): Anudi carries smartphone, loses it unnoticed, and receives it back from Kasun. Later: E01-S04: Anudi takes it back and subsequently receives Father's call.
+Thread (journey): handbag remains with Anudi from leaving Family car to the encounter beside Food three-wheeler.
+Thread (journey): Anudi carries and opens umbrella, retaining it while passing Food three-wheeler.
+Looks: person Kasun; kind wardrobe; note D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at KASUN'S Restaurant. Earlier individual outfits are unspecified.
+
+PEOPLE
+- Anudi [on_screen] Anudi maintains the same facial appearance, hairstyle and body type throughout. | wants: Continue toward her destination while putting her phone away. | feels: Preoccupied. -> Alert to Kasun's call.
+- Kasun [on_screen] His clothing gradually becomes more polished as the business grows. DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout. | wants: Return the dropped phone to its owner. | feels: Observant. -> Intent on helping her.
+
+PLACE: Colombo roadside (set), zones: three-wheeler, roadside
+THINGS
+- smartphone [hero] start: Anudi end: Kasun
+- handbag [used] start: Anudi end: Anudi
+- umbrella [used] start: Anudi end: Anudi
+- Food three-wheeler [dressing] start: Kasun end: Kasun
+
+BLOCKS
+E01-S03-B01 action: Anudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.
+    intent: Establish the awkward handling that precedes the loss.
+    event (setup): Passing the stall under her umbrella, Anudi attempts to stow the phone in her bag's outer pocket.
+    stage: person Anudi, zone roadside, facing right, frame_side right, holding umbrella, smartphone, posture walking
+    stage: person Kasun, zone three-wheeler, frame_side left
+E01-S03-B02 action: As she slips the phone into the bag, it accidentally slips from her hand and falls onto the roadside. Anudi doesn't notice and continues walking.
+    intent: Separate Anudi from her phone without her awareness.
+    event (turn): The phone misses the pocket and lands on the roadside as Anudi keeps moving.
+    event (setup, not visible): Anudi remains unaware that she has lost the phone.
+    stage: person Anudi, zone roadside, facing right, frame_side right, holding umbrella, posture walking
+E01-S03-B03 action: Kasun notices the phone lying on the ground. He quickly picks it up and runs after her.
+    intent: Show Kasun acting immediately to help.
+    event (turn): Kasun spots the fallen phone, retrieves it and hurries after Anudi.
+    stage: person Kasun, zone roadside, facing right, frame_side left, holding smartphone, posture running
+E01-S03-B04 dialogue Kasun (on_screen): "මිස්! මිස්! ඔයාගේ ෆෝන් එක!"
+    intent: Get her attention and identify what she has dropped.
+    event (turn): Kasun calls Anudi back about her phone.
+E01-S03-B05 action: Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+    intent: Bring the two into a face-to-face exchange.
+    event (setup): Anudi turns toward Kasun, who reaches her and extends the recovered phone.
+    stage: person Anudi, zone roadside, facing left, frame_side right, holding umbrella, posture standing
+    stage: person Kasun, zone roadside, facing right, frame_side left, holding smartphone, held out toward Anudi, posture walking
+
+FEELING: accidental, brisk, kindly; turns at E01-S03-B02, E01-S03-B03, E01-S03-B04
+DIRECTION IN SCOPE
+- D01 [general] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.
+- D02 [general] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.
+- D05 [scoped] Silence.
+- D09 [general] Kasun maintains the same facial appearance, hairstyle and body type throughout.
+- D10 [general] Anudi maintains the same facial appearance, hairstyle and body type throughout.
+- D11 [general] Anudi's father maintains the same appearance throughout.
+- D14 [general] His clothing gradually becomes more polished as the business grows.
+- D16 [general] Maintain authentic Colombo streets, vehicles, homes and environments.
+- D17 [general] Keep performances natural and avoid exaggerated melodrama.
+
+====================================================================================================
+
+SCENE E01-S04: SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING
+Title: A CONVERSATION THAT CHANGES EVERYTHING
+Summary: Returning the phone leads to a warm exchange about Kasun's business. Her father's call about marriage changes Anudi's mood and ends the meeting.
+Purpose: Establish mutual interest and Kasun's ambition while introducing the family pressure that interrupts their connection.
+Story time: order 4, normal, Continues E01-S03. (from E01-S03)
+Before it in the story: E01-S03, ends: Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+After it in the story: E02-S01, opens: A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar voice interrupts him.
+Thread (journey): Anudi carries smartphone, loses it unnoticed, and receives it back from Kasun.
+Looks: person Kasun; kind wardrobe; note D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at KASUN'S Restaurant. Earlier individual outfits are unspecified.
+
+PEOPLE
+- Anudi [on_screen] Anudi maintains the same facial appearance, hairstyle and body type throughout. | wants: Thank Kasun and learn about him, then respond to her father's demand. | feels: Grateful and receptive. -> Subdued but open to meeting Kasun again.
+- Kasun [on_screen] His clothing gradually becomes more polished as the business grows. DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout. | wants: Return her phone and answer her interest in his work. | feels: Friendly and helpful. -> Distracted by the encounter and her change in mood.
+- Father [phone] Anudi's father maintains the same appearance throughout. | wants: Have Anudi return home for a discussion about her marriage. | feels: Urgent and directive. -> Expecting her return.
+
+PLACE: Colombo roadside (set), zones: roadside, food business
+THINGS
+- smartphone [hero] start: Kasun end: Anudi
+- handbag [used] start: Anudi end: Anudi
+- umbrella [used] start: Anudi end: Anudi
+- Food three-wheeler [used] start: Kasun end: Kasun
+
+BLOCKS
+E01-S04-B01 action: Anudi takes her phone from Kasun.
+    intent: Complete the return that initiates their conversation.
+    event (setup): The phone passes from Kasun back to Anudi.
+    stage: person Anudi, zone roadside, facing right, frame_side left, holding her phone, posture standing
+    stage: person Kasun, zone roadside, facing left, frame_side right, posture standing
+E01-S04-B02 dialogue Anudi (on_screen): "අනේ, Thank you! මම දැක්කෙවත් නෑ."
+    intent: Thank him and acknowledge that she missed the accident.
+    event (texture): Anudi responds warmly to his help.
+E01-S04-B03 dialogue Kasun (on_screen): "වැස්ස නිසා වෙන්න ඇති."
+    intent: Put her at ease by attributing the mishap to the weather.
+    event (texture): Kasun offers an undemanding explanation for the accident.
+E01-S04-B04 action: Anudi smiles and looks at his small food business.
+    intent: Shift her attention from the returned phone to Kasun's livelihood.
+    event (setup): Anudi notices the business with friendly curiosity.
+E01-S04-B05 dialogue Anudi (on_screen): "මේ ඔයාගේ බිස්නස් එකද?"
+    intent: Find out whether the business belongs to him.
+    event (turn): The exchange becomes a personal conversation about his work.
+E01-S04-B06 dialogue Kasun (on_screen): "ඔව්. පොඩියට පටන් ගත්තේ."
+    intent: Confirm ownership while acknowledging the modest beginning.
+    event (reveal): Anudi learns that Kasun owns the small operation.
+E01-S04-B07 dialogue Anudi (on_screen): "තනියමද මේ හැමදේම කරන්නේ?"
+    intent: Learn whether he manages all the work himself.
+    event (texture): Anudi asks about his responsibility for the operation.
+E01-S04-B08 dialogue Kasun (on_screen): "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව."
+    intent: Explain his independent start with five thousand rupees and his wish to grow.
+    event (reveal): Anudi learns his starting resources, solitary workload and ambition.
+E01-S04-B09 action: Anudi looks impressed.
+    intent: Register her admiration before the interruption.
+    event (reveal): Anudi's response shows that his account has impressed her.
+E01-S04-B10 action: Before she can continue the conversation, her phone suddenly rings. She checks the screen. It's her father.
+    intent: Interrupt the growing connection with family demands.
+    event (turn): An incoming call interrupts Anudi, and she identifies her father on the display.
+E01-S04-B11 dialogue Anudi (on_screen, P02): "හෙලෝ තාත්තේ."
+    intent: Answer her father.
+    event (setup): Anudi begins the phone conversation.
+E01-S04-B12 dialogue Father (phone, P02): "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා."
+    intent: Locate Anudi and summon her home to discuss her marriage.
+    event (turn, not visible): Anudi learns that her father expects an urgent discussion about marriage.
+E01-S04-B13 action: Anudi's smile slowly disappears.
+    intent: Show the emotional cost of the call.
+    event (reveal): Anudi's earlier smile fades.
+E01-S04-B14 dialogue Anudi (on_screen, P02): "හරි තාත්තේ. මම එන්නම්."
+    intent: Agree to return.
+    event (turn): Anudi tells her father that she will come.
+E01-S04-B15 action: She ends the call. Kasun notices her changed expression. Anudi looks at him again.
+    intent: Return to their shared space with the interruption still affecting her.
+    event (setup): Anudi disconnects and turns her attention back to Kasun.
+    event (reveal): Kasun registers the difference in her expression.
+E01-S04-B16 dialogue Anudi (on_screen): "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු."
+    intent: Take her leave while keeping open the possibility of another meeting.
+    event (turn): Anudi ends the encounter with an invitation to meet again.
+E01-S04-B17 dialogue Kasun (on_screen): "හරි. පරිස්සමින් යන්න."
+    intent: Accept her departure and wish her well.
+    event (texture): Kasun responds with a caring farewell.
+E01-S04-B18 action: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else.
+    intent: Leave the encounter resonating after Anudi departs.
+    event (texture): Anudi walks away while Kasun watches, then he returns to the stall.
+    event (reveal, not visible): Kasun remains mentally distracted after resuming his routine.
+    stage: person Anudi, zone roadside, facing away, frame_side left, holding her phone, posture walking
+    stage: person Kasun, zone food business, facing away, frame_side right, posture walking
+
+FEELING: warm, curious, interrupted, reflective; turns at E01-S04-B05, E01-S04-B10, E01-S04-B12, E01-S04-B14, E01-S04-B16
+DIRECTION IN SCOPE
+- D01 [general] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.
+- D02 [general] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.
+- D09 [general] Kasun maintains the same facial appearance, hairstyle and body type throughout.
+- D10 [general] Anudi maintains the same facial appearance, hairstyle and body type throughout.
+- D11 [general] Anudi's father maintains the same appearance throughout.
+- D14 [general] His clothing gradually becomes more polished as the business grows.
+- D16 [general] Maintain authentic Colombo streets, vehicles, homes and environments.
+- D17 [general] Keep performances natural and avoid exaggerated melodrama.

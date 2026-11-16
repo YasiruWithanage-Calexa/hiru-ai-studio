@@ -251,6 +251,17 @@ class FrameStore(Protocol):
     def finish_look_sheet(self, look_id: str, assets: list[Any]) -> None: ...
     def audit(self, row: Row) -> None: ...
 
+    # The Scene board (plan/2026-11-14): `scene_boards` rows, one per scene, version and part.
+    def board(self, board_id: str) -> Row | None: ...
+    def boards(self, scene_id: str) -> list[Row]:
+        """Every board row of the scene, oldest version first."""
+
+    def create_boards(self, rows: list[Row]) -> None: ...
+    def claim_board(self, board_id: str) -> bool:
+        """queued -> running, or False when another delivery already has it (a board is paid for once)."""
+
+    def save_board(self, board_id: str, fields: Row) -> None: ...
+
     def frame_status(self, production_id: UUID, shot_ids: list[str] | None = None,
                      codes: list[str] | None = None) -> Row:
         """What exists, never where it is stored: `{"frames": [...], "sheets": [...]}`. `frames` are the first frames of
@@ -318,10 +329,12 @@ class ImageFailed(Exception):
 class ImageGen(Protocol):
     """Paint one picture from a prompt and labelled reference images, sent in the order the prompt numbers them.
     `draft` paints it at the draft quality (low): the cheap try a person settles the picture with. `sheet` paints a
-    canon reference sheet or a look sheet at the sheet quality (low)."""
+    canon reference sheet or a look sheet at the sheet quality (low). `quality` names the quality outright (a
+    Scene board at low or medium, a face sheet at medium: plan/2026-11-14), over both. `mask` (PNG bytes, the size of
+    the FIRST reference) limits the edit to its transparent part: a board's changed panels repainted, the rest kept."""
 
     def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
-                 sheet: bool = False) -> Picture: ...
+                 sheet: bool = False, quality: str = "", mask: bytes | None = None) -> Picture: ...
 
 
 class Jobs(Protocol):
