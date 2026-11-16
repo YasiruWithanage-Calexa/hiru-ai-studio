@@ -169,3 +169,21 @@ def test_a_face_sheet_is_asked_for_by_canon_editors_and_shown_beside_the_sheet(w
     entity = next(e for e in world.client.get(canon_url(world), headers=editor).json() if e["id"] == kamala)
     assert entity["face_sheet_url"] and entity["reference_sheet_url"] != entity["face_sheet_url"], \
         "the face sheet is never taken for the base sheet"
+
+
+def test_the_board_view_says_its_shape_and_when_it_is_not_the_productions():
+    """2026-11-16: a vertical production paints tall boards; a board painted wide before stays usable, with a note."""
+    from uuid import uuid4
+
+    from api.routers.boards import board_view
+
+    sid = uuid4()
+    wide = {"id": str(uuid4()), "version": 1, "part": 1, "parts": 1, "status": "done", "cells": [],
+            "prompt": "... Every panel is a landscape 16:9 still of the same size ..."}
+    tall = dict(wide, prompt="... Every panel is a tall portrait 9:16 still of the same size ...")
+    assert board_view(sid, [], [], "9:16").aspect == "9:16", "no board yet: the production's shape"
+    old = board_view(sid, [wide], [], "9:16")
+    assert old.aspect == "16:9" and old.wrong_shape, "an old wide board on a vertical production"
+    new = board_view(sid, [tall], [], "9:16")
+    assert new.aspect == "9:16" and not new.wrong_shape
+    assert not board_view(sid, [wide], []).wrong_shape, "a wide production's board is right"

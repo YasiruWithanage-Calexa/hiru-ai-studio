@@ -117,13 +117,38 @@ def test_a_frame_from_a_panel_names_people_keeps_their_state_and_drops_the_board
     sections = kit.frame_sections(w, 1, {"Nimal": "red", "Aruni": "blue"}, ["Aruni kneels at the gate."],
                                   faced=["Nimal"])
     text = " ".join(sections)
-    assert "Nimal is the red mannequin" in sections[0] and "face sheet" in sections[0]
-    assert "Aruni kneels at the gate." in sections[1] and "Nimal: eyes closed, still." in sections[1]
+    assert sections[0] == kit.STAND_INS, "the stand-in rule comes first"
+    assert "Nimal is the red mannequin" in sections[1] and "face sheet" in sections[1]
+    assert "Aruni kneels at the gate." in sections[2] and "Nimal: eyes closed, still." in sections[2]
     assert "This shot: Wide camera 1." in text and "Nimal lies still; Aruni kneels" in text
-    assert "grid" not in sections[2] and "gutters" not in sections[2], "the board's own words never reach a frame"
+    assert "grid" not in sections[3] and "gutters" not in sections[3], "the board's own words never reach a frame"
     assert kit.state_line(["Nimal lies still, eyes closed."], [kit.PanelPerson("Nimal", "eyes closed")]).count(
         "eyes closed") == 1, "a state the plan already says is not said twice"
     assert kit.frame_sections(w, 9, {}, []) == []
+
+
+def test_a_tall_production_paints_a_tall_board_in_smaller_parts():
+    """2026-11-16 (lab/portrait_board run_001): a vertical production's board is a 9:16 sheet of tall panels."""
+    assert kit.board_aspect("9:16") == "9:16" and kit.board_aspect("16:9") == kit.board_aspect(None) == "16:9"
+    w = writer([1, 2, 3])
+    tall = kit.board_prompt(w, [1, 2, 3], [], {}, "9:16")
+    wide = kit.board_prompt(w, [1, 2, 3], [], {})
+    assert "Every panel is a tall portrait 9:16 still" in tall and "landscape" not in tall
+    assert "Every panel is a landscape 16:9 still" in wide, "a wide board keeps its words"
+    assert kit.aspect_of_board({"prompt": tall}) == "9:16"
+    assert kit.aspect_of_board({"prompt": wide}) == kit.aspect_of_board({}) == "16:9", "older boards are wide"
+    assert kit.parts_of(list(range(9)), "9:16") == [list(range(9))]
+    parts = kit.parts_of(list(range(16)), "9:16")
+    assert [len(p) for p in parts] == [9, 8] and parts[0][-1] == parts[1][0], "one overlap panel"
+    assert kit.parts_of(list(range(16))) == [list(range(16))], "a wide board still holds 16"
+
+
+def test_a_figure_no_colour_names_becomes_a_person():
+    """lab/portrait_board run_001: the panel's "grey pedestrian mannequins" were painted into the frame as such."""
+    out = kit.unmannequin("Two small neutral-grey pedestrian mannequins stand on the right pavement; a grey mannequin "
+                          "sits; three mannequins wait. The red mannequin pours.", {"Nimal": "red"})
+    assert out == "Two pedestrians stand on the right pavement; a person sits; three people wait. Nimal pours."
+    assert "mannequin" not in out
 
 
 def test_unmannequin_turns_colours_back_into_people():

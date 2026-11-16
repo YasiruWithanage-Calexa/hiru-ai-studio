@@ -111,13 +111,20 @@ def test_the_provider_gets_pictures_in_the_persons_order_with_their_bytes(provid
 
 
 def test_the_deploy_may_choose_a_model_the_person_did_not_but_never_overrides_one_they_chose(provider):
-    row = render_row(make_spec([]))
-    assert run(FakeStore(row), row, fake_provider=False, models={"omni_flash": "gemini-omni-1.2-flash"}) == "done"
-    assert provider.calls[0][0]["model"] == "gemini-omni-1.2-flash"
+    row = render_row(make_spec([], engine="veo_3_1"))
+    assert run(FakeStore(row), row, fake_provider=False, models={"veo_3_1": "veo-3.1-generate-002"}) == "done"
+    assert provider.calls[0][0]["model"] == "veo-3.1-generate-002"
 
-    chosen = render_row(make_spec([], model="gemini-omni-9"))
-    assert run(FakeStore(chosen), chosen, fake_provider=False, models={"omni_flash": "gemini-omni-1.2-flash"}) == "done"
-    assert provider.calls[1][0]["model"] == "gemini-omni-9"
+    chosen = render_row(make_spec([], engine="veo_3_1", model="veo-9"))
+    assert run(FakeStore(chosen), chosen, fake_provider=False, models={"veo_3_1": "veo-3.1-generate-002"}) == "done"
+    assert provider.calls[1][0]["model"] == "veo-9"
+
+
+def test_an_omni_version_is_the_persons_pick_and_the_deploy_never_swaps_it(provider):
+    for picked in ("gemini-omni-1.1-flash", "gemini-omni-1.2-flash"):
+        row = render_row(make_spec([], model=picked))
+        assert run(FakeStore(row), row, fake_provider=False, models={"omni_flash": "gemini-omni-9"}) == "done"
+        assert provider.calls[-1][0]["model"] == picked
 
 
 def test_veo_seconds_become_the_hidden_usage_equivalent(provider):

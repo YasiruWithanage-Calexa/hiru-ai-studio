@@ -298,3 +298,51 @@ def test_the_build_keeps_the_canon_map_and_puts_the_scene_s_canon_on_its_packet(
         assert canon[bd.canon_ids[e.id]]["kind"] == kinds[e.kind]
     packets = [r["packet"] for r in ctx.ports.breakdown.packets.values() if r.get("packet")]
     assert packets and all(set(p["canon"]) == {"place", "people", "things", "spots"} for p in packets)
+
+
+# ── plan/2026-11-15: the reading and its gates in the build ─────────────────────────────────────────────────────
+
+
+def _reading_world():
+    from tests.breakdown.test_reading_run import CASE
+
+    ctx, payload = _world()
+    ctx.ports.docs.texts["t/ekama.txt"] = chr(10).join(CASE["lines"])
+    return ctx, payload
+
+
+def test_a_missing_length_pauses_the_build_on_an_open_question_and_the_answer_resumes_it(monkeypatch):
+    from tests.breakdown.test_reading_run import Scripted as ReadingScripted
+
+    ctx, payload = _reading_world()
+    scripted = ReadingScripted()
+    monkeypatch.setattr(graph, "calls", lambda _ctx: scripted.calls())
+    with use_models(ScriptedChatModel(replies=[])):
+        first = graph.run(payload, ctx)
+    jobs, structure = ctx.ports.jobs, ctx.ports.structure
+    assert first == {"waiting": 1} and jobs.status == "waiting_input"
+    (q,) = structure.question_rows.values()
+    assert q["status"] == "open" and q["key"] == "breakdown:length:11111111:E01-S02" and q["allow_text"]
+    assert scripted.asked["split"] == []  # nothing past the reading was paid for
+    q.update(status="answered", answer={"text": "25"})  # what the API writes; it then re-sends this hop
+    with use_models(ScriptedChatModel(replies=[])):
+        graph.run(payload.model_copy(update={"state": {"resume": True}}), ctx)
+    assert jobs.status != "waiting_input" and len(scripted.asked["split"]) == 1
+    bd, _, _ = graph.load(ctx, PID)  # the scripted episode call fails, so no row is written: the memory shows it
+    assert [sc.heading for sc in bd.scenes] == ["SCENE 01 — KASUN'S EVERYDAY LIFE", "SCENE 02 — ANUDI ARRIVES"]
+    from contracts.breakdown import fill
+
+    assert [fill.envelope_of(sc) for sc in bd.scenes] == [30, 25]  # the document's 0.5 minutes, the person's 25 s
+
+
+def test_damaged_letters_fail_the_job_with_the_gate_s_words(monkeypatch):
+    from tests.breakdown.test_reading_run import STORY
+    from tests.breakdown.test_reading_run import Scripted as ReadingScripted
+
+    ctx, payload = _reading_world()
+    damaged = {**STORY, "text_quality": {"readable": False, "problems": []}}
+    monkeypatch.setattr(graph, "calls", lambda _ctx: ReadingScripted(probe=damaged).calls())
+    with use_models(ScriptedChatModel(replies=[])):
+        out = graph.run(payload, ctx)
+    assert ctx.ports.jobs.status == "failed" and "Unicode Sinhala font" in out["failed"]
+

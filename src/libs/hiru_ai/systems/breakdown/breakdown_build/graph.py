@@ -51,7 +51,7 @@ from contracts.canon import (
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.production import ProductionSettings
 from contracts.veo import ASPECT_RATIO, Orientation
-from hiru_ai.core import agents, doc_reader, llm, parts
+from hiru_ai.core import agents, llm, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -80,7 +80,39 @@ def calls(ctx: RunContext) -> brun.Calls:
         episode=_ask("breakdown_episode", ctx),
         repair=_ask("breakdown_repair", ctx),
         series=_ask("breakdown_series", ctx),  # plan/2026-11-12b: what the drama is
+        probe=_ask("breakdown_probe", ctx),  # plan/2026-11-15: the model reads every fact; the gates decide
+        read=_ask("breakdown_read", ctx),
     )
+
+
+def answers_of(ctx: RunContext, job_id: UUID | None) -> dict[str, dict[str, Any]]:
+    """What people answered on this build's questions (a resumed build), by key."""
+    if job_id is None:
+        return {}
+    return {str(r["key"]): r["answer"] for r in ctx.need("structure").answers(job_id)
+            if r.get("status") == QuestionStatus.ANSWERED.value and r.get("answer")}
+
+
+def open_question_rows(job_id: UUID, production_id: UUID, asks: list[Any]) -> list[Row]:
+    """plan/2026-11-15 phase 6: the gates' questions, OPEN on the build's question channel; the API resumes the build
+    when the last is answered (decision D3: the roles that hold `answer_questions`)."""
+    return [
+        {
+            "id": str(UUID(hashlib.md5(f"{job_id}:{q.key}".encode()).hexdigest())),  # noqa: S324 (an id)
+            "production_id": str(production_id),
+            "job_id": str(job_id),
+            "key": q.key,
+            "agent": AGENT,
+            "scope": "scene" if ":length:" in q.key else "documents",
+            "title": q.title[:200],
+            "body": q.body[:2000],
+            "options": q.options,
+            "allow_text": q.allow_text,
+            "status": QuestionStatus.OPEN.value,
+            "answer": None,
+        }
+        for q in asks
+    ]
 
 
 # ── loading and saving the memories ─────────────────────────────────────────────────────────────────────────────
@@ -299,15 +331,9 @@ def fill_columns(
 
 
 def _text_of(ctx: RunContext, d: Row) -> tuple[str, str]:
-    """The document's text and how it was read: a 'pages' reading's clean transcription, else its text layer."""
-    docs = ctx.need("docs")
-    if d.get("read_from") == "pages":
-        read = doc_reader.load(ctx, d)
-        if read is not None and read.transcription:
-            from contracts.doc_read_run import transcribed_text
-
-            return transcribed_text(read, int(d.get("page_count") or 0)), "pages"
-    return docs.text(str(d["text_path"])), "text"
+    """The document's text layer (plan/2026-11-15, D6): the extractor honours /ActualText, and a layer whose letters are
+    still damaged stops at the probe's gate 0; no model's transcription stands in for the document's own words."""
+    return ctx.need("docs").text(str(d["text_path"])), "text"
 
 
 def build(
@@ -343,11 +369,21 @@ def build(
             production=str(production_id),
             workers=workers,
             progress=say,
+            default_s=envelope_s,
+            answers=answers_of(ctx, job_id),
         )
-        for note in res.notes:
+        for note in [*res.notes, *res.warnings]:
             jobs.event(job_id, JobEventType.WARNING, {"text": note}, agent=AGENT)
+        if res.questions and job_id is not None:  # plan/2026-11-15 phase 6: the build waits for a person
+            ctx.need("structure").upsert_questions(open_question_rows(job_id, production_id, res.questions))
+            jobs.event(job_id, JobEventType.AGENT_STEP, {
+                "text": f"{len(res.questions)} {'question' if len(res.questions) == 1 else 'questions'} to answer "
+                        "before the build goes on: the documents do not say everything the build needs."},
+                agent=AGENT)
+            jobs.stage(job_id, Stage.EPISODES.value, "active", "Waiting for answers")
+            return {"waiting": len(res.questions)}
         if res.memory is None:
-            return {"failed": f"The documents could not be broken down: {res.failed}."}
+            return {"failed": f"The documents could not be broken down: {res.failed}"}
         store = ctx.need("breakdown")
         for s in res.sources:
             store.save_source(production_id, s.document_id, s.filename, s.model_dump(mode="json"))
@@ -356,7 +392,7 @@ def build(
         return {"memory": bd.model_dump(mode="json")}
 
     def fill_node(state: State) -> State:
-        if state.get("failed"):
+        if state.get("failed") or state.get("waiting"):
             return {}
         jobs.stage(job_id, Stage.SCENES.value, "active")
         bd = Breakdown.model_validate(state["memory"])
@@ -392,7 +428,7 @@ def build(
 
     def refine_node(state: State) -> State:
         """The refine branch's two calls, beside fill. Nothing is written here."""
-        if state.get("failed") or not get_settings().breakdown.refine:
+        if state.get("failed") or state.get("waiting") or not get_settings().breakdown.refine:
             return {}
         try:
             mod = parts.module("system", "breakdown_canon_refine", "graph")
@@ -409,7 +445,7 @@ def build(
 
     def refine_apply(state: State) -> State:
         """The join: fill has written the canon and the scene rows; the answers are mapped to them and written."""
-        if not state.get("refined") or state.get("failed"):
+        if not state.get("refined") or state.get("failed") or state.get("waiting"):
             return {}
         try:
             mod = parts.module("system", "breakdown_canon_refine", "graph")
@@ -599,6 +635,9 @@ def run(payload: DispatchPayload, ctx: RunContext) -> Row:
     if final.get("failed"):
         jobs.set(job_id, JobStatus.FAILED, error=final["failed"])
         return {"failed": final["failed"]}
+    if final.get("waiting"):  # plan/2026-11-15: the API re-sends this hop when the last question is answered
+        jobs.set(job_id, JobStatus.WAITING_INPUT)
+        return {"waiting": final["waiting"]}
     report = dict(final.get("report") or {})
     carry["scene_ids"] = [] if not settings.build.shots else report.get("scene_ids", [])
     result = {k: v for k, v in report.items() if k not in ("scene_ids", "deleted_scenes")}

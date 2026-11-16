@@ -1,0 +1,2417 @@
+{
+ "message": "CARDS\nC01 [person] Kasun - details: His business has started growing. He is now supplying food to three small shops.; wardrobe: His clothing gradually becomes more polished as the business grows.; appearance: DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout.\nC02 [person] Anudi - details: Anudi sits in the back seat, looking at her smartphone.; appearance: Anudi maintains the same facial appearance, hairstyle and body type throughout.\nC03 [person] Father - look: Her father enters the living room with a serious expression.; appearance: Anudi's father maintains the same appearance throughout.\nC04 [person] office worker - details: An office worker approaches and orders tea.\nC05 [person] driver - details: The driver stops near an office building.\nC06 [person] representative - details: A representative from a major supermarket chain is on the other end.\nC07 [person] investor - details: He sits with a potential investor and explains his business plan.\nC08 [person] friends - details: His friends are unable to help.\nC09 [person] Staff members - details: Staff members are serving customers.\nC10 [person] customers - details: Staff members are serving customers.\nL01 [place, region] Colombo - details: The city is waking up.; look: Maintain authentic Colombo streets, vehicles, homes and environments.\nL02 [place, set in L01] Colombo roadside\nL03 [place, vehicle in L01] Food three-wheeler - details: Kasun's three-wheeler remains the same vehicle.; look: His early food business remains small and humble.\nL04 [place, vehicle in L01] Family car - look: Location: Colombo road – Family car and roadside Duration: 0.38 minutes A comfortable family car moves through Colombo traffic.; details: Anudi sits in the back seat, looking at her smartphone.\nL05 [place, vehicle in L01] father's car - details: Her father's car passes by.\nL06 [place, set in L01] Anudi's family home\nL07 [place, spot in L06] Living room\nL08 [place, set in L01] Kasun's small food preparation workspace - details: Kasun is working in his small rented workspace.\nL09 [place, set in L01] bank - details: He visits a bank and discusses a business loan.\nL10 [place, spot in L06] Bedroom\nL11 [place, set in L01] KASUN'S Restaurant - look: The interior has warm lighting, wooden tables and Sri Lankan-inspired design.\nL12 [place, spot in L11] entrance\nP01 [thing] flask\nP02 [thing] smartphone - details: She tries to put her smartphone into the side pocket of her handbag.\nP03 [thing] handbag - details: She tries to put her smartphone into the side pocket of her handbag.\nP04 [thing] umbrella - details: Anudi gets out, carrying her handbag and umbrella.\nP05 [thing] food containers - details: Anudi helps him arrange food containers.\nP06 [thing] notebook - details: He checks his orders, calculates expenses and writes figures in a notebook.\nP07 [thing] Kasun's phone - details: He makes phone calls to friends asking for financial support.\nP08 [thing] business documents - details: He reviews his business documents and calculations late at night.\nP09 [thing] supermarket order - details: He sits alone at the desk, looking at the supermarket order and the financial calculations.\nP10 [thing] photograph - details: She looks at a photograph of herself and Kasun.\nP11 [thing] envelope - details: He opens the envelope and sees the cheque.\nP12 [thing] bag - details: He takes an envelope from his bag and places it on the table.\nP13 [thing] cheque - details: He opens the envelope and sees the cheque.\nP14 [thing] short eats\nP15 [thing] small counter\n\nDIRECTION RULES\nD01 [other, all scenes] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.\nD02 [editing, all scenes] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.\nD03 [editing, scene 1] A romantic montage follows: Anudi visits Kasun after work. Kasun prepares her favourite tea. They spend time talking and laughing. Anudi helps him arrange food containers. Kasun walks with her to her car. They exchange smiles before saying goodbye.\nD04 [editing, scene 1] A sequence of connected moments shows his struggle. He visits a bank and discusses a business loan. He sits with a potential investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required support. The investor doesn't believe the small business can handle such a large order. His friends are unable to help.\nD05 [sound, scene 3] Silence.\nD06 [lighting, scene 5] The interior has warm lighting, wooden tables and Sri Lankan-inspired design.\nD07 [lens, scene 5] The camera slowly pulls back, revealing the restaurant and its customers.\nD08 [editing, scene 5] FINAL TEXT ON SCREEN: \"සමහර ආදර කතාවලට සල්ලි ඕනේ නෑ. තමන්ගේ හීන විශ්වාස කරන කෙනෙක් හිටියම ඇති.\"\nD09 [other, all scenes] Kasun maintains the same facial appearance, hairstyle and body type throughout.\nD10 [other, all scenes] Anudi maintains the same facial appearance, hairstyle and body type throughout.\nD11 [other, all scenes] Anudi's father maintains the same appearance throughout.\nD12 [other, place L03] Kasun's three-wheeler remains the same vehicle.\nD13 [other, place L03] His early food business remains small and humble.\nD14 [other, all scenes] His clothing gradually becomes more polished as the business grows.\nD15 [other, place L11] The final restaurant must visually feel like the successful evolution of his original business.\nD16 [other, all scenes] Maintain authentic Colombo streets, vehicles, homes and environments.\nD17 [action, all scenes] Keep performances natural and avoid exaggerated melodrama.\n\nCONTINUITY\n{\"synopses\": [{\"episode\": 1, \"text\": \"C01 dreams of owning L11 while running L03. Returning C02's P02 sparks a connection, interrupted by C03's demand to discuss her marriage.\"}, {\"episode\": 2, \"text\": \"C01 and C02 fall in love, but C03 disapproves of C01's financial position. C01's growing business attracts a supermarket opportunity requiring Rs. 2 million he lacks.\"}, {\"episode\": 3, \"text\": \"After funding attempts fail, C01 rejects C03's Rs. 2 million offer conditioned on leaving C02. Months later, C01 operates L11 with C02 beside him, and C03 apologizes and accepts him.\"}], \"arcs\": [{\"person\": \"C01\", \"change\": \"Moves from a small L03 operation and restaurant ambition to supplying three shops and confronting expansion costs for a supermarket opportunity.\", \"from_scene\": \"E01-S01\", \"to_scene\": \"E02-S04\"}, {\"person\": \"C01\", \"change\": \"Moves from urgently seeking expansion money to refusing funding that requires abandoning C02.\", \"from_scene\": \"E03-S01\", \"to_scene\": \"E03-S04\"}, {\"person\": \"C01\", \"change\": \"After rejecting conditional money, becomes the successful operator of L11 and receives C03's apology.\", \"from_scene\": \"E03-S04\", \"to_scene\": \"E03-S05\"}, {\"person\": \"C02\", \"change\": \"An impressed new acquaintance becomes C01's romantic partner and affirms support despite C03's financial objections.\", \"from_scene\": \"E01-S04\", \"to_scene\": \"E02-S04\"}, {\"person\": \"C02\", \"change\": \"Concern over C01's stalled financing gives way to sharing his success and witnessing C03's reconciliation.\", \"from_scene\": \"E03-S02\", \"to_scene\": \"E03-S05\"}, {\"person\": \"C03\", \"change\": \"Disapproval of C01's poverty escalates into a conditional offer designed to separate C01 and C02.\", \"from_scene\": \"E02-S02\", \"to_scene\": \"E03-S03\"}, {\"person\": \"C03\", \"change\": \"C01's refusal makes him question his judgment; later he apologizes and acknowledges C01's success without his money.\", \"from_scene\": \"E03-S04\", \"to_scene\": \"E03-S05\"}], \"threads\": [{\"kind\": \"setup_payoff\", \"subject\": \"C01\", \"summary\": \"The restaurant ambition is realized as L11.\", \"beats\": [{\"scene\": \"E01-S01\", \"note\": \"C01 voices his ambition despite the limitations of L03.\"}, {\"scene\": \"E03-S05\", \"note\": \"C01 stands at L11; C02 explicitly recognizes the fulfilled dream.\"}]}, {\"kind\": \"setup_payoff\", \"subject\": \"C03\", \"summary\": \"C03's insistence on money is challenged by C01's refusal and ultimately recanted.\", \"beats\": [{\"scene\": \"E02-S03\", \"note\": \"C03 dismisses dreams as insufficient financial security.\"}, {\"scene\": \"E03-S03\", \"note\": \"Offers the needed amount in exchange for separation.\"}, {\"scene\": \"E03-S04\", \"note\": \"C01 refuses; C03 begins questioning his judgment.\"}, {\"scene\": \"E03-S05\", \"note\": \"C03 apologizes and acknowledges success without his money.\"}]}, {\"source\": \"inferred\", \"kind\": \"open_question\", \"subject\": \"P09\", \"summary\": \"How C01 financed expansion after refusing C03, and whether the supermarket order was fulfilled, remain unstated.\", \"beats\": [{\"scene\": \"E02-S04\", \"note\": \"Expansion needs Rs. 2 million.\"}, {\"scene\": \"E03-S04\", \"note\": \"C01 refuses C03's money.\"}, {\"scene\": \"E03-S05\", \"note\": \"L11 succeeds months later; no financing mechanism or order resolution is given.\"}]}, {\"kind\": \"journey\", \"subject\": \"P02\", \"summary\": \"C02 carries P02, loses it unnoticed, and receives it back from C01.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"With C02 in L04 before she gets out.\"}, {\"scene\": \"E01-S03\", \"note\": \"Falls beside L03; C01 picks it up and offers it to C02.\"}, {\"scene\": \"E01-S04\", \"note\": \"C02 takes it back and subsequently receives C03's call.\"}]}, {\"kind\": \"journey\", \"subject\": \"P03\", \"summary\": \"P03 remains with C02 from leaving L04 to the encounter beside L03.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 carries P03 out of L04.\"}, {\"scene\": \"E01-S03\", \"note\": \"C02 attempts to put P02 in P03.\"}]}, {\"kind\": \"journey\", \"subject\": \"P04\", \"summary\": \"C02 carries and opens P04, retaining it while passing L03.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 carries P04 from L04 and opens it in the rain.\"}, {\"scene\": \"E01-S03\", \"note\": \"Still held by C02 beside L03.\"}]}, {\"kind\": \"journey\", \"subject\": \"P13\", \"summary\": \"C03 brings P13 inside P11; C01 inspects it and pushes it back.\", \"beats\": [{\"scene\": \"E03-S03\", \"note\": \"C03 takes P11 from P12 and places it on the table; C01 opens P11 and sees P13.\"}, {\"scene\": \"E03-S04\", \"note\": \"P13 remains before C01, who pushes it toward C03; C03 remains looking at it. Collection is not shown.\"}]}, {\"kind\": \"journey\", \"subject\": \"P08\", \"summary\": \"P08 remains part of C01's financing work and the subsequent confrontation at L08.\", \"beats\": [{\"scene\": \"E03-S01\", \"note\": \"C01 reviews P08 late at night.\"}, {\"scene\": \"E03-S03\", \"note\": \"C01 reviews P08 at his desk; C03 notices the documents.\"}, {\"scene\": \"E03-S04\", \"note\": \"P08 remains on the table during C01's decision.\"}]}], \"looks\": [{\"person\": \"C01\", \"kind\": \"wardrobe\", \"from_scene\": \"E01-S01\", \"to_scene\": \"E03-S05\", \"note\": \"D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at L11. Earlier individual outfits are unspecified.\"}], \"relationships\": [{\"a\": \"C01\", \"b\": \"C02\", \"state\": \"New acquaintances with mutual interest following P02's return.\", \"scene\": \"E01-S04\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"Repeated meetings develop friendship into love.\", \"scene\": \"E02-S01\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"C02 affirms commitment independent of money; C01 wants to provide financial security.\", \"scene\": \"E02-S04\"}, {\"a\": \"C02\", \"b\": \"C03\", \"state\": \"Conflict over C01's suitability; C02 defends his ambition while C03 insists on financial security.\", \"scene\": \"E02-S03\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"C03 attempts to buy C01's separation from C02.\", \"scene\": \"E03-S03\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"C01 respectfully refuses; C03's certainty about him begins to weaken.\", \"scene\": \"E03-S04\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"Reconciliation through apology and handshake, with C02 present.\", \"scene\": \"E03-S05\"}], \"timeline\": [{\"scene\": \"E01-S01\", \"story_order\": 1, \"story_day\": 0, \"relative\": \"Early morning; calendar day unspecified.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S02\", \"story_order\": 2, \"story_day\": 0, \"relative\": \"\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S03\", \"story_order\": 3, \"story_day\": 0, \"relative\": \"Continues E01-S02.\", \"kind\": \"normal\", \"anchor\": \"E01-S02\"}, {\"scene\": \"E01-S04\", \"story_order\": 4, \"story_day\": 0, \"relative\": \"Continues E01-S03.\", \"kind\": \"normal\", \"anchor\": \"E01-S03\"}, {\"scene\": \"E02-S01\", \"story_order\": 5, \"story_day\": 0, \"relative\": \"A few weeks later; spans different evenings.\", \"kind\": \"normal\", \"anchor\": \"E01-S04\"}, {\"scene\": \"E02-S02\", \"story_order\": 6, \"story_day\": 0, \"relative\": \"One evening during the established routine.\", \"kind\": \"normal\", \"anchor\": \"E02-S01\"}, {\"scene\": \"E02-S03\", \"story_order\": 7, \"story_day\": 0, \"relative\": \"That night.\", \"kind\": \"normal\", \"anchor\": \"E02-S02\"}, {\"scene\": \"E02-S04\", \"story_order\": 8, \"story_day\": 0, \"relative\": \"Late at night; whether the same night is unspecified.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E03-S01\", \"story_order\": 9, \"story_day\": 0, \"relative\": \"After the funding need is established; spans multiple attempts.\", \"kind\": \"normal\", \"anchor\": \"E02-S04\"}, {\"scene\": \"E03-S02\", \"story_order\": 10, \"story_day\": 0, \"relative\": \"After unsuccessful funding approaches.\", \"kind\": \"normal\", \"anchor\": \"E03-S01\"}, {\"scene\": \"E03-S03\", \"story_order\": 11, \"story_day\": 0, \"relative\": \"\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E03-S04\", \"story_order\": 12, \"story_day\": 0, \"relative\": \"Immediate continuation.\", \"kind\": \"normal\", \"anchor\": \"E03-S03\"}, {\"scene\": \"E03-S05\", \"story_order\": 13, \"story_day\": 0, \"relative\": \"Several months later.\", \"kind\": \"normal\", \"anchor\": \"E03-S04\"}], \"knowledge\": [{\"scene\": \"E03-S01\", \"person\": \"C01\", \"learns\": \"L09 cannot provide sufficient support, C07 doubts capacity, and C08 cannot help; the opportunity is endangered.\", \"audience_only\": false}, {\"scene\": \"E03-S02\", \"person\": \"C02\", \"learns\": \"C01 still has no solution after unsuccessful bank and investor approaches.\", \"audience_only\": false}, {\"scene\": \"E03-S03\", \"person\": \"C01\", \"learns\": \"C03 offers Rs. 2 million only if C01 leaves C02.\", \"audience_only\": false}, {\"scene\": \"E03-S04\", \"person\": \"C03\", \"learns\": \"C01 will refuse needed funding rather than abandon C02.\", \"audience_only\": false}, {\"scene\": \"E03-S05\", \"person\": \"C01\", \"learns\": \"C03 admits his earlier judgment was wrong and recognizes C01's success without his money.\", \"audience_only\": false}], \"scopes\": [{\"source\": \"inferred\", \"rule\": \"D01\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D02\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"rule\": \"D04\", \"scenes\": [\"E03-S01\"], \"moment_scene\": \"E03-S01\", \"moment_note\": \"Connected unsuccessful funding attempts.\"}, {\"rule\": \"D05\", \"scenes\": [\"E03-S03\"], \"moment_scene\": \"E03-S03\", \"moment_note\": \"Silence after C03 states the separation condition.\"}, {\"rule\": \"D06\", \"scenes\": [\"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"L11 interior lighting and design.\"}, {\"rule\": \"D07\", \"scenes\": [\"E03-S05\"], \"moment_scene\": \"E03-S05\", \"moment_note\": \"Slow pullback revealing L11 and C10.\"}, {\"rule\": \"D08\", \"scenes\": [\"E03-S05\"], \"moment_scene\": \"E03-S05\", \"moment_note\": \"Final on-screen text.\"}, {\"source\": \"inferred\", \"rule\": \"D09\", \"scenes\": [\"E01-S01\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S04\", \"E03-S01\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Keep C01's face, hairstyle and body type consistent.\"}, {\"source\": \"inferred\", \"rule\": \"D10\", \"scenes\": [\"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S02\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Keep C02's face, hairstyle and body type consistent.\"}, {\"source\": \"inferred\", \"rule\": \"D11\", \"scenes\": [\"E02-S02\", \"E02-S03\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Keep C03's appearance consistent.\"}, {\"source\": \"inferred\", \"rule\": \"D14\", \"scenes\": [\"E01-S01\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S04\", \"E03-S01\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Clothing becomes more polished with business growth; endpoint explicit at E03-S05.\"}, {\"source\": \"inferred\", \"rule\": \"D15\", \"scenes\": [\"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"L11 must visually evolve from the original business.\"}, {\"source\": \"inferred\", \"rule\": \"D16\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D17\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}]}\n\nEND OF THE EPISODE BEFORE\nE02-S04 SCENE 04 — KASUN'S DETERMINATION AND THE BIG OPPORTUNITY\n172: changes.\n173: The supermarket order requires a major investment.\n174: He needs Rs. 2 million.\n175: He looks at the numbers again.\n176: He doesn't have enough money.\n177: Anudi notices his silence.\n\nSCENES TO BREAK DOWN\n=== E03-S01 (place card: pick from the cards) ===\n182: SCENE 01 — THE STRUGGLE\n183: Location: Kasun's workspace and Colombo – Different locations\n184: Duration: 0.54 minutes\n185: Kasun is determined to secure the Rs. 2 million needed to expand his business.\n186: A sequence of connected moments shows his struggle.\n187: He visits a bank and discusses a business loan.\n188: He sits with a potential investor and explains his business plan.\n189: He makes phone calls to friends asking for financial support.\n190: He reviews his business documents and calculations late at night.\n191: Each attempt ends in disappointment.\n192: The bank cannot offer the required support.\n193: The investor doesn't believe the small business can handle such a large order.\n194: His friends are unable to help.\n195: Finally, Kasun returns to his small workspace.\n196: He sits alone at the desk, looking at the supermarket order and the financial calculations.\n197: He realizes that his biggest opportunity may disappear because he cannot find the money.\n\n=== E03-S02 (place card: pick from the cards) ===\n198: SCENE 02 — ANUDI'S SUPPORT\n199: Location: Anudi's family home – Bedroom\n200: Duration: 0.38 minutes\n201: Anudi sits alone in her bedroom.\n202: She looks at a photograph of herself and Kasun.\n203: Her phone rings.\n204: It is Kasun.\n205: Anudi: \"කොහොමද කසුන්? වැඩේ හරියනවද?\"\n206: Kasun: \"තාම හරියට විසඳුමක් නෑ අනුදි. බැංකුවෙන්වත් investor කෙනෙක්ගෙන්වත්\n207: උදව්වක් ලැබුණේ නෑ.\"\n208: Anudi sounds concerned.\n209: Anudi: \"හැමදේම හරියයි කසුන්. ඔයා උත්සාහය අතාරින්න එපා.\"\n210: Kasun smiles slightly.\n211: Kasun: \"මම උත්සාහ කරනවා අනුදි.\"\n212: They end the call.\n213: Anudi looks worried but continues believing in him.\n\n=== E03-S03 (place card: pick from the cards) ===\n214: SCENE 03 — AN UNEXPECTED OFFER\n215: Location: Kasun's small workspace\n216: Duration: 0.63 minutes\n217: Kasun is reviewing business documents at his small desk.\n218: Someone arrives.\n219: It is Anudi's father.\n220: Kasun stands up respectfully.\n221: Kasun: \"ආයුබෝවන් සර්. වාඩිවෙන්න.\"\n222: The father sits down.\n223: He looks around the small workspace.\n224: He notices the business documents, food containers and calculations on the table.\n225: He takes an envelope from his bag and places it on the table.\n226: Kasun looks at it.\n227: Father: \"මේකේ රුපියල් මිලියන දෙකක් තියෙනවා.\"\n228: Kasun looks surprised.\n229: He opens the envelope and sees the cheque.\n230: Kasun: \"බොහොම ස්තූතියි සර්. මේක මට ලොකු උදව්වක්.\"\n231: The father looks directly at him.\n232: Father: \"හැබැයි එක කොන්දේසියක් තියෙනවා.\"\n233: Kasun looks up.\n234: Father: \"ඔයා මගේ දුවගෙන් ඈත් වෙන්න ඕනේ.\"\n235: Silence.\n236: Kasun's smile disappears.\n237: He looks at the cheque and then at Anudi's father.\n\n=== E03-S04 (place card: pick from the cards) ===\n238: SCENE 04 — THE CHOICE\n239: Location: Same workspace\n240: Duration: 0.54 minutes\n241: Kasun remains silent for a moment.\n242: He looks at the cheque.\n243: He knows how much his business needs this money.\n244: He looks at the business documents on the table.\n245: Then he slowly pushes the cheque back toward Anudi's father.\n246: Kasun: \"සර්... මට ඕනේ අනුදිව මිසක් ඔයාගේ සල්ලි නෙවෙයි.\"\n247: The father looks surprised.\n248: Kasun takes a breath.\n249: Kasun: \"මගේ ව්‍යාපාරය මමම ගොඩනගා ගන්නම්. ඒත් මගේ ආදරේ සල්ලිවලට අතාරින්න\n250: මට බෑ.\"\n251: He stands up.\n252: Kasun: \"මට සමාවෙන්න සර්.\"\n253: Kasun respectfully walks away.\n254: The father remains seated.\n255: He looks at the cheque and then around the small workspace.\n256: For the first time, he begins to question his judgment about Kasun.\n\n=== E03-S05 (place card: pick from the cards) ===\n257: SCENE 05 — A DREAM COMES TRUE\n258: Location: KASUN'S Restaurant – Day\n259: Duration: 0.83 minutes\n260: Several months later.\n261: A modern but welcoming Sri Lankan restaurant is ready to open.\n262: The restaurant sign reads:\n263: KASUN'S — SRI LANKAN FOOD & COFFEE\n264: The restaurant is busy.\n265: Staff members are serving customers.\n266: The interior has warm lighting, wooden tables and Sri Lankan-inspired design.\n267: Kasun, now dressed in smart-casual clothing, stands proudly near the entrance.\n268: Anudi stands beside him.\n269: She looks around the restaurant and smiles.\n270: Anudi: \"ඔයාගේ හීනේ ඇත්තටම හැබෑ වුණා කසුන්.\"\n271: Kasun smiles.\n272: Kasun: \"ඔයා මාව විශ්වාස කළ නිසා.\"\n273: Suddenly, Kasun notices someone approaching.\n274: It is Anudi's father.\n275: He slowly walks toward them.\n276: He looks around the successful restaurant and then at Kasun.\n277: Father: \"මට සමාවෙන්න පුතා. මම එදා වැරදියට හිතුවේ.\"\n278: Kasun listens respectfully.\n279: Father: \"ඔයාට සාර්ථක වෙන්න මගේ සල්ලි ඕනේ වුණේ නෑ. ඔයාට ඕනේ වුණේ ඔයා ගැන\n280: විශ්වාස කරන කෙනෙක් විතරයි.\"\n281: He extends his hand.\n282: Kasun shakes it.\n283: Anudi smiles emotionally.\n284: The three of them stand together beneath the restaurant sign.\n285: The camera slowly pulls back, revealing the restaurant and its customers.\n286: FINAL TEXT ON SCREEN:\n287: \"සමහර ආදර කතාවලට සල්ලි ඕනේ නෑ. තමන්ගේ හීන විශ්වාස කරන කෙනෙක් හිටියම\n288: ඇති.\"",
+ "answer": {
+  "scenes": [
+   {
+    "scene": "E03-S01",
+    "title": "Funding attempts",
+    "summary": "Kasun pursues several funding routes, but none supplies the money he needs. Back at his workspace, he faces the possibility of losing the expansion opportunity.",
+    "purpose": "Exhaust the available approaches and establish the pressure behind the coming offer.",
+    "place": "L08",
+    "mood": [
+     "determined",
+     "frustrated",
+     "isolated"
+    ],
+    "people": [
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Obtain enough capital to expand.",
+      "feeling_start": "Resolved",
+      "feeling_end": "Discouraged and afraid of losing the opportunity",
+      "source": "inferred"
+     },
+     {
+      "person": "C07",
+      "presence": "on_screen",
+      "wants": "Assess whether the proposed expansion is credible.",
+      "feeling_start": "Evaluative",
+      "feeling_end": "Unconvinced",
+      "source": "inferred"
+     },
+     {
+      "person": "C08",
+      "presence": "phone",
+      "wants": "Respond to Kasun's request despite being unable to fund it.",
+      "feeling_start": "Not established",
+      "feeling_end": "Unable to assist",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P07",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "inferred"
+     },
+     {
+      "thing": "P08",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P09",
+      "role": "hero",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 185,
+        "w_from": 0,
+        "w_to": 14
+       },
+       {
+        "line": 186,
+        "w_from": 0,
+        "w_to": 8
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Establish the financial objective and the linked attempts to meet it.",
+      "delivery_hint": "Keep the progression purposeful rather than frantic.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": false,
+        "change": "The expansion need becomes an active search for funding.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 187,
+        "w_from": 0,
+        "w_to": 9
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Show a formal financing approach.",
+      "delivery_hint": "Use restrained businesslike behavior; no additional spoken wording is supplied.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L09",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun seeks a loan through a bank.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 188,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Try a private source of capital.",
+      "delivery_hint": "Let Kasun's preparation contrast with the investor's reserve.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C07"
+        ],
+        "things": [],
+        "spot": "L01",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun presents the proposed business expansion to an investor.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 189,
+        "w_from": 0,
+        "w_to": 10
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Extend the search into personal relationships.",
+      "delivery_hint": "Establish P07 in Kasun's hand before showing him initiating the calls.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C08"
+        ],
+        "things": [
+         "P07"
+        ],
+        "spot": "",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun contacts friends for financial help.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 190,
+        "w_from": 0,
+        "w_to": 10
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Show the work continuing beyond the meetings.",
+      "delivery_hint": "Emphasize sustained concentration and fatigue without adding activity.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P08"
+        ],
+        "spot": "",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun returns to the figures during late hours.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 191,
+        "w_from": 0,
+        "w_to": 5
+       },
+       {
+        "line": 192,
+        "w_from": 0,
+        "w_to": 7
+       },
+       {
+        "line": 193,
+        "w_from": 0,
+        "w_to": 13
+       },
+       {
+        "line": 194,
+        "w_from": 0,
+        "w_to": 6
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Close each apparent route to the required funding.",
+      "delivery_hint": "Link the refusals through subdued reactions rather than invented dialogue.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L09",
+        "speech": false,
+        "visible": false,
+        "change": "The bank route fails to provide sufficient support.",
+        "function": "turn"
+       },
+       {
+        "actors": [
+         "C01",
+         "C07"
+        ],
+        "things": [],
+        "spot": "L01",
+        "speech": false,
+        "visible": false,
+        "change": "The investor rejects the business's capacity for the proposed scale.",
+        "function": "turn"
+       },
+       {
+        "actors": [
+         "C01",
+         "C08"
+        ],
+        "things": [
+         "P07"
+        ],
+        "spot": "",
+        "speech": false,
+        "visible": false,
+        "change": "Personal contacts cannot supply the funding either.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 195,
+        "w_from": 0,
+        "w_to": 7
+       },
+       {
+        "line": 196,
+        "w_from": 0,
+        "w_to": 15
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Return the failed search to its concrete business stakes.",
+      "delivery_hint": "Allow the solitary examination of the order to settle.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P09",
+         "P08"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun returns alone to the order and its associated costs.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 197,
+        "w_from": 0,
+        "w_to": 14
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Make the threatened loss of the opportunity emotionally clear.",
+      "delivery_hint": "Hold a contained reaction; do not turn the realization into spoken words.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P09"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": false,
+        "change": "Kasun recognizes that the lack of capital may defeat the opportunity.",
+        "function": "turn"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     6,
+     8
+    ],
+    "source": "inferred",
+    "rules_met": [
+     "D04"
+    ]
+   },
+   {
+    "scene": "E03-S02",
+    "title": "The bedroom call",
+    "summary": "Anudi takes Kasun's call and learns that his funding search has failed. She encourages him, although her worry remains after they hang up.",
+    "purpose": "Sustain their emotional partnership while leaving the financial problem unresolved.",
+    "place": "L10",
+    "mood": [
+     "intimate",
+     "concerned",
+     "supportive"
+    ],
+    "people": [
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Understand Kasun's situation and keep him hopeful.",
+      "feeling_start": "Reflective",
+      "feeling_end": "Worried but steadfast",
+      "source": "inferred"
+     },
+     {
+      "person": "C01",
+      "presence": "phone",
+      "wants": "Share the setback and continue trying.",
+      "feeling_start": "Disappointed",
+      "feeling_end": "Slightly reassured",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P10",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P02",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P07",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "inferred"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 201,
+        "w_from": 0,
+        "w_to": 6
+       },
+       {
+        "line": 202,
+        "w_from": 0,
+        "w_to": 9
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Introduce Anudi's private attachment before the call.",
+      "delivery_hint": "Keep her attention on the photograph without treating its pictured figures as present.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P10"
+        ],
+        "spot": "L10",
+        "speech": false,
+        "visible": true,
+        "change": "Alone in her room, Anudi studies their shared photograph.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 203,
+        "w_from": 0,
+        "w_to": 3
+       },
+       {
+        "line": 204,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Connect the private moment to Kasun's situation.",
+      "delivery_hint": "Show P02 beside Anudi before it rings, make the incoming caller readable, then show her answering before speech begins.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C01"
+        ],
+        "things": [
+         "P02",
+         "P07"
+        ],
+        "spot": "L10",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun's incoming call reaches Anudi and is connected.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 205,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "P02",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Ask whether the business problem is moving toward a solution.",
+      "delivery_hint": "Warm and attentive, with an expectant question.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L10",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi asks for an update.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 206,
+        "w_from": 1,
+        "w_to": 9
+       },
+       {
+        "line": 207,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "C01",
+      "presence": "phone",
+      "device": "P02",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Admit that neither formal nor private financing has worked.",
+      "delivery_hint": "Tired and candid, without self-pity.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P07",
+         "P02"
+        ],
+        "spot": "",
+        "speech": true,
+        "visible": false,
+        "change": "Anudi learns that Kasun still has no financing solution.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 208,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Register Anudi's concern before her encouragement.",
+      "delivery_hint": "Carry the worry in her expression and subsequent vocal tone.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L10",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi responds with concern.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 209,
+        "w_from": 1,
+        "w_to": 8
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "P02",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Encourage persistence despite the setbacks.",
+      "delivery_hint": "Steady reassurance rather than certainty about a particular solution.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L10",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi offers continued emotional support.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 210,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "phone",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Show the small effect of her reassurance.",
+      "delivery_hint": "Keep the smile slight; his location remains unspecified.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P07"
+        ],
+        "spot": "",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun briefly brightens.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 211,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C01",
+      "presence": "phone",
+      "device": "P02",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Affirm that he is still making an effort.",
+      "delivery_hint": "Quiet resolve with a little renewed warmth.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P07",
+         "P02"
+        ],
+        "spot": "",
+        "speech": true,
+        "visible": false,
+        "change": "Kasun confirms his continuing effort.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 212,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 213,
+        "w_from": 0,
+        "w_to": 8
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Leave Anudi with unresolved anxiety and intact faith.",
+      "delivery_hint": "Let the disconnected call give way to a private, restrained reaction.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C01"
+        ],
+        "things": [
+         "P02",
+         "P07"
+        ],
+        "spot": "",
+        "speech": false,
+        "visible": true,
+        "change": "The call ends.",
+        "function": "texture"
+       },
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L10",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi remains troubled without withdrawing her belief in Kasun.",
+        "function": "reveal"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     4,
+     6
+    ],
+    "source": "inferred",
+    "rules_met": []
+   },
+   {
+    "scene": "E03-S03",
+    "title": "The conditional cheque",
+    "summary": "Anudi's father brings Kasun the full amount he needs. Kasun's gratitude collapses when the father makes the money conditional on leaving Anudi.",
+    "purpose": "Turn an apparent rescue into a direct conflict between financial ambition and love.",
+    "place": "L08",
+    "mood": [
+     "formal",
+     "hopeful",
+     "coercive",
+     "stunned"
+    ],
+    "people": [
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Receive the visitor respectfully and find a way forward for his business.",
+      "feeling_start": "Preoccupied",
+      "feeling_end": "Shocked and conflicted",
+      "source": "inferred"
+     },
+     {
+      "person": "C03",
+      "presence": "on_screen",
+      "wants": "Secure Kasun's separation from Anudi through a financial offer.",
+      "feeling_start": "Controlled and purposeful",
+      "feeling_end": "Awaiting Kasun's response",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P08",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P05",
+      "role": "dressing",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P12",
+      "role": "used",
+      "holder_start": "C03",
+      "holder_end": "C03",
+      "source": "script"
+     },
+     {
+      "thing": "P11",
+      "role": "used",
+      "holder_start": "C03",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P13",
+      "role": "hero",
+      "holder_start": "C03",
+      "holder_end": "C01",
+      "source": "script"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 217,
+        "w_from": 0,
+        "w_to": 9
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Reestablish Kasun amid the unresolved business problem.",
+      "delivery_hint": "Keep the workspace modest and his attention absorbed in the papers.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P08"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun examines his business paperwork.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 218,
+        "w_from": 0,
+        "w_to": 2
+       },
+       {
+        "line": 219,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 220,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Introduce an unexpected visitor under formal courtesy.",
+      "delivery_hint": "Reveal the father before emphasizing Kasun's respectful rise.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "The father arrives and Kasun rises to receive him.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 221,
+        "w_from": 1,
+        "w_to": 4
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Welcome the father and offer him a seat.",
+      "delivery_hint": "Courteous and slightly formal.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun invites the visitor to sit.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 222,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 223,
+        "w_from": 0,
+        "w_to": 6
+       },
+       {
+        "line": 224,
+        "w_from": 0,
+        "w_to": 12
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Let the father assess Kasun's working circumstances.",
+      "delivery_hint": "Use measured observation, not an exaggerated display of disdain.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P08",
+         "P05"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Seated, the father surveys the room and notices the business materials.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 225,
+        "w_from": 0,
+        "w_to": 13
+       },
+       {
+        "line": 226,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Give the offer a tangible focus.",
+      "delivery_hint": "Make the envelope's movement from bag to table clear and unhurried.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [
+         "P12",
+         "P11"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "The father places an envelope before Kasun, drawing his attention.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 227,
+        "w_from": 1,
+        "w_to": 6
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Present the offer as the exact financial answer Kasun needs.",
+      "delivery_hint": "Matter-of-fact and assured.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P11",
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "The father identifies the offered amount as two million rupees.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 228,
+        "w_from": 0,
+        "w_to": 3
+       },
+       {
+        "line": 229,
+        "w_from": 0,
+        "w_to": 8
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Allow the apparent solution to register.",
+      "delivery_hint": "Show the cheque clearly as Kasun opens the envelope.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P11",
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Surprised, Kasun opens the envelope and discovers the cheque.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 230,
+        "w_from": 1,
+        "w_to": 8
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Express gratitude for what appears to be crucial help.",
+      "delivery_hint": "Genuinely relieved, while retaining his respectful manner.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun thanks the father for the apparent assistance.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 231,
+        "w_from": 0,
+        "w_to": 6
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Prepare the shift from generosity to leverage.",
+      "delivery_hint": "Hold direct eye contact without menace added through performance.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "The father fixes his attention directly on Kasun.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 232,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Reveal that the offer is not unconditional.",
+      "delivery_hint": "Controlled and deliberate.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "The father introduces a condition.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 233,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Redirect Kasun's attention from the money to the giver.",
+      "delivery_hint": "Use a small, attentive lift of the eyes.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun looks up to hear the condition.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 234,
+        "w_from": 1,
+        "w_to": 7
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Demand separation from Anudi in exchange for the money.",
+      "delivery_hint": "Plain and firm; avoid theatrical hostility.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "The father makes leaving Anudi the price of his financial help.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "sound",
+      "spans": [
+       {
+        "line": 235,
+        "w_from": 0,
+        "w_to": 1
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [
+       "C01",
+       "C03"
+      ],
+      "intent": "Let the condition land without verbal cushioning.",
+      "delivery_hint": "Preserve the silent pause rather than adding speech or a musical response.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C03"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": false,
+        "change": "The exchange stops in silence.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 236,
+        "w_from": 0,
+        "w_to": 3
+       },
+       {
+        "line": 237,
+        "w_from": 0,
+        "w_to": 10
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Expose the emotional cost of the supposed rescue.",
+      "delivery_hint": "Let the smile fade naturally and hold the glance between cheque and father.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C03"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun loses his smile and weighs the money against the demand.",
+        "function": "reveal"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     10,
+     12,
+     13
+    ],
+    "source": "inferred",
+    "rules_met": [
+     "D05"
+    ]
+   },
+   {
+    "scene": "E03-S04",
+    "title": "The returned cheque",
+    "summary": "Kasun considers the money his business needs, then returns the cheque and refuses to abandon Anudi. Left behind, her father begins reconsidering his opinion of him.",
+    "purpose": "Resolve Kasun's moral choice and initiate the father's change of judgment.",
+    "place": "L08",
+    "mood": [
+     "strained",
+     "resolute",
+     "reflective"
+    ],
+    "people": [
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Protect his relationship and retain responsibility for building his business.",
+      "feeling_start": "Conflicted",
+      "feeling_end": "Resolved despite the financial cost",
+      "source": "inferred"
+     },
+     {
+      "person": "C03",
+      "presence": "on_screen",
+      "wants": "Obtain agreement to his condition.",
+      "feeling_start": "Expectant",
+      "feeling_end": "Surprised and uncertain of his judgment",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P13",
+      "role": "hero",
+      "holder_start": "C01",
+      "holder_end": "",
+      "source": "script"
+     },
+     {
+      "thing": "P08",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 241,
+        "w_from": 0,
+        "w_to": 6
+       },
+       {
+        "line": 242,
+        "w_from": 0,
+        "w_to": 5
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Hold the decision open long enough for its difficulty to register.",
+      "delivery_hint": "Maintain continuity from the previous silence; keep his gaze on the cheque.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun pauses over the offered money.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 243,
+        "w_from": 0,
+        "w_to": 9
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Keep the genuine business need present within the choice.",
+      "delivery_hint": "Express the weight through stillness, not added internal speech.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": false,
+        "change": "Kasun weighs how urgently the business needs the funds.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 244,
+        "w_from": 0,
+        "w_to": 9
+       },
+       {
+        "line": 245,
+        "w_from": 0,
+        "w_to": 10
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Make refusal a clear physical decision before explaining it.",
+      "delivery_hint": "Show the papers, then the slow return movement; do not show the father collecting the cheque.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C03"
+        ],
+        "things": [
+         "P08",
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "After looking at the business papers, Kasun pushes the cheque toward the father.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 246,
+        "w_from": 1,
+        "w_to": 9
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Place his relationship above the father's money.",
+      "delivery_hint": "Respectful but unambiguous, without raised volume.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun explicitly rejects money as a substitute for Anudi.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 247,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 248,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Register the father's surprise and Kasun's effort to continue calmly.",
+      "delivery_hint": "Keep the reaction small and the breath audible only as natural performance.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "The father is surprised while Kasun steadies himself with a breath.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 249,
+        "w_from": 1,
+        "w_to": 11
+       },
+       {
+        "line": 250,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Accept responsibility for his business while refusing to sell his commitment.",
+      "delivery_hint": "Grounded conviction; do not turn the statement into a triumphant speech.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun commits to building the business without abandoning his love.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 251,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Bring the encounter to a close.",
+      "delivery_hint": "Rise without aggression or abruptness.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun stands.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 252,
+        "w_from": 1,
+        "w_to": 4
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Close the refusal with courtesy.",
+      "delivery_hint": "Quiet and sincere, not apologetic about the underlying decision.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun offers a respectful parting apology.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 253,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 254,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 255,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Leave the father alone with the rejected offer and Kasun's circumstances.",
+      "delivery_hint": "Follow the transfer of attention from Kasun's departure to the father and the untouched cheque.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C03"
+        ],
+        "things": [
+         "P13"
+        ],
+        "spot": "L08",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun walks away while the seated father studies the cheque and the room.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 256,
+        "w_from": 0,
+        "w_to": 12
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Open the possibility of changed judgment without resolving it yet.",
+      "delivery_hint": "Use a restrained, unsettled reaction rather than remorseful dialogue.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L08",
+        "speech": false,
+        "visible": false,
+        "change": "The father begins doubting his assessment of Kasun.",
+        "function": "reveal"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     3,
+     4,
+     10
+    ],
+    "source": "inferred",
+    "rules_met": []
+   },
+   {
+    "scene": "E03-S05",
+    "title": "The restaurant reconciliation",
+    "summary": "Months later, Kasun and Anudi share the success of his restaurant. Her father arrives, admits his mistake, and reconciles with Kasun as the view widens to the busy business.",
+    "purpose": "Pay off the restaurant ambition and the couple's mutual trust while completing the father's change of heart, without supplying an unstated financing history.",
+    "place": "L11",
+    "mood": [
+     "warm",
+     "proud",
+     "reconciliatory",
+     "hopeful"
+    ],
+    "people": [
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Share his achievement with Anudi and receive her father's approach respectfully.",
+      "feeling_start": "Proud and grateful",
+      "feeling_end": "Accepted and fulfilled",
+      "source": "inferred"
+     },
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Celebrate Kasun's achievement beside him.",
+      "feeling_start": "Happy and proud",
+      "feeling_end": "Emotionally moved",
+      "source": "inferred"
+     },
+     {
+      "person": "C03",
+      "presence": "on_screen",
+      "wants": "Acknowledge his mistake and reconcile with Kasun.",
+      "feeling_start": "Reflective",
+      "feeling_end": "Reconciled",
+      "source": "inferred"
+     },
+     {
+      "person": "C09",
+      "presence": "on_screen",
+      "wants": "Serve the restaurant's guests.",
+      "feeling_start": "Occupied with service",
+      "feeling_end": "Occupied with service",
+      "source": "inferred"
+     },
+     {
+      "person": "C10",
+      "presence": "on_screen",
+      "wants": "Receive restaurant service.",
+      "feeling_start": "Engaged in their visit",
+      "feeling_end": "Engaged in their visit",
+      "source": "inferred"
+     }
+    ],
+    "things": [],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "transition",
+      "spans": [
+       {
+        "line": 260,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Advance to the later outcome without explaining the intervening financing.",
+      "delivery_hint": "Make the temporal separation clear through the changed business setting.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L11",
+        "speech": false,
+        "visible": false,
+        "change": "The story advances by several months.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 261,
+        "w_from": 0,
+        "w_to": 11
+       },
+       {
+        "line": 262,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Introduce the realized restaurant ambition.",
+      "delivery_hint": "Present a welcoming modern space that retains a visual relationship to Kasun's modest beginnings.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L11",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun's completed restaurant and its identifying sign are introduced.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "text",
+      "spans": [
+       {
+        "line": 263,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Identify the business through its displayed name.",
+      "delivery_hint": "Give the sign enough screen space and duration to be read.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L11",
+        "speech": false,
+        "visible": true,
+        "change": "The restaurant's name and food offering become readable.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 264,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 265,
+        "w_from": 0,
+        "w_to": 5
+       },
+       {
+        "line": 266,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Establish success as an active, welcoming business rather than an empty achievement.",
+      "delivery_hint": "Retain warm illumination, timber furnishings, and locally grounded design while service continues naturally.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C09",
+         "C10"
+        ],
+        "things": [],
+        "spot": "L11",
+        "speech": false,
+        "visible": true,
+        "change": "The populated restaurant is shown in operation.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 267,
+        "w_from": 0,
+        "w_to": 11
+       },
+       {
+        "line": 268,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 269,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Place the couple together within the fulfilled ambition.",
+      "delivery_hint": "Keep Kasun's improved clothing consistent with gradual business growth; let Anudi's pleasure remain unforced.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C02"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": false,
+        "visible": true,
+        "change": "The couple stands together at the entrance, taking pride in the restaurant.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 270,
+        "w_from": 1,
+        "w_to": 7
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Recognize the fulfillment of Kasun's ambition.",
+      "delivery_hint": "Affectionate pride rather than amazement.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi names the achievement as his dream realized.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 271,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Receive Anudi's recognition with warmth.",
+      "delivery_hint": "A simple, shared smile.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun smiles in response.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 272,
+        "w_from": 1,
+        "w_to": 6
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Credit Anudi's belief in him.",
+      "delivery_hint": "Direct, intimate gratitude.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun associates the achievement with Anudi's trust.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 273,
+        "w_from": 0,
+        "w_to": 5
+       },
+       {
+        "line": 274,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 275,
+        "w_from": 0,
+        "w_to": 5
+       },
+       {
+        "line": 276,
+        "w_from": 0,
+        "w_to": 10
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Bring the father into the visible evidence that challenges his earlier judgment.",
+      "delivery_hint": "Let his slow approach and survey of the room precede the apology.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C03",
+         "C02"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun notices the father, who approaches and takes in the thriving restaurant.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 277,
+        "w_from": 1,
+        "w_to": 8
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01",
+       "C02"
+      ],
+      "intent": "Apologize and admit that his previous judgment was wrong.",
+      "delivery_hint": "Sincere and plain, with no demand for an immediate response.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": true,
+        "visible": true,
+        "change": "The father openly acknowledges his mistake.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 278,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Maintain Kasun's respectful bearing through the reversal.",
+      "delivery_hint": "Listen without triumph or interruption.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun receives the apology attentively.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 279,
+        "w_from": 1,
+        "w_to": 14
+       },
+       {
+        "line": 280,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01",
+       "C02"
+      ],
+      "intent": "Recognize that Kasun succeeded without his money and value the support he had dismissed.",
+      "delivery_hint": "Reflective and accepting rather than instructive.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": true,
+        "visible": true,
+        "change": "The father replaces his money-based judgment with recognition of trust and support.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 281,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 282,
+        "w_from": 0,
+        "w_to": 3
+       },
+       {
+        "line": 283,
+        "w_from": 0,
+        "w_to": 3
+       },
+       {
+        "line": 284,
+        "w_from": 0,
+        "w_to": 10
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Make reconciliation physical and include Anudi in its emotional resolution.",
+      "delivery_hint": "Keep the handshake ordinary and meaningful; hold the three together beneath the sign.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03",
+         "C01",
+         "C02"
+        ],
+        "things": [],
+        "spot": "L12",
+        "speech": false,
+        "visible": true,
+        "change": "The father offers his hand, Kasun accepts it, and Anudi smiles as they stand together.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 285,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Connect the family resolution to the larger realized business.",
+      "delivery_hint": "Use a gradual pullback that includes the operating restaurant and its guests.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C02",
+         "C03",
+         "C09",
+         "C10"
+        ],
+        "things": [],
+        "spot": "L11",
+        "speech": false,
+        "visible": true,
+        "change": "The widening view places the reconciled group within the busy restaurant.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "text",
+      "spans": [
+       {
+        "line": 286,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 287,
+        "w_from": 0,
+        "w_to": 12
+       },
+       {
+        "line": 288,
+        "w_from": 0,
+        "w_to": 1
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Close on the value of belief in another person's dreams rather than money as a measure of love.",
+      "delivery_hint": "Display the supplied closing wording legibly without treating it as spoken narration.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L11",
+        "speech": false,
+        "visible": true,
+        "change": "The closing message appears on screen.",
+        "function": "reveal"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     9,
+     10,
+     13
+    ],
+    "source": "inferred",
+    "rules_met": [
+     "D06",
+     "D07",
+     "D08"
+    ]
+   }
+  ]
+ }
+}

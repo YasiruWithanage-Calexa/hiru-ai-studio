@@ -21,7 +21,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from contracts.breakdown.checks import _MINUTES, WPS
+from contracts.breakdown.checks import WPS
 from contracts.breakdown.schema import Breakdown, Entity, Scene
 from contracts.breakdown.series import packet_part as series_part
 
@@ -233,8 +233,7 @@ def assemble(bd: Breakdown, scene_id: str, cont: dict[str, Any] | None = None) -
     i = order.index(sc)
     brief = sc.brief
     place = bd.entity(brief.get("place", ""))
-    m = _MINUTES.search(sc.heading)
-    spoken = sum(len(b["text"].split()) for b in sc.blocks if b["kind"] == "dialogue") / WPS
+    spoken =sum(len(b["text"].split()) for b in sc.blocks if b["kind"] == "dialogue") / WPS
     people = []
     for p in brief["people"]:  # D3: full cards for the scene's people; nobody else is shown
         people.append(
@@ -258,7 +257,7 @@ def assemble(bd: Breakdown, scene_id: str, cont: dict[str, Any] | None = None) -
         "A_scene": {
             "id": sc.id,
             "heading": sc.heading,
-            "title": brief["title"],
+            "title": sc.title_doc or brief["title"],  # plan/2026-11-15: the document's own title first
             "summary": n.text(brief["summary"]),
             "purpose": n.text(brief["purpose"]),
             "purpose_source": brief.get("source", "inferred"),
@@ -300,7 +299,8 @@ def assemble(bd: Breakdown, scene_id: str, cont: dict[str, Any] | None = None) -
             if _in_scope(bd, sc, r) and _wanted(r, brief.get("rules_met"))
         ],
         "H_length": {
-            "stated_seconds": float(m.group(1)) * 60 if m else {EMPTY: "heading states none"},
+            # plan/2026-11-15: the reading's length (D1: a range's top) or a person's, never a pattern on the heading
+            "stated_seconds": round(sc.stated_s) if sc.stated_s else {EMPTY: "the document states none"},
             "spoken_seconds": round(spoken, 1),
         },
         "I_open": ([f"stale: {sc.stale}"] if sc.stale else []) + [f.message for f in bd.findings if f.scene == sc.id]

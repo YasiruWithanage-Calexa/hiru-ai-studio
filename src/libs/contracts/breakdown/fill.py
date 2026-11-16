@@ -17,7 +17,6 @@ Pure: no model, no database. Nothing here re-types a word: every text is the mem
 
 from __future__ import annotations
 
-import re
 from typing import Any
 
 from contracts.breakdown import series
@@ -52,7 +51,6 @@ CARD_LIMITS = {
     "details": 800,
     "notes": 2000,
 }
-_MINUTES = re.compile(r"(\d+(?:\.\d+)?)\s*MINUTES?\s*$", re.IGNORECASE)
 
 
 def _name(bd: Breakdown, id_: str) -> str:
@@ -82,8 +80,9 @@ def scene_blocks(bd: Breakdown, sc: Scene) -> list[dict[str, Any]]:
 
 
 def envelope_of(sc: Scene) -> int | None:
-    m = _MINUTES.search(sc.heading)
-    return max(4, round(float(m.group(1)) * 60)) if m else None
+    """The scene's length: the one the document states, as the reading read it (decision D1: a range gives its top),
+    or the one a person gave (plan/2026-11-15). None: the production's default applies."""
+    return max(4, round(sc.stated_s)) if sc.stated_s else None
 
 
 def structure(bd: Breakdown, *, doc_ids: list[str] | None = None) -> dict[str, Any]:
@@ -108,7 +107,7 @@ def structure(bd: Breakdown, *, doc_ids: list[str] | None = None) -> dict[str, A
         place = _name(bd, sc.brief.get("place", ""))
         row: dict[str, Any] = {
             "number": sc.number,
-            "title": str(sc.brief.get("title") or "")[:120],
+            "title": str(sc.title_doc or sc.brief.get("title") or "")[:120],  # the document's own title first
             "heading": {"raw": sc.heading, "time_of_day": heading.time_of_day},
             "location": {"new": place} if place else None,
             "blocks": scene_blocks(bd, sc),

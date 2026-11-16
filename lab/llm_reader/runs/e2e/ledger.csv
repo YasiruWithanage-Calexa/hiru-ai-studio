@@ -1,0 +1,19 @@
+time,step,slot,model,input_tokens,cached_tokens,output_tokens,dollars,status
+13:38:16,3,repair,gpt-6.1-sol,8854,2166,1523,0.0288,done
+13:38:26,3,repair,gpt-6.1-sol,8458,2166,1132,0.0241,done
+13:38:48,3,repair,gpt-6.1-sol,11109,2166,3145,0.0496,done
+13:39:00,3,repair,gpt-6.1-sol,9175,2166,1605,0.0303,done
+13:39:19,3,repair,gpt-6.1-sol,9543,2166,2437,0.0393,done
+13:39:45,3,repair,gpt-6.1-sol,11809,2166,3660,0.0561,done
+13:40:03,3,repair,gpt-6.1-sol,8782,2166,1984,0.0333,done
+13:40:19,3,repair,gpt-6.1-sol,9951,2166,2297,0.0388,done
+13:40:32,3,repair,gpt-6.1-sol,9096,2166,1732,0.0314,done
+13:40:50,3,repair,gpt-6.1-sol,10597,2166,2536,0.0424,done
+13:44:53,4,stager E01-S01,gpt-6.1-sol,1309,0,957,0.0122,done
+13:45:00,4,stager E01-S02,gpt-6.1-sol,1255,1075,483,0.0053,done
+13:45:12,4,stager E01-S03,gpt-6.1-sol,1269,1075,811,0.0086,done
+13:45:22,4,stager E01-S04,gpt-6.1-sol,1598,1075,542,0.0066,done
+13:49:02,6,raphael E01-S01,raphael,,,,0.1748,done
+13:52:46,6,raphael E01-S02,raphael,,,,0.1301,done
+13:55:34,6,raphael E01-S03,raphael,,,,0.1109,done
+14:01:00,6,raphael E01-S04,raphael,,,,0.2271,done

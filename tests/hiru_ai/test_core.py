@@ -48,6 +48,7 @@ def test_the_default_tiers_are_the_ones_the_engines_use_today():
                    "zora_chat": ("gpt-5-mini", "minimal"), "zora_author": ("gpt-6.1-terra", "low"),
                    "reader": ("gpt-5", "medium"),  # the document reader: the author's model (plan/2026-11-06f Q1)
                    "breakdown": ("gpt-6.1-sol", "medium"),  # the scene breakdown, as the lab ran (plan/2026-11-11 §9)
+                   "breakdown_probe": ("gpt-6.1-sol", "low"),  # the reading's first look (plan/2026-11-15)
                    # Sable (plan/2026-11-08 §4.4): the average tier and the deep one a turn may move up to once
                    "sable": ("gpt-5-mini", "low"), "sable_deep": ("gpt-5", "medium")}
     assert all(models_mod.resolve(n, s).fallbacks == () for n in got)  # today's behaviour: no fallback tiers

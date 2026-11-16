@@ -31,13 +31,31 @@ Row = dict[str, Any]
 
 # ── sizes and limits ────────────────────────────────────────────────────────────────────────
 
-BOARD_SIZE = (1536, 1024)  # the image model's landscape size; every board is wide, whatever the production
-BOARD_ASPECT = "16:9"
+# A board has the production's shape (2026-11-16, lab/portrait_board run_001): a wide production paints a 1536x1024
+# sheet of landscape panels, a vertical one a 1024x1536 sheet of tall panels, so each panel is the shape of its frame.
+BOARD_ASPECT = "16:9"  # the default shape (a production without an orientation, and every board painted before)
+TALL = "9:16"
 QUALITIES = ("low", "medium")  # D2: LOW by default, MEDIUM as a setting, never HIGH (the person's image rule)
 DEFAULT_QUALITY = "low"
-ONE_IMAGE = 16  # D5: up to 16 painted shots on one board (4x4 measured clean, run_004)
+ONE_IMAGE = 16  # D5: up to 16 painted shots on one wide board (4x4 measured clean, run_004)
 PART_SIZE = 12  # D5: above 16, parts of at most 12 ...
 OVERLAP = 1  # ... the last panel of one part repeated as the first of the next
+# A tall sheet holds narrower panels: up to 9 on one image (6 measured clean, lab/portrait_board run_001; 16 never
+# tried), above that parts of at most 9.
+ONE_IMAGE_TALL = 9
+PART_SIZE_TALL = 9
+_PANEL_SHAPE = {BOARD_ASPECT: "a landscape 16:9 still", TALL: "a tall portrait 9:16 still"}
+
+
+def board_aspect(aspect: str | None) -> str:
+    """The board's shape for a production of this aspect: tall for 9:16, wide for anything else."""
+    return TALL if aspect == TALL else BOARD_ASPECT
+
+
+def aspect_of_board(row: Mapping[str, Any]) -> str:
+    """The shape a saved board was painted in, read from its own prompt (the only record of it: boards painted
+    before 2026-11-16 are all wide and say so)."""
+    return TALL if _PANEL_SHAPE[TALL] in str(row.get("prompt") or "") else BOARD_ASPECT
 MAX_WRITER_PICTURES = 8  # the writer reads the reference pictures at detail low
 WRITER_MAX_OUTPUT = 10000  # run_001 used 4,341 output tokens (1,931 reasoning): over 2x headroom
 # Colours in person order (plan §3.2). Over six people the colours repeat (the lab never needed a seventh).
@@ -46,22 +64,25 @@ OVERLAP_LABEL = "the approved last panel of the previous part of this scene's bo
 
 
 def grid_for(n: int) -> tuple[int, int]:
-    """(columns, rows) for n landscape panels on a landscape sheet: `ceil(sqrt(n))` columns."""
+    """(columns, rows) for n panels: `ceil(sqrt(n))` columns. On a wide sheet the panels come out wide; on a tall
+    sheet (1024x1536) tall: 6 shots are 3 across and 2 down, about 340x765 each (lab/portrait_board run_001)."""
     n = max(n, 1)
     cols = math.ceil(math.sqrt(n))
     return cols, math.ceil(n / cols)
 
 
-def parts_of(items: Sequence[Any]) -> list[list[Any]]:
-    """D5: up to `ONE_IMAGE` items on one board; above that, parts of at most `PART_SIZE`, each part's first item the
-    previous part's last (so the cut between two images is painted twice, from one picture)."""
+def parts_of(items: Sequence[Any], aspect: str = BOARD_ASPECT) -> list[list[Any]]:
+    """D5: up to `ONE_IMAGE` items on one board (`ONE_IMAGE_TALL` on a tall one); above that, parts of at most
+    `PART_SIZE` (`PART_SIZE_TALL`), each part's first item the previous part's last (so the cut between two images is
+    painted twice, from one picture)."""
     items = list(items)
-    if len(items) <= ONE_IMAGE:
+    one, size = (ONE_IMAGE_TALL, PART_SIZE_TALL) if aspect == TALL else (ONE_IMAGE, PART_SIZE)
+    if len(items) <= one:
         return [items]
-    out, start, step = [], 0, PART_SIZE - OVERLAP
+    out, start, step = [], 0, size - OVERLAP
     while start < len(items):
-        out.append(items[start: start + PART_SIZE])
-        if start + PART_SIZE >= len(items):
+        out.append(items[start: start + size])
+        if start + size >= len(items):
             break
         start += step
     return out
@@ -300,9 +321,11 @@ def board_world(world: str, names: Iterable[str]) -> str:
     return " ".join(keep)
 
 
-def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], colours: Mapping[str, str]) -> str:
+def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], colours: Mapping[str, str],
+                 aspect: str = BOARD_ASPECT) -> str:
     """The image prompt for one board (or one part): the panels of `numbers`, in order (lab `board_prompt` with
-    mannequins). `labels` are the attached pictures in order; `colours`: name → colour."""
+    mannequins). `labels` are the attached pictures in order; `colours`: name → colour; `aspect`: the board's shape
+    (`board_aspect`), which every panel takes."""
     n = len(numbers)
     cols, rows = grid_for(n)
     cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
@@ -317,8 +340,9 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
         pos.append(f"PANEL {i + 1} (row {r + 1}, column {c + 1}) — {p.camera.rstrip('.')}. Background: "
                    f"{p.background.rstrip('.')}. {p.picture}")
     head = (f"A cinematic storyboard sheet for a Sri Lankan television drama: {n} photorealistic film stills of ONE "
-            f"scene, laid out in a grid {cols} panels across and {rows} down, read {order}. Every panel is a landscape "
-            "16:9 still of the same size, separated by thin, even, plain white gutters. All panels are the same "
+            f"scene, laid out in a grid {cols} panels across and {rows} down, read {order}. Every panel is "
+            f"{_PANEL_SHAPE[board_aspect(aspect)]} of the same size, separated by thin, even, plain white gutters. "
+            "All panels are the same "
             "moment's world, painted together: the same people, props, weather, light and colour grade in every "
             "panel.")
     refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
@@ -481,14 +505,34 @@ def state_line(opening: Sequence[str], people: Sequence[PanelPerson]) -> str:
             "upright as its mannequin, and each person's eyes and state exactly as planned.")
 
 
+# The stand-in rule (2026-11-16, lab/portrait_board run_001): without it, the board's unnamed background figures
+# ("two small neutral-grey pedestrian mannequins") were painted into the first frame as grey mannequins.
+STAND_INS = ("The approved draft shows people as plain mannequins: they are stand-ins for where people stand and how "
+             "they hold themselves, nothing more. Every figure in it, named or not, including small grey figures in "
+             "the background, is a real, clothed Sri Lankan person in this frame. Draw no mannequins, dummies, "
+             "statues or faceless figures.")
+# A mannequin no colour names: "two small neutral-grey pedestrian mannequins" → "two pedestrians", "a grey mannequin"
+# → "a person".
+_UNNAMED = re.compile(r"\b(?:(?:small|tiny|distant|faceless|plain|smooth|matte|neutral[- ]gr[ae]y|gr[ae]y|"
+                      r"background)[ ,-]+)*(pedestrian )?mannequin(s?)\b", re.IGNORECASE)
+
+
+def _person(m: re.Match[str]) -> str:
+    if m.group(1):
+        return "pedestrians" if m.group(2) else "pedestrian"
+    return "people" if m.group(2) else "person"
+
+
 def unmannequin(text: str, colours: Mapping[str, str]) -> str:
-    """The writer's mannequin words turned back into people: "the red mannequin" → "Nimal", "red head" → "head"."""
+    """The writer's mannequin words turned back into people: "the red mannequin" → "Nimal", "red head" → "head", and
+    a mannequin no colour names (a background figure) → "person" / "pedestrians"."""
     for name, c in colours.items():
         text = re.sub(rf"\bthe {c} mannequin\b", name, text, flags=re.IGNORECASE)
         text = re.sub(rf"\b{c} mannequin\b", name, text, flags=re.IGNORECASE)
         text = re.sub(rf"\b(smooth,? )?{c} (?=(head|hands?|arms?|body|figure|shoulders?|chest|torso|thigh|knee|"
                       r"forearm|feet|foot|legs?)\b)", "", text, flags=re.IGNORECASE)
-    return re.sub(r"\bmannequin's\b", "person's", re.sub(r"\bsmooth (?=head\b)", "", text))
+    text = re.sub(r"\bmannequin's\b", "person's", re.sub(r"\bsmooth (?=head\b)", "", text))
+    return _UNNAMED.sub(_person, text)
 
 
 _BOARD_WORDS = re.compile(r"\b(panels?|storyboard|grid|gutters?|mannequins?)\b", re.IGNORECASE)
@@ -508,11 +552,11 @@ def panel_text(panel: Panel, colours: Mapping[str, str]) -> str:
 
 def frame_sections(writer: Writer, number: int, colours: Mapping[str, str], opening: Sequence[str],
                    faced: Iterable[str] = ()) -> list[str]:
-    """The paragraphs a frame painted from its panel adds to its brief, in order: the mannequins, the state, the
-    scene's world and this panel. `colours`: name → colour of the people this frame shows."""
+    """The paragraphs a frame painted from its panel adds to its brief, in order: the stand-in rule, the mannequins,
+    the state, the scene's world and this panel. `colours`: name → colour of the people this frame shows."""
     panel = writer.panel(number)
     if panel is None:
         return []
-    return [x for x in (mannequin_paragraph(colours, faced), state_line(opening, panel.people),
+    return [x for x in (STAND_INS, mannequin_paragraph(colours, faced), state_line(opening, panel.people),
                         ("The scene: " + unmannequin(frame_world(writer.world), colours)) if writer.world else "",
                         panel_text(panel, colours)) if x]

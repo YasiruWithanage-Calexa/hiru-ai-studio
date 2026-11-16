@@ -31,6 +31,7 @@ from contracts import board as kit
 from contracts import safe_depiction
 from contracts.canon import look_sheet_path, named_in
 from contracts.frame_brief import sheet_path
+from contracts.veo import ASPECT_RATIO, Orientation
 from hiru_ai.core import agents, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.errors import ModelUnavailable
@@ -245,7 +246,9 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
         error = f"The board writer left out {kit.shots_phrase(missing)}. Paint the board again."
         frames.save_board(board_id, {"status": "failed", "error": error, "writer": writer.dump()})
         return {"status": "failed", "error": error}
-    groups = kit.parts_of(b.painted)
+    # The board has the production's shape (2026-11-16): a vertical production's panels are tall, like its frames.
+    aspect = kit.board_aspect(ASPECT_RATIO[Orientation(production.get("orientation") or "horizontal")])
+    groups = kit.parts_of(b.painted, aspect)
     rows = [board]
     if len(groups) > 1:  # D5: the first row is part 1; the job adds the others
         extra = [{"id": str(uuid4()), "production_id": board["production_id"], "scene_id": board["scene_id"],
@@ -263,14 +266,14 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
         refs = _pictures(ctx, b.image_pictures(group))
         if previous_last is not None:
             refs.append(Reference(label=kit.OVERLAP_LABEL, data=previous_last))
-        prompt = kit.board_prompt(writer, numbers, [r.label for r in refs], b.colours)
+        prompt = kit.board_prompt(writer, numbers, [r.label for r in refs], b.colours, aspect)
         fields: Row = {"parts": len(groups), "writer": writer.dump(), "colours": colours, "prompt": prompt}
         found = safe_depiction.blocking(prompt)
         if found:
             frames.save_board(rid, {**fields, "status": "refused", "error": safe_depiction.frame_error(found)})
             continue
         try:
-            picture = painter(prompt, kit.BOARD_ASPECT, refs, quality=str(row.get("quality") or kit.DEFAULT_QUALITY))
+            picture = painter(prompt, aspect, refs, quality=str(row.get("quality") or kit.DEFAULT_QUALITY))
         except ImageRefused as exc:
             frames.save_board(rid, {**fields, "status": "refused", "error": str(exc)})
             continue
@@ -355,7 +358,9 @@ def repaint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row
         return keep(safe_depiction.frame_error(found), "refused")
     mask = pics.repaint_mask(pics.image_size(image), [c["box"] for c in redo])
     try:
-        picture = painter(prompt, kit.BOARD_ASPECT, refs, quality=str(board.get("quality") or kit.DEFAULT_QUALITY),
+        # a repaint keeps the shape the board was painted in: the mask and the cells are cut from that picture
+        picture = painter(prompt, kit.aspect_of_board(board), refs,
+                          quality=str(board.get("quality") or kit.DEFAULT_QUALITY),
                           mask=mask)
     except ImageRefused as exc:
         return keep(str(exc), "refused")

@@ -34,6 +34,7 @@ from contracts.video_gen import (
     seed_note,
     spec_for,
     validate_render,
+    version_problem,
     wire_order,
 )
 
@@ -150,8 +151,8 @@ def test_layers_merge_field_by_field_and_say_where_each_value_came_from():
     assert resolve(prod, None, None, production_aspect="16:9", shot_seconds=4).sources["duration_s"] == "code"
 
 
-def test_the_model_and_size_are_the_productions_alone():
-    for locked in ({"engine": "omni_flash"}, {"model": "veo-3.1-generate-002"}, {"resolution": "720p"}):
+def test_the_engine_and_size_are_the_productions_alone():
+    for locked in ({"engine": "omni_flash"}, {"resolution": "720p"}, {"model": "no spaces allowed"}):
         with pytest.raises(ValueError):
             VideoOverrides(**locked)
     with pytest.raises(ValueError):
@@ -173,7 +174,7 @@ def test_a_draft_is_omni_flash_at_360p_and_leaves_another_engines_knobs_behind()
     assert not [k for k in got.sources if k.startswith("options.")]
     draft = spec_for(got, prose="Nimal opens the door.", references=[])
     assert draft.draft and draft.model == "gemini-omni-1.1-flash" and not blocking(validate_render(draft))
-    assert describe_spec(draft).startswith("Draft · Omni Flash · 360p")
+    assert describe_spec(draft).startswith("Draft · Omni Flash 1.1 · 360p")
     real = spec_for(resolve(veo, None, None, production_aspect="16:9", shot_seconds=8), prose="x", references=[])
     assert not real.draft and real.model == "veo-3.1-generate-002"
     assert request_hash(draft) != request_hash(draft.model_copy(update={"draft": False}))
@@ -418,3 +419,28 @@ def test_a_spec_round_trips_through_json_with_no_image_bytes():
     s = spec([ref("the character sheet for Nimal"), ref("a", slot="first_frame")], seed=None)
     again = type(s).model_validate_json(s.model_dump_json())
     assert again == s and request_hash(again) == request_hash(s)
+
+
+def test_a_shot_or_a_press_picks_an_omni_version_and_a_draft_takes_it_too():
+    omni, veo = VideoSettings(), VideoSettings(engine="veo_3_1")
+    picked = VideoOverrides(model="gemini-omni-1.2-flash")
+    got = resolve(omni, None, picked, production_aspect="9:16", shot_seconds=6)
+    assert (got.model, got.sources["model"]) == ("gemini-omni-1.2-flash", "run")
+    assert spec_for(got, prose="x", references=[]).model == "gemini-omni-1.2-flash"
+    shot = resolve(omni, picked, None, production_aspect="9:16", shot_seconds=6)
+    assert (shot.model, shot.sources["model"]) == ("gemini-omni-1.2-flash", "shot")
+    draft = resolve(veo, None, picked, production_aspect="9:16", shot_seconds=6, draft=True)
+    assert (draft.engine, draft.model, draft.sources["model"]) == ("omni_flash", "gemini-omni-1.2-flash", "run")
+    assert resolve(omni, None, None, production_aspect="9:16", shot_seconds=6).model is None, "the default is 1.1"
+    spec = spec_for(got, prose="x", references=[])
+    assert describe_spec(spec).startswith("Omni Flash 1.2 · 720p")
+    assert request_hash(spec) != request_hash(spec.model_copy(update={"model": "gemini-omni-1.1-flash"}))
+
+
+def test_only_an_engines_own_versions_may_be_picked():
+    assert version_problem("omni_flash", "gemini-omni-1.1-flash") is None
+    assert version_problem("omni_flash", "gemini-omni-1.2-flash") is None
+    assert version_problem("omni_flash", None) is None
+    assert "Choose 1.1 or 1.2" in (version_problem("omni_flash", "gemini-omni-9") or "")
+    assert "no versions" in (version_problem("veo_3_1", "gemini-omni-1.2-flash") or "")
+    assert capability("omni_flash").versions[0][1] == capability("omni_flash").model

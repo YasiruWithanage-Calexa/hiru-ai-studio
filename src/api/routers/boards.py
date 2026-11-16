@@ -31,6 +31,7 @@ from contracts import board as kit
 from contracts.jobs import JobKind
 from contracts.production import SceneStatus
 from contracts.roles import Permission
+from contracts.veo import ASPECT_RATIO, Orientation
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["scene-board"])
 ReposDep = Annotated[Repos, Depends(get_repos)]
@@ -83,6 +84,11 @@ class SceneBoardView(BaseModel):
     whole: bool  # only a whole repaint mends it (shots added, removed or reordered)
     approved: bool  # every part approved
     job_id: UUID | None  # the job painting it now, if any
+    # The board's shape: "16:9" (wide panels) or "9:16" (tall), the production's when there is no board yet. A board
+    # painted before the production's shape changed (or before tall boards, 2026-11-16) keeps its old shape:
+    # `wrong_shape` says so (advice: its panels still work, a whole repaint gives the production's shape).
+    aspect: str = "16:9"
+    wrong_shape: bool = False
 
 
 class BoardStarted(BaseModel):
@@ -125,8 +131,11 @@ def _part_view(row: Row, stale_numbers: set[int]) -> BoardPartView:
         cells=[_cell_view(c, stale_numbers) for c in row.get("cells") or []], created_at=str(row.get("created_at")))
 
 
-def board_view(scene_id: UUID, rows: list[Row], shots: list[Row]) -> SceneBoardView:
+def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_aspect: str = "16:9") -> SceneBoardView:
     parts = boards.current(rows)
+    wanted = kit.board_aspect(production_aspect)
+    painted = [p for p in parts if p.get("prompt")]
+    aspect = kit.aspect_of_board(painted[0]) if painted else wanted
     st = boards.stale(parts, shots)
     stale_numbers = set(st.changed)
     painting = [p for p in parts if p.get("status") in ("queued", "running")]
@@ -149,7 +158,7 @@ def board_view(scene_id: UUID, rows: list[Row], shots: list[Row]) -> SceneBoardV
     return SceneBoardView(scene_id=scene_id, state=state, parts=[_part_view(p, stale_numbers) for p in parts],
                           conflicts=conflicts, stale_reasons=st.reasons(), changed=sorted(st.changed),
                           whole=st.whole, approved=bool(parts) and all(p.get("approved_at") for p in parts),
-                          job_id=job)
+                          job_id=job, aspect=aspect, wrong_shape=bool(painted) and aspect != wanted)
 
 
 # ── helpers ────────────────────────────────────────────────────────────────────────────────
@@ -188,7 +197,8 @@ async def _audit(repos: Repos, access: ProductionAccess, action: str, entity_id:
 
 async def _view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneBoardView:
     _, shots, rows = await _scene(repos, access, scene_id)
-    return board_view(scene_id, rows, shots)
+    orientation = Orientation(access.production.get("orientation") or "horizontal")
+    return board_view(scene_id, rows, shots, ASPECT_RATIO[orientation])
 
 
 # ── routes ─────────────────────────────────────────────────────────────────────────────────

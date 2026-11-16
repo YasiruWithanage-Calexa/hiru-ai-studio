@@ -17,6 +17,7 @@ from __future__ import annotations
 # Ported from services/doc_ingest/doc_ingest/engine/extract.py (plan/2026-11-03 Phase 2).
 import io
 import re
+import subprocess
 import unicodedata
 from dataclasses import dataclass, field
 from typing import Literal
@@ -107,8 +108,12 @@ def _extract_text(data: bytes, kind: Kind) -> Extracted:
 
 
 def _extract_pdf(data: bytes) -> Extracted:
+    """plan/2026-11-15 phase 1: the text through `pdf_text` (beside this file), which honours `/ActualText` (pypdf's
+    `extract_text()` lost the Sinhala of Chrome- and Word-made PDFs)."""
     from pypdf import PdfReader
     from pypdf.errors import PdfReadError
+
+    from hiru_ai.steps.extract_text import pdf_text
 
     if not data.startswith(b"%PDF"):
         raise Rejected("This file is not a valid PDF.")
@@ -116,10 +121,10 @@ def _extract_pdf(data: bytes) -> Extracted:
         reader = PdfReader(io.BytesIO(data))
         if reader.is_encrypted and not reader.decrypt(""):
             raise Rejected("This PDF is password-protected. Remove the password and upload it again.")
-        pages = [normalise(page.extract_text() or "") for page in reader.pages]
+        pages = [normalise("\n".join(p)) for p in pdf_text.pages(data)]
     except Rejected:
         raise
-    except (PdfReadError, ValueError, KeyError, OSError) as exc:
+    except (PdfReadError, ValueError, KeyError, OSError, subprocess.SubprocessError) as exc:
         raise Rejected("This PDF could not be read. Export it again from the original "
                        "document and upload the new file.") from exc
 

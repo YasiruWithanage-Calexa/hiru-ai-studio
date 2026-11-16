@@ -41,6 +41,8 @@ tiers:
   # The scene breakdown (plan/2026-11-11 §9): the split, continuity, the episode calls, their repair and the stager on
   # blocks, all one model at one effort as in the lab (GPT-6.1 Sol, medium). A six-scene episode call is a long answer.
   breakdown: { model: model_breakdown, effort: effort_breakdown, timeout_s: 900, retries: 1, fallbacks: [] }
+  # plan/2026-11-15: the probe's first look at a document (what it is, are its letters whole), as lab/llm_reader ran it.
+  breakdown_probe: { model: model_breakdown, effort: effort_breakdown_probe, timeout_s: 300, retries: 1, fallbacks: [] }
   # Sable, the production assistant chat (plan/2026-11-08 §4.4): a turn starts on `sable` (the average model) and moves
   # once, upward, to `sable_deep` when the work needs it (core/middleware/tiering.py). The lab (Phase 4) picks the pair.
   sable:      { model: model_sable,      effort: effort_sable,      timeout_s: 120, retries: 2, fallbacks: [] }

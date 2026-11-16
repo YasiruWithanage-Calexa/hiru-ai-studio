@@ -1,0 +1,1643 @@
+{
+ "message": "CARDS\nC01 [person] Kasun - details: His business has started growing. He is now supplying food to three small shops.; wardrobe: His clothing gradually becomes more polished as the business grows.; appearance: DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout.\nC02 [person] Anudi - details: Anudi sits in the back seat, looking at her smartphone.; appearance: Anudi maintains the same facial appearance, hairstyle and body type throughout.\nC03 [person] Father - look: Her father enters the living room with a serious expression.; appearance: Anudi's father maintains the same appearance throughout.\nC04 [person] office worker - details: An office worker approaches and orders tea.\nC05 [person] driver - details: The driver stops near an office building.\nC06 [person] representative - details: A representative from a major supermarket chain is on the other end.\nC07 [person] investor - details: He sits with a potential investor and explains his business plan.\nC08 [person] friends - details: His friends are unable to help.\nC09 [person] Staff members - details: Staff members are serving customers.\nC10 [person] customers - details: Staff members are serving customers.\nL01 [place, region] Colombo - details: The city is waking up.; look: Maintain authentic Colombo streets, vehicles, homes and environments.\nL02 [place, set in L01] Colombo roadside\nL03 [place, vehicle in L01] Food three-wheeler - details: Kasun's three-wheeler remains the same vehicle.; look: His early food business remains small and humble.\nL04 [place, vehicle in L01] Family car - look: Location: Colombo road – Family car and roadside Duration: 0.38 minutes A comfortable family car moves through Colombo traffic.; details: Anudi sits in the back seat, looking at her smartphone.\nL05 [place, vehicle in L01] father's car - details: Her father's car passes by.\nL06 [place, set in L01] Anudi's family home\nL07 [place, spot in L06] Living room\nL08 [place, set in L01] Kasun's small food preparation workspace - details: Kasun is working in his small rented workspace.\nL09 [place, set in L01] bank - details: He visits a bank and discusses a business loan.\nL10 [place, spot in L06] Bedroom\nL11 [place, set in L01] KASUN'S Restaurant - look: The interior has warm lighting, wooden tables and Sri Lankan-inspired design.\nL12 [place, spot in L11] entrance\nP01 [thing] flask\nP02 [thing] smartphone - details: She tries to put her smartphone into the side pocket of her handbag.\nP03 [thing] handbag - details: She tries to put her smartphone into the side pocket of her handbag.\nP04 [thing] umbrella - details: Anudi gets out, carrying her handbag and umbrella.\nP05 [thing] food containers - details: Anudi helps him arrange food containers.\nP06 [thing] notebook - details: He checks his orders, calculates expenses and writes figures in a notebook.\nP07 [thing] Kasun's phone - details: He makes phone calls to friends asking for financial support.\nP08 [thing] business documents - details: He reviews his business documents and calculations late at night.\nP09 [thing] supermarket order - details: He sits alone at the desk, looking at the supermarket order and the financial calculations.\nP10 [thing] photograph - details: She looks at a photograph of herself and Kasun.\nP11 [thing] envelope - details: He opens the envelope and sees the cheque.\nP12 [thing] bag - details: He takes an envelope from his bag and places it on the table.\nP13 [thing] cheque - details: He opens the envelope and sees the cheque.\nP14 [thing] short eats\nP15 [thing] small counter\n\nDIRECTION RULES\nD01 [other, all scenes] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.\nD02 [editing, all scenes] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.\nD03 [editing, scene 1] A romantic montage follows: Anudi visits Kasun after work. Kasun prepares her favourite tea. They spend time talking and laughing. Anudi helps him arrange food containers. Kasun walks with her to her car. They exchange smiles before saying goodbye.\nD04 [editing, scene 1] A sequence of connected moments shows his struggle. He visits a bank and discusses a business loan. He sits with a potential investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required support. The investor doesn't believe the small business can handle such a large order. His friends are unable to help.\nD05 [sound, scene 3] Silence.\nD06 [lighting, scene 5] The interior has warm lighting, wooden tables and Sri Lankan-inspired design.\nD07 [lens, scene 5] The camera slowly pulls back, revealing the restaurant and its customers.\nD08 [editing, scene 5] FINAL TEXT ON SCREEN: \"සමහර ආදර කතාවලට සල්ලි ඕනේ නෑ. තමන්ගේ හීන විශ්වාස කරන කෙනෙක් හිටියම ඇති.\"\nD09 [other, all scenes] Kasun maintains the same facial appearance, hairstyle and body type throughout.\nD10 [other, all scenes] Anudi maintains the same facial appearance, hairstyle and body type throughout.\nD11 [other, all scenes] Anudi's father maintains the same appearance throughout.\nD12 [other, place L03] Kasun's three-wheeler remains the same vehicle.\nD13 [other, place L03] His early food business remains small and humble.\nD14 [other, all scenes] His clothing gradually becomes more polished as the business grows.\nD15 [other, place L11] The final restaurant must visually feel like the successful evolution of his original business.\nD16 [other, all scenes] Maintain authentic Colombo streets, vehicles, homes and environments.\nD17 [action, all scenes] Keep performances natural and avoid exaggerated melodrama.\n\nCONTINUITY\n{\"synopses\": [{\"episode\": 1, \"text\": \"C01 dreams of owning L11 while running L03. Returning C02's P02 sparks a connection, interrupted by C03's demand to discuss her marriage.\"}, {\"episode\": 2, \"text\": \"C01 and C02 fall in love, but C03 disapproves of C01's financial position. C01's growing business attracts a supermarket opportunity requiring Rs. 2 million he lacks.\"}, {\"episode\": 3, \"text\": \"After funding attempts fail, C01 rejects C03's Rs. 2 million offer conditioned on leaving C02. Months later, C01 operates L11 with C02 beside him, and C03 apologizes and accepts him.\"}], \"arcs\": [{\"person\": \"C01\", \"change\": \"Moves from a small L03 operation and restaurant ambition to supplying three shops and confronting expansion costs for a supermarket opportunity.\", \"from_scene\": \"E01-S01\", \"to_scene\": \"E02-S04\"}, {\"person\": \"C01\", \"change\": \"Moves from urgently seeking expansion money to refusing funding that requires abandoning C02.\", \"from_scene\": \"E03-S01\", \"to_scene\": \"E03-S04\"}, {\"person\": \"C01\", \"change\": \"After rejecting conditional money, becomes the successful operator of L11 and receives C03's apology.\", \"from_scene\": \"E03-S04\", \"to_scene\": \"E03-S05\"}, {\"person\": \"C02\", \"change\": \"An impressed new acquaintance becomes C01's romantic partner and affirms support despite C03's financial objections.\", \"from_scene\": \"E01-S04\", \"to_scene\": \"E02-S04\"}, {\"person\": \"C02\", \"change\": \"Concern over C01's stalled financing gives way to sharing his success and witnessing C03's reconciliation.\", \"from_scene\": \"E03-S02\", \"to_scene\": \"E03-S05\"}, {\"person\": \"C03\", \"change\": \"Disapproval of C01's poverty escalates into a conditional offer designed to separate C01 and C02.\", \"from_scene\": \"E02-S02\", \"to_scene\": \"E03-S03\"}, {\"person\": \"C03\", \"change\": \"C01's refusal makes him question his judgment; later he apologizes and acknowledges C01's success without his money.\", \"from_scene\": \"E03-S04\", \"to_scene\": \"E03-S05\"}], \"threads\": [{\"kind\": \"setup_payoff\", \"subject\": \"C01\", \"summary\": \"The restaurant ambition is realized as L11.\", \"beats\": [{\"scene\": \"E01-S01\", \"note\": \"C01 voices his ambition despite the limitations of L03.\"}, {\"scene\": \"E03-S05\", \"note\": \"C01 stands at L11; C02 explicitly recognizes the fulfilled dream.\"}]}, {\"kind\": \"setup_payoff\", \"subject\": \"C03\", \"summary\": \"C03's insistence on money is challenged by C01's refusal and ultimately recanted.\", \"beats\": [{\"scene\": \"E02-S03\", \"note\": \"C03 dismisses dreams as insufficient financial security.\"}, {\"scene\": \"E03-S03\", \"note\": \"Offers the needed amount in exchange for separation.\"}, {\"scene\": \"E03-S04\", \"note\": \"C01 refuses; C03 begins questioning his judgment.\"}, {\"scene\": \"E03-S05\", \"note\": \"C03 apologizes and acknowledges success without his money.\"}]}, {\"source\": \"inferred\", \"kind\": \"open_question\", \"subject\": \"P09\", \"summary\": \"How C01 financed expansion after refusing C03, and whether the supermarket order was fulfilled, remain unstated.\", \"beats\": [{\"scene\": \"E02-S04\", \"note\": \"Expansion needs Rs. 2 million.\"}, {\"scene\": \"E03-S04\", \"note\": \"C01 refuses C03's money.\"}, {\"scene\": \"E03-S05\", \"note\": \"L11 succeeds months later; no financing mechanism or order resolution is given.\"}]}, {\"kind\": \"journey\", \"subject\": \"P02\", \"summary\": \"C02 carries P02, loses it unnoticed, and receives it back from C01.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"With C02 in L04 before she gets out.\"}, {\"scene\": \"E01-S03\", \"note\": \"Falls beside L03; C01 picks it up and offers it to C02.\"}, {\"scene\": \"E01-S04\", \"note\": \"C02 takes it back and subsequently receives C03's call.\"}]}, {\"kind\": \"journey\", \"subject\": \"P03\", \"summary\": \"P03 remains with C02 from leaving L04 to the encounter beside L03.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 carries P03 out of L04.\"}, {\"scene\": \"E01-S03\", \"note\": \"C02 attempts to put P02 in P03.\"}]}, {\"kind\": \"journey\", \"subject\": \"P04\", \"summary\": \"C02 carries and opens P04, retaining it while passing L03.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 carries P04 from L04 and opens it in the rain.\"}, {\"scene\": \"E01-S03\", \"note\": \"Still held by C02 beside L03.\"}]}, {\"kind\": \"journey\", \"subject\": \"P13\", \"summary\": \"C03 brings P13 inside P11; C01 inspects it and pushes it back.\", \"beats\": [{\"scene\": \"E03-S03\", \"note\": \"C03 takes P11 from P12 and places it on the table; C01 opens P11 and sees P13.\"}, {\"scene\": \"E03-S04\", \"note\": \"P13 remains before C01, who pushes it toward C03; C03 remains looking at it. Collection is not shown.\"}]}, {\"kind\": \"journey\", \"subject\": \"P08\", \"summary\": \"P08 remains part of C01's financing work and the subsequent confrontation at L08.\", \"beats\": [{\"scene\": \"E03-S01\", \"note\": \"C01 reviews P08 late at night.\"}, {\"scene\": \"E03-S03\", \"note\": \"C01 reviews P08 at his desk; C03 notices the documents.\"}, {\"scene\": \"E03-S04\", \"note\": \"P08 remains on the table during C01's decision.\"}]}], \"looks\": [{\"person\": \"C01\", \"kind\": \"wardrobe\", \"from_scene\": \"E01-S01\", \"to_scene\": \"E03-S05\", \"note\": \"D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at L11. Earlier individual outfits are unspecified.\"}], \"relationships\": [{\"a\": \"C01\", \"b\": \"C02\", \"state\": \"New acquaintances with mutual interest following P02's return.\", \"scene\": \"E01-S04\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"Repeated meetings develop friendship into love.\", \"scene\": \"E02-S01\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"C02 affirms commitment independent of money; C01 wants to provide financial security.\", \"scene\": \"E02-S04\"}, {\"a\": \"C02\", \"b\": \"C03\", \"state\": \"Conflict over C01's suitability; C02 defends his ambition while C03 insists on financial security.\", \"scene\": \"E02-S03\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"C03 attempts to buy C01's separation from C02.\", \"scene\": \"E03-S03\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"C01 respectfully refuses; C03's certainty about him begins to weaken.\", \"scene\": \"E03-S04\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"Reconciliation through apology and handshake, with C02 present.\", \"scene\": \"E03-S05\"}], \"timeline\": [{\"scene\": \"E01-S01\", \"story_order\": 1, \"story_day\": 0, \"relative\": \"Early morning; calendar day unspecified.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S02\", \"story_order\": 2, \"story_day\": 0, \"relative\": \"\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S03\", \"story_order\": 3, \"story_day\": 0, \"relative\": \"Continues E01-S02.\", \"kind\": \"normal\", \"anchor\": \"E01-S02\"}, {\"scene\": \"E01-S04\", \"story_order\": 4, \"story_day\": 0, \"relative\": \"Continues E01-S03.\", \"kind\": \"normal\", \"anchor\": \"E01-S03\"}, {\"scene\": \"E02-S01\", \"story_order\": 5, \"story_day\": 0, \"relative\": \"A few weeks later; spans different evenings.\", \"kind\": \"normal\", \"anchor\": \"E01-S04\"}, {\"scene\": \"E02-S02\", \"story_order\": 6, \"story_day\": 0, \"relative\": \"One evening during the established routine.\", \"kind\": \"normal\", \"anchor\": \"E02-S01\"}, {\"scene\": \"E02-S03\", \"story_order\": 7, \"story_day\": 0, \"relative\": \"That night.\", \"kind\": \"normal\", \"anchor\": \"E02-S02\"}, {\"scene\": \"E02-S04\", \"story_order\": 8, \"story_day\": 0, \"relative\": \"Late at night; whether the same night is unspecified.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E03-S01\", \"story_order\": 9, \"story_day\": 0, \"relative\": \"After the funding need is established; spans multiple attempts.\", \"kind\": \"normal\", \"anchor\": \"E02-S04\"}, {\"scene\": \"E03-S02\", \"story_order\": 10, \"story_day\": 0, \"relative\": \"After unsuccessful funding approaches.\", \"kind\": \"normal\", \"anchor\": \"E03-S01\"}, {\"scene\": \"E03-S03\", \"story_order\": 11, \"story_day\": 0, \"relative\": \"\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E03-S04\", \"story_order\": 12, \"story_day\": 0, \"relative\": \"Immediate continuation.\", \"kind\": \"normal\", \"anchor\": \"E03-S03\"}, {\"scene\": \"E03-S05\", \"story_order\": 13, \"story_day\": 0, \"relative\": \"Several months later.\", \"kind\": \"normal\", \"anchor\": \"E03-S04\"}], \"knowledge\": [{\"scene\": \"E01-S04\", \"person\": \"C02\", \"learns\": \"C01 owns the business, works alone, began with Rs. 5,000 and hopes to expand.\", \"audience_only\": false}, {\"scene\": \"E01-S04\", \"person\": \"C02\", \"learns\": \"C03 wants her home to discuss her marriage.\", \"audience_only\": false}], \"scopes\": [{\"source\": \"inferred\", \"rule\": \"D01\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D02\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D09\", \"scenes\": [\"E01-S01\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S04\", \"E03-S01\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Keep C01's face, hairstyle and body type consistent.\"}, {\"source\": \"inferred\", \"rule\": \"D10\", \"scenes\": [\"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S02\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Keep C02's face, hairstyle and body type consistent.\"}, {\"source\": \"inferred\", \"rule\": \"D12\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\"], \"moment_scene\": \"\", \"moment_note\": \"Use the same L03.\"}, {\"source\": \"inferred\", \"rule\": \"D13\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\"], \"moment_scene\": \"\", \"moment_note\": \"Keep the early operation small and humble.\"}, {\"source\": \"inferred\", \"rule\": \"D14\", \"scenes\": [\"E01-S01\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S04\", \"E03-S01\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Clothing becomes more polished with business growth; endpoint explicit at E03-S05.\"}, {\"source\": \"inferred\", \"rule\": \"D16\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D17\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}]}\n\nEND OF THE EPISODE BEFORE\nnone: this is the first episode\n\nSCENES TO BREAK DOWN\n=== E01-S01 (place card: pick from the cards) ===\n13: SCENE 01 — KASUN'S EVERYDAY LIFE\n14: Location: Colombo roadside – Food three-wheeler\n15: Duration: 0.46 minutes\n16: Early morning in Colombo.\n17: The city is waking up. Buses, tuk-tuks, motorcycles and office workers fill the streets.\n18: Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea\n19: flask and cleans his small counter.\n20: An office worker approaches and orders tea.\n21: Kasun smiles and serves him.\n22: After the customer leaves, Kasun looks at his small business. He notices the limited space\n23: and old equipment but doesn't lose hope.\n24: He looks toward the busy road and quietly speaks to himself.\n25: Kasun: \"දවසක මගේම රෙස්ටුරන්ට් එකක් පටන් ගන්නවා.\"\n26: He smiles and continues working.\n\n=== E01-S02 (place card: pick from the cards) ===\n27: SCENE 02 — ANUDI ARRIVES\n28: Location: Colombo road – Family car and roadside\n29: Duration: 0.38 minutes\n30: A comfortable family car moves through Colombo traffic.\n31: Anudi sits in the back seat, looking at her smartphone.\n32: The driver stops near an office building.\n33: Anudi gets out, carrying her handbag and umbrella.\n34: She thanks the driver and walks toward the building.\n35: Rain begins to fall.\n36: She opens her umbrella and continues walking along the roadside, passing Kasun's small\n37: food three-wheeler.\n\n=== E01-S03 (place card: pick from the cards) ===\n38: SCENE 03 — THE UNEXPECTED ENCOUNTER\n39: Location: Colombo roadside – Near Kasun's food three-wheeler\n40: Duration: 0.29 minutes\n41: Anudi walks past Kasun's three-wheeler while holding her umbrella.\n42: She tries to put her smartphone into the side pocket of her handbag.\n43: As she slips the phone into the bag, it accidentally slips from her hand and falls onto the\n44: roadside.\n45: Anudi doesn't notice and continues walking.\n46: Kasun notices the phone lying on the ground.\n47: He quickly picks it up and runs after her.\n48: Kasun: \"මිස්! මිස්! ඔයාගේ ෆෝන් එක!\"\n49: Anudi hears him and turns around.\n50: Kasun approaches her, holding out the phone.\n\n=== E01-S04 (place card: pick from the cards) ===\n51: SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING\n52: Location: Colombo roadside – Near Kasun's food three-wheeler\n53: Duration: 0.75 minutes\n54: Anudi takes her phone from Kasun.\n55: Anudi: \"අනේ, Thank you! මම දැක්කෙවත් නෑ.\"\n56: Kasun: \"වැස්ස නිසා වෙන්න ඇති.\"\n57: Anudi smiles and looks at his small food business.\n58: Anudi: \"මේ ඔයාගේ බිස්නස් එකද?\"\n59: Kasun: \"ඔව්. පොඩියට පටන් ගත්තේ.\"\n60: Anudi: \"තනියමද මේ හැමදේම කරන්නේ?\"\n61: Kasun: \"ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි\n62: බලාපොරොත්තුව.\"\n63: Anudi looks impressed.\n64: Before she can continue the conversation, her phone suddenly rings.\n65: She checks the screen. It's her father.\n66: Anudi: \"හෙලෝ තාත්තේ.\"\n67: Father (over the phone): \"අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට\n68: ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා.\"\n69: Anudi's smile slowly disappears.\n70: Anudi: \"හරි තාත්තේ. මම එන්නම්.\"\n71: She ends the call.\n72: Kasun notices her changed expression.\n73: Anudi looks at him again.\n74: Anudi: \"එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු.\"\n75: Kasun: \"හරි. පරිස්සමින් යන්න.\"\n76: Anudi walks toward her destination.\n77: Kasun watches her leave. After a moment, he returns to his small business, but his\n78: thoughts are somewhere else.",
+ "answer": {
+  "scenes": [
+   {
+    "scene": "E01-S01",
+    "title": "The roadside breakfast trade",
+    "summary": "Kasun serves a morning customer at his modest food vehicle, then privately expresses his ambition to own a restaurant.",
+    "purpose": "Establish Kasun's livelihood, limited resources and determination before his encounter with Anudi.",
+    "place": "L03",
+    "mood": [
+     "ordinary",
+     "hopeful",
+     "modest"
+    ],
+    "people": [
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Run his business and eventually expand into a restaurant.",
+      "feeling_start": "Focused on the morning routine.",
+      "feeling_end": "Hopeful despite his limitations.",
+      "source": "inferred"
+     },
+     {
+      "person": "C04",
+      "presence": "on_screen",
+      "wants": "Buy tea.",
+      "feeling_start": "Businesslike.",
+      "feeling_end": "Ready to continue on his way.",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "L03",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P14",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P01",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P15",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     }
+    ],
+    "implied": [
+     {
+      "name": "tea cup",
+      "holder": "C01",
+      "where": "At the serving counter before passing to C04.",
+      "blocks": [
+       4
+      ],
+      "why": "Serving the ordered tea requires a drinking vessel."
+     }
+    ],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 16,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 17,
+        "w_from": 0,
+        "w_to": 14
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Establish the working city's morning rhythm.",
+      "delivery_hint": "Observe the street bustle without making it feel staged.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Morning traffic and pedestrian activity establish the surroundings.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 18,
+        "w_from": 0,
+        "w_to": 14
+       },
+       {
+        "line": 19,
+        "w_from": 0,
+        "w_to": 6
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Introduce Kasun through practical care for his small operation.",
+      "delivery_hint": "Keep the preparation economical and familiar.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "L03",
+         "P14",
+         "P01",
+         "P15"
+        ],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun gets the food display, tea supply and serving surface ready.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 20,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Introduce an ordinary customer transaction.",
+      "delivery_hint": "Keep the order routine; no particular wording is supplied.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C04"
+        ],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "A worker comes to the stall to purchase tea.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 21,
+        "w_from": 0,
+        "w_to": 5
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Show Kasun's welcoming manner.",
+      "delivery_hint": "Let the friendliness remain easy and unforced.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01",
+         "C04"
+        ],
+        "things": [
+         "P15"
+        ],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun serves the customer's tea with a friendly expression.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 22,
+        "w_from": 0,
+        "w_to": 15
+       },
+       {
+        "line": 23,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Contrast the business's limitations with Kasun's resilience.",
+      "delivery_hint": "Hold his appraisal without turning it into self-pity.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C04"
+        ],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "The customer departs.",
+        "function": "texture"
+       },
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "L03"
+        ],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun surveys the cramped operation and its worn fittings.",
+        "function": "reveal"
+       },
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": false,
+        "change": "His awareness of the limitations does not extinguish his optimism.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 24,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Prepare a private expression of ambition.",
+      "delivery_hint": "Shift his attention outward while keeping the moment intimate.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun turns his gaze toward the passing traffic before speaking.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 25,
+        "w_from": 1,
+        "w_to": 7
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Affirm his ambition to establish his own restaurant.",
+      "delivery_hint": "Quiet conviction rather than a grand declaration.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L03",
+        "speech": true,
+        "visible": true,
+        "change": "His restaurant ambition becomes explicit.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 26,
+        "w_from": 0,
+        "w_to": 5
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Return aspiration to everyday effort.",
+      "delivery_hint": "A small smile is enough before the work resumes.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "L03"
+        ],
+        "spot": "L03",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun returns to his tasks with renewed warmth.",
+        "function": "texture"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     7
+    ],
+    "source": "inferred",
+    "rules_met": []
+   },
+   {
+    "scene": "E01-S02",
+    "title": "Anudi's roadside arrival",
+    "summary": "Anudi leaves the family car near an office building. Rain starts as she continues past Kasun's food vehicle.",
+    "purpose": "Bring Anudi into Kasun's surroundings and establish the belongings involved in their encounter.",
+    "place": "L04",
+    "mood": [
+     "everyday",
+     "transitional",
+     "rainy"
+    ],
+    "people": [
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Reach the nearby building.",
+      "feeling_start": "Absorbed in her phone.",
+      "feeling_end": "Occupied with getting through the rain.",
+      "source": "inferred"
+     },
+     {
+      "person": "C05",
+      "presence": "on_screen",
+      "wants": "Drop Anudi near her destination.",
+      "feeling_start": "Attentive to driving.",
+      "feeling_end": "Task completed.",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "L04",
+      "role": "used",
+      "holder_start": "C05",
+      "holder_end": "C05",
+      "source": "script"
+     },
+     {
+      "thing": "P02",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P03",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P04",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "L03",
+      "role": "dressing",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "inferred"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 30,
+        "w_from": 0,
+        "w_to": 8
+       },
+       {
+        "line": 31,
+        "w_from": 0,
+        "w_to": 10
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Introduce Anudi within her comfortable daily routine.",
+      "delivery_hint": "Keep her attention naturally on the screen.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C05"
+        ],
+        "things": [
+         "L04",
+         "P02"
+        ],
+        "spot": "L04",
+        "speech": false,
+        "visible": true,
+        "change": "The car travels through the city while Anudi uses her phone in the rear seat.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 32,
+        "w_from": 0,
+        "w_to": 7
+       },
+       {
+        "line": 33,
+        "w_from": 0,
+        "w_to": 8
+       },
+       {
+        "line": 34,
+        "w_from": 0,
+        "w_to": 9
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Move Anudi from the car onto the roadside.",
+      "delivery_hint": "Treat her acknowledgment of the driver as a passing courtesy; no exact words are supplied.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C05"
+        ],
+        "things": [
+         "L04"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "The driver brings the car to a stop near the office.",
+        "function": "setup"
+       },
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P03",
+         "P04",
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi exits with her belongings, acknowledges the driver and heads toward the building.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 35,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 36,
+        "w_from": 0,
+        "w_to": 13
+       },
+       {
+        "line": 37,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Use the weather to bring Anudi past the food vehicle with her hands occupied.",
+      "delivery_hint": "Maintain a continuous walking action as she opens the umbrella.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [],
+        "things": [],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Rain starts.",
+        "function": "turn"
+       },
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P04",
+         "P03",
+         "P02",
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi raises her umbrella and walks past Kasun's vehicle.",
+        "function": "setup"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     3
+    ],
+    "source": "inferred",
+    "rules_met": []
+   },
+   {
+    "scene": "E01-S03",
+    "title": "The dropped phone",
+    "summary": "Anudi drops her phone without noticing. Kasun retrieves it, calls after her and offers it back.",
+    "purpose": "Create their first direct contact through Kasun's helpful response.",
+    "place": "L02",
+    "mood": [
+     "accidental",
+     "brisk",
+     "kindly"
+    ],
+    "people": [
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Continue toward her destination while putting her phone away.",
+      "feeling_start": "Preoccupied.",
+      "feeling_end": "Alert to Kasun's call.",
+      "source": "inferred"
+     },
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Return the dropped phone to its owner.",
+      "feeling_start": "Observant.",
+      "feeling_end": "Intent on helping her.",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P02",
+      "role": "hero",
+      "holder_start": "C02",
+      "holder_end": "C01",
+      "source": "script"
+     },
+     {
+      "thing": "P03",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P04",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "L03",
+      "role": "dressing",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "inferred"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 41,
+        "w_from": 0,
+        "w_to": 9
+       },
+       {
+        "line": 42,
+        "w_from": 0,
+        "w_to": 13
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Establish the awkward handling that precedes the loss.",
+      "delivery_hint": "Keep the umbrella, bag and phone positions readable.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02",
+         "P03",
+         "P04",
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Passing the stall under her umbrella, Anudi attempts to stow the phone in her bag's outer pocket.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 43,
+        "w_from": 0,
+        "w_to": 18
+       },
+       {
+        "line": 44,
+        "w_from": 0,
+        "w_to": 1
+       },
+       {
+        "line": 45,
+        "w_from": 0,
+        "w_to": 6
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Separate Anudi from her phone without her awareness.",
+      "delivery_hint": "Make the fall clear while allowing her walk to continue uninterrupted.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02",
+         "P03"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "The phone misses the pocket and lands on the roadside as Anudi keeps moving.",
+        "function": "turn"
+       },
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": false,
+        "change": "Anudi remains unaware that she has lost the phone.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 46,
+        "w_from": 0,
+        "w_to": 8
+       },
+       {
+        "line": 47,
+        "w_from": 0,
+        "w_to": 9
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Show Kasun acting immediately to help.",
+      "delivery_hint": "Use practical urgency rather than an exaggerated chase.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun spots the fallen phone, retrieves it and hurries after Anudi.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 48,
+        "w_from": 1,
+        "w_to": 6
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Get her attention and identify what she has dropped.",
+      "delivery_hint": "Project enough to reach her through the roadside noise.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun calls Anudi back about her phone.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 49,
+        "w_from": 0,
+        "w_to": 6
+       },
+       {
+        "line": 50,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Bring the two into a face-to-face exchange.",
+      "delivery_hint": "Let her turn answer his call before he offers the phone.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C01"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi turns toward Kasun, who reaches her and extends the recovered phone.",
+        "function": "setup"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     2,
+     3,
+     4
+    ],
+    "source": "inferred",
+    "rules_met": []
+   },
+   {
+    "scene": "E01-S04",
+    "title": "The interrupted conversation",
+    "summary": "Returning the phone leads to a warm exchange about Kasun's business. Her father's call about marriage changes Anudi's mood and ends the meeting.",
+    "purpose": "Establish mutual interest and Kasun's ambition while introducing the family pressure that interrupts their connection.",
+    "place": "L02",
+    "mood": [
+     "warm",
+     "curious",
+     "interrupted",
+     "reflective"
+    ],
+    "people": [
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Thank Kasun and learn about him, then respond to her father's demand.",
+      "feeling_start": "Grateful and receptive.",
+      "feeling_end": "Subdued but open to meeting Kasun again.",
+      "source": "inferred"
+     },
+     {
+      "person": "C01",
+      "presence": "on_screen",
+      "wants": "Return her phone and answer her interest in his work.",
+      "feeling_start": "Friendly and helpful.",
+      "feeling_end": "Distracted by the encounter and her change in mood.",
+      "source": "inferred"
+     },
+     {
+      "person": "C03",
+      "presence": "phone",
+      "wants": "Have Anudi return home for a discussion about her marriage.",
+      "feeling_start": "Urgent and directive.",
+      "feeling_end": "Expecting her return.",
+      "source": "inferred"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P02",
+      "role": "hero",
+      "holder_start": "C01",
+      "holder_end": "C02",
+      "source": "script"
+     },
+     {
+      "thing": "P03",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "inferred"
+     },
+     {
+      "thing": "P04",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "inferred"
+     },
+     {
+      "thing": "L03",
+      "role": "used",
+      "holder_start": "C01",
+      "holder_end": "C01",
+      "source": "script"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 54,
+        "w_from": 0,
+        "w_to": 6
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Complete the return that initiates their conversation.",
+      "delivery_hint": "Keep the handover simple and clearly visible.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C01"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "The phone passes from Kasun back to Anudi.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 55,
+        "w_from": 1,
+        "w_to": 7
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Thank him and acknowledge that she missed the accident.",
+      "delivery_hint": "Genuine gratitude with mild surprise.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi responds warmly to his help.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 56,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Put her at ease by attributing the mishap to the weather.",
+      "delivery_hint": "Gentle and matter-of-fact.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun offers an undemanding explanation for the accident.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 57,
+        "w_from": 0,
+        "w_to": 9
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Shift her attention from the returned phone to Kasun's livelihood.",
+      "delivery_hint": "Let the smile lead into an interested look toward the stall.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi notices the business with friendly curiosity.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 58,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Find out whether the business belongs to him.",
+      "delivery_hint": "Open curiosity without condescension.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "The exchange becomes a personal conversation about his work.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 59,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Confirm ownership while acknowledging the modest beginning.",
+      "delivery_hint": "Unembarrassed and modest.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi learns that Kasun owns the small operation.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 60,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Learn whether he manages all the work himself.",
+      "delivery_hint": "Interest deepens rather than becoming an interrogation.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi asks about his responsibility for the operation.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 61,
+        "w_from": 1,
+        "w_to": 10
+       },
+       {
+        "line": 62,
+        "w_from": 0,
+        "w_to": 1
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Explain his independent start with five thousand rupees and his wish to grow.",
+      "delivery_hint": "Honest pride, with hope stronger than self-promotion.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi learns his starting resources, solitary workload and ambition.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 63,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Register her admiration before the interruption.",
+      "delivery_hint": "A restrained reaction rather than an emphatic display.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi's response shows that his account has impressed her.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 64,
+        "w_from": 0,
+        "w_to": 10
+       },
+       {
+        "line": 65,
+        "w_from": 0,
+        "w_to": 7
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Interrupt the growing connection with family demands.",
+      "delivery_hint": "The already established phone rings; give its caller display a readable moment.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "An incoming call interrupts Anudi, and she identifies her father on the display.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 66,
+        "w_from": 1,
+        "w_to": 3
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "P02",
+      "addressee": "C03",
+      "heard_by": [
+       "C03",
+       "C01"
+      ],
+      "intent": "Answer her father.",
+      "delivery_hint": "An ordinary greeting before she knows the reason for the call.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi begins the phone conversation.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 67,
+        "w_from": 4,
+        "w_to": 12
+       },
+       {
+        "line": 68,
+        "w_from": 0,
+        "w_to": 6
+       }
+      ],
+      "speaker": "C03",
+      "presence": "phone",
+      "device": "P02",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Locate Anudi and summon her home to discuss her marriage.",
+      "delivery_hint": "Direct and authoritative without shouting.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "",
+        "speech": true,
+        "visible": false,
+        "change": "Anudi learns that her father expects an urgent discussion about marriage.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 69,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Show the emotional cost of the call.",
+      "delivery_hint": "Let the warmth drain gradually from her expression.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi's earlier smile fades.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 70,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "P02",
+      "addressee": "C03",
+      "heard_by": [
+       "C03",
+       "C01"
+      ],
+      "intent": "Agree to return.",
+      "delivery_hint": "Subdued compliance, contrasting with her earlier ease.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi tells her father that she will come.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 71,
+        "w_from": 0,
+        "w_to": 4
+       },
+       {
+        "line": 72,
+        "w_from": 0,
+        "w_to": 5
+       },
+       {
+        "line": 73,
+        "w_from": 0,
+        "w_to": 5
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Return to their shared space with the interruption still affecting her.",
+      "delivery_hint": "Allow a brief, observant pause without suggesting Kasun knows the unheard details.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi disconnects and turns her attention back to Kasun.",
+        "function": "setup"
+       },
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Kasun registers the difference in her expression.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 74,
+        "w_from": 1,
+        "w_to": 6
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C01",
+      "heard_by": [
+       "C01"
+      ],
+      "intent": "Take her leave while keeping open the possibility of another meeting.",
+      "delivery_hint": "Retain a little warmth beneath the changed mood.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi ends the encounter with an invitation to meet again.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 75,
+        "w_from": 1,
+        "w_to": 4
+       }
+      ],
+      "speaker": "C01",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Accept her departure and wish her well.",
+      "delivery_hint": "Simple, considerate warmth.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L02",
+        "speech": true,
+        "visible": true,
+        "change": "Kasun responds with a caring farewell.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 76,
+        "w_from": 0,
+        "w_to": 5
+       },
+       {
+        "line": 77,
+        "w_from": 0,
+        "w_to": 15
+       },
+       {
+        "line": 78,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Leave the encounter resonating after Anudi departs.",
+      "delivery_hint": "Let Kasun linger before returning to work; avoid specifying the content of his thoughts.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C01"
+        ],
+        "things": [
+         "P02",
+         "P03",
+         "P04",
+         "L03"
+        ],
+        "spot": "L02",
+        "speech": false,
+        "visible": true,
+        "change": "Anudi walks away while Kasun watches, then he returns to the stall.",
+        "function": "texture"
+       },
+       {
+        "actors": [
+         "C01"
+        ],
+        "things": [],
+        "spot": "L03",
+        "speech": false,
+        "visible": false,
+        "change": "Kasun remains mentally distracted after resuming his routine.",
+        "function": "reveal"
+       }
+      ]
+     }
+    ],
+    "turns": [
+     5,
+     10,
+     12,
+     14,
+     16
+    ],
+    "source": "inferred",
+    "rules_met": []
+   }
+  ]
+ }
+}

@@ -22,7 +22,12 @@ light, the props, the camera positions and where everyone stands
    (the image model never draws numbers), with black plates as black cells carrying their script line. Everything is in
    the private `frames` bucket under `<production>/boards/<board>/`.
 5. **Parts** (D5): up to 16 painted shots on one picture; above that, parts of at most 12, the last panel of one part
-   repeated as the first of the next (painted with that panel attached).
+   repeated as the first of the next (painted with that panel attached). A tall board holds up to 9, then parts of 9.
+6. **Shape** (2026-11-16, `lab/portrait_board` run_001): the board has the production's shape. A horizontal production
+   paints a 1536x1024 sheet of landscape panels; a vertical one a 1024x1536 sheet of tall panels ("a tall portrait 9:16
+   still"), so each panel is the shape of its 9:16 first frame. A repaint keeps the shape the board was painted in
+   (`aspect_of_board`, read from its prompt). A board in the other shape (painted before tall boards, or before the
+   production's orientation changed) still feeds frames; the API says `wrong_shape` and the card asks for a whole repaint.
 
 ## Approve, out of date, repaint
 
@@ -42,7 +47,10 @@ with the reason otherwise. Black plates need no board. Drafts are no longer pain
 person's face sheet, their look sheets (clothes only; hair from the look when the look sets hair, D6), the place, the props
 the shot names, then the panel as "the approved draft of this frame" (only its own panel, D8). The prompt gains the
 mannequin paragraph (who is which colour), each person's planned opening state, the board's world and the panel's
-words, all with the mannequins turned back into people. The vision check also looks for a leftover mannequin and for the
+words, all with the mannequins turned back into people, and first the stand-in rule (`STAND_INS`): every figure in the
+draft, named or not, is a real person. A background figure no colour names ("two grey pedestrian mannequins") becomes
+"two pedestrians" (`unmannequin`); before both, such extras were painted into the frame as grey mannequins. The
+vision check also looks for a leftover mannequin and for the
 planned state. These jobs run on the `hiru_ai` engine whatever `AI_ENGINE` says.
 
 ## What it costs (for the person, never the interface)

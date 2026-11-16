@@ -9,5 +9,6 @@ class State(TypedDict, total=False):
     uploads: list[dict[str, Any]]  # {document_id, filename, text, read_from} of each story document
     memory: dict[str, Any]  # the breakdown memory (contracts.breakdown.schema.Breakdown), dumped
     failed: str  # why there is no memory at all
+    waiting: int  # plan/2026-11-15: questions a person must answer before the build goes on (the job waits)
     report: dict[str, Any]
     refined: dict[str, Any]  # plan/2026-11-12c: the canon refine's checked answers (`breakdown_canon_refine.Answers`)

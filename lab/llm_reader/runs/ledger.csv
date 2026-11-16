@@ -1,0 +1,49 @@
+time,run,slot,model,effort,input_tokens,cached_tokens,output_tokens,dollars,status
+2026-11-15 11:23:43,run1,B_v2_pdf/read,gpt-6.1-sol,medium,6784,0,5085,0.0644,done
+2026-11-15 11:24:52,run1,B_v2_pdf/read,gpt-6.1-sol,medium,6816,0,5121,0.0648,done
+2026-11-15 11:25:57,run1,A_v1_pdf/read,gpt-6.1-sol,medium,6831,2040,5321,0.0630,done
+2026-11-15 11:26:50,run1,C_other_layout/read,gpt-6.1-sol,medium,6977,2040,5165,0.0617,done
+2026-11-15 11:27:37,run1,D_no_lengths/read,gpt-6.1-sol,medium,6678,2040,5115,0.0606,done
+2026-11-15 11:28:22,run1,E_not_a_story/read,gpt-6.1-sol,medium,2357,2040,557,0.0064,done
+2026-11-15 11:28:33,run1,F_glued_heading/read,gpt-6.1-sol,medium,6806,2040,5183,0.0616,done
+2026-11-15 11:29:18,run1,F_glued_heading/repair,gpt-6.1-sol,medium,10105,2040,3298,0.0493,done
+2026-11-15 12:27:12,run3,B_v2_pdf/probe,gpt-6.1-sol,low,5299,0,505,0.0156,done
+2026-11-15 12:27:29,run3,B_v2_pdf/transcribe p1-7,gpt-6.1-sol,low,2452,0,2127,0.0262,done
+2026-11-15 12:27:47,run3,B_v2_pdf/transcribe p8-13,gpt-6.1-sol,low,1894,0,1526,0.0190,done
+2026-11-15 12:28:04,run3,B_v2_pdf/read,gpt-6.1-sol,medium,6992,0,5360,0.0676,done
+2026-11-15 12:29:43,run3,A_v1_pdf/probe,gpt-6.1-sol,low,5314,0,433,0.0150,done
+2026-11-15 12:29:59,run3,A_v1_pdf/transcribe p1-7,gpt-6.1-sol,low,2460,0,2143,0.0264,done
+2026-11-15 12:30:16,run3,A_v1_pdf/transcribe p8-13,gpt-6.1-sol,low,1897,0,1531,0.0191,done
+2026-11-15 12:30:30,run3,A_v1_pdf/read,gpt-6.1-sol,medium,7007,2337,5314,0.0627,done
+2026-11-15 12:31:22,run3,C_other_layout/probe,gpt-6.1-sol,low,5372,0,164,0.0124,done
+2026-11-15 12:31:28,run3,C_other_layout/read,gpt-6.1-sol,medium,7185,2337,5853,0.0685,done
+2026-11-15 12:32:24,run3,D_no_lengths/probe,gpt-6.1-sol,low,5041,0,111,0.0112,done
+2026-11-15 12:32:28,run3,D_no_lengths/read,gpt-6.1-sol,medium,6854,2337,5121,0.0605,done
+2026-11-15 12:33:14,run3,E_not_a_story/probe,gpt-6.1-sol,low,838,0,71,0.0024,done
+2026-11-15 12:33:18,run3,F_glued_heading/probe,gpt-6.1-sol,low,5169,0,289,0.0132,done
+2026-11-15 12:33:23,run3,G_damaged_no_pdf/probe,gpt-6.1-sol,low,5300,0,400,0.0146,done
+2026-11-15 12:33:54,run4,A_v1_pdf/probe,gpt-6.1-sol,low,5365,0,370,0.0144,done
+2026-11-15 12:34:08,run4,B_v2_pdf/probe,gpt-6.1-sol,low,5350,0,357,0.0143,done
+2026-11-15 12:34:15,run4,C_other_layout/probe,gpt-6.1-sol,low,5423,0,99,0.0118,done
+2026-11-15 12:34:19,run4,D_no_lengths/probe,gpt-6.1-sol,low,5092,0,112,0.0113,done
+2026-11-15 12:34:23,run4,E_not_a_story/probe,gpt-6.1-sol,low,889,0,75,0.0025,done
+2026-11-15 12:34:26,run4,F_glued_heading/probe,gpt-6.1-sol,low,5220,0,111,0.0115,done
+2026-11-15 12:34:31,run4,F_glued_heading/read,gpt-6.1-sol,medium,6982,2337,5362,0.0631,done
+2026-11-15 12:35:25,run4,G_damaged_no_pdf/probe,gpt-6.1-sol,low,5351,0,394,0.0146,done
+2026-11-15 12:43:26,run5,A_v1_pdf/probe,gpt-6.1-sol,low,5245,0,112,0.0116,done
+2026-11-15 12:43:34,run5,B_v2_pdf/probe,gpt-6.1-sol,low,5230,0,106,0.0115,done
+2026-11-15 12:43:52,run5,G_damaged_no_pdf/probe,gpt-6.1-sol,low,5231,0,92,0.0114,done
+2026-11-15 12:44:00,run5,G_damaged_no_pdf/read,gpt-6.1-sol,medium,6993,2337,5560,0.0651,done
+2026-11-15 13:14:18,connect1,connect/split,gpt-6.1-sol,agent,5354,0,7189,0.0826,done
+2026-11-15 13:15:44,connect1,connect/continuity,gpt-6.1-sol,agent,6909,0,5361,0.0674,done
+2026-11-15 13:16:40,connect1,connect/episode,gpt-6.1-sol,agent,7930,0,10789,0.1237,done
+2026-11-15 13:18:19,connect1,connect/episode,gpt-6.1-sol,agent,8595,2173,11594,0.1290,done
+2026-11-15 13:20:03,connect1,connect/episode,gpt-6.1-sol,agent,8792,2173,11061,0.1241,done
+2026-11-15 13:21:56,connect1,connect/repair,gpt-6.1-sol,agent,8899,0,1647,0.0343,done
+2026-11-15 13:22:11,connect1,connect/repair,gpt-6.1-sol,agent,8005,2166,898,0.0209,done
+2026-11-15 13:22:19,connect1,connect/repair,gpt-6.1-sol,agent,8507,2166,1342,0.0263,done
+2026-11-15 13:22:33,connect1,connect/repair,gpt-6.1-sol,agent,11123,2166,3153,0.0497,done
+2026-11-15 13:22:55,connect1,connect/repair,gpt-6.1-sol,agent,9223,2166,1694,0.0313,done
+2026-11-15 13:23:09,connect1,connect/repair,gpt-6.1-sol,agent,8246,2166,802,0.0204,done
+2026-11-15 13:23:15,connect1,connect/repair,gpt-6.1-sol,agent,9576,2166,2167,0.0367,done
+2026-11-15 13:23:33,connect1,connect/repair,gpt-6.1-sol,agent,11821,2166,3655,0.0561,done

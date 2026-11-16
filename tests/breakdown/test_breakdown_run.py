@@ -174,8 +174,14 @@ def test_today_s_columns_come_from_the_memory(made):
     s2 = next(s for s in ep["scenes"] if s["number"] == 2)
     phone = [b for b in s2["blocks"] if b["kind"] == "dialogue" and b["delivery"] == "on the phone"]
     assert len(phone) == 1 and phone[0]["text"].startswith("Route eka maru") and phone[0]["speaker"] == "Mudalali"
-    assert s2["envelope_s"] >= 4 and s2["title"] == bd.scene("E01-S02").brief["title"]
+    # plan/2026-11-15: no reading here, so no stated length (the production's default applies) and the brief's title;
+    # never the "N MINUTES" pattern on the heading
+    assert "envelope_s" not in s2 and s2["title"] == bd.scene("E01-S02").brief["title"]
     assert len(s2["blocks"]) == len(bd.scene("E01-S02").blocks)  # block i is memory block i (staging indexes match)
+    sc = bd.scene("E01-S02").model_copy(update={"stated_s": 27.6, "title_doc": "THE CALL"})
+    bd2 = bd.model_copy(update={"scenes": [sc if s.id == sc.id else s for s in bd.scenes]})
+    s2b = next(s for s in fill.structure(bd2)["episodes"][0]["scenes"] if s["number"] == 2)
+    assert s2b["envelope_s"] == 28 and s2b["title"] == "THE CALL"  # the reading's length (rounded) and title
     cards = {c["name"]: c for c in fill.canon_cards(bd)}
     assert cards["Dinu"]["kind"] == "character" and cards["Dinu"]["card"]["notes"].startswith("details: ")
     rows = fill.memory_rows(bd)

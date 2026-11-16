@@ -1,0 +1,600 @@
+{
+ "message": "CARDS\nC01 [person] Kasun - details: His business has started growing. He is now supplying food to three small shops.; wardrobe: His clothing gradually becomes more polished as the business grows.; appearance: DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout.\nC02 [person] Anudi - details: Anudi sits in the back seat, looking at her smartphone.; appearance: Anudi maintains the same facial appearance, hairstyle and body type throughout.\nC03 [person] Father - look: Her father enters the living room with a serious expression.; appearance: Anudi's father maintains the same appearance throughout.\nC04 [person] office worker - details: An office worker approaches and orders tea.\nC05 [person] driver - details: The driver stops near an office building.\nC06 [person] representative - details: A representative from a major supermarket chain is on the other end.\nC07 [person] investor - details: He sits with a potential investor and explains his business plan.\nC08 [person] friends - details: His friends are unable to help.\nC09 [person] Staff members - details: Staff members are serving customers.\nC10 [person] customers - details: Staff members are serving customers.\nL01 [place, region] Colombo - details: The city is waking up.; look: Maintain authentic Colombo streets, vehicles, homes and environments.\nL02 [place, set in L01] Colombo roadside\nL03 [place, vehicle in L01] Food three-wheeler - details: Kasun's three-wheeler remains the same vehicle.; look: His early food business remains small and humble.\nL04 [place, vehicle in L01] Family car - look: Location: Colombo road – Family car and roadside Duration: 0.38 minutes A comfortable family car moves through Colombo traffic.; details: Anudi sits in the back seat, looking at her smartphone.\nL05 [place, vehicle in L01] father's car - details: Her father's car passes by.\nL06 [place, set in L01] Anudi's family home\nL07 [place, spot in L06] Living room\nL08 [place, set in L01] Kasun's small food preparation workspace - details: Kasun is working in his small rented workspace.\nL09 [place, set in L01] bank - details: He visits a bank and discusses a business loan.\nL10 [place, spot in L06] Bedroom\nL11 [place, set in L01] KASUN'S Restaurant - look: The interior has warm lighting, wooden tables and Sri Lankan-inspired design.\nL12 [place, spot in L11] entrance\nP01 [thing] flask\nP02 [thing] smartphone - details: She tries to put her smartphone into the side pocket of her handbag.\nP03 [thing] handbag - details: She tries to put her smartphone into the side pocket of her handbag.\nP04 [thing] umbrella - details: Anudi gets out, carrying her handbag and umbrella.\nP05 [thing] food containers - details: Anudi helps him arrange food containers.\nP06 [thing] notebook - details: He checks his orders, calculates expenses and writes figures in a notebook.\nP07 [thing] Kasun's phone - details: He makes phone calls to friends asking for financial support.\nP08 [thing] business documents - details: He reviews his business documents and calculations late at night.\nP09 [thing] supermarket order - details: He sits alone at the desk, looking at the supermarket order and the financial calculations.\nP10 [thing] photograph - details: She looks at a photograph of herself and Kasun.\nP11 [thing] envelope - details: He opens the envelope and sees the cheque.\nP12 [thing] bag - details: He takes an envelope from his bag and places it on the table.\nP13 [thing] cheque - details: He opens the envelope and sees the cheque.\nP14 [thing] short eats\nP15 [thing] small counter\nP16 [thing] tea cup - details: At the serving counter before passing to C04.\nP17 [thing] cup - details: At the tea preparation area of L03.\nP18 [thing] pen - details: At the notebook on the small work table.\nP19 [thing] phone - details: At the representative's unspecified location.\n\nDIRECTION RULES\nD01 [other, all scenes] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.\nD02 [editing, all scenes] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.\nD03 [editing, scene 1] A romantic montage follows: Anudi visits Kasun after work. Kasun prepares her favourite tea. They spend time talking and laughing. Anudi helps him arrange food containers. Kasun walks with her to her car. They exchange smiles before saying goodbye.\nD04 [editing, scene 1] A sequence of connected moments shows his struggle. He visits a bank and discusses a business loan. He sits with a potential investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required support. The investor doesn't believe the small business can handle such a large order. His friends are unable to help.\nD05 [sound, scene 3] Silence.\nD06 [lighting, scene 5] The interior has warm lighting, wooden tables and Sri Lankan-inspired design.\nD07 [lens, scene 5] The camera slowly pulls back, revealing the restaurant and its customers.\nD08 [editing, scene 5] FINAL TEXT ON SCREEN: \"සමහර ආදර කතාවලට සල්ලි ඕනේ නෑ. තමන්ගේ හීන විශ්වාස කරන කෙනෙක් හිටියම ඇති.\"\nD09 [other, all scenes] Kasun maintains the same facial appearance, hairstyle and body type throughout.\nD10 [other, all scenes] Anudi maintains the same facial appearance, hairstyle and body type throughout.\nD11 [other, all scenes] Anudi's father maintains the same appearance throughout.\nD12 [other, place L03] Kasun's three-wheeler remains the same vehicle.\nD13 [other, place L03] His early food business remains small and humble.\nD14 [other, all scenes] His clothing gradually becomes more polished as the business grows.\nD15 [other, place L11] The final restaurant must visually feel like the successful evolution of his original business.\nD16 [other, all scenes] Maintain authentic Colombo streets, vehicles, homes and environments.\nD17 [action, all scenes] Keep performances natural and avoid exaggerated melodrama.\n\nCONTINUITY\n{\"synopses\": [{\"episode\": 1, \"text\": \"C01 dreams of owning L11 while running L03. Returning C02's P02 sparks a connection, interrupted by C03's demand to discuss her marriage.\"}, {\"episode\": 2, \"text\": \"C01 and C02 fall in love, but C03 disapproves of C01's financial position. C01's growing business attracts a supermarket opportunity requiring Rs. 2 million he lacks.\"}, {\"episode\": 3, \"text\": \"After funding attempts fail, C01 rejects C03's Rs. 2 million offer conditioned on leaving C02. Months later, C01 operates L11 with C02 beside him, and C03 apologizes and accepts him.\"}], \"arcs\": [{\"person\": \"C01\", \"change\": \"Moves from a small L03 operation and restaurant ambition to supplying three shops and confronting expansion costs for a supermarket opportunity.\", \"from_scene\": \"E01-S01\", \"to_scene\": \"E02-S04\"}, {\"person\": \"C01\", \"change\": \"Moves from urgently seeking expansion money to refusing funding that requires abandoning C02.\", \"from_scene\": \"E03-S01\", \"to_scene\": \"E03-S04\"}, {\"person\": \"C01\", \"change\": \"After rejecting conditional money, becomes the successful operator of L11 and receives C03's apology.\", \"from_scene\": \"E03-S04\", \"to_scene\": \"E03-S05\"}, {\"person\": \"C02\", \"change\": \"An impressed new acquaintance becomes C01's romantic partner and affirms support despite C03's financial objections.\", \"from_scene\": \"E01-S04\", \"to_scene\": \"E02-S04\"}, {\"person\": \"C02\", \"change\": \"Concern over C01's stalled financing gives way to sharing his success and witnessing C03's reconciliation.\", \"from_scene\": \"E03-S02\", \"to_scene\": \"E03-S05\"}, {\"person\": \"C03\", \"change\": \"Disapproval of C01's poverty escalates into a conditional offer designed to separate C01 and C02.\", \"from_scene\": \"E02-S02\", \"to_scene\": \"E03-S03\"}, {\"person\": \"C03\", \"change\": \"C01's refusal makes him question his judgment; later he apologizes and acknowledges C01's success without his money.\", \"from_scene\": \"E03-S04\", \"to_scene\": \"E03-S05\"}], \"threads\": [{\"kind\": \"setup_payoff\", \"subject\": \"C01\", \"summary\": \"The restaurant ambition is realized as L11.\", \"beats\": [{\"scene\": \"E01-S01\", \"note\": \"C01 voices his ambition despite the limitations of L03.\"}, {\"scene\": \"E03-S05\", \"note\": \"C01 stands at L11; C02 explicitly recognizes the fulfilled dream.\"}]}, {\"kind\": \"setup_payoff\", \"subject\": \"C03\", \"summary\": \"C03's insistence on money is challenged by C01's refusal and ultimately recanted.\", \"beats\": [{\"scene\": \"E02-S03\", \"note\": \"C03 dismisses dreams as insufficient financial security.\"}, {\"scene\": \"E03-S03\", \"note\": \"Offers the needed amount in exchange for separation.\"}, {\"scene\": \"E03-S04\", \"note\": \"C01 refuses; C03 begins questioning his judgment.\"}, {\"scene\": \"E03-S05\", \"note\": \"C03 apologizes and acknowledges success without his money.\"}]}, {\"source\": \"inferred\", \"kind\": \"open_question\", \"subject\": \"P09\", \"summary\": \"How C01 financed expansion after refusing C03, and whether the supermarket order was fulfilled, remain unstated.\", \"beats\": [{\"scene\": \"E02-S04\", \"note\": \"Expansion needs Rs. 2 million.\"}, {\"scene\": \"E03-S04\", \"note\": \"C01 refuses C03's money.\"}, {\"scene\": \"E03-S05\", \"note\": \"L11 succeeds months later; no financing mechanism or order resolution is given.\"}]}, {\"kind\": \"journey\", \"subject\": \"P02\", \"summary\": \"C02 carries P02, loses it unnoticed, and receives it back from C01.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"With C02 in L04 before she gets out.\"}, {\"scene\": \"E01-S03\", \"note\": \"Falls beside L03; C01 picks it up and offers it to C02.\"}, {\"scene\": \"E01-S04\", \"note\": \"C02 takes it back and subsequently receives C03's call.\"}]}, {\"kind\": \"journey\", \"subject\": \"P03\", \"summary\": \"P03 remains with C02 from leaving L04 to the encounter beside L03.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 carries P03 out of L04.\"}, {\"scene\": \"E01-S03\", \"note\": \"C02 attempts to put P02 in P03.\"}]}, {\"kind\": \"journey\", \"subject\": \"P04\", \"summary\": \"C02 carries and opens P04, retaining it while passing L03.\", \"beats\": [{\"scene\": \"E01-S02\", \"note\": \"C02 carries P04 from L04 and opens it in the rain.\"}, {\"scene\": \"E01-S03\", \"note\": \"Still held by C02 beside L03.\"}]}, {\"kind\": \"journey\", \"subject\": \"P13\", \"summary\": \"C03 brings P13 inside P11; C01 inspects it and pushes it back.\", \"beats\": [{\"scene\": \"E03-S03\", \"note\": \"C03 takes P11 from P12 and places it on the table; C01 opens P11 and sees P13.\"}, {\"scene\": \"E03-S04\", \"note\": \"P13 remains before C01, who pushes it toward C03; C03 remains looking at it. Collection is not shown.\"}]}, {\"kind\": \"journey\", \"subject\": \"P08\", \"summary\": \"P08 remains part of C01's financing work and the subsequent confrontation at L08.\", \"beats\": [{\"scene\": \"E03-S01\", \"note\": \"C01 reviews P08 late at night.\"}, {\"scene\": \"E03-S03\", \"note\": \"C01 reviews P08 at his desk; C03 notices the documents.\"}, {\"scene\": \"E03-S04\", \"note\": \"P08 remains on the table during C01's decision.\"}]}], \"looks\": [{\"person\": \"C01\", \"kind\": \"wardrobe\", \"from_scene\": \"E01-S01\", \"to_scene\": \"E03-S05\", \"note\": \"D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at L11. Earlier individual outfits are unspecified.\"}], \"relationships\": [{\"a\": \"C01\", \"b\": \"C02\", \"state\": \"New acquaintances with mutual interest following P02's return.\", \"scene\": \"E01-S04\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"Repeated meetings develop friendship into love.\", \"scene\": \"E02-S01\"}, {\"a\": \"C01\", \"b\": \"C02\", \"state\": \"C02 affirms commitment independent of money; C01 wants to provide financial security.\", \"scene\": \"E02-S04\"}, {\"a\": \"C02\", \"b\": \"C03\", \"state\": \"Conflict over C01's suitability; C02 defends his ambition while C03 insists on financial security.\", \"scene\": \"E02-S03\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"C03 attempts to buy C01's separation from C02.\", \"scene\": \"E03-S03\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"C01 respectfully refuses; C03's certainty about him begins to weaken.\", \"scene\": \"E03-S04\"}, {\"a\": \"C01\", \"b\": \"C03\", \"state\": \"Reconciliation through apology and handshake, with C02 present.\", \"scene\": \"E03-S05\"}], \"timeline\": [{\"scene\": \"E01-S01\", \"story_order\": 1, \"story_day\": 0, \"relative\": \"Early morning; calendar day unspecified.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S02\", \"story_order\": 2, \"story_day\": 0, \"relative\": \"\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E01-S03\", \"story_order\": 3, \"story_day\": 0, \"relative\": \"Continues E01-S02.\", \"kind\": \"normal\", \"anchor\": \"E01-S02\"}, {\"scene\": \"E01-S04\", \"story_order\": 4, \"story_day\": 0, \"relative\": \"Continues E01-S03.\", \"kind\": \"normal\", \"anchor\": \"E01-S03\"}, {\"scene\": \"E02-S01\", \"story_order\": 5, \"story_day\": 0, \"relative\": \"A few weeks later; spans different evenings.\", \"kind\": \"normal\", \"anchor\": \"E01-S04\"}, {\"scene\": \"E02-S02\", \"story_order\": 6, \"story_day\": 0, \"relative\": \"One evening during the established routine.\", \"kind\": \"normal\", \"anchor\": \"E02-S01\"}, {\"scene\": \"E02-S03\", \"story_order\": 7, \"story_day\": 0, \"relative\": \"That night.\", \"kind\": \"normal\", \"anchor\": \"E02-S02\"}, {\"scene\": \"E02-S04\", \"story_order\": 8, \"story_day\": 0, \"relative\": \"Late at night; whether the same night is unspecified.\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E03-S01\", \"story_order\": 9, \"story_day\": 0, \"relative\": \"After the funding need is established; spans multiple attempts.\", \"kind\": \"normal\", \"anchor\": \"E02-S04\"}, {\"scene\": \"E03-S02\", \"story_order\": 10, \"story_day\": 0, \"relative\": \"After unsuccessful funding approaches.\", \"kind\": \"normal\", \"anchor\": \"E03-S01\"}, {\"scene\": \"E03-S03\", \"story_order\": 11, \"story_day\": 0, \"relative\": \"\", \"kind\": \"normal\", \"anchor\": \"\"}, {\"scene\": \"E03-S04\", \"story_order\": 12, \"story_day\": 0, \"relative\": \"Immediate continuation.\", \"kind\": \"normal\", \"anchor\": \"E03-S03\"}, {\"scene\": \"E03-S05\", \"story_order\": 13, \"story_day\": 0, \"relative\": \"Several months later.\", \"kind\": \"normal\", \"anchor\": \"E03-S04\"}], \"knowledge\": [{\"scene\": \"E02-S03\", \"person\": \"C02\", \"learns\": \"C03 saw her with C01 and considers his financial prospects inadequate.\", \"audience_only\": false}], \"scopes\": [{\"source\": \"inferred\", \"rule\": \"D01\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D02\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D10\", \"scenes\": [\"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S02\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Keep C02's face, hairstyle and body type consistent.\"}, {\"source\": \"inferred\", \"rule\": \"D11\", \"scenes\": [\"E02-S02\", \"E02-S03\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"Keep C03's appearance consistent.\"}, {\"source\": \"inferred\", \"rule\": \"D16\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}, {\"source\": \"inferred\", \"rule\": \"D17\", \"scenes\": [\"E01-S01\", \"E01-S02\", \"E01-S03\", \"E01-S04\", \"E02-S01\", \"E02-S02\", \"E02-S03\", \"E02-S04\", \"E03-S01\", \"E03-S02\", \"E03-S03\", \"E03-S04\", \"E03-S05\"], \"moment_scene\": \"\", \"moment_note\": \"\"}]}\n\nEND OF THE EPISODE BEFORE\nnone: this is the first episode\n\nSCENES TO BREAK DOWN\n=== E02-S03 (place card: pick from the cards) ===\n114: SCENE 03 — THE CONFRONTATION\n115: Location: Anudi's family home – Living room\n116: Duration: 0.63 minutes\n117: That night.\n118: Anudi is sitting comfortably on the sofa, looking at her phone.\n119: Her father enters the living room with a serious expression.\n120: He sits opposite her.\n121: Father: \"අද මම ඔයාව දැක්කා අර කොල්ලා එක්ක.\"\n122: Anudi looks up.\n123: Anudi: \"කවුද තාත්තේ?\"\n124: Father: \"අර පාරේ කෑම විකුණන කොල්ලා. ඒ ළමයා කවුද?\"\n125: Anudi becomes slightly uncomfortable.\n126: Anudi: \"තාත්තේ, එයා කසුන්. මගේ යාළුවෙක්.\"\n127: Father: \"යාළුවෙක් විතරද? ඒ ළමයට මොනවද තියෙන්නේ? තමන්ගේ කියලා හරියට\n128: තැනක්වත් නෑ.\"\n129: Anudi looks disappointed.\n130: Anudi: \"එයාට හීනයක් තියෙනවා තාත්තේ.\"\n131: Her father responds immediately.\n132: Father: \"හීනවලින් පවුල් ජීවත් කරන්න බෑ අනුදි. සල්ලි ඕනේ. අනාගතයක් තියෙන්න\n133: ඕනේ.\"\n134: Anudi looks at her father.\n135: She wants to argue, but decides to remain silent.\n136: She gets up and walks away.\n137: Her father remains seated, convinced that he is protecting his daughter.\n\nYOUR PREVIOUS ANSWER FOR THIS SCENE\n{\"scene\": \"E02-S03\", \"title\": \"Living room confrontation\", \"summary\": \"Anudi defends Kasun's ambition against her father's financial objections, then withdraws rather than prolonging the argument.\", \"purpose\": \"Make the conflict between emotional commitment and financial security explicit.\", \"place\": \"L07\", \"mood\": [\"tense\", \"hurt\", \"restrained\"], \"people\": [{\"person\": \"C02\", \"presence\": \"on_screen\", \"wants\": \"Have her father respect Kasun.\", \"feeling_start\": \"Comfortable\", \"feeling_end\": \"Hurt and unwilling to continue\", \"source\": \"inferred\"}, {\"person\": \"C03\", \"presence\": \"on_screen\", \"wants\": \"Protect his daughter's future through financial security.\", \"feeling_start\": \"Serious\", \"feeling_end\": \"Certain of his position\", \"source\": \"script\"}], \"things\": [{\"thing\": \"P02\", \"role\": \"used\", \"holder_start\": \"C02\", \"holder_end\": \"C02\", \"source\": \"inferred\"}], \"implied\": [], \"turns\": [2, 8, 10, 12, 13], \"source\": \"inferred\", \"rules_met\": [], \"blocks\": [{\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Replace Anudi's comfort with an impending difficult conversation.\", \"delivery_hint\": \"Let his serious entrance disturb the room's calm.\", \"source\": \"inferred\", \"spans\": [{\"line\": 117, \"w_from\": 0, \"w_to\": 2}, {\"line\": 118, \"w_from\": 0, \"w_to\": 11}, {\"line\": 119, \"w_from\": 0, \"w_to\": 10}, {\"line\": 120, \"w_from\": 0, \"w_to\": 4}], \"events\": [{\"actors\": [\"C02\", \"C03\"], \"things\": [\"P02\"], \"spot\": \"L07\", \"speech\": false, \"visible\": true, \"change\": \"Her father joins her and takes the opposite seat.\", \"function\": \"setup\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C03\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C02\", \"heard_by\": [\"C02\"], \"intent\": \"Confront her with his observation.\", \"delivery_hint\": \"Direct and controlled.\", \"source\": \"inferred\", \"spans\": [{\"line\": 121, \"w_from\": 1, \"w_to\": 8}], \"events\": [{\"actors\": [\"C03\"], \"things\": [], \"spot\": \"L07\", \"speech\": true, \"visible\": true, \"change\": \"Anudi learns that her father saw the meeting.\", \"function\": \"turn\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Redirect her attention to him.\", \"delivery_hint\": \"A small, immediate reaction.\", \"source\": \"inferred\", \"spans\": [{\"line\": 122, \"w_from\": 0, \"w_to\": 3}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L07\", \"speech\": false, \"visible\": true, \"change\": \"She looks away from her phone toward her father.\", \"function\": \"texture\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C02\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C03\", \"heard_by\": [\"C03\"], \"intent\": \"Ask whom he means.\", \"delivery_hint\": \"Brief and cautious.\", \"source\": \"inferred\", \"spans\": [{\"line\": 123, \"w_from\": 1, \"w_to\": 3}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L07\", \"speech\": true, \"visible\": true, \"change\": \"She seeks clarification.\", \"function\": \"texture\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C03\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C02\", \"heard_by\": [\"C02\"], \"intent\": \"Identify Kasun by his work and demand an explanation.\", \"delivery_hint\": \"Pointed but not raised.\", \"source\": \"inferred\", \"spans\": [{\"line\": 124, \"w_from\": 1, \"w_to\": 9}], \"events\": [{\"actors\": [\"C03\"], \"things\": [], \"spot\": \"L07\", \"speech\": true, \"visible\": true, \"change\": \"His questioning focuses explicitly on Kasun.\", \"function\": \"reveal\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Expose her growing discomfort.\", \"delivery_hint\": \"Keep the reaction slight.\", \"source\": \"inferred\", \"spans\": [{\"line\": 125, \"w_from\": 0, \"w_to\": 4}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L07\", \"speech\": false, \"visible\": true, \"change\": \"Her ease gives way to discomfort.\", \"function\": \"texture\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C02\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C03\", \"heard_by\": [\"C03\"], \"intent\": \"Introduce Kasun without escalating the conversation.\", \"delivery_hint\": \"Careful and measured.\", \"source\": \"inferred\", \"spans\": [{\"line\": 126, \"w_from\": 1, \"w_to\": 6}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L07\", \"speech\": true, \"visible\": true, \"change\": \"She names Kasun and describes him as a friend.\", \"function\": \"reveal\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C03\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C02\", \"heard_by\": [\"C02\"], \"intent\": \"Challenge the relationship through Kasun's lack of assets.\", \"delivery_hint\": \"Skeptical and increasingly firm.\", \"source\": \"inferred\", \"spans\": [{\"line\": 127, \"w_from\": 1, \"w_to\": 10}, {\"line\": 128, \"w_from\": 0, \"w_to\": 2}], \"events\": [{\"actors\": [\"C03\"], \"things\": [], \"spot\": \"L07\", \"speech\": true, \"visible\": true, \"change\": \"His questions become an explicit judgment of Kasun's means.\", \"function\": \"turn\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Register the personal cost of his judgment.\", \"delivery_hint\": \"Hold her disappointment without exaggeration.\", \"source\": \"inferred\", \"spans\": [{\"line\": 129, \"w_from\": 0, \"w_to\": 3}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L07\", \"speech\": false, \"visible\": true, \"change\": \"She is visibly disappointed.\", \"function\": \"texture\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C02\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C03\", \"heard_by\": [\"C03\"], \"intent\": \"Defend Kasun through his ambition.\", \"delivery_hint\": \"Quiet conviction.\", \"source\": \"inferred\", \"spans\": [{\"line\": 130, \"w_from\": 1, \"w_to\": 5}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L07\", \"speech\": true, \"visible\": true, \"change\": \"She offers a different measure of Kasun's worth.\", \"function\": \"turn\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"Deny her defense room to settle.\", \"delivery_hint\": \"Move directly into his answer.\", \"source\": \"inferred\", \"spans\": [{\"line\": 131, \"w_from\": 0, \"w_to\": 4}], \"events\": [{\"actors\": [\"C03\"], \"things\": [], \"spot\": \"L07\", \"speech\": false, \"visible\": true, \"change\": \"He responds without hesitation.\", \"function\": \"texture\"}]}, {\"kind\": \"dialogue\", \"speaker\": \"C03\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"C02\", \"heard_by\": [\"C02\"], \"intent\": \"Insist that ambition cannot replace material security.\", \"delivery_hint\": \"Certain and paternal rather than explosive.\", \"source\": \"inferred\", \"spans\": [{\"line\": 132, \"w_from\": 1, \"w_to\": 11}, {\"line\": 133, \"w_from\": 0, \"w_to\": 1}], \"events\": [{\"actors\": [\"C03\"], \"things\": [], \"spot\": \"L07\", \"speech\": true, \"visible\": true, \"change\": \"He makes financial stability his decisive condition.\", \"function\": \"turn\"}]}, {\"kind\": \"action\", \"speaker\": \"\", \"presence\": \"on_screen\", \"device\": \"\", \"addressee\": \"\", \"heard_by\": [], \"intent\": \"End the exchange without resolving either position.\", \"delivery_hint\": \"Let her departure and his continued stillness carry the separation.\", \"source\": \"inferred\", \"spans\": [{\"line\": 134, \"w_from\": 0, \"w_to\": 5}, {\"line\": 135, \"w_from\": 0, \"w_to\": 9}, {\"line\": 136, \"w_from\": 0, \"w_to\": 6}, {\"line\": 137, \"w_from\": 0, \"w_to\": 11}], \"events\": [{\"actors\": [\"C02\"], \"things\": [], \"spot\": \"L07\", \"speech\": false, \"visible\": false, \"change\": \"She suppresses her wish to argue.\", \"function\": \"turn\"}, {\"actors\": [\"C02\", \"C03\"], \"things\": [], \"spot\": \"L07\", \"speech\": false, \"visible\": true, \"change\": \"She leaves while he stays seated.\", \"function\": \"turn\"}, {\"actors\": [\"C03\"], \"things\": [], \"spot\": \"L07\", \"speech\": false, \"visible\": false, \"change\": \"He retains his belief that his stance protects her.\", \"function\": \"reveal\"}]}]}\n\nPROBLEMS\n- 17 word(s) in no block, 0 word(s) in more than one: line 115 words 0-6 (\"Location: Anudi's family home – Living room\") in no block; line 116 words 0-2 ('Duration: 0.63 minutes') in no block; line 121 word 0 ('Father:') in no block; line 123 word 0 ('Anudi:') in no block; line 124 word 0 ('Father:') in no block; line 126 word 0 ('Anudi:') in no block; line 127 word 0 ('Father:') in no block; line 130 word 0 ('Anudi:') in no block; ...",
+ "answer": {
+  "scenes": [
+   {
+    "scene": "E02-S03",
+    "title": "Living room confrontation",
+    "summary": "Anudi defends Kasun's ambition against her father's financial objections, then withdraws rather than prolonging the argument.",
+    "purpose": "Make the conflict between emotional commitment and financial security explicit.",
+    "place": "L07",
+    "mood": [
+     "tense",
+     "hurt",
+     "restrained"
+    ],
+    "people": [
+     {
+      "person": "C02",
+      "presence": "on_screen",
+      "wants": "Have her father respect Kasun.",
+      "feeling_start": "Comfortable",
+      "feeling_end": "Hurt and unwilling to continue",
+      "source": "inferred"
+     },
+     {
+      "person": "C03",
+      "presence": "on_screen",
+      "wants": "Protect his daughter's future through financial security.",
+      "feeling_start": "Serious",
+      "feeling_end": "Certain of his position",
+      "source": "script"
+     }
+    ],
+    "things": [
+     {
+      "thing": "P02",
+      "role": "used",
+      "holder_start": "C02",
+      "holder_end": "C02",
+      "source": "inferred"
+     }
+    ],
+    "implied": [],
+    "blocks": [
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 117,
+        "w_from": 0,
+        "w_to": 2
+       },
+       {
+        "line": 118,
+        "w_from": 0,
+        "w_to": 11
+       },
+       {
+        "line": 119,
+        "w_from": 0,
+        "w_to": 10
+       },
+       {
+        "line": 120,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Replace Anudi's comfort with an impending difficult conversation.",
+      "delivery_hint": "Let his serious entrance disturb the room's calm.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02",
+         "C03"
+        ],
+        "things": [
+         "P02"
+        ],
+        "spot": "L07",
+        "speech": false,
+        "visible": true,
+        "change": "Her father joins her and takes the opposite seat.",
+        "function": "setup"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 121,
+        "w_from": 1,
+        "w_to": 8
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Confront her with his observation.",
+      "delivery_hint": "Direct and controlled.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": true,
+        "visible": true,
+        "change": "Anudi learns that her father saw the meeting.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 122,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Redirect her attention to him.",
+      "delivery_hint": "A small, immediate reaction.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": false,
+        "visible": true,
+        "change": "She looks away from her phone toward her father.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 123,
+        "w_from": 1,
+        "w_to": 3
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Ask whom he means.",
+      "delivery_hint": "Brief and cautious.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": true,
+        "visible": true,
+        "change": "She seeks clarification.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 124,
+        "w_from": 1,
+        "w_to": 9
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Identify Kasun by his work and demand an explanation.",
+      "delivery_hint": "Pointed but not raised.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": true,
+        "visible": true,
+        "change": "His questioning focuses explicitly on Kasun.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 125,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Expose her growing discomfort.",
+      "delivery_hint": "Keep the reaction slight.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": false,
+        "visible": true,
+        "change": "Her ease gives way to discomfort.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 126,
+        "w_from": 1,
+        "w_to": 6
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Introduce Kasun without escalating the conversation.",
+      "delivery_hint": "Careful and measured.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": true,
+        "visible": true,
+        "change": "She names Kasun and describes him as a friend.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 127,
+        "w_from": 1,
+        "w_to": 10
+       },
+       {
+        "line": 128,
+        "w_from": 0,
+        "w_to": 2
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Challenge the relationship through Kasun's lack of assets.",
+      "delivery_hint": "Skeptical and increasingly firm.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": true,
+        "visible": true,
+        "change": "His questions become an explicit judgment of Kasun's means.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 129,
+        "w_from": 0,
+        "w_to": 3
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Register the personal cost of his judgment.",
+      "delivery_hint": "Hold her disappointment without exaggeration.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": false,
+        "visible": true,
+        "change": "She is visibly disappointed.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 130,
+        "w_from": 1,
+        "w_to": 5
+       }
+      ],
+      "speaker": "C02",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C03",
+      "heard_by": [
+       "C03"
+      ],
+      "intent": "Defend Kasun through his ambition.",
+      "delivery_hint": "Quiet conviction.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": true,
+        "visible": true,
+        "change": "She offers a different measure of Kasun's worth.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 131,
+        "w_from": 0,
+        "w_to": 4
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Deny her defense room to settle.",
+      "delivery_hint": "Move directly into his answer.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": false,
+        "visible": true,
+        "change": "He responds without hesitation.",
+        "function": "texture"
+       }
+      ]
+     },
+     {
+      "kind": "dialogue",
+      "spans": [
+       {
+        "line": 132,
+        "w_from": 1,
+        "w_to": 11
+       },
+       {
+        "line": 133,
+        "w_from": 0,
+        "w_to": 1
+       }
+      ],
+      "speaker": "C03",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "C02",
+      "heard_by": [
+       "C02"
+      ],
+      "intent": "Insist that ambition cannot replace material security.",
+      "delivery_hint": "Certain and paternal rather than explosive.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": true,
+        "visible": true,
+        "change": "He makes financial stability his decisive condition.",
+        "function": "turn"
+       }
+      ]
+     },
+     {
+      "kind": "action",
+      "spans": [
+       {
+        "line": 134,
+        "w_from": 0,
+        "w_to": 5
+       },
+       {
+        "line": 135,
+        "w_from": 0,
+        "w_to": 9
+       },
+       {
+        "line": 136,
+        "w_from": 0,
+        "w_to": 6
+       },
+       {
+        "line": 137,
+        "w_from": 0,
+        "w_to": 11
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "End the exchange without resolving either position.",
+      "delivery_hint": "Let her departure and his continued stillness carry the separation.",
+      "source": "inferred",
+      "events": [
+       {
+        "actors": [
+         "C02"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": false,
+        "visible": false,
+        "change": "She suppresses her wish to argue.",
+        "function": "turn"
+       },
+       {
+        "actors": [
+         "C02",
+         "C03"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": false,
+        "visible": true,
+        "change": "She leaves while he stays seated.",
+        "function": "turn"
+       },
+       {
+        "actors": [
+         "C03"
+        ],
+        "things": [],
+        "spot": "L07",
+        "speech": false,
+        "visible": false,
+        "change": "He retains his belief that his stance protects her.",
+        "function": "reveal"
+       }
+      ]
+     },
+     {
+      "kind": "text",
+      "spans": [
+       {
+        "line": 115,
+        "w_from": 0,
+        "w_to": 7
+       },
+       {
+        "line": 116,
+        "w_from": 0,
+        "w_to": 3
+       },
+       {
+        "line": 121,
+        "w_from": 0,
+        "w_to": 1
+       },
+       {
+        "line": 123,
+        "w_from": 0,
+        "w_to": 1
+       },
+       {
+        "line": 124,
+        "w_from": 0,
+        "w_to": 1
+       },
+       {
+        "line": 126,
+        "w_from": 0,
+        "w_to": 1
+       },
+       {
+        "line": 127,
+        "w_from": 0,
+        "w_to": 1
+       },
+       {
+        "line": 130,
+        "w_from": 0,
+        "w_to": 1
+       },
+       {
+        "line": 132,
+        "w_from": 0,
+        "w_to": 1
+       }
+      ],
+      "speaker": "",
+      "presence": "on_screen",
+      "device": "",
+      "addressee": "",
+      "heard_by": [],
+      "intent": "Identify scene metadata and speaker labels separately from spoken words.",
+      "delivery_hint": "Not spoken or displayed within the scene.",
+      "source": "inferred",
+      "events": []
+     }
+    ],
+    "turns": [
+     2,
+     8,
+     10,
+     12,
+     13
+    ],
+    "source": "inferred",
+    "rules_met": []
+   }
+  ]
+ }
+}

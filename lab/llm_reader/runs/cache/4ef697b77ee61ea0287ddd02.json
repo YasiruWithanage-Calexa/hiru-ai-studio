@@ -1,0 +1,45 @@
+{
+  "kind": "story_script",
+  "kind_why": "Scene headings such as “SCENE 03 — THE UNEXPECTED ENCOUNTER” accompany acted action (“He quickly picks it up and runs after her.”) and character-labelled dialogue.",
+  "language_of_dialogue": "Sinhala, with occasional English words and phrases.",
+  "text_quality": {
+    "readable": false,
+    "problems": [
+      {
+        "where": {
+          "line": 48,
+          "quote": "ඔයාෙ ෙෆන් එක"
+        },
+        "what": "Sinhala characters are missing or misordered: “ඔයාෙ” is damaged, and the word for phone has displaced or missing vowel components."
+      },
+      {
+        "where": {
+          "line": 55,
+          "quote": "අෙන් , Thank you! මම දැක්ෙකවත් නෑ"
+        },
+        "what": "Sinhala vowel signs precede the consonants they belong to: “අෙන්” and “දැක්ෙකවත්” should read “අනේ” and “දැක්කෙවත්”."
+      },
+      {
+        "where": {
+          "line": 206,
+          "quote": "බැංකුෙවන්වත් investor ෙකෙනක්ෙගන්වත්"
+        },
+        "what": "Repeated misplaced Sinhala vowel signs; these words should read “බැංකුවෙන්වත්” and “කෙනෙක්ගෙන්වත්”."
+      },
+      {
+        "where": {
+          "line": 234,
+          "quote": "ඔයා මෙ දුවෙගන් ඈත් ෙවන්න ඕෙන්"
+        },
+        "what": "“මෙ” is missing characters from “මගේ”; “දුවෙගන්”, “ෙවන්න”, and “ඕෙන්” also have displaced vowel signs."
+      },
+      {
+        "where": {
+          "line": 249,
+          "quote": "මෙ වාපාරය මමම ෙගාඩනගා ගන්නම්"
+        },
+        "what": "Letters are missing in “මෙ වාපාරය” (intended “මගේ ව්‍යාපාරය”), and the initial vowel sign in “ෙගාඩනගා” is misplaced."
+      }
+    ]
+  }
+}
