@@ -187,6 +187,13 @@ lettering); **checks report, they never edit** the prose or a person's list; **e
 (`EngineCapability.seed`, `verified`) is settled by `scripts/video_probe.py`, a person's to run. Read
 `plan/2026-11-06c/IMPLEMENTED.md` first.
 
+**Text inside the picture is allowed (plan/2026-11-17b; the person's rule, do not change it).** Omni Flash 1.1 / 1.2 render
+readable text (a phone's message, a sign, a letter) from the prompt's words and from a picture. Never write "Veo cannot render
+readable text", "show the glow of the screen on a face" or "free of lettering" into a prompt, a check, a knowledge base or a
+lab: say what the text is, word for word, in the script's language. The rule lives only in `contracts/on_screen_text.py`
+(`PLANNER`, `CRITIC`, `VIDEO`, `FRAME`); a new planner's prompt carries `PLANNER` word for word, and
+`tests/contracts/test_on_screen_text.py` fails on the old wording anywhere in `src/` or a lab prompt.
+
 ## A scene's production cost (plan/2026-11-06d)
 
 The scene panel's header shows ONE figure, "Scene ≈ $20.86": what the scene has cost plus what it will cost to finish. The

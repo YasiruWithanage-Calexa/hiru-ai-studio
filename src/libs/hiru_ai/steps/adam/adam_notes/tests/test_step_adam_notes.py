@@ -71,7 +71,7 @@ def test_the_report_says_what_code_found_and_how_many_problems_are_open():
             {"code": "envelope", "level": "warning", "message": "12 s over", "card": None}]},
         "continuity": {"issues": [{"code": "axis_cross", "where": "card 5", "message": "crosses the line"}]},
         "feasibility": {"flags": [
-            {"card": 2, "code": "screen_text", "risk": "high", "why": "text on a phone", "fix": "show a reaction",
+            {"card": 2, "code": "fast_hands", "risk": "high", "why": "typing fast", "fix": "cut to the face",
              "addressed": False},
             {"card": 4, "code": "mirror", "risk": "high", "why": "a mirror", "fix": "avoid", "addressed": True}]},
         "score": {"percent": 82.5, "max": 12, "signals": [{"signal": "sound", "applicable": True, "checks": [
@@ -81,7 +81,7 @@ def test_the_report_says_what_code_found_and_how_many_problems_are_open():
     assert "1 break(s)" in text and "[new_person] moment m4: a waiter appears" in text
     assert "52 s in 2 takes; 1 overrun(s)" in text and "[envelope] card -: 12 s over" in text
     assert "[axis_cross] card 5: crosses the line" in text
-    assert "[screen_text] card 2 (high)" in text and "mirror" not in text
+    assert "[fast_hands] card 2 (high)" in text and "mirror" not in text
     assert "Craft score: 82.5%" in text and "sound: card -: no change of sound at the turn" in text
 
 

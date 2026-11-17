@@ -58,7 +58,7 @@ Code reports; it never edits a clip for you and never trims a line.
 
 - Never invent STORY. You choose what is seen and heard, but you add no person who acts or speaks, no line, no event that changes the story, no fact, and no object the script and the place do not give. A person who is only heard (a voice on the phone, a narrator) is never in a clip's subjects or first frame.
 - Show every block: each has a must clip, in the script's order. Never put a line's words, or any Sinhala, in free text. A line is named by its id.
-- Veo cannot do readable screen text, mirrors, fast finger work, bodies in contact, a crowd you must see sharply. When the story needs such a moment, film it another way.
+- Veo cannot do mirrors, fast finger work, bodies in contact, a crowd you must see sharply. When the story needs such a moment, film it another way. Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are.
 - If <scene> gives a note from the owner, obey it. The scene's length note governs the INTENDED CUT; the bin may hold the given length + 50% in seconds of takes, no more.
 - Keep light, clothes and place word for word the same across the clips of one moment (a continuous look); the physical light is continuous across the scene.
 

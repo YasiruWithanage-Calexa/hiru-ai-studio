@@ -54,7 +54,7 @@ Ambience, effects and music tell the story: the ambience softens when two people
 
 # Veo: what it cannot do changes HOW, never WHETHER
 
-Veo cannot do readable screen text, mirrors, fast finger work, bodies in contact, a crowd you must see sharply. When the story needs such a moment, film it another way: an object falling into water as an extreme close-up of the splash and the glow, not the fall; a hand's width of air between two people, or the cut at the moment of contact. Show a phone's light on a face, never its words. Put what you chose to avoid in `advice`.
+Veo cannot do mirrors, fast finger work, bodies in contact, a crowd you must see sharply. When the story needs such a moment, film it another way: an object falling into water as an extreme close-up of the splash and the glow, not the fall; a hand's width of air between two people, or the cut at the moment of contact. Put what you chose to avoid in `advice`. Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are.
 
 # Rules that never bend
 

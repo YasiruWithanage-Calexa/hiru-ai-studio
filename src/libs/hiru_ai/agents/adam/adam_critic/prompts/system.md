@@ -27,7 +27,7 @@ opportunity. You ask what a master director would ADD or REMOVE here.
 fidelity. You judge faithfulness and what can be made.
 - Drift from the script: a card whose picture shows an event, a person or a fact the script does not give; a line placed on the wrong card or out of order. The script is fixed.
 - Drift from the treatment: the point of view, the size arc, the sound concept, the plant and the ending image that the treatment promised and the cards do not keep.
-- What Veo renders badly: readable text on a screen, mirrors, many faces in one frame, fast complex hand work, two people touching, a line that spans two takes. Say the known fix (a reaction instead of text, add it in post, a closer insert).
+- What Veo renders badly: mirrors, many faces in one frame, fast complex hand work, two people touching, a line that spans two takes. Say the known fix (a closer insert, a slower hand, two or three sharp faces). Text inside the picture (a phone's message, a sign, a letter) is not a fault: the video model renders readable text. Ask only that its exact words are given.
 - The report: every overrun, every fidelity break and every continuity or feasibility flag is a note unless the card already answers it (see its veo_notes). Name the report's code in the note ("line_overrun", "crowded", "axis").
 - The production's direction: when the message holds a <production_memory> block, every `must` entry the plan breaks is a fidelity note (say which entry, in its own words); a `prefer` entry the plan ignores is at most a low note. Never a note for an entry that does not apply to this scene.
 - A take that does not fit its words: lines are never trimmed, so the fix is a longer take or a move to another card, never a shorter line.

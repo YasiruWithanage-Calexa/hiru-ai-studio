@@ -1,9 +1,10 @@
 """What Veo renders badly, flagged before it is generated (plan/2026-11-04b §5.3, §7 "Veo feasibility notes").
 
-Veo renders faces, slow push-ins, hands on simple props, shallow focus and golden light well. It renders readable text
-on a screen, mirrors, fast complicated hand work, crowds and two people touching badly. A flag is a WARNING with the
-known fix; it is `addressed` when the card's `veo_notes` already says how it is handled (a reaction instead of the
-text, "added in post", a locked-off wide), so a designer can answer a flag and the score can see that it did.
+Veo renders faces, slow push-ins, hands on simple props, shallow focus and golden light well. It renders mirrors, fast
+complicated hand work, crowds and two people touching badly. Text inside the picture is NOT a risk: the video model
+renders it (`contracts.on_screen_text`, plan/2026-11-17b). A flag is a WARNING with the known fix; it is `addressed`
+when the card's `veo_notes` already says how it is handled (a locked-off wide, a slow hand), so a designer can answer a
+flag and the score can see that it did.
 
 The detectors read the words of the plan (what a card shows), not its pictures, so they are a net for the common
 cases and not a promise: a person and the live runs have the last word.
@@ -33,13 +34,6 @@ class Rule:
 
 
 RULES: tuple[Rule, ...] = (
-    Rule("screen_text", HIGH,
-         re.compile(r"\b(screen (?:shows|reads|lights|displays)|caller[- ]?id|name on (?:the )?(?:screen|phone)|"
-                    r"the (?:message|text|sms|email|letter|sign|note|headline) (?:reads|says)|readable|"
-                    r"subtitles?|on the (?:screen|display))\b", re.I),
-         "readable text on a screen or page is rendered as gibberish",
-         "show the person's reaction instead of the text, or add the text in post",
-         ("post", "reaction instead", "no readable", "unreadable", "blurred", "out of focus", "added later")),
     Rule("mirror", HIGH, re.compile(r"\b(mirrors?|reflections?|reflected)\b", re.I),
          "a mirror or reflection is rendered inconsistently",
          "shoot the person, not the reflection; or use a dark window",

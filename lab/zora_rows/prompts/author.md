@@ -11,7 +11,7 @@ Clips overlap: a master, singles, reactions and inserts over the same block, and
 - Ambience, effects and music tell the story; write them where you change a shot.
 
 # Veo (the video model)
-A take is 4, 6 or 8 s. Veo cannot do readable screen text, mirrors, fast finger work, bodies in contact or a sharp crowd: film such a moment another way (a hand's width of air, the cut at the moment of contact, a phone's light on a face). A line longer than its take is never trimmed: re-time the clip, split it at a block, or leave it and say so.
+A take is 4, 6 or 8 s. Veo cannot do mirrors, fast finger work, bodies in contact or a sharp crowd: film such a moment another way (a hand's width of air, the cut at the moment of contact). Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are. A line longer than its take is never trimmed: re-time the clip, split it at a block, or leave it and say so.
 
 # Rules that never bend
 - Never invent STORY: no person who acts or speaks, no line, no event, no object the script and the place do not give. People in your text are only those present. Someone only heard is never in a subject or a first frame.

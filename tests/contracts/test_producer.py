@@ -110,7 +110,8 @@ def test_the_frame_prompt_names_references_by_position_and_honours_a_persons_fra
     assert "Shot: Close-up, eye level; 85mm lens at f/4, a long portrait lens" in text
     assert "Compose it as a close-up." in text, "the panel as it stands: lens and stop as numbers and as their look"
     assert "Kamala: 52, grey hair in a bun; wearing a faded blue saree" in text
-    assert text.endswith("no collage, no split panels.") and "9:16 vertical framing" in text
+    assert text.endswith("no collage, no split panels. Text the brief spells out is drawn exactly as written; no other "
+                         "lettering is added.") and "9:16 vertical framing" in text
     assert "Night, lamp key" in text, "the preset lights a frame the IR says nothing about"
 
 

@@ -337,11 +337,9 @@ def _heard(scene: SceneS, plan: JonathanWire) -> list[Problem]:
     return out
 
 
-# What Veo does badly, and the known way round it (plan §6 "feasibility": reported, not repaired, in the first version)
+# What Veo does badly, and the known way round it (plan §6 "feasibility": reported, not repaired, in the first version).
+# Text inside the picture is NOT here: the video model renders it (`contracts.on_screen_text`, plan/2026-11-17b).
 FEASIBILITY: tuple[tuple[str, str, str], ...] = (
-    ("screen text", r"\b(reads?|text on|the screen shows|message (?:says|reads)|caption|subtitle|sign (?:says|reads)|"
-     r"lettering|notification)\b", "Veo cannot render readable text: show the glow of the screen on a face and let "
-     "a line or a sound carry the words."),
     # a mirror, or a person's reflection in glass; not the water on a wet road (the lab's rain scene tripped the word)
     ("a mirror", r"\b(mirrors?|(?:her|his|their|a person's|own) reflection|"
      r"reflection (?:of (?:her|him|them)|in (?:a|the) (?:glass|window|mirror)))\b",

@@ -27,19 +27,26 @@ def codes(out: dict[str, Any]) -> list[str]:
 
 def test_the_example_runs_alone_and_its_flag_is_answered():
     out = step.run(json.loads((HERE / "examples" / "basic.json").read_text(encoding="utf-8")))
-    assert codes(out) == ["screen_text"] and out["flags"][0]["addressed"] and out["ok"]
+    assert codes(out) == ["mirror"] and out["flags"][0]["addressed"] and out["ok"]
 
 
-def test_readable_screen_text_is_a_high_risk_until_the_card_answers_it():
-    out = run(seen="the screen shows her father's name")
-    assert codes(out) == ["screen_text"] and not out["ok"] and out["unaddressed_high"] == 1
-    assert "reaction" in out["flags"][0]["fix"] and out["by_card"] == {1: 1}
-    answered = run(seen="the screen shows her father's name", notes="the name is added in post")
+def test_text_inside_the_picture_is_not_a_risk():
+    """plan/2026-11-17b: the video model renders readable text, so a phone's message is never flagged."""
+    for seen in ("the screen shows her father's name", "the message reads 'come home'", "the sign says KANDY"):
+        out = run(seen=seen)
+        assert out["flags"] == [] and out["ok"], seen
+
+
+def test_a_mirror_is_a_high_risk_until_the_card_answers_it():
+    out = run(seen="a mirror behind her")
+    assert codes(out) == ["mirror"] and not out["ok"] and out["unaddressed_high"] == 1
+    assert "reflection" in out["flags"][0]["fix"] and out["by_card"] == {1: 1}
+    answered = run(seen="a mirror behind her", notes="shoot her, not the reflection")
     assert answered["flags"][0]["addressed"] and answered["ok"] and answered["unaddressed"] == 0
 
 
 def test_a_note_that_does_not_answer_the_flag_leaves_it_open():
-    out = run(seen="the screen shows her father's name", notes="slow push-in, warm light")
+    out = run(seen="a mirror behind her", notes="slow push-in, warm light")
     assert not out["flags"][0]["addressed"] and not out["ok"]
 
 

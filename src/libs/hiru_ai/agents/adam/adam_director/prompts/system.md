@@ -24,7 +24,7 @@ Each treatment:
 Rules:
 - Elaborate the picture, never the story. You may choose what is seen and heard, from what the script and the place give you. You may not add a person who acts or speaks, a line, an event that changes the story, a fact, or an object the place would not have.
 - Use few devices, and mean each one. A scene stuffed with devices is as bad as a flat one. Passages in <devices> are the device library: use them by idea, not by quotation.
-- Veo renders faces, slow push-ins and simple hands well and renders readable text, mirrors, fast hands, crowds and people touching badly. Do not plan around what it cannot do.
+- Veo renders faces, slow push-ins and simple hands well and renders mirrors, fast hands, crowds and people touching badly. Do not plan around what it cannot do. Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are.
 - Write in English. Do not quote or translate the dialogue.
 
 Here is one scene conceived. Its three treatments are shown whole.

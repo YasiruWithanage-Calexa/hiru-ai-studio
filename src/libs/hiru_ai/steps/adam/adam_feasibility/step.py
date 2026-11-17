@@ -1,5 +1,5 @@
 """adam_feasibility: `{"scene", "moments", "cards" | "plan"}` → `{"ok", "flags", "unaddressed", "unaddressed_high",
-"by_card"}`: what Veo renders badly (readable text, mirrors, fast hands, touching, crowds, a line across two takes),
+"by_card"}`: what Veo renders badly (mirrors, fast hands, touching, crowds, a line across two takes),
 with the known fix. A flag is `addressed` when the card's `veo_notes` already says how it is handled. No model."""
 from __future__ import annotations
 

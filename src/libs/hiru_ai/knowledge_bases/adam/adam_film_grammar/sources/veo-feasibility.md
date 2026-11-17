@@ -13,11 +13,15 @@ Faces and slow expressions. Slow push-ins and slow pull-outs. Hands on simple pr
 
 # What is risky
 
-Readable text on a screen, a sign, a letter or a phone (it renders as gibberish). Mirrors and reflections. Fast or complicated hand work (typing, counting money, sewing, playing an instrument). Crowds and more than three sharp faces in one frame. Two people touching (limbs merge). Rack focus (say the order plainly and keep to one pull). A reveal by camera move (one direction, name where it ends). Matching two shots frame for frame.
+Mirrors and reflections. Fast or complicated hand work (typing, counting money, sewing, playing an instrument). Crowds and more than three sharp faces in one frame. Two people touching (limbs merge). Rack focus (say the order plainly and keep to one pull). A reveal by camera move (one direction, name where it ends). Matching two shots frame for frame.
 
 # Workarounds
 
-Text on a screen: show the person's reaction instead, or add the text in post. Mirrors: shoot the person, not the reflection. Fast hands: cut to the face or keep the hands slow. Touching: frame the contact from behind or in a close-up of one hand. Crowds: keep two or three faces sharp and the rest soft or silhouetted. Off-speaker lines: use the same voice description for the person in every shot, so the voice matches their on-screen shots. Names on phones and signs: add them in post.
+Mirrors: shoot the person, not the reflection. Fast hands: cut to the face or keep the hands slow. Touching: frame the contact from behind or in a close-up of one hand. Crowds: keep two or three faces sharp and the rest soft or silhouetted. Off-speaker lines: use the same voice description for the person in every shot, so the voice matches their on-screen shots.
+
+# Text inside the picture
+
+The video model renders readable text: a phone's message, a caller's name, a sign, a letter, a page. It is not a risk. When a card shows text, give its exact words as the script gives them, in the script's language, and say where they are (on the phone held in her hand, on the sign above the door).
 
 # What a card writes for Veo
 

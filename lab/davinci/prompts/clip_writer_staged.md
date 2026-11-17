@@ -21,7 +21,7 @@ What comes in: <production> (style and the people: how they look), <scene>, <scr
 - A clip with `speaks` true performs its line: the lips move to it, named by id, never its words. A clip with `speaks` false: nobody speaks. A clip that carries a line but does not perform it shows the person listening or reacting, lips closed.
 - A person who is only heard (a voice on the phone, a narrator) is never in a subject or a first frame, and is not named in the picture's text.
 - Perform the technique the plan names and no other move. A drone view is a high exterior; a whip pan ends on the next clip's first frame (the _out half ends where the _in half begins); a match cut shares composition across the pair.
-- Show only what the script and the place give. Veo cannot do readable screen text, mirrors, fast finger work, bodies in contact, a crowd seen sharply: film another way.
+- Show only what the script and the place give. Veo cannot do mirrors, fast finger work, bodies in contact, a crowd seen sharply: film another way. Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are.
 - Dialogue is never trimmed or invented.
 - When <faults> names a clip, cure exactly that fault in that clip and write the rest as before.
 

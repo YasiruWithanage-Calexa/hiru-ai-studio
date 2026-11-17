@@ -27,7 +27,7 @@ Deleting those folders removes Adam; `hiru-ai remove --group adam` lists them an
 | `adam_fidelity` | step | Every script block and line once, in order; added moments only from the allowed kinds, with people present and objects that fit the place. A break is dropped (an added moment) or sent back (the script). |
 | `adam_fit` | step | Moments and cards on the Veo clock (4/6/8 s, 2.2 words/s). Reports overruns, the runtime against the envelope. Never trims a line. |
 | `adam_continuity` | step | The 180° line, eyelines and screen direction, a person in two places without a move, props that change hands unseen. |
-| `adam_feasibility` | step | What Veo renders badly (readable text, mirrors, fast hands, touching, crowds, a line across two takes) and the known fix. |
+| `adam_feasibility` | step | What Veo renders badly (mirrors, fast hands, touching, crowds, a line across two takes) and the known fix. |
 | `adam_score` | step | The craft score: fourteen signals, each naming the card it is about (plan 2026-11-04c added `coverage`, weight 3, and `one_job_per_card`). A fidelity break, an overrun or a required face lost to the other plan loses first. The percent is the craft share times the coverage share. Picks the better of two plans. |
 | `adam_coverage` | step | The coverage grid (beats by people) and the faces the analysis says must be seen: the turn, the other person at it, the irony, each subtext, each person's stake. Holes are named. The designer is told them before it designs. |
 | `adam_split` | step | Repairs a crowded card in code: a longer take, or a split at a moment boundary; never a deletion, never a trimmed line. |

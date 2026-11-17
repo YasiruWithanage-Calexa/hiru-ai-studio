@@ -243,10 +243,17 @@ def test_the_caller_in_frame_is_found():
 
 
 def test_what_veo_does_badly_is_reported_with_the_known_way_round():
-    plan = shots(gold.phone_call(), lambda s: {**s, "why": "The screen shows the message: a long text."}
+    plan = shots(gold.phone_call(), lambda s: {**s, "why": "She checks her reflection in the mirror."}
                  if s["n"] == 3 else s)
     report = only(plan, "feasibility")
-    assert len(report) == 1 and report[0].fix == "report" and "glow" in report[0].sentence
+    assert len(report) == 1 and report[0].fix == "report" and "not the glass" in report[0].sentence
+
+
+def test_text_inside_the_picture_is_never_reported():
+    """plan/2026-11-17b: the video model renders readable text (contracts.on_screen_text)."""
+    plan = shots(gold.phone_call(), lambda s: {**s, "why": "The screen shows the message: a long text. The sign "
+                                                "reads KANDY; a notification with her name."} if s["n"] == 3 else s)
+    assert only(plan, "feasibility") == []
 
 
 # ── staging and the end state ────────────────────────────────────────────────────────────────────

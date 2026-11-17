@@ -24,6 +24,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
+from contracts import on_screen_text
 from contracts.camera_words import camera_words, lighting_words
 from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment
 from contracts.staging import source_phrase
@@ -262,7 +263,7 @@ def _merge(segments: list[PromptSegment]) -> list[PromptSegment]:
 
 def _guard(shot: ShotInput) -> str:
     rules = get_schema()
-    bits = [rules.rule("frame_hygiene"), rules.rule("lettering_clean"), rules.rule("anatomy")]
+    bits = [rules.rule("frame_hygiene"), on_screen_text.VIDEO, rules.rule("anatomy")]
     if not shot.seen:
         bits.append(rules.rule("no_extra_people"))
     bits.append(rules.rule("physics"))

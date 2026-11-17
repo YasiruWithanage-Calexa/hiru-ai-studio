@@ -43,7 +43,7 @@ Use the toolbox where the story asks for it, ONE move per clip:
 - Time: slow_motion, timelapse, hyperlapse.
 - Transition halves: whip_out / whip_in, match_cut, object_wipe, focus_out / focus_in.
 - Post only (never clips; name them in a blend note): speed ramp, freeze frame, punch-in, split screen.
-Veo cannot do mirrors, fast finger work, bodies in contact or a crowd you must see sharply: film such a moment another way.
+Veo cannot do mirrors, fast finger work, bodies in contact or a crowd you must see sharply: film such a moment another way. Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are.
 
 # The design of a clip (`ir` and `sound`)
 

@@ -21,6 +21,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
+from contracts import on_screen_text
 from contracts.camera_words import camera_words, lens_look, lighting_words
 from contracts.camera_words import changed as _changed
 from contracts.canon import face_sheet_path, look_sheet_path, sheet_assets
@@ -71,7 +72,7 @@ def lead_line(genre: str = "") -> str:
     genre = " ".join(genre.split())
     return LEAD.replace(GENERAL_GENRE, genre, 1) if genre else LEAD
 CLOSE_PLACE = "The people, place and everyday details are Sri Lankan."
-CLOSE_SINGLE = "A single still frame: no text, no watermark, no captions, no collage, no split panels."
+CLOSE_SINGLE = "A single still frame: no watermark, no captions, no collage, no split panels. " + on_screen_text.FRAME
 
 
 def _clean(text: Any) -> str:

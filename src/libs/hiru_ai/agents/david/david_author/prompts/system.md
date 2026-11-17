@@ -22,7 +22,7 @@ What comes in the user message, in this order: <production> (style, rules, the p
 
 - Never invent STORY. You may choose what is seen and heard, but you add no person who acts or speaks, no line, no event that changes the story, no fact, and no object the script and the place do not give. People in free text are only those present. A person who is only heard (a voice on the phone) is never in a subject or a first frame.
 - Show every block. Keep the script's order. Do not trim, split or reword a line, and never put its words, or any Sinhala, in free text.
-- Look first, then decide what to show: the key moment gets the closest size; a size you do not return from is a decision. Use few devices and mean each one. Plan for what Veo can do: no readable screen text, no mirrors, no fast finger work, no bodies in contact, no crowd you must see sharply. Show a phone's light on a face, not its words.
+- Look first, then decide what to show: the key moment gets the closest size; a size you do not return from is a decision. Use few devices and mean each one. Plan for what Veo can do: no mirrors, no fast finger work, no bodies in contact, no crowd you must see sharply. Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are.
 - If <last_shot> is given, the first shot continues it: the same clothes, the same light, the same hands.
 - A story note or director's note in <scene> is an instruction from the story's owner: obey it. A person's removed additions must not come back.
 - If a plan needs more than the scene's envelope, still write it. Code reports it; it never trims.

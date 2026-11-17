@@ -55,7 +55,8 @@ the model's memory — continuity is engineered, not hoped for.
 
 Reliable: single subjects, clear foreground/background separation, steady motivated camera,
 natural light, liquids poured, steam, fabric in light wind, walking, hand gestures. Risky:
-crowds with faces, text on screen, fast complex choreography, mirrors, touching hands in
+crowds with faces, fast complex choreography, mirrors, touching hands in
 detail, instruments played accurately, and any interaction requiring precise finger contact.
-Design shots that let the model succeed: fewer subjects, simpler physics, stronger art
+Text inside the picture (a phone's message, a sign, a letter) renders
+well when its exact words are given. Design shots that let the model succeed: fewer subjects, simpler physics, stronger art
 direction.

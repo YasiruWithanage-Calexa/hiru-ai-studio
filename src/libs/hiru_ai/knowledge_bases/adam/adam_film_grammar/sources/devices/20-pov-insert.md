@@ -11,11 +11,11 @@ title: "Device: POV insert"
 
 **Use it when.** A sign, a face, a letter, a door; the person looking must be in the scene, and the thing must be the script's.
 
-**Do not use it when.** For a thing the script does not mention, or when the reaction shot says everything. Avoid readable text.
+**Do not use it when.** For a thing the script does not mention, or when the reaction shot says everything.
 
 **Allowed kind.** pov (elaboration)
 
-**Veo feasibility.** good for places and objects; risky for text (use the post-only note).
+**Veo feasibility.** good for places and objects; good for text when its exact words are given.
 
 **On a card.** A pov moment (who: the person looking, objects: [the thing]); arrangement pov, size INSERT, a 4 s take. cut_in motive: look.
 
