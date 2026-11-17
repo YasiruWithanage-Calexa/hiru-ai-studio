@@ -193,3 +193,34 @@ def test_the_apis_undo_replay_is_the_functions():
             rows.append({"revision": n, "kind": rng.choice(["turn", "use", "undo", "undo", "redo"])})
         st = Stack.of([{**r, "scene_id": "s", "stored": {"rows": [], "lines": []}} for r in rows])
         assert zora_service.undo_redo(rows) == (st.can_undo(), st.can_redo())
+
+
+def test_a_turn_that_changed_the_plan_ends_with_the_scenes_two_views(world: World, fn: Function):  # noqa: F811
+    """plan/2026-11-13d phase 4 (F10): the panel puts these in its cache instead of reading the scene twice. The
+    function's frames pass through untouched, even when a chunk ends inside a frame or inside a letter."""
+    sid = planned(world)
+    body = (director_service.sse("delta", {"text": "Wide on S03, ගේට්ටුව."})
+            + director_service.sse("plan", {"revision": 4})
+            + director_service.sse("done", {"message_id": "m1", "lane": "edit", "revision": 4, "suggestions": []}))
+    cut = body.index("ගේ".encode()) + 1  # inside a Sinhala letter
+
+    async def changed(payload: Row) -> AsyncIterator[bytes]:
+        for part in (body[:7], body[7:cut], body[cut:]):
+            yield part
+
+    world.client.app.dependency_overrides[zora_service.get_streamer] = lambda: changed  # type: ignore[attr-defined]
+    h = world.headers(world.director)
+    r = world.client.post(url(world, f"/scenes/{sid}/zora/turn"), json={"message": "Make S03 a wide"}, headers=h)
+    got = frames(r.text)
+    assert [e for e, _ in got] == ["accepted", "delta", "plan", "done", "views"]
+    assert got[1][1]["text"] == "Wide on S03, ගේට්ටුව."
+    views = got[-1][1]
+    assert views["scene"] == world.client.get(url(world, f"/scenes/{sid}"), headers=h).json()
+    assert views["production"] == world.client.get(url(world, f"/scenes/{sid}/production"), headers=h).json()
+
+
+def test_a_chat_only_turn_sends_no_views(world: World, fn: Function):  # noqa: F811
+    sid = planned(world)
+    r = world.client.post(url(world, f"/scenes/{sid}/zora/turn"), json={"message": "What is S03?"},
+                          headers=world.headers(world.director))
+    assert "views" not in [e for e, _ in frames(r.text)]

@@ -602,7 +602,7 @@ class SupabaseFrames:
         except httpx.HTTPError:
             pass
 
-    # The Scene board (plan/2026-11-14, schema v25)
+    # The Scene board (plan/2026-11-14, schema v26)
     def board(self, board_id: str) -> Row | None:
         return self.rest.first("scene_boards", {"id": f"eq.{board_id}", "select": "*"})
 

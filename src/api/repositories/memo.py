@@ -31,12 +31,16 @@ MEMOISED: dict[str, frozenset[str]] = {
     "scene_looks": frozenset({"list"}),
     "looks": frozenset({"list_for_production"}),
     "canon": frozenset({"list"}),
+    "packets": frozenset({"get"}),  # plan/2026-11-13d phase 4: the scene view and `/page` both read it
 }
 
 # A method whose name starts like this reads and changes nothing (it neither clears nor is kept).
 _READ_PREFIXES = ("get", "list", "latest", "counts", "live", "active", "role_of", "open_count", "count", "search",
                   "tokens_since", "budget", "prices", "scene_usage", "unassigned_usage", "recent_usage",
-                  "lines_by_scene", "versions", "threads", "thread")
+                  "lines_by_scene", "versions", "threads", "thread",
+                  # plan/2026-11-13d F13: `direction.series` (production memory) read beside the episode and looks in
+                  # `production.load` cleared the memo, so /page read six rows twice; `last_seq` / `last_event_at`.
+                  "series", "last_", "events", "find_", "match_", "processing_before", "download", "refined")
 
 
 @dataclass

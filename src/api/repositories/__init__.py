@@ -87,6 +87,10 @@ class JobsRepo(Protocol):
     # updated_at.
     async def active_before(self, before: datetime) -> list[Row]: ...
     async def last_event_at(self, job_id: UUID) -> datetime | None: ...
+    async def last_seq(self, job_id: UUID) -> int | None: ...  # the job's newest event number
+    # `/live` in one query (schema v25 `live_items()`): kind, id, shot_id, status, job_kind, updated_at, seq. None until
+    # the function exists; the caller then reads the four tables itself (plan/2026-11-13d phase 3).
+    async def live_items(self, production_id: UUID, since: datetime | None) -> list[Row] | None: ...
     # `live` (plan/2026-11-08c phase 3): ONE column-limited query for the status read: rows of the production that are
     # still active, plus (when `since` is given) any that changed after it. Never `*`, never a ticket.
     async def live(self, production_id: UUID, since: datetime | None) -> list[Row]: ...  # id, kind, status, updated_at
@@ -144,6 +148,8 @@ class EpisodesRepo(Protocol):
     async def list(self, production_id: UUID) -> list[Row]: ...
     async def get(self, production_id: UUID, episode_id: UUID) -> Row | None: ...
     async def update(self, episode_id: UUID, fields: Row) -> Row: ...
+    # How many episodes, scenes and shots the production has (count queries: no rows read).
+    async def count_structure(self, production_id: UUID) -> dict[str, int]: ...
 
 
 class ScenesRepo(Protocol):
@@ -265,6 +271,7 @@ class QuestionsRepo(Protocol):
     async def get(self, production_id: UUID, question_id: UUID) -> Row | None: ...
     async def answer(self, question_id: UUID, answer: Row, user_id: UUID) -> Row | None: ...
     async def open_count(self, job_id: UUID) -> int: ...
+    async def count_open(self, production_id: UUID) -> int: ...  # the production's open questions
 
 
 class FramesRepo(Protocol):
@@ -353,7 +360,7 @@ class PacketsRepo(Protocol):
 
 
 class SceneBoardsRepo(Protocol):
-    """The Scene board (plan/2026-11-14, schema v25 `scene_boards`): one row per scene, version and part. A database
+    """The Scene board (plan/2026-11-14, schema v26 `scene_boards`): one row per scene, version and part. A database
     before v25 has no table: `list` answers [] and a write raises (the router says to apply v25)."""
 
     async def list(self, scene_id: UUID) -> list[Row]: ...  # every version and part, oldest version first
@@ -362,6 +369,9 @@ class SceneBoardsRepo(Protocol):
     async def update(self, board_id: UUID, fields: Row) -> Row | None: ...
     # Moves the scene's one approved board OF THAT PART to `board_id` (False: it is not done, or someone else moved it).
     async def approve(self, scene_id: UUID, part: int, board_id: UUID, user_id: UUID) -> bool: ...
+    # The sweeper's read: queued / running parts last touched before `before` (id, job_id, updated_at).
+    async def active_before(self, before: datetime) -> builtins.list[Row]: ...
+    async def update_many(self, board_ids: builtins.list[str], fields: Row) -> None: ...
 
 
 @dataclass

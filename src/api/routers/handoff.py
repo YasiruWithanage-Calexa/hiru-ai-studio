@@ -162,6 +162,11 @@ async def _probe_generated(repos: Repos, assembler: Assembler, takes: list[Row])
 async def _view(repos: Repos, access: ProductionAccess, shot_id: UUID,
                 assembler: Assembler | None = None) -> HandoffView:
     ld, st = await load_shot(repos, access, shot_id)
+    return await view_of(repos, ld, st, assembler)
+
+
+async def view_of(repos: Repos, ld: Loaded, st: ShotState, assembler: Assembler | None = None) -> HandoffView:
+    """The handoff view of a shot already loaded (also `GET .../shots/{id}/panel`, plan/2026-11-13d phase 4)."""
     view = shot_view(ld, st, camera_checks(ld.states)[st.id])
     takes = await repos.takes.list_for_shots([st.id])
     settings = get_settings()

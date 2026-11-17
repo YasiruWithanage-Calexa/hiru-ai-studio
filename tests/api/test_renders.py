@@ -712,6 +712,20 @@ def test_render_plans_is_the_take_and_the_draft_from_one_load(world: World, vide
     assert out.status_code == 404
 
 
+def test_the_shot_panel_is_both_plans_and_the_handoff_from_one_load(world: World, video: Settings,
+                                                                     assembler: FakeAssembler):
+    """plan/2026-11-13d phase 4 (F11): the Generate Video card's first read; each half equals its own route."""
+    s, _ = ready(world)
+    h = world.headers(world.reviewer)
+    r = world.client.get(shot_url(world, s, 1, "/panel"), headers=h)
+    assert r.status_code == 200, r.text
+    panel = r.json()
+    assert panel["plans"] == world.client.get(shot_url(world, s, 1, "/render-plans"), headers=h).json()
+    assert panel["handoff"] == world.client.get(shot_url(world, s, 1, "/handoff"), headers=h).json()
+    assert world.client.get(shot_url(world, s, 1, "/panel"),
+                            headers=world.headers(world.outsider)).status_code == 404
+
+
 def test_the_card_picks_omni_flash_1_2_for_the_take_and_the_draft(world: World, video: Settings, fired: list[dict]):
     s, _ = ready(world)
     url = shot_url(world, s, 1, "/render-plans?model=gemini-omni-1.2-flash")

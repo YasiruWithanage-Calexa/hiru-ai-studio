@@ -1,5 +1,5 @@
--- The Scene board (plan/2026-11-14 §3.8): `scene_boards` and `first_frames.board_id`. Schema v25
--- (Database/schema_v25.sql, upgrade_v24_to_v25.sql).
+-- The Scene board (plan/2026-11-14 §3.8): `scene_boards` and `first_frames.board_id`. Schema v26
+-- (Database/schema_v26.sql, upgrade_v25_to_v26.sql).
 create table if not exists public.scene_boards (
   id             uuid primary key default gen_random_uuid(),
   production_id  uuid not null references public.productions (id) on delete cascade,

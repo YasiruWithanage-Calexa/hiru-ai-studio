@@ -1,0 +1,63 @@
+{
+ "_note": "Lab fixtures, written by hand for this lab only: two edits a person might make through Zora on the tea-stall scene. They are not the script's words and are never written to the database.",
+ "colours": {"Kasun": "red", "office worker": "blue"},
+ "add": {
+  "after": 3,
+  "plan": {
+   "number": 4, "role": "coverage", "size": "medium over-the-shoulder", "duration_s": 4,
+   "script_lines": ["Kasun fills the office worker's cup from the flask."],
+   "spoken": [],
+   "story": "Kasun pours tea into the office worker's cup.",
+   "purpose": "The moment of service, seen from the customer's side of the counter.",
+   "on_screen": ["Kasun", "office worker"],
+   "setting": "The food three-wheeler's serving hatch, public side, early morning",
+   "composition": "Over the office worker's shoulder toward Kasun behind the ledge",
+   "opening_picture": ["the office worker's back and shoulder in the right foreground",
+                       "Kasun tilts the silver flask over the cream cup resting on the ledge"],
+   "subjects": [
+    {"id": "Kasun", "action": "tilts the flask and pours tea into the cup", "position": "behind the ledge, left of centre"},
+    {"id": "office worker", "action": "waits with the cup set down on the ledge", "position": "right foreground, back to camera"}],
+   "cinematography": {"shot_size": "medium over-the-shoulder", "angle": "eye level", "lens": "50mm", "movement": "static"},
+   "lighting": "soft early daylight from frame right",
+   "beats": ["Kasun pours", "steam rises from the cup"]
+  }
+ },
+ "change_first": {
+  "shot": 1,
+  "plan": {
+   "number": 1, "role": "establishing", "size": "wide", "duration_s": 4,
+   "script_lines": ["Early morning. Kasun's tea stall on the Colombo roadside."],
+   "spoken": [],
+   "story": "Kasun's tea stall opens for the morning on the busy road.",
+   "purpose": "Establish the stall and Kasun at work before the customer comes.",
+   "on_screen": ["Kasun"],
+   "setting": "The Colombo roadside, from the near pavement beside the bus stop",
+   "composition": "From the near pavement at the bus stop, looking along the curb at the stall: the maroon three-wheeler side-on with its hatch open, Kasun at the hatch setting out a tray, the road beside it",
+   "opening_picture": ["the maroon three-wheeler parked side-on along the curb, hatch raised",
+                       "Kasun behind the ledge sets a tray of pastries down"],
+   "subjects": [{"id": "Kasun", "action": "sets a tray of pastries on the ledge", "position": "at the hatch, mid-ground"}],
+   "cinematography": {"shot_size": "wide", "angle": "eye level", "lens": "28mm", "movement": "static"},
+   "lighting": "soft early daylight from frame right",
+   "beats": ["Kasun sets the tray down", "a bus passes beyond"]
+  }
+ },
+ "change": {
+  "shot": 5,
+  "plan": {
+   "number": 5, "role": "coverage", "size": "wide", "duration_s": 4,
+   "script_lines": ["Kasun looks out at the road."],
+   "spoken": [],
+   "story": "Kasun, alone at his stall, looks out at the morning road.",
+   "purpose": "Show how small the stall is against the busy road.",
+   "on_screen": ["Kasun"],
+   "setting": "The Colombo roadside, seen from the far pavement across the road",
+   "composition": "From the far pavement across the road: traffic passes through the foreground, the maroon three-wheeler stands on the far curb with Kasun small at its hatch",
+   "opening_picture": ["a tuk-tuk crosses the foreground, slightly soft",
+                       "Kasun stands at the open hatch, chest toward the road, flask low in his right hand"],
+   "subjects": [{"id": "Kasun", "action": "stands still and looks at the road", "position": "at the hatch, small in frame, centre"}],
+   "cinematography": {"shot_size": "wide", "angle": "eye level", "lens": "35mm", "movement": "static"},
+   "lighting": "soft early daylight",
+   "beats": ["traffic passes", "Kasun keeps looking out"]
+  }
+ }
+}

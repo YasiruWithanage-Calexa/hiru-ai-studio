@@ -1,6 +1,7 @@
 """Supabase-backed repositories (supabase-py async client, service role)."""
 from __future__ import annotations
 
+import asyncio
 import builtins
 import copy
 import hashlib
@@ -324,6 +325,31 @@ class SupabaseJobs(_Base):
         row = _first(res.data)
         return datetime.fromisoformat(str(row["created_at"])) if row else None
 
+    # The hosted project may not have schema v25 yet: one "function not found" and this process stops asking.
+    _live_items_missing = False
+
+    async def live_items(self, production_id: UUID, since: datetime | None) -> list[Row] | None:
+        if SupabaseJobs._live_items_missing:
+            return None
+        args = {"p_production": str(production_id),
+                "p_since": since.astimezone(UTC).isoformat() if since is not None else None}
+        try:
+            res = await self.db.rpc("live_items", args).execute()
+        except Exception as exc:  # PGRST202 (no such function) before v25; anything else: the four reads, this once
+            if "PGRST202" in str(exc) or "Could not find the function" in str(exc):
+                SupabaseJobs._live_items_missing = True
+                _logger.info("live_items() is not in the database (schema v25): /live reads the four tables")
+            else:
+                _logger.warning("live_items() failed; /live reads the four tables", exc_info=True)
+            return None
+        return _rows(res.data)
+
+    async def last_seq(self, job_id: UUID) -> int | None:
+        res = (await self.db.table("job_events").select("seq").eq("job_id", str(job_id))
+               .order("seq", desc=True).limit(1).execute())
+        row = _first(res.data)
+        return int(row["seq"]) if row else None
+
 
 class SupabaseDocuments(_Base):
     async def create(self, fields: Row) -> Row:
@@ -451,6 +477,15 @@ class SupabaseUsage(_Base):
 
 
 class SupabaseEpisodes(_Base):
+    async def count_structure(self, production_id: UUID) -> dict[str, int]:
+        async def count(table: str) -> int:
+            res = await (self.db.table(table).select("id", count="exact", head=True)  # type: ignore[arg-type]
+                         .eq("production_id", str(production_id)).execute())
+            return res.count or 0
+
+        episodes, scenes, shots = await asyncio.gather(count("episodes"), count("scenes"), count("shots"))
+        return {"episodes": episodes, "scenes": scenes, "shots": shots}
+
     async def list(self, production_id: UUID) -> list[Row]:
         res = (await self.db.table("episodes").select("*").eq("production_id", str(production_id))
                .order("number").execute())
@@ -832,6 +867,11 @@ class SupabaseQuestions(_Base):
                .eq("job_id", str(job_id)).eq("status", "open").execute())
         return res.count or 0
 
+    async def count_open(self, production_id: UUID) -> int:
+        res = (await self.db.table("questions").select("id", count="exact", head=True)  # type: ignore[arg-type]
+               .eq("production_id", str(production_id)).eq("status", "open").execute())
+        return res.count or 0
+
 
 class SupabaseFrames(_Base):
     async def create_many(self, rows: list[Row]) -> None:
@@ -882,14 +922,14 @@ class SupabaseFrames(_Base):
 
 
 class SupabaseSceneBoards(_Base):
-    """`scene_boards` (schema v25, plan/2026-11-14)."""
+    """`scene_boards` (schema v26, plan/2026-11-14)."""
 
     async def list(self, scene_id: UUID) -> list[Row]:
         try:
             res = (await self.db.table("scene_boards").select("*").eq("scene_id", str(scene_id))
                    .order("version").order("part").execute())
         except Exception:  # a database before v25: no board yet, never an error on the scene screen
-            _logger.warning("scene_boards could not be read (schema v25 not applied?)", exc_info=True)
+            _logger.warning("scene_boards could not be read (schema v26 not applied?)", exc_info=True)
             return []
         return _rows(res.data)
 
@@ -919,6 +959,18 @@ class SupabaseSceneBoards(_Base):
             _logger.warning("board approve raced scene=%s board=%s", scene_id, board_id, exc_info=True)
             return False
         return bool(_rows(res.data))
+
+    async def active_before(self, before: datetime) -> builtins.list[Row]:
+        try:
+            res = (await self.db.table("scene_boards").select("id,job_id,updated_at")
+                   .in_("status", ["queued", "running"]).lt("updated_at", before.isoformat()).execute())
+        except Exception:  # a database before v26: nothing to sweep
+            return []
+        return _rows(res.data)
+
+    async def update_many(self, board_ids: builtins.list[str], fields: Row) -> None:
+        if board_ids:
+            await self.db.table("scene_boards").update(fields).in_("id", board_ids).execute()
 
 
 # The scene loader needs a prompt's text, checks, pins and camera, never the IR it was written from

@@ -56,6 +56,11 @@ async def _scene_and_packet(repos: Repos, production_id: UUID, scene_id: UUID) -
 @router.get("/v1/productions/{production_id}/scenes/{scene_id}/packet", response_model=PacketView)
 async def get_packet(production_id: UUID, scene_id: UUID, access: CanView, repos: ReposDep) -> PacketView:
     scene, row = await _scene_and_packet(repos, access.production_id, scene_id)
+    return packet_view(scene, row)
+
+
+def packet_view(scene: dict[str, Any], row: dict[str, Any]) -> PacketView:
+    """A scene's packet as the page shows it (also in `/page`, plan/2026-11-13d phase 4)."""
     stale = int(row.get("script_version") or 0) != int(scene.get("script_version") or 1)
     waits = [str(w) for w in row.get("waits") or []]
     return PacketView(

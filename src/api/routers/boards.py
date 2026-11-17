@@ -37,7 +37,7 @@ router = APIRouter(prefix="/v1/productions/{production_id}", tags=["scene-board"
 ReposDep = Annotated[Repos, Depends(get_repos)]
 CanView = Annotated[ProductionAccess, Depends(require_permission(Permission.VIEW))]
 CanGenerate = Annotated[ProductionAccess, Depends(require_permission(Permission.GENERATE))]
-NO_TABLE = "The Scene board needs database schema v25 (Database/upgrade_v24_to_v25.sql)."
+NO_TABLE = "The Scene board needs database schema v26 (Database/upgrade_v25_to_v26.sql)."
 
 
 # ── views ──────────────────────────────────────────────────────────────────────────────────

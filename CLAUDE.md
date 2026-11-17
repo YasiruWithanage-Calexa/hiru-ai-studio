@@ -245,6 +245,18 @@ and no refine while a plan or build runs** (`task_manager.refuse_busy`, 409); a 
 painted. Read `plan/2026-11-12c/IMPLEMENTED.md`: phases 1–7 and Track B built offline; v23 applied by the person 2026-11-12; phase 8 (the
 live check) is the person's.
 
+## Pushed status (plan/2026-11-13d)
+
+The browser hears about work in progress from ONE source, the activity store (`lib/activity` in the interface): the
+`/live` poll, or with `LIVE__TRANSPORT=stream` (API) and `NEXT_PUBLIC_LIVE_TRANSPORT=stream` (interface) one
+`GET /v1/productions/{id}/stream` fed by `api/live/hub.py` (Supabase Realtime, server side, service key, only while a
+stream is open). Rules that must not drift: **a message is `contracts/live.py`'s shapes only** (ids, statuses,
+timestamps, `seq`; never a row, cost, model, prompt or path); **no screen runs its own timer**; the build page reads
+`/build/events?after_seq=N` and applies it with `applyBuildDelta` (held equal to `/build` by
+`tests/api/test_build_delta.py`: change both); a repository method that only reads must start with a name the request
+memo knows (`repositories/memo.py` `_READ_PREFIXES`), or it clears the memo. Default `poll` until the person's check
+(D4); `live_items()` is schema v25, not applied. Read `plan/2026-11-13d/IMPLEMENTED.md`.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
 - A function under `src/services/<name>/` imports only its own package and `contracts`.

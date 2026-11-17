@@ -63,8 +63,10 @@ def test_page_reads_the_scene_rows_once(world: World) -> None:
 
             return counted
 
-    for name in MEMOISED:
-        setattr(world.repos, name, MemoRepo(Spy(getattr(world.repos, name), name), name))
+    # Every repository goes through the memo, as `build_supabase_repos` does: a read the memo does not know as one
+    # (plan/2026-11-13d F13: `direction.series`) clears it, and this test then sees the repeated reads.
+    for name, repo in list(vars(world.repos).items()):
+        setattr(world.repos, name, MemoRepo(Spy(repo, name) if name in MEMOISED else repo, name))
     scene_id = s["scene"]["id"]
     r = world.client.get(url(world, f"/scenes/{scene_id}/page"), headers=world.headers(world.producer))
     assert r.status_code == 200, r.text
@@ -96,3 +98,18 @@ def test_planners_with_plans_counts_only_a_plan_its_own_planner_wrote() -> None:
 
     scene = {"adam": {}, "david": {"planner": "david"}, "jonathan": {"planner": "adam"}, "raphael": None}
     assert planners_with_plans(scene) == ["david"]
+
+
+def test_the_page_carries_the_scenes_packet_or_says_there_is_none(world: World) -> None:
+    """plan/2026-11-13d phase 4 (F12): the director page asked `/packet` on every open and got a 404 without one."""
+    s = open_scene(world)
+    design(world, s)
+    sid = s["scene"]["id"]
+    h = world.headers(world.producer)
+    assert world.client.get(url(world, f"/scenes/{sid}/page"), headers=h).json()["packet"] is None
+    world.repos.packets.rows[sid] = {"scene_id": sid, "production_id": str(world.production),  # type: ignore[attr-defined]
+                                     "scene_key": "E01-S01", "packet": {"scene": {"heading": "EXT."}},
+                                     "waits": ["a person's dialogue check"], "script_version": 1}
+    got = world.client.get(url(world, f"/scenes/{sid}/page"), headers=h).json()["packet"]
+    assert got == world.client.get(url(world, f"/scenes/{sid}/packet"), headers=h).json()
+    assert got["waits"] == ["a person's dialogue check"] and got["ready"] is False

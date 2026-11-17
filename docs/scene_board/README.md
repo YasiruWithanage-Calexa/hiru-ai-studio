@@ -69,4 +69,4 @@ Measured in the lab: a face sheet ≈ $0.06; a board ≈ $0.15-0.18 (writer + LO
 | `POST .../scene-boards/{id}/repaint` `{shots}` | repaint some panels in place (job); none named = the changed ones |
 | `POST .../canon/{id}/face-sheet` | a character's face sheet (job) |
 
-Schema v25 (`Database/upgrade_v24_to_v25.sql`): `scene_boards`, `first_frames.board_id`.
+Schema v26 (`Database/upgrade_v25_to_v26.sql`): `scene_boards`, `first_frames.board_id`.

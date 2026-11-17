@@ -4,7 +4,10 @@ Writes to the hosted dev project named in the backend's .env. Plan/2026-11-13b P
     python seed.py media     # makes the dummy pictures and MP4s with ffmpeg (media/)
     python seed.py seed      # writes manifest.json beside this file
     python seed.py ids       # writes ids.json for walk.js
-    python seed.py clean     # removes everything manifest.json lists (and the bot user)
+    python seed.py clean     # removes everything manifest.json lists (and the bot user), and clean-create's rows
+    python seed.py create-prod   # plan/2026-11-13d: a new production traffic-create-<time>, the bot its director
+                                 # (written to ../../2026-11-13d/measure/create.json for create.js)
+    python seed.py clean-create   # plan/2026-11-13d: every production named traffic-create-*, its files and rows
 """
 from __future__ import annotations
 
@@ -190,7 +193,47 @@ def seed() -> None:
     print(f"done: frames={n_frames} takes={n_takes} storage objects={len(m['storage'])}")
 
 
+def create_prod() -> None:
+    """The creation walk starts from a fresh, empty production. Creating one is an admin's act and the bot is a
+    director, so it is made here with the service key, the way POST /v1/productions writes it."""
+    import time
+
+    from contracts.production import ProductionCreate
+
+    m = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    body = ProductionCreate(title=f"traffic-create-{time.strftime('%Y%m%d-%H%M%S')}", orientation="horizontal")
+    row = ins("productions", {**body.model_dump(mode="json"), "created_by": m["bot_id"]})[0]
+    r.c.post(f"{r.rest}/production_members", headers=H,
+             json={"production_id": row["id"], "user_id": m["bot_id"], "role": "director"}).raise_for_status()
+    out = HERE.parents[1] / "2026-11-13d" / "measure" / "create.json"
+    out.write_text(json.dumps({"P": row["id"], "title": row["title"], "email": m["bot_email"],
+                               "password": m["bot_password"]}, indent=1), encoding="utf-8")
+    print(f"{row['title']} {row['id']}")
+
+
+def clean_create() -> None:
+    """The creation walk's productions (plan/2026-11-13d section 8). Rows cascade from the production; files do not."""
+    for prod in r.get("productions", title="like.traffic-create-*", select="id,title"):
+        pid = prod["id"]
+        for bucket in ("documents", "frames", "references", "takes"):
+            paths: list[str] = []
+            stack = [pid]
+            while stack:
+                prefix = stack.pop()
+                res = r.c.post(f"{r.storage}/object/list/{bucket}", headers=H,
+                               json={"prefix": prefix + "/", "limit": 1000})
+                res.raise_for_status()
+                for o in res.json():
+                    (paths if o.get("id") else stack).append(f"{prefix}/{o['name']}")
+            for i in range(0, len(paths), 100):
+                r.c.request("DELETE", f"{r.storage}/object/{bucket}", headers=H,
+                            json={"prefixes": paths[i:i + 100]}).raise_for_status()
+        r.delete("productions", id=f"eq.{pid}")
+        print(f"removed {prod["title"]} ({pid})")
+
+
 def clean() -> None:
+    clean_create()
     m = json.loads(MANIFEST.read_text(encoding="utf-8"))
     by_bucket: dict[str, list[str]] = {}
     for bucket, path in m["storage"]:
@@ -244,4 +287,5 @@ def ids() -> None:
 
 
 if __name__ == "__main__":
-    {"seed": seed, "clean": clean, "media": media, "ids": ids}[sys.argv[1]]()
+    {"seed": seed, "clean": clean, "media": media, "ids": ids, "create-prod": create_prod,
+     "clean-create": clean_create}[sys.argv[1]]()

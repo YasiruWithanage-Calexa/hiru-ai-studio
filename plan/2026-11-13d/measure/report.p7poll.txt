@@ -1,0 +1,31 @@
+# Creation walk 'p7poll': per stretch
+
+step                secs  api browser options   db     kb  top routes
+login                  8    3       0       0    5    2.0  /v1/productionsx1, /v1/mex1, /v1/usagex1
+build-start            1    0       0       0    0    0.0  
+build-running         92   66      63      63  276  125.8  /livex29, /build/eventsx28, /overviewx7, /questionsx1, /buildx1
+build-settled         15    3       3       3   13   15.8  /livex1, /build/eventsx1, /overviewx1
+end                    5    0       0       0    0    0.0  
+TOTAL                      72      66      66  294  143.6
+
+# Routes: calls, DB queries per call (min/avg/max), bytes per call
+
+  GET /live                                                                30x  db 5/5.3/6  0.2 kb
+  GET /build/events                                                        29x  db 3/3.0/3  0.4 kb
+  GET /overview                                                             8x  db 4/4.5/6  15.4 kb
+  GET /build                                                                1x  db 6/6.0/6  0.7 kb
+  GET /v1/productions                                                       1x  db 3/3.0/3  1.9 kb
+  GET /v1/usage                                                             1x  db 2/2.0/2  0.0 kb
+  GET /questions                                                            1x  db 1/1.0/1  0.0 kb
+  GET /v1/me                                                                1x  db 0/0.0/0  0.1 kb
+  OPTIONS /live                                                            30x  db 0/0.0/0  0.0 kb
+  OPTIONS /build/events                                                    29x  db 0/0.0/0  0.0 kb
+  OPTIONS /overview                                                         7x  db 0/0.0/0  0.0 kb
+
+# OPTIONS preflights per URL (a browser with a working preflight cache sends one per URL per 10 min)
+
+   30x /live
+   29x /build/events
+    7x /overview
+
+# Errors

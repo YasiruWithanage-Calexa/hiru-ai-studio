@@ -38,7 +38,7 @@ the frame's existing checks cover the frames.
 
 ## Phase 3: the board
 
-- Schema v25: `Database/upgrade_v24_to_v25.sql`, `schema_v25.sql`, `supabase/migrations/20261114120000_scene_boards.sql`
+- Schema v26 (was v25 on main; renumbered at the merge with live_items, which kept v25): `Database/upgrade_v25_to_v26.sql`, `schema_v26.sql`, `supabase/migrations/20261114120000_scene_boards.sql`
   (table, unique (scene, version, part), one approved per (scene, part), RLS read like `first_frames`, realtime;
   `first_frames.board_id` + check `draft_id is null or board_id is null`). **Not applied.**
 - Agent `board_writer` (tier `board`: `OPENAI__MODEL_BOARD` default gpt-6.1-sol, `OPENAI__EFFORT_BOARD` default high; the
@@ -97,7 +97,7 @@ vitest 459/460 (the one failure, `raphael-panel.test.tsx`, fails on HEAD too), p
 
 ## Waits for the person
 
-- **Apply schema v25.** Until then the API refuses new first frames of painted shots ("Paint and approve the scene board
+- **Apply schema v26.** Until then the API refuses new first frames of painted shots ("Paint and approve the scene board
   first"), because there is no board table (D3).
 - Phase 0 (paid, ~$0.25): mask proof and the per-shot-props frame.
 - Phase 7 (paid, ~$1.20, after v25): face sheets for Aruni, Nimal, Dinu; boards for scenes 01 and 02; four frames.

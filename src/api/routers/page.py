@@ -17,7 +17,7 @@ from pydantic import BaseModel
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
-from api.routers import looks, production, scenes, structure
+from api.routers import breakdown, looks, production, scenes, structure
 from api.schemas import MyAccess
 from contracts.canon import CanonKind, LooksView, SceneLook, SceneLooksView
 from contracts.director import ChatMessage, ChatThread
@@ -41,6 +41,9 @@ class ScenePage(BaseModel):
     # Phase 3: the looks of each character the scene uses (canon entity id -> looks) and the scene's own picks.
     cast_looks: dict[str, LooksView] = {}
     scene_looks: SceneLooksView = SceneLooksView(looks=[])
+    # plan/2026-11-13d phase 4 (F12): the scene's breakdown packet, as `GET .../packet` answers it; None when the scene
+    # has none (the page then asks for nothing, where it used to get a 404).
+    packet: breakdown.PacketView | None = None
 
 
 PLANNER_COLUMNS = ("adam", "david", "jonathan", "raphael")
@@ -57,9 +60,9 @@ async def get_scene_page(production_id: UUID, scene_id: UUID,
                          repos: Annotated[Repos, Depends(get_repos)]) -> ScenePage:
     ld = await production.load(repos, access, scene_id)  # 404 for a scene that is not here
     episode_id = UUID(str(ld.scene["episode_id"]))
-    view, episode, threads = await asyncio.gather(
+    view, episode, threads, packet_row = await asyncio.gather(
         scenes.view(repos, access, scene_id), structure.get_episode(production_id, episode_id, access, repos),
-        repos.threads.list(production_id, scene_id))
+        repos.threads.list(production_id, scene_id), repos.packets.get(production_id, scene_id))
     mine = [t for t in threads if t.get("chat", "scene") == "scene"]
     rows = await repos.messages.list(mine[0]["id"]) if mine else []
     if not ld.states:
@@ -83,4 +86,5 @@ async def get_scene_page(production_id: UUID, scene_id: UUID,
                      production=production.scene_view(ld), episode=episode,
                      access=MyAccess(role=access.role, permissions=sorted(access.permissions)),
                      threads=[ChatThread.model_validate(t) for t in mine],
-                     messages=[ChatMessage.model_validate(m) for m in rows])
+                     messages=[ChatMessage.model_validate(m) for m in rows],
+                     packet=breakdown.packet_view(ld.scene, packet_row) if packet_row else None)

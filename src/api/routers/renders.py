@@ -25,9 +25,10 @@ from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.routers.handoff import handoff_checks
-from api.routers.production import load_shot
+from api.routers.production import Loaded, load_shot
 from api.services import media_links, media_thumbs
 from api.services import renders as svc
+from api.services.production import ShotState
 from contracts.producer import Check
 from contracts.production import ProductionSettings
 from contracts.roles import Permission
@@ -122,6 +123,13 @@ async def render_plans(production_id: UUID, shot_id: UUID, access: CanView, repo
     except ValidationError:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "That model could not be read.") from None
     ld, st = await load_shot(repos, access, shot_id)
+    return await plans_for(repos, settings, ld, st, run=run, model=model)
+
+
+async def plans_for(repos: Repos, settings: Settings, ld: Loaded, st: ShotState, *,
+                    run: VideoOverrides | None = None, model: str | None = None) -> PlanPair:
+    """Both plans for a shot already loaded (also `GET .../shots/{id}/panel`, plan/2026-11-13d phase 4, which reads
+    the default version's: no `run`). `run` / `model`: the version picked on the card, as `render-plans` takes it."""
     handoff = handoff_checks(ld, st)
     engine = ProductionSettings.model_validate(ld.production.get("settings") or {}).video.engine
     take_run = run if run and engine in ENGINE_CAPABILITIES and version_problem(engine, model) is None else None
