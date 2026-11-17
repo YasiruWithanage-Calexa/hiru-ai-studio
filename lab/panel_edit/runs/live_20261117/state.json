@@ -1,0 +1,115 @@
+{
+ "spent": 0.31352199999999997,
+ "steps": [
+  {
+   "step": "edit:change",
+   "revision": 2,
+   "at": "2026-11-17T09:48:28.314626+00:00"
+  },
+  {
+   "step": "edit:add",
+   "revision": 3,
+   "at": "2026-11-17T09:48:29.503609+00:00"
+  },
+  {
+   "step": "edit:remove",
+   "revision": 4,
+   "at": "2026-11-17T09:48:31.089302+00:00"
+  },
+  {
+   "step": "update",
+   "job_id": "488de1f7-2b25-4053-8683-e5aa32c2eb25",
+   "result": {
+    "status": "failed",
+    "updated": [],
+    "failed": {
+     "2": "Image generation is not set up on this server.",
+     "3": "Image generation is not set up on this server."
+    },
+    "locked": [],
+    "error": "Shot 2 could not be updated: Image generation is not set up on this server. Shot 3 could not be updated: Image generation is not set up on this server."
+   },
+   "seconds": 7,
+   "calls": [],
+   "at": "2026-11-17T09:48:58.996053+00:00"
+  },
+  {
+   "step": "update",
+   "job_id": "496f7821-c169-4860-88a8-6ce749ef96d7",
+   "result": {
+    "status": "done",
+    "updated": [
+     2,
+     3
+    ],
+    "failed": {},
+    "locked": []
+   },
+   "seconds": 138,
+   "calls": [
+    {
+     "phase": "frame_render.board_writer",
+     "model": "gpt-6.1-sol",
+     "in": 5493,
+     "out": 1412,
+     "dollars": 0.0251
+    },
+    {
+     "phase": "frame_render.image",
+     "model": "gpt-image-2",
+     "in": 5136,
+     "out": 158,
+     "dollars": 0.0577
+    },
+    {
+     "phase": "frame_render.board_writer",
+     "model": "gpt-6.1-sol",
+     "in": 5191,
+     "out": 801,
+     "dollars": 0.0184
+    },
+    {
+     "phase": "frame_render.image",
+     "model": "gpt-image-2",
+     "in": 6166,
+     "out": 158,
+     "dollars": 0.068
+    }
+   ],
+   "at": "2026-11-17T09:52:24.989325+00:00"
+  },
+  {
+   "step": "approve",
+   "at": "2026-11-17T09:53:04.214122+00:00"
+  },
+  {
+   "step": "frame",
+   "shot": 2,
+   "frame_id": "0981f0da-89ec-4766-8593-c29ecef61bf4",
+   "job_id": "890243e1-500b-40c1-89c7-df578dc96058",
+   "result": {
+    "done": 1,
+    "failed": 0,
+    "refused": 0,
+    "skipped": 0
+   },
+   "calls": [
+    {
+     "phase": "frame_render.image",
+     "model": "gpt-image-2",
+     "in": 7531,
+     "out": 1372,
+     "dollars": 0.1302
+    },
+    {
+     "phase": "frame_render.vision",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 2652,
+     "out": 887,
+     "dollars": 0.0142
+    }
+   ],
+   "at": "2026-11-17T09:54:02.649416+00:00"
+  }
+ ]
+}

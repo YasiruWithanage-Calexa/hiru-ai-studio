@@ -262,6 +262,41 @@ def _png(im: Image.Image) -> bytes:
     return buf.getvalue()
 
 
+def repaint_prompt(writer: kit.Writer, numbers: list[int], repaint: list[int], labels: list[str],
+                   colours: dict[str, str]) -> str:
+    """The product's masked repaint prompt as it was when this lab ran (D7 method A). plan/2026-11-17 removed it from
+    `contracts.board` (the mask is not honoured, D3); kept here so run_001's masked calls can be read again."""
+    cols, _ = kit.grid_for(len(numbers))
+    which = []
+    for i, number in enumerate(numbers):
+        p = writer.panel(number)
+        if number in repaint and p is not None:
+            r, c = divmod(i, cols)
+            which.append(f"PANEL {i + 1} (row {r + 1}, column {c + 1}) — {p.camera.rstrip('.')}. Background: "
+                         f"{p.background.rstrip('.')}. {p.picture}")
+    cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
+    return "\n\n".join([
+        "Image 1 is a storyboard sheet of one scene of a Sri Lankan television drama: a grid of photorealistic film "
+        "stills separated by thin white gutters. Paint again ONLY the masked panels listed below, each inside its own "
+        "cell, in the same world as the rest of the sheet: the same place, light, weather, colour grade and "
+        "mannequins. Everything outside the masked cells stays exactly as it is, the gutters too.",
+        f"Reference images, in order: {cite}.",
+        kit.mannequin_line(colours),
+        "World (every panel): " + kit.board_world(writer.world, colours),
+        "Geography: " + writer.geography,
+        "\n".join(which), kit.BODIES, kit.NO_TEXT,
+    ])
+
+
+def repaint_mask(size: tuple[int, int], boxes: list[tuple[int, int, int, int]]) -> bytes:
+    """Opaque everywhere, transparent over `boxes` (the product's mask when this lab ran; removed by plan/2026-11-17)."""
+    mask = Image.new("RGBA", size, (0, 0, 0, 255))
+    draw = ImageDraw.Draw(mask)
+    for x0, y0, x1, y1 in boxes:
+        draw.rectangle((int(x0), int(y0), int(x1) - 1, int(y1) - 1), fill=(0, 0, 0, 0))
+    return _png(mask)
+
+
 NEW = 100  # the added shot's place-holder number inside the lab's writer (prompts say PANEL n by position)
 
 
@@ -279,11 +314,11 @@ def strip(s: Scene, panel: kit.Panel) -> tuple[str, list[Reference], bytes, byte
         else:
             im.paste(_img(s.panels[n]).resize((x1 - x0, y1 - y0)), (x0, y0))
     sheet = _png(im)
-    mask = pics.repaint_mask(im.size, [s.boxes[hole]])
+    mask = repaint_mask(im.size, [s.boxes[hole]])
     writer = kit.Writer(world=s.writer.world, geography=s.writer.geography,
                         panels=[*s.writer.panels, kit.Panel(**{**panel.__dict__, "shot": NEW})])
     refs = [Reference(label=EDIT_LABEL, data=sheet), *s.places]
-    prompt = kit.repaint_prompt(writer, order, [NEW], [r.label for r in refs], s.colours)
+    prompt = repaint_prompt(writer, order, [NEW], [r.label for r in refs], s.colours)
     return prompt, refs, sheet, mask, hole
 
 
@@ -291,8 +326,8 @@ def masked(s: Scene, panel: kit.Panel, shot: int) -> tuple[str, list[Reference],
     """The change as the product does it today (D7 method A): the board itself, masked over the changed cell."""
     writer = s.writer.merged(kit.Writer(world="", geography="", panels=[panel]), [shot])
     refs = [Reference(label=EDIT_LABEL, data=s.sheet), *s.places]
-    prompt = kit.repaint_prompt(writer, list(range(1, 7)), [shot], [r.label for r in refs], s.colours)
-    return prompt, refs, s.sheet, pics.repaint_mask(_img(s.sheet).size, [s.boxes[shot - 1]]), shot - 1
+    prompt = repaint_prompt(writer, list(range(1, 7)), [shot], [r.label for r in refs], s.colours)
+    return prompt, refs, s.sheet, repaint_mask(_img(s.sheet).size, [s.boxes[shot - 1]]), shot - 1
 
 
 # ── Q3: drift, and the sheets a person judges ─────────────────────────────────────────────────────────────────

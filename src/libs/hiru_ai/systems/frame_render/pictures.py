@@ -1,10 +1,11 @@
 """The Scene board's pictures (plan/2026-11-14): Pillow work kept out of `contracts`, which stays standalone. Cut a
-painted board along its gutters, paste a locked panel back, make the repaint mask, draw the numbered sheet, cut a base
-sheet's portrait for a face sheet. Ported from the storyboard lab (`lab/storyboard/run.py`, `faces.py`)."""
+painted board along its gutters, paste a locked panel back, draw the numbered sheet (cells cut from a grid and panels
+painted alone side by side, plan/2026-11-17), cut a base sheet's portrait for a face sheet. Ported from the storyboard
+lab (`lab/storyboard/run.py`, `faces.py`)."""
 from __future__ import annotations
 
 import io
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 from contracts.board import BoardShot, grid_for
@@ -80,34 +81,33 @@ def paste(board_png: bytes, cells: Mapping[int, bytes], boxes: Mapping[int, Sequ
     return _png(im)
 
 
-def repaint_mask(size: tuple[int, int], boxes: Iterable[Sequence[int]]) -> bytes:
-    """D7 method A: a PNG the size of the board, opaque everywhere and fully transparent over `boxes` (the image
-    model paints only where the mask is transparent)."""
-    from PIL import Image, ImageDraw
-
-    mask = Image.new("RGBA", size, (0, 0, 0, 255))
-    draw = ImageDraw.Draw(mask)
-    for x0, y0, x1, y1 in boxes:
-        draw.rectangle((int(x0), int(y0), int(x1) - 1, int(y1) - 1), fill=(0, 0, 0, 0))
-    return _png(mask)
-
-
 def image_size(data: bytes) -> tuple[int, int]:
     size = _image(data).size
     return int(size[0]), int(size[1])
 
 
 SHEET_TAG = "#c8102e"  # Hiru red, the code-drawn "SHOT N" tag
+SHEET_BACK = "#1f1f1f"  # behind a cell whose shape is not the sheet's cell shape
+SHEET_CELL = 768  # the longest side of a sheet cell: a panel painted alone (1024x1536) is drawn smaller
+
+
+def _cell_size(sizes: Sequence[tuple[int, int]]) -> tuple[int, int]:
+    """The sheet's cell: the smallest cell (a grid cut, when there is one), its longest side at most `SHEET_CELL`."""
+    w, h = min(sizes, key=lambda s: s[0] * s[1])
+    scale = min(1.0, SHEET_CELL / max(w, h))
+    return max(round(w * scale), 1), max(round(h * scale), 1)
 
 
 def scene_sheet(shots: Sequence[BoardShot], cells: Mapping[str, bytes], cell_size: tuple[int, int] | None = None
                 ) -> bytes:
     """Every shot of the board, in order, on one numbered sheet: a painted shot's panel (`cells`: shot id → PNG) with
-    a red "SHOT N" tag drawn by code, a black plate as a black cell carrying its script line (lab `scene_sheet`)."""
+    a red "SHOT N" tag drawn by code, a black plate as a black cell carrying its script line (lab `scene_sheet`).
+    Cells of different sizes (a cell cut from a grid beside a panel painted alone) are drawn at one size, each FIT
+    inside it and centred, never stretched. The size: `cell_size`, else the smallest cell's (at most `SHEET_CELL`)."""
     from PIL import Image, ImageDraw, ImageFont
 
-    first = next((cells[s.id] for s in shots if s.id in cells), None)
-    cw, ch = cell_size or (_image(first).size if first else (384, 216))
+    sizes = [_image(cells[s.id]).size for s in shots if s.id in cells]
+    cw, ch = cell_size or (_cell_size(sizes) if sizes else (384, 216))
     cols, rows = grid_for(len(shots))
     gap = 8
     sheet = Image.new("RGB", (cols * cw + (cols + 1) * gap, rows * ch + (rows + 1) * gap), "white")
@@ -119,7 +119,11 @@ def scene_sheet(shots: Sequence[BoardShot], cells: Mapping[str, bytes], cell_siz
         r, c = divmod(i, cols)
         x, y = gap + c * (cw + gap), gap + r * (ch + gap)
         if shot.id in cells:
-            sheet.paste(_image(cells[shot.id]).resize((cw, ch)), (x, y))
+            pic = _image(cells[shot.id])
+            scale = min(cw / pic.width, ch / pic.height)
+            w, h = max(round(pic.width * scale), 1), max(round(pic.height * scale), 1)
+            draw.rectangle((x, y, x + cw - 1, y + ch - 1), fill=SHEET_BACK)
+            sheet.paste(pic.resize((w, h)), (x + (cw - w) // 2, y + (ch - h) // 2))
         else:
             draw.rectangle((x, y, x + cw - 1, y + ch - 1), fill="black")
             words, line, lines = shot.text.split(), "", []

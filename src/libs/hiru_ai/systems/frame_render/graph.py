@@ -7,6 +7,8 @@ agent, both found by id.
     state.look_id               instead: a look sheet for this look
     state.reference_kind        "face" with reference_entity_id: a face sheet for that character (plan/2026-11-14)
     state.board_id              instead: a Scene board for a scene (plan/2026-11-14, `board.py`)
+    state.update                instead: an update of the scene's current board, one panel at a time
+                                (plan/2026-11-17, `board.update`)
     state.quality               with frame_ids: the quality a person picked for the finals (low | medium, never high);
                                 absent = the configured final quality
 
@@ -438,15 +440,19 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         result = boards.run(ctx, production, job.world, dict(payload.state), str(job_id), warn)
         if result.get("status") != "skipped":
             ok = result.get("status") == "done"
+            updating = bool(payload.state.get("update"))
+            board_id = str(payload.state.get("board_id") or (payload.state.get("board_ids") or [""])[0])
+            done = "Scene board updated" if updating else "Scene board ready"
             jobs.event(job_id, JobEventType.PROGRESS if ok else JobEventType.WARNING,
-                       {"text": "Scene board ready" if ok else str(result.get("error") or "Part of the board failed"),
-                        "board_id": str(payload.state["board_id"])}, agent=AGENT)
+                       {"text": done if ok else str(result.get("error") or "Part of the board failed"),
+                        "board_id": board_id}, agent=AGENT)
             if ok:
-                audit("board.paint", "scene_board", str(payload.state["board_id"]), {"job_id": str(job_id)})
+                audit("board.update" if updating else "board.paint", "scene_board", board_id,
+                      {"job_id": str(job_id), **({"updated": result.get("updated", [])} if updating else {})})
         return {"result": result}
 
     def route(state: State) -> str:
-        if payload.state.get("board_id"):
+        if payload.state.get("board_id") or payload.state.get("update"):
             return "board"
         if payload.state.get("reference_entity_id"):
             return "face" if payload.state.get("reference_kind") == "face" else "reference"

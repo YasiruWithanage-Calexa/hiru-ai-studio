@@ -89,10 +89,11 @@ def run_graph(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
 def graph_only(payload: DispatchPayload) -> bool:
     """Work only the `hiru_ai` system does, whatever `AI_ENGINE` says (plan/2026-11-14, like canon_extract's refine): a
     Scene board, a face sheet, first frames painted from a board panel (the API marks those `from_board`), and first
-    frames at a quality a person picked (`quality`: the legacy painter has no per-job quality)."""
+    frames at a quality a person picked (`quality`: the legacy painter has no per-job quality), and an Update board
+    (`update`, plan/2026-11-17: the legacy pipeline would find no frames, end `done` and leave the parts running)."""
     state = payload.state
-    return bool(state.get("board_id") or state.get("reference_kind") == "face" or state.get("from_board")
-                or state.get("quality"))
+    return bool(state.get("board_id") or state.get("update") or state.get("reference_kind") == "face"
+                or state.get("from_board") or state.get("quality"))
 
 
 def handle(request: Any) -> tuple[dict[str, Any], int]:

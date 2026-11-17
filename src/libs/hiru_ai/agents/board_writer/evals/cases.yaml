@@ -37,3 +37,21 @@
         people: [ { name: "Kasun", state: "" } ]
     conflicts: []
   expect: { geography: "The lane runs from screen left to the shop at screen right." }
+# plan/2026-11-17: one panel for an approved board (lab/panel_edit run_001 `writer_add`, the ADD between panels 3 and 4,
+# cut short). The message ends with `contracts.board.ONE_PANEL`; the answer holds the one panel, world and geography empty.
+- name: one panel added to an approved board
+  input:
+    message: "<approved_board>{}</approved_board> <shot>{}</shot> ADD. Shot 4 is a new shot, between shot 3 and shot 5. Write its panel. ONE PANEL."
+    pictures: []
+  reply:
+    world: ""
+    geography: ""
+    panels:
+      - shot: 4
+        zone: "Counter, public-side customer shoulder"
+        camera: "Standing eye height on the public side near the cab end, just behind the office worker, looking past its shoulder toward Kasun; medium over-the-shoulder shot, 50mm lens feel."
+        background: "The maroon hatch upright occupies frame left behind Kasun; the road, bus-stop pole and broad dark-green tree remain visible through the upper-right opening."
+        picture: "The blue mannequin's back and shoulder occupy the right foreground. The red mannequin stands behind the ledge left of centre, tilting the scuffed silver flask over the plain cream cup."
+        people: [ { name: "Kasun", state: "" }, { name: "office worker", state: "" } ]
+    conflicts: []
+  expect: { world: "" }

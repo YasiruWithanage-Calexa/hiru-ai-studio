@@ -1,11 +1,11 @@
 """The Scene board job (plan/2026-11-14 §3.2-3.3): ONE mannequin storyboard per scene, painted before any first frame.
 
-    state.board_id      the row the API created `queued` (part 1 of a new version), or, for a repaint, the part
-                        the API set back to `queued` (its approval cleared)
-    state.repaint       true: repaint only some panels of `board_id`, in place (D7, method A); a failure leaves its
-                        old picture in force (status `done`, with the error)
-    state.shots         with `repaint`: the shot numbers to repaint
+    state.board_id      a whole board: the row the API created `queued` (part 1 of a new version)
     state.carry         a whole repaint: the previous version's part ids, whose notes and locked panels carry over
+    state.update        true: update the current board (plan/2026-11-17, `update`): `board_ids` (every part, set
+                        `queued` by the API with its approval cleared), `scene_id`, `shots` (shot ids; empty = all
+                        out of date) and `approvals` (board id → the approval cleared, written back to a part none
+                        of whose cells changed)
 
   claim     queued -> running, so a re-delivery never pays twice
   faces     D4: a face sheet for every on-screen person who lacks one (MEDIUM), for the frames that follow
@@ -16,7 +16,12 @@
   after     cells cut along the painted gutters, one PNG per shot, the numbered sheet drawn by code; all in the
             private `frames` bucket under `<production>/boards/<board>/`
 
-A board is never repainted by itself when a shot changes (the person, 2026-11-13): the API reports it out of date.
+  update    an edited or added shot's panel painted ALONE with its neighbours attached (one writer call and one
+            picture each); a removed or moved shot only tidies the cells; nothing is ever pasted over another panel
+            (the image model does not honour a mask: lab/panel_edit run_001, D3)
+
+A board is never repainted by itself when a shot changes (the person, 2026-11-13): the API reports it out of date and
+a person presses Update board.
 """
 from __future__ import annotations
 
@@ -45,15 +50,15 @@ FAILED = "The scene board could not be made. Try again in a moment."
 NOT_CONFIGURED = "Image generation is not set up on this server."
 NO_WRITER = "The board writer is not set up on this server."
 NOTHING = "Every shot of this scene is a black plate: there is nothing to paint."
-NO_SOURCE = "The board's picture could not be read. Paint the whole board again."
-MAX_IMAGE_REFS = 6  # the place, up to four props, and on a later part the panel it repeats
-EDIT_LABEL = "the storyboard sheet to edit"
+# the place, up to four props, and on a later part the panel it repeats; a panel painted alone: the place, its props
+# and its two neighbours
+MAX_IMAGE_REFS = 6
 
 
 class Board:
     """One scene's reads, as the board needs them: the frame_compose world, its shots and who each shot shows."""
 
-    def __init__(self, ctx: RunContext, world: Row) -> None:
+    def __init__(self, ctx: RunContext, world: Row, saved: Row | None = None) -> None:
         self.ctx, self.world = ctx, world
         compose = parts.module("step", "frame_compose")
         self.w = compose.World.of(world)
@@ -78,7 +83,11 @@ class Board:
             if shot.painted:
                 order += [c for c in self.seen.get(shot.id, {}) if c not in order]
         self.people = [c for c in order if (self.by_id.get(c) or {}).get("kind") == "character"]
-        self.colour_of = {c: kit.COLOURS[i % len(kit.COLOURS)] for i, c in enumerate(self.people)}  # id → colour
+        # A whole board takes fresh colours in person order; an update keeps the board's saved ones (plan/2026-11-17
+        # §3.4), so a person added to an early shot shifts no one. `saved_colours` is what the row stores.
+        self.saved_colours = (kit.keep_colours(saved, self.people) if saved
+                              else {c: kit.COLOURS[i % len(kit.COLOURS)] for i, c in enumerate(self.people)})
+        self.colour_of = {c: self.saved_colours[c] for c in self.people}  # id → colour, the people on the board
         self.colours = {str(self.by_id[c]["name"]): col for c, col in self.colour_of.items()}  # name → colour
 
     @property
@@ -87,6 +96,9 @@ class Board:
 
     def row(self, shot_id: str) -> Row:
         return next(r for r in self.shot_rows if str(r["id"]) == shot_id)
+
+    def shot(self, shot_id: str) -> kit.BoardShot:
+        return next(s for s in self.shots if s.id == shot_id)
 
     # ── what the writer reads ──────────────────────────────────────────────────────────────
 
@@ -257,7 +269,7 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
                   "created_by": board.get("created_by")} for i in range(1, len(groups))]
         frames.create_boards(extra)
         rows += extra
-    colours = {c: col for c, col in b.colour_of.items()}
+    colours = dict(b.saved_colours)
     done = 0
     previous_last: bytes | None = None
     for i, (row, group) in enumerate(zip(rows, groups, strict=True)):
@@ -314,97 +326,276 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
     return {"status": status, "parts": len(groups), "painted": done, "conflicts": len(writer.conflicts)}
 
 
-def repaint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, job_id: str,
-            warn: Callable[[str], None]) -> Row:
-    """D7, method A: only the given panels of one part, by a masked edit of its picture, in place; every other panel
-    stays pixel for pixel. Locked panels are never repainted. A failure keeps the old picture in force (the row goes
-    back to `done` with the error). → `{status, repainted}`."""
-    frames, painter = ctx.need("frames"), ctx.ports.images
-    board_id = str(board["id"])
+class _Failed(Exception):
+    """One panel of an update could not be painted: the reason, in words for the person."""
 
-    def keep(error: str, status: str = "failed") -> Row:
-        if board.get("storage_path"):  # the old picture is still a board: only the approval was cleared
-            frames.save_board(board_id, {"status": "done", "error": error})
-        else:
-            frames.save_board(board_id, {"status": "failed", "error": error})
-        return {"status": status, "error": error}
 
+def _approval(state: Row, board_id: str) -> Row:
+    """The approval the API cleared when it queued the update (§3.3), to write back to a part none of whose cells
+    changed."""
+    saved = (state.get("approvals") or {}).get(board_id) or {}
+    if not saved.get("approved_at"):
+        return {}
+    return {"approved_at": saved["approved_at"], "approved_by": saved.get("approved_by")}
+
+
+def _board_writer(rows: list[Row]) -> kit.Writer:
+    """The board's writer (every part stores the same one; a panel only a later part has is added)."""
+    writer = kit.Writer.of(rows[0].get("writer") or {})
+    have = {p.shot for p in writer.panels}
+    for r in rows[1:]:
+        for p in kit.Writer.of(r.get("writer") or {}).panels:
+            if p.shot not in have:
+                writer.panels.append(p)
+                have.add(p.shot)
+    writer.panels.sort(key=lambda p: p.shot)
+    return writer
+
+
+def _with_panel(writer: kit.Writer, panel: kit.Panel, conflicts: list[str] | None = None) -> kit.Writer:
+    panels = sorted([*(p for p in writer.panels if p.shot != panel.shot), panel], key=lambda p: p.shot)
+    return kit.Writer(world=writer.world, geography=writer.geography, panels=panels,
+                      conflicts=list(dict.fromkeys([*writer.conflicts, *(conflicts or [])])))
+
+
+def _renumbered(parts_cells: list[list[Row]], writer: kit.Writer, shots: list[Row]
+                ) -> tuple[list[list[Row]], kit.Writer]:
+    """`kit.renumber` over every part at once, each part's cells then put in shot order."""
+    flat, writer = kit.renumber([c for p in parts_cells for c in p], writer, shots)
+    out, i = [], 0
+    for p in parts_cells:
+        out.append(sorted(flat[i: i + len(p)], key=lambda c: int(c.get("number") or 0)))
+        i += len(p)
+    return out, writer
+
+
+def _neighbours(parts_cells: list[list[Row]], shot_id: str, number: int) -> list[tuple[str, Row]]:
+    """(before | after, cell) of the painted panels nearest this shot, as the board stands now (a panel painted
+    earlier in the same update included); one at the scene's ends."""
+    seen: dict[str, Row] = {}
+    for p in parts_cells:
+        for c in p:
+            if c.get("kind") == "painted" and c.get("path") and str(c["shot_id"]) != shot_id:
+                seen.setdefault(str(c["shot_id"]), c)
+    cells = sorted(seen.values(), key=lambda c: int(c.get("number") or 0))
+    before = [c for c in cells if int(c.get("number") or 0) < number]
+    after = [c for c in cells if int(c.get("number") or 0) > number]
+    out = []
+    if before:
+        out.append(("before", before[-1]))
+    if after:
+        out.append(("after", after[0]))
+    return out
+
+
+def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: list[list[Row]], shot: kit.BoardShot,
+                 note: str, aspect: str, quality: str) -> tuple[bytes, kit.Panel, list[str]]:
+    """ONE panel painted alone (plan/2026-11-17 §3.2): the one-panel writer, then `panel_prompt` → safe depiction →
+    one picture, the place, the shot's props and its neighbouring panels attached. → (picture, panel, conflicts).
+    Raises `_Failed` with the reason."""
+    painter = ctx.ports.images
     if painter is None:
-        return keep(NOT_CONFIGURED)
-    if not board.get("storage_path"):
-        return keep(NO_SOURCE)
-    b = Board(ctx, world)
-    ensure_faces(ctx, production, world["canon"], b.people, job_id, warn)
-    cells = [dict(c) for c in board.get("cells") or []]
-    wanted = {int(n) for n in state.get("shots") or []}
-    redo = [c for c in cells if c.get("kind") == "painted" and int(c["number"]) in wanted and not c.get("locked")
-            and c.get("box")]
-    if not redo:
-        return keep("No unlocked panel to repaint.")
+        raise _Failed(NOT_CONFIGURED)
+    near = []
+    for side, cell in _neighbours(parts_cells, shot.id, shot.number):
+        try:
+            near.append((side, int(cell["number"]), _download(ctx, "frames", str(cell["path"]))))
+        except Exception:
+            _log.warning("the panel of shot %s could not be read as a neighbour", cell.get("number"), exc_info=True)
+    places = _pictures(ctx, b.image_pictures([shot])[: MAX_IMAGE_REFS - len(near)])
+    edit = kit.Edit(kind="change" if writer.panel(shot.number) else "add", number=shot.number, plan=shot.plan,
+                    board=writer, before=next((n for s, n, _ in near if s == "before"), None),
+                    after=next((n for s, n, _ in near if s == "after"), None), note=note,
+                    pictures=[*(p.label for p in places),
+                              *(kit.writer_neighbour_label(s, n) for s, n, _ in near)])
+    message = kit.writer_message({}, b.colours, edit=edit)
+    sent = [*(p.data for p in places), *(d for _, _, d in near)]
     try:
-        image = _download(ctx, "frames", str(board["storage_path"]))
-    except Exception:
-        _log.warning("board %s could not be read", board_id, exc_info=True)
-        return keep(NO_SOURCE)
-    notes = {int(c["number"]): str(c.get("note") or "") for c in redo}
-    try:
-        fresh = write(ctx, b, notes)
+        out = agents.build("board_writer").run(
+            {"message": message, "pictures": [{"mime": "image/png", "b64": base64.b64encode(d).decode()}
+                                              for d in sent]},
+            ctx, max_output=kit.PANEL_WRITER_MAX_OUTPUT)
     except ModelUnavailable:
-        return keep(NO_WRITER)
+        raise _Failed(NO_WRITER) from None
     except Exception:
-        _log.warning("board writer failed for repaint %s", board_id, exc_info=True)
-        return keep(FAILED)
-    numbers_all = [int(c["number"]) for c in sorted((c for c in cells if c.get("panel")), key=lambda c: c["panel"])]
-    numbers = [int(c["number"]) for c in redo]
-    writer = kit.Writer.of(board.get("writer") or {}).merged(fresh, numbers)
-    painted_shots = [s for s in b.shots if s.number in numbers_all]
-    refs = [Reference(label=EDIT_LABEL, data=image), *_pictures(ctx, b.image_pictures(painted_shots))]
-    prompt = kit.repaint_prompt(writer, numbers_all, numbers, [r.label for r in refs], b.colours)
+        _log.warning("the one-panel writer failed for shot %s", shot.number, exc_info=True)
+        raise _Failed(FAILED) from None
+    raw = out.model_dump()
+    panel = kit.panel_answer(raw, shot.number)
+    if panel is None:
+        raise _Failed(f"The board writer gave no panel for shot {shot.number}.")
+    refs = [*places, *(Reference(label=kit.neighbour_label(s, n), data=d) for s, n, d in near)]
+    prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect)
     found = safe_depiction.blocking(prompt)
     if found:
-        return keep(safe_depiction.frame_error(found), "refused")
-    mask = pics.repaint_mask(pics.image_size(image), [c["box"] for c in redo])
+        raise _Failed(safe_depiction.frame_error(found))
     try:
-        # a repaint keeps the shape the board was painted in: the mask and the cells are cut from that picture
-        picture = painter(prompt, kit.aspect_of_board(board), refs,
-                          quality=str(board.get("quality") or kit.DEFAULT_QUALITY),
-                          mask=mask)
+        picture = painter(prompt, aspect, refs, quality=quality)
     except ImageRefused as exc:
-        return keep(str(exc), "refused")
+        raise _Failed(str(exc)) from None
     except Exception:
-        _log.warning("repaint of board %s failed", board_id, exc_info=True)
-        return keep(FAILED)
-    files = ctx.need("files")
-    base = f"{production['id']}/boards/{board_id}"
-    tag = job_id[:8]  # new files: the old picture stays whole until the new one is recorded
-    files.upload("frames", f"{base}/board-{tag}.png", picture.data, "image/png")
-    crops: dict[str, bytes] = {}
-    by_number = {s.number: s for s in b.shots}
-    redo_ids = {str(c["shot_id"]) for c in redo}
+        _log.warning("the panel of shot %s could not be painted", shot.number, exc_info=True)
+        raise _Failed(FAILED) from None
+    return picture.data, panel, kit.Writer.of(raw).conflicts
+
+
+def _sheet(ctx: RunContext, b: Board, cells: list[Row], base: str, tag: str) -> str:
+    """The part's numbered sheet drawn again from its stored cells (grid cuts and panels side by side)."""
+    shots, pictures = [], {}
     for c in cells:
-        if not c.get("box"):
+        sid = str(c["shot_id"])
+        known = next((s for s in b.shots if s.id == sid), None)
+        shots.append(kit.BoardShot(id=sid, number=int(c.get("number") or 0), slate=known.slate if known else "",
+                                   painted=c.get("kind") == "painted", text=str(c.get("text") or "")))
+        if c.get("kind") == "painted" and c.get("path"):
+            try:
+                pictures[sid] = _download(ctx, "frames", str(c["path"]))
+            except Exception:
+                _log.warning("the panel of shot %s could not be read for the sheet", c.get("number"), exc_info=True)
+    path = f"{base}/sheet-{tag}.png"
+    ctx.need("files").upload("frames", path, pics.scene_sheet(shots, pictures), "image/png")
+    return path
+
+
+def update(ctx: RunContext, production: Row, world: Row, rows: list[Row], state: Row, job_id: str,
+           warn: Callable[[str], None]) -> Row:
+    """plan/2026-11-17 §3.1: mend the current board for the scene's shots as they stand, never repainting it whole.
+    A changed or added shot's panel is painted ALONE, its neighbours attached (or its earlier picture put back when
+    an undo returned its plan, §3.6); a removed shot's cell is dropped; moved shots are put in order; a black plate
+    is drawn by code. A locked panel is never repainted. Then every cell and writer panel is renumbered together,
+    each touched part's sheet drawn again, and each part written once: a part none of whose cells changed gets the
+    person's approval back (§3.3; D2 as recommended: removing or moving a shot changes no picture). A panel that
+    fails keeps its old cell (an added shot stays out of date); the others still update. → `{status, updated,
+    failed, locked}`."""
+    frames, files = ctx.need("frames"), ctx.need("files")
+    b = Board(ctx, world, saved=rows[0].get("colours") or {})
+    original = [[dict(c) for c in r.get("cells") or []] for r in rows]
+    st = kit.stale_cells([c for p in original for c in p], b.shot_rows)
+    wanted = {str(x) for x in state.get("shots") or []}
+    to_paint = [sid for sid in st.paint if not wanted or sid in wanted]
+    now_ids = {str(s["id"]) for s in b.shot_rows}
+    parts_cells, writer = _renumbered([[c for c in p if str(c["shot_id"]) in now_ids] for p in original],
+                                      _board_writer(rows), b.shot_rows)
+    aspect = kit.aspect_of_board(rows[0])
+    quality = str(rows[0].get("quality") or kit.DEFAULT_QUALITY)
+    tag = job_id[:8]
+    changed: set[int] = set()
+    updated: list[int] = []
+    failed: dict[int, str] = {}
+    if any(b.shot(sid).painted for sid in to_paint):
+        ensure_faces(ctx, production, world["canon"], b.people, job_id, warn)  # D4, for the frames that follow
+
+    def put(sid: str, fields: Row, new: Row | None = None) -> None:
+        """Write `fields` into every cell of this shot (the overlap panel is in two parts), or insert `new`."""
+        hit = False
+        for i, cells in enumerate(parts_cells):
+            for j, c in enumerate(cells):
+                if str(c["shot_id"]) == sid:
+                    cells[j] = {**c, **fields}
+                    changed.add(i)
+                    hit = True
+        if not hit and new is not None:
+            i = kit.insert_position(parts_cells, b.shot_rows, sid)
+            parts_cells[i] = sorted([*parts_cells[i], {**new, **fields}], key=lambda c: int(c.get("number") or 0))
+            changed.add(i)
+
+    for sid in to_paint:
+        shot, row = b.shot(sid), b.row(sid)
+        pin = kit.plan_pin(row)
+        cell = next((c for p in parts_cells for c in p if str(c["shot_id"]) == sid), None)
+        fresh = kit.new_cell(shot, row, None, source="panel")
+        if not shot.painted:  # a black plate: drawn by code, nothing painted
+            put(sid, {k: fresh[k] for k in ("kind", "panel", "box", "path", "pin", "text", "source")}, fresh)
+            writer = kit.Writer(world=writer.world, geography=writer.geography, conflicts=writer.conflicts,
+                                panels=[p for p in writer.panels if p.shot != shot.number])
+            updated.append(shot.number)
             continue
-        data = pics.crop(picture.data, c["box"])
-        path = f"{base}/cell_{int(c['number']):03d}-{tag}.png"
-        files.upload("frames", path, data, "image/png")
-        crops[str(c["shot_id"])] = data
-        c["path"] = path
-        if str(c["shot_id"]) in redo_ids:
-            shot = by_number.get(int(c["number"]))
-            if shot is not None:
-                c["pin"] = kit.plan_pin(b.row(shot.id))
-    shots = [s for s in b.shots if s.id in {str(c["shot_id"]) for c in cells}]
-    sheet = pics.scene_sheet(shots, crops)
-    files.upload("frames", f"{base}/sheet-{tag}.png", sheet, "image/png")
-    frames.save_board(board_id, {"writer": writer.dump(), "prompt": prompt, "status": "done", "error": None,
-                                 "storage_path": f"{base}/board-{tag}.png", "sheet_path": f"{base}/sheet-{tag}.png",
-                                 "cells": cells})
-    return {"status": "done", "repainted": sorted(numbers)}
+        old_panel = writer.panel(shot.number) if cell is not None and cell.get("kind") == "painted" else None
+        history = kit.remember(cell, old_panel) if cell is not None else []
+        prev = kit.previous_for(cell, pin) if cell is not None else None
+        back = kit.panel_of(prev.get("panel"), shot.number) if prev else None
+        if prev and back is not None:  # §3.6: an undo put this plan back; its picture comes back for free
+            put(sid, {"kind": "painted", "path": prev["path"], "pin": pin, "source": "panel", "box": None,
+                      "panel": 1, "text": "", "previous": [p for p in history if p.get("pin") != pin]})
+            writer = _with_panel(writer, back)
+            updated.append(shot.number)
+            continue
+        note = str((cell or {}).get("note") or "")
+        try:
+            data, panel, conflicts = _paint_panel(ctx, b, writer, parts_cells, shot, note, aspect, quality)
+        except _Failed as exc:
+            failed[shot.number] = str(exc)
+            continue
+        owner = next((str(r["id"]) for r, p in zip(rows, parts_cells, strict=True)
+                      if any(str(c["shot_id"]) == sid for c in p)), None)
+        owner = owner or str(rows[kit.insert_position(parts_cells, b.shot_rows, sid)]["id"])
+        path = f"{production['id']}/boards/{owner}/cell_{sid}-{tag}.png"
+        try:
+            files.upload("frames", path, data, "image/png")
+        except Exception:
+            _log.warning("the panel of shot %s could not be stored", shot.number, exc_info=True)
+            failed[shot.number] = FAILED
+            continue
+        put(sid, {"kind": "painted", "path": path, "pin": pin, "source": "panel", "box": None, "panel": 1,
+                  "text": "", "previous": history}, fresh)
+        writer = _with_panel(writer, panel, conflicts)
+        updated.append(shot.number)
+
+    parts_cells, writer = _renumbered(parts_cells, writer, b.shot_rows)
+    done_ids = {str(c["shot_id"]) for p in parts_cells for c in p if int(c.get("number") or 0) in updated}
+    for cells in parts_cells:  # `fresh`: what THIS update changed, for the card's "look at it and approve it again"
+        for j, c in enumerate(cells):
+            if str(c["shot_id"]) in done_ids:
+                cells[j] = {**c, "fresh": True}
+            elif c.get("fresh"):
+                cells[j] = {k: v for k, v in c.items() if k != "fresh"}
+    errors =[f"Shot {n} could not be updated: {why}" for n, why in sorted(failed.items())]
+    for i, r in enumerate(rows):
+        rid = str(r["id"])
+        fields: Row = {"cells": parts_cells[i], "writer": writer.dump(), "colours": b.saved_colours,
+                       "status": "done", "error": " ".join(errors) or None, "parts": len(rows)}
+        if parts_cells[i] != original[i]:  # numbers, order, a dropped or a new picture: the sheet is drawn again
+            try:
+                fields["sheet_path"] = _sheet(ctx, b, parts_cells[i], f"{production['id']}/boards/{rid}", tag)
+            except Exception:
+                _log.warning("the sheet of board %s could not be drawn", rid, exc_info=True)
+        if i not in changed:
+            fields.update(_approval(state, rid))
+        frames.save_board(rid, fields)
+    status = "partial" if failed and updated else ("failed" if failed else "done")
+    out: Row = {"status": status, "updated": sorted(updated), "failed": failed, "locked": st.locked}
+    if errors:
+        out["error"] = " ".join(errors)
+    return out
+
+
+def _run_update(ctx: RunContext, production: Row, world_of: Callable[[str], Row], state: Row, job_id: str,
+                warn: Callable[[str], None]) -> Row:
+    frames = ctx.need("frames")
+    ids = [str(i) for i in state.get("board_ids") or []]
+    rows = [frames.board(i) for i in ids]
+    if not ids or any(r is None for r in rows):
+        return {"status": "failed", "error": "This board no longer exists."}
+    if not frames.claim_board(ids[0]):  # a re-delivery: the first delivery has the board
+        return {"status": "skipped"}
+    for i in ids[1:]:
+        frames.claim_board(i)
+    parts_rows = [r for r in rows if r is not None]
+    try:
+        world = world_of(str(state.get("scene_id") or parts_rows[0]["scene_id"]))
+        return update(ctx, production, world, parts_rows, state, job_id, warn)
+    except Exception:
+        _log.exception("the update of board %s crashed", ids[0])
+        for r in parts_rows:  # nothing was written: the board stays as it was, with its approval
+            frames.save_board(str(r["id"]), {"status": "done", "error": FAILED, **_approval(state, str(r["id"]))})
+        return {"status": "failed", "error": FAILED}
 
 
 def run(ctx: RunContext, production: Row, world_of: Callable[[str], Row], state: Row, job_id: str,
         warn: Callable[[str], None]) -> Row:
     """The board job. `world_of(scene_id)` is the frame_render system's shared reads."""
+    if state.get("update"):
+        return _run_update(ctx, production, world_of, state, job_id, warn)
     frames = ctx.need("frames")
     board_id = str(state["board_id"])
     board = frames.board(board_id)
@@ -414,8 +605,6 @@ def run(ctx: RunContext, production: Row, world_of: Callable[[str], Row], state:
         return {"status": "skipped"}
     try:
         world = world_of(str(board["scene_id"]))
-        if state.get("repaint"):
-            return repaint(ctx, production, world, board, state, job_id, warn)
         return paint(ctx, production, world, board, state, job_id, warn)
     except Exception:
         _log.exception("board %s crashed", board_id)

@@ -6,7 +6,18 @@ from pathlib import Path
 
 import yaml
 
-from contracts.board import Writer, board_prompt, colours_for, frame_sections, missing_panels
+from contracts.board import (
+    ONE_PANEL,
+    Edit,
+    Writer,
+    board_prompt,
+    colours_for,
+    frame_sections,
+    missing_panels,
+    panel_answer,
+    panel_prompt,
+    writer_message,
+)
 from contracts.safe_depiction import PROMPT_LINE, blocking
 from hiru_ai.agents.board_writer import agent
 from hiru_ai.agents.board_writer.schema import Input, Output
@@ -45,6 +56,23 @@ def test_a_recorded_answer_makes_a_clean_board_and_frame():
     frame = " ".join(frame_sections(out, 2, {"Aruni": "blue", "Nimal": "red"}, ["Nimal lies still."]))
     assert "Aruni stands at left" in frame and "the blue mannequin" not in frame.split("Background:")[-1]
     assert "eyes closed" in frame
+
+
+def test_one_panel_mode_leaves_the_system_prompt_alone():
+    """plan/2026-11-17 §3.2: the one-panel instructions travel at the END of the user message; the system prompt is
+    the same, byte for byte, for a whole board and for one panel (one cached prompt)."""
+    system = Prompt.load(HERE / "prompts" / "system.md").text
+    assert "ONE PANEL" not in system
+    board = Writer.of(CASES[0]["reply"])
+    edit = Edit(kind="add", number=3, plan={"number": 3}, board=board, before=2)
+    message = writer_message({}, colours_for(["Nimal"]), edit=edit)
+    assert message.endswith(ONE_PANEL) and agent.user_message(Input(message=message)) == message
+    case = next(c for c in CASES if c["name"] == "one panel added to an approved board")
+    answer = panel_answer(Output.model_validate(case["reply"]).model_dump(), 4)
+    assert answer is not None and answer.shot == 4 and "cream cup" in answer.picture
+    prompt = panel_prompt(board, answer, ["the location plate for Colombo roadside"], {"Kasun": "red",
+                                                                                    "office worker": "blue"})
+    assert not blocking(prompt) and "THE PANEL" in prompt
 
 
 def test_the_lab_answer_still_reads():

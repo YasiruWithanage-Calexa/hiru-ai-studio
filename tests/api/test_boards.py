@@ -3,6 +3,7 @@ test writes what the board job writes (`paint_done`)."""
 from __future__ import annotations
 
 from typing import Any
+from uuid import uuid4
 
 import pytest
 
@@ -89,52 +90,147 @@ def test_paint_approve_then_frames_are_painted_from_the_panel(world: World, fire
     assert frame["board_id"] == bid and fired[-1]["state"]["from_board"] is True
 
 
-def test_a_changed_shot_makes_its_panel_out_of_date_and_only_it_is_repainted(world: World,
-                                                                             fired: list[dict]):  # noqa: F811
-    s = open_scene(world)
-    design(world, s)
+def approved_board(world: World, s: dict) -> str:
     crew = world.headers(world.crew)
     bid = world.client.post(board_url(world, s), json={}, headers=crew).json()["board_id"]
     paint_done(world, s, bid)
     world.client.post(url(world, f"/scene-boards/{bid}/approve"), headers=crew)
+    return str(bid)
+
+
+def update_url(world: World, s: dict) -> str:
+    return url(world, f"/scenes/{s['scene']['id']}/board/update")
+
+
+def test_a_changed_shot_is_out_of_date_and_update_board_paints_only_it(world: World,
+                                                                       fired: list[dict]):  # noqa: F811
+    """plan/2026-11-17 §3.1: one route, one job; every part queued with its approval cleared and carried."""
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    approved_at = rows(world)[bid]["approved_at"]
     shot = world.repos.shots.rows[s["shots"][2]["id"]]  # type: ignore[attr-defined]
     shot["ir"] = {**shot["ir"], "setting": "the kitchen at night"}
     view = world.client.get(board_url(world, s), headers=crew).json()
     assert view["state"] == "stale" and view["changed"] == [3] and not view["whole"]
-    assert view["stale_reasons"] == ["shot 3 changed"]
+    assert view["stale_reasons"] == ["shot 3 changed"] and view["update"] == [{"number": 3, "what": "changed"}]
     assert [c["stale"] for c in view["parts"][0]["cells"]] == [False, False, True, False]
     assert world.client.post(shot_url(world, s, 2, "/frames"), json={}, headers=crew).json()["detail"] == boards.STALE
     assert world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).status_code == 202, \
         "an unchanged shot still paints from its approved panel"
 
-    shot_id = s["shots"][2]["id"]
-    v = world.client.patch(url(world, f"/scene-boards/{bid}/cells/{shot_id}"), json={"note": "  side-on,  rain "},
-                           headers=crew).json()
-    assert v["parts"][0]["cells"][2]["note"] == "side-on, rain"
-    r = world.client.post(url(world, f"/scene-boards/{bid}/repaint"), json={}, headers=crew)
+    r = world.client.post(update_url(world, s), json={}, headers=crew)
     assert r.status_code == 202, r.text
-    assert fired[-1]["state"] == {"board_id": bid, "repaint": True, "shots": [3]}
+    assert r.json()["board_id"] == bid
+    state = fired[-1]["state"]
+    assert state == {"update": True, "scene_id": s["scene"]["id"], "board_ids": [bid], "shots": [],
+                     "approvals": {bid: {"approved_at": approved_at, "approved_by": state["approvals"][bid][
+                         "approved_by"]}}}
     row = rows(world)[bid]
-    assert row["status"] == "queued" and row["approved_at"] is None, "a repaint is approved again"
+    assert row["status"] == "queued" and row["approved_at"] is None and row["job_id"] == r.json()["job_id"]
+    assert world.client.get(board_url(world, s), headers=crew).json()["state"] == "painting"
+    assert world.client.post(update_url(world, s), json={}, headers=crew).status_code == 409, "one job at a time"
+    assert world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).json()["detail"] == \
+        boards.PAINTING, "no first frame from a part being updated"
+    assert world.repos.audit.entries[-1]["action"] == "board.update"  # type: ignore[attr-defined]
 
 
-def test_a_locked_panel_is_never_repainted_and_an_added_shot_needs_a_whole_board(world: World,
-                                                                                 fired: list[dict]):  # noqa: F811
+def test_added_and_removed_shots_are_listed_for_the_update_not_a_whole_repaint(world: World,
+                                                                              fired: list[dict]):  # noqa: F811
     s = open_scene(world)
     design(world, s)
     crew = world.headers(world.crew)
-    bid = world.client.post(board_url(world, s), json={}, headers=crew).json()["board_id"]
-    paint_done(world, s, bid)
-    first = s["shots"][0]["id"]
-    world.client.patch(url(world, f"/scene-boards/{bid}/cells/{first}"), json={"locked": True}, headers=crew)
-    r = world.client.post(url(world, f"/scene-boards/{bid}/repaint"), json={"shots": [1]}, headers=crew)
-    assert r.status_code == 409 and "locked" in r.json()["detail"]
-    r = world.client.post(url(world, f"/scene-boards/{bid}/repaint"), json={"shots": [9]}, headers=crew)
-    assert r.status_code == 409 and "shot 9" in r.json()["detail"]
-
+    bid = approved_board(world, s)
     world.repos.shots.rows.pop(s["shots"][3]["id"])  # type: ignore[attr-defined]
     view = world.client.get(board_url(world, s), headers=crew).json()
-    assert view["whole"] and view["stale_reasons"] == ["shot 4 removed"]
+    assert not view["whole"] and view["stale_reasons"] == ["the board's shot 4 removed"]
+    assert view["update"] == [{"number": 4, "what": "removed"}]
+    r = world.client.post(update_url(world, s), json={}, headers=crew)
+    assert r.status_code == 202, r.text
+    assert fired[-1]["state"]["board_ids"] == [bid]
+
+
+def test_a_locked_panel_is_never_updated_and_nothing_to_do_is_refused(world: World,
+                                                                     fired: list[dict]):  # noqa: F811
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    r = world.client.post(update_url(world, s), json={}, headers=crew)
+    assert r.status_code == 409 and "Nothing on the board is out of date" in r.json()["detail"]
+    first = s["shots"][0]["id"]
+    world.client.patch(url(world, f"/scene-boards/{bid}/cells/{first}"), json={"locked": True}, headers=crew)
+    shot = world.repos.shots.rows[first]  # type: ignore[attr-defined]
+    shot["ir"] = {**shot["ir"], "setting": "the yard"}
+    view = world.client.get(board_url(world, s), headers=crew).json()
+    assert view["update"] == [{"number": 1, "what": "locked"}]
+    assert view["stale_reasons"] == ["shot 1 is locked and out of date: unlock to update"]
+    r = world.client.post(update_url(world, s), json={}, headers=crew)
+    assert r.status_code == 409 and "unlock it" in r.json()["detail"]
+    r = world.client.post(update_url(world, s), json={"shots": [first]}, headers=crew)
+    assert r.status_code == 409 and "unlock it first" in r.json()["detail"]
+    assert world.client.post(update_url(world, s), json={"shots": [str(uuid4())]}, headers=crew).status_code == 404
+    assert rows(world)[bid]["approved_at"], "a refused update changes nothing"
+
+
+def test_update_needs_a_finished_board_in_the_right_shape(world: World, fired: list[dict]):  # noqa: F811
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    r = world.client.post(update_url(world, s), json={}, headers=crew)
+    assert r.status_code == 409 and r.json()["detail"] == boards.PAINT_FIRST
+    bid = approved_board(world, s)
+    rows(world)[bid]["status"] = "failed"
+    view = world.client.get(board_url(world, s), headers=crew).json()
+    assert view["whole"], "a failed part: only a whole repaint mends it"
+    assert world.client.post(update_url(world, s), json={}, headers=crew).json()["detail"] == boards.PAINT_FIRST
+    rows(world)[bid].update(status="done", prompt="... Every panel is a tall portrait 9:16 still ...")
+    shot = world.repos.shots.rows[s["shots"][1]["id"]]  # type: ignore[attr-defined]
+    shot["ir"] = {**shot["ir"], "setting": "the yard"}
+    assert world.client.get(board_url(world, s), headers=crew).json()["whole"]
+    assert world.client.post(update_url(world, s), json={}, headers=crew).json()["detail"] == boards.WRONG_SHAPE
+
+
+def test_update_waits_while_the_scene_is_planned_and_a_failed_dispatch_keeps_the_approval(
+        world: World, fired: list[dict], monkeypatch: pytest.MonkeyPatch):  # noqa: F811
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    shot = world.repos.shots.rows[s["shots"][1]["id"]]  # type: ignore[attr-defined]
+    shot["ir"] = {**shot["ir"], "setting": "the yard"}
+    job = str(uuid4())
+    world.repos.jobs.rows[job] = {"id": job, "production_id": str(world.production),  # type: ignore[attr-defined]
+                                  "kind": "plan_scene_raphael", "status": "running",
+                                  "updated_at": "2026-11-17T00:00:00Z"}
+    r = world.client.post(update_url(world, s), json={}, headers=crew)
+    assert r.status_code == 409 and "being planned" in r.json()["detail"]
+    world.repos.jobs.rows[job]["status"] = "done"  # type: ignore[attr-defined]
+
+    async def broken(*_a: Any, **_k: Any) -> None:
+        raise RuntimeError("no queue")
+
+    monkeypatch.setattr("api.workers.task_manager.dispatch", broken)
+    r = world.client.post(update_url(world, s), json={}, headers=crew)
+    assert r.status_code == 503
+    row = rows(world)[bid]
+    assert row["status"] == "done" and row["approved_at"], "nothing started: the board is back, approved"
+
+
+def test_the_repaint_route_is_gone(world: World, fired: list[dict]):  # noqa: F811
+    s = open_scene(world)
+    design(world, s)
+    bid = approved_board(world, s)
+    r = world.client.post(url(world, f"/scene-boards/{bid}/repaint"), json={}, headers=world.headers(world.crew))
+    assert r.status_code in (404, 405), "plan/2026-11-17 D3: the masked repaint is removed"
+
+
+def test_a_whole_repaint_still_carries_notes_and_locks(world: World, fired: list[dict]):  # noqa: F811
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
     r = world.client.post(board_url(world, s), json={}, headers=crew)
     assert r.status_code == 202
     assert fired[-1]["state"]["carry"] == [bid], "notes and locks of the current board carry over"

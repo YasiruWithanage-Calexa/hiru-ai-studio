@@ -14,7 +14,6 @@ from contracts import board as kit
 from contracts.canon import face_sheet_path
 from hiru_ai.core.context import Ports, RunContext
 from hiru_ai.core.fakes import FakeImages
-from hiru_ai.systems.frame_render import board as graph_board
 from hiru_ai.systems.frame_render import graph
 from tests.contracts.test_board import board_png
 from tests.parity.graph_support import environment, scripted_models
@@ -162,45 +161,6 @@ def test_a_board_without_a_painter_or_twice_delivered_is_not_paid_for():
     store.board_rows[bid]["status"] = "done"
     result, _ = run(store, {"board_id": bid}, [], FakeImages())
     assert result["status"] == "skipped"
-
-
-def test_repainting_changed_panels_masks_only_their_cells_and_keeps_locked_ones():
-    store = BoardStore()
-    first = store.add_board()
-    painter = FakeImages()
-    painter.picture = board_png(2, 2)
-    run(store, {"board_id": first}, [reply(numbers(store))], painter)
-    src = store.board_rows[first]
-    src["cells"][0]["locked"] = True
-    src["cells"][1]["note"] = "side-on"
-    old_picture = src["storage_path"]
-    src.update(status="queued", approved_at=None)
-    result, (_, recorded) = run(store, {"board_id": first, "repaint": True, "shots": [1, 2]},
-                                [reply(numbers(store))], painter)
-    assert result == {"status": "done", "repainted": [2]}, "the locked panel 1 is never repainted"
-    assert src["status"] == "done" and src["storage_path"] != old_picture, "new files; the old one is untouched"
-    assert "- shot 2: side-on" in str(recorded.calls[-1]), "the person's note reaches the writer"
-    mask = Image.open(io.BytesIO(painter.masks[-1]))
-    box = src["cells"][1]["box"]
-    assert mask.getpixel((box[0] + 5, box[1] + 5))[3] == 0
-    other = src["cells"][0]["box"]
-    assert mask.getpixel((other[0] + 5, other[1] + 5))[3] == 255
-    assert painter.calls[-1][2][0].label == "the storyboard sheet to edit"
-
-
-def test_a_failed_repaint_keeps_the_old_picture_in_force():
-    store = BoardStore()
-    first = store.add_board()
-    painter = FakeImages()
-    painter.picture = board_png(2, 2)
-    run(store, {"board_id": first}, [reply(numbers(store))], painter)
-    src = store.board_rows[first]
-    old = src["storage_path"]
-    src.update(status="queued")
-    result, _ = run(store, {"board_id": first, "repaint": True, "shots": [2]}, [reply(numbers(store))],
-                    FakeImages(error=RuntimeError("boom")))
-    assert result["status"] == "failed" and src["status"] == "done" and src["storage_path"] == old
-    assert src["error"] == graph_board.FAILED
 
 
 def test_a_frame_from_the_board_attaches_the_panel_last_and_says_the_mannequins():

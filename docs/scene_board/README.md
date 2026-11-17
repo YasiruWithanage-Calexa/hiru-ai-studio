@@ -25,20 +25,53 @@ light, the props, the camera positions and where everyone stands
    repeated as the first of the next (painted with that panel attached). A tall board holds up to 9, then parts of 9.
 6. **Shape** (2026-11-16, `lab/portrait_board` run_001): the board has the production's shape. A horizontal production
    paints a 1536x1024 sheet of landscape panels; a vertical one a 1024x1536 sheet of tall panels ("a tall portrait 9:16
-   still"), so each panel is the shape of its 9:16 first frame. A repaint keeps the shape the board was painted in
+   still"), so each panel is the shape of its 9:16 first frame. An update keeps the shape the board was painted in
    (`aspect_of_board`, read from its prompt). A board in the other shape (painted before tall boards, or before the
-   production's orientation changed) still feeds frames; the API says `wrong_shape` and the card asks for a whole repaint.
+   production's orientation changed) still feeds frames; the API says `wrong_shape` and the card asks for a whole repaint
+  (Update board refuses it: a panel painted alone in the production's shape would not match its neighbours).
 
-## Approve, out of date, repaint
+## Approve, out of date, update
+
+([plan/2026-11-17/PLAN.md](../../plan/2026-11-17/PLAN.md); the lab: `lab/panel_edit/`, run_001 and run_002.)
 
 - A person **approves** the board (each part). Only an approved board feeds first frames (D3).
-- Each panel records a pin of what the writer read about its shot (`plan_pin`). When a shot changes the board says
-  "Out of date: shot 4 changed"; it **never repaints by itself**.
-- **Repaint changed panels** (D7, method A): a masked `images.edit` of that part's picture, transparent over the changed
-  cells only, so every other panel stays pixel for pixel. Its approval is cleared. **Repaint whole board** makes a new
-  version (needed when shots are added, removed or reordered); notes and locked panels carry over.
-- A **locked** panel is never repainted (in a whole repaint its old picture is pasted back). A **note** on a panel goes to
-  the writer only when that panel is repainted.
+- Every cell records a pin of what the writer read about its shot (`plan_pin`; a black plate's too). When a shot changes,
+  is added, removed or moved (through Zora, Sable or by hand) the board says "Out of date: Shot 5 changed · shot 4 added
+  · shot 7 removed"; it **never repaints by itself**. A Zora or Sable save moves only the pins of the shots it touched
+  (`tests/zora/test_board_pins.py`).
+- **Update board** (`POST .../scenes/{id}/board/update`, one job): an edited shot **repaints only its own panel**:
+
+  | Out of date because | What the update does | Painted |
+  |---|---|---|
+  | a shot changed | its panel painted alone | 1 panel |
+  | a shot was added | its panel written and painted alone, its cell inserted in shot order (in the part of the shot before it) | 1 panel |
+  | a shot was removed | its cell dropped | nothing |
+  | shots were reordered | the cells put in order | nothing |
+  | a shot became / stopped being a black plate | a black cell drawn by code / a panel painted alone | 0 or 1 |
+
+  **One panel alone** (§3.2): the same `board_writer`, the same system prompt (cached); the one-panel instructions
+  (`contracts.board.ONE_PANEL`) go at the end of the user message, with the approved board's world, geography and
+  panels as FIXED facts, the shot's plan and the board's SAVED colours. The image (`panel_prompt`) is one film still in
+  the board's shape, `CAMERA_RULE` included, the sheet's layout words dropped from the world (`panel_world`); attached:
+  the place, the shot's props, then the panels just before and after it. The picture is the cell, whole
+  (`cell_<shot_id>-<job>.png`, `source: "panel"`); nothing is ever pasted over another panel and no mask is used: the
+  image model does not honour one (run_001: cells outside the mask became a different street). Then code renumbers
+  every cell and writer panel together from the shots as they stand (`renumber`: a first frame reads its panel's words
+  by number), and redraws each touched part's numbered sheet from its cells (grid cuts and panels side by side, each
+  fit, never stretched).
+- **Colours stay** (§3.4): an update keeps the row's `colours`; a new person gets the first colour no one uses
+  (`keep_colours`). A whole repaint takes fresh colours.
+- **Approval** (§3.3): per part, as before. The API queues every part with its approval cleared (the schema allows an
+  approval only on a done part) and carries the approval in the job; a part whose cells got a new picture is left
+  unapproved ("Updated: shot 5. Look at the board and approve it again."), a part with no new picture gets the
+  person's approval back. An update that only removes or moves shots keeps the approval (D2, as recommended).
+- **Undo is free** (§3.6): a cell keeps its last three pictures (`previous`); when Zora's undo puts a plan back, the
+  update restores that picture and panel with no model call.
+- A panel that fails keeps its old cell (an added shot stays out of date); the others still update; the part says
+  which shot failed. A **locked** panel is never repainted: a locked and changed shot is named ("unlock it to update
+  it"). A **note** on a panel goes to the writer when that panel is painted again.
+- **Repaint whole board** makes a new version: for a fresh look, a board in the wrong shape, or a board with a failed
+  part; notes and locked panels carry over (a locked panel's old picture is pasted back).
 
 ## The first frame from its panel (§3.5)
 
@@ -56,7 +89,8 @@ planned state. These jobs run on the `hiru_ai` engine whatever `AI_ENGINE` says.
 ## What it costs (for the person, never the interface)
 
 Measured in the lab: a face sheet ≈ $0.06; a board ≈ $0.15-0.18 (writer + LOW picture); a first frame ≈ $0.13-0.19. A
-10-shot scene with two new characters ≈ $1.80.
+10-shot scene with two new characters ≈ $1.80. One panel updated (lab/panel_edit): writer ≈ $0.02-0.03 + LOW picture
+≈ $0.054-0.059; a removed or moved shot, or an undo, costs nothing.
 
 ## API
 
@@ -66,7 +100,7 @@ Measured in the lab: a face sheet ≈ $0.06; a board ≈ $0.15-0.18 (writer + LO
 | `POST .../scenes/{id}/board` `{quality}` | paint the whole board (job, new version) |
 | `POST .../scene-boards/{id}/approve` | approve one part |
 | `PATCH .../scene-boards/{id}/cells/{shot_id}` `{note?, locked?}` | a panel's note or lock |
-| `POST .../scene-boards/{id}/repaint` `{shots}` | repaint some panels in place (job); none named = the changed ones |
+| `POST .../scenes/{id}/board/update` `{shots?}` | Update board (job): shot ids, none = everything out of date; 409 with no finished board, a wrong shape, nothing out of date, or while a plan runs |
 | `POST .../canon/{id}/face-sheet` | a character's face sheet (job) |
 
 Schema v26 (`Database/upgrade_v25_to_v26.sql`): `scene_boards`, `first_frames.board_id`.

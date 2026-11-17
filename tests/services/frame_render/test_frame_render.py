@@ -379,3 +379,17 @@ def image_draft_label() -> str:
     from contracts.producer import DRAFT_LABEL
 
     return DRAFT_LABEL
+
+
+def test_board_work_goes_to_the_graph_whatever_the_engine_says() -> None:
+    """plan/2026-11-17: an Update board carries `update` and no `board_id`; under AI_ENGINE=legacy it went to the
+    legacy pipeline, which found no frames, ended `done` and left every part running until the sweeper failed it."""
+    from frame_render.app.handler import graph_only
+
+    def payload(state: dict[str, object]) -> DispatchPayload:
+        return DispatchPayload(job_id=uuid4(), kind=JobKind.FRAME_RENDER, actor_user_id=uuid4(),
+                               production_id=uuid4(), state=state)
+
+    assert graph_only(payload({"update": True, "scene_id": "s", "board_ids": ["b"], "shots": []}))
+    assert graph_only(payload({"board_id": "b"}))
+    assert not graph_only(payload({"frame_ids": ["f"]}))

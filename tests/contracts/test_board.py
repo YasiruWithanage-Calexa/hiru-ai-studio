@@ -87,12 +87,6 @@ def test_the_sheet_holds_every_shot_with_black_cells():
     assert im.width > 2 * 384 - 1 and im.height >= 216
 
 
-def test_the_repaint_mask_is_transparent_only_over_the_changed_cells():
-    mask = Image.open(io.BytesIO(pics.repaint_mask((300, 200), [(0, 0, 100, 100)])))
-    assert mask.mode == "RGBA" and mask.size == (300, 200)
-    assert mask.getpixel((50, 50))[3] == 0 and mask.getpixel((200, 150))[3] == 255
-
-
 def test_pins_say_which_panel_is_out_of_date():
     s1 = {"id": "a", "number": 1, "framing": "WIDE", "block_start": 0, "block_end": 1, "ir": {"setting": "canal"}}
     s2 = {"id": "b", "number": 2, "framing": "MCU", "block_start": 1, "block_end": 2, "ir": {"setting": "gate"}}
@@ -106,10 +100,12 @@ def test_pins_say_which_panel_is_out_of_date():
     assert not kit.stale_cells(cells, [s1, camera_only]).any, "only what the writer read pins a panel"
     s3 = {"id": "c", "number": 3, "block_start": 2, "block_end": 3}
     added = kit.stale_cells(cells, [s1, s2, s3])
-    assert added.whole and added.added == [3]
+    assert not added.whole and added.added == [3] and added.paint == ["c"], "an update paints an added shot alone"
     moved = kit.stale_cells(cells, [dict(s1, number=2), dict(s2, number=1)])
-    assert moved.order and moved.whole
-    assert kit.stale_cells(cells, [s1]).removed == [2]
+    assert moved.order and not moved.whole and moved.moved == [1, 2] and set(moved.tidy) == {"a", "b"}
+    assert moved.paint == [], "a move paints nothing"
+    removed = kit.stale_cells(cells, [s1])
+    assert removed.removed == [2] and removed.tidy == ["b"] and removed.updatable
 
 
 def test_a_frame_from_a_panel_names_people_keeps_their_state_and_drops_the_board():

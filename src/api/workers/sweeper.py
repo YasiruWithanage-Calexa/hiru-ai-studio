@@ -79,11 +79,17 @@ async def sweep(repos: Repos, now: datetime | None = None) -> int:
     # Scene board parts: a crash mid-board can leave a later part `running` with no worker (2026-11-16), which
     # blocks painting the scene's board again ("already being painted").
     boards = await repos.scene_boards.active_before(now)
-    stuck_boards = [str(b["id"]) for b in boards
-                    if str(b.get("job_id")) in failed_jobs or now - _when(b["updated_at"]) >= BOARD_LIMIT]
-    if stuck_boards:
-        await repos.scene_boards.update_many(stuck_boards, {"status": "failed", "error": reason(BOARD_LIMIT)})
-        ended += len(stuck_boards)
+    stuck_parts = [b for b in boards
+                   if str(b.get("job_id")) in failed_jobs or now - _when(b["updated_at"]) >= BOARD_LIMIT]
+    # A stuck Update board (plan/2026-11-17) leaves a part that still has its cells: its old picture is in force
+    # (`done`, approval still cleared); a part that was never painted fails.
+    kept = [str(b["id"]) for b in stuck_parts if b.get("cells") and b.get("sheet_path")]
+    lost = [str(b["id"]) for b in stuck_parts if str(b["id"]) not in kept]
+    if kept:
+        await repos.scene_boards.update_many(kept, {"status": "done", "error": reason(BOARD_LIMIT)})
+    if lost:
+        await repos.scene_boards.update_many(lost, {"status": "failed", "error": reason(BOARD_LIMIT)})
+    ended += len(stuck_parts)
 
     for doc in await repos.documents.processing_before(now - DOCUMENT_LIMIT):
         await repos.documents.update(doc["id"], {"status": "failed", "error": reason(DOCUMENT_LIMIT)})

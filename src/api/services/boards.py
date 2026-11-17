@@ -1,8 +1,8 @@
 """The Scene board's rules for the API (plan/2026-11-14 §3.3, §3.5): which rows are the scene's current board, which
 panel feeds a shot's first frame, and whether a shot may be painted at all (D3).
 
-  current board   the newest version's parts (a whole repaint makes a new version; repainting some panels changes a
-                  part in place and clears its approval)
+  current board   the newest version's parts (a whole repaint makes a new version; Update board, plan/2026-11-17,
+                  changes the parts in place: a part with a new picture is approved again, the others keep theirs)
   a shot's panel  the first part that paints it; it feeds a frame only when that part is done and approved and the
                   panel still shows the shot (`contracts.board.stale_cells`)
   a black plate   needs no board: it is made by code (the same rule as the engine's `World.plate`)
@@ -22,8 +22,10 @@ NO_BOARD = "Paint and approve the scene board first: every first frame is painte
 NOT_APPROVED = "Approve the scene board first: every first frame is painted from its panel."
 PAINTING = "The scene board is being painted. Approve it when it is ready."
 FAILED = "The scene board could not be painted. Paint it again."
-NOT_ON_BOARD = "This shot is not on the scene board (shots were added or moved). Paint the whole board again."
-STALE = "This shot changed since its panel was painted. Repaint its panel and approve the board again."
+NOT_ON_BOARD = "This shot is not on the scene board yet (shots were added or moved). Update the board."
+STALE = "This shot changed since its panel was painted. Update the board and approve it again."
+PAINT_FIRST = "Paint the board first: only a finished board can be updated."
+WRONG_SHAPE = "This board is not in the production's shape. Repaint the whole board."
 
 
 def current(rows: Sequence[Row]) -> list[Row]:
@@ -47,6 +49,12 @@ def is_plate(items: Sequence[Any], cast: Sequence[Any]) -> bool:
 def cells(parts: Sequence[Row]) -> list[Row]:
     """Every cell of the board, in part order (the overlap panel appears twice; its first part owns it)."""
     return [c for p in parts for c in p.get("cells") or []]
+
+
+def updatable(parts: Sequence[Row]) -> bool:
+    """Update board can mend it (plan/2026-11-17): every part finished, with its cells. A board with a failed part,
+    or none, needs a whole repaint."""
+    return bool(parts) and all(p.get("status") == "done" and p.get("cells") for p in parts)
 
 
 def stale(parts: Sequence[Row], shots: Sequence[Row]) -> kit.Stale:

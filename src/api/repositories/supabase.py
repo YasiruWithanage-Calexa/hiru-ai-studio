@@ -961,8 +961,9 @@ class SupabaseSceneBoards(_Base):
         return bool(_rows(res.data))
 
     async def active_before(self, before: datetime) -> builtins.list[Row]:
+        # sheet_path and cells: the sweeper keeps a stuck part that still has its picture (plan/2026-11-17).
         try:
-            res = (await self.db.table("scene_boards").select("id,job_id,updated_at")
+            res = (await self.db.table("scene_boards").select("id,job_id,updated_at,sheet_path,cells")
                    .in_("status", ["queued", "running"]).lt("updated_at", before.isoformat()).execute())
         except Exception:  # a database before v26: nothing to sweep
             return []

@@ -1,0 +1,1105 @@
+{
+ "shots": [
+  {
+   "id": "c14471f4-408a-450a-880e-0231b1482133",
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "scene_id": "bd5a6483-0eef-4a66-afac-b60556478618",
+   "number": 1,
+   "title": "Keeping bag, hand and road surface in one",
+   "framing": "WIDE",
+   "duration_s": 6,
+   "start_s": 0,
+   "sound_mode": "silent",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "director_line": ""
+    }
+   ],
+   "block_start": 0,
+   "block_end": 1,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Early-morning Colombo street bed: light engine idle from the three-wheeler, distant horns, footfalls, faint water drip from eaves.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Anudi walks right, guiding the phone toward the handbag’s side pocket.",
+      "camera": "Wide, focus priority on Anudi’s right hand and bag while keeping the curb line and three-wheeler anchored; unchanged.",
+      "performance": "She keeps her gaze forward, umbrella steady, her right hand feeling for the pocket without glancing down.",
+      "director_line": "A calm, readable street tableau keeps hand, bag and ground in one continuous view."
+     },
+     {
+      "time": "3-6s",
+      "action": "The phone slips, strikes the wet asphalt by the curb near the three-wheeler’s rear wheel and comes to rest; Anudi continues walking right with her right hand now empty.",
+      "camera": "Unchanged wide; hold composition as the handset leaves the hand and lands by the curb at the three-wheeler’s side.",
+      "performance": "She maintains the same even stride, no look back, her empty hand falling naturally by her side.",
+      "director_line": "The handset slips and settles in the foreground geography while her pace carries her out of danger of crowding the moment."
+     }
+    ],
+    "setting": "Colombo roadside outside a modest concrete building; wet asphalt, narrow pavement, open curb drain, a parked three-wheeler at frame left.",
+    "lighting": "Soft sky key from camera-left/front with low contrast; warm shop practicals kiss the left edge; wet ground adds gentle kick reflections without hotspots.",
+    "subjects": [
+     {
+      "id": "C02",
+      "action": "She guides the phone toward the side pocket while walking right; it slips, drops by the curb near the three-wheeler’s rear wheel, and she continues without looking back.",
+      "position": "",
+      "description": "Anudi walks under a closed black umbrella in her left hand, handbag on right shoulder, phone in right hand."
+     },
+     {
+      "id": "C01",
+      "action": "He remains beside the vehicle throughout the shot.",
+      "position": "",
+      "description": "Kasun stands by the three-wheeler at frame left, apron on, watching the street."
+     }
+    ],
+    "first_frame": {
+     "setting": "Wet asphalt lane with narrow pavement and open curb drain; low-rise shopfronts receding to frame right.",
+     "lighting": "Soft blue-grey daylight with a warm practical glow falling off the shopfront at frame left.",
+     "subjects": [
+      "Anudi mid-step, umbrella left, phone visible in her right hand near the bag pocket; neutral face, eyes ahead.",
+      "Kasun at the vehicle, profile to camera, still."
+     ],
+     "composition": "Vertical 9:16 wide framing: three-wheeler and Kasun fixed on the left third; Anudi entering mid-left, moving right; her right hand with phone, bag pocket and curb line clearly visible."
+    },
+    "cinematography": {
+     "angle": "eye level from the pavement edge, keeping curb and shopfronts diagonal left-to-right",
+     "camera": "locked-off sticks, 28mm, f/5.6",
+     "framing": "Wide shot holding full figures; Anudi mid-ground moving right with bag, hand and road edge in the same plane; Kasun and the three-wheeler anchored frame left.",
+     "movement": "locked-off on sticks",
+     "color_tone": "naturalistic, slightly desaturated with gentle warm highlights from practicals",
+     "white_balance": "cool 5600K overcast daylight with warm 3200K shop spill",
+     "depth_of_field": "Deep, crisp pavement texture and handset legible",
+     "lens_artifacts": "subtle wet-road sheen reflections"
+    }
+   },
+   "status": "draft",
+   "version": 2,
+   "created_at": "2026-11-15T10:40:35.40877+00:00",
+   "updated_at": "2026-11-15T18:09:30.0747+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+      "4fc68836-b389-4c0b-9127-77a236c10571": 2,
+      "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+     },
+     "looks": {},
+     "script_hash": "ebea7e40994ae8fb",
+     "shot_version": 2
+    },
+    "intent": "bd1a9778060d",
+    "job_id": "57b2f970-d201-42f4-b749-4099cd1cf84b",
+    "review": {
+     "notes": [
+      "S04 — Distinguish the move from S03: start in a clear leading 3/4 front (camera ahead, backing right) to keep his face open, rather than another lateral follow. Keep screen direction rightward.",
+      "S02 — Lock the drop geography to S03’s pickup: include a consistent ground landmark (e.g., the three‑wheeler wheel or the open drain) on the left so the phone’s landing spot reads as the same place.",
+      "S03 — Ensure the phone is visible in the very first frame at Kasun’s shoe before the dip; begin with a slight downward tilt if needed so WHAT WE SEE is honored."
+     ],
+     "revised": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+     ]
+    },
+    "missing": [],
+    "planner": "model",
+    "on_screen": [
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f",
+     "4fc68836-b389-4c0b-9127-77a236c10571"
+    ],
+    "rationale": "A locked-off 28mm at f/5.6 keeps bag, hand and road surface readable so the drop is unmistakable. Soft dawn ambience with a touch of warm spill preserves a natural, everyday feel.",
+    "designed_at": "2026-11-15T18:09:27.567103+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "28mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Wide shot",
+     "aperture": "f/5.6",
+     "lighting": "Dawn, soft ambient",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "Anudi passes the three-wheeler, attempts to stow her phone and unknowingly drops it while continuing right.",
+    "purpose": "Keeping bag, hand and road surface in one frame makes the unnoticed loss legible without manufactured suspense.",
+    "made_for": "",
+    "on_screen": [
+     "4fc68836-b389-4c0b-9127-77a236c10571",
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "Anudi continues an even rightward walking pace with the phone still in her right hand; Kasun remains beside the vehicle.; Anudi guides the smartphone toward the handbag side pocket with her right hand while walking right, holding the umbrella steady in her left hand.; The smartphone slips from Anudi's right hand, falls beside the three-wheeler onto the roadside and comes to rest; she continues rightward with her right hand empty.; The phone remains on the roadside as Anudi continues toward the right edge; Kasun stays beside the vehicle.",
+    "voice_source": "",
+    "emotional_beat": "Ordinary distraction gives the audience a small jolt of awareness."
+   },
+   "card": {
+    "size": "WS",
+    "lines": [],
+    "sound": {
+     "music": "None.",
+     "effects": "One small handset impact, restrained and added in post.",
+     "silence": true,
+     "ambience": "Very low light rain and distant Colombo road texture, added in post."
+    },
+    "use_s": 6,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 6
+   },
+   "planner": "raphael",
+   "role": "master",
+   "priority": "must",
+   "slate": "3A-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 2.0,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {}
+  },
+  {
+   "id": "6a660c2a-c8ea-4412-87a7-2d82762bb6b0",
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "scene_id": "bd5a6483-0eef-4a66-afac-b60556478618",
+   "number": 2,
+   "title": "Keeping bag, hand and road surface in one (2)",
+   "framing": "WIDE",
+   "duration_s": 6,
+   "start_s": 6,
+   "sound_mode": "silent",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "director_line": ""
+    }
+   ],
+   "block_start": 1,
+   "block_end": 2,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Street ambience at curb height: tire hiss on wet road, soft engine idle, distant voices under umbrellas, light drip into the drain.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "She walks right and guides the handset toward the bag pocket.",
+      "camera": "Wide low, focus on Anudi’s right hand and the curb landing zone at frame left; unchanged.",
+      "performance": "She keeps her posture relaxed, wrist searching the pocket opening while eyes stay forward beneath the umbrella brim.",
+      "director_line": "A grounded curb-level view ties hand to landing zone with the wheel and drain as anchors."
+     },
+     {
+      "time": "3-6s",
+      "action": "The phone slips and falls onto the roadside by the curb, comes to rest adjacent to the three-wheeler’s rear wheel and drain; she continues right without looking back.",
+      "camera": "Unchanged; hold the curb area so the slip and settle read cleanly while she exits toward frame right.",
+      "performance": "No change in stride; her empty right hand swings naturally as she passes out of the top of frame right.",
+      "director_line": "The handset drops and rests in the landmarked patch, left in frame as she moves away."
+     }
+    ],
+    "setting": "Same roadside, curb edge foreground with the three-wheeler’s rear wheel and open drain visible at frame left; shopfronts recede to the right.",
+    "lighting": "Soft sky key from camera-left; low contrast with specular kicks on wet asphalt; a mild warm edge from shop practicals touches the wheel housing.",
+    "subjects": [
+     {
+      "id": "C02",
+      "action": "The phone slips from her grasp, drops by the curb near the three-wheeler’s rear wheel and open drain, and she continues right without noticing.",
+      "position": "",
+      "description": "Anudi under her umbrella, right hand guiding the phone toward her handbag pocket as she walks right across the frame."
+     }
+    ],
+    "first_frame": {
+     "setting": "Wet curbside with open concrete drain and a parked three-wheeler just off camera left edge.",
+     "lighting": "Soft overcast daylight; a faint warm rim from shop practicals grazes the wheel arch.",
+     "subjects": [
+      "Anudi at the right third, umbrella low, right hand drawing the phone toward the bag pocket."
+     ],
+     "composition": "Vertical 9:16, low curb-height wide: three-wheeler rear wheel and open drain lock the left edge; clear negative space at the landing patch; Anudi approaching into the right half."
+    },
+    "cinematography": {
+     "angle": "low angle at curb height, canted slightly up to include Anudi’s hand and the landing area",
+     "camera": "locked-off low sticks, 35mm, f/5.6",
+     "framing": "Wide shot from curb height; Anudi passes at frame right mid-ground; left edge holds the three-wheeler’s rear wheel and the open curb drain as fixed landmarks.",
+     "movement": "locked-off on sticks",
+     "color_tone": "clean, natural daylight with gentle warmth near practicals",
+     "white_balance": "5600K soft daylight with a touch of 3200K spill on left edge",
+     "depth_of_field": "Deep, landing spot and Anudi’s hand both sharp",
+     "lens_artifacts": "none"
+    }
+   },
+   "status": "prompt",
+   "version": 1,
+   "created_at": "2026-11-15T18:04:23.142544+00:00",
+   "updated_at": "2026-11-16T18:43:04.710916+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "4fc68836-b389-4c0b-9127-77a236c10571": 2,
+      "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+     },
+     "looks": {},
+     "script_hash": "7a34f3112c95dac7",
+     "shot_version": 1
+    },
+    "intent": "ddca3e85b161",
+    "job_id": "57b2f970-d201-42f4-b749-4099cd1cf84b",
+    "review": {
+     "notes": [
+      "S04 — Distinguish the move from S03: start in a clear leading 3/4 front (camera ahead, backing right) to keep his face open, rather than another lateral follow. Keep screen direction rightward.",
+      "S02 — Lock the drop geography to S03’s pickup: include a consistent ground landmark (e.g., the three‑wheeler wheel or the open drain) on the left so the phone’s landing spot reads as the same place.",
+      "S03 — Ensure the phone is visible in the very first frame at Kasun’s shoe before the dip; begin with a slight downward tilt if needed so WHAT WE SEE is honored."
+     ],
+     "revised": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+     ]
+    },
+    "missing": [],
+    "planner": "model",
+    "on_screen": [
+     "4fc68836-b389-4c0b-9127-77a236c10571"
+    ],
+    "rationale": "A low curb-height 35mm anchors the drop to fixed landmarks so S03’s pickup matches perfectly. Deep focus ensures the small object stays legible against a busy street.",
+    "designed_at": "2026-11-15T18:09:27.568119+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "35mm",
+     "angle": "Low angle",
+     "speed": "None",
+     "framing": "Wide shot",
+     "aperture": "f/5.6",
+     "lighting": "Dawn, soft ambient",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "model",
+    "purpose": "Inciting incident: the phone drops unnoticed, setting up the encounter.",
+    "made_for": "v1:7a34f3112c95dac7",
+    "on_screen": [
+     "4fc68836-b389-4c0b-9127-77a236c10571"
+    ],
+    "heard_only": [],
+    "written_at": "2026-11-15T18:05:04.169932+00:00",
+    "split_after": null,
+    "what_we_see": "Anudi walks along the roadside at frame right under her umbrella, guiding her smartphone toward her bag. It slips from her hand and drops to the road surface by the curb, coming to rest. She continues walking to the right without looking back, leaving the phone behind in frame.",
+    "split_reason": "",
+    "voice_source": "",
+    "emotional_beat": "casual flow to unnoticed loss"
+   },
+   "card": {},
+   "planner": "classic",
+   "role": "",
+   "priority": "",
+   "slate": "",
+   "handle_in_s": 0.0,
+   "handle_out_s": 0.0,
+   "stage": 0,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {}
+  },
+  {
+   "id": "ce7534de-2510-47ac-bdd1-690529f18922",
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "scene_id": "bd5a6483-0eef-4a66-afac-b60556478618",
+   "number": 3,
+   "title": "An unbroken view of the phone, pickup and",
+   "framing": "MS",
+   "duration_s": 6,
+   "start_s": 12,
+   "sound_mode": "silent",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "director_line": ""
+    }
+   ],
+   "block_start": 2,
+   "block_end": 3,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Street bed with a closer rustle of apron fabric, quick footfalls starting, and the low idle of the three-wheeler behind.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Kasun bends from beside the three-wheeler, lifts the phone with his right hand and comes upright.",
+      "camera": "Medium with initial tilt down to the handset at Kasun’s shoe, then tilt up to his torso as he rises; settle center-left on Kasun.",
+      "performance": "His eyes cut down to the handset; he dips smoothly, closes his grip, then comes up with shoulders set to move.",
+      "director_line": "One unbroken move announces the phone, the pickup and his rise without flourish."
+     },
+     {
+      "time": "3-6s",
+      "action": "He turns into rightward running steps, the phone secure in his right hand.",
+      "camera": "From the tilt-up settle, ease into a gentle handheld follow right, keeping a medium on Kasun as he starts running.",
+      "performance": "He leans into the run, right arm tucked with the phone and left arm pumping, gaze fixed ahead.",
+      "director_line": "The camera gives him space to launch, letting practical urgency read in a clean frame."
+     }
+    ],
+    "setting": "Beside the three-wheeler at the vending bay; wet pavement and curb drain at Kasun’s feet.",
+    "lighting": "Soft overhead daylight is the key with a gentle warm edge from shop practicals; low contrast maintains face detail and keeps the phone readable on the ground.",
+    "subjects": [
+     {
+      "id": "C01",
+      "action": "He spots the phone, bends, picks it up with his right hand, rises and breaks into rightward running steps holding it securely.",
+      "position": "",
+      "description": "Kasun in teal shirt and apron at the three-wheeler’s side; the phone lies at his right shoe in the opening frame."
+     }
+    ],
+    "first_frame": {
+     "setting": "Pavement edge beside the three-wheeler with the open curb drain running along the bottom of frame.",
+     "lighting": "Soft daylight with a mild warm kiss from the shopfront grazing the left side.",
+     "subjects": [
+      "The phone is clearly visible at Kasun’s shoe; Kasun stands above it, ready to dip."
+     ],
+     "composition": "Vertical 9:16 medium framing angled slightly down: Kasun’s right shoe at lower center with the phone resting by the curb line; three-wheeler bodywork edges frame left."
+    },
+    "cinematography": {
+     "angle": "eye level with an initial slight downward tilt to include Kasun’s shoe and the phone",
+     "camera": "handheld, 50mm, f/4",
+     "framing": "Medium on Kasun from mid-thigh up, opening to show the phone at his shoe in the same frame before rising to hold his torso as he runs right.",
+     "movement": "handheld pivot: start with a slight tilt down to the phone at his shoe, tilt up as he lifts it, then ease into a gentle rightward follow for his first steps",
+     "color_tone": "naturalistic, slightly desaturated with warm accents",
+     "white_balance": "5600K soft daylight with mild 3200K edge from shopfront",
+     "depth_of_field": "Medium, enough depth to keep Kasun and the handset sharp on pickup",
+     "lens_artifacts": "none"
+    }
+   },
+   "status": "draft",
+   "version": 2,
+   "created_at": "2026-11-15T10:40:35.40877+00:00",
+   "updated_at": "2026-11-15T18:09:30.454347+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+      "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+     },
+     "looks": {},
+     "script_hash": "1433eefad44e80ac",
+     "shot_version": 2
+    },
+    "intent": "13fc55e09c54",
+    "job_id": "57b2f970-d201-42f4-b749-4099cd1cf84b",
+    "review": {
+     "notes": [
+      "S04 — Distinguish the move from S03: start in a clear leading 3/4 front (camera ahead, backing right) to keep his face open, rather than another lateral follow. Keep screen direction rightward.",
+      "S02 — Lock the drop geography to S03’s pickup: include a consistent ground landmark (e.g., the three‑wheeler wheel or the open drain) on the left so the phone’s landing spot reads as the same place.",
+      "S03 — Ensure the phone is visible in the very first frame at Kasun’s shoe before the dip; begin with a slight downward tilt if needed so WHAT WE SEE is honored."
+     ],
+     "revised": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+     ]
+    },
+    "missing": [],
+    "planner": "model",
+    "on_screen": [
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+    ],
+    "rationale": "A handheld 50mm allows a single organic tilt from phone to face and a small follow into the first steps, keeping the object and action clear. Medium depth keeps both phone and Kasun sharp.",
+    "designed_at": "2026-11-15T18:09:27.568119+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "50mm",
+     "angle": "Eye level",
+     "speed": "Slow",
+     "framing": "Medium shot",
+     "aperture": "f/4",
+     "lighting": "Dawn, soft ambient",
+     "movement": "Handheld"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "Kasun spots the handset, picks it up with his right hand and begins following Anudi.",
+    "purpose": "An unbroken view of the phone, pickup and first running steps establishes practical helpfulness without an action flourish.",
+    "made_for": "",
+    "on_screen": [
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "Kasun remains beside the three-wheeler with the phone stationary on the roadside ahead.; Kasun bends, lifts the phone from the roadside with his right hand, rises and launches into rightward running steps.; Kasun continues rightward with the phone secure in his right hand.",
+    "voice_source": "",
+    "emotional_beat": "Swift, unshowy helpfulness."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [],
+    "sound": {
+     "music": "None.",
+     "effects": "Light footsteps and fabric movement, added in post.",
+     "silence": true,
+     "ambience": "Very low light rain and distant road texture, added in post."
+    },
+    "use_s": 4,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 4
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "3B-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 1.5,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {}
+  },
+  {
+   "id": "fb8c5c21-6cf8-4003-84c1-8dfe3292f748",
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "scene_id": "bd5a6483-0eef-4a66-afac-b60556478618",
+   "number": 4,
+   "title": "Travelling with Kasun keeps his practical urgency readable",
+   "framing": "MS",
+   "duration_s": 8,
+   "start_s": 18,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "director_line": ""
+    },
+    {
+     "end_s": 8,
+     "action": "",
+     "camera": "",
+     "start_s": 6,
+     "director_line": ""
+    }
+   ],
+   "block_start": 3,
+   "block_end": 4,
+   "word_target": 17,
+   "words": 5,
+   "ir": {
+    "audio": "Footfalls and breath close to mic, steady street bed, occasional distant horn; soft slap of sandal on wet pavement.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Kasun runs rightward holding the phone in his right hand.",
+      "camera": "Medium leading 3/4 front; steadicam backing right keeps him centered as he runs; unchanged.",
+      "performance": "He breathes steadily, eyes locked ahead, arm rhythm controlled to keep the handset visible.",
+      "director_line": "A clean leading view tracks his intent and keeps his face readable."
+     },
+     {
+      "time": "3-6s",
+      "action": "He speaks while running, projecting forward.",
+      "camera": "Unchanged leading medium; hold framing to leave headroom for the on-camera call.",
+      "performance": "His mouth shapes the call, eyebrows lift and his gaze searches past camera while he keeps pace.",
+      "director_line": "The frame holds for his call without breaking stride."
+     },
+     {
+      "time": "6-8s",
+      "action": "He closes his lips and continues rightward with the phone still in his right hand.",
+      "camera": "Unchanged leading medium; maintain distance as he continues.",
+      "performance": "He settles his breath and reins in speed slightly, focus still set ahead.",
+      "director_line": "The energy tapers as the contact is made; we ride with him a beat longer."
+     }
+    ],
+    "setting": "Roadside walkway ahead of the vending bay, open space to frame right for Kasun to move into.",
+    "lighting": "Soft sky key from high camera-left keeps features open; minimal contrast with faint warm edge from shop practicals; wet ground bounces fill under chin.",
+    "subjects": [
+     {
+      "id": "C01",
+      "action": "He maintains a practical running pace, calls out mid-shot, then closes his lips while continuing rightward.",
+      "position": "",
+      "description": "Kasun runs toward camera’s backing move, phone in his right hand held forward of his hip."
+     }
+    ],
+    "first_frame": {
+     "setting": "Open stretch of the roadside walkway with soft morning bustle abstracting behind.",
+     "lighting": "Even soft daylight on his face with a mild warm edge from shop spill on camera-left.",
+     "subjects": [
+      "Kasun already in motion, eyes forward, right hand carrying the phone in-shot."
+     ],
+     "composition": "Vertical 9:16 medium, camera ahead of Kasun backing right: his torso fills center, 3/4 front to lens; phone visible at lower right of frame."
+    },
+    "cinematography": {
+     "angle": "eye level, leading 3/4 front so his face stays open to camera",
+     "camera": "steadicam, 35mm, f/2.8",
+     "framing": "Medium on Kasun, chest-up with the phone visible in his right hand near frame edge, background flowing behind him.",
+     "movement": "leading steadicam, backing right to maintain a 3/4 front on Kasun as he runs, keeping screen direction rightward",
+     "color_tone": "naturalistic with a gentle warm lift on skin tones",
+     "white_balance": "5600K soft daylight with slight 3200K edge from nearby shopfronts",
+     "depth_of_field": "Medium, face and phone crisp with softened background flow",
+     "lens_artifacts": "none"
+    }
+   },
+   "status": "draft",
+   "version": 2,
+   "created_at": "2026-11-15T10:40:35.40877+00:00",
+   "updated_at": "2026-11-15T18:09:30.609833+00:00",
+   "duration_locked": true,
+   "design": {
+    "pins": {
+     "canon": {
+      "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+      "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+     },
+     "looks": {},
+     "script_hash": "227b586e0fc7c908",
+     "shot_version": 2
+    },
+    "intent": "1963e4ac9e76",
+    "job_id": "57b2f970-d201-42f4-b749-4099cd1cf84b",
+    "review": {
+     "notes": [
+      "S04 — Distinguish the move from S03: start in a clear leading 3/4 front (camera ahead, backing right) to keep his face open, rather than another lateral follow. Keep screen direction rightward.",
+      "S02 — Lock the drop geography to S03’s pickup: include a consistent ground landmark (e.g., the three‑wheeler wheel or the open drain) on the left so the phone’s landing spot reads as the same place.",
+      "S03 — Ensure the phone is visible in the very first frame at Kasun’s shoe before the dip; begin with a slight downward tilt if needed so WHAT WE SEE is honored."
+     ],
+     "revised": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+     ]
+    },
+    "missing": [],
+    "planner": "model",
+    "on_screen": [
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+    ],
+    "rationale": "A leading 3/4 front move keeps Kasun’s face open for the on-camera line while preserving rightward direction. A 35mm at f/2.8 separates him gently from the background without losing context.",
+    "designed_at": "2026-11-15T18:09:27.568119+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "35mm",
+     "angle": "Eye level",
+     "speed": "Medium",
+     "framing": "Medium shot",
+     "aperture": "f/2.8",
+     "lighting": "Dawn, soft ambient",
+     "movement": "Dolly out"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "Kasun projects L3 toward Anudi while following her, the retrieved phone visible in his right hand.",
+    "purpose": "Travelling with Kasun keeps his practical urgency readable while allowing the entire projected line to remain on his face.",
+    "made_for": "",
+    "on_screen": [
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "Kasun continues rightward at a practical running pace with the phone in his right hand.; Kasun's lips move to L3 while he continues rightward holding the phone in his right hand.; Kasun closes his lips and continues rightward with the phone still in his right hand.",
+    "voice_source": "",
+    "emotional_beat": "An everyday interruption opens contact."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [
+     {
+      "line_id": "L3",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None.",
+     "effects": "Restrained running footsteps.",
+     "silence": false,
+     "ambience": "Very low light rain and distant road texture."
+    },
+    "use_s": 4,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 4
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "3C-1",
+   "handle_in_s": 0.8,
+   "handle_out_s": 0.9,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {}
+  },
+  {
+   "id": "6554f112-5dcb-4f6c-a64d-d7328bb6e551",
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "scene_id": "bd5a6483-0eef-4a66-afac-b60556478618",
+   "number": 5,
+   "title": "A shared still frame turns pursuit into a",
+   "framing": "TWO",
+   "duration_s": 6,
+   "start_s": 26,
+   "sound_mode": "silent",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "director_line": ""
+    }
+   ],
+   "block_start": 4,
+   "block_end": 5,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Ambient street bed: soft traffic wash, distant horn, light drip from awning; cloth rustle as they come to stillness.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Anudi turns left and stops; Kasun approaches from the left with the phone in his right hand.",
+      "camera": "Two-shot medium, focus favors Anudi’s eyes as she turns while keeping Kasun’s approach and the phone visible; unchanged.",
+      "performance": "She pivots under the umbrella, eyes find him and hold; he shortens his stride as his arm comes forward with the phone.",
+      "director_line": "Motion resolves into a shared still frame as she turns to meet the approach."
+     },
+     {
+      "time": "3-6s",
+      "action": "Kasun holds the phone out without transferring it; Anudi stands facing him with her right hand still empty.",
+      "camera": "Unchanged two-shot; slight focus bias shifts to the phone and hands while keeping both faces readable.",
+      "performance": "Her eyes drop briefly to the phone then lift to his face with a small appreciative softening; he keeps his hand extended, posture open, respectful distance maintained.",
+      "director_line": "The offered space between them is held, the object suspended in view."
+     }
+    ],
+    "setting": "Roadside walkway ahead, modest shopfronts; open space between Kasun and Anudi under her umbrella.",
+    "lighting": "Soft overhead daylight keys both faces evenly; a faint warm edge from shop practicals adds separation; wet pavement bounce fills shadows.",
+    "subjects": [
+     {
+      "id": "C02",
+      "action": "She hears him, turns left and stops, facing Kasun across a small gap.",
+      "position": "",
+      "description": "Anudi under her umbrella at frame right, handbag strap on right shoulder, right hand empty."
+     },
+     {
+      "id": "C01",
+      "action": "He eases pace, closes the distance and extends the phone, holding it short of her hand so the offer remains visible and unfinished.",
+      "position": "",
+      "description": "Kasun enters from frame left, phone in his right hand."
+     }
+    ],
+    "first_frame": {
+     "setting": "Same wet sidewalk with shopfront textures and curb line implied at lower edge.",
+     "lighting": "Even soft daylight; a faint warm edge rim from shopfronts along frame left.",
+     "subjects": [
+      "Anudi faces right under the umbrella, neutral, unaware for a beat.",
+      "Kasun steps in from frame left, phone visible in his right hand held forward."
+     ],
+     "composition": "Vertical 9:16 medium two-shot: Anudi at right profile facing away; Kasun already entering from left mid-ground; clear negative space between their positions."
+    },
+    "cinematography": {
+     "angle": "eye level on the sidewalk, squared to the action line",
+     "camera": "locked-off sticks, 50mm, f/2.8",
+     "framing": "Two-shot medium in vertical: Anudi at frame right turning to face left; Kasun approaches from frame left; a deliberate gap remains between his extended hand with the phone and her receiving space.",
+     "movement": "locked-off on sticks",
+     "color_tone": "naturalistic with a gentle warm lift to skin tones",
+     "white_balance": "5600K soft daylight with warm 3200K shop spill at frame edges",
+     "depth_of_field": "Medium, both faces and the offered phone in clear focus with softened background signage",
+     "lens_artifacts": "none"
+    }
+   },
+   "status": "draft",
+   "version": 2,
+   "created_at": "2026-11-15T10:40:35.40877+00:00",
+   "updated_at": "2026-11-15T18:09:30.77428+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+      "4fc68836-b389-4c0b-9127-77a236c10571": 2,
+      "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+     },
+     "looks": {},
+     "script_hash": "35e6321f8ce2a898",
+     "shot_version": 2
+    },
+    "intent": "b6d35488b1a4",
+    "job_id": "57b2f970-d201-42f4-b749-4099cd1cf84b",
+    "review": {
+     "notes": [
+      "S04 — Distinguish the move from S03: start in a clear leading 3/4 front (camera ahead, backing right) to keep his face open, rather than another lateral follow. Keep screen direction rightward.",
+      "S02 — Lock the drop geography to S03’s pickup: include a consistent ground landmark (e.g., the three‑wheeler wheel or the open drain) on the left so the phone’s landing spot reads as the same place.",
+      "S03 — Ensure the phone is visible in the very first frame at Kasun’s shoe before the dip; begin with a slight downward tilt if needed so WHAT WE SEE is honored."
+     ],
+     "revised": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05"
+     ]
+    },
+    "missing": [],
+    "planner": "model",
+    "on_screen": [
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f",
+     "4fc68836-b389-4c0b-9127-77a236c10571"
+    ],
+    "rationale": "A locked-off two-shot preserves the offered gap motif and lets the recognition land without distraction. A 50mm at f/2.8 keeps both faces and the small phone legible in a clean, shared frame.",
+    "designed_at": "2026-11-15T18:09:27.568119+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "50mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Two-shot",
+     "aperture": "f/2.8",
+     "lighting": "Dawn, soft ambient",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "Anudi turns left and stops; Kasun closes the remaining distance and extends the phone without transferring it.",
+    "purpose": "A shared still frame turns pursuit into a first encounter and lets the unaccepted offer remain visibly unfinished.",
+    "made_for": "",
+    "on_screen": [
+     "4fc68836-b389-4c0b-9127-77a236c10571",
+     "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "Anudi faces right under the umbrella while Kasun continues approaching from the left with the phone in his right hand.; Anudi turns left and stops; Kasun closes the remaining distance, eases his pace and extends the phone in his right hand, leaving a clear gap between them.; Anudi stands facing left with her umbrella in her left hand and right hand empty; Kasun holds the phone extended from frame left without transferring it.",
+    "voice_source": "",
+    "emotional_beat": "Recognition and a restrained first warmth."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [],
+    "sound": {
+     "music": "None.",
+     "effects": "Approaching footsteps easing away, added in post.",
+     "silence": true,
+     "ambience": "Very low light rain and distant road texture, added in post."
+    },
+    "use_s": 4,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 4
+   },
+   "planner": "raphael",
+   "role": "two_shot",
+   "priority": "must",
+   "slate": "3D-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 1.5,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {}
+  }
+ ],
+ "boards": [
+  {
+   "id": "653479ad-d637-4944-a519-59f30a90d23f",
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "scene_id": "bd5a6483-0eef-4a66-afac-b60556478618",
+   "version": 5,
+   "part": 1,
+   "parts": 1,
+   "status": "done",
+   "job_id": "c70ec5ed-120f-48fe-bb85-0d4a1d4c104f",
+   "quality": "low",
+   "storage_path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/653479ad-d637-4944-a519-59f30a90d23f/board.png",
+   "sheet_path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/653479ad-d637-4944-a519-59f30a90d23f/sheet.png",
+   "writer": {
+    "world": "One image contains five equal portrait 9:16 panels, ordered left to right across the top row, then left to right across the bottom row; the bottom-right grid space stays blank. Use narrow plain gutters without text or symbols. Kasun is a smooth, featureless red artist's mannequin of medium height and lean build; Anudi is a smooth, featureless blue mannequin of average height and slender build. Props and surroundings are painted realistically. Fine drizzle, rain-wet asphalt and concrete, soft overcast morning light and faint amber shop illumination share one naturalistic, slightly desaturated grade. Anudi holds an open navy umbrella in her left hand and carries a structured tan handbag on her right shoulder, with brass-coloured fittings and an open exterior pocket. The orange smartphone has a transparent case and three prominent rear camera circles. The parked three-wheeler has muted dark-green bodywork, a black canopy and a dull metal rear wheel. Nothing bears readable lettering.",
+    "panels": [
+     {
+      "shot": 1,
+      "zone": "Vending bay, road-side pavement edge",
+      "camera": "Standing eye height on the road side, looking across the route toward the vending bay; locked 28mm wide composition with full figures and deep focus.",
+      "people": [
+       {
+        "name": "Kasun",
+        "state": "standing still"
+       },
+       {
+        "name": "Anudi",
+        "state": ""
+       }
+      ],
+      "picture": "Kasun's red mannequin stands beside the three-wheeler on the left third, chest and head directed screen right in profile, with both hands resting low beside the body. Anudi's blue mannequin is mid-step just left of center, travelling across frame toward screen right with chest and head facing along the pavement. Her left hand grips the umbrella shaft, while her right hand holds the orange phone immediately outside the handbag pocket on her right side; the road beneath the pocket is unobstructed.",
+      "background": "The three-wheeler and blue shop awning occupy frame left. The modest concrete frontage sits behind center, the weathered boundary wall continues toward frame right, and the kerb drain crosses the lower frame."
+     },
+     {
+      "shot": 2,
+      "zone": "Vending bay, kerb-height landing-patch view",
+      "camera": "Kerb-height camera on the same road side of the axis, looking slightly upward across the landing patch; locked 35mm wide composition with deep focus.",
+      "people": [
+       {
+        "name": "Anudi",
+        "state": ""
+       }
+      ],
+      "picture": "Anudi's blue mannequin occupies the right third in a rightward walking stride, chest and head directed screen right rather than into depth. Her left hand holds the umbrella shaft low, and her right hand still holds the orange phone at the open exterior pocket of the handbag on her right shoulder. The empty wet landing patch is clearly visible below and just behind her right hand, beside the rear wheel at frame left; Kasun is outside the crop.",
+      "background": "The three-wheeler's rear wheel and open drain anchor frame left. Wet pavement fills the foreground, with the concrete frontage above center and the boundary wall and receding shutters toward frame right."
+     },
+     {
+      "shot": 3,
+      "zone": "Vending bay, beside the three-wheeler's rear wheel",
+      "camera": "Standing-height camera on the road side, angled down with a 50mm lens at f/4; medium pickup-detail framing from Kasun's lower chest to the pavement keeps his hand, foot and phone together.",
+      "people": [
+       {
+        "name": "Kasun",
+        "state": "standing still"
+       }
+      ],
+      "picture": "Kasun's red mannequin stands with its visible torso angled screen right and its right foot beside the orange phone lying back-up on the wet walking edge. Its right hand hangs open above the phone, while its left hand rests beside the opposite hip; the upper body is still upright within the crop. The phone's transparent case and three rear camera circles are clearly distinguishable beside the foot.",
+      "background": "Dark-green vehicle bodywork and the rear-wheel edge remain frame left. The open drain occupies lower left, wet concrete fills the lower background, and the base of the weathered boundary wall appears upper right."
+     },
+     {
+      "shot": 4,
+      "zone": "Walkway immediately ahead of the vending bay",
+      "camera": "Standing eye height, ahead and to Kasun's road-side right, looking diagonally back across his route; 35mm medium chest-up composition at f/2.8, preserving lateral rightward travel and a three-quarter view.",
+      "people": [
+       {
+        "name": "Kasun",
+        "state": "speaking while running"
+       }
+      ],
+      "picture": "Kasun's red mannequin is already in a rightward running pose, chest angled screen right and head directed farther along the pavement, past rather than toward the camera. His right elbow is bent with the orange phone upright and clearly visible at lower frame right, while his left arm is bent in a running counterpose. Leave space ahead of his upper body on frame right, with the distant blue awning retained at frame left.",
+      "background": "The blue awning recedes at far frame left, with a small dark-green edge of the three-wheeler beneath it. The weathered boundary wall now fills center and right, while a narrow strip of the same open drain remains lower left."
+     },
+     {
+      "shot": 5,
+      "zone": "Walkway ahead, beside the boundary wall",
+      "camera": "Standing eye height on the road side, square across the left-to-right action line; locked 50mm medium two-shot at f/2.8, wide enough to retain the umbrella and both hand positions.",
+      "people": [
+       {
+        "name": "Kasun",
+        "state": ""
+       },
+       {
+        "name": "Anudi",
+        "state": ""
+       }
+      ],
+      "picture": "Anudi's blue mannequin stands at frame right with chest and head still facing screen right, her left hand gripping the open umbrella and her empty right hand hanging beside the handbag. Kasun's red mannequin enters from frame left in a shortened rightward step, chest and head directed toward Anudi. His right hand carries the orange phone slightly forward at waist height, his left arm remains bent beside his body, and a clear gap separates him from Anudi.",
+      "background": "The blue awning is small at far frame left. The weathered pale boundary wall spans behind the gap between the figures, a recessed shutter appears at frame right, and the drain remains along the lower-left edge."
+     }
+    ],
+    "conflicts": [
+     "Shot 3 requests both a mid-thigh-up medium frame and the phone beside Kasun's foot in the opening picture. The panel prioritizes the foot-and-phone opening, using a downward lower-chest-to-ground detail composition.",
+     "The location description combines early-morning daylight with evening shop light. The board uses overcast morning daylight with amber shop practicals switched on.",
+     "The requested featureless mannequin treatment prevents visible articulation of Kasun's spoken line. His speaking state is retained in shot 4 metadata without drawn dialogue or facial detail."
+    ],
+    "geography": "The walking route runs across the image from left to right, with every camera remaining on the road side of that axis and looking toward the pavement and buildings. The three-wheeler occupies the left end of a compact vending bay beneath a blue awning; its rear wheel stands beside the open kerb drain and the phone's landing patch. Beyond the vehicle, the narrow concrete pavement continues right alongside a weathered pale boundary wall toward recessed shop shutters. Anudi passes the vehicle and continues right; Kasun starts beside it and follows her rightward. The blue awning remains on frame left as it recedes, while the same boundary wall becomes more prominent toward frame right. The drain follows the lower edge of this connected route."
+   },
+   "colours": {
+    "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": "red",
+    "4fc68836-b389-4c0b-9127-77a236c10571": "blue"
+   },
+   "cells": [
+    {
+     "box": [
+      0,
+      0,
+      345,
+      767
+     ],
+     "pin": "4e6c53437ad3ce38",
+     "kind": "painted",
+     "note": "",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/653479ad-d637-4944-a519-59f30a90d23f/cell_001.png",
+     "text": "",
+     "panel": 1,
+     "locked": false,
+     "number": 1,
+     "shot_id": "c14471f4-408a-450a-880e-0231b1482133"
+    },
+    {
+     "box": [
+      351,
+      0,
+      674,
+      767
+     ],
+     "pin": "5846da17f5979bbc",
+     "kind": "painted",
+     "note": "",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/653479ad-d637-4944-a519-59f30a90d23f/cell_002.png",
+     "text": "",
+     "panel": 2,
+     "locked": false,
+     "number": 2,
+     "shot_id": "6a660c2a-c8ea-4412-87a7-2d82762bb6b0"
+    },
+    {
+     "box": [
+      680,
+      0,
+      1024,
+      767
+     ],
+     "pin": "9d792aca5d26606d",
+     "kind": "painted",
+     "note": "",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/653479ad-d637-4944-a519-59f30a90d23f/cell_003.png",
+     "text": "",
+     "panel": 3,
+     "locked": false,
+     "number": 3,
+     "shot_id": "ce7534de-2510-47ac-bdd1-690529f18922"
+    },
+    {
+     "box": [
+      0,
+      773,
+      345,
+      1536
+     ],
+     "pin": "a170ccd7489e1e97",
+     "kind": "painted",
+     "note": "",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/653479ad-d637-4944-a519-59f30a90d23f/cell_004.png",
+     "text": "",
+     "panel": 4,
+     "locked": false,
+     "number": 4,
+     "shot_id": "fb8c5c21-6cf8-4003-84c1-8dfe3292f748"
+    },
+    {
+     "box": [
+      351,
+      773,
+      674,
+      1536
+     ],
+     "pin": "ecd1cec4b2b69510",
+     "kind": "painted",
+     "note": "",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/653479ad-d637-4944-a519-59f30a90d23f/cell_005.png",
+     "text": "",
+     "panel": 5,
+     "locked": false,
+     "number": 5,
+     "shot_id": "6554f112-5dcb-4f6c-a64d-d7328bb6e551"
+    }
+   ],
+   "prompt": "A cinematic storyboard sheet for a Sri Lankan television drama: 5 photorealistic film stills of ONE scene, laid out in a grid 3 panels across and 2 down, read left to right, then top to bottom. Every panel is a tall portrait 9:16 still of the same size, separated by thin, even, plain white gutters. All panels are the same moment's world, painted together: the same people, props, weather, light and colour grade in every panel.\n\nReference images, in order: image 1 is the location plate for Colombo roadside; image 2 is the reference sheet for phone. Take from image 1: the kind of place: its ground, water, plants, structures and materials. It is ONE view of the place; each panel has its own camera position, so do not repeat this view in every panel; image 2: phone exactly as shown.\n\nPeople (every panel): every person is a smooth, matte, faceless artist's mannequin in one solid colour, with jointed limbs and simple hands: Kasun is the red mannequin; Anudi is the blue mannequin. A small raised ridge on the front of the head, where a nose would be, shows which way the head faces. Each mannequin has the person's real height and build and sits, stands and holds things exactly as a real person would. No faces, no hair, no clothes, no skin: only the mannequin colour. Everything else (the place, the props, the light, the weather) is a real, photorealistic film still.\n\nWorld (every panel): One image contains five equal portrait 9:16 panels, ordered left to right across the top row, then left to right across the bottom row; the bottom-right grid space stays blank. Use narrow plain gutters without text or symbols. Kasun is a smooth, featureless red artist's mannequin of medium height and lean build; Anudi is a smooth, featureless blue mannequin of average height and slender build. Props and surroundings are painted realistically. Fine drizzle, rain-wet asphalt and concrete, soft overcast morning light and faint amber shop illumination share one naturalistic, slightly desaturated grade. Anudi holds an open navy umbrella in her left hand and carries a structured tan handbag on her right shoulder, with brass-coloured fittings and an open exterior pocket. The orange smartphone has a transparent case and three prominent rear camera circles. The parked three-wheeler has muted dark-green bodywork, a black canopy and a dull metal rear wheel. Nothing bears readable lettering.\n\nGeography: The walking route runs across the image from left to right, with every camera remaining on the road side of that axis and looking toward the pavement and buildings. The three-wheeler occupies the left end of a compact vending bay beneath a blue awning; its rear wheel stands beside the open kerb drain and the phone's landing patch. Beyond the vehicle, the narrow concrete pavement continues right alongside a weathered pale boundary wall toward recessed shop shutters. Anudi passes the vehicle and continues right; Kasun starts beside it and follows her rightward. The blue awning remains on frame left as it recedes, while the same boundary wall becomes more prominent toward frame right. The drain follows the lower edge of this connected route.\n\nPANEL 1 (row 1, column 1) — Standing eye height on the road side, looking across the route toward the vending bay; locked 28mm wide composition with full figures and deep focus. Background: The three-wheeler and blue shop awning occupy frame left. The modest concrete frontage sits behind center, the weathered boundary wall continues toward frame right, and the kerb drain crosses the lower frame. Kasun's red mannequin stands beside the three-wheeler on the left third, chest and head directed screen right in profile, with both hands resting low beside the body. Anudi's blue mannequin is mid-step just left of center, travelling across frame toward screen right with chest and head facing along the pavement. Her left hand grips the umbrella shaft, while her right hand holds the orange phone immediately outside the handbag pocket on her right side; the road beneath the pocket is unobstructed.\nPANEL 2 (row 1, column 2) — Kerb-height camera on the same road side of the axis, looking slightly upward across the landing patch; locked 35mm wide composition with deep focus. Background: The three-wheeler's rear wheel and open drain anchor frame left. Wet pavement fills the foreground, with the concrete frontage above center and the boundary wall and receding shutters toward frame right. Anudi's blue mannequin occupies the right third in a rightward walking stride, chest and head directed screen right rather than into depth. Her left hand holds the umbrella shaft low, and her right hand still holds the orange phone at the open exterior pocket of the handbag on her right shoulder. The empty wet landing patch is clearly visible below and just behind her right hand, beside the rear wheel at frame left; Kasun is outside the crop.\nPANEL 3 (row 1, column 3) — Standing-height camera on the road side, angled down with a 50mm lens at f/4; medium pickup-detail framing from Kasun's lower chest to the pavement keeps his hand, foot and phone together. Background: Dark-green vehicle bodywork and the rear-wheel edge remain frame left. The open drain occupies lower left, wet concrete fills the lower background, and the base of the weathered boundary wall appears upper right. Kasun's red mannequin stands with its visible torso angled screen right and its right foot beside the orange phone lying back-up on the wet walking edge. Its right hand hangs open above the phone, while its left hand rests beside the opposite hip; the upper body is still upright within the crop. The phone's transparent case and three rear camera circles are clearly distinguishable beside the foot.\nPANEL 4 (row 2, column 1) — Standing eye height, ahead and to Kasun's road-side right, looking diagonally back across his route; 35mm medium chest-up composition at f/2.8, preserving lateral rightward travel and a three-quarter view. Background: The blue awning recedes at far frame left, with a small dark-green edge of the three-wheeler beneath it. The weathered boundary wall now fills center and right, while a narrow strip of the same open drain remains lower left. Kasun's red mannequin is already in a rightward running pose, chest angled screen right and head directed farther along the pavement, past rather than toward the camera. His right elbow is bent with the orange phone upright and clearly visible at lower frame right, while his left arm is bent in a running counterpose. Leave space ahead of his upper body on frame right, with the distant blue awning retained at frame left.\nPANEL 5 (row 2, column 2) — Standing eye height on the road side, square across the left-to-right action line; locked 50mm medium two-shot at f/2.8, wide enough to retain the umbrella and both hand positions. Background: The blue awning is small at far frame left. The weathered pale boundary wall spans behind the gap between the figures, a recessed shutter appears at frame right, and the drain remains along the lower-left edge. Anudi's blue mannequin stands at frame right with chest and head still facing screen right, her left hand gripping the open umbrella and her empty right hand hanging beside the handbag. Kasun's red mannequin enters from frame left in a shortened rightward step, chest and head directed toward Anudi. His right hand carries the orange phone slightly forward at waist height, his left arm remains bent beside his body, and a clear gap separates him from Anudi.\n\nBodies (every panel): each person sits or stands the way a real person does the task in front of them, never posed for the camera. The body faces the task and only the head turns: someone at a steering wheel sits squarely behind it, the wheel centred in front of the chest, back against the seat, both hands on the rim; someone at a desk sits square to it; someone at a stove faces the stove. A camera beside a person sees the body side-on, not the chest. Nobody looks into or faces the lens unless the panel says so. Head and eyes turn together: the eyes never roll hard to one side while the face points at the camera; a near-frontal face looks just past the lens.\n\nDraw NO text of any kind: no panel numbers, no captions, no titles, no timestamps, no arrows, no labels, no borders other than the gutters. The people, place and everyday details are Sri Lankan.",
+   "checks": [],
+   "error": null,
+   "approved_at": "2026-11-16T18:40:17.091928+00:00",
+   "approved_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "created_at": "2026-11-16T18:37:46.661333+00:00",
+   "updated_at": "2026-11-16T18:40:17.03197+00:00"
+  }
+ ],
+ "lines": [
+  {
+   "id": "acbe8acb-29af-4442-bef7-894d2d1c499b",
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "scene_id": "bd5a6483-0eef-4a66-afac-b60556478618",
+   "ord": 0,
+   "speaker": "Kasun",
+   "character_id": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f",
+   "text": "\"මිස්! මිස්! ඔයාගේ ෆෝන් එක!\"",
+   "delivery": "",
+   "source_text": null,
+   "source_lang": null,
+   "words": 5,
+   "shot_id": "fb8c5c21-6cf8-4003-84c1-8dfe3292f748",
+   "beat_index": 0,
+   "start_s": 18.5,
+   "overrun_s": 0,
+   "created_at": "2026-11-15T10:34:52.120297+00:00",
+   "updated_at": "2026-11-15T18:04:23.307239+00:00"
+  }
+ ]
+}

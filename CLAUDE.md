@@ -281,8 +281,12 @@ One mannequin storyboard per scene, painted before any first frame (`docs/scene_
 live in the `hiru_ai` frame_render system (`board.py`, `faces.py`) and run there whatever `AI_ENGINE` says. Rules that must
 not drift: **an approved, current board is required for a first frame of a painted shot** (D3; black plates excepted);
 boards paint at LOW, MEDIUM as a setting, **never HIGH** (the person's image rule), face sheets and frames at MEDIUM; a
-board is **never repainted by itself** (out of date is reported); a locked panel is never repainted; each frame gets only
-its own panel (D8). Schema v25 is not applied; the paid phases 0 and 7 are the person's (`plan/2026-11-14/IMPLEMENTED.md`).
+board is **never repainted by itself** (out of date is reported; a person presses Update board); **an edited shot
+repaints only its own panel** (plan/2026-11-17: a changed or added shot's panel is painted ALONE with its neighbours
+attached, removed and moved shots only tidy the cells, cells and writer panels are renumbered together; no mask, the
+image model does not honour one); a locked panel is never repainted; each frame gets only its own panel (D8). Schema
+v25 is not applied; the paid phases 0 and 7 are the person's (`plan/2026-11-14/IMPLEMENTED.md`), and plan/2026-11-17
+phase 6 (`plan/2026-11-17/IMPLEMENTED.md`).
 
 ## Jobs
 - `task_manager.dispatch()` writes the `jobs` row, then enqueues. Register each new function in

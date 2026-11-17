@@ -5,10 +5,14 @@
                                                     panels of the current one carry over
     POST   .../scene-boards/{id}/approve            approve one part (only an approved, current board feeds frames, D3)
     PATCH  .../scene-boards/{id}/cells/{shot_id}    a panel's note or lock
-    POST   .../scene-boards/{id}/repaint            repaint only some panels of one part (job, D7 method A): the named
-                                                    shots, else the ones that changed; locked panels never
+    POST   .../scenes/{id}/board/update             Update board (job, plan/2026-11-17): each changed or added shot's
+                                                    panel painted ALONE, removed and moved shots tidied, every other
+                                                    panel untouched; the named shots, else everything out of date;
+                                                    locked panels never
 
-A board is never repainted by itself when a shot changes (the person, 2026-11-13): the view says which shots changed.
+A board is never repainted by itself when a shot changes (the person, 2026-11-13): the view says what is out of date
+and a person presses Update board. The masked repaint is gone (plan/2026-11-17 D3: the image model does not honour a
+mask).
 The scene LOCK (approval) closes this picture work, as it closes frames. Pictures are streamed through
 `/files/{ticket}`; no storage URL reaches a browser. No costs are shown anywhere (CLAUDE.md).
 """
@@ -55,6 +59,7 @@ class BoardCellView(BaseModel):
     note: str
     locked: bool
     stale: bool  # the shot changed since this panel was painted
+    fresh: bool = False  # painted (or put back) by the latest Update board: look at it, approve it again
 
 
 class BoardPartView(BaseModel):
@@ -73,6 +78,11 @@ class BoardPartView(BaseModel):
     created_at: str
 
 
+class BoardUpdateItem(BaseModel):
+    number: int  # the shot's number now (a removed shot's, its number on the board)
+    what: Literal["changed", "added", "removed", "moved", "locked"]
+
+
 class SceneBoardView(BaseModel):
     scene_id: UUID
     # none | painting | failed | ready (painted, waiting for approval) | approved | stale
@@ -80,8 +90,12 @@ class SceneBoardView(BaseModel):
     parts: list[BoardPartView]
     conflicts: list[str]  # what the board writer found disagreeing in the data: advice, not a block
     stale_reasons: list[str]  # "shots 4 and 7 changed", "shot 9 added", ...
-    changed: list[int]  # shot numbers whose panels can be repainted alone
-    whole: bool  # only a whole repaint mends it (shots added, removed or reordered)
+    changed: list[int]  # shot numbers whose panels changed (a locked one included)
+    # plan/2026-11-17: what Update board does, shot by shot (`changed | added | removed | moved | locked`); a locked
+    # shot is left as it is ("unlock to update")
+    update: list[BoardUpdateItem] = Field(default_factory=list)
+    # only a whole repaint mends it: no finished board, a part that failed, or the board is in the wrong shape
+    whole: bool
     approved: bool  # every part approved
     job_id: UUID | None  # the job painting it now, if any
     # The board's shape: "16:9" (wide panels) or "9:16" (tall), the production's when there is no board yet. A board
@@ -100,13 +114,13 @@ class PaintRequest(BaseModel):
     quality: Literal["low", "medium"] = "low"  # D2: LOW by default, MEDIUM a setting, never HIGH
 
 
+class UpdateRequest(BaseModel):
+    shots: list[UUID] = Field(default_factory=list)  # shot ids; empty = every shot out of date
+
+
 class CellUpdate(BaseModel):
     note: str | None = Field(default=None, max_length=300)
     locked: bool | None = None
-
-
-class RepaintRequest(BaseModel):
-    shots: list[int] = Field(default_factory=list)  # shot numbers; empty = the panels of this part that changed
 
 
 def _cell_view(cell: Row, stale_numbers: set[int]) -> BoardCellView:
@@ -117,7 +131,8 @@ def _cell_view(cell: Row, stale_numbers: set[int]) -> BoardCellView:
         thumb_url=media_links.thumb_url("frames", path) or None,
         file_key=media_links.key("frames", path) if path else None, text=str(cell.get("text") or ""),
         note=str(cell.get("note") or ""), locked=bool(cell.get("locked")),
-        stale=int(cell.get("number") or 0) in stale_numbers and cell.get("kind") == "painted")
+        stale=int(cell.get("number") or 0) in stale_numbers and cell.get("kind") == "painted",
+        fresh=bool(cell.get("fresh")))
 
 
 def _part_view(row: Row, stale_numbers: set[int]) -> BoardPartView:
@@ -139,6 +154,8 @@ def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_asp
     st = boards.stale(parts, shots)
     stale_numbers = set(st.changed)
     painting = [p for p in parts if p.get("status") in ("queued", "running")]
+    wrong_shape = bool(painted) and aspect != wanted
+    whole = bool(parts) and not painting and (not boards.updatable(parts) or wrong_shape)
     if not parts:
         state = "none"
     elif painting:
@@ -157,8 +174,9 @@ def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_asp
     job = next((p.get("job_id") for p in painting if p.get("job_id")), None)
     return SceneBoardView(scene_id=scene_id, state=state, parts=[_part_view(p, stale_numbers) for p in parts],
                           conflicts=conflicts, stale_reasons=st.reasons(), changed=sorted(st.changed),
-                          whole=st.whole, approved=bool(parts) and all(p.get("approved_at") for p in parts),
-                          job_id=job, aspect=aspect, wrong_shape=bool(painted) and aspect != wanted)
+                          update=[BoardUpdateItem(number=n, what=w) for n, w in st.items()],  # type: ignore[arg-type]
+                          whole=whole, approved=bool(parts) and all(p.get("approved_at") for p in parts),
+                          job_id=job, aspect=aspect, wrong_shape=wrong_shape)
 
 
 # ── helpers ────────────────────────────────────────────────────────────────────────────────
@@ -281,38 +299,67 @@ async def update_cell(production_id: UUID, board_id: UUID, shot_id: UUID, body: 
     return await _view(repos, access, UUID(str(row["scene_id"])))
 
 
-@router.post("/scene-boards/{board_id}/repaint", response_model=BoardStarted, status_code=status.HTTP_202_ACCEPTED)
-async def repaint_board(production_id: UUID, board_id: UUID, body: RepaintRequest, access: CanGenerate,
-                        repos: ReposDep) -> BoardStarted:
-    """Repaint only some panels of one part, in place, by a masked edit (D7 method A): the other panels stay pixel for
-    pixel. Its approval is cleared (a person approves the board again). Shots added, removed or reordered need a whole
-    repaint (`POST .../scenes/{id}/board`)."""
-    row = await _board(repos, access, board_id)
-    scene, shots, rows = await _scene(repos, access, UUID(str(row["scene_id"])))
+async def _planning(repos: Repos, production_id: UUID) -> bool:
+    """A plan or a build of this production runs: the shots may change under the update."""
+    busy = {k.value for k in (*task_manager.PLANNING, JobKind.STRUCTURE_BUILD)}
+    return any(str(r.get("kind")) in busy for r in await repos.jobs.live(production_id, None)
+               if r.get("status") in ("pending", "running"))
+
+
+@router.post("/scenes/{scene_id}/board/update", response_model=BoardStarted, status_code=status.HTTP_202_ACCEPTED)
+async def update_board(production_id: UUID, scene_id: UUID, body: UpdateRequest, access: CanGenerate,
+                       repos: ReposDep) -> BoardStarted:
+    """Update board (plan/2026-11-17 §3.1): one job for the scene's current board. Each changed or added shot's panel
+    is painted ALONE with its neighbours attached; a removed shot's cell is dropped and moved shots put in order;
+    every other panel stays exactly as it is; a locked panel is never repainted. Every part is set `queued` with its
+    approval cleared (the schema allows an approval only on a done part); the job writes the person's approval back
+    to a part none of whose cells changed (§3.3)."""
+    scene, shots, rows = await _scene(repos, access, scene_id)
     _unlocked(scene)
-    _current_only(row, rows)
-    if row.get("status") != "done" or not row.get("storage_path"):
-        raise HTTPException(status.HTTP_409_CONFLICT, "Only a finished board can be repainted. Paint it again.")
-    painted = {int(c["number"]): c for c in row.get("cells") or [] if c.get("kind") == "painted" and c.get("box")}
-    st = kit.stale_cells(row.get("cells") or [], shots)
-    wanted = body.shots or [n for n in st.changed if n in painted]
-    unknown = [n for n in wanted if n not in painted]
-    if unknown:
-        raise HTTPException(status.HTTP_409_CONFLICT, f"Not on this board: {kit.shots_phrase(unknown)}.")
-    numbers = [n for n in wanted if not painted[n].get("locked")]
-    if not numbers:
-        raise HTTPException(status.HTTP_409_CONFLICT, "Nothing to repaint: no panel changed, or every one asked for "
-                                                      "is locked.")
-    await repos.scene_boards.update(board_id, {"status": "queued", "approved_at": None, "approved_by": None,
-                                               "error": None})
+    parts = boards.current(rows)
+    if any(p.get("status") in ("queued", "running") for p in parts):
+        raise HTTPException(status.HTTP_409_CONFLICT, "The scene board is already being painted.")
+    if not parts or not boards.updatable(parts):
+        raise HTTPException(status.HTTP_409_CONFLICT, boards.PAINT_FIRST)
+    orientation = Orientation(access.production.get("orientation") or "horizontal")
+    if kit.aspect_of_board(parts[0]) != kit.board_aspect(ASPECT_RATIO[orientation]):
+        raise HTTPException(status.HTTP_409_CONFLICT, boards.WRONG_SHAPE)
+    st = boards.stale(parts, shots)
+    wanted = [str(s) for s in body.shots]
+    if wanted:
+        known = {str(s["id"]) for s in shots}
+        if [s for s in wanted if s not in known]:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Shot not found in this scene.")
+        if [s for s in wanted if s not in st.paint]:
+            raise HTTPException(status.HTTP_409_CONFLICT, "Only a shot that changed or was added can be updated "
+                                                          "(a locked panel: unlock it first).")
+    if not (st.paint or st.tidy):
+        locked = f" {kit.shots_phrase(st.locked)} changed but is locked: unlock it to update it." if st.locked else ""
+        raise HTTPException(status.HTTP_409_CONFLICT, "Nothing on the board is out of date." + locked)
+    if await _planning(repos, access.production_id):
+        raise HTTPException(status.HTTP_409_CONFLICT, "The scene is being planned. Update the board when it is done.")
+    ids = [str(p["id"]) for p in parts]
+    approvals = {str(p["id"]): {"approved_at": p.get("approved_at"), "approved_by": p.get("approved_by")}
+                 for p in parts if p.get("approved_at")}
+    for p in parts:
+        await repos.scene_boards.update(UUID(str(p["id"])), {"status": "queued", "approved_at": None,
+                                                             "approved_by": None, "error": None})
+    state: Row = {"update": True, "scene_id": str(scene_id), "board_ids": ids, "shots": wanted,
+                  "approvals": approvals}
     try:
         job_id = await task_manager.dispatch(JobKind.FRAME_RENDER, repos, actor_user_id=access.user.id,
                                              production_id=access.production_id,
-                                             request={"scene_id": str(row["scene_id"]), "repaint": numbers},
-                                             state={"board_id": str(board_id), "repaint": True, "shots": numbers})
+                                             request={"scene_id": str(scene_id), "board_update": wanted}, state=state)
     except RuntimeError:
-        await repos.scene_boards.update(board_id, {"status": "done", "error": "The repaint could not be started."})
-        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "The repaint could not be started.") from None
-    await repos.scene_boards.update(board_id, {"job_id": str(job_id)})
-    await _audit(repos, access, "board.repaint", str(board_id), {"job_id": str(job_id), "shots": numbers})
-    return BoardStarted(job_id=job_id, board_id=board_id)
+        for p in parts:  # nothing started: the board is back as it was, with its approval
+            await repos.scene_boards.update(UUID(str(p["id"])), {"status": "done", **approvals.get(str(p["id"]), {}),
+                                                                 "error": "The update could not be started."})
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "The update could not be started. Try again.") \
+            from None
+    for p in parts:
+        await repos.scene_boards.update(UUID(str(p["id"])), {"job_id": str(job_id)})
+    await _audit(repos, access, "board.update", ids[0], {"job_id": str(job_id), "shots": wanted,
+                                                         "paint": len([s for s in st.paint
+                                                                       if not wanted or s in wanted]),
+                                                         "tidy": len(st.tidy)})
+    return BoardStarted(job_id=job_id, board_id=UUID(ids[0]))
