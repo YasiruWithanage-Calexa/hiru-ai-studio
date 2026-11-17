@@ -693,6 +693,14 @@ class FakeSceneBoards(_Table):
         self.rows[full["id"]] = full
         return full
 
+    async def active_before(self, before: datetime) -> list[Row]:
+        return [r for r in self.rows.values() if r["status"] in ("queued", "running")
+                and _when(r["updated_at"]) < before]
+
+    async def update_many(self, board_ids: list[str], fields: Row) -> None:
+        for bid in board_ids:
+            self.rows[bid].update(fields)
+
     async def update(self, board_id: UUID, fields: Row) -> Row | None:
         row = self.rows.get(str(board_id))
         if row is not None:

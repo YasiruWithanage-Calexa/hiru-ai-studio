@@ -281,25 +281,32 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
             _log.warning("board %s part %s failed", board_id, i + 1, exc_info=True)
             frames.save_board(rid, {**fields, "status": "failed", "error": FAILED})
             continue
-        image = picture.data
-        cells_shots = _cells_of(b, group, i, len(groups))
-        boxes = pics.cell_boxes(image, len(numbers))
-        kept = {s.id: old[s.id] for s in cells_shots
-                if s.painted and s.id in old and old[s.id].get("locked") and old[s.id].get("path")}
-        if kept:  # a locked panel is never repainted: its old picture is put back where its cell now is
-            pasted = {}
-            for sid, prev in kept.items():
-                try:
-                    pasted[numbers.index(b.row(sid)["number"]) + 1] = _download(ctx, "frames", str(prev["path"]))
-                except Exception:
-                    _log.warning("locked panel of shot %s could not be read; it is repainted", sid, exc_info=True)
-            image = pics.paste(image, pasted, {p: boxes[p - 1] for p in pasted})
-        cells, path, sheet = _store_part(ctx, b, rid, str(production["id"]), image, cells_shots, numbers, old, boxes)
-        for c in cells:  # a kept panel keeps its old pin: it still shows what it was painted against
-            if c["shot_id"] in kept and kept[c["shot_id"]].get("pin"):
-                c["pin"] = kept[c["shot_id"]]["pin"]
-        last = next((c for c in reversed(cells) if c.get("path")), None)
-        previous_last = pics.crop(image, last["box"]) if last else None
+        try:  # a failure cutting or storing this part fails this part only; the others still paint (2026-11-16)
+            image = picture.data
+            cells_shots = _cells_of(b, group, i, len(groups))
+            boxes = pics.cell_boxes(image, len(numbers))
+            kept = {s.id: old[s.id] for s in cells_shots
+                    if s.painted and s.id in old and old[s.id].get("locked") and old[s.id].get("path")}
+            if kept:  # a locked panel is never repainted: its old picture is put back where its cell now is
+                pasted = {}
+                for sid, prev in kept.items():
+                    try:
+                        pasted[numbers.index(b.row(sid)["number"]) + 1] = _download(ctx, "frames", str(prev["path"]))
+                    except Exception:
+                        _log.warning("locked panel of shot %s could not be read; it is repainted", sid, exc_info=True)
+                image = pics.paste(image, pasted, {p: boxes[p - 1] for p in pasted})
+            cells, path, sheet = _store_part(ctx, b, rid, str(production["id"]), image, cells_shots, numbers, old,
+                                             boxes)
+            for c in cells:  # a kept panel keeps its old pin: it still shows what it was painted against
+                if c["shot_id"] in kept and kept[c["shot_id"]].get("pin"):
+                    c["pin"] = kept[c["shot_id"]]["pin"]
+            last = next((c for c in reversed(cells) if c.get("path")), None)
+            previous_last = pics.crop(image, last["box"]) if last else None
+        except Exception:
+            _log.exception("board %s part %s could not be cut or stored", board_id, i + 1)
+            frames.save_board(rid, {**fields, "status": "failed", "error": FAILED})
+            previous_last = None
+            continue
         frames.save_board(rid, {**fields, "status": "done", "error": None, "storage_path": path, "sheet_path": sheet,
                                 "cells": cells})
         done += 1

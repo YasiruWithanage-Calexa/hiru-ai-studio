@@ -25,6 +25,7 @@ FRAME_LIMIT = timedelta(minutes=10)
 RENDER_LIMIT = timedelta(minutes=30)
 DOCUMENT_LIMIT = timedelta(minutes=20)
 JOB_LIMIT = timedelta(minutes=15)
+BOARD_LIMIT = timedelta(minutes=15)  # a part paints in a few minutes; the face sheets and writer come first
 JOB_LIMITS: dict[str, timedelta] = {
     JobKind.FRAME_RENDER.value: FRAME_LIMIT,
     JobKind.VIDEO_RENDER.value: RENDER_LIMIT,
@@ -74,6 +75,15 @@ async def sweep(repos: Repos, now: datetime | None = None) -> int:
     if stuck_renders:
         await repos.renders.update_many(stuck_renders, {"status": "failed", "error": reason(RENDER_LIMIT)})
         ended += len(stuck_renders)
+
+    # Scene board parts: a crash mid-board can leave a later part `running` with no worker (2026-11-16), which
+    # blocks painting the scene's board again ("already being painted").
+    boards = await repos.scene_boards.active_before(now)
+    stuck_boards = [str(b["id"]) for b in boards
+                    if str(b.get("job_id")) in failed_jobs or now - _when(b["updated_at"]) >= BOARD_LIMIT]
+    if stuck_boards:
+        await repos.scene_boards.update_many(stuck_boards, {"status": "failed", "error": reason(BOARD_LIMIT)})
+        ended += len(stuck_boards)
 
     for doc in await repos.documents.processing_before(now - DOCUMENT_LIMIT):
         await repos.documents.update(doc["id"], {"status": "failed", "error": reason(DOCUMENT_LIMIT)})

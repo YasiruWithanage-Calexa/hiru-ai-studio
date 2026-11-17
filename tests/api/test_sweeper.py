@@ -5,7 +5,7 @@ from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
 from api.workers.sweeper import sweep
-from tests.api.fakes import FakeDocuments, FakeFrames, FakeJobs, FakeRenders
+from tests.api.fakes import FakeDocuments, FakeFrames, FakeJobs, FakeRenders, FakeSceneBoards
 
 NOW = datetime(2026, 11, 8, 12, 0, tzinfo=UTC)
 
@@ -17,6 +17,7 @@ def ago(minutes: float) -> str:
 class _Repos:
     def __init__(self) -> None:
         self.jobs, self.frames, self.renders, self.documents = FakeJobs(), FakeFrames(), FakeRenders(), FakeDocuments()
+        self.scene_boards = FakeSceneBoards()
 
 
 async def _job(repos: _Repos, kind: str, minutes: float, status: str = "running") -> str:
@@ -77,3 +78,17 @@ async def test_frames_renders_and_documents_of_a_dead_worker_end() -> None:
     assert repos.renders.rows["r2"]["status"] == "queued"
     assert repos.documents.rows["d1"]["status"] == "failed"
     assert repos.documents.rows["d1"]["error"] == "Stopped: no progress for 20 minutes."
+
+async def test_a_board_part_left_running_by_a_crash_ends() -> None:
+    """2026-11-16: part 1 crashed after its paint; part 2 stayed `running` and the board could not be painted again."""
+    repos = _Repos()
+    base = {"production_id": "p", "scene_id": "s", "version": 1, "parts": 2}
+    await repos.scene_boards.create({**base, "id": "b1", "part": 1, "status": "failed"})
+    await repos.scene_boards.create({**base, "id": "b2", "part": 2, "status": "running"})
+    await repos.scene_boards.create({**base, "id": "b3", "version": 2, "part": 1, "status": "running"})
+    repos.scene_boards.rows["b2"]["updated_at"] = ago(16)
+    repos.scene_boards.rows["b3"]["updated_at"] = ago(3)
+    assert await sweep(repos, NOW) == 1  # type: ignore[arg-type]
+    assert repos.scene_boards.rows["b2"]["status"] == "failed"
+    assert repos.scene_boards.rows["b2"]["error"] == "Stopped: no progress for 15 minutes."
+    assert repos.scene_boards.rows["b3"]["status"] == "running"

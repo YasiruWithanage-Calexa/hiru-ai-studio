@@ -1,0 +1,27 @@
+{
+ "run": "run_001",
+ "quality": "low",
+ "add_strip": {
+  "outside_mask_mean": 29.14,
+  "cells": {
+   "cell_1": 6.38,
+   "cell_2": 9.44,
+   "cell_4": 6.6,
+   "cell_5": 55.61,
+   "cell_6": 65.95
+  },
+  "read": "0-1: untouched; 2-6: re-encoded, same picture; above ~8: the model repainted it"
+ },
+ "change_mask": {
+  "outside_mask_mean": 6.09,
+  "cells": {
+   "cell_1": 7.06,
+   "cell_2": 4.96,
+   "cell_3": 6.05,
+   "cell_4": 5.69,
+   "cell_6": 6.25
+  },
+  "read": "0-1: untouched; 2-6: re-encoded, same picture; above ~8: the model repainted it"
+ },
+ "spent_total": 0.2892
+}

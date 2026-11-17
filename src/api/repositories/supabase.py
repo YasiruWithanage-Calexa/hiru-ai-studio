@@ -960,6 +960,18 @@ class SupabaseSceneBoards(_Base):
             return False
         return bool(_rows(res.data))
 
+    async def active_before(self, before: datetime) -> builtins.list[Row]:
+        try:
+            res = (await self.db.table("scene_boards").select("id,job_id,updated_at")
+                   .in_("status", ["queued", "running"]).lt("updated_at", before.isoformat()).execute())
+        except Exception:  # a database before v26: nothing to sweep
+            return []
+        return _rows(res.data)
+
+    async def update_many(self, board_ids: builtins.list[str], fields: Row) -> None:
+        if board_ids:
+            await self.db.table("scene_boards").update(fields).in_("id", board_ids).execute()
+
 
 # The scene loader needs a prompt's text, checks, pins and camera, never the IR it was written from
 # (plan/2026-11-08c phase 4).
