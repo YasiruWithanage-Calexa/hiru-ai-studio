@@ -29,7 +29,7 @@ def edit_turn() -> tuple[str, Recorded]:
 
 def craft_turn() -> tuple[str, Recorded]:
     conductor = {"lane": "craft", "confidence": 0.9, "ops": [], "variants": 0, "cannot": None, "memory": "",
-                 "tasks": [{"writes": ["camera"], "shots": [10], "instruction": "tenser"}]}
+                 "tasks": [{"writes": ["camera", "framing"], "shots": [10], "instruction": "tenser"}]}
     author = {"notes": "Closer.", "asks": [], "variants": [],
               "ops": [{"op": "set", "shot": "S10", "field": "size", "value": "CU"}]}
     return "Make S10 tenser.", Recorded(conductor=conductor, authors=[author], reply="Closer on Nimal now.")

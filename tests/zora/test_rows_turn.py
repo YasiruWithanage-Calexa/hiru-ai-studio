@@ -222,7 +222,8 @@ def test_an_author_cut_off_at_its_cap_is_reported_and_the_reply_still_comes() ->
                 raise B.CutOff("author was cut off at 400 output tokens")
             return super().ask(role, inp, max_out)
 
-    m = CutAuthor(conductor=conductor("craft", tasks=[{"writes": ["camera"], "shots": [8], "instruction": "tenser"}]),
+    m = CutAuthor(conductor=conductor("craft", tasks=[{"writes": ["camera", "framing"], "shots": [8],
+                                                       "instruction": "tenser"}]),
                   reply="I couldn't get to it this time.")
     out = w.turn("Make S08 tenser.", m)
     assert "plan" not in out and any("did not fit" in r for r in out["ops"][0]["refused"])

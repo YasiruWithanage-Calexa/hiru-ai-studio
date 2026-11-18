@@ -15,6 +15,8 @@ class Input(BaseModel):
     problems: list[str] = []
     place: str = ""  # what the turn is about, for the production memory (`memory_scope`)
     people: list[str] = []
+    board: str = ""  # the scene board in one sentence (findings 2026-11-17 C5); "" when it cannot be read
+    hands: str = ""  # what each hand holds, from the state ledger, one line per mark (C6, C7)
 
 
 class Output(ConductorAnswer):

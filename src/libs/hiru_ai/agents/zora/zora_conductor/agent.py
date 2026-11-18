@@ -26,6 +26,10 @@ def memory_scope(inp: Input) -> dict[str, Any]:
 def user_message(inp: Input) -> str:
     talk = "\n".join(inp.transcript[-TRANSCRIPT:]) or "(no earlier messages)"
     text = f"CONVERSATION (recent):\n{talk}\n\n{inp.scene}\n\n"
+    if inp.hands:
+        text += f"HANDS (the scene's state ledger, what every frame is painted from):\n{inp.hands}\n\n"
+    if inp.board:
+        text += f"SCENE BOARD (the storyboard picture): {inp.board}\n\n"
     if inp.rejected:
         text += f"THE PERSON REJECTED IN THIS THREAD (do not offer again): {'; '.join(inp.rejected)}\n\n"
     text += f"LATEST MESSAGE FROM THE DIRECTOR:\n{inp.message}"

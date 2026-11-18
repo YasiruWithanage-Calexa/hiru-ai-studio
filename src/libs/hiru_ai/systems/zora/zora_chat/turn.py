@@ -5,8 +5,10 @@ the nodes of the system's graph (`graph.py`):
     IN CODE   "undo" / "redo" (a revision, no model)
     CONDUCT   quick(): a plain command code reads itself (no model); else the conductor (gpt-5-mini minimal): the lane,
               the person's explicit changes as OPERATIONS, TASKS with kinds and shots; one retry told what was wrong
-    WORK      kernel → code's tasks → author (one call) → board → delivery → checks → repair (≤ 1) → risk:
-              safe → saved in place; risky → a card with Accept / Reject, nothing saved
+    WORK      kernel → code's tasks → author (one call) → fence → delivery → checks → repair (≤ 1, fenced) → risk:
+              safe → saved in place; risky → a card with Accept / Reject, nothing saved; the person's hand changes →
+              a hands card (the state ledger); a save that leaves scene-board panels out of date → an Update board card
+    BOARD     the person asks about or for the scene board: what it shows, and an Update board card (no model work)
     REPLY     the facts as plain sentences, read last; streamed; the guard cuts what cannot stand; the message stored
               with its blocks (the changes, a card, options); a clip that performs a line but is stored silent is
               offered as a one-click card
@@ -28,11 +30,12 @@ from contracts.coverage import checks, risk
 from contracts.coverage.ledger import changes, label, plain, short, where
 from contracts.coverage.scene import CINE, IR_JSON, Coverage
 from contracts.director import TurnPayload, without_replaced
-from contracts.zora.wire import WRITING_LANES, ConductorAnswer, to_op
+from contracts.zora.wire import WRITING_LANES, ConductorAnswer, HandChange, to_op
 from hiru_ai.core import agents, llm, parts
 from hiru_ai.core import memory as production_memory
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.settings import ZoraSettings, get_settings
+from hiru_ai.systems.zora.zora_chat import board_view, hands
 from hiru_ai.systems.zora.zora_chat import budget as B
 from hiru_ai.systems.zora.zora_chat import scene as world_of
 from hiru_ai.systems.zora.zora_chat.store import Saver
@@ -50,9 +53,18 @@ PERSONA = ("You are Zora, the director's creative partner: a seasoned Sri Lankan
 NO_MODEL = ("I can't work on that right now: my model is not available. Plain changes (\"Make S01 a wide\", \"Drop "
             "S08\"), undo and redo still work.")
 ROLE_REFUSAL = "Your role can comment on the shots but not change them; a director, producer or writer can."
-KIND_OF = {**{f: "camera" for f in ("size", "link", *CINE)}, **{f: "picture" for f in ("why", "sees", *IR_JSON)},
-           "setting": "light", "lighting": "light", "audio": "sound"}
+KIND_OF = {**{f: "camera" for f in ("link", *CINE)}, **{f: "picture" for f in ("why", "sees", *IR_JSON)},
+           "size": "framing", "setting": "light", "lighting": "light", "audio": "sound"}
 UNDO = re.compile(r"^\s*(undo|go back|redo)\b", re.I)
+# A malformed operation (findings 2026-11-17 C1, C8): the model's own slip, logged and never told to the person as a
+# limit. An operation the AUTHOR sent is a slip for every reason but a person's lock (the person asked for none of it).
+SLIP = re.compile(r"is not a field|is not a sound field|unknown operation|is not a size|is not a join|is not a sound "
+                  r"mode|is not a priority|not valid JSON|must be a list|no value for")
+LOCKED = "(locked)"
+# A sentence that claims something cannot be edited or changed (C8): kept only when a fact says so
+LIMIT = re.compile(r"\b(?:can'?t|cannot|couldn'?t|could not|unable to|not able to)\b[^.!?]{0,60}?"
+                   r"\b(?:edit|chang|touch|alter|apply|make)\w*|(?:\bnot|n't)\s+(?:editable|changeable|allowed|"
+                   r"possible)\b", re.I)
 
 
 def kernel_mod() -> Any:
@@ -125,18 +137,21 @@ LEAK = re.compile(r"(?i:what happened this turn)|WHAT CHANGED \(|WAITING FOR THE
                   r"THE PERSON (PRESSED|ASKED TO|PICKED)|THEY ASKED A QUESTION|OPTIONS shown as cards")
 
 
-def guard(text: str, *, card: bool, proposals: bool) -> tuple[str, list[str]]:
-    """Code takes out what cannot stand: the fact sheet pasted back, a card or a button that is not there."""
+def guard(text: str, *, card: bool, proposals: bool, limits: bool = True) -> tuple[str, list[str]]:
+    """Code takes out what cannot stand: the fact sheet pasted back, a card or a button that is not there, and (with
+    `limits` False: no fact says something could not be done) a sentence claiming a limit (findings 2026-11-17 C8:
+    "those on-screen fields aren't editable" about a field the model made up)."""
     cut: list[str] = []
     m = LEAK.search(text)
     if m and m.start() > 0:
         cut.append(text[m.start():])
         text = text[: m.start()].strip()
-    if card or proposals:
+    if card and proposals and limits:
         return text, cut
     kept: list[str] = []
     for s in re.split(r"(?<=[.!?])\s+", text):
-        (cut if CARD_WORDS.search(s) else kept).append(s)
+        bad = (not (card or proposals) and CARD_WORDS.search(s)) or (not limits and LIMIT.search(s))
+        (cut if bad else kept).append(s)
     return " ".join(kept).strip() or text, cut
 
 
@@ -170,6 +185,11 @@ class Rec:
     over_budget: bool = False
     memory: str = ""
     conductor: Row | None = None
+    slips: list[str] = field(default_factory=list)  # the models' own malformed operations: logged, never shown (C8)
+    hands: Row | None = None  # the hand change waiting for Accept (`hands.propose`, C7)
+    hands_refused: str = ""
+    board: Row | None = None  # the Update board card under the message (`board_view.card`, C4)
+    board_said: str = ""  # the scene board in one sentence, when the turn is about it or left it out of date
 
 
 def ledger_event(rec: Rec) -> Row:
@@ -194,8 +214,13 @@ def plain_reply(rec: Rec) -> str:
     """The reply in code, when no model reply fits the turn: what happened, in one sentence."""
     if rec.fact and rec.lane in ("undo", "redo", "nomodel", "role", "cannot"):
         return rec.fact.split(" Every clip is generated")[0]
+    if rec.lane == "board":
+        shots = f" Press Update board to repaint {', '.join(rec.board['shots'])}." if rec.board else ""
+        return (rec.board_said or "I can't read the scene board from here right now.") + shots
     if rec.card:
         return "This one needs your OK first: " + "; ".join(rec.card["reasons"]) + "."
+    if rec.hands and not rec.done:
+        return "This one needs your OK first: " + "; ".join(rec.hands["reasons"]) + "."
     if rec.done:
         return "Done: " + "; ".join(plain(x) for x in rec.done[:3]) + "."
     if rec.shown:
@@ -265,6 +290,12 @@ class Turn:
                            f"{m.get('text') or _blocks_text(m)}" for m in history]
         self.rejected = [r for m in history for b in m.get("blocks") or []
                          if b.get("kind") == "confirm" and b.get("state") == "rejected" for r in b.get("reasons") or []]
+        self.board = board_view.view(self.ctx, str(req.scene_id), world.shot_rows)
+        try:
+            self.hands_text = hands.text(world)
+        except Exception:  # a map that cannot be read leaves the hands unsaid, never the turn undone
+            _log.warning("the scene's hands could not be read for Zora", exc_info=True)
+            self.hands_text = ""
         return True
 
     # ── in code: undo, redo ───────────────────────────────────────────────────────────────────────────────────────
@@ -321,7 +352,7 @@ class Turn:
         cov, message = self.world.cov, self.req.message
         inp: Row = {"scene": cov.render(only=set()), "message": message, "transcript": self.transcript,
                     "rejected": self.rejected, "problems": [], "place": self.world.place(),
-                    "people": self.world.people()}
+                    "people": self.world.people(), "board": self.board.sentence(), "hands": self.hands_text}
         answer: Row | None = None
         problems: list[str] = []
         for _ in (1, 2):
@@ -337,8 +368,8 @@ class Turn:
             answer["ops"] = [to_op(o) for o in answer.get("ops") or []]
             problems = []
             if ConductorAnswer.model_validate(answer).does_nothing():
-                problems.append(f"lane {answer['lane']} carries no operations and no tasks: give them, or choose the "
-                                "lane that changes nothing")
+                problems.append(f"lane {answer['lane']} carries no operations, no tasks and no hands: give them, or "
+                                "choose the lane that changes nothing")
             problems += [f"the {o.get('op')} on {o.get('shot') or 'the scene'} writes words the person did not say: "
                          "make it a task for the author" for o in answer["ops"] if invented(o, message)]
             if not problems:
@@ -380,6 +411,28 @@ class Turn:
         elif rec.lane == "clarify":
             rec.fact = ("THE REQUEST WAS NOT CLEAR: nothing was changed. Ask ONE short question that tells the "
                         "readings apart.")
+        elif rec.lane == "board":
+            self._board_lane()
+
+    def _board_lane(self) -> None:
+        """The person asked about or for the scene board (findings 2026-11-17 C4, C5): say what it shows now, and offer
+        Update board for the shots they named, else for every panel out of date. Zora paints nothing herself."""
+        rec, board = self.rec, self.board
+        named = [int(n) for n in re.findall(r"\bS(\d+)\b", self.req.message, re.I)]
+        rec.board_said = board.sentence() or "I can't read the scene board from here right now."
+        if self.req.can_edit:
+            rec.board = board_view.card(board, named or board.out_of_date(),
+                                        "the shots you named" if named else "the panels that are out of date")
+        if rec.board:
+            shots = ", ".join(rec.board["shots"])
+            offer = f"An Update board card under your message repaints {shots} when they press it."
+        elif board.exists and board.updatable:
+            offer = "There is no Update board card this turn: the board is up to date and they named no shot."
+        else:
+            offer = "There is no Update board card this turn: the board screen is where it is painted."
+        rec.fact = ("THEY ASKED ABOUT THE SCENE BOARD (the storyboard picture painted from the shots; NOT the shots' "
+                    f"text): {rec.board_said} Zora never paints or repaints it herself and changed nothing this turn. "
+                    f"{offer} Never say you updated, repainted or checked the picture itself.")
 
     # ── the writing lanes ─────────────────────────────────────────────────────────────────────────────────────────
 
@@ -391,7 +444,9 @@ class Turn:
         k = K.Kernel(work)
         self.emit("status", {"text": "Applying your changes"})
         r0 = k.apply(list(answer.get("ops") or []), by="conductor")
-        rec.refused += [f"{x['op'].get('op')} {x['op'].get('shot') or ''}: {x['reason']}" for x in r0.rejected]
+        for x in r0.rejected:
+            said = f"{x['op'].get('op')} {x['op'].get('shot') or ''}: {x['reason']}"
+            (rec.slips if SLIP.search(x["reason"]) else rec.refused).append(said)
         rec.kernel_notes += r0.notes
         applied = list(r0.applied)
         tasks = self._tasks(answer, work, before)
@@ -418,13 +473,14 @@ class Turn:
             if variants:
                 self._proposals(before, work, tasks, ans)
                 return
-            kept, refused = board(ans["ops"], tasks, work)
-            rec.team_refused += refused
+            kept, refused = fence(ans["ops"], tasks, work)
+            rec.slips += refused  # an edit the task did not ask for is the model's, never a limit (C8, C9)
             r1 = k.apply(kept, by="author")
             applied += r1.applied
             rec.kernel_notes += r1.notes
-            rec.team_refused += [f"the team's {x['op'].get('op')} {x['op'].get('shot') or ''}: {x['reason']}"
-                                 for x in r1.rejected]
+            for x in r1.rejected:  # only a person's lock is something the person should hear about
+                said = f"the team's {x['op'].get('op')} {x['op'].get('shot') or ''}: {x['reason']}"
+                (rec.team_refused if LOCKED in x["reason"] else rec.slips).append(said)
             now = changes(before, work)
             for t in tasks:  # delivery: a task about named shots that changed none of them was not done
                 if t["scope"] and not t.get("code"):
@@ -436,9 +492,15 @@ class Turn:
         fix = checks.repairable(found)
         if fix and self.enabled:
             snap = work.copy()
-            allowed = sorted({w for t in tasks for w in t["writes"]}
-                             | {"picture", "camera", "timing", "light", "sound"})
-            rep_task = [{"writes": allowed, "scope": [], "instruction": "repair what the checks found"}]
+            # findings 2026-11-17 C9: the repair works on the clips the problems name, with the kinds this turn's
+            # tasks had, picture and sound; a take only for an overrun, never a new size the person did not ask for
+            allowed = sorted({w for t in tasks for w in t["writes"]} | {"picture", "sound", "light"}
+                             | ({"timing"} if any(f.code == "overrun" for f in fix) else set())
+                             | ({"order"} if any(f.code in ("block_unshown", "line_unbound", "line_outside")
+                                                 for f in fix) else set()))
+            named = {c.h for f in fix for n in re.findall(r"\bS(\d+)\b", f.sentence) if (c := work.at(n))}
+            named |= {c.h for f in fix if (m := re.search(r":(h\d+|n\d+)$", f.key)) and (c := work.clip(m.group(1)))}
+            rep_task = [{"writes": allowed, "scope": sorted(named), "instruction": "repair what the checks found"}]
             self.emit("status", {"text": "Fixing what the checks found"})
             try:
                 rep = self._author(work, rep_task, changes(before, work), 0, [f.sentence for f in fix])
@@ -448,7 +510,9 @@ class Turn:
                               "skipped": B.describe(exc)}
             if rep is not None:
                 rec.author.append(rep)
-                r2 = K.Kernel(work).apply([to_op(o) for o in rep.get("ops") or []], by="repair")
+                kept_rep, out_rep = fence([to_op(o) for o in rep.get("ops") or []], rep_task, work)
+                rec.slips += out_rep
+                r2 = K.Kernel(work).apply(kept_rep, by="repair")
                 again = checks.repairable(checks.new(before, work))
                 if len(again) < len(fix):
                     applied += r2.applied
@@ -470,9 +534,46 @@ class Turn:
                         "lines": risk.consequences(before, work, done, rec.kernel_notes, unfixed), "state": "",
                         "fix": ""}
             rec.would = done
-            return
-        if done:
+        elif done:
             self._save(work, done)
+        self._hands(work, done)
+        self._board_after()
+        if rec.slips:
+            _log.info("zora turn: the models' own operations refused (not shown): %s", rec.slips)
+
+    def _hands(self, work: Coverage, done: list[str]) -> None:
+        """The person's hand changes become a card (the ledger every frame is painted from, C7); with none, a touched
+        clip whose words put a held thing in the other hand is reported (C6)."""
+        rec = self.rec
+        asked = [HandChange.model_validate(h) for h in self.answer.get("hands") or []]
+        if asked:
+            if not self.req.can_edit:
+                return
+            got = hands.propose(self.world, asked, self.world.cov.fingerprint())
+            if isinstance(got, str):
+                rec.hands_refused = got
+            else:
+                rec.hands = got
+            return
+        handles = {c.h for x in done if (c := work.at(re.sub(r"\D", "", where(x)) or 0)) is not None}
+        try:
+            rec.reported += hands.disagree(self.world, work, sorted(handles))
+        except Exception:
+            _log.warning("the hands check could not run", exc_info=True)
+
+    def _board_after(self) -> None:
+        """A saved change leaves the scene board's panels of those shots out of date (a board is never repainted by
+        itself): say so, with the Update board card (C4)."""
+        rec = self.rec
+        if not rec.saved or not self.board.exists or not self.req.can_edit:
+            return
+        now = board_view.view(self.ctx, str(self.req.scene_id), self.world.shot_rows)
+        touched = {int(m.group(1)) for x in rec.touched if (m := re.match(r"S(\d+)", x))}
+        stale = [n for n in now.out_of_date() if n in touched]
+        if stale:
+            self.board = now
+            rec.board = board_view.card(now, stale, "the shots this change touched")
+            rec.board_said = now.sentence()
 
     def _save(self, work: Coverage, done: list[str]) -> None:
         rec = self.rec
@@ -542,6 +643,7 @@ class Turn:
         scene = work.render(only=set(), brief=True) if whole else work.render(only=only)
         inp: Row = {"scene": scene, "transcript": self.transcript, "done": done, "variants": variants,
                     "faults": faults, "place": self.world.place(), "people": self.world.people(),
+                    "hands": getattr(self, "hands_text", ""),
                     "tasks": [{"instruction": t["instruction"], "writes": t["writes"],
                                "on": ", ".join(work.code(h) for h in t["scope"]) or "any shot"} for t in tasks]}
         self.emit("status", {"text": "Working on the shots" if not faults else "Fixing what the checks found"})
@@ -556,7 +658,7 @@ class Turn:
         made_on = before.fingerprint()
         for v in (ans.get("variants") or [])[: self.cfg.variants_max]:
             trial = work.copy()
-            kept, refused = board(v["ops"], tasks, trial)
+            kept, refused = fence(v["ops"], tasks, trial)
             r = K.Kernel(trial).apply(kept, by="author")
             new = checks.repairable(checks.new(before, trial))
             lines = changes(before, trial)
@@ -648,7 +750,25 @@ class Turn:
             out.append("HEADS-UP: " + "; ".join(rec.silent["reasons"]) + ", so its video would be told nobody speaks. "
                        "A card under your message fixes the sound with one click (Accept); nothing is changed until "
                        "they press it.")
+        if rec.hands:
+            out.append("HANDS WAITING FOR THEIR OK: a card with Accept and Reject is under your message. It changes "
+                       "the scene's state ledger, which every frame and video prompt is painted from (a shot's text "
+                       "alone never moves a hand in the picture). If they accept:\n"
+                       + nl.join(f"- {x}" for x in rec.hands["lines"]))
+        elif rec.hands_refused:
+            out.append("COULD NOT BE DONE (say so honestly, with the reason):\n- the hand change: " + rec.hands_refused)
+        if rec.board and rec.lane != "board":
+            out.append(f"SCENE BOARD: {rec.board_said} An Update board card under your message repaints "
+                       f"{', '.join(rec.board['shots'])} when they press it; nothing is repainted by itself. Mention "
+                       "it in one short sentence.")
         return out
+
+    def limits(self) -> bool:
+        """Whether this turn has something that truly could not be done (the reply may then say "couldn't")."""
+        rec = self.rec
+        return bool(rec.refused or rec.team_refused or rec.undelivered or rec.hands_refused or rec.over_budget
+                    or rec.lane in ("cannot", "role", "nomodel", "board")
+                    or (rec.lane == "options" and not rec.shown))
 
     def reply(self) -> None:
         rec = self.rec
@@ -658,12 +778,12 @@ class Turn:
         self.emit("gate", gate)
         if rec.shown:
             self.emit("proposals", {"options": [_option(p) for p in rec.shown]})
-        for card in (rec.card, rec.silent):
+        for card in (rec.card, rec.silent, rec.hands):
             if card:
                 self.emit("confirm", _card(card))
         self.emit("status", {"text": "Writing the reply"})
         text = ""
-        has_card = bool(rec.card or rec.silent)
+        has_card = bool(rec.card or rec.silent or rec.hands or rec.board)
         if self.enabled:
             try:
                 inp = self._reply_input()
@@ -671,7 +791,7 @@ class Turn:
                 for delta in chunks:
                     text += delta
                     self.emit("delta", {"text": delta})
-                text, _ = guard(text.strip(), card=has_card, proposals=bool(rec.shown))
+                text, _ = guard(text.strip(), card=has_card, proposals=bool(rec.shown), limits=self.limits())
             except Exception as exc:
                 _log.warning("zora reply failed or did not fit; using the plain reply (%s)", B.describe(exc))
                 text = ""
@@ -700,9 +820,11 @@ class Turn:
         blocks: list[Row] = [{"kind": "text", "text": text},
                              {"kind": "changes", "ops": ledger, "gate": gate, "revision": rec.revision,
                               "suggestions": [], "lane": rec.lane}]
-        for card in (rec.card, rec.silent):
+        for card in (rec.card, rec.silent, rec.hands):
             if card:
                 blocks.append(_card(card))
+        if rec.board:
+            blocks.append(dict(rec.board))
         if rec.shown:
             blocks.append({"kind": "options", "question": "", "options": [_option(p) for p in rec.shown]})
         if used := production_memory.used_block(self.ctx):
@@ -725,7 +847,7 @@ def _kind(op: Row) -> str:
     return {"retime": "timing", "sound": "sound", "sound_mode": "sound"}.get(str(name), "order")
 
 
-def board(ops: list[Row], tasks: list[Row], work: Coverage) -> tuple[list[Row], list[str]]:
+def fence(ops: list[Row], tasks: list[Row], work: Coverage) -> tuple[list[Row], list[str]]:
     """The author kept to its tasks: an operation of a kind no task allows, or on a shot outside its tasks, is
     refused."""
     kept, refused = [], []
@@ -741,10 +863,14 @@ def board(ops: list[Row], tasks: list[Row], work: Coverage) -> tuple[list[Row], 
 
 
 def _card(card: Row) -> Row:
-    """A card as stored in the message and sent to the panel."""
-    return {"kind": "confirm", "ops": card["ops"], "made_on": card["made_on"], "reasons": list(card["reasons"]),
-            "lines": list(card["lines"]), "state": card.get("state") or "", "fix": card.get("fix") or "",
-            "revision": int(card.get("revision") or 0)}
+    """A card as stored in the message and sent to the panel (a hands card also keeps what Accept applies)."""
+    out = {"kind": "confirm", "ops": card["ops"], "made_on": card["made_on"], "reasons": list(card["reasons"]),
+           "lines": list(card["lines"]), "state": card.get("state") or "", "fix": card.get("fix") or "",
+           "revision": int(card.get("revision") or 0)}
+    if card.get("fix") == "hands":
+        out.update({"marks": list(card.get("marks") or []), "script_version": int(card.get("script_version") or 0),
+                    "touched": list(card.get("touched") or [])})
+    return out
 
 
 def _option(p: Row) -> Row:
@@ -774,4 +900,4 @@ def _blocks_text(m: Row) -> str:
     return " ".join(str(b.get("text") or "") for b in m.get("blocks") or [] if b.get("kind") == "text").strip()
 
 
-__all__ = ["Event", "Rec", "Turn", "board", "guard", "label", "ledger_event", "plain_reply", "quick", "short"]
+__all__ = ["Event", "Rec", "Turn", "fence", "guard", "label", "ledger_event", "plain_reply", "quick", "short"]

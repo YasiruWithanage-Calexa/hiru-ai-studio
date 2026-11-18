@@ -10,8 +10,11 @@ effect: stage
 max_result_tokens: 800
 guide: |
   For a fact about people that holds from a block on: "Kamal is dead from b12, he lies there", "Anudi sits down at b4",
-  "Kasun moves to the stall". Give `changes`, each `{who, from_block, posture?, condition?, zone?, facing?}`; only what you
-  give changes, the rest is kept from the person's last mark. `from_block` is the block's number as scene_read shows it (0 is
+  "Kasun moves to the stall", "Anudi holds the phone in her right hand from b5". Give `changes`, each `{who, from_block,
+  posture?, condition?, zone?, facing?, left_hand?, right_hand?}`; only what you give changes, the rest is kept from the
+  person's last mark. A hand takes the thing it holds ("the phone"; "free" empties it): every frame's hands sentence is
+  written from this, never from a shot's text, so a hand the person corrects is fixed here. A thing put in one hand
+  leaves the other, on later marks too (phone and umbrella swap; nothing is dropped). `from_block` is the block's number as scene_read shows it (0 is
   the first). `posture` is one of standing, sitting, kneeling, crouching, lying, walking, running. `condition` is a few words:
   "dead", "unconscious", "injured: left arm", or "well" to end one. `zone` is a spot on the scene's map. A dead or
   unconscious person with no posture lies, and stays where they fell. Only the scene that is open can change.

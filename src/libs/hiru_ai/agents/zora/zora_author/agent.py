@@ -23,6 +23,9 @@ def memory_scope(inp: Input) -> dict[str, Any]:
 
 def user_message(inp: Input) -> str:
     lines = ["CONVERSATION (recent):\n" + ("\n".join(inp.transcript[-TRANSCRIPT:]) or "(none)"), "", inp.scene, ""]
+    if inp.hands:
+        lines += ["HANDS (the scene's state ledger, what every frame is painted from; a hand you name in a shot's text "
+                  "matches it):\n" + inp.hands, ""]
     lines.append("ALREADY DONE THIS TURN:\n" + ("\n".join(f"- {d}" for d in inp.done) or "- nothing yet"))
     lines.append("\nTASKS THIS TURN:")
     for i, t in enumerate(inp.tasks, start=1):

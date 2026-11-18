@@ -1,0 +1,176 @@
+"""What each hand holds, as Zora reads and changes it (findings 2026-11-17 C6, C7).
+
+Every frame's hands sentence is written from the scene's state ledger (`scenes.staging`, `contracts.holding`), never
+from a shot's text. A shot's text that says "her left hand" next to a ledger that says right gives a picture that does
+what the ledger says. So Zora:
+
+    text(world)                      the hands per person and block, for the conductor and the author to read
+    propose(world, changes)          the person's hand changes tried on a copy of the ledger (`stagemap.apply_state`,
+                                     the code Sable's state card uses) → a confirm card (`fix: "hands"`), or a refusal
+    apply(world, card)               on Accept: the ledger saved as the person's own, the touched shots' versions moved
+                                     (their prompts and frames read as out of date) → (what changed, the shots touched)
+    disagree(world, cov, handles)    report-only: a touched clip whose words put a held thing in the other hand
+
+No model writes the ledger: a person accepts the card (plan/2026-11-09b D2).
+"""
+from __future__ import annotations
+
+import re
+from collections.abc import Iterable, Sequence
+from datetime import UTC, datetime
+from typing import Any
+
+from contracts import sceneplan
+from contracts import stagemap as sm
+from contracts.coverage.scene import Coverage
+from contracts.zora.wire import HandChange
+from hiru_ai.core.context import RunContext
+from hiru_ai.core.coverage_rows import World
+
+Row = dict[str, Any]
+SIDE = re.compile(r"\b(left|right)(?:[- ]hand(?:ed)?|\s+palm|\s+fist)\b", re.I)
+WINDOW = 60  # characters before a hand word in which the thing must be named
+
+
+def items_of(world: World) -> list[Any]:
+    return sceneplan.scene_items(world.scene_row, world.lines)
+
+
+def cast_of(world: World) -> list[str]:
+    return [str(c.get("name") or "") for c in world.characters if c.get("name")]
+
+
+def staging_of(world: World) -> sm.SceneStaging | None:
+    return sm.SceneStaging.of(world.scene_row)
+
+
+def text(world: World) -> str:
+    """One line per mark that holds something in a named hand: "b5 Anudi: left hand phone; right hand umbrella"."""
+    staging = staging_of(world)
+    if staging is None:
+        return ""
+    rows: list[tuple[int, str]] = []
+    for marks in staging.placed(items_of(world)).values():
+        for at, m in marks:
+            hands = [f"left hand {m.left_hand}" if m.left_hand else "", f"right hand {m.right_hand}" if m.right_hand
+                     else ""]
+            said = "; ".join(h for h in hands if h) or (f"holding {m.holding}" if m.holding else "")
+            if said:
+                rows.append((at, f"b{at} {m.who}: {said}"))
+    return "\n".join(r for _, r in sorted(rows))
+
+
+def _marks(changes: Iterable[HandChange]) -> list[sm.StateMark]:
+    out = []
+    for c in changes:
+        hand = str(c.hand).strip().lower()
+        if hand not in ("left", "right") or not c.who.strip() or not c.thing.strip():
+            continue
+        out.append(sm.StateMark(who=c.who.strip(), from_block=max(0, int(c.from_block)),
+                                **{f"{hand}_hand": c.thing.strip()}))
+    return out
+
+
+def _touched(world: World, before: sm.SceneStaging | None, after: sm.SceneStaging) -> list[int]:
+    ordered = sorted(world.shot_rows, key=lambda s: int(s.get("number") or 0))
+    spans = [(int(s.get("block_start") or 0), int(s.get("block_end") or 0)) for s in ordered]
+    return [int(ordered[n].get("number") or n + 1) for n in sm.changed_blocks(before, after, items_of(world), spans)]
+
+
+def propose(world: World, changes: Sequence[HandChange], made_on: str) -> Row | str:
+    """→ the card, or the sentence that says why the ledger cannot take it."""
+    marks = _marks(changes)
+    if not marks:
+        return "No hand to change was named (a person, the thing they hold, left or right, and from which block)."
+    before = staging_of(world)
+    version = int(world.scene_row.get("script_version") or 1)
+    try:
+        after = sm.apply_state(before, items_of(world), marks, cast_of(world), version=version)
+    except sm.StateRefused as exc:
+        return str(exc)
+    touched = _touched(world, before, after)
+    said = [f"{m.who}: {m.left_hand or m.right_hand} in the {'left' if m.left_hand else 'right'} hand from block "
+            f"{m.from_block}" for m in marks]
+    if not touched:
+        return "The ledger already has " + "; ".join(said) + "."
+    codes = [f"S{n:02d}" for n in touched]
+    return {"kind": "confirm", "fix": "hands", "ops": [], "made_on": made_on, "state": "",
+            "reasons": ["it changes which hand holds what in the scene's state ledger, which every frame and video "
+                        "prompt of these shots is written from"],
+            "lines": [*said, f"Shots that open or end differently: {', '.join(codes)}. Their prompts and frames read "
+                             "as out of date; nothing is regenerated by itself."],
+            "marks": [m.model_dump() for m in marks], "script_version": version, "touched": codes}
+
+
+class HandsRefused(Exception):
+    pass
+
+
+def apply(ctx: RunContext, world: World, card: Row) -> tuple[list[str], list[str]]:
+    """Accept: → (what changed, the shots touched). Raises `HandsRefused` with a sentence for the person."""
+    version = int(world.scene_row.get("script_version") or 1)
+    if int(card.get("script_version") or version) != version:
+        raise HandsRefused("The script changed since this card was made, so nothing was applied. Ask me again.")
+    before = staging_of(world)
+    try:
+        marks = [sm.StateMark.model_validate(m) for m in card.get("marks") or []]
+        after = sm.apply_state(before, items_of(world), marks, cast_of(world), version=version)
+    except sm.StateRefused as exc:
+        raise HandsRefused(str(exc)) from exc
+    except ValueError as exc:
+        raise HandsRefused("That change is not one I can apply any more.") from exc
+    touched = _touched(world, before, after)
+    rows = []
+    for row in world.shot_rows:
+        if int(row.get("number") or 0) in touched:
+            rows.append({**row, "version": int(row.get("version") or 1) + 1})
+    ctx.need("scenes").save_plan(world.scene_row["id"], rows, [], [],
+                                 {"staging": after.model_dump(mode="json"),
+                                  "updated_at": datetime.now(UTC).isoformat()})
+    return [str(x) for x in card.get("lines") or [] if not str(x).startswith("Shots that")], \
+        [f"S{n:02d}" for n in touched]
+
+
+def disagree(world: World, cov: Coverage, handles: Iterable[str]) -> list[str]:
+    """Report-only: a clip whose own words put a held thing in the hand the ledger does not ("the phone in her left
+    hand" while the ledger has Anudi's phone in her right). The ledger is what the frame paints."""
+    staging = staging_of(world)
+    if staging is None or not staging.marks:
+        return []
+    items = items_of(world)
+    out: list[str] = []
+    for h in handles:
+        c = cov.clip(h)
+        if c is None or not c.blocks:
+            continue
+        # what the clip's words describe happens over the clip: the hand as it ends, else as it opens
+        opens, ends = sm.clip_state(staging, items, c.blocks)
+        words = " ".join([c.sees, *_texts(c.ir.get("first_frame")), *_texts(c.ir.get("subjects")),
+                          *_texts(c.ir.get("beats"))])
+        for person in c.on_screen:
+            held: dict[str, tuple[str, str]] = {}
+            for state in (opens, ends):  # the end wins
+                p = state.person(person)
+                for key, said, hand in p.held if p is not None else ():
+                    held[key] = (said, hand)
+            for key, (said, hand) in held.items():
+                if not hand:
+                    continue
+                for m in SIDE.finditer(words):
+                    near = words[max(0, m.start() - WINDOW): m.start()].casefold()
+                    if key.casefold() in near and m.group(1).lower() != hand:
+                        out.append(f"{cov.code(h)} puts the {said} in {person}'s {m.group(1).lower()} hand, but the "
+                                   f"scene's state ledger (what the frame is painted from) has it in the {hand} hand: "
+                                   "write the same hand, or change the hand in the ledger.")
+                        break
+    return out
+
+
+def _texts(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        return [t for v in value.values() for t in _texts(v)]
+    if isinstance(value, list):
+        return [t for v in value for t in _texts(v)]
+    return []

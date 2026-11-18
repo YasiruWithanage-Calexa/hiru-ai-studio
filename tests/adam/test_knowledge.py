@@ -104,7 +104,7 @@ def test_the_house_and_veo_notes_exist_and_the_house_notes_say_they_are_a_draft(
     house = (SRC / "house-drama-notes.md").read_text(encoding="utf-8")
     assert "DRAFT" in house and "not" in house.lower()
     veo = (SRC / "veo-feasibility.md").read_text(encoding="utf-8")
-    for needle in ("4, 6 or 8", "2.2 words", "Readable text", "Mirrors", "Crowds", "Workarounds"):
+    for needle in ("4, 6 or 8", "2.2 words", "Text inside the picture", "Mirrors", "Crowds", "Workarounds"):
         assert needle in veo, needle
 
 

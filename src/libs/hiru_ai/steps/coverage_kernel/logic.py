@@ -3,6 +3,8 @@
     k = Kernel(cov)
     res = k.apply(ops, by="conductor" | "person" | "code" | "author" | "repair")
     res.applied, res.rejected, res.notes     what landed, what was refused (with the reason), what code did on its own
+    res.skipped                              operations that would change nothing (the value is already there): not
+                                             refusals, nothing to tell a person (findings 2026-11-17 C2)
 
 Guarantees: shots are named by their number AT THE START of the batch and resolved to handles once, so two edits in one
 batch never shift each other; a bad operation is rolled back alone; removals land all or none; a model (`author`,
@@ -69,11 +71,16 @@ class Refused(Exception):
     pass
 
 
+class Unchanged(Refused):
+    """The operation asks for what is already there: nothing to do, and nothing went wrong."""
+
+
 @dataclass
 class Result:
     applied: list[Row] = field(default_factory=list)
     rejected: list[Row] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
+    skipped: list[Row] = field(default_factory=list)  # {op, reason}: it would change nothing
 
 
 def _short(v: Any, n: int = 60) -> str:
@@ -108,6 +115,9 @@ class Kernel:
             try:
                 text = self._one(o, by, start, res)
                 res.applied.append({"op": o, "by": by, "text": text})
+            except Unchanged as exc:
+                self.cov.__dict__.update(snap.__dict__)
+                res.skipped.append({"op": o, "reason": str(exc)})
             except Refused as exc:
                 self.cov.__dict__.update(snap.__dict__)
                 res.rejected.append({"op": o, "reason": str(exc)})
@@ -155,7 +165,7 @@ class Kernel:
             if len(note) > NOTE_MAX:
                 raise Refused(f"a DoP note is at most {NOTE_MAX} characters, not {len(note)}")
             if note == c.note:
-                raise Refused(f"{code}'s DoP note is already that")
+                raise Unchanged(f"{code}'s DoP note is already that")
             old, c.note = c.note, note
             return f"{code} · DoP note: {_short(old)} → {_short(note)}"
         if name == "retime":
@@ -163,7 +173,7 @@ class Kernel:
             if t not in TAKES:
                 raise Refused(f"a take is 4, 6 or 8 s, not {o.get('take_s')}")
             if t == c.take_s:
-                raise Refused(f"{code} is already {t} s")
+                raise Unchanged(f"{code} is already {t} s")
             old, c.take_s = c.take_s, t
             if by in PEOPLE:
                 c.locks.add("take_s")
@@ -175,7 +185,7 @@ class Kernel:
             v2: Any = str(v).strip().lower() in ("true", "yes", "1") if f == "silence" else str(v or "")
             old = c.sound.get(f)
             if old == v2:
-                raise Refused(f"{code}'s {f} is already that")
+                raise Unchanged(f"{code}'s {f} is already that")
             c.sound[f] = v2
             if by in PEOPLE:
                 c.locks.add("sound")
@@ -189,7 +199,7 @@ class Kernel:
                 raise Refused(f"{code} performs {', '.join(ln.lid for ln in perf)}: its sound must voice it "
                               f"({cov.voice_for(c)}); move the line to another clip first")
             if v == c.sound_mode:
-                raise Refused(f"{code}'s sound is already {v}")
+                raise Unchanged(f"{code}'s sound is already {v}")
             old = c.sound_mode
             c.sound_mode = v
             if by in PEOPLE:
@@ -206,7 +216,7 @@ class Kernel:
             c.priority = str(pr or c.priority)
             now = f"{c.priority or '-'} {c.role or '-'}"
             if before == now:
-                raise Refused(f"{code} is already {now}")
+                raise Unchanged(f"{code} is already {now}")
             return f"{code} · role: {before} → {now}"
         if name == "remove":
             moved = self._rehome(c, exclude={c.h})
@@ -271,7 +281,7 @@ class Kernel:
         code = self.cov.code(c.h)
         f, v = str(o.get("field") or ""), o.get("value")
         if f not in SET_FIELDS:
-            raise Refused(f"{f!r} is not a field Zora writes")
+            raise Refused(f"{f!r} is not a field set writes ({', '.join(SET_FIELDS)})")
         if v is None:
             raise Refused(f"no value for {code}'s {f}")
         old: Any
@@ -303,11 +313,11 @@ class Kernel:
             if f in ("beats", "subjects") and not isinstance(parsed, list):
                 raise Refused(f"{code}'s {f} must be a list")
             if json.dumps(parsed, sort_keys=True) == json.dumps(c.ir.get(f), sort_keys=True):
-                raise Refused(f"{code}'s {f} is already that")
+                raise Unchanged(f"{code}'s {f} is already that")
             old, c.ir[f] = "(was set)" if c.ir.get(f) else "", parsed
             v = f"({len(parsed) if isinstance(parsed, list) else 1} written)"
         if str(old) == str(v):
-            raise Refused(f"{code}'s {f} is already {v}")
+            raise Unchanged(f"{code}'s {f} is already {v}")
         if by in PEOPLE:
             c.locks.add(f)  # what a person says becomes theirs
         return f"{code} · {f}: {_short(old)} → {_short(v)}"
@@ -322,7 +332,7 @@ class Kernel:
         if ln.block not in to.blocks:
             raise Refused(f"{cov.code(to.h)} does not cover b{ln.block}, where {lid} is said")
         if ln.by == to.h:
-            raise Refused(f"{cov.code(to.h)} already performs {lid}")
+            raise Unchanged(f"{cov.code(to.h)} already performs {lid}")
         old = cov.clip(ln.by) if ln.by else None
         was = cov.code(ln.by) if ln.by else "no clip"
         ln.by = to.h

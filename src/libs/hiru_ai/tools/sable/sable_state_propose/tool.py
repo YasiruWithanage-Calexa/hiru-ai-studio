@@ -38,7 +38,9 @@ class Result(BaseModel):
 
 def said(change: sm.StateMark) -> str:
     bits = [change.posture, change.condition, f"at {change.zone}" if change.zone else "",
-            f"facing {change.facing}" if change.facing else ""]
+            f"facing {change.facing}" if change.facing else "",
+            f"{change.left_hand} in the left hand" if change.left_hand else "",
+            f"{change.right_hand} in the right hand" if change.right_hand else ""]
     if not change.posture and change.condition.casefold().split(":")[0] in sm.STILL:
         bits.insert(0, "lying")
     return f"{change.who}: {', '.join(b for b in bits if b)}, from block {change.from_block}"

@@ -12,11 +12,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from contracts.coverage import checks, risk
 from contracts.coverage.ledger import changes, where
-from contracts.coverage.scene import Coverage
+from contracts.coverage.scene import CINE, IR_JSON, IR_TEXT, Coverage
 from hiru_ai.core import parts, tooling
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.errors import ToolRefused
@@ -25,6 +25,8 @@ from hiru_ai.core.trial import OPEN_FIRST, OTHER_SCENE
 Row = dict[str, Any]
 BY = "author"  # a model's: never writes a person's lock, never locks
 MAX_OPS = 12
+SET_FIELDS = ("size", "link", "why", "sees", *CINE, *IR_TEXT, *IR_JSON)  # the kernel's `set` fields
+SOUND_FIELDS = ("ambience", "effects", "music", "silence")
 OpName = Literal["set", "retime", "sound", "sound_mode", "role", "insert", "remove", "split", "merge", "move", "line",
                  "note"]
 
@@ -49,6 +51,15 @@ class RowOp(BaseModel):
     at_block: int | None = Field(None, description="split: the block the second half starts at")
     to_shot: int | None = Field(None, description="merge: the shot folded in; line: the shot that performs it")
     line: str | None = Field(None, description='line: the line, as "L" + its block number ("L5" for b5)')
+
+    @model_validator(mode="after")
+    def _field_of_its_op(self) -> RowOp:
+        """`field` is a field of THIS operation (findings 2026-11-17 C1: a model sent insert's `who` and the screen's
+        label "on screen" to `set`). Refused here, so the tool tells the model at once which fields there are."""
+        allowed = {"set": SET_FIELDS, "sound": SOUND_FIELDS}.get(self.op)
+        if allowed is not None and self.field not in allowed:
+            raise ValueError(f"{self.op}'s field is one of {', '.join(allowed)}, not {self.field!r}")
+        return self
 
     def as_op(self) -> Row:
         return {k: v for k, v in self.model_dump().items() if v is not None and v != []}
@@ -122,7 +133,9 @@ def run(ctx: RunContext, scene_ref: str | None, ops: list[RowOp]) -> tuple[RowTr
     raw = [o.as_op() for o in ops]
     after = before.copy()
     result = parts.step("coverage_kernel", "logic").Kernel(after).apply(raw, by=BY)
-    trial = RowTrial(scene, before, after, list(result.applied), list(result.rejected), list(result.notes),
+    trial = RowTrial(scene, before, after, list(result.applied),
+                     # a value already there is told to Sable as a refusal: its card would change nothing
+                     [*result.rejected, *getattr(result, "skipped", [])], list(result.notes),
                      before.fingerprint())
     trial.done = changes(before, after)
     return trial, raw

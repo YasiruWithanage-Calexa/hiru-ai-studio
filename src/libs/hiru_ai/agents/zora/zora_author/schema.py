@@ -27,6 +27,7 @@ class Input(BaseModel):
     # what the call is about, for the production memory (`memory_scope`)
     place: str = ""
     people: list[str] = []
+    hands: str = ""  # what each hand holds, from the state ledger (findings 2026-11-17 C6): keep the shot text with it
 
 
 class Output(AuthorAnswer):

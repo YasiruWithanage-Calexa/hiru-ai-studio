@@ -731,6 +731,43 @@ class StateMark(BaseModel):
     condition: str = Field(default="", max_length=40)
     zone: str = Field(default="", max_length=60)
     facing: str = ""
+    # findings 2026-11-17 C7: what a hand holds from this block on ("the phone"; "free" empties it). A thing put in one
+    # hand leaves the other, here and on the person's later marks, so a prop keeps the hand it was given.
+    left_hand: str = Field(default="", max_length=60)
+    right_hand: str = Field(default="", max_length=60)
+
+
+FREE_HAND = frozenset({"free", "empty", "nothing", "none"})
+
+
+def _hands_said(change: StateMark) -> dict[str, str]:
+    """{"left_hand" | "right_hand": the thing, or "" for an emptied hand} for the hands the change names."""
+    out: dict[str, str] = {}
+    for key in ("left_hand", "right_hand"):
+        raw = " ".join(str(getattr(change, key) or "").split())
+        if raw:
+            out[key] = "" if raw.casefold() in FREE_HAND else _clean(raw, 60)
+    return out
+
+
+def _put_in_hand(row: dict[str, Any], key: str, thing: str) -> None:
+    """`thing` into hand `key` of a mark row; `holding` keeps saying what is held. A thing the OTHER hand held changes
+    hands: what this hand held goes to the other one (phone and umbrella swap, nothing is dropped)."""
+    other = "right_hand" if key == "left_hand" else "left_hand"
+    was = str(row.get(key) or "")
+    new = hd.thing_of(thing) if thing else None
+    if new is not None and (held := hd.thing_of(str(row.get(other) or ""))) is not None and held.key == new.key:
+        row[other], row[key] = was, thing
+        row["holding"] = _with_hands(str(row.get("holding") or ""), thing, was)
+        return
+    old = hd.thing_of(was) if was else None
+    holding = str(row.get("holding") or "")
+    if old is not None and (new is None or old.key != new.key):
+        keep = hd.thing_of(str(row.get(other) or ""))
+        if keep is None or keep.key != old.key:
+            holding = _without(holding, old.key)
+    row[key] = thing
+    row["holding"] = _with_hands(holding, thing) if thing else holding
 
 
 class StateRefused(ValueError):
@@ -770,8 +807,9 @@ def apply_state(staging: SceneStaging | None, items: Sequence[Item], changes: Se
         zone = OFF if zone_said == OFF else zones.get(zone_said, "")
         if zone_said and not zone:
             raise StateRefused(f"{change.zone!r} is not a spot on this map ({', '.join(staging.zones)}).")
-        if not (posture or facing or condition or zone):
-            raise StateRefused("Nothing to change: say a posture, a condition, a spot or a direction.")
+        hands = _hands_said(change)
+        if not (posture or facing or condition or zone or hands):
+            raise StateRefused("Nothing to change: say a posture, a condition, a spot, a direction or a hand.")
         still = condition.casefold().split(":")[0] in STILL
         posture = posture or ("lying" if still else "")
         mine = sorted((r for r in rows if r["who"].casefold() == who.casefold()), key=lambda r: r["block"])
@@ -788,9 +826,17 @@ def apply_state(staging: SceneStaging | None, items: Sequence[Item], changes: Se
             rows.append(row)
         row.update({k: v for k, v in (("posture", posture), ("condition", condition), ("zone", zone),
                                       ("facing", facing)) if v})
+        for key, thing in hands.items():
+            _put_in_hand(row, key, thing)
         if still:  # a body stays where it fell, so a later mark cannot walk it off
             zone = zone or row["zone"]
         for later in (r for r in mine if r["block"] > change.from_block):
+            for key, thing in hands.items():  # the thing stays in the hand it was given until a mark puts it down
+                other = "right_hand" if key == "left_hand" else "left_hand"
+                new = hd.thing_of(thing) if thing else None
+                held = hd.thing_of(str(later.get(other) or ""))
+                if new is not None and held is not None and held.key == new.key:
+                    later[key], later[other] = later[other], str(later.get(key) or "")
             if posture and later["posture"]:
                 later["posture"] = posture
             if condition and later["condition"]:
