@@ -15,6 +15,7 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from enum import StrEnum
 
+from contracts import action_budget as ab
 from contracts.producer import Check
 
 # Brands a prompt must not name: Veo renders logos it is told about, and a broadcaster cannot air
@@ -55,6 +56,7 @@ class ShotNow:
     sound_mode: str
     lines: list[LineNow] = field(default_factory=list)
     speakers: list[SpeakerNow] = field(default_factory=list)
+    actions: list[str] = field(default_factory=list)  # the shot's beat actions; none: no budget line
 
 
 def _term_hits(prose: str, terms: Iterable[str]) -> list[str]:
@@ -103,6 +105,11 @@ def check_prompt(*, prose: str, sinhala: Sequence[str], shot: ShotNow,
     elif duration:
         checks.append(Check(label=f"{shot.duration_s} s on the Veo ladder", tone="pass"))
 
+    if any(a.strip() for a in shot.actions):  # plan/2026-11-18c phase 7: H-16, a warning here, never a block
+        why = ab.count(shot.actions).over()
+        checks.append(Check(label="Actions within budget" if not why
+                            else f"Over the action budget: {'; '.join(why)}", tone="advisory" if why else "pass"))
+
     hits = _term_hits(prose, banned_terms)
     checks.append(Check(label="No brands or listed names" if not hits else f"Names to remove: {', '.join(hits)}",
                         tone="pass" if not hits else "fail"))
@@ -114,6 +121,23 @@ def blocking(checks: Iterable[Check]) -> bool:
 
 
 # ── takes ──────────────────────────────────────────────────────────────────────────────────
+
+
+# Why a take failed, as a person picks it (plan/2026-11-18c phase 8): the action budget (H-16) is tuned from these.
+# Kept in the audit log (`take.reject`, `codes`) and said first in the take's reason; the takes table is unchanged.
+REJECT_REASONS: dict[str, str] = {
+    "wrong_action": "Wrong action",
+    "too_many_actions": "Too many actions",
+    "object_vanished": "Object vanished",
+    "camera_moved": "Camera moved",
+}
+
+
+def reject_reason(codes: Iterable[str], words: str = "") -> str:
+    """The take's reason as stored and shown: the picked reasons, then the person's own words."""
+    picked = "; ".join(REJECT_REASONS[c] for c in dict.fromkeys(codes) if c in REJECT_REASONS)
+    words = words.strip()
+    return " · ".join(x for x in (picked, words) if x) or "Rejected"
 
 
 class TakeStatus(StrEnum):

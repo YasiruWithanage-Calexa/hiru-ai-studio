@@ -37,7 +37,8 @@ def test_an_unmarked_line_whose_speaker_is_not_seen_is_voiced_off_screen_never_s
     assert bound["slate"] == next(c["slate"] for c in clips if c["id"] == "c08")
     assert bound["sound_mode"] == "voiceover" and bound["word_target"] > 0
     carrier = next(s for s in out["shots"] if s["slate"] == next(c["slate"] for c in clips if c["id"] == "c16"))
-    assert carrier["sound_mode"] == "silent" and carrier["word_target"] == 0
+    # no words of its own: "silent", or "ambient" when the clip gives its room (both say nobody speaks; 2026-11-18)
+    assert carrier["sound_mode"] in ("silent", "ambient") and carrier["word_target"] == 0
 
 
 def test_an_approved_scene_is_refused():

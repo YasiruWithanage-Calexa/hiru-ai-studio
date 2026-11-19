@@ -1,0 +1,48 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<frame.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<face_C02.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<look_C02.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<face_C05.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<look_C05.png>"
+  },
+  {
+   "type": "text",
+   "text": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Clear coverage, readable emotion, family-audience warmth.\n\nSETTING\nAt the left curb outside an office building on a Colombo roadside, with the food three-wheeler farther along the same pavement.\n\nSUBJECTS\nAnudi is an adult Sri Lankan woman with medium-brown skin, an oval face, dark eyes and long black hair tied in a low ponytail, wearing a muted blue blouse, charcoal trousers and flat black shoes — Lifts her handbag onto her left forearm and takes the closed umbrella in her left hand, exits retaining the smartphone in her right hand, pushes the rear door shut with her left forearm, gives a small closed-lip nod toward the driver and begins walking screen right; The driver is an adult Sri Lankan man with medium-brown skin, short black hair and a clean-shaven face, wearing a pale grey collared shirt — Brings the car to rest and remains seated with his hands at the wheel. Hands: Anudi holds the smartphone in one hand. driver is not holding the smartphone. During the shot Anudi takes the handbag. During the shot Anudi takes the umbrella.\n\nCAMERA\nCamera: Wide shot (WIDE showing the rear passenger doorway, Anudi's full figure on exit and the route toward the office; driver visible through the front side window), eye level (eye level from pavement looking obliquely toward the curb-side rear door); 35mm lens at f/5.6, a wide-normal lens: natural perspective with some of the space around them; focus: Deep; car, pedestrian route and office frontage legible. Static: a steady, locked-off frame. As planned: locked-off on sticks throughout. Camera on side A of the line of action: the action reads left to right. Grade: Neutral overcast daylight, 6000K, Natural skin, subdued road greys and restrained colour, with gently modelled shadows..\n\nLIGHTING\nDay, window light: Overcast sky provides consistent daylight, with gentle directional falloff beneath the office frontage and car roof.\n\nACTION & DIALOGUE\nOver 8 seconds:\n0-3s: WIDE fixed on the car and pavement. The arrival transfers her attention from handset to pavement. The driver stops; Anudi loops the handbag over her left forearm and takes the closed umbrella in her left hand while retaining the phone in her right. Anudi directs her eyes to the doorway and leans forward without haste.\n3-6s: WIDE fixed on the rear doorway. The doorway releases her into the ordinary street. The rear curb-side door swings open; with the door panel masking the grip, Anudi steps out and pushes it closed with her left forearm, phone still in right hand, handbag on left forearm and closed umbrella in left hand. She plants both feet before straightening and keeps the belongings gathered close to her side.\n6-8s: WIDE fixed on Anudi and the car. A small acknowledgment completes the familiar drop-off. Anudi gives the seated driver a small closed-lip nod and begins walking screen right toward the office. She briefly turns her face toward the front window, dips her chin once, then redirects her eyes along the pavement.\n\nSOUND\nNo dialogue. No voiceover. Nobody speaks on camera. Silence — no music, no room tone.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 9:16. Duration 8 seconds. Ends on a cut.\n\nReference images, in the order attached:\nImage 1 is the opening frame of this shot. The video starts exactly on this picture: the same framing, people, place, weather and light, and everything that happens grows out of it.\nImage 2 is the face sheet for Anudi: several angles of the same face. Anudi's face, age, skin tone and hair come only from this sheet, at every angle and expression, including when Anudi turns or moves closer to the camera.\nImage 3 is the look sheet for Anudi: exactly what Anudi wears in this shot, head to toe (Dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers and tan low-heeled closed shoes; Small gold stud earrings, a tan structured handbag and a navy folding umbrella). When more of Anudi comes into view, the clothes, shoes and things carried match this sheet exactly.\nImage 4 is the face sheet for the driver: several angles of the same face. The driver's face, age, skin tone and hair come only from this sheet, at every angle and expression, including when the driver turns or moves closer to the camera.\nImage 5 is the look sheet for the driver: exactly what the driver wears in this shot, head to toe (Plain pale-grey short-sleeved collared shirt, neatly pressed dark-navy trousers and black slip-on shoes). When more of the driver comes into view, the clothes, shoes and things carried match this sheet exactly.\nImages 2 to 5 are references only: never show a sheet, its grey backdrop or its panels in the video, and never cut to them. Where the words above describe someone's clothes or face differently from these pictures, the pictures win."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "9:16",
+  "resolution": "360p",
+  "duration": "8s",
+  "delivery": "uri"
+ },
+ "generation_config": {
+  "video_config": {
+   "task": "reference_to_video"
+  }
+ }
+}

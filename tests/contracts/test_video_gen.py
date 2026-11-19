@@ -71,11 +71,49 @@ def test_omni_cites_exactly_what_it_attaches_in_the_persons_order():
     built = build_omni_input(spec([start, a, end, b, c]))
 
     tags = [p["tag"] for p in built["references"]]
-    assert tags == ["<IMAGE_REF_0>", "<IMAGE_REF_1>", "<IMAGE_REF_2>", "<FIRST_FRAME>", "<LAST_FRAME>"]
-    assert [p["source_id"] for p in built["references"]] == [str(x.source.id) for x in (a, b, c, start, end)]
+    assert tags == ["Image 1", "Image 2", "Image 3", "Image 4", "Image 5"]
+    assert [p["source_id"] for p in built["references"]] == [str(x.source.id) for x in (start, a, b, c, end)]
     assert cited(built) == tags  # attached == cited, same order
-    assert "<IMAGE_REF_0> is the character sheet for Nimal." in built["prompt"]
-    assert "<FIRST_FRAME> is the literal opening frame: the opening frame." in built["prompt"]
+    assert "Image 1 is the opening frame of this shot. The video starts exactly on this picture" in built["prompt"]
+    assert "Image 2 is the character sheet for Nimal. Keep what it shows exactly." in built["prompt"]
+    assert "Image 5 is the closing frame of this shot. The video ends exactly on this picture." in built["prompt"]
+    assert "Never show Images 2, 3 and 4 in the video: they are references only" in built["prompt"]
+    assert "<IMAGE_REF" not in built["prompt"] and "<FIRST_FRAME>" not in built["prompt"]  # deprecated by Google
+
+
+@pytest.mark.parametrize("slots", [
+    [], ["first_frame"], ["reference"], ["first_frame", "reference"], ["first_frame", "last_frame"],
+    ["reference", "first_frame", "reference", "reference"], ["last_frame", "reference", "first_frame"]])
+def test_image_n_is_always_the_nth_picture_sent(slots):
+    """The guard (plan/2026-11-18 §3.3): if sentences and parts drift apart, every picture gets another's job."""
+    refs = [ref(f"the face sheet for P{chr(65 + i)}" if s == "reference" else "x", slot=s,
+                kind="face_sheet" if s == "reference" else "accepted_frame") for i, s in enumerate(slots)]
+    built = build_omni_input(spec(refs))
+    assert cited(built) == [p["tag"] for p in built["references"]] == [f"Image {n}" for n in range(1, len(refs) + 1)]
+    sent = [p["slot"] for p in built["references"]]
+    if "first_frame" in sent:
+        assert sent[0] == "first_frame"
+    if "last_frame" in sent:
+        assert sent[-1] == "last_frame"
+    for p in built["references"]:
+        line = next(x for x in built["prompt"].splitlines() if x.startswith(f"{p['tag']} is "))
+        word = {"first_frame": "opening frame", "last_frame": "closing frame", "reference": "face sheet"}[p["slot"]]
+        assert word in line
+
+
+def test_a_single_sheet_gets_the_singular_closing_line():
+    start = ref("the opening frame", slot="first_frame", kind="accepted_frame", bucket="frames")
+    built = build_omni_input(spec([start, ref("the look sheet for Anudi", kind="look_sheet")]))
+    assert "Image 2 is the look sheet for Anudi: exactly what that person wears in this shot" in built["prompt"]
+    assert "Never show Image 2 in the video: it is a reference only, so no sheet" in built["prompt"]
+    assert "never cuts to it." in built["prompt"]
+    assert cited(built) == ["Image 1", "Image 2"]
+
+
+def test_a_carried_frame_says_where_it_came_from():
+    carried = ref("the last frame of the shot before", slot="first_frame", kind="take_last_frame", bucket="takes")
+    built = build_omni_input(spec([carried]))
+    assert "Image 1 is the opening frame of this shot (the last frame of the shot before)." in built["prompt"]
 
 
 def test_reordering_renumbers_the_tags_and_never_sorts_or_dedupes():
@@ -85,8 +123,8 @@ def test_reordering_renumbers_the_tags_and_never_sorts_or_dedupes():
     two = build_omni_input(spec([b, a, same]))
     assert [p["path"] for p in one["references"]] == [a.source.path, b.source.path, a.source.path]
     assert [p["path"] for p in two["references"]] == [b.source.path, a.source.path, a.source.path]
-    assert "<IMAGE_REF_0> is the location plate for the kitchen." in two["prompt"]
-    assert "<IMAGE_REF_1> is the character sheet for Nimal." in two["prompt"]
+    assert "Image 1 is the location plate for the kitchen." in two["prompt"]
+    assert "Image 2 is the character sheet for Nimal." in two["prompt"]
 
 
 def test_veo_names_pictures_by_position_and_puts_frames_in_their_slots():
@@ -111,11 +149,11 @@ def test_no_references_means_no_citation_block():
     assert build_omni_input(spec([]))["prompt"] == "Nimal opens the door."
 
 
-def test_wire_order_is_references_then_start_then_end():
+def test_wire_order_is_start_then_references_then_end():
     a = ref("a")
     start = ref("s", slot="first_frame")
     end = ref("e", slot="last_frame")
-    assert [b.slot for b in wire_order([end, start, a])] == ["reference", "first_frame", "last_frame"]
+    assert [b.slot for b in wire_order([end, a, start])] == ["first_frame", "reference", "last_frame"]
 
 
 # ── labels are words ─────────────────────────────────────────────────────────────────────────────────────────
@@ -213,14 +251,21 @@ def test_veo_1080p_and_an_end_frame_also_need_eight_seconds():
 
 
 def test_caps_and_modes_are_enforced():
-    many = [ref(f"the sheet for person {chr(65 + i)}") for i in range(11)]
-    assert any("at most 10" in m for m in blocking(validate_render(spec(many))))
+    many = [ref(f"the sheet for person {chr(65 + i)}") for i in range(7)]
+    assert any("at most 6" in m for m in blocking(validate_render(spec(many))))
+    six_and_frame = spec([ref("a", slot="first_frame"), *many[:6]])
+    assert any("at most 6, the start frame included" in m for m in blocking(validate_render(six_and_frame)))
     veo = spec([ref("the character sheet for Nimal"), ref("a start", slot="first_frame")], engine="veo_3_1",
                duration_s=8)
     assert any("either reference pictures or a start frame" in m for m in blocking(validate_render(veo)))
     omni_both = spec([ref("a", slot="first_frame"), ref("the character sheet for Nimal")])
-    assert any("either reference pictures or a start frame" in m for m in blocking(validate_render(omni_both))), \
-        "Omni's image-to-video takes at most 2 images: the frames (a live 400, 2026-11-06)"
+    assert not blocking(validate_render(omni_both)), "Omni takes a start frame with sheets (plan/2026-11-18)"
+    omni_end = spec([ref("the character sheet for Nimal"), ref("b", slot="last_frame")])
+    assert any("either reference pictures or an end frame" in m for m in blocking(validate_render(omni_end)))
+    nimal = uuid4()
+    four = spec([ref(f"sheet {i}", binds_to=nimal) for i in range(4)])
+    assert any("at most 3 pictures of one person" in m for m in blocking(validate_render(four)))
+    assert not blocking(validate_render(spec([ref(f"sheet {i}", binds_to=nimal) for i in range(3)])))
     assert not blocking(validate_render(spec([ref("a", slot="first_frame"), ref("b", slot="last_frame")])))
     assert not blocking(validate_render(spec([ref("the character sheet for Nimal"), ref("the plate for the kitchen")])))
     two = spec([ref("a", slot="first_frame"), ref("b", slot="first_frame")])
@@ -262,7 +307,9 @@ def test_checks_name_what_will_drift_or_is_missing_and_change_nothing():
     s = spec(refs, prose="Nimal opens the door.")
     labels = [c.label for c in check_render(s, facts)]
     assert "Image 1 is Kamala; the prompt never mentions them. The picture will drift the frame." in labels
-    assert "Kamala has 2 reference pictures." in labels
+    assert not any("reference pictures." in label for label in labels), "a face + look pair is Omni's rule"
+    veo = [c.label for c in check_render(spec(refs, engine="veo_3_1", duration_s=8), facts)]
+    assert "Kamala has 2 reference pictures." in veo
     assert "Ruwan is in the shot but has no reference picture." in labels
     assert any("older card (v1; now v2)" in label for label in labels)
     assert not any("Nimal" in label and "drift" in label for label in labels)
@@ -281,13 +328,14 @@ def test_a_stale_start_frame_is_only_reported_when_there_is_one():
 # ── the default list follows the frame rule ───────────────────────────────────────────────────────────────────
 
 
-def cand(kind, name, seen=True, sheet=True, look=False):
+def cand(kind, name, seen=True, sheet=True, look=False, face=False):
     return SheetCandidate(entity_id=uuid4(), kind=kind, name=name, seen=seen,
-                          sheet=src() if sheet else None, look_sheet=src("look_sheet") if look else None)
+                          sheet=src() if sheet else None, look_sheet=src("look_sheet") if look else None,
+                          face=src("face_sheet") if face else None)
 
 
 def test_default_list_is_the_people_seen_then_the_place_then_props_with_a_look_before_the_base_sheet():
-    cap = capability("omni_flash")
+    cap = capability("veo_3_1").model_copy(update={"max_refs": 10})  # one picture per person, no frame
     place, prop = cand("location", "the kitchen"), cand("prop", "the kettle")
     nimal, kamala = cand("character", "Nimal", look=True), cand("character", "Kamala")
     got = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=None, carried_frame=None,
@@ -297,6 +345,71 @@ def test_default_list_is_the_people_seen_then_the_place_then_props_with_a_look_b
                                                "the reference sheet for the kettle"]
     assert got.bindings[0].source.kind == "look_sheet" and got.bindings[0].binds_to == nimal.entity_id
     assert all(b.origin == "code" and b.slot == "reference" for b in got.bindings)
+
+
+# ── Omni: the start frame AND each person's face and look sheets (plan/2026-11-18) ──────────────────────────────
+
+
+def test_omni_sends_the_frame_then_each_persons_face_then_look_and_leaves_the_place_to_the_frame():
+    """Love Hour 4 shot 02's shape (lab/omni_refs run 003)."""
+    cap = capability("omni_flash")
+    anudi, driver = cand("character", "Anudi", face=True, look=True), cand("character", "driver", face=True, look=True)
+    place, car = cand("location", "Colombo roadside"), cand("prop", "Family car")
+    got = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=src("accepted_frame", "frames"),
+                             carried_frame=None, candidates=[anudi, driver, place, car])
+    assert [b.label for b in got.bindings] == [
+        "the opening frame", "the face sheet for Anudi", "the look sheet for Anudi", "the face sheet for driver",
+        "the look sheet for driver"]
+    assert [b.source.kind for b in got.bindings][1:] == ["face_sheet", "look_sheet"] * 2
+    assert got.left_out == ["the location plate for Colombo roadside (the start frame already shows it)",
+                            "the reference sheet for Family car (the start frame already shows it)"]
+    s = spec(got.bindings, prose="Anudi steps out; the driver nods.")
+    assert validate_render(s) == []
+    built = build_request(s)
+    assert cited(built) == ["Image 1", "Image 2", "Image 3", "Image 4", "Image 5"]
+    assert "Image 2 is the face sheet for Anudi: several angles of the same face." in built["prompt"]
+    assert "Image 3 is the look sheet for Anudi: exactly what that person wears in this shot" in built["prompt"]
+
+
+def test_omni_falls_back_to_the_base_sheet_when_a_person_has_no_face_sheet():
+    cap = capability("omni_flash")
+    frame = src("accepted_frame", "frames")
+    looks = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=frame, carried_frame=None,
+                               candidates=[cand("character", "Nimal", look=True)])
+    assert [b.label for b in looks.bindings][1:] == ["the character sheet for Nimal", "the look sheet for Nimal"]
+    bare = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=frame, carried_frame=None,
+                              candidates=[cand("character", "Nimal")])
+    assert [b.label for b in bare.bindings][1:] == ["the character sheet for Nimal"]
+    face_only = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=frame, carried_frame=None,
+                                   candidates=[cand("character", "Nimal", face=True)])
+    assert [b.label for b in face_only.bindings][1:] == ["the face sheet for Nimal", "the character sheet for Nimal"]
+    nothing = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=frame, carried_frame=None,
+                                 candidates=[cand("character", "Nimal", sheet=False)])
+    assert [b.slot for b in nothing.bindings] == ["first_frame"], "no sheets: the frame alone, as before"
+
+
+def test_omni_gives_sheets_to_two_people_and_lists_the_rest():
+    cap = capability("omni_flash")
+    people = [cand("character", n, face=True, look=True) for n in ("Nimal", "Kamala", "Ruwan")]
+    got = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=src("accepted_frame", "frames"),
+                             carried_frame=None, candidates=people)
+    assert len(got.bindings) == 5
+    assert {b.binds_to for b in got.bindings[1:]} == {people[0].entity_id, people[1].entity_id}
+    assert got.left_out == ["the face sheet for Ruwan (Omni Flash keeps faces for up to 2 people)",
+                            "the look sheet for Ruwan (Omni Flash keeps faces for up to 2 people)"]
+
+
+def test_omni_without_a_frame_keeps_the_place_within_six():
+    cap = capability("omni_flash")
+    got = default_references(cap=cap, strategy=FrameStrategy.GENERATE, accepted_frame=None, carried_frame=None,
+                             candidates=[cand("character", "Nimal", face=True, look=True),
+                                         cand("character", "Kamala", face=True, look=True),
+                                         cand("location", "the kitchen"), cand("prop", "the kettle"),
+                                         cand("prop", "the cup")])
+    assert [b.label for b in got.bindings][-2:] == ["the location plate for the kitchen",
+                                                    "the reference sheet for the kettle"]
+    assert len(got.bindings) == 6 and got.left_out == ["the reference sheet for the cup"]
+    assert validate_render(spec(got.bindings, prose="Nimal and Kamala in the kitchen.")) == []
 
 
 def test_someone_only_heard_is_never_attached():

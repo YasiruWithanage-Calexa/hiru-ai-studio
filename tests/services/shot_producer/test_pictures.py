@@ -129,7 +129,8 @@ def test_the_dop_beats_are_matched_by_time_not_by_position():
     # the window 3-6 s overlaps "ring" (2-5) most; 6-8 s is "answer" (5-8); 0-3 s is "smile" (0-2)
     assert [b["director_line"] for b in out] == ["smile", "ring", "answer"]
     two = {"beats": [{"time": "0-6s", "director_line": "first"}, {"time": "6-8s", "director_line": "second"}]}
-    assert [b["director_line"] for b in shots.fit_beats(two, shot)["beats"]] == ["first", "first", "second"]  # type: ignore[arg-type]
+    # each beat once (2026-11-18): a long beat is not repeated in the next window (the phone fell twice)
+    assert [b["director_line"] for b in shots.fit_beats(two, shot)["beats"]] == ["first", "", "second"]  # type: ignore[arg-type]
     unstamped = shots.fit_beats({"beats": [{"director_line": "x"}, {"director_line": "y"}]}, shot)["beats"]  # type: ignore[arg-type]
     assert [b["director_line"] for b in unstamped] == ["x", "x", "y"]  # no times: across in order
 

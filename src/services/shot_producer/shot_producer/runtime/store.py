@@ -6,6 +6,7 @@ from uuid import UUID
 
 import httpx
 
+from contracts.canon import looks_in_force
 from shot_producer.runtime.rest import Rest, Row
 
 _logger = logging.getLogger(__name__)
@@ -76,6 +77,17 @@ class Store:
                                                  "accepted_at": "not.is.null", "stage": "neq.draft",
                                                  "select": "id,shot_id,pins"})
         return {str(r["shot_id"]): r for r in rows}
+
+    def scene_looks_in_force(self, scene: Row) -> dict[str, Row]:
+        """character id → the look this scene uses (`contracts.canon.looks_in_force`): a person's pick for the scene,
+        else the episode rule. What the video prompt dresses people in (plan/2026-11-18)."""
+        looks = self.rest.select("canon_looks", {"production_id": f"eq.{scene['production_id']}", "select": "*",
+                                                 "order": "created_at"})
+        if not looks:
+            return {}
+        picks = self.rest.select("scene_looks", {"scene_id": f"eq.{scene['id']}", "select": "*"})
+        episode = (scene.get("episode") or {}).get("number")
+        return dict(looks_in_force(looks, picks, int(episode) if episode is not None else None))
 
     def last_prompt_version(self, shot_id: str) -> int:
         row = self.rest.first("video_prompts", {"shot_id": f"eq.{shot_id}", "select": "version",

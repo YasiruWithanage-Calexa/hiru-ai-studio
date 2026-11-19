@@ -22,11 +22,12 @@ from __future__ import annotations
 
 # Ported from services/shot_producer/shot_producer/engine/serialize.py (plan/2026-11-03 Phase 2).
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from contracts import on_screen_text
 from contracts.camera_words import camera_words, lighting_words
+from contracts.canon import dressed
 from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment
 from contracts.staging import source_phrase
 from hiru_ai.core import parts
@@ -111,6 +112,9 @@ class Context:
     previous_code: str = ""
     carried: str = ""  # what a joined shot carries over from the previous one
     has_frame: bool = False  # an accepted first frame is attached
+    # canon code → what the scene's look puts on that person (`contracts.canon.look_outfit`); it replaces the planner's
+    # clothes in the Subjects line (plan/2026-11-18). Empty: the description as the planner wrote it.
+    wardrobe: dict[str, str] = field(default_factory=dict)
 
 
 def _seg(text: str) -> PromptSegment:
@@ -157,9 +161,11 @@ def _camera_text(ir: Row, ctx: Context) -> str:
     (it does not depend on the fields people choose)."""
     raw = ir.get("cinematography")
     cine: Row = raw if isinstance(raw, dict) else {}
-    grade = ", ".join(b for b in (_clean(cine.get("white_balance")), _clean(cine.get("color_tone"))) if b)
-    lens = _clean(cine.get("lens_artifacts"))
+    grade = ", ".join(b for b in (_bare(cine.get("white_balance")), _bare(cine.get("color_tone"))) if b)
+    lens = _bare(cine.get("lens_artifacts"))
     out = [f"Camera: {camera_words(ctx.camera, ctx.recommended, ir, still=False)}"]
+    if ctx.camera.movement == "Static":  # "locked-off" alone still drifts (2026-11-18): say it firmly
+        out.append(get_schema().rule("tripod"))
     if grade:
         out.append(f"Grade: {grade}.")
     if lens and lens.lower() != "none":
@@ -230,7 +236,9 @@ def _beats_section(shot: ShotInput, ir: Row, ctx: Context) -> PromptSection | No
     beats = [b for b in ir.get("beats") or [] if isinstance(b, dict)]
     if not beats:
         return None
-    drop_camera = bool(changed_fields(ctx) & {"framing", "movement", "speed"})
+    # A beat's camera note goes before its action only when the camera moves (where it times the move). On a static
+    # camera it is only "unchanged", "hold", "tableau": in the action those words make the people freeze (2026-11-18)
+    drop_camera = bool(changed_fields(ctx) & {"framing", "movement", "speed"}) or ctx.camera.movement == "Static"
     by_beat: dict[int, list[Line]] = {}
     for ln in shot.lines:
         idx = ln.beat_index if ln.beat_index is not None and 0 <= ln.beat_index < len(beats) else len(beats) - 1
@@ -248,6 +256,8 @@ def _beats_section(shot: ShotInput, ir: Row, ctx: Context) -> PromptSection | No
         cam = _bare(beat.get("camera"))
         if cam and not drop_camera and cam.lower() not in ("unchanged", "as above", "same", "none"):
             body = f"{cam}. {body}" if body else cam
+        if not body and not by_beat.get(n):  # a window no beat starts in (`shots.fit_beats`): nothing to say
+            continue
         line = f"\n{when}: {body}" if when else f"\n- {body}"
         if line.rstrip() and not line.rstrip().endswith((".", "!", "?", ":", "—")):
             line = line.rstrip() + "."
@@ -276,7 +286,10 @@ def _guard(shot: ShotInput) -> str:
     bits = [rules.rule("frame_hygiene"), on_screen_text.VIDEO, rules.rule("anatomy")]
     if not shot.seen:
         bits.append(rules.rule("no_extra_people"))
-    bits.append(rules.rule("physics"))
+    physics = rules.rule("physics")
+    if shot.moves:  # a thing leaves a hand in this shot: a line that keeps objects put would forbid it (2026-11-18)
+        physics = " ".join(physics.replace(rules.rule("stay_put"), "").split())
+    bits.append(physics)
     return "Rendering constraints: " + " ".join(b for b in bits if b)
 
 
@@ -300,7 +313,9 @@ def build_sections(shot: ShotInput, ir: Row, ctx: Context) -> list[PromptSection
     # plan/2026-11-09 (D4, Raphael first): the subject's place in the frame, the state the shot opens and ends in
     # (the scene's state ledger, by code) and a Story sentence. Every other planner's prompt is as it was.
     ledger = shot.intent if str(shot.row.get("planner") or "") == "raphael" else None
-    described = "; ".join(_bare(s.get("description")) + (f" — {_bare(s.get('action'))}" if s.get("action") else "")
+    wear = ctx.wardrobe
+    described = "; ".join(dressed(_bare(s.get("description")), wear.get(str(s.get("id") or ""), ""))
+                          + (f" — {_bare(s.get('action'))}" if s.get("action") else "")
                           + (f", {_bare(s.get('position'))}" if ledger is not None and _bare(s.get("position"))
                              else "")
                           for s in subjects)

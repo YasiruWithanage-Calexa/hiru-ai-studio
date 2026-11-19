@@ -13,6 +13,7 @@ does not import from the `adam` folders (plan §5.0). `steps/serialize/card.py` 
 """
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 from typing import Any
 
@@ -76,12 +77,23 @@ def decisions_text(card: Mapping[str, Any]) -> str:
     return f"DIRECTOR'S CAMERA, FROM THE SHOT CARD (fixed; express it, do not change it): {said}." if said else ""
 
 
+_NOTHING = re.compile(r"^(?:none|nothing|n/a|-|—)(?:\W|$)", re.IGNORECASE)
+
+
+def _sound_bit(label: str, value: Any) -> str:
+    """One part of the sound line, without its own closing stop (the line ends once: 'music: None..', 2026-11-18);
+    a part that says there is none ('None', 'None added', 'None; no score') is left out."""
+    text = " ".join(str(value or "").split()).rstrip(" .;,")
+    return "" if not text or text == "{}" or _NOTHING.match(text) else f"{label}: {text}"
+
+
 def sound_text(card: Mapping[str, Any]) -> str:
     """The card's sound design as one sentence for the prompt ('' when it has none)."""
     sound = _part(card, "sound")
-    bits = [_bit("room", sound.get("ambience")), _bit("effects", sound.get("effects")),
-            _bit("music", sound.get("music")), _bit("this sound arrives before its picture", sound.get("pre_lap")),
-            _bit("it carries into the next shot", sound.get("carries_over"))]
+    bits = [_sound_bit("room", sound.get("ambience")), _sound_bit("effects", sound.get("effects")),
+            _sound_bit("music", sound.get("music")),
+            _sound_bit("this sound arrives before its picture", sound.get("pre_lap")),
+            _sound_bit("it carries into the next shot", sound.get("carries_over"))]
     return "; ".join(b for b in bits if b)
 
 

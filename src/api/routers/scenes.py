@@ -27,7 +27,7 @@ from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.services.director import board
 from api.workers import task_manager
-from contracts import bridges, sceneplan, stagemap
+from contracts import action_budget, bridges, sceneplan, stagemap
 from contracts import reading as scene_reading
 from contracts.canon import CanonKind, name_key
 from contracts.director import BoardMember, ScriptUpdate, ShotUpdate
@@ -117,6 +117,7 @@ class ShotView(BaseModel):
     picture_s: float = 0.0  # seconds its actions take to show
     need_s: float = 0.0  # seconds it needs to show them and say its lines
     crowded: bool = False  # it holds more than its length can show
+    over_budget: str = ""  # why its actions are over the action budget (plan/2026-11-18c, H-16); "" when they fit
     timeline: list[TimelineSlot] = []
     holds: list[HoldView] = []  # time the scene's reading gave it: a reaction, a look held, a last image
     places: list[PlaceView] = []  # where the people it shows are when it starts (empty without a staging map)
@@ -490,6 +491,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             summary=summary_of.get(str(row.get("slate") or ""), ""),
             version=int(row.get("version") or 1), picture_s=f.picture_s, need_s=f.need_s,
             crowded=f.number in result.crowded if result else False,
+            over_budget=over_budget(row),
             timeline=[TimelineSlot(block=s.index, kind="line" if s.is_line else "picture", start_s=round(s.start_s, 2),
                                    end_s=round(s.end_s, 2)) for s in shot_clock(kernel_items[f.start:f.end])[0]]))
 
@@ -572,6 +574,15 @@ def staging_findings(staging: stagemap.SceneStaging | None, items: list[Any], re
     return [StagingFindingView(code=f.code, message=f.message, block=f.block,
                                shot_id=shot_of_number.get(f.shot) if f.shot else None, who=list(f.who), zone=f.zone)
             for f in found]
+
+
+def over_budget(row: Row) -> str:
+    """Why a shot's beats are over the action budget (`contracts.action_budget`, house rule H-16), "" when they fit
+    or none is written. Read from the IR's beats (Raphael's), else the shot's own."""
+    ir = row.get("ir") if isinstance(row.get("ir"), dict) else {}
+    actions = action_budget.beats_of(ir or {}) or [str(b.get("action") or "") for b in row.get("beats") or []
+                                                    if isinstance(b, dict)]
+    return "; ".join(action_budget.count(actions).over())
 
 
 def _pad(beats: list[Row], n: int) -> list[Row]:

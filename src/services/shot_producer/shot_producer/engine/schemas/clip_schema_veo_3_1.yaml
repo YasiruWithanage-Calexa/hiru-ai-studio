@@ -18,6 +18,8 @@ fixed_values:
     Solid objects — furniture, walls, props — are impenetrable: people move around them, never
     through them, and every contact carries natural weight. Objects stay put unless someone
     deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+  stay_put: "Objects stay put unless someone deliberately moves them."
+  tripod: "The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift."
   frame_hygiene: "Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay."
   medium_style: "Photorealistic live-action television drama footage, real optics and natural imperfections."
   language_line: >-

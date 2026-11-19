@@ -26,6 +26,7 @@ from datetime import UTC, datetime
 from typing import Any, Protocol
 from uuid import UUID
 
+from contracts.canon import wardrobe_by_code
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import CameraSettings, prompt_text
 from contracts.staging import AUTHORED
@@ -61,6 +62,7 @@ class StoreLike(Protocol):
     def canon(self, production_id: UUID) -> list[Row]: ...
     def lead_persona(self, production_id: UUID) -> Row | None: ...
     def accepted_frames(self, shot_ids: list[str]) -> dict[str, Row]: ...
+    def scene_looks_in_force(self, scene: Row) -> dict[str, Row]: ...
     def last_prompt_version(self, shot_id: str) -> int: ...
     def techniques(self, query: str, embedding: list[float] | None, k: int = 4) -> list[Row]: ...
     def save_design(self, shot_id: str, ir: Row, design: Row) -> None: ...
@@ -201,7 +203,7 @@ def design_scene(scene: SceneInput, group: list[ShotInput], prod: ProductionInpu
 
 
 def write_prompt(shot: ShotInput, scene: SceneInput, prod: ProductionInput, frame: Row | None,
-                 job_id: str, actor: str) -> Row:
+                 job_id: str, actor: str, *, wardrobe: dict[str, str] | None = None) -> Row:
     """A new prompt version's row, serialized in code from the stored IR."""
     previous = next((s for s in scene.shots if s.number == shot.number - 1), None)
     ctx = serialize.Context(aspect_ratio=prod.aspect_ratio, camera=shot.camera(scene),
@@ -209,7 +211,7 @@ def write_prompt(shot: ShotInput, scene: SceneInput, prod: ProductionInput, fram
                             previous_code=previous.code if previous else "",
                             carried=carried_state(previous.code, previous.row.get("ir"),
                                                   positions_text(previous.feeling.end)) if previous else "",
-                            has_frame=frame is not None)
+                            has_frame=frame is not None, wardrobe=dict(wardrobe or {}))
     ir = dict(shot.row.get("ir") or {})
     sections = serialize.build_sections(shot, ir, ctx)
     return {"production_id": prod.id, "shot_id": shot.id,
@@ -251,7 +253,7 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
     prefix: str | None = None
     designed = prompts = intents = 0
     skipped: list[str] = []
-    for _, scene in scenes:
+    for scene_row, scene in scenes:
         label = f"Scene {scene.number}"
         wanted_design = [s for s in scene.shots if (targets is None or s.id in targets)]
         if any(force or design_stale(s, prod) for s in wanted_design):
@@ -291,12 +293,14 @@ def run(payload: DispatchPayload, store: StoreLike, jobs: JobsLike, llm: LLMLike
             continue
         wanted = [s for s in scene.shots if targets is None or s.id in targets]
         frames = store.accepted_frames([s.id for s in wanted])
+        wardrobe = wardrobe_by_code(store.scene_looks_in_force(scene_row), canon)  # plan/2026-11-18
         for shot in wanted:
             frame = frames.get(shot.id)
             if shot.frame_strategy != "carry_last_frame" and frame is None:
                 skipped.append(f"{shot.code}: no accepted first frame")
                 continue
-            prompt = write_prompt(shot, scene, prod, frame, str(job_id), str(payload.actor_user_id))
+            prompt = write_prompt(shot, scene, prod, frame, str(job_id), str(payload.actor_user_id),
+                                  wardrobe=wardrobe)
             prompt["version"] = store.last_prompt_version(shot.id) + 1
             store.add_prompt(prompt)
             prompts += 1

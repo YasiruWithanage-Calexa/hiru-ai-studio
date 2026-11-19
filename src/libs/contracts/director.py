@@ -218,8 +218,39 @@ class ReplacesBlock(BaseModel):
     how: Literal["edit", "again"] = "edit"
 
 
+class ConfirmBlock(BaseModel):
+    """A Zora change that waits for Accept/Reject (plan/2026-11-13 §3.4, §3.7), as `zora_chat.turn._card` stores it.
+    `fix` is "" for an edit that asks first, "sound" for the silent-shot fix, "hands" for a hand-ledger change; a hands
+    card also keeps what Accept applies (`marks`, `script_version`, `touched`), so unknown fields are kept, not
+    refused. `state` is "" while it waits, then "accepted" or "rejected"."""
+
+    model_config = ConfigDict(extra="allow")
+
+    kind: Literal["confirm"] = "confirm"
+    ops: list[dict[str, Any]] = Field(default_factory=list)
+    made_on: str = ""
+    reasons: list[str] = Field(default_factory=list)
+    lines: list[str] = Field(default_factory=list)
+    state: str = ""
+    fix: str = ""
+    revision: int = 0
+
+
+class BoardBlock(BaseModel):
+    """"Update board" under a Zora reply (findings 2026-11-17 C4), as `zora_chat.board_view.card` stores it: the shots
+    whose scene-board panels one press repaints. The board is never repainted by itself."""
+
+    model_config = ConfigDict(extra="allow")
+
+    kind: Literal["board"] = "board"
+    shots: list[str] = Field(default_factory=list)  # "S06"
+    shot_ids: list[str] = Field(default_factory=list)
+    reason: str = ""
+    state: str = ""
+
+
 DirectorBlock = Annotated[TextBlock | DisagreementBlock | OptionsBlock | EditNoteBlock | ContinuityBlock | ChangesBlock
-                          | UsedBlock | ReplacesBlock, Field(discriminator="kind")]
+                          | UsedBlock | ReplacesBlock | ConfirmBlock | BoardBlock, Field(discriminator="kind")]
 
 
 class MessageKind(StrEnum):

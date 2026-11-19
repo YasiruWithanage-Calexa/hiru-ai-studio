@@ -4,7 +4,7 @@
     POST  .../shots/{id}/takes          a take a person brings back from Flow (MP4 / MOV / WebM)
     POST  .../takes/{id}/accept|reject  one accepted take per shot; accepting pulls its last frame
                                         for the next shot when that shot carries on from it
-    GET   .../scenes/{id}/bundle        the scene's prompts and opening frames as one zip
+    GET   .../scenes/{id}/bundle        the scene's prompts, opening frames and all canon as one zip
 
 Checks are run on every read (`contracts.handoff.check_prompt`): they report, they never edit.
 Takes and frames reach browsers only through `/files/{ticket}`. No costs anywhere.
@@ -13,9 +13,10 @@ from __future__ import annotations
 
 import io
 import json
+import re
 import zipfile
 from datetime import UTC, datetime
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, File, HTTPException, Response, UploadFile, status
@@ -37,7 +38,9 @@ from api.services import media_links
 from api.services.assemble import Assembler, get_assembler
 from api.services.media_thumbs import poster_path
 from api.services.production import ShotState, camera_checks
-from api.services.renders import RenderView, expire_stale, render_view
+from api.services.renders import RenderView, canon_sources, expire_stale, look_sources, render_view
+from contracts.action_budget import beats_of
+from contracts.canon import named_in
 from contracts.handoff import (
     DEFAULT_BANNED_TERMS,
     MAX_TAKE_BYTES,
@@ -47,9 +50,10 @@ from contracts.handoff import (
     TakeStatus,
     blocking,
     check_prompt,
+    reject_reason,
     video_kind,
 )
-from contracts.producer import Check, PromptSection
+from contracts.producer import Check, PromptSection, shot_canon_ids
 from contracts.production import ProductionSettings
 from contracts.roles import Permission
 from contracts.veo import FrameStrategy
@@ -101,6 +105,9 @@ class HandoffView(BaseModel):
 
 class RejectTake(BaseModel):
     reason: str = Field(default="", max_length=300)
+    # plan/2026-11-18c phase 8: what went wrong, picked from `REJECT_REASONS` (the action budget is tuned from them)
+    codes: list[Literal["wrong_action", "too_many_actions", "object_vanished", "camera_moved"]] = Field(
+        default_factory=list, max_length=4)
 
 
 def _settings(ld: Loaded) -> ProductionSettings:
@@ -124,8 +131,12 @@ def handoff_checks(ld: Loaded, st: ShotState) -> list[Check]:
              for i in st.items if i.is_line]
     speaker_ids = list(dict.fromkeys(i.speaker_id for i in st.items if i.is_line and i.speaker_id))
     speakers = [SpeakerNow(name=c.name, voice_pin=c.voice_pin) for c in st.cast if c.id in speaker_ids]
+    ir = st.row.get("ir") if isinstance(st.row.get("ir"), dict) else {}
+    actions = beats_of(ir or {}) or [str(b.get("action") or "") for b in st.row.get("beats") or []
+                                     if isinstance(b, dict)]
     shot = ShotNow(code=st.code, duration_s=int(st.row["duration_s"]), aspect_ratio=ld.aspect,
-                   sound_mode=str(st.row.get("sound_mode") or "ambient"), lines=lines, speakers=speakers)
+                   sound_mode=str(st.row.get("sound_mode") or "ambient"), lines=lines, speakers=speakers,
+                   actions=actions)
     return check_prompt(prose=str(st.prompt.get("prose") or ""), sinhala=sinhala, shot=shot,
                         banned_terms=[*DEFAULT_BANNED_TERMS, *_settings(ld).banned_terms])
 
@@ -285,21 +296,92 @@ async def reject_take(production_id: UUID, take_id: UUID, body: RejectTake, acce
                       repos: ReposDep) -> HandoffView:
     take = await _take(repos, production_id, take_id)
     await repos.takes.update(take_id, {"status": TakeStatus.REJECTED.value, "accepted_at": None, "accepted_by": None,
-                                       "reason": body.reason.strip() or "Rejected"})
-    await _audit(repos, access, "take.reject", str(take_id), {"shot_id": str(take["shot_id"]), "reason": body.reason})
+                                       "reason": reject_reason(body.codes, body.reason)})
+    await _audit(repos, access, "take.reject", str(take_id), {"shot_id": str(take["shot_id"]), "reason": body.reason,
+                                                               "codes": list(dict.fromkeys(body.codes))})
     return await _view(repos, access, UUID(str(take["shot_id"])))
 
 
 # ── the bundle ─────────────────────────────────────────────────────────────────────────────
 
 
-def _readme(ld: Loaded, rows: list[tuple[ShotState, list[Check]]]) -> str:
+def _shot_text(st: ShotState) -> str:
+    """Everything a shot says about what is in it: its script blocks, its beats and its prompt."""
+    ir = st.row.get("ir") if isinstance(st.row.get("ir"), dict) else {}
+    beats = beats_of(ir or {}) or [str(b.get("action") or "") for b in st.row.get("beats") or [] if isinstance(b, dict)]
+    return " ".join([*(i.text for i in st.items), *beats, str((st.prompt or {}).get("prose") or "")])
+
+
+def shot_props(ld: Loaded, st: ShotState) -> list[Row]:
+    """The production's props in this shot, in canon order: the ones a person added to the shot by hand, and the ones
+    its script, beats or prompt name as whole words (`contracts.canon.named_in`). One a person took out stays out."""
+    added, removed = set(st.edits.cast.add), set(st.edits.cast.remove)
+    text = _shot_text(st)
+    return [r for r in ld.canon if r.get("kind") == "prop" and str(r["id"]) not in removed
+            and (str(r["id"]) in added or named_in(str(r.get("name") or ""), text))]
+
+
+KIND_FOLDER = {"character": "characters", "location": "locations", "prop": "props"}
+
+
+def _slug(text: str) -> str:
+    return re.sub(r"[^\w]+", "-", text.strip().lower()).strip("-")[:48] or "card"
+
+
+def canon_folder(row: Row) -> str:
+    """canon/props/P01-steel-lunchbox: by kind, the code first so the folders sort as the canon does."""
+    kind = KIND_FOLDER.get(str(row.get("kind") or ""), "other")
+    return f"canon/{kind}/{row.get('code') or 'X'}-{_slug(str(row.get('name') or ''))}"
+
+
+def shot_canon(ld: Loaded, st: ShotState, props: list[Row]) -> list[Row]:
+    """Every card a shot uses, in canon order: its people, its place, what a person added, and the props it names."""
+    ids = {*shot_canon_ids(ld.scene, [c.id for c in st.cast], st.edits), *(str(p["id"]) for p in props)}
+    return [r for r in ld.canon if str(r["id"]) in ids]
+
+
+def _ext(path: str) -> str:
+    return path.rsplit(".", 1)[-1] if "." in path.rsplit("/", 1)[-1] else "png"
+
+
+def _card_text(row: Row, used_in: list[str], looks: list[Row], scene_look: str) -> str:
+    current = row.get("current") or {}
+    card = current.get("card") or {}
+    out = [f"{row.get('code') or ''}  {row.get('name') or ''}" + (f"  (card v{current['version']})"
+                                                                     if current.get("version") else ""),
+           f"Kind: {row.get('kind') or ''}",
+           f"In this scene's shots: {', '.join(used_in) if used_in else 'none'}"]
+    if row.get("aliases"):
+        out.append(f"Also called: {', '.join(str(a) for a in row['aliases'])}")
+    for key in ("wardrobe_anchor", "voice_pin"):
+        if str(current.get(key) or "").strip():
+            out.append(f"{key.replace('_', ' ').capitalize()}: {str(current[key]).strip()}")
+    out.append("")
+    for key, value in card.items():
+        if isinstance(value, str) and value.strip():
+            out.append(f"{key.replace('_', ' ').capitalize()}: {value.strip()}")
+    if looks:
+        out += ["", "Looks:"]
+        for look in looks:
+            mark = "  (this scene)" if str(look["id"]) == scene_look else ""
+            out.append(f"  {look.get('name') or 'Look'}{mark}")
+            for key in ("outfit", "hair", "accessories"):
+                if str(look.get(key) or "").strip():
+                    out.append(f"    {key.capitalize()}: {str(look[key]).strip()}")
+    return "\n".join(out) + "\n"
+
+
+def _readme(ld: Loaded, rows: list[tuple[ShotState, list[Check]]], used: dict[str, list[Row]]) -> str:
     scene = ld.scene
     out = [f"{ld.production.get('title') or 'Hiru production'} · Scene {scene['number']}: {scene.get('heading') or ''}",
            f"Aspect ratio {ld.aspect}. Made {datetime.now(UTC).strftime('%Y-%m-%d %H:%M')} UTC.", "",
-           "Each folder is one shot, in cut order: prompt.txt to paste into Flow, and first_frame.* to",
-           "attach as its first frame. A shot that carries on from the previous take opens on that",
-           "take's last frame instead.", ""]
+           "Each S folder is one shot, in cut order: prompt.txt to paste into Flow, first_frame.* to",
+           "attach as its first frame, and canon.txt naming the characters, place and props it uses.",
+           "A shot that carries on from the previous take opens on that take's last frame instead.", "",
+           "canon/ holds every card of the production, by kind (characters, locations, props), one",
+           "folder each: card.txt (what it looks like, its looks, which shots use it), sheet.* (the",
+           "reference sheets, newest first), face.* (a person's face sheet), look-*.* (look sheets).",
+           "canon.json lists them all.", ""]
     for st, checks in rows:
         join = st.row.get("camera_link") or "cut"
         opening = ("carries on from the previous take" if st.row.get("frame_strategy") == FrameStrategy.CARRY_LAST_FRAME
@@ -307,42 +389,94 @@ def _readme(ld: Loaded, rows: list[tuple[ShotState, list[Check]]]) -> str:
         prompt = (f"prompt v{st.prompt['version']}" + (" (OUT OF DATE)" if st.prompt_reasons else "")
                   if st.prompt else "NO PROMPT YET")
         fails = [c.label for c in checks if c.tone == "fail"]
+        codes = [str(p.get("code") or p.get("name")) for p in used.get(st.id, [])]
         out.append(f"{st.code}  {st.row['duration_s']} s  join: {join}  {opening}  {prompt}"
+                   + (f"  canon: {', '.join(codes)}" if codes else "")
                    + (f"  CHECKS FAIL: {'; '.join(fails)}" if fails else ""))
     return "\n".join(out) + "\n"
+
+
+async def _put(bundle: zipfile.ZipFile, repos: Repos, bucket: str, path: str, name: str) -> bool:
+    try:
+        bundle.writestr(name, await repos.storage.download(bucket, path))
+        return True
+    except Exception:
+        return False
+
+
+async def _write_canon(bundle: zipfile.ZipFile, repos: Repos, ld: Loaded, used: dict[str, list[Row]]) -> list[Row]:
+    """canon/<kind>/<code>-<name>/: card.txt, sheet.*, face.*, look-*.* for EVERY card of the production (a card no
+    shot of this scene uses is included too); → the canon.json entries."""
+    in_shots: dict[str, list[str]] = {}
+    for st in ld.states:
+        for r in used.get(st.id, []):
+            in_shots.setdefault(str(r["id"]), []).append(st.code)
+    looks_of: dict[str, list[Row]] = {}
+    for look in await repos.looks.list_for_production(UUID(str(ld.production["id"]))):
+        looks_of.setdefault(str(look["entity_id"]), []).append(look)
+    out: list[Row] = []
+    for row in ld.canon:
+        rid, folder = str(row["id"]), canon_folder(row)
+        looks = looks_of.get(rid, [])
+        scene_look = str((ld.looks.get(rid) or {}).get("id") or "")
+        bundle.writestr(f"{folder}/card.txt", _card_text(row, in_shots.get(rid, []), looks, scene_look))
+        files: list[str] = []
+        missing = 0
+        sources = canon_sources(row)
+        groups = [("sheet", [s for s in sources if s.kind == "canon_sheet"]),
+                  ("face", [s for s in sources if s.kind == "face_sheet"]),
+                  *((f"look-{_slug(str(lk.get('name') or 'look'))}", look_sources(lk)) for lk in looks)]
+        for stem, group in groups:
+            for n, src in enumerate(group, start=1):
+                name = f"{folder}/{stem}{'' if n == 1 else f'-{n}'}.{_ext(src.path)}"
+                if await _put(bundle, repos, src.bucket, src.path, name):
+                    files.append(name)
+                else:
+                    missing += 1
+        current = row.get("current") or {}
+        out.append({"code": row.get("code"), "name": row.get("name"), "kind": row.get("kind"),
+                    "card_version": current.get("version"), "folder": folder, "files": files,
+                    "files_missing": missing, "shots": in_shots.get(rid, []),
+                    "looks": [{"name": lk.get("name"), "this_scene": str(lk["id"]) == scene_look} for lk in looks],
+                    "card": {k: v for k, v in (current.get("card") or {}).items() if v not in (None, "", [], {})}})
+    return out
 
 
 @router.get("/scenes/{scene_id}/bundle")
 async def scene_bundle(production_id: UUID, scene_id: UUID, access: CanHandoff, repos: ReposDep) -> Response:
     """Every shot's latest prompt and accepted opening frame, as one zip, with a README that says
-    what is missing or out of date. Nothing is held back: the person decides what to send."""
+    what is missing or out of date, and every canon card of the production (characters, locations,
+    props) with its reference sheets. Nothing is held back: the person decides what to send."""
     ld = await load(repos, access, scene_id)
     rows = [(st, handoff_checks(ld, st)) for st in ld.states]
+    used = {st.id: shot_canon(ld, st, shot_props(ld, st)) for st in ld.states}
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as bundle:
-        bundle.writestr("README.txt", _readme(ld, rows))
+        bundle.writestr("README.txt", _readme(ld, rows, used))
         manifest = []
         for st, checks in rows:
             entry: Row = {"shot": st.code, "duration_s": int(st.row["duration_s"]),
                           "join": st.row.get("camera_link") or "cut",
                           "opens_on": st.row.get("frame_strategy") or "generate",
                           "prompt_version": int(st.prompt["version"]) if st.prompt else None,
-                          "prompt_out_of_date": bool(st.prompt_reasons), "checks_failing": blocking(checks)}
+                          "prompt_out_of_date": bool(st.prompt_reasons), "checks_failing": blocking(checks),
+                          "canon": [r.get("code") for r in used[st.id]]}
             if st.prompt:
                 bundle.writestr(f"{st.code}/prompt.txt", str(st.prompt.get("prose") or ""))
+            if used[st.id]:
+                bundle.writestr(f"{st.code}/canon.txt", "".join(
+                    f"{r.get('code') or ''}  {r.get('name') or ''}  → {canon_folder(r)}/\n" for r in used[st.id]))
             if st.accepted and st.accepted.get("storage_path"):
                 path = str(st.accepted["storage_path"])
-                try:
-                    bundle.writestr(f"{st.code}/first_frame.{path.rsplit('.', 1)[-1]}",
-                                    await repos.storage.download("frames", path))
-                    entry["first_frame"] = True
-                except Exception:
-                    entry["first_frame"] = False
+                entry["first_frame"] = await _put(bundle, repos, "frames", path,
+                                                  f"{st.code}/first_frame.{path.rsplit('.', 1)[-1]}")
             manifest.append(entry)
         bundle.writestr("shots.json", json.dumps(manifest, indent=2, ensure_ascii=False))
+        cards = await _write_canon(bundle, repos, ld, used)
+        bundle.writestr("canon.json", json.dumps(cards, indent=2, ensure_ascii=False))
     await repos.audit.record(action="scene.bundle", entity="scene", entity_id=str(scene_id),
                              actor_user_id=access.user.id, production_id=production_id,
-                             diff={"shots": len(rows)})
+                             diff={"shots": len(rows), "canon": len(cards)})
     name = f"scene-{ld.scene['number']:02d}-handoff.zip"
     return Response(content=buffer.getvalue(), media_type="application/zip",
                     headers={"Content-Disposition": f'attachment; filename="{name}"'})

@@ -296,3 +296,21 @@ def test_a_persons_dop_note_is_given_to_the_next_design_and_survives_it(scene0):
     assert prompts and prompts[0].count("DIRECTOR'S NOTE FOR THE DoP") == 1
     assert "Hold on Nimal's face; keep the light warm." in prompts[0]
     assert store.shot_rows[rows[1]["id"]]["person_edits"] == {"dop_note": "Hold on Nimal's face; keep the light warm."}
+
+
+def test_the_subjects_line_dresses_people_in_the_scenes_look_not_the_planners_clothes(scene0):
+    """plan/2026-11-18: Love Hour 4 shot 02 said "muted blue blouse" while the look (and the frame) were dusty rose,
+    and the video followed the words. The look the scene uses now decides the clothes; a person without one is
+    described as the planner wrote."""
+    scene, lines, rows = scene0
+    store = FakeStore(scene, lines, rows)
+    sid = rows[1]["id"]  # Nimal alone
+    _accept(store, sid)
+    run(store, mode="prompt", shot_ids=[sid])
+    before = _sections(store.prompts[0])["subjects"]["segments"][0]["text"]
+    store.looks_in_force = {NIMAL: {"outfit": "Navy kurta with rolled sleeves.", "accessories": "None."}}
+    run(store, mode="prompt", shot_ids=[sid])
+    after = _sections(store.prompts[1])["subjects"]["segments"][0]["text"]
+    assert "wearing navy kurta with rolled sleeves" in after
+    assert "with none" not in after.lower()
+    assert before != after and before.count("wearing") <= 1 and after.count("wearing") == 1

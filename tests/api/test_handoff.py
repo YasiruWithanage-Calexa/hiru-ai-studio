@@ -105,6 +105,21 @@ def test_takes_upload_accept_and_reject(world: World, fired: list[dict], assembl
     assert ("last_frame",) not in [c[:1] for c in assembler.calls], "S03 does not carry on from S02"
 
 
+def test_a_rejected_take_keeps_the_picked_reasons_for_tuning_the_action_budget(world: World, fired: list[dict],
+                                                                             assembler: FakeAssembler):
+    """plan/2026-11-18c phase 8: the reasons a person picks lead the take's reason and are kept in the audit log."""
+    s, _ = _ready_shot(world)
+    crew = world.headers(world.crew)
+    take = world.client.post(shot_url(world, s, 1, "/takes"), files={"file": ("take.mp4", MP4, "video/mp4")},
+                             headers=crew).json()["takes"][0]
+    v = world.client.post(url(world, f"/takes/{take['id']}/reject"),
+                          json={"codes": ["too_many_actions", "object_vanished"], "reason": "the phone"},
+                          headers=crew).json()
+    assert v["takes"][0]["reason"] == "Too many actions; Object vanished · the phone"
+    assert world.client.post(url(world, f"/takes/{take['id']}/reject"), json={"codes": ["bad_lighting"]},
+                             headers=crew).status_code == 422
+
+
 def test_accepting_a_take_opens_the_carried_shot_on_its_last_frame(world: World, fired: list[dict],
                                                                    assembler: FakeAssembler):
     s, _ = _ready_shot(world)
@@ -145,6 +160,69 @@ def test_the_scene_bundle(world: World, fired: list[dict]):
     assert manifest[1]["prompt_version"] == 1 and manifest[1]["first_frame"] is True
     assert world.client.get(url(world, f"/scenes/{s['scene']['id']}/bundle"),
                             headers=world.headers(world.reviewer)).status_code == 403
+
+
+def _prop(world: World, code: str, name: str, card: dict, sheets: list[str]) -> str:
+    canon = world.repos.canon  # type: ignore[attr-defined]
+    row = canon.add(production_id=str(world.production), kind="prop", code=code, name=name, aliases=[], core=False,
+                    locked=False)
+    version = {"id": f"v-{code}", "entity_id": str(row["id"]), "version": 2, "card": card,
+               "reference_assets": [{"path": p} for p in sheets]}
+    canon.version_rows[version["id"]] = version
+    canon.rows[str(row["id"])]["current_version_id"] = version["id"]
+    return str(row["id"])
+
+
+def test_the_scene_bundle_carries_every_canon_card_of_the_production(world: World, fired: list[dict]):
+    s, _ = _ready_shot(world)
+    _prop(world, "P01", "Steel lunchbox", {"details": "Dented, two tiers."},
+          ["p/lunch/sheet-a.png", "p/lunch/sheet-b.webp", "p/lunch/gone.png"])
+    pan = _prop(world, "P02", "Brass pan", {"details": "Old and polished."}, ["p/pan/sheet.png"])
+    _prop(world, "P03", "Umbrella", {}, [])  # in no shot and no sheet: still exported, with its card
+    storage = world.repos.storage.objects  # type: ignore[attr-defined]
+    storage[("references", "p/lunch/sheet-a.png")] = b"\x89PNG a"
+    storage[("references", "p/lunch/sheet-b.webp")] = b"RIFF b"
+    storage[("references", "p/pan/sheet.png")] = b"\x89PNG pan"
+    canon = world.repos.canon  # type: ignore[attr-defined]
+    person = next(r for r in canon.rows.values() if r["kind"] == "character")
+    version = canon.version_rows.setdefault(f"v-{person['code']}", {"id": f"v-{person['code']}",
+                                                                   "entity_id": person["id"], "version": 1})
+    canon.rows[person["id"]]["current_version_id"] = version["id"]
+    version["reference_assets"] = [{"path": "p/person/base.png"}, {"path": "p/person/face.png", "kind": "face"}]
+    storage[("references", "p/person/base.png")] = b"base"
+    storage[("references", "p/person/face.png")] = b"face"
+    world.repos.looks.add(production_id=str(world.production), entity_id=person["id"], name="Office day",  # type: ignore[attr-defined]
+                          outfit="Navy blazer", sheet_assets=[{"path": "p/person/look.png"}])
+    storage[("references", "p/person/look.png")] = b"look"
+    prompt = next(p for p in world.repos.prompts.rows.values() if p["shot_id"] == s["shots"][1]["id"])  # type: ignore[attr-defined]
+    prompt["prose"] = "CAMERA\nDolly in. She opens the steel lunchbox."  # named in S02's prompt
+    world.repos.shots.rows[s["shots"][2]["id"]]["person_edits"] = {"cast": {"add": [pan], "remove": []}}  # type: ignore[attr-defined]
+
+    r = world.client.get(url(world, f"/scenes/{s['scene']['id']}/bundle"), headers=world.headers(world.crew))
+    assert r.status_code == 200
+    z = zipfile.ZipFile(io.BytesIO(r.content))
+    names = set(z.namelist())
+    who = f"canon/characters/{person['code']}-"
+    assert {"canon.json", "canon/props/P01-steel-lunchbox/card.txt", "canon/props/P01-steel-lunchbox/sheet.png",
+            "canon/props/P01-steel-lunchbox/sheet-2.webp", "canon/props/P02-brass-pan/sheet.png",
+            "canon/props/P03-umbrella/card.txt", "S02/canon.txt", "S03/canon.txt"} <= names
+    assert {n.rsplit("/", 1)[-1] for n in names if n.startswith(who)} == {"card.txt", "sheet.png", "face.png",
+                                                                          "look-office-day.png"}
+    assert any(n.startswith("canon/locations/") for n in names), "the scene's place too"
+    assert z.read("canon/props/P01-steel-lunchbox/sheet.png") == b"\x89PNG a"
+    card = z.read("canon/props/P01-steel-lunchbox/card.txt").decode()
+    assert "Steel lunchbox  (card v2)" in card and "In this scene's shots: S02" in card
+    assert "Details: Dented, two tiers." in card
+    assert "In this scene's shots: none" in z.read("canon/props/P03-umbrella/card.txt").decode()
+    person_card = z.read(next(n for n in names if n.startswith(who) and n.endswith("card.txt"))).decode()
+    assert "Office day" in person_card and "Outfit: Navy blazer" in person_card
+    assert "canon/props/P02-brass-pan/" in z.read("S03/canon.txt").decode()
+    listed = {p["code"]: p for p in json.loads(z.read("canon.json"))}
+    assert {"P01", "P02", "P03", person["code"]} <= set(listed)
+    assert listed["P01"]["files_missing"] == 1 and listed["P02"]["shots"] == ["S03"] and listed["P03"]["shots"] == []
+    manifest = json.loads(z.read("shots.json"))
+    assert "P01" in manifest[1]["canon"] and "P02" in manifest[2]["canon"] and "P01" not in manifest[0]["canon"]
+    assert "P01" in z.read("README.txt").decode()
 
 
 def test_the_usage_budget_is_admin_set_and_members_see_a_percentage(world: World):

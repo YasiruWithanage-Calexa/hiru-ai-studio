@@ -1,0 +1,1404 @@
+{
+ "scene": "E01-S01",
+ "status": "done",
+ "seconds": 315.2,
+ "calls": 8,
+ "dollars": 0.1813,
+ "log": [
+  "stage 1: finished after 4 turns",
+  "stage 2: finished after 4 turns"
+ ],
+ "warnings": [],
+ "ids": {
+  "b0": "E01-S01-B01",
+  "b1": "E01-S01-B02",
+  "b2": "E01-S01-B03",
+  "b3": "E01-S01-B04",
+  "b4": "E01-S01-B05",
+  "b5": "E01-S01-B06",
+  "b6": "E01-S01-B07",
+  "L6": "E01-S01-B07",
+  "b7": "E01-S01-B08"
+ },
+ "result": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "local-E01-S01",
+  "input_hash": "e04fdcdb2aea820c",
+  "stage1": "finished",
+  "stage2": "finished",
+  "stopped": "",
+  "cap": 2.0,
+  "breakdown": null,
+  "mood": [],
+  "edit": {
+   "treatment": {
+    "logline": "A modest Colombo tea seller measures his cramped workplace against a larger ambition, then returns to the work that could make it possible.",
+    "arc": [
+     {
+      "beat": "Morning trade and careful preparation",
+      "blocks": {
+       "first": 0,
+       "last": 2
+      },
+      "feeling": "Everyday competence and modest means"
+     },
+     {
+      "beat": "Hospitality gives way to private appraisal",
+      "blocks": {
+       "first": 3,
+       "last": 4
+      },
+      "feeling": "Warmth followed by awareness of constraint"
+     },
+     {
+      "beat": "Ambition becomes explicit and returns to labour",
+      "blocks": {
+       "first": 5,
+       "last": 7
+      },
+      "feeling": "Quiet conviction, not triumph"
+     }
+    ],
+    "approach": "Grounded Sri Lankan everyday drama: let practical care establish character before the intimate statement of ambition. The genre facet here is hopeful working life, not suspense. Begin with a roadside master that contains the morning rhythm, then progressively privilege Kasun. Seven essential clips total 32 seconds, including preparation split for reliable physical actions. No montage material from other scenes is imported.",
+    "colour_script": [
+     {
+      "sequence": "S1",
+      "palette": "Restrained morning amber, worn neutral metal, natural skin and muted street colours",
+      "light": "Low morning daylight from road side, softened by the vehicle canopy, with believable shade inside",
+      "grade": "Natural contrast, gentle highlight roll-off and restrained saturation"
+     },
+     {
+      "sequence": "S2",
+      "palette": "Same morning amber and muted neutrals",
+      "light": "Same continuous roadside daylight and canopy shade",
+      "grade": "Consistent naturalistic grade; emotional emphasis comes from framing rather than a colour shift"
+     },
+     {
+      "sequence": "S3",
+      "palette": "Same morning amber with warm skin against shaded fittings",
+      "light": "Same continuous roadside daylight and canopy shade",
+      "grade": "Maintain the established grade through the final working image"
+     }
+    ],
+    "geography": "Kasun stays screen left behind the counter, initially facing screen right. The customer approaches from screen right and faces left. The road lies beyond the customer's side. The flask remains in Kasun's left hand. When he surveys the vehicle and finally resumes work he faces away into its cramped interior; his outward glance restores the screen-right eyeline.",
+    "key_image": "Kasun in a close single, the flask still in his left hand and the narrow vehicle fittings behind him, making a large promise in a small space.",
+    "advice": [
+     "Keep the transaction routine; the customer has no supplied dialogue and must receive no invented words.",
+     "Use traffic depth and indistinct pedestrian movement rather than sharply featured additional people.",
+     "Preserve the pause of appraisal without suggesting defeat.",
+     "Preparation uses short editorial ellipses between distinct tasks; never demand a whole hand routine in one generation."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "The morning operation",
+     "purpose": "Locate the business and establish Kasun through preparation and a routine customer arrival.",
+     "shots": {
+      "first": 0,
+      "last": 2
+     }
+    },
+    {
+     "id": "S2",
+     "title": "Trade and its limits",
+     "purpose": "Show easy hospitality, departure and the scale of the workplace.",
+     "shots": {
+      "first": 3,
+      "last": 4
+     }
+    },
+    {
+     "id": "S3",
+     "title": "A private promise",
+     "purpose": "Turn his attention outward, hold L6 and return him to work.",
+     "shots": {
+      "first": 5,
+      "last": 7
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0,
+      1
+     ],
+     "what": "Roadside morning activity surrounds Kasun as he arranges the food, fills his flask and cleans the serving surface across successive task clips.",
+     "feeling": "Practical care within limited means.",
+     "cut_uses": "Roadside eye-level wide master for the city and food arrangement; a counter-height medium single for flask filling. The cleaning continues in the next moment's arrival master through a preparation overlap."
+    },
+    {
+     "n": 2,
+     "sequence": "S1",
+     "blocks": [
+      2
+     ],
+     "what": "The office worker approaches the counter as Kasun finishes cleaning; the purchase request is conveyed through attention to the ready tea cup, without invented dialogue.",
+     "feeling": "Ordinary business begins.",
+     "cut_uses": "Eye-level two-shot master containing the approach and the last cleaning motion. This clip also covers the end of b1."
+    },
+    {
+     "n": 3,
+     "sequence": "S2",
+     "blocks": [
+      3
+     ],
+     "what": "Kasun smiles as the customer takes the prepared tea from the counter.",
+     "feeling": "Unforced hospitality.",
+     "cut_uses": "Counter-height two-shot, keeping both faces and the cup readable; avoid a complicated hand-to-hand transfer."
+    },
+    {
+     "n": 4,
+     "sequence": "S2",
+     "blocks": [
+      4
+     ],
+     "what": "The customer leaves with his tea; Kasun then surveys the small vehicle's worn fittings.",
+     "feeling": "Constraint registered without self-pity.",
+     "cut_uses": "Eye-level medium-wide master lets departure and Kasun's inward turn play sequentially in the same geography."
+    },
+    {
+     "n": 5,
+     "sequence": "S3",
+     "blocks": [
+      5,
+      6
+     ],
+     "what": "Kasun looks back toward the road and performs L6 with quiet conviction.",
+     "feeling": "Hope becomes a deliberate commitment.",
+     "cut_uses": "Road-facing eye-level close single with a static camera; the gaze turn leads into the complete L6 performance."
+    },
+    {
+     "n": 6,
+     "sequence": "S3",
+     "blocks": [
+      7
+     ],
+     "what": "A small smile accompanies Kasun's return to cleaning his working surface, flask still in hand.",
+     "feeling": "Aspiration grounded in continued effort.",
+     "cut_uses": "Eye-level medium single from the counter-side setup; end on useful work rather than a celebratory flourish."
+    }
+   ],
+   "editor_notes": [
+    "Intended cut: approximately 28 seconds; the 32-second must bin includes in-take handles, not 32 seconds of required screen time. Preserve the complete 2.7-second L6 performance.",
+    "The roadside master establishes the street and geography; the preparation single isolates the flask fill. The arrival master completes the counter-cleaning phase as the customer approaches. The shared counter view carries the smile and cup pickup; the later master keeps departure and appraisal in order. The close single carries the outward glance and L6; the final medium returns to work.",
+    "The three preparation tasks are divided across consecutive clips to avoid an unreliable hand routine. The kettle and cleaning cloth are implied by the specified preparation. The prepared tea is already on the counter before pickup; there is no direct hand-to-hand contact.",
+    "Kasun was not initially placed by the packet: he begins standing behind the counter at screen left. The initially unplaced customer approaches from screen right. The flask remains in Kasun's left hand. The customer carries the tea out to screen right.",
+    "Match the arranged food, flask, cloth, prepared cup and hand positions at cuts. The cup is on the counter before pickup and in the customer's right hand after it; the customer is off-screen before Kasun surveys the fittings. Match the inward-to-outward eyeline into the close single, and the outward-to-inward eyeline into the final medium.",
+    "The customer's request has no supplied wording: play the approach and attention to the tea cup without inventing dialogue. Lay continuous Colombo street ambience and restrained effects in post over the silent picture sources.",
+    "Avoid a close hand-to-hand transfer, elaborate pouring-and-resetting routines, sharp identifiable crowds and unsupported invented speech. No mirrors or complex physical contact are required.",
+    "Speed ramps, freeze frames, digital punch-ins and split screens are post-only possibilities; these locked clean sources do not require them, and none is part of the intended cut.",
+    "The supplied romantic montage and later struggle directions are scoped elsewhere and are not staged here. Preserve natural light and grounded performances as directed."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     0,
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level from roadside",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "The small business and the working city's movement belong in one frame before the scene becomes private.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "First part of preparation: food arrangement only. The 0.5-second handles allow the two 1.5-second script actions their full three-second combined clock.",
+    "summary": "A roadside wide view places Kasun's small food vehicle within Colombo morning traffic as he tidies the short-eat display.",
+    "id": "c01",
+    "slate": "1A-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off tripod, 35mm, f/5.6",
+      "angle": "eye level from roadside",
+      "framing": "WIDE, the complete serving side and Kasun screen left with road depth to the right",
+      "movement": "locked-off on sticks",
+      "white_balance": "5200K early morning daylight",
+      "color_tone": "Naturalistic morning amber, muted neutrals and restrained saturation",
+      "depth_of_field": "Deep, road activity legible but distant faces indistinct",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Arranges one short eat into the existing display with his right hand while keeping the flask in his left hand.",
+       "position": "Standing behind the counter at screen left, facing right, flask in left hand, right hand beside the short eats."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "WIDE, focus on the serving side with road depth",
+       "director_line": "The modest stall sits within the city's morning movement.",
+       "action": "Kasun keeps the flask in his left hand beside the arranged food.",
+       "performance": "His eyes remain on the food display."
+      },
+      {
+       "time": "0.5-2s",
+       "camera": "WIDE, focus on the serving side and road",
+       "director_line": "The city's ordinary morning surrounds the vehicle.",
+       "action": "Buses, tuk-tuks and motorcycles move along the distant road.",
+       "performance": "Kasun keeps his eyes on the food display."
+      },
+      {
+       "time": "2-3.5s",
+       "camera": "WIDE, focus on Kasun and counter",
+       "director_line": "A small adjustment reveals the care invested in the business.",
+       "action": "Kasun arranges one short eat into the existing display with his right hand.",
+       "performance": "His mouth stays relaxed and his eyes follow his right hand."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "WIDE, same serving-side composition",
+       "director_line": "The finished display sits against the larger rhythm of the road.",
+       "action": "Kasun keeps the flask in his left hand and his right hand beside the food.",
+       "performance": "His gaze remains on the completed arrangement."
+      }
+     ],
+     "audio": "Distant bus engines, tuk-tuk motors and motorcycle movement; indistinct foot traffic added in post, no intelligible voices.",
+     "first_frame": {
+      "composition": "Vehicle and counter occupy the left two-thirds; road activity occupies the right and distant background.",
+      "subjects": [
+       "Kasun stands left behind the counter with the flask in his left hand."
+      ],
+      "setting": "The same modest food three-wheeler, with short eats arranged on its small counter and distant buses, tuk-tuks, motorcycles and indistinct pedestrian silhouettes along the road.",
+      "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle."
+     }
+    },
+    "sound": {
+     "ambience": "Colombo morning road bed supplied in post",
+     "effects": "Soft food-display handling",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 1,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "counter-height three-quarter view",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "One clear task conveys practical competence without an unreliable sequence of hand operations.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Second part of preparation. Kettle is already in the right hand; flask remains left. Cut out before any resetting of tools.",
+    "summary": "From beside the counter, Kasun fills the flask in his left hand from a kettle already in his right hand.",
+    "id": "c02",
+    "slate": "1B-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off tripod, 50mm, f/4",
+      "angle": "counter-height three-quarter view",
+      "framing": "MS, Kasun from waist up with both hands and flask visible",
+      "movement": "locked-off on sticks",
+      "white_balance": "5200K early morning daylight",
+      "color_tone": "Naturalistic morning amber, muted neutrals and restrained saturation",
+      "depth_of_field": "Medium, hands and face clear with gently softened road depth",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Fills the flask in his left hand from the kettle already angled in his right hand.",
+       "position": "Standing behind the counter at screen left, facing right, open flask in left hand and kettle in right hand above its opening."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS, focus on hands and flask",
+       "director_line": "The next task begins from a ready position.",
+       "action": "Kasun keeps the kettle poised above the open flask.",
+       "performance": "His eyes remain fixed on the flask opening."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MS, same hands-and-face composition",
+       "director_line": "The tea supply receives the same economical care as the food.",
+       "action": "Kasun pours from the kettle into the flask.",
+       "performance": "His lips stay closed and his gaze stays on the stream."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MS, same hands-and-face composition",
+       "director_line": "A brief still interval gives the editor a clean endpoint.",
+       "action": "Kasun keeps the kettle above the filled flask with the stream finished.",
+       "performance": "His eyes remain lowered to the flask."
+      }
+     ],
+     "audio": "Distant road engines and the light sound of liquid entering the flask; no intelligible voices.",
+     "first_frame": {
+      "composition": "Kasun occupies the left and centre, both vessels visible below his face.",
+      "subjects": [
+       "Kasun holds the open flask left and the kettle right."
+      ],
+      "setting": "The small counter carries the arranged short eats beneath the vehicle canopy.",
+      "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous morning road bed in post",
+     "effects": "Brief liquid pour",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level from roadside",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "The established geography makes the ordinary purchase legible without inventing an unscripted exchange.",
+    "take_s": 4,
+    "handle_in_s": 0.75,
+    "handle_out_s": 0.75,
+    "priority": "must",
+    "editor_note": "Final preparation phase overlaps the customer arrival. Kettle now rests on the counter; a prepared cup of tea is already on the serving edge. No invented customer dialogue.",
+    "summary": "In the roadside master, the office worker approaches the tea counter while Kasun finishes wiping it. The worker's attention to the prepared cup establishes his routine tea purchase.",
+    "id": "c03",
+    "slate": "1A-2",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off tripod, 35mm, f/5.6",
+      "angle": "eye level from roadside",
+      "framing": "WIDE, Kasun left and the approaching customer right, counter between them",
+      "movement": "locked-off on sticks",
+      "white_balance": "5200K early morning daylight",
+      "color_tone": "Naturalistic morning amber, muted neutrals and restrained saturation",
+      "depth_of_field": "Deep, both men and counter readable, distant faces indistinct",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Wipes a clear patch of counter with his right hand while retaining the flask in his left.",
+       "position": "Standing screen left behind the counter facing right, flask left, cloth right, kettle resting farther inside and a prepared tea cup at the customer's edge."
+      },
+      {
+       "id": "C04",
+       "description": "Sri Lankan office worker with neatly combed black hair, wearing a plain light office shirt and dark trousers.",
+       "action": "Approaches the counter from the right and directs his gaze toward the tea cup.",
+       "position": "Screen right on the road side of the counter, facing left, hands empty."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.75s",
+       "camera": "WIDE, both men and the serving edge visible",
+       "director_line": "The next customer is already near enough to join the morning routine.",
+       "action": "Kasun keeps the cloth against the counter while the worker faces the stall.",
+       "performance": "Kasun's eyes rest on the surface; the worker's eyes settle on the serving edge."
+      },
+      {
+       "time": "0.75-2.25s",
+       "camera": "WIDE, same two-person composition",
+       "director_line": "Customer and proprietor complete their ordinary morning movements together.",
+       "action": "The worker approaches the counter as Kasun wipes a clear patch of its surface.",
+       "performance": "The worker keeps his gaze toward the tea cup; Kasun concentrates on the cloth."
+      },
+      {
+       "time": "2.25-3.25s",
+       "camera": "WIDE, focus remains across the counter",
+       "director_line": "A routine request is registered through the customer's attention.",
+       "action": "The worker directs his gaze toward the tea cup.",
+       "performance": "He inclines his chin slightly toward the cup with his lips closed."
+      },
+      {
+       "time": "3.25-4s",
+       "camera": "WIDE, same counter geography",
+       "director_line": "Both settle into the transaction.",
+       "action": "The worker remains at the counter while Kasun keeps the flask in his left hand.",
+       "performance": "The worker waits with his eyes on the tea."
+      }
+     ],
+     "audio": "Morning road engines and a soft cloth scrape; no intelligible voices.",
+     "first_frame": {
+      "composition": "Kasun left, customer near the counter at right, prepared cup visible between them.",
+      "subjects": [
+       "Kasun with flask left and cloth right.",
+       "Office worker on the right with empty hands."
+      ],
+      "setting": "Arranged short eats, resting kettle and a prepared tea cup occupy the modest serving counter.",
+      "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous morning road bed in post",
+     "effects": "Cloth against counter, brief footsteps",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "two_shot",
+    "setup": "C",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "TWO",
+    "angle": "counter-height side view",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "A shared frame makes the smile and completed service a single human beat without hand-to-hand contact.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Tea cup starts on the customer edge. Customer lifts it with his right hand; no direct handoff. Kasun retains flask left throughout.",
+    "summary": "A side two-shot shows Kasun smile while the office worker takes the prepared tea cup from the counter.",
+    "id": "c04",
+    "slate": "1C-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off tripod, 50mm, f/4",
+      "angle": "counter-height side view",
+      "framing": "TWO, both men waist up with the tea cup visible between them",
+      "movement": "locked-off on sticks",
+      "white_balance": "5200K early morning daylight",
+      "color_tone": "Naturalistic morning amber, muted neutrals and restrained saturation",
+      "depth_of_field": "Medium, both faces and cup clear against softened road depth",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Smiles toward the customer with the flask still in his left hand.",
+       "position": "Standing screen left behind the counter facing right, flask left and right hand resting beside the cloth."
+      },
+      {
+       "id": "C04",
+       "description": "Sri Lankan office worker with neatly combed black hair, wearing a plain light office shirt and dark trousers.",
+       "action": "Takes the prepared tea cup from the counter with his right hand.",
+       "position": "Standing screen right facing left at the counter, right hand beside the tea cup, left hand empty."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "TWO, focus includes both faces and cup",
+       "director_line": "A ready cup separates the two men.",
+       "action": "The tea cup rests at the customer edge of the counter.",
+       "performance": "Kasun meets the worker's gaze with his lips closed."
+      },
+      {
+       "time": "1-3s",
+       "camera": "TWO, same counter-side composition",
+       "director_line": "Hospitality is expressed through a small smile and uncomplicated service.",
+       "action": "The worker takes the tea cup in his right hand.",
+       "performance": "Kasun's mouth lifts into a small smile while the worker's eyes track the cup."
+      },
+      {
+       "time": "3-4s",
+       "camera": "TWO, same focus across counter",
+       "director_line": "The transaction completes without ceremony.",
+       "action": "The worker keeps the tea cup in his right hand.",
+       "performance": "Kasun keeps the small smile directed toward the customer."
+      }
+     ],
+     "audio": "Light cup movement against the counter beneath distant traffic; no intelligible voices.",
+     "first_frame": {
+      "composition": "Kasun left, worker right, prepared cup at the lower centre-right on the counter.",
+      "subjects": [
+       "Kasun holding flask left.",
+       "Office worker with empty hands beside the cup."
+      ],
+      "setting": "The same small serving counter and worn vehicle interior, food arranged farther inside.",
+      "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous morning road bed in post",
+     "effects": "Soft cup contact",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "eye level from roadside",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "Remaining with the physical stall after the customer leaves lets its restricted scale carry Kasun's appraisal.",
+    "take_s": 6,
+    "handle_in_s": 0.75,
+    "handle_out_s": 0.75,
+    "priority": "must",
+    "editor_note": "Customer departs toward the right and is fully off frame by 2.75 seconds. Kasun's appraisal follows, not precedes, the departure.",
+    "summary": "The customer leaves carrying his tea. Kasun then turns into the vehicle and studies its cramped counter and worn fittings, still holding the flask.",
+    "id": "c05",
+    "slate": "1A-3",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off tripod, 35mm, f/5.6",
+      "angle": "eye level from roadside",
+      "framing": "MWS, serving bay and Kasun left with customer at the right edge",
+      "movement": "locked-off on sticks",
+      "white_balance": "5200K early morning daylight",
+      "color_tone": "Naturalistic morning amber, muted neutrals and restrained saturation",
+      "depth_of_field": "Deep, cramped fittings and Kasun remain legible",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Turns away into the vehicle and surveys the cramped counter and worn fittings after the customer departs.",
+       "position": "Standing screen left behind the counter initially facing right, flask in left hand and right hand beside the cloth."
+      },
+      {
+       "id": "C04",
+       "description": "Sri Lankan office worker with neatly combed black hair, wearing a plain light office shirt and dark trousers.",
+       "action": "Walks out of frame to the right with the tea cup in his right hand.",
+       "position": "Standing at the right edge on the road side, tea cup in right hand, body angled toward the right exit."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.75s",
+       "camera": "MWS, counter and departing customer visible",
+       "director_line": "The small business has completed another ordinary exchange.",
+       "action": "The worker keeps his tea in his right hand beside the counter.",
+       "performance": "Kasun's small smile remains directed toward the worker."
+      },
+      {
+       "time": "0.75-2.75s",
+       "camera": "MWS, same view with open space at right",
+       "director_line": "The customer's movement leaves Kasun alone with the stall.",
+       "action": "The worker walks out of frame to the right with his tea.",
+       "performance": "Kasun's eyes follow the departing figure."
+      },
+      {
+       "time": "2.75-3.75s",
+       "camera": "MWS, Kasun and worn interior now carry the frame",
+       "director_line": "His attention returns to the confines of the business.",
+       "action": "Kasun turns away into the vehicle.",
+       "performance": "His smile settles and his chin lowers toward the fittings."
+      },
+      {
+       "time": "3.75-5.25s",
+       "camera": "MWS, focus on Kasun and cramped working area",
+       "director_line": "The modest scale registers without a collapse of resolve.",
+       "action": "Kasun surveys the cramped counter and worn fittings.",
+       "performance": "His eyes travel across the narrow surface while his shoulders remain upright."
+      },
+      {
+       "time": "5.25-6s",
+       "camera": "MWS, same working-area composition",
+       "director_line": "He remains steady within the small space.",
+       "action": "Kasun keeps the flask in his left hand while facing into the vehicle.",
+       "performance": "His gaze rests on the counter with his jaw relaxed."
+      }
+     ],
+     "audio": "Receding footsteps beneath continuous distant traffic; no intelligible voices.",
+     "first_frame": {
+      "composition": "Kasun left within the serving opening, customer on the right edge with tea, worn fittings behind Kasun.",
+      "subjects": [
+       "Kasun faces right with flask in his left hand.",
+       "Office worker holds tea in his right hand at the right edge."
+      ],
+      "setting": "The compact vehicle counter remains arranged for trade, with the tea cup now in the customer's hand.",
+      "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous morning road bed in post",
+     "effects": "Departing footsteps",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "single",
+    "setup": "D",
+    "blocks": [
+     5,
+     6
+    ],
+    "lines": [
+     "L6"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "CU",
+    "angle": "eye level three-quarter profile from the road side",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Stillness gives the private ambition weight without turning it into a grand declaration.",
+    "take_s": 6,
+    "handle_in_s": 0.9,
+    "handle_out_s": 0.9,
+    "priority": "must",
+    "editor_note": "Turn toward the road from 0.9 to 2.4 seconds; perform complete L6 from 2.4 to 5.1 seconds. Preserve both settled handles. Flask stays left, below the close frame.",
+    "summary": "In a close roadside single, Kasun turns his gaze outward and quietly affirms his ambition to own a restaurant through L6.",
+    "id": "c06",
+    "slate": "1D-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off tripod, 85mm, f/2.8",
+      "angle": "eye level three-quarter profile from the road side",
+      "framing": "CU, Kasun's face and upper shoulders fill frame with narrow worn fittings behind him",
+      "movement": "locked-off on sticks",
+      "white_balance": "5200K early morning daylight",
+      "color_tone": "Naturalistic morning amber, muted neutrals and restrained saturation",
+      "depth_of_field": "Shallow, face clear with softly separated fittings behind",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Turns his gaze toward the road, then his lips move to L6 with quiet conviction.",
+       "position": "Standing screen left behind the counter, initially facing into the vehicle, flask in left hand below frame; turns toward screen right."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.9s",
+       "camera": "CU, focus on Kasun's inward-facing profile",
+       "director_line": "His attention still rests inside the modest workplace.",
+       "action": "Kasun remains facing into the vehicle with the flask in his left hand below frame.",
+       "performance": "His lips stay closed and his chin remains slightly lowered."
+      },
+      {
+       "time": "0.9-2.4s",
+       "camera": "CU, same fixed composition receives his outward turn",
+       "director_line": "The road offers an eyeline beyond the small serving bay.",
+       "action": "Kasun turns his gaze toward screen right and the road.",
+       "performance": "His chin rises slightly and his eyes settle beyond the counter."
+      },
+      {
+       "time": "2.4-5.1s",
+       "camera": "CU, sharp on Kasun's eyes and mouth",
+       "director_line": "The private commitment emerges without theatrical emphasis.",
+       "action": "Kasun's lips move to L6.",
+       "performance": "He delivers L6 quietly with an even gaze and minimal movement of his head."
+      },
+      {
+       "time": "5.1-6s",
+       "camera": "CU, same face and eyeline",
+       "director_line": "The promise remains grounded in an ordinary morning.",
+       "action": "Kasun keeps his gaze toward the road with his lips closed.",
+       "performance": "The corners of his mouth soften without a broad grin."
+      }
+     ],
+     "audio": "L6 performed quietly in full from 2.4 to 5.1 seconds over restrained morning traffic.",
+     "first_frame": {
+      "composition": "Kasun's inward-facing profile occupies the left-centre, with a little space toward the screen-right road eyeline.",
+      "subjects": [
+       "Kasun, flask retained in his left hand below frame, face initially directed into the vehicle."
+      ],
+      "setting": "Worn fittings beneath the small food vehicle's canopy sit softly behind his face.",
+      "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous morning road bed kept below L6",
+     "effects": "None",
+     "music": "None",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "counter-height three-quarter view",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "Returning to the practical preparation setup joins the ambition to the labour that sustains it.",
+    "take_s": 4,
+    "handle_in_s": 0.75,
+    "handle_out_s": 0.75,
+    "priority": "must",
+    "editor_note": "Retain the flask left. The cloth already rests beneath the right hand at the start, avoiding a separate pickup. End with Kasun facing into the vehicle.",
+    "summary": "Kasun gives a small smile, turns back into his vehicle and resumes wiping the counter, flask still in his left hand.",
+    "id": "c07",
+    "slate": "1B-2",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off tripod, 50mm, f/4",
+      "angle": "counter-height three-quarter view",
+      "framing": "MS, Kasun waist up and the small working surface visible",
+      "movement": "locked-off on sticks",
+      "white_balance": "5200K early morning daylight",
+      "color_tone": "Naturalistic morning amber, muted neutrals and restrained saturation",
+      "depth_of_field": "Medium, face and working surface clear with softened road depth",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Smiles, turns back into the vehicle and resumes wiping the counter with his right hand.",
+       "position": "Standing screen left behind the counter facing right, flask in left hand and right hand resting on the cloth on the counter."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.75s",
+       "camera": "MS, face and working surface visible",
+       "director_line": "His outward gaze lingers for a brief interval.",
+       "action": "Kasun keeps the flask left and his right hand on the cloth.",
+       "performance": "His lips remain closed with his eyes toward the road."
+      },
+      {
+       "time": "0.75-1.5s",
+       "camera": "MS, same counter-side composition",
+       "director_line": "A small smile is sufficient acknowledgment of the promise.",
+       "action": "Kasun smiles.",
+       "performance": "The corners of his mouth lift briefly without showing his teeth."
+      },
+      {
+       "time": "1.5-2.25s",
+       "camera": "MS, same composition receives his inward turn",
+       "director_line": "The attention returns to the work in front of him.",
+       "action": "Kasun turns back into the vehicle.",
+       "performance": "His eyes lower to the working surface."
+      },
+      {
+       "time": "2.25-3.25s",
+       "camera": "MS, focus includes right hand and counter",
+       "director_line": "The aspiration ends in another ordinary working gesture.",
+       "action": "Kasun wipes the counter with his right hand.",
+       "performance": "His small smile remains as his eyes follow the cloth."
+      },
+      {
+       "time": "3.25-4s",
+       "camera": "MS, same settled working composition",
+       "director_line": "The morning's work remains his immediate occupation.",
+       "action": "Kasun keeps the cloth against the counter and the flask in his left hand.",
+       "performance": "He remains upright with his gaze on the working surface."
+      }
+     ],
+     "audio": "Soft cloth movement beneath the continuing morning road bed; no intelligible voices.",
+     "first_frame": {
+      "composition": "Kasun at left in medium view, counter below and narrow interior behind, empty customer space to the right.",
+      "subjects": [
+       "Kasun faces right, flask left and right hand resting on the cloth."
+      ],
+      "setting": "The arranged food, resting kettle and worn small counter remain inside the vehicle; the customer and tea cup are off frame.",
+      "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous morning road bed in post",
+     "effects": "Soft cloth scrape",
+     "music": "None",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "insert",
+    "setup": "E",
+    "blocks": [
+     6
+    ],
+    "lines": [
+     "L6"
+    ],
+    "speaks": false,
+    "over": "L6 audio from c06",
+    "size": "ECU",
+    "angle": "counter height, oblique from road side",
+    "lens": "85mm macro",
+    "technique": "shallow_isolation",
+    "why": "Makes the flask in his working hand the material counterpoint to the larger ambition, rather than repeating the facial close-up.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "should",
+    "editor_note": "Use briefly within L6, retaining its beginning and ending on c06; keep flask in left hand.",
+    "summary": "An extreme close-up isolates Kasun's left hand around the tea flask beside the narrow counter while L6 and morning traffic continue from c06.",
+    "id": "c08",
+    "slate": "1E-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm macro, f/2.8",
+      "angle": "counter height, oblique from road side",
+      "framing": "ECU of left hand and flask, with the counter edge softly receding behind",
+      "movement": "Stationary shallow isolation on the grip throughout.",
+      "white_balance": "warm early daylight, 5200K",
+      "color_tone": "Naturalistic warm highlights, restrained colour and gently shaded vehicle interior.",
+      "depth_of_field": "Shallow, softly dissolved fittings behind the hand.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Keeps his left hand around the flask, with a small settling of the thumb.",
+       "position": "Standing behind the counter on screen left, facing screen right; flask in left hand; only left forearm and hand visible."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "ECU focused on the left-hand grip.",
+       "director_line": "The familiar flask fills the narrow working space.",
+       "action": "His left hand remains around the flask.",
+       "performance": "His fingers rest evenly against the flask."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "ECU with the same isolated grip.",
+       "director_line": "One small adjustment carries the weight of the private commitment.",
+       "action": "His left thumb settles against the flask.",
+       "performance": "The grip stays steady as the thumb relaxes."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "ECU on left hand and flask.",
+       "director_line": "The everyday tool remains the visual answer to the ambition.",
+       "action": "The flask remains in his left hand.",
+       "performance": "His fingers remain relaxed."
+      }
+     ],
+     "audio": "Silent source clip; c06 supplies L6 and roadside ambience in the edit.",
+     "first_frame": {
+      "composition": "Left forearm enters from frame left; hand and flask dominate centre, narrow counter behind.",
+      "subjects": [
+       "Kasun's rolled sleeve, left forearm and left hand around the flask."
+      ],
+      "setting": "Small counter edge and worn vehicle fittings beneath the canopy.",
+      "lighting": "Roadside morning light rims the flask from screen right."
+     }
+    },
+    "sound": {
+     "ambience": "None in source clip.",
+     "effects": "None in source clip.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 2,
+    "anchor": [
+     "c06"
+    ],
+    "blend": "under_line"
+   },
+   {
+    "moment": 4,
+    "role": "reaction",
+    "setup": "F",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level from inside the serving bay",
+    "lens": "65mm",
+    "technique": "slow_creep",
+    "why": "Reverses the public view into a private, held response to the cramped fittings after the customer has left; the master supplies the departure.",
+    "take_s": 6,
+    "handle_in_s": 0.7,
+    "handle_out_s": 0.7,
+    "priority": "should",
+    "editor_note": "Enter after c05 has completed the customer's departure and Kasun's inward turn. Keep road eyeline off this shot.",
+    "summary": "From inside the vehicle, a slow approach watches Kasun study the worn interior, then lift his eyes slightly; the flask stays below frame in his left hand.",
+    "id": "c09",
+    "slate": "1F-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "short slider, 65mm, f/2.8",
+      "angle": "eye level from inside the serving bay looking outward",
+      "framing": "MCU of Kasun framed between soft worn fittings, his face occupying the left centre",
+      "movement": "One very slow forward creep toward Kasun throughout.",
+      "white_balance": "warm early daylight, 5200K",
+      "color_tone": "Naturalistic warm skin with subdued fittings and gentle interior shadows.",
+      "depth_of_field": "Shallow, fittings softly framing the face.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Studies the fittings, then lifts his eyes slightly within the interior.",
+       "position": "Standing screen left behind the counter, facing away from the road into the vehicle toward this interior camera; flask remains in left hand below frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.7s",
+       "camera": "MCU through the softly blurred fittings; forward creep begins.",
+       "director_line": "The serving bay encloses his face rather than displaying the business.",
+       "action": "Kasun's gaze rests on the lower fittings.",
+       "performance": "His lips stay closed and his chin remains slightly lowered."
+      },
+      {
+       "time": "0.7-5.3s",
+       "camera": "MCU marginally closer along the same forward path, focus on his eyes.",
+       "director_line": "His eyes rise within the cramped interior without a retreat from it.",
+       "action": "Kasun lifts his gaze slightly along the fittings.",
+       "performance": "His brow eases while his mouth remains closed."
+      },
+      {
+       "time": "5.3-6s",
+       "camera": "MCU at the closest point of the continuous creep.",
+       "director_line": "Let his steady face carry the limit he has just measured.",
+       "action": "Kasun remains facing the interior.",
+       "performance": "His eyes stay level and his jaw loosens."
+      }
+     ],
+     "audio": "Continuous morning road bed, slightly shaded by the vehicle interior.",
+     "first_frame": {
+      "composition": "Kasun left centre between soft vertical fittings, road brightness behind his right shoulder.",
+      "subjects": [
+       "Kasun facing into the vehicle, chin slightly lowered, lips closed."
+      ],
+      "setting": "Worn interior edges enclose the small serving bay.",
+      "lighting": "Morning side light from screen right with canopy shade across his face."
+     }
+    },
+    "sound": {
+     "ambience": "Morning buses and motorcycles outside the vehicle.",
+     "effects": "Faint vehicle fitting vibration.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c05"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 6,
+    "role": "clean_exit",
+    "setup": "G",
+    "blocks": [
+     7
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level from the customer side",
+    "lens": "35mm",
+    "technique": "pull_back",
+    "why": "Returns scale to the private ambition by gradually surrounding the working man with the modest business, ending on effort rather than triumph.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Follow c07 after his inward turn is complete; resume the established cleaning action, never introduce a second task.",
+    "summary": "A slow retreat from the customer side leaves Kasun working behind the small counter, flask in his left hand, with the vehicle and morning road growing around him.",
+    "id": "c10",
+    "slate": "1G-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "dolly, 35mm, f/5.6",
+      "angle": "eye level from the customer side, oblique to the serving bay",
+      "framing": "WIDE containing Kasun screen left and the complete counter, with growing roadside space to the right",
+      "movement": "One slow straight pullback away from the serving counter.",
+      "white_balance": "warm early daylight, 5200K",
+      "color_tone": "Grounded warm daylight with restrained saturation and shaded interior detail.",
+      "depth_of_field": "Deep, keeping the business legible while distant traffic is gently soft.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Continues cleaning the working surface with his right hand while keeping the flask in his left.",
+       "position": "Standing screen left behind the counter, facing away into the vehicle; flask in left hand and right hand at the working surface."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE from the customer side as the pullback begins.",
+       "director_line": "His work has already resumed before the view recedes.",
+       "action": "Kasun continues cleaning the small surface with his right hand.",
+       "performance": "His head is inclined toward the working surface."
+      },
+      {
+       "time": "1-5s",
+       "camera": "WIDE expanding along the same straight backward path.",
+       "director_line": "The business grows smaller around a man who stays occupied.",
+       "action": "Kasun continues the same cleaning motion.",
+       "performance": "His shoulders stay easy and his gaze follows the surface."
+      },
+      {
+       "time": "5-6s",
+       "camera": "WIDE at the outer end of the continuous pullback.",
+       "director_line": "Morning continues around the useful work.",
+       "action": "Kasun remains occupied with the counter.",
+       "performance": "His gaze stays on the task."
+      }
+     ],
+     "audio": "Morning road activity at the same level as the preceding coverage.",
+     "first_frame": {
+      "composition": "Complete counter across the lower frame, Kasun left facing inward, roadway opening right.",
+      "subjects": [
+       "Kasun at work, flask in left hand and right hand at the counter."
+      ],
+      "setting": "Full serving side of the small food three-wheeler beneath its canopy.",
+      "lighting": "Low road-side morning light and canopy shade."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous Colombo morning traffic.",
+     "effects": "Soft counter-cleaning friction.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c07"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 3,
+    "role": "insert",
+    "setup": "H",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "counter height, customer-side oblique",
+    "lens": "85mm macro",
+    "technique": "locked_off",
+    "why": "Gives the ordinary sale a precise tactile punctuation, isolating one cup pickup rather than another two-person view.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Match c04 immediately before the cup pickup. Cup begins on counter; the worker's right hand takes it. Never stage hand-to-hand contact.",
+    "summary": "From counter height, the office worker's right hand lifts the prepared tea cup off the counter; Kasun remains outside the crop and street sound continues.",
+    "id": "c11",
+    "slate": "1H-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm macro, f/4",
+      "angle": "counter height, customer-side oblique",
+      "framing": "INSERT with tea cup large at centre and the customer's right hand entering from screen right",
+      "movement": "Locked-off on sticks throughout the pickup.",
+      "white_balance": "warm early daylight, 5200K",
+      "color_tone": "Naturalistic warm highlights with muted counter colours.",
+      "depth_of_field": "Shallow, cup and fingers clear against soft fittings.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C04",
+       "description": "Sri Lankan office worker with neatly combed black hair, wearing a plain light office shirt and dark trousers.",
+       "action": "Takes the prepared tea cup from the counter with his right hand.",
+       "position": "Standing screen right at the counter facing left; only right sleeve and hand visible beside the cup, which starts on the counter."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT focused on the tea cup and adjacent right hand.",
+       "director_line": "A small cup occupies the whole scale of the exchange.",
+       "action": "The cup rests on the counter beside the customer's right hand.",
+       "performance": "His fingers are poised beside the cup."
+      },
+      {
+       "time": "1-3s",
+       "camera": "INSERT on the cup through its short lift.",
+       "director_line": "The purchase becomes one clean movement off the worn surface.",
+       "action": "The customer lifts the cup with his right hand.",
+       "performance": "His fingers keep an even grip around the cup."
+      },
+      {
+       "time": "3-4s",
+       "camera": "INSERT retaining the cup just above counter height.",
+       "director_line": "The cup is now securely his.",
+       "action": "The customer keeps the cup in his right hand above the counter.",
+       "performance": "His wrist remains steady."
+      }
+     ],
+     "audio": "Morning street bed with a small cup scrape.",
+     "first_frame": {
+      "composition": "Tea cup central on the counter, office worker's right hand beside it from frame right.",
+      "subjects": [
+       "Office worker's light shirt cuff and right hand."
+      ],
+      "setting": "Small worn serving counter with soft vehicle fittings behind.",
+      "lighting": "Low morning daylight from screen right grazing the cup."
+     }
+    },
+    "sound": {
+     "ambience": "Morning traffic matching c04.",
+     "effects": "Light ceramic scrape as the cup leaves the counter.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c04"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 1,
+    "role": "establishing",
+    "setup": "J",
+    "blocks": [],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "EWS",
+    "angle": "elevated oblique toward the serving side",
+    "lens": "28mm equivalent",
+    "technique": "drone_reveal",
+    "why": "Places the tiny business within the city's already moving morning rather than duplicating the roadside eye-level master.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Brief opening before c01; only enough altitude to establish roadside scale, not a skyline spectacle. Keep passersby distant and soft.",
+    "summary": "A short aerial rise reveals the food three-wheeler beside Colombo morning traffic, with Kasun small beneath its canopy and buses, tuk-tuks and motorcycles on the road.",
+    "id": "c12",
+    "slate": "1J-1",
+    "ir": {
+     "setting": "A modest food three-wheeler stands beside a Colombo road, its small counter and worn fittings under a shallow canopy.",
+     "cinematography": {
+      "camera": "drone, 28mm equivalent, f/5.6",
+      "angle": "elevated oblique toward the serving side",
+      "framing": "EWS with three-wheeler lower left and morning road extending across the right",
+      "movement": "One gentle vertical rise revealing more of the road beyond the canopy.",
+      "white_balance": "warm early daylight, 5200K",
+      "color_tone": "Grounded early morning warmth with controlled urban colours.",
+      "depth_of_field": "Deep, road and vehicle readable; distant figures too small for facial detail.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Low morning daylight enters from the road on screen right, with the canopy shading the counter and gentle falloff into the vehicle.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Sri Lankan man with short black hair and an average build, wearing a plain faded cotton shirt with sleeves rolled to the forearms and dark trousers.",
+       "action": "Remains at his serving counter with the flask in his left hand.",
+       "position": "Small in frame at screen left under the canopy, standing behind the counter facing right, flask in left hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "EWS elevated oblique; gentle vertical rise begins.",
+       "director_line": "A small roadside livelihood sits within the waking city.",
+       "action": "Kasun remains at the counter while road traffic passes.",
+       "performance": "His attention stays directed toward the working surface."
+      },
+      {
+       "time": "1-3s",
+       "camera": "EWS gaining height along the same vertical path, revealing the roadway.",
+       "director_line": "The moving road expands around the shaded serving bay.",
+       "action": "Buses, tuk-tuks and motorcycles travel along the road.",
+       "performance": ""
+      },
+      {
+       "time": "3-4s",
+       "camera": "EWS at the upper end of the continuous rise.",
+       "director_line": "Keep the modest business visible within the larger morning rhythm.",
+       "action": "Kasun remains beneath the canopy as traffic continues.",
+       "performance": "His head remains inclined toward the counter."
+      }
+     ],
+     "audio": "Layered morning buses, tuk-tuks and motorcycles; distant footsteps.",
+     "first_frame": {
+      "composition": "Food three-wheeler lower left, shaded serving side visible beneath canopy, road on the right.",
+      "subjects": [
+       "Kasun small beneath the canopy with flask in left hand.",
+       "Distant traffic and soft, small office-worker figures along the road."
+      ],
+      "setting": "Colombo roadside at the beginning of the working day.",
+      "lighting": "Low morning daylight across the road and shade under the canopy."
+     }
+    },
+    "sound": {
+     "ambience": "Colombo morning traffic and distant pedestrian movement.",
+     "effects": "Passing bus engine and tuk-tuk motors.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c01"
+    ],
+    "blend": "open"
+   }
+  ],
+  "line_ids": {
+   "L6": "E01-S01-B07"
+  },
+  "editor_notes": [
+   "Intended cut: approximately 28 seconds; the 32-second must bin includes in-take handles, not 32 seconds of required screen time. Preserve the complete 2.7-second L6 performance.",
+   "The roadside master establishes the street and geography; the preparation single isolates the flask fill. The arrival master completes the counter-cleaning phase as the customer approaches. The shared counter view carries the smile and cup pickup; the later master keeps departure and appraisal in order. The close single carries the outward glance and L6; the final medium returns to work.",
+   "The three preparation tasks are divided across consecutive clips to avoid an unreliable hand routine. The kettle and cleaning cloth are implied by the specified preparation. The prepared tea is already on the counter before pickup; there is no direct hand-to-hand contact.",
+   "Kasun was not initially placed by the packet: he begins standing behind the counter at screen left. The initially unplaced customer approaches from screen right. The flask remains in Kasun's left hand. The customer carries the tea out to screen right.",
+   "Match the arranged food, flask, cloth, prepared cup and hand positions at cuts. The cup is on the counter before pickup and in the customer's right hand after it; the customer is off-screen before Kasun surveys the fittings. Match the inward-to-outward eyeline into the close single, and the outward-to-inward eyeline into the final medium.",
+   "The customer's request has no supplied wording: play the approach and attention to the tea cup without inventing dialogue. Lay continuous Colombo street ambience and restrained effects in post over the silent picture sources.",
+   "Avoid a close hand-to-hand transfer, elaborate pouring-and-resetting routines, sharp identifiable crowds and unsupported invented speech. No mirrors or complex physical contact are required.",
+   "Speed ramps, freeze frames, digital punch-ins and split screens are post-only possibilities; these locked clean sources do not require them, and none is part of the intended cut.",
+   "The supplied romantic montage and later struggle directions are scoped elsewhere and are not staged here. Preserve natural light and grounded performances as directed."
+  ],
+  "blend_notes": [
+   "c08: Cut from c06 to the flask grip within L6, then return to Kasun; carry Kasun's complete L6 and road ambience from c06 over the silent insert.",
+   "c09: Cut into c05 after the customer's departure and Kasun's inward turn, then return to the master before the moment ends; carry c05's roadside ambience.",
+   "c10: Follow c07 with the retreat from the working counter; continue c07's road and work-surface audio, with no dialogue.",
+   "c11: Cut into c04 for the customer's cup pickup, then return to the two-shot; carry c04's ambient audio and match the cup sound.",
+   "c12: Open immediately before c01 with the aerial view; use matching morning road ambience from c01."
+  ],
+  "review": [
+   {
+    "moment": 1,
+    "earns": true,
+    "why": "A brief aerial opening places the small business within Colombo's morning traffic, complementing the eye-level preparation coverage."
+   },
+   {
+    "moment": 2,
+    "earns": false,
+    "why": "The existing arrival master covers this straightforward approach and the ready cup without another setup."
+   },
+   {
+    "moment": 3,
+    "earns": true,
+    "why": "The cup pickup insert gives the everyday sale a precise tactile beat without hand-to-hand choreography."
+   },
+   {
+    "moment": 4,
+    "earns": true,
+    "why": "An interior reaction isolates Kasun's assessment of the cramped vehicle after the departure."
+   },
+   {
+    "moment": 5,
+    "earns": true,
+    "why": "The flask-grip insert sets the present working life against the ambition carried by L6."
+   },
+   {
+    "moment": 6,
+    "earns": true,
+    "why": "A restrained pullback places his continued work in the scale of the modest business and road."
+   }
+  ],
+  "seconds": {
+   "target_s": 28.0,
+   "cap_s": 56.0,
+   "take_s": 56,
+   "must_s": 32,
+   "cinematic_s": 24
+  },
+  "left": [],
+  "report": {
+   "turns": {
+    "stage1": 4,
+    "stage2": 4
+   },
+   "calls": 8,
+   "log": [
+    "stage 1: finished after 4 turns",
+    "stage 2: finished after 4 turns"
+   ],
+   "model": "gpt-6.1-sol"
+  },
+  "previous": {}
+ }
+}

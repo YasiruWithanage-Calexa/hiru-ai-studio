@@ -26,6 +26,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from contracts import action_budget as ab
 from contracts import holding as hd
 from contracts import stagemap as sm
 from contracts.raphael.bin import Bin
@@ -710,7 +711,51 @@ def check_stage1(
         *state(scene, work),  # plan/2026-11-09: the state ledger, report only (D2)
         *breakdown_missing(breakdown, work),  # plan/2026-11-10: report only (D2)
         *device_unseen(scene, work),  # plan/2026-11-12: report only
+        *action_budget(work),  # plan/2026-11-18c: blocking (Raphael owns the breakdown)
     ]
+
+
+def _beats(clip: Clip) -> list[dict[str, object]]:
+    return [b for b in (clip.ir or {}).get("beats") or [] if isinstance(b, dict)]
+
+
+def action_budget(work: Bin) -> list[Fault]:
+    """Blocking (plan/2026-11-18c, house rule H-16, lab/action_budget). Counted in actions, never seconds:
+    - a clip over the budget (more than one hard action, more than three actions, or a hard action while someone
+      travels): split it, the next clip opening on the result;
+    - a door opened (or already open) in a clip and closed in none: nobody walks away from an open car door;
+    - a clip with a spoken line that opens with the speaker turned away: its first frame has no face.
+    Stage 2 runs stage 1's checks on the whole bin, so the cinematic clips keep the budget too."""
+    out: list[Fault] = []
+    for c in work.clips:
+        why = ab.count(str(b.get("action") or "") for b in _beats(c)).over()
+        if why:
+            out.append(_fault("action_budget", f"{c.slate or c.id} is over the action budget (H-16): "
+                              f"{'; '.join(why)}.", [c.id], key=f"action_budget:{c.id}"))
+    words = [" ".join([c.summary, *(str(b.get("action") or "") for b in _beats(c))]) for c in work.clips]
+    door = ab.door_left_open(words)
+    if door is not None:
+        c = work.clips[door]
+        out.append(_fault("action_budget", f"{c.slate or c.id} opens a door (or has it already open) and no clip "
+                          "closes it: a person never walks away from an open car door. Add a clip, the person "
+                          "standing still, that closes it, before the walk away (H-16).", [c.id],
+                          key=f"door_open:{c.id}"))
+    for c in work.clips:
+        if not (c.speaks or c.lines):
+            continue
+        ir = c.ir or {}
+        frame = ir.get("first_frame") if isinstance(ir.get("first_frame"), dict) else {}
+        beats = _beats(c)
+        opening = " ".join([str(beats[0].get("action") or "") if beats else "",
+                            *(str(s.get("position") or "") for s in ir.get("subjects") or [] if isinstance(s, dict)),
+                            *(str(s) for s in (frame or {}).get("subjects") or [])])
+        away = ab.turned_away(opening)
+        if away:
+            out.append(_fault("action_budget", f"{c.slate or c.id} carries a spoken line but opens with the speaker "
+                              f"'{away}': the first frame has no face. Open the clip with the speaker already turned "
+                              "to the camera's side; put the turn in the clip before (H-16).", [c.id],
+                              key=f"speaker_hidden:{c.id}"))
+    return out
 
 
 def device_unseen(scene: SceneS, work: Bin) -> list[Fault]:

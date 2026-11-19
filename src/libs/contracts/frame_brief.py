@@ -578,8 +578,10 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
     if when:
         place.add(f"Time: {when}", "scene heading")
     lighting, frame_light = _clean(ir.get("lighting")), _clean(frame.get("lighting"))
-    weather = weather_phrase(setting, frame_setting, lighting, frame_light, look.ambience, look.light,
-                             _clean(ir.get("audio")))
+    # The shot's own words only (its IR and its clip's sound). Never the sequence's colour script (`look.light`): it
+    # speaks for every shot of the sequence ("the same sky supports the first sparse rain in the final moment"), and
+    # gave "Weather: rain" to a dry arrival before the rain had started (2026-11-18, Love Hour 4 shot 02).
+    weather = weather_phrase(setting, frame_setting, lighting, frame_light, look.ambience, _clean(ir.get("audio")))
     if weather:
         place.add(f"Weather: {weather}", "ir + sound")
 

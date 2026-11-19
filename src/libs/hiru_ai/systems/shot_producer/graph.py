@@ -31,6 +31,7 @@ from typing import Any
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
+from contracts.canon import wardrobe_by_code
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
 from contracts.producer import CameraSettings
@@ -339,12 +340,16 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
                 continue
             wanted = [s for s in scene.shots if targets is None or s.id in targets]
             frames = producer.accepted_frames([s.id for s in wanted])
+            # plan/2026-11-18: the Subjects line dresses each person in the look the scene uses (the look sheet the
+            # take attaches), never in clothes the planner wrote.
+            wardrobe = wardrobe_by_code(frame_world(row, canon)["looks"], canon)
             for shot in wanted:
                 frame = frames.get(shot.id)
                 if shot.frame_strategy != "carry_last_frame" and frame is None:
                     skipped.append(f"{shot.code}: no accepted first frame")
                     continue
-                prompt = sz.write_prompt(shot, scene, prod, frame, str(job_id), str(payload.actor_user_id))
+                prompt = sz.write_prompt(shot, scene, prod, frame, str(job_id), str(payload.actor_user_id),
+                                         wardrobe=wardrobe)
                 if writer:
                     prompt = polish_mod.polish_video(ctx, prompt, names)
                 prompt["version"] = producer.last_prompt_version(shot.id) + 1

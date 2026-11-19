@@ -48,7 +48,7 @@ def design_row(shot: ShotInput, ir: Row, rec: CameraSettings, why: str, planner:
 
 
 def write_prompt(shot: ShotInput, scene: SceneInput, prod: ProductionInput, frame: Row | None, job_id: str,
-                 actor: str) -> Row:
+                 actor: str, *, wardrobe: dict[str, str] | None = None) -> Row:
     """A new prompt version's row, serialized in code from the stored IR."""
     carried_state = parts.step("serialize", "continuity").carried_state
     previous = next((s for s in scene.shots if s.number == shot.number - 1), None)
@@ -57,7 +57,7 @@ def write_prompt(shot: ShotInput, scene: SceneInput, prod: ProductionInput, fram
                             previous_code=previous.code if previous else "",
                             carried=carried_state(previous.code, previous.row.get("ir"),
                                                   positions_text(previous.feeling.end)) if previous else "",
-                            has_frame=frame is not None)
+                            has_frame=frame is not None, wardrobe=dict(wardrobe or {}))
     ir = dict(shot.row.get("ir") or {})
     sections = serialize.build_sections(shot, ir, ctx)
     return {"production_id": prod.id, "shot_id": shot.id,

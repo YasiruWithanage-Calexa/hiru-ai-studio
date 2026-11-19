@@ -426,15 +426,49 @@ def _source_beat(got: list[Row], n: int, window: tuple[int, int], total: int) ->
     return dict(got[n * len(got) // total])
 
 
+def _sentence(text: object) -> str:
+    t = " ".join(str(text or "").split())
+    return t if not t or t.endswith((".", "!", "?")) else f"{t}."
+
+
+def _placed(got: list[Row], windows: list[tuple[int, int]]) -> list[Row] | None:
+    """Each timed beat ONCE, in the window it overlaps most (the earlier on a tie; a beat outside every window goes to
+    the nearest); a window with several gets them in order, each action with its own performance; a window no beat
+    lands in is empty. None when a beat has no time. (2026-11-18: matching each WINDOW to the beat that overlaps it
+    most put a long middle beat in both windows, so the phone fell twice, and dropped the short beats around it.)"""
+    timed = [(g, _window(g)) for g in got]
+    if not timed or not windows or any(w is None for _, w in timed):
+        return None
+    home: list[int] = []
+    for _, w in timed:
+        assert w is not None
+        lap = [max(0.0, min(b, w[1]) - max(a, w[0])) for a, b in windows]
+        near = [min(abs(w[0] - b), abs(w[1] - a)) for a, b in windows]
+        home.append(max(range(len(windows)), key=lambda i: (lap[i], -near[i], -i)))
+    out: list[Row] = []
+    for n in range(len(windows)):
+        mine = [g for (g, _), h in zip(timed, home, strict=True) if h == n]
+        if len(mine) <= 1:
+            out.append(dict(mine[0]) if mine else {})
+            continue
+        acts = [x for i, g in enumerate(mine) for x in (_sentence(g.get("action")),
+                                                         _sentence(g.get("performance")) if i < len(mine) - 1 else "")]
+        out.append({"camera": next((str(g.get("camera")) for g in mine if g.get("camera")), ""),
+                    "director_line": next((str(g.get("director_line")) for g in mine if g.get("director_line")), ""),
+                    "action": " ".join(x for x in acts if x), "performance": str(mine[-1].get("performance") or "")})
+    return out
+
+
 def fit_beats(ir: Row, shot: ShotInput) -> Row:
     """The IR's beats on the shot's own beat windows (the kernel's), the director's notes on top.
     The DoP's beats are matched BY TIME, not by position, so a step it put at 4-6 s stays there when
-    the kernel's windows differ; a reply that stamped no times is mapped across in order, never
-    dropped silently."""
+    the kernel's windows differ; each beat lands once (`_placed`); a reply that stamped no times is
+    mapped across in order, never dropped silently."""
     got = [b for b in ir.get("beats") or [] if isinstance(b, dict)]
+    placed = _placed(got, list(shot.beats))
     beats = []
     for n, (a, b) in enumerate(shot.beats):
-        src = _source_beat(got, n, (a, b), len(shot.beats))
+        src = placed[n] if placed is not None else _source_beat(got, n, (a, b), len(shot.beats))
         note = shot.beat_notes[n] if n < len(shot.beat_notes) else {}
         beats.append({"time": f"{a}-{b}s", **{k: str(note.get(k) or src.get(k) or "")
                                                 for k in ("camera", "director_line", "action")},

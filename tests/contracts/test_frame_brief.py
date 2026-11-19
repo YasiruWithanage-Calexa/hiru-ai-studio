@@ -91,7 +91,8 @@ def test_every_field_of_the_camera_panel_is_in_the_prompt_as_it_stands():
     assert shot in text, "the panel's lens and stop, numbers and look"
     assert "Static: a steady, locked-off frame." in text
     assert "Camera on side A of the line of action: the action reads left to right." in text
-    assert "Lighting: Dawn, soft ambient: Bare tungsten bulbs hang over the trays" in text, "the panel's lighting leads"
+    # the preset's time leads; the planner's light names the source (2026-11-18: the preset's source is a guess)
+    assert "Lighting: Dawn: Bare tungsten bulbs hang over the trays" in text, "the panel's lighting leads"
     moved = brief(camera=camera(movement="Dolly in", speed="Slow", axis="Side B · right to left")).text()
     assert "Slow dolly in: this is the opening frame of the move." in moved
     assert "Camera on side B of the line of action: the action reads right to left." in moved
@@ -296,3 +297,18 @@ def test_the_scene_mood_from_the_packet_is_in_the_prompt_and_never_cut():
     assert "Scene mood: bleak, restrained, ominous." in brief.text() and "mood" in brief.cut
     assert "Scene mood" not in frame_prompt(ir=IR, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=SCENE,
                                             shot={"slate": "4C-2"})
+
+
+def test_the_sequence_colour_script_never_brings_weather_into_a_dry_shot():
+    """Love Hour 4 shot 02 (2026-11-18): the sequence's light said rain comes "in the final moment"; the arrival
+    before it was painted soaking wet. Weather comes from the shot's own words and its clip's sound only."""
+    dry = {**IR, "setting": "A covered fish stall at the Negombo lagoon market, before sunrise.",
+           "audio": "Gulls, the market waking."}
+    scene = {**SCENE, "raphael": {**SCENE["raphael"],
+                                  "clips": [{"slate": "4C-2", "moment": 2, "sound": {"ambience": "Gulls"}}]}}
+    scene["raphael"]["edit"] = {**SCENE["raphael"]["edit"], "treatment": {"colour_script": [
+        {"sequence": "S2", "palette": "Grey", "light": "Overcast throughout; the first rain comes in the final moment",
+         "grade": "Neutral"}]}}
+    text = frame_brief(ir=dry, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=scene,
+                       shot={"slate": "4C-2"}).text()
+    assert "Weather:" not in text

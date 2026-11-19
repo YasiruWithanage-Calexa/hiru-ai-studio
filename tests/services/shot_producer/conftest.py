@@ -29,6 +29,7 @@ class FakeStore:
         self.technique_queries: list[str] = []
         self.neighbour_rows: tuple[dict | None, dict | None] = (None, None)
         self.intents: dict[str, dict] = {}
+        self.looks_in_force: dict[str, dict] = {}  # character id → the look the scene uses (plan/2026-11-18)
 
     def production(self, production_id: UUID) -> dict | None:
         return {"id": str(production_id), "title": "Harbour Lights", "orientation": self.orientation,
@@ -58,6 +59,9 @@ class FakeStore:
 
     def accepted_frames(self, shot_ids: list[str]) -> dict[str, dict]:
         return {k: v for k, v in self.frames.items() if k in shot_ids}
+
+    def scene_looks_in_force(self, scene: dict) -> dict[str, dict]:
+        return dict(self.looks_in_force)
 
     def last_prompt_version(self, shot_id: str) -> int:
         return max((p["version"] for p in self.prompts if p["shot_id"] == shot_id), default=0)

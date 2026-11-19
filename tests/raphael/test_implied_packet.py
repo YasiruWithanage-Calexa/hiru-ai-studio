@@ -29,9 +29,10 @@ def test_the_packet_and_raphael_read_the_phone_as_a_given_thing():
 
 @pytest.mark.parametrize("name", ["raphael_planner", "raphael_cinematic"])
 def test_both_raphael_stages_get_h12_at_the_end_of_their_system_prompt(name: str):
-    system, ctx, _ = _through(name)  # and H-13, the genre lens (plan/2026-11-12b)
-    assert system.endswith(house_rules.block(house_rules.select(("objects", "genre"))))
-    assert hr_mw.used(ctx) == ["H-12 v2", "H-13 v2"]
+    system, ctx, _ = _through(name)  # and H-13, the genre lens (plan/2026-11-12b); H-15, accidents as coverage;
+    # H-16, the action budget (plan/2026-11-18c)
+    assert system.endswith(house_rules.block(house_rules.select(("objects", "genre", "coverage"))))
+    assert hr_mw.used(ctx) == ["H-12 v2", "H-13 v2", "H-15 v1", "H-16 v1"]
 
 
 def test_raphael_breakdown_is_not_subscribed_and_unchanged():

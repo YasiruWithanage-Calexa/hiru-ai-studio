@@ -64,9 +64,10 @@ def final_resolutions(engine: str) -> tuple[str, ...]:
     """The sizes a production on this engine may choose: the engine's, less the draft size."""
     return tuple(r for r in capability(engine).resolutions if r != DRAFT_RESOLUTION)
 
-REF_TAG = "<IMAGE_REF_{n}>"
-FIRST_FRAME_TAG = "<FIRST_FRAME>"
-LAST_FRAME_TAG = "<LAST_FRAME>"
+# Omni names each picture "Image n", n = its position among the image parts (1-based), in plain words. Google's Omni
+# page (read 2026-11-18): the `<FIRST_FRAME>` / `<IMAGE_REF_0>` control strings "are deprecated and unsupported in
+# future models. Describe how each image or video should be used in natural language instead." (plan/2026-11-18)
+IMAGE_TAG = "Image {n}"
 
 
 class _Model(BaseModel):
@@ -109,6 +110,13 @@ class EngineCapability(_Model):
     first_frame: bool
     last_frame: bool
     refs_with_first_frame: bool  # may references and a start frame go in one request (Phase 0 probe)
+    refs_with_last_frame: bool = True  # may references and an end frame go in one request
+    max_images: int = 0  # every picture in the request, frames included; 0 = only `max_refs` applies
+    max_per_person: int = 0  # pictures bound to one canon entity; 0 = no limit
+    max_people_with_sheets: int = 0  # Hiru's default attaches sheets for at most this many people; 0 = no limit
+    # "one": a person gets one picture (the look sheet, else the base sheet). "face_and_look": the face sheet (else the
+    # base sheet), then the look sheet (plan/2026-11-18, lab/omni_refs run 003).
+    person_pictures: Literal["one", "face_and_look"] = "one"
     full_length_for: tuple[str, ...] = ()  # Veo: "1080p", "references", "last_frame" need `full_length`
     full_length: int = 0
     seed: SeedSupport  # set by the Phase 0 probe, never assumed
@@ -129,15 +137,20 @@ _VEO_OPTIONS = {
 
 # Starting values are PromptMotion's rows (a027aec). The seed rows are the honest unknown: Omni's S0 probe saw `seed`
 # accepted on the wrong endpoint, so it stays "none" (not sent) until the probe settles it on /interactions.
-# Omni does NOT take references with a start frame: a request with a frame is image-to-video, and the live endpoint
-# answered a start frame + three sheets with 400 "Image-to-video does not support more than 2 images." (2026-11-06).
+# Omni takes a start frame WITH references as `reference_to_video` (plan/2026-11-18, lab/omni_refs run 003: frame + 4
+# sheets, the sheet's clothes and face held). As `image_to_video` the same request is a 400 ("Image-to-video does not
+# support more than 2 images", 2026-11-06), so the provider picks the task from the pictures. Google's limits for 1.2:
+# 6 reference images, at most 3 per character, for up to 2 characters; the start frame is counted in the 6 (safe).
+# An end frame with references is not tested and stays apart.
 ENGINE_CAPABILITIES: dict[str, EngineCapability] = {
     "omni_flash": EngineCapability(
         key="omni_flash", label="Omni Flash", model="gemini-omni-1.1-flash", api="interactions",
         versions=(("1.1", "gemini-omni-1.1-flash"), ("1.2", "gemini-omni-1.2-flash")),
-        durations=VEO_DURATIONS, aspects=("9:16", "16:9"), resolutions=("360p", "720p", "1080p"), max_refs=10,
-        first_frame=True, last_frame=True, refs_with_first_frame=False, seed="none",
-        notes="A start frame (and an end frame) OR up to 10 reference pictures cited as <IMAGE_REF_n>, not both."),
+        durations=VEO_DURATIONS, aspects=("9:16", "16:9"), resolutions=("360p", "720p", "1080p"), max_refs=6,
+        first_frame=True, last_frame=True, refs_with_first_frame=True, refs_with_last_frame=False, max_images=6,
+        max_per_person=3, max_people_with_sheets=2, person_pictures="face_and_look", seed="none",
+        notes="A start frame and up to 5 sheets (at most 3 of one person, sheets for up to 2 people), each named "
+              "Image 1, Image 2… in the order sent. An end frame goes without sheets."),
     "veo_3_1": EngineCapability(
         key="veo_3_1", label="Veo 3.1", model="veo-3.1-generate-preview", api="predict_long_running",
         durations=VEO_DURATIONS, aspects=("9:16", "16:9"), resolutions=("720p", "1080p"), max_refs=3,
@@ -316,7 +329,9 @@ def resolve(production: VideoSettings, shot: VideoOverrides | None, run: VideoOv
 
 # ── references: binding and order (§4.3) ──────────────────────────────────────────────────────────────────────
 
-RefKind = Literal["accepted_frame", "carried_frame", "canon_sheet", "look_sheet", "take_last_frame", "upload"]
+# `face_sheet`: a card's face asset (several angles of one face); `canon_sheet`: its other sheets (plan/2026-11-18).
+RefKind = Literal["accepted_frame", "carried_frame", "canon_sheet", "face_sheet", "look_sheet", "take_last_frame",
+                  "upload"]
 Bucket = Literal["frames", "references", "takes"]
 
 
@@ -376,7 +391,8 @@ def label_problem(label: str) -> str | None:
 @dataclass(frozen=True)
 class SheetCandidate:
     """One canon entity of the shot, as the frame rule offers it: `seen` is whether the camera sees it (a person only
-    heard is never attached), `sheet` its base sheet and `look_sheet` the look the scene uses, when there is one."""
+    heard is never attached), `sheet` its base sheet, `face` its face sheet and `look_sheet` the look the scene uses,
+    when there are."""
 
     entity_id: UUID
     kind: Literal["character", "location", "prop"]
@@ -384,6 +400,7 @@ class SheetCandidate:
     seen: bool
     sheet: RefSource | None = None
     look_sheet: RefSource | None = None
+    face: RefSource | None = None
 
 
 @dataclass
@@ -397,13 +414,36 @@ _SHEET_WORDS = {"character": "the character sheet for", "location": "the locatio
                 "prop": "the reference sheet for"}
 
 
+def _pictures_of(cap: EngineCapability, c: SheetCandidate) -> list[tuple[RefSource, str]]:
+    """The pictures one entity brings, with their words. A person on an engine that takes `face_and_look` brings the
+    face sheet (else the base sheet), then the look sheet (else the base sheet when the face sheet stood first)."""
+    def word(src: RefSource) -> str:
+        if src.kind == "look_sheet":
+            return f"the look sheet for {c.name}"
+        if src.kind == "face_sheet":
+            return f"the face sheet for {c.name}"
+        return f"{_SHEET_WORDS[c.kind]} {c.name}"
+
+    if c.kind == "character" and cap.person_pictures == "face_and_look":
+        first = c.face or c.sheet
+        second = c.look_sheet or (c.sheet if c.face is not None else None)
+        picks = [p for p in (first, second) if p is not None]
+    else:
+        pick = c.look_sheet or c.sheet
+        picks = [pick] if pick is not None else []
+    return [(p, word(p)) for p in picks]
+
+
 def default_references(*, cap: EngineCapability, strategy: FrameStrategy, accepted_frame: RefSource | None,
                        carried_frame: RefSource | None, candidates: Iterable[SheetCandidate]) -> DefaultReferences:
     """Hiru's choice of pictures, by the same rule as frames (`frame_render` `FrameJob.references`):
     the start frame (the accepted one, else the last frame carried from the shot before when this shot carries on),
-    then the sheets of the people the camera SEES (a look sheet before the base sheet), then the place, then props.
-    Cut to the engine's cap; what was cut is listed. Someone only heard is never attached. An engine that takes a start
-    frame or references but not both (`refs_with_first_frame` False) keeps the start frame and lists the sheets."""
+    then the sheets of the people the camera SEES (`_pictures_of`), then the place, then props. Cut to the engine's
+    caps; what was cut is listed. Someone only heard is never attached.
+
+    An engine that takes a start frame OR reference pictures, not both (`refs_with_first_frame` False), keeps the start
+    frame and lists the sheets. One that takes both (Omni, plan/2026-11-18) leaves places and props out when there is a
+    start frame (the frame already shows them) and attaches sheets for at most `max_people_with_sheets` people."""
     out: list[RefBinding] = []
     left: list[str] = []
     start = accepted_frame or (carried_frame if strategy is FrameStrategy.CARRY_LAST_FRAME else None)
@@ -413,23 +453,39 @@ def default_references(*, cap: EngineCapability, strategy: FrameStrategy, accept
     ordered = sorted(candidates, key=lambda c: _KIND_RANK[c.kind])  # stable: the frame rule's order inside a kind
     # An engine that takes a start frame OR reference pictures, not both, keeps the start frame (it was painted from the
     # same sheets, so the faces are already in it) and says what it left out.
-    exclusive = bool(out) and not cap.refs_with_first_frame
-    attached = 0
+    has_start = bool(out)
+    exclusive = has_start and not cap.refs_with_first_frame
+    room = cap.max_refs
+    if cap.max_images:
+        room = min(room, cap.max_images - len(out))
+    people = 0
     for c in ordered:
         if not c.seen:
             continue
-        pick = c.look_sheet or c.sheet
-        if pick is None:
+        picks = _pictures_of(cap, c)
+        if not picks:
             continue
-        word = f"the look sheet for {c.name}" if pick.kind == "look_sheet" else f"{_SHEET_WORDS[c.kind]} {c.name}"
         if exclusive:
-            left.append(f"{word} ({cap.label} takes a start frame or reference pictures, not both)")
+            left += [f"{w} ({cap.label} takes a start frame or reference pictures, not both)" for _, w in picks]
             continue
-        if attached >= cap.max_refs:
-            left.append(word)
+        if has_start and c.kind != "character" and cap.refs_with_first_frame:
+            left += [f"{w} (the start frame already shows it)" for _, w in picks]
             continue
-        out.append(RefBinding(slot="reference", source=pick, binds_to=c.entity_id, label=word, origin="code"))
-        attached += 1
+        if c.kind == "character" and cap.max_people_with_sheets and people >= cap.max_people_with_sheets:
+            left += [f"{w} ({cap.label} keeps faces for up to {cap.max_people_with_sheets} people)" for _, w in picks]
+            continue
+        if cap.max_per_person:
+            picks, cut = picks[:cap.max_per_person], picks[cap.max_per_person:]
+            left += [w for _, w in cut]
+        took = False
+        for pick, w in picks:
+            if room <= 0:
+                left.append(w)
+                continue
+            out.append(RefBinding(slot="reference", source=pick, binds_to=c.entity_id, label=w, origin="code"))
+            room -= 1
+            took = True
+        people += 1 if took and c.kind == "character" else 0
     return DefaultReferences(out, left)
 
 
@@ -449,10 +505,11 @@ def frame_of(bindings: Sequence[RefBinding], slot: Slot) -> RefBinding | None:
 
 
 def wire_order(bindings: Sequence[RefBinding]) -> list[RefBinding]:
-    """References in the person's order, then the start frame, then the end frame: the fixed layout that makes
-    `<IMAGE_REF_n>` equal the n-th image part of the request."""
+    """The start frame, then the references in the person's order, then the end frame: the fixed layout that makes
+    Omni's "Image n" the n-th image part of the request, with the opening frame always Image 1 (plan/2026-11-18).
+    Veo routes each picture by its slot, so the layout changes nothing there."""
     first, last = frame_of(bindings, "first_frame"), frame_of(bindings, "last_frame")
-    return [*references_of(bindings), *([first] if first else []), *([last] if last else [])]
+    return [*([first] if first else []), *references_of(bindings), *([last] if last else [])]
 
 
 MAX_REFERENCE_BYTES = 15 * 1024 * 1024  # the `references` bucket's limit
@@ -524,25 +581,62 @@ def _part(binding: RefBinding, tag: str) -> dict[str, Any]:
             "source_id": str(binding.source.id)}
 
 
+# The words Omni is given for each picture, by what it is (plan/2026-11-18; the wording lab/omni_refs run 003 tested).
+# `{tag}` is "Image n", `{label}` the binding's own words. Kept here, in one place, and added by code AFTER the prose,
+# so the prompt writer never rewords them.
+OMNI_CITATION_HEAD = "Reference images, in the order attached:"
+OMNI_LINES: dict[str, str] = {
+    "first_frame": ("{tag} is the opening frame of this shot{also}. The video starts exactly on this picture: the same "
+                    "framing, people, place, weather and light, and everything that happens grows out of it."),
+    "last_frame": "{tag} is the closing frame of this shot{also}. The video ends exactly on this picture.",
+    "face_sheet": ("{tag} is {label}: several angles of the same face. That person's face, age, skin tone and hair "
+                   "come only from this sheet, at every angle and expression, including when they turn or move closer "
+                   "to the camera."),
+    "look_sheet": ("{tag} is {label}: exactly what that person wears in this shot, head to toe. When more of them "
+                   "comes into view, the clothes, shoes and things they carry match this sheet exactly."),
+    "reference": "{tag} is {label}. Keep what it shows exactly.",
+}
+# Opens with "Never", not "Image n is", so `cited` counts one sentence per picture.
+OMNI_CITATION_TAIL = ("Never show {tags} in the video: {they} {are} {refs} only, so no sheet, grey backdrop or panel "
+                      "appears and the video never cuts to {them}. Where the words above describe someone's clothes or "
+                      "face differently from these pictures, the pictures win.")
+_FRAME_WORDS = ("the opening frame", "the closing frame")
+
+
+def _and_list(values: Sequence[str]) -> str:
+    return values[0] if len(values) == 1 else f"{', '.join(values[:-1])} and {values[-1]}"
+
+
+def _omni_line(b: RefBinding, tag: str) -> str:
+    if b.slot in ("first_frame", "last_frame"):
+        also = "" if b.label in _FRAME_WORDS else f" ({b.label})"
+        return OMNI_LINES[b.slot].format(tag=tag, also=also)
+    template = OMNI_LINES.get(b.source.kind) or OMNI_LINES["reference"]
+    return template.format(tag=tag, label=b.label)
+
+
 def build_omni_input(spec: RenderSpec) -> dict[str, Any]:
     """Spec → the Omni request, with every picture CITED. An attached picture the prompt never names drifts the
-    frame, so the citation block is built from the same list as the payload. `<IMAGE_REF_n>` numbers the plain
-    references 0..n-1 and those are the first n image parts; the frames come after and carry their own tags."""
+    frame, so the citation block is built from the same list as the payload: the n-th picture sent is "Image n" and
+    its sentence says what it is for. The start frame is always Image 1 (`wire_order`)."""
     parts = [spec.prose.strip()]
     payload: list[dict[str, Any]] = []
     lines: list[str] = []
-    for b in wire_order(spec.references):
-        if b.slot == "first_frame":
-            tag, line = FIRST_FRAME_TAG, f"{FIRST_FRAME_TAG} is the literal opening frame: {b.label}."
-        elif b.slot == "last_frame":
-            tag, line = LAST_FRAME_TAG, f"{LAST_FRAME_TAG} is the closing frame: {b.label}."
-        else:
-            tag = REF_TAG.format(n=sum(1 for p in payload if p["slot"] == "reference"))
-            line = f"{tag} is {b.label}."
+    sheets: list[str] = []
+    for n, b in enumerate(wire_order(spec.references), start=1):
+        tag = IMAGE_TAG.format(n=n)
         payload.append(_part(b, tag))
-        lines.append(line)
+        lines.append(_omni_line(b, tag))
+        if b.slot == "reference":
+            sheets.append(tag)
+    if sheets:
+        tags = f"Images {_and_list([s.removeprefix('Image ') for s in sheets])}" if len(sheets) > 1 else sheets[0]
+        many = len(sheets) > 1
+        lines.append(OMNI_CITATION_TAIL.format(tags=tags, they="they" if many else "it", are="are" if many else "is",
+                                               refs="references" if many else "a reference",
+                                               them="them" if many else "it"))
     if lines:
-        parts.append("Reference images:\n" + "\n".join(lines))
+        parts.append(OMNI_CITATION_HEAD + "\n" + "\n".join(lines))
     return {"model": spec.model, "prompt": "\n\n".join(p for p in parts if p), "references": payload,
             "config": _config(spec)}
 
@@ -574,14 +668,19 @@ def build_request(spec: RenderSpec) -> dict[str, Any]:
 
 
 def cited(built: Mapping[str, Any]) -> list[str]:
-    """The tags the built prompt cites, in the order they appear. Omni only (Veo cites by position)."""
-    return re.findall(r"<(?:IMAGE_REF_\d+|FIRST_FRAME|LAST_FRAME)>", built["prompt"].split("Reference images:\n")[-1]
-                      if "Reference images:\n" in built["prompt"] else "")
+    """The pictures the built prompt cites, one per sentence that opens with "Image n", in the order they appear.
+    Omni only (Veo cites by position)."""
+    head = OMNI_CITATION_HEAD + "\n"
+    block = built["prompt"].split(head)[-1] if head in built["prompt"] else ""
+    return re.findall(r"^(Image \d+) is ", block, flags=re.MULTILINE)
 
 
 def tags_of(spec: RenderSpec) -> list[str]:
-    """The name each picture goes by in the request, in wire order: `<IMAGE_REF_0>` for Omni, `image 1` for Veo, the
-    frame tags for frames. What the panel shows beside each card, so a person sees the tags renumber on a reorder."""
+    """The name each picture goes by in the request, in wire order: `Image 1`, `Image 2`… for Omni (frames included),
+    `image 1` for Veo's references and "start frame" / "end frame" for its frames. What the panel shows beside each
+    card, so a person sees the numbers change on a reorder."""
+    if capability(spec.engine).api == "interactions":
+        return [IMAGE_TAG.format(n=n) for n in range(1, len(wire_order(spec.references)) + 1)]
     out: list[str] = []
     n = 0
     for b in wire_order(spec.references):
@@ -590,8 +689,8 @@ def tags_of(spec: RenderSpec) -> list[str]:
         elif b.slot == "last_frame":
             out.append("end frame")
         else:
-            out.append(REF_TAG.format(n=n) if capability(spec.engine).api == "interactions" else f"image {n + 1}")
             n += 1
+            out.append(f"image {n}")
     return out
 
 
@@ -684,12 +783,25 @@ def validate_render(spec: RenderSpec, *, seed_choice: SeedChoice | None = None, 
     if len(plain) > cap.max_refs:
         out.append(_fail(f"{len(plain)} reference pictures; {cap.label} takes at most {cap.max_refs}. "
                          f"Remove {len(plain) - cap.max_refs}."))
+    elif cap.max_images and len(spec.references) > cap.max_images:
+        out.append(_fail(f"{len(spec.references)} pictures; {cap.label} takes at most {cap.max_images}, the start "
+                         f"frame included. Remove {len(spec.references) - cap.max_images}."))
     if first is not None and not cap.first_frame:
         out.append(_fail(f"{cap.label} cannot start from a picture."))
     if last is not None and not cap.last_frame:
         out.append(_fail(f"{cap.label} cannot aim at an end frame."))
     if plain and first is not None and not cap.refs_with_first_frame:
         out.append(_fail(f"{cap.label} takes either reference pictures or a start frame, not both."))
+    if plain and last is not None and not cap.refs_with_last_frame:
+        out.append(_fail(f"{cap.label} takes either reference pictures or an end frame, not both."))
+    if cap.max_per_person:
+        per: dict[UUID, int] = {}
+        for b in plain:
+            if b.binds_to is not None:
+                per[b.binds_to] = per.get(b.binds_to, 0) + 1
+        if any(n > cap.max_per_person for n in per.values()):
+            out.append(_fail(f"{cap.label} takes at most {cap.max_per_person} pictures of one person or thing. "
+                             f"Remove some from the one that has {max(per.values())}."))
     for b in spec.references:
         problem = label_problem(b.label)
         if problem:
@@ -734,22 +846,36 @@ def check_render(spec: RenderSpec, facts: RenderFacts) -> list[Check]:
     """Advisory checks on the bound request. Report only: the prose and the list are never edited to fit."""
     out: list[Check] = [_advisory(safe_depiction.spoken_label(f)) for f in safe_depiction.scan(spec.prose)
                         if f.spoken]
-    plain = references_of(spec.references)
+    try:
+        cap: EngineCapability | None = capability(spec.engine)
+    except ValueError:
+        cap = None
+    # Each reference's number as the request names it: its place among ALL pictures on Omni (the frame is Image 1),
+    # among the references on Veo.
+    every = cap is not None and cap.api == "interactions"
+    numbered = [(n, b) for n, b in enumerate(wire_order(spec.references), start=1) if b.slot == "reference"] if every \
+        else list(enumerate(references_of(spec.references), start=1))
     bound: dict[UUID, int] = {}
-    for i, b in enumerate(plain):
+    for n, b in numbered:
         if b.binds_to is None:
             continue
         bound[b.binds_to] = bound.get(b.binds_to, 0) + 1
         name = facts.names.get(b.binds_to) or facts.seen.get(b.binds_to) or ""
         if name and not _named(spec.prose, name):
-            out.append(_advisory(f"Image {i + 1} is {name}; the prompt never mentions them. "
+            out.append(_advisory(f"Image {n} is {name}; the prompt never mentions them. "
                                  "The picture will drift the frame."))
         have, now = b.source.version, facts.current_versions.get(b.binds_to)
         if have is not None and now is not None and have < now:
             out.append(_advisory(f"The picture of {name or b.label} is from an older card (v{have}; now v{now})."))
-    for who, n in bound.items():
-        if n > 1:
-            out.append(_advisory(f"{facts.names.get(who, 'Someone')} has {n} reference pictures."))
+    if cap is None or cap.person_pictures == "one":  # a face + a look sheet per person is the rule on the others
+        for who, n in bound.items():
+            if n > 1:
+                out.append(_advisory(f"{facts.names.get(who, 'Someone')} has {n} reference pictures."))
+    people = [who for who in bound if who in facts.seen]
+    if cap is not None and cap.max_people_with_sheets and len(people) > cap.max_people_with_sheets:
+        names = _and_list([facts.seen[w] for w in people])
+        out.append(_advisory(f"{names} all have pictures; {cap.label} keeps faces for up to "
+                             f"{cap.max_people_with_sheets} people, so some faces may drift."))
     for who, name in facts.seen.items():
         if who not in bound:
             out.append(_advisory(f"{name} is in the shot but has no reference picture."))

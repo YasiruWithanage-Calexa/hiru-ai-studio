@@ -44,11 +44,11 @@ def test_omni_sends_images_in_the_adapters_order_then_the_prompt(monkeypatch):
     omni.submit(built, files, api_key="KEY", base_url="https://g.test", timeout=30)
 
     parts = sent["body"]["input"]
-    assert [p.get("data") for p in parts[:-1]] == [b64(B), b64(A), b64(C), b64(S), b64(E)]  # refs, start, end
+    assert [p.get("data") for p in parts[:-1]] == [b64(S), b64(B), b64(A), b64(C), b64(E)]  # start, refs, end
     assert parts[-1] == {"type": "text", "text": built["prompt"]}
-    assert "<IMAGE_REF_0> is the location plate for the kitchen." in built["prompt"]
+    assert "Image 2 is the location plate for the kitchen." in built["prompt"]
     body = sent["body"]
-    assert body["generation_config"]["video_config"]["task"] == "image_to_video"
+    assert body["generation_config"]["video_config"]["task"] == "reference_to_video"
     assert body["response_format"] == {"type": "video", "aspect_ratio": "16:9", "resolution": "720p",
                                        "duration": "8s", "delivery": "uri"}
     assert sent["url"].startswith("https://g.test/v1beta/interactions?key=KEY") and body["store"] is True
@@ -56,7 +56,10 @@ def test_omni_sends_images_in_the_adapters_order_then_the_prompt(monkeypatch):
 
 @pytest.mark.parametrize(("slots", "task"), [
     ([], "text_to_video"), (["reference"], "reference_to_video"), (["first_frame"], "image_to_video"),
-    (["reference", "last_frame"], "image_to_video")])
+    (["first_frame", "last_frame"], "image_to_video"),
+    # plan/2026-11-18: a start frame WITH sheets is reference-to-video (image-to-video takes at most 2 images)
+    (["first_frame", "reference"], "reference_to_video"), (["reference", "first_frame", "reference"],
+                                                           "reference_to_video")])
 def test_omni_task_follows_the_slots(slots, task):
     refs = [ref("a thing", "p/a.png", slot=s) for s in slots]
     assert omni._task(build_omni_input(make_spec(refs))) == task

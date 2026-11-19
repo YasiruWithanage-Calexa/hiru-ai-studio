@@ -65,6 +65,7 @@ class ShotInput:
     staged: Staging = field(default_factory=Staging)  # who is seen, who is only heard
     basis: str = ""  # contracts.staging.intent_basis: what an intent must be written against
     hands: str = ""  # who holds what, and what passes between hands (contracts.holding), for the prompt
+    moves: bool = False  # a thing leaves or changes hands during the shot: no "objects stay put" (2026-11-18)
     feeling: Feeling = field(default_factory=Feeling)  # what the scene's reading and map ask of this shot (Phase 6)
 
     @property
@@ -218,6 +219,7 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
         edits = PersonEdits.of(s)
         cast_ids = shot_cast(own, characters, s)
         staged = staging(own, characters, s, cast_ids=cast_ids)
+        _hands = hands_for(scene, s, [prod.by_id[c].name for c in staged.on_screen if c in prod.by_id], video=True)
         shot_lines = [Line(id=i.line_id or "", speaker=i.speaker, character_id=i.speaker_id, text=i.text,
                            delivery=i.delivery,
                            beat_index=(by_line.get(i.line_id or "") or {}).get("beat_index"))
@@ -236,8 +238,7 @@ def scene_input(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row]
             pins=pins_for(shot_version=int(s.get("version") or 1), scene=scene, items=own, cast_ids=cast_ids,
                           versions=versions, edits=edits),
             staged=staged,
-            hands=hands_for(scene, s, [prod.by_id[c].name for c in staged.on_screen if c in prod.by_id],
-                            video=True).sentence,
+            hands=_hands.sentence, moves=_hands.moves,
             basis=intent_basis(int(s.get("version") or 1), script_hash(scene, own)),
             feeling=feeling_for(out.reading, out.staging, items, own,
                                 [(int(b["start_s"]), int(b["end_s"])) for b in s.get("beats") or []], cast_names)))
@@ -251,8 +252,9 @@ def restage(shot: ShotInput, scene: SceneInput, canon: list[Row], prod: Producti
     ids = shot_cast(shot.items, characters, shot.row)
     shot.cast = [prod.by_id[c] for c in ids if c in prod.by_id]
     shot.staged = staging(shot.items, characters, shot.row, cast_ids=ids)
-    shot.hands = hands_for(scene.row, shot.row, [prod.by_id[c].name for c in shot.staged.on_screen
-                                                 if c in prod.by_id], video=True).sentence
+    hands = hands_for(scene.row, shot.row, [prod.by_id[c].name for c in shot.staged.on_screen if c in prod.by_id],
+                      video=True)
+    shot.hands, shot.moves = hands.sentence, hands.moves
     shot.pins = pins_for(shot_version=shot.version, scene=scene.row, items=shot.items, cast_ids=ids,
                          versions={m.id: m.version for m in prod.by_id.values()}, edits=PersonEdits.of(shot.row))
 

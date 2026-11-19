@@ -38,6 +38,11 @@ WORN = re.compile(r"\b(shoulder|pocket|worn|wearing|strap|slung|on (?:her|his|th
 # Carried on the shoulder unless the holding says it is in a hand
 BAGS = re.compile(r"\b(handbag|bag|purse|backpack|satchel|rucksack|tote|sling)s?\b", re.IGNORECASE)
 IN_HAND = re.compile(r"\bin (?:her|his|their|one) hand\b", re.IGNORECASE)
+# How a thing is held, never a thing ("smartphone, held out toward Anudi": the second part names no thing; 2026-11-18,
+# the stager's E01-S03 mark gave "Kasun takes the anudi")
+HOW_HELD = frozenset({"held", "holding", "holds", "raised", "lifted", "lowered", "extended", "outstretched", "offered",
+                      "offering", "gripped", "clutched", "tucked", "pressed", "out", "up", "down", "away", "forward",
+                      "outward", "aloft", "high", "low", "tight", "tightly", "loosely"})
 CLOSE = frozenset({"MCU", "CU", "ECU", "INSERT"})
 
 
@@ -75,9 +80,10 @@ def thing_of(text: str) -> Thing | None:
         return None
     worn = bool(WORN.search(raw)) or (bool(BAGS.search(raw)) and not IN_HAND.search(raw))
     # "phone at ear", "umbrella over her head": the thing is before the place it is held
-    clean = re.split(r"\b(?:on|in|over|under|at|against|by|near|to|from|for)\b", clean, maxsplit=1)[0]
-    # not the thing: an owner ("Anudi's phone"), a manner ("briefly"), a block number ("b6")
-    words = [w for w in _words(clean) if w not in DETERMINERS and not re.search(r"['’]s$", w)
+    clean = re.split(r"\b(?:on|in|over|under|at|against|by|near|to|towards?|from|for|beside|behind)\b", clean,
+                     maxsplit=1)[0]
+    # not the thing: an owner ("Anudi's phone"), a manner ("briefly"), how it is held ("held out"), a block ("b6")
+    words = [w for w in _words(clean) if w not in DETERMINERS and w not in HOW_HELD and not re.search(r"['’]s$", w)
              and not (w.endswith("ly") and len(w) > 4) and not re.fullmatch(r"b\d+", w)]
     if not words:
         return None
@@ -237,6 +243,8 @@ class Hands:
     expect: str = ""  # for the vision check ("" = nothing to check)
     held: dict[str, list[str]] = field(default_factory=dict)  # seen person → the keys they hold
     absent: list[str] = field(default_factory=list)  # keys held by someone not in the frame
+    # a thing leaves or changes hands during the shot (video only): the prompt must not also say objects stay put
+    moves: bool = False
 
 
 def _say(t: Thing, state: str) -> str:
@@ -274,17 +282,22 @@ def _either(things: Sequence[str]) -> str:
 
 
 def shot_hands(ledger: Ledger | None, *, block_start: int, block_end: int, seen: Sequence[str], framing: str = "",
-               earlier: Iterable[str] = (), video: bool = False, shown: str = "") -> Hands:
+               earlier: Iterable[str] = (), video: bool = False, shown: str = "", after: bool = False) -> Hands:
     """The hands of the people this shot SEES (their names, as the planner writes them), as the shot opens; with
     `video`, also what passes between hands during it. `earlier`: sentences before this shot, for a prop's state.
     `shown`: what the shot's own words show; a thing they name is never called "not in this frame" (the insert of the
-    phone falling is the phone)."""
+    phone falling is the phone). `after`: the shot is the second half of a split moment (the insert showed the phone
+    fall; this clip shows her walking on): it opens once its blocks have played, and nothing changes hands in it."""
     if not ledger:
         return Hands()
     start, end = window(block_start, block_end)
+    if after:
+        start = end
     now = ledger.at(start)
+    during = ledger.during(start, end) if video and not after else []
     earlier = list(earlier)
     seen_keys = {s.casefold(): s for s in seen if s.strip()}
+    letting = {seen_keys.get(c.giver.casefold(), "") for c in during if c.giver} - {""}
     by_person: dict[str, list[tuple[str, Thing]]] = {s: [] for s in seen_keys.values()}
     absent: list[str] = []
     for key, (who, thing) in sorted(now.items()):
@@ -314,8 +327,10 @@ def shot_hands(ledger: Ledger | None, *, block_start: int, block_end: int, seen:
         else:
             rest = f", and also carries {', '.join(names[2:])}" if len(names) > 2 else ""
             first, second = _two_hands(sides[0], sides[1])
-            said.append(f"{person} holds {names[0]} in {first} and {names[1]} in {second}{rest}; "
-                        "each hand keeps its own, neither is put down.")
+            # "neither is put down" forbids the shot's own action when one of them leaves a hand during it (2026-11-18:
+            # five Omni Flash takes, the safety line beat the drop)
+            keep = "" if person in letting else "; each hand keeps its own, neither is put down"
+            said.append(f"{person} holds {names[0]} in {first} and {names[1]} in {second}{rest}{keep}.")
             expect.append(f"{person} holds {names[0]} and {names[1]}, one in each hand")
         for _, t in worn:
             said.append(f"{person} has {_say(t, t.state)}.")
@@ -327,20 +342,24 @@ def shot_hands(ledger: Ledger | None, *, block_start: int, block_end: int, seen:
     if framing.upper() in CLOSE and any(held for held in by_person.values()):
         said.append("Even this close, what each person holds stays in the picture (part of it in frame), "
                     "never left out.")
-    if video:
-        for c in ledger.during(start, end):
-            giver, taker = seen_keys.get(c.giver.casefold()), seen_keys.get(c.taker.casefold())
-            what = f"the {ledger.things[c.key].text.split()[-1]}"
-            if giver and taker:
-                said.append(f"During the shot {what} passes from {giver}'s hand to {taker}'s.")
-            elif giver and not c.taker:
-                said.append(f"During the shot {giver} lets go of {what}.")
-            elif taker and not c.giver:
-                said.append(f"During the shot {taker} takes {what}.")
+    moves = False
+    for c in during:
+        giver, taker = seen_keys.get(c.giver.casefold()), seen_keys.get(c.taker.casefold())
+        what = f"the {ledger.things[c.key].text.split()[-1]}"
+        if giver and taker:
+            said.append(f"During the shot {what} passes from {giver}'s hand to {taker}'s.")
+        elif giver and not c.taker:
+            said.append(f"During the shot {giver} lets go of {what}.")
+        elif taker and not c.giver:
+            said.append(f"During the shot {taker} takes {what}.")
+        else:
+            continue
+        moves = True
     if not said:
         return Hands()
     held_keys = {p: [k for k, _ in h] for p, h in by_person.items() if h}
-    return Hands(sentence="Hands: " + " ".join(said), expect="; ".join(expect), held=held_keys, absent=absent)
+    return Hands(sentence="Hands: " + " ".join(said), expect="; ".join(expect), held=held_keys, absent=absent,
+                 moves=moves)
 
 
 def canon_match(key: str, rows: Iterable[Mapping[str, Any]]) -> Mapping[str, Any] | None:
@@ -421,10 +440,35 @@ def ledger_for(scene: Mapping[str, Any], shot: Mapping[str, Any]) -> Ledger:
 
 def hands_for(scene: Mapping[str, Any], shot: Mapping[str, Any], seen: Sequence[str], *,
               video: bool = False) -> Hands:
-    """The `Hands` of a stored shot, for the people it SEES (their names)."""
+    """The `Hands` of a stored shot, for the people it SEES (their names). A shot whose card says `after` (the second
+    half of a split moment, `raphael_write`) opens once its blocks have played."""
+    card = shot.get("card") if isinstance(shot.get("card"), Mapping) else {}
     return shot_hands(ledger_for(scene, shot), block_start=int(shot.get("block_start") or 0),
                       block_end=int(shot.get("block_end") or 0), seen=seen, framing=str(shot.get("framing") or ""),
-                      earlier=earlier_text(scene, shot), video=video, shown=shown_text(shot))
+                      earlier=earlier_text(scene, shot), video=video, shown=shown_text(shot),
+                      after=bool((card or {}).get("after")))
+
+
+def after_ids(scene: Mapping[str, Any], shots: Sequence[Mapping[str, Any]]) -> set[str]:
+    """The shots that open AFTER a split moment (2026-11-18 coverage lab, plan/2026-11-18b): a must shot (stage 1, or
+    a new one with no stage) whose blocks an earlier must shot already plays, ending on the same block, where a thing
+    leaves or changes hands. The insert showed the phone fall; this one shows her walking on, the phone already on the
+    road. Raphael's writer marks them (`card.after`), and an edit by Zora or Sable re-marks them on every save, so a
+    moved, merged or new clip never keeps a stale mark."""
+    planner = next((str(s.get("planner")) for s in shots if s.get("planner")), "raphael")
+    ledger = Ledger.of(scene_marks(scene, planner))
+    if not ledger:
+        return set()
+    must = [s for s in shots if int(s.get("stage") or 1) == 1]
+    out: set[str] = set()
+    for s in must:
+        a, b = int(s.get("block_start") or 0), int(s.get("block_end") or 0)
+        if b <= a or not ledger.during(a, b):
+            continue
+        if any(int(o.get("number") or 0) < int(s.get("number") or 0) and int(o.get("block_start") or 0) <= a
+               and int(o.get("block_end") or 0) == b for o in must):
+            out.add(str(s["id"]))
+    return out
 
 
 def shown_text(shot: Mapping[str, Any]) -> str:

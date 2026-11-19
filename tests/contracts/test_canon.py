@@ -146,3 +146,36 @@ def test_a_looks_stamp_follows_its_wardrobe_and_sheet_not_its_name():
     assert look_stamp({**look, "hair": "loose"}) != look_stamp(look)
     assert look_stamp({**look, "sheet_assets": [{"path": "new.png"}]}) != look_stamp(look)
     assert look_wardrobe({**look, "hair": "a bun."}) == "outfit heiress outfit; hair a bun"
+
+
+# ── the look dresses the video prompt's people (plan/2026-11-18) ───────────────────────────────────────────────
+
+
+def test_dressed_replaces_the_planners_clothes_with_the_looks():
+    from contracts.canon import dressed, look_outfit
+
+    look = {"outfit": "Dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers and tan "
+                      "low-heeled closed shoes.", "accessories": "Small gold stud earrings, a tan structured handbag."}
+    outfit = look_outfit(look)
+    assert outfit == ("dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers and tan "
+                      "low-heeled closed shoes, with small gold stud earrings, a tan structured handbag")
+    planner = ("Anudi is an adult Sri Lankan woman with medium-brown skin, an oval face, dark eyes and long black hair "
+               "tied in a low ponytail, wearing a muted blue blouse, charcoal trousers and flat black shoes")
+    got = dressed(planner, outfit)
+    assert got.startswith("Anudi is an adult Sri Lankan woman with medium-brown skin")
+    assert "long black hair tied in a low ponytail, wearing dusty-rose" in got
+    assert "muted blue" not in got and "charcoal" not in got and got.count("wearing") == 1
+    assert dressed("wearing a creased white shirt", "a navy kurta") == "wearing a navy kurta"
+    assert dressed("Nimal, a tall man dressed in grey", "a navy kurta") == "Nimal, a tall man, wearing a navy kurta"
+    assert dressed("Nimal, a tall man", "a navy kurta") == "Nimal, a tall man, wearing a navy kurta"
+    assert dressed("Nimal, a tall man.", "") == "Nimal, a tall man.", "no look: as the planner wrote it"
+    assert look_outfit({"outfit": "", "accessories": "a watch"}) == ""
+    assert look_outfit({"outfit": "Plain grey shirt", "accessories": "None."}) == "plain grey shirt"
+
+
+def test_wardrobe_by_code_keys_each_look_by_the_persons_code():
+    from contracts.canon import wardrobe_by_code
+
+    canon = [{"id": "a", "code": "C02"}, {"id": "b", "code": "C05"}]
+    looks = {"a": {"outfit": "A rose blouse"}, "b": {"outfit": ""}, "z": {"outfit": "Lost"}}
+    assert wardrobe_by_code(looks, canon) == {"C02": "a rose blouse"}

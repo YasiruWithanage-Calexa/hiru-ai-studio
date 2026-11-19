@@ -443,8 +443,9 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
             f"scene, laid out in a grid {cols} panels across and {rows} down, read {order}. Every panel is "
             f"{_PANEL_SHAPE[board_aspect(aspect)]} of the same size, separated by thin, even, plain white gutters. "
             "All panels are the same "
-            "moment's world, painted together: the same people, props, weather, light and colour grade in every "
-            "panel.")
+            "scene's world, painted together: the same people, props, light and colour grade in every panel. The "
+            "weather and the ground (dry or wet, rain falling or not) are as each panel says: they can change during "
+            "the scene, and a panel that says it is dry has no rain and no wet ground.")
     refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
     return "\n\n".join(x for x in [
         head, refs, mannequin_line(colours),
@@ -463,8 +464,9 @@ CAMERA_RULE = ("The camera stands exactly where the panel says, and what is near
 _ONE_SHAPE = {BOARD_ASPECT: "wide landscape 16:9", TALL: "tall portrait 9:16"}
 NEIGHBOURS = ("The approved storyboard panels attached last sit next to this one on the same board. Paint this panel "
               "so it sits beside them unnoticed: the same mannequins in the same colours and finish, the same place, "
-              "props, light, weather, colour grade and level of detail. Do not copy their framing: this panel has its "
-              "own camera, described below.")
+              "props, light, colour grade and level of detail. The weather and the ground are as this panel says, "
+              "even where a neighbour's differ (rain can start or stop during a scene). Do not copy their framing: "
+              "this panel has its own camera, described below.")
 _SHEET_WORDS = ("panel", "gutter", "grid", "storyboard image", "sheet")
 
 

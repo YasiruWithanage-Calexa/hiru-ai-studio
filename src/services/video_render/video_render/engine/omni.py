@@ -56,13 +56,18 @@ __all__ = [
 
 
 def _task(built: dict) -> str:
-    """Which video task the request is. Frames make it image-to-video (one image animates from
-    that frame; two interpolate first → last); plain references make it reference-to-video."""
+    """Which video task the request is (plan/2026-11-18).
+
+    Frames alone make it image-to-video (one image animates from that frame; two interpolate first → last). ANY plain
+    reference makes it reference-to-video, a start frame included: image-to-video takes at most 2 images (a live 400,
+    2026-11-06), and lab/omni_refs run 003 showed reference-to-video keeps the opening frame's place and layout while
+    the sheets hold the faces and clothes. With no task at all (run 002) Omni treated the frame as one more reference
+    and invented a new opening, so the task is always sent."""
     roles = {r["slot"] for r in built["references"]}
+    if "reference" in roles:
+        return "reference_to_video"
     if roles & {"first_frame", "last_frame"}:
         return "image_to_video"
-    if roles:
-        return "reference_to_video"
     return "text_to_video"
 
 
@@ -75,7 +80,7 @@ def submit(built: dict, ref_bytes: dict[str, tuple[bytes, str]], *, api_key: str
     must not know what a bucket is.
 
     The images are sent IN THE ORDER the adapter listed them, which is the order its
-    `<IMAGE_REF_n>` tags count in (and, for frames, first before last — the order the model
+    "Image n" sentences count in (the start frame first, the end frame last — the order the model
     interpolates in). Sorting or de-duplicating them here would silently renumber every
     citation in the prompt.
     """

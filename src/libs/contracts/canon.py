@@ -303,6 +303,52 @@ def look_wardrobe(look: Mapping[str, Any]) -> str:
     return "; ".join(f"{k} {v}" for k, v in bits if v)
 
 
+def look_outfit(look: Mapping[str, Any]) -> str:
+    """"dusty-rose blouse and navy trousers, with gold stud earrings and a tan handbag": what the look puts ON the
+    person, for a video prompt's Subjects line (plan/2026-11-18). Hair and makeup stay with the person's description."""
+    outfit = _clean(str(look.get("outfit") or ""))
+    extras = _clean(str(look.get("accessories") or ""))
+    if extras.lower() in ("none", "no accessories", "n/a"):
+        extras = ""
+    if not outfit:
+        return ""
+    return f"{_sentence_case_off(outfit)}, with {_sentence_case_off(extras)}" if extras else _sentence_case_off(outfit)
+
+
+def _sentence_case_off(text: str) -> str:
+    """"Dusty-rose blouse" → "dusty-rose blouse", "A navy kurta" → "a navy kurta": a sentence's capital, not an
+    acronym's ("NGO uniform" stays)."""
+    first = text.split(" ", 1)[0]
+    if first[:1].isupper() and first[1:] == first[1:].lower():
+        return text[:1].lower() + text[1:]
+    return text
+
+
+def wardrobe_by_code(looks: Mapping[str, Mapping[str, Any]], canon: Sequence[Mapping[str, Any]]) -> dict[str, str]:
+    """canon code → `look_outfit`, from `looks_in_force` (character id → look): what a video prompt's Subjects line
+    dresses each person in. A person without a look, or a look without an outfit, is left out."""
+    code_of = {str(c.get("id")): str(c.get("code") or "") for c in canon}
+    out: dict[str, str] = {}
+    for entity_id, look in looks.items():
+        code, outfit = code_of.get(str(entity_id), ""), look_outfit(look)
+        if code and outfit:
+            out[code] = outfit
+    return out
+
+
+_WEARING = re.compile(r"(?:^|\s*,\s*|\s+and\s+|\s+)(?:wearing|dressed in|clad in)\b.*$", re.IGNORECASE | re.DOTALL)
+
+
+def dressed(description: str, outfit: str) -> str:
+    """A person's description with the clothes the scene's look gives them, in place of whatever clothes the planner
+    wrote (plan/2026-11-18: Love Hour 4 shot 02's prompt said "muted blue blouse" while her look and her frame were
+    dusty rose, and the video followed the words). Without an outfit the description is returned unchanged."""
+    if not outfit:
+        return description
+    body = _WEARING.sub("", description.strip().rstrip(" .;,"))
+    return f"{body}, wearing {outfit}" if body else f"wearing {outfit}"
+
+
 def look_stamp(look: Mapping[str, Any]) -> str:
     """Changes when what a frame takes from a look changes (its wardrobe or its sheet), not when
     its name or episodes do."""

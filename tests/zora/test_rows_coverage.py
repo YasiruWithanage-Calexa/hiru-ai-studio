@@ -9,12 +9,22 @@ from contracts.producer import PersonEdits
 from hiru_ai.steps.coverage_kernel.logic import Kernel
 from tests.zora.rows_world import data, scene
 
+# The fixture was planned before the action budget (plan/2026-11-18c): its key handover (Nimal lifts
+# the key from the box and places it in Dinu's palm, in S14 and S15) is two hard actions in one clip: real H-16 faults.
+PRE_BUDGET = {"action_budget:h14", "action_budget:h15"}
+
+
+def found(cov: Coverage) -> list[checks.Finding]:
+    """The findings, less the fixture's known pre-budget faults."""
+    return [f for f in checks.find(cov) if f.key not in PRE_BUDGET]
+
 
 def test_the_scene_loads_as_coverage_with_each_line_performed_once_and_no_findings() -> None:
     cov = scene()
     assert len(cov.clips) == 20
     assert {ln.lid: cov.code(ln.by) for ln in cov.lines.values()} == {"L2": "S05", "L3": "S08", "L4": "S11"}
-    assert checks.find(cov) == []
+    assert found(cov) == []
+    assert [f.key for f in checks.find(cov)] == sorted(PRE_BUDGET)
 
 
 def test_removing_a_line_clip_moves_the_line_to_a_clip_that_shows_the_speaker() -> None:
@@ -23,7 +33,7 @@ def test_removing_a_line_clip_moves_the_line_to_a_clip_that_shows_the_speaker() 
     assert res.applied and "moves to the single" in res.notes[0]
     new = cov.clip(cov.lines["L3"].by)
     assert new is not None and new.slate == "3C-3" and new.sound_mode == "dialogue"
-    assert checks.find(cov) == []
+    assert found(cov) == []
 
 
 def test_a_must_removal_is_risky_and_a_size_change_is_not() -> None:
@@ -77,7 +87,7 @@ def test_an_insert_needs_its_picture_and_the_check_says_so() -> None:
     cov = scene()
     Kernel(cov).apply([{"op": "insert", "after": "S15", "size": "INSERT", "take_s": 4, "first_block": 5,
                         "last_block": 5, "who": ["Dinu"]}], by="conductor")
-    assert [f.code for f in checks.find(cov)] == ["picture_empty"]
+    assert [f.code for f in found(cov)] == ["picture_empty"]
 
 
 def test_a_model_made_overrun_is_repaired_and_a_person_set_one_is_reported() -> None:
@@ -189,3 +199,44 @@ def test_a_moved_line_is_voiced_by_sight_and_the_clip_it_left_goes_quiet() -> No
     assert not res.rejected and "voiced off screen" in res.applied[0]["text"]
     assert target.sound_mode == "voiceover"
     assert cov.at("S08") is not None and cov.at("S08").sound_mode == "ambient"  # type: ignore[union-attr]
+
+
+# ── the action budget on an edit (plan/2026-11-18c phase 6) ───────────────────────────────────────────────────────
+
+
+def _beats(cov: Coverage, code: str, *actions: str) -> None:
+    clip = cov.at(int(code[1:]))
+    assert clip is not None
+    clip.ir = {**clip.ir, "beats": [{"start_s": 0, "end_s": 4, "action": a} for a in actions]}
+
+
+def test_an_edit_that_puts_a_car_exit_in_one_clip_is_over_the_budget_and_repaired() -> None:
+    before = scene()
+    after = before.copy()
+    _beats(after, "S03", "The car stops; Anudi opens the rear door, steps out and walks off toward the stall.")
+    (f,) = [f for f in checks.new(before, after) if f.code == "action_budget"]
+    assert f.fix == "repair" and f.sentence.startswith("S03 is over the action budget")
+    assert "open the next clip on the result" in f.sentence
+
+
+def test_a_door_opened_and_never_closed_is_found_once_and_closing_it_clears_it() -> None:
+    before = scene()
+    after = before.copy()
+    _beats(after, "S03", "Anudi opens the rear door.")
+    assert [f.code for f in checks.new(before, after) if f.code == "door_open"] == ["door_open"]
+    _beats(after, "S04", "Anudi closes the rear door.")
+    assert not [f for f in checks.new(before, after) if f.code == "door_open"]
+
+
+def test_a_clip_that_speaks_and_opens_turned_away_is_found() -> None:
+    before = scene()
+    after = before.copy()
+    _beats(after, "S05", "Initially facing into the vehicle, he turns and speaks.")
+    assert [f.code for f in checks.new(before, after) if f.code == "speaker_hidden"] == ["speaker_hidden"]
+
+
+def test_within_budget_is_not_a_finding() -> None:
+    before = scene()
+    after = before.copy()
+    _beats(after, "S03", "Anudi, already out of the car with the door shut, nods and walks off.")
+    assert not [f for f in checks.new(before, after) if f.code in ("action_budget", "door_open")]

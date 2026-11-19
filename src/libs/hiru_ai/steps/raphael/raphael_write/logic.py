@@ -56,11 +56,27 @@ def sound_mode_of(clip: Clip, performs: bool, heard_line: bool) -> str:
     if heard_line and clip.lines:
         return "voiceover"
     sound = clip.sound
-    if sound is not None and sound.silence:
+    # Raphael's `silence` means "nobody speaks" (Veo invents speech otherwise); a clip that also gives its room or its
+    # effects keeps them: "ambient" already says nobody speaks, and a rain scene keeps its rain (2026-11-18)
+    if sound is not None and sound.silence and not (sound.ambience or sound.effects):
         return "silent"
-    if sound is not None and sound.music and not (sound.ambience or sound.effects):
+    if sound is not None and sound.music and not (sound.ambience or sound.effects) and not sound.silence:
         return "music_only"
     return "ambient"
+
+
+def mark_after(shots: list[Row], scene: Row) -> None:
+    """The second half of a split moment opens AFTER it (2026-11-18 coverage lab): a must clip whose blocks an earlier
+    must clip already plays, ending on the same block, where a thing leaves or changes hands, is the "after" clip (the
+    insert showed the phone fall; this one shows her walking on, the phone already on the road). Its card says so,
+    and its hands, its frame and its video prompt open with the blocks' end state (`contracts.holding.hands_for`).
+    Mutates the cards. The rule is `contracts.holding.after_ids` (the scene's edit chats re-mark with it on every save)."""
+    from contracts.holding import after_ids
+
+    marked = after_ids(scene, shots)
+    for s in shots:
+        if str(s["id"]) in marked:
+            s["card"] = {**(s.get("card") or {}), "after": True}
 
 
 def people_by_name(characters: list[Row]) -> dict[str, str]:
@@ -265,9 +281,35 @@ def title_of(clip: Clip) -> str:
     return " ".join(words[:8]).rstrip(".,;:") or clip.slate
 
 
-def order(clips: list[Clip]) -> list[Clip]:
-    """The order of the intended cut: moment, must before cinematic, then the clip's id (the shooting order)."""
-    return sorted(clips, key=lambda c: (c.moment, c.stage, c.id))
+# A blend note that says its cinematic clip OPENS a moment, or plays BEFORE a clip: "c08 — Open moment 1 before c01"
+OPENS_BEFORE = re.compile(r"\bbefore\s+(c\d+)\b", re.IGNORECASE)
+OPENS_MOMENT = re.compile(r"\bopens?\s+moment\s+(\d+)\b", re.IGNORECASE)
+
+
+def _note_of(clip: Clip, notes: list[str]) -> str:
+    return next((n for n in notes if n.startswith(clip.id) and not n[len(clip.id) : len(clip.id) + 1].isdigit()), "")
+
+
+def order(clips: list[Clip], notes: list[str] | None = None) -> list[Clip]:
+    """The order of the intended cut: moment, must before cinematic, then the clip's id (the shooting order).
+
+    A cinematic clip whose blend note says it plays BEFORE a clip ("Open moment 1 before c01") is cut just ahead of
+    that clip, and one that only says it opens a moment ("Open moment 2 with ...") ahead of the moment's first clip
+    (plan/2026-11-18b phase 4): the establishing wide was put after the walk-on, in the middle of the moment."""
+    by_id = {c.id: c for c in clips}
+
+    def key(c: Clip) -> tuple[int, int, str, int, str]:
+        note = _note_of(c, notes or []) if c.is_extra else ""
+        before = OPENS_BEFORE.search(note)
+        target = by_id.get(before.group(1).lower()) if before else None
+        if target is not None and target.id != c.id:
+            return (target.moment, target.stage, target.id, 0, c.id)
+        opens = OPENS_MOMENT.search(note)
+        if opens:
+            return (int(opens.group(1)), 0, "", 0, c.id)
+        return (c.moment, c.stage, c.id, 1, "")
+
+    return sorted(clips, key=key)
 
 
 def performers(clips: list[Clip]) -> dict[str, str]:
@@ -291,7 +333,7 @@ def rows_for(
     """-> (the shot rows without IR and design, the line rows bound to them, the per-clip clock facts). New shot ids,
     as a
     re-split makes them. The lines' words are the script's: a line is bound by id and never copied from the plan."""
-    clips = [c for c in order(stored.clips) if c.ir is not None]
+    clips = [c for c in order(stored.clips, stored.blend_notes) if c.ir is not None]
     items = sceneplan.scene_items(scene, lines)
     by_index = {i.index: i for i in items}
     rows_by_id = {str(ln["id"]): ln for ln in lines}
@@ -410,6 +452,7 @@ def rows_for(
             )
         )
         line_rows.append(row)
+    mark_after(shots, scene)
     return shots, line_rows, facts
 
 
@@ -425,6 +468,7 @@ def design_all(
     canon: list[Row],
     production: Row,
     job_id: str,
+    notes: list[str] | None = None,
 ) -> None:
     """Finish each shot's IR the way the DoP's is and store it with a design whose pins are the ones the shot producer
     will
@@ -434,7 +478,7 @@ def design_all(
     design = parts.step("serialize", "design")
     prod = model.production_input(production, canon, None)
     scene_in = model.scene_input(scene, shots, line_rows, canon, prod)
-    by_number = {n: c for n, c in enumerate(order([c for c in clips if c.ir is not None]), 1)}
+    by_number = {n: c for n, c in enumerate(order([c for c in clips if c.ir is not None], notes), 1)}
     for shot_in, row in zip(scene_in.shots, shots, strict=True):
         clip = by_number[int(row["number"])]
         on_screen = list(row["intent"]["on_screen"])
@@ -498,7 +542,7 @@ def write(
         raise PermissionError("an approved scene is never touched")
     characters = [c for c in canon if c.get("kind") == "character"]
     shots, line_rows, facts = rows_for(scene, lines, stored, characters)
-    design_all(scene, shots, line_rows, stored.clips, canon, production, job_id)
+    design_all(scene, shots, line_rows, stored.clips, canon, production, job_id, stored.blend_notes)
     fields = {
         "status": "split",
         "fit_report": fit_report(stored, facts, scene.get("envelope_s")),

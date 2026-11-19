@@ -30,6 +30,7 @@ from typing import Any
 from uuid import UUID
 
 from contracts.coverage.scene import Coverage
+from contracts.holding import after_ids
 from hiru_ai.core import parts
 from hiru_ai.core.context import RunContext
 
@@ -264,6 +265,45 @@ def rows_for(before: Coverage, after: Coverage, *, planner: str, now: str = "") 
     return Plan(upsert, removed, lines, rows, all_lines, designs, touched)
 
 
+def _cut_shape(rows: list[Row]) -> list[tuple[str, int, int, int]]:
+    """What `card.after` depends on: each clip's blocks and stage, in cut order."""
+    ordered = sorted(rows, key=lambda r: _num(r.get("number")) or 0)
+    return [(str(r.get("id")), int(_num(r.get("block_start")) or 0), int(_num(r.get("block_end")) or 0),
+             int(_num(r.get("stage")) or 1)) for r in ordered]
+
+
+def remark_after(scene_row: Row, plan: Plan, before: list[Row] | None = None, *, now: str = "") -> None:
+    """Keep a split moment split (plan/2026-11-18b phase 8): after an edit that changes the shape of the cut (a clip's
+    blocks or stage, the order, a clip added or removed), each clip's `card.after` (it opens once its blocks have
+    played: the phone already on the road) is set again from the rows as they will be saved, by the rule Raphael's
+    writer uses (`contracts.holding.after_ids`). An edit that leaves the shape alone (a size, a sound) leaves every
+    mark as the planner wrote it. A clip whose mark changes is written with its version bumped, since its hands, frame
+    and video prompt change with it. Mutates `plan`."""
+    if before is not None and _cut_shape(before) == _cut_shape(plan.rows):
+        return
+    marked = after_ids(scene_row, plan.rows)
+    queued = {str(r["id"]) for r in plan.upsert}
+    for i, row in enumerate(plan.rows):
+        card: Row = dict(row["card"]) if isinstance(row.get("card"), dict) else {}
+        want = str(row["id"]) in marked
+        if bool(card.get("after")) == want:
+            continue
+        if want:
+            card["after"] = True
+        else:
+            card.pop("after", None)
+        new = {**row, "card": card}
+        if str(row["id"]) not in plan.touched:
+            new["version"] = int(row.get("version") or 0) + 1
+            new["updated_at"] = now or _now()
+            plan.touched.append(str(row["id"]))
+        plan.rows[i] = new
+        if str(row["id"]) in queued:
+            plan.upsert = [new if str(u["id"]) == str(row["id"]) else u for u in plan.upsert]
+        else:
+            plan.upsert.append(new)
+
+
 def finish_designs(world: World, plan: Plan) -> None:
     """Each clip whose camera design changed is finished the way the planners finish theirs (`serialize.shots.finish`,
     reached by id) and given a design row. A clip that cannot be finished keeps the IR as written (logged)."""
@@ -355,6 +395,7 @@ class Saver:
         if self.changed_meanwhile():
             return Saved(False, CHANGED_MEANWHILE)
         plan = rows_for(self.world.cov, after, planner=self.planner())
+        remark_after(self.world.scene_row, plan, self.world.shot_rows)
         finish_designs(self.world, plan)
         stack = self.stack()
         if stack is not None:

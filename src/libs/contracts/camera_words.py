@@ -101,4 +101,7 @@ def lighting_words(camera: CameraSettings, recommended: CameraSettings | None, p
     planner_light = _clean(planner_light).rstrip(".")
     if changed(camera, recommended, CameraField.LIGHTING) or not planner_light:
         return f"{camera.lighting}."
-    return f"{camera.lighting}: {planner_light}."
+    # The preset's source ("window light", "open sun") is a guess from the heading, which often names no INT or EXT
+    # ("SCENE 03 — THE UNEXPECTED ENCOUNTER" gave "window light" on an open road, 2026-11-18): the planner's light says
+    # the source, the preset keeps the time of day
+    return f"{camera.lighting.split(',')[0]}: {planner_light}."

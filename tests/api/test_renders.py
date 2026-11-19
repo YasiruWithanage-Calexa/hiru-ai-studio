@@ -97,8 +97,7 @@ def on(world: World, **video: object) -> None:
 
 
 def sheets_only(world: World, s: dict, n: int = 1) -> list[dict]:
-    """A person's list of one sheet per card (no start frame) in the order the catalog offers them, saved on the shot.
-    Omni and Veo take a start frame OR reference pictures, so Hiru's own choice is the start frame alone."""
+    """A person's list of one sheet per card (no start frame), in the catalog's order, saved on the shot."""
     seen: set[str] = set()
     out = []
     for c in plan(world, s, n)["catalog"]:
@@ -141,27 +140,27 @@ def test_the_plan_shows_the_exact_request_with_pictures_in_order_and_no_paths(wo
     assert v["settings"]["sources"]["aspect_ratio"] == "production" and v["settings"]["sources"]["duration_s"] == "code"
     assert v["references_origin"] == "hiru"
 
-    # Omni takes a start frame OR reference pictures (a frame + sheets is a live 400), so Hiru sends the accepted frame,
-    # which was painted from those sheets, and says which sheets it left out, people seen first, then the place.
+    # plan/2026-11-18: Omni takes the accepted frame AS Image 1 with the sheets of the people seen; the place is left
+    # to the frame, and the list says so.
     got = v["references"]
-    assert [(r["slot"], r["tag"], r["label"]) for r in got] == [("first_frame", "start frame", "the opening frame")]
-    left = v["left_out"]
-    assert all("Omni Flash takes a start frame or reference pictures, not both" in x for x in left)
-    nimal = next(i for i, x in enumerate(left) if "Nimal" in x)
-    house = next(i for i, x in enumerate(left) if "Kamala's house" in x)
-    assert nimal < house, "the people seen, then the place"
-    assert "<FIRST_FRAME> is the literal opening frame: the opening frame." in v["request"]["prompt"]
-    assert "<IMAGE_REF_" not in v["request"]["prompt"]
+    assert (got[0]["slot"], got[0]["tag"], got[0]["label"]) == ("first_frame", "Image 1", "the opening frame")
+    assert [r["tag"] for r in got] == [f"Image {i}" for i in range(1, len(got) + 1)]
+    assert ("reference", "the character sheet for Nimal") in [(r["slot"], r["label"]) for r in got]
+    assert any("Kamala's house" in x and "the start frame already shows it" in x for x in v["left_out"])
+    prompt = v["request"]["prompt"]
+    assert "Image 1 is the opening frame of this shot. The video starts exactly on this picture" in prompt
+    assert "Image 2 is the character sheet for Nimal. Keep what it shows exactly." in prompt
+    assert "<IMAGE_REF_" not in prompt and "<FIRST_FRAME>" not in prompt
     assert all(r["url"] and "/files/" in r["url"] for r in got)
 
     # a person's sheets-only list goes as reference pictures, cited in order
     sheets_only(world, s)
     v = plan(world, s)
     got = v["references"]
-    assert [r["tag"] for r in got] == [f"<IMAGE_REF_{i}>" for i in range(len(got))] and v["ready"]
+    assert [r["tag"] for r in got] == [f"Image {i}" for i in range(1, len(got) + 1)] and v["ready"]
     bound = [r["binds_to"] for r in got]
     assert ids["Nimal"] in bound and ids["Kamala's house"] in bound
-    assert "Reference images:\n<IMAGE_REF_0> is the character sheet for" in v["request"]["prompt"]
+    assert "Reference images, in the order attached:\nImage 1 is the character sheet for" in v["request"]["prompt"]
 
     raw = str(v)
     assert str(world.production) not in raw.replace("production_id", ""), "no storage path reaches a browser"
@@ -313,10 +312,10 @@ def test_a_person_reorders_relabels_and_removes_and_the_tags_follow(world: World
     got = r.json()
     assert got["references_origin"] == "person"
     assert [x["id"] for x in got["references"][:2]] == [base[1]["id"], base[0]["id"]]
-    assert [x["tag"] for x in got["references"][:2]] == ["<IMAGE_REF_0>", "<IMAGE_REF_1>"], "the tags renumber"
+    assert [x["tag"] for x in got["references"][:2]] == ["Image 1", "Image 2"], "the tags renumber"
     assert got["references"][0]["label"] == "the woman in the cream blouse"
     assert got["references"][0]["origin"] == "person"
-    assert "<IMAGE_REF_0> is the woman in the cream blouse." in got["request"]["prompt"]
+    assert "Image 1 is the woman in the cream blouse." in got["request"]["prompt"]
     assert [x["id"] for x in got["hiru_references"]] == [h["id"] for h in hiru], "Hiru's choice is still there"
     assert got["request_hash"] != v["request_hash"]
 
@@ -375,7 +374,7 @@ def test_a_persons_own_picture_joins_the_list_and_is_labelled_in_words(world: Wo
                          "label": "the red kettle on the stove"}, base[-1]]
     v = world.client.put(shot_url(world, s, 1, "/video-settings"), json={"references": mine}, headers=director).json()
     assert v["request"]["references"][-2]["label"] == "the red kettle on the stove"
-    assert "<IMAGE_REF_" in v["request"]["references"][-2]["tag"]
+    assert v["request"]["references"][-2]["tag"].startswith("Image ")
     stored = world.repos.shots.rows[s["shots"][1]["id"]]["video_settings"]  # type: ignore[attr-defined]
     assert stored["uploads"][0]["path"].startswith(f"{world.production}/uploads/"), "the path stays on the server"
 
@@ -757,3 +756,15 @@ def test_on_a_veo_production_the_pick_moves_the_draft_only(world: World, video: 
                             headers=world.headers(world.reviewer)).json()
     assert both["take"]["settings"]["engine"] == "veo_3_1" and both["take"]["settings"]["sources"]["model"] != "run"
     assert both["draft"]["settings"]["model"] == "gemini-omni-1.2-flash"
+
+
+def test_a_cards_face_asset_is_a_face_sheet_and_its_other_sheets_stay_canon_sheets():
+    """plan/2026-11-18: the face sheet has its own kind, so Omni is told what it is for."""
+    from api.services.renders import canon_sources
+
+    row = {"id": "4fc68836-b389-4c0b-9127-77a236c10571", "current": {
+        "id": "12fa0112-2810-4136-be28-6c444ea38867", "version": 2,
+        "reference_assets": [{"kind": "face", "path": "p/face.png"}, {"kind": "sheet", "path": "p/sheet.png"},
+                             "p/legacy.png"]}}
+    assert [(s.kind, s.path) for s in canon_sources(row)] == [
+        ("face_sheet", "p/face.png"), ("canon_sheet", "p/sheet.png"), ("canon_sheet", "p/legacy.png")]

@@ -171,4 +171,10 @@ def test_the_panel_prompt_matches_the_labs_run_002_add():
     labels = [*(f"the location plate for {r['name']}" for r in refs), kit.neighbour_label("before", after),
               kit.neighbour_label("after", after + 1)]
     prompt = kit.panel_prompt(kit.Writer.of(raw_board["writer"]), panel, labels, edits["colours"], kit.TALL)
-    assert prompt == golden.read_text(encoding="utf-8")
+    # 2026-11-18 (lab/action_budget): the weather is the panel's own, so a dry panel beside a rainy neighbour stays
+    # dry. Only that sentence differs from what the lab painted.
+    lab_neighbours = ("The approved storyboard panels attached last sit next to this one on the same board. Paint this "
+                      "panel so it sits beside them unnoticed: the same mannequins in the same colours and finish, the "
+                      "same place, props, light, weather, colour grade and level of detail. Do not copy their framing: "
+                      "this panel has its own camera, described below.")
+    assert prompt == golden.read_text(encoding="utf-8").replace(lab_neighbours, kit.NEIGHBOURS)

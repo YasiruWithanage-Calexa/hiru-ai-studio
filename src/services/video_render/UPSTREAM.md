@@ -6,7 +6,7 @@ lists what changed upstream since that commit in the files below.
 
 | Hiru file | Upstream file | What was kept |
 |---|---|---|
-| `engine/omni.py` | `video_render/engine/omni.py` | The Interactions API request (`POST /v1beta/interactions`), images sent as ONE ordered list exactly as the adapter listed them (never sorted or de-duplicated: `<IMAGE_REF_n>` counts by position), submit / wait / download split, the inline-or-file result, refusal vs failure, `usage_tokens` |
+| `engine/omni.py` | `video_render/engine/omni.py` | The Interactions API request (`POST /v1beta/interactions`), images sent as ONE ordered list exactly as the adapter listed them (never sorted or de-duplicated: "Image n" counts by position), submit / wait / download split, the inline-or-file result, refusal vs failure, `usage_tokens` |
 | `engine/veo.py` | `video_render/engine/veo.py` | `predictLongRunning` → poll → download, each picture in the slot its `slot` names (`image`, `lastFrame`, `referenceImages`), refusals from the operation error and the RAI filter, download retried hard |
 | `engine/transport.py` | `engine/transport.py` | `post_json` with rate-limit backoff and NO retry on a timeout (a request we stopped waiting for may still finish and bill) |
 | `engine/fake.py` | `engine/fake.py` | A provider that calls nobody (`VIDEO__FAKE_PROVIDER=true`) |
@@ -41,3 +41,7 @@ lists what changed upstream since that commit in the files below.
 11. **Safe depiction (plan/2026-11-10b).** A refusal's sentence ends with `contracts.safe_depiction.REFUSAL_HINT` (describe
     what the camera sees; leave out words like dead, blood or kill), and `validate_render`, which this function re-runs
     as its backstop, refuses a description that names death or violence before anything is sent.
+12. **A start frame WITH sheets (plan/2026-11-18).** Upstream sends a start frame OR references. Here any plain reference
+    makes the task `reference_to_video`, a start frame included (image-to-video takes at most 2 images), and the
+    pictures are named in plain words by position ("Image 1 is the opening frame…") instead of the deprecated
+    `<FIRST_FRAME>` / `<IMAGE_REF_n>` control strings. Evidence: `lab/omni_refs` runs 001-003.

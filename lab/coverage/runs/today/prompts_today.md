@@ -1,0 +1,141 @@
+# E01-S03 video prompts: today's serializer
+
+## S01 · 3A-1 · master · WIDE · 6 s · stage 1
+
+**Summary:** From a fixed roadside wide, Anudi passes Kasun's food three-wheeler under her umbrella, misses her handbag pocket with the phone and continues as it falls onto the road. Rain and a small landing sound accompany the action.
+
+```text
+[First frame] The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.
+[Style] Photorealistic live-action television drama footage, real optics and natural imperfections.
+[Setting] A rain-wet Colombo roadside beside Kasun's small humble food three-wheeler, with the vehicle on the left and the pedestrian route extending right.
+[Subjects] Anudi, consistent established face, hairstyle and build, wearing a simple muted blue outfit — Walks right under the umbrella, moves the phone toward the handbag's outer pocket, lets it slip past the pocket and continues without looking down, Screen right, facing right, handbag on right shoulder at right hip, umbrella in left hand, smartphone initially in right hand; Kasun, consistent established face, hairstyle and build, wearing a plain neutral shirt and dark trousers — Remains beside the three-wheeler with hands free, Screen left beside the three-wheeler, standing, hands empty. Hands: Kasun is not holding the smartphone or the umbrella. Anudi holds the smartphone in one hand and the umbrella in the other hand; each hand keeps its own, neither is put down. During the shot Anudi lets go of the smartphone.
+[Story] What happens in this clip: Anudi passes the stall, attempts to pocket her phone, misses, and continues without looking back.
+[Camera] Camera: Wide shot (WIDE full-body composition, three-wheeler and Kasun on the left, Anudi and clear road space on the right; phone trajectory remains within frame), eye level (eye-level side view from the roadside); 35mm lens at f/5.6, a wide-normal lens: natural perspective with some of the space around them; focus: Deep; vehicle, figures and landing area remain legible with little background bokeh. Static: a steady, locked-off frame. As planned: locked-off on sticks throughout. Camera on side A of the line of action: the action reads left to right. Grade: Overcast daylight 6000K, Naturalistic wet greys, muted colours, true skin tones and restrained highlights..
+[Lighting] Day, window light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+[Action & dialogue] Over 6 seconds:
+0-3s: WIDE fixed, focus holds the bag and road in the same plane. Her occupied hands create the small mistake in plain sight. Anudi walks past the vehicle and moves the phone toward the outer pocket at her right hip. Her eyes dip briefly toward the bag before returning to her path.
+3-6s: WIDE fixed, phone and her continuing stride remain visible. The phone separates from her journey while she keeps moving. The phone misses the outer pocket, slips from her right hand and lands on the roadside; Anudi continues right without looking back. Her gait stays even and her empty right hand relaxes beside the bag.
+[Sound] No dialogue. No voiceover. Nobody speaks on camera. Silence — no music, no room tone.
+[Style lock & constraints] Every person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+[Format] Aspect ratio 16:9. Duration 6 seconds. Ends on a cut.
+```
+
+## S02 · 3G-1 · insert · INSERT · 6 s · stage 2
+
+**Summary:** A low stationary insert shows Anudi's right hand beside her handbag pocket. The phone slips past the pocket onto the wet road as she continues rightward without pausing; a small impact is heard.
+
+```text
+[First frame] The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.
+[Style] Photorealistic live-action television drama footage, real optics and natural imperfections.
+[Setting] A rain-wet Colombo roadside beside Kasun's small humble food three-wheeler, with the vehicle on the left and the pedestrian route extending right.
+[Subjects] Anudi, consistent established face, hairstyle and build, wearing a simple muted blue outfit — Moves rightward as the smartphone slips from her right hand beside the side pocket and falls onto the roadside; she continues without pausing, Walking right on the roadside at frame right, handbag on her right shoulder, umbrella held in her left hand above the crop, smartphone initially in her right hand at the handbag side pocket. Hands: Anudi holds the smartphone in one hand and the umbrella in the other hand; each hand keeps its own, neither is put down. Even this close, what each person holds stays in the picture (part of it in frame), never left out. During the shot Anudi lets go of the smartphone.
+[Story] What happens in this clip: Anudi passes the stall, attempts to pocket her phone, misses, and continues without looking back.
+[Camera] Camera: Insert (INSERT encompassing the handbag side pocket, Anudi's right hand and the patch of roadside immediately below; face outside frame), low angle (low roadside angle on the same side of the travel axis); 50mm lens at f/5.6, a normal lens: natural perspective, as the eye sees it; focus: Medium, pocket and phone landing area legible within the same focus zone. Static: a steady, locked-off frame. As planned: locked-off as the phone falls through the composition and Anudi continues rightward. Camera on side A of the line of action: the action reads left to right. Grade: neutral overcast daylight, 6000K, Naturalistic wet greys and muted blue, restrained highlights..
+[Lighting] Day, window light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+[Action & dialogue] Over 6 seconds:
+0-3s: INSERT unchanged, pocket above and road below remain legible. The phone separates from her movement and meets the roadside. The smartphone slips past the pocket from her right hand and falls onto the wet roadside while she continues rightward. Her right hand continues with her stride without reaching back.
+3-6s: INSERT unchanged, pocket above and road below remain legible. The phone separates from her movement and meets the roadside. The smartphone slips past the pocket from her right hand and falls onto the wet roadside while she continues rightward. Her right hand continues with her stride without reaching back.
+[Sound] No dialogue. No voiceover. Nobody speaks on camera. Diegetic sound only: room: Steady rain and distant Colombo traffic.; effects: One small hard phone impact against the wet roadside.; music: none.
+[Style lock & constraints] Every person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+[Format] Aspect ratio 16:9. Duration 6 seconds. Ends on a cut.
+```
+
+## S03 · 3B-1 · master · MS · 4 s · stage 1
+
+**Summary:** In a medium-wide side view, Kasun notices the phone on the road, bends to retrieve it in his right hand and hurries right after Anudi; the camera tracks briefly with him through rain.
+
+```text
+[First frame] The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.
+[Style] Photorealistic live-action television drama footage, real optics and natural imperfections.
+[Setting] A rain-wet Colombo roadside beside Kasun's small humble food three-wheeler, with the vehicle on the left and the pedestrian route extending right.
+[Subjects] Kasun, consistent established face, hairstyle and build, wearing a plain neutral shirt and dark trousers — Notices the phone, bends, lifts it in his right hand and hurries right, Screen left beside the vehicle at opening, standing with hands empty, phone resting on the road ahead and to his right. Hands: Kasun is not holding the umbrella. During the shot Kasun takes the smartphone.
+[Story] What happens in this clip: Kasun spots the phone, retrieves it and hurries after her.
+[Camera] Camera: Medium shot (MWS, Kasun from head to below his knees with the phone on the road included at the bottom of frame), low angle (slightly low side view on the established roadside side); 35mm lens at f/5.6, a wide-normal lens: natural perspective with some of the space around them; focus: Deep; Kasun and the phone remain legible, distant road slightly softened. Static: a steady, locked-off frame. As planned: one continuous short rightward track following Kasun from the retrieval into his first hurried strides. Camera on side A of the line of action: the action reads left to right. Grade: Overcast daylight 6000K, Naturalistic wet greys, muted colours, true skin tones and restrained highlights..
+[Lighting] Day, window light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+[Action & dialogue] Over 4 seconds:
+0-2s: MWS, continuous rightward track keeps the bend, lift and rise inside frame. He retrieves the phone and follows its owner without ceremony. Kasun bends, grasps the phone with his right hand, rises and takes quick running strides rightward. He keeps his eyes on the pickup until his grip is secure, then lifts his gaze down the path.
+2-4s: MWS, continuous rightward track keeps the bend, lift and rise inside frame. He retrieves the phone and follows its owner without ceremony. Kasun bends, grasps the phone with his right hand, rises and takes quick running strides rightward. He keeps his eyes on the pickup until his grip is secure, then lifts his gaze down the path.
+[Sound] No dialogue. No voiceover. Nobody speaks on camera. Silence — no music, no room tone.
+[Style lock & constraints] Every person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+[Format] Aspect ratio 16:9. Duration 4 seconds. Ends on a cut.
+```
+
+## S04 · 3C-1 · single · MS · 4 s · stage 1
+
+**Summary:** An eye-level medium single shows Kasun slowing his hurried steps, holding the recovered phone and projecting L3 to alert Anudi that she has dropped it. Rain remains beneath the line.
+
+```text
+[First frame] The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.
+[Style] Photorealistic live-action television drama footage, real optics and natural imperfections.
+[Setting] A rain-wet Colombo roadside beside Kasun's small humble food three-wheeler, with the vehicle on the left and the pedestrian route extending right.
+[Subjects] Kasun, consistent established face, hairstyle and build, wearing a plain neutral shirt and dark trousers — Slows his hurried steps and projects L3 with lips moving, holding the phone in his right hand, Left of centre on the roadside, facing screen right toward Anudi off frame, right hand holding phone near his waist. Hands: Kasun holds the smartphone in one hand.
+[Story] What happens in this clip: Kasun gets Anudi's attention with L3 while holding her recovered phone.
+[Camera] Camera: Medium shot (MS, Kasun from waist up, right hand and phone inside the frame, looking screen right), eye level (eye-level three-quarter frontal from the established roadside side); 50mm lens at f/4, a normal lens: natural perspective, as the eye sees it; focus: Medium; face and phone legible with a softly resolved roadside background. Static: a steady, locked-off frame. As planned: locked-off on sticks throughout. Camera on side A of the line of action: the action reads left to right. Grade: Overcast daylight 6000K, Naturalistic wet greys, muted colours, true skin tones and restrained highlights..
+[Lighting] Day, window light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+[Action & dialogue] Over 4 seconds:
+0-2s: MS fixed, focus favours Kasun's face. L3 travels across the rain with practical urgency. Kasun performs L3, lips moving to the full line, phone secure in his right hand. He projects with a raised chin and an intent gaze, without a broad gesture. Kasun (the person in dIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun) says, "«"මිස්! මිස්! ඔයාගේ ෆෝන් එක!"»" — only Kasun's lips move.
+2-4s: MS fixed, focus favours Kasun's face. L3 travels across the rain with practical urgency. Kasun performs L3, lips moving to the full line, phone secure in his right hand. He projects with a raised chin and an intent gaze, without a broad gesture.
+[Sound] Spoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: room: Light rain and distant indistinct traffic under L3.; effects: Soft wet footfalls.; music: None; scoped silence, no score..
+[Style lock & constraints] Every person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+[Format] Aspect ratio 16:9. Duration 4 seconds. Ends on a cut.
+```
+
+## S05 · 3D-1 · two_shot · MS · 4 s · stage 1
+
+**Summary:** A fixed medium-wide two-shot shows Anudi turn left under her umbrella. Kasun approaches from the left and extends the phone in his right hand, stopping the scene before she accepts it.
+
+```text
+[First frame] The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.
+[Style] Photorealistic live-action television drama footage, real optics and natural imperfections.
+[Setting] A rain-wet Colombo roadside beside Kasun's small humble food three-wheeler, with the vehicle on the left and the pedestrian route extending right.
+[Subjects] Anudi, consistent established face, hairstyle and build, wearing a simple muted blue outfit — Turns left toward Kasun and comes to a standstill, retaining umbrella and handbag, Screen right initially facing right, umbrella in left hand, handbag on right shoulder at right hip, right hand empty; Kasun, consistent established face, hairstyle and build, wearing a plain neutral shirt and dark trousers — Approaches from the left after her turn and extends the phone in his right hand, Screen left on roadside, facing right toward Anudi, phone in right hand near waist and left hand free. Hands: Kasun holds the smartphone in one hand. Anudi holds the umbrella in one hand. During the shot Kasun takes the anudi.
+[Story] What happens in this clip: Anudi turns; Kasun closes the remaining distance and extends the phone.
+[Camera] Camera: Medium shot (MWS two-shot with Kasun left, Anudi right, umbrella canopy and both people's hands visible), eye level (eye-level side two-shot from the established roadside side); 35mm lens at f/5.6, a wide-normal lens: natural perspective with some of the space around them; focus: Deep; both faces and extended phone legible, distant roadside softened slightly. Static: a steady, locked-off frame. As planned: locked-off on sticks throughout. Camera on side A of the line of action: the action reads left to right. Grade: Overcast daylight 6000K, Naturalistic wet greys, muted colours, true skin tones and restrained highlights..
+[Lighting] Day, window light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+[Action & dialogue] Over 4 seconds:
+0-2s: MWS fixed with both figures separated across the frame. The space between them holds for the answering turn. Anudi checks her stride while Kasun remains a short distance behind with phone in right hand. Anudi lifts her chin slightly and stills her shoulders; Kasun keeps his gaze on her.
+2-4s: MWS unchanged, phone appears in the space between them. The recovered object becomes the reason for their first direct attention. Kasun closes the remaining distance with one step and extends the phone in his right hand toward Anudi without contact. Kasun meets her gaze with relaxed brows; Anudi keeps her empty right hand beside the bag.
+[Sound] No dialogue. No voiceover. Nobody speaks on camera. Silence — no music, no room tone.
+[Style lock & constraints] Every person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+[Format] Aspect ratio 16:9. Duration 4 seconds. Ends on a cut.
+```
+
+## S06 · 3E-1 · reaction · MCU · 4 s · stage 2
+
+**Summary:** A stationary close view holds Anudi beneath her umbrella after she has turned left. Her eyes settle toward Kasun and then dip toward the offered phone; rain remains audible.
+
+```text
+[First frame] The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.
+[Style] Photorealistic live-action television drama footage, real optics and natural imperfections.
+[Setting] A rain-wet Colombo roadside beside Kasun's small humble food three-wheeler, with the vehicle on the left and the pedestrian route extending right.
+[Subjects] Anudi, consistent established face, hairstyle and build, wearing a simple muted blue outfit — Holds her umbrella in her left hand, keeps her lips closed and brings her gaze from Kasun's face down toward the offered phone, Standing on the roadside at frame right, facing left after her turn; umbrella in her left hand, handbag on her right shoulder, right hand free. Hands: Anudi holds the umbrella in one hand. The smartphone is not in this frame. Even this close, what each person holds stays in the picture (part of it in frame), never left out.
+[Story] What happens in this clip: Anudi turns; Kasun closes the remaining distance and extends the phone.
+[Camera] Camera: Medium close-up (MCU of Anudi on frame right facing left, umbrella edge above her head; Kasun remains outside the image), eye level (eye level from the established roadside side); 85mm lens at f/2.8, a long portrait lens: the background compressed and drawn close behind them; focus: Shallow, with the roadside dissolving into unobtrusive soft bokeh. Static: a steady, locked-off frame. As planned: stationary shallow isolation of Anudi beneath the umbrella throughout. Camera on side A of the line of action: the action reads left to right. Grade: neutral overcast daylight, 6000K, Naturalistic muted blue and grey, restrained saturation and grounded skin tones..
+[Lighting] Day, window light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+[Action & dialogue] Over 4 seconds:
+0-2s: MCU held on Anudi's face beneath the umbrella. The umbrella frames a brief pause after her turn. Anudi holds her left-facing position with her umbrella steady. Her eyes fix screen left and her lips remain closed.
+2-4s: MCU unchanged, focus on her eyes. Attention replaces the forward momentum of her walk. Her gaze lowers slightly toward the phone outside frame. Her brows lift a fraction, then settle as her eyes track downward.
+[Sound] No dialogue. No voiceover. Nobody speaks on camera. Diegetic sound only: room: Steady rain and distant Colombo traffic.; effects: Light rain patter on the umbrella.; music: none.
+[Style lock & constraints] Every person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+[Format] Aspect ratio 16:9. Duration 4 seconds. Ends on a cut.
+```
+
+## S07 · 3F-1 · insert · INSERT · 4 s · stage 2
+
+**Summary:** A waist-height insert isolates the phone in Kasun's extended right hand, pointing toward Anudi at screen right. His hand settles and holds; rain continues.
+
+```text
+[First frame] The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.
+[Style] Photorealistic live-action television drama footage, real optics and natural imperfections.
+[Setting] A rain-wet Colombo roadside beside Kasun's small humble food three-wheeler, with the vehicle on the left and the pedestrian route extending right.
+[Subjects] Kasun, consistent established face, hairstyle and build, wearing a plain neutral shirt and dark trousers — Extends his right hand holding the recovered smartphone and keeps it in his grip, On the roadside at frame left facing right toward Anudi; only his right forearm and hand enter the insert; Anudi, consistent established face, hairstyle and build, wearing a simple muted blue outfit — Remains still beyond the offered phone without reaching, Standing on the roadside at frame right facing left, umbrella in her left hand and handbag on her right shoulder; only a narrow portion of her muted blue outfit is visible. Hands: Kasun holds the smartphone in one hand. Anudi holds the umbrella in one hand. Even this close, what each person holds stays in the picture (part of it in frame), never left out. During the shot Kasun takes the anudi.
+[Story] What happens in this clip: Anudi turns; Kasun closes the remaining distance and extends the phone.
+[Camera] Camera: Insert (INSERT of Kasun's right forearm and phone extending from frame left into open space toward frame right; no faces), eye level (waist height, same roadside side of the travel axis); 85mm lens at f/4, a long portrait lens: the background compressed and drawn close behind them; focus: Shallow, phone and right hand sharp against soft roadside bokeh. Static: a steady, locked-off frame. As planned: locked-off on the offered phone throughout. Camera on side A of the line of action: the action reads left to right. Grade: neutral overcast daylight, 6000K, Naturalistic restrained greys with muted blue at the far right edge..
+[Lighting] Day, window light: Overcast rain daylight falls from the open roadside, with soft directional shade beneath the umbrella and three-wheeler canopy.
+[Action & dialogue] Over 4 seconds:
+0-2s: INSERT, phone entering the centre from frame left, focus on its edge and Kasun's grip. The object enters the space between them. Kasun's already extended right forearm advances a little toward screen right. His hand maintains a steady grip.
+2-4s: INSERT unchanged, phone sharp against the roadside. The small offer holds without contact. Kasun settles his hand with the phone still held toward Anudi; she remains beyond it. His fingers remain still around the phone and Anudi does not reach.
+[Sound] No dialogue. No voiceover. Nobody speaks on camera. Diegetic sound only: room: Steady rain and distant Colombo traffic.; effects: None emphasized.; music: none.
+[Style lock & constraints] Every person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.
+[Format] Aspect ratio 16:9. Duration 4 seconds. Ends on a cut.
+```

@@ -86,7 +86,7 @@ class RefOut(BaseModel):
     binds_to: UUID | None
     label: str
     origin: Literal["code", "person"]
-    tag: str  # `<IMAGE_REF_0>`, `image 2`, "start frame": the name the request gives it
+    tag: str  # "Image 1" (Omni), "image 2" / "start frame" (Veo): the name the request gives it
     url: str | None  # /files/{ticket}
     thumb_url: str | None = None  # the small WebP beside it, for tiles
     version: int | None
@@ -113,6 +113,9 @@ class EngineView(BaseModel):
     first_frame: bool
     last_frame: bool
     refs_with_first_frame: bool
+    refs_with_last_frame: bool = True
+    max_images: int = 0  # every picture, frames included; 0 = only max_refs
+    max_per_person: int = 0
     seed: str
     seed_note: str
     negative_prompt: bool
@@ -171,7 +174,9 @@ def engine_view(cap: EngineCapability) -> EngineView:
     return EngineView(
         key=cap.key, label=cap.label, model=cap.model, durations=list(cap.durations), aspects=list(cap.aspects),
         resolutions=list(cap.resolutions), max_refs=cap.max_refs, first_frame=cap.first_frame,
-        last_frame=cap.last_frame, refs_with_first_frame=cap.refs_with_first_frame, seed=cap.seed,
+        last_frame=cap.last_frame, refs_with_first_frame=cap.refs_with_first_frame,
+        refs_with_last_frame=cap.refs_with_last_frame, max_images=cap.max_images, max_per_person=cap.max_per_person,
+        seed=cap.seed,
         seed_note=seed_note(cap.key), negative_prompt=cap.negative_prompt,
         options={k: v.model_dump(mode="json") for k, v in cap.options.items()}, verified=cap.verified, notes=cap.notes,
         versions=[{"label": label, "model": model} for label, model in cap.versions])
@@ -192,8 +197,9 @@ def canon_sources(row: Row) -> list[RefSource]:
     for asset in current.get("reference_assets") or []:
         path = _path_of(asset)
         if path:
-            out.append(RefSource(kind="canon_sheet", id=asset_id(version_id, path), path=path, bucket="references",
-                                 version=current.get("version")))
+            face = isinstance(asset, dict) and asset.get("kind") == "face"  # plan/2026-11-18: its own kind and words
+            out.append(RefSource(kind="face_sheet" if face else "canon_sheet", id=asset_id(version_id, path), path=path,
+                                 bucket="references", version=current.get("version")))
     return out
 
 
@@ -235,7 +241,8 @@ async def gather(repos: Repos, ld: Loaded, st: ShotState, state: ShotVideoState)
     pics = Pictures()
     for row in ld.canon:
         for src in canon_sources(row):
-            pics.add(src, f"{_WORDS.get(str(row['kind']), 'the sheet for')} {row['name']}", UUID(str(row["id"])))
+            words = "the face sheet for" if src.kind == "face_sheet" else _WORDS.get(str(row["kind"]), "the sheet for")
+            pics.add(src, f"{words} {row['name']}", UUID(str(row["id"])))
     for look in await repos.looks.list_for_production(UUID(str(ld.production["id"]))):
         owner = next((r for r in ld.canon if str(r["id"]) == str(look["entity_id"])), None)
         for src in look_sources(look):
@@ -267,11 +274,14 @@ def _candidates(ld: Loaded, st: ShotState) -> list[SheetCandidate]:
         row = by_id.get(cid)
         if row is None:
             continue
-        sheets = canon_sources(row)
+        sources = canon_sources(row)
+        sheets = [s for s in sources if s.kind == "canon_sheet"]
+        faces = [s for s in sources if s.kind == "face_sheet"]
         look = ld.looks.get(cid) if row["kind"] == "character" else None
         look_sheet = _look_first(look) if look is not None else None
         out.append(SheetCandidate(entity_id=UUID(cid), kind=row["kind"], name=str(row["name"]), seen=True,
-                                  sheet=sheets[0] if sheets else None, look_sheet=look_sheet))
+                                  sheet=sheets[0] if sheets else None, look_sheet=look_sheet,
+                                  face=faces[0] if faces else None))
     return out
 
 

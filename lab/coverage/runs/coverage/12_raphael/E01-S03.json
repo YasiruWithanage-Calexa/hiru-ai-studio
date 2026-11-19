@@ -1,0 +1,942 @@
+{
+ "scene": "E01-S03",
+ "status": "done",
+ "seconds": 228.9,
+ "calls": 8,
+ "dollars": 0.1678,
+ "log": [
+  "stage 1: finished after 5 turns",
+  "stage 2: finished after 3 turns"
+ ],
+ "warnings": [],
+ "ids": {
+  "b0": "E01-S03-B01",
+  "b1": "E01-S03-B02",
+  "b2": "E01-S03-B03",
+  "b3": "E01-S03-B04",
+  "L3": "E01-S03-B04",
+  "b4": "E01-S03-B05"
+ },
+ "result": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "local-E01-S03",
+  "input_hash": "59e9ad9276358137",
+  "stage1": "finished",
+  "stage2": "finished",
+  "stopped": "",
+  "cap": 2.0,
+  "breakdown": null,
+  "mood": [],
+  "edit": {
+   "treatment": {
+    "logline": "An unnoticed dropped phone turns a passing stranger into a first encounter.",
+    "arc": [
+     {
+      "beat": "Preoccupied movement becomes an unnoticed loss.",
+      "blocks": {
+       "first": 0,
+       "last": 1
+      },
+      "feeling": "Small everyday jeopardy."
+     },
+     {
+      "beat": "Kasun immediately acts and draws her attention.",
+      "blocks": {
+       "first": 2,
+       "last": 3
+      },
+      "feeling": "Brisk, practical kindness."
+     },
+     {
+      "beat": "Her turn completes their first contact.",
+      "blocks": {
+       "first": 4,
+       "last": 4
+      },
+      "feeling": "Alert curiosity, without romantic emphasis."
+     }
+    ],
+    "approach": "Realistic Sri Lankan drama played as a small accident and a useful response, not a chase. Five essential sources total 22 seconds: combine the stowing setup and isolated fall with a grounded-phone hold, then separate her continuing walk, his retrieval, his projected L3, and their encounter. H-90 requires the accident detail and continuation to be separate. D05 is interpreted as no score or added dialogue, preserving L3 and restrained location sound. Natural rain light remains directional under the stall canopy; performances stay understated.",
+    "colour_script": [
+     {
+      "sequence": "S1",
+      "palette": "Rain-grey roadside, restrained natural clothing colours and muted vehicle paint.",
+      "light": "Overcast daylight from the open road, with darker shelter beneath the three-wheeler canopy.",
+      "grade": "Natural skin, controlled wet highlights and modest contrast; no romantic glow."
+     }
+    ],
+    "geography": "Three-wheeler is screen left; Anudi travels left to right along the roadside. Kasun follows the same direction. In the final view he remains left and she remains right, turned left. Anudi holds the umbrella in her left hand; her handbag hangs from her left shoulder at her left hip; her right hand attempts the pocket. Kasun retrieves and retains the phone in his right hand.",
+    "key_image": "A phone extended across the small gap between two people beneath the rain.",
+    "advice": [
+     "End before the phone changes hands; the following scene owns acceptance.",
+     "Keep the phone plain and its screen dark; no invented notifications.",
+     "Keep Anudi's gaze along her route during her continuing walk.",
+     "Use the fall detail as causal coverage, not a stylized slow-motion event."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "Loss, recovery, encounter",
+     "purpose": "Make the accident legible and the helpful response immediate.",
+     "shots": {
+      "first": 0,
+      "last": 4
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0,
+      1
+     ],
+     "what": "A tight bag-side view establishes the stowing attempt and shows the missed pocket and fall; a separate medium view starts with the phone already on the road as Anudi continues.",
+     "feeling": "The audience notices what she has missed.",
+     "cut_uses": "An insert from the road-facing side covers the cause and fall, followed by a side-on medium continuation. Both are necessary to avoid a visibly staged non-reaction."
+    },
+    {
+     "n": 2,
+     "sequence": "S1",
+     "blocks": [
+      2
+     ],
+     "what": "Kasun spots the phone, retrieves it and hurries right after Anudi.",
+     "feeling": "Immediate practical helpfulness.",
+     "cut_uses": "One low medium-wide from the same side of the travel axis keeps his reach and first running steps together."
+    },
+    {
+     "n": 3,
+     "sequence": "S1",
+     "blocks": [
+      3
+     ],
+     "what": "Kasun projects L3 toward Anudi while retaining the recovered phone.",
+     "feeling": "Urgency that is friendly rather than alarming.",
+     "cut_uses": "An eye-level medium single gives the complete line its own uninterrupted performance."
+    },
+    {
+     "n": 4,
+     "sequence": "S1",
+     "blocks": [
+      4
+     ],
+     "what": "Anudi stops and turns; Kasun approaches and extends the phone without transferring it.",
+     "feeling": "Attention becomes first contact.",
+     "cut_uses": "A steady two-shot keeps her turn before his offer and leaves the physical gap visible."
+    }
+   ],
+   "editor_notes": [
+    "Five must sources, 22 seconds in all; their overlapping coverage and handles are raw material for an approximately 17-second intended scene, not 22 seconds of required screen time.",
+    "3A-1 is the bag-side causal detail: the pocket rim and swing send the phone down. Its final phone-only interval can supply a still image where needed. 3B-1 is the separate continuing-walk source, starting with the phone already grounded; cut the two on movement and match the exact phone position and wet-road orientation.",
+    "3C-1 shows the notice, right-handed retrieval and first pursuit steps. Match the grounded phone to the previous setup, and maintain its right-hand hold through 3D-1 and 3E-1.",
+    "3D-1 carries the complete L3 performance. 3E-1 is the turn and offer; place the turn before the extension and end before any transfer. Match Anudi's umbrella and handbag on her left side.",
+    "Kasun starts at the three-wheeler service opening, a step from the phone, an editorial choice within the unspecified starting placement. Keep his early-business wardrobe simple and maintain both cast continuity references.",
+    "D05 is treated as no score or added dialogue, not the removal of scripted L3; use restrained natural rain and road ambience.",
+    "Speed ramps, freeze frames, digital punch-ins and split screens are post-only possibilities, not rendered camera moves; these steady sources are available if the editor elects to use them, although none is required for the intended cut.",
+    "Avoid mirrors, fast finger work, body contact and a visibly staged non-reaction. The phone never changes hands in this scene."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "insert",
+    "setup": "A",
+    "blocks": [
+     0,
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "Bag-height side view",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "Isolate the visible cause of the loss and leave a still phone image rather than asking a full-body performance to sell an unnoticed accident.",
+    "take_s": 6,
+    "handle_in_s": 0.5,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "The first 1.5 seconds of action establish b0. The fall and grounded-phone hold cover b1; cut to the separately staged continuation. The final grounded-phone interval can also serve as the H-90 still.",
+    "summary": "At handbag height beside the three-wheeler, Anudi's right hand attempts the outer pocket; the phone catches the rim, tips outward and falls onto the roadside, where it remains. Only her bag-side body and hand are visible; rain and the landing are heard.",
+    "id": "c01",
+    "slate": "3A-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/5.6",
+      "angle": "Bag height, oblique side view",
+      "framing": "INSERT of the handbag outer pocket, right hand and the road directly below; face outside the image.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Restrained rain-grey surroundings, natural colour and controlled wet highlights.",
+      "depth_of_field": "Medium, pocket and landing area legible with soft vehicle background.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi with her established facial appearance, hairstyle and body type, in continuity wardrobe from the preceding scene.",
+       "action": "With handbag at left hip and umbrella retained in left hand above the crop, her right hand guides the phone toward the outer pocket; the lower edge catches the pocket rim, tips outward and falls onto the road.",
+       "position": "Bag-side torso occupies upper right; handbag hangs from left shoulder at left hip; right hand holds smartphone above the pocket; left hand retains umbrella above the crop."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "INSERT focused on pocket rim and phone.",
+       "director_line": "The small practical task fills the image.",
+       "action": "Her right hand rests with the phone beside the pocket while the bag hangs at her left hip.",
+       "performance": "Her hand remains loose around the phone."
+      },
+      {
+       "time": "0.5-2s",
+       "camera": "INSERT focused on pocket rim and phone.",
+       "director_line": "The attempt is readable before it goes wrong.",
+       "action": "Her right hand guides the phone partly against the outer pocket as the handbag swings with her rightward step.",
+       "performance": "Her fingers loosen as the phone reaches the pocket rim."
+      },
+      {
+       "time": "2-3.5s",
+       "camera": "INSERT includes the road below the pocket.",
+       "director_line": "The pocket rim redirects the phone into its short fall.",
+       "action": "The phone's lower edge catches the rim; the bag swings right, the phone tips outward from her fingers and lands on the roadside.",
+       "performance": "Her right hand continues past the pocket with the step."
+      },
+      {
+       "time": "3.5-5s",
+       "camera": "INSERT focused on the grounded phone.",
+       "director_line": "The separation is complete.",
+       "action": "The bag clears the right edge and the phone lies flat on the wet roadside.",
+       "performance": ""
+      },
+      {
+       "time": "5-6s",
+       "camera": "INSERT focused on the grounded phone.",
+       "director_line": "The object remains behind in the rain.",
+       "action": "Rain dots the road around the phone.",
+       "performance": ""
+      }
+     ],
+     "audio": "Light rain, distant road noise and one small phone impact; no vocal audio.",
+     "first_frame": {
+      "composition": "Pocket upper right, phone above its rim, wet landing area below; muted three-wheeler edge left.",
+      "subjects": [
+       "Anudi's bag-side torso and right hand holding the smartphone; handbag at left hip."
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant traffic.",
+     "effects": "Bag fabric and a small phone landing.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 1,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "Side-on at waist height",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "Her uninterrupted movement, separately staged with the phone already grounded, makes the unnoticed loss credible.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Continuation of b1, not a repeat of the fall. Cut between this and the accident detail so the uninterrupted walk and the fall share the same brief event.",
+    "summary": "A side-on medium shows Anudi continuing right beneath her umbrella, eyes along her route. Her phone is already on the roadside at lower left. She exits right at 3.5 seconds; rain and traffic continue.",
+    "id": "c02",
+    "slate": "3B-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 35mm, f/5.6",
+      "angle": "Waist-height side view",
+      "framing": "MS of Anudi with umbrella above her, handbag at left hip and grounded phone at lower left.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Restrained rain-grey surroundings, natural colour and controlled wet highlights.",
+      "depth_of_field": "Deep, grounded phone and walking figure readable.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi with her established facial appearance, hairstyle and body type, in continuity wardrobe from the preceding scene.",
+       "action": "Continues walking right under her umbrella with eyes along the roadside ahead; exits right at 3.5 seconds.",
+       "position": "Centre-right facing right; umbrella in left hand, handbag on left shoulder at left hip, right hand empty; smartphone already lies lower left on the roadside."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MS with the phone at lower left.",
+       "director_line": "Her route stays more important to her than the object behind.",
+       "action": "She continues her established rightward stride, eyes along the road ahead.",
+       "performance": "Her chin stays level and her lips remain closed."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MS with right-edge exit space.",
+       "director_line": "The distance from the phone opens naturally.",
+       "action": "She walks right and clears the right edge at 3.5 seconds; the phone remains on the road.",
+       "performance": "Her gaze stays on her route as her empty right hand settles beside her."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MS of the vacated walking space with phone lower left.",
+       "director_line": "The remaining object bridges to the observer.",
+       "action": "Rain dots the roadside around the phone.",
+       "performance": ""
+      }
+     ],
+     "audio": "Light rain and distant road noise; no vocal audio.",
+     "first_frame": {
+      "composition": "Anudi centre-right in rightward stride; phone already lower left; three-wheeler left background.",
+      "subjects": [
+       "Anudi beneath her open umbrella, handbag at left hip, empty right hand.",
+       "Smartphone lying on the wet roadside at lower left."
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant traffic.",
+     "effects": "Measured footsteps.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "Low roadside three-quarter view",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "A single readable full gesture makes the retrieval practical rather than heroic and keeps the rightward pursuit axis.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Phone begins in exactly the grounded position established in the accident coverage. End with it firmly in his right hand.",
+    "summary": "Beside the food three-wheeler, Kasun spots the phone, bends and lifts it with his right hand, then starts after Anudi toward screen right. The low medium-wide remains still; rain and quick footfalls are heard.",
+    "id": "c03",
+    "slate": "3C-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 35mm, f/5.6",
+      "angle": "Low three-quarter roadside view",
+      "framing": "MWS includes Kasun, the phone at his feet and open road to the right.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Restrained rain-grey surroundings, natural colour and controlled wet highlights.",
+      "depth_of_field": "Deep, hand and grounded phone legible.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun with his established facial appearance, hairstyle and body type, wearing simple everyday work clothes appropriate to his small food three-wheeler.",
+       "action": "Looks down at the phone, bends, picks it up in his right hand, straightens and starts running right.",
+       "position": "Left beside the three-wheeler service opening, standing a step from the phone on the roadside; both hands initially empty."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MWS focused on Kasun and the nearby phone.",
+       "director_line": "The useful observer is already close enough to act.",
+       "action": "Kasun stands beside the service opening while the phone lies a step to his right.",
+       "performance": "His eyes settle on the phone and his chin dips."
+      },
+      {
+       "time": "0.5-2s",
+       "camera": "MWS includes his reach to the road.",
+       "director_line": "His response has no hesitation.",
+       "action": "He steps to the phone, bends and closes his right hand around it.",
+       "performance": "His gaze follows his hand and his left arm extends slightly for balance."
+      },
+      {
+       "time": "2-3.5s",
+       "camera": "MWS with space to the right.",
+       "director_line": "The retrieval flows directly into pursuit.",
+       "action": "He straightens with the phone in his right hand and takes two quick running steps right.",
+       "performance": "His head rises toward the route ahead and his torso leans into the steps."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MWS on his rightward movement.",
+       "director_line": "The direction carries into the next view.",
+       "action": "He continues right with the phone secure in his right hand.",
+       "performance": "His eyes remain ahead and his lips stay closed."
+      }
+     ],
+     "audio": "Rain, clothing movement and quick footfalls; no vocal audio.",
+     "first_frame": {
+      "composition": "Kasun left beside the three-wheeler, grounded phone below centre, rightward route clear.",
+      "subjects": [
+       "Kasun standing with empty hands.",
+       "Smartphone on the roadside a step to his right."
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant traffic.",
+     "effects": "Cloth movement and quick footfalls.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "single",
+    "setup": "D",
+    "blocks": [
+     3
+    ],
+    "lines": [
+     "L3"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MS",
+    "angle": "Eye-level three-quarter profile facing right",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "An uninterrupted medium single gives the short projected line a clear source without inflating the helpful gesture.",
+    "take_s": 4,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.9,
+    "priority": "must",
+    "editor_note": "Perform all of L3 from 0.8 to 3.1 seconds. Retain original speed; no score.",
+    "summary": "An eye-level medium single shows Kasun slowing his quick approach with the recovered phone in his right hand. He alerts Anudi to her lost phone with L3, projected over the rain; the camera stays still.",
+    "id": "c04",
+    "slate": "3D-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/4",
+      "angle": "Eye-level three-quarter profile facing right",
+      "framing": "MS of Kasun on the left with clear space toward Anudi offscreen right; right hand and phone visible.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Restrained rain-grey surroundings, natural colour and controlled wet highlights.",
+      "depth_of_field": "Medium, face and phone clear against softer roadside.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun with his established facial appearance, hairstyle and body type, wearing simple everyday work clothes appropriate to his small food three-wheeler.",
+       "action": "Slows his approach facing right, retaining the phone in his right hand; his lips move to L3.",
+       "position": "Left foreground facing right toward Anudi beyond frame, phone secure in right hand at waist height, left hand free."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "MS on Kasun's face and right hand.",
+       "director_line": "A breath makes the interruption human rather than theatrical.",
+       "action": "He shortens his steps with the phone at waist height.",
+       "performance": "His eyes fix ahead and he draws a breath."
+      },
+      {
+       "time": "0.8-3.1s",
+       "camera": "MS favouring Kasun's face.",
+       "director_line": "The brief projected line reaches across the rain.",
+       "action": "His lips move to the complete L3 while his right hand keeps the phone visible.",
+       "performance": "He lifts his chin slightly and projects without a broad arm gesture."
+      },
+      {
+       "time": "3.1-4s",
+       "camera": "MS on Kasun's face and phone.",
+       "director_line": "He leaves room for her response.",
+       "action": "He closes his mouth and continues his slowing approach with the phone in his right hand.",
+       "performance": "His gaze remains ahead and his shoulders settle."
+      }
+     ],
+     "audio": "Complete L3, clearly projected, with low rain and distant traffic underneath.",
+     "first_frame": {
+      "composition": "Kasun left of centre, rightward look room, phone visible at waist height.",
+      "subjects": [
+       "Kasun facing right, recovered smartphone in right hand."
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant traffic, low beneath L3.",
+     "effects": "Footsteps slowing.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "two_shot",
+    "setup": "E",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "TWO",
+    "angle": "Eye-level side-on two-shot",
+    "lens": "40mm",
+    "technique": "locked_off",
+    "why": "Still shared space lets her turn precede his offer and makes their first direct contact the scene's endpoint.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Start with Anudi still facing right. Turn first, then offer. Phone remains in Kasun's right hand through the final frame; cut before next scene's acceptance.",
+    "summary": "A steady two-shot places Kasun left and Anudi right. She stops and turns left beneath her umbrella; he walks closer and extends the recovered phone in his right hand. She retains her handbag and umbrella, and no transfer occurs. Only rain and footsteps are heard.",
+    "id": "c05",
+    "slate": "3E-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 40mm, f/5.6",
+      "angle": "Eye-level side-on view",
+      "framing": "TWO with Kasun left and Anudi right, umbrella and extended-phone space included.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Restrained rain-grey surroundings, natural colour and controlled wet highlights.",
+      "depth_of_field": "Deep, both faces and the offered phone readable.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi with her established facial appearance, hairstyle and body type, in continuity wardrobe from the preceding scene.",
+       "action": "Stops and turns left toward Kasun, retaining umbrella in left hand and handbag on left shoulder at left hip; right hand remains empty.",
+       "position": "Right side facing right at opening, umbrella in left hand, handbag on left shoulder at left hip, right hand empty."
+      },
+      {
+       "id": "C01",
+       "description": "Kasun with his established facial appearance, hairstyle and body type, wearing simple everyday work clothes appropriate to his small food three-wheeler.",
+       "action": "Walks right toward Anudi after her turn and extends his right hand with the phone, retaining it.",
+       "position": "Left side facing right, approaching Anudi with smartphone in right hand at waist height and left hand free."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "TWO with the gap between them visible.",
+       "director_line": "The interruption reaches her before the distance closes.",
+       "action": "Anudi finishes her forward step; Kasun slows a short distance behind her with the phone in his right hand.",
+       "performance": "Anudi lifts her chin slightly; Kasun keeps his eyes on her."
+      },
+      {
+       "time": "1-2s",
+       "camera": "TWO on both faces and the space between.",
+       "director_line": "Her turn opens their shared moment.",
+       "action": "Anudi stops and turns left toward Kasun with the umbrella in her left hand and bag at her left hip.",
+       "performance": "Her brows lift and her eyes settle on him; his mouth stays closed."
+      },
+      {
+       "time": "2-3s",
+       "camera": "TWO including the offered phone.",
+       "director_line": "The object explains his approach.",
+       "action": "Kasun walks one step closer and extends his right hand with the phone toward Anudi; she remains standing.",
+       "performance": "His shoulders ease as he extends the phone; her gaze moves from his face to the phone."
+      },
+      {
+       "time": "3-4s",
+       "camera": "TWO on their faces and the extended phone.",
+       "director_line": "The scene ends on the offer rather than its acceptance.",
+       "action": "Kasun keeps the phone extended in his right hand; Anudi retains the umbrella in her left hand and her right hand at her side.",
+       "performance": "She raises her eyes toward him while he waits with his mouth closed."
+      }
+     ],
+     "audio": "Rain and a final slowing footstep; no vocal audio.",
+     "first_frame": {
+      "composition": "Kasun left, Anudi right facing along her route, small gap between them; three-wheeler recedes left.",
+      "subjects": [
+       "Anudi facing right under her open umbrella, handbag at left hip and right hand empty.",
+       "Kasun facing right, phone at waist height in right hand."
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant traffic.",
+     "effects": "A final slowing footstep and umbrella rain patter.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "reaction",
+    "setup": "F",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "eye level from Kasun's side of the gap, remaining on the established axis",
+    "lens": "85mm",
+    "technique": "shallow_isolation",
+    "why": "Isolates Anudi's first attentive response after her turn; the essential two-shot cannot give her eyes this emphasis.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Cut in after the turn in c05; keep her gaze screen left and return to the offered-phone gap. No added dialogue.",
+    "summary": "A close view beneath Anudi's umbrella catches her eyes settling on Kasun after she turns. Only restrained roadside sound accompanies the image.",
+    "id": "c06",
+    "slate": "3F-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.0",
+      "angle": "eye level, same side of the established travel axis",
+      "framing": "CU of Anudi beneath the umbrella edge, looking screen left, shoulders and a little headroom visible",
+      "movement": "locked-off shallow isolation throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "restrained natural colour, rain-grey highlights, shaped shadow and natural skin",
+      "depth_of_field": "Shallow, three-wheeler and roadside reduced to soft bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi with her established facial appearance, hairstyle and body type, in continuity wardrobe from the preceding scene.",
+       "action": "Stands after her turn with lips closed, her eyes settling toward Kasun.",
+       "position": "Roadside, frame right, facing left; umbrella in her left hand, handbag hanging from her left shoulder at her left hip; smartphone remains with Kasun outside this image."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU focused on Anudi's eyes beneath the umbrella edge",
+       "director_line": "The umbrella edge contains the first instant of her attention.",
+       "action": "Anudi stands facing left with her left hand maintaining the umbrella.",
+       "performance": "Her brows lift slightly and her eyes settle screen left."
+      },
+      {
+       "time": "1-3s",
+       "camera": "CU, same focus and framing",
+       "director_line": "Her attention becomes the centre of the encounter.",
+       "action": "Anudi keeps her head oriented toward Kasun and her lips closed.",
+       "performance": "Her eyes remain on him as her brow relaxes."
+      },
+      {
+       "time": "3-4s",
+       "camera": "CU, same focus and framing",
+       "director_line": "A quiet final beat leaves the encounter open.",
+       "action": "Anudi maintains her stance beneath the umbrella.",
+       "performance": "She blinks once and restores the same eyeline."
+      }
+     ],
+     "audio": "Restrained rain and distant road wash; no score or added vocal sound.",
+     "first_frame": {
+      "composition": "Anudi occupies the right two-thirds, umbrella edge above, negative space toward her screen-left eyeline.",
+      "subjects": [
+       "Anudi standing beneath her umbrella, lips closed, facing left"
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Restrained rain and distant road wash matching c05.",
+     "effects": "None added.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c05"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 4,
+    "role": "insert",
+    "setup": "G",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "hand height, side-on to the gap",
+    "lens": "75mm",
+    "technique": "shallow_isolation",
+    "why": "Makes the recovered phone a small bridge between strangers while preserving the unclosed distance; no transfer is introduced.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Use once c05 has established the extended arm. Return to c05 before any further action; the phone remains in Kasun's right hand throughout.",
+    "summary": "At hand height, Kasun's right hand holds the recovered phone into the space toward Anudi, whose body remains outside the image. The camera isolates the offer against the damp roadside; no handover occurs.",
+    "id": "c07",
+    "slate": "3G-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 75mm close-focus lens, f/2.8",
+      "angle": "hand height from the established side of the axis",
+      "framing": "INSERT of Kasun's right hand and smartphone extending from frame left into empty space on the right; screen angled away and unreadable",
+      "movement": "locked-off shallow isolation throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "restrained natural colour, rain-grey highlights, shaped shadow and natural skin",
+      "depth_of_field": "Shallow, the damp road dissolves into soft bokeh beyond the phone",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun with his established facial appearance, hairstyle and body type, wearing simple everyday work clothes appropriate to his small food three-wheeler.",
+       "action": "Maintains the recovered smartphone in his extended right hand.",
+       "position": "Roadside on frame left, facing right toward Anudi outside the image; right arm already extended, smartphone retained in his right hand; only his hand and forearm are visible."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT focused on the right hand and phone, empty space to the right",
+       "director_line": "The phone rests at the edge of the distance between them.",
+       "action": "Kasun keeps his right hand extended with the phone supported securely.",
+       "performance": "His fingers remain relaxed around the phone."
+      },
+      {
+       "time": "1-3s",
+       "camera": "INSERT, same focus and framing",
+       "director_line": "A practical offer becomes the image of first contact.",
+       "action": "The phone remains in Kasun's right hand with its screen angled away.",
+       "performance": "His wrist stays steady and his fingers maintain their grip."
+      },
+      {
+       "time": "3-4s",
+       "camera": "INSERT, same focus and framing",
+       "director_line": "The open gap remains available for the return to the two-shot.",
+       "action": "Kasun retains the phone in the same extended position.",
+       "performance": "His hand remains open in posture but secure around the phone."
+      }
+     ],
+     "audio": "Restrained rain and distant road wash; no score or added vocal sound.",
+     "first_frame": {
+      "composition": "Right hand and phone enter from frame left, ending near centre; the right half remains empty; no other hand enters.",
+      "subjects": [
+       "Kasun's right hand and forearm supporting the recovered smartphone, screen angled away"
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Restrained rain and distant road wash matching c05.",
+     "effects": "None added.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c05"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 1,
+    "role": "establishing",
+    "setup": "H",
+    "blocks": [],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "road-edge height, oblique view along the travel direction",
+    "lens": "28mm",
+    "technique": "foreground_framing",
+    "why": "Establishes the canopy-to-road contrast and left-to-right travel space before the tight accident coverage, without repeating the fall or her continuation.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Use a brief opening portion before c01 under the roadside ambience. No added music, figures or incident.",
+    "summary": "An empty wide roadside view places the food three-wheeler on the left and the damp walking route to the right, framed by its canopy edge. Rain and distant road wash establish the location before the accident detail.",
+    "id": "c08",
+    "slate": "3H-1",
+    "ir": {
+     "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+     "cinematography": {
+      "camera": "locked-off sticks, 28mm, f/5.6",
+      "angle": "road-edge height looking obliquely along the roadside",
+      "framing": "WIDE with the three-wheeler and its canopy forming the left foreground and the damp route opening to the right; people outside the image",
+      "movement": "locked-off foreground framing throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "restrained natural colour, rain-grey highlights, canopy shadows kept shaped rather than flat",
+      "depth_of_field": "Deep, foreground canopy and damp roadside remain legible",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE, foreground canopy on left and open roadside on right",
+       "director_line": "The sheltered edge frames the exposed route.",
+       "action": "Rain darkens the visible roadside surface.",
+       "performance": ""
+      },
+      {
+       "time": "1-3s",
+       "camera": "WIDE, same framing and deep focus",
+       "director_line": "The empty walking space establishes the direction of the coming encounter.",
+       "action": "Fine rain continues over the damp roadside.",
+       "performance": ""
+      },
+      {
+       "time": "3-4s",
+       "camera": "WIDE, same framing and deep focus",
+       "director_line": "The roadside remains clear for the cut into the handbag detail.",
+       "action": "Rain continues beside the stationary three-wheeler.",
+       "performance": ""
+      }
+     ],
+     "audio": "Restrained rain and distant road wash; no score or added vocal sound.",
+     "first_frame": {
+      "composition": "Food three-wheeler and canopy frame the left side; unoccupied damp roadside extends toward screen right.",
+      "subjects": [
+       "Stationary food three-wheeler",
+       "Rain-damp roadside"
+      ],
+      "setting": "A rain-damp Colombo roadside runs past the small food three-wheeler on the left.",
+      "lighting": "Overcast daylight enters from the open road on camera right, falling off beneath the three-wheeler canopy on the left."
+     }
+    },
+    "sound": {
+     "ambience": "Restrained rain and distant road wash matching the essential coverage.",
+     "effects": "None added.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c01",
+     "c02"
+    ],
+    "blend": "open"
+   }
+  ],
+  "line_ids": {
+   "L3": "E01-S03-B04"
+  },
+  "editor_notes": [
+   "Five must sources, 22 seconds in all; their overlapping coverage and handles are raw material for an approximately 17-second intended scene, not 22 seconds of required screen time.",
+   "3A-1 is the bag-side causal detail: the pocket rim and swing send the phone down. Its final phone-only interval can supply a still image where needed. 3B-1 is the separate continuing-walk source, starting with the phone already grounded; cut the two on movement and match the exact phone position and wet-road orientation.",
+   "3C-1 shows the notice, right-handed retrieval and first pursuit steps. Match the grounded phone to the previous setup, and maintain its right-hand hold through 3D-1 and 3E-1.",
+   "3D-1 carries the complete L3 performance. 3E-1 is the turn and offer; place the turn before the extension and end before any transfer. Match Anudi's umbrella and handbag on her left side.",
+   "Kasun starts at the three-wheeler service opening, a step from the phone, an editorial choice within the unspecified starting placement. Keep his early-business wardrobe simple and maintain both cast continuity references.",
+   "D05 is treated as no score or added dialogue, not the removal of scripted L3; use restrained natural rain and road ambience.",
+   "Speed ramps, freeze frames, digital punch-ins and split screens are post-only possibilities, not rendered camera moves; these steady sources are available if the editor elects to use them, although none is required for the intended cut.",
+   "Avoid mirrors, fast finger work, body contact and a visibly staged non-reaction. The phone never changes hands in this scene."
+  ],
+  "blend_notes": [
+   "c06 — In moment 4, cut from c05 after Anudi's turn to her held reaction and back to c05, over c05's location audio; no dialogue is added.",
+   "c07 — In moment 4, cut from c05 once Kasun extends the phone to the isolated offer, then return to c05, over c05's location audio; the phone stays in his right hand.",
+   "c08 — Open moment 1 before c01 with the roadside view, over matching location ambience; no dialogue or score."
+  ],
+  "review": [
+   {
+    "moment": 1,
+    "earns": true,
+    "why": "A quiet wide view establishes the rain-damp road, the canopy and the route before the locked accident coverage."
+   },
+   {
+    "moment": 2,
+    "earns": false,
+    "why": "The locked medium-wide already connects the discovery, pickup and first running steps; an extra would fragment that practical response."
+   },
+   {
+    "moment": 3,
+    "earns": false,
+    "why": "The complete L3 performance benefits from remaining uninterrupted, and room is better spent on the first encounter."
+   },
+   {
+    "moment": 4,
+    "earns": true,
+    "why": "Anudi's held reaction and the isolated offered phone give first contact intimacy while maintaining the physical gap and avoiding a transfer."
+   }
+  ],
+  "seconds": {
+   "target_s": 17.0,
+   "cap_s": 34.0,
+   "take_s": 34,
+   "must_s": 22,
+   "cinematic_s": 12
+  },
+  "left": [],
+  "report": {
+   "turns": {
+    "stage1": 5,
+    "stage2": 3
+   },
+   "calls": 8,
+   "log": [
+    "stage 1: finished after 5 turns",
+    "stage 2: finished after 3 turns"
+   ],
+   "model": "gpt-6.1-sol"
+  },
+  "previous": {}
+ }
+}

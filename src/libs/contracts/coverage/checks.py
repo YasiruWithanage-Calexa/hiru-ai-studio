@@ -2,6 +2,8 @@
 
     find(cov) -> [Finding]           every finding on the scene as it is
     new(before, after) -> [Finding]  only what an edit introduced (keys use handles, so renumbering is not "new")
+    budget(cov) -> [Finding]         the action budget (plan/2026-11-18c, H-16): over budget, a door left open, a
+                                     speaker turned away
     repairable(found)                the ones the author is asked to fix
     unvoiced(cov)                    the clips that perform a line but are stored silent, with the mode each must carry
 
@@ -12,6 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from contracts import action_budget as ab
 from contracts import safe_depiction
 from contracts.coverage.scene import IR_JSON, IR_TEXT, VOICED, Clip, Coverage
 from contracts.timing import speech_seconds
@@ -92,9 +95,41 @@ def find(cov: Coverage) -> list[Finding]:
                                f"{code}'s description uses {', '.join(words)}: the video model refuses it; "
                                "say what the "
                                "camera sees instead."))
+    out += budget(cov)
     if cov.target_s and cov.total_s() > cov.target_s * LONG_SHARE:
         out.append(Finding("length", "length", f"The clips hold {cov.total_s()} s of takes against a {cov.target_s} s "
                                                f"scene (over {LONG_SHARE:g}x).", "report"))
+    return out
+
+
+def budget(cov: Coverage) -> list[Finding]:
+    """The action budget (plan/2026-11-18c phase 6, house rule H-16): the same three faults Raphael's own check
+    blocks on (`contracts.raphael.checks.action_budget`), on the clips as edited. Zora's author is asked to repair
+    them; Sable's tools say them back to Sable; a person's own click or Accept only reports them (`fix` is the
+    caller's: `new` keeps only what an edit introduced)."""
+    out: list[Finding] = []
+    for c in cov.clips:
+        why = ab.count(ab.beats_of(c.ir)).over()
+        if why:
+            out.append(Finding(f"action_budget:{c.h}", "action_budget",
+                               f"{cov.code(c.h)} is over the action budget: {'; '.join(why)}."))
+    words = [" ".join([c.why, c.sees, *ab.beats_of(c.ir)]) for c in cov.clips]
+    door = ab.door_left_open(words)
+    if door is not None:
+        c = cov.clips[door]
+        out.append(Finding(f"door_open:{c.h}", "door_open",
+                           f"{cov.code(c.h)} opens a door (or has it already open) and no clip closes it: a person "
+                           "never walks away from an open car door. Close it in a clip, the person standing still, "
+                           "before the walk away."))
+    for c in cov.clips:
+        if not cov.performs(c.h):
+            continue
+        away = ab.turned_away(ab.opening_of(c.ir))
+        if away:
+            out.append(Finding(f"speaker_hidden:{c.h}", "speaker_hidden",
+                               f"{cov.code(c.h)} performs a line but opens with the speaker '{away}': its first "
+                               "frame has no face. Open it with the speaker already turned to the camera's side, the "
+                               "turn in the clip before."))
     return out
 
 

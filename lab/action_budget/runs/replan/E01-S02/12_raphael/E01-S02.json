@@ -1,0 +1,1025 @@
+{
+ "scene": "E01-S02",
+ "status": "done",
+ "seconds": 296.0,
+ "calls": 8,
+ "dollars": 0.1863,
+ "log": [
+  "stage 1: finished after 5 turns",
+  "stage 2: finished after 3 turns"
+ ],
+ "warnings": [],
+ "ids": {
+  "b0": "E01-S02-B01",
+  "b1": "E01-S02-B02",
+  "b2": "E01-S02-B03"
+ },
+ "result": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "local-E01-S02",
+  "input_hash": "b469258de099a3b0",
+  "stage1": "finished",
+  "stage2": "finished",
+  "stopped": "",
+  "cap": 2.0,
+  "breakdown": null,
+  "mood": [],
+  "edit": {
+   "treatment": {
+    "logline": "Absorbed in her phone, Anudi leaves the comfort of the family car and enters the rainy roadside world beside the food three-wheeler.",
+    "arc": [
+     {
+      "beat": "Insulated routine",
+      "blocks": {
+       "first": 0,
+       "last": 0
+      },
+      "feeling": "Everyday ease and private absorption."
+     },
+     {
+      "beat": "From passenger to pedestrian",
+      "blocks": {
+       "first": 1,
+       "last": 1
+      },
+      "feeling": "Unhurried courtesy and purposeful movement."
+     },
+     {
+      "beat": "Weather occupies her hands",
+      "blocks": {
+       "first": 2,
+       "last": 2
+      },
+      "feeling": "A small practical adjustment brings her into the next encounter's geography."
+     }
+    ],
+    "approach": "An everyday transitional drama, not a suspense passage: naturalistic Colombo daylight, restrained performances and simple camera positions. Six essential shots total 24 seconds. Build the change from enclosed rear-seat framing to an open roadside view. The rain changes her practical circumstances rather than her emotional register. Her acknowledgment is a small visible nod, with no invented dialogue. Preserve the scoped continuous-walking intention in the edit: isolate the umbrella opening in an upper-body source, with no legs visible, between walking shots.",
+    "colour_script": [
+     {
+      "sequence": "S1",
+      "palette": "Cream upholstery, muted blue and neutral clothing, restrained street colour.",
+      "light": "Overcast daylight through car windows; softly directional and believable.",
+      "grade": "Natural skin tones, modest contrast, gentle highlight rolloff."
+     },
+     {
+      "sequence": "S2",
+      "palette": "Concrete grey and muted urban colours with the same clothing.",
+      "light": "Overcast daylight, initially dry, with rain beginning only in the last sequence.",
+      "grade": "Naturalistic, slightly cooler outside the car."
+     },
+     {
+      "sequence": "S3",
+      "palette": "Rain-grey road, dark umbrella and modest food-vehicle colours.",
+      "light": "The same overcast daylight as light rain begins.",
+      "grade": "Restrained cool neutrals, readable faces and wet highlights."
+     }
+    ],
+    "geography": "Park the family car at the near curb, officeward travel left to right. Rear passenger door faces the pavement. The food three-wheeler stands farther along that same pavement, between Anudi and the building. Keep all roadside cameras on the street side of her walking axis. The driver remains seated; no additional identifiable people are required.",
+    "key_image": "Anudi passes the humble food three-wheeler with the open umbrella in her left hand, handbag on her left forearm and smartphone still in her right hand.",
+    "advice": [
+     "Preserve smartphone-right, umbrella-left and handbag-left-forearm continuity throughout.",
+     "Do not initiate the next scene's attempt to pocket the phone.",
+     "The car door is already open at the start of the exit angle; elide its opening rather than combining two hard actions.",
+     "No readable phone content is supplied, so keep its screen angled toward Anudi."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "Inside the routine",
+     "purpose": "Establish the moving family car and Anudi's absorption in her smartphone.",
+     "shots": {
+      "first": 1,
+      "last": 1
+     }
+    },
+    {
+     "id": "S2",
+     "title": "At the office curb",
+     "purpose": "Show the stop, exit and acknowledgment as separate playable actions.",
+     "shots": {
+      "first": 2,
+      "last": 4
+     }
+    },
+    {
+     "id": "S3",
+     "title": "Into the rain",
+     "purpose": "Show the weather turn, umbrella opening and passage beside the food vehicle.",
+     "shots": {
+      "first": 5,
+      "last": 6
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0
+     ],
+     "what": "Anudi rides in the rear seat looking at her smartphone while the driver takes the car through Colombo traffic.",
+     "feeling": "Comfortable absorption.",
+     "cut_uses": "A rear-seat medium single includes the driver ahead and moving street through the windows, establishing travel without a redundant exterior."
+    },
+    {
+     "n": 2,
+     "sequence": "S2",
+     "blocks": [
+      1
+     ],
+     "what": "The car stops; Anudi gets out with all belongings; she acknowledges the seated driver and heads toward the building.",
+     "feeling": "Routine courtesy becomes forward movement.",
+     "cut_uses": "B curbside wide for the stop, C pavement medium-wide for the exit through an already-open door, then D medium for a nod and officeward walk. Each hard action has its own source."
+    },
+    {
+     "n": 3,
+     "sequence": "S3",
+     "blocks": [
+      2
+     ],
+     "what": "Rain begins; Anudi opens her umbrella on her route and passes the food three-wheeler.",
+     "feeling": "Her hands become occupied as the two story worlds meet.",
+     "cut_uses": "E upper-body medium isolates the rain onset and umbrella opening, between the departing walk and F held wide of her passage beside the food vehicle. The cut implies the continuous walk requested by the direction, while avoiding a hard action during travel in the generated source."
+    }
+   ],
+   "editor_notes": [
+    "The six must sources run 24 seconds in total for a 23-second target; they are raw coverage, not a binding assembly. The four-second roadside shots have half-second handles so their three-second block clock fits.",
+    "2A-1 establishes cabin travel and phone absorption; 2B-1 establishes the curb stop. 2C-1 covers the exit with the door already open. 2D-1 carries the silent courtesy and start of the walk.",
+    "2E-1 isolates the umbrella opening in an upper-body frame; 2F-1 supplies the continuing walk past the food vehicle. Cut from the walk into the cropped opening and back out to the walk to suggest the scoped continuous action without requiring a hard action during travel.",
+    "Match phone in right hand, closed then open umbrella in left hand and handbag on left forearm. Match left-to-right screen direction and introduce rain only at the weather turn. Keep the phone in hand for the next scene.",
+    "The door opening is elided; do not imply a door closing or vehicle departure that was not captured. The driver's courtesy is a nod, not an invented spoken line.",
+    "If desired, speed ramp, freeze frame, digital punch-in and split screen are post-only techniques; these clips are clean sources and none is required by the intended cut.",
+    "Avoid mirrors, fast finger work, physical contact and sharply resolved crowds. The open umbrella shot is isolated to make the prop change more reliable."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "single",
+    "setup": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "Rear cabin eye level, oblique toward Anudi",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "Her quiet absorption contrasts with the street moving outside.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Use as the moving-car introduction; no readable screen content.",
+    "summary": "From inside the moving family car, Anudi studies her smartphone in the back seat; the seated driver is visible ahead. Traffic hum is heard.",
+    "id": "c01",
+    "slate": "2A-1",
+    "ir": {
+     "setting": "Inside the comfortable family car travelling through Colombo traffic under an overcast sky.",
+     "cinematography": {
+      "camera": "Cabin-mounted fixed camera, 35mm, f/4",
+      "angle": "Rear cabin eye level, oblique toward Anudi",
+      "framing": "MS of Anudi in the rear seat with the driver small ahead at frame left.",
+      "movement": "Fixed to the cabin with no independent camera movement.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Natural skin tones, cream and muted blue, modest contrast.",
+      "depth_of_field": "Medium, street shapes softly resolved beyond the windows.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight enters through the side windows, gently shaping faces with the cabin interior a little darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Looks at the smartphone throughout the moving ride.",
+       "position": "Seated in the rear passenger seat at frame right, phone in right hand, closed dark umbrella in left hand, handbag on left forearm."
+      },
+      {
+       "id": "C05",
+       "description": "The Sri Lankan driver, a middle-aged man with short dark hair and a pale blue shirt.",
+       "action": "Keeps his attention forward and hands on the steering wheel.",
+       "position": "Seated in the driver's seat ahead at frame left, facing the road."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS focused on Anudi, driver visible ahead.",
+       "director_line": "The cabin contains a private routine while the city moves beyond it.",
+       "action": "Anudi keeps the phone at lap height.",
+       "performance": "Her eyes rest on the screen and her lips remain closed."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MS on Anudi with the same cabin composition.",
+       "director_line": "Her attention stays within the small rectangle in her hand.",
+       "action": "Anudi studies the phone as the car travels.",
+       "performance": "Her gaze stays lowered with an easy brow."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MS on Anudi, same focus.",
+       "director_line": "The quiet passenger image remains available for the cut to the curb.",
+       "action": "Anudi keeps the phone at lap height.",
+       "performance": "Her lips remain closed and her gaze stays on the screen."
+      }
+     ],
+     "audio": "Low engine hum and muted Colombo traffic; no voices.",
+     "first_frame": {
+      "composition": "Anudi occupies the right half, driver ahead at left, moving road visible through the windows.",
+      "subjects": [
+       "Anudi seated with phone in right hand, closed umbrella in left hand and handbag on left forearm.",
+       "Driver seated facing forward with hands on wheel."
+      ],
+      "setting": "Comfortable family car moving through Colombo traffic.",
+      "lighting": "Overcast daylight through the side windows."
+     }
+    },
+    "sound": {
+     "ambience": "Muted Colombo traffic inside the car.",
+     "effects": "Low engine and tyre hum.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "master",
+    "setup": "B",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "Street-side eye level",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "A stable curbside view makes the arrival geographically clear.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Only the stopping action; no door action or exit in this source.",
+    "summary": "A street-side wide shows the driver bringing the family car to a stop beside the office pavement; Anudi remains seated in the rear.",
+    "id": "c02",
+    "slate": "2B-1",
+    "ir": {
+     "setting": "At the Colombo office-side curb, the family car stands beside the pavement leading toward the nearby building.",
+     "cinematography": {
+      "camera": "Tripod, 35mm, f/5.6",
+      "angle": "Street-side eye level",
+      "framing": "WIDE showing the car and office-side pavement with the occupants visible through the side windows.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Natural urban neutrals, modest contrast, slightly cool exterior.",
+      "depth_of_field": "Deep, car and building approach readable.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight falls from the open street side, with soft shadows under the car and the building frontage slightly darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Remains seated with her belongings as the car stops.",
+       "position": "Visible through the rear passenger window, phone in right hand, closed dark umbrella in left hand, handbag on left forearm."
+      },
+      {
+       "id": "C05",
+       "description": "The Sri Lankan driver, a middle-aged man with short dark hair and a pale blue shirt.",
+       "action": "Brings the car to a stop at the curb.",
+       "position": "Seated at the wheel, facing forward."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "WIDE with the car fully visible.",
+       "director_line": "The family car approaches its pavement position.",
+       "action": "The car rolls slowly beside the curb.",
+       "performance": "The driver looks along the road; Anudi keeps her gaze lowered."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "WIDE with car and office approach readable.",
+       "director_line": "The arrival ends in an ordinary curbside stop.",
+       "action": "The driver brings the car to a stop.",
+       "performance": "The driver's gaze stays forward and his shoulders stay level."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "WIDE on the stationary car.",
+       "director_line": "A settled vehicle provides a clean bridge to the exit.",
+       "action": "The car remains stationary.",
+       "performance": "Both occupants remain seated."
+      }
+     ],
+     "audio": "Exterior traffic and an engine settling to idle; no voices.",
+     "first_frame": {
+      "composition": "The family car is fully visible alongside the curb, office pavement extending screen right.",
+      "subjects": [
+       "Driver seated at the wheel.",
+       "Anudi seated in the rear with her belongings."
+      ],
+      "setting": "Office-side Colombo curb with dry pavement.",
+      "lighting": "Soft overcast daylight, shaded building frontage."
+     }
+    },
+    "sound": {
+     "ambience": "Colombo roadside traffic.",
+     "effects": "Engine deceleration into idle.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "Pavement eye level toward open rear passenger door",
+    "lens": "40mm",
+    "technique": "locked_off",
+    "why": "Isolate the exit so that the body and all three belongings remain legible.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Door is already open. Exit only; omit any door closing. Cut after she has reached a standing position.",
+    "summary": "From the pavement, Anudi gets out through the already-open rear passenger door, keeping her phone, handbag and closed umbrella with her.",
+    "id": "c03",
+    "slate": "2C-1",
+    "ir": {
+     "setting": "At the Colombo office-side curb, the family car stands beside the pavement leading toward the nearby building.",
+     "cinematography": {
+      "camera": "Tripod, 40mm, f/4",
+      "angle": "Pavement eye level toward open rear passenger door",
+      "framing": "MWS showing Anudi from head to shoes and the open rear doorway.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Natural urban neutrals, modest contrast, slightly cool exterior.",
+      "depth_of_field": "Medium, Anudi and doorway clear with frontage gently softened.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight falls from the open street side, with soft shadows under the car and the building frontage slightly darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Gets out through the open rear passenger door with her belongings.",
+       "position": "Initially seated in the rear doorway, phone in right hand, closed dark umbrella in left hand, handbag on left forearm; pavement directly outside."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MWS focused on Anudi at the open doorway.",
+       "director_line": "The open doorway bridges the cabin and the pavement.",
+       "action": "Anudi remains seated at the doorway.",
+       "performance": "Her eyes are directed toward the pavement landing."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MWS with her full exit area visible.",
+       "director_line": "Her belongings travel out of the private space with her.",
+       "action": "Anudi gets out onto the pavement.",
+       "performance": "She keeps her elbows close and her gaze on her footing."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MWS on Anudi standing beside the doorway.",
+       "director_line": "Her upright figure completes the move into the street.",
+       "action": "Anudi stands beside the open door.",
+       "performance": "Her shoulders settle and her grip stays secure."
+      }
+     ],
+     "audio": "Traffic, idling engine and a small shoe contact on pavement; no voices.",
+     "first_frame": {
+      "composition": "Open rear doorway at left, Anudi seated within it, clear pavement at right.",
+      "subjects": [
+       "Anudi seated with phone in right hand, closed umbrella in left hand, handbag on left forearm."
+      ],
+      "setting": "Stationary family car at the office-side curb; rear passenger door already open.",
+      "lighting": "Soft overcast daylight, shaded building frontage."
+     }
+    },
+    "sound": {
+     "ambience": "Colombo roadside traffic.",
+     "effects": "Clothing rustle and shoes on pavement.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "single",
+    "setup": "D",
+    "blocks": [
+     1
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "Street-side eye level along the pavement",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "The small courtesy and purposeful departure need no emphatic camera move.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "The nod carries the unscripted-word acknowledgment. No vocal improvisation. Door remains open outside this framing.",
+    "summary": "Anudi gives the seated driver a small appreciative nod and starts toward the office, moving left to right with all her belongings.",
+    "id": "c04",
+    "slate": "2D-1",
+    "ir": {
+     "setting": "At the Colombo office-side curb, the family car stands beside the pavement leading toward the nearby building.",
+     "cinematography": {
+      "camera": "Tripod, 50mm, f/4",
+      "angle": "Street-side eye level along the pavement",
+      "framing": "MS of Anudi beside the car with room toward screen right.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Natural urban neutrals, modest contrast, slightly cool exterior.",
+      "depth_of_field": "Medium, Anudi clear and car softly resolved.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight falls from the open street side, with soft shadows under the car and the building frontage slightly darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Gives a small nod toward the driver's position, then walks toward the building.",
+       "position": "Standing beside the car at frame left, facing diagonally toward the driver's position; phone in right hand, closed dark umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MS on Anudi beside the car.",
+       "director_line": "A brief pause allows the courtesy to register.",
+       "action": "Anudi faces the driver's position.",
+       "performance": "Her mouth stays closed and her gaze is directed into the front cabin."
+      },
+      {
+       "time": "0.5-1.5s",
+       "camera": "MS on Anudi, same focus.",
+       "director_line": "Her acknowledgment stays small and familiar.",
+       "action": "Anudi gives a small nod.",
+       "performance": "Her chin dips once with a slight closed-lip smile."
+      },
+      {
+       "time": "1.5-3.5s",
+       "camera": "MS with open space to screen right.",
+       "director_line": "The officeward route takes over from the car.",
+       "action": "Anudi walks toward screen right.",
+       "performance": "Her gaze moves toward the building and her shoulders face her route."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MS with Anudi still inside the right side of the composition.",
+       "director_line": "The departure remains continuous into the weather turn.",
+       "action": "Anudi continues along the pavement.",
+       "performance": "Her gaze stays toward the building and her hands retain their grips."
+      }
+     ],
+     "audio": "Road traffic and footsteps; no voices.",
+     "first_frame": {
+      "composition": "Anudi stands left of centre with officeward pavement extending right; the car is background texture.",
+      "subjects": [
+       "Anudi upright, phone in right hand, closed umbrella in left hand, handbag on left forearm."
+      ],
+      "setting": "Office-side Colombo pavement beside the stationary car.",
+      "lighting": "Soft overcast daylight, shaded building frontage."
+     }
+    },
+    "sound": {
+     "ambience": "Colombo roadside traffic.",
+     "effects": "Footsteps.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "single",
+    "setup": "E",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "Street-side eye level, lateral to the route",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "The upper-body composition isolates the umbrella opening so the cut can imply uninterrupted walking.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Film the opening with Anudi stationary and her legs outside frame; bridge between the preceding and following walks to imply continuous progress, as the scoped direction intends. Phone stays right, bag left forearm.",
+    "summary": "In an upper-body roadside view, rain begins and Anudi opens the umbrella in her left hand, keeping the phone in her right.",
+    "id": "c05",
+    "slate": "2E-1",
+    "ir": {
+     "setting": "Along the Colombo office-side pavement, the small humble food three-wheeler stands on Anudi's route toward the nearby building as light rain begins.",
+     "cinematography": {
+      "camera": "Tripod, 35mm, f/5.6",
+      "angle": "Street-side eye level, lateral to the route",
+      "framing": "MS of Anudi from waist upward with enough headroom for the umbrella canopy; legs outside frame.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Restrained cool rain-grey neutrals, natural skin, modest wet highlights.",
+      "depth_of_field": "Medium, Anudi and umbrella clear, roadside softly readable.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Opens the umbrella with her left hand while standing in place.",
+       "position": "At frame centre facing screen right, phone in right hand at waist level, closed dark umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MS on Anudi, closed umbrella in view and space above her head.",
+       "director_line": "The first rain reaches her on the officeward route.",
+       "action": "Anudi keeps the umbrella closed.",
+       "performance": "Her eyes stay along the pavement and her lips remain closed."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MS on Anudi with the full umbrella canopy area visible.",
+       "director_line": "The canopy becomes the new boundary of her private space.",
+       "action": "Anudi opens the umbrella above her.",
+       "performance": "Her left elbow rises while her right hand keeps the phone near her waist."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MS with the open umbrella completely visible.",
+       "director_line": "The occupied hands establish the next scene's practical difficulty.",
+       "action": "Anudi holds the open umbrella above her.",
+       "performance": "Her eyes stay on her route and her left hand maintains the raised grip."
+      }
+     ],
+     "audio": "Light rain emerging over roadside traffic, with an umbrella fabric pop; no voices.",
+     "first_frame": {
+      "composition": "Anudi waist-up near centre, closed umbrella in left hand and generous canopy space above.",
+      "subjects": [
+       "Anudi facing right, smartphone in right hand, closed umbrella in left hand and handbag on left forearm."
+      ],
+      "setting": "Office-side pavement; food three-wheeler farther along the route, first sparse raindrops visible.",
+      "lighting": "Overcast street-side daylight and tiny rain highlights."
+     }
+    },
+    "sound": {
+     "ambience": "Colombo traffic with light rain beginning.",
+     "effects": "Umbrella fabric opening.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "master",
+    "setup": "F",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "Street-side eye level across the walking axis",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "Resolve the scene by putting Anudi and the humble food vehicle in one clear geography.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Keep Kasun outside the composition. End with Anudi still available beside the vehicle for the next scene. Umbrella already open, no repeat opening.",
+    "summary": "A wide roadside view shows Anudi walking past the small food three-wheeler beneath her open umbrella. Her smartphone remains in her right hand as rain and traffic continue.",
+    "id": "c06",
+    "slate": "2F-1",
+    "ir": {
+     "setting": "Along the Colombo office-side pavement, the small humble food three-wheeler stands on Anudi's route toward the nearby building as light rain begins.",
+     "cinematography": {
+      "camera": "Tripod, 35mm, f/5.6",
+      "angle": "Street-side eye level across the walking axis",
+      "framing": "WIDE of the food three-wheeler and Anudi's left-to-right pavement route, her full figure and umbrella clear.",
+      "movement": "Locked-off on sticks.",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Restrained cool rain-grey neutrals, natural skin, modest wet highlights.",
+      "depth_of_field": "Deep, Anudi and the humble food vehicle readable.",
+      "lens_artifacts": "None."
+     },
+     "lighting": "Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Walks along the pavement past the food three-wheeler beneath her open umbrella.",
+       "position": "At frame left walking toward screen right beside the food three-wheeler, open dark umbrella in left hand, handbag on left forearm, smartphone in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "WIDE with Anudi approaching the near end of the food three-wheeler.",
+       "director_line": "The umbrella enters the humble business's immediate surroundings.",
+       "action": "Anudi walks along the pavement beneath the open umbrella.",
+       "performance": "Her gaze stays officeward and her phone remains at waist level."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "WIDE with Anudi moving beside the vehicle.",
+       "director_line": "The two worlds now share a simple roadside composition.",
+       "action": "Anudi passes along the visible side of the food three-wheeler.",
+       "performance": "Her pace stays even and her hands keep their separate grips."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "WIDE with Anudi still beside the far portion of the vehicle.",
+       "director_line": "Her path continues directly toward the encounter to follow.",
+       "action": "Anudi continues toward screen right beneath the umbrella.",
+       "performance": "Her gaze remains along the pavement and her lips remain closed."
+      }
+     ],
+     "audio": "Light rain on the umbrella, roadside traffic and footsteps; no voices.",
+     "first_frame": {
+      "composition": "Small food three-wheeler at centre-right, Anudi at left beneath an open umbrella; no attendant visible.",
+      "subjects": [
+       "Anudi walking rightward with umbrella in left hand, handbag on left forearm and phone in right hand."
+      ],
+      "setting": "Colombo office-side pavement with a small humble food three-wheeler and light rain.",
+      "lighting": "Overcast street-side daylight and tiny rain highlights."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and Colombo roadside traffic.",
+     "effects": "Rain ticking on umbrella and footsteps.",
+     "music": "None.",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "insert",
+    "setup": "G",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "street-side waist height",
+    "lens": "65mm",
+    "technique": "tracking",
+    "why": "Makes the practical burden of umbrella, handbag and persistent phone absorption legible in one detail that the wide passage cannot emphasize.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Use within c06 after the umbrella is fully open; preserve left-to-right travel and return to the wide before she clears the vehicle.",
+    "summary": "A waist-height tracking detail follows Anudi's smartphone in her right hand, umbrella in her left and handbag on her left forearm as she moves along the pavement. Light rain and roadside traffic remain audible.",
+    "id": "c07",
+    "slate": "2G-1",
+    "ir": {
+     "setting": "Along the Colombo office-side pavement, the small humble food three-wheeler stands on Anudi's route toward the nearby building as light rain begins.",
+     "cinematography": {
+      "camera": "short parallel dolly, 65mm, f/4",
+      "angle": "street-side waist height",
+      "framing": "INSERT of both occupied hands and the handbag against her cream blouse; face and feet outside frame",
+      "movement": "Track parallel at her walking pace from the street side for the whole take.",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic cream and navy, restrained saturation and soft daylight contrast",
+      "depth_of_field": "Shallow; pavement and vehicle softly separated behind the hands",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Walks toward screen right with smartphone in her right hand, open umbrella in her left hand and handbag on her left forearm.",
+       "position": "On the office-side pavement moving left to right; smartphone in right hand, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT centred on both hands and handbag, tracking parallel",
+       "director_line": "The sheltered routine becomes a small arrangement of occupied hands.",
+       "action": "Anudi walks toward screen right.",
+       "performance": "Her fingers remain settled around the phone and umbrella shaft."
+      },
+      {
+       "time": "1-5s",
+       "camera": "INSERT maintains the same hand-level distance during parallel tracking",
+       "director_line": "The phone remains present even beneath the open canopy.",
+       "action": "Anudi continues along the pavement.",
+       "performance": "Her right wrist stays angled inward while her left hand keeps the umbrella upright."
+      },
+      {
+       "time": "5-6s",
+       "camera": "INSERT continues at matching pace with both hands visible",
+       "director_line": "The handbag sways beneath the umbrella grip.",
+       "action": "Anudi continues toward the building.",
+       "performance": "Her grip stays steady through the walking rhythm."
+      }
+     ],
+     "audio": "Light rain on the canopy with subdued Colombo traffic; no dialogue.",
+     "first_frame": {
+      "composition": "Both hands occupy the central band; umbrella shaft rises from the left hand, handbag hangs from the left forearm, smartphone back faces camera in the right hand.",
+      "subjects": [
+       "Anudi's cream-clad torso, occupied hands and handbag; face outside frame."
+      ],
+      "setting": "Office-side pavement with the food three-wheeler softly defocused beyond her hands.",
+      "lighting": "Overcast street-side daylight with small rain highlights."
+     }
+    },
+    "sound": {
+     "ambience": "Light roadside rain and distant Colombo traffic.",
+     "effects": "Soft canopy patter and faint handbag movement.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c06"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 3,
+    "role": "cutaway",
+    "setup": "H",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "street-side oblique at chest height",
+    "lens": "50mm",
+    "technique": "rack_focus",
+    "why": "Gives the food vehicle visual weight independently of the coverage wide, then leaves it behind as a quiet end punctuation without inventing an encounter.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Alternate ending to the final portion of c06: do not replay her entire passage. Enter while she is already beside the vehicle; finish on the vehicle after she clears frame.",
+    "summary": "From the street side, the food three-wheeler fills the foreground while Anudi moves behind it toward screen right. Focus transfers to the vehicle as she leaves the image; rain and traffic continue.",
+    "id": "c08",
+    "slate": "2H-1",
+    "ir": {
+     "setting": "Along the Colombo office-side pavement, the small humble food three-wheeler stands on Anudi's route toward the nearby building as light rain begins.",
+     "cinematography": {
+      "camera": "locked-off sticks with controlled focus motor, 50mm, f/4",
+      "angle": "street-side oblique at chest height",
+      "framing": "MWS with the food three-wheeler occupying the left foreground and Anudi's umbrella and upper body visible in the right midground",
+      "movement": "Stationary camera with one gradual focus transfer from Anudi to the foreground food three-wheeler.",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic muted roadside colours, cream and navy retained",
+      "depth_of_field": "Shallow; initial focus on Anudi transfers to the vehicle while the office frontage remains soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Walks left to right past the food three-wheeler and clears the right edge at four seconds.",
+       "position": "Already alongside the food three-wheeler on the office-side pavement, facing screen right; smartphone in right hand, open umbrella in left hand and handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS with focus on Anudi behind the soft vehicle foreground",
+       "director_line": "Her umbrella passes close to the humble vehicle without interrupting her route.",
+       "action": "Anudi walks toward screen right.",
+       "performance": "Her chin stays angled toward the route ahead and her umbrella remains upright."
+      },
+      {
+       "time": "1-4s",
+       "camera": "MWS with a gradual focus transfer from Anudi to the food three-wheeler",
+       "director_line": "The roadside vehicle acquires definition as she moves beyond it.",
+       "action": "Anudi clears the right edge at four seconds.",
+       "performance": "Her pace remains even and her hands stay occupied."
+      },
+      {
+       "time": "4-6s",
+       "camera": "MWS with the foreground food three-wheeler in focus",
+       "director_line": "The vehicle remains in the light rain after her passage.",
+       "action": "Rain beads on the food three-wheeler.",
+       "performance": ""
+      }
+     ],
+     "audio": "Continuous light rain and distant road traffic; no dialogue.",
+     "first_frame": {
+      "composition": "The existing vehicle's near side occupies the left foreground; Anudi is already passing in the right midground beneath the open umbrella, with clear space toward screen right.",
+      "subjects": [
+       "Anudi walking beneath her open umbrella with smartphone and handbag.",
+       "The small humble food three-wheeler, with no occupant visible."
+      ],
+      "setting": "The officeward pavement extends behind the food vehicle; no readable signage is framed.",
+      "lighting": "Overcast street-side daylight catches the first rain against the darker frontage."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic.",
+     "effects": "Gentle rain against the vehicle and umbrella.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c06"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 1,
+    "role": "insert",
+    "setup": "I",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "rear-seat oblique downward",
+    "lens": "85mm",
+    "technique": "shallow_isolation",
+    "why": "Isolates the phone absorption that carries into the roadside scene, giving the later occupied-hands insert a visual counterpart without repeating the rear-seat single.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Brief cut into c01 over its car interior sound; retain the phone in her right hand throughout. Frame the device back and edge rather than inventing screen content.",
+    "summary": "Inside the moving car, a tight oblique view isolates Anudi's right hand around her smartphone against her navy trousers. Subdued engine and traffic sound preserve the sheltered interior.",
+    "id": "c09",
+    "slate": "2I-1",
+    "ir": {
+     "setting": "Inside the comfortable family car travelling through Colombo traffic under an overcast sky.",
+     "cinematography": {
+      "camera": "seat-mounted compact head, 85mm, f/2.8",
+      "angle": "rear-seat oblique downward toward Anudi's right hand",
+      "framing": "INSERT of smartphone back, right fingers and cream cuff against navy trousers; face outside frame",
+      "movement": "Fixed seat-mounted framing with natural vehicle vibration only.",
+      "white_balance": "neutral window daylight, 6000K",
+      "color_tone": "naturalistic cream and navy with softly subdued cabin shadows",
+      "depth_of_field": "Shallow; hand and phone edge sharp, seat and window colours blurred",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters through the side windows, gently shaping faces with the cabin interior a little darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, a Sri Lankan woman with a low ponytail, cream blouse and navy trousers, consistent facial features and build.",
+       "action": "Keeps the smartphone angled toward her face in her right hand.",
+       "position": "Sitting in the back seat, smartphone in right hand above her lap; face outside frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT isolating the right hand and smartphone back",
+       "director_line": "The phone occupies the sheltered centre of her journey.",
+       "action": "Anudi keeps the smartphone above her lap.",
+       "performance": "Her fingers rest securely around its edges."
+      },
+      {
+       "time": "1-3s",
+       "camera": "INSERT maintains the same shallow plane on hand and phone edge",
+       "director_line": "Passing window light moves gently across the device.",
+       "action": "Anudi keeps the smartphone angled toward her face.",
+       "performance": "Her wrist remains relaxed against the movement of the car."
+      },
+      {
+       "time": "3-4s",
+       "camera": "INSERT remains on the same hand-level composition",
+       "director_line": "The small rectangle stays steady within the moving cabin.",
+       "action": "Anudi keeps the smartphone in her right hand.",
+       "performance": "Her fingers remain still around the device."
+      }
+     ],
+     "audio": "Subdued engine vibration, tyre hum and traffic filtered through closed windows; no dialogue.",
+     "first_frame": {
+      "composition": "Phone back and right fingers fill the centre, with cream cuff above navy trousers; screen surface faces away from camera.",
+      "subjects": [
+       "Anudi's right hand holding her smartphone above her lap."
+      ],
+      "setting": "The rear-seat upholstery is softly out of focus inside the travelling family car.",
+      "lighting": "Soft side-window daylight across her hand, cabin background darker."
+     }
+    },
+    "sound": {
+     "ambience": "Enclosed car interior with muted Colombo traffic.",
+     "effects": "Low engine vibration and tyre hum.",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c01"
+    ],
+    "blend": "cut_in"
+   }
+  ],
+  "line_ids": {},
+  "editor_notes": [
+   "The six must sources run 24 seconds in total for a 23-second target; they are raw coverage, not a binding assembly. The four-second roadside shots have half-second handles so their three-second block clock fits.",
+   "2A-1 establishes cabin travel and phone absorption; 2B-1 establishes the curb stop. 2C-1 covers the exit with the door already open. 2D-1 carries the silent courtesy and start of the walk.",
+   "2E-1 isolates the umbrella opening in an upper-body frame; 2F-1 supplies the continuing walk past the food vehicle. Cut from the walk into the cropped opening and back out to the walk to suggest the scoped continuous action without requiring a hard action during travel.",
+   "Match phone in right hand, closed then open umbrella in left hand and handbag on left forearm. Match left-to-right screen direction and introduce rain only at the weather turn. Keep the phone in hand for the next scene.",
+   "The door opening is elided; do not imply a door closing or vehicle departure that was not captured. The driver's courtesy is a nod, not an invented spoken line.",
+   "If desired, speed ramp, freeze frame, digital punch-in and split screen are post-only techniques; these clips are clean sources and none is required by the intended cut.",
+   "Avoid mirrors, fast finger work, physical contact and sharply resolved crowds. The open umbrella shot is isolated to make the prop change more reliable."
+  ],
+  "blend_notes": [
+   "c07: Cut into c06 after the umbrella has opened, then return to the wide; carry c06's rain and roadside traffic underneath.",
+   "c08: Enter from the final passage in c06 while Anudi is still beside the food three-wheeler, then let her clear frame for the closing beat; carry c06's rain and traffic underneath.",
+   "c09: Cut briefly into c01 on the phone in Anudi's right hand, then return to the rear-seat single; carry c01's car interior and traffic sound underneath."
+  ],
+  "review": [
+   {
+    "moment": 1,
+    "earns": true,
+    "why": "A phone-and-hand insert isolates Anudi's absorption and sets up the later image of her occupied hands."
+   },
+   {
+    "moment": 2,
+    "earns": false,
+    "why": "The stop, exit, acknowledgment and onward movement already have distinct playable coverage; another angle would slow the transition."
+   },
+   {
+    "moment": 3,
+    "earns": true,
+    "why": "An occupied-hands insert makes the rain's practical effect clear, while the food-three-wheeler foreground and her exit leave a quiet closing image of the two worlds meeting."
+   }
+  ],
+  "seconds": {
+   "target_s": 23.0,
+   "cap_s": 46.0,
+   "take_s": 40,
+   "must_s": 24,
+   "cinematic_s": 16
+  },
+  "left": [],
+  "report": {
+   "turns": {
+    "stage1": 5,
+    "stage2": 3
+   },
+   "calls": 8,
+   "log": [
+    "stage 1: finished after 5 turns",
+    "stage 2: finished after 3 turns"
+   ],
+   "model": "gpt-6.1-sol"
+  },
+  "previous": {}
+ }
+}

@@ -1,0 +1,125 @@
+SCENE E01-S02: stage 1 finished, stage 2 finished
+Seconds: target 23.0, cap 46.0, takes 40 (must 24, cinematic 16)
+
+Logline: Absorbed in her phone, Anudi leaves the comfort of the family car and enters the rainy roadside world beside the food three-wheeler.
+Approach: An everyday transitional drama, not a suspense passage: naturalistic Colombo daylight, restrained performances and simple camera positions. Six essential shots total 24 seconds. Build the change from enclosed rear-seat framing to an open roadside view. The rain changes her practical circumstances rather than her emotional register. Her acknowledgment is a small visible nod, with no invented dialogue. Preserve the scoped continuous-walking intention in the edit: isolate the umbrella opening in an upper-body source, with no legs visible, between walking shots.
+Key Image: Anudi passes the humble food three-wheeler with the open umbrella in her left hand, handbag on her left forearm and smartphone still in her right hand.
+Geography: Park the family car at the near curb, officeward travel left to right. Rear passenger door faces the pavement. The food three-wheeler stands farther along that same pavement, between Anudi and the building. Keep all roadside cameras on the street side of her walking axis. The driver remains seated; no additional identifiable people are required.
+Arc: Insulated routine (blocks {'first': 0, 'last': 0}): Everyday ease and private absorption.
+Arc: From passenger to pedestrian (blocks {'first': 1, 'last': 1}): Unhurried courtesy and purposeful movement.
+Arc: Weather occupies her hands (blocks {'first': 2, 'last': 2}): A small practical adjustment brings her into the next encounter's geography.
+
+2A-1 [c01, stage 1, single, must]
+    SUMMARY: From inside the moving family car, Anudi studies her smartphone in the back seat; the seated driver is visible ahead. Traffic hum is heard.
+    block 0 = E01-S02-B01: A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.
+    MS · 35mm · locked_off · Rear cabin eye level, oblique toward Anudi · take 4 s
+    why: Her quiet absorption contrasts with the street moving outside.
+    editor: Use as the moving-car introduction; no readable screen content.
+    framing: MS of Anudi in the rear seat with the driver small ahead at frame left.
+    movement: Fixed to the cabin with no independent camera movement.
+    light: Overcast daylight enters through the side windows, gently shaping faces with the cabin interior a little darker.
+    C02: Looks at the smartphone throughout the moving ride.
+    C05: Keeps his attention forward and hands on the steering wheel.
+
+2B-1 [c02, stage 1, master, must]
+    SUMMARY: A street-side wide shows the driver bringing the family car to a stop beside the office pavement; Anudi remains seated in the rear.
+    block 1 = E01-S02-B02: The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building.
+    WIDE · 35mm · locked_off · Street-side eye level · take 4 s
+    why: A stable curbside view makes the arrival geographically clear.
+    editor: Only the stopping action; no door action or exit in this source.
+    framing: WIDE showing the car and office-side pavement with the occupants visible through the side windows.
+    movement: Locked-off on sticks.
+    light: Overcast daylight falls from the open street side, with soft shadows under the car and the building frontage slightly darker.
+    C02: Remains seated with her belongings as the car stops.
+    C05: Brings the car to a stop at the curb.
+
+2C-1 [c03, stage 1, single, must]
+    SUMMARY: From the pavement, Anudi gets out through the already-open rear passenger door, keeping her phone, handbag and closed umbrella with her.
+    block 1 = E01-S02-B02: The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building.
+    MWS · 40mm · locked_off · Pavement eye level toward open rear passenger door · take 4 s
+    why: Isolate the exit so that the body and all three belongings remain legible.
+    editor: Door is already open. Exit only; omit any door closing. Cut after she has reached a standing position.
+    framing: MWS showing Anudi from head to shoes and the open rear doorway.
+    movement: Locked-off on sticks.
+    light: Overcast daylight falls from the open street side, with soft shadows under the car and the building frontage slightly darker.
+    C02: Gets out through the open rear passenger door with her belongings.
+
+2D-1 [c04, stage 1, single, must]
+    SUMMARY: Anudi gives the seated driver a small appreciative nod and starts toward the office, moving left to right with all her belongings.
+    block 1 = E01-S02-B02: The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building.
+    MS · 50mm · locked_off · Street-side eye level along the pavement · take 4 s
+    why: The small courtesy and purposeful departure need no emphatic camera move.
+    editor: The nod carries the unscripted-word acknowledgment. No vocal improvisation. Door remains open outside this framing.
+    framing: MS of Anudi beside the car with room toward screen right.
+    movement: Locked-off on sticks.
+    light: Overcast daylight falls from the open street side, with soft shadows under the car and the building frontage slightly darker.
+    C02: Gives a small nod toward the driver's position, then walks toward the building.
+
+2E-1 [c05, stage 1, single, must]
+    SUMMARY: In an upper-body roadside view, rain begins and Anudi opens the umbrella in her left hand, keeping the phone in her right.
+    block 2 = E01-S02-B03: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.
+    MS · 35mm · locked_off · Street-side eye level, lateral to the route · take 4 s
+    why: The upper-body composition isolates the umbrella opening so the cut can imply uninterrupted walking.
+    editor: Film the opening with Anudi stationary and her legs outside frame; bridge between the preceding and following walks to imply continuous progress, as the scoped direction intends. Phone stays right, bag left forearm.
+    framing: MS of Anudi from waist upward with enough headroom for the umbrella canopy; legs outside frame.
+    movement: Locked-off on sticks.
+    light: Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.
+    C02: Opens the umbrella with her left hand while standing in place.
+
+2F-1 [c06, stage 1, master, must]
+    SUMMARY: A wide roadside view shows Anudi walking past the small food three-wheeler beneath her open umbrella. Her smartphone remains in her right hand as rain and traffic continue.
+    block 2 = E01-S02-B03: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.
+    WIDE · 35mm · locked_off · Street-side eye level across the walking axis · take 4 s
+    why: Resolve the scene by putting Anudi and the humble food vehicle in one clear geography.
+    editor: Keep Kasun outside the composition. End with Anudi still available beside the vehicle for the next scene. Umbrella already open, no repeat opening.
+    framing: WIDE of the food three-wheeler and Anudi's left-to-right pavement route, her full figure and umbrella clear.
+    movement: Locked-off on sticks.
+    light: Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.
+    C02: Walks along the pavement past the food three-wheeler beneath her open umbrella.
+
+2G-1 [c07, stage 2, insert, should, anchor c06]
+    SUMMARY: A waist-height tracking detail follows Anudi's smartphone in her right hand, umbrella in her left and handbag on her left forearm as she moves along the pavement. Light rain and roadside traffic remain audible.
+    block 2 = E01-S02-B03: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.
+    INSERT · 65mm · tracking · street-side waist height · take 6 s
+    why: Makes the practical burden of umbrella, handbag and persistent phone absorption legible in one detail that the wide passage cannot emphasize.
+    editor: Use within c06 after the umbrella is fully open; preserve left-to-right travel and return to the wide before she clears the vehicle.
+    framing: INSERT of both occupied hands and the handbag against her cream blouse; face and feet outside frame
+    movement: Track parallel at her walking pace from the street side for the whole take.
+    light: Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.
+    C02: Walks toward screen right with smartphone in her right hand, open umbrella in her left hand and handbag on her left forearm.
+
+2H-1 [c08, stage 2, cutaway, nice, anchor c06]
+    SUMMARY: From the street side, the food three-wheeler fills the foreground while Anudi moves behind it toward screen right. Focus transfers to the vehicle as she leaves the image; rain and traffic continue.
+    block 2 = E01-S02-B03: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.
+    MWS · 50mm · rack_focus · street-side oblique at chest height · take 6 s
+    why: Gives the food vehicle visual weight independently of the coverage wide, then leaves it behind as a quiet end punctuation without inventing an encounter.
+    editor: Alternate ending to the final portion of c06: do not replay her entire passage. Enter while she is already beside the vehicle; finish on the vehicle after she clears frame.
+    framing: MWS with the food three-wheeler occupying the left foreground and Anudi's umbrella and upper body visible in the right midground
+    movement: Stationary camera with one gradual focus transfer from Anudi to the foreground food three-wheeler.
+    light: Overcast daylight falls from the open street side, with the building frontage slightly darker and the first light rain catching small sky highlights.
+    C02: Walks left to right past the food three-wheeler and clears the right edge at four seconds.
+
+2I-1 [c09, stage 2, insert, should, anchor c01]
+    SUMMARY: Inside the moving car, a tight oblique view isolates Anudi's right hand around her smartphone against her navy trousers. Subdued engine and traffic sound preserve the sheltered interior.
+    block 0 = E01-S02-B01: A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.
+    INSERT · 85mm · shallow_isolation · rear-seat oblique downward · take 4 s
+    why: Isolates the phone absorption that carries into the roadside scene, giving the later occupied-hands insert a visual counterpart without repeating the rear-seat single.
+    editor: Brief cut into c01 over its car interior sound; retain the phone in her right hand throughout. Frame the device back and edge rather than inventing screen content.
+    framing: INSERT of smartphone back, right fingers and cream cuff against navy trousers; face outside frame
+    movement: Fixed seat-mounted framing with natural vehicle vibration only.
+    light: Overcast daylight enters through the side windows, gently shaping faces with the cabin interior a little darker.
+    C02: Keeps the smartphone angled toward her face in her right hand.
+
+Review moment 1: earns: A phone-and-hand insert isolates Anudi's absorption and sets up the later image of her occupied hands.
+Review moment 2: no: The stop, exit, acknowledgment and onward movement already have distinct playable coverage; another angle would slow the transition.
+Review moment 3: earns: An occupied-hands insert makes the rain's practical effect clear, while the food-three-wheeler foreground and her exit leave a quiet closing image of the two worlds meeting.
+Editor note: The six must sources run 24 seconds in total for a 23-second target; they are raw coverage, not a binding assembly. The four-second roadside shots have half-second handles so their three-second block clock fits.
+Editor note: 2A-1 establishes cabin travel and phone absorption; 2B-1 establishes the curb stop. 2C-1 covers the exit with the door already open. 2D-1 carries the silent courtesy and start of the walk.
+Editor note: 2E-1 isolates the umbrella opening in an upper-body frame; 2F-1 supplies the continuing walk past the food vehicle. Cut from the walk into the cropped opening and back out to the walk to suggest the scoped continuous action without requiring a hard action during travel.
+Editor note: Match phone in right hand, closed then open umbrella in left hand and handbag on left forearm. Match left-to-right screen direction and introduce rain only at the weather turn. Keep the phone in hand for the next scene.
+Editor note: The door opening is elided; do not imply a door closing or vehicle departure that was not captured. The driver's courtesy is a nod, not an invented spoken line.
+Editor note: If desired, speed ramp, freeze frame, digital punch-in and split screen are post-only techniques; these clips are clean sources and none is required by the intended cut.
+Editor note: Avoid mirrors, fast finger work, physical contact and sharply resolved crowds. The open umbrella shot is isolated to make the prop change more reliable.
+Blend note: c07: Cut into c06 after the umbrella has opened, then return to the wide; carry c06's rain and roadside traffic underneath.
+Blend note: c08: Enter from the final passage in c06 while Anudi is still beside the food three-wheeler, then let her clear frame for the closing beat; carry c06's rain and traffic underneath.
+Blend note: c09: Cut briefly into c01 on the phone in Anudi's right hand, then return to the rear-seat single; carry c01's car interior and traffic sound underneath.
