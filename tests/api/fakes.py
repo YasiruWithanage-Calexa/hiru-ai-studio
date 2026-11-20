@@ -366,6 +366,13 @@ class FakeShots(_Table):
     async def list_light(self, production_id: UUID) -> list[Row]:
         return [{k: r.get(k) for k in SHOT_LIGHT} for r in await self.list(production_id)]
 
+    async def lock_lengths(self, production_id: UUID) -> int:
+        n = 0
+        for r in self._scoped(production_id):
+            if not r.get("duration_locked"):
+                r["duration_locked"], n = True, n + 1
+        return n
+
     async def list_pinned(self, production_id: UUID) -> list[Row]:
         return [{"id": r["id"], "scene_id": r["scene_id"], "design": {"pins": (r.get("design") or {}).get("pins")}}
                 for r in await self.list(production_id)]

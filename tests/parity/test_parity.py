@@ -18,6 +18,10 @@ ENGINES = ["legacy", "graph"]
 # the systems whose `graph` engine exists (plan/2026-11-03 Phase 6): every service
 MIGRATED = {"echo", "doc_ingest", "canon_extract", "structure_build", "frame_render", "script_split", "shot_producer",
             "director_chat"}
+# Cases where the graph engine was meant to change and the legacy engine was not (it is not deployed): the recording is
+# the legacy engine's, and the graph's behaviour is held by its own tests.
+DIVERGED = {("shot_producer", "prompts"): "plan/2026-11-20b D13/D14: the graph's video prompts are the video prompt "
+                                          "agent's (tests/hiru_ai/test_video_prompt_system.py)"}
 
 
 @pytest.mark.parametrize("engine", ENGINES)
@@ -25,6 +29,8 @@ MIGRATED = {"echo", "doc_ingest", "canon_extract", "structure_build", "frame_ren
 def test_the_engine_matches_the_recording(service: str, name: str, fixture: dict[str, Any], engine: str):
     if engine == "graph" and service not in MIGRATED:
         pytest.skip(f"{service} is not migrated yet")
+    if engine == "graph" and (service, name) in DIVERGED:
+        pytest.skip(DIVERGED[(service, name)])
     got = outcome(run_case(service, fixture["input"], fixture["model"], engine))
     if UPDATE and got != fixture["expected"]:
         dump(path_for(service, name), {**fixture, "expected": got})

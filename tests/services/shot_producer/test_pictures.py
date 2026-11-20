@@ -41,11 +41,12 @@ def test_the_timeline_text_is_the_kernels_clock_in_words():
     items = sceneplan.items_for(scene["script"], lines)
     text = timeline_text(items[2:6], lambda i: "Father" if i.is_line else "")
     assert text == ("0.0–1.5 Anudi smiles back · 1.5–3.0 Suddenly, her phone rings · "
-                    "3.0–8.9 LINE Father (on the phone)")  # "It is her father" takes no time of its own
+                    # "It is her father" takes no time of its own; his line pauses at its sentence ends (2026-11-20)
+                    "3.0–10.5 LINE Father (on the phone)")
     with_bridge = bridges.with_bridges(scene["script"], lines, 1, cast=["Anudi", "Kasun"])  # Anudi never speaks here
     items = sceneplan.items_for(with_bridge, lines)
     text = timeline_text(items[2:7], lambda i: "Father" if i.is_line else "")
-    assert "3.0–4.5 Anudi answers the phone (implied)" in text and "4.5–10.4 LINE Father" in text
+    assert "3.0–4.5 Anudi answers the phone (implied)" in text and "4.5–12.0 LINE Father" in text
 
 
 def test_the_intent_prompt_carries_the_timeline_and_names_what_is_not_filmed():

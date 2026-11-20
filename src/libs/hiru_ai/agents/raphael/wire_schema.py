@@ -56,18 +56,27 @@ def _plain(node: Any) -> Any:
     return node
 
 
-def design_schema(wire: type[BaseModel], name: str) -> dict[str, Any]:
-    """`wire`'s strict JSON schema, flat, with the clip schema's camera design as the type of every `ir`."""
+LEGACY_TAKES: tuple[int, ...] = (4, 6, 8)  # a production made before plan/2026-11-19
+
+
+def design_schema(wire: type[BaseModel], name: str, takes: tuple[int, ...] = LEGACY_TAKES) -> dict[str, Any]:
+    """`wire`'s strict JSON schema, flat, with the clip schema's camera design as the type of every `ir` and the
+    scene's lengths (`SceneS.takes`, plan/2026-11-19) as the only values of every `take_s`."""
     raw = wire.model_json_schema()
     flat = _plain(inline(raw, raw.get("$defs") or {}))
     design = ir_schema()
+    take = {"type": "integer", "enum": sorted(int(t) for t in takes)}
 
     def put(node: Any) -> Any:
         if isinstance(node, dict):
             out = {k: put(v) for k, v in node.items()}
             props = out.get("properties")
             if isinstance(props, dict) and "ir" in props:
-                out["properties"] = {**props, "ir": design}
+                out["properties"] = props = {**props, "ir": design}
+            if isinstance(props, dict) and "take_s" in props:  # the field's title kept, its range made a list
+                was = props["take_s"] if isinstance(props["take_s"], dict) else {}
+                held = {k: v for k, v in was.items() if k not in ("minimum", "maximum", "type", "enum")}
+                out["properties"] = {**props, "take_s": {**take, **held}}
             return out
         if isinstance(node, list):
             return [put(v) for v in node]
@@ -95,7 +104,7 @@ _IDS = {"type": "array", "items": {"type": "string"}}
 _TEXTS = {"type": "array", "items": {"type": "string"}}
 
 
-def stage1_specs() -> list[dict[str, Any]]:
+def stage1_specs(takes: tuple[int, ...] = LEGACY_TAKES) -> list[dict[str, Any]]:
     return [
         _spec(
             "write_edit_plan",
@@ -109,7 +118,7 @@ def stage1_specs() -> list[dict[str, Any]]:
             'id "" adds a new clip (code gives the id and slate); the id of a clip in the bin replaces it (it keeps '
             "its id and slate, and a must clip stays must). Send a sequence at a time, and every repair the report "
             "asks for in one call. Returns the check report of the whole bin.",
-            _params(design_schema(PutW, SCHEMA_PUT)),
+            _params(design_schema(PutW, SCHEMA_PUT, takes)),
         ),
         _spec(
             "remove_clips",
@@ -131,7 +140,7 @@ def stage1_specs() -> list[dict[str, Any]]:
     ]
 
 
-def stage2_specs() -> list[dict[str, Any]]:
+def stage2_specs(takes: tuple[int, ...] = LEGACY_TAKES) -> list[dict[str, Any]]:
     review = {
         "type": "array",
         "items": _obj(moment={"type": "integer"}, earns={"type": "boolean"}, why={"type": "string"}),
@@ -143,7 +152,7 @@ def stage2_specs() -> list[dict[str, Any]]:
             "sound), its anchor (the must clip id(s) it sits with) and its blend. "
             'id "" adds a new clip (code gives the id and slate); the id of one of YOUR cinematic clips replaces it. '
             "A must clip id is refused: the must clips are locked. Returns the check report of the whole bin.",
-            _params(design_schema(ExtrasW, SCHEMA_EXTRAS)),
+            _params(design_schema(ExtrasW, SCHEMA_EXTRAS, takes)),
         ),
         _spec(
             "remove_extras",

@@ -20,6 +20,14 @@ from tests.raphael import gold, world
 from tests.raphael.world import World
 
 
+@pytest.fixture(autouse=True)
+def _run_3s_clock(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Run 3 and pass 5 were planned on the clock before plan/2026-11-20 (`tests.clock_before`)."""
+    from tests.raphael.conftest import run_3_clock
+
+    run_3_clock(monkeypatch)
+
+
 def planner(w: World, *, cap: float = 2, meter: Meter | None = None) -> raphael.Planner:
     """A planner for the world's scene, built the way the graph builds it."""
     row = w.row()

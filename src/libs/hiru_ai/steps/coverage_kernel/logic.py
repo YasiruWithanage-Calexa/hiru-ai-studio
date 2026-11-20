@@ -47,12 +47,12 @@ from contracts.coverage.scene import (
     PRIORITIES,
     SIZES,
     SOUND_MODES,
-    TAKES,
     VOICED,
     Clip,
     Coverage,
     lock_key,
 )
+from contracts.take_lengths import describe
 
 Row = dict[str, Any]
 OPS = ("set", "retime", "sound", "sound_mode", "role", "insert", "remove", "split", "merge", "move", "line",
@@ -170,8 +170,8 @@ class Kernel:
             return f"{code} · DoP note: {_short(old)} → {_short(note)}"
         if name == "retime":
             t = int(o.get("take_s") or 0)
-            if t not in TAKES:
-                raise Refused(f"a take is 4, 6 or 8 s, not {o.get('take_s')}")
+            if t not in self.cov.takes:
+                raise Refused(f"a take is {describe(self.cov.takes)}, not {o.get('take_s')}")
             if t == c.take_s:
                 raise Unchanged(f"{code} is already {t} s")
             old, c.take_s = c.take_s, t
@@ -351,8 +351,8 @@ class Kernel:
         if size not in SIZES:
             raise Refused(f"{size} is not a size ({', '.join(SIZES)})")
         take = int(o.get("take_s") or 4)
-        if take not in TAKES:
-            raise Refused(f"a take is 4, 6 or 8 s, not {take}")
+        if take not in cov.takes:
+            raise Refused(f"a take is {describe(cov.takes)}, not {take}")
         first = o.get("first_block")
         last = o.get("last_block")
         first = int(first) if first is not None else 0

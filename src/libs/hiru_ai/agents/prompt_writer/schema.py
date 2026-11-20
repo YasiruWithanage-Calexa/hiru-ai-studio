@@ -17,7 +17,7 @@ class Section(BaseModel):
 
 
 class Input(BaseModel):
-    kind: Literal["first_frame", "video"]  # a still for the image model, or a clip for the video model
+    kind: Literal["first_frame"]  # a still for the image model (plan/2026-11-20b D12: no video prompt)
     sections: list[Section]
 
 

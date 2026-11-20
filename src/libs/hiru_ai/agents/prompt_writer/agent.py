@@ -1,4 +1,5 @@
-"""prompt_writer hooks (plan/2026-11-11c): rewords a prompt's descriptive sections as film language.
+"""prompt_writer hooks (plan/2026-11-11c): rewords a first-frame prompt's descriptive sections as film language. A
+video prompt is the `video_prompter` agent's (plan/2026-11-20b D12).
 
 Code writes the prompt first, from what the shot planner saved, and that prompt is complete. This agent is sent only the
 sections whose wording may change (`contracts.prompt_polish.POLISHABLE`), each with the words it must keep. Code checks
@@ -14,8 +15,7 @@ import json
 
 from hiru_ai.agents.prompt_writer.schema import Input, Output, Written
 
-_FOR = {"first_frame": "ONE STILL FRAME for an image model (the opening frame of a shot)",
-        "video": "ONE VIDEO CLIP for a video model (the shot as it plays)"}
+_FOR = {"first_frame": "ONE STILL FRAME for an image model (the opening frame of a shot)"}
 
 
 def user_message(inp: Input) -> str:

@@ -1,0 +1,39 @@
+S01 4A-1  two_shot     dialogue  lines 1 cards dialogue,sinhala_voice           ~3681 tok in
+S02 4K-1  insert       ambient   lines 0 cards silent,detail                    ~3670 tok in
+S03 4B-1  single       dialogue  lines 1 cards dialogue,sinhala_voice           ~3465 tok in
+S04 4C-1  single       dialogue  lines 1 cards dialogue,sinhala_voice           ~3519 tok in
+S05 4L-1  pov          ambient   lines 0 cards detail                           ~3288 tok in
+S06 4A-2  two_shot     dialogue  lines 2 cards dialogue,sinhala_voice           ~3633 tok in
+S07 4B-2  single       dialogue  lines 1 cards dialogue,sinhala_voice           ~3484 tok in
+S08 4D-1  reaction     ambient   lines 0 cards silent                           ~3417 tok in
+S09 4J-1  insert       ambient   lines 0 cards silent,detail                    ~3528 tok in
+S10 4E-1  single       dialogue  lines 1 cards dialogue,sinhala_voice           ~3538 tok in
+S11 4E-2  reaction     voiceover lines 1 cards phone,sinhala_voice              ~3557 tok in
+S12 4G-1  reaction     voiceover lines 1 cards phone,sinhala_voice              ~3668 tok in
+S13 4E-3  single       dialogue  lines 1 cards dialogue,sinhala_voice           ~3548 tok in
+S14 4A-3  two_shot     dialogue  lines 1 cards dialogue,sinhala_voice           ~3671 tok in
+S15 4H-1  reaction     ambient   lines 0 cards silent                           ~3425 tok in
+S16 4B-3  single       dialogue  lines 1 cards dialogue,sinhala_voice           ~3464 tok in
+S17 4F-1  master       ambient   lines 0 cards silent                           ~3517 tok in
+S18 4I-1  clean_exit   ambient   lines 0 cards silent                           ~3496 tok in
+18 call(s) to make on gpt-6.1-sol (low); ~63569 tokens in before caching; ceiling ~$0.577 (cap $1.00)
+  4A-1: 1 call(s), $0.0113, OK
+  4K-1: 1 call(s), $0.0085, OK
+  4B-1: 1 call(s), $0.0081, OK
+  4C-1: 1 call(s), $0.0082, OK
+  4L-1: 1 call(s), $0.0064, OK
+  4A-2: 1 call(s), $0.0098, OK
+  4B-2: 1 call(s), $0.0083, OK
+  4D-1: 1 call(s), $0.0084, OK
+  4J-1: 2 call(s), $0.0123, OK (repaired)
+  4E-1: 1 call(s), $0.0085, OK
+  4E-2: 2 call(s), $0.0141, OK (repaired)
+  4G-1: 2 call(s), $0.0126, OK (repaired)
+  4E-3: 1 call(s), $0.0082, OK
+  4A-3: 1 call(s), $0.0093, OK
+  4H-1: 1 call(s), $0.0079, OK
+  4B-3: 1 call(s), $0.0081, OK
+  4F-1: 1 call(s), $0.0093, OK
+  4I-1: 1 call(s), $0.0083, OK
+spent $0.1676
+written: lab\video_prompt\runs\003_gpt-6.1-sol

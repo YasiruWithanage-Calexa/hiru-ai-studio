@@ -96,10 +96,14 @@ def build(
     edit: Row = dict(payload.state.get("edit") or {})
     replan = bool(payload.state.get("replan"))
     settings = ProductionSettings.model_validate(production.get("settings") or {})
+    takes = list(settings.takes)  # plan/2026-11-19: the lengths this production's takes may have
     # the length cap: this run's choice, else the production's (plan §2.1, L2)
     cap = raphael.a_cap(edit.get("cap") or payload.state.get("cap"), raphael.a_cap(settings.raphael_length_cap))
     cinematic_only = payload.kind.value == "cinematic_scene_raphael" or edit.get("stage") == "cinematic"
     use_packet = get_settings().raphael_packet  # plan/2026-11-11 phase 4 (off until the live check)
+    # plan/2026-11-20 D7/D9: long lines in parts. Off until schema v28 (`scenes.line_parts`) is applied: the write
+    # stores the flag with the shots, and every reader expands a scene's items only when it is set.
+    cut_lines = get_settings().raphael_line_parts
 
     characters = split.characters(production_id)
     canon = scenes_port.canon(production_id)
@@ -166,7 +170,8 @@ def build(
         """-> (the scene's map, the items it is for). A current stored map or a person's map costs nothing; else ONE
         stager call (no implied walks for Raphael, D3). A stager failure is not a Raphael failure: the scene is
         planned without a map, and the job says so."""
-        items = sceneplan.items_for(sc.get("script") or [], lines)
+        # numbered the way the stored map is (a scene saved in parts keeps a map for its parts, plan/2026-11-20)
+        items = sceneplan.items_for(sc.get("script") or [], lines, parts=sceneplan.line_parts_of(sc))
         place = place_notes.get(str(sc.get("location_id")), "")
 
         def ask(its: list[Any]) -> Row:
@@ -195,7 +200,8 @@ def build(
 
     moods: dict[str, tuple[str, ...]] = {}  # scene id -> the packet's mood words (plan/2026-11-12b D7)
 
-    def packet_of(sc: Row, lines: list[Row], scene_ctx: RunContext) -> tuple[str, Any, dict[str, str]] | None:
+    def packet_of(sc: Row, lines: list[Row], scene_ctx: RunContext,
+                  cut: bool = False) -> tuple[str, Any, dict[str, str]] | None:
         """plan/2026-11-11 phase 4: the scene's stored packet when `RAPHAEL_PACKET` is on and the scene has a complete,
         current one (the stager runs first if the scene has no map). Otherwise None, and the job says why."""
         if not use_packet:
@@ -205,7 +211,7 @@ def build(
         except Exception:  # no breakdown part, or a broken store: today's path
             _log.warning("the scene packet could not be read for %s", sc.get("id"), exc_info=True)
             got, why = None, "the breakdown could not be read"
-        made = raphael.from_packet(got, lines) if got is not None else None
+        made = raphael.from_packet(got, lines, takes, cut) if got is not None else None
         if made is not None:  # plan/2026-11-12b D7: the packet's mood words travel with the plan to the first frame
             feeling = got.get("F_feeling") if isinstance(got.get("F_feeling"), dict) else {}
             moods[str(sc["id"])] = tuple(str(m) for m in feeling.get("mood") or [] if isinstance(m, str))
@@ -219,7 +225,9 @@ def build(
         sc, lines = job["scene"], job["lines"]
         sid = str(sc["id"])
         stored = stored_row(sc)
-        from_packet = packet_of(sc, lines, replace(ctx, scene_id=UUID(sid)))
+        # stage 2 alone reads the scene the way its stored bin was planned; a new plan follows the setting
+        cut = stored.line_parts if cinematic_only and stored is not None else cut_lines
+        from_packet = packet_of(sc, lines, replace(ctx, scene_id=UUID(sid)), cut)
         bare, _ = raphael.script_of(sc, lines, cast=[], others=[], place="", objects=[])
         cast = raphael.present(characters, bare.blocks)
         location = locations.get(str(sc.get("location_id")))
@@ -231,6 +239,8 @@ def build(
             others=raphael.others_of(characters, cast),
             place=place,
             objects=raphael.objects_of(props, location, bare.blocks, packets.canon_things(ctx, sc)),
+            takes=takes,
+            parts=cut,
         )
         episode = episode_rows.get(str(sc.get("episode_id"))) or {}
         reading = SceneReading.of(sc)
@@ -241,12 +251,16 @@ def build(
             ledger = raphael.Ledger(note="")
         else:
             opening = ""
-            ledger, items = (
-                ledger_of(sc, lines, cast, reading, scene_ctx)
+            ledger = (
+                ledger_of(sc, lines, cast, reading, scene_ctx)[0]
                 if not cinematic_only
-                else (raphael.Ledger(staging=SceneStaging.of(sc)), sceneplan.items_for(sc.get("script") or [], lines))
+                else raphael.Ledger(staging=SceneStaging.of(sc))
             )
-            script = ledger_state.attach(script, ledger.staging, items, codes)
+            # the map pinned to the blocks Raphael reads (with parts, the parts); a map numbered the other way (made
+            # before the scene was cut, or the other way round) is found by its anchors
+            script = ledger_state.attach(
+                script, ledger.staging, sceneplan.items_for(sc.get("script") or [], lines, parts=cut), codes
+            )
         note = " ".join(p for p in (str(sc.get("note") or ""), str(edit.get("note") or "")) if p)
         context = {
             "heading": str(sc.get("heading") or ""),
@@ -377,7 +391,8 @@ def build(
                 failed.append({"scene_id": str(sc["id"]), "label": label, "reason": reason})
                 jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {reason}"}, agent=AGENT)
                 return
-            fields = {**out["fields"], **({"staging": sc["staging"]} if made else {})}
+            # the write's own map wins: it is the stager's map renumbered when the plan cut its lines in parts
+            fields = {**({"staging": sc["staging"]} if made else {}), **out["fields"]}
             scenes_port.replace_shots(UUID(str(sc["id"])), out["shots"], out["lines"], fields)
             out["fields"] = fields
             sc.update(out["fields"])

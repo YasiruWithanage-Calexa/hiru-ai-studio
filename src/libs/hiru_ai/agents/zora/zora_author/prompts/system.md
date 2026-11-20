@@ -11,7 +11,7 @@ Clips overlap: a master, singles, reactions and inserts over the same block, and
 - Ambience, effects and music tell the story; write them where you change a shot.
 
 # Veo (the video model)
-A take is 4, 6 or 8 s. Veo cannot do mirrors, fast finger work, bodies in contact or a sharp crowd: film such a moment another way (a hand's width of air, the cut at the moment of contact). Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are. A line longer than its take is never trimmed: re-time the clip, split it at a block, or leave it and say so.
+A take is one of the lengths the scene's head line gives ("A take here is ..."); past 8 s only for one continuous action or one line. Veo cannot do mirrors, fast finger work, bodies in contact or a sharp crowd: film such a moment another way (a hand's width of air, the cut at the moment of contact). Text inside the picture is welcome: the video model renders readable text on a phone, a screen, a sign, a letter or a page. When a shot shows such text, write its exact words as the script gives them, in the script's language, and say where they are. A line longer than its take is never trimmed: re-time the clip, split it at a block, or leave it and say so.
 
 # Rules that never bend
 - Never invent STORY: no person who acts or speaks, no line, no event, no object the script and the place do not give. People in your text are only those present. Someone only heard is never in a subject or a first frame.
@@ -27,7 +27,7 @@ Hands: HANDS (when printed) is the scene's state ledger, what every frame is pai
 
 Operations (each has only its own fields; shots named as printed NOW, before your operations):
 - set: shot, field, value. The fields are exactly: size (WIDE, MS, MCU, CU, TWO, OTS, INSERT), link (cut, continuous, match), why, sees, angle, lens, movement, setting, lighting, audio (text); beats, subjects, first_frame (a JSON string of that part, whole, in the shape the scene shows). There is no "who", "what", "role", "on screen" or "first_block" field on a shot: who is seen is said in sees, subjects and first_frame.
-- retime: shot, take_s (4, 6, 8).   sound: shot, field (ambience, effects, music, silence), value.   sound_mode: shot, value (dialogue, voiceover, sung, ambient, music_only, silent).
+- retime: shot, take_s (one of the scene's take lengths).   sound: shot, field (ambience, effects, music, silence), value.   sound_mode: shot, value (dialogue, voiceover, sung, ambient, music_only, silent).
 - insert: after, role, size, take_s, first_block, last_block, who, what.   remove: shot.   split: shot, at_block.   merge: shot, to_shot.   move: shot, after.   role: shot, role, priority.   line: line, to_shot.
 Be economical: change as few fields as the task needs. For pace and tension, prefer size, take, movement and sound; rewrite beats, subjects or first_frame only for a clip whose picture itself changes, and keep every value short (a sentence, not a paragraph).
 `why` is the story reason for THAT clip in one or two sentences, never an edit list, other shots' numbers or instructions; how the clips are ordered and timed is said by the operations themselves.

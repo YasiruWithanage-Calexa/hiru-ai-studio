@@ -206,6 +206,9 @@ class ShotLine(BaseModel):
     delivery: str
     words: int
     start_s: float | None
+    # plan/2026-11-20: a part of a long line covered in parts (k of n): `text` and `words` are the part's
+    part: int = 0
+    parts: int = 0
 
 
 class ShotBoardView(BaseModel):
@@ -437,7 +440,11 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
     lines = []
     for item in st.items:
         ln = by_line.get(item.line_id or "") if item.is_line else None
-        if ln:
+        if ln and item.is_part:  # the part this shot says, in the script's own words (plan/2026-11-20)
+            lines.append(ShotLine(id=ln["id"], speaker=ln["speaker"], character_id=ln.get("character_id"),
+                                  text=item.text, delivery=ln.get("delivery") or "", words=item.words,
+                                  start_s=None, part=item.part, parts=item.parts))
+        elif ln:
             lines.append(ShotLine(id=ln["id"], speaker=ln["speaker"], character_id=ln.get("character_id"),
                                   text=ln["text"], delivery=ln.get("delivery") or "", words=int(ln.get("words") or 0),
                                   start_s=ln.get("start_s")))

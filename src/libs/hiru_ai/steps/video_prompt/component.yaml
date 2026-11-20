@@ -1,0 +1,8 @@
+id: video_prompt
+kind: step
+version: 1
+summary: "The code around the video_prompter agent: the scene and clip brief from the packet and the shot's rows, the gates every answer passes, and the prompt assembled with every fact code's own."
+status: active
+owner: shot_producer
+entry: step:run
+uses: [serialize, feeling]

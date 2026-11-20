@@ -46,7 +46,7 @@ def conductor(lane: str, ops: list[dict] | None = None, tasks: list[dict] | None
 
 
 def test_the_wire_repeats_the_coverage_lists_exactly() -> None:
-    for name in ("SIZES", "TAKES", "CINE", "IR_TEXT", "IR_JSON", "SOUND_MODES", "PRIORITIES"):
+    for name in ("SIZES", "RENDERABLE", "CINE", "IR_TEXT", "IR_JSON", "SOUND_MODES", "PRIORITIES"):
         assert tuple(getattr(wire, name)) == tuple(getattr(coverage_scene, name)), name
     assert wire.SET_FIELDS == SET_FIELDS == row_trial.SET_FIELDS
 

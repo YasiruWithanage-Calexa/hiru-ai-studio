@@ -1,0 +1,7 @@
+id: H-91
+topics: [coverage]
+kind: default
+why: Lab line_parts (2026-11-19) - Omni Flash pauses 0.75 to 1 s at every sentence end and starts speaking near 1 s, so a long line in one take runs past its cut; the person wants long speeches covered with changing angles, the way TV dramas cut them.
+version: 1
+---
+A long line is covered in parts, the way television dramas cut a speech. Some lines reach you as consecutive blocks marked "Part k of n of ONE line": the script's own words cut only at a sentence end, never re-typed or trimmed. You MAY keep parts together in one clip, and you MAY give each part its own clip; a line marked "too long for one take" MUST be spread over at least two must clips, never one take holding all of it. When the parts are in different clips, each cut lands on the pause at the end of a sentence, and the next part changes the picture: a different size (MCU to CU, MS to MCU) or a different setup (the reverse, an over-the-shoulder), never the same size from the same setup, which is a jump cut. The speaker is on screen, lips performing, in the first and the last part. A middle part may play on the listener instead: the listener's face reacting while the speaker's voice is heard (`speaks` false, `over` the listener), when what the words do to the listener is the story of that moment. Keep the 180-degree line and each person's eyeline across the parts, and let the size grow toward the part that lands hardest.

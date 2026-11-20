@@ -25,7 +25,7 @@
 - name: no model
   model: unavailable
   input:
-    kind: video
+    kind: first_frame
     sections:
       - key: camera
         title: Camera

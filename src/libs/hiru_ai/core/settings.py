@@ -63,6 +63,10 @@ class OpenAISettings(BaseModel):
     # The Scene board writer (plan/2026-11-14): the `board` tier, the storyboard lab's model and effort.
     model_board: str = "gpt-6.1-sol"
     effort_board: str = "high"
+    # The video prompt agent (plan/2026-11-20b D2): the `video_prompter` tier, the lab's choice (lab/video_prompt
+    # run 003)
+    model_video_prompter: str = "gpt-6.1-sol"
+    effort_video_prompter: str = "low"
     model_vision: str = "gpt-5-mini"  # looks at pictures (the frame check); no reasoning effort
     model_image: str = "gpt-image-2"
     image_quality: str = "medium"  # a final first frame
@@ -114,8 +118,9 @@ class BreakdownSettings(BaseModel):
 
 
 class PromptWriterSettings(BaseModel):
-    """The prompt writer (plan/2026-11-11c): `PROMPT_WRITER__*`. Off until a person turns it on after a live check:
-    with it off, every first-frame and video prompt is the code's own words and no model is called."""
+    """The prompt writer (plan/2026-11-11c): `PROMPT_WRITER__*`, the FIRST FRAME's prompt only (plan/2026-11-20b D12: a
+    video prompt is the video prompt agent's). Off until a person turns it on after a live check: with it off, the
+    first-frame prompt is the code's own words and no model is called."""
 
     enabled: bool = False
 
@@ -162,6 +167,10 @@ class AISettings(BaseSettings):
     # plan/2026-11-11 phase 4: Raphael's first agent reads the stored scene packet (the whole packet is its first
     # message) when the scene has a complete one. false = today's message. Off until the live check.
     raphael_packet: bool = False
+    # plan/2026-11-20: Raphael plans a long line in parts (each part its own block; a line past 8 s must be spread over
+    # clips) and stores `scenes.line_parts` with the shots. Off until schema v28 is applied; true after, unless the
+    # person wants it off (no deploy needed).
+    raphael_line_parts: bool = False
     # Agents that run as a tool loop (their manifest's `with_tools` form), as a comma-separated list of ids. Empty =
     # none: an agent switches only after a live A/B says it is at least as good (plan/2026-11-04 §8). Going back is
     # removing the id.

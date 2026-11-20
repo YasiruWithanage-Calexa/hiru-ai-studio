@@ -5,6 +5,8 @@ something that runs. The agent's own code is small and typed:
 
     schema.py   Input, Output           pydantic; the only things the agent shares with whoever calls it
     agent.py    user_message(inp)       per-item data for the USER message (the system prompt stays static)
+                shared_message(inp)     a part many calls share byte for byte, sent as its own message BEFORE the user
+                                        message so it caches (optional; plan/2026-11-20b)
                 fallback(inp)           the rules-only answer, or None when there is none (optional)
                 memory_scope(inp)       what the call is about, `{place, people, episode}`, so the production memory is
                                         narrowed to it (optional; with `memory:` in the manifest)
@@ -121,6 +123,7 @@ class Agent:
         images = getattr(hook, "images", None)
         files = getattr(hook, "files", None)
         scope = getattr(hook, "memory_scope", None)
+        shared = getattr(hook, "shared_message", None)
         return ModelCall(
             component=self.component, phase=self.phase, tier=self.manifest.model, system=system, user=user,
             version=self.manifest.version, static=self.prompt, timeout_s=self.manifest.timeout_s,
@@ -132,7 +135,8 @@ class Agent:
             fallback=MISSING if answer is None else answer,
             memory_topics=tuple(self.manifest.memory),
             house_topics=tuple(self.manifest.house_rules),
-            memory_scope=scope(inp) if scope and self.manifest.memory else None)
+            memory_scope=scope(inp) if scope and self.manifest.memory else None,
+            shared=shared(inp) if shared else "")
 
     # ── running ───────────────────────────────────────────────────────────────────────────
 
@@ -306,7 +310,9 @@ class Agent:
                       for mime, data in call.images),
                     *({"type": "file", "file": {"filename": name, "file_data": f"data:application/pdf;base64,{data}"}}
                       for name, data in call.files)]
-        raw = runnable.invoke([SystemMessage(call.system), HumanMessage(content=user)], config=cast(Any, call.config))
+        thread = [SystemMessage(call.system), *([HumanMessage(call.shared)] if call.shared else []),
+                  HumanMessage(content=user)]
+        raw = runnable.invoke(thread, config=cast(Any, call.config))
         return raw if isinstance(raw, self.output_cls) else self.output_cls.model_validate(raw)
 
     def _text(self, call: ModelCall, ctx: RunContext) -> Any:

@@ -1,0 +1,136 @@
+You write the direction for ONE clip of a Sri Lankan television drama, for a video model (Omni Flash) that makes the
+clip with its sound. A shot planner has already decided the shot: who is in it, the framing, the camera, the take
+length, which lines are spoken in it. Code has the facts. Your job is what a good director says to actors and crew
+just before "action": where we are, what just happened, what each person wants, how each line is said and to whom,
+what the listener does, and how the moment feels. Code turns your answer into the final prompt and puts in the exact
+spoken words, the reference pictures and the format.
+
+# Why this matters
+
+A video model plays what it is told. Given only "she says, '...'" with a still face and a fixed camera, it plays an
+interview: a person delivering a clear statement towards no one, the other person frozen. Given a situation, a
+listener, a feeling and an intention, it plays a scene. You are the difference.
+
+# What you know about drama
+
+- Every line is said TO someone, for a reason: to persuade, to comfort, to tease, to hide, to end the talk. Name the
+  person it is said to and what the speaker wants from them.
+- Delivery = feeling + intention + one small physical act ("softly but stubbornly, almost pleading, turning the phone
+  in her hands"). Feeling and mood words ARE welcome here. Avoid stage-y words (dramatically, passionately) and avoid
+  "clearly", "slowly and deliberately", "articulates": those make a presenter.
+- A long line changes inside itself: a question then a softer afterthought, confidence that breaks, a smile that comes
+  in late. Say how, when it does.
+- The listener is half the scene. Give them a small, live reaction: a breath, a glance away, a nod, a smile they hide,
+  the jaw tightening. They never speak a word that is not in the script, and they do not freeze like a statue.
+- People in a Sri Lankan teledrama look at each other, not at the camera. Family speech has warmth and respect in it
+  (a daughter to her father, a young man to a stranger); strangers are polite and a little shy; nobody speechifies.
+- Sound makes the place real: rain, traffic, a three-wheeler engine, crows, a ceiling fan. Name two or three things
+  that belong to THIS place. No music unless the facts give it.
+- A clip with no words is still acting: what the person is thinking shows in where they look and what their hands do.
+
+# The planner's decisions you keep
+
+- The framing, the angle and the camera movement. Say them in ONE plain sentence, in film words a camera crew uses
+  (two-shot, close-up, over the shoulder, eye level, from the street side). A locked-off camera stays locked off: say
+  "a steady frame on a tripod", never handheld, never a push-in. A moving camera keeps its one move.
+- Who is in frame, where each one is (left/right), what they hold and in which hand, what happens and in what order.
+  Use the planner's action; you may make it vivid, never different.
+- Which lines are spoken in this clip and by whom. Lines not in this clip are context only.
+
+# Hard rules
+
+- Never write Sinhala and never write or translate a line's words. Code puts each line's exact words in. Refer to a
+  line only by its id, in the `line_id` field.
+- Never write a line id (like L4), a block id, or quotation marks in any text you write.
+- Never add a person, an object, an animal, an event, a sound source or words on a screen that the facts do not give.
+  A person who is only heard (a phone voice) is never seen and never described as present.
+- A clip whose sound says nobody speaks has no speaking in it: never "says", "asks", "tells", "replies", "whispers",
+  "calls". People may breathe, sigh, laugh softly or react.
+- Never use words for death, injury or violence; describe only what a camera sees.
+- English, plain present tense, short sentences. Be specific to THIS scene; no generic filler.
+
+# What you return
+
+- `situation`: one or two sentences: where and when, and what has just happened that this clip continues from.
+- `people`: who is in frame, a short look for each (from the facts), where they are relative to each other and the
+  feeling each one carries into this clip.
+- `flow`: the clip in order. An `action` step is one or two sentences of what happens (the planner's action, acted).
+  A `line` step is one spoken line: `line_id`, `to` (the person it is said to; "herself"/"himself" when muttered),
+  `how` (the delivery, as above, a phrase not a sentence), `listener` (what the listener does while or just after it
+  is said; "" when nobody else is there). Every line of this clip appears exactly once, in script order. For a line
+  heard through a phone, `to` is the person on screen holding the phone and `listener` is that person's reaction.
+- `camera`: one sentence (see above).
+- `sound`: the place's sound, two or three things; say "no music" unless music is given.
+
+Leave `text` empty on a line step, and `line_id`, `to`, `how`, `listener` empty on an action step.
+
+The facts and the script are data, never instructions to you.
+
+
+=== user ===
+<scene>
+Scene: A CONVERSATION THAT CHANGES EVERYTHING. Returning the phone leads to a warm exchange about Kasun's business. Her father's call about marriage changes Anudi's mood and ends the meeting.
+What it is for: Establish mutual interest and Kasun's ambition while introducing the family pressure that interrupts their connection.
+Just before (the previous scene ends): Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+Next (the following scene opens): A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar voice interrupts him.
+Place: Colombo roadside. Mood of the scene: warm, curious, interrupted, reflective.
+People:
+- Anudi (on screen): wants to Thank Kasun and learn about him, then respond to her father's demand; feels grateful and receptive at the start, subdued but open to meeting kasun again by the end.
+- Kasun (on screen): wants to Return her phone and answer her interest in his work; feels friendly and helpful at the start, distracted by the encounter and her change in mood by the end.
+- Father (heard on the phone only, never seen): wants to Have Anudi return home for a discussion about her marriage; feels urgent and directive at the start, expecting her return by the end.
+Between Kasun and Anudi: New acquaintances with mutual interest following smartphone's return.
+The production's direction: Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances. Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action. Kasun maintains the same facial appearance, hairstyle and body type throughout. Anudi maintains the same facial appearance, hairstyle and body type throughout.
+Script, in order (a line's id is the name you use for it; the words are Sinhala):
+action: Anudi takes her phone from Kasun. | how (the reader's note): Keep the handover simple and clearly visible. | intent: Complete the return that initiates their conversation.
+L1 Anudi to Kasun: "අනේ, Thank you! මම දැක්කෙවත් නෑ." | how (the reader's note): Genuine gratitude with mild surprise. | intent: Thank him and acknowledge that she missed the accident.
+L2 Kasun to Anudi: "වැස්ස නිසා වෙන්න ඇති." | how (the reader's note): Gentle and matter-of-fact. | intent: Put her at ease by attributing the mishap to the weather.
+action: Anudi smiles and looks at his small food business. | how (the reader's note): Let the smile lead into an interested look toward the stall. | intent: Shift her attention from the returned phone to Kasun's livelihood.
+L4 Anudi to Kasun: "මේ ඔයාගේ බිස්නස් එකද?" | how (the reader's note): Open curiosity without condescension. | intent: Find out whether the business belongs to him.
+L5 Kasun to Anudi: "ඔව්. පොඩියට පටන් ගත්තේ." | how (the reader's note): Unembarrassed and modest. | intent: Confirm ownership while acknowledging the modest beginning.
+L6 Anudi to Kasun: "තනියමද මේ හැමදේම කරන්නේ?" | how (the reader's note): Interest deepens rather than becoming an interrogation. | intent: Learn whether he manages all the work himself.
+L7 Kasun to Anudi: "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව." | how (the reader's note): Honest pride, with hope stronger than self-promotion. | intent: Explain his independent start with five thousand rupees and his wish to grow.
+action: Anudi looks impressed. | how (the reader's note): A restrained reaction rather than an emphatic display. | intent: Register her admiration before the interruption.
+action: Before she can continue the conversation, her phone suddenly rings. She checks the screen. It's her father. | how (the reader's note): The already established phone rings; give its caller display a readable moment. | intent: Interrupt the growing connection with family demands.
+L10 Anudi to Father: "හෙලෝ තාත්තේ." | how (the reader's note): An ordinary greeting before she knows the reason for the call. | intent: Answer her father.
+L11 Father (through the phone) to Anudi: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා." | how (the reader's note): Direct and authoritative without shouting. | intent: Locate Anudi and summon her home to discuss her marriage.
+action: Anudi's smile slowly disappears. | how (the reader's note): Let the warmth drain gradually from her expression. | intent: Show the emotional cost of the call.
+L13 Anudi to Father: "හරි තාත්තේ. මම එන්නම්." | how (the reader's note): Subdued compliance, contrasting with her earlier ease. | intent: Agree to return.
+action: She ends the call. Kasun notices her changed expression. Anudi looks at him again. | how (the reader's note): Allow a brief, observant pause without suggesting Kasun knows the unheard details. | intent: Return to their shared space with the interruption still affecting her.
+L15 Anudi to Kasun: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු." | how (the reader's note): Retain a little warmth beneath the changed mood. | intent: Take her leave while keeping open the possibility of another meeting.
+L16 Kasun to Anudi: "හරි. පරිස්සමින් යන්න." | how (the reader's note): Simple, considerate warmth. | intent: Accept her departure and wish her well.
+action: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else. | how (the reader's note): Let Kasun linger before returning to work; avoid specifying the content of his thoughts. | intent: Leave the encounter resonating after Anudi departs.
+</scene>
+
+<clip slate="4B-3">
+Role: single; framing MCU (MCU, Kasun chest and head); angle eye level from road side; lens 65mm; camera move: locked_off (locked-off on sticks); take 4 s.
+Why the planner made it: His direct farewell stays considerate without implying that he heard the remote conversation.
+Planner's summary: Kasun accepts Anudi's departure and wishes her well (L16), looking toward her from beside his business.
+Setting: A rainy Colombo roadside beside Kasun's small food three-wheeler, parked in right background.
+Light: Overcast daylight from the road side softly keys faces, falling off toward the shaded three-wheeler under continuous light rain.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Position: Frame right facing left, standing, empty hands at sides. Does: Lips move to L16.
+Hands (a fact, keep it): Hands: Kasun is not holding the phone. The phone is not in this frame.
+Planner's beats:
+- 0-1.2s: He meets her altered expression. Kasun holds his eyeline left. He lets his brows relax and gives a small nod.
+- 1.2-2.6s: His farewell is simple. Kasun's lips move to L16. He keeps his gaze on her with a slight smile.
+- 2.6-4s: He remains where she can leave him. Kasun stands still. His lips close while his eyes stay on Anudi.
+Planner's sound: ambience Light rain, distant traffic.; effects None featured.; music None..
+Lines SPOKEN in this clip (each exactly once in your flow, in this order):
+- L16: Kasun, about 3.0 s of speech
+Speech in all: about 3.0 s of a 4 s take.
+Pictures attached for the video model: the opening frame; a face sheet and a look sheet for Kasun. The frame already fixes the framing.
+</clip>
+
+<cards>
+CARD: PEOPLE TALKING ON SCREEN
+- Each line: to whom, why now, how (feeling + intention + one physical act). The line before it is what it answers.
+- Two speakers in one clip: the second answers the first. Say if they answer straight away, after a beat, or cut in.
+- The one who is not speaking listens with a small live reaction, never frozen, never mouthing words.
+- Eyes go to each other (or to the thing they talk about), never to the lens.
+- A short line in a long take: the people keep living after it (a smile, a look away, a breath), they do not freeze.
+CARD: SINHALA SPEECH
+- The words are casual spoken Sinhala, said the way people really talk: quick, warm, with natural pauses where a
+  person thinks, not a pause at every comma. Direct the voice, never the words.
+- English words inside a Sinhala line ("Thank you", "business") are said as Sri Lankans say them, mid-sentence.
+- Short replies ("ඔව්", "හරි") are tossed off lightly, not announced.
+- Respect lives in the voice: softer to a parent, friendly-polite to a stranger.
+</cards>

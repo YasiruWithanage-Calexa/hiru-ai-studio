@@ -1,0 +1,23 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "Night, inside a modest middle-class home in Colombo, Sri Lanka. A dining table under a warm ceiling light, plastic chairs, a calendar on the wall.\n\nAnudi, a Sri Lankan woman in her mid-twenties with long black hair in a low ponytail, sits across the table from her father, a Sri Lankan man in his late fifties with greying hair and a plain white shirt. They are arguing quietly about Kasun, the young man she likes, who sells food from a three-wheeler on the road. A real family argument: they look at each other.\n\nAnudi, softly but stubbornly, almost pleading:\n\"එයාට හීනයක් තියෙනවා තාත්තේ.\"\nHer father answers straight after her, with a tired sigh and a shake of the head, firm but not shouting, tapping the table on the last words:\n\"හීනවලින් පවුල් ජීවත් කරන්න බෑ අනුදි. සල්ලි ඕනේ. අනාගතයක් තියෙන්න ඕනේ.\"\nWhile her father speaks, Anudi looks down and her jaw tightens; she says nothing more.\n\nThey speak casual, everyday spoken Sinhala, the way a real family talks at home in a Sri Lankan teledrama: not an interview, not a speech, nobody looks at the camera.\n\nCamera: a vertical two-shot across the table, both faces in three-quarter profile, handheld with a slight natural sway.\n\nSound: only their voices in the room, a ceiling fan turning, crickets outside. No music."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "generation_config": {
+  "video_config": {
+   "task": "text_to_video"
+  }
+ },
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "9:16",
+  "resolution": "360p",
+  "duration": "10s",
+  "delivery": "uri"
+ }
+}

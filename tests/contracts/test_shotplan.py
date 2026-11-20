@@ -25,15 +25,16 @@ def action(i: int, words: int = 5) -> Item:
 
 
 def test_shortest_rung_that_holds_the_speech():
-    items = [line(0, 4)]  # 0.5 + 4/2.2 + 0.5 ≈ 2.8 s → 4 s
+    items = [line(0, 4)]  # 1.0 + 4/2.2 + 0.5 ≈ 3.3 s → 4 s (plan/2026-11-20 D1: Omni starts near 1 s)
     r = fit(items, [ProposedShot(0, 1)], envelope_s=60)
     assert r.shots[0].duration_s == 4
-    items = [line(0, 10)]  # ≈ 5.5 s → 6 s
+    items = [line(0, 9)]  # ≈ 5.6 s → 6 s
     assert fit(items, [ProposedShot(0, 1)], envelope_s=60).shots[0].duration_s == 6
+    assert fit([line(0, 10)], [ProposedShot(0, 1)], envelope_s=60).shots[0].duration_s == 8  # ≈ 6.05 s
 
 
 def test_planner_may_ask_for_longer_but_not_shorter():
-    items = [line(0, 10)]
+    items = [line(0, 9)]
     assert fit(items, [ProposedShot(0, 1, duration=8)], envelope_s=60).shots[0].duration_s == 8
     assert fit(items, [ProposedShot(0, 1, duration=4)], envelope_s=60).shots[0].duration_s == 6
 
@@ -150,7 +151,7 @@ def test_silent_seconds_and_share():
 
 def test_slow_delivery_needs_more_time_and_lowers_the_word_target():
     assert needed_seconds([line(0, 9, delivery="whispering")]) > needed_seconds([line(0, 9)])
-    r = fit([line(0, 9, delivery="trembling")], [ProposedShot(0, 1)], envelope_s=60)
+    r = fit([line(0, 7, delivery="trembling")], [ProposedShot(0, 1)], envelope_s=60)  # ≈ 5.4 s → 6 s
     assert r.shots[0].word_target < 13
 
 

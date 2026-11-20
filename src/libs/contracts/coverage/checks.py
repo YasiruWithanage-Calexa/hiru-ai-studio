@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from contracts import action_budget as ab
 from contracts import safe_depiction
 from contracts.coverage.scene import IR_JSON, IR_TEXT, VOICED, Clip, Coverage
+from contracts.sentences import sentence_breaks
 from contracts.timing import speech_seconds
 
 LONG_SHARE = 1.5  # takes over 1.5x the scene's target length are reported (Raphael's stage 1 cap)
@@ -62,9 +63,11 @@ def find(cov: Coverage) -> list[Finding]:
             out.append(Finding(f"speaker_unseen:{ln.lid}:{c.h}", "speaker_unseen",
                                f"{code} performs {ln.lid} but {ln.speaker} is not on screen in it (the line would be "
                                "heard, not seen).", "report"))
-        need = speech_seconds(ln.words, ln.delivery)
+        need = speech_seconds(ln.words, ln.delivery, sentence_breaks(ln.text))  # plan/2026-11-20 D1
         if need > c.take_s + 1e-9:
-            way = "re-time it to 8 s" if c.take_s < 8 else "let the line run over the cut into the next clip, or split"
+            longest = max(cov.takes)
+            way = (f"re-time it to {longest} s" if c.take_s < longest
+                   else "let the line run over the cut into the next clip, or split")
             # A take a person set is theirs: reported. A take a model shortened is repaired (re-time it).
             out.append(Finding(f"overrun:{ln.lid}:{c.h}", "overrun",
                                f"{ln.lid} needs about {need:.1f} s and {code} is {c.take_s} s: {way}. The line is "

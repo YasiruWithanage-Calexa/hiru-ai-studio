@@ -19,9 +19,11 @@ than its take) is reported, never trimmed.
 
 from __future__ import annotations
 
+import math
 import re
 from collections import Counter
 from collections.abc import Iterator
+from itertools import pairwise
 from typing import Literal
 
 from pydantic import BaseModel
@@ -31,7 +33,6 @@ from contracts import holding as hd
 from contracts import stagemap as sm
 from contracts.raphael.bin import Bin
 from contracts.raphael.scene import (
-    LONGEST_TAKE_S,
     Brief,
     SceneS,
     heard_names,
@@ -40,9 +41,11 @@ from contracts.raphael.scene import (
     long_actions,
     need_s,
     norm,
+    part_groups,
     parts_needed,
     plain_name,
     script_s,
+    shortest_take,
 )
 from contracts.raphael.wire import (
     AERIAL,
@@ -55,7 +58,8 @@ from contracts.raphael.wire import (
     Clip,
     ReviewRow,
 )
-from contracts.shotplan import Item
+from contracts.shotplan import LEAD_IN_S, TAIL_S, Item
+from contracts.take_lengths import SOFT_CAP_S, describe
 
 Owner = Literal["raphael", "code"]
 HANDLE_MAX_S = 2.0  # a handle is about a second; more than two seconds is a take spent on nothing
@@ -185,9 +189,17 @@ def _strings(value: object) -> Iterator[str]:
             yield from _strings(v)
 
 
+def target_s(brief: Brief) -> float:
+    """The length a bin aims at (plan/2026-11-20 D6): the scene's given length, or the script's own time on the clock
+    when that is longer (the script's words are not optional; the given length is an estimate). 0: no length given."""
+    if not brief.guide_s:
+        return 0.0
+    return max(brief.guide_s, float(math.ceil(script_s(brief.scene) - 1e-9)))  # whole seconds, as a person reads it
+
+
 def limit_s(brief: Brief, cap: float = STAGE1_CAP) -> float:
-    """The most seconds of takes the bin may hold: the scene's given length x `cap`. 0: no length was given."""
-    return brief.guide_s * cap
+    """The most seconds of takes the bin may hold: the target (`target_s`) x `cap`. 0: no length was given."""
+    return target_s(brief) * cap
 
 
 def clip_text(clip: Clip) -> list[str]:
@@ -375,7 +387,7 @@ def length(brief: Brief, work: Bin, cap: float = STAGE1_CAP, *, key: str = "leng
     return [
         _fault(
             "length",
-            f"The bin holds {total} s of takes and may hold {limit:g} s (the scene's {brief.guide_s:g} s x "
+            f"The bin holds {total} s of takes and may hold {limit:g} s (the scene's {target_s(brief):g} s x "
             f"{cap:g}): {by['must']} s must, {by['should']} s should, {by['nice']} s nice. Drop nice clips first, "
             "then should; the must clips are never the ones to go.",
             [c.id for c in work.extras()],
@@ -389,8 +401,8 @@ def length(brief: Brief, work: Bin, cap: float = STAGE1_CAP, *, key: str = "leng
 
 def _fits(c: Clip, take: int, need: float, spoken: bool) -> bool:
     """Do the clip's handles and what it shows fit a take of `take` seconds?"""
-    if spoken:  # the clock's 0.5 s lead-in and 0.5 s tail are silent time: they count as part of the handles
-        return c.handle_in_s + c.handle_out_s + max(need - 1.0, 0.0) <= take + 1e-9
+    if spoken:  # the clock's lead-in and tail are silent time: they count as part of the handles (plan/2026-11-20 D1)
+        return c.handle_in_s + c.handle_out_s + max(need - LEAD_IN_S - TAIL_S, 0.0) <= take + 1e-9
     window = ACTION_MIN_S if c.blocks and need else BARE_MIN_S
     return take - c.handle_in_s - c.handle_out_s >= max(window, need if c.blocks else 0.0) - 1e-9
 
@@ -412,14 +424,24 @@ def part_s(scene: SceneS, c: Clip, long: dict[int, float]) -> float:
 
 
 def clock(scene: SceneS, work: Bin) -> list[Fault]:
-    """4 / 6 / 8 s takes (the schema holds them), handles that fit, a line kept whole. Reports an overrun, never
-    trims.
+    """Takes of the scene's lengths (`SceneS.takes`, plan/2026-11-19), handles that fit, a line kept whole. Reports an
+    overrun, never trims.
 
     An action longer than any take (plan/2026-11-08f §1) cannot play whole in one clip: a clip over it shows a PART,
     at least `ACTION_MIN_S` of it, and `long_action` checks that the must clips over it add up to the whole."""
     out: list[Fault] = []
     long = long_actions(scene)
     for c in work.clips:
+        if c.take_s not in scene.takes:  # plan/2026-11-19: the tool schema names them; a stored bin may not
+            out.append(
+                _fault(
+                    "clock",
+                    f"{c.id} is a {c.take_s} s take; a take here is {describe(tuple(scene.takes))}.",
+                    [c.id],
+                    key=f"clock:length:{c.id}",
+                )
+            )
+            continue
         for name, h in (("in", c.handle_in_s), ("out", c.handle_out_s)):
             if not 0 <= h <= HANDLE_MAX_S:
                 out.append(
@@ -451,16 +473,7 @@ def clock(scene: SceneS, work: Bin) -> list[Fault]:
                 )
             continue
         if spoken and need > c.take_s + 1e-9:
-            out.append(
-                _fault(
-                    "clock",
-                    f"{c.id} needs {need:.1f} s for what it carries and the take is {c.take_s} s: a line "
-                    "is kept whole and never trimmed. Split the exchange into overlapping clips.",
-                    [c.id],
-                    fix="report",
-                    key=f"clock:overrun:{c.id}",
-                )
-            )
+            out.append(overrun(scene, c, need, spoken))
             continue
         if not _fits(c, c.take_s, need, bool(spoken)):
             out.append(
@@ -473,6 +486,24 @@ def clock(scene: SceneS, work: Bin) -> list[Fault]:
                 )
             )
     return out
+
+
+def overrun(scene: SceneS, c: Clip, need: float, spoken: list[Item]) -> Fault:
+    """A spoken clip that needs more than its take (plan/2026-11-20 D5). It BLOCKS `finish` when Raphael can fix it: a
+    longer take of the scene's lengths holds what it carries, or it carries more than one line or part (cut it at a
+    line or a part). Only one line (or part) alone longer than the longest take is reported, never trimmed."""
+    longer = shortest_take(need, scene.takes)
+    head = f"{c.id} needs {need:.1f} s for what it carries and the take is {c.take_s} s"
+    if longer is not None and longer > c.take_s:
+        return _fault("clock", f"{head}: take {longer} s, which holds it (a line is kept whole, never trimmed).",
+                      [c.id], key=f"clock:overrun:{c.id}")
+    if len(spoken) > 1:
+        what = "parts" if any(i.is_part for i in spoken) and len({i.line_id for i in spoken}) == 1 else "lines"
+        return _fault("clock", f"{head}, and no take here holds it ({scene.longest} s is the longest): it carries "
+                      f"{len(spoken)} {what}; cut it at a line or a part into clips that each hold theirs (a line is "
+                      "kept whole, never trimmed).", [c.id], key=f"clock:overrun:{c.id}")
+    return _fault("clock", f"{head}: one line longer than any take here ({scene.longest} s). Reported; it is never "
+                  "trimmed.", [c.id], fix="report", key=f"clock:overrun:{c.id}")
 
 
 def long_action(scene: SceneS, work: Bin) -> list[Fault]:
@@ -491,10 +522,10 @@ def long_action(scene: SceneS, work: Bin) -> list[Fault]:
         out.append(
             _fault(
                 "clock",
-                f"b{b} is a {seconds:.1f} s action, longer than any take ({LONGEST_TAKE_S} s): its must clips show "
+                f"b{b} is a {seconds:.1f} s action, longer than any take ({scene.longest} s): its must clips show "
                 f"the next part each, in order (say in each clip's beats which part). Together they show "
                 f"{shown:.1f} s of it now; it needs {seconds - shown:.1f} s more (in all about "
-                f"{parts_needed(seconds)} clips of 8 s with 1 s handles).",
+                f"{parts_needed(seconds, scene.longest)} clips of {scene.longest} s with 1 s handles).",
                 [c.id for c in over],
                 key=f"clock:long:{b}",
             )
@@ -512,13 +543,13 @@ def short(brief: Brief, work: Bin) -> list[Fault]:
     if not brief.guide_s:
         return []
     total = sum(c.take_s for c in work.clips)
-    floor = brief.guide_s * SHORT_SHARE
+    floor = target_s(brief) * SHORT_SHARE
     if total + 1e-9 >= floor:
         return []
     return [
         _fault(
             "length",
-            f"The bin holds {total} s of takes; the target is {brief.guide_s:g} s and `finish` needs at least "
+            f"The bin holds {total} s of takes; the target is {target_s(brief):g} s and `finish` needs at least "
             f"{floor:g} s. The script itself times at {script_s(brief.scene):.0f} s: the rest is coverage of the same "
             "moments. Add must angles where the intended cut needs them: the master, each speaker's single, the "
             "listener's reaction where a line lands, and long actions shown over consecutive clips.",
@@ -691,6 +722,76 @@ def consistency(work: Bin) -> list[Fault]:
     return out
 
 
+def long_take(scene: SceneS, work: Bin) -> list[Fault]:
+    """plan/2026-11-19 D5: a take past `SOFT_CAP_S` is for one continuous action or one line. A long take that carries
+    more than one line is reported (never blocking): how well Omni holds a face and clothes over it is not proven."""
+    out: list[Fault] = []
+    for c in work.clips:
+        if c.take_s > SOFT_CAP_S and len(c.lines) > 1:
+            out.append(
+                _fault(
+                    "long_take",
+                    f"{c.id} is a {c.take_s} s take carrying {len(c.lines)} lines ({', '.join(c.lines)}). Past "
+                    f"{SOFT_CAP_S} s a take is for one continuous action or one line: cut the exchange into clips "
+                    "unless it must play in one take.",
+                    [c.id],
+                    fix="report",
+                    key=f"long_take:{c.id}",
+                )
+            )
+    return out
+
+
+# ── long lines in parts (plan/2026-11-20 D11) ────────────────────────────────────────────────────
+
+
+def _cut_order(work: Bin) -> list[Clip]:
+    """The must clips in the order of the intended cut: moment, then id (the shooting order)."""
+    return sorted(work.musts(), key=lambda c: (c.moment, c.id))
+
+
+def line_parts(scene: SceneS, work: Bin) -> list[Fault]:
+    """Blocking, the lab's two (`lab/line_parts`): a must clip never carries every part of a line marked too long for
+    one take (`parts:whole`), and two consecutive parts in different must clips change the size or the setup at the cut
+    (`parts:jump`: the same size from the same setup is a jump cut). A part is carried by the first must clip, in cut
+    order, that has it."""
+    out: list[Fault] = []
+    musts = _cut_order(work)
+    for g in part_groups(scene):
+        if g.must:
+            for c in musts:
+                if all(lid in c.lines for lid in g.lids):
+                    out.append(_fault(
+                        "parts",
+                        f"{c.id} holds all of {', '.join(g.lids)}, one line too long for one take ({g.need_s:.1f} s): "
+                        "spread its parts over at least two must clips, each cut at a sentence end.",
+                        [c.id], key=f"parts:whole:{c.id}:{g.lids[0]}"))
+        carrier = [next((c for c in musts if lid in c.lines), None) for lid in g.lids]
+        for a, b, la, lb in zip(carrier, carrier[1:], g.lids, g.lids[1:], strict=False):
+            if a is None or b is None or a.id == b.id:
+                continue
+            if a.setup == b.setup and a.size == b.size:
+                out.append(_fault(
+                    "parts",
+                    f"{la} ({a.id}) and {lb} ({b.id}) are consecutive parts of one line on the same setup {a.setup} "
+                    f"and size {a.size}: a jump cut. Change the size or the setup at the cut.",
+                    [a.id, b.id], key=f"parts:jump:{a.id}:{b.id}"))
+    return out
+
+
+def cut_jump(work: Bin) -> list[Fault]:
+    """Report only (D11): two must clips next to each other in the cut on the same setup and size. Advisory until the
+    person has read how often it fires (runs 001 and 002 both cut Anudi's MCU on setup B to itself)."""
+    order = _cut_order(work)
+    return [
+        _fault("cut", f"{a.id} and {b.id} follow each other in the cut on the same setup {a.setup} and size {a.size}: "
+               "a jump cut unless something comes between them.", [a.id, b.id], fix="report",
+               key=f"cut:jump:{a.id}:{b.id}")
+        for a, b in pairwise(order)
+        if a.setup == b.setup and a.size == b.size
+    ]
+
+
 # ── stage 1 ──────────────────────────────────────────────────────────────────────────────────────
 
 
@@ -712,6 +813,9 @@ def check_stage1(
         *breakdown_missing(breakdown, work),  # plan/2026-11-10: report only (D2)
         *device_unseen(scene, work),  # plan/2026-11-12: report only
         *action_budget(work),  # plan/2026-11-18c: blocking (Raphael owns the breakdown)
+        *long_take(scene, work),  # plan/2026-11-19 D5: report only
+        *line_parts(scene, work),  # plan/2026-11-20 D11: blocking
+        *cut_jump(work),  # plan/2026-11-20 D11: report only
     ]
 
 
@@ -1317,8 +1421,8 @@ def breakdown_faults(brief: Brief, breakdown: BreakdownW) -> list[str]:
     for s in shots:
         if s.move not in TECHNIQUES:
             out.append(f"Shot {s.n}: `move` {s.move!r} is not in the camera vocabulary.")
-        if any(n not in (4, 6, 8) for n in s.takes):
-            out.append(f"Shot {s.n}: `takes` must be Veo takes of 4, 6 or 8 s, got {s.takes}.")
+        if any(n not in scene.takes for n in s.takes):
+            out.append(f"Shot {s.n}: `takes` must be takes of {describe(tuple(scene.takes))}, got {s.takes}.")
         for who in heard_names(scene):
             if any(mentions(p, who) for p in s.on_screen):
                 out.append(f"Shot {s.n}: {who} is only heard and never seen; use `off_screen`, not `on_screen`.")

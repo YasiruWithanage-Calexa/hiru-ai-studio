@@ -553,6 +553,11 @@ class SupabaseShots(_Base):
                      .order("number").execute())
         return _rows(res.data)
 
+    async def lock_lengths(self, production_id: UUID) -> int:
+        res = await (self.db.table("shots").update({"duration_locked": True})
+                     .eq("production_id", str(production_id)).eq("duration_locked", False).execute())
+        return len(res.data or [])
+
     async def list_pinned(self, production_id: UUID) -> builtins.list[Row]:
         res = await (self.db.table("shots").select("id,scene_id,pins:design->pins")
                      .eq("production_id", str(production_id)).execute())

@@ -1,0 +1,23 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "SITUATION\nOn the rain-damp Colombo roadside beside Kasun's food three-wheeler, Anudi listens as her father's demand to return home turns to marriage. The warmth of her new acquaintance gives way to quiet pressure.\n\nPEOPLE\nAnudi is frame left facing right, with her established appearance and roadside outfit. She holds the phone at her right ear in her right hand, the umbrella in her left hand and the handbag on her left forearm; her eyes are slightly lowered and her lips remain closed.\n\nACTION & DIALOGUE\nFather's voice through the phone, firm and directive without shouting, with a parent's certainty that she will comply:\nඅපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා.\nNo one on screen mouths these words. Anudi keeps the phone against her right ear and her lips closed. Her lowered gaze steadies as the corners of her mouth relax and the remaining warmth leaves her face.\n\nIn the silence after the sentence, Anudi keeps her eyes fixed and her phone at her ear. She holds the umbrella and handbag unchanged, absorbing the demand without moving her lips.\n\nThe voice speaks casual, everyday spoken Sinhala, like a real phone call in a Sri Lankan teledrama. Only these words are spoken, only by the people named; English words in a line are said as Sri Lankans say them.\n\nCAMERA\nEye-level medium close-up on a 65mm lens, Anudi frame left facing right, with her phone and portions of her umbrella and handbag visible, in a steady frame on a tripod.\n\nSOUND\nLight rain and low Colombo road wash beneath the father's subtly phone-filtered voice; no music.\n\nRULES\nHands: Anudi holds the phone in one hand. Even this close, what each person holds stays in the picture (part of it in frame), never left out. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nFORMAT\nAspect ratio 16:9. Duration 6 seconds. Ends on a cut."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "generation_config": {
+  "video_config": {
+   "task": "text_to_video"
+  }
+ },
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "16:9",
+  "resolution": "360p",
+  "duration": "6s",
+  "delivery": "uri"
+ }
+}

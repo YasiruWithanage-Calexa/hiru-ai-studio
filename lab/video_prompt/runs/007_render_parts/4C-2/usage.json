@@ -1,0 +1,29 @@
+{
+ "interaction_id": "v1_ChYxZF9fYXBDSUpjT2w2OTRQajhibkdREhYxZF9fYXBDSUpjT2w2OTRQajhibkdR",
+ "usage": {
+  "total_tokens": 12951,
+  "total_input_tokens": 462,
+  "input_tokens_by_modality": [
+   {
+    "modality": "text",
+    "tokens": 462
+   }
+  ],
+  "total_cached_tokens": 0,
+  "total_output_tokens": 11586,
+  "output_tokens_by_modality": [
+   {
+    "modality": "video",
+    "tokens": 11586
+   }
+  ],
+  "total_tool_use_tokens": 0,
+  "total_thought_tokens": 903,
+  "initial_input_tokens": 462
+ },
+ "tokens": [
+  462,
+  12489
+ ],
+ "seconds_waited": 38.9
+}

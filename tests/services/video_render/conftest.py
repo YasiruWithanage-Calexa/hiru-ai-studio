@@ -31,6 +31,17 @@ PNG = b"\x89PNG\r\n\x1a\n" + b"nimal"
 JPG = b"\xff\xd8\xff\xe0" + b"kitchen"
 
 
+
+def vs(engine: str = "omni_flash", **kw):
+    """Production settings, a RETIRED engine's included (plan/2026-11-19): a stored Veo choice reads as Omni Flash 1.2,
+    so a test of a Veo request made before the plan builds it past that reading."""
+    from contracts.video_gen import RETIRED_ENGINES
+
+    if engine not in RETIRED_ENGINES:
+        return VideoSettings(engine=engine, **kw)
+    kept = {k: kw.pop(k) for k in ("options", "model") if k in kw}
+    return VideoSettings(**kw).model_copy(update={"engine": engine, **kept})
+
 def config(**kw: Any) -> Config:
     base: dict[str, Any] = {"supabase_url": "http://x", "service_role_key": "k", "api_internal_url": "http://api",
                             "internal_secret": "s", "google_api_key": "g", "fake_provider": True,
@@ -48,7 +59,7 @@ def ref(label: str, path: str, slot: str = "reference", bucket: str = "reference
 
 def make_spec(refs: list[RefBinding] | None = None, engine: str = "omni_flash", **over: Any) -> RenderSpec:
     locked = {k: over.pop(k) for k in ("model", "resolution") if k in over}  # the production's, set past validation
-    settings = resolve(VideoSettings(engine=engine), None, VideoOverrides(**over), production_aspect="16:9",
+    settings = resolve(vs(engine), None, VideoOverrides(**over), production_aspect="16:9",
                        shot_seconds=8).model_copy(update=locked)
     return spec_for(settings, prose="Nimal opens the door.", references=refs or [], seed=7,
                     prompt_id=uuid4(), prompt_version=3)

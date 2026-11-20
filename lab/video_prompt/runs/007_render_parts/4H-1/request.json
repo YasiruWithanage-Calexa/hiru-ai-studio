@@ -1,0 +1,23 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "SITUATION\nOn a rain-damp Colombo roadside beside Kasun's small food three-wheeler, Anudi has just answered her father's call. The warmth of her exchange with Kasun still rests on her face as her attention turns to the phone.\n\nPEOPLE\nAnudi is frame left, facing right, in her established roadside outfit, with the same face, hairstyle and build. She holds the phone to her right ear in her right hand, the umbrella in her left hand and the handbag on her left forearm; she begins receptive, with a trace of a smile.\n\nACTION & DIALOGUE\nFather's voice through the phone, direct and urgently attentive, seeking her whereabouts with familiar parental authority rather than raised volume:\nඅනුදි, ඔයා කොහෙද ඉන්නේ?\nNo one on screen mouths these words. Anudi listens with closed lips, keeping the phone at her right ear. The edge of her smile remains as her eyes settle and her eyebrows draw together slightly.\n\nFather's voice through the phone, firmer and expectant, pressing her to return home without shouting:\nඉක්මනට ගෙදර එන්න.\nNo one on screen mouths these words. Anudi keeps her lips closed. Her smile becomes smaller and her gaze drops a fraction, her attention withdrawing from the roadside.\n\nShe remains on the line with the phone at her right ear. Her eyes stay lowered and her lips remain closed as she absorbs the direction.\n\nThe voice speaks casual, everyday spoken Sinhala, like a real phone call in a Sri Lankan teledrama. Only these words are spoken, only by the people named; English words in a line are said as Sri Lankans say them.\n\nCAMERA\nAn eye-level medium shot on a 50mm lens frames Anudi from the waist up on the left facing right, in a steady frame on a tripod.\n\nSOUND\nLight rain and low Colombo road wash sit beneath the subtle phone-channel sound of her father's voice; no music.\n\nRULES\nHands: Anudi holds the phone in one hand. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nFORMAT\nAspect ratio 16:9. Duration 8 seconds. Ends on a cut."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "generation_config": {
+  "video_config": {
+   "task": "text_to_video"
+  }
+ },
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "16:9",
+  "resolution": "360p",
+  "duration": "8s",
+  "delivery": "uri"
+ }
+}

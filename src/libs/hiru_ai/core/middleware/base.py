@@ -53,6 +53,10 @@ class ModelCall:
     memory_scope: Mapping[str, Any] | None = None  # what the call is about: place, people, episode (production_memory)
     house_topics: tuple[str, ...] = ()  # the house rule topics the agent is given (manifest `house_rules`)
     max_output: int | None = None  # the output tokens this call may spend (a caller's budget: plan/2026-11-13 §3.8)
+    # A part of the user message that many calls share byte for byte (a scene every clip of it is written from), sent
+    # as its OWN message before `user`: the provider's cache stops at a message whose bytes differ, so a shared part
+    # inside the per-item message never caches (plan/2026-11-20b phase 0, lab/video_prompt). "" = none.
+    shared: str = ""
 
 
 Next = Callable[[ModelCall], Any]

@@ -56,6 +56,10 @@ class StoredRaphael(_Model):
     # plan/2026-11-12b (D7): the scene packet's mood words ("bleak, restrained, ominous"), for the first frame's Mood
     # line; [] when the scene was not planned from a packet
     mood: list[str] = []
+    # plan/2026-11-19: the lengths the scene's takes could have; [] = 4/6/8 (a production made before that plan)
+    takes: list[int] = []
+    # plan/2026-11-20 D9: the scene was planned with its long lines in parts (its clips' blocks count the parts)
+    line_parts: bool = False
     edit: EditPlanW | None = None
     clips: list[Clip] = []
     line_ids: dict[str, str] = {}  # the agent-facing id (L4) → the dialogue line's id
@@ -69,8 +73,12 @@ class StoredRaphael(_Model):
     previous: dict[str, Any] = Field(default_factory=dict)
 
     def data(self) -> dict[str, Any]:
-        """The JSON `scenes.raphael` holds."""
-        return dict(self.model_dump(mode="json"))
+        """The JSON `scenes.raphael` holds. `line_parts` only when true, so a result without parts is stored as
+        before."""
+        out = dict(self.model_dump(mode="json"))
+        if not out.get("line_parts"):
+            out.pop("line_parts", None)
+        return out
 
     @classmethod
     def load(cls, raw: Any) -> StoredRaphael | None:

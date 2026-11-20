@@ -36,7 +36,7 @@ def test_a_clip_w_holds_the_labs_fields_and_nothing_else() -> None:
 
 def test_take_priority_and_blend_are_closed_lists() -> None:
     with pytest.raises(ValidationError):
-        ClipW.model_validate(_clip_w(take_s=5))
+        ClipW.model_validate(_clip_w(take_s=16))  # past what Omni Flash 1.2 makes (plan/2026-11-19)
     with pytest.raises(ValidationError):
         # the schema refuses must
         ExtraW.model_validate({**_clip_w(priority="must"), "anchor": ["c01"], "blend": "open"})

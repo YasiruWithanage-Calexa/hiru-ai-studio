@@ -29,7 +29,7 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
-from contracts.coverage.scene import Coverage
+from contracts.coverage.scene import Coverage, takes_of
 from contracts.holding import after_ids
 from hiru_ai.core import parts
 from hiru_ai.core.context import RunContext
@@ -74,8 +74,10 @@ def characters_of(canon: list[Row]) -> list[Row]:
     return [c for c in canon if str(c.get("kind") or "character") == "character" and c.get("id")]
 
 
-def coverage_of(scene_row: Row, shot_rows: list[Row], lines: list[Row], canon: list[Row]) -> Coverage:
-    return Coverage.from_rows(scene_row, shot_rows, lines, characters_of(canon))
+def coverage_of(scene_row: Row, shot_rows: list[Row], lines: list[Row], canon: list[Row],
+                production: Row | None = None) -> Coverage:
+    """The rows as coverage, held to the production's take lengths (plan/2026-11-19)."""
+    return Coverage.from_rows(scene_row, shot_rows, lines, characters_of(canon), takes=takes_of(production))
 
 
 def read(ctx: RunContext, production_id: UUID, scene_id: UUID, *, no_shots: str = NO_SHOTS,
@@ -92,14 +94,14 @@ def read(ctx: RunContext, production_id: UUID, scene_id: UUID, *, no_shots: str 
     lines = scenes.lines(scene_id)
     canon = scenes.canon(production_id)
     return World(production=production, scene_row=row, shot_rows=shot_rows, lines=lines, canon=canon,
-                 cov=coverage_of(row, shot_rows, lines, canon))
+                 cov=coverage_of(row, shot_rows, lines, canon, production))
 
 
 def reread(ctx: RunContext, world: World) -> Coverage:
     """The scene's rows as they are NOW (the optimistic check before a save)."""
     scenes = ctx.need("scenes")
     sid = world.scene_row["id"]
-    return coverage_of(world.scene_row, scenes.shots(sid), scenes.lines(sid), world.canon)
+    return coverage_of(world.scene_row, scenes.shots(sid), scenes.lines(sid), world.canon, world.production)
 
 
 # ── the revisions ─────────────────────────────────────────────────────────────────────────────────────────────────
@@ -253,9 +255,10 @@ def rows_for(before: Coverage, after: Coverage, *, planner: str, now: str = "") 
     removed = [c.row_id for c in before.clips if after.clip(c.h) is None and c.row_id]
     by_h = {c.h: c.row_id for c in after.clips}
     lines, all_lines = [], []
-    for ln in after.lines.values():
-        src = dict(after.line_rows[ln.row_id])
-        shot_id = by_h.get(ln.by) if ln.by else None
+    binding = after.row_binding()  # a line in parts: bound where its first part is (plan/2026-11-20)
+    for row_id, by in binding.items():
+        src = dict(after.line_rows[row_id])
+        shot_id = by_h.get(by) if by else None
         if str(src.get("shot_id") or "") != str(shot_id or ""):
             src["shot_id"] = shot_id
             lines.append(src)
@@ -388,7 +391,8 @@ class Saver:
 
     def changed_meanwhile(self) -> bool:
         sid = self.scene_id
-        now = coverage_of(self.world.scene_row, self.scenes.shots(sid), self.scenes.lines(sid), self.world.canon)
+        now = coverage_of(self.world.scene_row, self.scenes.shots(sid), self.scenes.lines(sid), self.world.canon,
+                          self.world.production)
         return now.fingerprint() != self.read_print
 
     def save(self, after: Coverage, *, kind: str = "turn", message_id: str = "") -> Saved:
@@ -419,7 +423,7 @@ class Saver:
         """What a later save in the same turn or click reads as "the rows now"."""
         w = self.world
         w.shot_rows, w.lines = [dict(r) for r in rows], [dict(ln) for ln in lines]
-        w.cov = coverage_of(w.scene_row, w.shot_rows, w.lines, w.canon)
+        w.cov = coverage_of(w.scene_row, w.shot_rows, w.lines, w.canon, w.production)
         self.read_print = w.cov.fingerprint()
 
     def restore(self, kind: str) -> Saved:

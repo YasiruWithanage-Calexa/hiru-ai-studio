@@ -2,6 +2,8 @@
 `lab/zora_rows/tests/test_lab.py`, ported). No model."""
 from __future__ import annotations
 
+import pytest
+
 from contracts.coverage import checks, risk
 from contracts.coverage.ledger import changes, plain
 from contracts.coverage.scene import Coverage
@@ -12,6 +14,15 @@ from tests.zora.rows_world import data, scene
 # The fixture was planned before the action budget (plan/2026-11-18c): its key handover (Nimal lifts
 # the key from the box and places it in Dinu's palm, in S14 and S15) is two hard actions in one clip: real H-16 faults.
 PRE_BUDGET = {"action_budget:h14", "action_budget:h15"}
+
+
+@pytest.fixture(autouse=True)
+def _recorded_clock(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The fixture's takes were chosen on the clock before plan/2026-11-20 (`tests.clock_before`): on the measured one
+    its S05 is 0.6 s short for L2, which the checks now report (and repair: a model made it)."""
+    from tests.clock_before import clock_before_line_parts
+
+    clock_before_line_parts(monkeypatch)
 
 
 def found(cov: Coverage) -> list[checks.Finding]:

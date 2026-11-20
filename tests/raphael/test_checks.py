@@ -12,6 +12,15 @@ from contracts.raphael.wire import LENGTH_CAPS, ClipW, ReviewRow
 from tests.raphael import gold
 
 
+@pytest.fixture(autouse=True)
+def _run_3s_clock(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Run 3 and pass 5 (the gold bins) were planned on the clock before plan/2026-11-20
+    (`tests.clock_before`); the measured clock is tested in `test_line_parts.py`."""
+    from tests.raphael.conftest import run_3_clock
+
+    run_3_clock(monkeypatch)
+
+
 def keys(found: list[checks.Fault]) -> set[str]:
     return {f.key for f in checks.blocking(found)}
 
@@ -221,14 +230,21 @@ def test_a_line_no_must_clip_performs_fails() -> None:
     )
 
 
-def test_an_overrun_is_reported_and_never_blocks() -> None:
+def test_an_overrun_blocks_when_a_clip_can_be_split_and_is_reported_when_one_line_is_too_long() -> None:
+    """plan/2026-11-20 D5: no take holds a clip that carries every line, but it can be cut at a line, so it blocks.
+    One line alone longer than any take is reported and never trimmed."""
     work = gold.stage1()
     speaking = next(c for c in work.clips if c.lines and c.take_s == 4)
     speaking.blocks = [b.index for b in gold.scene().blocks]
     speaking.lines = [b.line_id for b in gold.scene().lines if b.line_id]
     found = checks.check_stage1(gold.brief(), work)
-    assert any(f.key.startswith("clock:overrun") and f.fix == "report" for f in found)
-    assert not any(f.key.startswith("clock:overrun") for f in checks.blocking(found))
+    over = [f for f in checks.blocking(found) if f.key == f"clock:overrun:{speaking.id}"]
+    assert over and "cut it at a line or a part" in over[0].sentence
+    scene = gold.scene().model_copy(update={"takes": [4]})  # one line's own time is more than any take here
+    longest = max(scene.lines, key=lambda b: len(b.text.split()))
+    one = speaking.model_copy(update={"blocks": [longest.index], "lines": [longest.line_id], "take_s": 4})
+    alone = checks.clock(scene, Bin(edit=work.edit, clips=[one]))
+    assert [f.fix for f in alone if f.key.startswith("clock:overrun")] == ["report"]
 
 
 def test_a_missing_edit_plan_blocks() -> None:

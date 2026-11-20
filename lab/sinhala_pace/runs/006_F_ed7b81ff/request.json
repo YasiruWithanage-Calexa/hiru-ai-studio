@@ -1,0 +1,18 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "Vertical medium close-up of one Sri Lankan man in his thirties in a quiet office, soft daylight, static camera, his face and mouth clearly visible.\n\nHe says exactly this line once, in Sinhala as written (English words as English), at a natural, unhurried pace, as an actor in a Sri Lankan TV drama would, every word clear:\n\"Welcome! අපිත් මුලින් ChatGPT, Gemini විතරයි use කළේ. Productivity වැඩි වුණා, හැබැයි processes වෙනස් වුණේ නැහැ. ඉතින් අපි AI එක business processes එක්ක connect කළා.\"\n\nHe begins about half a second in. After the last word he stays silent and still with a calm expression until the shot ends. No one else speaks.\n\nSound: only this voice in a quiet room. No music, no background voices, no sound effects."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "9:16",
+  "resolution": "360p",
+  "duration": "15s",
+  "delivery": "uri"
+ }
+}

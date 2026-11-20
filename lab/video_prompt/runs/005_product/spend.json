@@ -1,0 +1,349 @@
+{
+ "usd": 0.1415,
+ "written": 18,
+ "clips": 18,
+ "calls": [
+  {
+   "slate": "4A-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3937,
+     "cached_input_tokens": 0,
+     "output_tokens": 441,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.01228,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 14.2
+  },
+  {
+   "slate": "4K-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3884,
+     "cached_input_tokens": 1725,
+     "output_tokens": 302,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00751,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 7.8
+  },
+  {
+   "slate": "4B-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3765,
+     "cached_input_tokens": 1725,
+     "output_tokens": 328,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00753,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 7.8
+  },
+  {
+   "slate": "4C-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3802,
+     "cached_input_tokens": 1725,
+     "output_tokens": 320,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00753,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 6.8
+  },
+  {
+   "slate": "4L-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3562,
+     "cached_input_tokens": 1725,
+     "output_tokens": 188,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00573,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 5.0
+  },
+  {
+   "slate": "4A-2",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3915,
+     "cached_input_tokens": 1725,
+     "output_tokens": 417,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00872,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 10.2
+  },
+  {
+   "slate": "4B-2",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3773,
+     "cached_input_tokens": 1725,
+     "output_tokens": 329,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00756,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 8.8
+  },
+  {
+   "slate": "4D-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3658,
+     "cached_input_tokens": 1725,
+     "output_tokens": 358,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00762,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 7.7
+  },
+  {
+   "slate": "4J-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3752,
+     "cached_input_tokens": 1725,
+     "output_tokens": 271,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00694,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 7.9
+  },
+  {
+   "slate": "4E-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3822,
+     "cached_input_tokens": 1725,
+     "output_tokens": 398,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00835,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 8.8
+  },
+  {
+   "slate": "4E-2",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3842,
+     "cached_input_tokens": 1725,
+     "output_tokens": 288,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00729,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 8.7
+  },
+  {
+   "slate": "4G-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3909,
+     "cached_input_tokens": 1725,
+     "output_tokens": 343,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00797,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 9.1
+  },
+  {
+   "slate": "4E-3",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3823,
+     "cached_input_tokens": 1725,
+     "output_tokens": 389,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00826,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 8.5
+  },
+  {
+   "slate": "4A-3",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3936,
+     "cached_input_tokens": 1725,
+     "output_tokens": 383,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00842,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 10.8
+  },
+  {
+   "slate": "4H-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3688,
+     "cached_input_tokens": 1725,
+     "output_tokens": 293,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00703,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 8.6
+  },
+  {
+   "slate": "4B-3",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3767,
+     "cached_input_tokens": 1725,
+     "output_tokens": 367,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00793,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 8.5
+  },
+  {
+   "slate": "4F-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3758,
+     "cached_input_tokens": 1725,
+     "output_tokens": 315,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00739,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 7.0
+  },
+  {
+   "slate": "4I-1",
+   "usage": [
+    {
+     "phase": "video_prompter.write",
+     "model": "gpt-6.1-sol",
+     "input_tokens": 3725,
+     "cached_input_tokens": 1725,
+     "output_tokens": 331,
+     "job_id": null,
+     "production_id": null,
+     "actor_user_id": null
+    }
+   ],
+   "usd": 0.00748,
+   "first_faults": [],
+   "faults": [],
+   "seconds": 8.7
+  }
+ ]
+}

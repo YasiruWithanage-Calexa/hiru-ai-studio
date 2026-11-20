@@ -42,7 +42,11 @@ def test_create_validates_orientation_and_settings(world: World):
     h = world.headers(world.admin)
     assert world.client.post("/v1/productions", json={**NEW, "orientation": "square"},
                              headers=h).status_code == 422
-    assert world.client.post("/v1/productions", json={**NEW, "settings": {"fixed_shot_seconds": 10}},
+    assert world.client.post("/v1/productions", json={**NEW, "settings": {"fixed_shot_seconds": 16}},
+                             headers=h).status_code == 422
+    assert world.client.post("/v1/productions", json={**NEW, "settings": {"max_take_s": 12}},
+                             headers=h).status_code == 422  # plan/2026-11-19: 10 or 15
+    assert world.client.post("/v1/productions", json={**NEW, "settings": {"take_lengths": "free"}},
                              headers=h).status_code == 422
 
 

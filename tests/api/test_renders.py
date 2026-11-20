@@ -26,6 +26,10 @@ PNG = bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) + b"0" * 32
 _FIRED: list[list[dict]] = []
 
 
+# plan/2026-11-19: what only Veo did (a recorded seed, a start frame OR sheets) has no offered engine to test on.
+VEO_RETIRED = pytest.mark.skip(reason="plan/2026-11-19: Veo is retired; Omni Flash 1.2 takes no seed")
+
+
 @pytest.fixture
 def fired(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
     calls: list[dict] = []
@@ -191,13 +195,13 @@ def test_the_model_and_size_are_the_productions_and_a_shot_or_a_press_cannot_cha
                                                                                            video: Settings,
                                                                                            fired: list[dict]):
     s, _ = ready(world)
-    on(world, engine="veo_3_1", resolution="1080p")
+    on(world, resolution="1080p")
     v = plan(world, s)
-    assert v["settings"]["engine"] == "veo_3_1" and v["settings"]["sources"]["engine"] == "production"
+    assert v["settings"]["engine"] == "omni_flash" and v["settings"]["sources"]["engine"] == "production"
     assert v["settings"]["resolution"] == "1080p" and v["settings"]["takes"] == 1
 
     director = world.headers(world.director)
-    picked = {"model": "veo-3.1-generate-002"}  # Veo has no versions to pick: refused at save, blocking at send
+    picked = {"model": "gemini-omni-9"}  # Omni Flash 1.2 has no versions to pick: refused at save, blocking at send
     assert world.client.put(shot_url(world, s, 1, "/video-settings"), json={"settings": picked},
                             headers=director).status_code == 422
     v = plan(world, s, query="?overrides=" + json.dumps(picked))
@@ -226,10 +230,10 @@ def test_the_model_and_size_are_the_productions_and_a_shot_or_a_press_cannot_cha
 
 def test_a_value_the_engine_cannot_take_is_a_blocking_check_never_a_silent_change(world: World, video: Settings):
     s, _ = ready(world)
-    on(world, engine="veo_3_1", resolution="1080p")
-    v = plan(world, s, query='?overrides={"duration_s":6}')
-    assert not v["ready"] and v["settings"]["duration_s"] == 6 and v["settings"]["resolution"] == "1080p"
-    assert any("only at 8 s; this shot is 6 s" in c for c in labels(v["checks"], "fail"))
+    on(world, resolution="1080p")
+    v = plan(world, s, query='?overrides={"duration_s":16}')
+    assert not v["ready"] and v["settings"]["duration_s"] == 16 and v["settings"]["resolution"] == "1080p"
+    assert any("16 s cannot be rendered" in c for c in labels(v["checks"], "fail"))
     assert [c["tone"] for c in v["checks"]] == sorted((c["tone"] for c in v["checks"]),
                                                       key=lambda t: {"fail": 0, "advisory": 1, "pass": 2}[t])
 
@@ -240,14 +244,13 @@ def test_a_value_the_engine_cannot_take_is_a_blocking_check_never_a_silent_chang
 def test_a_draft_is_omni_flash_at_360p_whatever_the_productions_model(world: World, video: Settings,
                                                                      fired: list[dict]):
     s, _ = ready(world)
-    on(world, engine="veo_3_1", resolution="1080p", options={"person_generation": "allow_adult"},
-       negative_prompt="no text")
+    on(world, resolution="1080p")
     v = plan(world, s, query="?draft=true")
     assert (v["settings"]["engine"], v["settings"]["resolution"]) == ("omni_flash", "360p")
     assert v["settings"]["sources"]["engine"] == v["settings"]["sources"]["resolution"] == "draft"
-    assert v["settings"]["options"] == {} and v["settings"]["negative_prompt"] == "", "Veo's own knobs stay on Veo"
+    assert v["settings"]["options"] == {} and v["settings"]["negative_prompt"] == ""
     assert v["ready"], labels(v["checks"], "fail")
-    assert plan(world, s)["settings"]["engine"] == "veo_3_1", "the production's take is unchanged"
+    assert plan(world, s)["settings"]["resolution"] == "1080p", "the production's take is unchanged"
 
     r = world.client.post(shot_url(world, s, 1, "/renders"), json={"draft": True, "request_hash": v["request_hash"]},
                           headers=world.headers(world.director))
@@ -255,7 +258,7 @@ def test_a_draft_is_omni_flash_at_360p_whatever_the_productions_model(world: Wor
     (row,) = world.repos.renders.rows.values()  # type: ignore[attr-defined]
     assert row["engine"] == "omni_flash" and row["spec"]["resolution"] == "360p" and row["spec"]["draft"] is True
     assert row["request_hash"] == request_hash(RenderSpec.model_validate(row["spec"]))
-    assert r.json()["renders"][0]["settings_text"].startswith("Draft · Omni Flash 1.1 · 360p")
+    assert r.json()["renders"][0]["settings_text"].startswith("Draft · Omni Flash 1.2 · 360p")
     assert any(a["action"] == "video.draft" for a in world.repos.audit.entries)  # type: ignore[attr-defined]
     assert len(fired) == 1
 
@@ -269,6 +272,7 @@ def test_a_draft_and_the_real_take_are_different_requests(world: World, video: S
     assert r.status_code == 409 and not fired
 
 
+@VEO_RETIRED
 def test_veo_keeps_the_start_frame_and_lists_the_sheets_it_cannot_take_with_it(world: World, video: Settings):
     s, _ = ready(world)
     on(world, engine="veo_3_1")
@@ -424,6 +428,7 @@ def test_generate_inserts_a_queued_row_with_the_exact_request_and_dispatches_one
     assert audit and audit[0]["diff"]["takes"] == 1
 
 
+@VEO_RETIRED
 def test_one_press_makes_one_take_with_a_recorded_seed(world: World, video: Settings, fired: list[dict]):
     s, _ = ready(world)
     on(world, engine="veo_3_1")
@@ -454,12 +459,12 @@ def test_a_fixed_seed_on_an_engine_that_takes_none_is_refused_and_random_sends_n
 def test_generate_is_refused_with_the_failing_checks_when_the_request_cannot_be_sent(world: World, video: Settings,
                                                                                       fired: list[dict]):
     s, _ = ready(world)
-    on(world, engine="veo_3_1", resolution="1080p")
+    on(world, resolution="1080p")
     r = world.client.post(shot_url(world, s, 1, "/renders"), headers=world.headers(world.director),
-                          json={"overrides": {"duration_s": 6}})
+                          json={"overrides": {"duration_s": 16}})
     assert r.status_code == 422
     checks = r.json()["detail"]["checks"]
-    assert any("only at 8 s" in c["label"] for c in checks) and all(c["tone"] == "fail" for c in checks)
+    assert any("16 s cannot be rendered" in c["label"] for c in checks) and all(c["tone"] == "fail" for c in checks)
     assert not fired and not world.repos.renders.rows  # type: ignore[attr-defined]
 
 
@@ -539,9 +544,9 @@ def test_a_job_that_cannot_start_fails_its_rows_and_says_so(world: World, video:
 # ── make again, vary ───────────────────────────────────────────────────────────────────────────────────────────
 
 
-def _veo_render(world: World, s: dict, fired: list[dict]) -> dict:
-    on(world, engine="veo_3_1")
-    body = {"overrides": {"duration_s": 8, "seed": {"mode": "fixed", "value": 77}}}
+def _omni_render(world: World, s: dict, fired: list[dict]) -> dict:
+    """One render on Omni Flash 1.2 (plan/2026-11-19: was Veo with seed 77; Omni takes no seed)."""
+    body = {"overrides": {"duration_s": 8}}
     r = world.client.post(shot_url(world, s, 1, "/renders"), json=body, headers=world.headers(world.director))
     assert r.status_code == 202, r.text
     return r.json()["renders"][0]
@@ -550,18 +555,19 @@ def _veo_render(world: World, s: dict, fired: list[dict]) -> dict:
 def test_make_again_repeats_the_request_and_the_seed_and_vary_changes_only_the_seed(world: World, video: Settings,
                                                                                      fired: list[dict]):
     s, _ = ready(world)
-    first = _veo_render(world, s, fired)
+    first = _omni_render(world, s, fired)
     director = world.headers(world.director)
     again = world.client.post(url(world, f"/renders/{first['id']}/again"), json={}, headers=director)
     assert again.status_code == 202, again.text
     rows = world.repos.renders.rows  # type: ignore[attr-defined]
     a, b = rows[first["id"]], rows[again.json()["renders"][0]["id"]]
-    assert b["seed"] == a["seed"] == 77 and b["request_hash"] == a["request_hash"] and b["spec"] == a["spec"]
-    assert b["id"] != a["id"] and again.json()["seeds"] == "seed 77"
+    assert b["seed"] is None and a["seed"] is None
+    assert b["request_hash"] == a["request_hash"] and b["spec"] == a["spec"]
+    assert b["id"] != a["id"] and again.json()["seeds"] == ""
 
     vary = world.client.post(url(world, f"/renders/{first['id']}/again"), json={"vary": True}, headers=director)
     c = rows[vary.json()["renders"][0]["id"]]
-    assert c["seed"] != 77
+    assert c["seed"] is None, "an engine that takes no seed is new every take"
     assert c["spec"]["references"] == a["spec"]["references"] and c["spec"]["prose"] == a["spec"]["prose"]
     assert len(fired) == 3
     actions = {x["action"] for x in world.repos.audit.entries}  # type: ignore[attr-defined]
@@ -570,7 +576,7 @@ def test_make_again_repeats_the_request_and_the_seed_and_vary_changes_only_the_s
 
 def test_make_again_clears_recorded_hashes_and_is_permissioned(world: World, video: Settings, fired: list[dict]):
     s, _ = ready(world)
-    first = _veo_render(world, s, fired)
+    first = _omni_render(world, s, fired)
     rows = world.repos.renders.rows  # type: ignore[attr-defined]
     for ref in rows[first["id"]]["spec"]["references"]:
         ref["source"]["sha256"] = "a" * 64  # what the function records once it has sent them
@@ -584,9 +590,10 @@ def test_make_again_clears_recorded_hashes_and_is_permissioned(world: World, vid
     assert world.client.post(other, json={}, headers=world.headers(world.admin)).status_code == 404
 
 
+@VEO_RETIRED
 def test_seed_from_a_take_reuses_that_takes_seed(world: World, video: Settings, fired: list[dict]):
     s, _ = ready(world)
-    first = _veo_render(world, s, fired)
+    first = _omni_render(world, s, fired)
     take = world.repos.takes.rows  # type: ignore[attr-defined]
     asyncio.run(world.repos.takes.create({"id": "00000000-0000-0000-0000-000000000abc",
                                           "production_id": str(world.production), "shot_id": s["shots"][1]["id"],
@@ -608,12 +615,12 @@ def test_seed_from_a_take_reuses_that_takes_seed(world: World, video: Settings, 
 def test_a_render_shows_the_request_it_sent_with_pictures_through_tickets(world: World, video: Settings,
                                                                            fired: list[dict]):
     s, _ = ready(world)
-    first = _veo_render(world, s, fired)
+    first = _omni_render(world, s, fired)
     r = world.client.get(url(world, f"/renders/{first['id']}"), headers=world.headers(world.reviewer))
     v = r.json()
-    assert v["status"] == "queued" and v["engine_label"] == "Veo 3.1" and v["seed"] == 77
-    assert v["settings_text"].startswith("Veo 3.1 · 720p · 16:9 · 8 s") and v["settings_text"].endswith("seed 77")
-    assert v["request"]["prompt"].startswith("Nimal opens the door") and v["request"]["config"]["seed"] == 77
+    assert v["status"] == "queued" and v["engine_label"] == "Omni Flash 1.2" and v["seed"] is None
+    assert v["settings_text"].startswith("Omni Flash 1.2 · 720p · 16:9 · 8 s")
+    assert v["request"]["prompt"].startswith("Nimal opens the door") and "seed" not in v["request"]["config"]
     assert all("/files/" in x["url"] for x in v["request"]["references"])
     assert world.client.get(url(world, f"/renders/{first['id']}"),
                             headers=world.headers(world.outsider)).status_code == 404
@@ -623,7 +630,7 @@ def test_the_handoff_screen_lists_queued_renders_and_generated_takes_with_their_
                                                                                          fired: list[dict],
                                                                                          assembler: FakeAssembler):
     s, _ = ready(world)
-    first = _veo_render(world, s, fired)
+    first = _omni_render(world, s, fired)
     reviewer = world.headers(world.reviewer)
     v = world.client.get(shot_url(world, s, 1, "/handoff"), headers=reviewer).json()
     assert v["video_available"] and [r["status"] for r in v["renders"]] == ["queued"] and v["takes"] == []
@@ -638,8 +645,8 @@ def test_the_handoff_screen_lists_queued_renders_and_generated_takes_with_their_
     v = world.client.get(shot_url(world, s, 1, "/handoff"), headers=reviewer).json()
     (take,) = v["takes"]
     assert v["renders"] == [], "a finished render is shown as its take"
-    assert take["origin"] == "generated" and take["engine"] == "veo_3_1" and take["seed"] == 77
-    assert take["settings_text"].startswith("Veo 3.1") and take["render_id"] == first["id"]
+    assert take["origin"] == "generated" and take["engine"] == "omni_flash" and take["seed"] is None
+    assert take["settings_text"].startswith("Omni Flash 1.2") and take["render_id"] == first["id"]
     assert take["duration_s"] == 7.5 and take["duration_note"] == "7.5 s; the shot is 4 s", "probed on first sight"
     assert assembler.calls.count(("probe", "takes", "p/t.mp4")) == 1
     world.client.get(shot_url(world, s, 1, "/handoff"), headers=reviewer)
@@ -661,7 +668,7 @@ def test_an_upload_is_still_an_upload(world: World, video: Settings, assembler: 
 def test_a_render_that_never_finished_is_reported_failed(world: World, video: Settings, fired: list[dict],
                                                           assembler: FakeAssembler):
     s, _ = ready(world)
-    first = _veo_render(world, s, fired)
+    first = _omni_render(world, s, fired)
     old = (datetime.now(UTC) - timedelta(hours=2)).isoformat()
     world.repos.renders.rows[first["id"]].update(status="running", updated_at=old)  # type: ignore[attr-defined]
     v = world.client.get(shot_url(world, s, 1, "/handoff"), headers=world.headers(world.reviewer)).json()
@@ -671,21 +678,25 @@ def test_a_render_that_never_finished_is_reported_failed(world: World, video: Se
 
 def test_the_model_and_size_are_chosen_when_the_production_is_created_and_never_change(world: World):
     admin = world.headers(world.admin)
-    base = {"title": "Veo drama", "orientation": "horizontal"}
-    video = {"engine": "veo_3_1", "resolution": "1080p"}
+    base = {"title": "Omni drama", "orientation": "horizontal"}
+    video = {"engine": "omni_flash", "resolution": "1080p"}
     r = world.client.post("/v1/productions", json={**base, "settings": {"video": video}}, headers=admin)
     assert r.status_code == 201, r.text
     pid = r.json()["id"]
-    assert r.json()["settings"]["video"]["engine"] == "veo_3_1"
+    assert r.json()["settings"]["video"]["engine"] == "omni_flash"
     assert r.json()["settings"]["video"]["resolution"] == "1080p"
-    for bad in ({"engine": "veo_3_1", "resolution": "360p"}, {"engine": "omni_flash", "resolution": "4k"},
+    for bad in ({"engine": "omni_flash", "resolution": "360p"}, {"engine": "omni_flash", "resolution": "4k"},
                 {"engine": "nope"}):
         assert world.client.post("/v1/productions", json={**base, "settings": {"video": bad}},
                                  headers=admin).status_code == 422, bad
+    # plan/2026-11-19: a request for Veo is made on Omni Flash 1.2, the only model
+    old = world.client.post("/v1/productions", json={**base, "settings": {"video": {"engine": "veo_3_1"}}},
+                            headers=admin)
+    assert old.status_code == 201 and old.json()["settings"]["video"]["engine"] == "omni_flash"
 
     stored = world.repos.productions.rows[pid]["settings"]  # type: ignore[attr-defined]
-    for change in ({"engine": "omni_flash", "resolution": "1080p"}, {"engine": "veo_3_1", "resolution": "720p"},
-                   {"engine": "veo_3_1", "resolution": "1080p", "model": "veo-3.1-generate-002"}):
+    for change in ({"engine": "omni_flash", "resolution": "720p"},
+                   {"engine": "omni_flash", "resolution": "1080p", "model": "gemini-omni-9"}):
         r = world.client.patch(f"/v1/productions/{pid}", json={"settings": {"video": change}}, headers=admin)
         assert r.status_code == 422 and "cannot be changed" in r.text, change
     assert world.repos.productions.rows[pid]["settings"] == stored  # type: ignore[attr-defined]
@@ -693,7 +704,7 @@ def test_the_model_and_size_are_chosen_when_the_production_is_created_and_never_
     # other settings save; the video choice they did not send is kept, never reset to the default
     r = world.client.patch(f"/v1/productions/{pid}", json={"settings": {"spoken_language": "en"}}, headers=admin)
     assert r.status_code == 200, r.text
-    assert r.json()["settings"]["video"]["engine"] == "veo_3_1" and r.json()["settings"]["spoken_language"] == "en"
+    assert r.json()["settings"]["video"]["resolution"] == "1080p" and r.json()["settings"]["spoken_language"] == "en"
     same = {**video, "seed": {"mode": "fixed", "value": 9}}
     r = world.client.patch(f"/v1/productions/{pid}", json={"settings": {"video": same}}, headers=admin)
     assert r.status_code == 200 and r.json()["settings"]["video"]["seed"]["value"] == 9
@@ -725,37 +736,29 @@ def test_the_shot_panel_is_both_plans_and_the_handoff_from_one_load(world: World
                             headers=world.headers(world.outsider)).status_code == 404
 
 
-def test_the_card_picks_omni_flash_1_2_for_the_take_and_the_draft(world: World, video: Settings, fired: list[dict]):
+def test_the_card_has_one_model_and_no_version_to_pick(world: World, video: Settings, fired: list[dict]):
+    """plan/2026-11-19: Omni Flash 1.2 only. The plan offers one engine with no versions; a press that names a model
+    is refused, never swapped."""
     s, _ = ready(world)
-    url = shot_url(world, s, 1, "/render-plans?model=gemini-omni-1.2-flash")
-    both = world.client.get(url, headers=world.headers(world.reviewer)).json()
-    for kind in ("take", "draft"):
-        assert both[kind]["settings"]["model"] == "gemini-omni-1.2-flash", kind
-        assert both[kind]["settings"]["sources"]["model"] == "run" and both[kind]["ready"], kind
-    omni = next(e for e in both["take"]["engines"] if e["key"] == "omni_flash")
-    assert [v["label"] for v in omni["versions"]] == ["1.1", "1.2"]
-
-    r = world.client.post(shot_url(world, s, 1, "/renders"),
-                          json={"overrides": {"model": "gemini-omni-1.2-flash"},
-                                "request_hash": both["take"]["request_hash"]},
-                          headers=world.headers(world.director))
-    assert r.status_code == 202, r.text
-    (row,) = world.repos.renders.rows.values()  # type: ignore[attr-defined]
-    assert row["model"] == row["spec"]["model"] == "gemini-omni-1.2-flash"
-    assert r.json()["renders"][0]["settings_text"].startswith("Omni Flash 1.2 · ")
-
+    both = world.client.get(shot_url(world, s, 1, "/render-plans"), headers=world.headers(world.reviewer)).json()
+    assert [e["key"] for e in both["take"]["engines"]] == ["omni_flash"]
+    omni = both["take"]["engines"][0]
+    assert omni["versions"] == [] and omni["model"] == "gemini-omni-1.2-flash" and omni["label"] == "Omni Flash 1.2"
+    assert omni["durations"] == list(range(3, 16))
     bad = world.client.get(shot_url(world, s, 1, "/render-plans?model=gemini-omni-9"),
                            headers=world.headers(world.reviewer)).json()
-    assert not bad["draft"]["ready"] and any("Choose 1.1 or 1.2" in c for c in labels(bad["draft"]["checks"], "fail"))
+    assert not bad["draft"]["ready"] and any("no versions" in c for c in labels(bad["draft"]["checks"], "fail"))
+    r = world.client.post(shot_url(world, s, 1, "/renders"), json={"overrides": {"model": "gemini-omni-9"}},
+                          headers=world.headers(world.director))
+    assert r.status_code == 422 and not fired
 
 
-def test_on_a_veo_production_the_pick_moves_the_draft_only(world: World, video: Settings, fired: list[dict]):
+def test_a_production_stored_on_veo_makes_its_takes_on_omni_flash_1_2(world: World, video: Settings):
     s, _ = ready(world)
-    on(world, engine="veo_3_1", resolution="720p")
-    both = world.client.get(shot_url(world, s, 1, "/render-plans?model=gemini-omni-1.2-flash"),
-                            headers=world.headers(world.reviewer)).json()
-    assert both["take"]["settings"]["engine"] == "veo_3_1" and both["take"]["settings"]["sources"]["model"] != "run"
-    assert both["draft"]["settings"]["model"] == "gemini-omni-1.2-flash"
+    on(world, engine="veo_3_1", resolution="720p", options={"person_generation": "allow_adult"})
+    both = world.client.get(shot_url(world, s, 1, "/render-plans"), headers=world.headers(world.reviewer)).json()
+    assert both["take"]["settings"]["engine"] == "omni_flash" and both["take"]["settings"]["options"] == {}
+    assert both["take"]["ready"], labels(both["take"]["checks"], "fail")
 
 
 def test_a_cards_face_asset_is_a_face_sheet_and_its_other_sheets_stay_canon_sheets():

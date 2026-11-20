@@ -18,7 +18,9 @@ from pydantic import BaseModel, ConfigDict, Field
 # The coverage contract's lists, repeated: `contracts.zora` imports only itself (tests/zora/test_isolation.py), and
 # tests/zora/test_wire_shapes.py holds these equal to `contracts.coverage.scene`.
 SIZES: tuple[str, ...] = ("WIDE", "MS", "MCU", "CU", "TWO", "OTS", "INSERT")
-TAKES: tuple[int, ...] = (4, 6, 8)
+# Every length Omni Flash 1.2 makes (plan/2026-11-19): a model may name any; the kernel refuses one the production
+# does not allow, with its lengths in the reason.
+RENDERABLE: tuple[int, ...] = tuple(range(3, 16))
 CINE: tuple[str, ...] = ("angle", "lens", "movement")
 IR_TEXT: tuple[str, ...] = ("setting", "lighting", "audio")
 IR_JSON: tuple[str, ...] = ("beats", "subjects", "first_frame")
@@ -114,12 +116,12 @@ def op_shapes(set_fields: tuple[str, ...] = SET_FIELDS) -> dict[str, dict[str, A
     shot = {"type": "string"}
     return {
         "set": {"shot": shot, "field": _enum(set_fields), "value": {"type": "string"}},
-        "retime": {"shot": shot, "take_s": _enum(TAKES, "integer")},
+        "retime": {"shot": shot, "take_s": _enum(RENDERABLE, "integer")},
         "sound": {"shot": shot, "field": _enum(SOUND_FIELDS), "value": {"type": "string"}},
         "sound_mode": {"shot": shot, "value": _enum(SOUND_MODES)},
         "role": {"shot": shot, "role": _S, "priority": _enum_or_null(PRIORITIES)},
         "insert": {"after": {"type": "string"}, "role": {"type": "string"}, "size": _enum(SIZES),
-                   "take_s": _enum_or_null(TAKES, "integer"), "first_block": {"type": "integer"}, "last_block": _I,
+                   "take_s": _enum_or_null(RENDERABLE, "integer"), "first_block": {"type": "integer"}, "last_block": _I,
                    "who": {"type": "array", "items": {"type": "string"}}, "what": _S},
         "remove": {"shot": shot},
         "split": {"shot": shot, "at_block": {"type": "integer"}},

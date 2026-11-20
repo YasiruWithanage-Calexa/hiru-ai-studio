@@ -1,5 +1,8 @@
 """One shot_producer job: design the shots that need it, and (mode `prompt`) write their prompts.
 
+Not deployed (`AI_ENGINE=legacy`; deploy-functions.yml runs the graph engine): since plan/2026-11-20b, video prompts are
+written only by the graph engine's video prompt agent. This engine keeps its code prompt until it is removed.
+
 Per scene, in order (plan/2026-11-01): the INTENT agent says what each shot is for and who is
 seen or only heard, and writes the scene's coverage plan; the DoP designs the scene in one call;
 a REVIEW reads the drafts against the intent and the free staging checks, and at most ONE
@@ -26,6 +29,7 @@ from datetime import UTC, datetime
 from typing import Any, Protocol
 from uuid import UUID
 
+from contracts import video_gen
 from contracts.canon import wardrobe_by_code
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.producer import CameraSettings, prompt_text
@@ -48,7 +52,8 @@ AGENT_DP = "director_of_photography"
 AGENT_INTENT = "first_assistant_director"
 AGENT_REVIEW = "design_review"
 AGENT_PROMPT = "prompt_writer"
-VIDEO_MODEL = "Veo 3.1"
+# The engine a prompt is written for, in words (plan/2026-11-19: Omni Flash 1.2 only).
+VIDEO_MODEL = video_gen.engine_label(video_gen.DEFAULT_ENGINE)
 Row = dict[str, Any]
 
 

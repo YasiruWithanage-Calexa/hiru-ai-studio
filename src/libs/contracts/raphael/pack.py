@@ -16,9 +16,10 @@ from collections import Counter
 from typing import Any
 
 from contracts.raphael.bin import Bin
-from contracts.raphael.checks import PER_MOMENT_MAX, SHORT_SHARE, limit_s
+from contracts.raphael.checks import PER_MOMENT_MAX, SHORT_SHARE, limit_s, target_s
 from contracts.raphael.scene import Brief, SceneS, heard_names, listing, long_actions, script_s
 from contracts.raphael.wire import STAGE1_CAP, BreakdownW
+from contracts.take_lengths import SOFT_CAP_S, describe
 
 
 def _words(text: Any) -> str:
@@ -83,6 +84,12 @@ def voice_only(scene: SceneS) -> str:
     )
 
 
+def _basis(brief: Brief) -> str:
+    """What the cap multiplies, in words: the given length, or the script's time when that is longer (D6)."""
+    target = target_s(brief)
+    return "the given length" if target <= brief.guide_s + 1e-9 else f"the script's {target:.0f} s"
+
+
 def length_block(brief: Brief) -> str:
     """The length rule in seconds (never money): the target is the given length, stage 1's cap is 1.5x and is hard,
     and (plan/2026-11-08f §3) a bin under 80 % of the target cannot finish. The script's own time is worked out by code
@@ -90,9 +97,10 @@ def length_block(brief: Brief) -> str:
     cap = limit_s(brief, STAGE1_CAP)
     if not cap:
         return ""
-    floor = brief.guide_s * SHORT_SHARE
+    target = target_s(brief)
+    floor = target * SHORT_SHARE
     own = script_s(brief.scene)
-    cover = max(brief.guide_s - own, 0.0)
+    cover = max(target - own, 0.0)
     gap = (
         f"The script itself times at {own:.0f} s (its actions and lines on one clock); the other {cover:.0f} s of the "
         "target is COVERAGE of the same moments: the master, each speaker's single, the listener's reaction where a "
@@ -108,10 +116,23 @@ def length_block(brief: Brief) -> str:
         if long
         else ""
     )
+    takes = (  # plan/2026-11-19: said only when the lengths are not 4/6/8, so an old production's opening is unchanged
+        ""
+        if brief.scene.legacy
+        else f"A take here is {describe(tuple(brief.scene.takes))}; past {SOFT_CAP_S} s only for one continuous "
+        "action or one line. "
+    )
+    longer = (  # plan/2026-11-20 D6: the script's words are not optional, the given length is an estimate
+        f"The script times at {own:.0f} s, longer than the given {brief.guide_s:g} s, so the target and the cap are "
+        "measured from the script. "
+        if target > brief.guide_s + 1e-9
+        else ""
+    )
     return (
-        f"<length>\nThe scene is {brief.guide_s:g} s long. TARGET: a bin of about {brief.guide_s:g} s of takes. "
-        f"{gap}{spread}"
-        f"CAP: {cap:g} s of takes (the given length x {STAGE1_CAP:g}); `finish` refuses a bin over it, and a bin "
+        f"<length>\nThe scene is {brief.guide_s:g} s long. TARGET: a bin of about {target:g} s of takes. "
+        f"{longer}{takes}{gap}{spread}"
+        f"CAP: {cap:g} s of takes ({'the target' if longer else 'the given length'} x {STAGE1_CAP:g}); `finish` "
+        f"refuses a bin over it, and a bin "
         f"under {floor:g} s. The room between the target and the cap is allowed, not expected.\n</length>"
     )
 
@@ -317,7 +338,7 @@ def room_block(brief: Brief, work: Bin, cap: float) -> str:
     room = (
         f"The scene is {brief.guide_s:g} s long. The must bin holds {held} s of takes. CAP: {total:g} s of takes for "
         f"the "
-        f"WHOLE bin (the given length x {cap:g}): {max(total - held, 0):g} s left for cinematic clips. "
+        f"WHOLE bin ({_basis(brief)} x {cap:g}): {max(total - held, 0):g} s left for cinematic clips. "
         if total
         else f"The must bin holds {held} s of takes. "
     )

@@ -1,0 +1,115 @@
+{
+ "op": "check",
+ "direction": {
+  "situation": "On a rainy Colombo roadside, Anudi has ended her father's phone call and turns back with her earlier warmth diminished. Kasun notices the change without knowing what caused it.",
+  "people": "Kasun stands frame right, facing Anudi off frame left, beside his small food three-wheeler in the right background. He wears a plain faded blue short-sleeved shirt; his empty hands remain below frame, and his friendly ease gives way to quiet concern.",
+  "flow": [
+   {
+    "kind": "action",
+    "text": "Kasun keeps his eyes on Anudi off frame left. His small smile settles and his brow gathers slightly as her changed manner registers.",
+    "line_id": "",
+    "to": "",
+    "how": "",
+    "listener": ""
+   },
+   {
+    "kind": "action",
+    "text": "His eyes dip briefly, giving her space, then return to her eyeline. He presses his closed lips together lightly and releases them without an intrusive gesture.",
+    "line_id": "",
+    "to": "",
+    "how": "",
+    "listener": ""
+   },
+   {
+    "kind": "action",
+    "text": "His brow relaxes while his attention stays with her. He remains facing left, quietly considerate, with his lips closed and hands below frame.",
+    "line_id": "",
+    "to": "",
+    "how": "",
+    "listener": ""
+   }
+  ],
+  "camera": "A road-side oblique close-up on a 100mm lens holds Kasun frame right against left negative space, with shallow isolation in a steady frame on a tripod.",
+  "sound": "Light rain beside the roadside three-wheeler and Kasun's quiet breathing; no speech, no music."
+ },
+ "clip": {
+  "code": "S15",
+  "slate": "4H-1",
+  "role": "reaction",
+  "size": "CU",
+  "framing_words": "CU of Kasun on frame right, looking into left negative space",
+  "angle": "road-side oblique view of Kasun",
+  "lens": "100mm",
+  "technique": "shallow_isolation",
+  "movement": "locked-off shallow isolation",
+  "locked_off": true,
+  "take_s": 4,
+  "why": "Gives the editor a private registration of her changed manner while the shared master preserves geography; he has no knowledge of the remote conversation.",
+  "summary": "A road-side close-up isolates Kasun as he studies Anudi's changed expression, then steadies his gaze during L15.",
+  "setting": "A rainy Colombo roadside beside Kasun's small food three-wheeler, parked in right background.",
+  "light": "Overcast daylight from the road side softly keys faces, falling off toward the shaded three-wheeler under continuous light rain.",
+  "in_frame": [
+   {
+    "name": "Kasun",
+    "description": "Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers.",
+    "position": "Standing roadside frame right facing left; hands empty below frame, food three-wheeler behind him to the right.",
+    "action": "Looks toward Anudi off frame left, briefly lowers his gaze, then meets her eyeline again with lips closed."
+   },
+   {
+    "name": "Anudi",
+    "description": "Anudi.",
+    "position": "",
+    "action": ""
+   }
+  ],
+  "heard_people": [],
+  "voice_source": "",
+  "over": "L15 on c10",
+  "hands": "Hands: Kasun is not holding the phone. Anudi holds the phone in one hand. Even this close, what each person holds stays in the picture (part of it in frame), never left out.",
+  "beats": [
+   {
+    "time": "0-2s",
+    "director_line": "Her altered manner registers in his pause.",
+    "action": "Kasun holds his gaze off frame left. His small smile settles and his brow gathers slightly. His eyes dip briefly and return toward Anudi.",
+    "performance": "He presses his lips together lightly, then releases them."
+   },
+   {
+    "time": "2-4s",
+    "director_line": "Leave room for the considerate response in the next cut.",
+    "action": "He stays facing left with his hands below frame.",
+    "performance": "His brow relaxes while his eyes remain on her."
+   }
+  ],
+  "sound": {
+   "ambience": "Light rain, reference only.",
+   "effects": "None.",
+   "music": "None added."
+  },
+  "sound_mode": "ambient",
+  "lines": [
+   {
+    "lid": "L15",
+    "id": "E01-S04-B16",
+    "text": "\"එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු.\"",
+    "speaker": "Anudi",
+    "character_id": "id-C02",
+    "heard": false,
+    "part": 0,
+    "parts": 0
+   }
+  ],
+  "edit_lines": [
+   "L15"
+  ],
+  "opening": "The clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.",
+  "opening_note": "on the accepted first frame",
+  "carried_from": "",
+  "join": "",
+  "join_note": "",
+  "carried": "",
+  "voices_missing": [
+   "Anudi"
+  ],
+  "aspect_ratio": "16:9"
+ }
+}

@@ -164,8 +164,11 @@ class SceneReading(BaseModel):
 
 
 def block_key(item: Item) -> str:
-    """A block's identity that survives a re-numbering: its kind and its words (a line: its id)."""
-    raw = f"{item.kind}|{item.line_id or ''}|{' '.join(item.text.split())}"
+    """A block's identity that survives a re-numbering: its kind and its words (a line: its id). A line's first part
+    (plan/2026-11-20) is the line itself, so what a reading or a map says about the line resolves to where it starts;
+    a later part is its own block."""
+    words = item.whole or item.text
+    raw = f"{item.kind}|{item.line_id or ''}|{' '.join(words.split())}" + (f"#{item.part}" if item.part > 1 else "")
     return hashlib.sha1(raw.encode("utf-8"), usedforsecurity=False).hexdigest()[:10]
 
 

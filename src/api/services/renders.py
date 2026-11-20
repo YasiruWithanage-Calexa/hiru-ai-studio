@@ -50,6 +50,7 @@ from contracts.video_gen import (
     default_references,
     describe_spec,
     draw_seeds,
+    engine_label,
     request_hash,
     resolve,
     seed_note,
@@ -437,7 +438,7 @@ def render_view(row: Row, *, with_request: bool = False) -> RenderView:
         built = build_request(spec)
         request = RequestView(prompt=built["prompt"], references=ref_out(spec), config=built["config"])
     return RenderView(id=row["id"], shot_id=row["shot_id"], status=str(row["status"]), engine=str(row["engine"]),
-                      engine_label=cap.label if cap else str(row["engine"]),
+                      engine_label=cap.label if cap else engine_label(str(row["engine"])),
                       settings_text=describe_spec(spec) if spec else str(row["engine"]), seed=row.get("seed"),
                       take_id=row.get("take_id"), error=row.get("error"), refusal=row.get("refusal"),
                       created_at=str(row["created_at"]), request=request)

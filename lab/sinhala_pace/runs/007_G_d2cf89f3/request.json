@@ -1,0 +1,18 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "Vertical medium close-up of one Sri Lankan woman in her thirties in a quiet office, soft daylight, static camera, her face and mouth clearly visible.\n\nShe says exactly this line once, in Sinhala as written (English words as English), at a natural, unhurried pace, as an actor in a Sri Lankan TV drama would, every word clear:\n\"Company B එක AI integration එක හොඳට කරනවලු. ගිහින් බලලා එන්න.\"\n\nShe begins about half a second in. After the last word she stays silent and still with a calm expression until the shot ends. No one else speaks.\n\nSound: only this voice in a quiet room. No music, no background voices, no sound effects."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "9:16",
+  "resolution": "360p",
+  "duration": "10s",
+  "delivery": "uri"
+ }
+}

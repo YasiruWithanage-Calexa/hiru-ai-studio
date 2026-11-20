@@ -52,7 +52,7 @@ def converse_args(inp: Input, run: Stage1Session) -> dict[str, Any]:
         run.turn = turn
 
     return {
-        "tools": wire_schema.stage1_specs(),
+        "tools": wire_schema.stage1_specs(tuple(inp.scene.takes)),  # plan/2026-11-19: the production's lengths
         "call_tool": run.call,
         "finished": lambda: run.done,
         "max_turns": inp.max_turns,

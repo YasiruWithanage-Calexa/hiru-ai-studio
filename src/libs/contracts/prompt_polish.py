@@ -1,7 +1,8 @@
 """Polishing a prompt's wording without losing a fact (the `prompt_writer` agent's rules, in code).
 
-Code writes every prompt first, from what the shot planner saved: that text is complete and testable. The agent may
-then rewrite the DESCRIPTIVE sections as film language for the image or video model. It never sees the parts whose words
+Code writes every first-frame prompt first, from what the shot planner saved: that text is complete and testable. The
+agent may then rewrite the DESCRIPTIVE sections as film language for the image model (a video prompt is the video
+prompt agent's since plan/2026-11-20b, D12). It never sees the parts whose words
 are load-bearing (the attached pictures and their numbers, the spoken lines, who is only heard, the fixed rules and the
 format), and its answer is checked here, section by section:
 
@@ -30,12 +31,11 @@ from pydantic import BaseModel, Field
 from contracts import safe_depiction
 
 Row = dict[str, Any]
-Kind = Literal["first_frame", "video"]
+Kind = Literal["first_frame"]  # plan/2026-11-20b D12: the video path is gone
 
-# The sections a model may reword. Everything else is sent to the image or video model exactly as code wrote it.
+# The sections a model may reword. Everything else is sent to the image model exactly as code wrote it.
 POLISHABLE: dict[str, tuple[str, ...]] = {
     "first_frame": ("shot", "composition", "people", "place", "light", "colour", "mood"),
-    "video": ("setting", "subjects", "story", "camera", "lighting"),
 }
 # Words whose loss changes the picture: screen side, the time of day, the weather, interior or exterior.
 _KEY_WORDS = ("left", "right", "night", "dawn", "dusk", "sunset", "sunrise", "morning", "evening", "afternoon",

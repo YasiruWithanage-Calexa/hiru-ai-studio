@@ -23,12 +23,14 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
+from contracts.take_lengths import describe
 from contracts.timing import word_target
 from contracts.veo import SoundMode
 
 Row = dict[str, Any]
 SIZES = ("WIDE", "MS", "MCU", "CU", "TWO", "OTS", "INSERT")  # the database's list (shots.framing)
-TAKES = (4, 6, 8)
+TAKES = (4, 6, 8)  # a production made before plan/2026-11-19; a newer one's are `Coverage.takes`
+RENDERABLE = tuple(range(3, 16))  # every length Omni Flash 1.2 makes: what a model may name (the kernel checks)
 LINKS = ("cut", "continuous", "match")
 CINE = ("angle", "lens", "movement")  # read from and written to ir.cinematography
 IR_TEXT = ("setting", "lighting", "audio")  # plain text parts of the IR
@@ -72,6 +74,31 @@ class Line:
     words: int
     character_id: str = ""
     by: str = ""  # the handle of the clip that performs it, "" = none
+    # plan/2026-11-20: a part of a long line (k of n); `text` and `words` are the part's. 0 / 0 = a whole line.
+    part: int = 0
+    parts: int = 0
+
+
+def _part_blocks(script: list[Any], line_rows: list[Row]) -> tuple[list[Block], dict[str, Line]]:
+    """A scene planned with its long lines in parts (`scenes.line_parts`): the blocks as the shots count them, each part
+    of a line its own block and line id (L<block>, the id Raphael's cards use)."""
+    from contracts import sceneplan
+
+    blocks: list[Block] = []
+    out: dict[str, Line] = {}
+    rows = {str(r["id"]): r for r in line_rows}
+    for item in sceneplan.items_for([dict(b or {}) for b in script], [dict(r) for r in line_rows], parts=True):
+        if not item.is_line:
+            blocks.append(Block(item.index, item.kind, item.text))
+            continue
+        row = rows[str(item.line_id)]
+        lid = f"L{item.index}"
+        out[lid] = Line(lid, str(row["id"]), item.index, str(row.get("speaker") or ""), item.text,
+                        str(row.get("delivery") or ""), item.words if item.is_part else int(row.get("words") or
+                                                                                            item.words),
+                        str(row.get("character_id") or ""), part=item.part, parts=item.parts)
+        blocks.append(Block(item.index, "dialogue", "", str(row.get("speaker") or ""), lid))
+    return blocks, out
 
 
 @dataclass
@@ -125,13 +152,27 @@ def _obj(value: Any) -> Row:
     return dict(value) if isinstance(value, dict) else {}
 
 
-def _take(seconds: Any) -> int:
-    """A stored length as a take Veo makes (4 / 6 / 8 s)."""
+def _take(seconds: Any, takes: tuple[int, ...] = TAKES) -> int:
+    """A stored length as one of the production's takes: the shortest that holds it, else the longest (4/6/8 by
+    default; plan/2026-11-19)."""
     try:
         s = int(float(seconds or 0))
     except (TypeError, ValueError):
         s = 0
-    return 4 if s <= 4 else 6 if s <= 6 else 8
+    ordered = sorted(takes) or list(TAKES)
+    return next((t for t in ordered if s <= t), ordered[-1])
+
+
+def takes_of(production: Mapping[str, Any] | None) -> tuple[int, ...]:
+    """The lengths a production row's shots may have (`ProductionSettings.takes`); 4/6/8 when there is no row."""
+    if not production:
+        return TAKES
+    from contracts.production import ProductionSettings
+
+    try:
+        return ProductionSettings.model_validate(production.get("settings") or {}).takes
+    except ValueError:
+        return TAKES
 
 
 @dataclass
@@ -147,14 +188,17 @@ class Coverage:
     scene_id: str = ""
     production_id: str = ""
     next_new: int = 1
+    takes: tuple[int, ...] = TAKES  # the lengths the production's shots may have (plan/2026-11-19)
 
     # ── loading ──────────────────────────────────────────────────────────────────────────────────────────────
 
     @classmethod
     def from_rows(cls, scene: Mapping[str, Any], shots: list[Row], lines: list[Row],
-                  characters: list[Row] | None = None) -> Coverage:
+                  characters: list[Row] | None = None, *, takes: tuple[int, ...] | None = None) -> Coverage:
         """The scene row (`heading`, `envelope_s`, `script`), its shot rows, its dialogue line rows and the production's
-        characters (`id`, `name`, `code`), as the ports return them."""
+        characters (`id`, `name`, `code`), as the ports return them. `takes`: the production's lengths
+        (`takes_of(production row)`); 4/6/8 when not given."""
+        allowed = tuple(takes or TAKES)
         chars = characters or []
         names = {str(c["id"]): str(c.get("name") or "") for c in chars if c.get("id")}
         names.update({str(c["code"]): str(c.get("name") or "") for c in chars if c.get("code")})
@@ -166,6 +210,9 @@ class Coverage:
         blocks: list[Block] = []
         out_lines: dict[str, Line] = {}
         spoken = iter(line_rows)
+        if scene.get("line_parts"):  # plan/2026-11-20: numbered as the shots are, each part of a long line a block
+            blocks, out_lines = _part_blocks(script, line_rows)
+            script = []
         for i, b in enumerate(script):
             kind = str((b or {}).get("kind") or "action")
             if kind == "dialogue":
@@ -195,7 +242,7 @@ class Coverage:
                 h=f"h{n}", row_id=str(r["id"]), slate=str(r.get("slate") or ""), role=str(r.get("role") or ""),
                 priority=str(r.get("priority") or ""), stage=int(r.get("stage") or 0),
                 anchor=[str(a) for a in r.get("anchor") or []], blend=str(r.get("blend") or ""),
-                size=size if size in SIZES else "MS", take_s=_take(r.get("duration_s")),
+                size=size if size in SIZES else "MS", take_s=_take(r.get("duration_s"), allowed),
                 link=str(r.get("camera_link") or "cut"), sound_mode=str(r.get("sound_mode") or "ambient"),
                 first=int(r.get("block_start") or 0), last=int(r.get("block_end") or 0),
                 why=str(intent.get("purpose") or ""), sees=str(intent.get("what_we_see") or ""),
@@ -207,11 +254,22 @@ class Coverage:
         cov = cls(heading=str(scene.get("heading") or ""), target_s=int(float(scene.get("envelope_s") or 0)),
                   blocks=blocks, lines=out_lines, clips=clips, names=names,
                   rows={str(r["id"]): dict(r) for r in ordered}, line_rows={str(r["id"]): dict(r) for r in line_rows},
-                  scene_id=str(scene.get("id") or ""), production_id=str(scene.get("production_id") or ""))
+                  scene_id=str(scene.get("id") or ""), production_id=str(scene.get("production_id") or ""),
+                  takes=allowed)
         by_row_clip = {c.row_id: c.h for c in clips}
         for ln in out_lines.values():
             ln.by = by_row_clip.get(str(by_row[ln.row_id].get("shot_id") or ""), "")
+            if ln.part > 1:  # a later part: performed by the first clip that voices it (its row names the first part's)
+                ln.by = next((c.h for c in clips if ln.lid in c.heard and c.sound_mode in VOICED), ln.by)
         return cov
+
+    def row_binding(self) -> dict[str, str]:
+        """Line row id -> the handle of the clip it is bound to: a line in parts is bound where its FIRST part is
+        performed (plan/2026-11-20 D8); a whole line where it is."""
+        out: dict[str, str] = {}
+        for ln in sorted(self.lines.values(), key=lambda x: x.block):
+            out.setdefault(ln.row_id, ln.by)
+        return out
 
     # ── addressing ───────────────────────────────────────────────────────────────────────────────────────────
 
@@ -311,7 +369,8 @@ class Coverage:
         and camera (a whole-scene task's view: lab run 6)."""
         musts = sum(c.take_s for c in self.clips if c.priority == "must")
         head = (f"SCENE: {self.heading}\nTARGET LENGTH: {self.target_s} s of screen time. TAKES: {self.total_s()} s in "
-                f"{len(self.clips)} clips ({musts} s in must clips).\nThis is COVERAGE: clips overlap, several clips "
+                f"{len(self.clips)} clips ({musts} s in must clips). A take here is {describe(self.takes)}.\n"
+                "This is COVERAGE: clips overlap, several clips "
                 "may show the same block (a master, singles, reactions, inserts); the editor cuts between them. Each "
                 "line is performed by exactly one clip; other clips over its block play silent or under it.")
         blocks = "BLOCKS (the script, read-only)\n" + "\n".join(self.block_text(b) for b in self.blocks)

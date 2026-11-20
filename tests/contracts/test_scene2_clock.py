@@ -13,8 +13,9 @@ def test_s05_and_s06_as_stored_are_crowded_and_nothing_is_trimmed():
     r = fit(scene2.items(), plan, envelope_s=35)
     s05, s06 = r.shots[-2], r.shots[-1]
     assert r.crowded == [s05.number, s06.number]
-    assert round(s05.need_s, 1) == 9.4 and s05.duration_s == 8 and s06.duration_s == 4
-    assert any(f"S{s05.number:02d} needs about 9.4 s" in i.message for i in r.issues if i.code == "crowded")
+    # plan/2026-11-20 D1: the lead-in of 1 s and a pause at each sentence end inside the father's line
+    assert round(s05.need_s, 1) == 11.0 and s05.duration_s == 8 and s06.duration_s == 4
+    assert any(f"S{s05.number:02d} needs about 11.0 s" in i.message for i in r.issues if i.code == "crowded")
     assert [ln.words for ln in r.lines if ln.line_id in ("l5", "l6")] == [13, 4]  # the lines are whole
 
 
@@ -26,8 +27,11 @@ def test_as_a_proposal_the_call_is_split_and_the_voice_follows_the_ring():
     assert (by_start[9].end, by_start[12].start) == (12, 12), "the ring and the look first, then the voice"
     assert by_start[12].end == 13 and by_start[12].sound_mode.value == "voiceover"
     father = next(ln for ln in r.lines if ln.line_id == "l5")
-    assert father.shot_number == by_start[12].number and father.overrun_s == 0
-    assert not r.crowded and all(i.code != "line_overrun" for i in r.issues)
+    assert father.shot_number == by_start[12].number and father.words == 13
+    # on the measured clock (plan/2026-11-20 D1) his line alone needs 9 s: past the old 8 s ladder, it is reported and
+    # never trimmed (Raphael covers it in parts; this is the classic kernel's 4/6/8)
+    assert father.overrun_s > 0 and any(i.code == "line_overrun" and i.line_id == "l5" for i in r.issues)
+    assert not r.crowded
 
 
 def test_the_voice_never_starts_before_the_phone_has_rung():

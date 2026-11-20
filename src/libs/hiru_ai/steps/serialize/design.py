@@ -7,6 +7,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
+from contracts import video_gen
 from contracts.producer import CameraSettings, prompt_text
 from contracts.staging import AUTHORED
 from hiru_ai.core import parts
@@ -15,7 +16,8 @@ from hiru_ai.steps.serialize import shots
 from hiru_ai.steps.serialize.model import ProductionInput, SceneInput, ShotInput
 
 Row = dict[str, Any]
-VIDEO_MODEL = "Veo 3.1"
+# The engine a prompt is written for, in words (plan/2026-11-19: Omni Flash 1.2 only).
+VIDEO_MODEL = video_gen.engine_label(video_gen.DEFAULT_ENGINE)
 positions_text = parts.step("feeling").positions_text
 
 

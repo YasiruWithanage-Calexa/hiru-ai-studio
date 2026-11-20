@@ -1,6 +1,6 @@
 """The prompt writer plugged into shot_producer (plan/2026-11-11c), with a scripted model: the first frame's descriptive
-sections are reworded and stored on the shot, a video prompt's descriptive sections are reworded while its action and
-dialogue stay as code wrote them, a rewrite that loses a fact is not used, and nothing is called when the writer is off.
+sections are reworded and stored on the shot, a rewrite that loses a fact is not used, and nothing is called when the
+writer is off. Its video path is gone (plan/2026-11-20b D12): `test_video_prompt_system.py` covers the video prompt.
 """
 from __future__ import annotations
 
@@ -83,24 +83,8 @@ def test_the_first_frame_is_reworded_section_by_section_and_stored_on_the_shot()
     assert not store.prompts, "the first frame's mode writes no video prompt"
 
 
-def test_a_video_prompt_is_reworded_but_its_action_and_dialogue_are_not():
-    store, rows = world()
-    store.frames[rows[0]["id"]] = {"id": "f1", "shot_id": rows[0]["id"], "pins": {}}
-    result, _, phases = run(store, rows, mode="prompt", shot_ids=[rows[0]["id"]])
-    assert result["prompts"] == 1 and WRITER in phases
-    sections = {s["id"]: s for s in store.prompts[0]["sections"]}
-    texts = {k: "".join(str(seg.get("text") or "") for seg in s["segments"]) for k, s in sections.items()}
-    assert texts["camera"].startswith("Vividly, ")
-    assert not any(texts[k].startswith("Vividly") for k in texts if k not in POLISHABLE["video"])
-    assert "Vividly, " in store.prompts[0]["prose"]
-    assert any(c["label"].startswith("Wording polished by the prompt writer") for c in store.prompts[0]["checks"])
-
-
 def test_with_the_writer_off_nothing_is_called_and_the_code_prompt_stands():
     store, rows = world()
-    store.frames[rows[0]["id"]] = {"id": "f1", "shot_id": rows[0]["id"], "pins": {}}
-    _, _, phases = run(store, rows, on=False, mode="prompt", shot_ids=[rows[0]["id"]])
-    assert WRITER not in phases and "Vividly" not in store.prompts[0]["prose"]
     result, jobs, phases = run(store, rows, on=False, mode="frame_prompt")
     assert WRITER not in phases and "frame_prompts" not in result
     assert any("The prompt writer is off" in e for e in events(jobs))

@@ -144,7 +144,7 @@ def test_fixed_length_productions_only_take_their_length(world: World):
     s = seed_scene(world, settings={"fixed_shot_seconds": 8})
     r = world.client.patch(url(world, f"/shots/{s['shots'][1]['id']}"), json={"duration_s": 6},
                            headers=world.headers(world.director))
-    assert r.status_code == 422 and "8 second" in r.json()["detail"]
+    assert r.status_code == 422 and "is 8 s, not 6 s" in r.json()["detail"]
 
 
 def test_who_may_edit_shots(world: World):

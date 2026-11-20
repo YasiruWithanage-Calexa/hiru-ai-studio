@@ -33,7 +33,17 @@ from contracts.canon import props_in
 from contracts.raphael import checks, pack
 from contracts.raphael.bin import Bin
 from contracts.raphael.money import CapReached, Meter, Unpriced, price_of
-from contracts.raphael.scene import BlockS, Brief, PlaceS, SceneS, mark_recorded, norm, plain_name, scene_dump
+from contracts.raphael.scene import (
+    LEGACY_TAKES,
+    BlockS,
+    Brief,
+    PlaceS,
+    SceneS,
+    mark_recorded,
+    norm,
+    plain_name,
+    scene_dump,
+)
 from contracts.raphael.stored import Left, Seconds, StoredRaphael
 from contracts.raphael.tools import Stage1Session, Stage2Session
 from contracts.raphael.wire import DEFAULT_CAP, LENGTH_CAPS, BreakdownW, Clip, ReviewRow
@@ -92,12 +102,21 @@ class Planned:
 
 
 def script_of(
-    scene: Row, lines: list[Row], *, cast: list[str], others: list[str], place: str, objects: list[str]
+    scene: Row,
+    lines: list[Row],
+    *,
+    cast: list[str],
+    others: list[str],
+    place: str,
+    objects: list[str],
+    takes: list[int] | None = None,
+    parts: bool = False,
 ) -> tuple[SceneS, dict[str, str]]:
     """The scene's blocks as `SceneS` (with the time its reading gives them), and the map from the short line id the
     agent
-    sees (L<block>) to the dialogue line's real id."""
-    items = sceneplan.scene_items(scene, lines)
+    sees (L<block>) to the dialogue line's real id. `parts` (plan/2026-11-20 D7): each long line as its parts, each
+    part its own block and short id, every part's short id mapped to the one line."""
+    items = sceneplan.scene_items(scene, lines, parts=parts)
     line_ids: dict[str, str] = {}
     blocks = []
     for item in items:
@@ -116,6 +135,7 @@ def script_of(
             others=others,
             place=PlaceS(name=place, objects=objects),
             envelope_s=float(envelope) if envelope else None,
+            takes=list(takes or LEGACY_TAKES),  # plan/2026-11-19: the production's lengths
         ),
         line_ids,
     )
@@ -159,19 +179,33 @@ def objects_of(props: list[Row], location: Row | None, blocks: list[BlockS],
     return props_in(props, " ".join(b.text for b in blocks) + " " + look, ids)
 
 
-def from_packet(packet: Row, lines: list[Row]) -> tuple[str, SceneS, dict[str, str]] | None:
+def from_packet(
+    packet: Row, lines: list[Row], takes: list[int] | None = None, parts: bool = False
+) -> tuple[str, SceneS, dict[str, str]] | None:
     """The packet path (plan/2026-11-11 phase 4): stage 1's opening, the `SceneS` Raphael's code reads, and the map from
     the short line id (L<block>) to the scene's real `dialogue_lines` row. The breakdown fills one row per spoken block,
     in block order, so the n-th spoken block is the line of `ord` n; a scene whose count differs is not planned from the
-    packet (None: today's path)."""
-    from contracts.raphael.packet import opening
+    packet (None: today's path). `parts` (plan/2026-11-20 D7): long lines as part blocks; every part of the n-th line
+    maps to the line of `ord` n, and a line the packet cuts differently from its row is not planned from the packet."""
+    from contracts.raphael.packet import line_block_id, opening
+    from contracts.sentences import sentences
 
-    text, script, ids = opening(packet)
+    text, script, ids = opening(packet, takes=takes, parts=parts)
     shorts = sorted((k for k in ids if k.startswith("L")), key=lambda k: int(k[1:]))
+    spoken = list(dict.fromkeys(line_block_id(ids[k]) for k in shorts))  # each line once, in order, parts folded
     rows = sorted(lines, key=lambda r: int(r.get("ord") or 0))
-    if len(shorts) != len(rows):
+    if len(spoken) != len(rows):
         return None
-    return text, script, {short: str(row["id"]) for short, row in zip(shorts, rows, strict=True)}
+    real = {block: str(row["id"]) for block, row in zip(spoken, rows, strict=True)}
+    if parts:  # the rows' own words must cut the same way, or raphael_write's items would not be these blocks
+        per_line: dict[str, int] = {}
+        for k in shorts:
+            per_line[line_block_id(ids[k])] = per_line.get(line_block_id(ids[k]), 0) + 1
+        for block, row in zip(spoken, rows, strict=True):
+            n = len(sentences(str(row.get("text") or "")))
+            if per_line[block] != (n if n > 1 else 1):
+                return None
+    return text, script, {short: real[line_block_id(ids[short])] for short in shorts}
 
 
 def a_cap(value: Any, default: float = DEFAULT_CAP) -> float:
@@ -497,6 +531,9 @@ class Planner:
             report=report,
             breakdown=self.breakdown,
             mood=list(self.mood),
+            takes=[] if self.scene.legacy else list(self.scene.takes),
+            # plan/2026-11-20 D9: the scene was planned with its long lines in parts; raphael_write reads its items so
+            line_parts=any(b.is_part for b in self.scene.blocks),
             previous=previous,
         )
         return Planned(stored, log=list(self.log), warnings=list(self.warnings))

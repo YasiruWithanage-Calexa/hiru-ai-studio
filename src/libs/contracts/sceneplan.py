@@ -23,7 +23,8 @@ from uuid import uuid4
 from contracts import beats
 from contracts import reading as scene_reading
 from contracts.beats import BLOCK_EXTRA
-from contracts.shotplan import FitResult, Item, ProposedShot
+from contracts.sentences import sentences
+from contracts.shotplan import FitResult, Item, ProposedShot, bound_lines
 from contracts.veo import SoundMode
 
 Row = dict[str, Any]
@@ -37,12 +38,46 @@ LINE_KEEP = ("id", "production_id", "scene_id", "ord", "speaker", "character_id"
 LINE_SOURCE = ("source_text", "source_lang")
 
 
-def items_for(script: list[Row], lines: list[Row]) -> list[Item]:
+def items_for(script: list[Row], lines: list[Row], parts: bool = False) -> list[Item]:
     """The scene's script blocks as kernel items. A dialogue block whose line no longer exists
     is dropped (nothing to bind), so block indexes are positions in THIS list.
 
     An action block that nobody has read yet (`contracts.beats`) is read by the free rules, so the
-    picture clock always runs; a stored reading (a model's, or a person's) wins."""
+    picture clock always runs; a stored reading (a model's, or a person's) wins.
+
+    `parts` (plan/2026-11-20 D8): a line of two or more sentences becomes consecutive PART items (`in_parts`). Only a
+    scene planned with parts (`scenes.line_parts`) is read this way: its shots' block numbers count the parts."""
+    items = _items_for(script, lines)
+    return in_parts(items) if parts else items
+
+
+def in_parts(items: list[Item]) -> list[Item]:
+    """Each line of two or more sentences (`contracts.sentences.sentences`) as consecutive part items, the script's
+    words unchanged, every item renumbered. A part keeps the line's id; the reading's turn goes with the first part
+    (the turn comes with the line's first words) and its hold with the last (the breath after the line)."""
+    out: list[Item] = []
+    for item in items:
+        cut = sentences(item.text) if item.is_line and not item.parts else []
+        if len(cut) < 2:
+            out.append(replace(item, index=len(out)))
+            continue
+        n = len(cut)
+        for k, text in enumerate(cut, start=1):
+            last = k == n
+            out.append(replace(item, index=len(out), text=text, part=k, parts=n, whole=item.text,
+                               turn=item.turn and k == 1, skip=item.skip if k == 1 else (),
+                               hold_s=item.hold_s if last else 0.0, hold_kind=item.hold_kind if last else "",
+                               hold_priority=item.hold_priority if last else 0,
+                               hold_who=item.hold_who if last else ""))
+    return out
+
+
+def line_parts_of(scene: Mapping[str, Any]) -> bool:
+    """Was this scene planned with its long lines in parts (`scenes.line_parts`, schema v28; absent = no)?"""
+    return bool(scene.get("line_parts"))
+
+
+def _items_for(script: list[Row], lines: list[Row]) -> list[Item]:
     by_id = {str(ln["id"]): ln for ln in lines}
     items: list[Item] = []
     for block in script or []:
@@ -64,12 +99,18 @@ def items_for(script: list[Row], lines: list[Row]) -> list[Item]:
     return _read_unread(items)
 
 
-def scene_items(scene: Mapping[str, Any], lines: list[Row], script: list[Row] | None = None) -> list[Item]:
+def scene_items(scene: Mapping[str, Any], lines: list[Row], script: list[Row] | None = None,
+                parts: bool | None = None) -> list[Item]:
     """The scene's kernel items WITH the time its reading gives them (holds, turns). Every place that times a scene
     from its stored rows (the API, the director, the prompts) reads items through here, so they agree with the split.
-    A scene with no reading times exactly as `items_for` does."""
+    A scene with no reading times exactly as `items_for` does.
+
+    A scene planned with line parts (`scenes.line_parts`, or `parts=True` for the planner about to plan it that way) is
+    read in parts (plan/2026-11-20 D8). The reading is applied to the whole lines first (it was written for them), then
+    each long line is cut (`in_parts`)."""
     items = items_for(scene.get("script") or [] if script is None else script, lines)
-    return scene_reading.apply(items, scene_reading.SceneReading.of(scene))
+    items = scene_reading.apply(items, scene_reading.SceneReading.of(scene))
+    return in_parts(items) if (line_parts_of(scene) if parts is None else parts) else items
 
 
 def _read_unread(items: list[Item]) -> list[Item]:
@@ -91,6 +132,8 @@ def item_row(item: Item) -> Row:
                 "hold_who": item.hold_who}
     if item.turn:
         row["turn"] = True
+    if item.parts:  # plan/2026-11-20: a part of a line travels as one, its line's words beside it
+        row |= {"part": item.part, "parts": item.parts, "whole": item.whole}
     if item.skip:  # a removed step is remembered on the block it belonged to (a line, or the block after a move)
         row["skip_bridges"] = list(item.skip)
     if item.kind == "action":
@@ -112,7 +155,8 @@ def item_of(index: int, row: Mapping[str, Any]) -> Item:
                 max(1, int(row.get("events") or 1)), bool(row.get("implied")), str(row.get("by") or ""),
                 int(row.get("for_version") or 0), tuple(row.get("skip_bridges") or ()), str(row.get("bridge") or ""),
                 float(row.get("hold_s") or 0.0), str(row.get("hold_kind") or ""), int(row.get("hold_priority") or 0),
-                str(row.get("hold_who") or ""), bool(row.get("turn")))
+                str(row.get("hold_who") or ""), bool(row.get("turn")), int(row.get("part") or 0),
+                int(row.get("parts") or 0), str(row.get("whole") or ""))
 
 
 def script_rows(items: Sequence[Mapping[str, Any]]) -> list[Row]:
@@ -121,6 +165,8 @@ def script_rows(items: Sequence[Mapping[str, Any]]) -> list[Row]:
     made for a script version or marks an implied step; the free rules' in-memory reading is not."""
     out: list[Row] = []
     for i in items:
+        if int(i.get("part") or 0) > 1:  # plan/2026-11-20: a line in parts is ONE block of the script
+            continue
         if i["kind"] == "dialogue":
             row: Row = {"kind": "dialogue", "text": "", "line_id": str(i["line_id"])}
             if i.get("skip_bridges"):
@@ -140,10 +186,10 @@ def lines_from_items(scene: Row, items: Sequence[Mapping[str, Any]]) -> list[Row
     items: one per dialogue block, in script order."""
     out: list[Row] = []
     for i in items:
-        if i["kind"] == "dialogue":
+        if i["kind"] == "dialogue" and int(i.get("part") or 0) <= 1:  # a line in parts is one row, its words whole
             out.append({"id": str(i["line_id"]), "production_id": str(scene["production_id"]),
                         "scene_id": str(scene["id"]), "ord": len(out), "speaker": str(i.get("speaker") or ""),
-                        "character_id": i.get("speaker_id"), "text": str(i.get("text") or ""),
+                        "character_id": i.get("speaker_id"), "text": str(i.get("whole") or i.get("text") or ""),
                         "delivery": str(i.get("delivery") or ""),
                         **{k: str(i[k]) for k in LINE_SOURCE if i.get(k)}})
     return out
@@ -223,7 +269,7 @@ def rows_after_fit(scene: Row, plan: list[Row], result: FitResult, lines: list[R
             row["version"] = int(old.get("version") or 1) + 1
         shots.append(row)
 
-    fitted = {fl.line_id: fl for fl in result.lines}
+    fitted = bound_lines(result.lines)  # a line in parts: bound to its first part's shot (plan/2026-11-20)
     line_rows = []
     for ln in lines:
         fl = fitted.get(str(ln["id"]))

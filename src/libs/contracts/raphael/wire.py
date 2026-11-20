@@ -326,7 +326,9 @@ class MenuW(_Wire):
     lens: str  # the lens and why
     technique: Technique
     why: str  # one sentence: the story reason for this clip and for its technique
-    take_s: Literal[4, 6, 8]  # what Veo makes
+    # what the video model makes: one of the scene's lengths (`SceneS.takes`, plan/2026-11-19). The tool schema holds
+    # the model to them (`wire_schema.stage1_specs(takes)`); `checks.clock` refuses any other in a stored bin
+    take_s: int = Field(ge=3, le=15)
     handle_in_s: float  # about 1 s of the take before the action starts
     handle_out_s: float  # about 1 s after it ends
     priority: Priority

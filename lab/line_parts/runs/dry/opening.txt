@@ -1,0 +1,174 @@
+<packet>
+SCENE E01-S04: SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING
+Title: A CONVERSATION THAT CHANGES EVERYTHING
+Summary: Returning the phone leads to a warm exchange about Kasun's business. Her father's call about marriage changes Anudi's mood and ends the meeting.
+Purpose (inferred): Establish mutual interest and Kasun's ambition while introducing the family pressure that interrupts their connection.
+Story time: order 4, normal, Continues E01-S03. (measured from E01-S03)
+The scene before it in the story: E01-S03 SCENE 03 — THE UNEXPECTED ENCOUNTER. It ends with: Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+The scene after it in the story: E02-S01 SCENE 01 — A FAMILIAR FACE. It opens with: A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar voice interrupts him.
+On the page, before it: E01-S03 SCENE 03 — THE UNEXPECTED ENCOUNTER
+On the page, after it: E02-S01 SCENE 01 — A FAMILIAR FACE
+Thread (journey, smartphone): Anudi carries smartphone, loses it unnoticed, and receives it back from Kasun. Here: Anudi takes it back and subsequently receives Father's call. Earlier: E01-S02: With Anudi in Family car before she gets out.; E01-S03: Falls beside Food three-wheeler; Kasun picks it up and offers it to Anudi..
+Knowledge: person Anudi; learns Kasun owns the business, works alone, began with Rs. 5,000 and hopes to expand.; audience_only False
+Knowledge: person Anudi; learns Father wants her home to discuss her marriage.; audience_only False
+Looks: person Kasun; kind wardrobe; note D14 requires progressively more polished clothing as the business grows; smart-casual clothing is explicit at KASUN'S Restaurant. Earlier individual outfits are unspecified.
+Relationship (Kasun and Anudi, as of E01-S04): New acquaintances with mutual interest following smartphone's return.
+
+PEOPLE (only these are in the scene; ids are what `subjects[].id` uses)
+- C02 Anudi [on_screen] appearance: Anudi maintains the same facial appearance, hairstyle and body type throughout. | wants: Thank Kasun and learn about him, then respond to her father's demand. | feels: Grateful and receptive. -> Subdued but open to meeting Kasun again. (inferred)
+- C01 Kasun [on_screen] wardrobe: His clothing gradually becomes more polished as the business grows.; appearance: DIRECTOR'S PRODUCTION NOTES Character and visual continuity Kasun maintains the same facial appearance, hairstyle and body type throughout. | wants: Return her phone and answer her interest in his work. | feels: Friendly and helpful. -> Distracted by the encounter and her change in mood. (inferred)
+- C03 Father [phone] appearance: Anudi's father maintains the same appearance throughout. | wants: Have Anudi return home for a discussion about her marriage. | feels: Urgent and directive. -> Expecting her return. (inferred)
+
+PLACE: Colombo roadside (set); zones: roadside, food business
+THINGS
+- P02 smartphone [hero] held at the start by: Kasun; at the end: Anudi (script)
+- P03 handbag [used] held at the start by: Anudi; at the end: Anudi (inferred)
+- P04 umbrella [used] held at the start by: Anudi; at the end: Anudi (inferred)
+- L03 Food three-wheeler [used] held at the start by: Kasun; at the end: Kasun (script). Card: details: Kasun's three-wheeler remains the same vehicle.; look: His early food business remains small and humble.
+STATE Kasun: in: zone roadside, facing left, frame side right, posture standing; out: zone food business, facing away, frame side right, posture walking
+STATE Anudi: in: zone roadside, facing right, frame side left, holding her phone, posture standing; out: zone roadside, facing away, frame side left, holding her phone, posture walking
+
+BLOCKS (the exact words; b = the id the tools use)
+b0 = E01-S04-B01 action: Anudi takes her phone from Kasun.
+    intent (inferred): Complete the return that initiates their conversation.
+    delivery hint: Keep the handover simple and clearly visible.
+    event E01-S04-B01-e1 (setup; who: Anudi, Kasun; things: smartphone; at: Colombo roadside [L02]): The phone passes from Kasun back to Anudi.
+    state from here: Anudi: zone roadside, facing right, frame side left, holding her phone, posture standing
+    state from here: Kasun: zone roadside, facing left, frame side right, posture standing
+b1 = E01-S04-B02-P1 dialogue Anudi [on_screen] to Kasun, heard by Kasun: අනේ, Thank you!
+    intent (inferred): Part 1 of 2 of ONE line (cut at a sentence end; the words are the script's, unchanged). Thank him and acknowledge that she missed the accident.
+    delivery hint: Genuine gratitude with mild surprise.
+    event E01-S04-B02-e1 (texture; who: Anudi; things: smartphone; at: Colombo roadside [L02]): Anudi responds warmly to his help.
+b2 = E01-S04-B02-P2 dialogue Anudi [on_screen] to Kasun, heard by Kasun: මම දැක්කෙවත් නෑ.
+    intent (inferred): Part 2 of 2 of ONE line (cut at a sentence end; the words are the script's, unchanged). Thank him and acknowledge that she missed the accident.
+    delivery hint: Genuine gratitude with mild surprise.
+b3 = E01-S04-B03 dialogue Kasun [on_screen] to Anudi, heard by Anudi: "වැස්ස නිසා වෙන්න ඇති."
+    intent (inferred): Put her at ease by attributing the mishap to the weather.
+    delivery hint: Gentle and matter-of-fact.
+    event E01-S04-B03-e1 (texture; who: Kasun; at: Colombo roadside [L02]): Kasun offers an undemanding explanation for the accident.
+b4 = E01-S04-B04 action: Anudi smiles and looks at his small food business.
+    intent (inferred): Shift her attention from the returned phone to Kasun's livelihood.
+    delivery hint: Let the smile lead into an interested look toward the stall.
+    event E01-S04-B04-e1 (setup; who: Anudi; things: Food three-wheeler; at: Colombo roadside [L02]): Anudi notices the business with friendly curiosity.
+b5 = E01-S04-B05 dialogue Anudi [on_screen] to Kasun, heard by Kasun: "මේ ඔයාගේ බිස්නස් එකද?"
+    intent (inferred): Find out whether the business belongs to him.
+    delivery hint: Open curiosity without condescension.
+    event E01-S04-B05-e1 (turn; who: Anudi; things: Food three-wheeler; at: Colombo roadside [L02]): The exchange becomes a personal conversation about his work.
+b6 = E01-S04-B06 dialogue Kasun [on_screen] to Anudi, heard by Anudi: "ඔව්. පොඩියට පටන් ගත්තේ."
+    intent (inferred): Confirm ownership while acknowledging the modest beginning.
+    delivery hint: Unembarrassed and modest.
+    event E01-S04-B06-e1 (reveal; who: Kasun; things: Food three-wheeler; at: Colombo roadside [L02]): Anudi learns that Kasun owns the small operation.
+b7 = E01-S04-B07 dialogue Anudi [on_screen] to Kasun, heard by Kasun: "තනියමද මේ හැමදේම කරන්නේ?"
+    intent (inferred): Learn whether he manages all the work himself.
+    delivery hint: Interest deepens rather than becoming an interrogation.
+    event E01-S04-B07-e1 (texture; who: Anudi; things: Food three-wheeler; at: Colombo roadside [L02]): Anudi asks about his responsibility for the operation.
+b8 = E01-S04-B08-P1 dialogue Kasun [on_screen] to Anudi, heard by Anudi: ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ.
+    intent (inferred): Part 1 of 2 of ONE line (cut at a sentence end; the words are the script's, unchanged). Explain his independent start with five thousand rupees and his wish to grow.
+    delivery hint: Honest pride, with hope stronger than self-promotion.
+    event E01-S04-B08-e1 (reveal; who: Kasun; things: Food three-wheeler; at: Colombo roadside [L02]): Anudi learns his starting resources, solitary workload and ambition.
+b9 = E01-S04-B08-P2 dialogue Kasun [on_screen] to Anudi, heard by Anudi: තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව.
+    intent (inferred): Part 2 of 2 of ONE line (cut at a sentence end; the words are the script's, unchanged). Explain his independent start with five thousand rupees and his wish to grow.
+    delivery hint: Honest pride, with hope stronger than self-promotion.
+b10 = E01-S04-B09 action: Anudi looks impressed.
+    intent (inferred): Register her admiration before the interruption.
+    delivery hint: A restrained reaction rather than an emphatic display.
+    event E01-S04-B09-e1 (reveal; who: Anudi; at: Colombo roadside [L02]): Anudi's response shows that his account has impressed her.
+b11 = E01-S04-B10 action: Before she can continue the conversation, her phone suddenly rings. She checks the screen. It's her father.
+    intent (inferred): Interrupt the growing connection with family demands.
+    delivery hint: The already established phone rings; give its caller display a readable moment.
+    event E01-S04-B10-e1 (turn; who: Anudi; things: smartphone; at: Colombo roadside [L02]): An incoming call interrupts Anudi, and she identifies her father on the display.
+b12 = E01-S04-B11 dialogue Anudi [on_screen, P02] to Father, heard by Father, Kasun: "හෙලෝ තාත්තේ."
+    intent (inferred): Answer her father.
+    delivery hint: An ordinary greeting before she knows the reason for the call.
+    event E01-S04-B11-e1 (setup; who: Anudi; things: smartphone; at: Colombo roadside [L02]): Anudi begins the phone conversation.
+b13 = E01-S04-B12-P1 dialogue Father [phone, P02] to Anudi, heard by Anudi: අනුදි, ඔයා කොහෙද ඉන්නේ?
+    intent (inferred): Part 1 of 3 of ONE line (cut at a sentence end; the words are the script's, unchanged). This line is too long for one take (9.5 s): its parts go in at least two different must clips. Locate Anudi and summon her home to discuss her marriage.
+    delivery hint: Direct and authoritative without shouting.
+    event E01-S04-B12-e1 (turn, not visible; who: Father; things: smartphone): Anudi learns that her father expects an urgent discussion about marriage.
+b14 = E01-S04-B12-P2 dialogue Father [phone, P02] to Anudi, heard by Anudi: ඉක්මනට ගෙදර එන්න.
+    intent (inferred): Part 2 of 3 of ONE line (cut at a sentence end; the words are the script's, unchanged). This line is too long for one take (9.5 s): its parts go in at least two different must clips. Locate Anudi and summon her home to discuss her marriage.
+    delivery hint: Direct and authoritative without shouting.
+b15 = E01-S04-B12-P3 dialogue Father [phone, P02] to Anudi, heard by Anudi: අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා.
+    intent (inferred): Part 3 of 3 of ONE line (cut at a sentence end; the words are the script's, unchanged). This line is too long for one take (9.5 s): its parts go in at least two different must clips. Locate Anudi and summon her home to discuss her marriage.
+    delivery hint: Direct and authoritative without shouting.
+b16 = E01-S04-B13 action: Anudi's smile slowly disappears.
+    intent (inferred): Show the emotional cost of the call.
+    delivery hint: Let the warmth drain gradually from her expression.
+    event E01-S04-B13-e1 (reveal; who: Anudi; things: smartphone; at: Colombo roadside [L02]): Anudi's earlier smile fades.
+b17 = E01-S04-B14 dialogue Anudi [on_screen, P02] to Father, heard by Father, Kasun: "හරි තාත්තේ. මම එන්නම්."
+    intent (inferred): Agree to return.
+    delivery hint: Subdued compliance, contrasting with her earlier ease.
+    event E01-S04-B14-e1 (turn; who: Anudi; things: smartphone; at: Colombo roadside [L02]): Anudi tells her father that she will come.
+b18 = E01-S04-B15 action: She ends the call. Kasun notices her changed expression. Anudi looks at him again.
+    intent (inferred): Return to their shared space with the interruption still affecting her.
+    delivery hint: Allow a brief, observant pause without suggesting Kasun knows the unheard details.
+    event E01-S04-B15-e1 (setup; who: Anudi; things: smartphone; at: Colombo roadside [L02]): Anudi disconnects and turns her attention back to Kasun.
+    event E01-S04-B15-e2 (reveal; who: Kasun; at: Colombo roadside [L02]): Kasun registers the difference in her expression.
+b19 = E01-S04-B16 dialogue Anudi [on_screen] to Kasun, heard by Kasun: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු."
+    intent (inferred): Take her leave while keeping open the possibility of another meeting.
+    delivery hint: Retain a little warmth beneath the changed mood.
+    event E01-S04-B16-e1 (turn; who: Anudi; at: Colombo roadside [L02]): Anudi ends the encounter with an invitation to meet again.
+b20 = E01-S04-B17 dialogue Kasun [on_screen] to Anudi, heard by Anudi: "හරි. පරිස්සමින් යන්න."
+    intent (inferred): Accept her departure and wish her well.
+    delivery hint: Simple, considerate warmth.
+    event E01-S04-B17-e1 (texture; who: Kasun; at: Colombo roadside [L02]): Kasun responds with a caring farewell.
+b21 = E01-S04-B18 action: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else.
+    intent (inferred): Leave the encounter resonating after Anudi departs.
+    delivery hint: Let Kasun linger before returning to work; avoid specifying the content of his thoughts.
+    event E01-S04-B18-e1 (texture; who: Anudi, Kasun; things: smartphone, handbag, umbrella, Food three-wheeler; at: Colombo roadside [L02]): Anudi walks away while Kasun watches, then he returns to the stall.
+    event E01-S04-B18-e2 (reveal, not visible; who: Kasun; at: Food three-wheeler [L03]): Kasun remains mentally distracted after resuming his routine.
+    state from here: Anudi: zone roadside, facing away, frame side left, holding her phone, posture walking
+    state from here: Kasun: zone food business, facing away, frame side right, posture walking
+
+FEELING: warm, curious, interrupted, reflective; the scene turns at b5, b11, b13, b17, b19
+DIRECTION IN SCOPE
+- D01 [general] Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.
+- D02 [general] Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.
+- D09 [general] Kasun maintains the same facial appearance, hairstyle and body type throughout.
+- D10 [general] Anudi maintains the same facial appearance, hairstyle and body type throughout.
+- D11 [general] Anudi's father maintains the same appearance throughout.
+- D14 [general] His clothing gradually becomes more polished as the business grows.
+- D16 [general] Maintain authentic Colombo streets, vehicles, homes and environments.
+- D17 [general] Keep performances natural and avoid exaggerated melodrama.
+
+LENGTH: stated 45 s; spoken 27.3 s
+OPEN
+- episode call: Anudi ends the scene with smartphone; the stager's last state has Anudi holding 'her phone'
+- episode call: Anudi ends the scene with handbag; the stager's last state has Anudi holding 'her phone'
+- episode call: Anudi ends the scene with umbrella; the stager's last state has Anudi holding 'her phone'
+</packet>
+
+<timing>
+b0 action: 1.5 s on screen
+b1 line [L1] Anudi: 3 words, 1.4 s, shortest take 3 s
+b2 line [L2] Anudi: 3 words, 1.4 s, shortest take 3 s
+b3 line [L3] Kasun: 4 words, 1.8 s, shortest take 4 s
+b4 action: 1.5 s on screen
+b5 line [L5] Anudi: 4 words, 1.8 s, shortest take 4 s
+b6 line [L6] Kasun: 4 words, 1.8 s, shortest take 4 s
+b7 line [L7] Anudi: 4 words, 1.8 s, shortest take 4 s
+b8 line [L8] Kasun: 5 words, 2.3 s, shortest take 4 s
+b9 line [L9] Kasun: 5 words, 2.3 s, shortest take 4 s
+b10 action: 1.5 s on screen
+b11 action: 1.5 s on screen
+b12 line [L12] Anudi: 2 words, 0.9 s, shortest take 3 s
+b13 line [L13] Father: 4 words, 1.8 s, shortest take 4 s
+b14 line [L14] Father: 3 words, 1.4 s, shortest take 3 s
+b15 line [L15] Father: 7 words, 3.2 s, shortest take 5 s
+b16 action: 1.5 s on screen
+b17 line [L17] Anudi: 4 words, 1.8 s, shortest take 4 s
+b18 action: 3.0 s on screen
+b19 line [L19] Anudi: 5 words, 2.3 s, shortest take 4 s
+b20 line [L20] Kasun: 3 words, 1.4 s, shortest take 3 s
+b21 action: 3.0 s on screen
+</timing>
+
+<voice_only>
+Father: heard and never seen. Never in subjects or first_frame as a person, and never named in a clip's picture text as the person someone listens to. The one exception: their NAME as text on a phone screen (a caller ID, a message, a voicemail), which is welcome.
+</voice_only>
+
+<length>
+The scene is 45 s long. TARGET: a bin of about 45 s of takes. A take here is 3 to 15 s; past 8 s only for one continuous action or one line. The script itself times at 49 s. CAP: 67.5 s of takes (the given length x 1.5); `finish` refuses a bin over it, and a bin under 36 s. The room between the target and the cap is allowed, not expected.
+</length>
+
+Plan this scene. Start with the intended cut.

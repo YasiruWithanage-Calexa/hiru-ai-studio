@@ -75,9 +75,17 @@ def test_overrun_seconds():
 # ── server-only rules ─────────────────────────────────────────────────────────────────────
 
 
-def test_default_beats_rejects_unrenderable():
+def test_default_beats_cover_any_length_and_keep_4_6_8():
+    # plan/2026-11-19: 3 to 15 s; 4, 6 and 8 s keep their beats
+    assert default_beats(4) == [(0, 2), (2, 4)]
+    assert default_beats(6) == [(0, 3), (3, 6)]
+    assert default_beats(8) == [(0, 3), (3, 6), (6, 8)]
+    assert default_beats(3) == [(0, 2), (2, 3)]
+    assert default_beats(7) == [(0, 3), (3, 7)]
+    assert default_beats(10) == [(0, 3), (3, 6), (6, 10)]
+    assert default_beats(15) == [(0, 3), (3, 6), (6, 9), (9, 12), (12, 15)]
     with pytest.raises(ValueError):
-        default_beats(10)
+        default_beats(0)
 
 
 def test_parentheticals_are_not_speech():

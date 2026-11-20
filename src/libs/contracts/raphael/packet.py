@@ -1,6 +1,7 @@
 """Raphael reads the scene packet (plan/2026-11-11 §7): the whole packet goes to the model, nothing is dropped.
 
     opening(packet)             -> (first message, SceneS, ids)   what raphael_planner is given on the packet path
+    split_packet(packet)        -> packet                         long lines as part blocks (plan/2026-11-20 D7)
     scene_from_packet(packet)   -> (SceneS, ids)                  what Raphael's CODE reads (tools, checks, length)
     render(packet, ids)         -> text                           every section of the packet, as the model reads it
     timing(scene, ids)          -> text                           the clock per block, worked out by code
@@ -20,11 +21,24 @@ No model here. Pure functions of the packet dict (`lab/two_memories/packet.py` a
 
 from __future__ import annotations
 
+import copy
 import re
 from typing import Any
 
 from contracts.breakdown.series import render_lines as render_series
-from contracts.raphael.scene import BlockS, Brief, PlaceS, SceneS, action_s, line_facts
+from contracts.raphael.scene import (
+    LEGACY_TAKES,
+    BlockS,
+    Brief,
+    PlaceS,
+    SceneS,
+    action_s,
+    line_facts,
+    part_groups,
+)
+from contracts.sentences import sentences
+from contracts.shotplan import Item, shot_clock
+from contracts.take_lengths import SOFT_CAP_S
 
 EMPTY = "empty"
 _THING_ID = re.compile(r"\s*\bP\d{2,}\b")  # a block's device is "phone P08": the thing's name, then its id
@@ -51,7 +65,52 @@ def _state(fields: dict[str, Any]) -> str:
     return ", ".join(f"{k.replace('_', ' ')} {v}" for k, v in fields.items() if v and k != "person")
 
 
-def scene_from_packet(packet: dict[str, Any]) -> tuple[SceneS, dict[str, str]]:
+PART_ID = re.compile(r"-P\d+$")  # a part block's id is its line block's id and "-P2"
+
+
+def line_block_id(block_id: str) -> str:
+    """The id of the line block a part was cut from (`E01-S04-B12-P2` -> `E01-S04-B12`); any other id as it is."""
+    return PART_ID.sub("", block_id)
+
+
+def split_packet(packet: dict[str, Any]) -> dict[str, Any]:
+    """The packet with every spoken line of two or more sentences as consecutive PART blocks (plan/2026-11-20 D7,
+    `lab/line_parts` `split_packet`): the script's words unchanged, cut at sentence ends (`contracts.sentences`). Each
+    part's intent starts "Part k of n of ONE line"; a line past `SOFT_CAP_S` on the clock is marked too long for one
+    take. The line's events belong to its first part; a turn in feeling moves to the first part, a state change to the
+    last. A packet with no such line comes back equal."""
+    p = copy.deepcopy(packet)
+    blocks: list[dict[str, Any]] = []
+    stage = p.get("stage") or {}
+    changes = stage.get("changes_at", {}) if isinstance(stage, dict) else {}
+    turns = p["F_feeling"].get("turns", []) if isinstance(p.get("F_feeling"), dict) else []
+    for b in p["E_blocks"]:
+        cut = sentences(b["text"]) if b["kind"] == "dialogue" and b.get("speaker") else []
+        if len(cut) < 2:
+            blocks.append(b)
+            continue
+        need = shot_clock([Item(0, "dialogue", b["text"], "", None, "", "line")])[1]
+        must = need > SOFT_CAP_S + 1e-9
+        ids = [f"{b['id']}-P{k}" for k in range(1, len(cut) + 1)]
+        for k, (pid, text) in enumerate(zip(ids, cut, strict=True), start=1):
+            nb = copy.deepcopy(b)
+            nb.update({"id": pid, "text": text, "part": k, "parts": len(cut), "whole": b["text"]})
+            head = (f"Part {k} of {len(cut)} of ONE line (cut at a sentence end; the words are the script's, "
+                    "unchanged)." + (f" This line is too long for one take ({need:.1f} s): its parts go in at least "
+                                     "two different must clips." if must else ""))
+            nb["intent"] = f"{head} {b.get('intent') or ''}".strip()
+            if k > 1:
+                nb["events"] = []  # the events belong to the line once
+            blocks.append(nb)
+        if b["id"] in changes:  # the state change lands when the line is done
+            changes[ids[-1]] = changes.pop(b["id"])
+        if b["id"] in turns:  # the turn in feeling comes with the line's first words
+            turns[turns.index(b["id"])] = ids[0]
+    p["E_blocks"] = blocks
+    return p
+
+
+def scene_from_packet(packet: dict[str, Any], takes: list[int] | None = None) -> tuple[SceneS, dict[str, str]]:
     people = packet["B_people"]
     presence = {p["id"]: p["presence"] for p in people}
     speakers = {b["speaker"] for b in packet["E_blocks"] if b["kind"] == "dialogue" and b["speaker"]}
@@ -82,6 +141,9 @@ def scene_from_packet(packet: dict[str, Any]) -> tuple[SceneS, dict[str, str]]:
                 turn=b["id"] in turns,
                 now=now,
                 device=_THING_ID.sub("", b.get("device") or "").strip() if line else "",
+                part=int(b.get("part") or 0) if line else 0,
+                parts=int(b.get("parts") or 0) if line else 0,
+                whole=str(b.get("whole") or "") if line else "",
             )
         )
     opening = "; ".join(
@@ -98,6 +160,7 @@ def scene_from_packet(packet: dict[str, Any]) -> tuple[SceneS, dict[str, str]]:
         envelope_s=float(stated) if isinstance(stated, (int, float)) and stated > 0 else None,
         codes={p["id"]: p["name"] for p in people},  # a subject's id is the person's packet id (C01)
         opening_state=opening,
+        takes=list(takes or LEGACY_TAKES),  # plan/2026-11-19: the production's lengths
     )
     return scene, ids
 
@@ -244,36 +307,54 @@ def render(packet: dict[str, Any], ids: dict[str, str]) -> str:
 
 def timing(scene: SceneS, ids: dict[str, str]) -> str:
     """The clock, worked out by code (the model never does it): each line's words, seconds and shortest take; each
-    action's seconds on screen."""
+    action's seconds on screen. A line in parts (plan/2026-11-20 D12): each part's seconds INCLUDE what comes before it
+    (the lead-in for the first, the sentence pause for the next), so the parts add up to the line's own note under its
+    last part."""
     facts = {b.index: (w, s, t) for b, w, s, t in line_facts(scene)}
+    groups = {g.blocks[-1]: g for g in part_groups(scene)}
     acts = action_s(scene)
     rows = []
     for b in sorted(scene.blocks, key=lambda x: x.index):
         if b.index in facts:
             w, s, t = facts[b.index]
             heard = ", heard not seen" if b.delivery in DELIVERY.values() and b.speaker not in scene.cast else ""
+            part = (f" part {b.part} of {b.parts}" if b.is_part else "")
+            before = (f" (with the {'lead-in' if b.part == 1 else 'pause'} before it)" if b.is_part else "")
             rows.append(
-                f"b{b.index} line [{b.line_id}] {b.speaker}{heard}: {w} words, {s:.1f} s, "
+                f"b{b.index} line [{b.line_id}] {b.speaker}{heard}{part}: {w} words, {s:.1f} s{before}, "
                 + (f"shortest take {t} s" if t else "longer than any take: reported, never trimmed")
+                + (" alone" if b.is_part and t else "")
             )
+            g = groups.get(b.index)
+            if g is not None:
+                rows.append(
+                    f"    the whole line {' + '.join(g.lids)}: {g.need_s:.1f} s as one take (its parts and the "
+                    "tail)" + ("; too long for one take: spread its parts over at least two must clips" if g.must
+                               else "; it may play in one clip or in parts")
+                )
         elif b.index in acts:
             rows.append(f"b{b.index} action: {acts[b.index]:.1f} s on screen")
     return "\n".join(rows)
 
 
-def opening(packet: dict[str, Any], length_block: str = "") -> tuple[str, SceneS, dict[str, str]]:
+def opening(
+    packet: dict[str, Any], length_block: str = "", takes: list[int] | None = None, parts: bool = False
+) -> tuple[str, SceneS, dict[str, str]]:
     """The first message on the packet path: <packet> first (the same for every turn: it caches), then the clock, the
-    voice-only rule and the length, then the instruction. `length_block` is `pack.length_block(Brief(...))`."""
+    voice-only rule and the length, then the instruction. `length_block` is `pack.length_block(Brief(...))`. `parts`
+    (plan/2026-11-20): long lines are given as part blocks (`split_packet`)."""
     from contracts.raphael.pack import length_block as _length
     from contracts.raphael.pack import voice_only
 
-    scene, ids = scene_from_packet(packet)
+    if parts:
+        packet = split_packet(packet)
+    scene, ids = scene_from_packet(packet, takes)
     length = length_block or _length(Brief(scene, float(scene.envelope_s or 0)))
-    parts = [
+    sections = [
         f"<packet>\n{render(packet, ids)}\n</packet>",
         f"<timing>\n{timing(scene, ids)}\n</timing>",
         voice_only(scene),
         length,
         "Plan this scene. Start with the intended cut.",
     ]
-    return "\n\n".join(p for p in parts if p), scene, ids
+    return "\n\n".join(p for p in sections if p), scene, ids

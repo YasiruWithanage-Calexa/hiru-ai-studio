@@ -13,10 +13,10 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from contracts import take_lengths as tl
 from contracts.roles import AppRole, ProductionRole
 from contracts.veo import (
     DEFAULT_SHOT_SECONDS,
-    VEO_DURATIONS,
     CameraLink,
     FrameStrategy,
     Orientation,
@@ -57,8 +57,13 @@ class BuildOptions(_Model):
 class ProductionSettings(_Model):
     """Per-production settings. Changing them is admin-only (Permission.MANAGE_PRODUCTION)."""
 
-    # Force every shot to 8 s instead of the 4/6/8 ladder (PLAN.md Q3).
+    # Force every shot to one length instead of the production's lengths (PLAN.md Q3).
     fixed_shot_seconds: int | None = None
+    # The longest take, 10 or 15 s, and how shots are cut (plan/2026-11-19 D1, D2): chosen when the production is
+    # created and never changed. Unset: a production made before that plan, which keeps 4/6/8
+    # (`contracts.take_lengths.for_settings`).
+    max_take_s: int | None = None
+    take_lengths: tl.TakeMode | None = None
     # Default scene envelope in seconds; shots must fit inside it, never stretched to fill it.
     default_scene_envelope_s: int = Field(default=60, ge=4, le=1800)
     # Market for accent casting ("a Sri Lankan (Colombo) accent").
@@ -100,9 +105,23 @@ class ProductionSettings(_Model):
     @field_validator("fixed_shot_seconds")
     @classmethod
     def _renderable(cls, v: int | None) -> int | None:
-        if v is not None and v not in VEO_DURATIONS:
-            raise ValueError(f"fixed_shot_seconds must be one of {VEO_DURATIONS}")
+        if v is not None and not tl.renderable(v):
+            raise ValueError(f"fixed_shot_seconds must be {tl.MIN_TAKE_S} to {tl.LONGEST_TAKE_S}")
         return v
+
+    @field_validator("max_take_s")
+    @classmethod
+    def _a_max_take(cls, v: int | None) -> int | None:
+        if v is not None and v not in tl.MAX_TAKE_CHOICES:
+            raise ValueError(f"max_take_s must be one of {tl.MAX_TAKE_CHOICES}")
+        return v
+
+    @property
+    def takes(self) -> tuple[int, ...]:
+        """The lengths this production's shots may have (plan/2026-11-19)."""
+        if self.fixed_shot_seconds:
+            return (self.fixed_shot_seconds,)
+        return tl.for_settings(self)
 
 
 class ProductionCreate(_Model):
@@ -261,8 +280,8 @@ class Shot(_Model):
     @field_validator("duration_s")
     @classmethod
     def _renderable(cls, v: int) -> int:
-        if v not in VEO_DURATIONS:
-            raise ValueError(f"duration_s must be one of {VEO_DURATIONS}")
+        if not tl.renderable(v):  # which of these a production uses is its settings' (`takes`)
+            raise ValueError(f"duration_s must be {tl.MIN_TAKE_S} to {tl.LONGEST_TAKE_S}")
         return v
 
     @property

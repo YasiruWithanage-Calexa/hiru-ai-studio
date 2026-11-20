@@ -22,7 +22,7 @@ from tests.api.test_scenes import seed_scene
 
 OMNI_PER_SECOND = 100_000  # the seeded price: $0.10 a second at 720p
 FRAME = with_margin(80_000, "image")  # the seeded flat price of a frame, with the image margin
-PROMPT = 20_000
+PROMPT = 10_000  # plan/2026-11-20b D15
 
 
 def cost_url(world: World, s: dict) -> str:

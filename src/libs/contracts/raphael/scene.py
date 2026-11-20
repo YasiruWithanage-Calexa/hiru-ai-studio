@@ -13,19 +13,22 @@ the dialogue line's real id is the caller's (the system's `script_of`).
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from itertools import pairwise
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from contracts.sentences import sentence_breaks
 from contracts.shotplan import HEARD_MARKS, LEAD_IN_S, TAIL_S, Item, shot_clock
 from contracts.stagemap import SceneStaging
-from contracts.timing import speech_seconds, words_in
+from contracts.take_lengths import SOFT_CAP_S
+from contracts.timing import SENTENCE_PAUSE_S, speech_seconds, words_in
 from contracts.veo import VEO_DURATIONS
 
 VOICE_OVER = ("v.o", "vo)", "voice over", "voice-over", "voiceover", "narrat")
-LONGEST_TAKE_S = max(VEO_DURATIONS)  # 8 s: no single Veo take is longer
+LONGEST_TAKE_S = max(VEO_DURATIONS)  # 8 s: the longest take of a production made before plan/2026-11-19
+LEGACY_TAKES: list[int] = list(VEO_DURATIONS)  # 4/6/8; a newer production's are `SceneS.takes`
 USUAL_HANDLE_S = 1.0  # the prompt's "about 1 s" each side
 
 
@@ -53,6 +56,10 @@ class BlockS(_Model):
     turn: bool = False
     now: str = ""  # plan/2026-11-09: what the state ledger says changes at this block ("Anudi: phone in left hand")
     device: str = ""  # plan/2026-11-12: the thing a heard line comes out of ("phone"), from the packet
+    # plan/2026-11-20 D7: a part of a long line (`contracts.sceneplan.in_parts`): k of n, the line's whole words
+    part: int = 0
+    parts: int = 0
+    whole: str = ""
 
     @classmethod
     def of(cls, item: Item) -> BlockS:
@@ -69,7 +76,14 @@ class BlockS(_Model):
             hold_kind=item.hold_kind,
             hold_who=item.hold_who,
             turn=item.turn,
+            part=item.part,
+            parts=item.parts,
+            whole=item.whole,
         )
+
+    @property
+    def is_part(self) -> bool:
+        return self.parts > 1
 
     def item(self) -> Item:
         return Item(
@@ -86,6 +100,9 @@ class BlockS(_Model):
             hold_kind=self.hold_kind,
             hold_who=self.hold_who,
             turn=self.turn,
+            part=self.part,
+            parts=self.parts,
+            whole=self.whole,
         )
 
 
@@ -104,6 +121,18 @@ class SceneS(_Model):
     staging: SceneStaging | None = None
     codes: dict[str, str] = {}  # a person's code in <production> -> their name (the clips' subjects use the code)
     opening_state: str = ""  # everyone and every prop at the first block
+    # plan/2026-11-19: the lengths the production's takes may have (`ProductionSettings.takes`), shortest first
+    takes: list[int] = Field(default_factory=lambda: list(LEGACY_TAKES), min_length=1)
+
+    @property
+    def longest(self) -> int:
+        """The longest take this scene may use."""
+        return max(self.takes)
+
+    @property
+    def legacy(self) -> bool:
+        """True for 4/6/8: the openings and checks read as they did before plan/2026-11-19."""
+        return list(self.takes) == LEGACY_TAKES
 
     def items(self) -> list[Item]:
         return [b.item() for b in sorted(self.blocks, key=lambda b: b.index)]
@@ -135,9 +164,14 @@ def scene_dump(scene: SceneS) -> dict[str, Any]:
     for key in LEDGER_FIELDS:
         if not data.get(key):
             data.pop(key, None)
+    if data.get("takes") == LEGACY_TAKES:  # plan/2026-11-19: 4/6/8 dumps as before, other lengths plan again
+        data.pop("takes", None)
     for block in data["blocks"]:
         if not block.get("now"):
             block.pop("now", None)
+        for key in ("part", "parts", "whole"):  # plan/2026-11-20: a scene with no line in parts hashes as before
+            if not block.get(key):
+                block.pop(key, None)
     return data
 
 
@@ -157,9 +191,10 @@ def need_s(items: list[Item]) -> float:
     return shot_clock(items)[1]
 
 
-def shortest_take(need: float) -> int | None:
-    """The shortest Veo take that holds `need` seconds, None when even the longest does not."""
-    return next((t for t in sorted(VEO_DURATIONS) if t >= need - 1e-9), None)
+def shortest_take(need: float, takes: Any = VEO_DURATIONS) -> int | None:
+    """The shortest take of `takes` (a scene's lengths) that holds `need` seconds, None when even the longest does
+    not."""
+    return next((t for t in sorted(takes) if t >= need - 1e-9), None)
 
 
 def action_s(scene: SceneS) -> dict[int, float]:
@@ -170,7 +205,7 @@ def action_s(scene: SceneS) -> dict[int, float]:
 def long_actions(scene: SceneS) -> dict[int, float]:
     """The action blocks longer than any take (plan/2026-11-08f §1): no one clip can show them, so consecutive clips
     each show the next part (`checks.long_action`). Block index -> seconds."""
-    return {b: s for b, s in action_s(scene).items() if s > LONGEST_TAKE_S + 1e-9}
+    return {b: s for b, s in action_s(scene).items() if s > scene.longest + 1e-9}
 
 
 def script_s(scene: SceneS) -> float:
@@ -179,21 +214,66 @@ def script_s(scene: SceneS) -> float:
     return need_s(items) if items else 0.0
 
 
-def parts_needed(seconds: float) -> int:
-    """How many consecutive 8 s clips with the usual 1 s handles (6 s of action each) it takes to show `seconds`."""
-    per = int((LONGEST_TAKE_S - 2 * USUAL_HANDLE_S) * 10)
+def parts_needed(seconds: float, longest: int = LONGEST_TAKE_S) -> int:
+    """How many consecutive clips of the longest take with the usual 1 s handles (8 s: 6 s of action each) it takes
+    to show `seconds`."""
+    per = int((longest - 2 * USUAL_HANDLE_S) * 10)
     return max(1, -(-round(seconds * 10) // per))
 
 
 def line_facts(scene: SceneS) -> list[tuple[BlockS, int, float, int | None]]:
-    """For each line: (block, words, seconds to say, the shortest take that holds it alone). Worked out in code so the
-    model does not do the clock in its reasoning."""
+    """For each line (or part of one): (block, words, seconds to say, the shortest take that holds it alone). Worked out
+    in code so the model does not do the clock in its reasoning. A part's seconds INCLUDE what comes before it on the
+    clock (plan/2026-11-20 D12): the lead-in for the first part, the sentence pause for a later one."""
     out = []
     for b in scene.lines:
         words = words_in(b.text)
-        said = speech_seconds(words, b.delivery)
-        out.append((b, words, said, shortest_take(said + LEAD_IN_S + TAIL_S)))
+        said = speech_seconds(words, b.delivery, sentence_breaks(b.text))  # plan/2026-11-20 D1: its pauses
+        if b.is_part:  # alone in a clip a part opens on the lead-in, whichever part it is
+            before = LEAD_IN_S if b.part == 1 else SENTENCE_PAUSE_S
+            out.append((b, words, said + before, shortest_take(said + LEAD_IN_S + TAIL_S, scene.takes)))
+            continue
+        out.append((b, words, said, shortest_take(said + LEAD_IN_S + TAIL_S, scene.takes)))
     return out
+
+
+@dataclass
+class PartGroup:
+    """One line in parts (plan/2026-11-20 D7): its parts' short ids in order, what the WHOLE line needs on the clock,
+    and whether it must be spread over clips (past `SOFT_CAP_S`, too long for one take)."""
+
+    lids: list[str] = field(default_factory=list)
+    blocks: list[int] = field(default_factory=list)
+    need_s: float = 0.0
+    must: bool = False
+
+
+def part_groups(scene: SceneS) -> list[PartGroup]:
+    """Every line the scene has in parts, in script order."""
+    out: list[PartGroup] = []
+    run: list[BlockS] = []
+    for b in sorted(scene.lines, key=lambda x: x.index):
+        if not b.is_part:
+            continue
+        if b.part == 1:
+            run = []
+        run.append(b)
+        if b.part == b.parts:
+            need = shot_clock([x.item() for x in run])[1]
+            out.append(PartGroup([str(x.line_id) for x in run], [x.index for x in run], round(need, 2),
+                                 need > SOFT_CAP_S + 1e-9))
+    return out
+
+
+def part_note(b: BlockS, groups: list[PartGroup]) -> str:
+    """How the listing marks a part: "Part 2 of 3 of ONE line (L13 to L15, 9.5 s; too long for one take: ...)"."""
+    group = next((g for g in groups if b.index in g.blocks), None)
+    if group is None:
+        return ""
+    span = f"{group.lids[0]} to {group.lids[-1]}" if len(group.lids) > 2 else " and ".join(group.lids)
+    must = (" Too long for one take: its parts go in at least two different must clips." if group.must else "")
+    return (f"Part {b.part} of {b.parts} of ONE line ({span}, {group.need_s:.1f} s as one take; cut at a sentence "
+            f"end, the words are the script's).{must}")
 
 
 # ── voices ───────────────────────────────────────────────────────────────────────────────────────
@@ -261,6 +341,7 @@ def listing(scene: SceneS) -> str:
     phone, a narrator), its word count and the shortest take that holds it, worked out by code. An action that moves a
     person is marked `[move]`."""
     facts = {b.index: (w, s, t) for b, w, s, t in line_facts(scene)}
+    groups = part_groups(scene)
     seconds = action_s(scene)
     head = [
         f"Present: {', '.join(scene.cast)}" if scene.cast else "",
@@ -283,18 +364,19 @@ def listing(scene: SceneS) -> str:
                 else ""
             )
             held = f"shortest take {take} s" if take else "longer than any take: reported, never trimmed"
+            part = f" {part_note(b, groups)}" if b.is_part else ""
             rows.append(
-                f"b{b.index} line [{b.line_id}] {b.speaker}{how}{heard} ({words} words, {said:.1f} s, {held}): "
-                f'"{b.text}"'
+                f"b{b.index} line [{b.line_id}] {b.speaker}{how}{heard} ({words} words, {said:.1f} s, {held}):"
+                f'{part} "{b.text}"'
             )
         elif b.kind == "action" and b.index in seconds:
             # The action's own time, worked out by code (plan/2026-11-08f §2): the model never guesses the clock.
             mark = " [move]" if b.screen == "move" else ""
             took = seconds[b.index]
             when = (
-                f"{took:.1f} s on screen, longer than any take: show it over {parts_needed(took)} consecutive "
-                "clips, each the next part"
-                if took > LONGEST_TAKE_S + 1e-9
+                f"{took:.1f} s on screen, longer than any take: show it over {parts_needed(took, scene.longest)} "
+                "consecutive clips, each the next part"
+                if took > scene.longest + 1e-9
                 else f"{took:.1f} s on screen"
             )
             rows.append(f"b{b.index} action{mark} ({when}): {b.text}")

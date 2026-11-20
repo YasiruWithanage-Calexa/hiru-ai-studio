@@ -1,0 +1,23 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "SITUATION\nBeside his small food three-wheeler on a rain-damp Colombo roadside, Kasun answers Anudi's interest in how he manages the business alone. Her curiosity gives him room to share his modest beginning and his hopes for more.\n\nPEOPLE\nKasun is frame right, looking left toward Anudi offscreen. He keeps his established appearance and modest work clothes, his shoulders loose and hands below frame, carrying quiet pride rather than a wish to impress.\n\nACTION & DIALOGUE\nKasun, to Anudi, friendly and unembarrassed, answering her curiosity with honest pride, keeping his chin level and letting a slight smile emerge at the end:\nඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ.\n\nKasun, to Anudi, after a brief natural sentence pause, more hopeful than boastful, sharing what he wants to build as his eyes brighten and his smile stays small:\nතව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව.\n\nHis lips settle together. He holds Anudi's offscreen eyeline to the left, the small smile remaining as he leaves the thought with her.\n\nThey speak casual, everyday spoken Sinhala, the way people really talk in a Sri Lankan teledrama: not an interview, not a speech, nobody looks at the camera. Only these words are spoken, only by the people named; English words in a line are said as Sri Lankans say them.\n\nCAMERA\nAn eye-level medium close-up on a 65mm lens holds Kasun frame right looking left, chest and face filling a steady frame on a tripod, with the food three-wheeler softly identifiable behind him.\n\nSOUND\nLight rain, low Colombo road wash and distant umbrella patter; no music.\n\nRULES\nHands: Kasun is not holding the phone. The phone is not in this frame. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nFORMAT\nAspect ratio 16:9. Duration 8 seconds. Ends on a cut."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "generation_config": {
+  "video_config": {
+   "task": "text_to_video"
+  }
+ },
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "16:9",
+  "resolution": "360p",
+  "duration": "8s",
+  "delivery": "uri"
+ }
+}

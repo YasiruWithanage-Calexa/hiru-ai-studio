@@ -334,8 +334,9 @@ SEED_PRICES: tuple[Price, ...] = (
     _vid("omni_flash", "720p", "0.10", "derived from the preview's token rate: confirm (plan/2026-11-06d Phase 0)"),
     Price(kind="estimate", model_prefix="frame", unit_micros=micros_of("0.08"),
           note="one first frame at medium quality: used only when no frame has been made yet"),
-    Price(kind="estimate", model_prefix="prompt", unit_micros=micros_of("0.02"),
-          note="one video prompt: used only when none has been made yet"),
+    Price(kind="estimate", model_prefix="prompt", unit_micros=micros_of("0.01"),
+          note="one video prompt by the video prompt agent (lab: $0.0093 a clip, plan/2026-11-20b D15): used only when "
+               "none has been made yet"),
 )
 
 # List prices code knows that the database does NOT seed yet (no migration adds them): they price what code itself caps

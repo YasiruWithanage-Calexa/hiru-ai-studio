@@ -36,6 +36,7 @@ from contracts.raphael.checks import mentions, strings_of
 from contracts.raphael.scene import LONGEST_TAKE_S, norm
 from contracts.raphael.stored import StoredRaphael
 from contracts.raphael.wire import FRAMING, Clip
+from contracts.sentences import sentence_breaks
 from contracts.shotplan import Item, shot_clock
 from contracts.stagemap import SceneStaging
 from contracts.staging import heard_marked, voice_source
@@ -334,8 +335,20 @@ def rows_for(
     as a
     re-split makes them. The lines' words are the script's: a line is bound by id and never copied from the plan."""
     clips = [c for c in order(stored.clips, stored.blend_notes) if c.ir is not None]
-    items = sceneplan.scene_items(scene, lines)
+    # plan/2026-11-20 D9: a bin planned with its long lines in parts counts the parts as blocks
+    items = sceneplan.scene_items(scene, lines, parts=stored.line_parts)
     by_index = {i.index: i for i in items}
+
+    def item_for(ln: str, among: list[Item]) -> Item | None:
+        """The block a short line id (L13) names among `among`: the line's own block, or, for a line in parts, the
+        part at that block number (every part shares the line's id)."""
+        real = stored.line_ids.get(ln)
+        hits = [i for i in among if i.line_id == real]
+        if len(hits) <= 1:
+            return hits[0] if hits else None
+        at = int(ln[1:]) if ln[1:].isdigit() else -1
+        return next((i for i in hits if i.index == at), hits[0])
+
     rows_by_id = {str(ln["id"]): ln for ln in lines}
     by_short = {short: rows_by_id[real] for short, real in stored.line_ids.items() if real in rows_by_id}
     people = people_by_name(characters)
@@ -348,7 +361,7 @@ def rows_for(
     long = {
         i.index: s
         for i, s in ((i, shot_clock([i])[1]) for i in items if i.kind == "action")
-        if s > LONGEST_TAKE_S + 1e-9
+        if s > (max(stored.takes) if stored.takes else LONGEST_TAKE_S) + 1e-9  # plan/2026-11-19
     }
     slates = {c.id: c.slate for c in stored.clips}
     shots: list[Row] = []
@@ -367,12 +380,12 @@ def rows_for(
         # script often leaves a recording or a call unmarked ("Aruni's voice message plays." then a bare line), and a
         # clip with words must never be written silent (the prompt would say "nobody speaks" over a spoken line).
         heard_line = (bool(mine) and not c.speaks) or any(
-            (blk := next((i for i in own if i.line_id == stored.line_ids.get(ln)), None)) is not None
-            and heard_marked(blk)
-            for ln in c.lines
+            (blk := item_for(ln, own)) is not None and heard_marked(blk) for ln in c.lines
         )
         mode = sound_mode_of(c, bool(mine) and c.speaks, heard_line)
-        words = sum(_words(by_short[ln]) for ln in mine if ln in by_short)
+        # a part counts its own words; a whole line the row's (plan/2026-11-20)
+        words = sum((p.words if (p := item_for(ln, items)) is not None and p.is_part else _words(by_short[ln]))
+                    for ln in mine if ln in by_short)
         speakers = {str(r["character_id"]) for r in spoken if r.get("character_id")}
         shots.append(
             {
@@ -421,24 +434,36 @@ def rows_for(
         )
         line_facts = []
         for ln in mine:
-            row, block = by_short.get(ln), next((i for i in own if i.line_id == stored.line_ids.get(ln)), None)
+            row, block = by_short.get(ln), item_for(ln, own)
             if row is None or block is None:
                 continue
             at = starts.get(block.index, 0.0)
+            said = block.text if block.is_part else str(row.get("text") or "")  # a part: its own words and pauses
             over = overrun_seconds(
                 start_sec=start_s + at,
-                words=_words(row),
+                words=words_in(said),
                 shot_end_sec=start_s + c.take_s,
                 delivery=str(row.get("delivery") or ""),
+                breaks=sentence_breaks(said),
             )
             beat = next((i for i, (a, b) in enumerate(windows) if a <= at < b), len(windows) - 1)
-            bound[str(row["id"])] = {
-                "shot_id": shot_ids[c.id],
-                "beat_index": beat,
-                "start_s": round(start_s + at, 2),
-                "overrun_s": round(over, 2),
-                "words": _words(row),
-            }
+            # A line in parts is bound to the clip of its FIRST part (where it starts); its overrun is what all its
+            # parts run over (plan/2026-11-20 D8). A whole line is bound where it is performed, as before.
+            first = bound.get(str(row["id"]))
+            if first is not None and block.is_part:
+                first["overrun_s"] = round(first["overrun_s"] + over, 2)
+                if block.part < first["_part"]:
+                    first.update({"shot_id": shot_ids[c.id], "beat_index": beat, "start_s": round(start_s + at, 2),
+                                  "_part": block.part})
+            else:
+                bound[str(row["id"])] = {
+                    "shot_id": shot_ids[c.id],
+                    "beat_index": beat,
+                    "start_s": round(start_s + at, 2),
+                    "overrun_s": round(over, 2),
+                    "words": _words(row),
+                    "_part": block.part,
+                }
             line_facts.append({"line_id": ln, "start_s": round(at, 2), "overrun_s": round(over, 2)})
         facts.append({"number": n, "take_s": c.take_s, "need_s": round(need, 2), "lines": line_facts})
         start_s += c.take_s
@@ -447,9 +472,9 @@ def rows_for(
     for source in lines:
         row = {k: source.get(k) for k in keep}
         row.update(
-            bound.get(
+            {k: v for k, v in bound.get(
                 str(source["id"]), {"shot_id": None, "beat_index": None, "start_s": None, "overrun_s": 0, "words": 0}
-            )
+            ).items() if not k.startswith("_")}
         )
         line_rows.append(row)
     mark_after(shots, scene)
@@ -486,6 +511,24 @@ def design_all(
         ir, rec, why = shots_mod.finish(entry, shot_in, scene_in, prod)
         row["ir"] = ir
         row["design"] = design.design_row(shot_in, ir, rec, why, "raphael", on_screen, job_id)
+
+
+def renumbered_staging(scene: Row, lines: list[Row], parts: bool) -> Row | None:
+    """The scene's map renumbered for the blocks these shots count (plan/2026-11-20 D8), or None when it already is.
+    A map made for the scene's whole lines, saved with shots planned in parts (or the other way round), would put
+    every mark after a long line on the wrong block for the readers that take a mark's block as it is
+    (`contracts.holding`): it is pinned again to the new numbering, each mark found by its anchor."""
+    from contracts import reading as rd
+    from contracts import stagemap as sm
+
+    staging = SceneStaging.of(scene)
+    if staging is None:
+        return None
+    script = scene.get("script") or []
+    now = sceneplan.items_for(script, lines, parts=parts)
+    if staging.basis == rd.basis(now) or staging.basis != rd.basis(sceneplan.items_for(script, lines, parts=not parts)):
+        return None
+    return sm.pinned(staging, now, now).model_dump(mode="json")
 
 
 def fit_report(stored: StoredRaphael, facts: list[Row], envelope_s: Any) -> Row:
@@ -540,15 +583,26 @@ def write(
     """-> (shots, line rows, the scene's fields). Refuses an approved scene."""
     if scene.get("status") == "approved":
         raise PermissionError("an approved scene is never touched")
+    if stored.line_parts:  # every reader below sees the scene as it will be stored: its long lines in parts
+        scene = {**scene, "line_parts": True}
+    staging = renumbered_staging(scene, lines, stored.line_parts)
+    if staging is not None:
+        scene = {**scene, "staging": staging}
     characters = [c for c in canon if c.get("kind") == "character"]
     shots, line_rows, facts = rows_for(scene, lines, stored, characters)
     design_all(scene, shots, line_rows, stored.clips, canon, production, job_id, stored.blend_notes)
-    fields = {
+    fields: Row = {
         "status": "split",
         "fit_report": fit_report(stored, facts, scene.get("envelope_s")),
         "raphael": stored.data(),
         "coverage": coverage_of(stored, int(scene.get("script_version") or 1)),
     }
+    # plan/2026-11-20 D9: with the shots, in the same write. Named only when the plan is in parts or the scene row has
+    # the column (schema v28), so a database without it still saves every plan made without parts.
+    if stored.line_parts or "line_parts" in scene:
+        fields["line_parts"] = stored.line_parts
+    if staging is not None:
+        fields["staging"] = staging
     return shots, line_rows, fields
 
 

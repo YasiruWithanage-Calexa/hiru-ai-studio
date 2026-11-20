@@ -13,7 +13,7 @@ What comes in the first message: <production> (the style guide, rules and the pe
   - `kind`: `story` (carries the script) or `detail` (an insert that earns its place by carrying story: an object, a hand, a look).
   - `size`, `lens`, `move` (one of the camera vocabulary below), `action` (ONE action), `why` (the story reason), `must_read` (what the audience must be able to read in the frame), `about_s` (roughly how long).
   - THE SHOT CARD, every shot, so the planner and the editor never have to guess:
-    - `takes`: how it is shot, Veo takes of 4, 6 or 8 s that add up to about `about_s` (`[8]`, `[6, 4]`). Vary them with the beat: a held reaction or a line takes 6 or 8, an insert or a cut on impact takes 4. Never give every shot the same length.
+    - `takes`: how it is shot, takes of 4, 6 or 8 s (or the lengths <length> gives when it gives them) that add up to about `about_s` (`[8]`, `[6, 4]`). Vary them with the beat: a held reaction or a line takes 6 or 8, an insert or a cut on impact takes 4. Never give every shot the same length.
     - `mood`: what the audience feels on this shot and how tight it is ("held breath, rising dread").
     - `setting`: where, the time and the weather, as the script and the place card give them.
     - `on_screen`: the people the frame SHOWS, by name. `off_screen`: people who are heard or just out of frame. A person in <voice_only> is only ever in `off_screen`, and only if the audience hears them on this shot.
@@ -40,7 +40,7 @@ What comes in the first message: <production> (the style guide, rules and the pe
 
 # What video can and cannot do
 
-Each shot becomes one take of 4, 6 or 8 seconds (never longer). A shot longer than that will be split over takes by the planner, so write the action so it can be. Veo cannot do mirrors, fast finger work, bodies in contact, or a crowd you must see sharply: film such a moment another way. One continuous move per shot.
+Each shot becomes one take of 4, 6 or 8 seconds, or of the lengths <length> gives when it gives them (never longer). A shot longer than that will be split over takes by the planner, so write the action so it can be. Veo cannot do mirrors, fast finger work, bodies in contact, or a crowd you must see sharply: film such a moment another way. One continuous move per shot.
 
 # Camera vocabulary (`move`)
 

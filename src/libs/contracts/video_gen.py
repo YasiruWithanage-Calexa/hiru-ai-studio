@@ -31,7 +31,8 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from contracts import safe_depiction
 from contracts.producer import Check, Pins
-from contracts.veo import VEO_DURATIONS, FrameStrategy
+from contracts.take_lengths import LONGEST_TAKE_S, MIN_TAKE_S
+from contracts.veo import FrameStrategy
 
 Source = Literal["production", "shot", "run", "code", "draft"]
 Slot = Literal["first_frame", "last_frame", "reference"]
@@ -40,6 +41,14 @@ SeedSupport = Literal["honoured", "accepted", "none"]
 SEED_MAX = 2**32 - 1
 MAX_TAKES_PER_PRESS = 1  # one video per press of Generate (the person's decision, 2026-11-06)
 DEFAULT_ENGINE = "omni_flash"
+# plan/2026-11-19: Hiru makes every take with Gemini Omni Flash 1.2, 3 to 15 s. Veo 3.1, Veo 3.1 Fast and Omni Flash 1.1
+# are dropped: a production or a shot that stored one reads as 1.2 (`_retired`); an old take keeps its engine's name.
+OMNI_MODEL = "gemini-omni-1.2-flash"
+OMNI_DURATIONS: tuple[int, ...] = tuple(range(MIN_TAKE_S, LONGEST_TAKE_S + 1))
+RETIRED_ENGINES: dict[str, str] = {"veo_3_1": "Veo 3.1", "veo_3_1_fast": "Veo 3.1 Fast"}  # rows: RETIRED_CAPABILITIES
+RETIRED_MODELS: frozenset[str] = frozenset({"gemini-omni-1.1-flash", "veo-3.1-generate-preview",
+                                            "veo-3.1-fast-generate-preview"})
+RETIRED_OPTIONS: frozenset[str] = frozenset({"person_generation"})  # Veo's
 # A draft is a cheap look before the real take: always Omni Flash at 360p, whatever the production's model (Veo has
 # no 360p). The production's own size is chosen from the rest.
 DRAFT_ENGINE = "omni_flash"
@@ -103,7 +112,7 @@ class EngineCapability(_Model):
     label: str
     model: str  # default model id; `VIDEO__MODELS` overrides per engine without a code change
     api: Literal["interactions", "predict_long_running"]
-    durations: tuple[int, ...]  # what Hiru OFFERS: its ladder ∩ the engine's (4/6/8; 10 s stays off, PLAN.md Q4)
+    durations: tuple[int, ...]  # what the engine makes; a production uses its own lengths (`ProductionSettings.takes`)
     aspects: tuple[str, ...]
     resolutions: tuple[str, ...]
     max_refs: int  # plain references; frames are not counted
@@ -130,11 +139,6 @@ class EngineCapability(_Model):
     versions: tuple[tuple[str, str], ...] = ()
 
 
-_VEO_OPTIONS = {
-    "person_generation": OptionSpec(kind="choice", label="People in the picture",
-                                    choices=("allow_adult", "allow_all", "dont_allow")),
-}
-
 # Starting values are PromptMotion's rows (a027aec). The seed rows are the honest unknown: Omni's S0 probe saw `seed`
 # accepted on the wrong endpoint, so it stays "none" (not sent) until the probe settles it on /interactions.
 # Omni takes a start frame WITH references as `reference_to_video` (plan/2026-11-18, lab/omni_refs run 003: frame + 4
@@ -144,31 +148,40 @@ _VEO_OPTIONS = {
 # An end frame with references is not tested and stays apart.
 ENGINE_CAPABILITIES: dict[str, EngineCapability] = {
     "omni_flash": EngineCapability(
-        key="omni_flash", label="Omni Flash", model="gemini-omni-1.1-flash", api="interactions",
-        versions=(("1.1", "gemini-omni-1.1-flash"), ("1.2", "gemini-omni-1.2-flash")),
-        durations=VEO_DURATIONS, aspects=("9:16", "16:9"), resolutions=("360p", "720p", "1080p"), max_refs=6,
+        key="omni_flash", label="Omni Flash 1.2", model=OMNI_MODEL, api="interactions",
+        durations=OMNI_DURATIONS, aspects=("9:16", "16:9"), resolutions=("360p", "720p", "1080p"), max_refs=6,
         first_frame=True, last_frame=True, refs_with_first_frame=True, refs_with_last_frame=False, max_images=6,
         max_per_person=3, max_people_with_sheets=2, person_pictures="face_and_look", seed="none",
         notes="A start frame and up to 5 sheets (at most 3 of one person, sheets for up to 2 people), each named "
-              "Image 1, Image 2… in the order sent. An end frame goes without sheets."),
+              "Image 1, Image 2… in the order sent. An end frame goes without sheets. 3 to 15 s."),
+}
+
+# Retired (plan/2026-11-19): never offered, never chosen (`_retired` reads a stored choice as Omni Flash 1.2). Kept so
+# `capability` still describes a request made before, and a Veo render already sent can be picked up and finished.
+_VEO_OPTIONS = {
+    "person_generation": OptionSpec(kind="choice", label="People in the picture",
+                                    choices=("allow_adult", "allow_all", "dont_allow")),
+}
+RETIRED_CAPABILITIES: dict[str, EngineCapability] = {
     "veo_3_1": EngineCapability(
         key="veo_3_1", label="Veo 3.1", model="veo-3.1-generate-preview", api="predict_long_running",
-        durations=VEO_DURATIONS, aspects=("9:16", "16:9"), resolutions=("720p", "1080p"), max_refs=3,
+        durations=(4, 6, 8), aspects=("9:16", "16:9"), resolutions=("720p", "1080p"), max_refs=3,
         first_frame=True, last_frame=True, refs_with_first_frame=False, seed="accepted",
         full_length=8, full_length_for=("1080p", "references", "last_frame"), options=_VEO_OPTIONS,
-        notes="1080p, references and an end frame need 8 s."),
+        notes="Retired. 1080p, references and an end frame need 8 s."),
     "veo_3_1_fast": EngineCapability(
         key="veo_3_1_fast", label="Veo 3.1 Fast", model="veo-3.1-fast-generate-preview", api="predict_long_running",
-        durations=VEO_DURATIONS, aspects=("9:16", "16:9"), resolutions=("720p", "1080p"), max_refs=3,
+        durations=(4, 6, 8), aspects=("9:16", "16:9"), resolutions=("720p", "1080p"), max_refs=3,
         first_frame=True, last_frame=True, refs_with_first_frame=False, seed="accepted",
         full_length=8, full_length_for=("1080p", "references", "last_frame"), options=_VEO_OPTIONS,
-        notes="Faster Veo 3.1. 1080p, references and an end frame need 8 s."),
+        notes="Retired. Faster Veo 3.1. 1080p, references and an end frame need 8 s."),
 }
 
 
 def capability(engine: str) -> EngineCapability:
+    """An engine's row: an offered one, or a retired one (to read a request made before plan/2026-11-19)."""
     try:
-        return ENGINE_CAPABILITIES[engine]
+        return ENGINE_CAPABILITIES.get(engine) or RETIRED_CAPABILITIES[engine]
     except KeyError:
         raise ValueError(f"unknown video engine {engine!r}; known: {sorted(ENGINE_CAPABILITIES)}") from None
 
@@ -226,9 +239,34 @@ def _model_id(v: str | None) -> str | None:
     return v
 
 
+def _retired(data: Any) -> Any:
+    """A stored production or shot setting as Omni Flash 1.2 reads it (plan/2026-11-19): a retired engine is Omni
+    Flash (its options dropped) and a retired model id is the default. A shot's stored Veo option is dropped by
+    `resolve` when the take is not on a retired engine."""
+    if not isinstance(data, dict):
+        return data
+    out = dict(data)
+    if out.get("engine") in RETIRED_ENGINES:
+        out["engine"] = DEFAULT_ENGINE
+        if isinstance(out.get("options"), dict):  # the retired engine's knobs go with it
+            out["options"] = {k: v for k, v in out["options"].items() if k not in RETIRED_OPTIONS}
+    if out.get("model") in RETIRED_MODELS:
+        out["model"] = None
+    return out
+
+
+def engine_label(engine: str) -> str:
+    """An engine's name for a take's card, a retired one included ("Veo 3.1")."""
+    if engine in ENGINE_CAPABILITIES:
+        return ENGINE_CAPABILITIES[engine].label
+    return RETIRED_ENGINES.get(engine, engine)
+
+
 class VideoSettings(_Model):
     """The production's (`ProductionSettings.video`): every field has a value. `engine`, `model` and `resolution` are
     set when the production is created and never change (`LOCKED_VIDEO_FIELDS`)."""
+
+    _read_retired = model_validator(mode="before")(lambda cls, data: _retired(data))
 
     engine: str = DEFAULT_ENGINE
     model: str | None = None  # a specific model id, e.g. a newer Veo preview
@@ -254,7 +292,10 @@ class VideoSettings(_Model):
 class VideoOverrides(_Model):
     """A shot's or a run's one-off overrides: only the fields set are used. The engine and size are not here: they are
     the production's (`LOCKED_VIDEO_FIELDS`), so a shot or a press that names one is refused. `model` is one of the
-    engine's `versions` (Omni Flash 1.1 / 1.2); any other is a blocking check, never a silent swap."""
+    engine's `versions`; Omni Flash 1.2 has none (plan/2026-11-19), so a model a shot stored for a retired version is
+    dropped when read and any other is a blocking check, never a silent swap."""
+
+    _read_retired = model_validator(mode="before")(lambda cls, data: _retired(data))
 
     model: str | None = None
     aspect_ratio: str | None = None
@@ -309,6 +350,10 @@ def resolve(production: VideoSettings, shot: VideoOverrides | None, run: VideoOv
         for k, v in lay.options.items():
             options[k] = v
             sources[f"options.{k}"] = src
+    if values["engine"] not in RETIRED_ENGINES:  # plan/2026-11-19: a shot's Veo knob from before is not Omni's
+        for k in RETIRED_OPTIONS & set(options):
+            options.pop(k)
+            sources.pop(f"options.{k}", None)
     if values.get("aspect_ratio") is None:
         values["aspect_ratio"], sources["aspect_ratio"] = production_aspect, "production"
     if values.get("duration_s") is None:
@@ -703,7 +748,7 @@ def describe_spec(spec: RenderSpec) -> str:
         if version:
             label = f"{label} {version}"
     except ValueError:
-        label = spec.engine
+        label = engine_label(spec.engine)  # a retired engine's take keeps its name (plan/2026-11-19)
     parts = [label, spec.resolution, spec.aspect_ratio, f"{spec.duration_s} s"]
     if spec.draft:
         parts.insert(0, "Draft")

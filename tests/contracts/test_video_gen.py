@@ -39,6 +39,16 @@ from contracts.video_gen import (
 )
 
 
+def vs(engine: str = "omni_flash", **kw):
+    """Production settings, a RETIRED engine's included (plan/2026-11-19): a stored Veo choice reads as Omni Flash 1.2,
+    so a test of a Veo request made before the plan builds it past that reading."""
+    from contracts.video_gen import RETIRED_ENGINES
+
+    if engine not in RETIRED_ENGINES:
+        return VideoSettings(engine=engine, **kw)
+    kept = {k: kw.pop(k) for k in ("options", "model") if k in kw}
+    return VideoSettings(**kw).model_copy(update={"engine": engine, **kept})
+
 def src(kind="canon_sheet", bucket="references", path=None, version=None) -> RefSource:
     return RefSource(kind=kind, id=uuid4(), path=path or f"p/{uuid4().hex[:6]}.png", bucket=bucket, version=version)
 
@@ -49,7 +59,7 @@ def ref(label: str, binds_to: UUID | None = None, slot="reference", **kw) -> Ref
 
 def settings(engine="omni_flash", **kw):
     locked = {k: kw.pop(k) for k in ("model", "resolution") if k in kw}  # the production's, set past validation
-    return resolve(VideoSettings(engine=engine), None, VideoOverrides(**kw), production_aspect="16:9",
+    return resolve(vs(engine), None, VideoOverrides(**kw), production_aspect="16:9",
                    shot_seconds=8).model_copy(update=locked)
 
 
@@ -176,7 +186,7 @@ def test_names_pass(label):
 
 
 def test_layers_merge_field_by_field_and_say_where_each_value_came_from():
-    prod = VideoSettings(engine="veo_3_1", resolution="1080p", options={"person_generation": "allow_adult"})
+    prod = vs("veo_3_1", resolution="1080p", options={"person_generation": "allow_adult"})
     shot = VideoOverrides(options={"person_generation": "allow_all"}, duration_s=8)
     run = VideoOverrides(duration_s=6)
     got = resolve(prod, shot, run, production_aspect="9:16", shot_seconds=8)
@@ -203,7 +213,7 @@ def test_the_engine_and_size_are_the_productions_alone():
 
 
 def test_a_draft_is_omni_flash_at_360p_and_leaves_another_engines_knobs_behind():
-    veo = VideoSettings(engine="veo_3_1", resolution="1080p", model="veo-3.1-generate-002", negative_prompt="no text",
+    veo = vs("veo_3_1", resolution="1080p", model="veo-3.1-generate-002", negative_prompt="no text",
                         options={"person_generation": "allow_adult"})
     got = resolve(veo, None, VideoOverrides(duration_s=8), production_aspect="16:9", shot_seconds=4, draft=True)
     assert (got.engine, got.model, got.resolution, got.draft) == (DRAFT_ENGINE, None, DRAFT_RESOLUTION, True)
@@ -211,8 +221,8 @@ def test_a_draft_is_omni_flash_at_360p_and_leaves_another_engines_knobs_behind()
     assert got.sources["engine"] == got.sources["resolution"] == got.sources["model"] == "draft"
     assert not [k for k in got.sources if k.startswith("options.")]
     draft = spec_for(got, prose="Nimal opens the door.", references=[])
-    assert draft.draft and draft.model == "gemini-omni-1.1-flash" and not blocking(validate_render(draft))
-    assert describe_spec(draft).startswith("Draft · Omni Flash 1.1 · 360p")
+    assert draft.draft and draft.model == "gemini-omni-1.2-flash" and not blocking(validate_render(draft))
+    assert describe_spec(draft).startswith("Draft · Omni Flash 1.2 · 360p")
     real = spec_for(resolve(veo, None, None, production_aspect="16:9", shot_seconds=8), prose="x", references=[])
     assert not real.draft and real.model == "veo-3.1-generate-002"
     assert request_hash(draft) != request_hash(draft.model_copy(update={"draft": False}))
@@ -231,7 +241,7 @@ def test_an_empty_run_override_clears_a_lower_negative_prompt():
 def test_a_model_id_is_checked():
     with pytest.raises(ValueError):
         VideoSettings(model="x; drop table")
-    assert VideoSettings(model="veo-3.1-generate-002", engine="veo_3_1").model == "veo-3.1-generate-002"
+    assert vs("veo_3_1", model="veo-3.1-generate-002").model == "veo-3.1-generate-002"
 
 
 # ── blocking checks, never silent snapping ───────────────────────────────────────────────────────────────────
@@ -272,9 +282,14 @@ def test_caps_and_modes_are_enforced():
     assert any("Only one picture can be the start frame" in m for m in blocking(validate_render(two)))
 
 
-def test_ten_seconds_stays_off():
-    assert any("10 s cannot be rendered" in m for m in blocking(validate_render(spec([], duration_s=10))))
-    assert capability("omni_flash").durations == (4, 6, 8)
+def test_omni_flash_1_2_renders_3_to_15_seconds():
+    # plan/2026-11-19 (was "ten seconds stays off"): the production's lengths decide which of these a shot uses
+    for seconds in (3, 7, 10, 13, 15):
+        assert not blocking(validate_render(spec([], duration_s=seconds))), seconds
+    for seconds in (2, 16):
+        found = blocking(validate_render(spec([], duration_s=seconds)))
+        assert any(f"{seconds} s cannot be rendered" in m for m in found), seconds
+    assert capability("omni_flash").durations == tuple(range(3, 16))
 
 
 def test_unknown_engine_aspect_resolution_prompt_negative_and_options():
@@ -395,8 +410,8 @@ def test_omni_gives_sheets_to_two_people_and_lists_the_rest():
                              carried_frame=None, candidates=people)
     assert len(got.bindings) == 5
     assert {b.binds_to for b in got.bindings[1:]} == {people[0].entity_id, people[1].entity_id}
-    assert got.left_out == ["the face sheet for Ruwan (Omni Flash keeps faces for up to 2 people)",
-                            "the look sheet for Ruwan (Omni Flash keeps faces for up to 2 people)"]
+    assert got.left_out == ["the face sheet for Ruwan (Omni Flash 1.2 keeps faces for up to 2 people)",
+                            "the look sheet for Ruwan (Omni Flash 1.2 keeps faces for up to 2 people)"]
 
 
 def test_omni_without_a_frame_keeps_the_place_within_six():
@@ -535,7 +550,7 @@ def test_a_spec_round_trips_through_json_with_no_image_bytes():
 
 
 def test_a_shot_or_a_press_picks_an_omni_version_and_a_draft_takes_it_too():
-    omni, veo = VideoSettings(), VideoSettings(engine="veo_3_1")
+    omni, veo = VideoSettings(), vs("veo_3_1")
     picked = VideoOverrides(model="gemini-omni-1.2-flash")
     got = resolve(omni, None, picked, production_aspect="9:16", shot_seconds=6)
     assert (got.model, got.sources["model"]) == ("gemini-omni-1.2-flash", "run")
@@ -544,16 +559,15 @@ def test_a_shot_or_a_press_picks_an_omni_version_and_a_draft_takes_it_too():
     assert (shot.model, shot.sources["model"]) == ("gemini-omni-1.2-flash", "shot")
     draft = resolve(veo, None, picked, production_aspect="9:16", shot_seconds=6, draft=True)
     assert (draft.engine, draft.model, draft.sources["model"]) == ("omni_flash", "gemini-omni-1.2-flash", "run")
-    assert resolve(omni, None, None, production_aspect="9:16", shot_seconds=6).model is None, "the default is 1.1"
+    assert resolve(omni, None, None, production_aspect="9:16", shot_seconds=6).model is None, "the default"
     spec = spec_for(got, prose="x", references=[])
     assert describe_spec(spec).startswith("Omni Flash 1.2 · 720p")
     assert request_hash(spec) != request_hash(spec.model_copy(update={"model": "gemini-omni-1.1-flash"}))
 
 
-def test_only_an_engines_own_versions_may_be_picked():
-    assert version_problem("omni_flash", "gemini-omni-1.1-flash") is None
-    assert version_problem("omni_flash", "gemini-omni-1.2-flash") is None
+def test_omni_flash_1_2_has_no_versions_to_pick():
+    # plan/2026-11-19: one model; a stored 1.1 pick is dropped when read (`VideoOverrides`), any other is refused
     assert version_problem("omni_flash", None) is None
-    assert "Choose 1.1 or 1.2" in (version_problem("omni_flash", "gemini-omni-9") or "")
-    assert "no versions" in (version_problem("veo_3_1", "gemini-omni-1.2-flash") or "")
-    assert capability("omni_flash").versions[0][1] == capability("omni_flash").model
+    assert "no versions" in (version_problem("omni_flash", "gemini-omni-9") or "")
+    assert VideoOverrides(model="gemini-omni-1.1-flash").model is None
+    assert capability("omni_flash").versions == () and capability("omni_flash").model == "gemini-omni-1.2-flash"

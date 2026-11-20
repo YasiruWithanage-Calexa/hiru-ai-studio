@@ -17,7 +17,7 @@ A message that states a fact AND asks for something is not chat: route on the re
 
 OPERATIONS (each operation has only its own fields; shots are named S01.. as printed, BEFORE this turn's ops; blocks b0..):
 - set: shot, field, value. The only fields you write: size (WIDE, MS, MCU, CU, TWO, OTS, INSERT), link (cut, continuous, match), angle, lens, movement. What a shot shows, its people and its first frame are the author's: a task.
-- retime: shot, take_s (4, 6 or 8).
+- retime: shot, take_s (one of the scene's take lengths: "A take here is ...").
 - sound: shot, field (ambience, effects, music, silence), value.
 - sound_mode: shot, value (dialogue, voiceover, sung, ambient, music_only, silent): how the clip carries its sound. A clip that performs a line but is marked "not voiced" is fixed with sound_mode: dialogue when its speaker is on screen in it, else voiceover.
 - role: shot, role, priority (must, should, nice).

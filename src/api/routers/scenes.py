@@ -27,7 +27,7 @@ from api.deps.db import get_repos
 from api.repositories import Repos, Row
 from api.services.director import board
 from api.workers import task_manager
-from contracts import action_budget, bridges, sceneplan, stagemap
+from contracts import action_budget, bridges, sceneplan, stagemap, take_lengths
 from contracts import reading as scene_reading
 from contracts.canon import CanonKind, name_key
 from contracts.director import BoardMember, ScriptUpdate, ShotUpdate
@@ -35,7 +35,7 @@ from contracts.jobs import JobKind
 from contracts.producer import PersonEdits, shot_items
 from contracts.production import BlockKind, Framing, ProductionSettings, SceneStatus, ShotStatus
 from contracts.roles import Permission
-from contracts.shotplan import FitResult, allowed_durations, fit, shot_clock
+from contracts.shotplan import FitResult, bound_lines, fit, shot_clock
 from contracts.staging import ShotIntent, shot_cast
 from contracts.veo import CameraLink, FrameStrategy, SoundMode
 
@@ -91,6 +91,19 @@ class StagingFindingView(BaseModel):
     zone: str = ""
 
 
+class LinePartView(BaseModel):
+    """A part of a long line that a shot carries (plan/2026-11-20 D8): the script's words of that part, unchanged."""
+
+    line_id: UUID
+    part: int  # 1-based
+    parts: int
+    text: str
+    words: int
+    start_s: float  # from the start of the scene
+    end_s: float
+    overrun_s: float  # how far this part runs past the shot's cut (reported, never trimmed)
+
+
 class ShotView(BaseModel):
     id: UUID
     code: str  # "S01"
@@ -131,6 +144,8 @@ class ShotView(BaseModel):
     blend: str = ""
     # What happens in the shot, in plain words (the Raphael clip's summary; "" for another planner's shot)
     summary: str = ""
+    # plan/2026-11-20: the parts of long lines this shot carries ([] when it carries whole lines only)
+    line_parts: list[LinePartView] = []
 
 
 class LineView(BaseModel):
@@ -151,6 +166,9 @@ class LineView(BaseModel):
     start_s: float | None  # from the start of the scene
     end_s: float | None
     overrun_s: float  # how far it runs past its shot's cut (reported, never trimmed)
+    # plan/2026-11-20: a line covered in parts (2 or more) is bound to the shot of its first part; each shot lists
+    # the parts it carries (`ShotView.line_parts`). 0 = a whole line.
+    parts: int = 0
 
 
 class ScriptBlockView(BaseModel):
@@ -247,6 +265,8 @@ class SceneView(BaseModel):
     # its dialogue waits for a person to check it against the page; None = the rules read it.
     read_from: str | None = None
     read_confirmed_at: datetime | None = None
+    # The lengths a shot here may have, shortest first (plan/2026-11-19): 4/6/8 for a production made before it
+    take_lengths: list[int] = [4, 6, 8]
 
 
 class ResplitStarted(BaseModel):
@@ -366,10 +386,15 @@ class Loaded:
     def fixed(self) -> int | None:
         return self.settings.fixed_shot_seconds
 
+    @property
+    def takes(self) -> tuple[int, ...]:
+        """The lengths this production's shots may have (plan/2026-11-19)."""
+        return self.settings.takes
+
     def fit(self, plan: list[Row], script: list[Row] | None = None, lines: list[Row] | None = None,
             envelope_s: int | None = None) -> FitResult:
         items = sceneplan.scene_items(self.scene, self.lines if lines is None else lines, script)
-        return fit(items, sceneplan.proposal_for(plan), fixed_seconds=self.fixed,
+        return fit(items, sceneplan.proposal_for(plan), fixed_seconds=self.fixed, lengths=self.takes,
                    envelope_s=int(self.scene["envelope_s"]) if envelope_s is None else envelope_s)
 
 
@@ -402,7 +427,8 @@ def natural_cast(ld: Loaded, canon_rows: list[Row]) -> dict[str, set[str]]:
     """Shot id → who and what the script puts in it: its speakers, who its action names, the place.
     What a person added or took out by hand (`PersonEdits.cast`) is not in it."""
     characters = [c for c in canon_rows if c["kind"] == CanonKind.CHARACTER.value]
-    items = sceneplan.items_for(ld.scene.get("script") or [], ld.lines)
+    # numbered as the shots are (a scene planned in parts counts the parts, plan/2026-11-20)
+    items = sceneplan.items_for(ld.scene.get("script") or [], ld.lines, parts=sceneplan.line_parts_of(ld.scene))
     place = {str(ld.scene["location_id"])} if ld.scene.get("location_id") else set()
     # shot_cast, not cast_in: it also counts who the shot's intent puts on screen, so the scene's canon holds
     # everyone a shot pins (the interface lists a shot's canon from the scene's).
@@ -463,6 +489,8 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
                   for c in ((_raphael_result(scene) or {}).get("clips") or []) if isinstance(c, dict)}
     shot_of_number: dict[int, UUID | None] = {}
     shots: list[ShotView] = []
+    part_text = {(i.line_id, i.part): i.text for i in kernel_items if i.is_part}  # plan/2026-11-20
+    parts_of = {i.line_id: i.parts for i in kernel_items if i.is_part}
     for f in result.shots if result else []:
         row = by_start.get(f.start)  # None only if the stored plan was not written by the kernel
         shot_of_number[f.number] = UUID(str(row["id"])) if row else None
@@ -489,13 +517,17 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             priority=str(row.get("priority") or ""), stage=int(row.get("stage") or 0),
             anchor=[str(a) for a in row.get("anchor") or []], blend=str(row.get("blend") or ""),
             summary=summary_of.get(str(row.get("slate") or ""), ""),
+            line_parts=[LinePartView(line_id=UUID(fl.line_id), part=fl.part, parts=fl.parts,
+                                     text=part_text.get((fl.line_id, fl.part), ""), words=fl.words,
+                                     start_s=fl.start_s, end_s=fl.end_s, overrun_s=fl.overrun_s)
+                        for fl in (result.lines if result else []) if fl.shot_number == f.number and fl.parts > 1],
             version=int(row.get("version") or 1), picture_s=f.picture_s, need_s=f.need_s,
             crowded=f.number in result.crowded if result else False,
             over_budget=over_budget(row),
             timeline=[TimelineSlot(block=s.index, kind="line" if s.is_line else "picture", start_s=round(s.start_s, 2),
                                    end_s=round(s.end_s, 2)) for s in shot_clock(kernel_items[f.start:f.end])[0]]))
 
-    timed = {fl.line_id: fl for fl in result.lines} if result else {}
+    timed = bound_lines(result.lines) if result else {}  # a line in parts: where its first part is
     lines = []
     for ln in ld.lines:
         fl = timed.get(str(ln["id"]))
@@ -505,10 +537,12 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
             shot_id=shot_of_number.get(fl.shot_number) if fl else None, beat_index=fl.beat_index if fl else None,
             source_text=ln.get("source_text"), source_lang=ln.get("source_lang"),
             start_s=fl.start_s if fl else None, end_s=fl.end_s if fl else None,
-            overrun_s=fl.overrun_s if fl else 0.0))
+            overrun_s=fl.overrun_s if fl else 0.0, parts=parts_of.get(str(ln["id"]), 0)))
 
     line_by_id = {str(ln["id"]): ln for ln in ld.lines}
     shot_of_block = {b: s.id for s in shots for b in range(s.block_start, s.block_end)}
+    # a script block is one item, or a long line's parts (plan/2026-11-20): it starts at its first item
+    starts_at = [i.index for i in kernel_items if i.part <= 1]
     script: list[ScriptBlockView] = []
     for block in scene.get("script") or []:
         kind = BlockKind(block.get("kind", "action"))
@@ -516,12 +550,13 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
         if kind is BlockKind.DIALOGUE and said is None:
             continue  # same rule as the kernel: a dangling line reference is not a block
         i = len(script)
-        item = kernel_items[i] if i < len(kernel_items) else None
+        first = starts_at[i] if i < len(starts_at) else i
+        item = kernel_items[first] if first < len(kernel_items) else None
         picture = item is not None and item.kind == "action"
         script.append(ScriptBlockView(
             index=i, kind=kind, text="" if said else str(block.get("text", "")), line_id=said["id"] if said else None,
             speaker=said["speaker"] if said else "", delivery=(said.get("delivery") or "") if said else "",
-            shot_id=shot_of_block.get(i), screen=item.screen if picture and item else "",
+            shot_id=shot_of_block.get(first), screen=item.screen if picture and item else "",
             events=item.events if picture and item else 1, picture_s=item.picture_s if item else 0.0,
             implied=bool(item and item.implied), bridge=item.bridge if item else ""))
 
@@ -540,6 +575,7 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
     stored_reading = scene_reading.SceneReading.of(scene)
     members, _ = await board(repos, production_id)
     return SceneView(
+        take_lengths=list(ld.takes),
         id=scene["id"], production_id=production_id, production_title=ld.production["title"],
         episode=EpisodeRef(id=episode["id"], number=episode["number"], title=episode.get("title") or ""),
         number=scene["number"], heading=scene.get("heading") or "", title=scene.get("title") or "",
@@ -557,8 +593,9 @@ async def view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneV
         next_scene_id=siblings[at + 1]["id"] if at + 1 < len(siblings) else None,
         reading=stored_reading, reading_stale=bool(stored_reading and stored_reading.stale(
             sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))),
-        staging=staging, staging_stale=bool(staging and staging.stale(
-            sceneplan.items_for(scene.get("script") or [], ld.lines), int(scene.get("script_version") or 1))),
+        staging=staging, staging_stale=bool(staging and staging.stale(  # numbered as the scene is stored
+            sceneplan.items_for(scene.get("script") or [], ld.lines, parts=sceneplan.line_parts_of(scene)),
+            int(scene.get("script_version") or 1))),
         staging_findings=staging_findings(staging, kernel_items, result, cast_names, shot_of_number),
         read_from=scene.get("read_from"), read_confirmed_at=scene.get("read_confirmed_at"))
 
@@ -614,9 +651,8 @@ async def update_shot(production_id: UUID, shot_id: UUID, body: ShotUpdate, acce
         seconds = fields["duration_s"]
         if seconds is None:
             target["duration"], target["duration_locked"] = None, False
-        elif seconds not in allowed_durations(ld.fixed):
-            raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "Veo renders "
-                                + ", ".join(str(d) for d in allowed_durations(ld.fixed)) + " second shots.")
+        elif seconds not in ld.takes:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, take_lengths.not_allowed(seconds, ld.takes))
         else:
             target["duration"], target["duration_locked"] = seconds, True
     if body.camera_link is CameraLink.CONTINUOUS and plan[0] is target:
@@ -1209,8 +1245,9 @@ async def _replace_script(repos: Repos, access: ProductionAccess, ld: Loaded, sc
     when none of the old script survives (Re-split plans it again)."""
     scene_id = UUID(str(ld.scene["id"]))
     production_id = access.production_id
-    old_keys = [_block_key(_as_block(i)) for i in sceneplan.items_for(ld.scene.get("script") or [], ld.lines)]
-    new_keys = [_block_key(_as_block(i)) for i in sceneplan.items_for(script, lines)]
+    parts = sceneplan.line_parts_of(ld.scene)  # the shots count a long line's parts (plan/2026-11-20): so do the keys
+    old_keys = [_block_key(_as_block(i)) for i in sceneplan.items_for(ld.scene.get("script") or [], ld.lines, parts)]
+    new_keys = [_block_key(_as_block(i)) for i in sceneplan.items_for(script, lines, parts)]
     plan = remap_plan(old_keys, new_keys, sceneplan.plan_from_rows(ld.shots)) if ld.shots else []
 
     # Lines first (deleted ones go before new ones take their places), then the script, then

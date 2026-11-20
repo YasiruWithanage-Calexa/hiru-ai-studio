@@ -24,6 +24,15 @@ from tests.raphael import gold, world
 from tests.raphael.test_system import planner
 from tests.raphael.world import World
 
+
+@pytest.fixture(autouse=True)
+def _run_3s_clock(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Run 3 and pass 5 (the gold bins) were planned on the clock before plan/2026-11-20
+    (`tests.clock_before`); the measured clock is tested in `test_line_parts.py`."""
+    from tests.raphael.conftest import run_3_clock
+
+    run_3_clock(monkeypatch)
+
 LONG = 1  # gold block b1 ("act", 1.5 s), made a 12.5 s walk below; c01 covers b0-b2
 
 

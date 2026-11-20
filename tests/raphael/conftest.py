@@ -10,6 +10,7 @@ from typing import Any
 import pytest
 
 from hiru_ai.core.testing import no_real_models
+from tests.clock_before import clock_before_line_parts
 
 
 @pytest.fixture(autouse=True)
@@ -20,3 +21,13 @@ def _no_real_models(monkeypatch: Any) -> Iterator[None]:
 
     get_settings.cache_clear()
     yield
+
+
+
+def run_3_clock(monkeypatch: Any) -> None:
+    """The clock run 3 and pass 5 (the gold bins) were planned on, before plan/2026-11-20 D1: on the measured one two of
+    run 3's clips (c07, c10) are a second short, which `finish` now refuses (D5)."""
+    from contracts.raphael import checks
+    from contracts.raphael import scene as rscene
+
+    clock_before_line_parts(monkeypatch, rscene, checks)

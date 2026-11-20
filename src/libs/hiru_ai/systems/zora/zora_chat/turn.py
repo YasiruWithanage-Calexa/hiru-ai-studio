@@ -109,7 +109,7 @@ def quick(message: str, cov: Coverage) -> Row | None:
         for part in re.split(r"\s*(?:,|\band\b)\s*", m.group(2)):
             p = re.sub(r"^(a|an)\s+", "", part.strip().lower())
             t = re.fullmatch(r"(\d+)\s*(?:s|secs?|seconds?)(?:\s+long)?", p)
-            if t and int(t.group(1)) in (4, 6, 8):
+            if t and int(t.group(1)) in cov.takes:
                 ops.append({"op": "retime", "shot": m.group(1).upper(), "take_s": int(t.group(1))})
             elif p in SIZE_WORDS:
                 ops.append({"op": "set", "shot": m.group(1).upper(), "field": "size", "value": SIZE_WORDS[p]})

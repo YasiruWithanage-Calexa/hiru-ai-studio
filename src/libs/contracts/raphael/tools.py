@@ -117,9 +117,9 @@ class Stage1Session:
         return (
             f"{clip.id} carries blocks {blocks}, which need {need} s; its take is {clip.take_s} s and no take is "
             f"longer "
-            "than 8 s. Split those blocks across clips that follow each other (each clip fewer blocks, neighbours may "
-            "share one block), each the must clip of its blocks. Another angle over the SAME blocks overruns the same "
-            "way."
+            f"than {self.brief.scene.longest} s. Split those blocks across clips that follow each other (each clip "
+            "fewer blocks, neighbours may share one block), each the must clip of its blocks. Another angle over the "
+            "SAME blocks overruns the same way."
         )
 
     def seconds_line(self) -> str:

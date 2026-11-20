@@ -128,6 +128,10 @@ def test_an_eval_case_runs_against_a_scripted_model(comp: Component, case: dict[
         with llm.use_models(model):
             got = agent.run(inp, ctx)
         sent = model.calls[0]
+        shared = agent.prepare(inp).shared  # a part many calls share goes first, as its own message (it caches)
+        if shared:
+            assert sent[1].content == shared
+            sent = [sent[0], *sent[2:]]
         sent_user = sent[1].content
         if isinstance(sent_user, list):  # the text part, then the pictures, then the PDFs (the document reader)
             kinds = [p["type"] for p in sent_user]

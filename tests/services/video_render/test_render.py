@@ -120,11 +120,14 @@ def test_the_deploy_may_choose_a_model_the_person_did_not_but_never_overrides_on
     assert provider.calls[1][0]["model"] == "veo-9"
 
 
-def test_an_omni_version_is_the_persons_pick_and_the_deploy_never_swaps_it(provider):
-    for picked in ("gemini-omni-1.1-flash", "gemini-omni-1.2-flash"):
-        row = render_row(make_spec([], model=picked))
-        assert run(FakeStore(row), row, fake_provider=False, models={"omni_flash": "gemini-omni-9"}) == "done"
-        assert provider.calls[-1][0]["model"] == picked
+def test_omni_flash_1_2_has_no_versions_so_the_deploy_may_stand_in_for_its_default(provider):
+    # plan/2026-11-19: one model, no pick on the card; VIDEO__MODELS may replace the default, never a production's own
+    row = render_row(make_spec([]))
+    assert run(FakeStore(row), row, fake_provider=False, models={"omni_flash": "gemini-omni-9"}) == "done"
+    assert provider.calls[-1][0]["model"] == "gemini-omni-9"
+    own = render_row(make_spec([], model="gemini-omni-1.2-flash-002"))
+    assert run(FakeStore(own), own, fake_provider=False, models={"omni_flash": "gemini-omni-9"}) == "done"
+    assert provider.calls[-1][0]["model"] == "gemini-omni-1.2-flash-002"
 
 
 def test_veo_seconds_become_the_hidden_usage_equivalent(provider):

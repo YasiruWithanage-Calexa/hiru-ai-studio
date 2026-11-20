@@ -26,7 +26,9 @@ import math
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
+from contracts.sentences import sentence_breaks
 from contracts.timing import (
+    SENTENCE_PAUSE_S,
     TURN_GAP_S,
     action_seconds,
     default_beats,
@@ -44,8 +46,12 @@ from contracts.veo import (
     SoundMode,
 )
 
-LEAD_IN_S = 0.5  # a beat before the first word: Veo needs a moment to establish the frame
-LINE_GAP_S = 0.3  # between two lines in one shot
+# plan/2026-11-20 D1, measured on Omni Flash 1.2 (lab/sinhala_pace run 1): it starts speaking at 0.75 to 1.0 s and
+# pauses 0.75 to 1 s at every sentence end inside a line (`timing.SENTENCE_PAUSE_S`). On the two measured takes this
+# clock is already 0.9 to 1.5 s longer than the real speech, so there is no extra margin. LINE_GAP_S (two different
+# speakers) was not measured: provisional. Mirrors the interface's LEAD_IN_SEC / LINE_GAP_SEC / TAIL_SEC.
+LEAD_IN_S = 1.0  # a beat before the first word: the model establishes the frame first
+LINE_GAP_S = 0.8  # between two lines in one shot
 TAIL_S = 0.5  # after the last word, so the cut does not clip it
 
 # A voice that is heard, not seen: narration, or a speaker who is off screen, on the phone, on the
@@ -82,6 +88,16 @@ class Item:
     hold_priority: int = 0  # 1 is never dropped by code; 2 and 3 go first when the scene is over its envelope
     hold_who: str = ""  # whose face the hold is for
     turn: bool = False  # the reading says feeling turns here: the answer to a turn line waits `TURN_GAP_S`
+    # plan/2026-11-20 D8: a long line covered in parts. A part item keeps the line's `line_id` and carries its own
+    # sentence(s) in `text`; `part` is 1-based, `parts` how many, `whole` the line's full words. 0 / 0 / "" = a whole
+    # line (every scene planned before line parts, and every line of one sentence).
+    part: int = 0
+    parts: int = 0
+    whole: str = ""
+
+    @property
+    def is_part(self) -> bool:
+        return self.parts > 1
 
     @property
     def is_line(self) -> bool:
@@ -118,6 +134,25 @@ class FittedLine:
     end_s: float
     words: int
     overrun_s: float
+    part: int = 0  # plan/2026-11-20: which part of the line this is (0 = the whole line)
+    parts: int = 0
+
+
+def bound_lines(lines: list[FittedLine]) -> dict[str, FittedLine]:
+    """Line id -> where the line is bound, one entry per line (plan/2026-11-20 D8). A line in parts is bound to the
+    shot of its FIRST part, starts there and ends where its last part ends; its overrun is what all its parts run
+    over, and its words are all of theirs."""
+    out: dict[str, FittedLine] = {}
+    for fl in lines:
+        seen = out.get(fl.line_id)
+        if seen is None:
+            out[fl.line_id] = FittedLine(fl.line_id, fl.shot_number, fl.beat_index, fl.start_s, fl.end_s, fl.words,
+                                         fl.overrun_s, fl.part, fl.parts)
+            continue
+        seen.end_s = fl.end_s
+        seen.words += fl.words
+        seen.overrun_s = round(seen.overrun_s + fl.overrun_s, 2)
+    return out
 
 
 @dataclass(frozen=True)
@@ -213,12 +248,15 @@ class FitResult:
         return self.unearned_silent_s / self.total_s if self.total_s else 0.0
 
 
-def allowed_durations(fixed: int | None) -> tuple[int, ...]:
-    return (fixed,) if fixed else VEO_DURATIONS
+def allowed_durations(fixed: int | None, lengths: tuple[int, ...] = VEO_DURATIONS) -> tuple[int, ...]:
+    """The lengths a shot may have: the fixed one, else the production's (`ProductionSettings.takes`; 4/6/8 for the
+    planners that do not read it)."""
+    return (fixed,) if fixed else tuple(lengths)
 
 
 def line_seconds(item: Item) -> float:
-    return speech_seconds(item.words, item.delivery)
+    """Seconds the item's words take to say, a pause at each sentence end inside them (plan/2026-11-20 D1)."""
+    return speech_seconds(item.words, item.delivery, sentence_breaks(item.text))
 
 
 def shot_clock(items: list[Item]) -> tuple[list[Slot], float]:
@@ -235,20 +273,30 @@ def shot_clock(items: list[Item]) -> tuple[list[Slot], float]:
     after_line = False
     turn_line = False
     pause = 0.0
+    last: Item | None = None  # the line item just before, while nothing came between
     for item in items:
         if item.is_line:
-            gap = (TURN_GAP_S if turn_line else LINE_GAP_S) if after_line else 0.0
+            # the next part of the same line (plan/2026-11-20 D1): the pause at its sentence end, never a turn's gap
+            # (a turn waits for the line's ANSWER, after its last part)
+            follows = (after_line and last is not None and item.is_part and item.part == last.part + 1
+                       and item.whole == last.whole)
+            if follows:
+                gap = SENTENCE_PAUSE_S
+            else:
+                gap = (TURN_GAP_S if turn_line else LINE_GAP_S) if after_line else 0.0
             start = max(clock + max(gap, pause), LEAD_IN_S)
             clock = start + line_seconds(item)
             slots.append(Slot(item.index, start, clock, True))
             after_line = True
-            turn_line = item.turn
+            turn_line = item.turn or (follows and turn_line)
             pause = item.hold_s
+            last = item
         elif item.picture_s > 0:
             clock += pause
             slots.append(Slot(item.index, clock, clock + item.picture_s, False))
             clock += item.picture_s
             after_line = False
+            last = None
             pause = item.hold_s
         elif item.hold_s > 0:  # a block with no picture of its own can still be held
             pause = max(pause, item.hold_s)
@@ -395,9 +443,10 @@ def _beat_of(offset: float, beats: list[tuple[int, int]]) -> int:
 
 
 def fit(items: list[Item], proposal: list[ProposedShot], *, envelope_s: int,
-        fixed_seconds: int | None = None) -> FitResult:
-    """The kernel. `items` must be the scene's blocks in order with `index` = position."""
-    allowed = allowed_durations(fixed_seconds)
+        fixed_seconds: int | None = None, lengths: tuple[int, ...] = VEO_DURATIONS) -> FitResult:
+    """The kernel. `items` must be the scene's blocks in order with `index` = position. `lengths`: the production's
+    (plan/2026-11-19)."""
+    allowed = allowed_durations(fixed_seconds, lengths)
     longest = max(allowed)
     shots, repaired = normalise(proposal, len(items))
     issues: list[Issue] = []
@@ -435,7 +484,7 @@ def fit(items: list[Item], proposal: list[ProposedShot], *, envelope_s: int,
             duration = _rung(need if lines else max(need, _silent_seconds(block)), allowed)
             if p.duration in allowed and p.duration > duration:  # a planner may ask for longer
                 duration = p.duration
-        beats = default_beats(duration) if duration in (4, 6, 8) else [(0, duration)]
+        beats = default_beats(duration)
         speakers = {ln.speaker_id for ln in lines if ln.speaker_id}
         voices = {ln.speaker_id or ln.speaker.casefold() for ln in lines}  # unlinked speakers count too
         try:
@@ -451,7 +500,8 @@ def fit(items: list[Item], proposal: list[ProposedShot], *, envelope_s: int,
                           title=p.title, sound_mode=mode, camera_link=link, frame_strategy=strategy,
                           duration_s=duration, start_s=clock, beats=beats,
                           speaker_id=next(iter(speakers)) if len(speakers) == 1 else None,
-                          word_target=target, words=words, line_ids=[ln.line_id for ln in lines if ln.line_id],
+                          word_target=target, words=words,
+                          line_ids=list(dict.fromkeys(ln.line_id for ln in lines if ln.line_id)),
                           picture_s=round(picture_s, 2), need_s=round(need, 2),
                           holds=[(i.index, i.hold_s, i.hold_kind) for i in block if i.hold_s > 0])
 
@@ -462,9 +512,9 @@ def fit(items: list[Item], proposal: list[ProposedShot], *, envelope_s: int,
             secs = line_seconds(ln)
             t = clock + starts[ln.index]
             over = round(overrun_seconds(start_sec=t, words=ln.words, shot_end_sec=shot_end,
-                                         delivery=ln.delivery), 2)
+                                         delivery=ln.delivery, breaks=sentence_breaks(ln.text)), 2)
             fitted_lines.append(FittedLine(ln.line_id, number, _beat_of(t - clock, beats), round(t, 2),
-                                           round(t + secs, 2), ln.words, over))
+                                           round(t + secs, 2), ln.words, over, ln.part, ln.parts))
             if over > 0:
                 issues.append(Issue("line_overrun", f"A line in S{number:02d} runs {over:.1f} s past the "
                                                     f"cut. Shorten the line, or give it its own shot.",

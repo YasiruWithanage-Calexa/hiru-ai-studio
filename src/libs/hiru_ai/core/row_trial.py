@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from contracts.coverage import checks, risk
 from contracts.coverage.ledger import changes, where
-from contracts.coverage.scene import CINE, IR_JSON, IR_TEXT, Coverage
+from contracts.coverage.scene import CINE, IR_JSON, IR_TEXT, Coverage, takes_of
 from hiru_ai.core import parts, tooling
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.errors import ToolRefused
@@ -39,7 +39,7 @@ class RowOp(BaseModel):
     field: str | None = Field(None, description="set: size, link, why, sees, angle, lens, movement, setting, "
                                                 "lighting, audio; sound: ambience, effects, music, silence")
     value: str | None = Field(None, description="The new value (set, sound, sound_mode, note)")
-    take_s: int | None = Field(None, description="retime / insert: 4, 6 or 8")
+    take_s: int | None = Field(None, description="retime / insert: one of the production's take lengths")
     role: str | None = Field(None, description="role / insert: master, two_shot, single, ots, wide, reaction, insert")
     priority: str | None = Field(None, description="role / insert: must, should or nice")
     size: str | None = Field(None, description="insert: the new clip's size, like CU")
@@ -120,7 +120,8 @@ def coverage(ctx: RunContext, store: Any, scene: Row) -> Coverage:
     sid = str(scene["id"])
     canon = store.canon(tooling.production_of(ctx))
     people = [c for c in canon if str(c.get("kind") or "character") == "character" and c.get("id")]
-    return Coverage.from_rows(scene, store.shots(sid), store.lines(sid), people)
+    takes = takes_of(store.production(tooling.production_of(ctx)))  # plan/2026-11-19
+    return Coverage.from_rows(scene, store.shots(sid), store.lines(sid), people, takes=takes)
 
 
 def run(ctx: RunContext, scene_ref: str | None, ops: list[RowOp]) -> tuple[RowTrial, list[Row]]:

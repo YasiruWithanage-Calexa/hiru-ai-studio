@@ -1,0 +1,130 @@
+{
+ "_about": "plan/2026-11-20 D1/D2: the clock and the sentence splitter, case for case in both repos. The backend reads tests/contracts/clock_cases.json, the interface src/lib/veo/clock-cases.json: keep the two files identical. need_s = lead-in + words at the rate + a pause per break + tail.",
+ "lead_in_s": 1.0,
+ "sentence_pause_s": 0.8,
+ "line_gap_s": 0.8,
+ "tail_s": 0.5,
+ "lines": [
+  {
+   "name": "B: lab/sinhala_pace, three short questions; heard 0.75-6.75 s",
+   "text": "යාළුවෙක් විතරද? ඒ ළමයට මොනවද තියෙන්නේ? තමන්ගේ කියලා හරියට තැනක්වත් නෑ.",
+   "delivery": "",
+   "words": 11,
+   "breaks": 2,
+   "parts": [
+    "යාළුවෙක් විතරද? ඒ ළමයට මොනවද තියෙන්නේ?",
+    "තමන්ගේ කියලා හරියට තැනක්වත් නෑ."
+   ],
+   "need_s": 8.1,
+   "at_least_s": 7.25
+  },
+  {
+   "name": "G: lab/sinhala_pace, Sinhala and English, two sentences; heard 1.0-5.3 s",
+   "text": "Company B එක AI integration එක හොඳට කරනවලු. ගිහින් බලලා එන්න.",
+   "delivery": "",
+   "words": 11,
+   "breaks": 1,
+   "parts": [
+    "Company B එක AI integration එක හොඳට කරනවලු.",
+    "ගිහින් බලලා එන්න."
+   ],
+   "need_s": 7.3,
+   "at_least_s": 5.8
+  },
+  {
+   "name": "E01-S04 B12: the father on the phone, past 8 s: must split",
+   "text": "\"අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා.\"",
+   "delivery": "",
+   "words": 14,
+   "breaks": 2,
+   "parts": [
+    "අනුදි, ඔයා කොහෙද ඉන්නේ?",
+    "ඉක්මනට ගෙදර එන්න.",
+    "අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා."
+   ],
+   "need_s": 9.46
+  },
+  {
+   "name": "E01-S04 B08: Kasun's start, may split",
+   "text": "\"ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව.\"",
+   "delivery": "",
+   "words": 10,
+   "breaks": 2,
+   "parts": [
+    "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ.",
+    "තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව."
+   ],
+   "need_s": 7.65
+  },
+  {
+   "name": "E01-S04 B02: quoted by the database, may split",
+   "text": "\"\"අනේ, Thank you! මම දැක්කෙවත් නෑ.\"\"",
+   "delivery": "",
+   "words": 6,
+   "breaks": 1,
+   "parts": [
+    "\"අනේ, Thank you!",
+    "මම දැක්කෙවත් නෑ.\""
+   ],
+   "need_s": 5.03
+  },
+  {
+   "name": "E01-S04 B06: a short first sentence joins the next",
+   "text": "\"ඔව්. පොඩියට පටන් ගත්තේ.\"",
+   "delivery": "",
+   "words": 4,
+   "breaks": 1,
+   "parts": [
+    "ඔව්. පොඩියට පටන් ගත්තේ."
+   ],
+   "need_s": 4.12
+  },
+  {
+   "name": "one sentence",
+   "text": "\"මේ ඔයාගේ බිස්නස් එකද?\"",
+   "delivery": "",
+   "words": 4,
+   "breaks": 0,
+   "parts": [
+    "මේ ඔයාගේ බිස්නස් එකද?"
+   ],
+   "need_s": 3.32
+  },
+  {
+   "name": "a closing quote stays with its sentence",
+   "text": "He said \"Go home.\" Then he left the room.",
+   "delivery": "",
+   "words": 9,
+   "breaks": 1,
+   "parts": [
+    "He said \"Go home.\"",
+    "Then he left the room."
+   ],
+   "need_s": 6.39
+  },
+  {
+   "name": "a stage direction is not a pause",
+   "text": "(softly) Hello there my friend. Come in now.",
+   "delivery": "",
+   "words": 7,
+   "breaks": 1,
+   "parts": [
+    "(softly) Hello there my friend.",
+    "Come in now."
+   ],
+   "need_s": 5.48
+  },
+  {
+   "name": "slow delivery",
+   "text": "Please stay here with me tonight. I am afraid.",
+   "delivery": "whispering",
+   "words": 9,
+   "breaks": 1,
+   "parts": [
+    "Please stay here with me tonight.",
+    "I am afraid."
+   ],
+   "need_s": 7.3
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+stage1 finished, stage2 finished, line_parts True, scene field line_parts=True
+left: []
+S01 4A-1   must   TWO   setup A  8 s dialogue  speaks=True lines ['L1 p1/2', 'L2 p2/2']
+S02 4M-1   should INSERT setup M  4 s ambient   speaks=False lines []
+S03 4G-1   must   TWO   setup G  8 s dialogue  speaks=True lines ['L3', 'L5']
+S04 4N-1   nice   CU    setup N  4 s ambient   speaks=False lines []
+S05 4A-2   must   TWO   setup A  8 s dialogue  speaks=True lines ['L6', 'L7']
+S06 4B-1   must   MCU   setup B  8 s dialogue  speaks=True lines ['L8 p1/2', 'L9 p2/2']
+S07 4D-1   must   MCU   setup D  6 s ambient   speaks=False lines []
+S08 4I-1   should ECU   setup I  4 s ambient   speaks=False lines []
+S09 4C-1   must   MCU   setup C  4 s dialogue  speaks=True lines ['L12']
+S10 4H-1   must   MS    setup H  8 s voiceover speaks=False lines ['L13 p1/3', 'L14 p2/3']
+S11 4C-2   must   MCU   setup C  6 s voiceover speaks=False lines ['L15 p3/3']
+S12 4J-1   should CU    setup J  6 s ambient   speaks=False lines ['L15 p3/3']
+S13 4E-1   must   CU    setup E  6 s dialogue  speaks=True lines ['L17']
+S14 4A-3   must   TWO   setup A  8 s dialogue  speaks=True lines ['L19']
+S15 4B-2   must   MCU   setup B  4 s dialogue  speaks=True lines ['L20']
+S16 4K-1   should CU    setup K  4 s ambient   speaks=False lines []
+S17 4F-1   must   WIDE  setup F  6 s ambient   speaks=False lines []
+S18 4L-1   nice   WIDE  setup L  6 s ambient   speaks=False lines []
+line E01-S04-B02: shot 4A-1, overrun 0.0
+line E01-S04-B03: shot 4G-1, overrun 0.0
+line E01-S04-B05: shot 4G-1, overrun 0.0
+line E01-S04-B06: shot 4A-2, overrun 0.0
+line E01-S04-B07: shot 4A-2, overrun 0.0
+line E01-S04-B08: shot 4B-1, overrun 0.0
+line E01-S04-B11: shot 4C-1, overrun 0.0
+line E01-S04-B12: shot 4H-1, overrun 0.0
+line E01-S04-B14: shot 4E-1, overrun 0.0
+line E01-S04-B16: shot 4A-3, overrun 0.0
+line E01-S04-B17: shot 4B-2, overrun 0.0
