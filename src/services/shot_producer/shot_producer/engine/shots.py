@@ -37,6 +37,7 @@ from contracts.producer import (
     CastMember,
     default_camera,
     identity_line,
+    is_hold,
 )
 from contracts.shotplan import timeline_text
 from contracts.staging import source_phrase
@@ -484,9 +485,9 @@ def recommendation(entry: Row, shot: ShotInput, scene: SceneInput) -> CameraSett
     # The card's camera (Shot Planner Adam) is the director's: it wins over the DoP, never over the shot's size.
     cam = base.with_overrides({**{k: v for k, v in rec.items() if k != CameraField.FRAMING.value},
                                **card_camera(card_of(shot.row))})
-    if cam.movement == "Static" and cam.speed != "None":
+    if is_hold(cam) and cam.speed != "None":
         cam = cam.with_overrides({"speed": "None"})
-    elif cam.movement != "Static" and cam.speed == "None":
+    elif not is_hold(cam) and cam.speed == "None":
         cam = cam.with_overrides({"speed": "Slow"})
     return cam
 

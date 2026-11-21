@@ -646,6 +646,9 @@ OMNI_CITATION_TAIL = ("Never show {tags} in the video: {they} {are} {refs} only,
                       "appears and the video never cuts to {them}. Where the words above describe someone's clothes or "
                       "face differently from these pictures, the pictures win.")
 _FRAME_WORDS = ("the opening frame", "the closing frame")
+# Google's reference-to-video template closes the prompt with this line (plan/2026-11-20d D10; lab/shot_prompts): it
+# goes after the citation block, last, whenever a picture is attached.
+GOOGLE_LINE = "Use the images as references to generate the video."
 
 
 def _and_list(values: Sequence[str]) -> str:
@@ -682,6 +685,7 @@ def build_omni_input(spec: RenderSpec) -> dict[str, Any]:
                                                them="them" if many else "it"))
     if lines:
         parts.append(OMNI_CITATION_HEAD + "\n" + "\n".join(lines))
+        parts.append(GOOGLE_LINE)  # D10: Google's closing line, last
     return {"model": spec.model, "prompt": "\n\n".join(p for p in parts if p), "references": payload,
             "config": _config(spec)}
 

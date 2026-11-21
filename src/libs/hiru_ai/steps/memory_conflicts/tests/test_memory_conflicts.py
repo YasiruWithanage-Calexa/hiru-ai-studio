@@ -17,11 +17,13 @@ def kinds(found: list[dict[str, Any]]) -> list[str]:
 
 
 def test_a_lens_the_camera_does_not_have_is_reported_and_the_ones_it_has_are_not():
-    found = logic.find([entry("a", "Use 24mm for geography, 35mm for movement and 50mm for emotional impact.",
+    # plan/2026-11-20c: the panel's lenses are the camera catalogue's, 18 to 135mm
+    found = logic.find([entry("a", "Use 16mm for geography, 35mm for movement and 50mm for emotional impact.",
                               applies_to="when:action scenes")])
-    assert kinds(found) == ["lens"] and "24mm" in found[0]["text"] and "28mm, 35mm, 50mm, 85mm" in found[0]["text"]
+    assert kinds(found) == ["lens"] and "16mm" in found[0]["text"] and "18mm, 24mm, 28mm" in found[0]["text"]
+    assert logic.find([entry("a", "Use 24mm for geography, 35mm for movement and 50mm for emotional impact.")]) == []
     assert logic.find([entry("a", "Use 50mm and 85mm lenses, shallow focus.", applies_to="when:love scenes")]) == []
-    found = logic.find([entry("a", "Use a 135 mm lens for the chase and a 14mm for the van.")])
+    found = logic.find([entry("a", "Use a 150 mm lens for the chase and a 14mm for the van.")])
     assert kinds(found) == ["lens", "lens"]
 
 
@@ -68,5 +70,5 @@ def test_the_same_place_written_two_ways_is_one_target():
 
 
 def test_the_step_runs_from_json():
-    out = step.run({"entries": [entry("a", "Use 24mm.")]})
+    out = step.run({"entries": [entry("a", "Use 16mm.")]})
     assert [c["kind"] for c in out["conflicts"]] == ["lens"]

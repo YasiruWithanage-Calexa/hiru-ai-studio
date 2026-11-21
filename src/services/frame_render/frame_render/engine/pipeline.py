@@ -31,7 +31,7 @@ from datetime import UTC, datetime
 from typing import Any, Protocol
 from uuid import UUID
 
-from contracts import safe_depiction, sceneplan
+from contracts import picture_pins, safe_depiction, sceneplan
 from contracts.canon import (
     SHEET_ASPECT,
     CanonCard,
@@ -49,6 +49,7 @@ from contracts.frame_brief import (
     MAX_REFERENCES,
     SETUP_LABEL,
     SetupFrame,
+    agent_camera,
     expected_frame,
     frame_prompt,
     plan_references,
@@ -247,7 +248,9 @@ class FrameJob:
                               cast=self.cast(shot, staged.on_screen), references=labels, recommended=recommended,
                               unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
                               hands=self.hands(shot).sentence, scene=scene, shot=shot)
-        return prompt, pins.model_dump()
+        # plan/2026-11-20d D8: the camera's picture and motion, pinned as the graph engine pins them (the legacy
+        # engine paints no shot prompt, so its frames pin no opening)
+        return prompt, picture_pins.pinned(pins, camera, recommended, agent_camera(shot))
 
     def hands(self, shot: Row) -> Hands:
         """Who holds what as the shot opens (`contracts.holding`), for the people the camera sees."""

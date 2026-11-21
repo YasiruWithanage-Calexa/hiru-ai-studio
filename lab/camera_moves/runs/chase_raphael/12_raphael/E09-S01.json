@@ -1,0 +1,2100 @@
+{
+ "scene": "E09-S01",
+ "status": "done",
+ "seconds": 448.4,
+ "calls": 9,
+ "dollars": 0.274,
+ "log": [
+  "stage 1: finished after 6 turns",
+  "stage 2: finished after 3 turns"
+ ],
+ "warnings": [],
+ "ids": {
+  "b0": "E09-S01-B01",
+  "b1": "E09-S01-B02",
+  "L1": "E09-S01-B02",
+  "b2": "E09-S01-B03",
+  "b3": "E09-S01-B04",
+  "b4": "E09-S01-B05",
+  "b5": "E09-S01-B06",
+  "b6": "E09-S01-B07",
+  "L6": "E09-S01-B07"
+ },
+ "result": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "local-E09-S01",
+  "input_hash": "d0b71c85e0b64110",
+  "stage1": "finished",
+  "stage2": "finished",
+  "stopped": "",
+  "cap": 2.0,
+  "breakdown": null,
+  "mood": [],
+  "takes": [],
+  "line_parts": false,
+  "edit": {
+   "treatment": {
+    "logline": "A hunted man escapes the market with a metal box, only to discover that the danger has bought him nothing he can understand.",
+    "arc": [
+     {
+      "beat": "Recognition divides the market into hunter and quarry.",
+      "blocks": {
+       "first": 0,
+       "last": 1
+      },
+      "feeling": "Watchful tension snaps into exposure."
+     },
+     {
+      "beat": "The pursuit compresses from crowded lane to wet alley and iron stairs.",
+      "blocks": {
+       "first": 2,
+       "last": 3
+      },
+      "feeling": "Scrambling physical vulnerability."
+     },
+     {
+      "beat": "A tank becomes the thin boundary between concealment and discovery.",
+      "blocks": {
+       "first": 4,
+       "last": 4
+      },
+      "feeling": "Held breath."
+     },
+     {
+      "beat": "An empty box replaces the visible pursuer with an unanswered question.",
+      "blocks": {
+       "first": 5,
+       "last": 6
+      },
+      "feeling": "Escape drains into bewilderment."
+     }
+    ],
+    "approach": "Play the crime-thriller facet as vulnerable flight, not heroic spectacle: close handheld frames, directional practical light, deep backgrounds and controlled blue, green and sodium colour. Widen only enough to explain pursuit geography. No music and no slow motion. The extra duration belongs to recognition, pursuit coverage, the searching light and the empty-box reaction rather than new events.",
+    "colour_script": [
+     {
+      "sequence": "S1",
+      "palette": "Cold blue rain, green tarp spill, sodium orange faces.",
+      "light": "Hard sodium side keys and small practical highlights, background falling into shadow.",
+      "grade": "Deep blacks, restrained saturation, wet highlights protected."
+     },
+     {
+      "sequence": "S2",
+      "palette": "Blue-green masonry with receding sodium orange.",
+      "light": "Directional lane spill and practical stair light, dark recesses.",
+      "grade": "Deep blacks, restrained saturation, wet highlights protected."
+     },
+     {
+      "sequence": "S3",
+      "palette": "Cold blue roof, distant sodium and a narrow neutral torch beam.",
+      "light": "Hard blue side light and a moving practical torch, tanks throwing deep shadows.",
+      "grade": "Deep blacks, restrained saturation, wet highlights protected."
+     }
+    ],
+    "geography": "Dinu travels screen left to right; Rohan follows the same direction. The alley opens on the right of the market; the iron stairs rise toward screen right. On the roof Dinu crouches on the camera side of a water tank; Rohan searches its far side and continues right. All coverage stays on this side of the pursuit axis. Dinu carries the box under his jacket against his left ribs with his left hand; Rohan retains the torch in his right hand throughout.",
+    "key_image": "A narrow torch beam crosses the tank above Dinu's compressed body; later the same dark shelter contains a visibly empty metal box.",
+    "advice": [
+     "Let Rohan's recognition register before L1 and before the running.",
+     "Cut on the cart impact and the slipping foot, not on arbitrary motion.",
+     "The cart incident is fragmented into a physical cause, the cart tipping and the pursuit beyond it; no bodies make contact.",
+     "Keep the empty interior readable before returning to Dinu for L6."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "Recognition and rupture",
+     "purpose": "Establish the quarry, hunter and physical cost of flight.",
+     "shots": {
+      "first": 0,
+      "last": 2
+     }
+    },
+    {
+     "id": "S2",
+     "title": "The narrowing route",
+     "purpose": "Make the slip consequential and establish the climb.",
+     "shots": {
+      "first": 3,
+      "last": 3
+     }
+    },
+    {
+     "id": "S3",
+     "title": "Shelter and absence",
+     "purpose": "Sustain the search, then reveal the empty box.",
+     "shots": {
+      "first": 4,
+      "last": 6
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0
+     ],
+     "what": "Dinu threads the lane with the concealed box; across the lane Rohan recognises him.",
+     "feeling": "Exposure approaches before Dinu can react.",
+     "cut_uses": "Handheld medium master for the route, then a tight Rohan recognition single; the torch is visible before its later search."
+    },
+    {
+     "n": 2,
+     "sequence": "S1",
+     "blocks": [
+      1
+     ],
+     "what": "Rohan projects L1 across the lane.",
+     "feeling": "The threat becomes public and immediate.",
+     "cut_uses": "Frontal three-quarter MCU single performing L1; keep the face readable."
+    },
+    {
+     "n": 3,
+     "sequence": "S1",
+     "blocks": [
+      2
+     ],
+     "what": "Dinu bolts, catches the fruit cart, and the tipped cart releases oranges as Rohan pursues.",
+     "feeling": "Clumsy momentum, not mastery.",
+     "cut_uses": "A running medium, a stationary close view of the cart contact, an impact detail of the tipping cart, then a medium pursuit beyond the fallen cart. Separate contact from tipping and from travel."
+    },
+    {
+     "n": 4,
+     "sequence": "S2",
+     "blocks": [
+      3
+     ],
+     "what": "Dinu turns into the alley, slips and recovers, then climbs; Rohan follows below.",
+     "feeling": "A near loss of balance threatens the escape.",
+     "cut_uses": "Medium alley entry, low tight slip coverage, then side medium-wide stair coverage. The slipping foot and recovery remain together long enough to read."
+    },
+    {
+     "n": 5,
+     "sequence": "S3",
+     "blocks": [
+      4
+     ],
+     "what": "Dinu crouches behind a tank while Rohan searches the opposite side; the beam pauses, then passes and footsteps recede.",
+     "feeling": "Held breath until the threat passes.",
+     "cut_uses": "Tight hiding single, wider tank geography with the search, then Dinu's held reaction as light and footsteps move away."
+    },
+    {
+     "n": 6,
+     "sequence": "S3",
+     "blocks": [
+      5
+     ],
+     "what": "Dinu opens the box in his lap and registers the empty interior.",
+     "feeling": "Relief collapses into absence.",
+     "cut_uses": "A high close detail performs the single opening action and exposes the whole empty interior; a face single holds its consequence."
+    },
+    {
+     "n": 7,
+     "sequence": "S3",
+     "blocks": [
+      6
+     ],
+     "what": "Still crouching with the open box, Dinu performs L6.",
+     "feeling": "Breathless uncertainty outlasts the pursuit.",
+     "cut_uses": "A close single performing L6, with a long enough tail to leave the question hanging."
+    }
+   ],
+   "editor_notes": [
+    "The must bin contains 15 clips, 78 seconds of takes; use it as raw material, not a binding 78-second assembly. The intended scene runs approximately 75 seconds, paced with the recognition, search, empty interior and final reaction.",
+    "The lane master and Rohan recognition single establish geography before the L1 performing single. Keep left-to-right pursuit and Rohan's opposing initial eyeline consistent.",
+    "The cart contact, cart-tip detail and pursuit master are consecutive pieces of the same event. Match the upper rail across the impact cut and open the pursuit master on the already tipped cart and scattered oranges. Use soft foreground occlusions and sound to suggest passage through shoppers without requiring body contact or sharp crowds.",
+    "The alley entry, slip/recovery and stair master are consecutive parts of the pursuit, not alternate performances of one long move. Match Dinu's box at his left ribs and Rohan's torch in his right hand.",
+    "On the roof, match the torch patch from the search across the tank to Dinu's reaction, then let footsteps recede. The box is already in Dinu's lap at the opening detail; the edit skips the extraction, not the opening. Keep the empty interior unobstructed and let L6 follow on the face.",
+    "The checker flags fast-hand feasibility on the two running shots. Neither asks for finger work: the box and torch remain in fixed grips; favour the faces and bodies if a render introduces finger motion.",
+    "The short cart and pursuit shots have half-second handles. Use their impacts and continuous direction as match points; do not trim L1 or L6.",
+    "Speed ramps, freeze frames, digital punch-ins and split screens are post-only; clean sources are supplied, but none is required in the reference cut. Avoid slow motion, mirrors, intricate finger work and contact between bodies. Music is omitted; rain, breath, impacts and footsteps lead."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "master",
+    "setup": "A",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level, lateral",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "Restricted handheld visibility makes Dinu vulnerable within the lane rather than heroic above it.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Establish left-to-right travel and the concealed box silhouette; no sharp background faces.",
+    "summary": "From the lane's near side, Dinu threads wet stalls with the box held beneath his jacket; rain dominates.",
+    "id": "c01",
+    "slate": "1A-1",
+    "ir": {
+     "setting": "A rain-soaked Pettah market lane runs between tarpaulin stalls under sodium lamps and green practical bulbs.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 35mm, f/2.8",
+      "angle": "eye level, lateral",
+      "framing": "MS of Dinu from waist up, crowded edges softly obscured",
+      "movement": "restrained handheld drift alongside Dinu",
+      "white_balance": "4300K, sodium orange and cold blue rain",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Shallow, indistinct background silhouettes",
+      "lens_artifacts": "small rain glints"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Threads the lane with his left hand securing the box beneath his jacket.",
+       "position": "Left of frame moving right, box beneath jacket against left ribs in left hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS, focus on Dinu's eyes",
+       "director_line": "Wet stall edges compress the route around his face.",
+       "action": "Dinu keeps his left forearm against his ribs.",
+       "performance": "His eyes track the gap ahead, chin tucked."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MS, handheld drift alongside Dinu",
+       "director_line": "His guarded passage makes the hidden weight legible.",
+       "action": "Dinu walks screen right between occluded stall edges.",
+       "performance": "His shoulders narrow and his eyes keep searching ahead."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MS, focus remains on Dinu",
+       "director_line": "The jacket silhouette preserves the secret.",
+       "action": "Dinu keeps the box against his ribs.",
+       "performance": "His jaw stays set and his gaze stays ahead."
+      }
+     ],
+     "audio": "Rain on tarpaulins, wet footfalls, indistinct market wash without intelligible voices.",
+     "first_frame": {
+      "composition": "Dinu left of centre, wet stall edges in foreground, lane receding right.",
+      "subjects": [
+       "Dinu with left forearm pressed over the concealed box."
+      ],
+      "setting": "Rainy market lane with tarpaulins and soft background silhouettes.",
+      "lighting": "Sodium side light, green spill and cold blue rain."
+     }
+    },
+    "sound": {
+     "ambience": "Rain on tarpaulins and indistinct market wash.",
+     "effects": "Wet shoes and jacket friction.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 1,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "eye level three-quarter",
+    "lens": "85mm",
+    "technique": "handheld",
+    "why": "A restrained tremor lets recognition land on Rohan without a decorative push.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Recognition precedes L1. Torch remains in his right grip, glimpsed at lower edge.",
+    "summary": "Across the lane, Rohan fixes on Dinu; the tight view holds the recognition over rain.",
+    "id": "c02",
+    "slate": "1B-1",
+    "ir": {
+     "setting": "A rain-soaked Pettah market lane runs between tarpaulin stalls under sodium lamps and green practical bulbs.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 85mm, f/2.8",
+      "angle": "eye level three-quarter",
+      "framing": "CU of Rohan, torch grip at lower edge",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, sodium orange and cold blue rain",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Shallow, tarpaulins dissolved behind face",
+      "lens_artifacts": "small rain glints"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [
+      {
+       "id": "C09",
+       "description": "Rohan, a heavy-built 40-year-old Sri Lankan man with short black hair, black raincoat, dark trousers and dark shoes.",
+       "action": "Fixes his gaze across the lane.",
+       "position": "Right of frame facing screen left in three-quarter view, standing with heavy black torch down in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "CU on Rohan's face",
+       "director_line": "Half his face emerges from the lane's dark edge.",
+       "action": "Rohan stands with the torch at his right thigh.",
+       "performance": "His eyes range across the lane."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "CU, focus on eyes",
+       "director_line": "Recognition narrows the distance before the pursuit begins.",
+       "action": "Rohan fixes his gaze screen left.",
+       "performance": "His eyelids narrow and his jaw firms."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "CU, settled on eyes",
+       "director_line": "The recognition remains readable.",
+       "action": "Rohan keeps the torch down.",
+       "performance": "His stare stays fixed screen left."
+      }
+     ],
+     "audio": "Rain, low market wash without intelligible voices.",
+     "first_frame": {
+      "composition": "Rohan fills right two-thirds, looking into left negative space.",
+      "subjects": [
+       "Rohan standing with torch down in right hand."
+      ],
+      "setting": "Opposite edge of the same wet market lane.",
+      "lighting": "Hard orange edge across face, green background spill."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and indistinct market wash.",
+     "effects": "Raincoat patter.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     1
+    ],
+    "lines": [
+     "L1"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level three-quarter",
+    "lens": "65mm",
+    "technique": "handheld",
+    "why": "The same side of Rohan preserves the recognition-to-challenge connection.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Perform all of L1 within 1-3s; no running yet.",
+    "summary": "Rohan projects L1 across the market to stop Dinu, in a tight three-quarter view above the rain.",
+    "id": "c03",
+    "slate": "1B-2",
+    "ir": {
+     "setting": "A rain-soaked Pettah market lane runs between tarpaulin stalls under sodium lamps and green practical bulbs.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 65mm, f/2.8",
+      "angle": "eye level three-quarter",
+      "framing": "MCU, Rohan's face and upper torso readable",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, sodium orange and cold blue rain",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Shallow, softly occluded market behind",
+      "lens_artifacts": "small rain glints"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [
+      {
+       "id": "C09",
+       "description": "Rohan, a heavy-built 40-year-old Sri Lankan man with short black hair, black raincoat, dark trousers and dark shoes.",
+       "action": "Lips move to L1, projecting across the lane.",
+       "position": "Right of frame, face already three-quarter toward screen left, standing with heavy black torch down in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on Rohan",
+       "director_line": "The face is already exposed to the opposing lane.",
+       "action": "Rohan braces in place.",
+       "performance": "His eyes pin the offscreen target."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MCU favouring mouth and eyes",
+       "director_line": "L1 breaks through the rain.",
+       "action": "Rohan's lips move to L1.",
+       "performance": "His chin thrusts slightly forward and his mouth opens forcefully."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MCU on Rohan",
+       "director_line": "The challenge hangs before the rush.",
+       "action": "Rohan keeps the torch at his side.",
+       "performance": "His mouth closes while his stare remains fixed."
+      }
+     ],
+     "audio": "L1 over rain and low market ambience; no additional words.",
+     "first_frame": {
+      "composition": "Rohan right of centre, open eyeline left, full face readable in three-quarter.",
+      "subjects": [
+       "Rohan with torch down in right hand."
+      ],
+      "setting": "Rainy market lane under tarpaulins.",
+      "lighting": "Hard sodium side light and green practical spill."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and muted market wash.",
+     "effects": "Raincoat patter.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level lateral",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "Scrambling lateral coverage gives the flight weight while avoiding staged bodily collisions.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "First pursuit fragment; indistinct silhouettes and stalls suggest the market. No finger movement: the box stays secured against his ribs. End before cart contact.",
+    "summary": "Dinu bolts right through a narrow gap in the market, guarding the concealed box as wet shoes strike the road.",
+    "id": "c04",
+    "slate": "1C-1",
+    "ir": {
+     "setting": "The wet Pettah lane narrows beside a wooden cart piled with oranges beneath tarpaulins.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 35mm, f/2.8",
+      "angle": "eye level lateral",
+      "framing": "MS of Dinu, soft stall edges crossing foreground",
+      "movement": "short handheld drift parallel to his route",
+      "white_balance": "4300K, sodium orange and cold blue rain",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Medium, background silhouettes indistinct",
+      "lens_artifacts": "rain glints"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Runs through a gap toward the cart, left arm securing the box against his ribs.",
+       "position": "Left of frame facing right, box concealed at left ribs and supported by left palm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MS on Dinu",
+       "director_line": "A narrow gap is his only route.",
+       "action": "Dinu leans forward.",
+       "performance": "His lips press together and his eyes fix right."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MS with lateral drift",
+       "director_line": "His escape is cramped and hurried.",
+       "action": "Dinu runs screen right through the gap.",
+       "performance": "His shoulders hunch around the box."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MS on his upper body",
+       "director_line": "The concealed weight stays with him.",
+       "action": "Dinu keeps the box against his ribs.",
+       "performance": "His jaw remains clenched."
+      }
+     ],
+     "audio": "Rapid wet footfalls, rain and fabric friction.",
+     "first_frame": {
+      "composition": "Dinu on the left, cart edge ahead on the right, soft occlusions near lens.",
+      "subjects": [
+       "Dinu guarding his left side."
+      ],
+      "setting": "Narrow market route alongside the orange cart.",
+      "lighting": "Orange side light and green spill over wet ground."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and indistinct market wash.",
+     "effects": "Rapid wet footfalls.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "single",
+    "setup": "D",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "low three-quarter side",
+    "lens": "40mm",
+    "technique": "handheld",
+    "why": "Separate physical contact from travel so the collision has a clear cause and one manageable action.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Dinu is momentarily planted at the cart. Cut on his right palm's impact to the cart detail.",
+    "summary": "Beside the upright orange cart, Dinu's right palm drives against its upper rail while his left arm protects the box.",
+    "id": "c05",
+    "slate": "1D-1",
+    "ir": {
+     "setting": "The wet Pettah lane narrows beside a wooden cart piled with oranges beneath tarpaulins.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 40mm, f/2.8",
+      "angle": "low three-quarter side",
+      "framing": "MS of Dinu beside the cart rail",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, sodium orange and cold blue rain",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Medium, cart rail and torso readable",
+      "lens_artifacts": "rain glints"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Drives his right palm against the upper cart rail.",
+       "position": "Left of cart, feet planted, facing right, box concealed at left ribs in left hand, right palm just clear of rail."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MS, torso and rail in focus",
+       "director_line": "The cart blocks the narrowed passage.",
+       "action": "Dinu braces beside the rail.",
+       "performance": "His gaze stays on the route beyond the cart."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MS, impact visible at right edge",
+       "director_line": "His hurried contact gives the coming spill its cause.",
+       "action": "Dinu drives his right palm against the upper rail.",
+       "performance": "His teeth press together as his shoulder tightens."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MS on Dinu and rail",
+       "director_line": "The impact gives the editor a physical cutting point.",
+       "action": "Dinu keeps his right palm against the rail.",
+       "performance": "His face stays aimed toward the route ahead."
+      }
+     ],
+     "audio": "Palm impact on wet wood, rain.",
+     "first_frame": {
+      "composition": "Dinu left, upright loaded cart right, right palm just off its rail.",
+      "subjects": [
+       "Dinu planted beside the cart, left arm protecting the concealed box."
+      ],
+      "setting": "Wet orange cart at the market's bottleneck.",
+      "lighting": "Hard sodium side light on wet wood, green spill behind."
+     }
+    },
+    "sound": {
+     "ambience": "Rain.",
+     "effects": "Dull wood impact.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "insert",
+    "setup": "E",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "low close side",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "Isolate the cart's tipping as the consequence of the preceding impact, avoiding multi-object choreography around a running body.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Required cart event. Match rail position to prior impact; Dinu is outside frame.",
+    "summary": "A close low view shows the struck wooden cart tip sideways and oranges spill onto the wet road with a wooden crash.",
+    "id": "c06",
+    "slate": "1E-1",
+    "ir": {
+     "setting": "The wet Pettah lane narrows beside a wooden cart piled with oranges beneath tarpaulins.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 50mm, f/4",
+      "angle": "low close side",
+      "framing": "INSERT, cart wheel, rail and oranges fill image",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, sodium orange and cold blue rain",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Medium, tipped rail and nearest fruit readable",
+      "lens_artifacts": "rain glints"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "INSERT on loaded cart and wet road",
+       "director_line": "The loaded cart is already off balance from the preceding impact.",
+       "action": "The cart balances on its far wheel at a slight angle.",
+       "performance": ""
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "INSERT, cart and road both visible",
+       "director_line": "The spill makes the escape materially costly.",
+       "action": "The cart tips sideways, releasing oranges across the wet stones.",
+       "performance": ""
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "INSERT on tipped rail and fruit",
+       "director_line": "The consequence remains legible after impact.",
+       "action": "Oranges roll clear of the tipped cart.",
+       "performance": ""
+      }
+     ],
+     "audio": "Wooden crash, fruit pattering and rolling on stones, rain.",
+     "first_frame": {
+      "composition": "Loaded cart tilted slightly at left, wet road open at right.",
+      "subjects": [
+       "Wooden cart piled with oranges, already leaning from the preceding impact."
+      ],
+      "setting": "Wet market stones below the cart.",
+      "lighting": "Small sodium reflections on fruit and road, green shaded background."
+     }
+    },
+    "sound": {
+     "ambience": "Rain.",
+     "effects": "Wooden crash and oranges rattling over wet stones.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "master",
+    "setup": "F",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "eye level lateral",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "One shared frame proves the pursuit distance after the impact without extra collision choreography.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Cart already tipped and fruit already scattered in the opening frame. The grips stay still; Dinu exits right at 3.5s and Rohan follows within frame.",
+    "summary": "Beyond the fallen cart, Dinu runs right with Rohan several paces behind, the torch still in Rohan's right grip.",
+    "id": "c07",
+    "slate": "1F-1",
+    "ir": {
+     "setting": "The wet Pettah lane narrows beside a wooden cart piled with oranges beneath tarpaulins.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 35mm, f/4",
+      "angle": "eye level lateral",
+      "framing": "MWS, quarry right and pursuer left, tipped cart foreground",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, sodium orange and cold blue rain",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Medium, principals clear and background silhouettes indistinct",
+      "lens_artifacts": "rain glints"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Runs right beyond the tipped cart, exiting at 3.5s.",
+       "position": "Right of frame beyond cart, box concealed at left ribs and supported by left palm."
+      },
+      {
+       "id": "C09",
+       "description": "Rohan, a heavy-built 40-year-old Sri Lankan man with short black hair, black raincoat, dark trousers and dark shoes.",
+       "action": "Runs after Dinu.",
+       "position": "Left of frame several paces behind, heavy black torch in right grip."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MWS of both men beyond foreground cart",
+       "director_line": "The scattered fruit places the impact behind them.",
+       "action": "Both men lean into the route to the right.",
+       "performance": "Dinu fixes on the alley entrance while Rohan fixes on Dinu."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "MWS, right exit visible",
+       "director_line": "The pursuer occupies the space his quarry just crossed.",
+       "action": "Dinu runs out right as Rohan runs after him.",
+       "performance": "Dinu guards his left ribs and Rohan drives his shoulders forward."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "MWS favouring Rohan",
+       "director_line": "The pursuit remains close.",
+       "action": "Rohan continues right.",
+       "performance": "His eyes stay on the right exit."
+      }
+     ],
+     "audio": "Rapid wet footfalls, rain, diminishing fruit rattle.",
+     "first_frame": {
+      "composition": "Tipped cart and scattered oranges foreground, Dinu right and Rohan left beyond it.",
+      "subjects": [
+       "Dinu ahead with concealed box.",
+       "Rohan behind with torch in right grip."
+      ],
+      "setting": "Market bottleneck after the cart spill.",
+      "lighting": "Hard sodium side light across principals, dark lane behind."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and indistinct market wash.",
+     "effects": "Pounding wet shoes and faint rolling fruit.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "single",
+    "setup": "G",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level lateral",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "The lateral passage carries the rightward chase into the constricted alley.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Route begins at the market exit and leads toward the stairway; cut before the slip.",
+    "summary": "Dinu runs right into the narrow alley, the box still concealed against his left side, with hurried footfalls and rain.",
+    "id": "c08",
+    "slate": "1G-1",
+    "ir": {
+     "setting": "A narrow wet-stone alley leads from the market to an iron stairway rising toward a flat rooftop.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 35mm, f/2.8",
+      "angle": "eye level lateral",
+      "framing": "MS of Dinu, masonry tight on either side",
+      "movement": "short handheld drift parallel to his route",
+      "white_balance": "4300K, cold blue alley with sodium spill",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Medium, slick stones and Dinu clear",
+      "lens_artifacts": "small wet highlights"
+     },
+     "lighting": "Hard sodium light from the lane and a cold practical stair light rake the wet masonry, leaving the alley recesses dark.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Runs into the alley toward the stairs.",
+       "position": "Left of frame moving right, box beneath jacket against left ribs in left hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS on Dinu at alley mouth",
+       "director_line": "The market gives way to a narrow channel.",
+       "action": "Dinu leans toward the alley.",
+       "performance": "His eyes fix on the stairway ahead."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MS with lateral handheld drift",
+       "director_line": "Wet masonry crowds the route.",
+       "action": "Dinu runs screen right into the alley.",
+       "performance": "He keeps his left arm compressed against his ribs."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MS on Dinu",
+       "director_line": "The hard route remains ahead.",
+       "action": "Dinu keeps the box beneath his jacket.",
+       "performance": "His gaze remains fixed right."
+      }
+     ],
+     "audio": "Rain, hurried wet footfalls and breathing.",
+     "first_frame": {
+      "composition": "Dinu left at alley mouth, wet stones and stair approach to the right.",
+      "subjects": [
+       "Dinu carrying the concealed box at his left ribs."
+      ],
+      "setting": "Alley entrance off the market.",
+      "lighting": "Sodium edge from behind and cold stair light ahead."
+     }
+    },
+    "sound": {
+     "ambience": "Rain in the narrow alley.",
+     "effects": "Wet shoes and breathing.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "single",
+    "setup": "H",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "low side",
+    "lens": "40mm",
+    "technique": "handheld",
+    "why": "A low view makes the vulnerable footing and recovery legible without treating the slip as a stunt.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Cut from the entry on his stride. One foot slides; he stays upright and regains his footing, never falling to the ground.",
+    "summary": "Dinu's shoe slides on wet alley stones; he catches his balance while keeping the hidden box against his ribs.",
+    "id": "c09",
+    "slate": "1H-1",
+    "ir": {
+     "setting": "A narrow wet-stone alley leads from the market to an iron stairway rising toward a flat rooftop.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 40mm, f/4",
+      "angle": "low side",
+      "framing": "MS including Dinu from face to shoes against wet stones",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, cold blue alley with sodium spill",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Medium, face and shoes readable",
+      "lens_artifacts": "small wet highlights"
+     },
+     "lighting": "Hard sodium light from the lane and a cold practical stair light rake the wet masonry, leaving the alley recesses dark.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "One shoe slides on the wet stone; he regains his footing without falling.",
+       "position": "Centre frame facing right, box beneath jacket against left ribs in left hand, one shoe planted ahead."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS, shoe and face visible",
+       "director_line": "The wet stone is plainly visible beneath his next step.",
+       "action": "Dinu bears weight on his forward shoe.",
+       "performance": "His eyes remain on the stairs."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MS, focus on sliding shoe and torso",
+       "director_line": "The nearest failure comes from the ground itself.",
+       "action": "Dinu's forward shoe slides sideways.",
+       "performance": "His eyes widen and his shoulders tighten around the box."
+      },
+      {
+       "time": "3-5s",
+       "camera": "MS, focus rises naturally within the same frame to his face",
+       "director_line": "He catches himself before the route is lost.",
+       "action": "Dinu regains his footing.",
+       "performance": "His jaw tightens as his eyes return to the stairs."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MS, face and shoes visible",
+       "director_line": "A planted foot gives the next cut its match.",
+       "action": "Dinu keeps his feet planted.",
+       "performance": "His gaze stays right."
+      }
+     ],
+     "audio": "A wet sole scrapes stone, breathing, rain.",
+     "first_frame": {
+      "composition": "Full figure compressed by walls, forward shoe on reflective stone.",
+      "subjects": [
+       "Dinu with his left arm protecting the concealed box."
+      ],
+      "setting": "Wet stone alley before the stairs.",
+      "lighting": "Hard lane light and cold stair light cut across the stones."
+     }
+    },
+    "sound": {
+     "ambience": "Rain between masonry walls.",
+     "effects": "Sole scrape and a caught breath.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "master",
+    "setup": "J",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MWS",
+    "angle": "side, slightly low",
+    "lens": "35mm",
+    "technique": "handheld",
+    "why": "A side view establishes the vertical escape and Rohan's following distance in one readable axis.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Dinu ascends to screen right; Rohan follows at the foot of the stairs. Continue upward at normal speed.",
+    "summary": "Dinu climbs the iron stairs toward the roof with the box beneath his jacket; Rohan follows from the alley below with his torch.",
+    "id": "c10",
+    "slate": "1J-1",
+    "ir": {
+     "setting": "A narrow wet-stone alley leads from the market to an iron stairway rising toward a flat rooftop.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 35mm, f/4",
+      "angle": "side, slightly low",
+      "framing": "MWS of iron stairs, Dinu above and Rohan below",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, cold blue alley with sodium spill",
+      "color_tone": "controlled blue-green and sodium orange, deep blacks, small wet highlights",
+      "depth_of_field": "Medium, both figures and treads readable",
+      "lens_artifacts": "small wet highlights"
+     },
+     "lighting": "Hard sodium light from the lane and a cold practical stair light rake the wet masonry, leaving the alley recesses dark.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Climbs the iron stairway toward the roof.",
+       "position": "On lower stairway at frame centre facing up and right, box beneath jacket against left ribs in left hand."
+      },
+      {
+       "id": "C09",
+       "description": "Rohan, a heavy-built 40-year-old Sri Lankan man with short black hair, black raincoat, dark trousers and dark shoes.",
+       "action": "Runs toward the foot of the stairway behind Dinu.",
+       "position": "Lower left in the alley facing right, heavy black torch in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS, both figures and stairs clear",
+       "director_line": "The stairs turn the chase upward.",
+       "action": "Dinu bears weight on the first tread as Rohan approaches below.",
+       "performance": "Dinu looks up the stairway; Rohan fixes on Dinu."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MWS, stairs rising diagonally right",
+       "director_line": "The pursuer follows the same narrowing route.",
+       "action": "Dinu climbs the iron stairs as Rohan runs toward their foot.",
+       "performance": "Dinu hunches around the box while Rohan drives forward."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MWS favouring upper stairs",
+       "director_line": "A gap persists, but not a safe one.",
+       "action": "Dinu keeps the box against his ribs.",
+       "performance": "His eyes remain on the roof approach."
+      }
+     ],
+     "audio": "Iron footfalls, rain and hurried breathing.",
+     "first_frame": {
+      "composition": "Dinu on lower stairs centre, Rohan in alley at lower left, stairway rising right.",
+      "subjects": [
+       "Dinu with box held beneath jacket.",
+       "Rohan carrying torch in right hand."
+      ],
+      "setting": "Alley and iron stairway.",
+      "lighting": "Cold practical stair light with sodium spill behind."
+     }
+    },
+    "sound": {
+     "ambience": "Rain and distant market wash.",
+     "effects": "Metal treads and wet footsteps.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "single",
+    "setup": "K",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, tank side",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "A tight, almost still handheld frame makes the tank feel like a fragile barrier.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Dinu is already crouching; keep his left hand and concealed box at the same ribs position.",
+    "summary": "On the roof, Dinu crouches behind a water tank and struggles to quiet his breathing while clutching the concealed box.",
+    "id": "c11",
+    "slate": "1K-1",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 50mm, f/2.8",
+      "angle": "eye level at crouching height",
+      "framing": "MCU of Dinu beside tank, dark tank face filling foreground",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, cold blue roof with distant sodium",
+      "color_tone": "controlled cold blue-green with small sodium accents, deep blacks",
+      "depth_of_field": "Shallow, tank edge soft beside face",
+      "lens_artifacts": "subtle wet highlights"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Crouches behind the tank and steadies his breathing.",
+       "position": "Low left behind the camera-side tank, facing right, box beneath jacket against left ribs in left hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on Dinu beside tank edge",
+       "director_line": "The tank cuts him off from the open roof.",
+       "action": "Dinu crouches against the tank.",
+       "performance": "His lips part on a breath and his eyes track the far side."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU, focus on eyes",
+       "director_line": "Breath becomes the only visible movement in hiding.",
+       "action": "Dinu breathes hard.",
+       "performance": "His shoulders rise and settle as he presses himself closer to the tank."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU, focus on face",
+       "director_line": "The exposed route remains beyond the edge.",
+       "action": "Dinu keeps the box against his ribs.",
+       "performance": "His eyes stay fixed toward the far side."
+      }
+     ],
+     "audio": "Hard breathing, rain on the tank and distant footsteps.",
+     "first_frame": {
+      "composition": "Dinu low left, tank surface filling right foreground.",
+      "subjects": [
+       "Dinu crouched behind the tank with his left arm guarding the concealed box."
+      ],
+      "setting": "Camera side of a rooftop water tank.",
+      "lighting": "Cold side light grazing his face, tank shadow concealing his body."
+     }
+    },
+    "sound": {
+     "ambience": "Rain on tank and roof.",
+     "effects": "Dinu's breathing and distant wet footfalls.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "single",
+    "setup": "L",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MS",
+    "angle": "eye level across tank",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "The search gains a clear physical source while the tank preserves the spatial separation.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Torch in Rohan's right hand; beam moves across the tank, pauses, then continues off its far edge. His departure is heard in the next shot.",
+    "summary": "From the far side of the tank, Rohan sweeps his torch across it, pauses the beam, then moves the light on.",
+    "id": "c12",
+    "slate": "1L-1",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 50mm, f/4",
+      "angle": "eye level across tank",
+      "framing": "MS, Rohan at far side and tank surface filling opposite half",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, cold blue roof with distant sodium",
+      "color_tone": "controlled cold blue-green with small sodium accents, deep blacks",
+      "depth_of_field": "Medium, torch and beam landing visible",
+      "lens_artifacts": "subtle wet highlights"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [
+      {
+       "id": "C09",
+       "description": "Rohan, a heavy-built 40-year-old Sri Lankan man with short black hair, black raincoat, dark trousers and dark shoes.",
+       "action": "Sweeps the torch beam across the tank, pauses it, and moves it onward.",
+       "position": "Far side of tank at right, facing left, heavy black torch raised in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MS on Rohan and tank surface",
+       "director_line": "The source of the threat is visible across the barrier.",
+       "action": "Rohan holds the torch aimed at the tank edge.",
+       "performance": "His eyes follow the beam."
+      },
+      {
+       "time": "1-3s",
+       "camera": "MS with beam visible on tank",
+       "director_line": "Light searches the barrier separating the two men.",
+       "action": "Rohan sweeps the torch beam across the tank.",
+       "performance": "His gaze follows the moving patch of light."
+      },
+      {
+       "time": "3-4s",
+       "camera": "MS on beam and Rohan",
+       "director_line": "The pause stretches the danger.",
+       "action": "Rohan keeps the torch beam on one patch.",
+       "performance": "His eyes narrow toward the illuminated surface."
+      },
+      {
+       "time": "4-5s",
+       "camera": "MS with far edge of tank visible",
+       "director_line": "The light continues beyond the hiding place.",
+       "action": "Rohan moves the beam off the tank.",
+       "performance": "His gaze follows the light away."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MS on Rohan",
+       "director_line": "The tank returns to shadow.",
+       "action": "Rohan keeps the torch angled away.",
+       "performance": "His gaze remains beyond the tank."
+      }
+     ],
+     "audio": "Rain on roof, wet footfalls, faint torch handling.",
+     "first_frame": {
+      "composition": "Rohan at right on far side of tank, torch aimed at near edge, tank surface left.",
+      "subjects": [
+       "Rohan with black torch raised in right hand."
+      ],
+      "setting": "Far side of the rooftop tank.",
+      "lighting": "Cold directional roof light, narrow torch patch at tank edge."
+     }
+    },
+    "sound": {
+     "ambience": "Rain on rooftop.",
+     "effects": "Wet footfalls and quiet torch handling.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "reaction",
+    "setup": "K",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level at crouching height",
+    "lens": "50mm",
+    "technique": "handheld",
+    "why": "The light's departure and receding steps are measured against Dinu's face, not an invented pursuit beat.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Match Dinu's crouch and left-hand box position. The beam passes off the tank, and Rohan's steps recede offscreen.",
+    "summary": "Dinu stays crouched as the torch light moves off the tank; the footsteps recede and his breathing remains audible.",
+    "id": "c13",
+    "slate": "1K-2",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 50mm, f/2.8",
+      "angle": "eye level at crouching height",
+      "framing": "MCU of Dinu and the tank edge",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, cold blue roof with distant sodium",
+      "color_tone": "controlled cold blue-green with small sodium accents, deep blacks",
+      "depth_of_field": "Shallow, tank edge and face readable",
+      "lens_artifacts": "subtle wet highlights"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Crouches while the beam moves away and footsteps recede.",
+       "position": "Low left behind the camera-side tank, facing right, box beneath jacket against left ribs in left hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on Dinu and tank edge",
+       "director_line": "The paused beam grazes the tank edge.",
+       "action": "Dinu remains crouched.",
+       "performance": "His eyes fix on the bright edge and his lips close."
+      },
+      {
+       "time": "1-5s",
+       "camera": "MCU on Dinu, beam leaving edge",
+       "director_line": "The light moves away before his body releases.",
+       "action": "The torch beam moves off the tank edge.",
+       "performance": "Dinu keeps his gaze on the edge, then lets his shoulders lower slightly."
+      },
+      {
+       "time": "5-6s",
+       "camera": "MCU on Dinu",
+       "director_line": "Receding steps leave him alone with the box.",
+       "action": "Dinu keeps the box against his ribs.",
+       "performance": "His mouth opens for a quiet breath."
+      }
+     ],
+     "audio": "Rain, close breathing, wet footsteps receding across the roof.",
+     "first_frame": {
+      "composition": "Dinu low left, tank edge right with a narrow torch patch at its far edge.",
+      "subjects": [
+       "Dinu crouched with the box secured beneath his jacket."
+      ],
+      "setting": "Camera side of the rooftop tank.",
+      "lighting": "Cold roof light and a torch patch grazing the tank edge."
+     }
+    },
+    "sound": {
+     "ambience": "Rain on rooftop.",
+     "effects": "Breathing and receding wet footsteps.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "insert",
+    "setup": "M",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "high three-quarter",
+    "lens": "50mm",
+    "technique": "locked_off",
+    "why": "A steady unobstructed view makes the absence inside the box unmistakable.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "The closed box is already in his lap and supported by his left hand; his right hand opens the lid once. Hold the interior unobstructed.",
+    "summary": "Crouched behind the tank, Dinu opens the dented metal box in his lap; its interior is empty.",
+    "id": "c14",
+    "slate": "1M-1",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/4",
+      "angle": "high three-quarter",
+      "framing": "INSERT of the box and Dinu's hands in his lap",
+      "movement": "locked-off on sticks",
+      "white_balance": "4300K, cold blue roof with distant sodium",
+      "color_tone": "controlled cold blue-green with small sodium accents, deep blacks",
+      "depth_of_field": "Medium, entire box interior in focus",
+      "lens_artifacts": "subtle wet highlights"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Supports the closed box with his left hand and opens its lid with his right hand.",
+       "position": "Crouched behind the tank, closed box already in lap supported by left hand, right hand at lid."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT on closed box and hands",
+       "director_line": "The object that cost the chase is finally accessible.",
+       "action": "Dinu supports the closed box in his lap.",
+       "performance": "His right hand rests on the lid."
+      },
+      {
+       "time": "1-3s",
+       "camera": "INSERT with interior fully visible",
+       "director_line": "The lid rises to expose the absence inside.",
+       "action": "Dinu opens the lid with his right hand.",
+       "performance": "His hands pause at the end of the movement."
+      },
+      {
+       "time": "3-5s",
+       "camera": "INSERT on unobstructed box interior",
+       "director_line": "Nothing interrupts the view of the empty interior.",
+       "action": "Dinu keeps the box open in his lap.",
+       "performance": "His fingers remain still at the box edges."
+      },
+      {
+       "time": "5-6s",
+       "camera": "INSERT on open box",
+       "director_line": "The absence has time to register.",
+       "action": "Dinu supports the open box.",
+       "performance": "His hands stay still."
+      }
+     ],
+     "audio": "Small metal lid sound, rain, close breathing.",
+     "first_frame": {
+      "composition": "Closed dented metal box fills centre, left hand supporting it, right hand at lid.",
+      "subjects": [
+       "Dinu's hands holding the closed box in his lap."
+      ],
+      "setting": "Crouching place behind the rooftop tank.",
+      "lighting": "Cold side light catches the closed metal lid."
+     }
+    },
+    "sound": {
+     "ambience": "Rain on rooftop.",
+     "effects": "Metal lid movement and breathing.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "single",
+    "setup": "N",
+    "blocks": [
+     6
+    ],
+    "lines": [
+     "L6"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "CU",
+    "angle": "eye level three-quarter",
+    "lens": "75mm",
+    "technique": "handheld",
+    "why": "A close face lets the empty-box discovery turn into the whispered question without melodramatic movement.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "must",
+    "editor_note": "Perform the whole of L6 between the handles; the open box stays supported in his lap below frame.",
+    "summary": "Dinu looks into the empty box and voices L6, wondering where the missing thing is, as the rain continues.",
+    "id": "c15",
+    "slate": "1N-1",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "handheld shoulder rig, 75mm, f/2.8",
+      "angle": "eye level three-quarter at crouching height",
+      "framing": "CU of Dinu, face visible in three-quarter, eyes down",
+      "movement": "restrained handheld drift in place",
+      "white_balance": "4300K, cold blue roof with distant sodium",
+      "color_tone": "controlled cold blue-green with small sodium accents, deep blacks",
+      "depth_of_field": "Shallow, tank and open box soft below frame",
+      "lens_artifacts": "subtle wet highlights"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Lips move to L6 while he looks into the empty box.",
+       "position": "Crouched behind the tank, face already three-quarter toward camera with eyes lowered, open box supported in his lap by left hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU on Dinu's face",
+       "director_line": "His face receives the empty space below frame.",
+       "action": "Dinu looks into the open box.",
+       "performance": "His mouth parts and his gaze stays lowered."
+      },
+      {
+       "time": "1-4s",
+       "camera": "CU favouring mouth and eyes",
+       "director_line": "L6 emerges breathlessly into the roof's quiet.",
+       "action": "Dinu's lips move to L6.",
+       "performance": "His voice is barely voiced as his eyes remain on the box."
+      },
+      {
+       "time": "4-6s",
+       "camera": "CU on Dinu",
+       "director_line": "The unanswered question remains with him.",
+       "action": "Dinu keeps the open box in his lap.",
+       "performance": "His lips close slowly and his gaze stays down."
+      }
+     ],
+     "audio": "L6 softly performed, close breathing and rain; no music.",
+     "first_frame": {
+      "composition": "Dinu fills the frame in three-quarter, eyes down toward the open box below the bottom edge.",
+      "subjects": [
+       "Dinu crouched behind the tank, open box supported in his lap."
+      ],
+      "setting": "Rooftop hiding place behind the water tank.",
+      "lighting": "Cold directional light catches one side of his face against the dark tank."
+     }
+    },
+    "sound": {
+     "ambience": "Rain on rooftop.",
+     "effects": "Close breath and faint metal contact.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "reaction",
+    "setup": "P",
+    "blocks": [
+     5
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "ECU",
+    "angle": "eye level, three-quarter from the pursuit-axis side",
+    "lens": "100mm",
+    "technique": "shallow_isolation",
+    "why": "The opening insert establishes absence; this isolated face makes its consequence readable before L6 without repeating the hands or reopening the box.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "After c14 exposes the interior, cut to this face with the box already open below frame; return to c15 for L6.",
+    "summary": "An extreme close view isolates Dinu behind the rooftop tank. His eyes remain on the open box below frame and his jaw loosens as rain and uneven breathing continue.",
+    "id": "c16",
+    "slate": "1P-1",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "locked-off sticks, 100mm, f/2.0",
+      "angle": "eye level with the crouching face, three-quarter",
+      "framing": "ECU from brow to chin; tank edge soft at frame left, eyes off lens toward lap",
+      "movement": "locked-off shallow isolation throughout",
+      "white_balance": "4300K, cold practical highlights with restrained sodium warmth",
+      "color_tone": "Deep blacks, controlled blue and sodium, restrained saturation and small highlights.",
+      "depth_of_field": "Shallow; tank and rooftop dissolve into soft bokeh.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Keeps his eyes on the open box in his lap; his jaw loosens.",
+       "position": "Crouching on the camera side of the water tank, face three-quarter toward screen right, open metal box in his lap below frame, left hand supporting its base."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "ECU on lowered eyes and compressed jaw.",
+       "director_line": "The dark tank edge separates his face from the empty roof beyond.",
+       "action": "Dinu keeps his gaze lowered toward his lap.",
+       "performance": "His jaw stays compressed and his lips remain closed."
+      },
+      {
+       "time": "1-5s",
+       "camera": "Same ECU, focus fixed on the near eye.",
+       "director_line": "A small release of the jaw replaces the tension of hiding.",
+       "action": "His jaw loosens.",
+       "performance": "His lower lip parts slightly while his eyes stay fixed downward."
+      },
+      {
+       "time": "5-6s",
+       "camera": "Same ECU and near-eye focus.",
+       "director_line": "The isolated face remains suspended above the unseen box.",
+       "action": "Dinu remains crouched with the box in his lap.",
+       "performance": "His eyes remain down and his mouth stays still."
+      }
+     ],
+     "audio": "Rain on rooftop surfaces and Dinu's uneven breathing; no voice or music.",
+     "first_frame": {
+      "composition": "Dinu's face fills the image in three-quarter; blurred tank edge at left; open box below the crop.",
+      "subjects": [
+       "Dinu crouched, eyes lowered, jaw compressed, left hand supporting the open box below frame."
+      ],
+      "setting": "Dark rooftop shelter on the camera side of a water tank.",
+      "lighting": "Cold side light catches one eye and cheek; the opposite cheek falls into deep shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Rooftop rain and distant market wash.",
+     "effects": "Uneven close breathing.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c14"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 5,
+    "role": "insert",
+    "setup": "Q",
+    "blocks": [
+     4
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "low grazing angle along the tank wall",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "Isolates the beam's pause as a physical threat on the tank wall, giving the editor a suspense detail rather than another face or search medium.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Cut into c12 during the beam's pause, then back as it continues right. Match the beam direction; do not replay a second sweep.",
+    "summary": "A tight low view of the wet tank wall catches the torch beam already paused on its surface. The beam travels right and leaves darkness; rain and rooftop footfalls continue off frame.",
+    "id": "c17",
+    "slate": "1Q-1",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.8",
+      "angle": "low grazing view of the tank surface from the established pursuit-axis side",
+      "framing": "INSERT of wet tank wall; narrow torch patch near centre, no people in frame",
+      "movement": "locked-off on sticks throughout",
+      "white_balance": "4300K, neutral torch core against cold rooftop spill",
+      "color_tone": "Deep blue-black shadows, neutral beam, restrained sodium at the edge.",
+      "depth_of_field": "Shallow; illuminated water tracks sharp with soft falloff along the wall.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT focused on the illuminated wet tank surface.",
+       "director_line": "The narrow bright patch sits against almost black surroundings.",
+       "action": "The torch beam remains paused on the tank wall.",
+       "performance": ""
+      },
+      {
+       "time": "1-5s",
+       "camera": "Same INSERT, focus stays on the wet surface.",
+       "director_line": "The light leaves the shelter untouched as it continues right.",
+       "action": "The torch beam travels off the right edge of the tank detail.",
+       "performance": ""
+      },
+      {
+       "time": "5-6s",
+       "camera": "Same INSERT with only cold residual spill.",
+       "director_line": "The water tracks disappear back into deep shadow.",
+       "action": "Rainwater trails down the tank surface.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rooftop rain and off-frame footsteps continuing toward screen right; no voice or music.",
+     "first_frame": {
+      "composition": "Wet tank wall fills the frame; a narrow neutral torch patch is already stationary near centre.",
+      "subjects": [
+       "Rainwater tracks on the tank wall; no people visible."
+      ],
+      "setting": "The tank's far-side surface on the rooftop, viewed obliquely from the established camera side.",
+      "lighting": "Small neutral torch highlight against cold spill and deep shadow."
+     }
+    },
+    "sound": {
+     "ambience": "Rooftop rain.",
+     "effects": "Off-frame footsteps receding right.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c12"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 7,
+    "role": "clean_exit",
+    "setup": "R",
+    "blocks": [
+     6
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "elevated oblique view from the established camera side",
+    "lens": "32mm",
+    "technique": "crane",
+    "why": "Releases the final close single into spatial isolation after L6, making the concealed shelter feel large around the man and the useless box.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Use only after c15 completes L6. Start on Dinu already crouched with the open box; let the crane retreat carry the scene end without music.",
+    "summary": "After L6, an elevated camera retreats from Dinu crouched behind the tank with the open box in his lap. He remains still as more rain-wet rooftop surrounds him.",
+    "id": "c18",
+    "slate": "1R-1",
+    "ir": {
+     "setting": "On the rain-wet flat rooftop, water tanks stand between the iron stair landing and the far roof edge.",
+     "cinematography": {
+      "camera": "small crane, 32mm, f/4",
+      "angle": "elevated oblique angle, always on the camera side of the tank",
+      "framing": "WIDE with Dinu small at lower right beside the tank, expanding negative rooftop space",
+      "movement": "one slow rising crane retreat away from Dinu, remaining on the established side of the pursuit axis",
+      "white_balance": "4300K, cold rooftop practical with distant sodium warmth",
+      "color_tone": "Controlled cold blue and sodium, deep blacks and small wet highlights.",
+      "depth_of_field": "Deep; Dinu and nearby tank legible, distant roof detail subdued.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Remains crouched with his gaze in the open metal box.",
+       "position": "On the camera side of the water tank at lower right, open metal box in his lap, left hand supporting the base, face three-quarter down toward screen right."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "Elevated WIDE, Dinu and open box visible beside the tank.",
+       "director_line": "The shelter contains only the crouched man and the open box.",
+       "action": "Dinu remains crouched with the open box in his lap.",
+       "performance": "His eyes stay lowered and his lips are closed."
+      },
+      {
+       "time": "1-5s",
+       "camera": "WIDE expands through the single rising crane retreat, keeping Dinu lower right.",
+       "director_line": "Rain-wet space grows around his compressed figure.",
+       "action": "Dinu keeps his left hand under the box.",
+       "performance": "His shoulders remain rounded and his gaze stays inside the box."
+      },
+      {
+       "time": "5-6s",
+       "camera": "Expanded WIDE at the end of the same retreat.",
+       "director_line": "The tank and dark roof dwarf the motionless figure.",
+       "action": "Rain falls across the rooftop.",
+       "performance": "Dinu remains crouched, eyes down, mouth still."
+      }
+     ],
+     "audio": "Rain across the roof and distant market ambience; no voice or music.",
+     "first_frame": {
+      "composition": "Elevated wide view from the camera side of the tank, Dinu small at lower right, open box visible in his lap; no other person visible.",
+      "subjects": [
+       "Dinu crouched behind the tank, open box supported by his left hand, lips closed."
+      ],
+      "setting": "Rain-wet roof between tank and stair landing, with the far roof edge subdued in darkness.",
+      "lighting": "Cold practical light rakes the roof; sodium spill touches wet edges while tank sides remain dark."
+     }
+    },
+    "sound": {
+     "ambience": "Rooftop rain and distant market wash.",
+     "effects": "Faint uneven breathing diminishing with distance.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c15"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 3,
+    "role": "cutaway",
+    "setup": "S",
+    "blocks": [
+     2
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "road level across the escape route",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "The must insert handles the cart tipping; this separate low aftermath lets the oranges briefly measure the disturbance after the men have passed.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Place after c07's pursuit passage or as a very short bridge into the alley. Oranges are already on the road in the first frame; do not repeat the cart's fall.",
+    "summary": "At road level, oranges already scattered beside the tipped cart fill the foreground. One continues rolling and settles while running footfalls recede off frame.",
+    "id": "c19",
+    "slate": "1S-1",
+    "ir": {
+     "setting": "The wet Pettah lane narrows beside a wooden cart piled with oranges beneath tarpaulins.",
+     "cinematography": {
+      "camera": "locked-off low hat, 65mm, f/2.8",
+      "angle": "road level looking screen right along the pursuit route",
+      "framing": "INSERT of scattered oranges on wet road, a small tipped cart edge soft at upper left; people excluded",
+      "movement": "locked-off throughout",
+      "white_balance": "4000K, sodium warmth and green practical spill against blue rain",
+      "color_tone": "Deep controlled blacks, muted green and blue with saturated orange highlights.",
+      "depth_of_field": "Shallow; nearest rolling orange sharp and cart edge softly blurred.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "Road-level INSERT on oranges already on the wet road.",
+       "director_line": "The pursuit has left its colour scattered across the lane.",
+       "action": "One orange rolls screen right among the stationary oranges.",
+       "performance": ""
+      },
+      {
+       "time": "1-5s",
+       "camera": "Same INSERT, focus on the moving orange's final position.",
+       "director_line": "The small remaining movement spends itself on the wet stones.",
+       "action": "The rolling orange slows to rest.",
+       "performance": ""
+      },
+      {
+       "time": "5-6s",
+       "camera": "Same INSERT on the settled orange.",
+       "director_line": "Only rain continues across the abandoned foreground.",
+       "action": "Rain strikes the road around the oranges.",
+       "performance": ""
+      }
+     ],
+     "audio": "Rain on road and tarpaulins; running footfalls recede screen right; no voice or music.",
+     "first_frame": {
+      "composition": "Oranges already scattered on the road; one rolling right near centre; soft tipped cart edge at upper left, no feet visible.",
+      "subjects": [
+       "Scattered oranges on wet stones, with one still rolling."
+      ],
+      "setting": "Road surface beside the tipped fruit cart in the narrow market lane.",
+      "lighting": "Small sodium highlights on orange peel, green reflections and cold blue rain glints against dark stones."
+     }
+    },
+    "sound": {
+     "ambience": "Market rain and distant market wash.",
+     "effects": "Soft rolling scrape and receding running footfalls.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c06",
+     "c07"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 1,
+    "role": "establishing",
+    "setup": "T",
+    "blocks": [
+     0
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level from beneath a tarpaulin edge",
+    "lens": "35mm",
+    "technique": "slow_pan_reveal",
+    "why": "Gives the recognition singles a shared lane and visible separation, using rain and occluded market edges without sharply resolving passing shoppers.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Open moment 1 with this brief geography, then enter c01 and c02. Keep Dinu moving left to right and Rohan across the lane; no readable signs required.",
+    "summary": "From beneath a tarpaulin edge, a short pan reveals Dinu threading rightward through the rainy market and Rohan standing across the lane with his torch low in his right hand. The few distant shoppers stay indistinct.",
+    "id": "c20",
+    "slate": "1T-1",
+    "ir": {
+     "setting": "A rain-soaked Pettah market lane runs between tarpaulin stalls under sodium lamps and green practical bulbs.",
+     "cinematography": {
+      "camera": "fluid-head tripod, 35mm, f/2.8",
+      "angle": "eye level from the established pursuit-axis side beneath a tarpaulin edge",
+      "framing": "WIDE across the lane; Dinu left foreground and Rohan across the lane at right, a few distant shoppers soft at edges",
+      "movement": "one slow pan right revealing the separation between Dinu and Rohan",
+      "white_balance": "4000K, sodium and green practicals with cold rain highlights",
+      "color_tone": "Deep blacks, controlled sodium amber and green, restrained cold blue rain.",
+      "depth_of_field": "Medium; principals legible, foreground tarpaulin and distant shoppers softly obscured.",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and worn dark shoes.",
+       "action": "Threads screen right through the lane with his left hand keeping the concealed box against his left ribs.",
+       "position": "Near side of market lane at frame left, walking screen right, metal box hidden under jacket against left ribs and secured with left hand."
+      },
+      {
+       "id": "C09",
+       "description": "Rohan, a heavy-built 40-year-old Sri Lankan man with short black hair, black raincoat, dark trousers and dark shoes.",
+       "action": "Stands across the lane with his gaze directed toward Dinu.",
+       "position": "Far side of the lane at frame right, standing facing diagonally toward screen left, torch held low in right hand."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE beginning the gentle rightward pan, Dinu at left and Rohan near the right edge.",
+       "director_line": "Rain and blurred stall edges divide the two men across the lane.",
+       "action": "Dinu walks screen right with the concealed box secured against his left ribs.",
+       "performance": "Dinu keeps his chin low and his left elbow close to his side; Rohan's gaze stays across the lane."
+      },
+      {
+       "time": "1-5s",
+       "camera": "WIDE continues the same slow pan right, bringing Rohan fully clear of the soft stall edge.",
+       "director_line": "The hunter becomes legible across the route of the moving man.",
+       "action": "Rohan remains standing with the torch low in his right hand.",
+       "performance": "Rohan fixes his eyes on Dinu while Dinu's face stays directed along his route."
+      },
+      {
+       "time": "5-6s",
+       "camera": "WIDE reaches the end of its single pan with the men separated across the lane.",
+       "director_line": "The gap between them is clear before the cut moves closer.",
+       "action": "Dinu continues screen right.",
+       "performance": "Dinu keeps his left elbow pressed in; Rohan remains still with eyes on him."
+      }
+     ],
+     "audio": "Heavy rain on tarpaulins, wet foot traffic and indistinct market wash; no intelligible voices or music.",
+     "first_frame": {
+      "composition": "Wide lane framed by a soft tarpaulin edge above; Dinu at near left moving right, Rohan visible near far right, a few distant shoppers indistinct at margins.",
+      "subjects": [
+       "Dinu walking right with left elbow pressed over the concealed metal box.",
+       "Rohan standing across the lane, torch low in his right hand."
+      ],
+      "setting": "Rainy Pettah lane between tarpaulin stalls and sodium and green practical pools.",
+      "lighting": "Hard sodium side light models the men; green spill and cold rain glints recede into a dark lane."
+     }
+    },
+    "sound": {
+     "ambience": "Market rain, indistinct market wash and wet foot traffic.",
+     "effects": "Rain drumming on tarpaulins.",
+     "music": "None.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c01",
+     "c02"
+    ],
+    "blend": "open"
+   }
+  ],
+  "line_ids": {
+   "L1": "E09-S01-B02",
+   "L6": "E09-S01-B07"
+  },
+  "editor_notes": [
+   "The must bin contains 15 clips, 78 seconds of takes; use it as raw material, not a binding 78-second assembly. The intended scene runs approximately 75 seconds, paced with the recognition, search, empty interior and final reaction.",
+   "The lane master and Rohan recognition single establish geography before the L1 performing single. Keep left-to-right pursuit and Rohan's opposing initial eyeline consistent.",
+   "The cart contact, cart-tip detail and pursuit master are consecutive pieces of the same event. Match the upper rail across the impact cut and open the pursuit master on the already tipped cart and scattered oranges. Use soft foreground occlusions and sound to suggest passage through shoppers without requiring body contact or sharp crowds.",
+   "The alley entry, slip/recovery and stair master are consecutive parts of the pursuit, not alternate performances of one long move. Match Dinu's box at his left ribs and Rohan's torch in his right hand.",
+   "On the roof, match the torch patch from the search across the tank to Dinu's reaction, then let footsteps recede. The box is already in Dinu's lap at the opening detail; the edit skips the extraction, not the opening. Keep the empty interior unobstructed and let L6 follow on the face.",
+   "The checker flags fast-hand feasibility on the two running shots. Neither asks for finger work: the box and torch remain in fixed grips; favour the faces and bodies if a render introduces finger motion.",
+   "The short cart and pursuit shots have half-second handles. Use their impacts and continuous direction as match points; do not trim L1 or L6.",
+   "Speed ramps, freeze frames, digital punch-ins and split screens are post-only; clean sources are supplied, but none is required in the reference cut. Avoid slow motion, mirrors, intricate finger work and contact between bodies. Music is omitted; rain, breath, impacts and footsteps lead."
+  ],
+  "blend_notes": [
+   "c16 — After c14 reveals the empty interior, hold Dinu’s isolated reaction over rooftop rain and his breathing; then return to c15 for L6.",
+   "c17 — Cut into c12 at the paused beam, over Rohan’s rooftop footsteps and rain; return to c12 as the search moves on.",
+   "c18 — After c15 completes L6, retreat from Dinu over rooftop rain and distant market ambience; no music.",
+   "c19 — After c07’s pursuit passage, hold briefly on the settling oranges over receding running footsteps and market rain, then cut to the alley.",
+   "c20 — Open moment 1 before c01 and c02, using market rain and foot traffic; retain the established left-to-right pursuit axis."
+  ],
+  "review": [
+   {
+    "moment": 1,
+    "earns": true,
+    "why": "A rainy wide reveal establishes the distance across the lane before the recognition singles."
+   },
+   {
+    "moment": 2,
+    "earns": false,
+    "why": "Rohan’s readable performing single carries the immediate impact of L1; a cutaway would dilute it."
+   },
+   {
+    "moment": 3,
+    "earns": true,
+    "why": "A ground-level aftermath of the oranges gives the cart disruption a distinct visual consequence without repeating its tip."
+   },
+   {
+    "moment": 4,
+    "earns": false,
+    "why": "The locked alley entry, slip and recovery, and stair master already explain the route and near loss of balance."
+   },
+   {
+    "moment": 5,
+    "earns": true,
+    "why": "A tank-surface insert makes the searching beam’s pause and departure tactile without duplicating the held reaction."
+   },
+   {
+    "moment": 6,
+    "earns": true,
+    "why": "An isolated facial reaction registers the empty box after the locked opening insert."
+   },
+   {
+    "moment": 7,
+    "earns": true,
+    "why": "A restrained crane retreat leaves Dinu small in the rooftop shelter after L6."
+   }
+  ],
+  "seconds": {
+   "target_s": 75.0,
+   "cap_s": 150.0,
+   "take_s": 108,
+   "must_s": 78,
+   "cinematic_s": 30
+  },
+  "left": [
+   {
+    "code": "feasibility",
+    "sentence": "c04 asks for fast hands. fast finger work blurs: hold on the face, or show the hands still on the object.",
+    "clips": [
+     "c04"
+    ],
+    "fix": "report",
+    "key": "feasibility:c04:fast hands"
+   },
+   {
+    "code": "feasibility",
+    "sentence": "c07 asks for fast hands. fast finger work blurs: hold on the face, or show the hands still on the object.",
+    "clips": [
+     "c07"
+    ],
+    "fix": "report",
+    "key": "feasibility:c07:fast hands"
+   }
+  ],
+  "report": {
+   "turns": {
+    "stage1": 6,
+    "stage2": 3
+   },
+   "calls": 9,
+   "log": [
+    "stage 1: finished after 6 turns",
+    "stage 2: finished after 3 turns"
+   ],
+   "model": "gpt-6.1-sol"
+  },
+  "previous": {}
+ }
+}

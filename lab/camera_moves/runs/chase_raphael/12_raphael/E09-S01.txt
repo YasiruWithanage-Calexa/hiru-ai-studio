@@ -1,0 +1,256 @@
+SCENE E09-S01: stage 1 finished, stage 2 finished
+Seconds: target 75.0, cap 150.0, takes 108 (must 78, cinematic 30)
+
+Logline: A hunted man escapes the market with a metal box, only to discover that the danger has bought him nothing he can understand.
+Approach: Play the crime-thriller facet as vulnerable flight, not heroic spectacle: close handheld frames, directional practical light, deep backgrounds and controlled blue, green and sodium colour. Widen only enough to explain pursuit geography. No music and no slow motion. The extra duration belongs to recognition, pursuit coverage, the searching light and the empty-box reaction rather than new events.
+Key Image: A narrow torch beam crosses the tank above Dinu's compressed body; later the same dark shelter contains a visibly empty metal box.
+Geography: Dinu travels screen left to right; Rohan follows the same direction. The alley opens on the right of the market; the iron stairs rise toward screen right. On the roof Dinu crouches on the camera side of a water tank; Rohan searches its far side and continues right. All coverage stays on this side of the pursuit axis. Dinu carries the box under his jacket against his left ribs with his left hand; Rohan retains the torch in his right hand throughout.
+Arc: Recognition divides the market into hunter and quarry. (blocks {'first': 0, 'last': 1}): Watchful tension snaps into exposure.
+Arc: The pursuit compresses from crowded lane to wet alley and iron stairs. (blocks {'first': 2, 'last': 3}): Scrambling physical vulnerability.
+Arc: A tank becomes the thin boundary between concealment and discovery. (blocks {'first': 4, 'last': 4}): Held breath.
+Arc: An empty box replaces the visible pursuer with an unanswered question. (blocks {'first': 5, 'last': 6}): Escape drains into bewilderment.
+
+1A-1 [c01, stage 1, master, must]
+    SUMMARY: From the lane's near side, Dinu threads wet stalls with the box held beneath his jacket; rain dominates.
+    block 0 = E09-S01-B01: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under his jacket. Across the lane, Rohan, in a black raincoat, sees him.
+    MS · 35mm · handheld · eye level, lateral · take 6 s
+    why: Restricted handheld visibility makes Dinu vulnerable within the lane rather than heroic above it.
+    editor: Establish left-to-right travel and the concealed box silhouette; no sharp background faces.
+    framing: MS of Dinu from waist up, crowded edges softly obscured
+    movement: restrained handheld drift alongside Dinu
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+    C01: Threads the lane with his left hand securing the box beneath his jacket.
+
+1B-1 [c02, stage 1, single, must]
+    SUMMARY: Across the lane, Rohan fixes on Dinu; the tight view holds the recognition over rain.
+    block 0 = E09-S01-B01: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under his jacket. Across the lane, Rohan, in a black raincoat, sees him.
+    CU · 85mm · handheld · eye level three-quarter · take 4 s
+    why: A restrained tremor lets recognition land on Rohan without a decorative push.
+    editor: Recognition precedes L1. Torch remains in his right grip, glimpsed at lower edge.
+    framing: CU of Rohan, torch grip at lower edge
+    movement: restrained handheld drift in place
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+    C09: Fixes his gaze across the lane.
+
+1B-2 [c03, stage 1, single, must]
+    SUMMARY: Rohan projects L1 across the market to stop Dinu, in a tight three-quarter view above the rain.
+    block 1 = E09-S01-B02: Dinu! Nawathipan!
+    line L1 = E09-S01-B02: Dinu! Nawathipan!
+    MCU · 65mm · handheld · eye level three-quarter · take 4 s
+    why: The same side of Rohan preserves the recognition-to-challenge connection.
+    editor: Perform all of L1 within 1-3s; no running yet.
+    framing: MCU, Rohan's face and upper torso readable
+    movement: restrained handheld drift in place
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+    C09: Lips move to L1, projecting across the lane.
+
+1C-1 [c04, stage 1, single, must]
+    SUMMARY: Dinu bolts right through a narrow gap in the market, guarding the concealed box as wet shoes strike the road.
+    block 2 = E09-S01-B03: Dinu runs. He shoves past shoppers and knocks over a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd.
+    MS · 35mm · handheld · eye level lateral · take 4 s
+    why: Scrambling lateral coverage gives the flight weight while avoiding staged bodily collisions.
+    editor: First pursuit fragment; indistinct silhouettes and stalls suggest the market. No finger movement: the box stays secured against his ribs. End before cart contact.
+    framing: MS of Dinu, soft stall edges crossing foreground
+    movement: short handheld drift parallel to his route
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+    C01: Runs through a gap toward the cart, left arm securing the box against his ribs.
+
+1D-1 [c05, stage 1, single, must]
+    SUMMARY: Beside the upright orange cart, Dinu's right palm drives against its upper rail while his left arm protects the box.
+    block 2 = E09-S01-B03: Dinu runs. He shoves past shoppers and knocks over a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd.
+    MS · 40mm · handheld · low three-quarter side · take 4 s
+    why: Separate physical contact from travel so the collision has a clear cause and one manageable action.
+    editor: Dinu is momentarily planted at the cart. Cut on his right palm's impact to the cart detail.
+    framing: MS of Dinu beside the cart rail
+    movement: restrained handheld drift in place
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+    C01: Drives his right palm against the upper cart rail.
+
+1E-1 [c06, stage 1, insert, must]
+    SUMMARY: A close low view shows the struck wooden cart tip sideways and oranges spill onto the wet road with a wooden crash.
+    block 2 = E09-S01-B03: Dinu runs. He shoves past shoppers and knocks over a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd.
+    INSERT · 50mm · handheld · low close side · take 4 s
+    why: Isolate the cart's tipping as the consequence of the preceding impact, avoiding multi-object choreography around a running body.
+    editor: Required cart event. Match rail position to prior impact; Dinu is outside frame.
+    framing: INSERT, cart wheel, rail and oranges fill image
+    movement: restrained handheld drift in place
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+
+1F-1 [c07, stage 1, master, must]
+    SUMMARY: Beyond the fallen cart, Dinu runs right with Rohan several paces behind, the torch still in Rohan's right grip.
+    block 2 = E09-S01-B03: Dinu runs. He shoves past shoppers and knocks over a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd.
+    MWS · 35mm · handheld · eye level lateral · take 4 s
+    why: One shared frame proves the pursuit distance after the impact without extra collision choreography.
+    editor: Cart already tipped and fruit already scattered in the opening frame. The grips stay still; Dinu exits right at 3.5s and Rohan follows within frame.
+    framing: MWS, quarry right and pursuer left, tipped cart foreground
+    movement: restrained handheld drift in place
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+    C01: Runs right beyond the tipped cart, exiting at 3.5s.
+    C09: Runs after Dinu.
+
+1G-1 [c08, stage 1, single, must]
+    SUMMARY: Dinu runs right into the narrow alley, the box still concealed against his left side, with hurried footfalls and rain.
+    block 3 = E09-S01-B04: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron stairway to a rooftop. Rohan is close behind.
+    MS · 35mm · handheld · eye level lateral · take 6 s
+    why: The lateral passage carries the rightward chase into the constricted alley.
+    editor: Route begins at the market exit and leads toward the stairway; cut before the slip.
+    framing: MS of Dinu, masonry tight on either side
+    movement: short handheld drift parallel to his route
+    light: Hard sodium light from the lane and a cold practical stair light rake the wet masonry, leaving the alley recesses dark.
+    C01: Runs into the alley toward the stairs.
+
+1H-1 [c09, stage 1, single, must]
+    SUMMARY: Dinu's shoe slides on wet alley stones; he catches his balance while keeping the hidden box against his ribs.
+    block 3 = E09-S01-B04: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron stairway to a rooftop. Rohan is close behind.
+    MS · 40mm · handheld · low side · take 6 s
+    why: A low view makes the vulnerable footing and recovery legible without treating the slip as a stunt.
+    editor: Cut from the entry on his stride. One foot slides; he stays upright and regains his footing, never falling to the ground.
+    framing: MS including Dinu from face to shoes against wet stones
+    movement: restrained handheld drift in place
+    light: Hard sodium light from the lane and a cold practical stair light rake the wet masonry, leaving the alley recesses dark.
+    C01: One shoe slides on the wet stone; he regains his footing without falling.
+
+1J-1 [c10, stage 1, master, must]
+    SUMMARY: Dinu climbs the iron stairs toward the roof with the box beneath his jacket; Rohan follows from the alley below with his torch.
+    block 3 = E09-S01-B04: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron stairway to a rooftop. Rohan is close behind.
+    MWS · 35mm · handheld · side, slightly low · take 6 s
+    why: A side view establishes the vertical escape and Rohan's following distance in one readable axis.
+    editor: Dinu ascends to screen right; Rohan follows at the foot of the stairs. Continue upward at normal speed.
+    framing: MWS of iron stairs, Dinu above and Rohan below
+    movement: restrained handheld drift in place
+    light: Hard sodium light from the lane and a cold practical stair light rake the wet masonry, leaving the alley recesses dark.
+    C01: Climbs the iron stairway toward the roof.
+    C09: Runs toward the foot of the stairway behind Dinu.
+
+1K-1 [c11, stage 1, single, must]
+    SUMMARY: On the roof, Dinu crouches behind a water tank and struggles to quiet his breathing while clutching the concealed box.
+    block 4 = E09-S01-B05: On the roof, Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on. His footsteps fade.
+    MCU · 50mm · handheld · eye level, tank side · take 6 s
+    why: A tight, almost still handheld frame makes the tank feel like a fragile barrier.
+    editor: Dinu is already crouching; keep his left hand and concealed box at the same ribs position.
+    framing: MCU of Dinu beside tank, dark tank face filling foreground
+    movement: restrained handheld drift in place
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+    C01: Crouches behind the tank and steadies his breathing.
+
+1L-1 [c12, stage 1, single, must]
+    SUMMARY: From the far side of the tank, Rohan sweeps his torch across it, pauses the beam, then moves the light on.
+    block 4 = E09-S01-B05: On the roof, Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on. His footsteps fade.
+    MS · 50mm · handheld · eye level across tank · take 6 s
+    why: The search gains a clear physical source while the tank preserves the spatial separation.
+    editor: Torch in Rohan's right hand; beam moves across the tank, pauses, then continues off its far edge. His departure is heard in the next shot.
+    framing: MS, Rohan at far side and tank surface filling opposite half
+    movement: restrained handheld drift in place
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+    C09: Sweeps the torch beam across the tank, pauses it, and moves it onward.
+
+1K-2 [c13, stage 1, reaction, must]
+    SUMMARY: Dinu stays crouched as the torch light moves off the tank; the footsteps recede and his breathing remains audible.
+    block 4 = E09-S01-B05: On the roof, Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on. His footsteps fade.
+    MCU · 50mm · handheld · eye level at crouching height · take 6 s
+    why: The light's departure and receding steps are measured against Dinu's face, not an invented pursuit beat.
+    editor: Match Dinu's crouch and left-hand box position. The beam passes off the tank, and Rohan's steps recede offscreen.
+    framing: MCU of Dinu and the tank edge
+    movement: restrained handheld drift in place
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+    C01: Crouches while the beam moves away and footsteps recede.
+
+1M-1 [c14, stage 1, insert, must]
+    SUMMARY: Crouched behind the tank, Dinu opens the dented metal box in his lap; its interior is empty.
+    block 5 = E09-S01-B06: Dinu opens the metal box. It is empty.
+    INSERT · 50mm · locked_off · high three-quarter · take 6 s
+    why: A steady unobstructed view makes the absence inside the box unmistakable.
+    editor: The closed box is already in his lap and supported by his left hand; his right hand opens the lid once. Hold the interior unobstructed.
+    framing: INSERT of the box and Dinu's hands in his lap
+    movement: locked-off on sticks
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+    C01: Supports the closed box with his left hand and opens its lid with his right hand.
+
+1N-1 [c15, stage 1, single, must]
+    SUMMARY: Dinu looks into the empty box and voices L6, wondering where the missing thing is, as the rain continues.
+    block 6 = E09-S01-B07: Nimal... eka koheda thiyanne?
+    line L6 = E09-S01-B07: Nimal... eka koheda thiyanne?
+    CU · 75mm · handheld · eye level three-quarter · take 6 s
+    why: A close face lets the empty-box discovery turn into the whispered question without melodramatic movement.
+    editor: Perform the whole of L6 between the handles; the open box stays supported in his lap below frame.
+    framing: CU of Dinu, face visible in three-quarter, eyes down
+    movement: restrained handheld drift in place
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+    C01: Lips move to L6 while he looks into the empty box.
+
+1P-1 [c16, stage 2, reaction, should, anchor c14]
+    SUMMARY: An extreme close view isolates Dinu behind the rooftop tank. His eyes remain on the open box below frame and his jaw loosens as rain and uneven breathing continue.
+    block 5 = E09-S01-B06: Dinu opens the metal box. It is empty.
+    ECU · 100mm · shallow_isolation · eye level, three-quarter from the pursuit-axis side · take 6 s
+    why: The opening insert establishes absence; this isolated face makes its consequence readable before L6 without repeating the hands or reopening the box.
+    editor: After c14 exposes the interior, cut to this face with the box already open below frame; return to c15 for L6.
+    framing: ECU from brow to chin; tank edge soft at frame left, eyes off lens toward lap
+    movement: locked-off shallow isolation throughout
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+    C01: Keeps his eyes on the open box in his lap; his jaw loosens.
+
+1Q-1 [c17, stage 2, insert, should, anchor c12]
+    SUMMARY: A tight low view of the wet tank wall catches the torch beam already paused on its surface. The beam travels right and leaves darkness; rain and rooftop footfalls continue off frame.
+    block 4 = E09-S01-B05: On the roof, Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on. His footsteps fade.
+    INSERT · 85mm · locked_off · low grazing angle along the tank wall · take 6 s
+    why: Isolates the beam's pause as a physical threat on the tank wall, giving the editor a suspense detail rather than another face or search medium.
+    editor: Cut into c12 during the beam's pause, then back as it continues right. Match the beam direction; do not replay a second sweep.
+    framing: INSERT of wet tank wall; narrow torch patch near centre, no people in frame
+    movement: locked-off on sticks throughout
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+
+1R-1 [c18, stage 2, clean_exit, nice, anchor c15]
+    SUMMARY: After L6, an elevated camera retreats from Dinu crouched behind the tank with the open box in his lap. He remains still as more rain-wet rooftop surrounds him.
+    block 6 = E09-S01-B07: Nimal... eka koheda thiyanne?
+    WIDE · 32mm · crane · elevated oblique view from the established camera side · take 6 s
+    why: Releases the final close single into spatial isolation after L6, making the concealed shelter feel large around the man and the useless box.
+    editor: Use only after c15 completes L6. Start on Dinu already crouched with the open box; let the crane retreat carry the scene end without music.
+    framing: WIDE with Dinu small at lower right beside the tank, expanding negative rooftop space
+    movement: one slow rising crane retreat away from Dinu, remaining on the established side of the pursuit axis
+    light: Cold directional rooftop practical light and distant sodium spill leave the tank sides in deep shadow, with a narrow neutral torch beam when directed at them.
+    C01: Remains crouched with his gaze in the open metal box.
+
+1S-1 [c19, stage 2, cutaway, nice, anchor c06,c07]
+    SUMMARY: At road level, oranges already scattered beside the tipped cart fill the foreground. One continues rolling and settles while running footfalls recede off frame.
+    block 2 = E09-S01-B03: Dinu runs. He shoves past shoppers and knocks over a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd.
+    INSERT · 65mm · locked_off · road level across the escape route · take 6 s
+    why: The must insert handles the cart tipping; this separate low aftermath lets the oranges briefly measure the disturbance after the men have passed.
+    editor: Place after c07's pursuit passage or as a very short bridge into the alley. Oranges are already on the road in the first frame; do not repeat the cart's fall.
+    framing: INSERT of scattered oranges on wet road, a small tipped cart edge soft at upper left; people excluded
+    movement: locked-off throughout
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+
+1T-1 [c20, stage 2, establishing, nice, anchor c01,c02]
+    SUMMARY: From beneath a tarpaulin edge, a short pan reveals Dinu threading rightward through the rainy market and Rohan standing across the lane with his torch low in his right hand. The few distant shoppers stay indistinct.
+    block 0 = E09-S01-B01: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under his jacket. Across the lane, Rohan, in a black raincoat, sees him.
+    WIDE · 35mm · slow_pan_reveal · eye level from beneath a tarpaulin edge · take 6 s
+    why: Gives the recognition singles a shared lane and visible separation, using rain and occluded market edges without sharply resolving passing shoppers.
+    editor: Open moment 1 with this brief geography, then enter c01 and c02. Keep Dinu moving left to right and Rohan across the lane; no readable signs required.
+    framing: WIDE across the lane; Dinu left foreground and Rohan across the lane at right, a few distant shoppers soft at edges
+    movement: one slow pan right revealing the separation between Dinu and Rohan
+    light: Hard sodium side light and green practical spill shape the faces against a darker lane, with cold blue rain highlights.
+    C01: Threads screen right through the lane with his left hand keeping the concealed box against his left ribs.
+    C09: Stands across the lane with his gaze directed toward Dinu.
+
+Review moment 1: earns: A rainy wide reveal establishes the distance across the lane before the recognition singles.
+Review moment 2: no: Rohan’s readable performing single carries the immediate impact of L1; a cutaway would dilute it.
+Review moment 3: earns: A ground-level aftermath of the oranges gives the cart disruption a distinct visual consequence without repeating its tip.
+Review moment 4: no: The locked alley entry, slip and recovery, and stair master already explain the route and near loss of balance.
+Review moment 5: earns: A tank-surface insert makes the searching beam’s pause and departure tactile without duplicating the held reaction.
+Review moment 6: earns: An isolated facial reaction registers the empty box after the locked opening insert.
+Review moment 7: earns: A restrained crane retreat leaves Dinu small in the rooftop shelter after L6.
+Editor note: The must bin contains 15 clips, 78 seconds of takes; use it as raw material, not a binding 78-second assembly. The intended scene runs approximately 75 seconds, paced with the recognition, search, empty interior and final reaction.
+Editor note: The lane master and Rohan recognition single establish geography before the L1 performing single. Keep left-to-right pursuit and Rohan's opposing initial eyeline consistent.
+Editor note: The cart contact, cart-tip detail and pursuit master are consecutive pieces of the same event. Match the upper rail across the impact cut and open the pursuit master on the already tipped cart and scattered oranges. Use soft foreground occlusions and sound to suggest passage through shoppers without requiring body contact or sharp crowds.
+Editor note: The alley entry, slip/recovery and stair master are consecutive parts of the pursuit, not alternate performances of one long move. Match Dinu's box at his left ribs and Rohan's torch in his right hand.
+Editor note: On the roof, match the torch patch from the search across the tank to Dinu's reaction, then let footsteps recede. The box is already in Dinu's lap at the opening detail; the edit skips the extraction, not the opening. Keep the empty interior unobstructed and let L6 follow on the face.
+Editor note: The checker flags fast-hand feasibility on the two running shots. Neither asks for finger work: the box and torch remain in fixed grips; favour the faces and bodies if a render introduces finger motion.
+Editor note: The short cart and pursuit shots have half-second handles. Use their impacts and continuous direction as match points; do not trim L1 or L6.
+Editor note: Speed ramps, freeze frames, digital punch-ins and split screens are post-only; clean sources are supplied, but none is required in the reference cut. Avoid slow motion, mirrors, intricate finger work and contact between bodies. Music is omitted; rain, breath, impacts and footsteps lead.
+Blend note: c16 — After c14 reveals the empty interior, hold Dinu’s isolated reaction over rooftop rain and his breathing; then return to c15 for L6.
+Blend note: c17 — Cut into c12 at the paused beam, over Rohan’s rooftop footsteps and rain; return to c12 as the search moves on.
+Blend note: c18 — After c15 completes L6, retreat from Dinu over rooftop rain and distant market ambience; no music.
+Blend note: c19 — After c07’s pursuit passage, hold briefly on the settling oranges over receding running footsteps and market rain, then cut to the alley.
+Blend note: c20 — Open moment 1 before c01 and c02, using market rain and foot traffic; retain the established left-to-right pursuit axis.
+Left: c04 asks for fast hands. fast finger work blurs: hold on the face, or show the hands still on the object.
+Left: c07 asks for fast hands. fast finger work blurs: hold on the face, or show the hands still on the object.

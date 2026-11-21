@@ -22,7 +22,7 @@ from tests.api.test_scenes import seed_scene
 
 OMNI_PER_SECOND = 100_000  # the seeded price: $0.10 a second at 720p
 FRAME = with_margin(80_000, "image")  # the seeded flat price of a frame, with the image margin
-PROMPT = 10_000  # plan/2026-11-20b D15
+PROMPT = 20_000  # plan/2026-11-20d D12: one shot prompt (first frame + video)
 
 
 def cost_url(world: World, s: dict) -> str:
@@ -239,7 +239,7 @@ def test_a_prompt_is_estimated_at_the_median_of_the_last_prompts(world: World):
     s = seed_scene(world)
     before = get(world, s, world.producer)["total_micros"]
     for n in range(3):
-        usage(world, phase="shot_producer.craft", i=100_000, o=10_000, at=f"2026-11-0{n + 1}T00:00:00+00:00")
+        usage(world, phase="shot_prompter.write", i=100_000, o=10_000, at=f"2026-11-0{n + 1}T00:00:00+00:00")
     # gpt-5: 0.125 + 0.10 = $0.225 a prompt
     assert get(world, s, world.producer)["total_micros"] - before == with_retry(len(s["shots"]) * (225_000 - PROMPT))
 

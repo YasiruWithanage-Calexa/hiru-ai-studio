@@ -16,7 +16,7 @@ from typing import Any
 
 import yaml
 
-from contracts.producer import CAMERA_OPTIONS, CameraField
+from contracts.producer import CAMERA_OPTIONS, CORE_FIELDS, CameraField
 
 _SCHEMAS_DIR = Path(__file__).parent / "schemas"
 
@@ -24,7 +24,7 @@ VIDEO_ENGINE_SCHEMAS = {"veo_3_1": "clip_schema_veo_3_1"}
 
 # The camera fields the DP recommends from the panel's own choices. Framing is not one of them:
 # the director fixed the shot size in the Director panel.
-RECOMMENDED_FIELDS: tuple[CameraField, ...] = tuple(f for f in CameraField if f is not CameraField.FRAMING)
+RECOMMENDED_FIELDS: tuple[CameraField, ...] = tuple(f for f in CORE_FIELDS if f is not CameraField.FRAMING)
 
 
 def _structure_to_template(node: Any) -> Any:

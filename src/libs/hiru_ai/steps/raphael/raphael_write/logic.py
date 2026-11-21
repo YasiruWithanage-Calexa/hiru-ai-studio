@@ -494,10 +494,15 @@ def design_all(
     production: Row,
     job_id: str,
     notes: list[str] | None = None,
+    hint: bool = True,
 ) -> None:
     """Finish each shot's IR the way the DoP's is and store it with a design whose pins are the ones the shot producer
     will
-    compute from these same rows, so `design_stale` is empty. Mutates `shots`."""
+    compute from these same rows, so `design_stale` is empty. Mutates `shots`.
+
+    `hint`: the panel's words for the planner's camera (`camera_hint`) seed the recommendation. False when the Camera
+    agent designs the camera next (plan/2026-11-20c D12): then the recommendation is the rule camera for the size, the
+    agent's design replaces it, and a clip the agent could not design keeps the rule camera (D10)."""
     model = parts.step("serialize", "model")
     shots_mod = parts.step("serialize", "shots")
     design = parts.step("serialize", "design")
@@ -507,7 +512,9 @@ def design_all(
     for shot_in, row in zip(scene_in.shots, shots, strict=True):
         clip = by_number[int(row["number"])]
         on_screen = list(row["intent"]["on_screen"])
-        entry = {**(clip.ir or {}), "recommendation": camera_hint(clip.ir or {}), "rationale": clip.why}
+        entry = {**(clip.ir or {}), "rationale": clip.why}
+        if hint:  # no model to call the Camera agent: the planner's hint seeds the rule camera
+            entry["recommendation"] = camera_hint(clip.ir or {})
         ir, rec, why = shots_mod.finish(entry, shot_in, scene_in, prod)
         row["ir"] = ir
         row["design"] = design.design_row(shot_in, ir, rec, why, "raphael", on_screen, job_id)
@@ -578,7 +585,8 @@ def coverage_of(stored: StoredRaphael, script_version: int) -> Row:
 
 
 def write(
-    scene: Row, lines: list[Row], stored: StoredRaphael, canon: list[Row], production: Row, job_id: str = ""
+    scene: Row, lines: list[Row], stored: StoredRaphael, canon: list[Row], production: Row, job_id: str = "",
+    hint: bool = True,
 ) -> tuple[list[Row], list[Row], Row]:
     """-> (shots, line rows, the scene's fields). Refuses an approved scene."""
     if scene.get("status") == "approved":
@@ -590,7 +598,7 @@ def write(
         scene = {**scene, "staging": staging}
     characters = [c for c in canon if c.get("kind") == "character"]
     shots, line_rows, facts = rows_for(scene, lines, stored, characters)
-    design_all(scene, shots, line_rows, stored.clips, canon, production, job_id, stored.blend_notes)
+    design_all(scene, shots, line_rows, stored.clips, canon, production, job_id, stored.blend_notes, hint=hint)
     fields: Row = {
         "status": "split",
         "fit_report": fit_report(stored, facts, scene.get("envelope_s")),

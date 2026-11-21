@@ -1,0 +1,32 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "prompt": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSITUATION\nOn a rain-damp Colombo roadside, Kasun has recovered the phone Anudi dropped without noticing. He is already running after her beside his small food three-wheeler.\n\nPEOPLE\nKasun is left-center, three-quarter toward the camera and facing screen right, looking ahead off lens toward Anudi, who remains unseen. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back. His right hand holds the recovered smartphone low beside his waist, and his empty left arm is bent. He carries practical urgency and friendly concern.\n\nACTION & DIALOGUE\n[0-1s] Kasun continues his short, practical run toward screen right, keeping the smartphone secure in his right hand beside his waist. His gaze stays on Anudi ahead as he draws breath.\n\n[1-5s] Kasun, to Anudi, friendly-polite and projected over the street noise without alarm, intent on getting her attention, lifting his eyebrows slightly while keeping his eyes ahead:\n\"මිස්! මිස්! ඔයාගේ ෆෝන් එක!\"\n\n[5-6s] His lips close and he takes another breath while continuing right. His eyes remain on Anudi ahead, and the phone stays visible in his right hand at his side.\n\nThey speak casual, everyday spoken Sinhala, the way people really talk in a Sri Lankan teledrama: not an interview, not a speech, nobody looks at the camera. Only these words are spoken, only by the people named; English words in a line are said as Sri Lankans say them.\n\nCAMERA\nThe camera travels smoothly right beside Kasun in an eye-level medium shot as he calls, the roadside sliding left behind him, ending in the same three-quarter framing with the phone at his side.\n\nSOUND\nLight rain, low distant traffic and quick natural footfalls beneath his voice. No music.\n\nRULES\nHands: Kasun holds the smartphone in one hand. The umbrella is not in this frame. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nFORMAT\nAspect ratio 9:16. Duration 6 seconds. A single continuous shot, no scene cuts.\n\nReference images, in the order attached:\nImage 1 is the opening frame of this shot. The video starts exactly on this picture: the same framing, people, place, weather and light, and everything that happens grows out of it.\nImage 2 is the face sheet for Kasun: several angles of the same face. That person's face, age, skin tone and hair come only from this sheet, at every angle and expression, including when they turn or move closer to the camera.\nImage 3 is the look sheet for Kasun: exactly what that person wears in this shot, head to toe. When more of them comes into view, the clothes, shoes and things they carry match this sheet exactly.\nNever show Images 2 and 3 in the video: they are references only, so no sheet, grey backdrop or panel appears and the video never cuts to them. Where the words above describe someone's clothes or face differently from these pictures, the pictures win.\n\nUse the images as references to generate the video.",
+ "config": {
+  "duration_seconds": 6,
+  "aspect_ratio": "9:16",
+  "resolution": "360p"
+ },
+ "references": [
+  {
+   "tag": "Image 1",
+   "slot": "first_frame",
+   "bucket": "frames",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/e9b2d8e0-0a27-4cbe-9ce4-c35c804bf4df/dd489795-4873-4327-bc2d-85b034c0713d.png",
+   "source_id": "dd489795-4873-4327-bc2d-85b034c0713d"
+  },
+  {
+   "tag": "Image 2",
+   "slot": "reference",
+   "bucket": "references",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/cc610a95-c3f6-4f20-b504-20c8fb162a0c-face-621eab5f.png",
+   "source_id": "6f780733-797d-538c-b436-fb991a4f6db7"
+  },
+  {
+   "tag": "Image 3",
+   "slot": "reference",
+   "bucket": "references",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/looks/1d986035-f304-47cb-ae57-5f0986484ad3-f5871821.png",
+   "source_id": "8546b4a5-d326-5362-9eab-42f156ad20cc"
+  }
+ ]
+}

@@ -100,28 +100,28 @@
      "agent": "director_of_photography",
      "planner": "rules",
      "shot_id": "<id:2>",
-     "text": "S01: 28mm · static",
+     "text": "S01: 28mm · hold",
      "type": "progress"
     },
     {
      "agent": "director_of_photography",
      "planner": "rules",
      "shot_id": "<id:3>",
-     "text": "S02: 50mm · static",
+     "text": "S02: 50mm · hold",
      "type": "progress"
     },
     {
      "agent": "director_of_photography",
      "planner": "rules",
      "shot_id": "<id:4>",
-     "text": "S03: 28mm · static",
+     "text": "S03: 28mm · hold",
      "type": "progress"
     },
     {
      "agent": "director_of_photography",
      "planner": "rules",
      "shot_id": "<id:5>",
-     "text": "S04: 50mm · static",
+     "text": "S04: 50mm · hold",
      "type": "progress"
     }
    ],
@@ -233,6 +233,8 @@
        "<id:9>": 1
       },
       "looks": {},
+      "motion": {},
+      "picture": {},
       "script_hash": "<digest:1>",
       "shot_version": 1
      },
@@ -242,11 +244,16 @@
       "angle": "Eye level",
       "aperture": "f/4",
       "axis": "Side A · left to right",
+      "composition": "",
+      "focus": "",
       "framing": "Wide shot",
+      "height": "",
       "lens": "28mm",
       "lighting": "Dawn, soft ambient",
-      "movement": "Static",
-      "speed": "None"
+      "movement": "Hold",
+      "speed": "None",
+      "support": "",
+      "time": ""
      }
     },
     "duration_locked": false,
@@ -372,6 +379,8 @@
        "<id:9>": 1
       },
       "looks": {},
+      "motion": {},
+      "picture": {},
       "script_hash": "<digest:4>",
       "shot_version": 1
      },
@@ -381,11 +390,16 @@
       "angle": "Eye level",
       "aperture": "f/2.8",
       "axis": "Side A · left to right",
+      "composition": "",
+      "focus": "",
       "framing": "Medium close-up",
+      "height": "",
       "lens": "50mm",
       "lighting": "Dawn, soft ambient",
-      "movement": "Static",
-      "speed": "None"
+      "movement": "Hold",
+      "speed": "None",
+      "support": "",
+      "time": ""
      }
     },
     "duration_locked": false,
@@ -503,6 +517,8 @@
        "<id:9>": 1
       },
       "looks": {},
+      "motion": {},
+      "picture": {},
       "script_hash": "<digest:7>",
       "shot_version": 1
      },
@@ -512,11 +528,16 @@
       "angle": "Eye level",
       "aperture": "f/4",
       "axis": "Side A · left to right",
+      "composition": "",
+      "focus": "",
       "framing": "Wide shot",
+      "height": "",
       "lens": "28mm",
       "lighting": "Dawn, soft ambient",
-      "movement": "Static",
-      "speed": "None"
+      "movement": "Hold",
+      "speed": "None",
+      "support": "",
+      "time": ""
      }
     },
     "duration_locked": false,
@@ -634,6 +655,8 @@
        "<id:9>": 1
       },
       "looks": {},
+      "motion": {},
+      "picture": {},
       "script_hash": "<digest:10>",
       "shot_version": 1
      },
@@ -643,11 +666,16 @@
       "angle": "Eye level",
       "aperture": "f/2.8",
       "axis": "Side A · left to right",
+      "composition": "",
+      "focus": "",
       "framing": "Medium close-up",
+      "height": "",
       "lens": "50mm",
       "lighting": "Dawn, soft ambient",
-      "movement": "Static",
-      "speed": "None"
+      "movement": "Hold",
+      "speed": "None",
+      "support": "",
+      "time": ""
      }
     },
     "duration_locked": false,

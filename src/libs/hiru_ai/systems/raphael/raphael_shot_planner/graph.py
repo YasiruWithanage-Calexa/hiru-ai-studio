@@ -41,7 +41,7 @@ from contracts.raphael import state as ledger_state
 from contracts.raphael.stored import StoredRaphael
 from contracts.reading import SceneReading
 from contracts.stagemap import SceneStaging
-from hiru_ai.core import agents, llm, packets, parts
+from hiru_ai.core import agents, camera, llm, packets, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
@@ -350,7 +350,49 @@ def build(
         written = shot_count = reused = 0
         planned_ids: list[str] = []
 
-        def write_result(job: Row, result: raphael.Planned | raphael.Unchanged | str) -> None:
+        camera_on = camera.on()  # plan/2026-11-20c D11 (a): whenever a model can be called
+
+        def rows_of(job: Row, result: raphael.Planned) -> Row:
+            """The scene's rows (raphael_write), then their camera by the Camera agent when it is on (D11 a): in the
+            worker, so scenes are designed side by side. The stager's map goes with the shots first, as before."""
+            sc = job["scene"]
+            if result.ledger.staging is not None and result.ledger.made:
+                sc["staging"] = result.ledger.staging.model_dump(mode="json")
+            out = write.run(
+                {
+                    "scene": sc,
+                    "lines": job["lines"],
+                    "stored": result.stored.data(),
+                    "canon": canon,
+                    "production": production,
+                    "job_id": str(job_id),
+                    "camera_hint": not camera_on,  # D12: the agent designs the camera, not the planner's hint
+                }
+            )
+            if camera_on and "shots" in out:
+                out["camera"] = design_camera(sc, out)
+            return out
+
+        def design_camera(sc: Row, out: Row) -> Row:
+            """D11 (a): one Camera agent call for the scene's clips; each design row replaced where it answered."""
+            model = parts.step("serialize", "model")
+            row = {**sc, **out["fields"]}
+            try:
+                prod = model.production_input(production, canon, persona)
+                scene_in = model.scene_input(row, out["shots"], out["lines"], canon, prod)
+                packet = camera.packet_of(ctx, row)
+                got = camera.design(replace(ctx, scene_id=UUID(str(sc["id"]))), scene_in, prod, packet=packet,
+                                    line_rows=out["lines"], job_id=str(job_id))
+            except Exception:  # the camera never costs the plan: the rule camera stands
+                _log.warning("the Camera agent could not run for scene %s", sc.get("id"), exc_info=True)
+                return {"designed": 0, "warnings": [camera.NEEDS_MODEL.replace("needs a model", "could not run")]}
+            for shot in out["shots"]:
+                if str(shot["id"]) in got.designs:
+                    shot["design"] = got.designs[str(shot["id"])]
+            return {"designed": got.designed, "fallback": got.fallback, "warnings": got.warnings,
+                    "language": got.language}
+
+        def write_result(job: Row, result: raphael.Planned | raphael.Unchanged | str, made_out: Row | None) -> None:
             nonlocal written, shot_count, reused
             sc, label = job["scene"], job["label"]
             if isinstance(result, str):
@@ -376,16 +418,7 @@ def build(
                     agent=AGENT,
                 )
                 return
-            out = write.run(
-                {
-                    "scene": sc,
-                    "lines": job["lines"],
-                    "stored": result.stored.data(),
-                    "canon": canon,
-                    "production": production,
-                    "job_id": str(job_id),
-                }
-            )
+            out = made_out if made_out is not None else rows_of(job, result)
             if "refused" in out or "malformed" in out:
                 reason = str(out.get("refused") or out.get("malformed"))
                 failed.append({"scene_id": str(sc["id"]), "label": label, "reason": reason})
@@ -394,6 +427,14 @@ def build(
             # the write's own map wins: it is the stager's map renumbered when the plan cut its lines in parts
             fields = {**({"staging": sc["staging"]} if made else {}), **out["fields"]}
             scenes_port.replace_shots(UUID(str(sc["id"])), out["shots"], out["lines"], fields)
+            cam_out = out.pop("camera", None)
+            if cam_out is not None:
+                for warning in cam_out.get("warnings") or []:
+                    jobs.event(job_id, JobEventType.WARNING, {"text": f"{label}: {warning}"}, agent=camera.AGENT)
+                if cam_out.get("designed"):
+                    jobs.event(job_id, JobEventType.PROGRESS,
+                               {"text": f"{label}: the Camera agent designed {cam_out['designed']} clips",
+                                "scene_id": str(sc["id"])}, agent=camera.AGENT)
             out["fields"] = fields
             sc.update(out["fields"])
             by_id[str(sc["id"])].update(out["fields"])
@@ -424,7 +465,7 @@ def build(
                 agent=AGENT,
             )
 
-        results: queue.Queue[tuple[Row, raphael.Planned | raphael.Unchanged | str]] = queue.Queue()
+        results: queue.Queue[tuple[Row, raphael.Planned | raphael.Unchanged | str, Row | None]] = queue.Queue()
         first = [True]
 
         def run_one(job: Row) -> Row | None:
@@ -432,7 +473,14 @@ def build(
             if not first[0] and time.monotonic() - started > limit:
                 return job
             first[0] = False
-            results.put((job, plan_one(job)))
+            result = plan_one(job)
+            made_out: Row | None = None
+            if isinstance(result, raphael.Planned):
+                try:
+                    made_out = rows_of(job, result)
+                except Exception:  # write_result writes it again and reports it, as before
+                    _log.warning("the scene's rows could not be written in the worker", exc_info=True)
+            results.put((job, result, made_out))
             return None
 
         workers = max(1, get_settings().raphael_workers)
@@ -443,7 +491,7 @@ def build(
                 pending.append(pool.submit(contextvars.copy_context().run, run_one, job))
             while pending or not results.empty():
                 try:
-                    job, result = results.get(timeout=0.1)
+                    job, result, made_out = results.get(timeout=0.1)
                 except queue.Empty:
                     for f in [f for f in pending if f.done()]:
                         pending.remove(f)
@@ -451,7 +499,7 @@ def build(
                         if kept is not None:
                             left_jobs.append(kept)
                     continue
-                write_result(job, result)
+                write_result(job, result, made_out)
         return {
             "written": written,
             "shot_count": shot_count,

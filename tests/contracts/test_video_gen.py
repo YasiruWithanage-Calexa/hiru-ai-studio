@@ -11,6 +11,8 @@ from contracts.video_gen import (
     DRAFT_ENGINE,
     DRAFT_RESOLUTION,
     ENGINE_CAPABILITIES,
+    GOOGLE_LINE,
+    OMNI_CITATION_HEAD,
     RefBinding,
     RefSource,
     RenderFacts,
@@ -89,6 +91,21 @@ def test_omni_cites_exactly_what_it_attaches_in_the_persons_order():
     assert "Image 5 is the closing frame of this shot. The video ends exactly on this picture." in built["prompt"]
     assert "Never show Images 2, 3 and 4 in the video: they are references only" in built["prompt"]
     assert "<IMAGE_REF" not in built["prompt"] and "<FIRST_FRAME>" not in built["prompt"]  # deprecated by Google
+
+
+def test_googles_closing_line_comes_last_after_the_citations_in_the_attached_order():
+    """plan/2026-11-20d D10: Google's reference-to-video line closes the prompt; the "Image n" order is the order the
+    pictures are attached (the frame first, then each person's face and look sheets)."""
+    start = ref("the opening frame", slot="first_frame", kind="accepted_frame", bucket="frames")
+    face, look = ref("the face sheet for Anudi", kind="face_sheet"), ref("the look sheet for Anudi", kind="look_sheet")
+    built = build_omni_input(spec([start, face, look]))
+    assert built["prompt"].endswith("\n\n" + GOOGLE_LINE)
+    assert built["prompt"].index(OMNI_CITATION_HEAD) < built["prompt"].index(GOOGLE_LINE)
+    assert cited(built) == [p["tag"] for p in built["references"]] == ["Image 1", "Image 2", "Image 3"]
+    assert [p["source_id"] for p in built["references"]] == [str(x.source.id) for x in (start, face, look)]
+    assert "Image 2 is the face sheet for Anudi" in built["prompt"] and "Image 3 is the look sheet for Anudi" in \
+        built["prompt"]
+    assert GOOGLE_LINE not in build_omni_input(spec([]))["prompt"]  # no picture, no line
 
 
 @pytest.mark.parametrize("slots", [

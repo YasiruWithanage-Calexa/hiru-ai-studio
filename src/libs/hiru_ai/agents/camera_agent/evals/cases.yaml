@@ -1,0 +1,1266 @@
+# lab/camera_moves (plan/2026-11-20d §6): the written chase scene "The market chase" (E09-S01) as the lab briefed
+# it (the scene part and one clip of runs/chase/brief.txt), each with gpt-6.1-sol's answer from that run; and the
+# Ask on Api Denna E01-S04 4C-1 with the lab's answer for that clip. A good answer: the moment, its intensity and
+# who holds the power; the move, angle and height from them; a camera-only sentence with no gear.
+- name: 'chase 1E-1: pursuit 4: a low follow pan with Dinu as he runs'
+  input:
+    scene: "<scene>\nScene: The market chase (SCENE 01 - EXT. PETTAH MARKET AND ROOFTOP - COLOMBO - NIGHT - 1.25 MINUTES).\
+      \ Rohan spots Dinu carrying Nimal's metal box through the night market and chases him through the crowd, an alley\
+      \ and up to a rooftop, where Dinu hides from the torch and finds the box empty.\nWhat it is for: Put Dinu in physical\
+      \ danger for the box, then turn the escape into a new mystery: the box is empty.\nPlace: Pettah market; exterior.\
+      \ Mood: urgent, tense, desperate.\nPeople:\n- Dinu (on_screen): wants Escape with the box and learn what Nimal left\
+      \ him.; feels Watchful -> Breathless and lost\n- Rohan (on_screen): wants Catch Dinu and take the box.; feels Predatory\
+      \ -> Thwarted\nThe production's direction (the person's own style rules; each applies to its scope):\n- Colombo palette\
+      \ - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\n- Lighting - Vehicle\
+      \ headlights, sodium lamps, practical bulbs and lightning flashes.\n- Editing - Fast cuts only on impact. Let important\
+      \ punches and reactions stay on screen.\n- Sound - Rain, breathing, metal impacts and footsteps first. Music enters\
+      \ only for hero elevation moments.\n- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n\
+      - The action is mass but not weightless. Every hit has a location, an object or a consequence.\n- Dinu is not an invincible\
+      \ superhero; he wins because he knows vehicles, space and timing.\n- Aruni is an active participant in the climax,\
+      \ and the final victory comes from the recording, the village and their courage - not from violence alone.\nScript,\
+      \ in order:\naction: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under\
+      \ his jacket. Across the lane, Rohan, in a black raincoat, sees him. | intent: Establish the crowd, the box and the\
+      \ hunter before either moves.\nL1 Rohan to Dinu: \"Dinu! Nawathipan!\" | how: Shouted across the lane, cutting through\
+      \ the rain. | intent: Name him and stop him in public.\naction: Dinu runs. He shoves past shoppers and knocks over\
+      \ a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd. | intent: Start the pursuit\
+      \ with physical chaos.\naction: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron\
+      \ stairway to a rooftop. Rohan is close behind. | intent: Tighten the space and the danger.\naction: On the roof,\
+      \ Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on.\
+      \ His footsteps fade. | intent: Hold the danger in stillness until it passes.\naction: Dinu opens the metal box. It\
+      \ is empty. | intent: Turn the escape into loss and a new mystery.\nL6 Dinu: \"Nimal... eka koheda thiyanne?\" | how:\
+      \ Whispered to himself, breathless. | intent: Voice the question the scene leaves.\n</scene>\n\n<moves>\nYour whole\
+      \ toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move:\
+      \ what it does. Use: when.\n- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes,\
+      \ quiet contemplative moments, formal compositions.\n- breathing: the frame floats and sways a little all the time,\
+      \ as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the\
+      \ camera.\n- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs\
+      \ life without a statement.\n- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside\
+      \ the shot.\n- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build,\
+      \ revealing scale.\n- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning\
+      \ realization, dread.\n- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject\
+      \ is smaller/alone than thought.\n- push_then_hold: a push that lands and stays. Use: a line or realisation that must\
+      \ land, then sit.\n- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden\
+      \ object/character reveals.\n- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves)\
+      \ toward the subject. Use: entering a private moment, discovery.\n- truck_left: Keeps pace with subject, feels natural\
+      \ and grounded. Use: Following a walking/moving subject alongside them.\n- truck_right: Keeps pace with subject, feels\
+      \ natural and grounded. Use: Following a walking/moving subject alongside them.\n- tracking_alongside (beside them):\
+      \ Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.\n\
+      - lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's\
+      \ physical or emotional journey.\n- follow (behind them): Keeps audience connected to subject's journey. Use: Following\
+      \ a subject's physical or emotional journey.\n- track_then_hold: travel with a person, then stop as they stop. Use:\
+      \ arrivals, a walk that ends in a meeting.\n- arc_left: Builds tension, dramatizes a moment, shows all angles. Use:\
+      \ Confrontations, dramatic reveals, hero moments.\n- arc_right: Builds tension, dramatizes a moment, shows all angles.\
+      \ Use: Confrontations, dramatic reveals, hero moments.\n- half_orbit (half a circle): Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- orbit: Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- circle_two: Smooth, controlled circular\
+      \ reveal. Use: Polished orbit shots without handheld shake.\n- pan_left: Guides attention, reveals space side to side.\
+      \ Use: Following action across a wide space, revealing something off-screen.\n- pan_right: Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- follow_pan (turning\
+      \ with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space,\
+      \ revealing something off-screen.\n- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action\
+      \ sequences, comedic cuts, sudden surprise reveals.\n- slow_pan_reveal (slow, discovering): Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- tilt_up: Reveals\
+      \ height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n- tilt_down:\
+      \ Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n\
+      - tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or\
+      \ event.\n- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.\n- pedestal_up:\
+      \ Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject\
+      \ standing/sitting.\n- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information\
+      \ gradually, matching a subject standing/sitting.\n- crane_up (rising): Establishes geography, can express emotional\
+      \ distance. Use: Establishing shots, revealing environment scale.\n- crane_down (descending): Establishes geography,\
+      \ can express emotional distance. Use: Establishing shots, revealing environment scale.\n- rising_reveal: Reveal or\
+      \ conceal information smoothly. Use: Gradual reveal of a space or object.\n- zoom_in: Sudden emphasis, can feel artificial/stylized\
+      \ or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- zoom_out: Sudden emphasis, can\
+      \ feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- slow_zoom\
+      \ (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail,\
+      \ retro/stylized look, comedic beat.\n- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent.\
+      \ Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- crash_zoom (fast, violent): Sudden emphasis,\
+      \ can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- dolly_zoom:\
+      \ Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.\n\
+      - aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic\
+      \ transitions.\n- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale\
+      \ reveals, scenic transitions.\n- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- top_down: Objective, god's-eye view, patterns/geometry\
+      \ emphasis. Use: Showing spatial layout, symbolic detachment.\n- flyover: Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- whip_out (first half of a whip transition):\
+      \ Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise\
+      \ reveals.\n- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences,\
+      \ comedic cuts, sudden surprise reveals.\n- focus_out (defocus out (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- focus_in (focus in (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- shake (impact shake): Urgency, chaos, realism, instability.\
+      \ Use: Action scenes, documentary style, emotional breakdown.\nFocus:\n- rack_focus: Redirects attention within the\
+      \ frame. Use: Shifting importance between two elements.\n- focus_follow: Keeps audience locked on the subject. Use:\
+      \ Subject moving toward or away from camera.\n- shallow_isolation: Isolates subject, intimacy, precise attention.\
+      \ Use: Emotional close-ups, busy backgrounds.\n- deep: Audience chooses where to look, observational. Use: Complex\
+      \ staging, ensemble scenes.\n</moves>\n\n<omni>\nMEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent\
+      \ renders, 2026-11-20), background motion over the take:\n- push_in / push_then_hold on a face, also while she speaks:\
+      \ PERFORMED clearly (87 px, 72 px; MS -> MCU).\n- push_then_hold on a TWO-shot (\"slowly pushes closer to both of\
+      \ them ... then comes to rest\"): PERFORMED (full\n  figures -> waist up, then settles).\n- A float in a two-shot\
+      \ is NOT performed, however it is worded: \"gently floating and swaying\" 16 px, \"handheld\n  camera with a slight\
+      \ natural shake\" 19 px, \"drifts slowly sideways to the right\" 20 px, against 12 px for \"a steady\n  frame on a\
+      \ tripod\". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.\nPROVISIONAL (not\
+      \ measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;\ntracking_alongside;\
+      \ follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;\nslow_zoom; aerial_establishing;\
+      \ aerial_pull_away; arc_left/right (short, slow).\nRisky (may be ignored or warp faces; use only with a strong reason,\
+      \ never on a speaking face): half_orbit; orbit;\ncircle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom;\
+      \ dutch_roll; rack_focus (the model often\nignores a timed focus change); focus_out; focus_in; push_past_foreground;\
+      \ pull_back_reveal through a doorway; flyover;\ntop_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse;\
+      \ hyperlapse.\n</omni>"
+    clips: '<clips>
+
+      In cut order. SIZE is the size the clip OPENS on (fixed).
+
+      <clip slate="1E-1" n="7">
+
+      Setup E; role insert; SIZE INSERT; take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+
+      Planner''s camera words (a hint): technique handheld; handheld shoulder rig, 50mm, f/4; angle low close side; movement:
+      restrained handheld drift in place; lens 50mm.
+
+      Why the planner made it: Isolate the cart''s tipping as the consequence of the preceding impact, avoiding multi-object
+      choreography around a running body.
+
+      What happens: A close low view shows the struck wooden cart tip sideways and oranges spill onto the wet road with
+      a wooden crash.
+
+      No person in frame.
+
+      Opening picture: Loaded cart tilted slightly at left, wet road open at right.
+
+      Beats: 0-0.5s: The cart balances on its far wheel at a slight angle. | 0.5-3.5s: The cart tips sideways, releasing
+      oranges across the wet stones. | 3.5-4s: Oranges roll clear of the tipped cart.
+
+      Nobody speaks on camera in this clip.
+
+      Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles;
+      use: Confrontations, dramatic reveals, hero moments | shake: Urgency, chaos, realism, instability; use: Action scenes,
+      documentary style, emotional breakdown | pan_left: Guides attention, reveals space side to side; use: Following action
+      across a wide space, revealing something off-screen | whip_pan: Jarring energy shift, comedic timing, fast transition;
+      use: Fast action sequences, comedic cuts, sudden surprise reveals
+
+      </clip>
+
+      </clips>'
+  reply:
+    camera_language: Handheld-motivated travel keeps the market crowded and physical; movement contracts around the tank,
+      drives into the empty box at the turn, then rises away into isolation.
+    arc: Watchfulness at 2 rises through pursuit at 4, compresses into rooftop suspense, drops to a quiet 2 before the empty-box
+      peak at 5, then releases into loss.
+    peak_slate: 1M-1
+    clips:
+    - slate: 1E-1
+      moment: pursuit
+      intensity: 4
+      power: none
+      support: shoulder
+      move: follow_pan
+      direction: right with the falling cart and spilling oranges
+      speed: medium
+      start_s: 0.5
+      end_s: 3.5
+      trigger: The cart tips sideways
+      motivation: Carry the force from the cart into the debris that now obstructs the route.
+      opens_on: Low insert of the tilted loaded cart at left and wet road at right.
+      lands_on: Low insert of oranges spreading across wet stones with the tipped cart at the left edge.
+      end_size: INSERT
+      angle: low
+      height: ground
+      angle_reason: Road height makes the falling wood and rolling fruit tangible hazards in the escape route.
+      lens: 50mm
+      aperture: f/4
+      focus: medium
+      rack_from: ''
+      rack_to: ''
+      rack_at_s: 0.0
+      composition: lead_room
+      composition_note: Keep open road to the right for the spill to occupy.
+      time: normal
+      axis: side_a
+      omni: works
+      why: 'Pursuit 4: the handheld pan follows a specific physical consequence rather than adding an unmotivated impact
+        shake.'
+      camera_sentence: In a ground-level close insert, pan right with the cart's sideways fall and spilling oranges, ending
+        on fruit spreading over the wet stones with the fallen cart at the left edge.
+- name: 'chase 1M-1: the peak, reveal 5: a push then hold from high onto what he finds'
+  input:
+    scene: "<scene>\nScene: The market chase (SCENE 01 - EXT. PETTAH MARKET AND ROOFTOP - COLOMBO - NIGHT - 1.25 MINUTES).\
+      \ Rohan spots Dinu carrying Nimal's metal box through the night market and chases him through the crowd, an alley\
+      \ and up to a rooftop, where Dinu hides from the torch and finds the box empty.\nWhat it is for: Put Dinu in physical\
+      \ danger for the box, then turn the escape into a new mystery: the box is empty.\nPlace: Pettah market; exterior.\
+      \ Mood: urgent, tense, desperate.\nPeople:\n- Dinu (on_screen): wants Escape with the box and learn what Nimal left\
+      \ him.; feels Watchful -> Breathless and lost\n- Rohan (on_screen): wants Catch Dinu and take the box.; feels Predatory\
+      \ -> Thwarted\nThe production's direction (the person's own style rules; each applies to its scope):\n- Colombo palette\
+      \ - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\n- Lighting - Vehicle\
+      \ headlights, sodium lamps, practical bulbs and lightning flashes.\n- Editing - Fast cuts only on impact. Let important\
+      \ punches and reactions stay on screen.\n- Sound - Rain, breathing, metal impacts and footsteps first. Music enters\
+      \ only for hero elevation moments.\n- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n\
+      - The action is mass but not weightless. Every hit has a location, an object or a consequence.\n- Dinu is not an invincible\
+      \ superhero; he wins because he knows vehicles, space and timing.\n- Aruni is an active participant in the climax,\
+      \ and the final victory comes from the recording, the village and their courage - not from violence alone.\nScript,\
+      \ in order:\naction: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under\
+      \ his jacket. Across the lane, Rohan, in a black raincoat, sees him. | intent: Establish the crowd, the box and the\
+      \ hunter before either moves.\nL1 Rohan to Dinu: \"Dinu! Nawathipan!\" | how: Shouted across the lane, cutting through\
+      \ the rain. | intent: Name him and stop him in public.\naction: Dinu runs. He shoves past shoppers and knocks over\
+      \ a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd. | intent: Start the pursuit\
+      \ with physical chaos.\naction: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron\
+      \ stairway to a rooftop. Rohan is close behind. | intent: Tighten the space and the danger.\naction: On the roof,\
+      \ Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on.\
+      \ His footsteps fade. | intent: Hold the danger in stillness until it passes.\naction: Dinu opens the metal box. It\
+      \ is empty. | intent: Turn the escape into loss and a new mystery.\nL6 Dinu: \"Nimal... eka koheda thiyanne?\" | how:\
+      \ Whispered to himself, breathless. | intent: Voice the question the scene leaves.\n</scene>\n\n<moves>\nYour whole\
+      \ toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move:\
+      \ what it does. Use: when.\n- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes,\
+      \ quiet contemplative moments, formal compositions.\n- breathing: the frame floats and sways a little all the time,\
+      \ as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the\
+      \ camera.\n- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs\
+      \ life without a statement.\n- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside\
+      \ the shot.\n- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build,\
+      \ revealing scale.\n- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning\
+      \ realization, dread.\n- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject\
+      \ is smaller/alone than thought.\n- push_then_hold: a push that lands and stays. Use: a line or realisation that must\
+      \ land, then sit.\n- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden\
+      \ object/character reveals.\n- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves)\
+      \ toward the subject. Use: entering a private moment, discovery.\n- truck_left: Keeps pace with subject, feels natural\
+      \ and grounded. Use: Following a walking/moving subject alongside them.\n- truck_right: Keeps pace with subject, feels\
+      \ natural and grounded. Use: Following a walking/moving subject alongside them.\n- tracking_alongside (beside them):\
+      \ Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.\n\
+      - lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's\
+      \ physical or emotional journey.\n- follow (behind them): Keeps audience connected to subject's journey. Use: Following\
+      \ a subject's physical or emotional journey.\n- track_then_hold: travel with a person, then stop as they stop. Use:\
+      \ arrivals, a walk that ends in a meeting.\n- arc_left: Builds tension, dramatizes a moment, shows all angles. Use:\
+      \ Confrontations, dramatic reveals, hero moments.\n- arc_right: Builds tension, dramatizes a moment, shows all angles.\
+      \ Use: Confrontations, dramatic reveals, hero moments.\n- half_orbit (half a circle): Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- orbit: Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- circle_two: Smooth, controlled circular\
+      \ reveal. Use: Polished orbit shots without handheld shake.\n- pan_left: Guides attention, reveals space side to side.\
+      \ Use: Following action across a wide space, revealing something off-screen.\n- pan_right: Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- follow_pan (turning\
+      \ with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space,\
+      \ revealing something off-screen.\n- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action\
+      \ sequences, comedic cuts, sudden surprise reveals.\n- slow_pan_reveal (slow, discovering): Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- tilt_up: Reveals\
+      \ height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n- tilt_down:\
+      \ Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n\
+      - tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or\
+      \ event.\n- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.\n- pedestal_up:\
+      \ Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject\
+      \ standing/sitting.\n- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information\
+      \ gradually, matching a subject standing/sitting.\n- crane_up (rising): Establishes geography, can express emotional\
+      \ distance. Use: Establishing shots, revealing environment scale.\n- crane_down (descending): Establishes geography,\
+      \ can express emotional distance. Use: Establishing shots, revealing environment scale.\n- rising_reveal: Reveal or\
+      \ conceal information smoothly. Use: Gradual reveal of a space or object.\n- zoom_in: Sudden emphasis, can feel artificial/stylized\
+      \ or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- zoom_out: Sudden emphasis, can\
+      \ feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- slow_zoom\
+      \ (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail,\
+      \ retro/stylized look, comedic beat.\n- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent.\
+      \ Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- crash_zoom (fast, violent): Sudden emphasis,\
+      \ can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- dolly_zoom:\
+      \ Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.\n\
+      - aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic\
+      \ transitions.\n- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale\
+      \ reveals, scenic transitions.\n- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- top_down: Objective, god's-eye view, patterns/geometry\
+      \ emphasis. Use: Showing spatial layout, symbolic detachment.\n- flyover: Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- whip_out (first half of a whip transition):\
+      \ Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise\
+      \ reveals.\n- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences,\
+      \ comedic cuts, sudden surprise reveals.\n- focus_out (defocus out (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- focus_in (focus in (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- shake (impact shake): Urgency, chaos, realism, instability.\
+      \ Use: Action scenes, documentary style, emotional breakdown.\nFocus:\n- rack_focus: Redirects attention within the\
+      \ frame. Use: Shifting importance between two elements.\n- focus_follow: Keeps audience locked on the subject. Use:\
+      \ Subject moving toward or away from camera.\n- shallow_isolation: Isolates subject, intimacy, precise attention.\
+      \ Use: Emotional close-ups, busy backgrounds.\n- deep: Audience chooses where to look, observational. Use: Complex\
+      \ staging, ensemble scenes.\n</moves>\n\n<omni>\nMEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent\
+      \ renders, 2026-11-20), background motion over the take:\n- push_in / push_then_hold on a face, also while she speaks:\
+      \ PERFORMED clearly (87 px, 72 px; MS -> MCU).\n- push_then_hold on a TWO-shot (\"slowly pushes closer to both of\
+      \ them ... then comes to rest\"): PERFORMED (full\n  figures -> waist up, then settles).\n- A float in a two-shot\
+      \ is NOT performed, however it is worded: \"gently floating and swaying\" 16 px, \"handheld\n  camera with a slight\
+      \ natural shake\" 19 px, \"drifts slowly sideways to the right\" 20 px, against 12 px for \"a steady\n  frame on a\
+      \ tripod\". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.\nPROVISIONAL (not\
+      \ measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;\ntracking_alongside;\
+      \ follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;\nslow_zoom; aerial_establishing;\
+      \ aerial_pull_away; arc_left/right (short, slow).\nRisky (may be ignored or warp faces; use only with a strong reason,\
+      \ never on a speaking face): half_orbit; orbit;\ncircle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom;\
+      \ dutch_roll; rack_focus (the model often\nignores a timed focus change); focus_out; focus_in; push_past_foreground;\
+      \ pull_back_reveal through a doorway; flyover;\ntop_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse;\
+      \ hyperlapse.\n</omni>"
+    clips: '<clips>
+
+      In cut order. SIZE is the size the clip OPENS on (fixed).
+
+      <clip slate="1M-1" n="17">
+
+      Setup M; role insert; SIZE INSERT; take 6 s, handles 1 s in / 1 s out; sound ambient.
+
+      Planner''s camera words (a hint): technique locked_off; locked-off sticks, 50mm, f/4; angle high three-quarter; movement:
+      locked-off on sticks; lens 50mm.
+
+      Why the planner made it: A steady unobstructed view makes the absence inside the box unmistakable.
+
+      What happens: Crouched behind the tank, Dinu opens the dented metal box in his lap; its interior is empty.
+
+      In frame: Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and
+      worn dark shoes. Where: Crouched behind the tank, closed box already in lap supported by left hand, right hand at
+      lid. Does: Supports the closed box with his left hand and opens its lid with his right hand.
+
+      Opening picture: Closed dented metal box fills centre, left hand supporting it, right hand at lid.
+
+      Beats: 0-1s: Dinu supports the closed box in his lap. | 1-3s: Dinu opens the lid with his right hand. | 3-5s: Dinu
+      keeps the box open in his lap. | 5-6s: Dinu supports the open box.
+
+      Nobody speaks on camera in this clip.
+
+      Ideas from the knowledge base (ideas, not orders): pull_out: Reveals scale, isolation, or new context; use: Ending
+      a scene, revealing subject is smaller/alone than thought | tilt_reveal: Builds suspense through gradual visual reveal;
+      use: Suspense builds, revealing scale of a space or event | crane_up: Establishes geography, can express emotional
+      distance; use: Establishing shots, revealing environment scale | dolly_zoom: Disorientation, dread, sudden gut-punch
+      realization; use: Horror reveals, shocking realizations, psychological unease
+
+      </clip>
+
+      </clips>'
+  reply:
+    camera_language: Handheld-motivated travel keeps the market crowded and physical; movement contracts around the tank,
+      drives into the empty box at the turn, then rises away into isolation.
+    arc: Watchfulness at 2 rises through pursuit at 4, compresses into rooftop suspense, drops to a quiet 2 before the empty-box
+      peak at 5, then releases into loss.
+    peak_slate: 1M-1
+    clips:
+    - slate: 1M-1
+      moment: reveal
+      intensity: 5
+      power: none
+      support: shoulder
+      move: push_then_hold
+      direction: down the viewing line into the box interior
+      speed: medium
+      start_s: 1.0
+      end_s: 5.0
+      trigger: Dinu begins lifting the lid
+      motivation: Drive attention into the absence and remain there long enough for the failed purpose of the chase to register.
+      opens_on: High three-quarter insert of the closed dented box in Dinu's lap and both hands.
+      lands_on: Tighter insert with the empty interior filling the frame and supporting fingers at its edge.
+      end_size: INSERT
+      angle: high
+      height: above_head
+      angle_reason: Look down along Dinu's inspection line so the entire empty cavity is unmistakable.
+      lens: 50mm
+      aperture: f/4
+      focus: focus_follow
+      rack_from: ''
+      rack_to: ''
+      rack_at_s: 0.0
+      composition: centred
+      composition_note: Maintain a clear view over the near rim and finish the push as the lid clears, holding the empty
+        cavity through the remaining beat.
+      time: normal
+      axis: side_a
+      omni: works
+      why: 'Reveal 5: the scene''s decisive handheld push lands inside the empty box and holds the absence, turning physical
+        escape into a new mystery.'
+      camera_sentence: From a high three-quarter insert of the box, push decisively closer as the lid opens, then hold with
+        the empty interior filling the frame and the supporting fingers at its edge.
+- name: 'chase 1R-1: isolation 4: a crane up leaving him small'
+  input:
+    scene: "<scene>\nScene: The market chase (SCENE 01 - EXT. PETTAH MARKET AND ROOFTOP - COLOMBO - NIGHT - 1.25 MINUTES).\
+      \ Rohan spots Dinu carrying Nimal's metal box through the night market and chases him through the crowd, an alley\
+      \ and up to a rooftop, where Dinu hides from the torch and finds the box empty.\nWhat it is for: Put Dinu in physical\
+      \ danger for the box, then turn the escape into a new mystery: the box is empty.\nPlace: Pettah market; exterior.\
+      \ Mood: urgent, tense, desperate.\nPeople:\n- Dinu (on_screen): wants Escape with the box and learn what Nimal left\
+      \ him.; feels Watchful -> Breathless and lost\n- Rohan (on_screen): wants Catch Dinu and take the box.; feels Predatory\
+      \ -> Thwarted\nThe production's direction (the person's own style rules; each applies to its scope):\n- Colombo palette\
+      \ - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\n- Lighting - Vehicle\
+      \ headlights, sodium lamps, practical bulbs and lightning flashes.\n- Editing - Fast cuts only on impact. Let important\
+      \ punches and reactions stay on screen.\n- Sound - Rain, breathing, metal impacts and footsteps first. Music enters\
+      \ only for hero elevation moments.\n- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n\
+      - The action is mass but not weightless. Every hit has a location, an object or a consequence.\n- Dinu is not an invincible\
+      \ superhero; he wins because he knows vehicles, space and timing.\n- Aruni is an active participant in the climax,\
+      \ and the final victory comes from the recording, the village and their courage - not from violence alone.\nScript,\
+      \ in order:\naction: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under\
+      \ his jacket. Across the lane, Rohan, in a black raincoat, sees him. | intent: Establish the crowd, the box and the\
+      \ hunter before either moves.\nL1 Rohan to Dinu: \"Dinu! Nawathipan!\" | how: Shouted across the lane, cutting through\
+      \ the rain. | intent: Name him and stop him in public.\naction: Dinu runs. He shoves past shoppers and knocks over\
+      \ a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd. | intent: Start the pursuit\
+      \ with physical chaos.\naction: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron\
+      \ stairway to a rooftop. Rohan is close behind. | intent: Tighten the space and the danger.\naction: On the roof,\
+      \ Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on.\
+      \ His footsteps fade. | intent: Hold the danger in stillness until it passes.\naction: Dinu opens the metal box. It\
+      \ is empty. | intent: Turn the escape into loss and a new mystery.\nL6 Dinu: \"Nimal... eka koheda thiyanne?\" | how:\
+      \ Whispered to himself, breathless. | intent: Voice the question the scene leaves.\n</scene>\n\n<moves>\nYour whole\
+      \ toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move:\
+      \ what it does. Use: when.\n- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes,\
+      \ quiet contemplative moments, formal compositions.\n- breathing: the frame floats and sways a little all the time,\
+      \ as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the\
+      \ camera.\n- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs\
+      \ life without a statement.\n- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside\
+      \ the shot.\n- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build,\
+      \ revealing scale.\n- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning\
+      \ realization, dread.\n- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject\
+      \ is smaller/alone than thought.\n- push_then_hold: a push that lands and stays. Use: a line or realisation that must\
+      \ land, then sit.\n- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden\
+      \ object/character reveals.\n- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves)\
+      \ toward the subject. Use: entering a private moment, discovery.\n- truck_left: Keeps pace with subject, feels natural\
+      \ and grounded. Use: Following a walking/moving subject alongside them.\n- truck_right: Keeps pace with subject, feels\
+      \ natural and grounded. Use: Following a walking/moving subject alongside them.\n- tracking_alongside (beside them):\
+      \ Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.\n\
+      - lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's\
+      \ physical or emotional journey.\n- follow (behind them): Keeps audience connected to subject's journey. Use: Following\
+      \ a subject's physical or emotional journey.\n- track_then_hold: travel with a person, then stop as they stop. Use:\
+      \ arrivals, a walk that ends in a meeting.\n- arc_left: Builds tension, dramatizes a moment, shows all angles. Use:\
+      \ Confrontations, dramatic reveals, hero moments.\n- arc_right: Builds tension, dramatizes a moment, shows all angles.\
+      \ Use: Confrontations, dramatic reveals, hero moments.\n- half_orbit (half a circle): Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- orbit: Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- circle_two: Smooth, controlled circular\
+      \ reveal. Use: Polished orbit shots without handheld shake.\n- pan_left: Guides attention, reveals space side to side.\
+      \ Use: Following action across a wide space, revealing something off-screen.\n- pan_right: Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- follow_pan (turning\
+      \ with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space,\
+      \ revealing something off-screen.\n- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action\
+      \ sequences, comedic cuts, sudden surprise reveals.\n- slow_pan_reveal (slow, discovering): Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- tilt_up: Reveals\
+      \ height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n- tilt_down:\
+      \ Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n\
+      - tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or\
+      \ event.\n- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.\n- pedestal_up:\
+      \ Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject\
+      \ standing/sitting.\n- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information\
+      \ gradually, matching a subject standing/sitting.\n- crane_up (rising): Establishes geography, can express emotional\
+      \ distance. Use: Establishing shots, revealing environment scale.\n- crane_down (descending): Establishes geography,\
+      \ can express emotional distance. Use: Establishing shots, revealing environment scale.\n- rising_reveal: Reveal or\
+      \ conceal information smoothly. Use: Gradual reveal of a space or object.\n- zoom_in: Sudden emphasis, can feel artificial/stylized\
+      \ or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- zoom_out: Sudden emphasis, can\
+      \ feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- slow_zoom\
+      \ (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail,\
+      \ retro/stylized look, comedic beat.\n- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent.\
+      \ Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- crash_zoom (fast, violent): Sudden emphasis,\
+      \ can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- dolly_zoom:\
+      \ Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.\n\
+      - aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic\
+      \ transitions.\n- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale\
+      \ reveals, scenic transitions.\n- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- top_down: Objective, god's-eye view, patterns/geometry\
+      \ emphasis. Use: Showing spatial layout, symbolic detachment.\n- flyover: Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- whip_out (first half of a whip transition):\
+      \ Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise\
+      \ reveals.\n- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences,\
+      \ comedic cuts, sudden surprise reveals.\n- focus_out (defocus out (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- focus_in (focus in (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- shake (impact shake): Urgency, chaos, realism, instability.\
+      \ Use: Action scenes, documentary style, emotional breakdown.\nFocus:\n- rack_focus: Redirects attention within the\
+      \ frame. Use: Shifting importance between two elements.\n- focus_follow: Keeps audience locked on the subject. Use:\
+      \ Subject moving toward or away from camera.\n- shallow_isolation: Isolates subject, intimacy, precise attention.\
+      \ Use: Emotional close-ups, busy backgrounds.\n- deep: Audience chooses where to look, observational. Use: Complex\
+      \ staging, ensemble scenes.\n</moves>\n\n<omni>\nMEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent\
+      \ renders, 2026-11-20), background motion over the take:\n- push_in / push_then_hold on a face, also while she speaks:\
+      \ PERFORMED clearly (87 px, 72 px; MS -> MCU).\n- push_then_hold on a TWO-shot (\"slowly pushes closer to both of\
+      \ them ... then comes to rest\"): PERFORMED (full\n  figures -> waist up, then settles).\n- A float in a two-shot\
+      \ is NOT performed, however it is worded: \"gently floating and swaying\" 16 px, \"handheld\n  camera with a slight\
+      \ natural shake\" 19 px, \"drifts slowly sideways to the right\" 20 px, against 12 px for \"a steady\n  frame on a\
+      \ tripod\". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.\nPROVISIONAL (not\
+      \ measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;\ntracking_alongside;\
+      \ follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;\nslow_zoom; aerial_establishing;\
+      \ aerial_pull_away; arc_left/right (short, slow).\nRisky (may be ignored or warp faces; use only with a strong reason,\
+      \ never on a speaking face): half_orbit; orbit;\ncircle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom;\
+      \ dutch_roll; rack_focus (the model often\nignores a timed focus change); focus_out; focus_in; push_past_foreground;\
+      \ pull_back_reveal through a doorway; flyover;\ntop_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse;\
+      \ hyperlapse.\n</omni>"
+    clips: '<clips>
+
+      In cut order. SIZE is the size the clip OPENS on (fixed).
+
+      <clip slate="1R-1" n="20">
+
+      Setup R; role clean_exit; SIZE WIDE; take 6 s, handles 1 s in / 1 s out; sound ambient.
+
+      Planner''s camera words (a hint): technique crane; small crane, 32mm, f/4; angle elevated oblique view from the established
+      camera side; movement: one slow rising crane retreat away from Dinu, remaining on the established side of the pursuit
+      axis; lens 32mm.
+
+      Why the planner made it: Releases the final close single into spatial isolation after L6, making the concealed shelter
+      feel large around the man and the useless box.
+
+      What happens: After L6, an elevated camera retreats from Dinu crouched behind the tank with the open box in his lap.
+      He remains still as more rain-wet rooftop surrounds him.
+
+      In frame: Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and
+      worn dark shoes. Where: On the camera side of the water tank at lower right, open metal box in his lap, left hand
+      supporting the base, face three-quarter down toward screen right. Does: Remains crouched with his gaze in the open
+      metal box.
+
+      Opening picture: Elevated wide view from the camera side of the tank, Dinu small at lower right, open box visible
+      in his lap; no other person visible.
+
+      Beats: 0-1s: Dinu remains crouched with the open box in his lap. | 1-5s: Dinu keeps his left hand under the box. |
+      5-6s: Rain falls across the rooftop.
+
+      Nobody speaks on camera in this clip.
+
+      Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded;
+      use: Following a walking/moving subject alongside them | top_down: Objective, god''s-eye view, patterns/geometry emphasis;
+      use: Showing spatial layout, symbolic detachment | push_in: Builds intimacy (in) or distance/isolation (out); use:
+      Emotional realization, tension build, revealing scale | arc_left: Builds tension, dramatizes a moment, shows all angles;
+      use: Confrontations, dramatic reveals, hero moments
+
+      </clip>
+
+      </clips>'
+  reply:
+    camera_language: Handheld-motivated travel keeps the market crowded and physical; movement contracts around the tank,
+      drives into the empty box at the turn, then rises away into isolation.
+    arc: Watchfulness at 2 rises through pursuit at 4, compresses into rooftop suspense, drops to a quiet 2 before the empty-box
+      peak at 5, then releases into loss.
+    peak_slate: 1M-1
+    clips:
+    - slate: 1R-1
+      moment: isolation
+      intensity: 4
+      power: none
+      support: crane
+      move: crane_up
+      direction: up and away on the established camera side
+      speed: slow
+      start_s: 1.0
+      end_s: 5.0
+      trigger: Dinu remains crouched over the open box after the question
+      motivation: Make the shelter expand around a man whose escape has yielded nothing.
+      opens_on: Elevated wide view of Dinu small at lower right behind the tank with the open box in his lap.
+      lands_on: Extreme-wide high view of the rain-wet rooftop, Dinu smaller beside the tank.
+      end_size: EWS
+      angle: high
+      height: above_head
+      angle_reason: The rising viewpoint diminishes Dinu and turns the rooftop from shelter into empty surrounding space.
+      lens: 32mm
+      aperture: f/4
+      focus: deep
+      rack_from: ''
+      rack_to: ''
+      rack_at_s: 0.0
+      composition: negative_space
+      composition_note: Keep Dinu lower right and remain on the established side while progressively revealing more roof
+        around the tank.
+      time: normal
+      axis: side_a
+      omni: works
+      why: 'Isolation 4: the final rise deliberately leaves the production''s close handheld language to make Dinu visibly
+        small after the empty-box turn.'
+      camera_sentence: From an elevated wide view, rise slowly up and away as Dinu remains over the open box, ending in
+        an extreme-wide view with him small beside the tank amid the wet rooftop.
+- name: 'chase 1N-1: isolation 3: a pull out as he is left alone'
+  input:
+    scene: "<scene>\nScene: The market chase (SCENE 01 - EXT. PETTAH MARKET AND ROOFTOP - COLOMBO - NIGHT - 1.25 MINUTES).\
+      \ Rohan spots Dinu carrying Nimal's metal box through the night market and chases him through the crowd, an alley\
+      \ and up to a rooftop, where Dinu hides from the torch and finds the box empty.\nWhat it is for: Put Dinu in physical\
+      \ danger for the box, then turn the escape into a new mystery: the box is empty.\nPlace: Pettah market; exterior.\
+      \ Mood: urgent, tense, desperate.\nPeople:\n- Dinu (on_screen): wants Escape with the box and learn what Nimal left\
+      \ him.; feels Watchful -> Breathless and lost\n- Rohan (on_screen): wants Catch Dinu and take the box.; feels Predatory\
+      \ -> Thwarted\nThe production's direction (the person's own style rules; each applies to its scope):\n- Colombo palette\
+      \ - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\n- Lighting - Vehicle\
+      \ headlights, sodium lamps, practical bulbs and lightning flashes.\n- Editing - Fast cuts only on impact. Let important\
+      \ punches and reactions stay on screen.\n- Sound - Rain, breathing, metal impacts and footsteps first. Music enters\
+      \ only for hero elevation moments.\n- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n\
+      - The action is mass but not weightless. Every hit has a location, an object or a consequence.\n- Dinu is not an invincible\
+      \ superhero; he wins because he knows vehicles, space and timing.\n- Aruni is an active participant in the climax,\
+      \ and the final victory comes from the recording, the village and their courage - not from violence alone.\nScript,\
+      \ in order:\naction: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under\
+      \ his jacket. Across the lane, Rohan, in a black raincoat, sees him. | intent: Establish the crowd, the box and the\
+      \ hunter before either moves.\nL1 Rohan to Dinu: \"Dinu! Nawathipan!\" | how: Shouted across the lane, cutting through\
+      \ the rain. | intent: Name him and stop him in public.\naction: Dinu runs. He shoves past shoppers and knocks over\
+      \ a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd. | intent: Start the pursuit\
+      \ with physical chaos.\naction: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron\
+      \ stairway to a rooftop. Rohan is close behind. | intent: Tighten the space and the danger.\naction: On the roof,\
+      \ Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on.\
+      \ His footsteps fade. | intent: Hold the danger in stillness until it passes.\naction: Dinu opens the metal box. It\
+      \ is empty. | intent: Turn the escape into loss and a new mystery.\nL6 Dinu: \"Nimal... eka koheda thiyanne?\" | how:\
+      \ Whispered to himself, breathless. | intent: Voice the question the scene leaves.\n</scene>\n\n<moves>\nYour whole\
+      \ toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move:\
+      \ what it does. Use: when.\n- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes,\
+      \ quiet contemplative moments, formal compositions.\n- breathing: the frame floats and sways a little all the time,\
+      \ as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the\
+      \ camera.\n- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs\
+      \ life without a statement.\n- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside\
+      \ the shot.\n- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build,\
+      \ revealing scale.\n- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning\
+      \ realization, dread.\n- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject\
+      \ is smaller/alone than thought.\n- push_then_hold: a push that lands and stays. Use: a line or realisation that must\
+      \ land, then sit.\n- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden\
+      \ object/character reveals.\n- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves)\
+      \ toward the subject. Use: entering a private moment, discovery.\n- truck_left: Keeps pace with subject, feels natural\
+      \ and grounded. Use: Following a walking/moving subject alongside them.\n- truck_right: Keeps pace with subject, feels\
+      \ natural and grounded. Use: Following a walking/moving subject alongside them.\n- tracking_alongside (beside them):\
+      \ Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.\n\
+      - lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's\
+      \ physical or emotional journey.\n- follow (behind them): Keeps audience connected to subject's journey. Use: Following\
+      \ a subject's physical or emotional journey.\n- track_then_hold: travel with a person, then stop as they stop. Use:\
+      \ arrivals, a walk that ends in a meeting.\n- arc_left: Builds tension, dramatizes a moment, shows all angles. Use:\
+      \ Confrontations, dramatic reveals, hero moments.\n- arc_right: Builds tension, dramatizes a moment, shows all angles.\
+      \ Use: Confrontations, dramatic reveals, hero moments.\n- half_orbit (half a circle): Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- orbit: Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- circle_two: Smooth, controlled circular\
+      \ reveal. Use: Polished orbit shots without handheld shake.\n- pan_left: Guides attention, reveals space side to side.\
+      \ Use: Following action across a wide space, revealing something off-screen.\n- pan_right: Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- follow_pan (turning\
+      \ with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space,\
+      \ revealing something off-screen.\n- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action\
+      \ sequences, comedic cuts, sudden surprise reveals.\n- slow_pan_reveal (slow, discovering): Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- tilt_up: Reveals\
+      \ height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n- tilt_down:\
+      \ Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n\
+      - tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or\
+      \ event.\n- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.\n- pedestal_up:\
+      \ Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject\
+      \ standing/sitting.\n- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information\
+      \ gradually, matching a subject standing/sitting.\n- crane_up (rising): Establishes geography, can express emotional\
+      \ distance. Use: Establishing shots, revealing environment scale.\n- crane_down (descending): Establishes geography,\
+      \ can express emotional distance. Use: Establishing shots, revealing environment scale.\n- rising_reveal: Reveal or\
+      \ conceal information smoothly. Use: Gradual reveal of a space or object.\n- zoom_in: Sudden emphasis, can feel artificial/stylized\
+      \ or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- zoom_out: Sudden emphasis, can\
+      \ feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- slow_zoom\
+      \ (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail,\
+      \ retro/stylized look, comedic beat.\n- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent.\
+      \ Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- crash_zoom (fast, violent): Sudden emphasis,\
+      \ can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- dolly_zoom:\
+      \ Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.\n\
+      - aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic\
+      \ transitions.\n- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale\
+      \ reveals, scenic transitions.\n- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- top_down: Objective, god's-eye view, patterns/geometry\
+      \ emphasis. Use: Showing spatial layout, symbolic detachment.\n- flyover: Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- whip_out (first half of a whip transition):\
+      \ Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise\
+      \ reveals.\n- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences,\
+      \ comedic cuts, sudden surprise reveals.\n- focus_out (defocus out (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- focus_in (focus in (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- shake (impact shake): Urgency, chaos, realism, instability.\
+      \ Use: Action scenes, documentary style, emotional breakdown.\nFocus:\n- rack_focus: Redirects attention within the\
+      \ frame. Use: Shifting importance between two elements.\n- focus_follow: Keeps audience locked on the subject. Use:\
+      \ Subject moving toward or away from camera.\n- shallow_isolation: Isolates subject, intimacy, precise attention.\
+      \ Use: Emotional close-ups, busy backgrounds.\n- deep: Audience chooses where to look, observational. Use: Complex\
+      \ staging, ensemble scenes.\n</moves>\n\n<omni>\nMEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent\
+      \ renders, 2026-11-20), background motion over the take:\n- push_in / push_then_hold on a face, also while she speaks:\
+      \ PERFORMED clearly (87 px, 72 px; MS -> MCU).\n- push_then_hold on a TWO-shot (\"slowly pushes closer to both of\
+      \ them ... then comes to rest\"): PERFORMED (full\n  figures -> waist up, then settles).\n- A float in a two-shot\
+      \ is NOT performed, however it is worded: \"gently floating and swaying\" 16 px, \"handheld\n  camera with a slight\
+      \ natural shake\" 19 px, \"drifts slowly sideways to the right\" 20 px, against 12 px for \"a steady\n  frame on a\
+      \ tripod\". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.\nPROVISIONAL (not\
+      \ measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;\ntracking_alongside;\
+      \ follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;\nslow_zoom; aerial_establishing;\
+      \ aerial_pull_away; arc_left/right (short, slow).\nRisky (may be ignored or warp faces; use only with a strong reason,\
+      \ never on a speaking face): half_orbit; orbit;\ncircle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom;\
+      \ dutch_roll; rack_focus (the model often\nignores a timed focus change); focus_out; focus_in; push_past_foreground;\
+      \ pull_back_reveal through a doorway; flyover;\ntop_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse;\
+      \ hyperlapse.\n</omni>"
+    clips: '<clips>
+
+      In cut order. SIZE is the size the clip OPENS on (fixed).
+
+      <clip slate="1N-1" n="19">
+
+      Setup N; role single; SIZE CU; take 6 s, handles 1 s in / 1 s out; sound dialogue.
+
+      Planner''s camera words (a hint): technique handheld; handheld shoulder rig, 75mm, f/2.8; angle eye level three-quarter;
+      movement: restrained handheld drift in place; lens 75mm.
+
+      Why the planner made it: A close face lets the empty-box discovery turn into the whispered question without melodramatic
+      movement.
+
+      What happens: Dinu looks into the empty box and voices L6, wondering where the missing thing is, as the rain continues.
+
+      In frame: Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and
+      worn dark shoes. Where: Crouched behind the tank, face already three-quarter toward camera with eyes lowered, open
+      box supported in his lap by left hand. Does: Lips move to L6 while he looks into the empty box.
+
+      Opening picture: Dinu fills the frame in three-quarter, eyes down toward the open box below the bottom edge.
+
+      Beats: 0-1s: Dinu looks into the open box. | 1-4s: Dinu''s lips move to L6. | 4-6s: Dinu keeps the open box in his
+      lap.
+
+      Spoken here: L6 Dinu (~3.3 s)
+
+      Ideas from the knowledge base (ideas, not orders): crane_up: Establishes geography, can express emotional distance;
+      use: Establishing shots, revealing environment scale | zoom_in: Sudden emphasis, can feel artificial/stylized or urgent;
+      use: Quick emphasis on a detail, retro/stylized look, comedic beat | pull_out: Reveals scale, isolation, or new context;
+      use: Ending a scene, revealing subject is smaller/alone than thought | truck_left: Keeps pace with subject, feels
+      natural and grounded; use: Following a walking/moving subject alongside them
+
+      </clip>
+
+      </clips>'
+  reply:
+    camera_language: Handheld-motivated travel keeps the market crowded and physical; movement contracts around the tank,
+      drives into the empty box at the turn, then rises away into isolation.
+    arc: Watchfulness at 2 rises through pursuit at 4, compresses into rooftop suspense, drops to a quiet 2 before the empty-box
+      peak at 5, then releases into loss.
+    peak_slate: 1M-1
+    clips:
+    - slate: 1N-1
+      moment: isolation
+      intensity: 3
+      power: none
+      support: shoulder
+      move: pull_out
+      direction: away from Dinu toward the surrounding tank
+      speed: slow
+      start_s: 1.0
+      end_s: 5.0
+      trigger: Dinu begins the whispered question L6
+      motivation: Let the unanswered question restore a little hostile space around the face without losing the whisper.
+      opens_on: Dinu's face in three-quarter close-up, eyes lowered toward the box below frame.
+      lands_on: Dinu chest up beside the tank, with more wet rooftop space around his shoulders.
+      end_size: MCU
+      angle: eye_level
+      height: knee
+      angle_reason: Stay at his crouched eyeline so the withdrawal expresses isolation rather than renewed threat.
+      lens: 75mm
+      aperture: f/2.8
+      focus: focus_follow
+      rack_from: ''
+      rack_to: ''
+      rack_at_s: 0.0
+      composition: negative_space
+      composition_note: Keep his full speaking face readable as a restrained amount of empty space returns beside him.
+      time: normal
+      axis: side_a
+      omni: works
+      why: 'Isolation 3: a slow handheld withdrawal keeps the whispered face readable while beginning the spatial release
+        that the final wide completes.'
+      camera_sentence: From an eye-level close-up at crouched height, pull back slowly as Dinu whispers toward the box,
+        ending chest up with the tank and more empty rooftop space around him.
+- name: 'chase 1P-1: realisation 4: a held frame after the movement, with a reason'
+  input:
+    scene: "<scene>\nScene: The market chase (SCENE 01 - EXT. PETTAH MARKET AND ROOFTOP - COLOMBO - NIGHT - 1.25 MINUTES).\
+      \ Rohan spots Dinu carrying Nimal's metal box through the night market and chases him through the crowd, an alley\
+      \ and up to a rooftop, where Dinu hides from the torch and finds the box empty.\nWhat it is for: Put Dinu in physical\
+      \ danger for the box, then turn the escape into a new mystery: the box is empty.\nPlace: Pettah market; exterior.\
+      \ Mood: urgent, tense, desperate.\nPeople:\n- Dinu (on_screen): wants Escape with the box and learn what Nimal left\
+      \ him.; feels Watchful -> Breathless and lost\n- Rohan (on_screen): wants Catch Dinu and take the box.; feels Predatory\
+      \ -> Thwarted\nThe production's direction (the person's own style rules; each applies to its scope):\n- Colombo palette\
+      \ - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\n- Lighting - Vehicle\
+      \ headlights, sodium lamps, practical bulbs and lightning flashes.\n- Editing - Fast cuts only on impact. Let important\
+      \ punches and reactions stay on screen.\n- Sound - Rain, breathing, metal impacts and footsteps first. Music enters\
+      \ only for hero elevation moments.\n- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n\
+      - The action is mass but not weightless. Every hit has a location, an object or a consequence.\n- Dinu is not an invincible\
+      \ superhero; he wins because he knows vehicles, space and timing.\n- Aruni is an active participant in the climax,\
+      \ and the final victory comes from the recording, the village and their courage - not from violence alone.\nScript,\
+      \ in order:\naction: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under\
+      \ his jacket. Across the lane, Rohan, in a black raincoat, sees him. | intent: Establish the crowd, the box and the\
+      \ hunter before either moves.\nL1 Rohan to Dinu: \"Dinu! Nawathipan!\" | how: Shouted across the lane, cutting through\
+      \ the rain. | intent: Name him and stop him in public.\naction: Dinu runs. He shoves past shoppers and knocks over\
+      \ a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd. | intent: Start the pursuit\
+      \ with physical chaos.\naction: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron\
+      \ stairway to a rooftop. Rohan is close behind. | intent: Tighten the space and the danger.\naction: On the roof,\
+      \ Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on.\
+      \ His footsteps fade. | intent: Hold the danger in stillness until it passes.\naction: Dinu opens the metal box. It\
+      \ is empty. | intent: Turn the escape into loss and a new mystery.\nL6 Dinu: \"Nimal... eka koheda thiyanne?\" | how:\
+      \ Whispered to himself, breathless. | intent: Voice the question the scene leaves.\n</scene>\n\n<moves>\nYour whole\
+      \ toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move:\
+      \ what it does. Use: when.\n- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes,\
+      \ quiet contemplative moments, formal compositions.\n- breathing: the frame floats and sways a little all the time,\
+      \ as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the\
+      \ camera.\n- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs\
+      \ life without a statement.\n- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside\
+      \ the shot.\n- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build,\
+      \ revealing scale.\n- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning\
+      \ realization, dread.\n- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject\
+      \ is smaller/alone than thought.\n- push_then_hold: a push that lands and stays. Use: a line or realisation that must\
+      \ land, then sit.\n- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden\
+      \ object/character reveals.\n- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves)\
+      \ toward the subject. Use: entering a private moment, discovery.\n- truck_left: Keeps pace with subject, feels natural\
+      \ and grounded. Use: Following a walking/moving subject alongside them.\n- truck_right: Keeps pace with subject, feels\
+      \ natural and grounded. Use: Following a walking/moving subject alongside them.\n- tracking_alongside (beside them):\
+      \ Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.\n\
+      - lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's\
+      \ physical or emotional journey.\n- follow (behind them): Keeps audience connected to subject's journey. Use: Following\
+      \ a subject's physical or emotional journey.\n- track_then_hold: travel with a person, then stop as they stop. Use:\
+      \ arrivals, a walk that ends in a meeting.\n- arc_left: Builds tension, dramatizes a moment, shows all angles. Use:\
+      \ Confrontations, dramatic reveals, hero moments.\n- arc_right: Builds tension, dramatizes a moment, shows all angles.\
+      \ Use: Confrontations, dramatic reveals, hero moments.\n- half_orbit (half a circle): Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- orbit: Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- circle_two: Smooth, controlled circular\
+      \ reveal. Use: Polished orbit shots without handheld shake.\n- pan_left: Guides attention, reveals space side to side.\
+      \ Use: Following action across a wide space, revealing something off-screen.\n- pan_right: Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- follow_pan (turning\
+      \ with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space,\
+      \ revealing something off-screen.\n- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action\
+      \ sequences, comedic cuts, sudden surprise reveals.\n- slow_pan_reveal (slow, discovering): Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- tilt_up: Reveals\
+      \ height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n- tilt_down:\
+      \ Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n\
+      - tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or\
+      \ event.\n- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.\n- pedestal_up:\
+      \ Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject\
+      \ standing/sitting.\n- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information\
+      \ gradually, matching a subject standing/sitting.\n- crane_up (rising): Establishes geography, can express emotional\
+      \ distance. Use: Establishing shots, revealing environment scale.\n- crane_down (descending): Establishes geography,\
+      \ can express emotional distance. Use: Establishing shots, revealing environment scale.\n- rising_reveal: Reveal or\
+      \ conceal information smoothly. Use: Gradual reveal of a space or object.\n- zoom_in: Sudden emphasis, can feel artificial/stylized\
+      \ or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- zoom_out: Sudden emphasis, can\
+      \ feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- slow_zoom\
+      \ (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail,\
+      \ retro/stylized look, comedic beat.\n- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent.\
+      \ Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- crash_zoom (fast, violent): Sudden emphasis,\
+      \ can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- dolly_zoom:\
+      \ Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.\n\
+      - aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic\
+      \ transitions.\n- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale\
+      \ reveals, scenic transitions.\n- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- top_down: Objective, god's-eye view, patterns/geometry\
+      \ emphasis. Use: Showing spatial layout, symbolic detachment.\n- flyover: Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- whip_out (first half of a whip transition):\
+      \ Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise\
+      \ reveals.\n- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences,\
+      \ comedic cuts, sudden surprise reveals.\n- focus_out (defocus out (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- focus_in (focus in (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- shake (impact shake): Urgency, chaos, realism, instability.\
+      \ Use: Action scenes, documentary style, emotional breakdown.\nFocus:\n- rack_focus: Redirects attention within the\
+      \ frame. Use: Shifting importance between two elements.\n- focus_follow: Keeps audience locked on the subject. Use:\
+      \ Subject moving toward or away from camera.\n- shallow_isolation: Isolates subject, intimacy, precise attention.\
+      \ Use: Emotional close-ups, busy backgrounds.\n- deep: Audience chooses where to look, observational. Use: Complex\
+      \ staging, ensemble scenes.\n</moves>\n\n<omni>\nMEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent\
+      \ renders, 2026-11-20), background motion over the take:\n- push_in / push_then_hold on a face, also while she speaks:\
+      \ PERFORMED clearly (87 px, 72 px; MS -> MCU).\n- push_then_hold on a TWO-shot (\"slowly pushes closer to both of\
+      \ them ... then comes to rest\"): PERFORMED (full\n  figures -> waist up, then settles).\n- A float in a two-shot\
+      \ is NOT performed, however it is worded: \"gently floating and swaying\" 16 px, \"handheld\n  camera with a slight\
+      \ natural shake\" 19 px, \"drifts slowly sideways to the right\" 20 px, against 12 px for \"a steady\n  frame on a\
+      \ tripod\". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.\nPROVISIONAL (not\
+      \ measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;\ntracking_alongside;\
+      \ follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;\nslow_zoom; aerial_establishing;\
+      \ aerial_pull_away; arc_left/right (short, slow).\nRisky (may be ignored or warp faces; use only with a strong reason,\
+      \ never on a speaking face): half_orbit; orbit;\ncircle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom;\
+      \ dutch_roll; rack_focus (the model often\nignores a timed focus change); focus_out; focus_in; push_past_foreground;\
+      \ pull_back_reveal through a doorway; flyover;\ntop_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse;\
+      \ hyperlapse.\n</omni>"
+    clips: '<clips>
+
+      In cut order. SIZE is the size the clip OPENS on (fixed).
+
+      <clip slate="1P-1" n="18">
+
+      Setup P; role reaction; SIZE ECU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+
+      Planner''s camera words (a hint): technique shallow_isolation; locked-off sticks, 100mm, f/2.0; angle eye level, three-quarter
+      from the pursuit-axis side; movement: locked-off shallow isolation throughout; lens 100mm.
+
+      Why the planner made it: The opening insert establishes absence; this isolated face makes its consequence readable
+      before L6 without repeating the hands or reopening the box.
+
+      What happens: An extreme close view isolates Dinu behind the rooftop tank. His eyes remain on the open box below frame
+      and his jaw loosens as rain and uneven breathing continue.
+
+      In frame: Dinu, a 32-year-old Sri Lankan man with short black hair, dark charcoal jacket, faded dark trousers and
+      worn dark shoes. Where: Crouching on the camera side of the water tank, face three-quarter toward screen right, open
+      metal box in his lap below frame, left hand supporting its base. Does: Keeps his eyes on the open box in his lap;
+      his jaw loosens.
+
+      Opening picture: Dinu''s face fills the image in three-quarter; blurred tank edge at left; open box below the crop.
+
+      Beats: 0-1s: Dinu keeps his gaze lowered toward his lap. | 1-5s: His jaw loosens. | 5-6s: Dinu remains crouched with
+      the box in his lap.
+
+      Nobody speaks on camera in this clip.
+
+      Ideas from the knowledge base (ideas, not orders): crane_up: Establishes geography, can express emotional distance;
+      use: Establishing shots, revealing environment scale | arc_left: Builds tension, dramatizes a moment, shows all angles;
+      use: Confrontations, dramatic reveals, hero moments | tilt_up: Reveals height, scale, or power dynamics; use: Showing
+      tall buildings/subjects, revealing something above or below | zoom_in: Sudden emphasis, can feel artificial/stylized
+      or urgent; use: Quick emphasis on a detail, retro/stylized look, comedic beat
+
+      </clip>
+
+      </clips>'
+  reply:
+    camera_language: Handheld-motivated travel keeps the market crowded and physical; movement contracts around the tank,
+      drives into the empty box at the turn, then rises away into isolation.
+    arc: Watchfulness at 2 rises through pursuit at 4, compresses into rooftop suspense, drops to a quiet 2 before the empty-box
+      peak at 5, then releases into loss.
+    peak_slate: 1M-1
+    clips:
+    - slate: 1P-1
+      moment: realisation
+      intensity: 4
+      power: none
+      support: shoulder
+      move: hold
+      direction: fixed on Dinu's lowered eyes and mouth
+      speed: none
+      start_s: 0.0
+      end_s: 0.0
+      trigger: Dinu's jaw loosens as he looks into the box
+      motivation: Let the consequence register without competing with an already extreme facial framing.
+      opens_on: Extreme close-up of Dinu's three-quarter face, eyes lowered, tank edge blurred at left.
+      lands_on: The same extreme close-up with his loosened jaw and lowered gaze unobstructed.
+      end_size: ECU
+      angle: eye_level
+      height: knee
+      angle_reason: Meet his crouched eyeline so the loss is witnessed directly rather than judged from above.
+      lens: 100mm
+      aperture: f/2
+      focus: shallow_isolation
+      rack_from: ''
+      rack_to: ''
+      rack_at_s: 0.0
+      composition: centred
+      composition_note: Do not tighten beyond the extreme close-up; retain both eyes and enough mouth to read the reaction.
+      time: normal
+      axis: side_a
+      omni: works
+      why: 'Realisation 4: a deliberately held handheld position breaks the preceding push so the important reaction remains
+        on screen without ornamental motion.'
+      camera_sentence: Hold an eye-level extreme close-up at Dinu's crouched height as his jaw loosens, ending on the same
+        isolated three-quarter face with his eyes lowered.
+- name: 'chase 1B-2: confrontation 4: a push in, slightly low on the one with power'
+  input:
+    scene: "<scene>\nScene: The market chase (SCENE 01 - EXT. PETTAH MARKET AND ROOFTOP - COLOMBO - NIGHT - 1.25 MINUTES).\
+      \ Rohan spots Dinu carrying Nimal's metal box through the night market and chases him through the crowd, an alley\
+      \ and up to a rooftop, where Dinu hides from the torch and finds the box empty.\nWhat it is for: Put Dinu in physical\
+      \ danger for the box, then turn the escape into a new mystery: the box is empty.\nPlace: Pettah market; exterior.\
+      \ Mood: urgent, tense, desperate.\nPeople:\n- Dinu (on_screen): wants Escape with the box and learn what Nimal left\
+      \ him.; feels Watchful -> Breathless and lost\n- Rohan (on_screen): wants Catch Dinu and take the box.; feels Predatory\
+      \ -> Thwarted\nThe production's direction (the person's own style rules; each applies to its scope):\n- Colombo palette\
+      \ - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.\n- Lighting - Vehicle\
+      \ headlights, sodium lamps, practical bulbs and lightning flashes.\n- Editing - Fast cuts only on impact. Let important\
+      \ punches and reactions stay on screen.\n- Sound - Rain, breathing, metal impacts and footsteps first. Music enters\
+      \ only for hero elevation moments.\n- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.\n\
+      - The action is mass but not weightless. Every hit has a location, an object or a consequence.\n- Dinu is not an invincible\
+      \ superhero; he wins because he knows vehicles, space and timing.\n- Aruni is an active participant in the climax,\
+      \ and the final victory comes from the recording, the village and their courage - not from violence alone.\nScript,\
+      \ in order:\naction: Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under\
+      \ his jacket. Across the lane, Rohan, in a black raincoat, sees him. | intent: Establish the crowd, the box and the\
+      \ hunter before either moves.\nL1 Rohan to Dinu: \"Dinu! Nawathipan!\" | how: Shouted across the lane, cutting through\
+      \ the rain. | intent: Name him and stop him in public.\naction: Dinu runs. He shoves past shoppers and knocks over\
+      \ a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd. | intent: Start the pursuit\
+      \ with physical chaos.\naction: Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron\
+      \ stairway to a rooftop. Rohan is close behind. | intent: Tighten the space and the danger.\naction: On the roof,\
+      \ Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on.\
+      \ His footsteps fade. | intent: Hold the danger in stillness until it passes.\naction: Dinu opens the metal box. It\
+      \ is empty. | intent: Turn the escape into loss and a new mystery.\nL6 Dinu: \"Nimal... eka koheda thiyanne?\" | how:\
+      \ Whispered to himself, breathless. | intent: Voice the question the scene leaves.\n</scene>\n\n<moves>\nYour whole\
+      \ toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move:\
+      \ what it does. Use: when.\n- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes,\
+      \ quiet contemplative moments, formal compositions.\n- breathing: the frame floats and sways a little all the time,\
+      \ as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the\
+      \ camera.\n- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs\
+      \ life without a statement.\n- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside\
+      \ the shot.\n- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build,\
+      \ revealing scale.\n- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning\
+      \ realization, dread.\n- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject\
+      \ is smaller/alone than thought.\n- push_then_hold: a push that lands and stays. Use: a line or realisation that must\
+      \ land, then sit.\n- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden\
+      \ object/character reveals.\n- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves)\
+      \ toward the subject. Use: entering a private moment, discovery.\n- truck_left: Keeps pace with subject, feels natural\
+      \ and grounded. Use: Following a walking/moving subject alongside them.\n- truck_right: Keeps pace with subject, feels\
+      \ natural and grounded. Use: Following a walking/moving subject alongside them.\n- tracking_alongside (beside them):\
+      \ Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.\n\
+      - lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's\
+      \ physical or emotional journey.\n- follow (behind them): Keeps audience connected to subject's journey. Use: Following\
+      \ a subject's physical or emotional journey.\n- track_then_hold: travel with a person, then stop as they stop. Use:\
+      \ arrivals, a walk that ends in a meeting.\n- arc_left: Builds tension, dramatizes a moment, shows all angles. Use:\
+      \ Confrontations, dramatic reveals, hero moments.\n- arc_right: Builds tension, dramatizes a moment, shows all angles.\
+      \ Use: Confrontations, dramatic reveals, hero moments.\n- half_orbit (half a circle): Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- orbit: Intense focus on subject, disorienting\
+      \ or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.\n- circle_two: Smooth, controlled circular\
+      \ reveal. Use: Polished orbit shots without handheld shake.\n- pan_left: Guides attention, reveals space side to side.\
+      \ Use: Following action across a wide space, revealing something off-screen.\n- pan_right: Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- follow_pan (turning\
+      \ with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space,\
+      \ revealing something off-screen.\n- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action\
+      \ sequences, comedic cuts, sudden surprise reveals.\n- slow_pan_reveal (slow, discovering): Guides attention, reveals\
+      \ space side to side. Use: Following action across a wide space, revealing something off-screen.\n- tilt_up: Reveals\
+      \ height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n- tilt_down:\
+      \ Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.\n\
+      - tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or\
+      \ event.\n- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.\n- pedestal_up:\
+      \ Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject\
+      \ standing/sitting.\n- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information\
+      \ gradually, matching a subject standing/sitting.\n- crane_up (rising): Establishes geography, can express emotional\
+      \ distance. Use: Establishing shots, revealing environment scale.\n- crane_down (descending): Establishes geography,\
+      \ can express emotional distance. Use: Establishing shots, revealing environment scale.\n- rising_reveal: Reveal or\
+      \ conceal information smoothly. Use: Gradual reveal of a space or object.\n- zoom_in: Sudden emphasis, can feel artificial/stylized\
+      \ or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- zoom_out: Sudden emphasis, can\
+      \ feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- slow_zoom\
+      \ (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail,\
+      \ retro/stylized look, comedic beat.\n- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent.\
+      \ Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- crash_zoom (fast, violent): Sudden emphasis,\
+      \ can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.\n- dolly_zoom:\
+      \ Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.\n\
+      - aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic\
+      \ transitions.\n- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale\
+      \ reveals, scenic transitions.\n- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- top_down: Objective, god's-eye view, patterns/geometry\
+      \ emphasis. Use: Showing spatial layout, symbolic detachment.\n- flyover: Scale, grandeur, geographic establishing\
+      \ context. Use: Establishing shots, scale reveals, scenic transitions.\n- whip_out (first half of a whip transition):\
+      \ Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise\
+      \ reveals.\n- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences,\
+      \ comedic cuts, sudden surprise reveals.\n- focus_out (defocus out (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- focus_in (focus in (transition)): Smooth dreamlike scene transition.\
+      \ Use: Transitioning between scenes or time jumps.\n- shake (impact shake): Urgency, chaos, realism, instability.\
+      \ Use: Action scenes, documentary style, emotional breakdown.\nFocus:\n- rack_focus: Redirects attention within the\
+      \ frame. Use: Shifting importance between two elements.\n- focus_follow: Keeps audience locked on the subject. Use:\
+      \ Subject moving toward or away from camera.\n- shallow_isolation: Isolates subject, intimacy, precise attention.\
+      \ Use: Emotional close-ups, busy backgrounds.\n- deep: Audience chooses where to look, observational. Use: Complex\
+      \ staging, ensemble scenes.\n</moves>\n\n<omni>\nMEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent\
+      \ renders, 2026-11-20), background motion over the take:\n- push_in / push_then_hold on a face, also while she speaks:\
+      \ PERFORMED clearly (87 px, 72 px; MS -> MCU).\n- push_then_hold on a TWO-shot (\"slowly pushes closer to both of\
+      \ them ... then comes to rest\"): PERFORMED (full\n  figures -> waist up, then settles).\n- A float in a two-shot\
+      \ is NOT performed, however it is worded: \"gently floating and swaying\" 16 px, \"handheld\n  camera with a slight\
+      \ natural shake\" 19 px, \"drifts slowly sideways to the right\" 20 px, against 12 px for \"a steady\n  frame on a\
+      \ tripod\". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.\nPROVISIONAL (not\
+      \ measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;\ntracking_alongside;\
+      \ follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;\nslow_zoom; aerial_establishing;\
+      \ aerial_pull_away; arc_left/right (short, slow).\nRisky (may be ignored or warp faces; use only with a strong reason,\
+      \ never on a speaking face): half_orbit; orbit;\ncircle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom;\
+      \ dutch_roll; rack_focus (the model often\nignores a timed focus change); focus_out; focus_in; push_past_foreground;\
+      \ pull_back_reveal through a doorway; flyover;\ntop_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse;\
+      \ hyperlapse.\n</omni>"
+    clips: '<clips>
+
+      In cut order. SIZE is the size the clip OPENS on (fixed).
+
+      <clip slate="1B-2" n="4">
+
+      Setup B; role single; SIZE MCU; take 4 s, handles 1 s in / 1 s out; sound dialogue.
+
+      Planner''s camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle eye level three-quarter;
+      movement: restrained handheld drift in place; lens 65mm.
+
+      Why the planner made it: The same side of Rohan preserves the recognition-to-challenge connection.
+
+      What happens: Rohan projects L1 across the market to stop Dinu, in a tight three-quarter view above the rain.
+
+      In frame: Rohan, a heavy-built 40-year-old Sri Lankan man with short black hair, black raincoat, dark trousers and
+      dark shoes. Where: Right of frame, face already three-quarter toward screen left, standing with heavy black torch
+      down in right hand. Does: Lips move to L1, projecting across the lane.
+
+      Opening picture: Rohan right of centre, open eyeline left, full face readable in three-quarter.
+
+      Beats: 0-1s: Rohan braces in place. | 1-3s: Rohan''s lips move to L1. | 3-4s: Rohan keeps the torch at his side.
+
+      Spoken here: L1 Rohan (~2.6 s)
+
+      Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded;
+      use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral
+      energy; use: Following a subject moving sideways, dialogue while walking | pan_left: Guides attention, reveals space
+      side to side; use: Following action across a wide space, revealing something off-screen | lead: Keeps audience connected
+      to subject''s journey; use: Following a subject''s physical or emotional journey
+
+      </clip>
+
+      </clips>'
+  reply:
+    camera_language: Handheld-motivated travel keeps the market crowded and physical; movement contracts around the tank,
+      drives into the empty box at the turn, then rises away into isolation.
+    arc: Watchfulness at 2 rises through pursuit at 4, compresses into rooftop suspense, drops to a quiet 2 before the empty-box
+      peak at 5, then releases into loss.
+    peak_slate: 1M-1
+    clips:
+    - slate: 1B-2
+      moment: confrontation
+      intensity: 4
+      power: Rohan
+      support: shoulder
+      move: push_in
+      direction: toward Rohan's face
+      speed: slow
+      start_s: 1.0
+      end_s: 3.0
+      trigger: Rohan begins L1
+      motivation: Make the public command bear down on Dinu without disturbing the speaking face.
+      opens_on: Rohan chest up at right in three-quarter view, eyeline open to the left.
+      lands_on: Rohan's face in close-up, maintaining the same leftward eyeline.
+      end_size: CU
+      angle: slightly_low
+      height: chest
+      angle_reason: Match setup B's lower viewpoint so his command continues the established dominance.
+      lens: 65mm
+      aperture: f/2.8
+      focus: focus_follow
+      rack_from: ''
+      rack_to: ''
+      rack_at_s: 0.0
+      composition: negative_space
+      composition_note: Keep his full three-quarter face readable and preserve the leftward address.
+      time: normal
+      axis: side_a
+      omni: works
+      why: 'Confrontation 4: a slow, visible handheld push strengthens the command while protecting lip readability and
+        matching the preceding movement.'
+      camera_sentence: From a slightly low chest-up view, push slowly toward Rohan as he calls across the lane, ending in
+        a close-up of his three-quarter face with his leftward eyeline clear.
+- name: 'E01-S04 4C-1 Ask: the person asks for a visible slow push (reply: lab/camera_moves apidenna_s04)'
+  input:
+    scene: '<scene>
+
+      Scene: A CONVERSATION THAT CHANGES EVERYTHING. Returning the phone leads to a warm exchange about Kasun''s business.
+      Her father''s call about marriage changes Anudi''s mood and ends the meeting.
+
+      What it is for: Establish mutual interest and Kasun''s ambition while introducing the family pressure that interrupts
+      their connection.
+
+      Just before (the previous scene ends): Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+
+      Next (the following scene opens): A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar
+      voice interrupts him.
+
+      Place: Colombo roadside. Mood of the scene: warm, curious, interrupted, reflective.
+
+      People:
+
+      - Anudi (on screen): wants to Thank Kasun and learn about him, then respond to her father''s demand; feels grateful
+      and receptive at the start, subdued but open to meeting kasun again by the end.
+
+      - Kasun (on screen): wants to Return her phone and answer her interest in his work; feels friendly and helpful at
+      the start, distracted by the encounter and her change in mood by the end.
+
+      - Father (heard on the phone only, never seen): wants to Have Anudi return home for a discussion about her marriage;
+      feels urgent and directive at the start, expecting her return by the end.
+
+      Between Kasun and Anudi: New acquaintances with mutual interest following smartphone''s return.
+
+      The production''s direction: Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments
+      and emotionally grounded performances. Scene Structure: Fewer, longer scenes with multiple camera shots and continuous
+      dramatic action. Kasun maintains the same facial appearance, hairstyle and body type throughout. Anudi maintains the
+      same facial appearance, hairstyle and body type throughout.
+
+      Script, in order (a line''s id is the name you use for it; the words are Sinhala):
+
+      action: Anudi takes her phone from Kasun. | how (the reader''s note): Keep the handover simple and clearly visible.
+      | intent: Complete the return that initiates their conversation.
+
+      L1 Anudi to Kasun: "අනේ, Thank you! මම දැක්කෙවත් නෑ." | how (the reader''s note): Genuine gratitude with mild surprise.
+      | intent: Thank him and acknowledge that she missed the accident.
+
+      L2 Kasun to Anudi: "වැස්ස නිසා වෙන්න ඇති." | how (the reader''s note): Gentle and matter-of-fact. | intent: Put her
+      at ease by attributing the mishap to the weather.
+
+      action: Anudi smiles and looks at his small food business. | how (the reader''s note): Let the smile lead into an
+      interested look toward the stall. | intent: Shift her attention from the returned phone to Kasun''s livelihood.
+
+      L4 Anudi to Kasun: "මේ ඔයාගේ බිස්නස් එකද?" | how (the reader''s note): Open curiosity without condescension. | intent:
+      Find out whether the business belongs to him.
+
+      L5 Kasun to Anudi: "ඔව්. පොඩියට පටන් ගත්තේ." | how (the reader''s note): Unembarrassed and modest. | intent: Confirm
+      ownership while acknowledging the modest beginning.
+
+      L6 Anudi to Kasun: "තනියමද මේ හැමදේම කරන්නේ?" | how (the reader''s note): Interest deepens rather than becoming an
+      interrogation. | intent: Learn whether he manages all the work himself.
+
+      L7 Kasun to Anudi: "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව." | how (the reader''s note):
+      Honest pride, with hope stronger than self-promotion. | intent: Explain his independent start with five thousand rupees
+      and his wish to grow.
+
+      action: Anudi looks impressed. | how (the reader''s note): A restrained reaction rather than an emphatic display.
+      | intent: Register her admiration before the interruption.
+
+      action: Before she can continue the conversation, her phone suddenly rings. She checks the screen. It''s her father.
+      | how (the reader''s note): The already established phone rings; give its caller display a readable moment. | intent:
+      Interrupt the growing connection with family demands.
+
+      L10 Anudi to Father: "හෙලෝ තාත්තේ." | how (the reader''s note): An ordinary greeting before she knows the reason for
+      the call. | intent: Answer her father.
+
+      L11 Father (through the phone) to Anudi: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න
+      තියෙනවා." | how (the reader''s note): Direct and authoritative without shouting. | intent: Locate Anudi and summon
+      her home to discuss her marriage.
+
+      action: Anudi''s smile slowly disappears. | how (the reader''s note): Let the warmth drain gradually from her expression.
+      | intent: Show the emotional cost of the call.
+
+      L13 Anudi to Father: "හරි තාත්තේ. මම එන්නම්." | how (the reader''s note): Subdued compliance, contrasting with her
+      earlier ease. | intent: Agree to return.
+
+      action: She ends the call. Kasun notices her changed expression. Anudi looks at him again. | how (the reader''s note):
+      Allow a brief, observant pause without suggesting Kasun knows the unheard details. | intent: Return to their shared
+      space with the interruption still affecting her.
+
+      L15 Anudi to Kasun: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු." | how (the reader''s note): Retain a little warmth beneath
+      the changed mood. | intent: Take her leave while keeping open the possibility of another meeting.
+
+      L16 Kasun to Anudi: "හරි. පරිස්සමින් යන්න." | how (the reader''s note): Simple, considerate warmth. | intent: Accept
+      her departure and wish her well.
+
+      action: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business,
+      but his thoughts are somewhere else. | how (the reader''s note): Let Kasun linger before returning to work; avoid
+      specifying the content of his thoughts. | intent: Leave the encounter resonating after Anudi departs.
+
+      </scene>'
+    clips: '<clips>
+
+      In cut order. SIZE is fixed (the clip opens on it).
+
+      <clip slate="4C-1" n="4">
+
+      Setup C; role single; SIZE MS (MS, Anudi waist up with vehicle edge in right depth); take 4 s, handles 0.35 s in /
+      0.35 s out; sound dialogue.
+
+      Planner''s camera words (a hint): technique locked_off; locked-off sticks, 50mm, f/4; angle eye level from road side;
+      movement: locked-off on sticks; depth: Medium, vehicle edge recognizable.
+
+      Why the planner made it: Let her gaze, not a camera move, turn the practical exchange toward his life.
+
+      What happens: Anudi smiles toward the food three-wheeler and enquires whether it belongs to Kasun (L4), with rain
+      audible.
+
+      In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame
+      left facing right, standing; phone at right waist, open umbrella in left hand, handbag on left forearm. Does: Smiles
+      toward the business, then lips move to L4.
+
+      Opening picture: Anudi left, phone low, umbrella above, vehicle edge right depth.
+
+      Beats: 0-0.35s: Anudi holds position. | 0.35-1.85s: Anudi smiles and looks toward the food three-wheeler. | 1.85-3.65s:
+      Anudi''s lips move to L4. | 3.65-4s: Anudi holds position.
+
+      Spoken here: L4 Anudi (~2.5 s)
+
+      </clip>
+
+      </clips>'
+    focus:
+    - 4C-1
+    note: 'Too still. I want to feel the camera move: a visible slow push toward her as she gets curious about his business.'
+    language: Operated and calm at the roadside
+    current: '4C-1: drift / very_slow — An eye-level medium shot drifts very slowly right as Anudi smiles toward the business
+      and asks her question, retaining her on the left with the phone low and the vehicle edge in depth, then settles.'
+  reply:
+    camera_language: Eye-level shared frames and measured approaches build connection; the father's demand peaks in an elevated
+      push toward Anudi, before widening farewells and a retreating exit.
+    arc: Gratitude and curiosity at 1–2 rise to admiration at 3, quiet briefly before the call, tighten through 4 to 5 under
+      family pressure, then recede through 4–3 to reflective distance at 2.
+    peak_slate: 4G-1
+    clips:
+    - slate: 4C-1
+      moment: intimacy
+      intensity: 2
+      power: equal
+      support: dolly
+      move: push_in
+      direction: straight toward Anudi
+      speed: slow
+      start_s: 0.5
+      end_s: 3.6
+      trigger: Anudi smiles toward the business before L4.
+      motivation: A visible approach marks her shift from practical gratitude to personal curiosity.
+      opens_on: Anudi waist up on the left, phone low and umbrella above, with the vehicle edge in right depth.
+      lands_on: Anudi chest up, her interested expression larger while her eyeline retains room right.
+      end_size: MCU
+      angle: eye_level
+      height: eye
+      angle_reason: ''
+      lens: 50mm
+      aperture: f/4
+      focus: focus_follow
+      rack_from: ''
+      rack_to: ''
+      rack_at_s: 0.0
+      composition: lead_room
+      composition_note: Approach along the lens axis without consuming her looking room toward Kasun's business.
+      time: normal
+      axis: side_a
+      omni: works
+      why: 'Intimacy 2: the slow waist-to-chest approach makes her growing curiosity visible without rushing her spoken
+        question.'
+      camera_sentence: From an eye-level medium shot, push slowly toward Anudi as her smile forms, ending chest up with
+        looking room toward the business.
+  expect:
+    clips:
+    - slate: 4C-1
+      move: push_in

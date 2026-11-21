@@ -73,7 +73,7 @@
      "agent": "director_of_photography",
      "planner": "rules",
      "shot_id": "<id:2>",
-     "text": "S02: 50mm · static",
+     "text": "S02: 50mm · hold",
      "type": "progress"
     }
    ],
@@ -170,6 +170,8 @@
        "<id:6>": 1
       },
       "looks": {},
+      "motion": {},
+      "picture": {},
       "script_hash": "<digest:1>",
       "shot_version": 1
      },
@@ -179,11 +181,16 @@
       "angle": "Eye level",
       "aperture": "f/2.8",
       "axis": "Side A · left to right",
+      "composition": "",
+      "focus": "",
       "framing": "Medium close-up",
+      "height": "",
       "lens": "50mm",
       "lighting": "Dawn, soft ambient",
-      "movement": "Static",
-      "speed": "None"
+      "movement": "Hold",
+      "speed": "None",
+      "support": "",
+      "time": ""
      }
     },
     "duration_locked": false,

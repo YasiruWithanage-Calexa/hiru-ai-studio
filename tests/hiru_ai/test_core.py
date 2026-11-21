@@ -41,7 +41,7 @@ def test_the_default_tiers_are_the_ones_the_engines_use_today():
            if not n.startswith("raphael") and (t := models_mod.resolve(n, s))}
     assert got == {"ultra": ("gpt-5", "high"), "high": ("gpt-5", "medium"), "medium": ("gpt-5-mini", "low"),
                    "low": ("gpt-5-nano", "minimal"), "vision": ("gpt-5-mini", ""), "board": ("gpt-6.1-sol", "high"),
-                   "video_prompter": ("gpt-6.1-sol", "low"),
+                   "shot_prompter": ("gpt-6.1-sol", "medium"), "camera_agent": ("gpt-6.1-sol", "medium"),
                    "fixer": ("gpt-5", "low"),  # the big rung of Adam's fixer ladder (plan/2026-11-05)
                    "author": ("gpt-5", "medium"), "repair": ("gpt-5", "low"),  # Shot Planner David (plan/2026-11-05e)
                    "jonathan": ("gpt-6.1-sol", "high"),  # Shot Planner Jonathan (plan/2026-11-06b)

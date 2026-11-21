@@ -1,0 +1,46 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "prompt": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSITUATION\nAt a rain-damp Colombo roadside, Anudi continues past Kasun's small food three-wheeler. Her smartphone already lies on the pavement behind her, unnoticed.\n\nPEOPLE\nKasun is at frame left beside the cart, observant, facing right with both hands empty. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back. Anudi is near frame right, facing right with her attention up the road. She wears a dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers and tan low-heeled closed shoes, with small gold stud earrings, a tan structured handbag and a navy folding umbrella. Her left hand holds the open umbrella overhead, her handbag hangs from her right shoulder and her right hand is empty.\n\nACTION & DIALOGUE\n[0-1.5s] Anudi continues right and leaves the frame without looking back, her eyes up the road beneath the umbrella. The smartphone remains flat on the pavement beside Kasun.\n\n[1.5-3s] Kasun lowers his chin and settles his eyes on the phone. Once Anudi is out of frame, he bends beside the cart and reaches directly toward it with his right hand.\n\n[3-4s] He lifts the phone in his right hand just above the pavement, his eyes following the pickup. Still bent beside the cart, he lifts his gaze toward the right edge with helpful attention.\n\nNobody speaks in this clip: no dialogue, no voice.\n\nCAMERA\nThe camera pushes slowly from a slightly elevated wide shot toward Kasun as Anudi exits right, ending medium-wide on his bent figure and the recovered phone beside the cart.\n\nSOUND\nLight rain, low distant traffic and faint clothing rustle. No music. Nobody speaks.\n\nRULES\nHands: Kasun is not holding the smartphone or the umbrella. Anudi holds the smartphone in one hand and the umbrella in the other hand. During the shot Anudi lets go of the smartphone. During the shot Kasun takes the smartphone. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nFORMAT\nAspect ratio 9:16. Duration 4 seconds. A single continuous shot, no scene cuts.\n\nReference images, in the order attached:\nImage 1 is the opening frame of this shot. The video starts exactly on this picture: the same framing, people, place, weather and light, and everything that happens grows out of it.\nImage 2 is the face sheet for Kasun: several angles of the same face. That person's face, age, skin tone and hair come only from this sheet, at every angle and expression, including when they turn or move closer to the camera.\nImage 3 is the look sheet for Kasun: exactly what that person wears in this shot, head to toe. When more of them comes into view, the clothes, shoes and things they carry match this sheet exactly.\nImage 4 is the face sheet for Anudi: several angles of the same face. That person's face, age, skin tone and hair come only from this sheet, at every angle and expression, including when they turn or move closer to the camera.\nImage 5 is the look sheet for Anudi: exactly what that person wears in this shot, head to toe. When more of them comes into view, the clothes, shoes and things they carry match this sheet exactly.\nNever show Images 2, 3, 4 and 5 in the video: they are references only, so no sheet, grey backdrop or panel appears and the video never cuts to them. Where the words above describe someone's clothes or face differently from these pictures, the pictures win.\n\nUse the images as references to generate the video.",
+ "config": {
+  "duration_seconds": 4,
+  "aspect_ratio": "9:16",
+  "resolution": "360p"
+ },
+ "references": [
+  {
+   "tag": "Image 1",
+   "slot": "first_frame",
+   "bucket": "frames",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/deb4d6f8-a2d1-44e2-a11c-326ae8df4318/a237cc4b-df4b-4480-9c0a-68ee60f50f41.png",
+   "source_id": "a237cc4b-df4b-4480-9c0a-68ee60f50f41"
+  },
+  {
+   "tag": "Image 2",
+   "slot": "reference",
+   "bucket": "references",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/cc610a95-c3f6-4f20-b504-20c8fb162a0c-face-621eab5f.png",
+   "source_id": "6f780733-797d-538c-b436-fb991a4f6db7"
+  },
+  {
+   "tag": "Image 3",
+   "slot": "reference",
+   "bucket": "references",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/looks/1d986035-f304-47cb-ae57-5f0986484ad3-f5871821.png",
+   "source_id": "8546b4a5-d326-5362-9eab-42f156ad20cc"
+  },
+  {
+   "tag": "Image 4",
+   "slot": "reference",
+   "bucket": "references",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/4fc68836-b389-4c0b-9127-77a236c10571/12fa0112-2810-4136-be28-6c444ea38867-face-621eab5f.png",
+   "source_id": "c4995853-11d4-53a1-9144-c57c42e76a3a"
+  },
+  {
+   "tag": "Image 5",
+   "slot": "reference",
+   "bucket": "references",
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/4fc68836-b389-4c0b-9127-77a236c10571/looks/f548056e-211f-4ee2-ac67-1fb15a5453a8-fd79bae0.png",
+   "source_id": "57ad4d92-af92-506e-b5f0-5dc42ff71902"
+  }
+ ]
+}

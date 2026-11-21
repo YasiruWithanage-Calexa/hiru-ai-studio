@@ -1,0 +1,169 @@
+{
+ "started": "2026-11-21T05:22:41.112074+00:00",
+ "jobs": [
+  {
+   "what": "plan with Raphael",
+   "job_id": "9db9a2d8-ed71-4194-9849-20ee704bbf24",
+   "status": "done",
+   "seconds": 339,
+   "result": {
+    "shots": 5,
+    "failed": 0,
+    "scenes": 1,
+    "skipped": 0
+   },
+   "error": null,
+   "at": "2026-11-21T05:28:22.366318+00:00"
+  },
+  {
+   "what": "draw first frames",
+   "job_id": "5667e055-4de0-41ab-858d-9c1dd3da5c19",
+   "status": "done",
+   "seconds": 392,
+   "result": {
+    "done": 5,
+    "failed": 0,
+    "refused": 0,
+    "skipped": 0
+   },
+   "error": null,
+   "at": "2026-11-21T05:35:12.386882+00:00"
+  },
+  {
+   "what": "generate video prompts",
+   "job_id": "7c92ad0f-fb06-4a47-938f-605ed5d796aa",
+   "status": "done",
+   "seconds": 6,
+   "result": {
+    "prompts": 5,
+    "skipped": 0,
+    "designed": 0
+   },
+   "error": null,
+   "at": "2026-11-21T05:36:23.386985+00:00"
+  },
+  {
+   "what": "generate video prompts",
+   "job_id": "2850ac77-d138-47c6-92a0-cc55df011910",
+   "status": "done",
+   "seconds": 13,
+   "result": {
+    "prompts": 5,
+    "skipped": 0,
+    "designed": 0
+   },
+   "error": null,
+   "at": "2026-11-21T05:39:02.737976+00:00"
+  },
+  {
+   "what": "take 3D-1",
+   "job_id": "bd9e1ff0-38ca-47bc-8822-5ae95e2de78b",
+   "status": "done",
+   "seconds": 69,
+   "result": {
+    "done": 1,
+    "failed": 0,
+    "refused": 0,
+    "skipped": 0
+   },
+   "error": null,
+   "at": "2026-11-21T05:40:31.204962+00:00"
+  },
+  {
+   "what": "take 3C-1",
+   "job_id": "6721e938-f2f4-4910-8952-283212a4b651",
+   "status": "done",
+   "seconds": 71,
+   "result": {
+    "done": 1,
+    "failed": 0,
+    "refused": 0,
+    "skipped": 0
+   },
+   "error": null,
+   "at": "2026-11-21T05:41:43.954591+00:00"
+  },
+  {
+   "what": "take 3A-1",
+   "job_id": "13eca2af-d0e2-478b-8c0a-733278bddf20",
+   "status": "done",
+   "seconds": 77,
+   "result": {
+    "done": 1,
+    "failed": 0,
+    "refused": 0,
+    "skipped": 0
+   },
+   "error": null,
+   "at": "2026-11-21T05:43:02.338458+00:00"
+  }
+ ],
+ "renders": [
+  {
+   "slate": "3D-1",
+   "seconds": 6,
+   "job_id": "bd9e1ff0-38ca-47bc-8822-5ae95e2de78b",
+   "renders": [
+    {
+     "id": "71110c56-fa90-4cb4-abbf-e3d700be8f80",
+     "shot_id": "e9b2d8e0-0a27-4cbe-9ce4-c35c804bf4df",
+     "status": "queued",
+     "engine": "omni_flash",
+     "engine_label": "Omni Flash 1.2",
+     "settings_text": "Draft · Omni Flash 1.2 · 360p · 9:16 · 6 s · 3 pictures",
+     "seed": null,
+     "take_id": null,
+     "error": null,
+     "refusal": null,
+     "created_at": "2026-11-21T05:39:22.114413+00:00",
+     "request": null
+    }
+   ],
+   "seeds": ""
+  },
+  {
+   "slate": "3C-1",
+   "seconds": 4,
+   "job_id": "6721e938-f2f4-4910-8952-283212a4b651",
+   "renders": [
+    {
+     "id": "e0a7541c-e211-4e08-a4a6-1a5f5e5e91a9",
+     "shot_id": "deb4d6f8-a2d1-44e2-a11c-326ae8df4318",
+     "status": "queued",
+     "engine": "omni_flash",
+     "engine_label": "Omni Flash 1.2",
+     "settings_text": "Draft · Omni Flash 1.2 · 360p · 9:16 · 4 s · 5 pictures",
+     "seed": null,
+     "take_id": null,
+     "error": null,
+     "refusal": null,
+     "created_at": "2026-11-21T05:40:32.418335+00:00",
+     "request": null
+    }
+   ],
+   "seeds": ""
+  },
+  {
+   "slate": "3A-1",
+   "seconds": 4,
+   "job_id": "13eca2af-d0e2-478b-8c0a-733278bddf20",
+   "renders": [
+    {
+     "id": "81165a68-e876-4d96-a54e-7c797d2ef176",
+     "shot_id": "b960444b-964c-4b04-ab87-fe83546fd9a8",
+     "status": "queued",
+     "engine": "omni_flash",
+     "engine_label": "Omni Flash 1.2",
+     "settings_text": "Draft · Omni Flash 1.2 · 360p · 9:16 · 4 s · 5 pictures",
+     "seed": null,
+     "take_id": null,
+     "error": null,
+     "refusal": null,
+     "created_at": "2026-11-21T05:41:45.339410+00:00",
+     "request": null
+    }
+   ],
+   "seeds": ""
+  }
+ ]
+}

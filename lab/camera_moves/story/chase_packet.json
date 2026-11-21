@@ -1,0 +1,605 @@
+{
+ "E09-S01": {
+  "ids": {
+   "C01": {
+    "name": "Dinu",
+    "kind": "person"
+   },
+   "C09": {
+    "name": "Rohan",
+    "kind": "person"
+   },
+   "L10": {
+    "name": "Pettah market",
+    "kind": "place"
+   },
+   "L11": {
+    "name": "narrow alley",
+    "kind": "place"
+   },
+   "L12": {
+    "name": "rooftop",
+    "kind": "place"
+   },
+   "P03": {
+    "name": "metal box",
+    "kind": "thing"
+   },
+   "P06": {
+    "name": "torch",
+    "kind": "thing"
+   },
+   "P07": {
+    "name": "fruit cart",
+    "kind": "thing"
+   }
+  },
+  "A_scene": {
+   "id": "E09-S01",
+   "heading": "SCENE 01 - EXT. PETTAH MARKET AND ROOFTOP - COLOMBO - NIGHT - 1.25 MINUTES",
+   "title": "The market chase",
+   "summary": "Rohan spots Dinu carrying Nimal's metal box through the night market and chases him through the crowd, an alley and up to a rooftop, where Dinu hides from the torch and finds the box empty.",
+   "purpose": "Put Dinu in physical danger for the box, then turn the escape into a new mystery: the box is empty.",
+   "purpose_source": "script",
+   "before_on_page": {
+    "empty": "first scene"
+   },
+   "after_on_page": {
+    "empty": "last scene"
+   },
+   "time": {
+    "story_order": 1,
+    "story_day": {
+     "empty": "not stated"
+    },
+    "relative": "Night, after Nimal's death",
+    "kind": "linear",
+    "anchor": "",
+    "source": "script"
+   },
+   "before_in_story": {
+    "empty": "not stated"
+   },
+   "after_in_story": {
+    "empty": "not stated"
+   },
+   "threads": [],
+   "irony": {
+    "empty": "none stated"
+   },
+   "knowledge": [
+    {
+     "person": "Dinu",
+     "learns": "The metal box is empty.",
+     "audience_only": false,
+     "source": "script"
+    }
+   ],
+   "looks": [],
+   "relationships": [
+    {
+     "between": [
+      "Dinu",
+      "Rohan"
+     ],
+     "state": "Rohan hunts Dinu for Mudalali.",
+     "scene": "E09-S01",
+     "source": "script"
+    }
+   ]
+  },
+  "B_people": [
+   {
+    "id": "C01",
+    "name": "Dinu",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Dinu - 32, cash-van driver, Nimal's closest friend.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Escape with the box and learn what Nimal left him.",
+    "feeling_start": "Watchful",
+    "feeling_end": "Breathless and lost",
+    "source": "script"
+   },
+   {
+    "id": "C09",
+    "name": "Rohan",
+    "kind": "person",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "Rohan - 40, Mudalali's enforcer, black raincoat, heavy build.",
+      "source": "script"
+     }
+    },
+    "presence": "on_screen",
+    "wants": "Catch Dinu and take the box.",
+    "feeling_start": "Predatory",
+    "feeling_end": "Thwarted",
+    "source": "script"
+   }
+  ],
+  "C_place": {
+   "id": "L10",
+   "name": "Pettah market",
+   "kind": "place",
+   "place_kind": "set",
+   "card": {
+    "summary": {
+     "value": "A crowded night market lane in Pettah, Colombo: stalls under tarpaulins, sodium light, rain on the road; a narrow alley and an iron stairway up to a flat rooftop with water tanks.",
+     "source": "script"
+    }
+   }
+  },
+  "D_things": [
+   {
+    "id": "P03",
+    "name": "metal box",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "A small dented metal box.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Dinu",
+    "holder_end": "Dinu",
+    "source": "script"
+   },
+   {
+    "id": "P06",
+    "name": "torch",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "A heavy black torch.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "Rohan",
+    "holder_end": "Rohan",
+    "source": "script"
+   },
+   {
+    "id": "P07",
+    "name": "fruit cart",
+    "kind": "thing",
+    "place_kind": null,
+    "card": {
+     "summary": {
+      "value": "A wooden cart piled with oranges.",
+      "source": "script"
+     }
+    },
+    "role": "used",
+    "holder_start": "",
+    "holder_end": "",
+    "source": "script"
+   }
+  ],
+  "E_blocks": [
+   {
+    "id": "E09-S01-B01",
+    "kind": "action",
+    "text": "Rain over Pettah market at night. Dinu pushes through the crowded lane, a metal box hidden under his jacket. Across the lane, Rohan, in a black raincoat, sees him.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Establish the crowd, the box and the hunter before either moves.",
+    "delivery_hint": "Let the recognition land on Rohan's face before anyone runs.",
+    "intent_source": "script",
+    "events": [
+     {
+      "id": "E09-S01-B01-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P03"
+      ],
+      "spot": "L10",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu moves through the crowd with the hidden box.",
+      "function": "setup"
+     },
+     {
+      "id": "E09-S01-B01-e2",
+      "actors": [
+       "C09",
+       "C01"
+      ],
+      "things": [],
+      "spot": "L10",
+      "speech": false,
+      "visible": true,
+      "change": "Rohan recognises Dinu.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E09-S01-B02",
+    "kind": "dialogue",
+    "text": "Dinu! Nawathipan!",
+    "speaker": "C09",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "C01",
+    "heard_by": [
+     "C01",
+     "C09"
+    ],
+    "intent": "Name him and stop him in public.",
+    "delivery_hint": "Shouted across the lane, cutting through the rain.",
+    "intent_source": "script",
+    "events": [
+     {
+      "id": "E09-S01-B02-e1",
+      "actors": [
+       "C09"
+      ],
+      "things": [],
+      "spot": "L10",
+      "speech": true,
+      "visible": true,
+      "change": "Rohan calls out to Dinu.",
+      "function": "escalation"
+     }
+    ]
+   },
+   {
+    "id": "E09-S01-B03",
+    "kind": "action",
+    "text": "Dinu runs. He shoves past shoppers and knocks over a fruit cart; oranges roll across the wet road. Rohan chases him through the crowd.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Start the pursuit with physical chaos.",
+    "delivery_hint": "Fast and scrambling, never balletic.",
+    "intent_source": "script",
+    "events": [
+     {
+      "id": "E09-S01-B03-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P07"
+      ],
+      "spot": "L10",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu flees and overturns the fruit cart.",
+      "function": "escalation"
+     },
+     {
+      "id": "E09-S01-B03-e2",
+      "actors": [
+       "C09"
+      ],
+      "things": [],
+      "spot": "L10",
+      "speech": false,
+      "visible": true,
+      "change": "Rohan pursues.",
+      "function": "escalation"
+     }
+    ]
+   },
+   {
+    "id": "E09-S01-B04",
+    "kind": "action",
+    "text": "Dinu turns into a narrow alley, slips on the wet stones, recovers, and climbs an iron stairway to a rooftop. Rohan is close behind.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Tighten the space and the danger.",
+    "delivery_hint": "Breathless; the slip is the closest call.",
+    "intent_source": "script",
+    "events": [
+     {
+      "id": "E09-S01-B04-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P03"
+      ],
+      "spot": "L11",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu slips, recovers and climbs.",
+      "function": "escalation"
+     },
+     {
+      "id": "E09-S01-B04-e2",
+      "actors": [
+       "C09"
+      ],
+      "things": [],
+      "spot": "L11",
+      "speech": false,
+      "visible": true,
+      "change": "Rohan follows into the alley.",
+      "function": "escalation"
+     }
+    ]
+   },
+   {
+    "id": "E09-S01-B05",
+    "kind": "action",
+    "text": "On the roof, Dinu hides behind a water tank, breathing hard. Rohan's torch beam sweeps across the tank, stops, then moves on. His footsteps fade.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Hold the danger in stillness until it passes.",
+    "delivery_hint": "Silence and breath; the torch is the threat.",
+    "intent_source": "script",
+    "events": [
+     {
+      "id": "E09-S01-B05-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P03"
+      ],
+      "spot": "L12",
+      "speech": false,
+      "visible": true,
+      "change": "Dinu hides behind the water tank.",
+      "function": "turn"
+     },
+     {
+      "id": "E09-S01-B05-e2",
+      "actors": [
+       "C09"
+      ],
+      "things": [
+       "P06"
+      ],
+      "spot": "L12",
+      "speech": false,
+      "visible": true,
+      "change": "The torch beam searches, then moves away.",
+      "function": "turn"
+     }
+    ]
+   },
+   {
+    "id": "E09-S01-B06",
+    "kind": "action",
+    "text": "Dinu opens the metal box. It is empty.",
+    "speaker": "",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [],
+    "intent": "Turn the escape into loss and a new mystery.",
+    "delivery_hint": "A held beat; the emptiness must read.",
+    "intent_source": "script",
+    "events": [
+     {
+      "id": "E09-S01-B06-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [
+       "P03"
+      ],
+      "spot": "L12",
+      "speech": false,
+      "visible": true,
+      "change": "The box is revealed to be empty.",
+      "function": "reveal"
+     }
+    ]
+   },
+   {
+    "id": "E09-S01-B07",
+    "kind": "dialogue",
+    "text": "Nimal... eka koheda thiyanne?",
+    "speaker": "C01",
+    "presence": "on_screen",
+    "device": "",
+    "addressee": "",
+    "heard_by": [
+     "C01"
+    ],
+    "intent": "Voice the question the scene leaves.",
+    "delivery_hint": "Whispered to himself, breathless.",
+    "intent_source": "script",
+    "events": [
+     {
+      "id": "E09-S01-B07-e1",
+      "actors": [
+       "C01"
+      ],
+      "things": [],
+      "spot": "L12",
+      "speech": true,
+      "visible": true,
+      "change": "Dinu asks where the thing is.",
+      "function": "texture"
+     }
+    ]
+   }
+  ],
+  "F_feeling": {
+   "mood": [
+    "urgent",
+    "tense",
+    "desperate"
+   ],
+   "turns": [
+    "E09-S01-B03",
+    "E09-S01-B05",
+    "E09-S01-B06"
+   ]
+  },
+  "G_direction": [
+   {
+    "id": "D01",
+    "about": "palette",
+    "applies": "scoped",
+    "text": "Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and\ncrowded backgrounds."
+   },
+   {
+    "id": "D05",
+    "about": "lighting",
+    "applies": "general",
+    "text": "Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes."
+   },
+   {
+    "id": "D06",
+    "about": "editing",
+    "applies": "general",
+    "text": "Editing - Fast cuts only on impact. Let important punches and reactions stay on screen."
+   },
+   {
+    "id": "D07",
+    "about": "sound",
+    "applies": "general",
+    "text": "Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero\nelevation moments."
+   },
+   {
+    "id": "D08",
+    "about": "slow_motion",
+    "applies": "general",
+    "text": "Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun."
+   },
+   {
+    "id": "D09",
+    "about": "action",
+    "applies": "general",
+    "text": "The action is mass but not weightless. Every hit has a location, an object or a consequence."
+   },
+   {
+    "id": "D10",
+    "about": "action",
+    "applies": "general",
+    "text": "Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing."
+   },
+   {
+    "id": "D11",
+    "about": "action",
+    "applies": "general",
+    "text": "Aruni is an active participant in the climax, and the final victory comes from the recording, the\nvillage and their courage - not from violence alone."
+   }
+  ],
+  "H_length": {
+   "stated_seconds": 75.0,
+   "spoken_seconds": 3.0
+  },
+  "I_open": {
+   "empty": "no open question"
+  },
+  "stage": {
+   "zones": [
+    "market lane",
+    "narrow alley",
+    "iron stairway",
+    "rooftop"
+   ],
+   "not_placed": {},
+   "people": {
+    "C01": {
+     "in": {
+      "zone": "market lane",
+      "holding": "metal box",
+      "posture": "walking"
+     },
+     "out": {
+      "zone": "rooftop",
+      "holding": "metal box",
+      "posture": "crouching"
+     }
+    },
+    "C09": {
+     "in": {
+      "zone": "market lane",
+      "posture": "standing"
+     },
+     "out": {
+      "zone": "rooftop",
+      "holding": "torch",
+      "posture": "walking"
+     }
+    }
+   },
+   "changes_at": {
+    "E09-S01-B01": [
+     {
+      "person": "Dinu",
+      "zone": "market lane",
+      "holding": "metal box",
+      "posture": "walking"
+     },
+     {
+      "person": "Rohan",
+      "zone": "market lane",
+      "posture": "standing"
+     }
+    ],
+    "E09-S01-B03": [
+     {
+      "person": "Dinu",
+      "zone": "market lane",
+      "holding": "metal box",
+      "posture": "running"
+     },
+     {
+      "person": "Rohan",
+      "zone": "market lane",
+      "posture": "running"
+     }
+    ],
+    "E09-S01-B04": [
+     {
+      "person": "Dinu",
+      "zone": "iron stairway",
+      "holding": "metal box",
+      "posture": "climbing"
+     },
+     {
+      "person": "Rohan",
+      "zone": "narrow alley",
+      "posture": "running"
+     }
+    ],
+    "E09-S01-B05": [
+     {
+      "person": "Dinu",
+      "zone": "rooftop",
+      "holding": "metal box",
+      "posture": "crouching"
+     },
+     {
+      "person": "Rohan",
+      "zone": "rooftop",
+      "holding": "torch",
+      "posture": "walking"
+     }
+    ]
+   }
+  }
+ }
+}

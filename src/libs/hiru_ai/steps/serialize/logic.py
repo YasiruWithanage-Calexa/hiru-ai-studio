@@ -28,7 +28,7 @@ from typing import Any
 from contracts import on_screen_text
 from contracts.camera_words import camera_words, lighting_words
 from contracts.canon import dressed
-from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment
+from contracts.producer import CameraSettings, CastMember, Check, PromptSection, PromptSegment, is_hold
 from contracts.staging import source_phrase
 from hiru_ai.core import parts
 from hiru_ai.steps.serialize.card import of as card_of
@@ -164,7 +164,7 @@ def _camera_text(ir: Row, ctx: Context) -> str:
     grade = ", ".join(b for b in (_bare(cine.get("white_balance")), _bare(cine.get("color_tone"))) if b)
     lens = _bare(cine.get("lens_artifacts"))
     out = [f"Camera: {camera_words(ctx.camera, ctx.recommended, ir, still=False)}"]
-    if ctx.camera.movement == "Static":  # "locked-off" alone still drifts (2026-11-18): say it firmly
+    if is_hold(ctx.camera):  # "locked-off" alone still drifts (2026-11-18): say it firmly
         out.append(get_schema().rule("tripod"))
     if grade:
         out.append(f"Grade: {grade}.")
@@ -238,7 +238,7 @@ def _beats_section(shot: ShotInput, ir: Row, ctx: Context) -> PromptSection | No
         return None
     # A beat's camera note goes before its action only when the camera moves (where it times the move). On a static
     # camera it is only "unchanged", "hold", "tableau": in the action those words make the people freeze (2026-11-18)
-    drop_camera = bool(changed_fields(ctx) & {"framing", "movement", "speed"}) or ctx.camera.movement == "Static"
+    drop_camera = bool(changed_fields(ctx) & {"framing", "movement", "speed"}) or is_hold(ctx.camera)
     by_beat: dict[int, list[Line]] = {}
     for ln in shot.lines:
         idx = ln.beat_index if ln.beat_index is not None and 0 <= ln.beat_index < len(beats) else len(beats) - 1

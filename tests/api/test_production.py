@@ -58,9 +58,37 @@ def design(world: World, s: dict) -> None:
                     "pins": st.pins.model_dump(), "designed_at": "2026-10-24T00:00:00+00:00"})
 
 
+def shot_prompts(world: World, s: dict) -> None:
+    """What the Shot prompt agent stores (plan/2026-11-20d D5): an opening, a frame and a video, pinned to the shot and
+    its camera as they are now."""
+    from contracts import picture_pins
+    from contracts.frame_brief import agent_camera
+
+    for st in states(world, s):
+        record = {"opening": {"people": [{"name": "Nimal", "side": "left", "facing": "Kamala", "posture": "standing",
+                                          "hands": "empty", "expression": "ashamed"}],
+                              "background": "The kitchen.", "light": "Dawn."},
+                  "frame": {"composition": "The camera is at eye height, a medium shot of Nimal on the left third.",
+                            "people": "Nimal stands at the door, ashamed.", "background": "The kitchen.",
+                            "light": "Dawn through the window."},
+                  "video": {"situation": "Dawn.", "people": "Nimal.", "flow": [], "sound": "Crows."},
+                  "pins": picture_pins.pinned(st.pins, st.camera, st.recommended, agent_camera(st.row)),
+                  "mode": "both", "written_at": "2026-11-20T00:00:00+00:00"}
+        row = world.repos.shots.rows[st.id]  # type: ignore[attr-defined]
+        row["design"] = {**(row.get("design") or {}), "shot_prompt": record}
+
+
 def finish_frames(world: World, s: dict, frame_ids: list[str]) -> None:
-    """What frame_render writes: done, stored, pinned to the shot as it is now."""
-    pins = {st.id: st.pins.model_dump() for st in states(world, s)}
+    """What frame_render writes: done, stored, pinned to the shot (and its camera's picture) as it is now."""
+    from contracts import picture_pins
+    from contracts.frame_brief import agent_camera
+
+    pins = {}
+    for st in states(world, s):
+        sp = st.shot_prompt_current
+        pins[st.id] = {**st.pins.model_dump(),
+                       "picture": picture_pins.picture(st.camera, agent_camera(st.row),
+                                                       picture_pins.opening_text((sp or {}).get("opening")))}
     for fid in frame_ids:
         row = world.repos.frames.rows[fid]  # type: ignore[attr-defined]
         row.update(status="done", storage_path=f"p/{row['shot_id']}/{fid}.png", pins=pins[row["shot_id"]])
@@ -144,6 +172,7 @@ def test_frames_chain_a_design_when_one_is_missing(world: World, fired: list[dic
     sent = fired[0]
     assert sent["kind"] == "shot_produce" and sent["pipeline"] == ["shot_produce", "frame_render"]
     assert sent["state"] == {"frame_ids": body["frame_ids"], "mode": "design", "shot_ids": [s["shots"][1]["id"]],
+                             "shot_prompts": [s["shots"][1]["id"]],  # plan/2026-11-20d D4 a
                              "from_board": True}, "plan/2026-11-14: painted from the scene board's panel"
     rows = world.repos.frames.rows  # type: ignore[attr-defined]
     assert all(rows[f]["status"] == "queued" and rows[f]["job_id"] == body["job_id"] for f in body["frame_ids"])
@@ -153,8 +182,13 @@ def test_frames_chain_a_design_when_one_is_missing(world: World, fired: list[dic
 
     design(world, s)
     r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=world.headers(world.crew))
-    assert fired[1]["kind"] == "frame_render" and fired[1]["pipeline"] == ["frame_render"], "designed: frames only"
-    assert fired[1]["url"].endswith(":8208/")
+    sent = fired[1]  # plan/2026-11-20d D4 a: designed, but no shot prompt yet: the agent writes it first
+    assert sent["pipeline"] == ["shot_produce", "frame_render"]
+    assert sent["state"]["shot_prompts"] == [s["shots"][1]["id"]] and sent["state"]["mode"] == "design"
+    shot_prompts(world, s)
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=world.headers(world.crew))
+    assert fired[2]["kind"] == "frame_render" and fired[2]["pipeline"] == ["frame_render"], "current: frames only"
+    assert fired[2]["url"].endswith(":8208/")
 
 
 def test_frames_carry_the_quality_a_person_picked_low_or_medium_never_high(world: World, fired: list[dict]):
@@ -281,7 +315,7 @@ def test_a_persons_camera_and_back(world: World, fired: list[dict]):
     v = r.json()
     assert v["camera"]["current"]["lens"] == "85mm" and v["camera"]["recommended"]["lens"] == "35mm"
     assert sorted(v["camera"]["changed"]) == ["axis", "lens"]
-    assert v["camera"]["storyboard_note"] == "85mm · slow dolly in"
+    assert v["camera"]["storyboard_note"] == "85mm · slow push in"  # 2026-11-20c: a stored "Dolly in" is "Push in"
     assert "a long portrait lens" in v["frame_prompt"], "a person's lens reaches the frame, as its look"
     assert v["prompt"]["stale_reasons"] == ["The camera settings changed."]
     assert any(c["label"].startswith("Crosses the axis") for c in v["checks"])
@@ -562,27 +596,126 @@ def test_a_later_shot_of_a_setup_shows_the_first_ones_accepted_frame_and_a_perso
     assert v["frame_references"][-1]["role"] == "setup"
 
 
-def test_the_prompt_writer_is_asked_for_a_shots_first_frame(world: World, fired: list[dict]):
+def test_rewrite_prompts_for_one_shot(world: World, fired: list[dict]):
     s = open_scene(world)
     crew = world.headers(world.crew)
-    assert world.client.post(shot_url(world, s, 1, "/frame-prompt"), headers=crew).status_code == 409, "no design"
+    assert world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew).status_code == 409, "no design"
     design(world, s)
-    r = world.client.post(shot_url(world, s, 1, "/frame-prompt"), headers=crew)
+    r = world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew)
     assert r.status_code == 202, r.text
-    assert fired[-1]["state"] == {"mode": "frame_prompt", "shot_ids": [s["shots"][1]["id"]]}
-    assert world.client.post(shot_url(world, s, 1, "/frame-prompt"),
+    assert fired[-1]["state"] == {"mode": "shot_prompt", "shot_ids": [s["shots"][1]["id"]]}
+    assert world.client.post(shot_url(world, s, 1, "/shot-prompt"),
                              headers=world.headers(world.reviewer)).status_code == 403
-    v = world.client.get(shot_url(world, s, 1), headers=crew).json()
-    assert v["frame_polished"] is False
+    assert world.client.get(shot_url(world, s, 1), headers=crew).json()["shot_prompt"] is None
 
 
-def test_the_prompt_writer_is_asked_for_every_designed_shot_of_a_scene(world: World, fired: list[dict]):
+def test_write_prompts_for_all_shots_skips_the_current_ones(world: World, fired: list[dict]):
     s = open_scene(world)
     crew = world.headers(world.crew)
-    to = url(world, f"/scenes/{s['scene']['id']}/frame-prompts")
+    to = url(world, f"/scenes/{s['scene']['id']}/shot-prompts")
     assert world.client.post(to, json={}, headers=crew).status_code == 409, "no design"
     design(world, s)
     r = world.client.post(to, json={}, headers=crew)
     assert r.status_code == 202, r.text
-    assert fired[-1]["state"] == {"mode": "frame_prompt", "shot_ids": [shot["id"] for shot in s["shots"]]}
+    assert fired[-1]["state"] == {"mode": "shot_prompt", "shot_ids": [shot["id"] for shot in s["shots"]]}
+    shot_prompts(world, s)
+    assert world.client.post(to, json={}, headers=crew).status_code == 409, "every one is current"
+    assert world.client.post(to, json={"only_missing": False}, headers=crew).status_code == 202
     assert world.client.post(to, json={}, headers=world.headers(world.reviewer)).status_code == 403
+
+
+def test_the_shot_shows_its_shot_prompt_and_the_frame_is_painted_from_it(world: World):
+    s = open_scene(world)
+    design(world, s)
+    shot_prompts(world, s)
+    v = world.client.get(shot_url(world, s, 1), headers=world.headers(world.crew)).json()
+    sp = v["shot_prompt"]
+    assert sp["people"][0]["side"] == "left" and sp["composition"].startswith("The camera is at eye height")
+    assert not sp["stale"] and sp["mode"] == "both"
+    assert "This shot: The camera is at eye height" in v["frame_prompt"]
+    assert any("shot_prompter" in b["sources"] for b in v["frame_brief"])
+
+
+def test_an_angle_change_marks_the_frame_and_the_shot_prompt_with_the_fields_and_nothing_is_redrawn(
+        world: World, fired: list[dict]):
+    s = open_scene(world)
+    design(world, s)
+    shot_prompts(world, s)
+    fid = _accept_one(world, s, 1)
+    crew = world.headers(world.crew)
+    scene = world.client.get(url(world, f"/scenes/{s['scene']['id']}/production"), headers=crew).json()
+    assert scene["stale_frames"] == 0 and not scene["shots"][1]["frames"][0]["stale"]
+    sent = len(fired)
+    v = world.client.patch(shot_url(world, s, 1, "/camera"), json={"angle": "Low angle"}, headers=crew).json()
+    assert v["frames"][0]["stale_reasons"] == ["The camera changed: angle eye level → low angle."]
+    assert v["shot_prompt"]["stale"] and v["shot_prompt"]["stale_reasons"][0].startswith("The camera changed: angle")
+    assert "This shot: The camera is at eye height" not in v["frame_prompt"], "out of date: code's words again"
+    assert len(fired) == sent, "a camera edit only marks: nothing is redrawn or rewritten"
+    scene = world.client.get(url(world, f"/scenes/{s['scene']['id']}/production"), headers=crew).json()
+    assert scene["stale_frames"] == 1
+    r = world.client.post(url(world, f"/scenes/{s['scene']['id']}/frames"), json={"only_stale": True}, headers=crew)
+    assert r.status_code == 202, r.text
+    shots = {world.repos.frames.rows[f]["shot_id"] for f in r.json()["frame_ids"]}  # type: ignore[attr-defined]
+    assert shots == {s["shots"][1]["id"]}, "Redraw out-of-date frames: only the marked one"
+    assert world.client.post(url(world, f"/frames/{fid}/accept"), headers=crew).status_code == 409
+
+
+def test_a_move_only_change_keeps_the_frame(world: World, fired: list[dict]):
+    s = open_scene(world)
+    design(world, s)
+    shot_prompts(world, s)
+    _accept_one(world, s, 1)
+    v = world.client.patch(shot_url(world, s, 1, "/camera"), json={"movement": "Hold", "speed": "None"},
+                           headers=world.headers(world.crew)).json()
+    assert not v["frames"][0]["stale"] and not v["prompt_lock"]["locked"]
+    assert v["shot_prompt"]["stale"] and "The camera move changed" in v["shot_prompt"]["stale_reasons"][0]
+
+
+# ── the Camera agent (plan/2026-11-20c) ───────────────────────────────────────────────────────
+
+
+def test_ask_camera_starts_a_one_shot_job_with_the_note(world: World, fired: list[dict]):
+    s = open_scene(world)
+    crew = world.headers(world.crew)
+    r = world.client.post(shot_url(world, s, 0, "/camera/ask"), json={"note": "x"}, headers=crew)
+    assert r.status_code == 409 and "Design the scene first" in r.json()["detail"]  # no IR yet
+    design(world, s)
+    r = world.client.post(shot_url(world, s, 0, "/camera/ask"), json={"note": "  a visible   slow push "},
+                          headers=crew)
+    assert r.status_code == 202, r.text
+    assert fired[-1]["kind"] == "shot_produce"
+    assert fired[-1]["state"] == {"mode": "camera_ask", "shot_ids": [s["shots"][0]["id"]],
+                                  "note": "a visible slow push"}
+    h = world.headers(world.reviewer)
+    assert world.client.post(shot_url(world, s, 0, "/camera/ask"), json={}, headers=h).status_code == 403
+
+
+def test_the_card_shows_the_agents_design_and_the_scene_its_camera_language(world: World):
+    s = open_scene(world)
+    design(world, s)
+    sts = states(world, s)
+    row = world.repos.shots.rows[sts[0].id]  # type: ignore[attr-defined]
+    rec = {**RECOMMENDED, "movement": "Push, then hold", "support": "Operated", "height": "Chest height"}
+    row["design"] = {**row["design"], "recommended": rec,
+                     "camera": {"state": "designed", "move": "push_then_hold", "trigger": "L4", "why": "the demand",
+                                "camera_sentence": "The camera slowly pushes in toward her face as she listens.",
+                                "start_s": 1, "end_s": 5.5, "opens_on": "her face", "language": "Eases closer."}}
+    r = world.client.get(url(world, f"/scenes/{s['scene']['id']}/production"), headers=world.headers(world.reviewer))
+    body = r.json()
+    assert body["camera_language"] == "Eases closer."
+    cam = body["shots"][0]["camera"]
+    assert cam["agent"]["state"] == "designed" and cam["agent"]["sentence_in_use"] is True
+    assert cam["agent"]["why"] == "the demand" and cam["agent"]["end_s"] == 5.5
+    assert cam["storyboard_note"] == "35mm · slow push, then hold on L4"
+    assert cam["recommended"]["height"] == "Chest height"
+    assert body["shots"][1]["camera"]["agent"] is None  # a shot the agent has not seen
+    assert body["shots"][1]["camera"]["recommended"]["movement"] == "Push in"  # an old "Dolly in" reads as today's
+
+
+def test_an_old_dolly_in_override_still_applies(world: World):
+    s = open_scene(world)
+    design(world, s)
+    r = world.client.patch(shot_url(world, s, 0, "/camera"), json={"movement": "Dolly out"},
+                           headers=world.headers(world.crew))
+    assert r.status_code == 200, r.text
+    assert r.json()["camera"]["current"]["movement"] == "Pull out"

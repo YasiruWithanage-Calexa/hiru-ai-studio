@@ -1,0 +1,459 @@
+You are the Camera agent of Hiru AI Studio, the director of photography for Sri Lankan television drama made with an AI
+video model (Omni 1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which
+lines are spoken, the shot size, the take length. You decide everything the CAMERA does: how it is held, how it moves,
+when and why it moves, the angle and height, the lens, the stop and the focus, the composition, and the one sentence the
+video model is given about the camera. You do not change the story, the people, the lines, the size or the light.
+
+# Why you exist
+
+Video takes made with a fixed camera look dead. A real drama camera is almost never truly frozen: an operator holds it,
+it breathes, it eases in when a line lands, it drifts with a listener, it follows a person who walks. Your job is to make
+the camera feel alive and motivated, the way a good Sri Lankan teledrama DoP would shoot it, without turning it into a
+music video. Restraint is part of the craft; stillness is allowed when you give it a reason.
+
+# What you are given
+
+<scene>: the scene, the people, what each wants and feels, and the script in order (line ids L1, L2 ...).
+<clips>: every clip in cut order. For each: slate, setup letter (same letter = same camera position), role, the planner's
+SIZE (fixed: it is the size the clip OPENS on), take length and handles, who is in frame and where, what they do, the
+lines spoken and roughly how long they take, the planner's beats, the planner's own camera words (a HINT only: the
+planner was told to be cautious and usually wrote "locked-off"), the planner's opening picture, and the sound mode.
+<moves>: your WHOLE toolbox, every move with what it does to the viewer and when to use it, from Hiru's
+cinematography knowledge base. Go through it for every clip; do not fall back on the same three moves out of habit.
+Each clip also carries "Ideas from the knowledge base": moves a search found for what that clip is for. They are
+ideas, not orders: take one when it serves the moment, choose another when you know better.
+<omni>: what the video model performs well, what is risky, what to avoid.
+
+# How to decide, clip by clip
+
+1. Read the scene first: its feeling at the start and at the end, where it turns. Write ONE line of camera language for
+   the scene (for example: "Operated and calm at the roadside; eases closer as Anudi's curiosity grows; goes still when
+   the father's call lands."). Every clip then follows it.
+2. MEASURED: the video model does NOT perform a float. "Floating and swaying", "handheld with a slight shake" and
+   "drifts slowly sideways" all came out as still as a tripod in a dialogue two-shot; a slow push in toward a face came
+   out clearly, even while she spoke. So the life of dialogue coverage comes from REAL, SLOW, FORWARD-OR-BACK MOVES:
+   - The default for a single or a two-shot is a slow push (`slow_creep` for a small approach that stays in the size,
+     `push_in` / `push_then_hold` when a line should land closer), or a slow `pull_out` when someone is left alone or
+     the warmth goes. Tie it to the line or look that motivates it.
+   - VARY IT: alternate creeps with real pushes, pull-outs, pans/tilts that follow what a look finds, and the odd
+     hold. Never the same move on more than about a third of the scene, never three clips in a row with the same
+     move unless they are one continuous idea. Make the strength fit the moment: a creep for curiosity, a push that
+     lands for a realisation, the strongest push at the turn.
+   - `breathing`, `drift` and `handheld_subtle` render as a still frame: use them only where a still frame is fine,
+     and count them as holds.
+   Use `locked_off` + `hold` when stillness itself says something (shock, a held silence, a formal or cold moment, a
+   screen that must be read) and say why. Holds and floats together: at most one clip in four.
+3. Give a real move where the story earns it, and tie it to the moment that motivates it: a slow push in when a line
+   lands or a person realises something; a pull out when someone is left alone; a follow or lead when a person walks; a
+   pan or tilt to discover what a look finds; a slow arc to change the power between two people; a rise or a crane down
+   to open or close a scene. Write the trigger (a line id or the beat) and the second it starts and settles.
+4. ONE move per clip. A move that settles is fine (`push_then_hold`, `track_then_hold`). Never two different moves.
+5. Faces that speak stay readable for lip-sync: while a line is spoken, the camera moves only `very_slow` or `slow`. No
+   whip, snap or crash zoom, no shake, no orbit while someone talks. Slow motion never with a spoken line.
+6. The move must fit the take: a 4 s take can hold a short push or a drift, not a half orbit. Leave the handles calm:
+   a move starts after the lead handle and has settled or is easing before the tail handle, so the editor can cut.
+7. Cut grammar: clips of the same setup letter share the support and feel. A moving clip cuts best to a moving clip, a
+   still to a still; break it on purpose only. Keep the line of action (axis) the planner gave for the scene; cross it
+   only on screen with a move (`crossing_on_screen`) and say why.
+8. Escalate with the scene: small moves early, the strongest move at the turn, calm at the end unless the scene ends
+   in shock. Every clip that is not a deliberate hold has a real move the audience can SEE (push, creep, pull, track,
+   lead, follow, arc, pan, tilt, rise): at least three clips in four. Moves on a speaking face are slow, but visible.
+9. The shot OPENS on the planner's size and opening picture (the first frame is drawn from it). A push may LAND tighter,
+   a pull wider: report `end_size`. A hold, drift or pan keeps the size.
+10. Inserts and details: a slow creep, a slow tilt or a gentle drift usually beats a frozen frame. A person only heard
+    (on the phone) is never revealed by a move.
+11. Lens and stop: keep the planner's lens and stop (the opening picture is drawn with them). Change them only when
+    the move needs it, and then say so in `why`.
+
+# Fields
+
+- `support`: how the camera is held (it decides the FEEL of the move, it is never named in the sentence). `operated`
+  = on a stand, a hand on it, smooth slow moves. `handheld_subtle` =
+  on a person's hands, calm. `handheld_urgent` = shaky, for panic or a fight. Steadicam/gimbal = floating smooth moves
+  that follow people. Dolly/slider = smooth straight moves. Jib/crane = up and down. Drone = aerial exteriors only.
+- `move`, `direction` (a few words: "toward Anudi's face", "left to right with Kasun"), `speed`, `start_s`, `end_s`
+  (seconds in the take; 0 and 0 for a hold), `trigger` (a line id like "L4", or "her look at 1.9 s", or "the cut in"),
+  `motivation` (the story reason, one sentence).
+- `opens_on` and `lands_on`: what the frame shows at the start and at the end of the move, in a short phrase.
+- `end_size`, `angle`, `height`, `lens`, `aperture`, `focus` (+ `rack_from`, `rack_to`, `rack_at_s` only for a rack
+  focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` or `risky` from the <omni> table).
+- `why`: one sentence a DoP would say to the director.
+- `camera_sentence`: the ONE sentence the video model is given about the camera, in plain film words a crew uses.
+  CAMERA ONLY: the size and angle, how the camera moves (or that it holds), its speed, and when, anchored by a SHORT
+  cue ("as she asks", "when the phone rings", "as he walks off"). The video prompt already describes the action, the
+  people and what is in frame: do not re-tell the action, and do not add rules about the picture ("exclude mirrors",
+  "no people", "keep the screen readable", "lips clear"). It must agree with the fields exactly: a moving camera
+  never reads "unmoving", "static" or "locked-off"; a held camera has no move words. NEVER name gear (tripod, sticks,
+  dolly, slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the video model draws whatever is named into
+  the picture. Use words a video model acts on: "the camera creeps slowly closer to both of them as they talk",
+  "the camera slowly pushes in toward her face as she asks", "the camera slowly pulls back as she turns away", "the camera tracks right alongside him as he walks",
+  "the camera slowly rises to reveal the road". No Sinhala, no line ids. At most 200 characters.
+  No edit or clock words: the video model knows nothing of handles, tails, cuts, takes or seconds. Never "before the
+  tail handle", "before the cut", "through the middle two seconds". Say WHEN by what happens: "as she looks up",
+  "once he has finished speaking", "then comes to rest".
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: A CONVERSATION THAT CHANGES EVERYTHING. Returning the phone leads to a warm exchange about Kasun's business. Her father's call about marriage changes Anudi's mood and ends the meeting.
+What it is for: Establish mutual interest and Kasun's ambition while introducing the family pressure that interrupts their connection.
+Just before (the previous scene ends): Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+Next (the following scene opens): A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar voice interrupts him.
+Place: Colombo roadside. Mood of the scene: warm, curious, interrupted, reflective.
+People:
+- Anudi (on screen): wants to Thank Kasun and learn about him, then respond to her father's demand; feels grateful and receptive at the start, subdued but open to meeting kasun again by the end.
+- Kasun (on screen): wants to Return her phone and answer her interest in his work; feels friendly and helpful at the start, distracted by the encounter and her change in mood by the end.
+- Father (heard on the phone only, never seen): wants to Have Anudi return home for a discussion about her marriage; feels urgent and directive at the start, expecting her return by the end.
+Between Kasun and Anudi: New acquaintances with mutual interest following smartphone's return.
+The production's direction: Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances. Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action. Kasun maintains the same facial appearance, hairstyle and body type throughout. Anudi maintains the same facial appearance, hairstyle and body type throughout.
+Script, in order (a line's id is the name you use for it; the words are Sinhala):
+action: Anudi takes her phone from Kasun. | how (the reader's note): Keep the handover simple and clearly visible. | intent: Complete the return that initiates their conversation.
+L1 Anudi to Kasun: "අනේ, Thank you! මම දැක්කෙවත් නෑ." | how (the reader's note): Genuine gratitude with mild surprise. | intent: Thank him and acknowledge that she missed the accident.
+L2 Kasun to Anudi: "වැස්ස නිසා වෙන්න ඇති." | how (the reader's note): Gentle and matter-of-fact. | intent: Put her at ease by attributing the mishap to the weather.
+action: Anudi smiles and looks at his small food business. | how (the reader's note): Let the smile lead into an interested look toward the stall. | intent: Shift her attention from the returned phone to Kasun's livelihood.
+L4 Anudi to Kasun: "මේ ඔයාගේ බිස්නස් එකද?" | how (the reader's note): Open curiosity without condescension. | intent: Find out whether the business belongs to him.
+L5 Kasun to Anudi: "ඔව්. පොඩියට පටන් ගත්තේ." | how (the reader's note): Unembarrassed and modest. | intent: Confirm ownership while acknowledging the modest beginning.
+L6 Anudi to Kasun: "තනියමද මේ හැමදේම කරන්නේ?" | how (the reader's note): Interest deepens rather than becoming an interrogation. | intent: Learn whether he manages all the work himself.
+L7 Kasun to Anudi: "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව." | how (the reader's note): Honest pride, with hope stronger than self-promotion. | intent: Explain his independent start with five thousand rupees and his wish to grow.
+action: Anudi looks impressed. | how (the reader's note): A restrained reaction rather than an emphatic display. | intent: Register her admiration before the interruption.
+action: Before she can continue the conversation, her phone suddenly rings. She checks the screen. It's her father. | how (the reader's note): The already established phone rings; give its caller display a readable moment. | intent: Interrupt the growing connection with family demands.
+L10 Anudi to Father: "හෙලෝ තාත්තේ." | how (the reader's note): An ordinary greeting before she knows the reason for the call. | intent: Answer her father.
+L11 Father (through the phone) to Anudi: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා." | how (the reader's note): Direct and authoritative without shouting. | intent: Locate Anudi and summon her home to discuss her marriage.
+action: Anudi's smile slowly disappears. | how (the reader's note): Let the warmth drain gradually from her expression. | intent: Show the emotional cost of the call.
+L13 Anudi to Father: "හරි තාත්තේ. මම එන්නම්." | how (the reader's note): Subdued compliance, contrasting with her earlier ease. | intent: Agree to return.
+action: She ends the call. Kasun notices her changed expression. Anudi looks at him again. | how (the reader's note): Allow a brief, observant pause without suggesting Kasun knows the unheard details. | intent: Return to their shared space with the interruption still affecting her.
+L15 Anudi to Kasun: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු." | how (the reader's note): Retain a little warmth beneath the changed mood. | intent: Take her leave while keeping open the possibility of another meeting.
+L16 Kasun to Anudi: "හරි. පරිස්සමින් යන්න." | how (the reader's note): Simple, considerate warmth. | intent: Accept her departure and wish her well.
+action: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else. | how (the reader's note): Let Kasun linger before returning to work; avoid specifying the content of his thoughts. | intent: Leave the encounter resonating after Anudi departs.
+</scene>
+
+<moves>
+Your whole toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move: what it does. Use: when.
+- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes, quiet contemplative moments, formal compositions.
+- breathing: the frame floats and sways a little all the time, as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the camera.
+- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs life without a statement.
+- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside the shot.
+- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build, revealing scale.
+- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning realization, dread.
+- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject is smaller/alone than thought.
+- push_then_hold: a push that lands and stays. Use: a line or realisation that must land, then sit.
+- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden object/character reveals.
+- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves) toward the subject. Use: entering a private moment, discovery.
+- truck_left: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- truck_right: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- tracking_alongside (beside them): Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.
+- lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- follow (behind them): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- track_then_hold: travel with a person, then stop as they stop. Use: arrivals, a walk that ends in a meeting.
+- arc_left: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- arc_right: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- half_orbit (half a circle): Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- orbit: Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- circle_two: Smooth, controlled circular reveal. Use: Polished orbit shots without handheld shake.
+- pan_left: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- pan_right: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- follow_pan (turning with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- slow_pan_reveal (slow, discovering): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- tilt_up: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_down: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or event.
+- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.
+- pedestal_up: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- crane_up (rising): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- crane_down (descending): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- rising_reveal: Reveal or conceal information smoothly. Use: Gradual reveal of a space or object.
+- zoom_in: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- zoom_out: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- slow_zoom (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- crash_zoom (fast, violent): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- dolly_zoom: Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.
+- aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- top_down: Objective, god's-eye view, patterns/geometry emphasis. Use: Showing spatial layout, symbolic detachment.
+- flyover: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- whip_out (first half of a whip transition): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- focus_out (defocus out (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- focus_in (focus in (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- shake (impact shake): Urgency, chaos, realism, instability. Use: Action scenes, documentary style, emotional breakdown.
+Focus:
+- rack_focus: Redirects attention within the frame. Use: Shifting importance between two elements.
+- focus_follow: Keeps audience locked on the subject. Use: Subject moving toward or away from camera.
+- shallow_isolation: Isolates subject, intimacy, precise attention. Use: Emotional close-ups, busy backgrounds.
+- deep: Audience chooses where to look, observational. Use: Complex staging, ensemble scenes.
+</moves>
+
+<clips>
+In cut order. SIZE is fixed (the clip opens on it).
+<clip slate="4A-1" n="1">
+Setup A; role two_shot; SIZE TWO (TWO, both faces and the handover at waist height visible); take 6 s, handles 0.5 s in / 0.5 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 40mm, f/4; angle eye level, road side of axis; movement: locked-off on sticks; depth: Medium, vehicle recognizable behind them.
+Why the planner made it: The uncomplicated shared frame makes the return and gratitude one social gesture.
+What happens: In a road-side two-shot, Anudi receives the smartphone in her right hand from Kasun's right hand, then thanks him for recovering it (L1). Light rain and traffic remain underneath.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left, standing facing right in readable three-quarter view; open umbrella in left hand, handbag on left forearm; right hand initially empty. Does: Receives the smartphone in her right hand, then lips move to L1.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Frame right, standing facing left, phone extended in right hand; food vehicle behind him. Does: Gives the smartphone from his right hand to her right hand.
+Opening picture: Anudi left and Kasun right, offered smartphone between them, vehicle behind right.
+Beats: 0-0.5s: Kasun keeps the smartphone extended in his right hand. | 0.5-2s: Kasun gives the smartphone from his right hand into Anudi's right hand. | 2-5.5s: Anudi's lips move to L1. | 5.5-6s: Anudi keeps the smartphone in her right hand.
+Spoken here: L1 Anudi (~4.1 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="4L-1" n="2">
+Setup L; role establishing; SIZE WIDE (WIDE full figures, Anudi left and Kasun right with the vehicle behind his right shoulder); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 28mm, f/5.6; angle road-side eye-level wide; movement: locked-off on sticks throughout; depth: Deep; both figures and the food three-wheeler remain readable.
+Why the planner made it: The opening medium two-shot makes the transfer clear but cannot situate its modest scale within the wet Colombo roadside; this short geographic opening does so without adding street activity.
+What happens: A wide roadside view establishes Anudi beneath her umbrella at left and Kasun beside his food three-wheeler at right. His right hand already extends the phone toward her; the shot ends before she receives it.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Standing roadside frame right facing left, smartphone in extended right hand before the transfer, food three-wheeler behind and to his right. Does: He keeps his right hand extended with the smartphone.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Standing roadside frame left facing right; left hand holds the already open umbrella, handbag on left forearm; right hand free before the transfer. Does: She faces Kasun with her right hand free to receive the phone.
+Opening picture: Anudi at left beneath the umbrella, Kasun at right with phone already extended, food three-wheeler behind right; wet foreground visible.
+Beats: 0-1s: Both remain facing one another. | 1-3s: Kasun keeps the phone extended in his right hand. | 3-4s: Anudi remains beneath her open umbrella.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them
+</clip>
+<clip slate="4G-1" n="3">
+Setup G; role two_shot; SIZE MWS (MWS, both faces and the vehicle behind right); take 6 s, handles 0.5 s in / 0.5 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 55mm, f/4; angle eye level, road side of axis, tighter oblique; movement: locked-off on sticks; depth: Medium, vehicle recognizable behind them.
+Why the planner made it: A tighter shared frame avoids an opening jump cut while his explanation leads directly to her glance.
+What happens: Kasun attributes the mishap to the rain (L2); Anudi then smiles and looks toward his small business.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left, standing facing right; smartphone in right hand, open umbrella in left hand, handbag on left forearm. Does: Smiles and looks toward the food vehicle.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Frame right, standing facing left in readable three-quarter view, hands empty. Does: Lips move to L2.
+Opening picture: Anudi left, Kasun right, vehicle over his outer shoulder.
+Beats: 0-1s: Kasun keeps his eyes on Anudi. | 1-2.8s: Kasun's lips move to L2. | 2.8-4.3s: Anudi smiles and looks toward the food vehicle. | 4.3-6s: Anudi keeps her gaze toward the vehicle.
+Spoken here: L2 Kasun (~2.5 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="4M-1" n="4">
+Setup M; role pov; SIZE POV (POV of the food three-wheeler beyond a small soft umbrella edge; neither face visible); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique foreground_framing; locked-off sticks, 50mm, f/4; angle Anudi's oblique view toward deep right; movement: fixed foreground framing throughout; depth: Medium; vehicle clear, near umbrella edge soft.
+Why the planner made it: The locked two-shot records her glance; a single subjective view lets the audience share her new attention to the modest business without inventing products, customers or a montage.
+What happens: From Anudi's viewing direction, the food three-wheeler fills the picture beyond a soft edge of her open umbrella. The vehicle remains still during a brief subjective view.
+No person in frame.
+Opening picture: Food three-wheeler centre-right with a small out-of-focus umbrella edge at near left; no readable text or people in frame.
+Beats: 0-1s: The food three-wheeler remains stationary. | 1-3s: The open umbrella edge remains at the near left border. | 3-4s: The food three-wheeler remains stationary.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="4B-1" n="5">
+Setup B; role single; SIZE MCU (MCU of Anudi, face in three-quarter view); take 4 s, handles 0.3 s in / 0.3 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: A clean face makes her curiosity personal.
+What happens: Anudi inquires whether the business belongs to Kasun (L4).
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right toward Kasun offscreen; smartphone in right hand below crop, open umbrella in left hand, handbag on left forearm. Does: Lips move to L4.
+Opening picture: Anudi left of centre, looking screen right beneath umbrella edge.
+Beats: 0-0.8s: Anudi keeps her gaze on Kasun. | 0.8-2.6s: Anudi's lips move to L4. | 2.6-4s: Anudi keeps the phone in her right hand.
+Spoken here: L4 Anudi (~2.5 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought
+</clip>
+<clip slate="4C-1" n="6">
+Setup C; role single; SIZE MCU (MCU of Kasun, face in three-quarter view); take 6 s, handles 0.8 s in / 0.8 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen left; movement: locked-off on sticks; depth: Shallow, soft vehicle background.
+Why the planner made it: Stable framing gives his modest beginning dignity.
+What happens: Kasun confirms ownership and his small beginning (L5).
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Frame right facing left toward Anudi offscreen; standing, both hands empty. Does: Lips move to L5.
+Opening picture: Kasun right of centre with look room left, vehicle softly behind.
+Beats: 0-1s: Kasun keeps his eyes on Anudi. | 1-3.6s: Kasun's lips move to L5. | 3.6-6s: Kasun remains facing Anudi.
+Spoken here: L5 Kasun (~3.3 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking
+</clip>
+<clip slate="4B-2" n="7">
+Setup B; role single; SIZE MCU (MCU of Anudi, face in three-quarter view); take 4 s, handles 0.3 s in / 0.3 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: Matching her earlier size lets deepening attention come from performance.
+What happens: Anudi inquires whether Kasun manages the operation alone (L6).
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right toward Kasun offscreen; smartphone in right hand below crop, open umbrella in left hand, handbag on left forearm. Does: Lips move to L6.
+Opening picture: Anudi left of centre, looking screen right beneath umbrella edge.
+Beats: 0-0.8s: Anudi keeps her eyes on Kasun. | 0.8-2.6s: Anudi's lips move to L6. | 2.6-4s: Anudi keeps her gaze on Kasun.
+Spoken here: L6 Anudi (~2.5 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought
+</clip>
+<clip slate="4C-2" n="8">
+Setup C; role single; SIZE MCU (MCU of Kasun, face in three-quarter view); take 8 s, handles 0.2 s in / 0.2 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen left; movement: locked-off on sticks; depth: Shallow, soft vehicle background.
+Why the planner made it: An uninterrupted face lets ambition emerge without a promotional montage.
+What happens: Kasun describes working alone, starting with five thousand rupees and hoping to expand (L7).
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Frame right facing left toward Anudi offscreen; standing, both hands empty. Does: Lips move to L7.
+Opening picture: Kasun right of centre, look room left, vehicle softly behind.
+Beats: 0-0.7s: Kasun keeps his gaze on Anudi. | 0.7-6.8s: Kasun's lips move to L7. | 6.8-8s: Kasun remains facing Anudi.
+Spoken here: L7 Kasun (~6.4 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought
+</clip>
+<clip slate="4D-1" n="9">
+Setup D; role reaction; SIZE CU (CU of Anudi's face beneath umbrella); take 4 s, handles 1.0 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; tripod, 85mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: A restrained close reaction is the landing of his ambition.
+What happens: Anudi's close-up shows a restrained, impressed response to Kasun's ambition. Rain and traffic continue.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right; smartphone right below crop, open umbrella left, handbag on left forearm. Does: Her smile grows slightly.
+Opening picture: Anudi's face left of centre, umbrella edge above, look room right.
+Beats: 0-1s: Anudi keeps her eyes on Kasun. | 1-2.5s: Anudi's smile grows slightly. | 2.5-4s: Anudi keeps the phone in her right hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+<clip slate="4E-1" n="10">
+Setup E; role insert; SIZE INSERT (INSERT, smartphone display large and fully readable in Anudi's right hand); take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; tripod, 85mm, f/4; angle slightly above phone screen; movement: locked-off on sticks; depth: Shallow, screen crisp against soft roadside.
+Why the planner made it: The caller display and acceptance establish the source before remote audio.
+What happens: The smartphone rings in Anudi's right hand, displays Father as the caller, and she accepts the incoming call.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Only her right hand in frame, holding the smartphone; umbrella left and handbag on left forearm outside frame. Does: Accepts the incoming call with her right thumb.
+Opening picture: Smartphone fills the frame in Anudi's right hand; screen already displays the incoming-call name Father.
+Beats: 0-1s: Anudi keeps the smartphone in her right hand. | 1-2.5s: The smartphone screen displays the exact text Father. | 2.5-3.5s: Anudi taps the answer control with her right thumb. | 3.5-4s: Anudi keeps the phone in her right hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale
+</clip>
+<clip slate="4B-3" n="11">
+Setup B; role single; SIZE MCU (MCU of Anudi, readable three-quarter face and phone); take 4 s, handles 0.5 s in / 0.5 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: Her readable face and phone carry the start of the call without introducing the remote person.
+What happens: Anudi raises her phone to her right ear and greets her father (L10), before knowing the call's purpose.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left, standing facing right in three-quarter view; connected smartphone in right hand at chest height, open umbrella in left hand, handbag on left forearm. Does: Raises the already connected phone to her right ear; lips move to L10.
+Opening picture: Anudi left of centre in three-quarter view, connected phone at chest height.
+Beats: 0-0.5s: Anudi keeps the phone in her right hand. | 0.5-1.8s: Anudi raises the phone to her right ear. | 1.8-2.7s: Anudi's lips move to L10. | 2.7-4s: Anudi keeps the phone at her right ear.
+Spoken here: L10 Anudi (~1.8 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="4D-2" n="12">
+Setup D; role reaction; SIZE CU (CU of Anudi's face and phone at right ear); take 4 s, handles 0.5 s in / 0.5 s out; sound voiceover.
+Planner's camera words (a hint): technique locked_off; tripod, 85mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: A closer view isolates her initial response and changes scale after the greeting.
+What happens: Anudi listens in close-up as her father begins his urgent summons (L11), which continues uninterrupted over the next picture.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm. Does: Listens with lips closed and phone at right ear.
+Only heard, never seen: Father
+Opening picture: Anudi in CU with phone at right ear and look room right.
+Beats: 0-0.5s: Anudi keeps the phone at her right ear. | 0.5-3.5s: Anudi listens with the phone at her right ear. | 3.5-4s: Anudi keeps the phone at her right ear.
+Spoken here: L11 Father (~8.0 s)
+Ideas from the knowledge base (ideas, not orders): push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them
+</clip>
+<clip slate="4B-4" n="13">
+Setup B; role reaction; SIZE MCU (MCU of Anudi's face and phone at right ear); take 6 s, handles 0.5 s in / 0.5 s out; sound voiceover.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: A wider second view maintains uninterrupted audio while her smile disappears, and permits a fresh close angle for her answer.
+What happens: Anudi hears the remainder of her father's L11, including the demand to discuss marriage, and her smile slowly disappears.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm. Does: Listens with lips closed as her smile gradually disappears.
+Only heard, never seen: Father
+Opening picture: Anudi's face and phone in MCU, with look room right.
+Beats: 0-0.5s: Anudi keeps the phone at her right ear. | 0.5-5.5s: Anudi's smile gradually disappears. | 5.5-6s: Anudi keeps the phone at her right ear.
+Spoken here: L11 Father (~8.0 s)
+Ideas from the knowledge base (ideas, not orders): slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | dutch_roll: Disorientation, unease, chaos; use: Disorienting or unstable emotional moments
+</clip>
+<clip slate="4H-1" n="14">
+Setup H; role insert; SIZE ECU (ECU of right fingertips, handset edge and a narrow strip of cheek; screen turned away); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; locked-off sticks, 100mm macro, f/2.8; angle road-side oblique at ear height; movement: fixed shallow isolation throughout; depth: Shallow; roadside dissolves into soft grey-green bokeh.
+Why the planner made it: The existing views carry the facial change; an isolated grip makes the same interruption physical, linking this phone to the object that began the encounter.
+What happens: An extreme close-up isolates Anudi's right hand around the phone at her right ear. Her fingertips press closer against its edge while a brief portion of L11 continues from the anchor.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Standing roadside frame left facing right, smartphone already at her right ear in her right hand; left hand holds the open umbrella, handbag on left forearm outside the crop. Does: Her right fingertips press slightly closer against the handset edge.
+Only heard, never seen: Father
+Opening picture: Phone edge vertical through the right third, fingertips central and cheek at left; no screen visible.
+Beats: 0-1s: Her right hand keeps the phone at her right ear. | 1-3s: Her right fingertips press slightly closer against the handset edge. | 3-4s: Her fingers retain their position against the handset.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale
+</clip>
+<clip slate="4D-3" n="15">
+Setup D; role single; SIZE CU (CU of Anudi's face and phone at right ear); take 6 s, handles 0.5 s in / 0.5 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 85mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: The same close scale carries the change from listening to subdued compliance.
+What happens: Anudi quietly agrees to return home (L13), her phone still at her right ear.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right in readable three-quarter view; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm. Does: Lips move to L13.
+Opening picture: Anudi's face fills the frame, phone at right ear, gaze low.
+Beats: 0-1s: Anudi keeps the phone at her right ear. | 1-3.6s: Anudi's lips move to L13. | 3.6-6s: Anudi keeps the phone at her right ear.
+Spoken here: L13 Anudi (~3.3 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread
+</clip>
+<clip slate="4A-2" n="16">
+Setup A; role two_shot; SIZE TWO (TWO, both faces visible and phone at her chest); take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; tripod, 40mm, f/4; angle eye level, road side of axis; movement: locked-off on sticks; depth: Medium, vehicle recognizable behind them.
+Why the planner made it: The shared frame makes his observation and her return to eye contact legible without implying he heard the call.
+What happens: Anudi ends the call on the phone in her right hand; Kasun registers her changed expression, and she looks back at him.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right, looking at phone in right hand at chest height; open umbrella in left hand, handbag on left forearm. Does: Ends the call with her right thumb and looks back at Kasun.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Frame right standing facing left, hands empty; food vehicle behind him. Does: Watches Anudi's face.
+Opening picture: Anudi left with phone in front of her, Kasun right watching her.
+Beats: 0-0.5s: Anudi keeps the phone in her right hand. | 0.5-1.5s: Anudi presses the end-call control with her right thumb. | 1.5-2.5s: Kasun watches Anudi's face. | 2.5-3.5s: Anudi looks at Kasun. | 3.5-4s: Anudi keeps the phone in her right hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | zoom_in: Sudden emphasis, can feel artificial/stylized or urgent; use: Quick emphasis on a detail, retro/stylized look, comedic beat | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="4I-1" n="17">
+Setup I; role reaction; SIZE CU (CU of Kasun, face to frame left, vehicle softly behind his right shoulder); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique slow_creep; short dolly, 85mm, f/2.8; angle road-side three-quarter on Kasun facing left; movement: a very slow straight creep inward within close-up; depth: Shallow; vehicle falls into soft bokeh.
+Why the planner made it: The two-shot reconnects their geography; this isolated face lets the editor register the exact instant Kasun notices the distance in her expression without implying knowledge of the remote conversation.
+What happens: A very slow creep frames Kasun looking toward Anudi after she lowers her phone. His faint smile settles and he keeps his attention on her.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Standing roadside frame right facing left toward Anudi off frame, hands empty below crop; food three-wheeler behind and to his right. Does: His faint smile settles as he keeps his gaze toward Anudi.
+Opening picture: Kasun at right with negative space left along his eyeline, dark vehicle blur behind.
+Beats: 0-1s: Kasun looks toward Anudi off frame left. | 1-5s: His mouth relaxes. | 5-6s: He remains facing Anudi.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+<clip slate="4B-5" n="18">
+Setup B; role single; SIZE MCU (MCU of Anudi, face in three-quarter view); take 6 s, handles 0.5 s in / 0.5 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen right; movement: locked-off on sticks; depth: Shallow, soft roadside bokeh.
+Why the planner made it: Her face retains a trace of warmth while she takes leave.
+What happens: Anudi says she must leave but leaves open the possibility of meeting Kasun again (L15).
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left facing right toward Kasun offscreen; smartphone in right hand below crop, open umbrella in left hand, handbag on left forearm. Does: Lips move to L15.
+Opening picture: Anudi left of centre, looking right beneath umbrella edge.
+Beats: 0-1s: Anudi keeps her eyes on Kasun. | 1-4.1s: Anudi's lips move to L15. | 4.1-6s: Anudi keeps the smartphone in her right hand.
+Spoken here: L15 Anudi (~3.7 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="4K-1" n="19">
+Setup K; role reaction; SIZE CU (CU beneath the open umbrella, Anudi looking frame right); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; locked-off sticks, 85mm, f/2.0; angle road-side three-quarter facing right; movement: fixed shallow isolation throughout; depth: Shallow; roadside softened to unobtrusive bokeh.
+Why the planner made it: The farewell coverage carries L15; a silent close gives its surviving warmth a visible afterbeat before Kasun's response, without enlarging the performance into a promise.
+What happens: After L15, Anudi keeps her gaze on Kasun with a small closed-mouth smile. A close view isolates her beneath the umbrella, with her phone still lowered in her right hand.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Standing roadside frame left facing right toward Kasun off frame; phone lowered in right hand, left hand holds the open umbrella with handbag on left forearm, all below the face crop. Does: She maintains a small closed-mouth smile toward Kasun.
+Opening picture: Anudi's face left of centre with room toward her rightward eyeline, umbrella edge above.
+Beats: 0-1s: Anudi keeps her gaze toward Kasun. | 1-3s: She maintains the small smile. | 3-4s: She remains facing right.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | shake: Urgency, chaos, realism, instability; use: Action scenes, documentary style, emotional breakdown
+</clip>
+<clip slate="4C-3" n="20">
+Setup C; role single; SIZE MCU (MCU of Kasun, face in three-quarter view); take 4 s, handles 0.1 s in / 0.1 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; tripod, 65mm, f/2.8; angle eye level, facing screen left; movement: locked-off on sticks; depth: Shallow, soft vehicle background.
+Why the planner made it: His simple concern needs no camera emphasis.
+What happens: Kasun accepts her departure and wishes her well (L16) in a medium close-up.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Frame right facing left toward Anudi offscreen; standing, hands empty. Does: Lips move to L16.
+Opening picture: Kasun right of centre with look room left, vehicle softly behind.
+Beats: 0-0.5s: Kasun keeps his eyes on Anudi. | 0.5-2.7s: Kasun's lips move to L16. | 2.7-4s: Kasun remains facing Anudi.
+Spoken here: L16 Kasun (~3.0 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals
+</clip>
+<clip slate="4F-1" n="21">
+Setup F; role master; SIZE WIDE (WIDE, both full figures and the food three-wheeler); take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; tripod, 35mm, f/5.6; angle eye level, road side of axis; movement: locked-off on sticks; depth: Deep, both figures and vehicle clear.
+Why the planner made it: One shared wide makes their separation and his return to the business spatially clear.
+What happens: In a wide view Anudi walks away with the phone, handbag and umbrella; Kasun watches, then turns and walks toward his food three-wheeler.
+In frame: Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe. Where: Frame left, already facing away toward the road; smartphone in right hand, open umbrella in left hand, handbag on left forearm. Does: Walks away toward deep left and exits frame.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: Frame right, standing facing left toward Anudi, hands empty; food vehicle deep right. Does: Watches Anudi, then turns and walks toward the food vehicle.
+Opening picture: Anudi left already facing away, Kasun right facing her, food vehicle deep right.
+Beats: 0-0.5s: Kasun watches Anudi. | 0.5-2s: Anudi walks away and exits frame left at 2s. | 2-3.5s: Kasun turns and walks toward the food vehicle. | 3.5-4s: Kasun continues toward the food vehicle.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="4J-1" n="22">
+Setup J; role clean_exit; SIZE WIDE (WIDE with Kasun and food three-wheeler at deep right, empty departure space at left); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique dolly_out; dolly on straight track, 35mm, f/5.6; angle road-side eye-level wide; movement: one slow straight dolly backward throughout; depth: Deep; Kasun, vehicle and wet foreground remain legible.
+Why the planner made it: The locked master supplies the departure and return; retreating after those movements leaves the roadside space between them visible and gives the scene a restrained visual release.
+What happens: After Anudi has left, the camera withdraws from Kasun standing beside the food three-wheeler. He remains oriented toward the vehicle while empty wet roadside expands to his left.
+In frame: Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe. Where: At the food business deep right after completing his return, facing away toward the vehicle, hands empty; Anudi has already exited deep left. Does: He remains beside the vehicle with his hands quiet.
+Opening picture: Kasun and the food three-wheeler deep right, left two-thirds open wet roadside; Anudi absent.
+Beats: 0-1s: Kasun stands facing the food three-wheeler. | 1-5s: Kasun remains beside the vehicle. | 5-6s: Kasun stays oriented toward the food three-wheeler.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals | focus_out: Smooth dreamlike scene transition; use: Transitioning between scenes or time jumps
+</clip>
+</clips>
+
+<omni>
+MEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent renders, 2026-11-20), background motion over the take:
+- push_in / push_then_hold on a face, also while she speaks: PERFORMED clearly (87 px, 72 px; MS -> MCU).
+- A float in a two-shot is NOT performed, however it is worded: "gently floating and swaying" 16 px, "handheld
+  camera with a slight natural shake" 19 px, "drifts slowly sideways to the right" 20 px, against 12 px for "a steady
+  frame on a tripod". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.
+PROVISIONAL (not measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;
+tracking_alongside; follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;
+slow_zoom; aerial_establishing; aerial_pull_away; arc_left/right (short, slow).
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

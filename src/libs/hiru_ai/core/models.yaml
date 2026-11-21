@@ -50,9 +50,13 @@ tiers:
   # The Scene board writer (plan/2026-11-14 §3.2): one scene's board in one answer, as the storyboard lab ran it
   # (GPT-6.1 Sol, high; run_001 took 4,341 output tokens). The caller caps the answer at 10,000 tokens.
   board:  { model: model_board, effort: effort_board, timeout_s: 600, retries: 1, fallbacks: [] }
-  # The video prompt agent (plan/2026-11-20b D2): writes the direction of every video clip, one call a clip. The lab
-  # chose GPT-6.1 Sol at low effort (lab/video_prompt run 003) over terra and gpt-5-mini.
-  video_prompter: { model: model_video_prompter, effort: effort_video_prompter, timeout_s: 120, retries: 1, fallbacks: [] }
+  # The Shot prompt agent (plan/2026-11-20d D2): writes a shot's first frame and its video together, one call a shot,
+  # as lab/shot_prompts ran it (GPT-6.1 Sol, medium; $0.007-0.023 a shot). The caller caps the answer at 12,000 tokens.
+  # It replaces plan/2026-11-20b's video prompter.
+  shot_prompter: { model: model_shot_prompter, effort: effort_shot_prompter, timeout_s: 120, retries: 1, fallbacks: [] }
+  # The Camera agent (plan/2026-11-20c D2): designs every shot's camera, one call a scene (and one for an Ask), as
+  # lab/camera_agent ran it (GPT-6.1 Sol, medium; 77-88 s a scene). The caller caps the answer at 16,000 tokens.
+  camera_agent: { model: model_camera_agent, effort: effort_camera_agent, timeout_s: 180, retries: 1, fallbacks: [] }
   vision: { model: model_vision,                        timeout_s: 120, retries: 1, fallbacks: [] }  # the frame check
 embed:
   model: embedding_model

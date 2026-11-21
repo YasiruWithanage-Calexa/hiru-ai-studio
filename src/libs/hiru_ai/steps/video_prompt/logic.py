@@ -29,8 +29,6 @@ LINE_ID = re.compile(r"\bL\d+\b|\bE\d+-S\d+-B\d+")
 QUOTES = re.compile(r"[\"“”«»]")
 SPEECH = re.compile(r"\b(say|says|said|saying|ask|asks|asked|tell|tells|told|repl(?:y|ies|ied)|whisper(?:s|ed)?|"
                     r"shout(?:s|ed)?|speak(?:s|ing)?|talk(?:s|ing)?|call(?:s)? out|murmur(?:s|ed)?|answers?)\b", re.I)
-MOVING = re.compile(r"\b(handheld|hand-held|push(?:es)?[- ]in|dolly|pan(?:s|ning)?|tilt(?:s)?|zoom(?:s)?|tracking|"
-                    r"drift(?:s)?|sway(?:s)?|creep(?:s)?)\b", re.I)
 # plan §4.2 (new): the agent must not write notes to us into the prompt (gpt-5-mini did in the lab)
 NOTES = re.compile(r"\(?[^.()]*\bin the edit\b[^.()]*\)?|\bnot spoken here\b|\bthe planner\b|\bthe brief\b", re.I)
 # Camera gear named in a prompt is drawn into the picture: render 007 put a camera on a tripod in two takes after the
@@ -47,7 +45,7 @@ def camera_words(text: str) -> str:
     return text
 
 
-LIMITS = {"situation": 450, "people": 650, "camera": 300, "sound": 250, "step": 450}
+LIMITS = {"situation": 450, "people": 650, "sound": 250, "step": 450}
 SPOKEN_MODES = ("dialogue", "voiceover", "sung")
 VIA = {"phone": "through the phone"}  # how a heard voice reaches the scene, in the line's head
 
@@ -170,8 +168,9 @@ def clip_brief(clip: Row) -> str:
     lines heard over it, how it opens and joins, and the pictures the take attaches."""
     out = [f"<clip slate=\"{clip.get('slate') or clip.get('code')}\">",
            f"Role: {clip.get('role') or 'shot'}; framing {clip.get('size', '')} ({clip.get('framing_words', '')}); "
-           f"angle {clip.get('angle', '')}; lens {clip.get('lens', '')}; camera move: {clip.get('technique', '')} "
-           f"({clip.get('movement', '')}); take {clip.get('take_s')} s."]
+           f"angle {clip.get('angle', '')}; lens {clip.get('lens', '')}; take {clip.get('take_s')} s.",
+           # plan/2026-11-20c D13: the camera is designed; code puts this sentence in the prompt
+           f"Camera (designed; code puts it in the prompt, do not write it): {clip.get('camera_sentence') or ''}"]
     for label, key in (("Why the planner made it", "why"), ("Planner's summary", "summary"), ("Setting", "setting"),
                        ("Light", "light")):
         if clip.get(key):
@@ -236,7 +235,7 @@ def gates(d: Row, clip: Row) -> list[str]:
     if got != want:
         faults.append(f"lines: this clip speaks {want or 'nothing'} in that order, each once; your flow has "
                       f"{got or 'none'}")
-    texts = {k: str(d.get(k) or "") for k in ("situation", "people", "camera", "sound")}
+    texts = {k: str(d.get(k) or "") for k in ("situation", "people", "sound")}
     for n, s in enumerate(flow, 1):
         for k in ("text", "to", "how", "listener"):
             texts[f"flow {n} {k}"] = str(s.get(k) or "")
@@ -263,9 +262,6 @@ def gates(d: Row, clip: Row) -> list[str]:
         named = re.search(rf"\b{re.escape(name)}\b[^.;]*", str(d.get("people") or ""), re.I)
         if named and not re.search(r"heard|never in frame|never seen|phone|voice", named.group(0), re.I):
             faults.append(f"people: {name} is only heard and never in frame")
-    if clip.get("locked_off") and MOVING.search(str(d.get("camera") or "")):
-        faults.append(f"camera: the planner's camera is locked off; "
-                      f"'{MOVING.search(str(d.get('camera') or '')).group(0)}' moves it")  # type: ignore[union-attr]
     for s in flow:
         if s.get("kind") == "line" and not str(s.get("how") or "").strip():
             faults.append(f"line {s.get('line_id')}: no delivery")
@@ -300,14 +296,50 @@ def register(clip: Row) -> str:
               "Lankans say them.")
 
 
+def lower_first(how: str, clip: Row) -> str:
+    """A delivery after "to X," starts lower-case (plan/2026-11-20d D7: the lab wrote "to the visitor, Calm and..."),
+    unless it starts with a name, an "I" or an acronym."""
+    first = how.split(" ", 1)[0].strip(",;:").split("'")[0].split("’")[0]
+    names = {str(p.get("name") or "").split(" ")[0] for p in clip.get("in_frame") or []} | {
+        str(ln.get("speaker") or "").split(" ")[0] for ln in clip.get("lines") or []}
+    if not first or first in names or first == "I" or (len(first) > 1 and first[1].isupper()):
+        return how
+    return how[0].lower() + how[1:]
+
+
+SINGLE_SHOT = "A single continuous shot, no scene cuts."  # Google's Omni guide: it cuts unless asked not to
+
+
+def _sec(x: float) -> str:
+    return f"{x:g}"
+
+
+def timecodes(d: Row, clip: Row) -> list[str] | None:
+    """Google's timecodes, one per step ("[0-1s] "), when every step carries a range that runs from 0 to the take in
+    order (lab/timecodes, 2026-11-21); None for a shot prompt written before them (it is assembled as before)."""
+    flow = [s for s in d.get("flow") or [] if isinstance(s, dict)]
+    try:
+        times = [(float(s["start_s"]), float(s["end_s"])) for s in flow]
+    except (KeyError, TypeError, ValueError):
+        return None
+    take = float(clip.get("take_s") or 0)
+    ok = bool(times) and times[0][0] == 0 and all(b > a for a, b in times) and all(
+        abs(times[i][1] - times[i + 1][0]) < 1e-6 for i in range(len(times) - 1)) and (
+        not take or abs(times[-1][1] - take) < 1e-6)
+    return [f"[{_sec(a)}-{_sec(b)}s] " for a, b in times] if ok else None
+
+
 def action_section(d: Row, clip: Row) -> PromptSection:
     """The flow: actions as the agent wrote them; each line its head, the line's exact words as a Sinhala segment,
-    and what the listener does. Then the register line."""
+    and what the listener does, each step after its timecode when it has one. Then the register line."""
     by_lid = {ln["lid"]: ln for ln in spoken(clip)}
+    stamps = timecodes(d, clip)
     segments: list[PromptSegment] = []
-    for s in d.get("flow") or []:
+    for n, s in enumerate(d.get("flow") or []):
         if segments:
             segments.append(_seg(NL + NL))
+        if stamps:
+            segments.append(_seg(stamps[n]))
         if s.get("kind") != "line":
             segments.append(_seg(_end(str(s.get("text") or ""))))
             continue
@@ -320,9 +352,10 @@ def action_section(d: Row, clip: Row) -> PromptSection:
             head = f"{ln['speaker']}'s voice {via}, {how}:"
             tail = "No one on screen mouths these words."
         else:
-            head = f"{ln['speaker']}, to {str(s.get('to') or '').strip()}, {how}:"
+            head = f"{ln['speaker']}, to {str(s.get('to') or '').strip()}, {lower_first(how, clip)}:"
             tail = ""
-        segments += [_seg(head + NL), PromptSegment(sinhala=body(ln["text"]))]
+        # the words in quotes, as lab/shot_prompts and lab/natural_dialogue sent them to Omni (the audit of 2026-11-21)
+        segments += [_seg(head + NL + "\""), PromptSegment(sinhala=body(ln["text"])), _seg("\"")]
         rest = " ".join(x for x in (tail, _end(str(s.get("listener") or ""))) if x)
         if rest:
             segments.append(_seg(NL + rest))
@@ -356,11 +389,12 @@ def assemble(d: Row, clip: Row, *, repaired: bool = False) -> Row:
         _section("situation", "Situation", str(d.get("situation") or "")),
         _section("people", "People", str(d.get("people") or "")),
         action_section(d, clip),
-        _section("camera", "Camera", camera_words(str(d.get("camera") or ""))),
+        _section("camera", "Camera", camera_words(str(clip.get("camera_sentence") or ""))),  # D13: code's sentence
         _section("sound", "Sound", str(d.get("sound") or "")),
         _section("rules", "Rules", *rules),
         _section("format", "Format", f"Aspect ratio {clip.get('aspect_ratio', '16:9')}. Duration "
-                                     f"{clip.get('take_s')} seconds. Ends on a cut."),
+                                     f"{clip.get('take_s')} seconds. "
+                                     + (SINGLE_SHOT if timecodes(d, clip) else "Ends on a cut.")),
     ) if s is not None]
     return {"sections": [s.model_dump(exclude_none=True) for s in sections], "prose": prompt_text(sections),
             "checks": [c.model_dump() for c in checks(d, clip, sections, repaired=repaired)]}

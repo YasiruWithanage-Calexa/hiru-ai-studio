@@ -1,0 +1,38 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<frame.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<face_C03.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<look_C03.png>"
+  },
+  {
+   "type": "text",
+   "text": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Clear coverage, readable emotion, family-audience warmth.\n\nSETTING\nAn organised modern hotel operations office with a computer on the workstation between the two standing managers.\n\nSUBJECTS\nSri Lankan adult operations manager in a light plain business shirt and dark trousers, wearing warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels, with small plain gold stud earrings — Lips move to L2 while maintaining Company A Operations Manager (Employee)'s eyeline.\n\nCAMERA\nCamera: From a slightly low waist-up view, move slowly toward the manager as the explanation begins, settling chest-up with looking space to the right.\n\nLIGHTING\nDay: Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.\n\nVOICES\nVoice casting — fixed for the whole production, identical in every shot: Company B Operations Manager (the woman in warm taupe tailored jacket and matching straight-leg trousers): Clear medium-low alto with a warm resonance, relaxed conversational Sinhala and fluent English technical terms; evenly paced explanations with gentle emphasis woman voice (39), a Sri Lankan (Colombo) accent.\n\nACTION & DIALOGUE\nOver 6 seconds:\n0-3s: The manager's practical explanation remains directed to his visitor. Company B Operations Manager remains upright beside the workstation. Company B Operations Manager keeps his lips closed and his eyes on the offscreen visitor. Company B Operations Manager's lips move to L2. Company B Operations Manager slightly firms his mouth between phrases while maintaining an even gaze.\n3-6s: The sentence ends with room for the next step. Company B Operations Manager remains beside the workstation. Company B Operations Manager closes his lips and keeps his chin level. Company B Operations Manager (the woman in warm taupe tailored jacket and matching straight-leg trousers) says, \"Productivity වැඩි වුණා, හැබැයි processes වෙනස් වුණේ නැහැ.\" — only Company B Operations Manager's lips move.\n\nSOUND\nSpoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: room: Quiet office ventilation.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 9:16. Duration 6 seconds. Ends on a cut.\n\nReference images, in the order attached:\nImage 1 is the opening frame of this shot. The video starts exactly on this picture: the same framing, people, place, weather and light, and everything that happens grows out of it.\nImage 2 is the face sheet for Company B Operations Manager: several angles of the same face. Company B Operations Manager's face, age, skin tone and hair come only from this sheet, at every angle and expression, including when Company B Operations Manager turns or moves closer to the camera.\nImage 3 is the look sheet for Company B Operations Manager: exactly what Company B Operations Manager wears in this shot, head to toe (Warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels; Small plain gold stud earrings). When more of Company B Operations Manager comes into view, the clothes, shoes and things carried match this sheet exactly.\nImages 2 to 3 are references only: never show a sheet, its grey backdrop or its panels in the video, and never cut to them. Where the words above describe someone's clothes or face differently from these pictures, the pictures win."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "9:16",
+  "resolution": "360p",
+  "duration": "6s",
+  "delivery": "uri"
+ },
+ "generation_config": {
+  "video_config": {
+   "task": "reference_to_video"
+  }
+ }
+}

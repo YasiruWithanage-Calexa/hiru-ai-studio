@@ -1,0 +1,41 @@
+{
+ "answer": {
+  "opening": {
+   "people": [],
+   "background": "The computer display fills the image. Its request area is blank. No people or surrounding office details are visible.",
+   "light": "Soft directional daylight from camera left and gentle interior fill keep display reflections controlled."
+  },
+  "frame": {
+   "composition": "A straight-on insert at chest height, level with the workstation display. The screen sits square to the camera and fills the image. A 50mm lens at f/5.6 gives a natural perspective and deep focus. The blank request area is centred with comfortable margins.",
+   "people": "No people are visible.",
+   "background": "Only the computer display is visible. The request area is blank, with no enquiry text or panel.",
+   "light": "Soft directional daylight from camera left combines with gentle interior fill. Reflections remain subdued across the readable display."
+  },
+  "video": {
+   "situation": "Daytime in an organised modern hotel operations office. The workstation display is ready to receive a corporate conference enquiry, but its request area is still blank.",
+   "people": "No people are visible.",
+   "flow": [
+    {
+     "kind": "action",
+     "text": "Within the first two seconds, the request area holds blank briefly, then a request panel appears. It reads: Corporate Conference Request — 2 nights · 30 guests · Accommodation · Conference facilities · Meals.",
+     "line_id": "",
+     "to": "",
+     "how": "",
+     "listener": ""
+    },
+    {
+     "kind": "action",
+     "text": "From two to four seconds, the complete request panel remains unchanged and readable. Every requirement stays inside the display crop with comfortable margins.",
+     "line_id": "",
+     "to": "",
+     "how": "",
+     "listener": ""
+    }
+   ],
+   "sound": "Quiet office room tone and a faint computer hum. No speech, notification tone or music."
+  }
+ },
+ "first_faults": [],
+ "faults": [],
+ "calls": 1
+}

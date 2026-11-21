@@ -17,6 +17,7 @@ from enum import StrEnum
 
 from contracts import action_budget as ab
 from contracts.producer import Check
+from contracts.sentences import body
 
 # Brands a prompt must not name: Veo renders logos it is told about, and a broadcaster cannot air
 # them unlicensed. A starting list; a production adds its own (`ProductionSettings.banned_terms`,
@@ -75,7 +76,9 @@ def check_prompt(*, prose: str, sinhala: Sequence[str], shot: ShotNow,
 
     spoken = shot.sound_mode in ("dialogue", "voiceover", "sung") and bool(shot.lines)
     if spoken:
-        verbatim = list(sinhala) == [ln.text for ln in shot.lines]
+        # the words as they are said (`contracts.sentences.body`): the script may keep the quotes around a line and the
+        # shot prompt's assembly writes the words without them (the paid test of 2026-11-21: every spoken shot failed)
+        verbatim = [body(s) for s in sinhala] == [body(ln.text) for ln in shot.lines]
         checks.append(Check(label="Lines match the approved script" if verbatim
                             else "A line differs from the approved script", tone="pass" if verbatim else "fail"))
         for ln in shot.lines:

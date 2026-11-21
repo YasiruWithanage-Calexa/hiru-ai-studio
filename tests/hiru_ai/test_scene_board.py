@@ -182,6 +182,34 @@ def test_a_frame_from_the_board_attaches_the_panel_last_and_says_the_mannequins(
     assert "Kamala stirs a pot." in frame["prompt"]
 
 
+def test_a_shot_with_a_current_shot_prompt_is_painted_from_it_not_from_the_panel(monkeypatch: Any):
+    """The audit of 2026-11-21: the panel says "keep its composition exactly" and was painted before the Camera agent's
+    angle and opening; a shot with a current shot prompt is painted from its words and the sheets (lab/shot_prompts)."""
+    from hiru_ai.steps.frame_compose import logic
+
+    store = BoardStore()
+    bid = store.add_board()
+    painter = FakeImages()
+    painter.picture = board_png(2, 2)
+    run(store, {"board_id": bid}, [reply(numbers(store))], painter)
+    store.board_rows[bid]["approved_at"] = "2026-11-14T10:00:00Z"
+    record = {"frame": {"composition": "The camera is low at hip height, looking up at Kamala, waist up.",
+                        "people": "Kamala stands at the stove, facing left.", "background": "The kitchen.",
+                        "light": "Morning light."}, "opening": {"people": [], "background": "", "light": ""}}
+    monkeypatch.setattr(logic.World, "shot_prompt_reasons", lambda self, shot: [])
+    monkeypatch.setattr(logic.World, "shot_prompt", lambda self, shot: record)
+    shot = shots(store)[0]
+    fid = store.add_frame(shot["id"], stage="final", board_id=bid)
+    painter.picture = png()
+    result, _ = run(store, {"frame_ids": [fid], "from_board": True}, [], painter)
+    frame = store.frame_rows[fid]
+    assert result["done"] == 1, frame.get("error")
+    labels = [r.label for r in painter.calls[-1][2]]
+    assert "the approved draft of this frame" not in labels and labels[0] == "the face sheet for Kamala"
+    assert "This shot: The camera is low at hip height" in frame["prompt"]
+    assert "mannequin" not in frame["prompt"] and "keep its composition" not in frame["prompt"]
+
+
 def test_a_frame_is_painted_at_the_quality_the_person_picked():
     store = BoardStore()
     bid = store.add_board()

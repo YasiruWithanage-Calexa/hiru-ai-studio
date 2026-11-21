@@ -404,17 +404,19 @@ def test_the_genre_a_document_gives_replaces_the_shot_producers_constant():
 # ── Phase 4: conflicts ────────────────────────────────────────────────────────────────────────────────────────────────
 
 
-def test_ingest_reports_the_lens_the_camera_does_not_have_and_still_keeps_the_entry():
+def test_ingest_keeps_the_bibles_lenses_and_no_longer_reports_them():
+    """The bible asks for 24, 35 and 50mm; since plan/2026-11-20c the camera panel has all three (18 to 135mm), so
+    nothing is reported and the entry is kept. A lens it still lacks is reported (`test_a_build_puts_each_...`)."""
     store = FakeMemory()
     _, jobs, _ = ingest(BIBLE, models(doc_ingest__memory=[reply_for(BIBLE)]), store)
     warned = [e["text"] for e in jobs.events if e["type"] == "warning" and "24mm" in e.get("text", "")]
-    assert len(warned) == 1 and "28mm, 35mm, 50mm, 85mm" in warned[0]
-    assert any("24mm for geography" in r["says"] for r in store.rows)  # reported, not dropped, not obeyed
+    assert warned == []
+    assert any("24mm for geography" in r["says"] for r in store.rows)
 
 
 def test_a_build_puts_each_conflict_on_its_events_once_and_a_clean_memory_adds_nothing():
     jobs = FakeJobs()
-    rows = [row("camera", "Use 24mm.", "when:action scenes", document_id="d1"),
+    rows = [row("camera", "Use 16mm.", "when:action scenes", document_id="d1"),
             row("visual", "Natural light.", document_id="d1"), row("visual", "Sodium light.", document_id="d2")]
     assert memory.report(ctx_with(rows), jobs, uuid4(), "planner") == 2
     assert [e["type"] for e in jobs.events] == ["warning", "warning"] and jobs.events[0]["agent"] == "planner"

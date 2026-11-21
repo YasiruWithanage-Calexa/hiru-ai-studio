@@ -1,0 +1,642 @@
+{
+ "2A-1": {
+  "facts": {
+   "slate": "2A-1",
+   "code": "2A-1",
+   "role": "two_shot",
+   "size": "MS",
+   "take_s": 8,
+   "sound_mode": "dialogue",
+   "why": "A gentle lateral track introduces an orderly workplace and an equal peer relationship without making the welcome a presentation.",
+   "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+   "light": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+   "in_frame": [
+    {
+     "name": "Company B Operations Manager",
+     "description": "Company B Operations Manager in Warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels..",
+     "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+     "action": "Gives a small welcome nod while lips move to L1."
+    },
+    {
+     "name": "Company A Operations Manager (Employee)",
+     "description": "Company A Operations Manager (Employee) in Pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes..",
+     "position": "Standing frame right facing left toward Company B Operations Manager, hands relaxed at sides.",
+     "action": "Listens with eyes on Company B Operations Manager."
+    }
+   ],
+   "heard_people": [],
+   "hands": "",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Both managers remain standing opposite one another.",
+     "performance": "Company B Operations Manager meets Company A Operations Manager (Employee)'s eyeline with a slight smile; Company A Operations Manager (Employee) keeps attentive eye contact."
+    },
+    {
+     "time": "3-6s",
+     "action": "Company B Operations Manager gives one small nod with lips moving to L1.",
+     "performance": "Company B Operations Manager's smile eases into a matter-of-fact delivery while Company A Operations Manager (Employee) keeps attentive eye contact."
+    },
+    {
+     "time": "6-8s",
+     "action": "Both remain in their standing positions.",
+     "performance": "Company B Operations Manager closes the lips and keeps eye contact; Company A Operations Manager (Employee) remains attentive."
+    }
+   ],
+   "sound": {
+    "ambience": "",
+    "effects": "",
+    "music": ""
+   },
+   "lines": [
+    {
+     "lid": "L1",
+     "text": "Welcome! අපිත් මුලින් ChatGPT, Gemini විතරයි use කළේ.",
+     "speaker": "Company B Operations Manager",
+     "heard": false,
+     "part": 1,
+     "parts": 1
+    }
+   ],
+   "first_frame": {
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+    "subjects": [
+     "Company B Operations Manager standing left in a light plain business shirt and dark trousers.",
+     "Company A Operations Manager (Employee) standing right in a dark plain business shirt and dark trousers."
+    ],
+    "composition": "Company B Operations Manager on the left and Company A Operations Manager (Employee) on the right, workstation and computer between them, both faces already readable."
+   },
+   "opens_state": "",
+   "camera": {
+    "angle": "eye_level",
+    "height": "eye",
+    "size": "MS",
+    "lens": "35mm",
+    "aperture": "f/4",
+    "focus": "medium",
+    "composition": "symmetric",
+    "composition_note": "Give both managers equal visual weight and retain the workstation between them.",
+    "move": "push_then_hold",
+    "direction": "straight toward both managers",
+    "speed": "slow",
+    "start_s": 1.0,
+    "end_s": 7.0,
+    "trigger": "The welcome and the manager's small nod.",
+    "opens_on": "Both managers waist-up, Company B left and Company A right, with the workstation between them.",
+    "lands_on": "Both managers chest-up, their faces equally readable across the workstation.",
+    "end_size": "MCU",
+    "designed": true,
+    "sentence": "From an eye-level waist-up two-shot, move slowly closer as the welcome begins, settling with both managers chest-up and their faces equally readable."
+   }
+  },
+  "answer": {
+   "opening": {
+    "people": [
+     {
+      "name": "Company B Operations Manager",
+      "side": "left",
+      "facing": "Facing right toward Company A Operations Manager, with a readable three-quarter face.",
+      "posture": "Standing upright beside the workstation, shoulders relaxed.",
+      "hands": "Both hands rest loosely at waist level beside the computer, holding nothing.",
+      "expression": "A slight welcoming smile and direct eye contact with the visitor."
+     },
+     {
+      "name": "Company A Operations Manager (Employee)",
+      "side": "right",
+      "facing": "Facing left toward Company B Operations Manager, with a readable three-quarter face.",
+      "posture": "Standing upright opposite Company B Operations Manager.",
+      "hands": "Both hands hang relaxed at the sides, holding nothing.",
+      "expression": "Attentive and receptive, eyes on Company B Operations Manager."
+     }
+    ],
+    "background": "An organised modern hotel operations office. A workstation and computer sit between the two standing managers.",
+    "light": "Soft directional daylight enters from camera left through the office window. Gentle interior fill keeps both faces readable, with warm tones and controlled reflections on the computer display."
+   },
+   "frame": {
+    "composition": "The camera is at eye height, looking level across the workstation in a symmetric waist-up two-shot. A natural 35mm lens look at f/4 gives both managers equal visual weight and moderate background separation. Company B stands left and Company A stands right. The workstation and computer occupy the lower central foreground between them, with the orderly office behind. Both three-quarter faces are equally readable. Photorealistic corporate-film texture retains natural skin detail and subtle optical imperfections.",
+    "people": "Company B Operations Manager stands left, facing right toward the visitor, shoulders relaxed and both hands resting loosely at waist level beside the computer, holding nothing. A slight welcoming smile accompanies direct eye contact. Company B wears a warm taupe tailored jacket and matching straight-leg trousers, with an ivory blouse. Company A Operations Manager (Employee) stands right, facing left toward Company B, with both hands relaxed at the sides, holding nothing. The expression is attentive and receptive. Company A wears a pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists, with a black leather belt.",
+    "background": "An organised modern hotel operations office surrounds the workstation. The computer remains between the managers. The office has an orderly, professional appearance.",
+    "light": "Soft directional daylight from camera left shapes both faces. Gentle interior fill preserves readable expressions, warm tones and controlled display reflections."
+   },
+   "video": {
+    "situation": "Daytime in an organised modern hotel operations office. Company B Operations Manager welcomes the visiting Company A Operations Manager across the workstation.",
+    "people": "Company B Operations Manager stands left, facing right, carrying a relaxed, knowledgeable welcome. Company B wears a warm taupe tailored jacket and matching straight-leg trousers, with an ivory blouse; both hands rest loosely at waist level beside the computer, holding nothing. Company A Operations Manager (Employee) stands right, facing left, attentive and receptive. Company A wears a pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists, with a black leather belt; both hands remain relaxed at the sides, holding nothing.",
+    "flow": [
+     {
+      "kind": "action",
+      "text": "Both managers hold their standing positions across the workstation. Company B meets the visitor's eyes with a slight smile; Company A returns attentive eye contact.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 0.0,
+      "end_s": 2.0
+     },
+     {
+      "kind": "line",
+      "text": "",
+      "line_id": "L1",
+      "to": "Company A Operations Manager (Employee)",
+      "how": "Warm and welcoming at first, then matter-of-fact as the explanation continues. Company B gives one small nod while speaking, keeping both hands loosely at waist level and maintaining eye contact.",
+      "listener": "Company A keeps attentive eye contact, takes a quiet breath and remains relaxed, with both hands at the sides.",
+      "start_s": 2.0,
+      "end_s": 7.0
+     },
+     {
+      "kind": "action",
+      "text": "Company B closes the lips and maintains a friendly, settled gaze. Company A remains attentive. Both stay standing in the same positions through the final hold.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 7.0,
+      "end_s": 8.0
+     }
+    ],
+    "sound": "Quiet office room tone and a faint computer hum beneath the dialogue. No music."
+   }
+  }
+ },
+ "2B-1": {
+  "facts": {
+   "slate": "2B-1",
+   "code": "2B-1",
+   "role": "single",
+   "size": "MS",
+   "take_s": 6,
+   "sound_mode": "dialogue",
+   "why": "A settled single gives the limitation of standalone tools a clear sentence-sized beat.",
+   "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+   "light": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+   "in_frame": [
+    {
+     "name": "Company B Operations Manager",
+     "description": "Company B Operations Manager in Warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels..",
+     "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+     "action": "Lips move to L2 while maintaining Company A Operations Manager (Employee)'s eyeline."
+    }
+   ],
+   "heard_people": [],
+   "hands": "",
+   "beats": [
+    {
+     "time": "0-3s",
+     "action": "Company B Operations Manager remains upright beside the workstation. Company B Operations Manager keeps his lips closed and his eyes on the offscreen visitor. Company B Operations Manager's lips move to L2.",
+     "performance": "Company B Operations Manager slightly firms his mouth between phrases while maintaining an even gaze."
+    },
+    {
+     "time": "3-6s",
+     "action": "Company B Operations Manager remains beside the workstation.",
+     "performance": "Company B Operations Manager closes his lips and keeps his chin level."
+    }
+   ],
+   "sound": {
+    "ambience": "",
+    "effects": "",
+    "music": ""
+   },
+   "lines": [
+    {
+     "lid": "L2",
+     "text": "Productivity වැඩි වුණා, හැබැයි processes වෙනස් වුණේ නැහැ.",
+     "speaker": "Company B Operations Manager",
+     "heard": false,
+     "part": 1,
+     "parts": 1
+    }
+   ],
+   "first_frame": {
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+    "subjects": [
+     "Company B Operations Manager in a light plain business shirt and dark trousers, standing and facing right."
+    ],
+    "composition": "Waist-up Company B Operations Manager on the left third, already three-quarter to camera with open space toward the right."
+   },
+   "opens_state": "",
+   "camera": {
+    "angle": "slightly_low",
+    "height": "chest",
+    "size": "MS",
+    "lens": "50mm",
+    "aperture": "f/4",
+    "focus": "focus_follow",
+    "composition": "rule_of_thirds",
+    "composition_note": "Retain the left-third placement and clear rightward eyeline throughout the advance.",
+    "move": "push_then_hold",
+    "direction": "straight toward Company B Operations Manager",
+    "speed": "slow",
+    "start_s": 0.75,
+    "end_s": 5.25,
+    "trigger": "The manager begins the explanatory phrase.",
+    "opens_on": "Company B Operations Manager waist-up on the left third, facing right.",
+    "lands_on": "Company B Operations Manager chest-up, retaining rightward looking space.",
+    "end_size": "MCU",
+    "designed": true,
+    "sentence": "From a slightly low waist-up view, move slowly toward the manager as the explanation begins, settling chest-up with looking space to the right."
+   }
+  },
+  "answer": {
+   "opening": {
+    "people": [
+     {
+      "name": "Company B Operations Manager",
+      "side": "left",
+      "facing": "Facing right toward the offscreen visitor, with the face readable in three-quarter view.",
+      "posture": "Upright beside the workstation, shoulders relaxed.",
+      "hands": "Both hands rest loosely at waist level, holding nothing.",
+      "expression": "Lips closed, chin level, with an attentive, even gaze."
+     }
+    ],
+    "background": "An organised modern hotel operations office. The workstation and its computer sit beside the manager toward the right. The visitor remains outside the frame.",
+    "light": "Soft directional daylight enters through the office window from camera left. Gentle interior fill keeps the face readable and display reflections controlled."
+   },
+   "frame": {
+    "composition": "The camera sits low at the manager's chest height, below the face, and looks slightly up at the manager. A natural 50mm lens perspective at f/4 frames the manager waist-up on the left third, with clear looking space to the right. The workstation occupies the lower-right edge, with the organised office providing depth behind it. Focus rests on the manager's face.",
+    "people": "The Company B Operations Manager wears a warm taupe tailored jacket and ivory blouse. The manager stands upright beside the workstation, facing right toward the offscreen visitor, with the face readable in three-quarter view. Both empty hands rest loosely at waist level. Shoulders stay relaxed, lips closed and chin level. The gaze is attentive and even.",
+    "background": "An organised modern hotel operations office with a computer on the workstation beside the manager. No other person is visible.",
+    "light": "Soft directional daylight from camera left shapes the face, balanced by gentle interior fill. Display reflections remain controlled. Warm, natural colour and subtle optical imperfections give the image a photorealistic corporate-film finish."
+   },
+   "video": {
+    "situation": "Daytime in the hotel operations office, just after the welcome and introduction to standalone AI tools. The manager continues the explanation to the visitor standing offscreen right.",
+    "people": "The Company B Operations Manager stands frame left beside the workstation, wearing a warm taupe tailored jacket and ivory blouse. The manager faces right in three-quarter view, carrying calm recognition of a familiar operational limitation. Both empty hands initially rest loosely at waist level. The visitor stays offscreen.",
+    "flow": [
+     {
+      "kind": "action",
+      "text": "For the opening moment, the manager keeps lips closed and eyes on the offscreen visitor. The upright posture and relaxed hands remain unchanged.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 0.0,
+      "end_s": 1.0
+     },
+     {
+      "kind": "line",
+      "text": "",
+      "line_id": "L2",
+      "to": "Company A Operations Manager, offscreen right",
+      "how": "Matter-of-fact and candid, acknowledging the initial benefit before stressing its limit. The manager starts around three-quarters of a second into the shot, slightly firms the mouth at the phrase break, then finishes the thought while maintaining an even gaze.",
+      "listener": "The visitor listens offscreen without speaking.",
+      "start_s": 1.0,
+      "end_s": 5.0
+     },
+     {
+      "kind": "action",
+      "text": "The manager closes the lips after the explanation and keeps the chin level. Hold the visitor's eyeline through the end of the six-second shot, with hands still resting loosely at waist level.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 5.0,
+      "end_s": 6.0
+     }
+    ],
+    "sound": "The manager's voice is close and natural against quiet office room tone. No music."
+   }
+  }
+ },
+ "2H-1": {
+  "facts": {
+   "slate": "2H-1",
+   "code": "2H-1",
+   "role": "cutaway",
+   "size": "MS",
+   "take_s": 4,
+   "sound_mode": "ambient",
+   "why": "Releases the demonstration into its real workplace and leaves the responsible manager, rather than the software, as the final visual emphasis.",
+   "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+   "light": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+   "in_frame": [
+    {
+     "name": "Company B Operations Manager",
+     "description": "Company B Operations Manager in Warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels..",
+     "position": "Standing frame left, facing right toward Company A Operations Manager (Employee) outside the frame; workstation to her right; hands relaxed at her sides.",
+     "action": "Maintains eye contact toward the visitor with lips closed."
+    }
+   ],
+   "heard_people": [],
+   "hands": "",
+   "beats": [
+    {
+     "time": "0-2s",
+     "action": "Company B Operations Manager keeps her gaze toward the visitor. Her lips remain closed and her shoulders settle. Company B Operations Manager maintains her standing position.",
+     "performance": "She retains a small closed-mouth smile toward the visitor."
+    },
+    {
+     "time": "2-4s",
+     "action": "Company B Operations Manager remains beside the workstation.",
+     "performance": "Her gaze stays level toward the visitor, lips closed."
+    }
+   ],
+   "sound": {
+    "ambience": "",
+    "effects": "",
+    "music": ""
+   },
+   "lines": [],
+   "first_frame": {
+    "setting": "Cream office walls, pale oak workstation and flush timber storage in the background.",
+    "lighting": "Directional window light shapes Company B Operations Manager's face with gentle interior fill.",
+    "subjects": [
+     "Company B Operations Manager standing beside the workstation, lips closed"
+    ],
+    "composition": "Company B Operations Manager stands left in three-quarter view; the workstation occupies the lower right and its display is seen from the back, with Company A Operations Manager (Employee) beyond the right crop."
+   },
+   "opens_state": "",
+   "camera": {
+    "angle": "eye_level",
+    "height": "eye",
+    "size": "MS",
+    "lens": "40mm",
+    "aperture": "f/4",
+    "focus": "medium",
+    "composition": "rule_of_thirds",
+    "composition_note": "Keep the manager on the left third and limit the widening so the visitor remains beyond the right crop.",
+    "move": "pull_out",
+    "direction": "straight back from the manager and workstation",
+    "speed": "slow",
+    "start_s": 1.0,
+    "end_s": 3.0,
+    "trigger": "The manager's shoulders settle after the explanation.",
+    "opens_on": "Company B Operations Manager waist-up at left, with the workstation and back of the display at lower right.",
+    "lands_on": "Company B Operations Manager framed to mid-thigh beside more of the desk and organised office, with the visitor still outside the right edge.",
+    "end_size": "MWS",
+    "designed": true,
+    "sentence": "From an eye-level waist-up view, move slowly back as the manager's shoulders settle, ending at mid-thigh with more desk and office around the manager."
+   }
+  },
+  "answer": {
+   "opening": {
+    "people": [
+     {
+      "name": "Company B Operations Manager",
+      "side": "left",
+      "facing": "Three-quarter view facing right toward the visitor outside the frame.",
+      "posture": "Standing beside the workstation with relaxed shoulders.",
+      "hands": "Both hands rest at her sides, holding nothing.",
+      "expression": "A small closed-mouth smile, with level eyes resting on the visitor."
+     }
+    ],
+    "background": "An organised modern hotel operations office. The workstation occupies the lower right, with its computer display seen from the back. The visitor remains outside the right edge.",
+    "light": "Softened directional daylight from camera left and gentle interior fill keep her face readable and display reflections controlled."
+   },
+   "frame": {
+    "composition": "The camera is at eye height, looking level across the office. A natural 40mm lens view at f/4 frames the manager waist-up on the left third, with moderate depth of field. The workstation and back of the computer display occupy the lower-right foreground, with the organised office behind her. The visitor is beyond the right crop.",
+    "people": "The Company B Operations Manager wears a warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels; the waist-up crop shows her jacket and blouse. She stands in three-quarter view facing right toward the unseen visitor. Both hands rest at her sides below the crop, holding nothing. Her shoulders are relaxed, her gaze is level, and she holds a small closed-mouth smile.",
+    "background": "An organised modern hotel operations office surrounds the workstation. The computer display is seen only from the back at lower right.",
+    "light": "Softened directional daylight enters from camera left. Gentle interior fill keeps her face readable, with warm natural tones and controlled display reflections."
+   },
+   "video": {
+    "situation": "In the hotel operations office during the day, the manager has finished explaining the workflow. A quiet four-second pause holds her calm connection with the visitor.",
+    "people": "The Company B Operations Manager stands on the left beside the workstation, facing right toward the visitor outside the frame. She wears a warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels. Both hands rest at her sides, holding nothing. She carries calm assurance and a small closed-mouth smile.",
+    "flow": [
+     {
+      "kind": "action",
+      "text": "For the first two seconds, she keeps her level gaze on the visitor and lets her shoulders settle. Her lips stay closed, her hands remain relaxed at her sides, and her small smile holds.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 0.0,
+      "end_s": 2.5
+     },
+     {
+      "kind": "action",
+      "text": "Through the final two seconds, she remains standing beside the workstation, breathing naturally. Her gaze stays with the visitor outside the right edge, and her lips remain closed.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 2.5,
+      "end_s": 4.0
+     }
+    ],
+    "sound": "Quiet office room tone and a faint computer hum. Nobody speaks. No music."
+   }
+  }
+ },
+ "2I-1": {
+  "facts": {
+   "slate": "2I-1",
+   "code": "2I-1",
+   "role": "reaction",
+   "size": "CU",
+   "take_s": 4,
+   "sound_mode": "ambient",
+   "why": "Gives the welcome a recipient and establishes the visitor's attentive engagement before the display dominates the demonstration.",
+   "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+   "light": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+   "in_frame": [
+    {
+     "name": "Company A Operations Manager (Employee)",
+     "description": "Company A Operations Manager (Employee) in Pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes..",
+     "position": "Standing frame right, facing left toward Company B Operations Manager offscreen; hands below the crop.",
+     "action": "Listens with lips closed and gives one small nod."
+    }
+   ],
+   "heard_people": [],
+   "hands": "",
+   "beats": [
+    {
+     "time": "0-2s",
+     "action": "Company A Operations Manager (Employee) watches Company B Operations Manager. His lips remain closed with the corners slightly lifted. Company A Operations Manager (Employee) gives one small nod.",
+     "performance": "His chin dips once while his eyes stay directed toward Company B Operations Manager."
+    },
+    {
+     "time": "2-4s",
+     "action": "Company A Operations Manager (Employee) maintains eye contact toward Company B Operations Manager.",
+     "performance": "His head is steady and his lips remain closed."
+    }
+   ],
+   "sound": {
+    "ambience": "",
+    "effects": "",
+    "music": ""
+   },
+   "lines": [],
+   "first_frame": {
+    "setting": "Softly blurred cream wall and honey-toned office storage behind Company A Operations Manager (Employee).",
+    "lighting": "Soft directional daylight defines the face with gentle fill.",
+    "subjects": [
+     "Company A Operations Manager (Employee) standing, attentive gaze left, lips closed"
+    ],
+    "composition": "Company A Operations Manager (Employee)'s face occupies the right half, turned three-quarter left toward Company B Operations Manager beyond the crop."
+   },
+   "opens_state": "",
+   "camera": {
+    "angle": "eye_level",
+    "height": "eye",
+    "size": "CU",
+    "lens": "85mm",
+    "aperture": "f/2.8",
+    "focus": "shallow_isolation",
+    "composition": "lead_room",
+    "composition_note": "Keep looking space to the left toward the host.",
+    "move": "hold",
+    "direction": "none",
+    "speed": "none",
+    "start_s": 0.0,
+    "end_s": 0.0,
+    "trigger": "The visitor receives the welcome.",
+    "opens_on": "The visitor's face in close-up on the right, looking left.",
+    "lands_on": "The same close-up of the visitor maintaining the host's eyeline.",
+    "end_size": "CU",
+    "designed": true,
+    "sentence": "Hold an eye-level close-up of the visitor on the right with looking space to the left, keeping the same framing through the small nod."
+   }
+  },
+  "answer": {
+   "opening": {
+    "people": [
+     {
+      "name": "Company A Operations Manager (Employee)",
+      "side": "right",
+      "facing": "Three-quarter left toward Company B Operations Manager offscreen.",
+      "posture": "Standing upright with relaxed shoulders.",
+      "hands": "Both hands remain below the crop; no held object is visible.",
+      "expression": "Attentive eyes directed left, lips closed with the corners slightly lifted."
+     }
+    ],
+    "background": "An organised modern hotel operations office falls softly out of focus. The host remains outside the crop to the left.",
+    "light": "Softened directional daylight from camera left shapes his face, with gentle interior fill and warm office tones."
+   },
+   "frame": {
+    "composition": "The camera is at the visitor's eye height, looking level at his face. An 85mm lens at f/2.8 gives shallow focus and natural perspective. His face occupies the right half of the close-up, with looking space to the left toward the offscreen host. His shoulders sit at the lower edge; his hands and the workstation remain outside the crop. The office recedes into soft blur behind him.",
+    "people": "Company A Operations Manager (Employee) stands frame right, upright with relaxed shoulders, facing three-quarter left toward Company B Operations Manager offscreen. His eyes stay directed left. His lips are closed with the corners slightly lifted. Both hands remain below the crop; no held object is visible. He wears a pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes. Only his collar and upper shirt are visible.",
+    "background": "An organised modern hotel operations office forms a softly blurred background in warm tones. No other person is visible.",
+    "light": "Softened directional daylight enters from camera left, with gentle interior fill keeping his face readable. Skin texture and subtle natural optical imperfections remain visible."
+   },
+   "video": {
+    "situation": "During a daytime welcome in an organised modern hotel operations office, the visitor receives the host's attention before the demonstration. The host remains offscreen to the left.",
+    "people": "Company A Operations Manager (Employee) stands frame right, facing three-quarter left with relaxed shoulders and a receptive, attentive expression. His hands remain below the crop. He wears a pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes. Only his collar and upper shirt are visible.",
+    "flow": [
+     {
+      "kind": "action",
+      "text": "Over the first two seconds, the visitor watches the offscreen host with his lips closed and their corners slightly lifted. He gives one small nod, dipping his chin once while keeping his eyes directed left.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 0.0,
+      "end_s": 2.5
+     },
+     {
+      "kind": "action",
+      "text": "For the remaining two seconds, his head settles and stays steady. He maintains the host's eyeline with quiet attention and closed lips.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 2.5,
+      "end_s": 4.0
+     }
+    ],
+    "sound": "Quiet office room tone and a faint computer hum. Nobody speaks. No music."
+   }
+  }
+ },
+ "2D-1": {
+  "facts": {
+   "slate": "2D-1",
+   "code": "2D-1",
+   "role": "insert",
+   "size": "INSERT",
+   "take_s": 4,
+   "sound_mode": "ambient",
+   "why": "The enquiry is the story's concrete input; a still, readable screen allows its requirements to register without inventing a physical interaction.",
+   "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+   "light": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+   "in_frame": [],
+   "heard_people": [],
+   "hands": "",
+   "beats": [
+    {
+     "time": "0-2s",
+     "action": "The request area remains blank. The request panel appears with the exact text: Corporate Conference Request — 2 nights · 30 guests · Accommodation · Conference facilities · Meals.",
+     "performance": ""
+    },
+    {
+     "time": "2-4s",
+     "action": "The request panel remains visible.",
+     "performance": ""
+    }
+   ],
+   "sound": {
+    "ambience": "",
+    "effects": "",
+    "music": ""
+   },
+   "lines": [],
+   "first_frame": {
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+    "subjects": [],
+    "composition": "The computer display fills the image, with its request area blank before the enquiry appears."
+   },
+   "opens_state": "",
+   "camera": {
+    "angle": "eye_level",
+    "height": "chest",
+    "size": "INSERT",
+    "lens": "50mm",
+    "aperture": "f/5.6",
+    "focus": "deep",
+    "composition": "centred",
+    "composition_note": "Keep every requirement inside the display crop with comfortable margins.",
+    "move": "hold",
+    "direction": "none",
+    "speed": "none",
+    "start_s": 0.0,
+    "end_s": 0.0,
+    "trigger": "The conference enquiry appears in the blank request area.",
+    "opens_on": "The computer display fills the image with the request area blank.",
+    "lands_on": "The same display insert containing the complete conference request.",
+    "end_size": "INSERT",
+    "designed": true,
+    "sentence": "Hold a straight-on insert level with the display as the enquiry appears, ending with the complete request and all its requirements inside the frame."
+   }
+  },
+  "answer": {
+   "opening": {
+    "people": [],
+    "background": "The computer display fills the image. Its request area is blank. No people or surrounding office details are visible.",
+    "light": "Soft directional daylight from camera left and gentle interior fill keep display reflections controlled."
+   },
+   "frame": {
+    "composition": "A straight-on insert at chest height, level with the workstation display. The screen sits square to the camera and fills the image. A 50mm lens at f/5.6 gives a natural perspective and deep focus. The blank request area is centred with comfortable margins.",
+    "people": "No people are visible.",
+    "background": "Only the computer display is visible. The request area is blank, with no enquiry text or panel.",
+    "light": "Soft directional daylight from camera left combines with gentle interior fill. Reflections remain subdued across the readable display."
+   },
+   "video": {
+    "situation": "Daytime in an organised modern hotel operations office. The workstation display is ready to receive a corporate conference enquiry, but its request area is still blank.",
+    "people": "No people are visible.",
+    "flow": [
+     {
+      "kind": "action",
+      "text": "Within the first two seconds, the request area holds blank briefly, then a request panel appears. It reads: Corporate Conference Request — 2 nights · 30 guests · Accommodation · Conference facilities · Meals.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 0.0,
+      "end_s": 2.5
+     },
+     {
+      "kind": "action",
+      "text": "From two to four seconds, the complete request panel remains unchanged and readable. Every requirement stays inside the display crop with comfortable margins.",
+      "line_id": "",
+      "to": "",
+      "how": "",
+      "listener": "",
+      "start_s": 2.5,
+      "end_s": 4.0
+     }
+    ],
+    "sound": "Quiet office room tone and a faint computer hum. No speech, notification tone or music."
+   }
+  }
+ }
+}

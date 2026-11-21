@@ -18,6 +18,7 @@ from langchain_core.outputs import ChatGeneration, ChatResult
 from langgraph.errors import GraphInterrupt  # noqa: F401  (hitl pauses a graph by interrupting)
 from pydantic import Field
 
+from contracts.camera import LENSES
 from hiru_ai.core import agents, llm
 from hiru_ai.core import registry as registry_mod
 from hiru_ai.core.context import Ports, RunContext
@@ -96,7 +97,7 @@ def test_the_shot_writers_schema_comes_from_the_clip_yaml_and_is_named(keyed: Wi
     fmt = keyed.bodies[0]["response_format"]["json_schema"]
     assert fmt["name"] == "scene_design" and fmt["strict"] is True
     assert fmt["schema"]["properties"]["shots"]["items"]["properties"]["recommendation"]["properties"]["lens"][
-        "enum"] == ["28mm", "35mm", "50mm", "85mm"]
+        "enum"] == list(LENSES)  # plan/2026-11-20c: the camera catalogue's
     assert agent.wire_schema()["title"] == "scene_design"
 
 

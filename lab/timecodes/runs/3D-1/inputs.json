@@ -1,0 +1,217 @@
+{
+ "slate": "3D-1",
+ "take_s": 6,
+ "sound_mode": "dialogue",
+ "shot_prompt": {
+  "mode": "both",
+  "pins": {
+   "canon": {
+    "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+    "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+   },
+   "looks": {
+    "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": {
+     "id": "1d986035-f304-47cb-ae57-5f0986484ad3",
+     "name": "Kasun — food-counter workwear",
+     "stamp": "67b4c5283b83"
+    }
+   },
+   "motion": {
+    "end_s": "6.0",
+    "speed": "Slow",
+    "start_s": "0.0",
+    "trigger": "Kasun's rightward run, already underway at the opening.",
+    "end_size": "MS",
+    "lands_on": "b8aaa11bf458",
+    "movement": "Track alongside",
+    "sentence": "2fa82d9f05be"
+   },
+   "picture": {
+    "axis": "Side A · left to right",
+    "lens": "50mm",
+    "angle": "Eye level",
+    "focus": "Follow focus",
+    "height": "Eye height",
+    "framing": "Medium shot",
+    "aperture": "f/4",
+    "lighting": "Day, window light",
+    "opens_on": "65f97a0e3970",
+    "composition": "Lead room"
+   },
+   "script_hash": "227b586e0fc7c908",
+   "shot_version": 1
+  },
+  "frame": {
+   "light": "Soft overcast rain daylight comes from the street side. The food three-wheeler roof casts gentle shade, and the wet pavement carries small highlights.",
+   "people": "Kasun faces screen right, three-quarter toward the camera, eyes ahead off lens toward Anudi. His torso leans slightly forward in a mid-stride running pose. His right hand holds the recovered smartphone low beside his waist; his empty left hand is bent in a running position. His lips are slightly parted and his expression is attentive and helpful. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back.",
+   "background": "Rain-damp Colombo roadside beside Kasun's small food three-wheeler. Wet pavement provides depth toward screen right. No other person is visible.",
+   "composition": "The camera is at Kasun's eye height, looking level in a medium single with a natural 50mm lens perspective at f/4. Kasun sits left-center in three-quarter profile, with generous space toward his screen-right eyeline. The lower edge includes his right hand and smartphone beside his waist. His face and phone are readable against a softly separated roadside background."
+  },
+  "model": "gpt-6.1-sol",
+  "video": {
+   "flow": [
+    {
+     "to": "",
+     "how": "",
+     "kind": "action",
+     "text": "Kasun continues his short, practical run toward screen right, keeping the smartphone secure in his right hand beside his waist. His gaze stays on Anudi ahead as he draws breath.",
+     "line_id": "",
+     "listener": ""
+    },
+    {
+     "to": "Anudi",
+     "how": "Friendly-polite and projected over the street noise without alarm, intent on getting her attention, lifting his eyebrows slightly while keeping his eyes ahead",
+     "kind": "line",
+     "text": "",
+     "line_id": "L3",
+     "listener": ""
+    },
+    {
+     "to": "",
+     "how": "",
+     "kind": "action",
+     "text": "His lips close and he takes another breath while continuing right. His eyes remain on Anudi ahead, and the phone stays visible in his right hand at his side.",
+     "line_id": "",
+     "listener": ""
+    }
+   ],
+   "sound": "Light rain, low distant traffic and quick natural footfalls beneath his voice. No music.",
+   "people": "Kasun is left-center, three-quarter toward the camera and facing screen right, looking ahead off lens toward Anudi, who remains unseen. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back. His right hand holds the recovered smartphone low beside his waist, and his empty left arm is bent. He carries practical urgency and friendly concern.",
+   "situation": "On a rain-damp Colombo roadside, Kasun has recovered the phone Anudi dropped without noticing. He is already running after her beside his small food three-wheeler."
+  },
+  "job_id": "5667e055-4de0-41ab-858d-9c1dd3da5c19",
+  "opening": {
+   "light": "Soft overcast rain daylight from the street side, gentle shade beneath the food three-wheeler roof and small highlights on the wet pavement.",
+   "people": [
+    {
+     "name": "Kasun",
+     "side": "left",
+     "hands": "His right hand holds the recovered smartphone low beside his waist, visible in frame. His empty left hand rests in a bent-arm running position.",
+     "facing": "Three-quarter toward the camera, facing screen right with eyes fixed ahead off lens toward Anudi.",
+     "posture": "Caught mid-stride in a practical run, torso slightly forward. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back.",
+     "expression": "Attentive and helpful, with lips slightly parted and gaze intent on the person ahead."
+    }
+   ],
+   "background": "Rain-damp Colombo roadside beside Kasun's small food three-wheeler, with wet pavement extending toward screen right. No other person is visible."
+  },
+  "repaired": false,
+  "written_at": "2026-11-21T05:30:33.618245+00:00"
+ },
+ "camera": {
+  "arc": "1 ordinary passage → 3 unnoticed loss → 2 quiet discovery → 3 helpful pursuit → 4 recognition and connection.",
+  "why": "Pursuit 3: smooth parallel movement carries his helpful urgency while keeping the complete spoken line visually stable.",
+  "move": "tracking_alongside",
+  "omni": "works",
+  "end_s": 6.0,
+  "model": "gpt-6.1-sol",
+  "power": "equal",
+  "speed": "slow",
+  "state": "designed",
+  "job_id": "9db9a2d8-ed71-4194-9849-20ee704bbf24",
+  "moment": "pursuit",
+  "rack_to": "",
+  "start_s": 0.0,
+  "trigger": "Kasun's rightward run, already underway at the opening.",
+  "end_size": "MS",
+  "lands_on": "Matching medium single of Kasun with the phone still visible, against a visibly advanced stretch of roadside.",
+  "language": "Observational roadside frames make the accident legible, a smooth parallel move carries Kasun's practical urgency, and the strongest push brings their first connection closer.",
+  "opens_on": "Eye-level medium single of Kasun left-center in three-quarter profile, phone visible in his right hand and space ahead to the right.",
+  "direction": "right alongside Kasun",
+  "intensity": 3,
+  "rack_at_s": 0.0,
+  "rack_from": "",
+  "motivation": "Match his modest running pace with smooth parallel travel so urgency comes from passing roadside scenery rather than disturbance of his speaking face.",
+  "peak_slate": "3E-1",
+  "designed_at": "2026-11-21T05:28:18.921477+00:00",
+  "angle_reason": "",
+  "camera_sentence": "The camera travels smoothly right beside Kasun in an eye-level medium shot as he calls, the roadside sliding left behind him, ending in the same three-quarter framing with the phone at his side.",
+  "composition_note": "Maintain the three-quarter facial angle, room toward his screen-right eyeline and enough lower frame for the recovered phone."
+ },
+ "beats": [
+  {
+   "time": "0-3s",
+   "action": "Kasun runs right with the phone in his right hand. His eyes fix ahead and his mouth prepares for L3. Kasun continues running right; his lips move to L3.",
+   "camera": "MS tracking parallel, face and phone readable",
+   "performance": "His eyebrows lift slightly as he projects L3, gaze directed ahead rather than at the lens.",
+   "director_line": "He closes the distance with a practical short run."
+  },
+  {
+   "time": "3-6s",
+   "action": "Kasun continues right with the phone in his right hand.",
+   "camera": "MS tracking parallel, face and phone readable",
+   "performance": "His lips close and his eyes stay forward.",
+   "director_line": "His attention stays with the person ahead."
+  }
+ ],
+ "render_id": "71110c56-fa90-4cb4-abbf-e3d700be8f80",
+ "spec": {
+  "pins": {
+   "canon": {
+    "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+    "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+   },
+   "looks": {},
+   "motion": {},
+   "picture": {},
+   "script_hash": "227b586e0fc7c908",
+   "shot_version": 1
+  },
+  "seed": null,
+  "draft": true,
+  "model": "gemini-omni-1.2-flash",
+  "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSITUATION\nOn a rain-damp Colombo roadside, Kasun has recovered the phone Anudi dropped without noticing. He is already running after her beside his small food three-wheeler.\n\nPEOPLE\nKasun is left-center, three-quarter toward the camera and facing screen right, looking ahead off lens toward Anudi, who remains unseen. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back. His right hand holds the recovered smartphone low beside his waist, and his empty left arm is bent. He carries practical urgency and friendly concern.\n\nACTION & DIALOGUE\nKasun continues his short, practical run toward screen right, keeping the smartphone secure in his right hand beside his waist. His gaze stays on Anudi ahead as he draws breath.\n\nKasun, to Anudi, friendly-polite and projected over the street noise without alarm, intent on getting her attention, lifting his eyebrows slightly while keeping his eyes ahead:\n\"මිස්! මිස්! ඔයාගේ ෆෝන් එක!\"\n\nHis lips close and he takes another breath while continuing right. His eyes remain on Anudi ahead, and the phone stays visible in his right hand at his side.\n\nThey speak casual, everyday spoken Sinhala, the way people really talk in a Sri Lankan teledrama: not an interview, not a speech, nobody looks at the camera. Only these words are spoken, only by the people named; English words in a line are said as Sri Lankans say them.\n\nCAMERA\nThe camera travels smoothly right beside Kasun in an eye-level medium shot as he calls, the roadside sliding left behind him, ending in the same three-quarter framing with the phone at his side.\n\nSOUND\nLight rain, low distant traffic and quick natural footfalls beneath his voice. No music.\n\nRULES\nHands: Kasun holds the smartphone in one hand. The umbrella is not in this frame. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nFORMAT\nAspect ratio 9:16. Duration 6 seconds. Ends on a cut.",
+  "engine": "omni_flash",
+  "options": {},
+  "frame_id": "dd489795-4873-4327-bc2d-85b034c0713d",
+  "prompt_id": "f378f8fa-02f6-4c62-aff4-33e10c088f60",
+  "duration_s": 6,
+  "references": [
+   {
+    "slot": "first_frame",
+    "label": "the opening frame",
+    "origin": "code",
+    "source": {
+     "id": "dd489795-4873-4327-bc2d-85b034c0713d",
+     "kind": "accepted_frame",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/e9b2d8e0-0a27-4cbe-9ce4-c35c804bf4df/dd489795-4873-4327-bc2d-85b034c0713d.png",
+     "bucket": "frames",
+     "sha256": "c91ff70065fdfbaf76332d0eb585fe94899e87db166ae3faaf6e4c51f730c07e",
+     "version": null
+    },
+    "binds_to": null
+   },
+   {
+    "slot": "reference",
+    "label": "the face sheet for Kasun",
+    "origin": "code",
+    "source": {
+     "id": "6f780733-797d-538c-b436-fb991a4f6db7",
+     "kind": "face_sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/cc610a95-c3f6-4f20-b504-20c8fb162a0c-face-621eab5f.png",
+     "bucket": "references",
+     "sha256": "cbedc5cb21295cf8926bece97183f5f60fd52d69c31965575f9cc477f90d5806",
+     "version": 2
+    },
+    "binds_to": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+   },
+   {
+    "slot": "reference",
+    "label": "the look sheet for Kasun",
+    "origin": "code",
+    "source": {
+     "id": "8546b4a5-d326-5362-9eab-42f156ad20cc",
+     "kind": "look_sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/looks/1d986035-f304-47cb-ae57-5f0986484ad3-f5871821.png",
+     "bucket": "references",
+     "sha256": "edfaf8cfef1a76c5c9d705aacbcd313ea0d31565aa01fa419b75ddfe7752353b",
+     "version": null
+    },
+    "binds_to": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+   }
+  ],
+  "resolution": "360p",
+  "aspect_ratio": "9:16",
+  "prompt_version": 2,
+  "negative_prompt": ""
+ }
+}

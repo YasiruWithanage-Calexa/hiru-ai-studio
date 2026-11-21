@@ -1,0 +1,16 @@
+id: camera_agent
+kind: agent
+version: 1
+summary: "Designs everything the camera does for every clip of a scene (support, move, path, speed, timing, motivation, angle, height, lens, stop, focus, composition, time, axis, the camera sentence); the planner keeps the story and the shot size, the camera_design step keeps every fact and check."
+status: active
+owner: shot_producer
+model: camera_agent
+shape: structured
+phase: camera_agent.design
+input: schema:Input
+output: schema:SceneCamera
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, untrusted_text, absent_safe]
+writes_dialogue: false

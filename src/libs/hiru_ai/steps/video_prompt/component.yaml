@@ -1,7 +1,7 @@
 id: video_prompt
 kind: step
 version: 1
-summary: "The code around the video_prompter agent: the scene and clip brief from the packet and the shot's rows, the gates every answer passes, and the prompt assembled with every fact code's own."
+summary: "The video prompt's code: the scene brief from the packet, the clip's facts from the shot's rows, and the prompt assembled from the shot_prompter's video part with every fact code's own (the spoken words, the camera sentence, the rules)."
 status: active
 owner: shot_producer
 entry: step:run

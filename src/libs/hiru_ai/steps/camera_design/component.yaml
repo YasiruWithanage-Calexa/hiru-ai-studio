@@ -1,0 +1,8 @@
+id: camera_design
+kind: step
+version: 1
+summary: "The code around the camera_agent: the scene and clip brief with the knowledge base's moves and ideas, the gates every answer passes, the merge into the shot's design (and the rule fallback), and the camera sentence."
+status: active
+owner: shot_producer
+entry: step:run
+uses: [serialize, video_prompt]

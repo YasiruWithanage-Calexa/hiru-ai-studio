@@ -25,6 +25,15 @@ def test_a_good_prompt_passes():
                               "4 s on the Veo ladder": "pass", "No brands or listed names": "pass"}
 
 
+def test_a_script_line_kept_in_quotes_matches_the_same_words_without_them():
+    """The paid test of 2026-11-21: the script stored "…" around the line, the prompt's words had none; every spoken
+    shot was refused."""
+    quoted = shot(lines=[LineNow(text=f'"{LINE}"', speaker="Nimal")])
+    assert labels(check_prompt(prose=PROSE, sinhala=[LINE], shot=quoted))["Lines match the approved script"] == "pass"
+    other = check_prompt(prose=PROSE, sinhala=["වෙනස් පේළියක්"], shot=quoted)
+    assert labels(other)["A line differs from the approved script"] == "fail"
+
+
 def test_changed_lines_overruns_and_voice_pins_are_reported():
     checks = check_prompt(prose=PROSE, sinhala=["වෙනස් පේළියක්"],
                           shot=shot(lines=[LineNow(text=LINE, speaker="Nimal", overrun_s=1.24)],

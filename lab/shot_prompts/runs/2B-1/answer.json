@@ -1,0 +1,60 @@
+{
+ "answer": {
+  "opening": {
+   "people": [
+    {
+     "name": "Company B Operations Manager",
+     "side": "left",
+     "facing": "Facing right toward the offscreen visitor, with the face readable in three-quarter view.",
+     "posture": "Upright beside the workstation, shoulders relaxed.",
+     "hands": "Both hands rest loosely at waist level, holding nothing.",
+     "expression": "Lips closed, chin level, with an attentive, even gaze."
+    }
+   ],
+   "background": "An organised modern hotel operations office. The workstation and its computer sit beside the manager toward the right. The visitor remains outside the frame.",
+   "light": "Soft directional daylight enters through the office window from camera left. Gentle interior fill keeps the face readable and display reflections controlled."
+  },
+  "frame": {
+   "composition": "The camera sits low at the manager's chest height, below the face, and looks slightly up at the manager. A natural 50mm lens perspective at f/4 frames the manager waist-up on the left third, with clear looking space to the right. The workstation occupies the lower-right edge, with the organised office providing depth behind it. Focus rests on the manager's face.",
+   "people": "The Company B Operations Manager wears a warm taupe tailored jacket and ivory blouse. The manager stands upright beside the workstation, facing right toward the offscreen visitor, with the face readable in three-quarter view. Both empty hands rest loosely at waist level. Shoulders stay relaxed, lips closed and chin level. The gaze is attentive and even.",
+   "background": "An organised modern hotel operations office with a computer on the workstation beside the manager. No other person is visible.",
+   "light": "Soft directional daylight from camera left shapes the face, balanced by gentle interior fill. Display reflections remain controlled. Warm, natural colour and subtle optical imperfections give the image a photorealistic corporate-film finish."
+  },
+  "video": {
+   "situation": "Daytime in the hotel operations office, just after the welcome and introduction to standalone AI tools. The manager continues the explanation to the visitor standing offscreen right.",
+   "people": "The Company B Operations Manager stands frame left beside the workstation, wearing a warm taupe tailored jacket and ivory blouse. The manager faces right in three-quarter view, carrying calm recognition of a familiar operational limitation. Both empty hands initially rest loosely at waist level. The visitor stays offscreen.",
+   "flow": [
+    {
+     "kind": "action",
+     "text": "For the opening moment, the manager keeps lips closed and eyes on the offscreen visitor. The upright posture and relaxed hands remain unchanged.",
+     "line_id": "",
+     "to": "",
+     "how": "",
+     "listener": ""
+    },
+    {
+     "kind": "line",
+     "text": "",
+     "line_id": "L2",
+     "to": "Company A Operations Manager, offscreen right",
+     "how": "Matter-of-fact and candid, acknowledging the initial benefit before stressing its limit. The manager starts around three-quarters of a second into the shot, slightly firms the mouth at the phrase break, then finishes the thought while maintaining an even gaze.",
+     "listener": "The visitor listens offscreen without speaking."
+    },
+    {
+     "kind": "action",
+     "text": "The manager closes the lips after the explanation and keeps the chin level. Hold the visitor's eyeline through the end of the six-second shot, with hands still resting loosely at waist level.",
+     "line_id": "",
+     "to": "",
+     "how": "",
+     "listener": ""
+    }
+   ],
+   "sound": "The manager's voice is close and natural against quiet office room tone. No music."
+  }
+ },
+ "first_faults": [
+  "frame: the design's angle is slightly_low (chest) but the composition never says so in physical words"
+ ],
+ "faults": [],
+ "calls": 2
+}

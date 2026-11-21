@@ -307,11 +307,15 @@ def remark_after(scene_row: Row, plan: Plan, before: list[Row] | None = None, *,
             plan.upsert.append(new)
 
 
-def finish_designs(world: World, plan: Plan) -> None:
+def finish_designs(world: World, plan: Plan, ctx: RunContext | None = None) -> list[str]:
     """Each clip whose camera design changed is finished the way the planners finish theirs (`serialize.shots.finish`,
-    reached by id) and given a design row. A clip that cannot be finished keeps the IR as written (logged)."""
+    reached by id) and given a design row. A clip that cannot be finished keeps the IR as written (logged).
+
+    plan/2026-11-20c D11 (b): with the Camera agent on (and a `ctx` to call it with), the changed clips' camera is then
+    the agent's: ONE one-shot call for all of them, the scene as context. -> its warnings (a clip it could not design
+    keeps the rule camera, D10)."""
     if not plan.designs:
-        return
+        return []
     try:
         model = parts.step("serialize", "model")
         shots_mod = parts.step("serialize", "shots")
@@ -327,8 +331,26 @@ def finish_designs(world: World, plan: Plan) -> None:
             ir, rec, why = shots_mod.finish(entry, shot_in, scene_in, prod)
             row["ir"] = ir
             row["design"] = design.design_row(shot_in, ir, rec, why, "zora", list(intent.get("on_screen") or []), "")
+            shot_in.row = row
     except Exception:
         _log.warning("a changed camera design could not be finished; it is saved as written", exc_info=True)
+        return []
+    from hiru_ai.core import camera
+
+    if ctx is None or not camera.on():
+        return []
+    try:
+        packet = camera.packet_of(ctx, world.scene_row)
+        got = camera.design(ctx, scene_in, prod, packet=packet, line_rows=plan.all_lines,
+                            focus=[str(i) for i in plan.designs])
+    except Exception:
+        _log.warning("the Camera agent could not design the changed clips; the rule camera stands", exc_info=True)
+        return [camera.NEEDS_MODEL.replace("needs a model", "could not run")]
+    for row in plan.rows:
+        if str(row["id"]) in got.designs:
+            row["design"] = got.designs[str(row["id"])]
+            plan.upsert = [row if str(u["id"]) == str(row["id"]) else u for u in plan.upsert]
+    return got.warnings
 
 
 # ── the saver ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -346,6 +368,7 @@ class Saver:
     def __init__(self, ctx: RunContext, world: World, *, actor_user_id: UUID | None, kept: int = KEPT,
                  chat: str = "zora") -> None:
         self.ctx, self.world, self.actor, self.kept, self.chat = ctx, world, actor_user_id, kept, chat
+        self.camera_warnings: list[str] = []  # plan/2026-11-20c: what the last save's Camera agent call could not do
         self.scenes, self.director = ctx.need("scenes"), ctx.need("director")
         self.revisions = ctx.ports.revisions
         self.read_print = world.cov.fingerprint()
@@ -400,7 +423,7 @@ class Saver:
             return Saved(False, CHANGED_MEANWHILE)
         plan = rows_for(self.world.cov, after, planner=self.planner())
         remark_after(self.world.scene_row, plan, self.world.shot_rows)
-        finish_designs(self.world, plan)
+        self.camera_warnings = finish_designs(self.world, plan, self.ctx)
         stack = self.stack()
         if stack is not None:
             stack = self._base(stack)

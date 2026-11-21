@@ -38,7 +38,7 @@ def run_graph(store: FakeStore, p: Any, jobs: FakeJobs, paint: FakePainter | Non
             store.upload(bucket, path, data, mime)
 
     def images(prompt: str, aspect: str, references: list[Any], *, draft: bool = False,
-               sheet: bool = False) -> Any:
+               sheet: bool = False, quality: str = "") -> Any:
         try:
             return paint(prompt, aspect, references, draft=draft, sheet=sheet)  # type: ignore[misc]
         except RefusedError as exc:
@@ -315,6 +315,27 @@ def test_a_later_shot_of_a_setup_is_painted_against_the_first_shots_accepted_fra
     frame = next(f for f in got["frames"].values() if f.get("status") == "done" and f.get("prompt"))
     assert all(r != frame["id"] for r in frame["reference_ids"]) and len(frame["reference_ids"]) == len(labels) - 1, \
         "`reference_ids` holds canon ids only"
+
+
+def test_a_same_setup_frame_drawn_before_the_camera_design_is_not_attached():
+    """The audit of 2026-11-21: the 18 November frames had no picture pin; after the Camera agent designed the
+    setup's angle, such a frame would hand its old angle and framing on to the later shot."""
+    def setup(store: FakeStore) -> dict[str, Any]:
+        first, later = shots(store)[0], shots(store)[1]
+        first["slate"], later["slate"] = "1A-1", "1A-2"
+        first["design"] = {**(first.get("design") or {}), "camera": {"state": "designed", "opens_on": "waist up"}}
+        store.add_frame(first["id"], "done", accepted_at="2026-11-11T00:00:00Z", storage_path="p/1a-1.png",
+                        pins={"shot_version": 1, "script_hash": "x"})
+        return {"frame_ids": [store.add_frame(later["id"])]}
+
+    # the graph engine only (frames run on it, scripts/start-functions.ps1); the legacy pipeline is left as it was
+    with seeded_ids():
+        store = FakeStore()
+        paint = FakePainter()
+        jobs = FakeJobs()
+        result = run_graph(store, payload(**setup(store)), jobs, paint, {"OPENAI__MODEL_VISION": "m-vision"}, None)
+        got = _plain(outcome(store, jobs, paint, result))
+    assert got["painted"] and not any("accepted frame of shot" in str(x) for x in got["painted"][0])
 
 
 def test_a_person_can_turn_the_same_setup_frame_off():

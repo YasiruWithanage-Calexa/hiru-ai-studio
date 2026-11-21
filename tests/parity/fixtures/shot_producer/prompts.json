@@ -70,14 +70,14 @@
      "agent": "director_of_photography",
      "planner": "rules",
      "shot_id": "<id:2>",
-     "text": "S01: 28mm · static",
+     "text": "S01: 28mm · hold",
      "type": "progress"
     },
     {
      "agent": "director_of_photography",
      "planner": "rules",
      "shot_id": "<id:3>",
-     "text": "S02: 50mm · static",
+     "text": "S02: 50mm · hold",
      "type": "progress"
     },
     {
@@ -109,11 +109,16 @@
      "angle": "Eye level",
      "aperture": "f/2.8",
      "axis": "Side A · left to right",
+     "composition": "",
+     "focus": "",
      "framing": "Medium close-up",
+     "height": "",
      "lens": "50mm",
      "lighting": "Dawn, soft ambient",
-     "movement": "Static",
-     "speed": "None"
+     "movement": "Hold",
+     "speed": "None",
+     "support": "",
+     "time": ""
     },
     "checks": [
      {
@@ -190,11 +195,13 @@
       "<id:7>": 1
      },
      "looks": {},
+     "motion": {},
+     "picture": {},
      "script_hash": "<digest:4>",
      "shot_version": 1
     },
     "production_id": "<id:4>",
-    "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Available light, held frames.\n\nSETTING\nKamala's house, dawn.\n\nSUBJECTS\nwearing a creased white shirt.\n\nCAMERA\nCamera: Medium close-up (medium close-up on Nimal), eye level; 50mm lens at f/2.8, a normal lens: natural perspective, as the eye sees it; focus: Shallow, soft background. Static: a steady, locked-off frame. As planned: locked-off, no camera movement. Camera on side A of the line of action: the action reads left to right. The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift. Grade: cool 6000K dawn warming, naturalistic, gently warm, film-like.\n\nLIGHTING\nDawn: Pale early light, low and soft, cool shadows warming at the edges.\n\nACTION & DIALOGUE\nOver 4 seconds:\n0-2s: Nimal speak. Nimal (the man in a creased white shirt) says (quietly), \"අම්මේ, මම ආපහු ආවා.\" — only Nimal's lips move.\n2-4s: Nimal speak.\n\nSOUND\nSpoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: natural sound of the location.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 16:9. Duration 4 seconds. Ends on a cut.",
+    "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Available light, held frames.\n\nSETTING\nKamala's house, dawn.\n\nSUBJECTS\nwearing a creased white shirt.\n\nCAMERA\nCamera: Medium close-up (medium close-up on Nimal), eye level; 50mm lens at f/2.8, a normal lens: natural perspective, as the eye sees it; focus: Shallow, soft background. The camera holds still: a steady, unmoving frame. Camera on side A of the line of action: the action reads left to right. The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift. Grade: cool 6000K dawn warming, naturalistic, gently warm, film-like.\n\nLIGHTING\nDawn: Pale early light, low and soft, cool shadows warming at the edges.\n\nACTION & DIALOGUE\nOver 4 seconds:\n0-2s: Nimal speak. Nimal (the man in a creased white shirt) says (quietly), \"අම්මේ, මම ආපහු ආවා.\" — only Nimal's lips move.\n2-4s: Nimal speak.\n\nSOUND\nSpoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: natural sound of the location.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 16:9. Duration 4 seconds. Ends on a cut.",
     "sections": [
      {
       "id": "opening",
@@ -236,7 +243,7 @@
       "id": "camera",
       "segments": [
        {
-        "text": "Camera: Medium close-up (medium close-up on Nimal), eye level; 50mm lens at f/2.8, a normal lens: natural perspective, as the eye sees it; focus: Shallow, soft background. Static: a steady, locked-off frame. As planned: locked-off, no camera movement. Camera on side A of the line of action: the action reads left to right. The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift. Grade: cool 6000K dawn warming, naturalistic, gently warm, film-like."
+        "text": "Camera: Medium close-up (medium close-up on Nimal), eye level; 50mm lens at f/2.8, a normal lens: natural perspective, as the eye sees it; focus: Shallow, soft background. The camera holds still: a steady, unmoving frame. Camera on side A of the line of action: the action reads left to right. The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift. Grade: cool 6000K dawn warming, naturalistic, gently warm, film-like."
        }
       ],
       "title": "Camera"
@@ -431,6 +438,8 @@
        "<id:7>": 1
       },
       "looks": {},
+      "motion": {},
+      "picture": {},
       "script_hash": "<digest:1>",
       "shot_version": 1
      },
@@ -440,11 +449,16 @@
       "angle": "Eye level",
       "aperture": "f/4",
       "axis": "Side A · left to right",
+      "composition": "",
+      "focus": "",
       "framing": "Wide shot",
+      "height": "",
       "lens": "28mm",
       "lighting": "Dawn, soft ambient",
-      "movement": "Static",
-      "speed": "None"
+      "movement": "Hold",
+      "speed": "None",
+      "support": "",
+      "time": ""
      }
     },
     "duration_locked": false,
@@ -570,6 +584,8 @@
        "<id:7>": 1
       },
       "looks": {},
+      "motion": {},
+      "picture": {},
       "script_hash": "<digest:4>",
       "shot_version": 1
      },
@@ -579,11 +595,16 @@
       "angle": "Eye level",
       "aperture": "f/2.8",
       "axis": "Side A · left to right",
+      "composition": "",
+      "focus": "",
       "framing": "Medium close-up",
+      "height": "",
       "lens": "50mm",
       "lighting": "Dawn, soft ambient",
-      "movement": "Static",
-      "speed": "None"
+      "movement": "Hold",
+      "speed": "None",
+      "support": "",
+      "time": ""
      }
     },
     "duration_locked": false,

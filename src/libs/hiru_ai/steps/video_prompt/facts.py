@@ -16,12 +16,14 @@ from __future__ import annotations
 
 from typing import Any
 
+from contracts.camera_words import camera_line
 from contracts.canon import dressed
+from contracts.frame_brief import agent_camera
+from contracts.producer import is_hold
 from hiru_ai.core import parts
 from hiru_ai.steps.video_prompt import logic
 
 Row = dict[str, Any]
-MOVES_STILL = ("locked", "static", "tripod", "sticks")
 
 
 def usable_packet(store: Any, scene_row: Row) -> tuple[Row | None, str]:
@@ -86,6 +88,9 @@ def clip_facts(shot: Any, scene: Any, prod: Any, frame: Row | None, *, lids: dic
     cine: Row = raw_cine if isinstance(raw_cine, dict) else {}
     camera = shot.camera(scene)
     technique = str(clip.get("technique") or camera.movement or "")
+    # plan/2026-11-20c D13: the camera sentence is the Camera agent's while a person has not changed a camera field,
+    # else code's from the fields; `locked_off` reads the design's move (the panel as it stands)
+    sentence = camera_line(camera, shot.recommended(scene), agent_camera(shot.row))
     wear = dict(wardrobe or {})
     in_frame = []
     for c in shot.seen:
@@ -130,7 +135,7 @@ def clip_facts(shot: Any, scene: Any, prod: Any, frame: Row | None, *, lids: dic
         "size": str(clip.get("size") or shot.framing), "framing_words": str(cine.get("framing") or ""),
         "angle": str(clip.get("angle") or camera.angle or ""), "lens": str(clip.get("lens") or camera.lens or ""),
         "technique": technique, "movement": str(cine.get("movement") or camera.movement or ""),
-        "locked_off": any(w in f"{technique} {cine.get('movement') or ''}".lower() for w in MOVES_STILL),
+        "locked_off": is_hold(camera), "camera_sentence": sentence,
         "take_s": shot.duration_s, "why": str(clip.get("why") or (shot.intent.purpose if shot.intent else "") or ""),
         "summary": str(clip.get("summary") or ""), "setting": str(ir.get("setting") or ""),
         "light": str(ir.get("lighting") or ""), "in_frame": in_frame,

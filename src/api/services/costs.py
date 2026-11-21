@@ -38,7 +38,7 @@ _logger = logging.getLogger(__name__)
 EPISODE_PHASES = ("script_split.", "structure_build.", "adam.", "david.", "jonathan.")
 FRAME_PHASE = "frame_render."
 FRAME_IMAGE_PHASE = "frame_render.image"
-PROMPT_PHASE = "shot_producer.craft"  # one call writes one video prompt
+PROMPT_PHASE = "shot_prompter.write"  # plan/2026-11-20d: one call writes one shot's first frame + video
 HISTORY_JOBS = 20  # "the last 20 frame_render items"
 HISTORY_ROWS = 400
 

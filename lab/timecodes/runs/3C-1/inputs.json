@@ -1,0 +1,260 @@
+{
+ "slate": "3C-1",
+ "take_s": 4,
+ "sound_mode": "ambient",
+ "shot_prompt": {
+  "mode": "both",
+  "pins": {
+   "canon": {
+    "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+    "4fc68836-b389-4c0b-9127-77a236c10571": 2,
+    "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+   },
+   "looks": {
+    "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": {
+     "id": "1d986035-f304-47cb-ae57-5f0986484ad3",
+     "name": "Kasun — food-counter workwear",
+     "stamp": "67b4c5283b83"
+    },
+    "4fc68836-b389-4c0b-9127-77a236c10571": {
+     "id": "f548056e-211f-4ee2-ac67-1fb15a5453a8",
+     "name": "Anudi — office-day separates",
+     "stamp": "677b2fd1aa9a"
+    }
+   },
+   "motion": {
+    "end_s": "3.5",
+    "speed": "Slow",
+    "start_s": "0.5",
+    "trigger": "Anudi continues toward the right edge.",
+    "end_size": "MWS",
+    "lands_on": "1f488d57e1e5",
+    "movement": "Push in",
+    "sentence": "d41ce3b99e6c"
+   },
+   "picture": {
+    "axis": "Side A · left to right",
+    "lens": "35mm",
+    "angle": "Slightly high",
+    "focus": "Deep focus",
+    "height": "Above head",
+    "framing": "Wide shot",
+    "aperture": "f/8",
+    "lighting": "Day, window light",
+    "opens_on": "6f1eb27041dd",
+    "composition": "Rule of thirds"
+   },
+   "script_hash": "89c2a0635f03d0a5",
+   "shot_version": 1
+  },
+  "frame": {
+   "light": "Soft overcast rain daylight comes from the street side. Gentle shade lies beneath the umbrella and cart roof. Small highlights catch the wet pavement.",
+   "people": "Kasun wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back. He stands upright at frame left, facing right in three-quarter profile, looking along the roadside with a quietly observant expression. Both hands hang empty at his sides. Anudi wears a dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers and tan low-heeled closed shoes, with small gold stud earrings, a tan structured handbag and a navy folding umbrella. Near frame right, she faces right in profile, one foot ahead of the other, eyes up the road with distracted concentration. Her left hand holds the open umbrella overhead; her handbag hangs from her right shoulder and her right hand is empty.",
+   "background": "Kasun's small food three-wheeler stands beside the rain-damp Colombo roadside at left. The smartphone lies flat on the pavement below Kasun, between the two people.",
+   "composition": "The camera is above head height, looking slightly down in a wide view with a natural 35mm lens look and deep focus. The food three-wheeler and Kasun occupy the left third. Anudi stands near the right edge with clear space ahead of her. The foreground pavement and grounded smartphone remain plainly visible, with Kasun's full bending reach contained in the frame."
+  },
+  "model": "gpt-6.1-sol",
+  "video": {
+   "flow": [
+    {
+     "to": "",
+     "how": "",
+     "kind": "action",
+     "text": "Anudi continues right and leaves the frame without looking back, her eyes up the road beneath the umbrella. The smartphone remains flat on the pavement beside Kasun.",
+     "line_id": "",
+     "listener": ""
+    },
+    {
+     "to": "",
+     "how": "",
+     "kind": "action",
+     "text": "Kasun lowers his chin and settles his eyes on the phone. Once Anudi is out of frame, he bends beside the cart and reaches directly toward it with his right hand.",
+     "line_id": "",
+     "listener": ""
+    },
+    {
+     "to": "",
+     "how": "",
+     "kind": "action",
+     "text": "He lifts the phone in his right hand just above the pavement, his eyes following the pickup. Still bent beside the cart, he lifts his gaze toward the right edge with helpful attention.",
+     "line_id": "",
+     "listener": ""
+    }
+   ],
+   "sound": "Light rain, low distant traffic and faint clothing rustle. No music. Nobody speaks.",
+   "people": "Kasun is at frame left beside the cart, observant, facing right with both hands empty. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back. Anudi is near frame right, facing right with her attention up the road. She wears a dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers and tan low-heeled closed shoes, with small gold stud earrings, a tan structured handbag and a navy folding umbrella. Her left hand holds the open umbrella overhead, her handbag hangs from her right shoulder and her right hand is empty.",
+   "situation": "At a rain-damp Colombo roadside, Anudi continues past Kasun's small food three-wheeler. Her smartphone already lies on the pavement behind her, unnoticed."
+  },
+  "job_id": "5667e055-4de0-41ab-858d-9c1dd3da5c19",
+  "opening": {
+   "light": "Overcast rain daylight from the street side, with gentle shade beneath the umbrella and cart roof and small highlights on wet pavement.",
+   "people": [
+    {
+     "name": "Kasun",
+     "side": "left",
+     "hands": "Both hands empty and relaxed at his sides. The smartphone lies flat on the pavement within bending reach.",
+     "facing": "Right, in three-quarter profile, looking along the roadside.",
+     "posture": "Upright beside the roadside edge of the food three-wheeler.",
+     "expression": "Quietly observant."
+    },
+    {
+     "name": "Anudi",
+     "side": "right",
+     "hands": "Left hand holds the open navy folding umbrella overhead. The tan structured handbag hangs from her right shoulder; her right hand is empty.",
+     "facing": "Right in profile, eyes directed up the road.",
+     "posture": "Upright near the right edge, one foot ahead of the other.",
+     "expression": "Distracted, intent on her destination."
+    }
+   ],
+   "background": "Rain-damp Colombo roadside. Kasun's small food three-wheeler occupies the left side. The smartphone lies flat on the wet pavement below him, in the gap between him and Anudi."
+  },
+  "repaired": true,
+  "written_at": "2026-11-21T05:30:16.839396+00:00"
+ },
+ "camera": {
+  "arc": "1 ordinary passage → 3 unnoticed loss → 2 quiet discovery → 3 helpful pursuit → 4 recognition and connection.",
+  "why": "Reveal 2: a restrained push transfers attention to his discovery and practical pickup before the pursuit adds momentum.",
+  "move": "push_in",
+  "omni": "works",
+  "end_s": 3.5,
+  "model": "gpt-6.1-sol",
+  "power": "none",
+  "speed": "slow",
+  "state": "designed",
+  "job_id": "9db9a2d8-ed71-4194-9849-20ee704bbf24",
+  "moment": "reveal",
+  "rack_to": "",
+  "start_s": 0.5,
+  "trigger": "Anudi continues toward the right edge.",
+  "end_size": "MWS",
+  "lands_on": "Slightly elevated medium-wide view of Kasun bent beside the cart, with his right hand and recovered phone above the pavement.",
+  "language": "Observational roadside frames make the accident legible, a smooth parallel move carries Kasun's practical urgency, and the strongest push brings their first connection closer.",
+  "opens_on": "Slightly elevated wide view of cart and Kasun left, phone on pavement below him and Anudi near the right edge.",
+  "direction": "toward Kasun and the grounded phone",
+  "intensity": 2,
+  "rack_at_s": 0.0,
+  "rack_from": "",
+  "motivation": "Gradually transfer attention from the departing owner to the nearby helper without losing the phone's relationship to the cart.",
+  "peak_slate": "3E-1",
+  "designed_at": "2026-11-21T05:28:18.921477+00:00",
+  "angle_reason": "A modest elevation exposes the pavement between the figures so the phone and Kasun's retrieval remain legible without implying dominance.",
+  "camera_sentence": "The camera pushes slowly from a slightly elevated wide shot toward Kasun as Anudi exits right, ending medium-wide on his bent figure and the recovered phone beside the cart.",
+  "composition_note": "Advance toward Kasun's left-third position while retaining his full bending reach and the pavement; Anudi's rightward exit remains unobstructed."
+ },
+ "beats": [
+  {
+   "time": "0-2s",
+   "action": "The phone lies on the pavement beside Kasun. Anudi's face points up the road; Kasun's gaze rests along the roadside. Anudi walks out through the right edge at 1.5 seconds. Her eyes stay up the road beneath the umbrella. Kasun lowers his gaze to the phone.",
+   "camera": "WIDE, phone visible between the two people",
+   "performance": "His chin dips and his eyes settle on the handset.",
+   "director_line": "The fallen phone occupies the gap she leaves behind."
+  },
+  {
+   "time": "2-4s",
+   "action": "Kasun bends to retrieve the phone in his right hand. His eyes follow his right hand directly to the handset. The phone remains in Kasun's right hand.",
+   "camera": "WIDE, Kasun and phone readable",
+   "performance": "His eyes lift toward the right edge.",
+   "director_line": "His response is immediate and practical."
+  }
+ ],
+ "render_id": "e0a7541c-e211-4e08-a4a6-1a5f5e5e91a9",
+ "spec": {
+  "pins": {
+   "canon": {
+    "2a0c6095-28fe-4a8d-ab78-58272c84ff0f": 2,
+    "4fc68836-b389-4c0b-9127-77a236c10571": 2,
+    "56315d5f-37ab-41a2-873a-6c05611bdf88": 2
+   },
+   "looks": {},
+   "motion": {},
+   "picture": {},
+   "script_hash": "89c2a0635f03d0a5",
+   "shot_version": 1
+  },
+  "seed": null,
+  "draft": true,
+  "model": "gemini-omni-1.2-flash",
+  "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSITUATION\nAt a rain-damp Colombo roadside, Anudi continues past Kasun's small food three-wheeler. Her smartphone already lies on the pavement behind her, unnoticed.\n\nPEOPLE\nKasun is at frame left beside the cart, observant, facing right with both hands empty. He wears a faded teal short-sleeved cotton shirt, charcoal straight-leg trousers, plain dark sandals and a clean dark-brown waist apron tied at the back. Anudi is near frame right, facing right with her attention up the road. She wears a dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers and tan low-heeled closed shoes, with small gold stud earrings, a tan structured handbag and a navy folding umbrella. Her left hand holds the open umbrella overhead, her handbag hangs from her right shoulder and her right hand is empty.\n\nACTION & DIALOGUE\nAnudi continues right and leaves the frame without looking back, her eyes up the road beneath the umbrella. The smartphone remains flat on the pavement beside Kasun.\n\nKasun lowers his chin and settles his eyes on the phone. Once Anudi is out of frame, he bends beside the cart and reaches directly toward it with his right hand.\n\nHe lifts the phone in his right hand just above the pavement, his eyes following the pickup. Still bent beside the cart, he lifts his gaze toward the right edge with helpful attention.\n\nNobody speaks in this clip: no dialogue, no voice.\n\nCAMERA\nThe camera pushes slowly from a slightly elevated wide shot toward Kasun as Anudi exits right, ending medium-wide on his bent figure and the recovered phone beside the cart.\n\nSOUND\nLight rain, low distant traffic and faint clothing rustle. No music. Nobody speaks.\n\nRULES\nHands: Kasun is not holding the smartphone or the umbrella. Anudi holds the smartphone in one hand and the umbrella in the other hand. During the shot Anudi lets go of the smartphone. During the shot Kasun takes the smartphone. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nFORMAT\nAspect ratio 9:16. Duration 4 seconds. Ends on a cut.",
+  "engine": "omni_flash",
+  "options": {},
+  "frame_id": "a237cc4b-df4b-4480-9c0a-68ee60f50f41",
+  "prompt_id": "ebe9d08c-f667-4ccd-b42b-a796e80af93e",
+  "duration_s": 4,
+  "references": [
+   {
+    "slot": "first_frame",
+    "label": "the opening frame",
+    "origin": "code",
+    "source": {
+     "id": "a237cc4b-df4b-4480-9c0a-68ee60f50f41",
+     "kind": "accepted_frame",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/deb4d6f8-a2d1-44e2-a11c-326ae8df4318/a237cc4b-df4b-4480-9c0a-68ee60f50f41.png",
+     "bucket": "frames",
+     "sha256": "d37a9ca0b33cb6edc7cdeb09a3b5763f72c2856c265387a3f73bbaad81481199",
+     "version": null
+    },
+    "binds_to": null
+   },
+   {
+    "slot": "reference",
+    "label": "the face sheet for Kasun",
+    "origin": "code",
+    "source": {
+     "id": "6f780733-797d-538c-b436-fb991a4f6db7",
+     "kind": "face_sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/cc610a95-c3f6-4f20-b504-20c8fb162a0c-face-621eab5f.png",
+     "bucket": "references",
+     "sha256": "cbedc5cb21295cf8926bece97183f5f60fd52d69c31965575f9cc477f90d5806",
+     "version": 2
+    },
+    "binds_to": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+   },
+   {
+    "slot": "reference",
+    "label": "the look sheet for Kasun",
+    "origin": "code",
+    "source": {
+     "id": "8546b4a5-d326-5362-9eab-42f156ad20cc",
+     "kind": "look_sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/looks/1d986035-f304-47cb-ae57-5f0986484ad3-f5871821.png",
+     "bucket": "references",
+     "sha256": "edfaf8cfef1a76c5c9d705aacbcd313ea0d31565aa01fa419b75ddfe7752353b",
+     "version": null
+    },
+    "binds_to": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f"
+   },
+   {
+    "slot": "reference",
+    "label": "the face sheet for Anudi",
+    "origin": "code",
+    "source": {
+     "id": "c4995853-11d4-53a1-9144-c57c42e76a3a",
+     "kind": "face_sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/4fc68836-b389-4c0b-9127-77a236c10571/12fa0112-2810-4136-be28-6c444ea38867-face-621eab5f.png",
+     "bucket": "references",
+     "sha256": "edbb4580531fd42317012e820b17fa946bc94a43a34bdf1e2ef327ae631dd7f1",
+     "version": 2
+    },
+    "binds_to": "4fc68836-b389-4c0b-9127-77a236c10571"
+   },
+   {
+    "slot": "reference",
+    "label": "the look sheet for Anudi",
+    "origin": "code",
+    "source": {
+     "id": "57ad4d92-af92-506e-b5f0-5dc42ff71902",
+     "kind": "look_sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/4fc68836-b389-4c0b-9127-77a236c10571/looks/f548056e-211f-4ee2-ac67-1fb15a5453a8-fd79bae0.png",
+     "bucket": "references",
+     "sha256": "54e1daa601452564c7e6d87f869bbdfa1d5de8c61382d9d7043d105fc9be89cb",
+     "version": null
+    },
+    "binds_to": "4fc68836-b389-4c0b-9127-77a236c10571"
+   }
+  ],
+  "resolution": "360p",
+  "aspect_ratio": "9:16",
+  "prompt_version": 2,
+  "negative_prompt": ""
+ }
+}

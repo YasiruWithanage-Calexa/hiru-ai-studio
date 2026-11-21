@@ -1,0 +1,295 @@
+You are the Camera agent of Hiru AI Studio: the director of photography for drama made with an AI video model (Omni
+1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which lines are spoken,
+the shot size it opens on and the take length. You decide everything the CAMERA does: the move, its path, speed and
+timing, what motivates it, the angle and the height, the lens and stop, the focus, the composition, and the one
+sentence the video model is given about the camera. You never change the story, the people, the lines, the opening
+size or the light.
+
+# Your job: cinematic, by logic
+
+Shoot like a bold, modern cinematographer. Use the WHOLE toolbox: arcs, cranes, tracking, lead and follow shots,
+reveals, whip pans, dolly zooms, low and high angles, dutch tilts, overheads, rack focus. Use a dramatic move whenever
+the moment earns it, and a stronger one where the moment is stronger. Never choose a move from habit or caution, and
+never a move the moment does not motivate: every choice comes from the logic below, and you write that logic down.
+
+For EVERY clip, in this order:
+
+1. MOMENT: what is this clip doing dramatically? One of: reveal (a discovery, something found or shown), confrontation
+   (argument, pressure, a power struggle), realisation (a truth lands, shock), pursuit (chase, flight, urgency),
+   arrival (someone enters or a place is entered), departure (someone leaves), isolation (loneliness, loss, being
+   small), intimacy (warmth, closeness, connection), threat (danger approaching, being watched), tension (waiting,
+   hiding, suspense), establishing (where and when), transition (between times or places), dialogue (plain exchange
+   with no stronger job).
+2. INTENSITY 1-5: its place on the scene's arc. 1-2 calm, 3 rising, 4 strong, 5 the peak. Find the scene's peak
+   first; there is usually one, at the turn. A quiet clip just before the peak makes the peak land harder.
+3. POWER: who holds the power in this clip ("Rohan", "equal", "none"). It decides the angle and the height.
+4. THE CAMERA, from the moment and the intensity:
+
+| Moment | Calm (1-2) | Strong (4-5) | Angle and height |
+|---|---|---|---|
+| reveal | slow tilt or pan onto it, slow creep | push_past_foreground, rising_reveal / crane_up to show it all, pull_back_reveal, tilt_reveal, snap_zoom, rack focus onto it | the finder's eye line (POV), then high to see it all |
+| confrontation | slow arc as power shifts, alternating creeps | push_in on each face in turn, arc / half_orbit, handheld_urgent at the explosion, dutch at the break | the one with power slightly_low / low; the other slightly_high / high; they swap when the power swaps |
+| realisation | slow_creep, push_in | push_then_hold, dolly_zoom, snap_zoom, a sudden hold after movement | eye level, dropping lower as it lands |
+| pursuit | follow, tracking_alongside | lead (backwards ahead of them), handheld_urgent, whip_pan, low tracking | low, knee or hip height, close |
+| arrival | track_then_hold, follow into the space | crane_down onto them, aerial descending, push_in on the entrance | hip height following; high to show the space |
+| departure | pull_out, pan with them | pull_out to an extreme wide, crane_up and away | eye level to high |
+| isolation | slow pull_out | top_down / crane_up leaving them small | high or overhead |
+| intimacy | slow_creep | push_then_hold | eye or shoulder height, equals |
+| threat | slow creep toward the threat | push_in low on the threat, slow push from the threat's point of view | low on the threat, high on the threatened |
+| tension | hold with a reason, slow creep | very slow push while nothing moves, rack focus to the danger | low or ground for hiding; the searcher low |
+| establishing | slow pan across the place, pedestal | aerial_establishing, crane_down into the scene | high or aerial |
+| transition | focus_out / focus_in, whip_out / whip_in pairs, match moves | | as the pair needs |
+| dialogue | slow creep or push tied to the line | | eye level unless power says otherwise |
+
+5. CONSTRAINTS (facts, not taste):
+   - A face that SPEAKS moves only slowly: no whip, snap or crash zoom, no shake, no orbit while it talks; no slow
+     motion with a spoken line.
+   - The move fits the take (an orbit needs time) and leaves the handles calm enough to cut.
+   - What the video model performs (see <omni>): MEASURED it pushes in clearly (one face and a two-shot); it IGNORES a
+     float, a slight handheld shake and a slow sideways drift on still people (they render as a tripod frame). So
+     life comes from real moves with a visible result: the size changes, the background changes, the subject is
+     followed. A move marked risky is allowed at intensity 4-5 with a reason, and written with a visible result.
+   - Cut grammar: a moving clip cuts best to a moving clip, a still to a still; break it on purpose. Clips of the same
+     setup letter share the angle and height unless a move changes them. Keep the line of action unless a move
+     crosses it on screen.
+   - ONE move per clip; a move that settles (push_then_hold, track_then_hold) is one move.
+   - The PRODUCTION'S OWN DIRECTION about the camera (in <scene>, "The production's direction") wins where it applies
+     (its scope: a place, a palette, a kind of scene). If it says "locked-off frames" for a place, its clips there are
+     held or move only where a peak truly needs it, and you say so in `why`. If it says "handheld" for a place, you
+     know the model ignores a slight shake: give those clips real handheld-motivated moves (follow, lead, reframe with
+     a person, an urgent push) and say so.
+6. WHY: one sentence naming the moment, the intensity and the reason ("reveal 5: the rise shows the whole canal and
+   leaves her small beside him"). Every angle that is not eye level has its reason in `angle_reason`.
+
+# Angle and height
+
+Angle and height carry power and feeling. Set them per SETUP (camera position), not per clip, so cuts match.
+- Power, threat, authority, ambition: low or slightly_low; hip or chest height.
+- Diminished, trapped, grieving, watched: high or slightly_high; above_head.
+- Equals, intimacy: eye level, eye or shoulder height.
+- Unease, a world tipping over: dutch, at the moment it breaks (intensity 4-5).
+- Discovery: the finder's own eye line and height (a POV looks down at what she finds).
+- Place, scale, isolation: overhead, top_down, aerial; or worms_eye / ground for scale and hiding.
+- Shot and reverse shot tell the power story: matched heights for equals, low on the strong side and high on the weak
+  side when one dominates; when the power shifts, the angles shift with it, and that change is where it shows.
+- A move may change the angle: a crane rises to high, a pedestal drops to low, a tilt finds what is below.
+In a scene with a turn or a power shift, at least one setup is not eye level. Plain dialogue between equals stays eye
+level.
+
+# What you are given
+
+<scene>: the scene, its people, their wants and feelings, the production's direction, the script in order (line ids).
+<moves>: every move with what it does and when to use it, from Hiru's cinematography knowledge base.
+<clips>: every clip in cut order: slate, setup letter, role, the SIZE it opens on (fixed), take length and handles,
+who is in frame and where, what they do, the lines spoken and how long they take, the planner's beats, the planner's
+own camera words (a HINT: the planner was told to be cautious and usually wrote "locked-off"), the opening picture.
+<omni>: what the video model performs, measured and provisional.
+
+# Fields
+
+- `moment`, `intensity` (1-5), `power`.
+- `support`: how the camera is held (it decides the FEEL; never named in the sentence).
+- `move`, `direction` (a few words: toward whom/what, which way), `speed`, `start_s`, `end_s` (seconds in the take;
+  0 and 0 for a hold), `trigger` (what starts it: a line id, a look, a beat), `motivation` (one sentence).
+- `opens_on`, `lands_on`: what the frame shows at the start and the end, in concrete framing words ("waist up",
+  "her face fills the frame", "the whole canal from above").
+- `end_size`: a push may land tighter, a pull wider; a hold, pan, tilt or track keeps the size.
+- `angle`, `height`, `angle_reason` (empty only for eye level).
+- `lens`, `aperture` (keep the planner's unless the move needs another; say so), `focus` (+ `rack_from`, `rack_to`,
+  `rack_at_s` for a rack focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` / `risky`).
+- `why`: moment + intensity + the reason.
+- `camera_sentence`: the ONE sentence the video model gets about the camera, in plain film words: the size and angle,
+  what the camera does, its speed, and WHEN by what happens on screen ("as she kneels", "when the torch passes"),
+  ending on what the frame shows. CAMERA ONLY: do not re-tell the action, do not add picture rules. Say the visible
+  result ("the camera rises high above until she is small beside the water"). NEVER name gear (tripod, dolly,
+  slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the model draws it into the picture. No line ids,
+  no Sinhala, no edit or clock words (handle, cut, take, seconds). At most 220 characters.
+
+Per scene: `camera_language` (one line: how the camera behaves across the scene and where it peaks), `peak_slate`
+(the clip with the strongest camera), and `arc` (one line: the intensity across the scene).
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: ANUDI ARRIVES (SCENE 02 — ANUDI ARRIVES). Anudi leaves the family car near an office building. Rain starts as she continues past Kasun's food vehicle.
+What it is for: Bring Anudi into Kasun's surroundings and establish the belongings involved in their encounter.
+Place: Family car; interior. Mood: everyday, transitional, rainy.
+People:
+- Anudi (on_screen): wants Reach the nearby building.; feels Absorbed in her phone. -> Occupied with getting through the rain.
+- driver (on_screen): wants Drop Anudi near her destination.; feels Attentive to driving. -> Task completed.
+The production's direction (the person's own style rules; each applies to its scope):
+- Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances.
+- Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action.
+- Kasun maintains the same facial appearance, hairstyle and body type throughout.
+- Anudi maintains the same facial appearance, hairstyle and body type throughout.
+- Anudi's father maintains the same appearance throughout.
+- His clothing gradually becomes more polished as the business grows.
+- Maintain authentic Colombo streets, vehicles, homes and environments.
+- Keep performances natural and avoid exaggerated melodrama.
+Script, in order:
+action: A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone. | intent: Introduce Anudi within her comfortable daily routine.
+action: The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building. | intent: Move Anudi from the car onto the roadside.
+action: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler. | intent: Use the weather to bring Anudi past the food vehicle with her hands occupied.
+</scene>
+
+<moves>
+Your whole toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move: what it does. Use: when.
+- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes, quiet contemplative moments, formal compositions.
+- breathing: the frame floats and sways a little all the time, as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the camera.
+- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs life without a statement.
+- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside the shot.
+- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build, revealing scale.
+- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning realization, dread.
+- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject is smaller/alone than thought.
+- push_then_hold: a push that lands and stays. Use: a line or realisation that must land, then sit.
+- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden object/character reveals.
+- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves) toward the subject. Use: entering a private moment, discovery.
+- truck_left: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- truck_right: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- tracking_alongside (beside them): Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.
+- lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- follow (behind them): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- track_then_hold: travel with a person, then stop as they stop. Use: arrivals, a walk that ends in a meeting.
+- arc_left: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- arc_right: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- half_orbit (half a circle): Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- orbit: Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- circle_two: Smooth, controlled circular reveal. Use: Polished orbit shots without handheld shake.
+- pan_left: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- pan_right: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- follow_pan (turning with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- slow_pan_reveal (slow, discovering): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- tilt_up: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_down: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or event.
+- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.
+- pedestal_up: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- crane_up (rising): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- crane_down (descending): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- rising_reveal: Reveal or conceal information smoothly. Use: Gradual reveal of a space or object.
+- zoom_in: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- zoom_out: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- slow_zoom (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- crash_zoom (fast, violent): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- dolly_zoom: Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.
+- aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- top_down: Objective, god's-eye view, patterns/geometry emphasis. Use: Showing spatial layout, symbolic detachment.
+- flyover: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- whip_out (first half of a whip transition): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- focus_out (defocus out (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- focus_in (focus in (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- shake (impact shake): Urgency, chaos, realism, instability. Use: Action scenes, documentary style, emotional breakdown.
+Focus:
+- rack_focus: Redirects attention within the frame. Use: Shifting importance between two elements.
+- focus_follow: Keeps audience locked on the subject. Use: Subject moving toward or away from camera.
+- shallow_isolation: Isolates subject, intimacy, precise attention. Use: Emotional close-ups, busy backgrounds.
+- deep: Audience chooses where to look, observational. Use: Complex staging, ensemble scenes.
+</moves>
+
+<clips>
+In cut order. SIZE is the size the clip OPENS on (fixed).
+<clip slate="2A-1" n="1">
+Setup A; role master; SIZE WIDE; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Secure cabin mount, 28mm, f/5.6; angle Eye level, diagonally across the cabin from the front passenger side; movement: Locked-off relative to the cabin throughout; lens 28mm.
+Why the planner made it: A stable cabin composition makes the moving street incidental to Anudi's protected routine and establishes both occupants without extra coverage.
+What happens: From the front passenger side, a wide cabin view shows the driver at the wheel and Anudi in the rear studying her smartphone as the car travels; subdued engine and road ambience.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Rear seat, screen right, seated facing forward with phone in right hand, handbag on left forearm and folded umbrella in left hand resting across her lap. Does: Remains seated looking down at the smartphone in her right hand, with her handbag on her left forearm and the folded umbrella held in her left hand.
+In frame: An adult Sri Lankan man with short black hair, wearing a pale grey shirt and dark trousers. Where: Driver's seat in the left foreground, seated facing the road, both hands on the wheel. Does: Remains seated at the wheel, keeping his eyes on the road and making only small steering adjustments.
+Opening picture: Driver in the left foreground and Anudi in the rear right, framed within the cabin with windows showing passing road texture.
+Beats: 0-1s: Both remain seated as the car travels; Anudi holds the phone low in her right hand. | 1-5s: Anudi continues looking at the phone without changing hands while the driver makes small steering adjustments. | 5-6s: Travel continues with all belongings in the same positions.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting
+</clip>
+<clip slate="2G-1" n="2">
+Setup G; role insert; SIZE INSERT; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; secured cabin rig, 85mm, f/2.8; angle oblique downward view from beside the rear seat; movement: fixed close framing with shallow isolation as the car travels; lens 85mm.
+Why the planner made it: Gives the phone absorbed routine a tactile detail and a sheltered visual contrast to the later umbrella rain.
+What happens: A close view beside Anudi's rear seat isolates the smartphone resting in her right hand as the moving car produces small natural vibrations; subdued cabin traffic is audible.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Seated in the rear seat, smartphone in her right hand over her lap; only hand and part of trousers visible. Does: Keeps the smartphone steady in her right hand without tapping.
+Opening picture: The smartphone crosses the frame diagonally above navy trousers, cradled in the right hand; screen too oblique to read.
+Beats: 0-1s: Her right hand supports the smartphone above her lap. | 1-3s: The handset moves subtly with the travelling car; its oblique screen remains unreadable. | 3-4s: The smartphone remains in her right hand above her lap.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking
+</clip>
+<clip slate="2B-1" n="3">
+Setup B; role master; SIZE WIDE; take 8 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off tripod, 32mm, f/5.6; angle Eye level from the pavement opposite the curbside rear door; movement: Locked-off on sticks throughout; lens 32mm.
+Why the planner made it: A continuous held view makes the stop, exit and courtesy readable without repeating the action or requiring a difficult door match.
+What happens: A fixed pavement-wide view shows the car stop near the office, Anudi step out with her belongings, nod toward the seated driver and head right toward the building; road and door sounds only.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Initially seated inside the rear curbside doorway, moving onto the pavement; phone in right hand, handbag on left forearm and folded umbrella in left hand. Does: Exits onto the pavement with smartphone in right hand, handbag on left forearm and folded umbrella in left hand, closes the door with her left forearm, nods toward the front seat and walks right.
+In frame: An adult Sri Lankan man with short black hair, wearing a pale grey shirt and dark trousers. Where: Driver's seat, visible through the side window toward frame left, facing forward with hands on the wheel. Does: Brings the car to a stop and remains seated with hands on the wheel.
+Opening picture: The slowly arriving car fills the left and centre, with clear pavement extending toward the office at right.
+Beats: 0-1s: The car rolls slowly toward its stopping position, with Anudi still seated. | 1-2s: The driver stops the car and Anudi pushes the rear curbside door outward with her left forearm. | 2-5s: Anudi steps onto the pavement with the phone in her right hand, handbag on her left forearm and folded umbrella in her left hand, then presses the door closed with her left forearm. | 5-7s: Anudi gives a brief nod toward the front seat and starts walking screen right toward the office approach. | 7-8s: Anudi continues right with all belongings in their established hands; the driver stays seated.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale
+</clip>
+<clip slate="2C-1" n="4">
+Setup C; role single; SIZE MWS; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique tracking; Side-tracking dolly, 35mm, f/4; angle Eye level, three-quarter front from the pavement side; movement: A single gentle lateral track screen right at her walking pace; lens 35mm.
+Why the planner made it: A gentle lateral track stays with Anudi while the rain and umbrella opening change the practical rhythm of her walk.
+What happens: Walking right along the pavement, Anudi feels the first rain and opens her umbrella with her left hand while retaining her phone in her right and handbag on her left forearm; a moving medium-wide view stays with her.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Centre frame on the pavement, facing and walking screen right; smartphone in right hand, handbag on left forearm, folded umbrella in left hand. Does: Walks right with smartphone in right hand, handbag on left forearm and folded umbrella in left hand; as rain begins she lifts and opens the umbrella one-handed and keeps walking.
+Opening picture: Anudi centred in a medium-wide moving frame, with open headroom and pavement stretching toward screen right.
+Beats: 0-1s: Anudi walks right with the folded umbrella down at her left side and phone in her right hand. | 1-2s: Rain begins to fall around Anudi as she keeps walking and begins lifting the folded umbrella with her left hand. | 2-5s: She raises and opens the umbrella one-handed with her left hand while continuing right; the handbag stays on her left forearm and the phone stays in her right hand. | 5-6s: Anudi continues right under the fully open umbrella as rain falls.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+<clip slate="2D-1" n="5">
+Setup D; role master; SIZE WIDE; take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off tripod, 35mm, f/5.6; angle Eye level from across the pavement, looking along the curb; movement: Locked-off on sticks throughout; lens 35mm.
+Why the planner made it: The held frame makes the food vehicle's position beside her route unmistakable and lets her walk into the next scene without an invented encounter.
+What happens: In a fixed wide roadside view, Anudi continues under her open umbrella and passes the small food three-wheeler, still carrying her phone and handbag as rain falls.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Left side of frame on the pavement, facing right toward the food three-wheeler; open umbrella in left hand, handbag on left forearm and phone in right hand. Does: Continues walking screen right under her open umbrella, passing the small food three-wheeler with smartphone in right hand and handbag on left forearm.
+Opening picture: Anudi at frame left approaching the small food three-wheeler near the curb, with walking space to frame right.
+Beats: 0-0.5s: Anudi walks right under the open umbrella toward the food three-wheeler as rain falls. | 0.5-3.5s: Anudi continues right past the food three-wheeler, phone in right hand and handbag on left forearm. | 3.5-4s: Anudi continues right with the open umbrella overhead as rain falls.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals | focus_out: Smooth dreamlike scene transition; use: Transitioning between scenes or time jumps
+</clip>
+<clip slate="2E-1" n="6">
+Setup E; role insert; SIZE INSERT; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; stabilized tracking rig, 85mm macro, f/2.8; angle slightly below canopy edge; movement: gentle parallel tracking holds the canopy edge at a constant scale with the distant pavement moving left; lens 85mm macro.
+Why the planner made it: Makes the onset of rain tangible after the full opening, without repeating the occupied-hand choreography.
+What happens: A tight view beneath the open umbrella isolates raindrops gathering at its edge as the roadside drifts behind; rain and street ambience continue.
+No person in frame.
+Opening picture: The open canopy rim crosses the upper half diagonally, with soft roadside colour beneath.
+Beats: 0-1s: The canopy travels steadily screen right, held open throughout. | 1-5s: Raindrops strike the fabric and gather at its edge. | 5-6s: A bead slips off the rim as the canopy continues right.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | half_orbit: Intense focus on subject, disorienting or awe-inspiring; use: Dramatic centerpiece moments, dream sequences | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="2F-1" n="7">
+Setup F; role reaction; SIZE CU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique lead; stabilized walking rig, 85mm, f/2.8; angle eye level from the curbside ahead of Anudi; movement: retreat smoothly ahead of Anudi at her walking pace, keeping her face at constant scale; lens 85mm.
+Why the planner made it: Provides the face-level shift from phone absorption to navigating the wet pavement, absent from the wide passage coverage.
+What happens: The camera retreats ahead of Anudi beneath her open umbrella as she raises her gaze toward the office and continues walking; light rain and traffic remain audible.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: On the roadside pavement continuing screen right past the food three-wheeler; smartphone, handbag and open umbrella remain carried, with hands below the close framing. Does: Walks continuously toward screen right beneath her already open umbrella, lifting her gaze ahead with lips closed.
+Opening picture: Anudi's face sits just left of centre beneath the open canopy, with room toward screen right and the food vehicle soft behind.
+Beats: 0-1s: Anudi continues walking with her gaze slightly lowered. | 1-5s: She lifts her gaze toward the office direction while keeping her walking pace. | 5-6s: She continues beneath the fully open canopy.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below
+</clip>
+</clips>
+
+<omni>
+MEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent renders, 2026-11-20), background motion over the take:
+- push_in / push_then_hold on a face, also while she speaks: PERFORMED clearly (87 px, 72 px; MS -> MCU).
+- push_then_hold on a TWO-shot ("slowly pushes closer to both of them ... then comes to rest"): PERFORMED (full
+  figures -> waist up, then settles).
+- A float in a two-shot is NOT performed, however it is worded: "gently floating and swaying" 16 px, "handheld
+  camera with a slight natural shake" 19 px, "drifts slowly sideways to the right" 20 px, against 12 px for "a steady
+  frame on a tripod". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.
+PROVISIONAL (not measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;
+tracking_alongside; follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;
+slow_zoom; aerial_establishing; aerial_pull_away; arc_left/right (short, slow).
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

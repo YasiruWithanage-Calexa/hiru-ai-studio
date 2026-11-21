@@ -1,0 +1,38 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<frame.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<face_C01.png>"
+  },
+  {
+   "type": "image",
+   "mime_type": "image/png",
+   "data": "<look_C01.png>"
+  },
+  {
+   "type": "text",
+   "text": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Clear coverage, readable emotion, family-audience warmth.\n\nSETTING\nAn organised modern hotel operations office with a computer on the workstation between the two standing managers.\n\nSUBJECTS\nSri Lankan adult operations manager in a dark plain business shirt and dark trousers, wearing pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes — Listens with lips closed and gives one small nod. Company B Operations Manager is heard from off screen and is never seen.\n\nCAMERA\nCamera: Eye-level close-up of the visitor; the camera creeps slowly closer as he gives his small nod, staying a close-up with his face a little larger in the frame.\n\nLIGHTING\nDay: Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.\n\nACTION & DIALOGUE\nOver 4 seconds:\n0-2s: Make the introduction a meeting between peers. Company A Operations Manager (Employee) watches Company B Operations Manager. His lips remain closed with the corners slightly lifted. Company A Operations Manager (Employee) gives one small nod. His chin dips once while his eyes stay directed toward Company B Operations Manager.\n2-4s: Leave a clean attentive beat for the return. Company A Operations Manager (Employee) maintains eye contact toward Company B Operations Manager. His head is steady and his lips remain closed. Company B Operations Manager's voice comes from off screen, \"Welcome! අපිත් මුලින් ChatGPT, Gemini විතරයි use කළේ.\" — Company B Operations Manager is not in the frame and no one on screen mouths these words.\n\nSOUND\nNo dialogue. No voiceover. Nobody speaks on camera. Diegetic sound only: room: Office room tone.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 9:16. Duration 4 seconds. Ends on a cut.\n\nReference images, in the order attached:\nImage 1 is the opening frame of this shot. The video starts exactly on this picture: the same framing, people, place, weather and light, and everything that happens grows out of it.\nImage 2 is the face sheet for Company A Operations Manager (Employee): several angles of the same face. Company A Operations Manager (Employee)'s face, age, skin tone and hair come only from this sheet, at every angle and expression, including when Company A Operations Manager (Employee) turns or moves closer to the camera.\nImage 3 is the look sheet for Company A Operations Manager (Employee): exactly what Company A Operations Manager (Employee) wears in this shot, head to toe (Pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes). When more of Company A Operations Manager (Employee) comes into view, the clothes, shoes and things carried match this sheet exactly.\nImages 2 to 3 are references only: never show a sheet, its grey backdrop or its panels in the video, and never cut to them. Where the words above describe someone's clothes or face differently from these pictures, the pictures win."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "9:16",
+  "resolution": "360p",
+  "duration": "4s",
+  "delivery": "uri"
+ },
+ "generation_config": {
+  "video_config": {
+   "task": "reference_to_video"
+  }
+ }
+}

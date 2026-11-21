@@ -1,0 +1,23 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "Beside Kasun's small food three-wheeler on a rainy Colombo roadside, Anudi has just shown interest in his business. Their new acquaintance grows warmer as he answers without embarrassment.\n\nAnudi stands frame left facing Kasun, in a plain cream blouse and muted teal skirt, receptive and curious. Her phone rests in her right hand at waist level; her left hand holds the open umbrella, with her handbag on her left forearm. Kasun stands frame right facing her, in a faded blue short-sleeved shirt and dark trousers, his empty hands at his sides and his business behind him. He feels quietly comfortable with her interest.\n\nThey stay turned toward each other. Kasun meets Anudi's expectant gaze.\nKasun, to Anudi, friendly and modest, giving a slight nod as he confirms ownership, then settling into unembarrassed ease about the small beginning:\n\"ඔව්. පොඩියට පටන් ගත්තේ.\"\nAnudi keeps her eyes on him, her eyebrows lifting slightly as her curiosity deepens.\nAnudi, to Kasun, after a brief beat, warmly curious rather than probing, inclining her head a fraction toward him to learn how much he manages himself:\n\"තනියමද මේ හැමදේම කරන්නේ?\"\nKasun watches her attentively, taking her interest seriously without becoming formal.\nAnudi waits with a small smile, keeping her phone at her waist. Kasun draws a quiet breath, still meeting her eyes.\n\nThey speak casual, everyday spoken Sinhala, the way people really talk in a Sri Lankan teledrama: not an interview, not a speech, nobody looks at the camera. Only these words are spoken, only by the people named; English words in a line are said as Sri Lankans say them.\n\nCamera: In an eye-level waist-up two-shot, the camera slowly pushes closer to both of them through his answer and her next question, then comes to rest.\n\nSound: Continuous light rain and distant roadside traffic beneath their natural, friendly-polite voices; no music.\n\nHands: Kasun is not holding the phone. Anudi holds the phone in one hand. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nDuration 6 seconds. Ends on a cut."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "generation_config": {
+  "video_config": {
+   "task": "text_to_video"
+  }
+ },
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "16:9",
+  "resolution": "360p",
+  "duration": "6s",
+  "delivery": "uri"
+ }
+}

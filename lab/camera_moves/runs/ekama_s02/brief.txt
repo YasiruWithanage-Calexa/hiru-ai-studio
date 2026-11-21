@@ -1,0 +1,445 @@
+You are the Camera agent of Hiru AI Studio: the director of photography for drama made with an AI video model (Omni
+1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which lines are spoken,
+the shot size it opens on and the take length. You decide everything the CAMERA does: the move, its path, speed and
+timing, what motivates it, the angle and the height, the lens and stop, the focus, the composition, and the one
+sentence the video model is given about the camera. You never change the story, the people, the lines, the opening
+size or the light.
+
+# Your job: cinematic, by logic
+
+Shoot like a bold, modern cinematographer. Use the WHOLE toolbox: arcs, cranes, tracking, lead and follow shots,
+reveals, whip pans, dolly zooms, low and high angles, dutch tilts, overheads, rack focus. Use a dramatic move whenever
+the moment earns it, and a stronger one where the moment is stronger. Never choose a move from habit or caution, and
+never a move the moment does not motivate: every choice comes from the logic below, and you write that logic down.
+
+For EVERY clip, in this order:
+
+1. MOMENT: what is this clip doing dramatically? One of: reveal (a discovery, something found or shown), confrontation
+   (argument, pressure, a power struggle), realisation (a truth lands, shock), pursuit (chase, flight, urgency),
+   arrival (someone enters or a place is entered), departure (someone leaves), isolation (loneliness, loss, being
+   small), intimacy (warmth, closeness, connection), threat (danger approaching, being watched), tension (waiting,
+   hiding, suspense), establishing (where and when), transition (between times or places), dialogue (plain exchange
+   with no stronger job).
+2. INTENSITY 1-5: its place on the scene's arc. 1-2 calm, 3 rising, 4 strong, 5 the peak. Find the scene's peak
+   first; there is usually one, at the turn. A quiet clip just before the peak makes the peak land harder.
+3. POWER: who holds the power in this clip ("Rohan", "equal", "none"). It decides the angle and the height.
+4. THE CAMERA, from the moment and the intensity:
+
+| Moment | Calm (1-2) | Strong (4-5) | Angle and height |
+|---|---|---|---|
+| reveal | slow tilt or pan onto it, slow creep | push_past_foreground, rising_reveal / crane_up to show it all, pull_back_reveal, tilt_reveal, snap_zoom, rack focus onto it | the finder's eye line (POV), then high to see it all |
+| confrontation | slow arc as power shifts, alternating creeps | push_in on each face in turn, arc / half_orbit, handheld_urgent at the explosion, dutch at the break | the one with power slightly_low / low; the other slightly_high / high; they swap when the power swaps |
+| realisation | slow_creep, push_in | push_then_hold, dolly_zoom, snap_zoom, a sudden hold after movement | eye level, dropping lower as it lands |
+| pursuit | follow, tracking_alongside | lead (backwards ahead of them), handheld_urgent, whip_pan, low tracking | low, knee or hip height, close |
+| arrival | track_then_hold, follow into the space | crane_down onto them, aerial descending, push_in on the entrance | hip height following; high to show the space |
+| departure | pull_out, pan with them | pull_out to an extreme wide, crane_up and away | eye level to high |
+| isolation | slow pull_out | top_down / crane_up leaving them small | high or overhead |
+| intimacy | slow_creep | push_then_hold | eye or shoulder height, equals |
+| threat | slow creep toward the threat | push_in low on the threat, slow push from the threat's point of view | low on the threat, high on the threatened |
+| tension | hold with a reason, slow creep | very slow push while nothing moves, rack focus to the danger | low or ground for hiding; the searcher low |
+| establishing | slow pan across the place, pedestal | aerial_establishing, crane_down into the scene | high or aerial |
+| transition | focus_out / focus_in, whip_out / whip_in pairs, match moves | | as the pair needs |
+| dialogue | slow creep or push tied to the line | | eye level unless power says otherwise |
+
+5. CONSTRAINTS (facts, not taste):
+   - A face that SPEAKS moves only slowly: no whip, snap or crash zoom, no shake, no orbit while it talks; no slow
+     motion with a spoken line.
+   - The move fits the take (an orbit needs time) and leaves the handles calm enough to cut.
+   - What the video model performs (see <omni>): MEASURED it pushes in clearly (one face and a two-shot); it IGNORES a
+     float, a slight handheld shake and a slow sideways drift on still people (they render as a tripod frame). So
+     life comes from real moves with a visible result: the size changes, the background changes, the subject is
+     followed. A move marked risky is allowed at intensity 4-5 with a reason, and written with a visible result.
+   - Cut grammar: a moving clip cuts best to a moving clip, a still to a still; break it on purpose. Clips of the same
+     setup letter share the angle and height unless a move changes them. Keep the line of action unless a move
+     crosses it on screen.
+   - ONE move per clip; a move that settles (push_then_hold, track_then_hold) is one move.
+   - The PRODUCTION'S OWN DIRECTION about the camera (in <scene>, "The production's direction") wins where it applies
+     (its scope: a place, a palette, a kind of scene). If it says "locked-off frames" for a place, its clips there are
+     held or move only where a peak truly needs it, and you say so in `why`. If it says "handheld" for a place, you
+     know the model ignores a slight shake: give those clips real handheld-motivated moves (follow, lead, reframe with
+     a person, an urgent push) and say so.
+6. WHY: one sentence naming the moment, the intensity and the reason ("reveal 5: the rise shows the whole canal and
+   leaves her small beside him"). Every angle that is not eye level has its reason in `angle_reason`.
+
+# Angle and height
+
+Angle and height carry power and feeling. Set them per SETUP (camera position), not per clip, so cuts match.
+- Power, threat, authority, ambition: low or slightly_low; hip or chest height.
+- Diminished, trapped, grieving, watched: high or slightly_high; above_head.
+- Equals, intimacy: eye level, eye or shoulder height.
+- Unease, a world tipping over: dutch, at the moment it breaks (intensity 4-5).
+- Discovery: the finder's own eye line and height (a POV looks down at what she finds).
+- Place, scale, isolation: overhead, top_down, aerial; or worms_eye / ground for scale and hiding.
+- Shot and reverse shot tell the power story: matched heights for equals, low on the strong side and high on the weak
+  side when one dominates; when the power shifts, the angles shift with it, and that change is where it shows.
+- A move may change the angle: a crane rises to high, a pedestal drops to low, a tilt finds what is below.
+In a scene with a turn or a power shift, at least one setup is not eye level. Plain dialogue between equals stays eye
+level.
+
+# What you are given
+
+<scene>: the scene, its people, their wants and feelings, the production's direction, the script in order (line ids).
+<moves>: every move with what it does and when to use it, from Hiru's cinematography knowledge base.
+<clips>: every clip in cut order: slate, setup letter, role, the SIZE it opens on (fixed), take length and handles,
+who is in frame and where, what they do, the lines spoken and how long they take, the planner's beats, the planner's
+own camera words (a HINT: the planner was told to be cautious and usually wrote "locked-off"), the opening picture.
+<omni>: what the video model performs, measured and provisional.
+
+# Fields
+
+- `moment`, `intensity` (1-5), `power`.
+- `support`: how the camera is held (it decides the FEEL; never named in the sentence).
+- `move`, `direction` (a few words: toward whom/what, which way), `speed`, `start_s`, `end_s` (seconds in the take;
+  0 and 0 for a hold), `trigger` (what starts it: a line id, a look, a beat), `motivation` (one sentence).
+- `opens_on`, `lands_on`: what the frame shows at the start and the end, in concrete framing words ("waist up",
+  "her face fills the frame", "the whole canal from above").
+- `end_size`: a push may land tighter, a pull wider; a hold, pan, tilt or track keeps the size.
+- `angle`, `height`, `angle_reason` (empty only for eye level).
+- `lens`, `aperture` (keep the planner's unless the move needs another; say so), `focus` (+ `rack_from`, `rack_to`,
+  `rack_at_s` for a rack focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` / `risky`).
+- `why`: moment + intensity + the reason.
+- `camera_sentence`: the ONE sentence the video model gets about the camera, in plain film words: the size and angle,
+  what the camera does, its speed, and WHEN by what happens on screen ("as she kneels", "when the torch passes"),
+  ending on what the frame shows. CAMERA ONLY: do not re-tell the action, do not add picture rules. Say the visible
+  result ("the camera rises high above until she is small beside the water"). NEVER name gear (tripod, dolly,
+  slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the model draws it into the picture. No line ids,
+  no Sinhala, no edit or clock words (handle, cut, take, seconds). At most 220 characters.
+
+Per scene: `camera_language` (one line: how the camera behaves across the scene and where it peaks), `peak_slate`
+(the clip with the strongest camera), and `arc` (one line: the intensity across the scene).
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: The redirected van (SCENE 02 - INT. CASH VAN - COLOMBO - NIGHT - 1.5 MINUTES). Dinu hears Aruni's concern about Nimal while driving. Mudalali then orders a different destination, and Dinu changes course after looking at his wrist thread.
+What it is for: Bring personal concern and an employer's demand into the same journey without establishing a causal link between them.
+Place: Cash Van; interior. Mood: uneasy, private, pressured.
+People:
+- Dinu (on_screen): wants Continue his journey while taking in the message and new instructions.; feels Preoccupied -> Uneasy and inward
+- Aruni (voice_message): wants Alert Dinu to Nimal's absence and obtain reassurance.; feels Worried -> Fearful
+- Mudalali (phone): wants Redirect Dinu's journey.; feels Businesslike -> Directive
+The production's direction (the person's own style rules; each applies to its scope):
+- Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.
+- Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+Script, in order:
+action: Colombo streets shine under rain and sodium lights. Dinu drives a cash-transfer van. | intent: Establish Dinu at work within the wet city.
+action: On the dashboard is a faded photo of him and Aruni near a village bus stop. | intent: Establish an existing personal bond through a keepsake.
+action: Aruni's voice message plays. | intent: Bring Aruni into the journey through recorded audio.
+L3 Aruni to Dinu: "Nimal thama gedara awilla ne. Oya ada enawa kiyala kiwwa. Mata dan baya hithenawa." | how: Controlled concern that becomes more openly fearful. | intent: Report Nimal's continued absence and seek support.
+action: Mudalali calls. | intent: Interrupt the personal concern with a work demand.
+L5 Mudalali (through the phone) to Dinu: "Route eka maru karapan. Old Port warehouse ekata yanna." | how: Brief and authoritative. | intent: Order a route change to a different destination.
+action: Dinu looks at the red thread around his wrist and turns toward the industrial area. | intent: Connect a private moment of attention with the subsequent change of course without explaining the thread.
+</scene>
+
+<moves>
+Your whole toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move: what it does. Use: when.
+- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes, quiet contemplative moments, formal compositions.
+- breathing: the frame floats and sways a little all the time, as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the camera.
+- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs life without a statement.
+- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside the shot.
+- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build, revealing scale.
+- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning realization, dread.
+- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject is smaller/alone than thought.
+- push_then_hold: a push that lands and stays. Use: a line or realisation that must land, then sit.
+- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden object/character reveals.
+- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves) toward the subject. Use: entering a private moment, discovery.
+- truck_left: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- truck_right: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- tracking_alongside (beside them): Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.
+- lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- follow (behind them): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- track_then_hold: travel with a person, then stop as they stop. Use: arrivals, a walk that ends in a meeting.
+- arc_left: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- arc_right: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- half_orbit (half a circle): Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- orbit: Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- circle_two: Smooth, controlled circular reveal. Use: Polished orbit shots without handheld shake.
+- pan_left: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- pan_right: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- follow_pan (turning with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- slow_pan_reveal (slow, discovering): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- tilt_up: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_down: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or event.
+- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.
+- pedestal_up: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- crane_up (rising): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- crane_down (descending): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- rising_reveal: Reveal or conceal information smoothly. Use: Gradual reveal of a space or object.
+- zoom_in: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- zoom_out: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- slow_zoom (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- crash_zoom (fast, violent): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- dolly_zoom: Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.
+- aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- top_down: Objective, god's-eye view, patterns/geometry emphasis. Use: Showing spatial layout, symbolic detachment.
+- flyover: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- whip_out (first half of a whip transition): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- focus_out (defocus out (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- focus_in (focus in (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- shake (impact shake): Urgency, chaos, realism, instability. Use: Action scenes, documentary style, emotional breakdown.
+Focus:
+- rack_focus: Redirects attention within the frame. Use: Shifting importance between two elements.
+- focus_follow: Keeps audience locked on the subject. Use: Subject moving toward or away from camera.
+- shallow_isolation: Isolates subject, intimacy, precise attention. Use: Emotional close-ups, busy backgrounds.
+- deep: Audience chooses where to look, observational. Use: Complex staging, ensemble scenes.
+</moves>
+
+<clips>
+In cut order. SIZE is the size the clip OPENS on (fixed).
+<clip slate="2K-1" n="1">
+Setup K; role atmosphere; SIZE CU; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique rack_focus; secured interior camera, 75mm, f/2.8; angle Passenger-side forward view onto wet windshield; movement: Fixed camera with one slow focus transfer from windshield droplets to the road beyond; lens 75mm.
+Why the planner made it: Introduces the wet moving environment through optical depth before the spatial master, giving isolation a visual texture without adding an exterior camera or another driving angle.
+What happens: From the passenger side inside the van, focus shifts from windshield rain to soft sodium reflections on the road. The opening engine and rain bed leads into the rear interior master.
+No person in frame.
+Opening picture: Windshield droplets sharp across frame with abstract amber road light beyond.
+Beats: 0-1s: Rain beads cling to the windshield as road light moves beyond. | 1-3s: Focus travels from droplets to the wet roadway beyond. | 3-4s: The road continues moving beneath the van.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale
+</clip>
+<clip slate="2A-1" n="2">
+Setup A; role master; SIZE MWS; take 8 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 35mm, f/2.8; angle Rear passenger-side eye level; movement: Restrained handheld drift within the rear passenger position; lens 35mm.
+Why the planner made it: A restrained vehicle-bound drift locates the driver inside a working cab rather than a chase.
+What happens: From behind the passenger position, Dinu drives steadily through rain-lit Colombo; engine, rain and wipers fill the cab.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist. Does: Keeps both hands on the wheel and maintains a steady course.
+Opening picture: Driver centred beyond the passenger-side foreground with the wet road filling the upper frame.
+Beats: 0-1s: Both hands rest on the wheel as road light slides across the dashboard. | 1-7s: He maintains a steady course while the wipers clear the windshield. | 7-8s: His hands hold their positions on the wheel.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): shake: Urgency, chaos, realism, instability; use: Action scenes, documentary style, emotional breakdown | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="2B-1" n="3">
+Setup B; role single; SIZE MCU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 65mm, f/2.8; angle Passenger-side profile at eye level; movement: Restrained handheld drift from the passenger seat; lens 65mm.
+Why the planner made it: The profile gives the opening journey a human duration without adding a new event.
+What happens: A passenger-side profile holds Dinu's steady driving against dense wet street lights.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, frame right facing the windshield; red thread around left wrist. Does: Keeps both hands on the wheel and maintains a steady course.
+Opening picture: Dinu's profile at right with soft wet street lights behind.
+Beats: 0-1s: His head stays directed toward the windshield. | 1-5s: He maintains a steady course while the wipers clear the windshield. | 5-6s: His posture remains unchanged.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought
+</clip>
+<clip slate="2D-1" n="4">
+Setup D; role insert; SIZE INSERT; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 85mm, f/4; angle Passenger-side downward oblique; movement: Restrained handheld drift over the fixed dashboard detail; lens 85mm.
+Why the planner made it: The physical print establishes the private bond without a flashback or an embodied visitor.
+What happens: A tight dashboard view holds the faded photograph of a couple beside a village bus stop while the van continues moving.
+No person in frame.
+Opening picture: Faded photograph fills the centre, its edges visibly resting on the dashboard.
+Beats: 0-1s: The faded photograph remains fixed on the dashboard. | 1-5s: The static print shows two small figures near a village bus stop as passing light moves over its faded surface. | 5-6s: The photograph remains fixed in place.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+<clip slate="2C-1" n="5">
+Setup C; role single; SIZE MCU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 50mm, f/2.8; angle Front passenger-side oblique at eye level; movement: Restrained handheld drift at the front passenger position; lens 50mm.
+Why the planner made it: A close listening onset brings recorded presence into the cab without inventing device handling.
+What happens: Dinu's eyes remain on the road as recorded playback enters the cab; the camera is close and oblique from the passenger side.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist. Does: Listens while keeping both hands on the wheel.
+Opening picture: Dinu centred above the lower edge of the wheel, wet city soft behind.
+Beats: 0-1s: He keeps his eyes on the road. | 1-5s: He listens without moving his hands from the wheel. | 5-6s: He maintains his forward posture.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting
+</clip>
+<clip slate="2C-2" n="6">
+Setup C; role single; SIZE MCU; take 8 s, handles 0.8 s in / 0.8 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 50mm, f/2.8; angle Front passenger-side oblique at eye level; movement: Restrained handheld drift at the front passenger position; lens 50mm.
+Why the planner made it: The intact recorded line belongs on Dinu's face, where his attention tightens while he drives.
+What happens: In a passenger-side single, Dinu drives and listens as L3 reports that Nimal has not returned and conveys fear.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist. Does: Listens while keeping both hands on the wheel.
+Only heard, never seen: Aruni
+Opening picture: Dinu centred above the low wheel edge, wet city soft behind.
+Beats: 0-0.8s: He keeps his eyes on the road and both hands on the wheel. | 0.8-7.2s: He listens through the complete recorded line while maintaining his course. | 7.2-8s: He maintains his course.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals | shake: Urgency, chaos, realism, instability; use: Action scenes, documentary style, emotional breakdown
+</clip>
+<clip slate="2B-2" n="7">
+Setup B; role reaction; SIZE MCU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 65mm, f/2.8; angle Passenger-side profile at eye level; movement: Restrained handheld drift from the passenger seat; lens 65mm.
+Why the planner made it: The profile holds the cost of the message after its final word rather than inventing an answer.
+What happens: Dinu's profile remains at the wheel after L3 lands, his jaw set as wet lights slide behind him.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, frame right facing the windshield; red thread around left wrist. Does: Maintains his course after the recorded line.
+Opening picture: Dinu's profile at right with soft wet street lights behind.
+Beats: 0-1s: He keeps his gaze ahead. | 1-5s: He maintains his course with both hands on the wheel. | 5-6s: His posture stays fixed toward the windshield.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals | tilt_reveal: Builds suspense through gradual visual reveal; use: Suspense builds, revealing scale of a space or event | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | dolly_zoom: Disorientation, dread, sudden gut-punch realization; use: Horror reveals, shocking realizations, psychological unease
+</clip>
+<clip slate="2A-2" n="8">
+Setup A; role master; SIZE MWS; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 35mm, f/2.8; angle Rear passenger-side eye level; movement: Restrained handheld drift within the rear passenger position; lens 35mm.
+Why the planner made it: The enclosed master lets the concern linger in the working space before the interruption.
+What happens: From the rear of the cab, Dinu continues the journey after L3, alone with the wet road and engine.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist. Does: Maintains his course after the recorded line.
+Opening picture: Driver centred beyond passenger-side foreground, wet road above.
+Beats: 0-1s: Both hands remain on the wheel. | 1-5s: He maintains his course as the wipers clear the windshield. | 5-6s: His hands hold their positions.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="2G-1" n="9">
+Setup G; role reaction; SIZE ECU; take 8 s, handles 0.8 s in / 0.8 s out; sound ambient.
+Planner's camera words (a hint): technique slow_creep; short interior slider, 100mm, f/2.8; angle Passenger-side front oblique, eye height; movement: One very slow three-centimetre creep toward the eyes; lens 100mm.
+Why the planner made it: The existing handheld profile and medium singles show listening; this near-still eye detail lets the personal message register through a tiny visible change rather than extra activity.
+What happens: An extreme close-up slowly approaches Dinu's eyes as he absorbs the absence report and fear in L3. The recorded message remains offscreen, with the original cab audio underneath.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, facing the windshield; both hands remain on the wheel outside frame. Does: Keeps his eyes on the road, blinks once and draws his brow slightly together.
+Only heard, never seen: Aruni
+Opening picture: Nearest eye just right of centre, brow above, far cheek soft at the right edge.
+Beats: 0-0.8s: He maintains his forward gaze. | 0.8-7.2s: He blinks once and slightly gathers his brow. | 7.2-8s: He holds his gaze ahead.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): shake: Urgency, chaos, realism, instability; use: Action scenes, documentary style, emotional breakdown | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+<clip slate="2C-3" n="10">
+Setup C; role single; SIZE MCU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 50mm, f/2.8; angle Front passenger-side oblique at eye level; movement: Restrained handheld drift at the front passenger position; lens 50mm.
+Why the planner made it: The ring interrupts the held space without forcing a fabricated phone gesture.
+What happens: An incoming call interrupts the cab's rain and engine bed while Dinu remains focused on driving.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist. Does: Keeps both hands on the wheel as an incoming signal enters the cab.
+Opening picture: Dinu centred above the low wheel edge, wet city soft behind.
+Beats: 0-1s: He maintains his course. | 1-5s: He listens while holding the wheel. | 5-6s: He remains upright at the wheel.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tilt_reveal: Builds suspense through gradual visual reveal; use: Suspense builds, revealing scale of a space or event
+</clip>
+<clip slate="2I-1" n="11">
+Setup I; role reaction; SIZE CU; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique light_across_face; secured interior camera, 85mm, f/2.8; angle Passenger-side oblique below eye height; movement: Fixed camera as passing street light travels across the face; lens 85mm.
+Why the planner made it: Makes the interruption legible as a brief break in facial stillness rather than a device operation; the tighter lower-face view differs from the existing medium single.
+What happens: A tight passenger-side view of Dinu's cheek and closed mouth catches a brief lip press as the incoming ring sounds on c08's track. Passing street light crosses his face.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat facing the windshield; both hands remain on the wheel outside frame. Does: Briefly presses his closed lips together, then releases them while remaining forward-facing.
+Opening picture: Cheek and closed mouth dominate the frame with eyes near the top edge.
+Beats: 0-1s: His lips remain closed. | 1-3s: He presses his lips together briefly and releases them. | 3-4s: He maintains his forward-facing posture.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="2C-4" n="12">
+Setup C; role single; SIZE MCU; take 6 s, handles 0.9 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 50mm, f/2.8; angle Front passenger-side oblique at eye level; movement: Restrained handheld drift at the front passenger position; lens 50mm.
+Why the planner made it: The contained listener makes the new order feel intrusive without portraying the remote voice.
+What happens: Dinu listens at the wheel as L5 redirects him to the Old Port warehouse; the camera holds his passenger-side single.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist. Does: Listens while keeping both hands on the wheel.
+Only heard, never seen: Mudalali
+Opening picture: Dinu centred above the low wheel edge, wet city soft behind.
+Beats: 0-0.9s: He holds the wheel and faces forward. | 0.9-5s: He listens through the complete phone line and maintains his course. | 5-6s: He continues holding the wheel.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="2B-3" n="13">
+Setup B; role reaction; SIZE MCU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 65mm, f/2.8; angle Passenger-side profile at eye level; movement: Restrained handheld drift from the passenger seat; lens 65mm.
+Why the planner made it: The reaction gives the order its weight without adding a verbal response.
+What happens: Dinu stays silent in profile after L5, looking ahead while his jaw remains firm.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, frame right facing the windshield; red thread around left wrist. Does: Maintains his course after the phone line.
+Opening picture: Dinu's profile at right with soft wet street lights behind.
+Beats: 0-1s: He keeps his gaze ahead. | 1-5s: He maintains his course with both hands on the wheel. | 5-6s: His posture stays directed toward the windshield.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake
+</clip>
+<clip slate="2A-3" n="14">
+Setup A; role master; SIZE MWS; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 35mm, f/2.8; angle Rear passenger-side eye level; movement: Restrained handheld drift within the rear passenger position; lens 35mm.
+Why the planner made it: A restrained wide breath restores the cab geography before the wrist glance and route change.
+What happens: From the rear passenger position, Dinu continues straight after the route instruction, with the wet windshield ahead.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; red thread around left wrist. Does: Maintains his course after the phone line.
+Opening picture: Driver centred beyond passenger-side foreground, wet road above.
+Beats: 0-1s: Both hands remain on the wheel. | 1-5s: He maintains his course as the wipers clear the windshield. | 5-6s: His hands hold their positions.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale
+</clip>
+<clip slate="2H-1" n="15">
+Setup H; role insert; SIZE INSERT; take 6 s, handles 0.9 s in / 0.9 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; secured interior camera, 85mm, f/2.8; angle Passenger-side high oblique onto right hand and wheel; movement: Locked-off throughout; lens 85mm.
+Why the planner made it: Provides an object-scale counterpoint to the listener coverage during the route instruction, withholding facial interpretation and preserving the thread reveal for the next moment.
+What happens: A passenger-side insert holds Dinu's right hand steady on the wheel during the destination instruction in L5. The instruction and moving-cab audio continue from c09.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat facing the windshield; right hand on the wheel in frame, left hand on the wheel outside frame. Does: Maintains his right hand on the wheel without changing his grip.
+Only heard, never seen: Mudalali
+Opening picture: Right hand and wheel arc fill the lower centre; soft instrument light behind.
+Beats: 0-0.9s: His right hand holds the wheel. | 0.9-5.1s: He maintains the same hand position through the van's movement. | 5.1-6s: His hand stays on the rim.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="2C-5" n="16">
+Setup C; role single; SIZE MCU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 50mm, f/2.8; angle Front passenger-side oblique at eye level; movement: Restrained handheld drift at the front passenger position; lens 50mm.
+Why the planner made it: The lowered gaze gives the thread a readable, private beat before any steering change.
+What happens: Dinu looks down toward the red thread on his left wrist, then returns his eyes to the road.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; both hands on the wheel, red thread around left wrist. Does: Glances at the thread on his left wrist and returns his eyes to the road.
+Opening picture: Dinu centred above the wheel, left wrist and thread low in frame.
+Beats: 0-1s: Both hands remain on the wheel. | 1-5s: He glances at the thread on his left wrist and returns his eyes to the road. | 5-6s: Both hands remain on the wheel.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | rising_reveal: Reveal or conceal information smoothly; use: Gradual reveal of a space or object | zoom_in: Sudden emphasis, can feel artificial/stylized or urgent; use: Quick emphasis on a detail, retro/stylized look, comedic beat
+</clip>
+<clip slate="2E-1" n="17">
+Setup E; role single; SIZE MS; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique foreground_framing; braced handheld, 35mm, f/4; angle Low passenger-side oblique toward face and wheel; movement: Held handheld frame behind the wheel foreground; lens 35mm.
+Why the planner made it: The wheel and thread anchor the glance in the same physical driving space, enabling a motivated match.
+What happens: From low beside the passenger seat, the red thread and Dinu's face share the frame as he looks down and back to the road.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; both hands on the wheel, red thread around left wrist. Does: Glances at the thread on his left wrist and returns his eyes to the road.
+Opening picture: Wheel foreground frames Dinu's face and left wrist with its red thread.
+Beats: 0-1s: Both hands remain on the wheel. | 1-5s: He glances at the thread on his left wrist and returns his eyes to the road. | 5-6s: Both hands remain on the wheel.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | zoom_in: Sudden emphasis, can feel artificial/stylized or urgent; use: Quick emphasis on a detail, retro/stylized look, comedic beat | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below
+</clip>
+<clip slate="2A-4" n="18">
+Setup A; role master; SIZE MWS; take 8 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; braced handheld, 35mm, f/2.8; angle Rear passenger-side eye level; movement: Restrained handheld drift within the rear passenger position; lens 35mm.
+Why the planner made it: The rear master makes the route change legible through wheel and road together, without suggesting a chase.
+What happens: From behind the passenger position, Dinu turns the wheel and steers toward the industrial area, the van continuing into rain-lit streets.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat, centre frame facing the windshield; both hands on the wheel, red thread around left wrist. Does: Turns the wheel and steers toward the industrial area.
+Opening picture: Driver centred beyond passenger-side foreground with wheel and wet road above.
+Beats: 0-1s: Both hands rest on the wheel. | 1-7s: He turns the wheel and steers toward the industrial area. | 7-8s: He steadies the wheel on the new course.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | shake: Urgency, chaos, realism, instability; use: Action scenes, documentary style, emotional breakdown | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="2F-1" n="19">
+Setup F; role insert; SIZE ECU; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; secured interior camera, 100mm macro, f/2.8; angle Low passenger-side detail across the wheel; movement: Fixed shallow isolation on the thread throughout; lens 100mm macro.
+Why the planner made it: Isolates the faded thread and the resting left wrist from the existing two-plane coverage; gives the editor a tactile punctuation within the single glance, not another enactment of it.
+What happens: From low on the passenger side, an extreme close-up holds the red thread on Dinu's left wrist while his left hand remains on the wheel. Engine and wet-road sound continue from the master.
+In frame: Dinu, 30, a Sri Lankan cash-transport driver in a plain charcoal work shirt. Where: Seated in the right-hand driver's seat facing the windshield; left wrist at the wheel, right hand remaining on the wheel outside frame. Does: Keeps his left hand on the wheel, with the red thread visible around his left wrist.
+Opening picture: Red thread crosses the centre of a tight left-wrist detail, wheel rim beneath it.
+Beats: 0-1s: Left hand rests on the wheel. | 1-3s: The wrist remains at the wheel as moving light crosses it. | 3-4s: The hand maintains its position.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="2J-1" n="20">
+Setup J; role pov; SIZE POV; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; secured interior camera, 40mm, f/4; angle Forward from passenger side through windshield; movement: Locked-off relative to the moving cab throughout; lens 40mm.
+Why the planner made it: Lets the new direction remain onscreen after the gesture, replacing another face beat with the industrial frontage already established by the master.
+What happens: From inside the van on the passenger side, the camera holds the rain-softened road and industrial frontage after the turn. Engine and wet-road sound carry the scene out.
+No person in frame.
+Opening picture: Dark dashboard edge below, wet road central, industrial frontage soft beyond the windshield.
+Beats: 0-1s: The van advances along the industrial frontage. | 1-5s: Road reflections and building surfaces move past the moving van. | 5-6s: The van continues forward.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+</clips>
+
+<omni>
+MEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent renders, 2026-11-20), background motion over the take:
+- push_in / push_then_hold on a face, also while she speaks: PERFORMED clearly (87 px, 72 px; MS -> MCU).
+- push_then_hold on a TWO-shot ("slowly pushes closer to both of them ... then comes to rest"): PERFORMED (full
+  figures -> waist up, then settles).
+- A float in a two-shot is NOT performed, however it is worded: "gently floating and swaying" 16 px, "handheld
+  camera with a slight natural shake" 19 px, "drifts slowly sideways to the right" 20 px, against 12 px for "a steady
+  frame on a tripod". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.
+PROVISIONAL (not measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;
+tracking_alongside; follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;
+slow_zoom; aerial_establishing; aerial_pull_away; arc_left/right (short, slow).
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

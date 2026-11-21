@@ -1,0 +1,484 @@
+You are the Camera agent of Hiru AI Studio: the director of photography for drama made with an AI video model (Omni
+1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which lines are spoken,
+the shot size it opens on and the take length. You decide everything the CAMERA does: the move, its path, speed and
+timing, what motivates it, the angle and the height, the lens and stop, the focus, the composition, and the one
+sentence the video model is given about the camera. You never change the story, the people, the lines, the opening
+size or the light.
+
+# Your job: cinematic, by logic
+
+Shoot like a bold, modern cinematographer. Use the WHOLE toolbox: arcs, cranes, tracking, lead and follow shots,
+reveals, whip pans, dolly zooms, low and high angles, dutch tilts, overheads, rack focus. Use a dramatic move whenever
+the moment earns it, and a stronger one where the moment is stronger. Never choose a move from habit or caution, and
+never a move the moment does not motivate: every choice comes from the logic below, and you write that logic down.
+
+For EVERY clip, in this order:
+
+1. MOMENT: what is this clip doing dramatically? One of: reveal (a discovery, something found or shown), confrontation
+   (argument, pressure, a power struggle), realisation (a truth lands, shock), pursuit (chase, flight, urgency),
+   arrival (someone enters or a place is entered), departure (someone leaves), isolation (loneliness, loss, being
+   small), intimacy (warmth, closeness, connection), threat (danger approaching, being watched), tension (waiting,
+   hiding, suspense), establishing (where and when), transition (between times or places), dialogue (plain exchange
+   with no stronger job).
+2. INTENSITY 1-5: its place on the scene's arc. 1-2 calm, 3 rising, 4 strong, 5 the peak. Find the scene's peak
+   first; there is usually one, at the turn. A quiet clip just before the peak makes the peak land harder.
+3. POWER: who holds the power in this clip ("Rohan", "equal", "none"). It decides the angle and the height.
+4. THE CAMERA, from the moment and the intensity:
+
+| Moment | Calm (1-2) | Strong (4-5) | Angle and height |
+|---|---|---|---|
+| reveal | slow tilt or pan onto it, slow creep | push_past_foreground, rising_reveal / crane_up to show it all, pull_back_reveal, tilt_reveal, snap_zoom, rack focus onto it | the finder's eye line (POV), then high to see it all |
+| confrontation | slow arc as power shifts, alternating creeps | push_in on each face in turn, arc / half_orbit, handheld_urgent at the explosion, dutch at the break | the one with power slightly_low / low; the other slightly_high / high; they swap when the power swaps |
+| realisation | slow_creep, push_in | push_then_hold, dolly_zoom, snap_zoom, a sudden hold after movement | eye level, dropping lower as it lands |
+| pursuit | follow, tracking_alongside | lead (backwards ahead of them), handheld_urgent, whip_pan, low tracking | low, knee or hip height, close |
+| arrival | track_then_hold, follow into the space | crane_down onto them, aerial descending, push_in on the entrance | hip height following; high to show the space |
+| departure | pull_out, pan with them | pull_out to an extreme wide, crane_up and away | eye level to high |
+| isolation | slow pull_out | top_down / crane_up leaving them small | high or overhead |
+| intimacy | slow_creep | push_then_hold | eye or shoulder height, equals |
+| threat | slow creep toward the threat | push_in low on the threat, slow push from the threat's point of view | low on the threat, high on the threatened |
+| tension | hold with a reason, slow creep | very slow push while nothing moves, rack focus to the danger | low or ground for hiding; the searcher low |
+| establishing | slow pan across the place, pedestal | aerial_establishing, crane_down into the scene | high or aerial |
+| transition | focus_out / focus_in, whip_out / whip_in pairs, match moves | | as the pair needs |
+| dialogue | slow creep or push tied to the line | | eye level unless power says otherwise |
+
+5. CONSTRAINTS (facts, not taste):
+   - A face that SPEAKS moves only slowly: no whip, snap or crash zoom, no shake, no orbit while it talks; no slow
+     motion with a spoken line.
+   - The move fits the take (an orbit needs time) and leaves the handles calm enough to cut.
+   - What the video model performs (see <omni>): MEASURED it pushes in clearly (one face and a two-shot); it IGNORES a
+     float, a slight handheld shake and a slow sideways drift on still people (they render as a tripod frame). So
+     life comes from real moves with a visible result: the size changes, the background changes, the subject is
+     followed. A move marked risky is allowed at intensity 4-5 with a reason, and written with a visible result.
+   - Cut grammar: a moving clip cuts best to a moving clip, a still to a still; break it on purpose. Clips of the same
+     setup letter share the angle and height unless a move changes them. Keep the line of action unless a move
+     crosses it on screen.
+   - ONE move per clip; a move that settles (push_then_hold, track_then_hold) is one move.
+   - The PRODUCTION'S OWN DIRECTION about the camera (in <scene>, "The production's direction") wins where it applies
+     (its scope: a place, a palette, a kind of scene). If it says "locked-off frames" for a place, its clips there are
+     held or move only where a peak truly needs it, and you say so in `why`. If it says "handheld" for a place, you
+     know the model ignores a slight shake: give those clips real handheld-motivated moves (follow, lead, reframe with
+     a person, an urgent push) and say so.
+6. WHY: one sentence naming the moment, the intensity and the reason ("reveal 5: the rise shows the whole canal and
+   leaves her small beside him"). Every angle that is not eye level has its reason in `angle_reason`.
+
+# Angle and height
+
+Angle and height carry power and feeling. Set them per SETUP (camera position), not per clip, so cuts match.
+- Power, threat, authority, ambition: low or slightly_low; hip or chest height.
+- Diminished, trapped, grieving, watched: high or slightly_high; above_head.
+- Equals, intimacy: eye level, eye or shoulder height.
+- Unease, a world tipping over: dutch, at the moment it breaks (intensity 4-5).
+- Discovery: the finder's own eye line and height (a POV looks down at what she finds).
+- Place, scale, isolation: overhead, top_down, aerial; or worms_eye / ground for scale and hiding.
+- Shot and reverse shot tell the power story: matched heights for equals, low on the strong side and high on the weak
+  side when one dominates; when the power shifts, the angles shift with it, and that change is where it shows.
+- A move may change the angle: a crane rises to high, a pedestal drops to low, a tilt finds what is below.
+In a scene with a turn or a power shift, at least one setup is not eye level. Plain dialogue between equals stays eye
+level.
+
+# What you are given
+
+<scene>: the scene, its people, their wants and feelings, the production's direction, the script in order (line ids).
+<moves>: every move with what it does and when to use it, from Hiru's cinematography knowledge base.
+<clips>: every clip in cut order: slate, setup letter, role, the SIZE it opens on (fixed), take length and handles,
+who is in frame and where, what they do, the lines spoken and how long they take, the planner's beats, the planner's
+own camera words (a HINT: the planner was told to be cautious and usually wrote "locked-off"), the opening picture.
+<omni>: what the video model performs, measured and provisional.
+
+# Fields
+
+- `moment`, `intensity` (1-5), `power`.
+- `support`: how the camera is held (it decides the FEEL; never named in the sentence).
+- `move`, `direction` (a few words: toward whom/what, which way), `speed`, `start_s`, `end_s` (seconds in the take;
+  0 and 0 for a hold), `trigger` (what starts it: a line id, a look, a beat), `motivation` (one sentence).
+- `opens_on`, `lands_on`: what the frame shows at the start and the end, in concrete framing words ("waist up",
+  "her face fills the frame", "the whole canal from above").
+- `end_size`: a push may land tighter, a pull wider; a hold, pan, tilt or track keeps the size.
+- `angle`, `height`, `angle_reason` (empty only for eye level).
+- `lens`, `aperture` (keep the planner's unless the move needs another; say so), `focus` (+ `rack_from`, `rack_to`,
+  `rack_at_s` for a rack focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` / `risky`).
+- `why`: moment + intensity + the reason.
+- `camera_sentence`: the ONE sentence the video model gets about the camera, in plain film words: the size and angle,
+  what the camera does, its speed, and WHEN by what happens on screen ("as she kneels", "when the torch passes"),
+  ending on what the frame shows. CAMERA ONLY: do not re-tell the action, do not add picture rules. Say the visible
+  result ("the camera rises high above until she is small beside the water"). NEVER name gear (tripod, dolly,
+  slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the model draws it into the picture. No line ids,
+  no Sinhala, no edit or clock words (handle, cut, take, seconds). At most 220 characters.
+
+Per scene: `camera_language` (one line: how the camera behaves across the scene and where it peaks), `peak_slate`
+(the clip with the strongest camera), and `arc` (one line: the intensity across the scene).
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: The garage handoff (SCENE 03 - FLASHBACK - INT. COLOMBO GARAGE - 2 MINUTES). Earlier, Nimal presents material concerning Mudalali's money. Dinu objects to taking it, but Nimal presses him through his relationship with Aruni and places the key in his hand.
+What it is for: Establish the key's earlier custody and Dinu's moral resistance without resolving whether he accepts Nimal's proposal.
+Place: Colombo Garage; interior. Mood: secretive, conflicted, insistent.
+People:
+- Nimal (on_screen): wants Persuade Dinu to participate in taking the money.; feels Purposeful -> Insistent
+- Dinu (on_screen): wants Resist becoming morally equivalent to the men Nimal condemns.; feels Guarded -> Conflicted
+The production's direction (the person's own style rules; each applies to its scope):
+- Colombo palette - Cold blue, green and sodium orange. Handheld camera, tight frames and crowded backgrounds.
+- Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+Script, in order:
+action: Six hours earlier. | intent: Move the chronology backward relative to the van journey.
+action: Nimal opens a metal box containing photographs, bank documents and the C-17 key. | intent: Present tangible support for Nimal's proposal.
+L2 Nimal to Dinu: "Mudalali ge salli. Rupiyal million 300. Village project walin gaththa salli." | how: Direct and certain. | intent: Identify the money and justify targeting it through its alleged origin.
+L3 Dinu to Nimal: "Api meka gaththoth apiuth eyala wage wenawa." | how: Quiet but firm. | intent: Reject the moral distinction Nimal uses to support taking the money.
+L4 Nimal to Dinu: "Aruniwa aran yanna oyata oni neda? Eya salli nisa nemei, oyage baya nisa oyawa atharinnawa." | how: Personal and pressing rather than reassuring. | intent: Shift the argument from money to Dinu's fear and attachment to Aruni.
+action: Nimal places the key in Dinu's hand. | intent: Make the entrustment physical without treating it as agreement.
+action: Dinu looks at it as rain hits the garage roof. | intent: Leave Dinu's decision unresolved.
+</scene>
+
+<moves>
+Your whole toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move: what it does. Use: when.
+- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes, quiet contemplative moments, formal compositions.
+- breathing: the frame floats and sways a little all the time, as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the camera.
+- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs life without a statement.
+- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside the shot.
+- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build, revealing scale.
+- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning realization, dread.
+- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject is smaller/alone than thought.
+- push_then_hold: a push that lands and stays. Use: a line or realisation that must land, then sit.
+- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden object/character reveals.
+- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves) toward the subject. Use: entering a private moment, discovery.
+- truck_left: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- truck_right: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- tracking_alongside (beside them): Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.
+- lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- follow (behind them): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- track_then_hold: travel with a person, then stop as they stop. Use: arrivals, a walk that ends in a meeting.
+- arc_left: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- arc_right: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- half_orbit (half a circle): Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- orbit: Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- circle_two: Smooth, controlled circular reveal. Use: Polished orbit shots without handheld shake.
+- pan_left: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- pan_right: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- follow_pan (turning with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- slow_pan_reveal (slow, discovering): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- tilt_up: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_down: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or event.
+- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.
+- pedestal_up: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- crane_up (rising): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- crane_down (descending): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- rising_reveal: Reveal or conceal information smoothly. Use: Gradual reveal of a space or object.
+- zoom_in: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- zoom_out: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- slow_zoom (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- crash_zoom (fast, violent): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- dolly_zoom: Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.
+- aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- top_down: Objective, god's-eye view, patterns/geometry emphasis. Use: Showing spatial layout, symbolic detachment.
+- flyover: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- whip_out (first half of a whip transition): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- focus_out (defocus out (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- focus_in (focus in (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- shake (impact shake): Urgency, chaos, realism, instability. Use: Action scenes, documentary style, emotional breakdown.
+Focus:
+- rack_focus: Redirects attention within the frame. Use: Shifting importance between two elements.
+- focus_follow: Keeps audience locked on the subject. Use: Subject moving toward or away from camera.
+- shallow_isolation: Isolates subject, intimacy, precise attention. Use: Emotional close-ups, busy backgrounds.
+- deep: Audience chooses where to look, observational. Use: Complex staging, ensemble scenes.
+</moves>
+
+<clips>
+In cut order. SIZE is the size the clip OPENS on (fixed).
+<clip slate="3M-1" n="1">
+Setup M; role establishing; SIZE WIDE; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 24mm, f/5.6; angle slightly elevated entrance-side view; movement: Locked-off on sticks throughout.; lens 24mm.
+Why the planner made it: Places the men within the enclosing rain-bound garage before the handheld coverage narrows attention to the box; provides a clean temporal-caption option.
+What happens: A fixed wide view from the garage entrance frames Nimal at left with the closed box and Dinu at right. Neither moves as rain strikes the roof; the temporal caption can be added in post.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Standing frame left facing right, closed box supported in left hand with right hand at the lid. Does: Holds the closed metal box at his waist, facing Dinu.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Standing frame right facing left, hands lowered and empty. Does: Faces Nimal without moving toward him.
+Opening picture: Nimal left and Dinu right beneath visible roof structure, open space between them.
+Beats: 0-1s: Nimal holds the closed box while Dinu faces him. | 1-3s: Both remain in place with the box closed. | 3-4s: No positions or props change.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale
+</clip>
+<clip slate="3A-1" n="2">
+Setup A; role master; SIZE TWO; take 4 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 35mm, f/4; angle Eye level from the entrance side; movement: Restrained handheld drift around a fixed composition; lens 35mm.
+Why the planner made it: A restrained shared frame establishes the distance that the proposal will test.
+What happens: From the entrance side, Nimal and Dinu face each other in the garage; rain is audible, and the earlier time is established by a post caption.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right toward Dinu. Does: Holds the closed metal box in his left hand at waist height, right hand resting by its lid.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left toward Nimal. Does: Remains opposite Nimal, hands lowered and lips closed.
+Opening picture: Nimal left, Dinu right, closed metal box low between them.
+Beats: 0-1s: Both maintain position around the closed box. | 1-2.5s: Both remain in place with the box closed. | 2.5-4s: Both hold the opening positions.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="3B-1" n="3">
+Setup B; role master; SIZE TWO; take 4 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 40mm, f/5.6; angle Waist height, slightly downward from entrance side; movement: Restrained handheld drift around a fixed composition; lens 40mm.
+Why the planner made it: Shared framing connects the exposed contents to both men without an isolated object shot.
+What happens: A low shared view shows Nimal opening the box in his left hand while Dinu watches; photographs, bank documents and C-17 are exposed.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right, box at waist height. Does: Supports the box with his left hand and raises its lid with his right over 1.5 seconds; photographs, bank documents and C-17 become visible.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left. Does: Keeps both hands lowered and looks into the opening box.
+Opening picture: Box lower centre, Nimal's torso left and Dinu's torso right.
+Beats: 0-1s: Nimal supports the closed box with his left hand; his right rests at the lid. | 1-2.5s: Nimal raises the lid with his right hand over 1.5 seconds, revealing photographs, bank documents and the small metal key marked C-17. | 2.5-4s: The lid stays raised, the box supported in Nimal's left hand and his right resting by its edge.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals
+</clip>
+<clip slate="3C-1" n="4">
+Setup C; role single; SIZE MS; take 4 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 50mm, f/5.6; angle Slightly above waist level toward Nimal; movement: Restrained handheld drift around a fixed composition; lens 50mm.
+Why the planner made it: Nimal and the opening box share one frame so the editor can favour the person presenting the material.
+What happens: A medium view of Nimal shows the same box opening, including the photographs, bank documents and C-17.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left-centre, standing facing right, box at waist height. Does: Supports the box with his left hand and raises its lid with his right over 1.5 seconds; photographs, bank documents and C-17 become visible.
+Opening picture: Nimal left-centre above the closed metal box, facing the empty right look space.
+Beats: 0-1s: Nimal supports the closed box with his left hand; his right rests at the lid. | 1-2.5s: Nimal raises the lid with his right hand over 1.5 seconds, revealing photographs, bank documents and the small metal key marked C-17. | 2.5-4s: The lid stays raised, the box supported in Nimal's left hand and his right resting by its edge.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | zoom_in: Sudden emphasis, can feel artificial/stylized or urgent; use: Quick emphasis on a detail, retro/stylized look, comedic beat
+</clip>
+<clip slate="3L-1" n="5">
+Setup L; role insert; SIZE INSERT; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm close-focus lens, f/5.6; angle elevated entrance-side view into the box; movement: Locked-off on sticks throughout.; lens 65mm close focus.
+Why the planner made it: Makes the photographs, bank documents and C-17 legible as a physical collection without adding explanatory text or repeating the opening master.
+What happens: A fixed close view holds on the photographs, bank documents and C-17 inside Nimal's open metal box. His left hand supports it as roof rain continues.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Standing frame left facing right, box at waist height in left hand, lid raised after opening with right hand. Does: Supports the newly opened metal box steadily with his left hand; keeps his right hand clear of the contents.
+Opening picture: Open metal box fills the frame with photographs, bank documents and C-17 visible; supporting left hand at the bottom edge.
+Beats: 0-1s: Nimal holds the open box level in his left hand. | 1-3s: Photographs, bank documents and C-17 remain untouched inside the box. | 3-4s: The box stays open and level.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale
+</clip>
+<clip slate="3A-2" n="6">
+Setup A; role master; SIZE TWO; take 8 s, handles 1.5 s in / 1.5 s out; sound dialogue.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 35mm, f/4; angle Eye level from the entrance side; movement: Restrained handheld drift around a fixed composition; lens 35mm.
+Why the planner made it: A full shared performance establishes the financial argument before the opposing singles.
+What happens: In the shared frame Nimal identifies the money's owner, amount and alleged source in L2; Dinu listens beside the open box.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right. Does: Performs L2 with lips moving, keeping the open box supported in his left hand and his right at its edge.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left. Does: Listens with hands lowered and lips closed.
+Opening picture: Nimal left and Dinu right with the open metal box low between them.
+Beats: 0-1.5s: Nimal steadies the open box; Dinu keeps his hands down. | 1.5-6.5s: Nimal's lips move to the complete L2 while the box remains level. | 6.5-8s: Nimal closes his lips; both maintain their positions.
+Spoken here: L2 Nimal (~6.8 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale
+</clip>
+<clip slate="3D-1" n="7">
+Setup D; role single; SIZE MCU; take 8 s, handles 1.5 s in / 1.5 s out; sound dialogue.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle Eye level toward Nimal, entrance side of axis; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: The allegation needs Nimal's unbroken certainty in a full-duration single.
+What happens: An eye-level single holds Nimal through L2 as he identifies the money's owner, amount and alleged source.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Left-centre, standing facing right toward Dinu off frame. Does: Performs L2 with lips moving, keeping the open box supported in his left hand and his right at its edge below frame.
+Opening picture: Nimal chest up left-centre, looking right.
+Beats: 0-1.5s: Nimal steadies the open box below frame. | 1.5-6.5s: Nimal's lips move to the complete L2 while the box remains level below frame. | 6.5-8s: Nimal closes his lips and maintains position.
+Spoken here: L2 Nimal (~6.8 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | tilt_reveal: Builds suspense through gradual visual reveal; use: Suspense builds, revealing scale of a space or event
+</clip>
+<clip slate="3E-1" n="8">
+Setup E; role reaction; SIZE MCU; take 8 s, handles 1.5 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle Eye level toward Dinu, entrance side of axis; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: A complete receiving angle lets the editor locate the moral resistance before Dinu responds.
+What happens: Dinu holds Nimal's gaze while L2 is available off screen from the selected performance; rain remains audible.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Right-centre, standing facing left toward Nimal off frame. Does: Listens with hands lowered below frame and lips closed.
+Opening picture: Dinu chest up right-centre, looking left.
+Beats: 0-1.5s: Dinu keeps his hands down below frame. | 1.5-6.5s: Dinu remains still with lips closed. | 6.5-8s: Dinu maintains position.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting
+</clip>
+<clip slate="3A-3" n="9">
+Setup A; role master; SIZE TWO; take 6 s, handles 1.4 s in / 1.4 s out; sound dialogue.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 35mm, f/4; angle Eye level from the entrance side; movement: Restrained handheld drift around a fixed composition; lens 35mm.
+Why the planner made it: The shared frame keeps the objection between the two friends rather than turning it into an isolated declaration.
+What happens: Dinu quietly objects to taking the money in L3 while Nimal holds the open box in the shared frame.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right. Does: Listens with lips closed, supporting the open box with his left hand, right hand at its edge.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left. Does: Performs L3 with lips moving and hands lowered.
+Opening picture: Nimal left with the open box, Dinu right facing him.
+Beats: 0-1.4s: Nimal holds the box level; Dinu keeps his hands down. | 1.4-4.6s: Dinu's lips move to the complete L3; Nimal remains still. | 4.6-6s: Dinu closes his lips and both remain in place.
+Spoken here: L3 Dinu (~3.7 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals
+</clip>
+<clip slate="3E-2" n="10">
+Setup E; role single; SIZE MCU; take 6 s, handles 1.4 s in / 1.4 s out; sound dialogue.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle Eye level toward Dinu, entrance side of axis; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: The moral turn belongs to Dinu's full unbroken performance.
+What happens: Dinu faces Nimal and delivers L3, rejecting the moral logic of taking the money.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Right-centre, standing facing left toward Nimal off frame. Does: Performs L3 with lips moving and hands lowered below frame.
+Opening picture: Dinu chest up right-centre, looking left.
+Beats: 0-1.4s: Dinu keeps his hands down below frame. | 1.4-4.6s: Dinu's lips move to the complete L3. | 4.6-6s: Dinu closes his lips and remains in place.
+Spoken here: L3 Dinu (~3.7 s)
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="3D-2" n="11">
+Setup D; role reaction; SIZE MCU; take 6 s, handles 1.4 s in / 1.4 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle Eye level toward Nimal, entrance side of axis; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: Nimal's receiving face marks the failure of the first appeal and motivates the personal turn.
+What happens: Nimal receives Dinu's objection, L3, with the open box still supported below frame.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Left-centre, standing facing right toward Dinu off frame. Does: Listens with lips closed, supporting the open box with his left hand, right hand at its edge below frame.
+Opening picture: Nimal chest up left-centre, looking right.
+Beats: 0-1.4s: Nimal steadies the box below frame. | 1.4-4.6s: Nimal remains still and keeps the box level below frame. | 4.6-6s: Nimal holds position.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below | pull_back_reveal: Surprise, dramatic information reveal; use: Twist moments, hidden object/character reveals | half_orbit: Intense focus on subject, disorienting or awe-inspiring; use: Dramatic centerpiece moments, dream sequences | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting
+</clip>
+<clip slate="3A-4" n="12">
+Setup A; role master; SIZE TWO; take 8 s, handles 0.1 s in / 0.1 s out; sound dialogue.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 35mm, f/4; angle Eye level from the entrance side; movement: Restrained handheld drift around a fixed composition; lens 35mm.
+Why the planner made it: The full shared performance establishes the personal pressure and Dinu's simultaneous reception.
+What happens: Nimal presses Dinu about his relationship with Aruni and his fear in L4, while Dinu listens across the open box.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right. Does: Performs L4 with lips moving while supporting the open box in his left hand and keeping his right hand at its edge.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left. Does: Listens with lips closed and hands down.
+Opening picture: Nimal left with the open box, Dinu right facing him.
+Beats: 0-0.6s: Nimal holds the box level; Dinu's hands remain lowered. | 0.6-7.4s: Nimal's lips move to the complete L4; Dinu remains in place. | 7.4-8s: Nimal closes his lips; the box remains level.
+Spoken here: L4 Nimal (~7.6 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale
+</clip>
+<clip slate="3D-3" n="13">
+Setup D; role single; SIZE MCU; take 8 s, handles 0.1 s in / 0.1 s out; sound dialogue.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle Eye level toward Nimal, entrance side of axis; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: A full personal appeal in close coverage lets the editor hold Nimal's insistence without cutting the line.
+What happens: Nimal directs L4 at Dinu, using the possibility of losing Aruni to press him.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Left-centre, standing facing right toward Dinu off frame. Does: Performs L4 with lips moving while supporting the open box in his left hand and keeping his right hand at its edge below frame.
+Opening picture: Nimal chest up left-centre, looking right.
+Beats: 0-0.6s: Nimal holds the box level below frame. | 0.6-7.4s: Nimal's lips move to the complete L4 while the box remains level below frame. | 7.4-8s: Nimal closes his lips and holds position.
+Spoken here: L4 Nimal (~7.6 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | dutch_roll: Disorientation, unease, chaos; use: Disorienting or unstable emotional moments
+</clip>
+<clip slate="3E-3" n="14">
+Setup E; role reaction; SIZE MCU; take 8 s, handles 0.1 s in / 0.1 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle Eye level toward Dinu, entrance side of axis; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: The sustained receiving face makes the personal turn visible without an invented answer.
+What happens: Dinu listens to Nimal's personal appeal, L4, then lowers his eyes toward the box without agreeing.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Right-centre, standing facing left toward Nimal off frame. Does: Listens with lips closed and hands down below frame.
+Opening picture: Dinu chest up right-centre, looking left.
+Beats: 0-0.6s: Dinu keeps his hands down below frame. | 0.6-7.4s: Dinu remains in place with lips closed. | 7.4-8s: Dinu holds position.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake
+</clip>
+<clip slate="3H-1" n="15">
+Setup H; role reaction; SIZE CU; take 8 s, handles 0.1 s in / 0.1 s out; sound ambient.
+Planner's camera words (a hint): technique slow_creep; controlled slider, 85mm, f/2.8; angle eye level, entrance side of axis; movement: Very slow straight creep toward Dinu, holding the close-up throughout.; lens 85mm.
+Why the planner made it: A nearly imperceptible tightening isolates Dinu's restraint as the pressure becomes personal, rather than repeating the handheld chest-up receiver.
+What happens: A tight entrance-side view creeps toward Dinu as his eyes briefly lower and return toward Nimal. L4 continues from Nimal off screen over roof rain.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Standing in the garage at frame right facing left; hands below the crop, not holding the key. Does: Keeps his lips closed; briefly lowers his eyes, then restores his leftward gaze without turning his body.
+Opening picture: Dinu's face on the right with negative space to the left.
+Beats: 0-0.1s: Dinu remains still with lips closed. | 0.1-7.9s: Dinu lowers his eyes briefly and returns them leftward. | 7.9-8s: Dinu holds his gaze left.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="3B-2" n="16">
+Setup B; role master; SIZE TWO; take 6 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 40mm, f/5.6; angle Waist height, slightly downward from entrance side; movement: Restrained handheld drift around a fixed composition; lens 40mm.
+Why the planner made it: A shared waist-height view makes the ownership change legible while keeping both bodies in their established positions.
+What happens: Nimal lifts C-17 from the open box in his left hand and places it in Dinu's open right palm; the men do not touch.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right, box at waist height. Does: Supports the open box in his left hand; with his right hand he lifts C-17 from the box and releases it into Dinu's open right palm without touching Dinu.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left, right palm open toward the box. Does: Holds his right palm open at waist height and receives C-17 without closing his fingers.
+Opening picture: Nimal left with open box, Dinu right with empty open right palm, both torsos visible.
+Beats: 0-1s: Nimal holds the open box in his left hand, right hand at its edge; Dinu holds his right palm open. | 1-2.5s: Over 1.5 seconds Nimal lifts C-17 from the box with his right hand and releases it into Dinu's open right palm, without skin contact. | 2.5-4.5s: Dinu holds C-17 in his open right palm; Nimal returns his right hand to the box edge. | 4.5-6s: Dinu holds C-17 in his open right palm; Nimal holds the box.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+<clip slate="3F-1" n="17">
+Setup F; role two_shot; SIZE TWO; take 6 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/5.6; angle Slightly downward from entrance side, tighter on torsos; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: A closer shared view gives the key release a precise cut point while preserving donor and receiver.
+What happens: A closer shared view follows Nimal's right hand carrying C-17 from his open box into Dinu's open right palm.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right, box at waist height. Does: Supports the open box in his left hand; with his right hand he lifts C-17 from the box and releases it into Dinu's open right palm without touching Dinu.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left, right palm open toward the box. Does: Holds his right palm open at waist height and receives C-17 without closing his fingers.
+Opening picture: Nimal's torso and open box left, Dinu's torso and empty open right palm right.
+Beats: 0-1s: Nimal holds the open box in his left hand, right hand at its edge; Dinu holds his right palm open. | 1-2.5s: Over 1.5 seconds Nimal lifts C-17 from the box with his right hand and releases it into Dinu's open right palm, without skin contact. | 2.5-4.5s: Dinu holds C-17 in his open right palm; Nimal returns his right hand to the box edge. | 4.5-6s: Dinu holds C-17 in his open right palm; Nimal holds the box.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+<clip slate="3I-1" n="18">
+Setup I; role insert; SIZE INSERT; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 75mm close-focus lens, f/5.6; angle slightly elevated entrance-side detail; movement: Locked-off on sticks throughout.; lens 75mm close focus.
+Why the planner made it: Isolates the instant of custody without treating the gesture as agreement; the must frames retain geography while this view gives the editor a tactile punctuation.
+What happens: A fixed close detail shows Nimal's right hand moving C-17 from the open box into Dinu's open right palm. The hands remain separate; roof rain continues.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Standing frame left facing right; open metal box supported at his waist by his left hand, lid raised. Does: Supports the open metal box with his left hand; lifts C-17 with his right hand and releases it into Dinu's right palm without touching him.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Standing frame right facing left, open right palm extended beside the box; initially empty. Does: Holds his open right palm steady as C-17 settles into it; leaves the palm open.
+Opening picture: Open box lower left, empty right palm at right, a clear gap between them.
+Beats: 0-1s: Nimal's right hand is poised at C-17 inside the supported box; Dinu's right palm is empty. | 1-3s: Nimal lifts C-17 in his right hand and releases it a short distance into Dinu's open right palm; his fingers remain clear of Dinu's hand. | 3-4s: C-17 rests in Dinu's right palm while Nimal continues supporting the box with his left hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below
+</clip>
+<clip slate="3G-1" n="19">
+Setup G; role single; SIZE MS; take 8 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 50mm, f/4; angle Eye level toward Dinu with palm in lower frame; movement: Restrained handheld drift around a fixed composition; lens 50mm.
+Why the planner made it: Dinu's face and the key share a held frame so custody is clear without implying consent.
+What happens: Dinu studies C-17 in his open right palm while rain sounds against the garage roof.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right-centre, standing facing left, C-17 in open right palm at waist height. Does: Studies C-17 in his open right palm for three seconds, then holds the same position.
+Opening picture: Dinu right-centre, face above his open right palm holding the key.
+Beats: 0-1s: Dinu holds C-17 in his open right palm. | 1-4s: Dinu studies C-17 in his open right palm for three seconds. | 4-6.5s: Dinu holds C-17 in the same open right palm. | 6.5-8s: Dinu holds C-17 in the same open right palm.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="3A-5" n="20">
+Setup A; role master; SIZE TWO; take 8 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 35mm, f/4; angle Eye level from the entrance side; movement: Restrained handheld drift around a fixed composition; lens 35mm.
+Why the planner made it: The shared ending preserves Nimal's position and the open distance after the transfer.
+What happens: In the shared garage frame Dinu studies C-17 in his open right palm; Nimal retains the open box as rain strikes the roof.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Frame left, standing facing right. Does: Holds the open box in his left hand with his right at its edge and watches Dinu.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Frame right, standing facing left, C-17 in open right palm at waist height. Does: Studies C-17 in his open right palm for three seconds, then holds the same position.
+Opening picture: Nimal left with open box, Dinu right with C-17 in open right palm.
+Beats: 0-1s: Dinu holds C-17 in his open right palm; Nimal holds the open box. | 1-4s: Dinu studies C-17 in his open right palm for three seconds; Nimal keeps the box level. | 4-6.5s: Dinu holds C-17 in the same open right palm; Nimal keeps the box in his left hand. | 6.5-8s: Dinu holds C-17 in the same open right palm; Nimal holds the box.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="3D-4" n="21">
+Setup D; role reaction; SIZE MCU; take 8 s, handles 1 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique handheld; handheld shoulder rig, 65mm, f/2.8; angle Eye level toward Nimal, entrance side of axis; movement: Restrained handheld drift around a fixed composition; lens 65mm.
+Why the planner made it: Nimal's waiting face allows the editor to sustain the unresolved space without an invented decision.
+What happens: Nimal watches Dinu study the key, holding the open box below frame as rain continues on the roof.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Left-centre, standing facing right toward Dinu off frame. Does: Holds the open box in his left hand with his right at its edge below frame and watches Dinu.
+Opening picture: Nimal chest up left-centre, looking right toward Dinu.
+Beats: 0-1s: Nimal holds the open box below frame. | 1-4s: Nimal holds position while the box stays level below frame. | 4-6.5s: Nimal keeps the open box supported below frame. | 6.5-8s: Nimal keeps the open box supported below frame.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake | tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="3J-1" n="22">
+Setup J; role insert; SIZE ECU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; locked-off sticks, 100mm macro, f/4; angle high oblique from entrance side; movement: Locked-off shallow isolation of the key throughout.; lens 100mm macro.
+Why the planner made it: The unmoving key in an unclosed hand separates physical custody from consent, a detail the waist-up ending cannot isolate.
+What happens: An extreme close view isolates C-17 resting in Dinu's open right palm. His fingers stay extended while rain continues overhead.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Standing frame right facing left, gaze lowered outside the crop, right palm open at waist height holding C-17. Does: Keeps C-17 resting in his open right palm without curling his fingers.
+Opening picture: C-17 centred across the open palm, slate-blue cuff at the right edge.
+Beats: 0-1s: C-17 rests on Dinu's open right palm. | 1-5s: Dinu holds his palm in place. | 5-6s: The key remains motionless.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | zoom_in: Sudden emphasis, can feel artificial/stylized or urgent; use: Quick emphasis on a detail, retro/stylized look, comedic beat | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought
+</clip>
+<clip slate="3K-1" n="23">
+Setup K; role clean_exit; SIZE TWO; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique dolly_out; dolly, 40mm, f/4; angle eye level from entrance side; movement: One slow straight dolly backward, maintaining the left-right arrangement.; lens 40mm.
+Why the planner made it: Ends on increasing space between the men and the camera while preserving the key image; neither a decision nor an exit is invented.
+What happens: The camera withdraws from the two men. Dinu keeps his gaze on the key in his open right palm; Nimal stays separate at the left with the open box. Only rain remains.
+In frame: Dinu, 30, in a plain slate-blue work shirt and dark trousers. Where: Standing frame right facing left; C-17 rests in his open right palm at waist height. Does: Keeps his gaze lowered to C-17 in his still-open right palm.
+In frame: Nimal, 34, in a plain charcoal work shirt and dark trousers. Where: Standing frame left facing right; left hand supports the open box at his waist, lid raised, right hand clear of Dinu. Does: Remains apart from Dinu, watching him while supporting the open box.
+Opening picture: Nimal separated at the left edge, Dinu right with lowered gaze and open right palm visible.
+Beats: 0-1s: Dinu looks down while Nimal remains still. | 1-5s: Both men maintain their positions and the key remains exposed in Dinu's palm. | 5-6s: The open box stays left and the open palm stays right.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey
+</clip>
+</clips>
+
+<omni>
+MEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent renders, 2026-11-20), background motion over the take:
+- push_in / push_then_hold on a face, also while she speaks: PERFORMED clearly (87 px, 72 px; MS -> MCU).
+- push_then_hold on a TWO-shot ("slowly pushes closer to both of them ... then comes to rest"): PERFORMED (full
+  figures -> waist up, then settles).
+- A float in a two-shot is NOT performed, however it is worded: "gently floating and swaying" 16 px, "handheld
+  camera with a slight natural shake" 19 px, "drifts slowly sideways to the right" 20 px, against 12 px for "a steady
+  frame on a tripod". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.
+PROVISIONAL (not measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;
+tracking_alongside; follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;
+slow_zoom; aerial_establishing; aerial_pull_away; arc_left/right (short, slow).
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

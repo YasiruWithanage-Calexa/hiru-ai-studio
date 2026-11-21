@@ -53,7 +53,7 @@ def test_lighting_from_the_heading(heading, time, preset):
 def test_default_camera_keeps_the_directors_size_and_is_valid_everywhere():
     for code in ("WIDE", "MS", "MCU", "CU", "TWO", "OTS", "INSERT"):
         cam = default_camera(code, heading="INT. X - DAY")
-        assert cam.movement == "Static" and cam.speed == "None" and cam.axis.startswith("Side A")
+        assert cam.movement == "Hold" and cam.speed == "None" and cam.axis.startswith("Side A")
     assert default_camera("CU").framing == "Close-up" and default_camera("CU").lens == "85mm"
 
 
@@ -69,8 +69,11 @@ def test_every_field_is_one_of_the_panels_choices():
 
 def test_storyboard_note():
     cam = default_camera("MCU")
-    assert storyboard_note(cam) == "50mm · static"
-    assert storyboard_note(cam.with_overrides({"movement": "Dolly in", "speed": "Slow"})) == "50mm · slow dolly in"
+    assert storyboard_note(cam) == "50mm · hold"
+    assert storyboard_note(cam.with_overrides({"movement": "Dolly in", "speed": "Slow"})) == "50mm · slow push in"
+    moving = cam.with_overrides({"movement": "Push in", "speed": "Slow"})
+    assert storyboard_note(moving, "L4") == "50mm · slow push in on L4"
+    assert storyboard_note(cam, "L4") == "50mm · hold"  # a hold names no trigger
 
 
 def test_cast_comes_from_the_lines_and_the_names_in_the_action():

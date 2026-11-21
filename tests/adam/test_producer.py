@@ -104,7 +104,7 @@ def test_the_card_wins_the_recommendation_but_never_the_size(world: dict[str, An
     shots = parts.step("serialize", "shots")
     asked = {"recommendation": {"angle": "High angle", "lens": "28mm", "movement": "Static", "framing": "Wide shot"}}
     got = shots.recommendation(asked, world["scene"].shots[0], world["scene"])
-    assert (got.angle, got.lens, got.movement) == ("Low angle", "85mm", "Dolly in")
+    assert (got.angle, got.lens, got.movement) == ("Low angle", "85mm", "Push in")  # 2026-11-20c: today's word
     assert got == legacy_shots.recommendation(asked, world["old_scene"].shots[0], world["old_scene"])
     classic = shots.recommendation(asked, world["scene"].shots[1], world["scene"])
     assert (classic.angle, classic.lens) == ("High angle", "28mm")

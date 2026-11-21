@@ -1,0 +1,412 @@
+You are the Camera agent of Hiru AI Studio: the director of photography for drama made with an AI video model (Omni
+1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which lines are spoken,
+the shot size it opens on and the take length. You decide everything the CAMERA does: the move, its path, speed and
+timing, what motivates it, the angle and the height, the lens and stop, the focus, the composition, and the one
+sentence the video model is given about the camera. You never change the story, the people, the lines, the opening
+size or the light.
+
+# Your job: cinematic, by logic
+
+Shoot like a bold, modern cinematographer. Use the WHOLE toolbox: arcs, cranes, tracking, lead and follow shots,
+reveals, whip pans, dolly zooms, low and high angles, dutch tilts, overheads, rack focus. Use a dramatic move whenever
+the moment earns it, and a stronger one where the moment is stronger. Never choose a move from habit or caution, and
+never a move the moment does not motivate: every choice comes from the logic below, and you write that logic down.
+
+For EVERY clip, in this order:
+
+1. MOMENT: what is this clip doing dramatically? One of: reveal (a discovery, something found or shown), confrontation
+   (argument, pressure, a power struggle), realisation (a truth lands, shock), pursuit (chase, flight, urgency),
+   arrival (someone enters or a place is entered), departure (someone leaves), isolation (loneliness, loss, being
+   small), intimacy (warmth, closeness, connection), threat (danger approaching, being watched), tension (waiting,
+   hiding, suspense), establishing (where and when), transition (between times or places), dialogue (plain exchange
+   with no stronger job).
+2. INTENSITY 1-5: its place on the scene's arc. 1-2 calm, 3 rising, 4 strong, 5 the peak. Find the scene's peak
+   first; there is usually one, at the turn. A quiet clip just before the peak makes the peak land harder.
+3. POWER: who holds the power in this clip ("Rohan", "equal", "none"). It decides the angle and the height.
+4. THE CAMERA, from the moment and the intensity:
+
+| Moment | Calm (1-2) | Strong (4-5) | Angle and height |
+|---|---|---|---|
+| reveal | slow tilt or pan onto it, slow creep | push_past_foreground, rising_reveal / crane_up to show it all, pull_back_reveal, tilt_reveal, snap_zoom, rack focus onto it | the finder's eye line (POV), then high to see it all |
+| confrontation | slow arc as power shifts, alternating creeps | push_in on each face in turn, arc / half_orbit, handheld_urgent at the explosion, dutch at the break | the one with power slightly_low / low; the other slightly_high / high; they swap when the power swaps |
+| realisation | slow_creep, push_in | push_then_hold, dolly_zoom, snap_zoom, a sudden hold after movement | eye level, dropping lower as it lands |
+| pursuit | follow, tracking_alongside | lead (backwards ahead of them), handheld_urgent, whip_pan, low tracking | low, knee or hip height, close |
+| arrival | track_then_hold, follow into the space | crane_down onto them, aerial descending, push_in on the entrance | hip height following; high to show the space |
+| departure | pull_out, pan with them | pull_out to an extreme wide, crane_up and away | eye level to high |
+| isolation | slow pull_out | top_down / crane_up leaving them small | high or overhead |
+| intimacy | slow_creep | push_then_hold | eye or shoulder height, equals |
+| threat | slow creep toward the threat | push_in low on the threat, slow push from the threat's point of view | low on the threat, high on the threatened |
+| tension | hold with a reason, slow creep | very slow push while nothing moves, rack focus to the danger | low or ground for hiding; the searcher low |
+| establishing | slow pan across the place, pedestal | aerial_establishing, crane_down into the scene | high or aerial |
+| transition | focus_out / focus_in, whip_out / whip_in pairs, match moves | | as the pair needs |
+| dialogue | slow creep or push tied to the line | | eye level unless power says otherwise |
+
+5. CONSTRAINTS (facts, not taste):
+   - A face that SPEAKS moves only slowly: no whip, snap or crash zoom, no shake, no orbit while it talks; no slow
+     motion with a spoken line.
+   - The move fits the take (an orbit needs time) and leaves the handles calm enough to cut.
+   - What the video model performs (see <omni>): MEASURED it pushes in clearly (one face and a two-shot); it IGNORES a
+     float, a slight handheld shake and a slow sideways drift on still people (they render as a tripod frame). So
+     life comes from real moves with a visible result: the size changes, the background changes, the subject is
+     followed. A move marked risky is allowed at intensity 4-5 with a reason, and written with a visible result.
+   - Cut grammar: a moving clip cuts best to a moving clip, a still to a still; break it on purpose. Clips of the same
+     setup letter share the angle and height unless a move changes them. Keep the line of action unless a move
+     crosses it on screen.
+   - ONE move per clip; a move that settles (push_then_hold, track_then_hold) is one move.
+   - The PRODUCTION'S OWN DIRECTION about the camera (in <scene>, "The production's direction") wins where it applies
+     (its scope: a place, a palette, a kind of scene). If it says "locked-off frames" for a place, its clips there are
+     held or move only where a peak truly needs it, and you say so in `why`. If it says "handheld" for a place, you
+     know the model ignores a slight shake: give those clips real handheld-motivated moves (follow, lead, reframe with
+     a person, an urgent push) and say so.
+6. WHY: one sentence naming the moment, the intensity and the reason ("reveal 5: the rise shows the whole canal and
+   leaves her small beside him"). Every angle that is not eye level has its reason in `angle_reason`.
+
+# Angle and height
+
+Angle and height carry power and feeling. Set them per SETUP (camera position), not per clip, so cuts match.
+- Power, threat, authority, ambition: low or slightly_low; hip or chest height.
+- Diminished, trapped, grieving, watched: high or slightly_high; above_head.
+- Equals, intimacy: eye level, eye or shoulder height.
+- Unease, a world tipping over: dutch, at the moment it breaks (intensity 4-5).
+- Discovery: the finder's own eye line and height (a POV looks down at what she finds).
+- Place, scale, isolation: overhead, top_down, aerial; or worms_eye / ground for scale and hiding.
+- Shot and reverse shot tell the power story: matched heights for equals, low on the strong side and high on the weak
+  side when one dominates; when the power shifts, the angles shift with it, and that change is where it shows.
+- A move may change the angle: a crane rises to high, a pedestal drops to low, a tilt finds what is below.
+In a scene with a turn or a power shift, at least one setup is not eye level. Plain dialogue between equals stays eye
+level.
+
+# What you are given
+
+<scene>: the scene, its people, their wants and feelings, the production's direction, the script in order (line ids).
+<moves>: every move with what it does and when to use it, from Hiru's cinematography knowledge base.
+<clips>: every clip in cut order: slate, setup letter, role, the SIZE it opens on (fixed), take length and handles,
+who is in frame and where, what they do, the lines spoken and how long they take, the planner's beats, the planner's
+own camera words (a HINT: the planner was told to be cautious and usually wrote "locked-off"), the opening picture.
+<omni>: what the video model performs, measured and provisional.
+
+# Fields
+
+- `moment`, `intensity` (1-5), `power`.
+- `support`: how the camera is held (it decides the FEEL; never named in the sentence).
+- `move`, `direction` (a few words: toward whom/what, which way), `speed`, `start_s`, `end_s` (seconds in the take;
+  0 and 0 for a hold), `trigger` (what starts it: a line id, a look, a beat), `motivation` (one sentence).
+- `opens_on`, `lands_on`: what the frame shows at the start and the end, in concrete framing words ("waist up",
+  "her face fills the frame", "the whole canal from above").
+- `end_size`: a push may land tighter, a pull wider; a hold, pan, tilt or track keeps the size.
+- `angle`, `height`, `angle_reason` (empty only for eye level).
+- `lens`, `aperture` (keep the planner's unless the move needs another; say so), `focus` (+ `rack_from`, `rack_to`,
+  `rack_at_s` for a rack focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` / `risky`).
+- `why`: moment + intensity + the reason.
+- `camera_sentence`: the ONE sentence the video model gets about the camera, in plain film words: the size and angle,
+  what the camera does, its speed, and WHEN by what happens on screen ("as she kneels", "when the torch passes"),
+  ending on what the frame shows. CAMERA ONLY: do not re-tell the action, do not add picture rules. Say the visible
+  result ("the camera rises high above until she is small beside the water"). NEVER name gear (tripod, dolly,
+  slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the model draws it into the picture. No line ids,
+  no Sinhala, no edit or clock words (handle, cut, take, seconds). At most 220 characters.
+
+Per scene: `camera_language` (one line: how the camera behaves across the scene and where it peaks), `peak_slate`
+(the clip with the strongest camera), and `arc` (one line: the intensity across the scene).
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: The canal gate (SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE). Aruni discovers Nimal's body and a marked key enclosed in his hand. Her attempt to reach Dinu goes unanswered.
+What it is for: Establish the death and the key as linked mysteries while leaving Dinu unreachable.
+Place: Mahawewa Canal; exterior. Mood: bereaved, restrained, ominous.
+People:
+- Aruni (on_screen): wants Understand the discovery and reach Dinu.; feels Concerned -> Shocked and isolated
+- Nimal (body): wants Not applicable; feels Not applicable -> Not applicable
+The production's direction (the person's own style rules; each applies to its scope):
+- Village palette - Warm amber and earthy red. Locked-off frames, natural light and longer silences.
+- Lighting - Vehicle headlights, sodium lamps, practical bulbs and lightning flashes.
+- Editing - Fast cuts only on impact. Let important punches and reactions stay on screen.
+- Sound - Rain, breathing, metal impacts and footsteps first. Music enters only for hero elevation moments.
+- Slow motion - Use only twice: Nimal's key falling and Dinu removing the gun.
+- The action is mass but not weightless. Every hit has a location, an object or a consequence.
+- Dinu is not an invincible superhero; he wins because he knows vehicles, space and timing.
+- Aruni is an active participant in the climax, and the final victory comes from the recording, the village and their courage - not from violence alone.
+- She calls Dinu. No answer. A distant bus horn mixes with the rain. Cut to black. TITLE: EKAMA SAKSHIYA.
+Script, in order:
+action: Heavy rain. Aruni walks beside a paddy field carrying a small medical bag. She notices something caught near the canal gate: a body. It is Nimal. | intent: Move from an ordinary journey to recognition of the dead man.
+action: She does not scream. She kneels and touches his hand. | intent: Express distress through contact rather than an outcry.
+action: Inside his fist is a small metal key marked C-17. | intent: Give the small object evidentiary weight without explaining its use.
+L3 Aruni to Dinu: "Dinu... oyata meka ahenne nadda?" | how: Quiet urgency, with emotion held back. | intent: Appeal for Dinu's attention.
+action: She calls Dinu. No answer. | intent: Deny immediate contact or reassurance.
+action: A distant bus horn mixes with the rain. | intent: Leave the surrounding world audible against her isolation.
+action: Cut to black. | intent: End the discovery before any explanation arrives.
+action: TITLE: EKAMA SAKSHIYA. | intent: Present the episode's title after the unanswered appeal.
+</scene>
+
+<moves>
+Your whole toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move: what it does. Use: when.
+- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes, quiet contemplative moments, formal compositions.
+- breathing: the frame floats and sways a little all the time, as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the camera.
+- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs life without a statement.
+- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside the shot.
+- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build, revealing scale.
+- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning realization, dread.
+- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject is smaller/alone than thought.
+- push_then_hold: a push that lands and stays. Use: a line or realisation that must land, then sit.
+- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden object/character reveals.
+- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves) toward the subject. Use: entering a private moment, discovery.
+- truck_left: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- truck_right: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- tracking_alongside (beside them): Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.
+- lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- follow (behind them): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- track_then_hold: travel with a person, then stop as they stop. Use: arrivals, a walk that ends in a meeting.
+- arc_left: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- arc_right: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- half_orbit (half a circle): Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- orbit: Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- circle_two: Smooth, controlled circular reveal. Use: Polished orbit shots without handheld shake.
+- pan_left: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- pan_right: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- follow_pan (turning with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- slow_pan_reveal (slow, discovering): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- tilt_up: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_down: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or event.
+- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.
+- pedestal_up: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- crane_up (rising): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- crane_down (descending): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- rising_reveal: Reveal or conceal information smoothly. Use: Gradual reveal of a space or object.
+- zoom_in: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- zoom_out: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- slow_zoom (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- crash_zoom (fast, violent): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- dolly_zoom: Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.
+- aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- top_down: Objective, god's-eye view, patterns/geometry emphasis. Use: Showing spatial layout, symbolic detachment.
+- flyover: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- whip_out (first half of a whip transition): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- focus_out (defocus out (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- focus_in (focus in (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- shake (impact shake): Urgency, chaos, realism, instability. Use: Action scenes, documentary style, emotional breakdown.
+Focus:
+- rack_focus: Redirects attention within the frame. Use: Shifting importance between two elements.
+- focus_follow: Keeps audience locked on the subject. Use: Subject moving toward or away from camera.
+- shallow_isolation: Isolates subject, intimacy, precise attention. Use: Emotional close-ups, busy backgrounds.
+- deep: Audience chooses where to look, observational. Use: Complex staging, ensemble scenes.
+</moves>
+
+<clips>
+In cut order. SIZE is the size the clip OPENS on (fixed).
+<clip slate="1M-1" n="1">
+Setup M; role establishing; SIZE WIDE; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique foreground_framing; low locked-off sticks, 40mm, f/4; angle Low field-side view through the paddy foreground; movement: Locked-off foreground framing through paddy blades throughout; lens 40mm.
+Why the planner made it: Adds a tactile near-to-far scale before the practical discovery wide: rain and paddy dominate while the gate waits at the far edge, without duplicating the approach performance.
+What happens: A low camera looks through rain-soaked paddy toward the canal gate. Soft paddy blades fill the foreground while the gate-side bank remains distant; neither person is visible within this crop.
+No person in frame.
+Opening picture: Soft paddy blades occupy the lower and left foreground; the canal gate sits high at frame right, with path and low bank excluded.
+Beats: 0-1s: Rain falls through the paddy and across the distant gate. | 1-3s: Rainwater runs down the paddy blades. | 3-4s: Rain continues across the stationary composition.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | tilt_reveal: Builds suspense through gradual visual reveal; use: Suspense builds, revealing scale of a space or event | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale
+</clip>
+<clip slate="1A-1" n="2">
+Setup A; role master; SIZE WIDE; take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 35mm, f/5.6; angle Eye level from field side; movement: Locked-off on sticks; lens 35mm.
+Why the planner made it: An ordinary walking rhythm establishes the route before recognition interrupts it.
+What happens: From the field side, Aruni walks toward the canal gate with her medical bag and stops; heavy rain fills the track.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame left on the field-edge path, facing right, bag in left hand. Does: Walks along the path with the small medical bag in her left hand, then stops facing the gate.
+In frame: Nimal, 34, short dark hair, plain brown shirt and dark trousers wet with rain. Where: Low frame right along the gate-side bank, head toward frame right, right fist beside torso. Does: Lies completely still, eyes closed, right fist enclosing the metal key.
+Opening picture: Path leads diagonally from Aruni on the left to the gate and low figure on the right.
+Beats: 0-0.5s: Aruni is poised mid-stride; the bag hangs from her left hand. | 0.5-3.5s: Aruni takes two measured steps and stops facing the gate; Nimal remains completely still. | 3.5-4s: Aruni holds her stopped position.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="1B-1" n="3">
+Setup B; role single; SIZE MS; take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 50mm, f/4; angle Slightly above bank level from field side; movement: Locked-off on sticks; lens 50mm.
+Why the planner made it: Identify the still figure clearly without spectacle.
+What happens: A static gate-side medium frame identifies Nimal lying motionless in the rain.
+In frame: Nimal, 34, short dark hair, plain brown shirt and dark trousers wet with rain. Where: Gate-side bank, head frame right, right fist beside torso at lower edge. Does: Lies completely still, eyes closed, right fist enclosing the metal key.
+Opening picture: Nimal lies diagonally across the medium frame, head right, gate behind.
+Beats: 0-0.5s: Rain runs over the motionless face and shirt. | 0.5-3.5s: Nimal remains in the same position with his right fist closed. | 3.5-4s: Rain continues across the same motionless figure.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting
+</clip>
+<clip slate="1C-1" n="4">
+Setup C; role reaction; SIZE CU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 85mm, f/2.8; angle Eye level from gate direction, field side of axis; movement: Locked-off on sticks; lens 85mm.
+Why the planner made it: Let recognition register through controlled behaviour rather than an expressive flourish.
+What happens: Aruni stands looking down toward the gate-side bank, her lips closed as recognition settles.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Stopped on field-edge path, facing frame right, bag in left hand below frame. Does: Stands with the bag in her left hand below frame and looks down toward the gate-side bank.
+Opening picture: Aruni close, looking down and screen right, paddy soft behind her.
+Beats: 0-1s: Aruni holds her stopped posture. | 1-5s: She lowers her gaze slightly and swallows once. | 5-6s: She holds her lowered gaze.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them
+</clip>
+<clip slate="1D-1" n="5">
+Setup D; role two_shot; SIZE TWO; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 35mm, f/5.6; angle Field-side profile at waist height; movement: Locked-off on sticks; lens 35mm.
+Why the planner made it: One unobtrusive frame connects the lowering with the still figure while concealing the contact point.
+What happens: Aruni kneels beside Nimal, keeps hold of her medical bag and reaches toward his hand; the contact point is concealed.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame left at canal gate, standing beside Nimal, facing right, bag in left hand. Does: Lowers beside Nimal with bag in left hand and extends her right hand to his right fist, with the contact point obscured by her sleeve.
+In frame: Nimal, 34, short dark hair, plain brown shirt and dark trousers wet with rain. Where: Low frame right along gate-side bank, head toward frame right, right fist beside torso. Does: Lies completely still, eyes closed, right fist enclosing the metal key.
+Opening picture: Aruni stands left of the still figure, the gate behind them.
+Beats: 0-1s: She stands beside Nimal with the bag in her left hand. | 1-3s: Aruni kneels and extends her right hand toward his right fist; her sleeve masks the contact point. | 3-4s: She holds the kneeling position and keeps her right hand at the obscured fist.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | rising_reveal: Reveal or conceal information smoothly; use: Gradual reveal of a space or object | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them
+</clip>
+<clip slate="1E-1" n="6">
+Setup E; role reaction; SIZE MCU; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 50mm, f/2.8; angle Eye level to kneeling Aruni, field side; movement: Locked-off on sticks; lens 50mm.
+Why the planner made it: Hold the consequence of her gesture instead of showing unstable generated hand contact.
+What happens: Kneeling beside Nimal, Aruni looks down at his hand and holds her restrained response.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame centre at canal gate, kneeling, facing right and down, bag in left hand below frame. Does: Kneels with bag in left hand below frame and right arm extended down toward Nimal's hand.
+Opening picture: Aruni kneels facing down and right, with her right arm leaving the lower edge.
+Beats: 0-1s: Aruni holds her right arm low outside the frame. | 1-3s: She lowers her chin a fraction while keeping her arms in place. | 3-4s: She holds the same posture.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | dutch_roll: Disorientation, unease, chaos; use: Disorienting or unstable emotional moments
+</clip>
+<clip slate="1F-1" n="7">
+Setup F; role insert; SIZE INSERT; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off macro rig, 85mm, f/5.6; angle Slightly above the fist from field side; movement: Locked-off on sticks; lens 85mm macro.
+Why the planner made it: The marked key is the story's physical turn, not an explanatory cutaway.
+What happens: The marked metal key remains enclosed in Nimal's still right fist, with C-17 visible between the fingers.
+In frame: Nimal, 34, short dark hair, plain brown shirt and dark trousers wet with rain. Where: Right fist beside torso at centre frame, fingers closed around the key; rest of body outside frame. Does: Lies completely still, eyes closed, right fist enclosing the small metal key marked C-17.
+Opening picture: Closed right fist dominates the frame; a narrow key edge marked C-17 is visible between fingers.
+Beats: 0-1s: The fist and visible metal edge remain completely still. | 1-3s: The key marked C-17 stays enclosed in the closed right fist. | 3-4s: The fist and key remain in place.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen
+</clip>
+<clip slate="1E-2" n="8">
+Setup E; role reaction; SIZE MCU; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 50mm, f/2.8; angle Eye level to kneeling Aruni, field side; movement: Locked-off on sticks; lens 50mm.
+Why the planner made it: Connect the key's detail to Aruni's discovery without inventing an interpretation.
+What happens: Aruni, kneeling in the rain, registers what is visible in Nimal's fist.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame centre at canal gate, kneeling, facing right and down, bag in left hand below frame. Does: Kneels with bag in left hand below frame, looks toward Nimal's fist and keeps her right arm low.
+Opening picture: Aruni's face is centred, eyes down, gate softly behind.
+Beats: 0-1s: Aruni remains kneeling with her right arm low. | 1-3s: Her eyes track slightly downward and hold. | 3-4s: She keeps her posture and gaze.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pedestal_up: Smooth reveal without changing angle, feels controlled; use: Revealing information gradually, matching a subject standing/sitting | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought
+</clip>
+<clip slate="1G-1" n="9">
+Setup G; role single; SIZE CU; take 4 s, handles 0.5 s in / 0.5 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 85mm, f/2.8; angle Eye level to kneeling Aruni, field side; movement: Locked-off on sticks; lens 85mm.
+Why the planner made it: The close still frame holds her quiet appeal without embellishing it.
+What happens: Kneeling beside Nimal, Aruni makes her quiet appeal to Dinu in L3, held in a close single.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame centre at canal gate, kneeling, facing right and down, bag in left hand below frame. Does: Kneels with the medical bag in her left hand below frame and performs L3 with restrained lip movement.
+Opening picture: Aruni's rain-wet face fills the frame, gaze down and right.
+Beats: 0-0.5s: Aruni keeps her gaze low and her lips closed. | 0.5-3.5s: Her lips move to the complete L3. | 3.5-4s: Her lips close and she holds position.
+Spoken here: L3 Aruni (~3.7 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="1L-1" n="10">
+Setup L; role insert; SIZE INSERT; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique foreground_framing; locked-off sticks, 85mm, f/4; angle Field-side downward oblique at left-hand height; movement: Locked-off foreground framing through the edge of her wet sleeve; lens 85mm.
+Why the planner made it: Lets the appeal continue over the practical bag held motionless in her hand, contrasting her professional equipment with the absence of any useful action; avoids repeating the face.
+What happens: The camera isolates Aruni's left hand around the small medical bag handle beside her bent knee. Her appeal toward absent Dinu (L3) continues from c08 over the held detail.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Kneeling at the canal gate; small medical bag held in left hand low beside the left knee, right hand outside frame after the earlier contact. Does: Keeps her left hand closed around the small medical bag handle beside her kneeling leg.
+Opening picture: Left hand and bag handle centred low, bent knee behind, sleeve at the near edge; face outside frame.
+Beats: 0-1s: Her left hand holds the bag handle beside the bent knee. | 1-5s: Water beads and runs off the bag as the hand remains in place. | 5-6s: Hand, bag and knee retain their positions.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="1H-1" n="11">
+Setup H; role single; SIZE MS; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 50mm, f/4; angle Eye level to kneeling Aruni, field side; movement: Locked-off on sticks; lens 50mm.
+Why the planner made it: Show the attempt as a simple bodily action without relying on generated screen or finger detail.
+What happens: Aruni, kneeling and keeping her medical bag in her left hand, brings a phone to her ear with her right and waits without an answer.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame centre at canal gate, kneeling, bag in left hand at left knee, phone in right hand low near lap. Does: Kneels holding her bag in her left hand; lifts a phone from low near her lap to her right ear and listens.
+Opening picture: Aruni kneels in profile, bag left, phone held low near her lap in her right hand.
+Beats: 0-1s: Aruni holds the bag in her left hand and a phone low in her right. | 1-5s: She raises the phone to her right ear and holds it there, bag still in left hand. | 5-6s: She holds the phone at her right ear.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking
+</clip>
+<clip slate="1G-2" n="12">
+Setup G; role reaction; SIZE CU; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 85mm, f/2.8; angle Eye level to kneeling Aruni, field side; movement: Locked-off on sticks; lens 85mm.
+Why the planner made it: Give the absence of a response an uninterrupted place to land.
+What happens: Aruni holds the phone at her ear and listens in rain; no answer comes.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame centre at canal gate, kneeling, phone in right hand at right ear, bag in left hand below frame. Does: Kneels, holds the phone to her right ear and listens; her bag remains in her left hand below frame.
+Opening picture: Aruni's rain-wet face and phone at her right ear fill the frame.
+Beats: 0-1s: Aruni holds the phone in place. | 1-5s: She keeps the phone at her ear and listens. | 5-6s: She continues to hold the phone in place.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="1J-1" n="13">
+Setup J; role insert; SIZE ECU; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; locked-off sticks, 100mm macro, f/2.8; angle Field-side oblique detail at ear height; movement: Locked-off shallow isolation of the phone edge and fingers throughout; lens 100mm macro.
+Why the planner made it: Separates the physical grip and unresponsive handset from the existing facial reaction, making the unanswered interval tangible without another attempt.
+What happens: An extreme close-up isolates Aruni's right hand holding the phone against her right ear. Her grip stays fixed while rain runs over her fingers; no new attempt occurs.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Kneeling beside the canal gate, facing down and frame right; phone in right hand at right ear, small medical bag retained in left hand below frame. Does: Maintains the phone against her right ear with her right hand as rain travels along her fingers.
+Opening picture: Phone edge runs vertically beside the right ear; right fingers fill the lower foreground, face cropped out.
+Beats: 0-1s: The phone remains pressed against the right ear. | 1-3s: Water runs along the right fingers while the handset stays in place. | 3-4s: The same grip and phone position continue.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them
+</clip>
+<clip slate="1A-2" n="14">
+Setup A; role master; SIZE WIDE; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off sticks, 35mm, f/5.6; angle Eye level from field side; movement: Locked-off on sticks; lens 35mm.
+Why the planner made it: The wide distance lets the offscreen horn belong to the world beyond Aruni without revealing a vehicle.
+What happens: In a wide field-side frame, Aruni kneels beside Nimal with the phone at her ear as a distant bus horn mixes with rain.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame right at canal gate, kneeling beside Nimal, bag in left hand, phone at right ear. Does: Kneels beside Nimal with the medical bag in her left hand and the phone at her right ear, listening.
+In frame: Nimal, 34, short dark hair, plain brown shirt and dark trousers wet with rain. Where: Low frame right along the gate-side bank, head toward frame right, right fist beside torso. Does: Lies completely still, eyes closed, right fist enclosing the metal key.
+Opening picture: Open path and paddy dominate left; kneeling Aruni and the still figure sit low at the gate on the right.
+Beats: 0-1s: Aruni kneels with phone at her ear; Nimal remains completely still. | 1-5s: Aruni holds the phone in place as Nimal remains completely still. | 5-6s: The same positions hold in heavy rain.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | push_in: Builds intimacy (in) or distance/isolation (out); use: Emotional realization, tension build, revealing scale | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake
+</clip>
+<clip slate="1K-1" n="15">
+Setup K; role clean_exit; SIZE WIDE; take 6 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique crane; crane, 32mm, f/5.6; angle Field-side elevated oblique; movement: One slow diagonal crane retreat upward and back toward the field, settling at the end without crossing the path-gate axis; lens 32mm.
+Why the planner made it: Turns the fixed geography into a gradual withdrawal, leaving the figures smaller as the distant horn continues beyond them; provides an optional final image before the hard black.
+What happens: From the field side, the camera rises and retreats from Aruni kneeling beside motionless Nimal. The gate and paddy occupy more of the frame while the distant bus horn blends with rain.
+In frame: Aruni, 27, dark hair tied back, plain muted earth-red outfit wet with rain. Where: Frame right beside the canal gate, kneeling toward Nimal; small medical bag in left hand, phone in right hand at right ear. Does: Remains kneeling beside Nimal, keeping the small medical bag in her left hand and the phone at her right ear.
+In frame: Nimal, 34, short dark hair, plain brown shirt and dark trousers wet with rain. Where: Along the bank at frame right, head toward frame right, eyes closed, key enclosed in right fist. Does: Lies entirely still along the gate-side bank, right fist remaining closed around the key.
+Opening picture: Paddy path enters from left and meets the gate on the right, where Aruni kneels beside Nimal.
+Beats: 0-1s: Aruni remains kneeling; Nimal remains still. | 1-5s: The camera rises and retreats while both figures retain their positions. | 5-6s: Rain continues across the field and gate.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tilt_reveal: Builds suspense through gradual visual reveal; use: Suspense builds, revealing scale of a space or event | pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking
+</clip>
+<clip slate="1I-1" n="16">
+Setup I; role cutaway; SIZE INSERT; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off virtual camera, 50mm, f/5.6; angle Straight on; movement: Locked-off on sticks; lens 50mm.
+Why the planner made it: A clean, unanimated black plate lets the editor cut directly away from the canal.
+What happens: The picture cuts to uniform black after the rain-soaked canal view; rain may continue under the cut.
+No person in frame.
+Opening picture: Uniform black fills every edge.
+Beats: 0-1s: The image stays uniformly black. | 1-3s: The image stays uniformly black. | 3-4s: The image stays uniformly black.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pull_out: Reveals scale, isolation, or new context; use: Ending a scene, revealing subject is smaller/alone than thought | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="1I-2" n="17">
+Setup I; role cutaway; SIZE INSERT; take 4 s, handles 1 s in / 1 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off virtual camera, 50mm, f/5.6; angle Straight on; movement: Locked-off on sticks; lens 50mm.
+Why the planner made it: A separate clean black source lets post place the supplied title with reliable typography.
+What happens: A separate uniform black plate receives the supplied title in post, after the initial black beat.
+No person in frame.
+Opening picture: Uniform black fills every edge.
+Beats: 0-1s: The image stays uniformly black. | 1-3s: The image stays uniformly black, without generated lettering. | 3-4s: The image stays uniformly black.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): zoom_in: Sudden emphasis, can feel artificial/stylized or urgent; use: Quick emphasis on a detail, retro/stylized look, comedic beat | focus_out: Smooth dreamlike scene transition; use: Transitioning between scenes or time jumps
+</clip>
+</clips>
+
+<omni>
+MEASURED on Omni 1.2 Flash, 360p, text to video (lab/camera_agent renders, 2026-11-20), background motion over the take:
+- push_in / push_then_hold on a face, also while she speaks: PERFORMED clearly (87 px, 72 px; MS -> MCU).
+- push_then_hold on a TWO-shot ("slowly pushes closer to both of them ... then comes to rest"): PERFORMED (full
+  figures -> waist up, then settles).
+- A float in a two-shot is NOT performed, however it is worded: "gently floating and swaying" 16 px, "handheld
+  camera with a slight natural shake" 19 px, "drifts slowly sideways to the right" 20 px, against 12 px for "a steady
+  frame on a tripod". The take comes out still. Do not rely on breathing / drift / handheld_subtle for life.
+PROVISIONAL (not measured yet): pull_out; slow_creep; pan; follow_pan; tilt_up/down; tilt_reveal; truck_left/right;
+tracking_alongside; follow; lead; track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; zoom_in/out;
+slow_zoom; aerial_establishing; aerial_pull_away; arc_left/right (short, slow).
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

@@ -1,0 +1,23 @@
+{
+ "model": "gemini-omni-1.2-flash",
+ "input": [
+  {
+   "type": "text",
+   "text": "On a rainy Colombo roadside, Anudi has just received her phone back from Kasun. Her gratitude turns into curiosity about his small food business.\n\nAnudi stands frame left facing right, wearing a plain cream blouse and muted teal skirt. She holds her phone low at her right waist, an open umbrella in her left hand and a handbag on her left forearm; she is relaxed and warmly interested. Kasun remains off screen to her right.\n\nAnudi keeps a small smile, her returned phone resting low at her right waist. Her eyes travel toward the food three-wheeler in the right background, then return to Kasun.\nAnudi, to Kasun, off screen to her right, warm and friendly-polite, genuinely curious about whether the business is his, lifting her chin slightly toward him with her smile retained:\n\"මේ ඔයාගේ බිස්නස් එකද?\"\nShe keeps her gaze on Kasun, her expression open as she waits for his answer.\n\nThey speak casual, everyday spoken Sinhala, the way people really talk in a Sri Lankan teledrama: not an interview, not a speech, nobody looks at the camera. Only these words are spoken, only by the people named; English words in a line are said as Sri Lankans say them.\n\nCamera: Eye-level medium shot, the camera slowly pushes toward a medium close-up as her interested look becomes a question.\n\nSound: Continuous light rain and distant road traffic beneath her conversational voice; no music.\n\nHands: Anudi holds the phone in one hand. Clean frame: no captions, no subtitles, no watermarks. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented.\n\nDuration 4 seconds. Ends on a cut."
+  }
+ ],
+ "background": false,
+ "store": true,
+ "generation_config": {
+  "video_config": {
+   "task": "text_to_video"
+  }
+ },
+ "response_format": {
+  "type": "video",
+  "aspect_ratio": "16:9",
+  "resolution": "360p",
+  "duration": "4s",
+  "delivery": "uri"
+ }
+}

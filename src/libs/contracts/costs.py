@@ -334,9 +334,9 @@ SEED_PRICES: tuple[Price, ...] = (
     _vid("omni_flash", "720p", "0.10", "derived from the preview's token rate: confirm (plan/2026-11-06d Phase 0)"),
     Price(kind="estimate", model_prefix="frame", unit_micros=micros_of("0.08"),
           note="one first frame at medium quality: used only when no frame has been made yet"),
-    Price(kind="estimate", model_prefix="prompt", unit_micros=micros_of("0.01"),
-          note="one video prompt by the video prompt agent (lab: $0.0093 a clip, plan/2026-11-20b D15): used only when "
-               "none has been made yet"),
+    Price(kind="estimate", model_prefix="prompt", unit_micros=micros_of("0.02"),
+          note="one shot's prompts (first frame + video) by the Shot prompt agent (lab/shot_prompts: $0.007-0.023 a "
+               "shot, plan/2026-11-20d D12): used only when none has been made yet"),
 )
 
 # List prices code knows that the database does NOT seed yet (no migration adds them): they price what code itself caps
@@ -344,6 +344,13 @@ SEED_PRICES: tuple[Price, ...] = (
 UNSEEDED_PRICES: tuple[Price, ...] = (
     _tok("gpt-6.1-terra", "1.00", "0.05", "5.00",
          "OpenAI list price, read 2026-11-08 by lab/raphael (contracts/raphael/money.py): confirm"),
+    # plan/2026-11-20c D18: the Camera agent (gpt-6.1-sol, medium), as lab/camera_agent measured it. Its real spend is
+    # metered like every call (`token_usage`, priced by the gpt-6.1-sol row); these are the admin list's estimates,
+    # never shown in the UI. Not seeded: no migration in this plan.
+    Price(kind="estimate", model_prefix="camera", unit_micros=micros_of("0.10"),
+          note="the Camera agent designing one scene (lab: $0.087-0.099 for 18-22 clips)"),
+    Price(kind="estimate", model_prefix="camera_ask", unit_micros=micros_of("0.04"),
+          note="one \"Ask Camera\" redo of a shot (lab: $0.038)"),
 )
 # Every list price code knows: what a turn budget prices its calls with (plan/2026-11-13 §3.8).
 LIST_PRICES: tuple[Price, ...] = SEED_PRICES + UNSEEDED_PRICES

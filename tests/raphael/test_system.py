@@ -323,3 +323,29 @@ def test_with_no_model_the_job_fails_clearly_and_names_the_classic_planner() -> 
 
 def test_the_graph_draws() -> None:
     assert graph.blank().get_graph().draw_mermaid()
+
+
+def test_with_the_camera_agent_on_each_clip_is_saved_with_its_camera_and_no_planners_hint(
+        monkeypatch: pytest.MonkeyPatch) -> None:
+    """plan/2026-11-20c D11 (a), D12: after the write, ONE Camera agent call for the scene's clips; its designs go into
+    the rows before they are saved; the recommendation it starts from is the rule camera (no `camera_hint`)."""
+    from hiru_ai.core import camera
+
+    calls: list[dict[str, Any]] = []
+
+    def fake_design(ctx: Any, scene: Any, prod: Any, **kw: Any) -> camera.Designed:
+        calls.append({"shots": [s.id for s in scene.shots], **kw})
+        assert all(s.recommended(scene).movement == "Hold" for s in scene.shots)  # D12: the rule camera, no hint
+        out = camera.Designed(language="eases closer")
+        for s in scene.shots:
+            out.designs[s.id] = {**(s.row.get("design") or {}), "camera": {"state": "designed", "move": "push_in"}}
+        out.fallback, out.warnings = [scene.shots[0].code], ["Scene 4: the Camera agent could not design S01"]
+        return out
+
+    monkeypatch.setattr(graph.camera, "on", lambda: True)
+    monkeypatch.setattr(graph.camera, "design", fake_design)
+    w = World()
+    result = run_graph(w, w.payload(replan=True), world.stage1_turns(), world.stage2_turns())
+    assert result["shots"] == 21 and len(calls) == 1 and len(calls[0]["shots"]) == 21
+    shots = w.shots()
+    assert all(s["design"]["camera"]["state"] == "designed" and s["design"]["pins"] for s in shots)

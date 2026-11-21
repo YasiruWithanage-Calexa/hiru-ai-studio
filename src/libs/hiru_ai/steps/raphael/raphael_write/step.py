@@ -1,7 +1,8 @@
 """raphael_write: a result → the rows to store. Deterministic, no model, no database.
 
     {"scene": <scene row>, "lines": [<dialogue_lines rows>], "stored": <StoredRaphael as data>, "canon": [<canon rows>],
-     "production": <production row>, "job_id"?: str}
+     "production": <production row>, "job_id"?: str,
+     "camera_hint"?: bool}   false when the Camera agent designs the camera next (plan/2026-11-20c D12)
         → {"shots": [...], "lines": [...], "fields": {status, fit_report, raphael, coverage}}     the system saves them
 
 An approved scene is refused (`{"refused": ...}`); a result that cannot be read says so instead of raising.
@@ -27,6 +28,7 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
             list(payload.get("canon") or []),
             dict(payload.get("production") or {}),
             str(payload.get("job_id") or ""),
+            hint=bool(payload.get("camera_hint", True)),
         )
     except (ValidationError, KeyError) as exc:
         return {"malformed": str(exc)[:600]}

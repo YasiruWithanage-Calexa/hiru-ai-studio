@@ -1,0 +1,8 @@
+id: shot_prompt
+kind: step
+version: 1
+summary: "The code around the shot_prompter agent: the shot and camera brief, the checks both prompts pass (same people, same sides, the design's angle and size in the frame, no motion in a still, lines once each), the stored shot prompt and the frame's words for the frame brief."
+status: active
+owner: shot_producer
+entry: step:run
+uses: [video_prompt]

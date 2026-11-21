@@ -235,7 +235,11 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "")
     sheets = [cid for cid, role, _ in refs if role != "setup"]  # `reference_ids` holds canon ids only
     draft = frame_stage(frame) == FrameStage.DRAFT
     board: Row | None = None
-    if frame.get("board_id") and not draft:  # plan/2026-11-14 §3.5: the shot's panel of the approved board, LAST
+    # A shot with a CURRENT shot prompt (plan/2026-11-20d) is painted from its words and the sheets, as lab/shot_prompts
+    # proved: the board's panel says "keep its composition, framing, pose ... exactly" and was painted before the Camera
+    # agent's angle, height and opening, so it would win over them (the audit of 2026-11-21).
+    from_prompt = not _compose("shot_prompt", **world, shot=shot)["reasons"]
+    if frame.get("board_id") and not draft and not from_prompt:  # plan/2026-11-14 §3.5: the board's panel, LAST
         try:
             panel, board = _board_panel(ctx, scenes, str(frame["board_id"]), shot)
             pictures.append(panel)

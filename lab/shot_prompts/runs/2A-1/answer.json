@@ -1,0 +1,66 @@
+{
+ "answer": {
+  "opening": {
+   "people": [
+    {
+     "name": "Company B Operations Manager",
+     "side": "left",
+     "facing": "Facing right toward Company A Operations Manager, with a readable three-quarter face.",
+     "posture": "Standing upright beside the workstation, shoulders relaxed.",
+     "hands": "Both hands rest loosely at waist level beside the computer, holding nothing.",
+     "expression": "A slight welcoming smile and direct eye contact with the visitor."
+    },
+    {
+     "name": "Company A Operations Manager (Employee)",
+     "side": "right",
+     "facing": "Facing left toward Company B Operations Manager, with a readable three-quarter face.",
+     "posture": "Standing upright opposite Company B Operations Manager.",
+     "hands": "Both hands hang relaxed at the sides, holding nothing.",
+     "expression": "Attentive and receptive, eyes on Company B Operations Manager."
+    }
+   ],
+   "background": "An organised modern hotel operations office. A workstation and computer sit between the two standing managers.",
+   "light": "Soft directional daylight enters from camera left through the office window. Gentle interior fill keeps both faces readable, with warm tones and controlled reflections on the computer display."
+  },
+  "frame": {
+   "composition": "The camera is at eye height, looking level across the workstation in a symmetric waist-up two-shot. A natural 35mm lens look at f/4 gives both managers equal visual weight and moderate background separation. Company B stands left and Company A stands right. The workstation and computer occupy the lower central foreground between them, with the orderly office behind. Both three-quarter faces are equally readable. Photorealistic corporate-film texture retains natural skin detail and subtle optical imperfections.",
+   "people": "Company B Operations Manager stands left, facing right toward the visitor, shoulders relaxed and both hands resting loosely at waist level beside the computer, holding nothing. A slight welcoming smile accompanies direct eye contact. Company B wears a warm taupe tailored jacket and matching straight-leg trousers, with an ivory blouse. Company A Operations Manager (Employee) stands right, facing left toward Company B, with both hands relaxed at the sides, holding nothing. The expression is attentive and receptive. Company A wears a pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists, with a black leather belt.",
+   "background": "An organised modern hotel operations office surrounds the workstation. The computer remains between the managers. The office has an orderly, professional appearance.",
+   "light": "Soft directional daylight from camera left shapes both faces. Gentle interior fill preserves readable expressions, warm tones and controlled display reflections."
+  },
+  "video": {
+   "situation": "Daytime in an organised modern hotel operations office. Company B Operations Manager welcomes the visiting Company A Operations Manager across the workstation.",
+   "people": "Company B Operations Manager stands left, facing right, carrying a relaxed, knowledgeable welcome. Company B wears a warm taupe tailored jacket and matching straight-leg trousers, with an ivory blouse; both hands rest loosely at waist level beside the computer, holding nothing. Company A Operations Manager (Employee) stands right, facing left, attentive and receptive. Company A wears a pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists, with a black leather belt; both hands remain relaxed at the sides, holding nothing.",
+   "flow": [
+    {
+     "kind": "action",
+     "text": "Both managers hold their standing positions across the workstation. Company B meets the visitor's eyes with a slight smile; Company A returns attentive eye contact.",
+     "line_id": "",
+     "to": "",
+     "how": "",
+     "listener": ""
+    },
+    {
+     "kind": "line",
+     "text": "",
+     "line_id": "L1",
+     "to": "Company A Operations Manager (Employee)",
+     "how": "Warm and welcoming at first, then matter-of-fact as the explanation continues. Company B gives one small nod while speaking, keeping both hands loosely at waist level and maintaining eye contact.",
+     "listener": "Company A keeps attentive eye contact, takes a quiet breath and remains relaxed, with both hands at the sides."
+    },
+    {
+     "kind": "action",
+     "text": "Company B closes the lips and maintains a friendly, settled gaze. Company A remains attentive. Both stay standing in the same positions through the final hold.",
+     "line_id": "",
+     "to": "",
+     "how": "",
+     "listener": ""
+    }
+   ],
+   "sound": "Quiet office room tone and a faint computer hum beneath the dialogue. No music."
+  }
+ },
+ "first_faults": [],
+ "faults": [],
+ "calls": 1
+}

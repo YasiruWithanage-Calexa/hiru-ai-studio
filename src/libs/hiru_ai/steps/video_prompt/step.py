@@ -1,12 +1,13 @@
-"""video_prompt: the code around the `video_prompter` agent (plan/2026-11-20b §4). JSON in, JSON out, no model.
+"""video_prompt: the video prompt's code (plan/2026-11-20b §4). JSON in, JSON out, no model. Since plan/2026-11-20d the
+`direction` is the `shot_prompter` agent's video part (the `shot_prompt` step checks it); the scene brief, the clip
+facts and the assembly stay here.
 
     {"op": "brief", "scene": {packet, genre, style_note}, "clip": {...}}  -> {"scene": str, "clip": str, "cards": [...]}
     {"op": "brief", "scene": {...}}                                      -> {"scene": str}       (once per scene)
     {"op": "check", "direction": {...}, "clip": {...}}                    -> {"faults": [str]}
     {"op": "assemble", "direction": {...}, "clip": {...}, "repaired": b}  -> {"sections", "prose", "checks"}
 
-`clip` is what `facts.clip_facts` builds from the shot producer's rows. A system calls the agent between `brief` and
-`check`, gives a failed answer ONE repair with the faults, and writes no prompt when the faults remain (D3).
+`clip` is what `facts.clip_facts` builds from the shot producer's rows.
 """
 from __future__ import annotations
 

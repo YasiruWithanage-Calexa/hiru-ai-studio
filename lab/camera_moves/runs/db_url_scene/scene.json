@@ -1,0 +1,3667 @@
+{
+ "scene": {
+  "id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+  "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+  "episode_id": "2b21d949-1a8b-4efb-bf41-9107fac908e2",
+  "number": 2,
+  "heading": "SCENE 02 — SEE AI IN ACTION",
+  "title": "SEE AI IN ACTION",
+  "location_id": "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e",
+  "time_of_day": "",
+  "envelope_s": 40,
+  "script": [
+   {
+    "kind": "action",
+    "text": "Warm tones, an organised office, smooth camera movement. The Company B Operations Manager welcomes the visitor.",
+    "line_id": null
+   },
+   {
+    "kind": "dialogue",
+    "text": "",
+    "line_id": "ed7b81ff-d1e4-4ce9-a42f-df5fc700aa4a"
+   },
+   {
+    "kind": "action",
+    "text": "A corporate conference enquiry appears on the hotel management system.",
+    "line_id": null
+   },
+   {
+    "kind": "action",
+    "text": "On-screen enquiry: Corporate Conference Request — 2 nights · 30 guests · Accommodation · Conference facilities · Meals",
+    "line_id": null
+   },
+   {
+    "kind": "action",
+    "text": "The central workflow dashboard activates.",
+    "line_id": null
+   },
+   {
+    "kind": "dialogue",
+    "text": "",
+    "line_id": "55d9e009-81dc-4cad-8ef6-920fdd2936d0"
+   },
+   {
+    "kind": "action",
+    "text": "On screen, four agents light up and work in parallel: Customer Agent · Availability Agent · Operations Agent · Finance Agent. Connected systems appear: Company Knowledge · Policies & SOPs · CRM · Hotel Management System.",
+    "line_id": null
+   },
+   {
+    "kind": "dialogue",
+    "text": "",
+    "line_id": "6a5215ec-7cb2-4bb2-b58d-b70576dbdc95"
+   },
+   {
+    "kind": "action",
+    "text": "A consolidated quotation appears, marked Awaiting Approval.",
+    "line_id": null
+   },
+   {
+    "kind": "dialogue",
+    "text": "",
+    "line_id": "90d7ba05-344a-4a5d-9906-0e600d157f0a"
+   },
+   {
+    "kind": "action",
+    "text": "Episode: 1 Time: Day Episode Timecode: 00:34 – 01:14 Breakdown: welcome & intro ~13s · enquiry and dashboard with dialogue over it ~22s · quotation awaiting approval ~5s Company B Manager: Company B Manager: Company B Manager: Company B Manager:",
+    "line_id": null
+   }
+  ],
+  "script_version": 1,
+  "status": "split",
+  "note": "",
+  "fit_report": {
+   "use_s": 70,
+   "issues": [],
+   "need_s": 77,
+   "crowded": [],
+   "planner": "raphael",
+   "total_s": 70,
+   "silent_s": 16,
+   "voiceover": [],
+   "envelope_s": 40,
+   "critic_notes": [],
+   "silent_share": 0.23,
+   "multi_speaker": []
+  },
+  "locked_by": null,
+  "locked_at": null,
+  "created_at": "2026-11-19T08:41:18.806226+00:00",
+  "updated_at": "2026-11-20T07:18:33.084223+00:00",
+  "coverage": {
+   "by": "raphael",
+   "axis": "C03 stands left facing right; C01 stands right facing left throughout. The hotel's computer is on the workstation between them, angled toward both. All cameras stay on the same audience side of their axis. Screen-dominant oblique compositions include C03's readable face along the left edge; C01 can ",
+   "motif": "The consolidated quotation occupies the foreground display with Awaiting Approval legible, while its responsible manager remains visible beside it.",
+   "made_for": 1,
+   "written_at": null,
+   "progression": "Establish a practical welcome and shared experience of standalone tools. (Peer-to-peer reassurance.) → Follow a real enquiry through the coordinated workflow and connected resources. (Visible, comprehensible progress.) → Land on the approval boundary and the manager's responsibility. (Confidence wit"
+  },
+  "reading": {},
+  "staging": {
+   "by": "model",
+   "basis": "",
+   "marks": [
+    {
+     "who": "Company B Operations Manager",
+     "zone": "office",
+     "block": 0,
+     "facing": "right",
+     "holding": "",
+     "posture": "standing",
+     "wearing": "",
+     "condition": "",
+     "left_hand": "",
+     "frame_side": "left",
+     "right_hand": ""
+    },
+    {
+     "who": "Company A Operations Manager (Employee)",
+     "zone": "office",
+     "block": 0,
+     "facing": "left",
+     "holding": "",
+     "posture": "standing",
+     "wearing": "",
+     "condition": "",
+     "left_hand": "",
+     "frame_side": "right",
+     "right_hand": ""
+    }
+   ],
+   "props": [],
+   "zones": [
+    "office",
+    "central workflow dashboard"
+   ],
+   "for_version": 1
+  },
+  "adam": {},
+  "david": {},
+  "jonathan": {},
+  "raphael": {
+   "cap": 1.5,
+   "edit": {
+    "moments": [
+     {
+      "n": 1,
+      "what": "C03 welcomes the visitor in the orderly office and performs L1.",
+      "blocks": [
+       0,
+       1
+      ],
+      "feeling": "Welcomed by a knowledgeable peer.",
+      "cut_uses": "A medium-wide two-shot, audience side of the axis, with a gentle lateral track; welcome and L1 share the same time.",
+      "sequence": "S1"
+     },
+     {
+      "n": 2,
+      "what": "C03 continues with L2 while C01 listens.",
+      "blocks": [
+       2
+      ],
+      "feeling": "Recognition of a familiar limitation.",
+      "cut_uses": "A medium single of C03 from setup B; the sentence-boundary change isolates the practical limitation.",
+      "sequence": "S1"
+     },
+     {
+      "n": 3,
+      "what": "C03 completes the opening explanation with L3.",
+      "blocks": [
+       3
+      ],
+      "feeling": "Curiosity about what changed.",
+      "cut_uses": "A tighter C03 single from setup C, giving the transition to integrated work a clear landing.",
+      "sequence": "S1"
+     },
+     {
+      "n": 4,
+      "what": "The conference enquiry appears and its requirements remain readable.",
+      "blocks": [
+       4,
+       5
+      ],
+      "feeling": "A concrete business problem replaces abstraction.",
+      "cut_uses": "A mandatory display detail from setup D, directly showing the input and its exact requirements.",
+      "sequence": "S2"
+     },
+     {
+      "n": 5,
+      "what": "The workflow dashboard activates as C03 performs L7.",
+      "blocks": [
+       6,
+       7
+      ],
+      "feeling": "The process becomes intelligible.",
+      "cut_uses": "A screen-dominant medium composition from setup E includes C03's three-quarter face; dashboard activation overlaps the explanation.",
+      "sequence": "S2"
+     },
+     {
+      "n": 6,
+      "what": "Four agents activate together with their connected systems while C03 performs L9.",
+      "blocks": [
+       8,
+       9
+      ],
+      "feeling": "Coordinated work, bounded by visible business resources.",
+      "cut_uses": "A tighter screen-dominant setup F changes size at the line boundary, keeping the distinct roles and resource labels legible throughout the explanation.",
+      "sequence": "S2"
+     },
+     {
+      "n": 7,
+      "what": "The consolidated quotation appears with its pending status as C03 performs L11.",
+      "blocks": [
+       10,
+       11
+      ],
+      "feeling": "Assurance that responsibility remains human.",
+      "cut_uses": "Return to screen-dominant setup E to make Awaiting Approval the visual turn, with C03 visibly performing the first part of the closing line.",
+      "sequence": "S3"
+     },
+     {
+      "n": 8,
+      "what": "C03 completes L12; the production annotation adds no audience-facing event.",
+      "blocks": [
+       12,
+       13
+      ],
+      "feeling": "Clear, calm understanding.",
+      "cut_uses": "Return to C03's medium single from setup B at the sentence boundary; the human owner of the decision closes the scene.",
+      "sequence": "S3"
+     }
+    ],
+    "sequences": [
+     {
+      "id": "S1",
+      "shots": {
+       "last": 3,
+       "first": 0
+      },
+      "title": "Welcome and shared experience",
+      "purpose": "Establish the operational peer relationship and the distinction between tool use and connected processes."
+     },
+     {
+      "id": "S2",
+      "shots": {
+       "last": 9,
+       "first": 4
+      },
+      "title": "Follow the request",
+      "purpose": "Make the enquiry, coordination and authorised business connections readable under the explanation."
+     },
+     {
+      "id": "S3",
+      "shots": {
+       "last": 13,
+       "first": 10
+      },
+      "title": "People retain the decision",
+      "purpose": "Resolve the workflow at a pending quotation and clarify human responsibility."
+     }
+    ],
+    "treatment": {
+     "arc": [
+      {
+       "beat": "Establish a practical welcome and shared experience of standalone tools.",
+       "blocks": {
+        "last": 3,
+        "first": 0
+       },
+       "feeling": "Peer-to-peer reassurance."
+      },
+      {
+       "beat": "Follow a real enquiry through the coordinated workflow and connected resources.",
+       "blocks": {
+        "last": 9,
+        "first": 4
+       },
+       "feeling": "Visible, comprehensible progress."
+      },
+      {
+       "beat": "Land on the approval boundary and the manager's responsibility.",
+       "blocks": {
+        "last": 13,
+        "first": 10
+       },
+       "feeling": "Confidence without surrendering control."
+      }
+     ],
+     "advice": [
+      "Keep every line intact and at its supplied conversational pace.",
+      "Screen changes can occur under the explanation, rather than creating extra pauses between each system step.",
+      "Do not turn pending approval into an approval click or a sent quotation.",
+      "The 40-second page estimate cannot contain all supplied speech and visual reading time comfortably; use the script-adjusted target and preserve delivery.",
+      "Block 13 is production metadata only, associated with the closing image, never displayed or voiced."
+     ],
+     "logline": "A hotel operations manager demonstrates how a conference enquiry becomes a coordinated quotation, with the final decision still belonging to the team.",
+     "approach": "Play the corporate genre as a credible workplace demonstration, not a futuristic product pitch. Warm, directional daylight, controlled reflections and restrained smooth movement support orderly competence. Give the physical display most of the demonstration frame while retaining a readable three-quarter view of the guide performing the explanation: the screen does the explaining without losing the human source. No suspense treatment or unrestricted-access imagery. Parts of long lines change size or setup at sentence boundaries.",
+     "geography": "C03 stands left facing right; C01 stands right facing left throughout. The hotel's computer is on the workstation between them, angled toward both. All cameras stay on the same audience side of their axis. Screen-dominant oblique compositions include C03's readable face along the left edge; C01 can remain outside those tighter frames. This is a hotel workstation, not a computer physically transported from the preceding scene.",
+     "key_image": "The consolidated quotation occupies the foreground display with Awaiting Approval legible, while its responsible manager remains visible beside it.",
+     "colour_script": [
+      {
+       "grade": "Natural skin, clean whites, moderate contrast.",
+       "light": "Directional daylight with gentle interior fill.",
+       "palette": "Warm neutrals, restrained amber and natural business clothing.",
+       "sequence": "S1"
+      },
+      {
+       "grade": "Controlled highlights and readable interface contrast.",
+       "light": "Continuous daylight; display exposed for legibility.",
+       "palette": "The same warm office with neutral dashboard surfaces and restrained active indicators.",
+       "sequence": "S2"
+      },
+      {
+       "grade": "Consistent, natural and assured.",
+       "light": "Unchanged daylight and interior fill.",
+       "palette": "Warm neutrals with a clear pending-approval display.",
+       "sequence": "S3"
+      }
+     ]
+    },
+    "editor_notes": [
+     "The bin contains eight must takes, 58 seconds including handles, against the script-adjusted 47-second target and 70.5-second cap. The fixed take lengths and whole-line requirements account for the overage; tighten handles and overlap the visual events with their designated dialogue, not by truncating lines. The original 40-second estimate may not accommodate a comfortable complete delivery.",
+     "Use A for the shared welcome, B and C for the opening sentence-boundary changes, D for the readable enquiry, E and F for the live demonstration, and B again for the final human decision. Every dialogue angle performs its own indicated line.",
+     "Match the active dashboard between E and F, the four illuminated agents and resources into the returning E shot, and the quotation's pending status into the final single. Keep the visitor's rightward location and C03's eyeline consistent.",
+     "The enquiry, agent and system labels, and Awaiting Approval must remain legible. If screen readability needs a post composite, preserve the exact scripted labels and sequence; do not invent values, permissions, an approval action or a sent quotation.",
+     "The two parts of the final long line and the three parts of the opening long line cut at sentence boundaries with changed size or setup. The first and last parts remain on the performing manager.",
+     "Speed ramp, freeze frame, digital punch-in and split screen are post-only possibilities, not requested effects for this restrained business scene. The settled screen and single takes provide clean sources should editorial choose to use them.",
+     "Avoid mirrors, hand contact, rapid typing and fabricated system interactions; the screen changes directly without an invented operator gesture. The production timing annotation is never shown or voiced.",
+     "The hotel's computer is staged between the standing managers; the earlier scene's computer belongs to another scene and is not carried into this office. Wardrobe appearance and the workstation placement are consistent editorial choices where the packet does not specify them."
+    ]
+   },
+   "left": [],
+   "mood": [
+    "welcoming",
+    "orderly",
+    "assured"
+   ],
+   "clips": [
+    {
+     "id": "c01",
+     "ir": {
+      "audio": "L1 performed by C03 over subdued office ventilation; no additional voices.",
+      "beats": [
+       {
+        "time": "0-0.5s",
+        "action": "Both managers remain standing opposite one another.",
+        "camera": "MWS, both faces in focus as the lateral track begins.",
+        "performance": "C03 meets C01's eyeline with a slight smile; C01 keeps attentive eye contact.",
+        "director_line": "The orderly workstation separates two colleagues rather than a presenter and an audience."
+       },
+       {
+        "time": "0.5-6.5s",
+        "action": "C03 gives one small nod with lips moving to L1.",
+        "camera": "MWS, the same lateral track preserves the two faces.",
+        "performance": "C03's smile eases into a matter-of-fact delivery while C01 keeps attentive eye contact.",
+        "director_line": "A small welcome gesture accompanies the first practical admission."
+       },
+       {
+        "time": "6.5-8s",
+        "action": "Both remain in their standing positions.",
+        "camera": "MWS, the lateral track continues at the same gentle pace.",
+        "performance": "C03 closes the lips and keeps eye contact; C01 remains attentive.",
+        "director_line": "The visitor has space to absorb the first sentence."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Gives a small welcome nod while lips move to L1.",
+        "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       },
+       {
+        "id": "C01",
+        "action": "Listens with eyes on C03.",
+        "position": "Standing frame right facing left toward C03, hands relaxed at sides.",
+        "description": "Sri Lankan adult operations manager in a dark plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [
+        "C03 standing left in a light plain business shirt and dark trousers.",
+        "C01 standing right in a dark plain business shirt and dark trousers."
+       ],
+       "composition": "C03 on the left and C01 on the right, workstation and computer between them, both faces already readable."
+      },
+      "cinematography": {
+       "angle": "Eye level on the audience side of the managers' axis",
+       "camera": "Stabilised slider, 35mm, f/4",
+       "framing": "MWS two-shot, C03 left and C01 right, both visible from mid-thigh upward with the workstation between them.",
+       "movement": "One gentle lateral track parallel to the workstation throughout the take.",
+       "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Medium, both faces readable and background softly resolved.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "A gentle lateral track introduces an orderly workplace and an equal peer relationship without making the welcome a presentation.",
+     "lens": "35mm",
+     "over": "",
+     "role": "two_shot",
+     "size": "MWS",
+     "angle": "Eye level, audience side of the axis",
+     "blend": "",
+     "lines": [
+      "L1"
+     ],
+     "setup": "A",
+     "slate": "2A-1",
+     "sound": {
+      "music": "None; retain a clean dialogue source.",
+      "effects": "None.",
+      "silence": false,
+      "ambience": "Quiet office ventilation."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      0,
+      1
+     ],
+     "moment": 1,
+     "speaks": true,
+     "take_s": 8,
+     "summary": "A moving medium-wide two-shot introduces both standing managers. C03 welcomes C01 and describes their own starting point with standalone tools (L1); subdued office ambience remains underneath.",
+     "priority": "must",
+     "technique": "tracking",
+     "editor_note": "The welcome nod occupies the beginning of L1 rather than adding a separate greeting pause. Cut at the sentence end; the extra tail gives the full line room.",
+     "handle_in_s": 0.5,
+     "handle_out_s": 1.0
+    },
+    {
+     "id": "c02",
+     "ir": {
+      "audio": "L2 performed by C03 over subdued office ventilation; no additional voices.",
+      "beats": [
+       {
+        "time": "0-0.5s",
+        "action": "C03 remains upright beside the workstation.",
+        "camera": "MS, focus on C03's eyes.",
+        "performance": "C03 keeps his lips closed and his eyes on the offscreen visitor.",
+        "director_line": "The manager's practical explanation remains directed to his visitor."
+       },
+       {
+        "time": "0.5-5.5s",
+        "action": "C03's lips move to L2.",
+        "camera": "MS, focus remains on C03's face.",
+        "performance": "C03 slightly firms his mouth between phrases while maintaining an even gaze.",
+        "director_line": "The limitation lands without a rhetorical flourish."
+       },
+       {
+        "time": "5.5-6s",
+        "action": "C03 remains beside the workstation.",
+        "camera": "MS, focus on C03.",
+        "performance": "C03 closes his lips and keeps his chin level.",
+        "director_line": "The sentence ends with room for the next step."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Lips move to L2 while maintaining C01's eyeline.",
+        "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [
+        "C03 in a light plain business shirt and dark trousers, standing and facing right."
+       ],
+       "composition": "Waist-up C03 on the left third, already three-quarter to camera with open space toward the right."
+      },
+      "cinematography": {
+       "angle": "Eye-level three-quarter face toward frame right",
+       "camera": "Locked-off sticks, 50mm, f/4",
+       "framing": "MS of C03 from the waist up, with space toward C01 offscreen right.",
+       "movement": "Locked-off on sticks.",
+       "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Medium, face crisp against a gently softened office.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "A settled single gives the limitation of standalone tools a clear sentence-sized beat.",
+     "lens": "50mm",
+     "over": "",
+     "role": "single",
+     "size": "MS",
+     "angle": "Eye-level three-quarter view toward frame right",
+     "blend": "",
+     "lines": [
+      "L2"
+     ],
+     "setup": "B",
+     "slate": "2B-1",
+     "sound": {
+      "music": "None.",
+      "effects": "None.",
+      "silence": false,
+      "ambience": "Quiet office ventilation."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      2
+     ],
+     "moment": 2,
+     "speaks": true,
+     "take_s": 6,
+     "summary": "An eye-level medium single holds C03 as he explains that productivity improved without changing processes (L2). Quiet office ambience continues.",
+     "priority": "must",
+     "technique": "locked_off",
+     "editor_note": "Cut from A at the end of L1. Preserve the eyeline to C01 offscreen right.",
+     "handle_in_s": 0.5,
+     "handle_out_s": 0.5
+    },
+    {
+     "id": "c03",
+     "ir": {
+      "audio": "L3 performed by C03 over subdued office ventilation; no additional voices.",
+      "beats": [
+       {
+        "time": "0-0.5s",
+        "action": "C03 remains upright.",
+        "camera": "MCU on C03's face.",
+        "performance": "C03 maintains the visitor's eyeline with lips closed.",
+        "director_line": "The closer size marks the shift from a limitation to a practical response."
+       },
+       {
+        "time": "0.5-5.5s",
+        "action": "C03's lips move to L3.",
+        "camera": "MCU on C03's eyes and mouth.",
+        "performance": "C03's brows lift slightly and settle as he finishes the thought.",
+        "director_line": "The explanation finds its positive next step without turning into a pitch."
+       },
+       {
+        "time": "5.5-6s",
+        "action": "C03 remains in position.",
+        "camera": "MCU on C03's face.",
+        "performance": "C03 closes his lips with a small, restrained smile.",
+        "director_line": "The demonstration is ready to replace the explanation."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Lips move to L3.",
+        "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [
+        "C03 in a light plain business shirt and dark trousers, standing and facing right."
+       ],
+       "composition": "Chest-up C03 on the left third with a rightward eyeline, face already visible in three-quarter view."
+      },
+      "cinematography": {
+       "angle": "Eye-level three-quarter face toward frame right",
+       "camera": "Locked-off sticks, 75mm, f/4",
+       "framing": "MCU of C03, chest upward, eyes off lens toward the visitor.",
+       "movement": "Locked-off on sticks.",
+       "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Medium, face readable and office gently softened.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "A closer sentence-boundary view gives the move to process integration a distinct visual landing without a jump cut.",
+     "lens": "75mm",
+     "over": "",
+     "role": "single",
+     "size": "MCU",
+     "angle": "Eye-level three-quarter view toward frame right",
+     "blend": "",
+     "lines": [
+      "L3"
+     ],
+     "setup": "C",
+     "slate": "2C-1",
+     "sound": {
+      "music": "None.",
+      "effects": "None.",
+      "silence": false,
+      "ambience": "Quiet office ventilation."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      3
+     ],
+     "moment": 3,
+     "speaks": true,
+     "take_s": 6,
+     "summary": "A tighter three-quarter single of C03 completes the opening explanation: they connected AI to business processes (L3).",
+     "priority": "must",
+     "technique": "locked_off",
+     "editor_note": "L3 is the final part of the opening long line. The size changes from MS to MCU; keep the same rightward eyeline.",
+     "handle_in_s": 0.5,
+     "handle_out_s": 0.5
+    },
+    {
+     "id": "c04",
+     "ir": {
+      "audio": "Silent picture source; quiet office ventilation can be added in post.",
+      "beats": [
+       {
+        "time": "0-0.5s",
+        "action": "The request area remains blank.",
+        "camera": "INSERT, sharp focus across the display.",
+        "performance": "",
+        "director_line": "The hotel's operational screen awaits its incoming request."
+       },
+       {
+        "time": "0.5-3s",
+        "action": "The request panel appears with the exact text: Corporate Conference Request — 2 nights · 30 guests · Accommodation · Conference facilities · Meals.",
+        "camera": "INSERT, sharp focus across the display.",
+        "performance": "",
+        "director_line": "The corporate enquiry arrives in one clear, readable panel."
+       },
+       {
+        "time": "3-4s",
+        "action": "The request panel remains visible.",
+        "camera": "INSERT, sharp focus across the display.",
+        "performance": "",
+        "director_line": "The full scope of the request stays available for reading."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [],
+       "composition": "The computer display fills the image, with its request area blank before the enquiry appears."
+      },
+      "cinematography": {
+       "angle": "Straight-on to the computer display",
+       "camera": "Locked-off sticks, 50mm, f/5.6",
+       "framing": "INSERT: the display fills the frame with the enquiry text large and legible.",
+       "movement": "Locked-off on sticks.",
+       "color_tone": "Warm neutrals, natural screen whites and restrained contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Deep, the entire display plane sharp with no distracting bokeh.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "The enquiry is the story's concrete input; a still, readable screen allows its requirements to register without inventing a physical interaction.",
+     "lens": "50mm",
+     "over": "",
+     "role": "insert",
+     "size": "INSERT",
+     "angle": "Straight-on view of the hotel system display",
+     "blend": "",
+     "lines": [],
+     "setup": "D",
+     "slate": "2D-1",
+     "sound": {
+      "music": "None.",
+      "effects": "None.",
+      "silence": true,
+      "ambience": "None in source; add quiet office ventilation in post."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      4,
+      5
+     ],
+     "moment": 4,
+     "speaks": false,
+     "take_s": 4,
+     "summary": "On the computer display, a corporate conference request appears with its two-night stay, 30 guests, accommodation, conference facilities and meals. This is a silent picture source.",
+     "priority": "must",
+     "technique": "locked_off",
+     "editor_note": "The only mandatory detail view is the enquiry; use its tail to bridge into the activated dashboard. Exact screen text is supplied in the picture.",
+     "handle_in_s": 0.5,
+     "handle_out_s": 0.5
+    },
+    {
+     "id": "c05",
+     "ir": {
+      "audio": "L7 performed by C03 over subdued office ventilation; no electronic voice or alert.",
+      "beats": [
+       {
+        "time": "0-1s",
+        "action": "C03 stands beside the inactive workflow area.",
+        "camera": "MS screen-dominant framing with C03 and display both sharp.",
+        "performance": "C03 keeps lips closed and eyes toward the visitor offscreen right.",
+        "director_line": "The guide and the operational screen share the frame."
+       },
+       {
+        "time": "1-9s",
+        "action": "The workflow dashboard activates while C03's lips move to L7.",
+        "camera": "MS, deep focus across C03 and the display.",
+        "performance": "C03 maintains an easy, direct eyeline and measured delivery.",
+        "director_line": "The central workflow activates as the explanation begins."
+       },
+       {
+        "time": "9-10s",
+        "action": "The dashboard remains active.",
+        "camera": "MS, deep focus across C03 and the active display.",
+        "performance": "C03 closes the lips and keeps the head level.",
+        "director_line": "The active workflow remains in view at the end of the sentence."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Lips move to L7 while the dashboard becomes active.",
+        "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [
+        "C03 standing left in a light plain business shirt and dark trousers, facing right."
+       ],
+       "composition": "C03 is already face-readable at left; the computer display occupies the right side with the workflow area inactive."
+      },
+      "cinematography": {
+       "angle": "Oblique eye level from the audience side of the managers' axis",
+       "camera": "Locked-off sticks, 35mm, f/8",
+       "framing": "MS screen-dominant composition: C03's readable three-quarter face and upper torso occupy the left third, while the computer display fills the right two thirds.",
+       "movement": "Locked-off on sticks.",
+       "color_tone": "Warm neutrals, clean readable display whites and moderate contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Deep, face and display both readable with minimal background blur.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "A composed screen-dominant view lets the workflow activate under the guide's actual performance and makes the source of the explanation clear.",
+     "lens": "35mm",
+     "over": "",
+     "role": "single",
+     "size": "MS",
+     "angle": "Oblique eye-level screen-and-face view from the audience side",
+     "blend": "",
+     "lines": [
+      "L7"
+     ],
+     "setup": "E",
+     "slate": "2E-1",
+     "sound": {
+      "music": "None.",
+      "effects": "None.",
+      "silence": false,
+      "ambience": "Quiet office ventilation."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      6,
+      7
+     ],
+     "moment": 5,
+     "speaks": true,
+     "take_s": 10,
+     "summary": "The dashboard activates on the computer as C03, visible beside it, explains how the central coordinator distributes a request among specialised agents (L7).",
+     "priority": "must",
+     "technique": "locked_off",
+     "editor_note": "Screen information and L7 happen together. Preserve the complete live dialogue and use the screen as its visual focus, with C03's face visible throughout.",
+     "handle_in_s": 1.0,
+     "handle_out_s": 1.0
+    },
+    {
+     "id": "c06",
+     "ir": {
+      "audio": "L9 performed by C03 over subdued office ventilation; no electronic voice or alert.",
+      "beats": [
+       {
+        "time": "0-1s",
+        "action": "The active dashboard remains visible.",
+        "camera": "MCU screen-dominant framing with C03 and display both sharp.",
+        "performance": "C03 keeps lips closed and eyes toward the visitor offscreen right.",
+        "director_line": "The already active workflow is ready to reveal its coordinated components."
+       },
+       {
+        "time": "1-9s",
+        "action": "Four dashboard agents light up in parallel and connected systems appear while C03's lips move to L9; the exact agent labels on the display are Customer Agent · Availability Agent · Operations Agent · Finance Agent, and the exact system labels are Company Knowledge · Policies & SOPs · CRM · Hotel Management System.",
+        "camera": "MCU, deep focus across C03 and the display.",
+        "performance": "C03 keeps the explanation even and practical, with eyes toward the visitor.",
+        "director_line": "Four distinct roles illuminate together beside their connected resources."
+       },
+       {
+        "time": "9-10s",
+        "action": "All four agents and connected systems remain visible.",
+        "camera": "MCU, deep focus across C03 and the display.",
+        "performance": "C03 closes the lips and keeps the gaze steady.",
+        "director_line": "The connected roles remain readable for a clean transition to the result."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Lips move to L9 as the roles and resources appear.",
+        "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [
+        "C03 standing left in a light plain business shirt and dark trousers, facing right."
+       ],
+       "composition": "C03 is face-readable at left and the active workflow display fills the right, before the agents and resource labels appear."
+      },
+      "cinematography": {
+       "angle": "Tighter oblique eye level from the audience side of the managers' axis",
+       "camera": "Locked-off sticks, 50mm, f/11",
+       "framing": "MCU screen-dominant composition: C03's readable three-quarter face and shoulders occupy the left third; a large, near-frontal display occupies the right two thirds.",
+       "movement": "Locked-off on sticks.",
+       "color_tone": "Warm neutrals, clean readable display whites and moderate contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Deep, face and display both readable with minimal background blur.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "A tighter, distinct setup at the sentence boundary makes the parallel roles and connected resources visual evidence for the continuing explanation without a jump cut.",
+     "lens": "50mm",
+     "over": "",
+     "role": "single",
+     "size": "MCU",
+     "angle": "Tighter oblique eye-level screen-and-face view from the audience side",
+     "blend": "",
+     "lines": [
+      "L9"
+     ],
+     "setup": "F",
+     "slate": "2F-1",
+     "sound": {
+      "music": "None.",
+      "effects": "None.",
+      "silence": false,
+      "ambience": "Quiet office ventilation."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      8,
+      9
+     ],
+     "moment": 6,
+     "speaks": true,
+     "take_s": 10,
+     "summary": "The active dashboard shows four parallel agents and four connected business resources while C03 explains that they work together to prepare the quotation (L9).",
+     "priority": "must",
+     "technique": "locked_off",
+     "editor_note": "Use the full line at natural pace. The four agents activate together, not in sequence. Keep all eight exact labels readable; cut back to the wider E setup for the quotation.",
+     "handle_in_s": 1.0,
+     "handle_out_s": 1.0
+    },
+    {
+     "id": "c07",
+     "ir": {
+      "audio": "L11 performed by C03 over subdued office ventilation; no electronic voice or alert.",
+      "beats": [
+       {
+        "time": "0-0.5s",
+        "action": "The active agents and connected systems remain on the display.",
+        "camera": "MS, C03 and the active dashboard sharp.",
+        "performance": "C03 keeps lips closed and eyes on the visitor offscreen right.",
+        "director_line": "The connected workflow has reached its output."
+       },
+       {
+        "time": "0.5-5.5s",
+        "action": "A consolidated quotation appears on the display with the exact status text Awaiting Approval while C03's lips move to L11.",
+        "camera": "MS, deep focus keeps C03 and the output readable.",
+        "performance": "C03 keeps a steady eyeline and a measured, reassuring delivery.",
+        "director_line": "A consolidated quotation replaces the workflow as the manager identifies the human decision point."
+       },
+       {
+        "time": "5.5-6s",
+        "action": "The quotation remains marked Awaiting Approval.",
+        "camera": "MS, C03 and the pending quotation remain sharp.",
+        "performance": "C03 closes the lips and keeps the head level.",
+        "director_line": "The status remains pending at the sentence boundary."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Lips move to L11 as the quotation appears.",
+        "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [
+        "C03 standing left in a light plain business shirt and dark trousers, facing right."
+       ],
+       "composition": "C03 stands face-readable at left; the active agent and system display fills the right, before the quotation appears."
+      },
+      "cinematography": {
+       "angle": "Oblique eye level from the audience side of the managers' axis",
+       "camera": "Locked-off sticks, 35mm, f/8",
+       "framing": "MS screen-dominant composition: C03's readable three-quarter face and upper torso occupy the left third, while the computer display fills the right two thirds.",
+       "movement": "Locked-off on sticks.",
+       "color_tone": "Warm neutrals, clean readable display whites and moderate contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Deep, face and display both readable with minimal background blur.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "The return to the wider screen-and-face setup places the pending quotation beside the person identifying the team's decision boundary.",
+     "lens": "35mm",
+     "over": "",
+     "role": "single",
+     "size": "MS",
+     "angle": "Oblique eye-level screen-and-face view from the audience side",
+     "blend": "",
+     "lines": [
+      "L11"
+     ],
+     "setup": "E",
+     "slate": "2E-2",
+     "sound": {
+      "music": "None.",
+      "effects": "None.",
+      "silence": false,
+      "ambience": "Quiet office ventilation."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      10,
+      11
+     ],
+     "moment": 7,
+     "speaks": true,
+     "take_s": 6,
+     "summary": "A consolidated quotation appears on the computer marked Awaiting Approval. C03, visible beside the display, states that the team retains final approval (L11).",
+     "priority": "must",
+     "technique": "locked_off",
+     "editor_note": "The quotation appears during L11 and stays pending. Match the active roles and connected systems to the preceding clip; no approval occurs.",
+     "handle_in_s": 0.5,
+     "handle_out_s": 0.5
+    },
+    {
+     "id": "c08",
+     "ir": {
+      "audio": "L12 performed by C03 over subdued office ventilation; no additional voices.",
+      "beats": [
+       {
+        "time": "0-0.5s",
+        "action": "C03 remains upright beside the workstation.",
+        "camera": "MS, focus on C03's eyes.",
+        "performance": "C03 keeps lips closed and eyes on the offscreen visitor.",
+        "director_line": "The decision returns to the person responsible for it."
+       },
+       {
+        "time": "0.5-7s",
+        "action": "C03's lips move to L12.",
+        "camera": "MS, focus remains on C03's face.",
+        "performance": "C03 maintains the visitor's eyeline and lets a slight smile return near the end.",
+        "director_line": "The final distinction is practical and direct."
+       },
+       {
+        "time": "7-8s",
+        "action": "C03 remains beside the workstation.",
+        "camera": "MS, focus on C03.",
+        "performance": "C03 closes the lips and keeps the expression open.",
+        "director_line": "The explanation ends without a sales flourish."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Lips move to L12 while maintaining C01's eyeline.",
+        "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+       "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+       "subjects": [
+        "C03 in a light plain business shirt and dark trousers, standing and facing right."
+       ],
+       "composition": "Waist-up C03 on the left third, already three-quarter to camera with open space toward the right."
+      },
+      "cinematography": {
+       "angle": "Eye-level three-quarter face toward frame right",
+       "camera": "Locked-off sticks, 50mm, f/4",
+       "framing": "MS of C03 from the waist up, with space toward C01 offscreen right.",
+       "movement": "Locked-off on sticks.",
+       "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+       "white_balance": "Warm-neutral 4500K daylight balance",
+       "depth_of_field": "Medium, face crisp against a gently softened office.",
+       "lens_artifacts": "None"
+      }
+     },
+     "why": "Returning to the manager's face makes the final decision the responsibility of people rather than the screen.",
+     "lens": "50mm",
+     "over": "",
+     "role": "single",
+     "size": "MS",
+     "angle": "Eye-level three-quarter view toward frame right",
+     "blend": "",
+     "lines": [
+      "L12"
+     ],
+     "setup": "B",
+     "slate": "2B-2",
+     "sound": {
+      "music": "None.",
+      "effects": "None.",
+      "silence": false,
+      "ambience": "Quiet office ventilation."
+     },
+     "stage": 1,
+     "anchor": [],
+     "blocks": [
+      12,
+      13
+     ],
+     "moment": 8,
+     "speaks": true,
+     "take_s": 8,
+     "summary": "In the same medium single used earlier, C03 completes the explanation that AI handles repetitive work while the team focuses on decisions (L12). The scene's timing annotation is not shown or read.",
+     "priority": "must",
+     "technique": "locked_off",
+     "editor_note": "Cut at the sentence boundary after L11. Block b13 is production metadata: do not render or voice it. Leave the quotation pending offscreen.",
+     "handle_in_s": 0.5,
+     "handle_out_s": 1.0
+    },
+    {
+     "id": "c09",
+     "ir": {
+      "audio": "Quiet office ventilation; no interface chime.",
+      "beats": [
+       {
+        "time": "0-1s",
+        "action": "The quotation status remains visible.",
+        "camera": "INSERT, focus on the status lettering.",
+        "performance": "",
+        "director_line": "The pending state becomes the entire visual argument."
+       },
+       {
+        "time": "1-3s",
+        "action": "The screen retains its pending state.",
+        "camera": "INSERT, identical status-plane focus.",
+        "performance": "",
+        "director_line": "The process pauses at a clearly readable human checkpoint."
+       },
+       {
+        "time": "3-4s",
+        "action": "The status remains Awaiting Approval.",
+        "camera": "INSERT, same composition and focus.",
+        "performance": "",
+        "director_line": "Leave a clean tail for the return to the manager."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [],
+      "first_frame": {
+       "setting": "The hotel workstation display, with only a soft trace of its bezel at the edge.",
+       "lighting": "Soft directional window illumination with controlled display reflections.",
+       "subjects": [
+        "Workstation display status: Awaiting Approval"
+       ],
+       "composition": "The exact text Awaiting Approval is centred in a tight display crop; other quotation content is outside the frame."
+      },
+      "cinematography": {
+       "angle": "Near-frontal, level with the display status",
+       "camera": "locked-off sticks, 85mm macro, f/4",
+       "framing": "INSERT of the quotation status, large enough for immediate reading; surrounding content outside the crop.",
+       "movement": "Fixed shallow isolation on the status plane for the entire take.",
+       "color_tone": "Natural warm ivory and honey tones, controlled contrast and restrained saturation.",
+       "white_balance": "Daylight balanced with warm interior accents",
+       "depth_of_field": "Shallow; status lettering sharp, display bezel softly blurred.",
+       "lens_artifacts": "none"
+      }
+     },
+     "why": "Separates the pending status from the explanatory composition so the human approval boundary has a distinct visual punctuation.",
+     "lens": "85mm macro",
+     "over": "",
+     "role": "insert",
+     "size": "INSERT",
+     "angle": "Near-frontal display detail from the audience side",
+     "blend": "cut_in",
+     "lines": [],
+     "setup": "G",
+     "slate": "2G-1",
+     "sound": {
+      "music": "none",
+      "effects": "none",
+      "silence": false,
+      "ambience": "Low office ventilation."
+     },
+     "stage": 2,
+     "anchor": [
+      "c07"
+     ],
+     "blocks": [
+      10,
+      11
+     ],
+     "moment": 7,
+     "speaks": false,
+     "take_s": 4,
+     "summary": "A close detail isolates Awaiting Approval on the workstation display; the quotation remains pending throughout.",
+     "priority": "should",
+     "technique": "shallow_isolation",
+     "editor_note": "Cut after the quotation appears in c07; retain the pending state throughout and return before the sentence boundary.",
+     "handle_in_s": 1.0,
+     "handle_out_s": 1.0
+    },
+    {
+     "id": "c10",
+     "ir": {
+      "audio": "Quiet office ventilation.",
+      "beats": [
+       {
+        "time": "0-1s",
+        "action": "C03 keeps her gaze toward the visitor.",
+        "camera": "MWS, C03 left with workstation right; dolly begins its gentle retreat.",
+        "performance": "Her lips remain closed and her shoulders settle.",
+        "director_line": "Return the completed demonstration to its human scale."
+       },
+       {
+        "time": "1-3s",
+        "action": "C03 maintains her standing position.",
+        "camera": "MWS, continuous straight retreat reveals more of the desk without admitting C01.",
+        "performance": "She retains a small closed-mouth smile toward the visitor.",
+        "director_line": "Orderly space surrounds the person responsible for the process."
+       },
+       {
+        "time": "3-4s",
+        "action": "C03 remains beside the workstation.",
+        "camera": "MWS, the same retreat continues gently to its endpoint.",
+        "performance": "Her gaze stays level toward the visitor, lips closed.",
+        "director_line": "Finish on professional composure rather than a software flourish."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C03",
+        "action": "Maintains eye contact toward the visitor with lips closed.",
+        "position": "Standing frame left, facing right toward C01 outside the frame; workstation to her right; hands relaxed at her sides.",
+        "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "Cream office walls, pale oak workstation and flush timber storage in the background.",
+       "lighting": "Directional window light shapes C03's face with gentle interior fill.",
+       "subjects": [
+        "C03 standing beside the workstation, lips closed"
+       ],
+       "composition": "C03 stands left in three-quarter view; the workstation occupies the lower right and its display is seen from the back, with C01 beyond the right crop."
+      },
+      "cinematography": {
+       "angle": "Eye level on the same audience side of the managers' axis",
+       "camera": "short dolly track, 40mm, f/4",
+       "framing": "MWS of C03 on the left beside the workstation; C01 remains beyond the right edge throughout.",
+       "movement": "One slow straight dolly out, revealing a little more desk and office around C03.",
+       "color_tone": "Natural warm ivory and honey tones, controlled contrast and restrained saturation.",
+       "white_balance": "Daylight balanced with warm interior accents",
+       "depth_of_field": "Medium; manager clearly defined, distant cupboards gently softened.",
+       "lens_artifacts": "none"
+      }
+     },
+     "why": "Releases the demonstration into its real workplace and leaves the responsible manager, rather than the software, as the final visual emphasis.",
+     "lens": "40mm",
+     "over": "",
+     "role": "cutaway",
+     "size": "MWS",
+     "angle": "Eye level, audience side, three-quarter view of C03",
+     "blend": "close",
+     "lines": [],
+     "setup": "H",
+     "slate": "2H-1",
+     "sound": {
+      "music": "none",
+      "effects": "none",
+      "silence": false,
+      "ambience": "Low office ventilation."
+     },
+     "stage": 2,
+     "anchor": [
+      "c08"
+     ],
+     "blocks": [
+      12,
+      13
+     ],
+     "moment": 8,
+     "speaks": false,
+     "take_s": 4,
+     "summary": "After the explanation, C03 remains beside the workstation with lips closed as a gentle pullback reveals more of the orderly office.",
+     "priority": "nice",
+     "technique": "dolly_out",
+     "editor_note": "Use only after L12 is complete. C03 remains standing left, visitor outside the right edge; avoid any suggestion of approval being entered.",
+     "handle_in_s": 1.0,
+     "handle_out_s": 1.0
+    },
+    {
+     "id": "c11",
+     "ir": {
+      "audio": "Office room tone only; source dialogue retained from the anchor in post.",
+      "beats": [
+       {
+        "time": "0-1s",
+        "action": "C01 watches C03.",
+        "camera": "CU focused on C01's eyes, eyeline directed frame left.",
+        "performance": "His lips remain closed with the corners slightly lifted.",
+        "director_line": "Make the introduction a meeting between peers."
+       },
+       {
+        "time": "1-3s",
+        "action": "C01 gives one small nod.",
+        "camera": "CU, fixed eye focus and composition.",
+        "performance": "His chin dips once while his eyes stay directed toward C03.",
+        "director_line": "A small acknowledgement receives the welcome without interrupting it."
+       },
+       {
+        "time": "3-4s",
+        "action": "C01 maintains eye contact toward C03.",
+        "camera": "CU, same eye focus.",
+        "performance": "His head is steady and his lips remain closed.",
+        "director_line": "Leave a clean attentive beat for the return."
+       }
+      ],
+      "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+      "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+      "subjects": [
+       {
+        "id": "C01",
+        "action": "Listens with lips closed and gives one small nod.",
+        "position": "Standing frame right, facing left toward C03 offscreen; hands below the crop.",
+        "description": "Sri Lankan adult operations manager in a dark plain business shirt and dark trousers."
+       }
+      ],
+      "first_frame": {
+       "setting": "Softly blurred cream wall and honey-toned office storage behind C01.",
+       "lighting": "Soft directional daylight defines the face with gentle fill.",
+       "subjects": [
+        "C01 standing, attentive gaze left, lips closed"
+       ],
+       "composition": "C01's face occupies the right half, turned three-quarter left toward C03 beyond the crop."
+      },
+      "cinematography": {
+       "angle": "Eye level from the established audience side",
+       "camera": "locked-off sticks, 85mm, f/2.8",
+       "framing": "CU of C01, right-weighted with eyeline space to the left; C03 outside the frame.",
+       "movement": "Locked-off on sticks for the entire take.",
+       "color_tone": "Natural warm ivory and honey tones, controlled contrast and restrained saturation.",
+       "white_balance": "Daylight balanced with warm interior accents",
+       "depth_of_field": "Shallow; C01's eyes sharp against softly blurred office timber.",
+       "lens_artifacts": "none"
+      }
+     },
+     "why": "Gives the welcome a recipient and establishes the visitor's attentive engagement before the display dominates the demonstration.",
+     "lens": "85mm",
+     "over": "C03, a short portion of L1",
+     "role": "reaction",
+     "size": "CU",
+     "angle": "Eye level, audience-side reverse toward C01",
+     "blend": "under_line",
+     "lines": [],
+     "setup": "I",
+     "slate": "2I-1",
+     "sound": {
+      "music": "none",
+      "effects": "none",
+      "silence": true,
+      "ambience": "Office room tone."
+     },
+     "stage": 2,
+     "anchor": [
+      "c01"
+     ],
+     "blocks": [
+      1
+     ],
+     "moment": 1,
+     "speaks": false,
+     "take_s": 4,
+     "summary": "A close audience-side view catches C01 listening to the welcome with a small nod; C03 remains outside the picture.",
+     "priority": "should",
+     "technique": "locked_off",
+     "editor_note": "Use a short section under C03's L1 audio, not the whole line; return to c01 to retain the guide's introduction.",
+     "handle_in_s": 1.0,
+     "handle_out_s": 1.0
+    }
+   ],
+   "takes": [
+    4,
+    6,
+    8,
+    10
+   ],
+   "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+   "report": {
+    "log": [
+     "stage 1: finished after 6 turns",
+     "stage 2: finished after 2 turns"
+    ],
+    "calls": 8,
+    "model": "gpt-6.1-sol",
+    "turns": {
+     "stage1": 6,
+     "stage2": 2
+    }
+   },
+   "review": [
+    {
+     "why": "A close visitor reaction gives the welcome a human recipient and introduces the peer relationship.",
+     "earns": true,
+     "moment": 1
+    },
+    {
+     "why": "The sentence-boundary medium single already isolates the limitation; the limited remaining room is better spent on the approval and closing turns.",
+     "earns": false,
+     "moment": 2
+    },
+    {
+     "why": "The tighter C03 single already gives the shift to integrated processes a distinct landing.",
+     "earns": false,
+     "moment": 3
+    },
+    {
+     "why": "The locked display insert already makes the conference enquiry and requirements readable; another screen detail would repeat it.",
+     "earns": false,
+     "moment": 4
+    },
+    {
+     "why": "The screen-dominant composition already combines dashboard activation with the human guide.",
+     "earns": false,
+     "moment": 5
+    },
+    {
+     "why": "The closer screen composition already covers the agent and resource labels while retaining C03; an additional detail would compete with their legibility.",
+     "earns": false,
+     "moment": 6
+    },
+    {
+     "why": "A tight pending-status insert punctuates the human-approval boundary without replacing the explanatory composition.",
+     "earns": true,
+     "moment": 7
+    },
+    {
+     "why": "A gentle pullback after L12 returns the demonstration to the physical workplace and leaves the responsible manager in view.",
+     "earns": true,
+     "moment": 8
+    }
+   ],
+   "stage1": "finished",
+   "stage2": "finished",
+   "planner": "raphael",
+   "seconds": {
+    "cap_s": 70.5,
+    "must_s": 58,
+    "take_s": 70,
+    "target_s": 40.0,
+    "cinematic_s": 12
+   },
+   "stopped": "",
+   "version": 1,
+   "line_ids": {
+    "L1": "ed7b81ff-d1e4-4ce9-a42f-df5fc700aa4a",
+    "L2": "ed7b81ff-d1e4-4ce9-a42f-df5fc700aa4a",
+    "L3": "ed7b81ff-d1e4-4ce9-a42f-df5fc700aa4a",
+    "L7": "55d9e009-81dc-4cad-8ef6-920fdd2936d0",
+    "L9": "6a5215ec-7cb2-4bb2-b58d-b70576dbdc95",
+    "L11": "90d7ba05-344a-4a5d-9906-0e600d157f0a",
+    "L12": "90d7ba05-344a-4a5d-9906-0e600d157f0a"
+   },
+   "previous": {},
+   "breakdown": null,
+   "input_hash": "811d37aa60b83b38",
+   "line_parts": true,
+   "blend_notes": [
+    "c09: Cut into c07 after the quotation appears, over C03’s L11 audio, then return to c07 before the sentence boundary.",
+    "c10: Close moment 8 after C03’s L12 ends, over the office ambience from c08; let the pullback settle before the scene change.",
+    "c11: Lay the visitor’s reaction over a short portion of C03’s L1 audio in c01, then return to the two-shot."
+   ],
+   "editor_notes": [
+    "The bin contains eight must takes, 58 seconds including handles, against the script-adjusted 47-second target and 70.5-second cap. The fixed take lengths and whole-line requirements account for the overage; tighten handles and overlap the visual events with their designated dialogue, not by truncating lines. The original 40-second estimate may not accommodate a comfortable complete delivery.",
+    "Use A for the shared welcome, B and C for the opening sentence-boundary changes, D for the readable enquiry, E and F for the live demonstration, and B again for the final human decision. Every dialogue angle performs its own indicated line.",
+    "Match the active dashboard between E and F, the four illuminated agents and resources into the returning E shot, and the quotation's pending status into the final single. Keep the visitor's rightward location and C03's eyeline consistent.",
+    "The enquiry, agent and system labels, and Awaiting Approval must remain legible. If screen readability needs a post composite, preserve the exact scripted labels and sequence; do not invent values, permissions, an approval action or a sent quotation.",
+    "The two parts of the final long line and the three parts of the opening long line cut at sentence boundaries with changed size or setup. The first and last parts remain on the performing manager.",
+    "Speed ramp, freeze frame, digital punch-in and split screen are post-only possibilities, not requested effects for this restrained business scene. The settled screen and single takes provide clean sources should editorial choose to use them.",
+    "Avoid mirrors, hand contact, rapid typing and fabricated system interactions; the screen changes directly without an invented operator gesture. The production timing annotation is never shown or voiced.",
+    "The hotel's computer is staged between the standing managers; the earlier scene's computer belongs to another scene and is not carried into this office. Wardrobe appearance and the workstation placement are consistent editorial choices where the packet does not specify them."
+   ]
+  },
+  "read_from": null,
+  "read_confirmed_by": null,
+  "read_confirmed_at": null,
+  "line_parts": true
+ },
+ "shots": [
+  {
+   "id": "7bcd36b6-7434-4aeb-a447-7966b8ef99eb",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 1,
+   "title": "A gentle lateral track introduces an orderly workplace",
+   "framing": "MS",
+   "duration_s": 8,
+   "start_s": 0,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 8,
+     "action": "",
+     "camera": "",
+     "start_s": 6,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 0,
+   "block_end": 2,
+   "word_target": 17,
+   "words": 8,
+   "ir": {
+    "audio": "L1 performed by Company B Operations Manager over subdued office ventilation; no additional voices.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Both managers remain standing opposite one another.",
+      "camera": "MWS, both faces in focus as the lateral track begins.",
+      "performance": "Company B Operations Manager meets Company A Operations Manager (Employee)'s eyeline with a slight smile; Company A Operations Manager (Employee) keeps attentive eye contact.",
+      "director_line": "The orderly workstation separates two colleagues rather than a presenter and an audience."
+     },
+     {
+      "time": "3-6s",
+      "action": "Company B Operations Manager gives one small nod with lips moving to L1.",
+      "camera": "MWS, the same lateral track preserves the two faces.",
+      "performance": "Company B Operations Manager's smile eases into a matter-of-fact delivery while Company A Operations Manager (Employee) keeps attentive eye contact.",
+      "director_line": "A small welcome gesture accompanies the first practical admission."
+     },
+     {
+      "time": "6-8s",
+      "action": "Both remain in their standing positions.",
+      "camera": "MWS, the lateral track continues at the same gentle pace.",
+      "performance": "Company B Operations Manager closes the lips and keeps eye contact; Company A Operations Manager (Employee) remains attentive.",
+      "director_line": "The visitor has space to absorb the first sentence."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Gives a small welcome nod while lips move to L1.",
+      "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     },
+     {
+      "id": "C01",
+      "action": "Listens with eyes on Company B Operations Manager.",
+      "position": "Standing frame right facing left toward Company B Operations Manager, hands relaxed at sides.",
+      "description": "Sri Lankan adult operations manager in a dark plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [
+      "Company B Operations Manager standing left in a light plain business shirt and dark trousers.",
+      "Company A Operations Manager (Employee) standing right in a dark plain business shirt and dark trousers."
+     ],
+     "composition": "Company B Operations Manager on the left and Company A Operations Manager (Employee) on the right, workstation and computer between them, both faces already readable."
+    },
+    "cinematography": {
+     "angle": "Eye level on the audience side of the managers' axis",
+     "camera": "Stabilised slider, 35mm, f/4",
+     "framing": "MWS two-shot, Company B Operations Manager left and Company A Operations Manager (Employee) right, both visible from mid-thigh upward with the workstation between them.",
+     "movement": "One gentle lateral track parallel to the workstation throughout the take.",
+     "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Medium, both faces readable and background softly resolved.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "prompt",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:32:17.670971+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "34d7adf0-716b-4223-b397-250e6308fd82": 2,
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "4d313e42302779ad",
+     "shot_version": 1
+    },
+    "intent": "e25fee23d94b",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+     "34d7adf0-716b-4223-b397-250e6308fd82"
+    ],
+    "rationale": "A gentle lateral track introduces an orderly workplace and an equal peer relationship without making the welcome a presentation.",
+    "designed_at": "2026-11-20T07:18:30.699723+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "35mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Medium shot",
+     "aperture": "f/4",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "C03 welcomes the visitor in the orderly office and performs L1.",
+    "purpose": "A gentle lateral track introduces an orderly workplace and an equal peer relationship without making the welcome a presentation.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+     "34d7adf0-716b-4223-b397-250e6308fd82"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "Both managers remain standing opposite one another.; C03 gives one small nod with lips moving to L1.; Both remain in their standing positions.",
+    "voice_source": "",
+    "emotional_beat": "Welcomed by a knowledgeable peer."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [
+     {
+      "line_id": "L1",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None; retain a clean dialogue source.",
+     "effects": "None.",
+     "silence": false,
+     "ambience": "Quiet office ventilation."
+    },
+    "use_s": 8,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 8
+   },
+   "planner": "raphael",
+   "role": "two_shot",
+   "priority": "must",
+   "slate": "2A-1",
+   "handle_in_s": 0.5,
+   "handle_out_s": 1.0,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": {
+    "id": "e6010c40-f62e-42c0-8882-f694b4dc9e5e",
+    "version": 1,
+    "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Clear coverage, readable emotion, family-audience warmth.\n\nSETTING\nAn organised modern hotel operations office with a computer on the workstation between the two standing managers.\n\nSUBJECTS\nSri Lankan adult operations manager in a light plain business shirt and dark trousers, wearing warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels, with small plain gold stud earrings — Gives a small welcome nod while lips move to L1; Sri Lankan adult operations manager in a dark plain business shirt and dark trousers, wearing pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes — Listens with eyes on Company B Operations Manager.\n\nCAMERA\nCamera: Medium shot (MWS two-shot, Company B Operations Manager left and Company A Operations Manager (Employee) right, both visible from mid-thigh upward with the workstation between them), eye level (eye level on the audience side of the managers' axis); 35mm lens at f/4, a wide-normal lens: natural perspective with some of the space around them; focus: Medium, both faces readable and background softly resolved. Static: a steady, locked-off frame. As planned: one gentle lateral track parallel to the workstation throughout the take. Camera on side A of the line of action: the action reads left to right. The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift. Grade: Warm-neutral 4500K daylight balance, Warm neutrals, natural skin, clean whites and moderate contrast.\n\nLIGHTING\nDay: Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.\n\nVOICES\nVoice casting — fixed for the whole production, identical in every shot: Company B Operations Manager (the woman in warm taupe tailored jacket and matching straight-leg trousers): Clear medium-low alto with a warm resonance, relaxed conversational Sinhala and fluent English technical terms; evenly paced explanations with gentle emphasis woman voice (39), a Sri Lankan (Colombo) accent.\n\nACTION & DIALOGUE\nOver 8 seconds:\n0-3s: The orderly workstation separates two colleagues rather than a presenter and an audience. Both managers remain standing opposite one another. Company B Operations Manager meets Company A Operations Manager (Employee)'s eyeline with a slight smile; Company A Operations Manager (Employee) keeps attentive eye contact.\n3-6s: A small welcome gesture accompanies the first practical admission. Company B Operations Manager gives one small nod with lips moving to L1. Company B Operations Manager's smile eases into a matter-of-fact delivery while Company A Operations Manager (Employee) keeps attentive eye contact. Company B Operations Manager (the woman in warm taupe tailored jacket and matching straight-leg trousers) says, \"Welcome! අපිත් මුලින් ChatGPT, Gemini විතරයි use කළේ.\" — only Company B Operations Manager's lips move.\n6-8s: The visitor has space to absorb the first sentence. Both remain in their standing positions. Company B Operations Manager closes the lips and keeps eye contact; Company A Operations Manager (Employee) remains attentive.\n\nSOUND\nSpoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: room: Quiet office ventilation.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 9:16. Duration 8 seconds. Ends on a cut."
+   },
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "e8d31aa6-6764-433d-b094-4e9aed4e8d7a",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 2,
+   "title": "Gives the welcome a recipient and establishes the",
+   "framing": "CU",
+   "duration_s": 4,
+   "start_s": 8,
+   "sound_mode": "ambient",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 2,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 4,
+     "action": "",
+     "camera": "",
+     "start_s": 2,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 1,
+   "block_end": 2,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Office room tone only; source dialogue retained from the anchor in post.",
+    "beats": [
+     {
+      "time": "0-2s",
+      "action": "Company A Operations Manager (Employee) watches Company B Operations Manager. His lips remain closed with the corners slightly lifted. Company A Operations Manager (Employee) gives one small nod.",
+      "camera": "CU focused on Company A Operations Manager (Employee)'s eyes, eyeline directed frame left.",
+      "performance": "His chin dips once while his eyes stay directed toward Company B Operations Manager.",
+      "director_line": "Make the introduction a meeting between peers."
+     },
+     {
+      "time": "2-4s",
+      "action": "Company A Operations Manager (Employee) maintains eye contact toward Company B Operations Manager.",
+      "camera": "CU, same eye focus.",
+      "performance": "His head is steady and his lips remain closed.",
+      "director_line": "Leave a clean attentive beat for the return."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C01",
+      "action": "Listens with lips closed and gives one small nod.",
+      "position": "Standing frame right, facing left toward Company B Operations Manager offscreen; hands below the crop.",
+      "description": "Sri Lankan adult operations manager in a dark plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "Softly blurred cream wall and honey-toned office storage behind Company A Operations Manager (Employee).",
+     "lighting": "Soft directional daylight defines the face with gentle fill.",
+     "subjects": [
+      "Company A Operations Manager (Employee) standing, attentive gaze left, lips closed"
+     ],
+     "composition": "Company A Operations Manager (Employee)'s face occupies the right half, turned three-quarter left toward Company B Operations Manager beyond the crop."
+    },
+    "cinematography": {
+     "angle": "Eye level from the established audience side",
+     "camera": "locked-off sticks, 85mm, f/2.8",
+     "framing": "CU of Company A Operations Manager (Employee), right-weighted with eyeline space to the left; Company B Operations Manager outside the frame.",
+     "movement": "Locked-off on sticks for the entire take.",
+     "color_tone": "Natural warm ivory and honey tones, controlled contrast and restrained saturation.",
+     "white_balance": "Daylight balanced with warm interior accents",
+     "depth_of_field": "Shallow; Company A Operations Manager (Employee)'s eyes sharp against softly blurred office timber.",
+     "lens_artifacts": "none"
+    }
+   },
+   "status": "prompt",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:38:51.24723+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "34d7adf0-716b-4223-b397-250e6308fd82": 2,
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "4c0e01e2360a6562",
+     "shot_version": 1
+    },
+    "intent": "f6b7a195235b",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "34d7adf0-716b-4223-b397-250e6308fd82"
+    ],
+    "rationale": "Gives the welcome a recipient and establishes the visitor's attentive engagement before the display dominates the demonstration.",
+    "designed_at": "2026-11-20T07:18:30.701865+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "85mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Close-up",
+     "aperture": "f/2.8",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "C03 welcomes the visitor in the orderly office and performs L1.",
+    "purpose": "Gives the welcome a recipient and establishes the visitor's attentive engagement before the display dominates the demonstration.",
+    "made_for": "",
+    "on_screen": [
+     "34d7adf0-716b-4223-b397-250e6308fd82"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "C01 watches C03.; C01 gives one small nod.; C01 maintains eye contact toward C03.",
+    "voice_source": "",
+    "emotional_beat": "Welcomed by a knowledgeable peer."
+   },
+   "card": {
+    "size": "CU",
+    "lines": [],
+    "sound": {
+     "music": "none",
+     "effects": "none",
+     "silence": true,
+     "ambience": "Office room tone."
+    },
+    "use_s": 4,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 4
+   },
+   "planner": "raphael",
+   "role": "reaction",
+   "priority": "should",
+   "slate": "2I-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 1.0,
+   "stage": 2,
+   "anchor": [
+    "2A-1"
+   ],
+   "blend": "under_line",
+   "video_settings": {},
+   "prompt": {
+    "id": "5ffb0da9-cad8-4c4a-8aba-4597777c1406",
+    "version": 2,
+    "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Clear coverage, readable emotion, family-audience warmth.\n\nSETTING\nAn organised modern hotel operations office with a computer on the workstation between the two standing managers.\n\nSUBJECTS\nSri Lankan adult operations manager in a dark plain business shirt and dark trousers, wearing pale blue long-sleeved cotton business shirt tucked into charcoal trousers, collar open and cuffs buttoned at the wrists; black leather belt and black lace-up shoes — Listens with lips closed and gives one small nod. Company B Operations Manager is heard from off screen and is never seen.\n\nCAMERA\nCamera: Close-up (CU of Company A Operations Manager (Employee), right-weighted with eyeline space to the left; Company B Operations Manager outside the frame), eye level (eye level from the established audience side); 85mm lens at f/2.8, a long portrait lens: the background compressed and drawn close behind them; focus: Shallow; Company A Operations Manager (Employee)'s eyes sharp against softly blurred office timber. Static: a steady, locked-off frame. As planned: locked-off on sticks for the entire take. Camera on side A of the line of action: the action reads left to right. The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift. Grade: Daylight balanced with warm interior accents, Natural warm ivory and honey tones, controlled contrast and restrained saturation.\n\nLIGHTING\nDay: Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.\n\nACTION & DIALOGUE\nOver 4 seconds:\n0-2s: Make the introduction a meeting between peers. Company A Operations Manager (Employee) watches Company B Operations Manager. His lips remain closed with the corners slightly lifted. Company A Operations Manager (Employee) gives one small nod. His chin dips once while his eyes stay directed toward Company B Operations Manager.\n2-4s: Leave a clean attentive beat for the return. Company A Operations Manager (Employee) maintains eye contact toward Company B Operations Manager. His head is steady and his lips remain closed. Company B Operations Manager's voice comes from off screen, \"Welcome! අපිත් මුලින් ChatGPT, Gemini විතරයි use කළේ.\" — Company B Operations Manager is not in the frame and no one on screen mouths these words.\n\nSOUND\nNo dialogue. No voiceover. Nobody speaks on camera. Diegetic sound only: room: Office room tone.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 9:16. Duration 4 seconds. Ends on a cut."
+   },
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "e98bc127-f432-4e11-bab6-cc388ada606c",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 3,
+   "title": "A settled single gives the limitation of standalone",
+   "framing": "MS",
+   "duration_s": 6,
+   "start_s": 12,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 2,
+   "block_end": 3,
+   "word_target": 13,
+   "words": 8,
+   "ir": {
+    "audio": "L2 performed by Company B Operations Manager over subdued office ventilation; no additional voices.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Company B Operations Manager remains upright beside the workstation. Company B Operations Manager keeps his lips closed and his eyes on the offscreen visitor. Company B Operations Manager's lips move to L2.",
+      "camera": "MS, focus on Company B Operations Manager's eyes.",
+      "performance": "Company B Operations Manager slightly firms his mouth between phrases while maintaining an even gaze.",
+      "director_line": "The manager's practical explanation remains directed to his visitor."
+     },
+     {
+      "time": "3-6s",
+      "action": "Company B Operations Manager remains beside the workstation.",
+      "camera": "MS, focus on Company B Operations Manager.",
+      "performance": "Company B Operations Manager closes his lips and keeps his chin level.",
+      "director_line": "The sentence ends with room for the next step."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Lips move to L2 while maintaining Company A Operations Manager (Employee)'s eyeline.",
+      "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [
+      "Company B Operations Manager in a light plain business shirt and dark trousers, standing and facing right."
+     ],
+     "composition": "Waist-up Company B Operations Manager on the left third, already three-quarter to camera with open space toward the right."
+    },
+    "cinematography": {
+     "angle": "Eye-level three-quarter face toward frame right",
+     "camera": "Locked-off sticks, 50mm, f/4",
+     "framing": "MS of Company B Operations Manager from the waist up, with space toward Company A Operations Manager (Employee) offscreen right.",
+     "movement": "Locked-off on sticks.",
+     "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Medium, face crisp against a gently softened office.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "prompt",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:41:51.255468+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "a881f277f24a67dc",
+     "shot_version": 1
+    },
+    "intent": "cb56e46471fb",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "rationale": "A settled single gives the limitation of standalone tools a clear sentence-sized beat.",
+    "designed_at": "2026-11-20T07:18:30.702399+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "50mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Medium shot",
+     "aperture": "f/4",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "C03 continues with L2 while C01 listens.",
+    "purpose": "A settled single gives the limitation of standalone tools a clear sentence-sized beat.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "C03 remains upright beside the workstation.; C03's lips move to L2.; C03 remains beside the workstation.",
+    "voice_source": "",
+    "emotional_beat": "Recognition of a familiar limitation."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [
+     {
+      "line_id": "L2",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None.",
+     "effects": "None.",
+     "silence": false,
+     "ambience": "Quiet office ventilation."
+    },
+    "use_s": 6,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 6
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "2B-1",
+   "handle_in_s": 0.5,
+   "handle_out_s": 0.5,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": {
+    "id": "b6b91bf6-f4e6-46bf-b73d-45498e100072",
+    "version": 1,
+    "prose": "FIRST FRAME\nThe clip opens on the supplied first frame and stays true to it: the same faces, hair, wardrobe, place and light.\n\nSTYLE\nPhotorealistic live-action television drama footage, real optics and natural imperfections. Clear coverage, readable emotion, family-audience warmth.\n\nSETTING\nAn organised modern hotel operations office with a computer on the workstation between the two standing managers.\n\nSUBJECTS\nSri Lankan adult operations manager in a light plain business shirt and dark trousers, wearing warm taupe tailored jacket and matching straight-leg trousers, ivory blouse and dark brown closed-toe low heels, with small plain gold stud earrings — Lips move to L2 while maintaining Company A Operations Manager (Employee)'s eyeline.\n\nCAMERA\nCamera: Medium shot (MS of Company B Operations Manager from the waist up, with space toward Company A Operations Manager (Employee) offscreen right), eye level (eye-level three-quarter face toward frame right); 50mm lens at f/4, a normal lens: natural perspective, as the eye sees it; focus: Medium, face crisp against a gently softened office. Static: a steady, locked-off frame. As planned: locked-off on sticks. Camera on side A of the line of action: the action reads left to right. The camera is mounted on a tripod and does not move at all: no push-in, no pan, no drift. Grade: Warm-neutral 4500K daylight balance, Warm neutrals, natural skin, clean whites and moderate contrast.\n\nLIGHTING\nDay: Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.\n\nVOICES\nVoice casting — fixed for the whole production, identical in every shot: Company B Operations Manager (the woman in warm taupe tailored jacket and matching straight-leg trousers): Clear medium-low alto with a warm resonance, relaxed conversational Sinhala and fluent English technical terms; evenly paced explanations with gentle emphasis woman voice (39), a Sri Lankan (Colombo) accent.\n\nACTION & DIALOGUE\nOver 6 seconds:\n0-3s: The manager's practical explanation remains directed to his visitor. Company B Operations Manager remains upright beside the workstation. Company B Operations Manager keeps his lips closed and his eyes on the offscreen visitor. Company B Operations Manager's lips move to L2. Company B Operations Manager slightly firms his mouth between phrases while maintaining an even gaze.\n3-6s: The sentence ends with room for the next step. Company B Operations Manager remains beside the workstation. Company B Operations Manager closes his lips and keeps his chin level. Company B Operations Manager (the woman in warm taupe tailored jacket and matching straight-leg trousers) says, \"Productivity වැඩි වුණා, හැබැයි processes වෙනස් වුණේ නැහැ.\" — only Company B Operations Manager's lips move.\n\nSOUND\nSpoken dialogue only, exactly as written in the beats above and only from the named speakers. No narration, no voiceover. Room sound: room: Quiet office ventilation.\n\nSTYLE LOCK & CONSTRAINTS\nEvery person on screen who isn't the named speaker keeps their lips closed and still. All speech is in Sinhala, spoken naturally by a native speaker, exactly as written — not translated, not accented English. The setting, casting and everyday details are Sri Lankan. Rendering constraints: Clean, unmarked frame — no watermarks, no captions, no subtitles, no UI overlay. Text the description spells out (on a screen, a sign, a letter or a page) is rendered exactly as written; no other lettering is invented. Anatomy stays natural and consistent: hands with five fingers, stable facial features, limbs that hold their proportions through the move. Solid objects — furniture, walls, props — are impenetrable: people move around them, never through them, and every contact carries natural weight. Objects stay put unless someone deliberately moves them. Gravity behaves normally and the camera move stays smooth and singular.\n\nFORMAT\nAspect ratio 9:16. Duration 6 seconds. Ends on a cut."
+   },
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "2a560a25-e514-48d3-94ec-8775bb6e462b",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 4,
+   "title": "A closer sentence-boundary view gives the move to",
+   "framing": "MCU",
+   "duration_s": 6,
+   "start_s": 18,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 3,
+   "block_end": 4,
+   "word_target": 13,
+   "words": 9,
+   "ir": {
+    "audio": "L3 performed by Company B Operations Manager over subdued office ventilation; no additional voices.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Company B Operations Manager remains upright. Company B Operations Manager maintains the visitor's eyeline with lips closed. Company B Operations Manager's lips move to L3.",
+      "camera": "MCU on Company B Operations Manager's face.",
+      "performance": "Company B Operations Manager's brows lift slightly and settle as he finishes the thought.",
+      "director_line": "The closer size marks the shift from a limitation to a practical response."
+     },
+     {
+      "time": "3-6s",
+      "action": "Company B Operations Manager remains in position.",
+      "camera": "MCU on Company B Operations Manager's face.",
+      "performance": "Company B Operations Manager closes his lips with a small, restrained smile.",
+      "director_line": "The demonstration is ready to replace the explanation."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Lips move to L3.",
+      "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [
+      "Company B Operations Manager in a light plain business shirt and dark trousers, standing and facing right."
+     ],
+     "composition": "Chest-up Company B Operations Manager on the left third with a rightward eyeline, face already visible in three-quarter view."
+    },
+    "cinematography": {
+     "angle": "Eye-level three-quarter face toward frame right",
+     "camera": "Locked-off sticks, 75mm, f/4",
+     "framing": "MCU of Company B Operations Manager, chest upward, eyes off lens toward the visitor.",
+     "movement": "Locked-off on sticks.",
+     "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Medium, face readable and office gently softened.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "3b337a55451a3e3d",
+     "shot_version": 1
+    },
+    "intent": "e020fc4daba3",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "rationale": "A closer sentence-boundary view gives the move to process integration a distinct visual landing without a jump cut.",
+    "designed_at": "2026-11-20T07:18:30.703434+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "85mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Medium close-up",
+     "aperture": "f/4",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "C03 completes the opening explanation with L3.",
+    "purpose": "A closer sentence-boundary view gives the move to process integration a distinct visual landing without a jump cut.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "C03 remains upright.; C03's lips move to L3.; C03 remains in position.",
+    "voice_source": "",
+    "emotional_beat": "Curiosity about what changed."
+   },
+   "card": {
+    "size": "MCU",
+    "lines": [
+     {
+      "line_id": "L3",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None.",
+     "effects": "None.",
+     "silence": false,
+     "ambience": "Quiet office ventilation."
+    },
+    "use_s": 6,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 6
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "2C-1",
+   "handle_in_s": 0.5,
+   "handle_out_s": 0.5,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "b978f74f-fab5-4969-87a5-fc0e42c5ed3e",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 5,
+   "title": "The enquiry is the story's concrete input; a",
+   "framing": "INSERT",
+   "duration_s": 4,
+   "start_s": 24,
+   "sound_mode": "ambient",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 2,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 4,
+     "action": "",
+     "camera": "",
+     "start_s": 2,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 4,
+   "block_end": 6,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Silent picture source; quiet office ventilation can be added in post.",
+    "beats": [
+     {
+      "time": "0-2s",
+      "action": "The request area remains blank. The request panel appears with the exact text: Corporate Conference Request — 2 nights · 30 guests · Accommodation · Conference facilities · Meals.",
+      "camera": "INSERT, sharp focus across the display.",
+      "performance": "",
+      "director_line": "The hotel's operational screen awaits its incoming request."
+     },
+     {
+      "time": "2-4s",
+      "action": "The request panel remains visible.",
+      "camera": "INSERT, sharp focus across the display.",
+      "performance": "",
+      "director_line": "The full scope of the request stays available for reading."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [],
+     "composition": "The computer display fills the image, with its request area blank before the enquiry appears."
+    },
+    "cinematography": {
+     "angle": "Straight-on to the computer display",
+     "camera": "Locked-off sticks, 50mm, f/5.6",
+     "framing": "INSERT: the display fills the frame with the enquiry text large and legible.",
+     "movement": "Locked-off on sticks.",
+     "color_tone": "Warm neutrals, natural screen whites and restrained contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Deep, the entire display plane sharp with no distracting bokeh.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "34adeb0e5003e8c7",
+     "shot_version": 1
+    },
+    "intent": "f8bfabb5cc23",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [],
+    "rationale": "The enquiry is the story's concrete input; a still, readable screen allows its requirements to register without inventing a physical interaction.",
+    "designed_at": "2026-11-20T07:18:30.704408+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "50mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Insert",
+     "aperture": "f/5.6",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "The conference enquiry appears and its requirements remain readable.",
+    "purpose": "The enquiry is the story's concrete input; a still, readable screen allows its requirements to register without inventing a physical interaction.",
+    "made_for": "",
+    "on_screen": [],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "The request area remains blank.; The request panel appears with the exact text: Corporate Conference Request — 2 nights · 30 guests · Accommodation · Conference facilities · Meals.; The request panel remains visible.",
+    "voice_source": "",
+    "emotional_beat": "A concrete business problem replaces abstraction."
+   },
+   "card": {
+    "size": "INSERT",
+    "lines": [],
+    "sound": {
+     "music": "None.",
+     "effects": "None.",
+     "silence": true,
+     "ambience": "None in source; add quiet office ventilation in post."
+    },
+    "use_s": 4,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 4
+   },
+   "planner": "raphael",
+   "role": "insert",
+   "priority": "must",
+   "slate": "2D-1",
+   "handle_in_s": 0.5,
+   "handle_out_s": 0.5,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "89580994-8494-4410-ad86-a2da25508019",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 6,
+   "title": "A composed screen-dominant view lets the workflow activate",
+   "framing": "MS",
+   "duration_s": 10,
+   "start_s": 28,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 10,
+     "action": "",
+     "camera": "",
+     "start_s": 6,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 6,
+   "block_end": 8,
+   "word_target": 22,
+   "words": 14,
+   "ir": {
+    "audio": "L7 performed by Company B Operations Manager over subdued office ventilation; no electronic voice or alert.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Company B Operations Manager stands beside the inactive workflow area.",
+      "camera": "MS screen-dominant framing with Company B Operations Manager and display both sharp.",
+      "performance": "Company B Operations Manager keeps lips closed and eyes toward the visitor offscreen right.",
+      "director_line": "The guide and the operational screen share the frame."
+     },
+     {
+      "time": "3-6s",
+      "action": "",
+      "camera": "",
+      "performance": "",
+      "director_line": ""
+     },
+     {
+      "time": "6-10s",
+      "action": "The workflow dashboard activates while Company B Operations Manager's lips move to L7. Company B Operations Manager maintains an easy, direct eyeline and measured delivery. The dashboard remains active.",
+      "camera": "MS, deep focus across Company B Operations Manager and the display.",
+      "performance": "Company B Operations Manager closes the lips and keeps the head level.",
+      "director_line": "The central workflow activates as the explanation begins."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Lips move to L7 while the dashboard becomes active.",
+      "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [
+      "Company B Operations Manager standing left in a light plain business shirt and dark trousers, facing right."
+     ],
+     "composition": "Company B Operations Manager is already face-readable at left; the computer display occupies the right side with the workflow area inactive."
+    },
+    "cinematography": {
+     "angle": "Oblique eye level from the audience side of the managers' axis",
+     "camera": "Locked-off sticks, 35mm, f/8",
+     "framing": "MS screen-dominant composition: Company B Operations Manager's readable three-quarter face and upper torso occupy the left third, while the computer display fills the right two thirds.",
+     "movement": "Locked-off on sticks.",
+     "color_tone": "Warm neutrals, clean readable display whites and moderate contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Deep, face and display both readable with minimal background blur.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "e7762e5434239db9",
+     "shot_version": 1
+    },
+    "intent": "cd0fa9f70246",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "rationale": "A composed screen-dominant view lets the workflow activate under the guide's actual performance and makes the source of the explanation clear.",
+    "designed_at": "2026-11-20T07:18:30.706411+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "35mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Medium shot",
+     "aperture": "f/5.6",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "The workflow dashboard activates as C03 performs L7.",
+    "purpose": "A composed screen-dominant view lets the workflow activate under the guide's actual performance and makes the source of the explanation clear.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "C03 stands beside the inactive workflow area.; The workflow dashboard activates while C03's lips move to L7.; The dashboard remains active.",
+    "voice_source": "",
+    "emotional_beat": "The process becomes intelligible."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [
+     {
+      "line_id": "L7",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None.",
+     "effects": "None.",
+     "silence": false,
+     "ambience": "Quiet office ventilation."
+    },
+    "use_s": 10,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 10
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "2E-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 1.0,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "e6d84649-f946-488d-9e97-c2a32d0d3672",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 7,
+   "title": "A tighter, distinct setup at the sentence boundary",
+   "framing": "MCU",
+   "duration_s": 10,
+   "start_s": 38,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 10,
+     "action": "",
+     "camera": "",
+     "start_s": 6,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 8,
+   "block_end": 10,
+   "word_target": 22,
+   "words": 16,
+   "ir": {
+    "audio": "L9 performed by Company B Operations Manager over subdued office ventilation; no electronic voice or alert.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "The active dashboard remains visible.",
+      "camera": "MCU screen-dominant framing with Company B Operations Manager and display both sharp.",
+      "performance": "Company B Operations Manager keeps lips closed and eyes toward the visitor offscreen right.",
+      "director_line": "The already active workflow is ready to reveal its coordinated components."
+     },
+     {
+      "time": "3-6s",
+      "action": "",
+      "camera": "",
+      "performance": "",
+      "director_line": ""
+     },
+     {
+      "time": "6-10s",
+      "action": "Four dashboard agents light up in parallel and connected systems appear while Company B Operations Manager's lips move to L9; the exact agent labels on the display are Customer Agent · Availability Agent · Operations Agent · Finance Agent, and the exact system labels are Company Knowledge · Policies & SOPs · CRM · Hotel Management System. Company B Operations Manager keeps the explanation even and practical, with eyes toward the visitor. All four agents and connected systems remain visible.",
+      "camera": "MCU, deep focus across Company B Operations Manager and the display.",
+      "performance": "Company B Operations Manager closes the lips and keeps the gaze steady.",
+      "director_line": "Four distinct roles illuminate together beside their connected resources."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Lips move to L9 as the roles and resources appear.",
+      "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [
+      "Company B Operations Manager standing left in a light plain business shirt and dark trousers, facing right."
+     ],
+     "composition": "Company B Operations Manager is face-readable at left and the active workflow display fills the right, before the agents and resource labels appear."
+    },
+    "cinematography": {
+     "angle": "Tighter oblique eye level from the audience side of the managers' axis",
+     "camera": "Locked-off sticks, 50mm, f/11",
+     "framing": "MCU screen-dominant composition: Company B Operations Manager's readable three-quarter face and shoulders occupy the left third; a large, near-frontal display occupies the right two thirds.",
+     "movement": "Locked-off on sticks.",
+     "color_tone": "Warm neutrals, clean readable display whites and moderate contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Deep, face and display both readable with minimal background blur.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "0895399cf0f88663",
+     "shot_version": 1
+    },
+    "intent": "297c17646773",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "rationale": "A tighter, distinct setup at the sentence boundary makes the parallel roles and connected resources visual evidence for the continuing explanation without a jump cut.",
+    "designed_at": "2026-11-20T07:18:30.707408+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "50mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Medium close-up",
+     "aperture": "f/5.6",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "Four agents activate together with their connected systems while C03 performs L9.",
+    "purpose": "A tighter, distinct setup at the sentence boundary makes the parallel roles and connected resources visual evidence for the continuing explanation without a jump cut.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "The active dashboard remains visible.; Four dashboard agents light up in parallel and connected systems appear while C03's lips move to L9; the exact agent labels on the display are Customer Agent · Availability Agent · Operations Agent · Finance Agent, and the exact system labels are Company Knowledge · Policies & SOPs · CRM · Hotel Management System.; All four agents and connected systems remain visible.",
+    "voice_source": "",
+    "emotional_beat": "Coordinated work, bounded by visible business resources."
+   },
+   "card": {
+    "size": "MCU",
+    "lines": [
+     {
+      "line_id": "L9",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None.",
+     "effects": "None.",
+     "silence": false,
+     "ambience": "Quiet office ventilation."
+    },
+    "use_s": 10,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 10
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "2F-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 1.0,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "71f9e278-1013-4219-bed0-a4fe5292f32a",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 8,
+   "title": "The return to the wider screen-and-face setup places",
+   "framing": "MS",
+   "duration_s": 6,
+   "start_s": 48,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 10,
+   "block_end": 12,
+   "word_target": 13,
+   "words": 7,
+   "ir": {
+    "audio": "L11 performed by Company B Operations Manager over subdued office ventilation; no electronic voice or alert.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "The active agents and connected systems remain on the display. Company B Operations Manager keeps lips closed and eyes on the visitor offscreen right. A consolidated quotation appears on the display with the exact status text Awaiting Approval while Company B Operations Manager's lips move to L11.",
+      "camera": "MS, Company B Operations Manager and the active dashboard sharp.",
+      "performance": "Company B Operations Manager keeps a steady eyeline and a measured, reassuring delivery.",
+      "director_line": "The connected workflow has reached its output."
+     },
+     {
+      "time": "3-6s",
+      "action": "The quotation remains marked Awaiting Approval.",
+      "camera": "MS, Company B Operations Manager and the pending quotation remain sharp.",
+      "performance": "Company B Operations Manager closes the lips and keeps the head level.",
+      "director_line": "The status remains pending at the sentence boundary."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Lips move to L11 as the quotation appears.",
+      "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [
+      "Company B Operations Manager standing left in a light plain business shirt and dark trousers, facing right."
+     ],
+     "composition": "Company B Operations Manager stands face-readable at left; the active agent and system display fills the right, before the quotation appears."
+    },
+    "cinematography": {
+     "angle": "Oblique eye level from the audience side of the managers' axis",
+     "camera": "Locked-off sticks, 35mm, f/8",
+     "framing": "MS screen-dominant composition: Company B Operations Manager's readable three-quarter face and upper torso occupy the left third, while the computer display fills the right two thirds.",
+     "movement": "Locked-off on sticks.",
+     "color_tone": "Warm neutrals, clean readable display whites and moderate contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Deep, face and display both readable with minimal background blur.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "5994fef203486beb",
+     "shot_version": 1
+    },
+    "intent": "d71ce1434399",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "rationale": "The return to the wider screen-and-face setup places the pending quotation beside the person identifying the team's decision boundary.",
+    "designed_at": "2026-11-20T07:18:30.708464+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "35mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Medium shot",
+     "aperture": "f/5.6",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "The consolidated quotation appears with its pending status as C03 performs L11.",
+    "purpose": "The return to the wider screen-and-face setup places the pending quotation beside the person identifying the team's decision boundary.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "The active agents and connected systems remain on the display.; A consolidated quotation appears on the display with the exact status text Awaiting Approval while C03's lips move to L11.; The quotation remains marked Awaiting Approval.",
+    "voice_source": "",
+    "emotional_beat": "Assurance that responsibility remains human."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [
+     {
+      "line_id": "L11",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None.",
+     "effects": "None.",
+     "silence": false,
+     "ambience": "Quiet office ventilation."
+    },
+    "use_s": 6,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 6
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "2E-2",
+   "handle_in_s": 0.5,
+   "handle_out_s": 0.5,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "59ceb6b7-b7c2-4204-ab16-256b0f8e4426",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 9,
+   "title": "Separates the pending status from the explanatory composition",
+   "framing": "INSERT",
+   "duration_s": 4,
+   "start_s": 54,
+   "sound_mode": "ambient",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 2,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 4,
+     "action": "",
+     "camera": "",
+     "start_s": 2,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 10,
+   "block_end": 12,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Quiet office ventilation; no interface chime.",
+    "beats": [
+     {
+      "time": "0-2s",
+      "action": "The quotation status remains visible. The screen retains its pending state.",
+      "camera": "INSERT, focus on the status lettering.",
+      "performance": "",
+      "director_line": "The pending state becomes the entire visual argument."
+     },
+     {
+      "time": "2-4s",
+      "action": "The status remains Awaiting Approval.",
+      "camera": "INSERT, same composition and focus.",
+      "performance": "",
+      "director_line": "Leave a clean tail for the return to the manager."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [],
+    "first_frame": {
+     "setting": "The hotel workstation display, with only a soft trace of its bezel at the edge.",
+     "lighting": "Soft directional window illumination with controlled display reflections.",
+     "subjects": [
+      "Workstation display status: Awaiting Approval"
+     ],
+     "composition": "The exact text Awaiting Approval is centred in a tight display crop; other quotation content is outside the frame."
+    },
+    "cinematography": {
+     "angle": "Near-frontal, level with the display status",
+     "camera": "locked-off sticks, 85mm macro, f/4",
+     "framing": "INSERT of the quotation status, large enough for immediate reading; surrounding content outside the crop.",
+     "movement": "Fixed shallow isolation on the status plane for the entire take.",
+     "color_tone": "Natural warm ivory and honey tones, controlled contrast and restrained saturation.",
+     "white_balance": "Daylight balanced with warm interior accents",
+     "depth_of_field": "Shallow; status lettering sharp, display bezel softly blurred.",
+     "lens_artifacts": "none"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "5994fef203486beb",
+     "shot_version": 1
+    },
+    "intent": "5aef3b4f2b8a",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [],
+    "rationale": "Separates the pending status from the explanatory composition so the human approval boundary has a distinct visual punctuation.",
+    "designed_at": "2026-11-20T07:18:30.709463+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "85mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Insert",
+     "aperture": "f/4",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "The consolidated quotation appears with its pending status as C03 performs L11.",
+    "purpose": "Separates the pending status from the explanatory composition so the human approval boundary has a distinct visual punctuation.",
+    "made_for": "",
+    "on_screen": [],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "The quotation status remains visible.; The screen retains its pending state.; The status remains Awaiting Approval.",
+    "voice_source": "",
+    "emotional_beat": "Assurance that responsibility remains human."
+   },
+   "card": {
+    "size": "INSERT",
+    "lines": [],
+    "sound": {
+     "music": "none",
+     "effects": "none",
+     "silence": false,
+     "ambience": "Low office ventilation."
+    },
+    "use_s": 4,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 4
+   },
+   "planner": "raphael",
+   "role": "insert",
+   "priority": "should",
+   "slate": "2G-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 1.0,
+   "stage": 2,
+   "anchor": [
+    "2E-2"
+   ],
+   "blend": "cut_in",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "7eefc17b-1b3d-45e6-9279-99b6012da9bc",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 10,
+   "title": "Returning to the manager's face makes the final",
+   "framing": "MS",
+   "duration_s": 8,
+   "start_s": 58,
+   "sound_mode": "dialogue",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "beats": [
+    {
+     "end_s": 3,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 6,
+     "action": "",
+     "camera": "",
+     "start_s": 3,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 8,
+     "action": "",
+     "camera": "",
+     "start_s": 6,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 12,
+   "block_end": 14,
+   "word_target": 17,
+   "words": 10,
+   "ir": {
+    "audio": "L12 performed by Company B Operations Manager over subdued office ventilation; no additional voices.",
+    "beats": [
+     {
+      "time": "0-3s",
+      "action": "Company B Operations Manager remains upright beside the workstation.",
+      "camera": "MS, focus on Company B Operations Manager's eyes.",
+      "performance": "Company B Operations Manager keeps lips closed and eyes on the offscreen visitor.",
+      "director_line": "The decision returns to the person responsible for it."
+     },
+     {
+      "time": "3-6s",
+      "action": "Company B Operations Manager's lips move to L12.",
+      "camera": "MS, focus remains on Company B Operations Manager's face.",
+      "performance": "Company B Operations Manager maintains the visitor's eyeline and lets a slight smile return near the end.",
+      "director_line": "The final distinction is practical and direct."
+     },
+     {
+      "time": "6-8s",
+      "action": "Company B Operations Manager remains beside the workstation.",
+      "camera": "MS, focus on Company B Operations Manager.",
+      "performance": "Company B Operations Manager closes the lips and keeps the expression open.",
+      "director_line": "The explanation ends without a sales flourish."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Lips move to L12 while maintaining Company A Operations Manager (Employee)'s eyeline.",
+      "position": "Standing frame left facing right, three-quarter face readable, hands resting loosely at waist level beside the computer.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+     "lighting": "Directional daylight from camera left with gentle interior fill and controlled display reflections.",
+     "subjects": [
+      "Company B Operations Manager in a light plain business shirt and dark trousers, standing and facing right."
+     ],
+     "composition": "Waist-up Company B Operations Manager on the left third, already three-quarter to camera with open space toward the right."
+    },
+    "cinematography": {
+     "angle": "Eye-level three-quarter face toward frame right",
+     "camera": "Locked-off sticks, 50mm, f/4",
+     "framing": "MS of Company B Operations Manager from the waist up, with space toward Company A Operations Manager (Employee) offscreen right.",
+     "movement": "Locked-off on sticks.",
+     "color_tone": "Warm neutrals, natural skin, clean whites and moderate contrast.",
+     "white_balance": "Warm-neutral 4500K daylight balance",
+     "depth_of_field": "Medium, face crisp against a gently softened office.",
+     "lens_artifacts": "None"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "db024cc670f76d2e",
+     "shot_version": 1
+    },
+    "intent": "2a93f1bb07ca",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "rationale": "Returning to the manager's face makes the final decision the responsibility of people rather than the screen.",
+    "designed_at": "2026-11-20T07:18:30.710463+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "50mm",
+     "angle": "Eye level",
+     "speed": "None",
+     "framing": "Medium shot",
+     "aperture": "f/4",
+     "lighting": "Day, window light",
+     "movement": "Static"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "C03 completes L12; the production annotation adds no audience-facing event.",
+    "purpose": "Returning to the manager's face makes the final decision the responsibility of people rather than the screen.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "C03 remains upright beside the workstation.; C03's lips move to L12.; C03 remains beside the workstation.",
+    "voice_source": "",
+    "emotional_beat": "Clear, calm understanding."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [
+     {
+      "line_id": "L12",
+      "over_whom": "",
+      "on_speaker": true
+     }
+    ],
+    "sound": {
+     "music": "None.",
+     "effects": "None.",
+     "silence": false,
+     "ambience": "Quiet office ventilation."
+    },
+    "use_s": 8,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 8
+   },
+   "planner": "raphael",
+   "role": "single",
+   "priority": "must",
+   "slate": "2B-2",
+   "handle_in_s": 0.5,
+   "handle_out_s": 1.0,
+   "stage": 1,
+   "anchor": [],
+   "blend": "",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  },
+  {
+   "id": "fe35cd39-4a7d-411d-b0c8-1e34aac3d6a4",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "number": 11,
+   "title": "Releases the demonstration into its real workplace and",
+   "framing": "MS",
+   "duration_s": 4,
+   "start_s": 66,
+   "sound_mode": "ambient",
+   "camera_link": "cut",
+   "frame_strategy": "generate",
+   "speaker_id": null,
+   "beats": [
+    {
+     "end_s": 2,
+     "action": "",
+     "camera": "",
+     "start_s": 0,
+     "performance": "",
+     "director_line": ""
+    },
+    {
+     "end_s": 4,
+     "action": "",
+     "camera": "",
+     "start_s": 2,
+     "performance": "",
+     "director_line": ""
+    }
+   ],
+   "block_start": 12,
+   "block_end": 14,
+   "word_target": 0,
+   "words": 0,
+   "ir": {
+    "audio": "Quiet office ventilation.",
+    "beats": [
+     {
+      "time": "0-2s",
+      "action": "Company B Operations Manager keeps her gaze toward the visitor. Her lips remain closed and her shoulders settle. Company B Operations Manager maintains her standing position.",
+      "camera": "MWS, Company B Operations Manager left with workstation right; dolly begins its gentle retreat.",
+      "performance": "She retains a small closed-mouth smile toward the visitor.",
+      "director_line": "Return the completed demonstration to its human scale."
+     },
+     {
+      "time": "2-4s",
+      "action": "Company B Operations Manager remains beside the workstation.",
+      "camera": "MWS, the same retreat continues gently to its endpoint.",
+      "performance": "Her gaze stays level toward the visitor, lips closed.",
+      "director_line": "Finish on professional composure rather than a software flourish."
+     }
+    ],
+    "setting": "An organised modern hotel operations office with a computer on the workstation between the two standing managers.",
+    "lighting": "Directional daylight from camera left is softened by the office window, with gentle interior fill, readable faces and controlled display reflections.",
+    "subjects": [
+     {
+      "id": "C03",
+      "action": "Maintains eye contact toward the visitor with lips closed.",
+      "position": "Standing frame left, facing right toward Company A Operations Manager (Employee) outside the frame; workstation to her right; hands relaxed at her sides.",
+      "description": "Sri Lankan adult operations manager in a light plain business shirt and dark trousers."
+     }
+    ],
+    "first_frame": {
+     "setting": "Cream office walls, pale oak workstation and flush timber storage in the background.",
+     "lighting": "Directional window light shapes Company B Operations Manager's face with gentle interior fill.",
+     "subjects": [
+      "Company B Operations Manager standing beside the workstation, lips closed"
+     ],
+     "composition": "Company B Operations Manager stands left in three-quarter view; the workstation occupies the lower right and its display is seen from the back, with Company A Operations Manager (Employee) beyond the right crop."
+    },
+    "cinematography": {
+     "angle": "Eye level on the same audience side of the managers' axis",
+     "camera": "short dolly track, 40mm, f/4",
+     "framing": "MWS of Company B Operations Manager on the left beside the workstation; Company A Operations Manager (Employee) remains beyond the right edge throughout.",
+     "movement": "One slow straight dolly out, revealing a little more desk and office around Company B Operations Manager.",
+     "color_tone": "Natural warm ivory and honey tones, controlled contrast and restrained saturation.",
+     "white_balance": "Daylight balanced with warm interior accents",
+     "depth_of_field": "Medium; manager clearly defined, distant cupboards gently softened.",
+     "lens_artifacts": "none"
+    }
+   },
+   "status": "draft",
+   "version": 1,
+   "created_at": "2026-11-20T07:18:32.743844+00:00",
+   "updated_at": "2026-11-20T07:18:32.743844+00:00",
+   "duration_locked": false,
+   "design": {
+    "pins": {
+     "canon": {
+      "6b52c194-201a-4e42-a6f2-92fdbfdc93bc": 2,
+      "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e": 2
+     },
+     "looks": {},
+     "script_hash": "db024cc670f76d2e",
+     "shot_version": 1
+    },
+    "intent": "5443217d97bd",
+    "job_id": "e73233b8-3468-434a-9a2d-8117e396b086",
+    "missing": [],
+    "planner": "raphael",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "rationale": "Releases the demonstration into its real workplace and leaves the responsible manager, rather than the software, as the final visual emphasis.",
+    "designed_at": "2026-11-20T07:18:30.711971+00:00",
+    "recommended": {
+     "axis": "Side A · left to right",
+     "lens": "35mm",
+     "angle": "Eye level",
+     "speed": "Slow",
+     "framing": "Medium shot",
+     "aperture": "f/4",
+     "lighting": "Day, window light",
+     "movement": "Dolly out"
+    }
+   },
+   "camera_overrides": {},
+   "person_edits": {},
+   "intent": {
+    "by": "raphael",
+    "story": "C03 completes L12; the production annotation adds no audience-facing event.",
+    "purpose": "Releases the demonstration into its real workplace and leaves the responsible manager, rather than the software, as the final visual emphasis.",
+    "made_for": "",
+    "on_screen": [
+     "6b52c194-201a-4e42-a6f2-92fdbfdc93bc"
+    ],
+    "heard_only": [],
+    "written_at": null,
+    "what_we_see": "C03 keeps her gaze toward the visitor.; C03 maintains her standing position.; C03 remains beside the workstation.",
+    "voice_source": "",
+    "emotional_beat": "Clear, calm understanding."
+   },
+   "card": {
+    "size": "MS",
+    "lines": [],
+    "sound": {
+     "music": "none",
+     "effects": "none",
+     "silence": false,
+     "ambience": "Low office ventilation."
+    },
+    "use_s": 4,
+    "cut_in": {
+     "link": "cut"
+    },
+    "take_s": 4
+   },
+   "planner": "raphael",
+   "role": "cutaway",
+   "priority": "nice",
+   "slate": "2H-1",
+   "handle_in_s": 1.0,
+   "handle_out_s": 1.0,
+   "stage": 2,
+   "anchor": [
+    "2B-2"
+   ],
+   "blend": "close",
+   "video_settings": {},
+   "prompt": null,
+   "has_frame": true,
+   "takes": []
+  }
+ ],
+ "lines": [
+  {
+   "id": "ed7b81ff-d1e4-4ce9-a42f-df5fc700aa4a",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "ord": 0,
+   "speaker": "Company B Operations Manager",
+   "character_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "text": "\"Welcome! අපිත් මුලින් ChatGPT, Gemini විතරයි use කළේ. Productivity වැඩි වුණා, හැබැයි processes වෙනස් වුණේ නැහැ. ඉතින් අපි AI එක business processes එක්ක connect කළා.\"",
+   "delivery": "",
+   "source_text": null,
+   "source_lang": null,
+   "words": 25,
+   "shot_id": "7bcd36b6-7434-4aeb-a447-7966b8ef99eb",
+   "beat_index": 1,
+   "start_s": 3,
+   "overrun_s": 0,
+   "created_at": "2026-11-19T08:41:19.034966+00:00",
+   "updated_at": "2026-11-20T07:18:32.948569+00:00"
+  },
+  {
+   "id": "55d9e009-81dc-4cad-8ef6-920fdd2936d0",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "ord": 1,
+   "speaker": "Company B Operations Manager",
+   "character_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "text": "\"මේ වගේ request එකක් ආවම, central orchestrator එක ඒක specialised agents ලාට බෙදලා දෙනවා.\"",
+   "delivery": "",
+   "source_text": null,
+   "source_lang": null,
+   "words": 14,
+   "shot_id": "89580994-8494-4410-ad86-a2da25508019",
+   "beat_index": 0,
+   "start_s": 29.5,
+   "overrun_s": 0,
+   "created_at": "2026-11-19T08:41:19.034966+00:00",
+   "updated_at": "2026-11-20T07:18:32.948569+00:00"
+  },
+  {
+   "id": "6a5215ec-7cb2-4bb2-b58d-b70576dbdc95",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "ord": 2,
+   "speaker": "Company B Operations Manager",
+   "character_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "text": "\"ඒ agents ලා company knowledge, CRM සහ hotel system එක්ක එකට වැඩ කරලා quotation එක හදනවා.\"",
+   "delivery": "",
+   "source_text": null,
+   "source_lang": null,
+   "words": 16,
+   "shot_id": "e6d84649-f946-488d-9e97-c2a32d0d3672",
+   "beat_index": 1,
+   "start_s": 41,
+   "overrun_s": 0.27,
+   "created_at": "2026-11-19T08:41:19.034966+00:00",
+   "updated_at": "2026-11-20T07:18:32.948569+00:00"
+  },
+  {
+   "id": "90d7ba05-344a-4a5d-9906-0e600d157f0a",
+   "production_id": "af187049-cde5-4bbb-88f4-39d247222355",
+   "scene_id": "48fbb071-b6b3-4943-a74f-92cdd21f3d96",
+   "ord": 3,
+   "speaker": "Company B Operations Manager",
+   "character_id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "text": "\"හැබැයි final approval එක අපේ team එකයි. AI එක repetitive වැඩ කරනවා, අපි decisions වලට focus කරනවා.\"",
+   "delivery": "",
+   "source_text": null,
+   "source_lang": null,
+   "words": 17,
+   "shot_id": "71f9e278-1013-4219-bed0-a4fe5292f32a",
+   "beat_index": 0,
+   "start_s": 49.5,
+   "overrun_s": 0,
+   "created_at": "2026-11-19T08:41:19.034966+00:00",
+   "updated_at": "2026-11-20T07:18:32.948569+00:00"
+  }
+ ],
+ "canon": [
+  {
+   "id": "6ab94989-a598-4531-858b-da16df444702",
+   "code": "L01",
+   "name": "Sri Lanka",
+   "kind": "location",
+   "class": "region"
+  },
+  {
+   "id": "fb3999dd-c794-42d5-acd8-48529fde5380",
+   "code": "P02",
+   "name": "Gemini",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "180b4d68-a531-412c-bbe4-26c3b9e86f77",
+   "code": "P05",
+   "name": "central workflow dashboard",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "4c5c8097-b2e0-4241-ada8-5abf65dc7f91",
+   "code": "P08",
+   "name": "Operations Agent",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "4308e63f-d0b1-4195-bde6-87d5fc45c376",
+   "code": "P11",
+   "name": "Policies & SOPs",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "2c131efb-17b2-4204-abbc-948e650a037b",
+   "code": "L03",
+   "name": "CEO's Office",
+   "kind": "location",
+   "class": "set"
+  },
+  {
+   "id": "c387197b-3567-41f7-bc81-2b438381406b",
+   "code": "L06",
+   "name": "Meeting Area",
+   "kind": "location",
+   "class": "set"
+  },
+  {
+   "id": "2b3e464b-391c-49e6-b6d5-316692b8adcf",
+   "code": "C07",
+   "name": "Someone",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "6b52c194-201a-4e42-a6f2-92fdbfdc93bc",
+   "code": "C03",
+   "name": "Company B Operations Manager",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "34d7adf0-716b-4223-b397-250e6308fd82",
+   "code": "C01",
+   "name": "Company A Operations Manager (Employee)",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "b854d2e1-be89-42a6-8b63-60fbddd3daa0",
+   "code": "P03",
+   "name": "spreadsheet",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "838f47e5-fa5f-4c84-8c4e-a84417d46bab",
+   "code": "P09",
+   "name": "Finance Agent",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "94506d31-aa31-4553-89ce-4969af35e084",
+   "code": "P12",
+   "name": "Crm",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "e3366bcf-b534-41df-ad6a-6aed430b6c16",
+   "code": "P14",
+   "name": "Seven-Stage AI Adoption Framework (animated",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "8b697360-8a5c-428e-b0cc-0b9ef156e6b3",
+   "code": "L04",
+   "name": "modern hotel",
+   "kind": "location",
+   "class": "set"
+  },
+  {
+   "id": "db15fc13-a130-4157-b598-bf102bc7bda4",
+   "code": "C08",
+   "name": "A manager",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "98dc9200-ba6a-4bcc-9792-287f72f9bff3",
+   "code": "C05",
+   "name": "An employee",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "d6089db0-159a-4268-bab8-ecf983950147",
+   "code": "C04",
+   "name": "Voice-over",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "4a7fa163-5898-44e9-823d-dd7c0308d47c",
+   "code": "P06",
+   "name": "orchestrator එක",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "cc7807ac-7bb7-4136-9eda-b1518bc72d13",
+   "code": "P04",
+   "name": "corporate conference enquiry",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "b95edaf5-ea14-4f2c-a955-c7614c8f7626",
+   "code": "P07",
+   "name": "Agent ·",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "94899094-ee56-4957-a79b-c0b13596cb27",
+   "code": "P10",
+   "name": "Company Knowledge",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "fb0fc4f5-1acc-4d14-a429-7d5edbb0b064",
+   "code": "P13",
+   "name": "consolidated quotation",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "58135756-b647-4007-a021-a33184375e3f",
+   "code": "L02",
+   "name": "Office Floor",
+   "kind": "location",
+   "class": "set"
+  },
+  {
+   "id": "ce7c62ee-e946-4f0c-a81a-8487c00e0a0e",
+   "code": "L05",
+   "name": "Modern Hotel Operations Office",
+   "kind": "location",
+   "class": "set"
+  },
+  {
+   "id": "afec3925-e67e-4414-81f2-384fb2e5c62a",
+   "code": "P01",
+   "name": "ChatGPT",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "3d754f34-2947-425a-9991-b737e8a63b65",
+   "code": "C06",
+   "name": "Another employee",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "c417f980-b9a7-45a3-b2ea-989320a158c8",
+   "code": "C02",
+   "name": "Ceo",
+   "kind": "character",
+   "class": null
+  },
+  {
+   "id": "d0cb707f-c0c3-4b3a-be26-90e8c0654fc7",
+   "code": "P15",
+   "name": "Innovations website, showing",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "4eefa819-926f-4d35-bce0-aadbea052c8f",
+   "code": "P19",
+   "name": "car",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "b9e1d7ce-f0ba-4c92-a5d7-b21904869f74",
+   "code": "P16",
+   "name": "Audit Your AI Stage —",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "51e22c84-02ab-466f-991d-bcff01758a9c",
+   "code": "P18",
+   "name": "computer",
+   "kind": "prop",
+   "class": "prop"
+  },
+  {
+   "id": "ca2e40ef-71c2-437f-b889-eb0e07e4e968",
+   "code": "P17",
+   "name": "Calexa Innovations logo",
+   "kind": "prop",
+   "class": "prop"
+  }
+ ],
+ "production": {
+  "id": "af187049-cde5-4bbb-88f4-39d247222355",
+  "title": "test promo",
+  "kind": "drama_series",
+  "orientation": "vertical",
+  "status": "draft",
+  "summary": "",
+  "settings": {
+   "build": {
+    "canon": true,
+    "shots": true,
+    "scenes": true
+   },
+   "video": {
+    "seed": {
+     "mode": "random",
+     "value": null,
+     "take_id": null
+    },
+    "model": null,
+    "takes": 1,
+    "engine": "omni_flash",
+    "options": {},
+    "duration_s": null,
+    "resolution": "720p",
+    "aspect_ratio": null,
+    "negative_prompt": ""
+   },
+   "market": "LK",
+   "max_take_s": 10,
+   "david_order": "linked",
+   "banned_terms": [],
+   "shot_planner": "raphael",
+   "take_lengths": "steps",
+   "final_cut_trim": false,
+   "jonathan_order": "linked",
+   "spoken_language": "si",
+   "fixed_shot_seconds": null,
+   "raphael_length_cap": 1.0,
+   "default_scene_envelope_s": 60
+  },
+  "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "created_at": "2026-11-19T08:29:28.495877+00:00",
+  "updated_at": "2026-11-19T16:18:57.899731+00:00"
+ }
+}

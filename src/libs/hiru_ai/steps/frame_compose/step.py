@@ -5,7 +5,9 @@
                                                               "path", "bucket"}]}]}
     {"op": "compose", <world>, "shot": row, "labels": [], "board": [..]?} -> {"prompt", "pins"}
     {"op": "expected", <world>, "shot": row}              -> {"seen", "unseen", "frame", "hands", "names"}
-    {"op": "brief", <world>, "shot": row, "polished": bool} -> {"sections": [{key, title, text, sources}], "names"}
+    {"op": "brief", <world>, "shot": row}                -> {"sections": [{key, title, text, sources}], "names"}
+    {"op": "shot_prompt", <world>, "shot": row}          -> {"reasons": [...], "pins": {...}} (plan/2026-11-20d D8:
+                                                              why its stored shot prompt is out of date; pins now)
     {"op": "checks", <world>, "shot": row, "attached": [ids], "answer": row | null} -> {"checks": [...]}
     {"op": "reference_sheet", "production": row, "entity": row}  -> {"prompt", "aspect"}
     {"op": "look_sheet", "entity": row, "look": row}              -> {"prompt", "aspect"}
@@ -30,7 +32,7 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
         return {"prompt": prompt, "aspect": aspect}
     if op == "look_sheet":
         return {"prompt": logic.look_sheet(payload["entity"], payload["look"]), "aspect": logic.ASPECT_OF_SHEET}
-    if op not in ("references", "compose", "expected", "checks", "brief", "plate"):
+    if op not in ("references", "compose", "expected", "checks", "brief", "plate", "shot_prompt"):
         raise ValueError(f"unknown op {op!r}")
     world = logic.World.of(payload)
     shot = payload["shot"]
@@ -41,9 +43,11 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
     if op == "compose":
         prompt, pins = world.compose(shot, list(payload["labels"]), list(payload.get("board") or []) or None)
         return {"prompt": prompt, "pins": pins}
-    if op == "brief":  # the prompt as the shot screen shows it, by section (plan/2026-11-11c: the writer's input)
-        brief = world.brief(shot, world.preview_labels(shot), polished=bool(payload.get("polished", True)))
+    if op == "brief":  # the prompt as the shot screen shows it, by section
+        brief = world.brief(shot, world.preview_labels(shot))
         return {"sections": brief.view(), "names": world.names()}
+    if op == "shot_prompt":
+        return {"reasons": world.shot_prompt_reasons(shot), "pins": world.pins_now(shot)}
     if op == "expected":
         return {**world.expected(shot, list(payload.get("board") or []) or None), "names": world.seen_names(shot)}
     return {"checks": logic.sheet_checks(world.seen_names(shot), set(payload.get("attached") or []))

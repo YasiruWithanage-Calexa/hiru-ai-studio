@@ -1,0 +1,288 @@
+SCENE E01-S04: stage 1 finished, stage 2 stopped (The planning run reached its limit before it finished.)
+Seconds: target 45.0, cap 108.0, takes 108 (must 80, cinematic 28)
+
+Logline: A returned phone opens a tentative connection beside a humble food business, until a family summons changes the encounter's rhythm.
+Approach: Grounded romantic social drama, not thriller suspense: visible reciprocal attention gives way to a restrained facial change. Natural rain-softened daylight and controlled contrast preserve the ordinary Colombo setting. Use a readable opening two-shot, clean alternating faces, the necessary caller-display detail, then listening coverage. No added street performers or business activity. The scripted material already exceeds 45 seconds; preserve every line and event rather than accelerating performance.
+Key Image: The phone that brings them together remains in Anudi's right hand as its call separates their attention.
+Geography: Anudi stands frame left facing right; Kasun stands frame right facing left, with his food three-wheeler behind and to his right. All coverage stays on the road side of their axis. Anudi's left hand holds an already open umbrella with her handbag on her left forearm; her right hand receives and retains the smartphone. Kasun initially offers it in his right hand. At the end she leaves toward deep left and he returns toward deep right.
+Arc: Gratitude becomes curiosity (blocks {'first': 0, 'last': 6}): Unforced warmth and growing attention
+Arc: Ambition earns admiration (blocks {'first': 7, 'last': 8}): Respect with a suggestion of attraction
+Arc: The phone interrupts and changes her expression (blocks {'first': 9, 'last': 14}): Private pressure enters a public encounter
+Arc: A farewell leaves the possibility open (blocks {'first': 15, 'last': 17}): Restrained warmth and lingering distraction
+
+4A-1 [c01, stage 1, two_shot, must]
+    SUMMARY: In a road-side two-shot, Anudi receives the smartphone in her right hand from Kasun's right hand, then thanks him for recovering it (L1). Light rain and traffic remain underneath.
+    block 0 = E01-S04-B01: Anudi takes her phone from Kasun.
+    block 1 = E01-S04-B02: "අනේ, Thank you! මම දැක්කෙවත් නෑ."
+    line L1 = E01-S04-B02: "අනේ, Thank you! මම දැක්කෙවත් නෑ."
+    TWO · 40mm · locked_off · eye level, road side of axis · take 6 s
+    why: The uncomplicated shared frame makes the return and gratitude one social gesture.
+    editor: Transfer occupies 0.5-2s; L1 occupies 2-5.5s. Use continuous incoming identity references.
+    framing: TWO, both faces and the handover at waist height visible
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Receives the smartphone in her right hand, then lips move to L1.
+    C01: Gives the smartphone from his right hand to her right hand.
+
+4G-1 [c02, stage 1, two_shot, must]
+    SUMMARY: Kasun attributes the mishap to the rain (L2); Anudi then smiles and looks toward his small business.
+    block 2 = E01-S04-B03: "වැස්ස නිසා වෙන්න ඇති."
+    block 3 = E01-S04-B04: Anudi smiles and looks at his small food business.
+    line L2 = E01-S04-B03: "වැස්ස නිසා වෙන්න ඇති."
+    MWS · 55mm · locked_off · eye level, road side of axis, tighter oblique · take 6 s
+    why: A tighter shared frame avoids an opening jump cut while his explanation leads directly to her glance.
+    editor: L2 1-2.8s; her smile and glance 2.8-4.3s.
+    framing: MWS, both faces and the vehicle behind right
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Smiles and looks toward the food vehicle.
+    C01: Lips move to L2.
+
+4B-1 [c03, stage 1, single, must]
+    SUMMARY: Anudi inquires whether the business belongs to Kasun (L4).
+    block 4 = E01-S04-B05: "මේ ඔයාගේ බිස්නස් එකද?"
+    line L4 = E01-S04-B05: "මේ ඔයාගේ බිස්නස් එකද?"
+    MCU · 65mm · locked_off · eye level, facing screen right · take 4 s
+    why: A clean face makes her curiosity personal.
+    editor: Already facing Kasun; preserve rightward eyeline.
+    framing: MCU of Anudi, face in three-quarter view
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Lips move to L4.
+
+4C-1 [c04, stage 1, single, must]
+    SUMMARY: Kasun confirms ownership and his small beginning (L5).
+    block 5 = E01-S04-B06: "ඔව්. පොඩියට පටන් ගත්තේ."
+    line L5 = E01-S04-B06: "ඔව්. පොඩියට පටන් ගත්තේ."
+    MCU · 65mm · locked_off · eye level, facing screen left · take 6 s
+    why: Stable framing gives his modest beginning dignity.
+    editor: L5 1-3.6s; tail may be trimmed.
+    framing: MCU of Kasun, face in three-quarter view
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C01: Lips move to L5.
+
+4B-2 [c05, stage 1, single, must]
+    SUMMARY: Anudi inquires whether Kasun manages the operation alone (L6).
+    block 6 = E01-S04-B07: "තනියමද මේ හැමදේම කරන්නේ?"
+    line L6 = E01-S04-B07: "තනියමද මේ හැමදේම කරන්නේ?"
+    MCU · 65mm · locked_off · eye level, facing screen right · take 4 s
+    why: Matching her earlier size lets deepening attention come from performance.
+    editor: Match B framing and prop hands.
+    framing: MCU of Anudi, face in three-quarter view
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Lips move to L6.
+
+4C-2 [c06, stage 1, single, must]
+    SUMMARY: Kasun describes working alone, starting with five thousand rupees and hoping to expand (L7).
+    block 7 = E01-S04-B08: "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව."
+    line L7 = E01-S04-B08: "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව."
+    MCU · 65mm · locked_off · eye level, facing screen left · take 8 s
+    why: An uninterrupted face lets ambition emerge without a promotional montage.
+    editor: Full L7 0.7-6.8s, with settled picture before and after.
+    framing: MCU of Kasun, face in three-quarter view
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C01: Lips move to L7.
+
+4D-1 [c07, stage 1, reaction, must]
+    SUMMARY: Anudi's close-up shows a restrained, impressed response to Kasun's ambition. Rain and traffic continue.
+    block 8 = E01-S04-B09: Anudi looks impressed.
+    CU · 85mm · locked_off · eye level, facing screen right · take 4 s
+    why: A restrained close reaction is the landing of his ambition.
+    editor: Admiration develops 1-2.5s; trim the settled tail if needed.
+    framing: CU of Anudi's face beneath umbrella
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Her smile grows slightly.
+
+4E-1 [c08, stage 1, insert, must]
+    SUMMARY: The smartphone rings in Anudi's right hand, displays Father as the caller, and she accepts the incoming call.
+    block 9 = E01-S04-B10: Before she can continue the conversation, her phone suddenly rings. She checks the screen. It's her father.
+    INSERT · 85mm · locked_off · slightly above phone screen · take 4 s
+    why: The caller display and acceptance establish the source before remote audio.
+    editor: Readable incoming-call screen first, then right thumb accepts it; cut to the phone being raised.
+    framing: INSERT, smartphone display large and fully readable in Anudi's right hand
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Accepts the incoming call with her right thumb.
+
+4B-3 [c09, stage 1, single, must]
+    SUMMARY: Anudi raises her phone to her right ear and greets her father (L10), before knowing the call's purpose.
+    block 10 = E01-S04-B11: "හෙලෝ තාත්තේ."
+    line L10 = E01-S04-B11: "හෙලෝ තාත්තේ."
+    MCU · 65mm · locked_off · eye level, facing screen right · take 4 s
+    why: Her readable face and phone carry the start of the call without introducing the remote person.
+    editor: Phone is already answered at the cut; she lifts it to her right ear, then performs L10. Its state remains in her right hand.
+    framing: MCU of Anudi, readable three-quarter face and phone
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Raises the already connected phone to her right ear; lips move to L10.
+
+4D-2 [c10, stage 1, reaction, must]
+    SUMMARY: Anudi listens in close-up as her father begins his urgent summons (L11), which continues uninterrupted over the next picture.
+    block 11 = E01-S04-B12: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා."
+    line L11 = E01-S04-B12: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා."
+    CU · 85mm · locked_off · eye level, facing screen right · take 4 s
+    why: A closer view isolates her initial response and changes scale after the greeting.
+    editor: Use the first three seconds of the continuous eight-second L11 audio; remaining five seconds run on the next shot. Do not repeat or trim the audio.
+    framing: CU of Anudi's face and phone at right ear
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Listens with lips closed and phone at right ear.
+
+4B-4 [c11, stage 1, reaction, must]
+    SUMMARY: Anudi hears the remainder of her father's L11, including the demand to discuss marriage, and her smile slowly disappears.
+    block 11 = E01-S04-B12: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා."
+    block 12 = E01-S04-B13: Anudi's smile slowly disappears.
+    line L11 = E01-S04-B12: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා."
+    MCU · 65mm · locked_off · eye level, facing screen right · take 6 s
+    why: A wider second view maintains uninterrupted audio while her smile disappears, and permits a fresh close angle for her answer.
+    editor: Use the final five seconds of continuous L11 after the three-second first view; match the gradually lowering smile.
+    framing: MCU of Anudi's face and phone at right ear
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Listens with lips closed as her smile gradually disappears.
+
+4D-3 [c12, stage 1, single, must]
+    SUMMARY: Anudi quietly agrees to return home (L13), her phone still at her right ear.
+    block 13 = E01-S04-B14: "හරි තාත්තේ. මම එන්නම්."
+    line L13 = E01-S04-B14: "හරි තාත්තේ. මම එන්නම්."
+    CU · 85mm · locked_off · eye level, facing screen right · take 6 s
+    why: The same close scale carries the change from listening to subdued compliance.
+    editor: L13 remains whole. Match the lowered gaze and phone at right ear.
+    framing: CU of Anudi's face and phone at right ear
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Lips move to L13.
+
+4A-2 [c13, stage 1, two_shot, must]
+    SUMMARY: Anudi ends the call on the phone in her right hand; Kasun registers her changed expression, and she looks back at him.
+    block 14 = E01-S04-B15: She ends the call. Kasun notices her changed expression. Anudi looks at him again.
+    TWO · 40mm · locked_off · eye level, road side of axis · take 4 s
+    why: The shared frame makes his observation and her return to eye contact legible without implying he heard the call.
+    editor: Phone opens held in front of her after leaving her ear; end-call touch, his observation and her look occupy 0.5-3.5s.
+    framing: TWO, both faces visible and phone at her chest
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Ends the call with her right thumb and looks back at Kasun.
+    C01: Watches Anudi's face.
+
+4B-5 [c14, stage 1, single, must]
+    SUMMARY: Anudi says she must leave but leaves open the possibility of meeting Kasun again (L15).
+    block 15 = E01-S04-B16: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු."
+    line L15 = E01-S04-B16: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු."
+    MCU · 65mm · locked_off · eye level, facing screen right · take 6 s
+    why: Her face retains a trace of warmth while she takes leave.
+    editor: Full L15, rightward eyeline and phone still in right hand.
+    framing: MCU of Anudi, face in three-quarter view
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Lips move to L15.
+
+4C-3 [c15, stage 1, single, must]
+    SUMMARY: Kasun accepts her departure and wishes her well (L16) in a medium close-up.
+    block 16 = E01-S04-B17: "හරි. පරිස්සමින් යන්න."
+    line L16 = E01-S04-B17: "හරි. පරිස්සමින් යන්න."
+    MCU · 65mm · locked_off · eye level, facing screen left · take 4 s
+    why: His simple concern needs no camera emphasis.
+    editor: L16 is whole; trim handles as necessary.
+    framing: MCU of Kasun, face in three-quarter view
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C01: Lips move to L16.
+
+4F-1 [c16, stage 1, master, must]
+    SUMMARY: In a wide view Anudi walks away with the phone, handbag and umbrella; Kasun watches, then turns and walks toward his food three-wheeler.
+    block 17 = E01-S04-B18: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else.
+    WIDE · 35mm · locked_off · eye level, road side of axis · take 4 s
+    why: One shared wide makes their separation and his return to the business spatially clear.
+    editor: Anudi exits deep left first; Kasun watches then walks deep right toward the vehicle. No business routine is invented.
+    framing: WIDE, both full figures and the food three-wheeler
+    movement: locked-off on sticks
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Walks away toward deep left and exits frame.
+    C01: Watches Anudi, then turns and walks toward the food vehicle.
+
+4H-1 [c17, stage 2, insert, should, anchor c10,c11]
+    SUMMARY: An extreme close-up isolates Anudi's right hand around the phone at her right ear. Her fingertips press closer against its edge while a brief portion of L11 continues from the anchor.
+    block 11 = E01-S04-B12: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා."
+    ECU · 100mm macro · shallow_isolation · road-side oblique at ear height · take 4 s
+    why: The existing views carry the facial change; an isolated grip makes the same interruption physical, linking this phone to the object that began the encounter.
+    editor: Use only a brief section within the continuous L11 audio; do not restart or extend the line.
+    framing: ECU of right fingertips, handset edge and a narrow strip of cheek; screen turned away
+    movement: fixed shallow isolation throughout
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: Her right fingertips press slightly closer against the handset edge.
+
+4I-1 [c18, stage 2, reaction, should, anchor c13]
+    SUMMARY: A very slow creep frames Kasun looking toward Anudi after she lowers her phone. His faint smile settles and he keeps his attention on her.
+    block 14 = E01-S04-B15: She ends the call. Kasun notices her changed expression. Anudi looks at him again.
+    CU · 85mm · slow_creep · road-side three-quarter on Kasun facing left · take 6 s
+    why: The two-shot reconnects their geography; this isolated face lets the editor register the exact instant Kasun notices the distance in her expression without implying knowledge of the remote conversation.
+    editor: Insert after her return glance in c13, with phone already lowered; keep his eyeline to frame left.
+    framing: CU of Kasun, face to frame left, vehicle softly behind his right shoulder
+    movement: a very slow straight creep inward within close-up
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C01: His faint smile settles as he keeps his gaze toward Anudi.
+
+4J-1 [c19, stage 2, clean_exit, nice, anchor c16]
+    SUMMARY: After Anudi has left, the camera withdraws from Kasun standing beside the food three-wheeler. He remains oriented toward the vehicle while empty wet roadside expands to his left.
+    block 17 = E01-S04-B18: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else.
+    WIDE · 35mm · dolly_out · road-side eye-level wide · take 6 s
+    why: The locked master supplies the departure and return; retreating after those movements leaves the roadside space between them visible and gives the scene a restrained visual release.
+    editor: Continue after c16 with Anudi already beyond deep left and Kasun already at the vehicle; do not repeat either walk or add business activity.
+    framing: WIDE with Kasun and food three-wheeler at deep right, empty departure space at left
+    movement: one slow straight dolly backward throughout
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C01: He remains beside the vehicle with his hands quiet.
+
+4K-1 [c20, stage 2, reaction, nice, anchor c14]
+    SUMMARY: After L15, Anudi keeps her gaze on Kasun with a small closed-mouth smile. A close view isolates her beneath the umbrella, with her phone still lowered in her right hand.
+    block 15 = E01-S04-B16: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු."
+    CU · 85mm · shallow_isolation · road-side three-quarter facing right · take 4 s
+    why: The farewell coverage carries L15; a silent close gives its surviving warmth a visible afterbeat before Kasun's response, without enlarging the performance into a promise.
+    editor: Use a short tail after L15 and before L16; do not repeat the farewell or turn this into another line performance.
+    framing: CU beneath the open umbrella, Anudi looking frame right
+    movement: fixed shallow isolation throughout
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C02: She maintains a small closed-mouth smile toward Kasun.
+
+4L-1 [c21, stage 2, establishing, nice, anchor c01]
+    SUMMARY: A wide roadside view establishes Anudi beneath her umbrella at left and Kasun beside his food three-wheeler at right. His right hand already extends the phone toward her; the shot ends before she receives it.
+    WIDE · 28mm · locked_off · road-side eye-level wide · take 4 s
+    why: The opening medium two-shot makes the transfer clear but cannot situate its modest scale within the wet Colombo roadside; this short geographic opening does so without adding street activity.
+    editor: Open before c01. Phone is still extended from Kasun's right hand here; the actual transfer belongs exclusively to c01.
+    framing: WIDE full figures, Anudi left and Kasun right with the vehicle behind his right shoulder
+    movement: locked-off on sticks throughout
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+    C01: He keeps his right hand extended with the smartphone.
+    C02: She faces Kasun with her right hand free to receive the phone.
+
+4M-1 [c22, stage 2, pov, nice, anchor c02]
+    SUMMARY: From Anudi's viewing direction, the food three-wheeler fills the picture beyond a soft edge of her open umbrella. The vehicle remains still during a brief subjective view.
+    block 3 = E01-S04-B04: Anudi smiles and looks at his small food business.
+    POV · 50mm · foreground_framing · Anudi's oblique view toward deep right · take 4 s
+    why: The locked two-shot records her glance; a single subjective view lets the audience share her new attention to the modest business without inventing products, customers or a montage.
+    editor: Cut from her glance at the end of c02 to the vehicle, then to c03. No extra business action and no added signage or product detail.
+    framing: POV of the food three-wheeler beyond a small soft umbrella edge; neither face visible
+    movement: fixed foreground framing throughout
+    light: Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.
+
+Editor note: The must bin has 16 clips totalling 80 seconds of raw takes, under the 81-second cap. The 53-second script and minimum take sizes make the raw bin longer than the 54-second target; trim handles and overlap audio in the assembly, never compress or omit dialogue.
+Editor note: Use c01 for the return and L1, c02 for L2 and the look toward the business, the B/C singles for the exchange, and c07 for admiration. Keep the screen direction and the prop hands matched.
+Editor note: Use c08 to show the readable caller ID and the acceptance before the remote voice. Add the ring, rain, traffic and end tone in post where silent-source generation suppresses sound.
+Editor note: L11 is one uninterrupted eight-second phone performance, recorded separately in full and laid across c10 and c11: use three seconds over c10 and five seconds over c11, with their handles outside those picture intervals. The checker still reports the full line against each short picture take; do not treat either report as permission to trim, repeat or reword the line. Match Anudi's gradually fading smile across the cut.
+Editor note: Match the right-hand phone from c08 through the ear position in c09-c12 and the lowered position in c13. Kasun can observe Anudi's expression but does not hear the remote words.
+Editor note: In the handover, keep the performers' hands on separate ends of the phone and avoid visible body contact. Maintain the same open umbrella in Anudi's left hand and handbag on her left forearm.
+Editor note: c16 starts with Anudi already facing away; use the preceding reverse to bridge the skipped turn. She exits left before Kasun turns toward the vehicle. Do not add an invented work action or explain his thoughts.
+Editor note: No speed ramp, freeze frame, digital punch-in or split screen is requested; if editorially desired, create it in post from the clean source and preserve dialogue timing. Avoid mirrors, fast finger work, contact between bodies and sharply staged crowds.
+Blend note: c17: cut_in with c10, c11 (the cinematic pass stopped before it wrote a note)
+Blend note: c18: cut_in with c13 (the cinematic pass stopped before it wrote a note)
+Blend note: c19: close with c16 (the cinematic pass stopped before it wrote a note)
+Blend note: c20: close with c14 (the cinematic pass stopped before it wrote a note)
+Blend note: c21: open with c01 (the cinematic pass stopped before it wrote a note)
+Blend note: c22: cut_in with c02 (the cinematic pass stopped before it wrote a note)
+Left: c10 needs 9.5 s for what it carries and the take is 4 s: one line longer than any take here (8 s). Reported; it is never trimmed.
+Left: c11 needs 10.5 s for what it carries and the take is 6 s: one line longer than any take here (8 s). Reported; it is never trimmed.

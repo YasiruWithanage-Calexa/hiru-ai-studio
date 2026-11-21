@@ -89,12 +89,12 @@ def test_every_field_of_the_camera_panel_is_in_the_prompt_as_it_stands():
     shot = ("Shot: Medium close-up (MCU of Sunil over the scales), eye level (low three-quarter from the ice trays); "
             "50mm lens at f/2.8, a normal lens")
     assert shot in text, "the panel's lens and stop, numbers and look"
-    assert "Static: a steady, locked-off frame." in text
+    assert "The camera holds still: a steady, unmoving frame." in text
     assert "Camera on side A of the line of action: the action reads left to right." in text
     # the preset's time leads; the planner's light names the source (2026-11-18: the preset's source is a guess)
     assert "Lighting: Dawn: Bare tungsten bulbs hang over the trays" in text, "the panel's lighting leads"
     moved = brief(camera=camera(movement="Dolly in", speed="Slow", axis="Side B · right to left")).text()
-    assert "Slow dolly in: this is the opening frame of the move." in moved
+    assert "This is the opening frame of the move: from here the camera slowly pushes in." in moved
     assert "Camera on side B of the line of action: the action reads right to left." in moved
 
 
@@ -171,9 +171,10 @@ def test_the_scene_look_is_read_only_from_a_slate_the_plan_has():
 
 
 def test_the_panels_nearest_lens_and_stop():
-    assert nearest_option(CameraField.LENS, "braced handheld, 65mm, f/2.8") == "50mm"
-    assert nearest_option(CameraField.LENS, "70mm") == "85mm"
-    assert nearest_option(CameraField.LENS, "a 24mm wide") == "28mm"
+    # plan/2026-11-20c: the catalogue's lenses (18 to 135mm, with 32/40/55/65/75)
+    assert nearest_option(CameraField.LENS, "braced handheld, 65mm, f/2.8") == "65mm"
+    assert nearest_option(CameraField.LENS, "70mm") == "75mm"  # a tie goes to the longer lens
+    assert nearest_option(CameraField.LENS, "a 20mm wide") == "18mm"
     assert nearest_option(CameraField.APERTURE, "T2.1, f/2.2") == "f/2"
     assert nearest_option(CameraField.LENS, "handheld") == "" and nearest_option(CameraField.APERTURE, "") == ""
 
@@ -238,24 +239,47 @@ def test_over_the_limit_the_setup_frame_goes_before_anyone():
     assert [p.role for p in planned] == ["character", "character", "place"]
 
 
-# ── the prompt writer's words (plan/2026-11-11c) ───────────────────────────────────────────
+# ── the shot prompt's words (plan/2026-11-20d D5) ──────────────────────────────────────────────────────────────────
+
+SHOT_PROMPT = {"composition": "The camera is low at chest height, looking slightly up at Sunil, waist-up on the left "
+                              "third, the ice trays leading in from the right.",
+               "people": "Sunil stands behind the scales, facing right toward the buyer, a seer fish in both hands.",
+               "background": "The covered stall, the far stalls soft behind him.",
+               "light": "Bare bulbs above, cold blue dawn from the lagoon side."}
 
 
-def test_a_stored_polish_is_used_only_while_the_code_words_are_the_ones_it_was_written_from():
-    from contracts.prompt_polish import stamp
-
-    code = {s.key: s.text for s in brief().sections}
-    record = {"light": {"stamp": stamp(code["light"]), "text": "Warm 3800K bulbs pool over the trays."},
-              "mood": {"stamp": "0" * 12, "text": "Stale words."}}
-    used = brief(shot={"slate": "4C-2", "design": {"frame_polish": record}})
+def test_a_current_shot_prompt_paints_the_picture_and_code_keeps_identity_time_colour_and_format():
+    plain, used = brief(), brief(shot_prompt=SHOT_PROMPT)
     by_key = {s["key"]: s for s in used.view()}
-    assert by_key["light"]["text"] == "Warm 3800K bulbs pool over the trays." and by_key["light"]["sources"] == [
-        "prompt_writer"]
-    assert by_key["mood"]["text"] == code["mood"], "written from other words: the code's come back"
-    plain = brief(shot={"slate": "4C-2", "design": {"frame_polish": record}}, polished=False)
-    assert plain.text() == brief().text()
-    stale = brief(camera=camera(lighting="Day, open sun"), shot={"slate": "4C-2", "design": {"frame_polish": record}})
-    assert "Warm 3800K bulbs" not in stale.text(), "a person changed the light: the polish no longer applies"
+    assert by_key["shot"]["text"] == f"This shot: {SHOT_PROMPT['composition']}"
+    assert by_key["shot"]["sources"] == ["shot_prompter"] and "composition" not in by_key
+    assert SHOT_PROMPT["people"] in by_key["people"]["text"]
+    assert by_key["people"]["text"].startswith("Who they are: Sunil")
+    assert "Behind the scales, frame left" not in used.text(), "the shot prompt places the people, not the IR"
+    assert "Background: The covered stall" in by_key["place"]["text"] and "Time: dawn" in by_key["place"]["text"]
+    assert "Inside the stall" not in used.text()
+    assert by_key["light"]["text"].startswith("Lighting: Bare bulbs above") and "Colour" in used.text()
+    assert used.view()[-1] == {k: v for k, v in plain.view()[-1].items()}, "the close is code's"
+    assert used.view()[0] == plain.view()[0], "the lead is code's"
+
+
+def test_a_persons_lighting_change_still_wins_over_the_shot_prompt():
+    used = brief(camera=camera(lighting="Day, open sun"), shot_prompt=SHOT_PROMPT)
+    assert "Lighting: Day, open sun" in used.text() and "Bare bulbs above" not in used.text()
+
+
+def test_no_shot_prompt_or_an_empty_one_keeps_the_code_words():
+    assert brief(shot_prompt=None).text() == brief().text() == brief(shot_prompt={"composition": ""}).text()
+
+
+def test_a_frame_with_nobody_in_it_names_no_faces():
+    """plan/2026-11-20d D7 (lab/shot_prompts 2D-1): an insert attaches only a place plate: no face sentence."""
+    only_place = references_block(["the location plate for the lagoon market"])
+    assert "faces" not in " ".join(only_place) and "the same place" in only_place[0]
+    assert "the same faces" in references_block(["the face sheet for Sunil"])[0]
+    empty = frame_brief(ir={"setting": "A desk"}, camera=camera(), aspect_ratio="9:16", cast=[],
+                        references=["the location plate for the office"], shot_prompt=SHOT_PROMPT)
+    assert "Who they are" not in empty.text() and "faces" not in empty.text()
 
 
 # ── the production's genre (plan/2026-11-12b) ───────────────────────────────────────────────────────────────────────
@@ -275,12 +299,6 @@ def test_without_a_genre_the_lead_is_byte_for_byte_as_before():
     assert plain == frame_brief(ir=IR, camera=camera(), aspect_ratio="16:9", cast=[SUNIL], scene=SCENE,
                                 genre="").text()
     assert plain.startswith(LEAD)
-
-
-def test_the_prompt_writer_never_rewords_the_lead():
-    from contracts.prompt_polish import POLISHABLE
-
-    assert "lead" not in POLISHABLE["first_frame"]
 
 
 def test_a_cut_to_black_or_a_title_card_is_a_black_plate():

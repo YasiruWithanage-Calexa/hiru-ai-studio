@@ -30,6 +30,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_serializer, model_validator
 
+from contracts import camera as cam
 from contracts.canon import look_stamp, name_key
 from contracts.shotplan import Item
 
@@ -45,22 +46,54 @@ class CameraField(StrEnum):
     SPEED = "speed"
     AXIS = "axis"
     LIGHTING = "lighting"
+    # plan/2026-11-20c D5: the Camera agent's further fields. Optional: "" = not set (a design made before the agent)
+    SUPPORT = "support"
+    HEIGHT = "height"
+    FOCUS = "focus"
+    COMPOSITION = "composition"
+    TIME = "time"
 
 
-# The panel's choices, field by field. Mirrors the frontend's
-# `src/features/production/lib/camera-options.ts`; change both together.
+# The eight fields every design has had; the five after them are optional ("" = not set).
+CORE_FIELDS: tuple[CameraField, ...] = (CameraField.FRAMING, CameraField.ANGLE, CameraField.LENS,
+                                        CameraField.APERTURE, CameraField.MOVEMENT, CameraField.SPEED,
+                                        CameraField.AXIS, CameraField.LIGHTING)
+OPTIONAL_FIELDS: tuple[CameraField, ...] = tuple(f for f in CameraField if f not in CORE_FIELDS)
+
+# The panel's choices, field by field, from the camera catalogue (`contracts.camera`, plan/2026-11-20c D6). Mirrors the
+# frontend's `src/features/production/lib/camera-options.ts`; change both together.
 CAMERA_OPTIONS: dict[CameraField, tuple[str, ...]] = {
-    CameraField.FRAMING: ("Wide shot", "Medium shot", "Medium close-up", "Close-up", "Two-shot",
-                          "Over-the-shoulder", "Insert"),
-    CameraField.ANGLE: ("Eye level", "Low angle", "High angle", "Overhead"),
-    CameraField.LENS: ("28mm", "35mm", "50mm", "85mm"),
-    CameraField.APERTURE: ("f/1.8", "f/2", "f/2.8", "f/4", "f/5.6"),
-    CameraField.MOVEMENT: ("Static", "Dolly in", "Dolly out", "Pan", "Handheld"),
-    CameraField.SPEED: ("None", "Slow", "Medium", "Fast"),
-    CameraField.AXIS: ("Side A · left to right", "Side B · right to left"),
-    CameraField.LIGHTING: ("Night, lamp key", "Night, moonlight", "Day, window light", "Day, open sun",
-                           "Dawn, soft ambient", "Dusk, soft ambient"),
+    CameraField.FRAMING: tuple(cam.SIZES.values()),
+    CameraField.ANGLE: tuple(cam.ANGLES.values()),
+    CameraField.LENS: cam.LENSES,
+    CameraField.APERTURE: cam.APERTURES,
+    CameraField.MOVEMENT: tuple(m.label for m in cam.MOVES),
+    CameraField.SPEED: tuple(cam.SPEEDS.values()),
+    CameraField.AXIS: tuple(cam.AXES.values()),
+    CameraField.LIGHTING: cam.LIGHTING,
+    CameraField.SUPPORT: tuple(cam.SUPPORTS.values()),
+    CameraField.HEIGHT: tuple(cam.HEIGHTS.values()),
+    CameraField.FOCUS: tuple(cam.FOCUS.values()),
+    CameraField.COMPOSITION: tuple(cam.COMPOSITIONS.values()),
+    CameraField.TIME: tuple(cam.TIMES.values()),
 }
+
+
+def _known_value(f: CameraField, value: str) -> bool:
+    return value in CAMERA_OPTIONS[f] or (f in OPTIONAL_FIELDS and value == "")
+
+
+def _normalised(data: Any) -> Any:
+    """Old panel words ("Dolly in", "Handheld") in today's: stored designs and overrides keep validating (D6)."""
+    if not isinstance(data, Mapping):
+        return data
+    out = dict(data)
+    move = out.get("movement")
+    if isinstance(move, str) and move in cam.OLD["movement"]:
+        if move in cam.OLD_SUPPORT and not out.get("support"):
+            out["support"] = cam.OLD_SUPPORT[move]
+        out["movement"] = cam.normalise("movement", move)
+    return out
 
 # The director's shot size (Phase 3, `shots.framing`) in the panel's words. The director's
 # choice wins: a recommendation never changes a shot's size, only how it is lensed and moved.
@@ -76,7 +109,7 @@ _LENS_FOR: dict[str, tuple[str, str]] = {
 
 
 class CameraSettings(BaseModel):
-    """One shot's camera, every field one of `CAMERA_OPTIONS`."""
+    """One shot's camera, every field one of `CAMERA_OPTIONS` (the optional five may be "": not set)."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -88,21 +121,32 @@ class CameraSettings(BaseModel):
     speed: str
     axis: str
     lighting: str
+    support: str = ""
+    height: str = ""
+    focus: str = ""
+    composition: str = ""
+    time: str = ""
+
+    @model_validator(mode="before")
+    @classmethod
+    def _old_words(cls, data: Any) -> Any:
+        return _normalised(data)
 
     @model_validator(mode="after")
     def _known(self) -> CameraSettings:
         for f in CameraField:
             value = getattr(self, f.value)
-            if value not in CAMERA_OPTIONS[f]:
+            if not _known_value(f, value):
                 raise ValueError(f"{f.value} must be one of: {', '.join(CAMERA_OPTIONS[f])}")
         return self
 
     def with_overrides(self, overrides: Mapping[str, Any] | None) -> CameraSettings:
         """The camera as it stands: the recommendation with a person's changes on top. A change
-        that is no longer a valid choice is ignored rather than breaking the shot."""
+        that is no longer a valid choice is ignored rather than breaking the shot. An old word
+        ("Dolly in") counts as today's ("Push in")."""
         data = self.model_dump()
-        for key, value in (overrides or {}).items():
-            if key in data and isinstance(value, str) and value in CAMERA_OPTIONS[CameraField(key)]:
+        for key, value in (_normalised(overrides) or {}).items():
+            if key in data and isinstance(value, str) and value and value in CAMERA_OPTIONS[CameraField(key)]:
                 data[key] = value
         return CameraSettings.model_validate(data)
 
@@ -120,6 +164,18 @@ class CameraUpdate(BaseModel):
     speed: str | None = None
     axis: str | None = None
     lighting: str | None = None
+    support: str | None = None
+    height: str | None = None
+    focus: str | None = None
+    composition: str | None = None
+    time: str | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def _old_words(cls, data: Any) -> Any:
+        if isinstance(data, Mapping) and isinstance(data.get("movement"), str):
+            return {**data, "movement": cam.normalise("movement", data["movement"])}
+        return data
 
     @model_validator(mode="after")
     def _known(self) -> CameraUpdate:
@@ -143,25 +199,36 @@ def lighting_for(heading: str, time_of_day: str) -> str:
     return "Day, open sun" if exterior else "Day, window light"
 
 
+HOLD = cam.MOVE["hold"].label
+
+
 def default_camera(framing: str, *, heading: str = "", time_of_day: str = "") -> CameraSettings:
     """The rule-based recommendation: the director's size, a lens and stop that suit it, a
-    locked-off camera at eye level on side A, and light from the scene heading."""
+    camera that holds at eye level on side A, and light from the scene heading. Since plan/2026-11-20c the Camera agent
+    designs the camera; this stays for a clip the agent could not design (D10) and a shot no agent has seen."""
     lens, stop = _LENS_FOR.get(framing, ("35mm", "f/2.8"))
     return CameraSettings(framing=FRAMING_LABEL.get(framing, "Medium shot"), angle="Eye level", lens=lens,
-                          aperture=stop, movement="Static", speed="None", axis=CAMERA_OPTIONS[CameraField.AXIS][0],
+                          aperture=stop, movement=HOLD, speed="None", axis=CAMERA_OPTIONS[CameraField.AXIS][0],
                           lighting=lighting_for(heading, time_of_day))
 
 
-def storyboard_note(camera: CameraSettings) -> str:
-    """The note under a storyboard tile: "50mm · dolly in"."""
-    move = camera.movement.lower() if camera.speed in ("None", "Medium") or camera.movement == "Static" \
+def is_hold(camera: CameraSettings) -> bool:
+    """The camera does not move (a hold, or a float, which the video model renders still: plan/2026-11-20c D7)."""
+    return cam.slug_of("movement", camera.movement) in cam.HOLDS
+
+
+def storyboard_note(camera: CameraSettings, trigger: str = "") -> str:
+    """The note under a storyboard tile: "50mm · slow push in on L4" (the trigger only from the Camera agent's design,
+    while a person has not changed the move)."""
+    move = camera.movement.lower() if camera.speed in ("None", "Medium") or is_hold(camera) \
         else f"{camera.speed.lower()} {camera.movement.lower()}"
-    return f"{camera.lens} · {move}"
+    on = f" on {trigger}" if trigger and not is_hold(camera) else ""
+    return f"{camera.lens} · {move}{on}"
 
 
 def camera_sentence(camera: CameraSettings) -> str:
     """The camera in one sentence of plain filmmaking words (for prompts)."""
-    move = ("Locked-off, no camera movement" if camera.movement == "Static"
+    move = ("Locked-off, no camera movement" if is_hold(camera)
             else f"{camera.speed.lower() + ' ' if camera.speed != 'None' else ''}{camera.movement.lower()}, "
                  "one smooth move")
     depth = "shallow depth of field" if camera.aperture in ("f/1.8", "f/2", "f/2.8") else "deep focus"
@@ -344,6 +411,10 @@ class Pins(BaseModel):
     script_hash: str
     canon: dict[str, int] = Field(default_factory=dict)  # canon entity id → card version
     looks: dict[str, LookPin] = Field(default_factory=dict)  # character id → look (frames only)
+    # plan/2026-11-20d D8 (`contracts.picture_pins`): the camera fields that shape the still (and, on a frame, the shot
+    # prompt's opening it was drawn from), and those that shape the motion. {} = made before they were pinned.
+    picture: dict[str, str] = Field(default_factory=dict)
+    motion: dict[str, str] = Field(default_factory=dict)
 
 
 def shot_items(items: list[Item], start: int, end: int) -> list[Item]:
@@ -415,15 +486,63 @@ def look_pins(ids: Iterable[str], looks: Mapping[str, Mapping[str, Any]]) -> dic
     return {i: LookPin.of(looks[i]) for i in ids if i in looks}
 
 
+# plan/2026-11-20d D8: what each pinned camera field is called in a reason, and the fields stored as a short hash (long
+# text: a change is named, never shown)
+PIN_LABELS = {"framing": "size", "angle": "angle", "height": "height", "lens": "lens", "aperture": "stop",
+              "focus": "focus", "composition": "composition", "axis": "side of the line", "lighting": "lighting",
+              "opens_on": "opening picture", "movement": "move", "speed": "speed", "start_s": "start",
+              "end_s": "settle", "trigger": "trigger", "lands_on": "where it lands", "end_size": "end size",
+              "sentence": "camera sentence"}
+HASHED_PINS = ("opens_on", "lands_on", "sentence", "opening")
+OPENING_REWRITTEN = "The shot's prompts were rewritten: a new opening state."
+BEFORE_CAMERA = "Made before the Camera agent designed this shot: it shows the old camera."
+
+
+def camera_changes(was: Mapping[str, str] | None, now: Mapping[str, str] | None, *, head: str) -> list[str]:
+    """The named fields of a picture or motion pin that moved, before → after (D8): ["The camera changed: angle eye
+    level → low; height eye → hip."]. Only the fields `was` pinned count (an older pin knows fewer); the shot prompt's
+    `opening` is its own sentence. [] when nothing moved or nothing was pinned."""
+    if not was:
+        return []
+    now = now or {}
+    bits, out = [], []
+    for key, before in was.items():
+        after = str(now.get(key) or "")
+        if str(before or "") == after:
+            continue
+        if key == "opening":
+            out.append(OPENING_REWRITTEN)
+        elif key in HASHED_PINS:
+            bits.append(f"{PIN_LABELS.get(key, key)} changed")
+        else:
+            bits.append(f"{PIN_LABELS.get(key, key)} {str(before or 'not set').lower()} → {after.lower() or 'not set'}")
+    return ([f"{head}: {'; '.join(bits)}."] if bits else []) + out
+
+
 def stale_reasons(pins: Pins | Mapping[str, Any] | None, *, shot_version: int, script_hash: str,
-                  canon: Mapping[str, CastMember], looks: Mapping[str, LookPin] | None = None) -> list[str]:
+                  canon: Mapping[str, CastMember], looks: Mapping[str, LookPin] | None = None,
+                  picture: Mapping[str, str] | None = None, motion: Mapping[str, str] | None = None,
+                  designed: bool = False) -> list[str]:
     """Why something made against `pins` is out of date now ([] when it is current).
     `canon`: the production's entities by id, with their current version. `looks`: the looks the
-    shot's people wear now (`look_pins`); given for frames only, which are painted with them."""
+    shot's people wear now (`look_pins`); given for frames only, which are painted with them.
+    `picture` / `motion` (plan/2026-11-20d D8, `contracts.picture_pins`): the shot's pins now, compared with what was
+    pinned when given (a frame: picture; a video prompt and a shot prompt: both).
+    `designed`: the Camera agent designed this shot. Then something pinned with no camera at all was made before that
+    design (an older frame or prompt, or one the legacy engine wrote) and is out of date: it shows the old camera
+    (the audit of 2026-11-21: a "tripod, does not move at all" prompt passed as current)."""
     if not pins:
         return []
     p = pins if isinstance(pins, Pins) else Pins.model_validate(pins)
     reasons: list[str] = []
+    unpinned = (picture is not None and not p.picture) or (motion is not None and not p.motion)
+    if designed and unpinned:
+        reasons.append(BEFORE_CAMERA)
+    else:
+        if picture is not None:
+            reasons += camera_changes(p.picture, picture, head="The camera changed")
+        if motion is not None:
+            reasons += camera_changes(p.motion, motion, head="The camera move changed")
     if p.shot_version != shot_version:
         reasons.append("The shot changed (its length, size, sound or join).")
     if p.script_hash != script_hash:

@@ -139,7 +139,7 @@ class FakePainter:
         self.refuse, self.fail = refuse, fail
 
     def __call__(self, prompt: str, aspect: str, references: list[Reference], *, draft: bool = False,
-                 sheet: bool = False) -> Picture:
+                 sheet: bool = False, quality: str = "") -> Picture:
         self.calls.append({"prompt": prompt, "aspect": aspect, "references": [r.label for r in references],
                            "pictures": [r.data for r in references]})
         self.drafts.append(draft)

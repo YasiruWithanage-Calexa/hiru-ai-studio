@@ -63,10 +63,13 @@ class OpenAISettings(BaseModel):
     # The Scene board writer (plan/2026-11-14): the `board` tier, the storyboard lab's model and effort.
     model_board: str = "gpt-6.1-sol"
     effort_board: str = "high"
-    # The video prompt agent (plan/2026-11-20b D2): the `video_prompter` tier, the lab's choice (lab/video_prompt
-    # run 003)
-    model_video_prompter: str = "gpt-6.1-sol"
-    effort_video_prompter: str = "low"
+    # The Shot prompt agent (plan/2026-11-20d D2): the `shot_prompter` tier, the lab's model and effort
+    # (lab/shot_prompts). It replaces plan/2026-11-20b's video prompter.
+    model_shot_prompter: str = "gpt-6.1-sol"
+    effort_shot_prompter: str = "medium"
+    # The Camera agent (plan/2026-11-20c D2): the `camera_agent` tier, the lab's model and effort (lab/camera_agent)
+    model_camera_agent: str = "gpt-6.1-sol"
+    effort_camera_agent: str = "medium"
     model_vision: str = "gpt-5-mini"  # looks at pictures (the frame check); no reasoning effort
     model_image: str = "gpt-image-2"
     image_quality: str = "medium"  # a final first frame
@@ -115,14 +118,6 @@ class BreakdownSettings(BaseModel):
     # plan/2026-11-12c phase 7: the canon refine runs beside fill in every build (two calls, ~$0.06-0.10 a short
     # production); off writes the canon as extracted, as before
     refine: bool = True
-
-
-class PromptWriterSettings(BaseModel):
-    """The prompt writer (plan/2026-11-11c): `PROMPT_WRITER__*`, the FIRST FRAME's prompt only (plan/2026-11-20b D12: a
-    video prompt is the video prompt agent's). Off until a person turns it on after a live check: with it off, the
-    first-frame prompt is the code's own words and no model is called."""
-
-    enabled: bool = False
 
 
 class SupabaseSettings(BaseModel):
@@ -181,7 +176,6 @@ class AISettings(BaseSettings):
     reader: ReaderSettings = ReaderSettings()
     breakdown: BreakdownSettings = BreakdownSettings()
     sable: SableSettings = SableSettings()
-    prompt_writer: PromptWriterSettings = PromptWriterSettings()
     # Where traces go (ADR 0008: Langfuse Cloud). Langfuse's own names, as its settings page prints them. Empty keys =
     # no tracing.
     langfuse_public_key: str = ""

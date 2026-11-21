@@ -345,7 +345,7 @@ def _frame_render_graph(payload: Any, store: Any, jobs: Any, paint: Any) -> dict
             store.upload(bucket, path, data, mime)
 
     def images(prompt: str, aspect: str, references: list[Any], *, draft: bool = False,
-               sheet: bool = False) -> Any:
+               sheet: bool = False, quality: str = "") -> Any:
         try:
             return paint(prompt, aspect, references, draft=draft, sheet=sheet)
         except RefusedError as exc:

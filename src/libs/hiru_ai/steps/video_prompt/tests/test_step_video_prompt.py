@@ -76,7 +76,6 @@ def test_the_lines_must_be_the_clips_each_once_in_order():
     ("people", 'Anudi, who said "thanks", stands left.', "quotation marks"),
     ("sound", "Rain; her words are heard in the edit over this shot.", "a note to us"),
     ("situation", "As the planner asked, they stand in the rain.", "a note to us"),
-    ("camera", "A slow push-in on the two of them.", "moves it"),
     ("situation", "Blood on the road where he fell.", "decline"),
     ("sound", "rain " * 80, "characters, at most 250"),
 ])
@@ -109,8 +108,28 @@ def test_a_heard_voice_named_as_heard_passes_and_placed_in_frame_fails():
 # ── the assembly ───────────────────────────────────────────────────────────────────────────────────────────────────
 
 
+SENTENCE = "In an eye-level waist-up two-shot, the camera slowly pushes closer to both of them, then comes to rest."
+
+
+def with_camera(slate: str, sentence: str = SENTENCE) -> dict:
+    """The clip as `facts.clip_facts` builds it since plan/2026-11-20c D13: with the camera sentence code puts in."""
+    return {**copy.deepcopy(CLIPS[slate]), "camera_sentence": sentence}
+
+
+def test_the_camera_is_codes_sentence_never_the_agents_and_the_brief_says_so():
+    """plan/2026-11-20c D13: the Camera agent's sentence (or code's after a person's change) is the Camera section;
+    a camera the video prompter still writes is ignored, and no gate reads it."""
+    d = {**answer("4A-2"), "camera": "A steady, unmoving frame."}
+    made = logic.assemble(d, with_camera("4A-2"))
+    camera = next(s for s in made["sections"] if s["id"] == "camera")
+    assert camera["segments"][0]["text"] == SENTENCE and "unmoving" not in made["prose"]
+    assert logic.gates(d, with_camera("4A-2")) == logic.gates({**d, "camera": "A whip pan."}, with_camera("4A-2"))
+    assert f"Camera (designed; code puts it in the prompt, do not write it): {SENTENCE}" in logic.clip_brief(
+        with_camera("4A-2"))
+
+
 def test_the_words_are_the_scripts_as_their_own_segment_and_the_sections_are_the_plans():
-    made = logic.assemble(answer("4A-2"), CLIPS["4A-2"])
+    made = logic.assemble(answer("4A-2"), with_camera("4A-2"))
     assert [s["id"] for s in made["sections"]] == ["opening", "situation", "people", "action", "camera", "sound",
                                                    "rules", "format"]
     words = [seg["sinhala"] for s in made["sections"] for seg in s["segments"] if "sinhala" in seg]
@@ -167,6 +186,21 @@ def test_a_phone_voice_is_not_said_to_come_through_the_phone_twice():
     assert "Father's voice through the phone, urgent and authoritative:" in prose
 
 
+def test_a_delivery_after_to_x_starts_lower_case_unless_it_starts_with_a_name():
+    """plan/2026-11-20d D7 (lab/shot_prompts 2B-1): "to the visitor, Calm and sure" read as a new sentence."""
+    slate = next(s for s, c in CLIPS.items() if any(not ln.get("heard") for ln in logic.spoken(c)))
+    d = answer(slate)
+    line = next(s for s in d["flow"] if s["kind"] == "line")
+    line["how"] = "Calm and sure, a small nod"
+    prose = logic.assemble(d, CLIPS[slate])["prose"]
+    assert ", calm and sure, a small nod:" in prose
+    who = logic.spoken(CLIPS[slate])[0]["speaker"].split(" ")[0]
+    line["how"] = f"{who}'s voice warm, a small nod"
+    assert f", {who}'s voice warm" in logic.assemble(d, CLIPS[slate])["prose"]
+    line["how"] = "OK-ish, a shrug"
+    assert ", OK-ish, a shrug:" in logic.assemble(d, CLIPS[slate])["prose"]
+
+
 @pytest.mark.parametrize(("said", "made"), [
     ("An eye-level medium shot on a 50mm lens, in a steady frame on a tripod.",
      "An eye-level medium shot on a 50mm lens, in a steady unmoving frame."),
@@ -175,7 +209,30 @@ def test_a_phone_voice_is_not_said_to_come_through_the_phone_twice():
 ])
 def test_the_camera_section_names_no_gear(said: str, made: str):
     """Render 007 (360p, 2026-11-20): "a steady frame on a tripod" put a camera on a tripod into two takes."""
-    d = answer("4A-2")
-    d["camera"] = said
-    camera = next(s for s in logic.assemble(d, CLIPS["4A-2"])["sections"] if s["id"] == "camera")
+    camera = next(s for s in logic.assemble(answer("4A-2"), with_camera("4A-2", said))["sections"]
+                  if s["id"] == "camera")
     assert camera["segments"][0]["text"] == made
+
+
+# ── timecodes (lab/timecodes, 2026-11-21) ─────────────────────────────────────────────────────────────────────────
+
+
+def test_each_step_is_prefixed_with_its_range_and_the_format_asks_for_one_continuous_shot():
+    d = answer("4A-2")  # 6 s: action, line, line, action
+    for s, (a, b) in zip(d["flow"], ((0, 1), (1, 3), (3, 5), (5, 6)), strict=True):
+        s["start_s"], s["end_s"] = a, b
+    prose = logic.assemble(d, CLIPS["4A-2"])["prose"]
+    action = prose.split("ACTION & DIALOGUE\n", 1)[1].split("\n\nCAMERA", 1)[0]
+    blocks = action.split("\n\n")
+    assert [b[:7] for b in blocks[:4]] == ["[0-1s] ", "[1-3s] ", "[3-5s] ", "[5-6s] "]
+    assert not blocks[-1].startswith("[")  # the register line is about the whole clip: no time
+    assert prose.rstrip().endswith("Duration 6 seconds. A single continuous shot, no scene cuts.")
+
+
+def test_a_shot_prompt_without_ranges_or_with_broken_ones_is_assembled_as_before():
+    prose = logic.assemble(answer("4A-2"), CLIPS["4A-2"])["prose"]
+    assert "[0-" not in prose and prose.rstrip().endswith("Ends on a cut.")
+    d = answer("4A-2")
+    for s, (a, b) in zip(d["flow"], ((0, 1), (2, 3), (3, 5), (5, 6)), strict=True):  # a gap: not printed
+        s["start_s"], s["end_s"] = a, b
+    assert "[0-1s]" not in logic.assemble(d, CLIPS["4A-2"])["prose"]

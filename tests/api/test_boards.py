@@ -44,13 +44,13 @@ def test_no_board_no_first_frame_d3(world: World, fired: list[dict]):  # noqa: F
     crew = world.headers(world.crew)
     view = world.client.get(board_url(world, s), headers=world.headers(world.reviewer)).json()
     assert view["state"] == "none" and view["parts"] == []
-    r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew)
-    assert r.status_code == 409 and r.json()["detail"] == boards.NO_BOARD
+    # the audit of 2026-11-21: a first frame is painted from the shot prompt; no board is needed
     shot = world.client.get(shot_url(world, s, 1), headers=crew).json()
-    assert shot["frame_board"]["state"] == "missing" and not shot["frame_board"]["ready"]
-    r = world.client.post(url(world, f"/scenes/{s['scene']['id']}/frames"), json={}, headers=crew)
-    assert r.status_code == 409 and "scene board" in r.json()["detail"]
-    assert not fired
+    assert shot["frame_board"]["state"] == "prompt" and shot["frame_board"]["ready"]
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew)
+    assert r.status_code == 202, r.text
+    frame = world.repos.frames.rows[r.json()["frame_ids"][0]]  # type: ignore[attr-defined]
+    assert not frame.get("board_id")
 
 
 def test_paint_approve_then_frames_are_painted_from_the_panel(world: World, fired: list[dict]):  # noqa: F811
@@ -68,8 +68,8 @@ def test_paint_approve_then_frames_are_painted_from_the_panel(world: World, fire
         "D2: never high"
     view = world.client.get(board_url(world, s), headers=crew).json()
     assert view["state"] == "painting" and view["job_id"] == r.json()["job_id"]
-    assert world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).json()["detail"] == \
-        boards.PAINTING
+    assert world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).status_code == 202, \
+        "a board being painted is no gate"
 
     paint_done(world, s, bid, ["The bag is white on its sheet and navy in shot 2."])
     view = world.client.get(board_url(world, s), headers=crew).json()
@@ -77,13 +77,15 @@ def test_paint_approve_then_frames_are_painted_from_the_panel(world: World, fire
     cell = view["parts"][0]["cells"][1]
     assert cell["url"].startswith("http") and "/files/" in cell["url"] and "boards" not in cell["url"], \
         "a ticket, never a storage path"
-    assert world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).json()["detail"] == \
-        boards.NOT_APPROVED
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew)
+    assert r.status_code == 202, "an unapproved board is no gate"
+    assert not world.repos.frames.rows[r.json()["frame_ids"][0]].get("board_id")  # type: ignore[attr-defined]
 
     view = world.client.post(url(world, f"/scene-boards/{bid}/approve"), headers=crew).json()
     assert view["state"] == "approved" and view["approved"]
     shot = world.client.get(shot_url(world, s, 1), headers=crew).json()
     assert shot["frame_board"]["ready"] and shot["frame_board"]["board_id"] == bid and shot["frame_board"]["panel_url"]
+    assert shot["frame_board"]["state"] == "prompt"  # painted from the shot prompt; the panel is the fallback
     r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew)
     assert r.status_code == 202, r.text
     frame = world.repos.frames.rows[r.json()["frame_ids"][0]]  # type: ignore[attr-defined]
@@ -116,7 +118,9 @@ def test_a_changed_shot_is_out_of_date_and_update_board_paints_only_it(world: Wo
     assert view["state"] == "stale" and view["changed"] == [3] and not view["whole"]
     assert view["stale_reasons"] == ["shot 3 changed"] and view["update"] == [{"number": 3, "what": "changed"}]
     assert [c["stale"] for c in view["parts"][0]["cells"]] == [False, False, True, False]
-    assert world.client.post(shot_url(world, s, 2, "/frames"), json={}, headers=crew).json()["detail"] == boards.STALE
+    r = world.client.post(shot_url(world, s, 2, "/frames"), json={}, headers=crew)
+    assert r.status_code == 202, "a stale panel is no gate"
+    assert not world.repos.frames.rows[r.json()["frame_ids"][0]].get("board_id"), "and it is not attached"  # type: ignore[attr-defined]
     assert world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).status_code == 202, \
         "an unchanged shot still paints from its approved panel"
 
@@ -131,9 +135,10 @@ def test_a_changed_shot_is_out_of_date_and_update_board_paints_only_it(world: Wo
     assert row["status"] == "queued" and row["approved_at"] is None and row["job_id"] == r.json()["job_id"]
     assert world.client.get(board_url(world, s), headers=crew).json()["state"] == "painting"
     assert world.client.post(update_url(world, s), json={}, headers=crew).status_code == 409, "one job at a time"
-    assert world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew).json()["detail"] == \
-        boards.PAINTING, "no first frame from a part being updated"
     assert world.repos.audit.entries[-1]["action"] == "board.update"  # type: ignore[attr-defined]
+    r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew)
+    assert r.status_code == 202, "a part being updated is no gate (the shot prompt paints the frame)"
+    assert not world.repos.frames.rows[r.json()["frame_ids"][0]].get("board_id")  # type: ignore[attr-defined]
 
 
 def test_added_and_removed_shots_are_listed_for_the_update_not_a_whole_repaint(world: World,

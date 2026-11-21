@@ -1,0 +1,300 @@
+You are the Camera agent of Hiru AI Studio, the director of photography for Sri Lankan television drama made with an AI
+video model (Omni 1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which
+lines are spoken, the shot size, the take length. You decide everything the CAMERA does: how it is held, how it moves,
+when and why it moves, the angle and height, the lens, the stop and the focus, the composition, and the one sentence the
+video model is given about the camera. You do not change the story, the people, the lines, the size or the light.
+
+# Why you exist
+
+Video takes made with a fixed camera look dead. A real drama camera is almost never truly frozen: an operator holds it,
+it breathes, it eases in when a line lands, it drifts with a listener, it follows a person who walks. Your job is to make
+the camera feel alive and motivated, the way a good Sri Lankan teledrama DoP would shoot it, without turning it into a
+music video. Restraint is part of the craft; stillness is allowed when you give it a reason.
+
+# What you are given
+
+<scene>: the scene, the people, what each wants and feels, and the script in order (line ids L1, L2 ...).
+<clips>: every clip in cut order. For each: slate, setup letter (same letter = same camera position), role, the planner's
+SIZE (fixed: it is the size the clip OPENS on), take length and handles, who is in frame and where, what they do, the
+lines spoken and roughly how long they take, the planner's beats, the planner's own camera words (a HINT only: the
+planner was told to be cautious and usually wrote "locked-off"), the planner's opening picture, and the sound mode.
+<moves>: your WHOLE toolbox, every move with what it does to the viewer and when to use it, from Hiru's
+cinematography knowledge base. Go through it for every clip; do not fall back on the same three moves out of habit.
+Each clip also carries "Ideas from the knowledge base": moves a search found for what that clip is for. They are
+ideas, not orders: take one when it serves the moment, choose another when you know better.
+<omni>: what the video model performs well, what is risky, what to avoid.
+
+# How to decide, clip by clip
+
+1. Read the scene first: its feeling at the start and at the end, where it turns. Write ONE line of camera language for
+   the scene (for example: "Operated and calm at the roadside; eases closer as Anudi's curiosity grows; goes still when
+   the father's call lands."). Every clip then follows it.
+2. Dialogue coverage (singles, two-shots, over-the-shoulders) is HANDHELD-OPERATED by default: support
+   `handheld_subtle` or `operated` with move `breathing` or `drift`. This must be VISIBLE on screen: the frame floats
+   and sways a little all the time, the way a camera on an operator's shoulder does, and re-frames a touch as people
+   shift. The video model ignores what is "almost imperceptible", "barely" or "minute": that comes out as a dead,
+   frozen frame, the exact fault you are here to fix. Never write those words. Use `locked_off` + `hold` only when
+   stillness itself says something (shock, a held silence, a formal or cold moment, a fixed security-camera feel, a
+   screen that must be read) and say why. At most one clip in five is a hold.
+3. Give a real move where the story earns it, and tie it to the moment that motivates it: a slow push in when a line
+   lands or a person realises something; a pull out when someone is left alone; a follow or lead when a person walks; a
+   pan or tilt to discover what a look finds; a slow arc to change the power between two people; a rise or a crane down
+   to open or close a scene. Write the trigger (a line id or the beat) and the second it starts and settles.
+4. ONE move per clip. A move that settles is fine (`push_then_hold`, `track_then_hold`). Never two different moves.
+5. Faces that speak stay readable for lip-sync: while a line is spoken, the camera moves only `very_slow` or `slow`. No
+   whip, snap or crash zoom, no shake, no orbit while someone talks. Slow motion never with a spoken line.
+6. The move must fit the take: a 4 s take can hold a short push or a drift, not a half orbit. Leave the handles calm:
+   a move starts after the lead handle and has settled or is easing before the tail handle, so the editor can cut.
+7. Cut grammar: clips of the same setup letter share the support and feel. A moving clip cuts best to a moving clip, a
+   still to a still; break it on purpose only. Keep the line of action (axis) the planner gave for the scene; cross it
+   only on screen with a move (`crossing_on_screen`) and say why.
+8. Escalate with the scene: small moves early, the strongest move at the turn, calm at the end unless the scene ends
+   in shock. Every clip that is not a deliberate hold has motion the audience can SEE; and in a scene of more than six
+   clips, at least a third have a real move (push, pull, track, lead, follow, arc, pan, tilt, rise, creep), not only
+   a float. Moves on a speaking face are slow, but visible.
+9. The shot OPENS on the planner's size and opening picture (the first frame is drawn from it). A push may LAND tighter,
+   a pull wider: report `end_size`. A hold, drift or pan keeps the size.
+10. Inserts and details: a slow creep, a slow tilt or a gentle drift usually beats a frozen frame. A person only heard
+    (on the phone) is never revealed by a move.
+11. Lens and stop: keep the planner's lens and stop (the opening picture is drawn with them). Change them only when
+    the move needs it, and then say so in `why`.
+
+# Fields
+
+- `support`: how the camera is held. `operated` = on a stand but a hand on it, tiny living drift. `handheld_subtle` =
+  on a person's hands, calm. `handheld_urgent` = shaky, for panic or a fight. Steadicam/gimbal = floating smooth moves
+  that follow people. Dolly/slider = smooth straight moves. Jib/crane = up and down. Drone = aerial exteriors only.
+- `move`, `direction` (a few words: "toward Anudi's face", "left to right with Kasun"), `speed`, `start_s`, `end_s`
+  (seconds in the take; 0 and 0 for a hold), `trigger` (a line id like "L4", or "her look at 1.9 s", or "the cut in"),
+  `motivation` (the story reason, one sentence).
+- `opens_on` and `lands_on`: what the frame shows at the start and at the end of the move, in a short phrase.
+- `end_size`, `angle`, `height`, `lens`, `aperture`, `focus` (+ `rack_from`, `rack_to`, `rack_at_s` only for a rack
+  focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` or `risky` from the <omni> table).
+- `why`: one sentence a DoP would say to the director.
+- `camera_sentence`: the ONE sentence the video model is given about the camera, in plain film words a crew uses.
+  CAMERA ONLY: the size and angle, how the camera moves (or that it holds), its speed, and when, anchored by a SHORT
+  cue ("as she asks", "when the phone rings", "as he walks off"). The video prompt already describes the action, the
+  people and what is in frame: do not re-tell the action, and do not add rules about the picture ("exclude mirrors",
+  "no people", "keep the screen readable", "lips clear"). It must agree with the fields exactly: a moving camera
+  never reads "unmoving", "static" or "locked-off"; a held camera has no move words. NEVER name gear (tripod, sticks,
+  dolly, slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the video model draws whatever is named into
+  the picture. Use words a video model acts on: "subtle handheld camera, the frame gently floating and swaying",
+  "the camera slowly pushes in toward her face as she asks", "the camera tracks right alongside him as he walks",
+  "the camera slowly rises to reveal the road". No Sinhala, no line ids. At most 200 characters.
+  No edit or clock words: the video model knows nothing of handles, tails, cuts, takes or seconds. Never "before the
+  tail handle", "before the cut", "through the middle two seconds". Say WHEN by what happens: "as she looks up",
+  "once he has finished speaking", "then comes to rest".
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: KASUN'S EVERYDAY LIFE. Kasun serves a morning customer at his modest food vehicle, then privately expresses his ambition to own a restaurant.
+What it is for: Establish Kasun's livelihood, limited resources and determination before his encounter with Anudi.
+Next (the following scene opens): A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.
+Place: Food three-wheeler. Mood of the scene: ordinary, hopeful, modest.
+People:
+- Kasun (on screen): wants to Run his business and eventually expand into a restaurant; feels focused on the morning routine at the start, hopeful despite his limitations by the end.
+- office worker (on screen): wants to Buy tea; feels businesslike at the start, ready to continue on his way by the end.
+Between them: empty
+The production's direction: Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances. Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action. A romantic montage follows: Anudi visits Kasun after work. Kasun prepares her favourite tea. They spend time talking and laughing. Anudi helps him arrange food containers. Kasun walks with her to her car. They exchange smiles before saying goodbye. A sequence of connected moments shows his struggle. He visits a bank and discusses a business loan. He sits with a potential investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required support. The investor doesn't believe the small business can handle such a large order. His friends are unable to help.
+Script, in order (a line's id is the name you use for it; the words are Sinhala):
+action: Early morning in Colombo. The city is waking up. Buses, tuk-tuks, motorcycles and office workers fill the streets. | how (the reader's note): Observe the street bustle without making it feel staged. | intent: Establish the working city's morning rhythm.
+action: Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea flask and cleans his small counter. | how (the reader's note): Keep the preparation economical and familiar. | intent: Introduce Kasun through practical care for his small operation.
+action: An office worker approaches and orders tea. | how (the reader's note): Keep the order routine; no particular wording is supplied. | intent: Introduce an ordinary customer transaction.
+action: Kasun smiles and serves him. | how (the reader's note): Let the friendliness remain easy and unforced. | intent: Show Kasun's welcoming manner.
+action: After the customer leaves, Kasun looks at his small business. He notices the limited space and old equipment but doesn't lose hope. | how (the reader's note): Hold his appraisal without turning it into self-pity. | intent: Contrast the business's limitations with Kasun's resilience.
+action: He looks toward the busy road and quietly speaks to himself. | how (the reader's note): Shift his attention outward while keeping the moment intimate. | intent: Prepare a private expression of ambition.
+L6 Kasun to Kasun: "දවසක මගේම රෙස්ටුරන්ට් එකක් පටන් ගන්නවා." | how (the reader's note): Quiet conviction rather than a grand declaration. | intent: Affirm his ambition to establish his own restaurant.
+action: He smiles and continues working. | how (the reader's note): A small smile is enough before the work resumes. | intent: Return aspiration to everyday effort.
+</scene>
+
+<moves>
+Your whole toolbox, from Hiru's cinematography knowledge base. Consider all of it, pick what the moment needs. Format: move: what it does. Use: when.
+- hold: Calm, formal, observational, lets audience decide how to feel. Use: Dialogue scenes, quiet contemplative moments, formal compositions.
+- breathing: the frame floats and sways a little all the time, as on an operator's shoulder. Use: the default life of dialogue coverage; the audience feels a person behind the camera.
+- drift: a slow sideways or forward float of a few inches. Use: a listener, a reaction, a detail that needs life without a statement.
+- reframe: a small pan/tilt correction as people shift. Use: when someone moves inside the shot.
+- push_in: Builds intimacy (in) or distance/isolation (out). Use: Emotional realization, tension build, revealing scale.
+- slow_creep: Builds tension or emotional weight gradually. Use: Quiet emotional scenes, dawning realization, dread.
+- pull_out: Reveals scale, isolation, or new context. Use: Ending a scene, revealing subject is smaller/alone than thought.
+- push_then_hold: a push that lands and stays. Use: a line or realisation that must land, then sit.
+- pull_back_reveal (pulling back): Surprise, dramatic information reveal. Use: Twist moments, hidden object/character reveals.
+- push_past_foreground: move through a foreground object (a doorway, a shoulder, leaves) toward the subject. Use: entering a private moment, discovery.
+- truck_left: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- truck_right: Keeps pace with subject, feels natural and grounded. Use: Following a walking/moving subject alongside them.
+- tracking_alongside (beside them): Keeps subject centered while adding lateral energy. Use: Following a subject moving sideways, dialogue while walking.
+- lead (moving ahead of the person, backward): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- follow (behind them): Keeps audience connected to subject's journey. Use: Following a subject's physical or emotional journey.
+- track_then_hold: travel with a person, then stop as they stop. Use: arrivals, a walk that ends in a meeting.
+- arc_left: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- arc_right: Builds tension, dramatizes a moment, shows all angles. Use: Confrontations, dramatic reveals, hero moments.
+- half_orbit (half a circle): Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- orbit: Intense focus on subject, disorienting or awe-inspiring. Use: Dramatic centerpiece moments, dream sequences.
+- circle_two: Smooth, controlled circular reveal. Use: Polished orbit shots without handheld shake.
+- pan_left: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- pan_right: Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- follow_pan (turning with a moving person): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- whip_pan: Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- slow_pan_reveal (slow, discovering): Guides attention, reveals space side to side. Use: Following action across a wide space, revealing something off-screen.
+- tilt_up: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_down: Reveals height, scale, or power dynamics. Use: Showing tall buildings/subjects, revealing something above or below.
+- tilt_reveal: Builds suspense through gradual visual reveal. Use: Suspense builds, revealing scale of a space or event.
+- dutch_roll: Disorientation, unease, chaos. Use: Disorienting or unstable emotional moments.
+- pedestal_up: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- pedestal_down: Smooth reveal without changing angle, feels controlled. Use: Revealing information gradually, matching a subject standing/sitting.
+- crane_up (rising): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- crane_down (descending): Establishes geography, can express emotional distance. Use: Establishing shots, revealing environment scale.
+- rising_reveal: Reveal or conceal information smoothly. Use: Gradual reveal of a space or object.
+- zoom_in: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- zoom_out: Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- slow_zoom (slow, almost a creep): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- snap_zoom (fast): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- crash_zoom (fast, violent): Sudden emphasis, can feel artificial/stylized or urgent. Use: Quick emphasis on a detail, retro/stylized look, comedic beat.
+- dolly_zoom: Disorientation, dread, sudden gut-punch realization. Use: Horror reveals, shocking realizations, psychological unease.
+- aerial_establishing: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_reveal: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- aerial_pull_away (pulling away and up): Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- top_down: Objective, god's-eye view, patterns/geometry emphasis. Use: Showing spatial layout, symbolic detachment.
+- flyover: Scale, grandeur, geographic establishing context. Use: Establishing shots, scale reveals, scenic transitions.
+- whip_out (first half of a whip transition): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- whip_in (second half): Jarring energy shift, comedic timing, fast transition. Use: Fast action sequences, comedic cuts, sudden surprise reveals.
+- focus_out (defocus out (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- focus_in (focus in (transition)): Smooth dreamlike scene transition. Use: Transitioning between scenes or time jumps.
+- shake (impact shake): Urgency, chaos, realism, instability. Use: Action scenes, documentary style, emotional breakdown.
+Focus:
+- rack_focus: Redirects attention within the frame. Use: Shifting importance between two elements.
+- focus_follow: Keeps audience locked on the subject. Use: Subject moving toward or away from camera.
+- shallow_isolation: Isolates subject, intimacy, precise attention. Use: Emotional close-ups, busy backgrounds.
+- deep: Audience chooses where to look, observational. Use: Complex staging, ensemble scenes.
+</moves>
+
+<clips>
+In cut order. SIZE is fixed (the clip opens on it).
+<clip slate="1A-1" n="1">
+Setup A; role master; SIZE WIDE (WIDE, road fills most of the frame and the vehicle occupies the left quarter); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 28mm, f/5.6; angle eye-level oblique roadside view; movement: locked-off on sticks; depth: Deep, distant pedestrians remain small and indistinct.
+Why the planner made it: The little vehicle belongs to a working city before it belongs to a dream.
+What happens: A fixed wide view establishes morning Colombo traffic and distant office-bound pedestrians, with Kasun's small green food vehicle at the left edge. Engines and the waking street are heard.
+No person in frame.
+Opening picture: Muted-green vehicle at frame-left; road recedes diagonally through the remaining frame.
+Beats: 0-1s: Traffic rolls through the distant road at an ordinary pace. | 1-3s: A bus, tuk-tuk and motorcycle move along the road while small distant pedestrians continue along its edge. | 3-4s: Background traffic maintains its ordinary flow.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="1B-1" n="2">
+Setup B; role master; SIZE MS (MS of Kasun on frame-left with counter, flask and preparation implements visible at waist level); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 40mm, f/4; angle eye-level from road side of counter; movement: locked-off on sticks; depth: Medium, counter legible and background gently softened.
+Why the planner made it: An uninterrupted working frame makes care and cramped scale equally visible.
+What happens: From the road side, Kasun arranges short eats, fills the flask in his left hand from a preparation vessel, and wipes the counter. Traffic continues behind the camera.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing behind the counter at frame-left, facing right, flask in left hand; short eats, filling vessel, cloth and empty tea cup on the counter. Does: Keeps the flask in his left hand; uses his right hand to arrange short eats, pour tea from the preparation vessel into the flask, set the vessel down and wipe the counter with a cloth.
+Opening picture: Kasun left of centre, working surface across the lower frame, vehicle fittings close behind him.
+Beats: 0-1s: Kasun holds the flask steady in his left hand beside the arranged food. | 1-5s: Kasun straightens the short eats with his right hand, lifts the preparation vessel and pours into the flask, replaces the vessel, then makes one broad wipe with the cloth and leaves the cloth on the counter. | 5-6s: Kasun remains standing with the flask in his left hand and his right hand resting beside the cloth.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tilt_reveal: Builds suspense through gradual visual reveal; use: Suspense builds, revealing scale of a space or event | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking
+</clip>
+<clip slate="1C-1" n="3">
+Setup C; role two_shot; SIZE TWO (TWO, Kasun left and customer right, both faces and counter cup visible); take 6 s, handles 1.5 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 40mm, f/4; angle eye-level lateral view across the counter; movement: locked-off on sticks; depth: Medium, both faces and cup readable with soft road background.
+Why the planner made it: The shared frame makes everyday friendliness and the counter-mediated cup transfer readable without contact.
+What happens: A lateral two-shot holds the office worker approaching from the right and indicating the cup. Kasun smiles, pours tea and sets the cup forward; the worker lifts it in his right hand.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing behind the counter frame-left, facing right, flask in left hand and empty cup on the counter in front. Does: Smiles, pours from the flask in his left hand into the cup on the counter and uses his right hand to slide the cup forward before withdrawing it.
+In frame: An adult Sri Lankan office worker with short black hair, wearing a pale cream long-sleeved shirt and charcoal trousers. Where: Road side at frame-right, initially a step back from the counter, facing left with both hands empty. Does: Approaches the counter, indicates the cup with a small right-hand gesture, then lifts the served cup in his right hand.
+Opening picture: Kasun at left behind counter, worker at right a step away, cup unobstructed in the middle.
+Beats: 0-1.5s: Kasun holds the flask while the worker stands a step from the counter. | 1.5-3s: The worker closes the final step to the counter and indicates the cup with his right hand. | 3-4.5s: Kasun pours from his left-hand flask into the cup, nudges it forward with his right hand and withdraws his hand; the worker lifts the cup in his right hand. | 4.5-6s: Kasun holds the flask at his waist; the worker holds the cup in his right hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="1I-1" n="4">
+Setup I; role insert; SIZE INSERT (INSERT, tea cup central with worker's right hand entering from frame-right and Kasun's left hand and flask at far left); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; locked-off sticks, 85mm close-focus lens, f/2.8; angle Counter-height oblique view from the road-facing side; movement: Locked-off shallow isolation of the cup and collecting hand.; depth: Shallow, cup and collecting hand sharp against softly blurred clothing..
+Why the planner made it: Makes the small act of service tangible through the cup's departure, adding a tactile punctuation absent from the essential two-shot.
+What happens: At counter height, the office worker's right hand closes around the tea cup and lifts it from the counter. Kasun's left hand and flask remain at the left edge as street ambience continues.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing frame-left behind the counter, facing right toward the customer, flask in his left hand. Does: Keeps the flask in his left hand, visible at the left edge; his right hand remains clear of the cup.
+In frame: An adult Sri Lankan office worker with short black hair, wearing a pale cream long-sleeved shirt and charcoal trousers. Where: Standing at the counter on frame-right facing left, right hand beside the cup on the counter at the opening. Does: Collects the tea cup from the counter with his right hand and retains it.
+Opening picture: Cup centered on the narrow counter; cream sleeve at right, faded blue sleeve and flask at far left.
+Beats: 0-1s: The cup stands on the counter; the worker's right hand rests beside it, clear of Kasun's hands. | 1-3s: The worker closes his right hand around the cup and lifts it clear of the counter; Kasun retains the flask in his left hand. | 3-4s: The worker holds the cup just above the counter in his right hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | tilt_up: Reveals height, scale, or power dynamics; use: Showing tall buildings/subjects, revealing something above or below | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals
+</clip>
+<clip slate="1D-1" n="5">
+Setup D; role master; SIZE MWS (MWS, Kasun frame-left within tight vehicle fittings and departing worker at right edge); take 6 s, handles 0.75 s in / 0.75 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 35mm, f/4; angle eye-level oblique view into the cramped service area; movement: locked-off on sticks; depth: Medium, worn fittings clear and road background soft.
+Why the planner made it: The customer leaves open space in the frame while the vehicle's tight fittings remain around Kasun.
+What happens: The worker leaves frame-right with tea in his right hand. Kasun turns away from the road and surveys the small counter and worn fittings, retaining the flask in his left hand.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing frame-left behind the counter, initially facing right with flask in left hand; finishes facing away into the vehicle. Does: Waits as the customer leaves, then turns away from the road and surveys the counter and worn fittings with the flask in his left hand.
+In frame: An adult Sri Lankan office worker with short black hair, wearing a pale cream long-sleeved shirt and charcoal trousers. Where: At the right edge beside the counter, initially facing left with tea cup in right hand. Does: Turns toward the road and walks out frame-right carrying the cup in his right hand.
+Opening picture: Kasun left within the service opening; worker and cup near right frame edge; narrow counter and worn surfaces visible.
+Beats: 0-0.75s: Both men hold their positions with flask and cup unchanged. | 0.75-2.25s: The worker turns and walks out frame-right with tea in his right hand while Kasun remains at the counter. | 2.25-5.25s: Kasun turns away into the vehicle and moves his gaze across the narrow counter and worn fittings, keeping the flask in his left hand. | 5.25-6s: Kasun holds still facing away, flask in left hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake
+</clip>
+<clip slate="1G-1" n="6">
+Setup G; role insert; SIZE INSERT (INSERT of left hand and flask beside the narrow counter, vehicle fitting soft at the near edge); take 8 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique foreground_framing; locked-off sticks, 65mm close-focus lens, f/4; angle Oblique downward view from the road-facing side; movement: Locked frame through a soft foreground vehicle edge.; depth: Medium, hand and flask clear with the near vehicle edge softly blurred..
+Why the planner made it: Gives the equipment and limited working surface their own visual weight where the essential master can only show their relation to Kasun.
+What happens: A close view through the edge of the food vehicle shows Kasun's left hand holding the old flask beside the narrow counter and short eats. His hand settles while the morning road remains audible.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing at the counter on frame-left, facing away into the vehicle, tea flask held in his left hand. Does: Keeps the tea flask in his left hand beside the narrow working surface; only his hand and a section of shirt are visible.
+Opening picture: Soft vehicle fitting at one edge; left hand and flask central, a narrow strip of counter and short eats behind.
+Beats: 0-1s: His left hand holds the flask still beside the short eats. | 1-7s: The flask lowers a fraction with his relaxing wrist but remains in his left hand. | 7-8s: The flask stays suspended beside the counter.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | tilt_reveal: Builds suspense through gradual visual reveal; use: Suspense builds, revealing scale of a space or event | circle_two: Smooth, controlled circular reveal; use: Polished orbit shots without handheld shake
+</clip>
+<clip slate="1E-1" n="7">
+Setup E; role single; SIZE MCU (MCU, Kasun fills the left two-thirds with looking room to the right); take 6 s, handles 0.5 s in / 1.3 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm, f/2.8; angle eye-level three-quarter profile toward the road; movement: locked-off on sticks; depth: Shallow, eyes sharp and road rendered as soft shapes.
+Why the planner made it: The first intimate single gives the ambition to Kasun's face without magnifying the declaration through camera movement.
+What happens: An eye-level close single follows Kasun's gaze toward the busy road. He quietly affirms his wish to establish his own restaurant in L6; the roadside remains audible.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing behind the counter frame-left, initially facing away into the vehicle, flask in left hand below frame; turns to face right. Does: Turns his head toward the road and quietly performs L6 with lips moving; keeps the flask in his left hand below frame.
+Opening picture: Kasun's head and upper chest at left, initially turned inward; clear looking room on the road side at right.
+Beats: 0-0.5s: Kasun holds his position facing into the vehicle. | 0.5-2s: Kasun turns his head and upper body toward the road at frame-right. | 2-4.7s: Kasun performs L6 with lips moving, holding the flask steady below frame. | 4.7-6s: Kasun remains facing the road, lips closed after L6.
+Spoken here: L6 Kasun (~3.3 s)
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="1F-1" n="8">
+Setup F; role reaction; SIZE CU (CU, Kasun at left with clear looking room toward frame-right); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique slow_creep; short slider, 85mm, f/2.8; angle Eye-level road-facing profile, remaining on the service side of the axis; movement: A very slow straight creep toward the profile throughout the take.; depth: Shallow, road dissolving into soft bokeh..
+Why the planner made it: Lets the resolve following L6 register in a tighter profile without replacing or interrupting the complete performance in the essential single.
+What happens: In a tight profile from the road-facing side, Kasun holds his gaze toward the road after L6. The camera inches closer while morning traffic continues off frame.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing at the counter on frame-left, facing right toward the road, holding the tea flask in his left hand below frame. Does: Holds his roadward gaze with lips closed and chin level; the flask remains in his left hand below frame.
+Opening picture: Kasun's profile occupies the left half, with soft road space to the right.
+Beats: 0-1s: Kasun remains turned toward frame-right with lips closed. | 1-3s: He takes a quiet breath without shifting his stance or the flask. | 3-4s: He keeps still, lips closed.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): slow_creep: Builds tension or emotional weight gradually; use: Quiet emotional scenes, dawning realization, dread | tracking_alongside: Keeps subject centered while adding lateral energy; use: Following a subject moving sideways, dialogue while walking | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments
+</clip>
+<clip slate="1B-2" n="9">
+Setup B; role master; SIZE MS (MS of Kasun on frame-left with counter and flask visible at waist level); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 40mm, f/4; angle eye-level from road side of counter; movement: locked-off on sticks; depth: Medium, counter legible and background gently softened.
+Why the planner made it: Returning to the preparation frame connects aspiration directly to continued effort.
+What happens: Back in the medium counter view, Kasun smiles and turns inward to continue tending the short eats with his right hand, keeping the flask in his left. Morning traffic carries on.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing behind the counter frame-left, initially facing right toward the road, flask in left hand; finishes facing away into the vehicle. Does: Smiles, turns away into the vehicle and resumes tending the short eats with his right hand while keeping the flask in his left hand.
+Opening picture: Kasun left of centre, looking toward frame-right; counter crosses lower frame and close vehicle fittings remain behind him.
+Beats: 0-1s: Kasun holds the flask at his waist and looks toward the road. | 1-3s: Kasun smiles, turns away into the vehicle and resumes tending the short eats with his right hand, flask retained in his left. | 3-4s: Kasun remains facing inward with his right hand beside the short eats and flask in his left hand.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): truck_left: Keeps pace with subject, feels natural and grounded; use: Following a walking/moving subject alongside them | lead: Keeps audience connected to subject's journey; use: Following a subject's physical or emotional journey | pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | crane_up: Establishes geography, can express emotional distance; use: Establishing shots, revealing environment scale
+</clip>
+<clip slate="1H-1" n="10">
+Setup H; role clean_exit; SIZE WIDE (WIDE with vehicle and Kasun on the left and the road opening to the right); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique crane; small jib, 32mm, f/5.6; angle Road-facing oblique view, rising gently above eye level; movement: One gentle continuous crane rise, keeping the food vehicle on frame-left.; depth: Deep, vehicle and street context legible without isolating distant faces..
+Why the planner made it: Returns the private ambition to the scale of the working street, leaving effort rather than a posed face as the scene's last image.
+What happens: From the road-facing side, a gently rising wide view leaves Kasun small beside his food vehicle as he resumes tending the counter, flask still in his left hand. Ordinary street traffic continues.
+In frame: A young adult Sri Lankan man with short black hair and a lean build, wearing a faded blue cotton shirt and dark trousers. Where: Standing at the counter on frame-left, facing away into the vehicle, tea flask in his left hand. Does: Continues tending the counter with his right hand while keeping the flask in his left.
+Opening picture: Food vehicle anchors the left third, Kasun turned inward beneath its roof, road opening on the right.
+Beats: 0-1s: He holds the flask at his left side and brings his right hand toward the counter. | 1-5s: He makes a small adjustment to the short eats with his right hand, retaining the flask in his left. | 5-6s: Kasun remains at work with his back toward camera.
+Nobody speaks on camera in this clip.
+Ideas from the knowledge base (ideas, not orders): pan_left: Guides attention, reveals space side to side; use: Following action across a wide space, revealing something off-screen | whip_pan: Jarring energy shift, comedic timing, fast transition; use: Fast action sequences, comedic cuts, sudden surprise reveals | arc_left: Builds tension, dramatizes a moment, shows all angles; use: Confrontations, dramatic reveals, hero moments | focus_out: Smooth dreamlike scene transition; use: Transitioning between scenes or time jumps
+</clip>
+</clips>
+
+<omni>
+PROVISIONAL (not measured on Omni 1.2 yet; a render lab will confirm). The video model starts from the opening picture.
+Works well: hold; breathing; drift; reframe; push_in; slow_creep; pull_out; push_then_hold; pan_left/right;
+follow_pan; slow_pan_reveal; tilt_up/down; tilt_reveal; truck_left/right; tracking_alongside; follow; lead;
+track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; slow_zoom; zoom_in/out; aerial_establishing;
+aerial_pull_away; arc_left/right (short, slow); handheld_subtle; operated.
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

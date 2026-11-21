@@ -3,6 +3,9 @@
 # changes. Restart a function by hand after editing its code.
 # Ports must match api/workers/task_manager (FUNCTIONS, and DIRECTOR_CHAT for the streamed chat). Run from the repo root:
 #   powershell -File scripts\start-functions.ps1
+# Restart only some (the one already listening on the port is stopped first):
+#   powershell -File scripts\start-functions.ps1 -Only hiru-shot-producer,hiru-frame-render
+param([string[]]$Only = @())
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $python = Join-Path $root ".venv\Scripts\python.exe"
@@ -14,8 +17,9 @@ $functions = @(
     @{ Name = "hiru-structure-build"; Source = "src\services\structure_build"; Port = 8204 },
     @{ Name = "hiru-canon-extract"; Source = "src\services\canon_extract"; Port = 8205 },
     @{ Name = "hiru-director-chat"; Source = "src\services\director_chat"; Port = 8206 },
-    @{ Name = "hiru-shot-producer"; Source = "src\services\shot_producer"; Port = 8207 },
-    @{ Name = "hiru-frame-render"; Source = "src\services\frame_render"; Port = 8208 },
+    # plan/2026-11-20d: the Camera agent, the Shot prompt agent and the camera pins live only in the hiru_ai engine
+    @{ Name = "hiru-shot-producer"; Source = "src\services\shot_producer"; Port = 8207; Engine = "graph" },
+    @{ Name = "hiru-frame-render"; Source = "src\services\frame_render"; Port = 8208; Engine = "graph" },
     @{ Name = "hiru-shot-planner-adam"; Source = "src\services\shot_planner_adam"; Port = 8209 },
     @{ Name = "hiru-shot-planner-david"; Source = "src\services\shot_planner_david"; Port = 8210 },
     @{ Name = "hiru-shot-planner-jonathan"; Source = "src\services\shot_planner_jonathan"; Port = 8211 },
@@ -26,7 +30,8 @@ $functions = @(
 )
 
 # AI_ENGINE=legacy (default) | graph picks the engine of a function whose system is migrated (hiru_ai, plan/2026-11-03
-# Phase 6). Set it in .env, or per window before starting. `hiru_ai` comes from the editable install (pip install -e .),
+# Phase 6). Set it in .env, or per window before starting. A function with `Engine` in the list above always starts on
+# that engine, whatever .env says. `hiru_ai` comes from the editable install (pip install -e .),
 # as `contracts` does; in the cloud the deploy workflow bundles it into the zips flagged "ai".
 # Functions read SUPABASE__* from the environment; load them from .env.
 Get-Content (Join-Path $root ".env") | Where-Object { $_ -match '^\s*[A-Z_]+=' } | ForEach-Object {
@@ -35,12 +40,25 @@ Get-Content (Join-Path $root ".env") | Where-Object { $_ -match '^\s*[A-Z_]+=' }
     if ($v.Length -ge 2 -and ($v[0] -eq '"' -or $v[0] -eq "'") -and $v[-1] -eq $v[0]) { $v = $v.Substring(1, $v.Length - 2) }  # KEY="value" as dotenv reads it
     [Environment]::SetEnvironmentVariable($k.Trim(), $v, "Process")
 }
+$defaultEngine = if ($env:AI_ENGINE) { $env:AI_ENGINE } else { "legacy" }
+if ($Only.Count) {
+    $Only = @($Only | ForEach-Object { $_ -split "," } | Where-Object { $_ })
+    $unknown = @($Only | Where-Object { $_ -notin $functions.Name })
+    if ($unknown.Count) { throw "No such function: $($unknown -join ', '). Known: $($functions.Name -join ', ')" }
+}
 # `contracts` is importable from the editable install; the service folder goes on PYTHONPATH.
 foreach ($f in $functions) {
+    if ($Only.Count -and $f.Name -notin $Only) { continue }
+    if ($Only.Count) {  # a restart: stop whatever listens on the port now
+        Get-NetTCPConnection -LocalPort $f.Port -State Listen -ErrorAction SilentlyContinue |
+            ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }
+        Start-Sleep -Milliseconds 500
+    }
     $src = Join-Path $root $f.Source
     $env:PYTHONPATH = $src
+    $env:AI_ENGINE = if ($f.Engine) { $f.Engine } else { $defaultEngine }
     Start-Process -FilePath $python -ArgumentList @(
         "-m", "functions_framework", "--target", "handle", "--source", "`"$(Join-Path $src "main.py")`"",
         "--port", $f.Port) -WorkingDirectory $src
-    Write-Host "$($f.Name) on http://localhost:$($f.Port)"
+    Write-Host "$($f.Name) on http://localhost:$($f.Port) (engine: $env:AI_ENGINE)"
 }

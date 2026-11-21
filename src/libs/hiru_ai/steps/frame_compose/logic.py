@@ -11,7 +11,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
-from contracts import sceneplan
+from contracts import picture_pins, sceneplan
 from contracts.canon import (
     SHEET_ASPECT,
     CanonCard,
@@ -28,6 +28,7 @@ from contracts.frame_brief import (
     FrameBrief,
     PlannedReference,
     SetupFrame,
+    agent_camera,
     black_plate,
     expected_frame,
     frame_brief,
@@ -43,16 +44,21 @@ from contracts.producer import (
     CameraSettings,
     CastMember,
     PersonEdits,
+    camera_changes,
     default_camera,
     identity_line,
+    look_pins,
     pins_for,
+    shot_canon_ids,
     shot_items,
+    stale_reasons,
 )
 from contracts.staging import Staging, shot_cast, source_phrase, staging, unseen_sentence
 from contracts.veo import ASPECT_RATIO, Orientation
 
 Row = dict[str, Any]
 ASPECT_OF_SHEET = SHEET_ASPECT
+NO_SHOT_PROMPT = "no shot prompt"
 
 
 def cast_member(row: Row) -> CastMember:
@@ -134,8 +140,23 @@ class World:
         return self._own(shot)[2]
 
     def setup(self, shot: Row) -> SetupFrame | None:
-        """The accepted frame of the first earlier shot of this shot's camera setup (`contracts.frame_brief`)."""
-        return setup_frame(shot, self.shots, self.accepted)
+        """The accepted frame of the first earlier shot of this shot's camera setup (`contracts.frame_brief`), among
+        those drawn for the camera their shot has now: a frame of a shot the Camera agent designed after it was drawn
+        (no picture pin) or whose picture moved since would hand its old angle and framing on (the audit of
+        2026-11-21). An accepted row read without its pins is kept as before."""
+        return setup_frame(shot, self.shots, self.current_accepted())
+
+    def current_accepted(self) -> dict[str, Row]:
+        by_id = {str(s.get("id")): s for s in self.shots}
+        out: dict[str, Row] = {}
+        for sid, f in self.accepted.items():
+            s = by_id.get(sid)
+            if s is not None and "pins" in f and agent_camera(s):
+                made = ((f.get("pins") or {}).get("picture") or {}) if isinstance(f.get("pins"), Mapping) else {}
+                if not made or camera_changes(made, self.pins_now(s, frame=True)["picture"], head="x"):
+                    continue
+            out[sid] = f
+        return out
 
     def planned(self, shot: Row) -> list[PlannedReference]:
         """The pictures this frame wants, in their fixed order (`contracts.frame_brief.plan_references`)."""
@@ -176,17 +197,56 @@ class World:
             recommended = default
         return recommended, recommended.with_overrides(shot.get("camera_overrides") or {})
 
-    def brief(self, shot: Row, labels: list[str], *, polished: bool = True, board: list[str] | None = None
-              ) -> FrameBrief:
+    def pins_now(self, shot: Row, *, frame: bool = False) -> Row:
+        """The shot's pins as it stands (plan/2026-11-20d D8): the shot, its script, its canon, the looks it is painted
+        with, and the camera's picture and motion. `frame`: a frame's pins (the looks; and the picture carries the
+        opening of the shot prompt it is drawn from, when one is current)."""
+        own, cast_ids, _ = self._own(shot)
+        recommended, camera = self.camera(shot)
+        pins = pins_for(shot_version=int(shot.get("version") or 1), scene=self.scene, items=own, cast_ids=cast_ids,
+                        versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot),
+                        looks=self.looks)
+        record = self.shot_prompt(shot) if frame else None
+        opening = picture_pins.opening_text((record or {}).get("opening"))
+        return picture_pins.pinned(pins, camera, recommended, agent_camera(shot), opening=opening)
+
+    def shot_prompt_reasons(self, shot: Row) -> list[str]:
+        """Why the shot's stored shot prompt (`design.shot_prompt`) no longer fits it (D8): the camera's picture or
+        motion, the script, the shot, the cast or the looks moved. ["no shot prompt"] when there is none."""
+        record = (shot.get("design") or {}).get("shot_prompt")
+        if not isinstance(record, Mapping) or not record.get("frame"):
+            return [NO_SHOT_PROMPT]
+        made = record.get("pins") or {}
+        if not made:
+            return [NO_SHOT_PROMPT]
+        _, cast_ids, _ = self._own(shot)
+        now = self.pins_now(shot)
+        worn = look_pins(shot_canon_ids(self.scene, cast_ids, PersonEdits.of(shot)), self.looks)
+        reasons = stale_reasons(made, shot_version=int(now["shot_version"]), script_hash=str(now["script_hash"]),
+                                canon=self.members, looks=worn, picture=now["picture"], motion=now["motion"],
+                                designed=bool(agent_camera(shot)))
+        if set(made.get("canon") or {}) != set(now["canon"]) and not reasons:
+            reasons.append("Different people or place in the shot.")
+        return reasons
+
+    def shot_prompt(self, shot: Row) -> Mapping[str, Any] | None:
+        """The shot's stored shot prompt while it is current (D5), else None: the frame is then painted from the code's
+        own words."""
+        record = (shot.get("design") or {}).get("shot_prompt")
+        return record if isinstance(record, Mapping) and not self.shot_prompt_reasons(shot) else None
+
+    def brief(self, shot: Row, labels: list[str], *, board: list[str] | None = None) -> FrameBrief:
         """The first frame's brief naming exactly `labels` as its attached images (`contracts.frame_brief`), in the
-        prompt writer's words where it has polished the shot (`polished=False`: the code's words only)."""
+        shot prompt's words for the picture while it is current (plan/2026-11-20d D5)."""
         staged = self._own(shot)[2]
         recommended, camera = self.camera(shot)
+        record = self.shot_prompt(shot)
         return frame_brief(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
                            cast=self.cast(shot, staged.on_screen), references=labels, recommended=recommended,
                            unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
                            hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p),
-                           scene=self.scene, shot=shot, polished=polished, genre=self.genre, board=board or ())
+                           scene=self.scene, shot=shot, genre=self.genre, board=board or (),
+                           shot_prompt=(record or {}).get("frame"))
 
     def preview_labels(self, shot: Row) -> list[str]:
         """The labels the renderer will attach, when every first choice can be read (what the shot screen shows)."""
@@ -198,12 +258,10 @@ class World:
 
     def compose(self, shot: Row, labels: list[str], board: list[str] | None = None) -> tuple[str, Row]:
         """→ (the frame prompt naming exactly `labels` as its attached images, the pins). The pins cover everyone in
-        the shot, heard too (a voice's card is still part of the shot); the People line names only who is seen."""
-        own, cast_ids, _ = self._own(shot)
-        pins = pins_for(shot_version=int(shot.get("version") or 1), scene=self.scene, items=own, cast_ids=cast_ids,
-                        versions={k: m.version for k, m in self.members.items()}, edits=PersonEdits.of(shot),
-                        looks=self.looks)
-        return self.brief(shot, labels, board=board).text(), pins.model_dump()
+        the shot, heard too (a voice's card is still part of the shot); the People line names only who is seen. The
+        picture pin (plan/2026-11-20d D8) marks the frame out of date when the camera's picture changes, or when the
+        shot prompt it was drawn from is rewritten."""
+        return self.brief(shot, labels, board=board).text(), self.pins_now(shot, frame=True)
 
     def hands(self, shot: Row) -> Hands:
         """Who holds what as the shot opens (`contracts.holding`), for the people the camera sees."""
@@ -214,7 +272,10 @@ class World:
         """What the vision check compares the picture with: `{seen, unseen, frame}`. A frame painted from its Scene
         board panel (`board`, plan/2026-11-14 §3.5) is also checked for a leftover mannequin and the planned state."""
         staged = self._own(shot)[2]
-        text = expected_frame(shot.get("ir") or {}, self.scene)
+        record = self.shot_prompt(shot)  # D5: a frame painted from the shot prompt is checked against the same words
+        words = (record or {}).get("frame") or {}
+        text = (" ".join(str(words.get(k) or "") for k in ("composition", "people")).strip() if record
+                else expected_frame(shot.get("ir") or {}, self.scene))
         state = next((x for x in board or [] if x.startswith("Each person at the opening")), "")
         return {"seen": [identity_line(m) for m in self.cast(shot, staged.on_screen)],
                 "unseen": [f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"

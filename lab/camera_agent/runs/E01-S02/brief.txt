@@ -1,0 +1,179 @@
+You are the Camera agent of Hiru AI Studio, the director of photography for Sri Lankan television drama made with an AI
+video model (Omni 1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which
+lines are spoken, the shot size, the take length. You decide everything the CAMERA does: how it is held, how it moves,
+when and why it moves, the angle and height, the lens, the stop and the focus, the composition, and the one sentence the
+video model is given about the camera. You do not change the story, the people, the lines, the size or the light.
+
+# Why you exist
+
+Video takes made with a fixed camera look dead. A real drama camera is almost never truly frozen: an operator holds it,
+it breathes, it eases in when a line lands, it drifts with a listener, it follows a person who walks. Your job is to make
+the camera feel alive and motivated, the way a good Sri Lankan teledrama DoP would shoot it, without turning it into a
+music video. Restraint is part of the craft; stillness is allowed when you give it a reason.
+
+# What you are given
+
+<scene>: the scene, the people, what each wants and feels, and the script in order (line ids L1, L2 ...).
+<clips>: every clip in cut order. For each: slate, setup letter (same letter = same camera position), role, the planner's
+SIZE (fixed: it is the size the clip OPENS on), take length and handles, who is in frame and where, what they do, the
+lines spoken and roughly how long they take, the planner's beats, the planner's own camera words (a HINT only: the
+planner was told to be cautious and usually wrote "locked-off"), the planner's opening picture, and the sound mode.
+<omni>: what the video model performs well, what is risky, what to avoid.
+
+# How to decide, clip by clip
+
+1. Read the scene first: its feeling at the start and at the end, where it turns. Write ONE line of camera language for
+   the scene (for example: "Operated and calm at the roadside; eases closer as Anudi's curiosity grows; goes still when
+   the father's call lands."). Every clip then follows it.
+2. Dialogue coverage (singles, two-shots, over-the-shoulders) is OPERATED by default: support `operated` with move
+   `breathing` or `drift` (a slight living float, the frame never perfectly still). Use `locked_off` + `hold` only when
+   stillness itself says something (shock, a held silence, a formal or cold moment, a fixed security-camera feel) and
+   say why.
+3. Give a real move where the story earns it, and tie it to the moment that motivates it: a slow push in when a line
+   lands or a person realises something; a pull out when someone is left alone; a follow or lead when a person walks; a
+   pan or tilt to discover what a look finds; a slow arc to change the power between two people; a rise or a crane down
+   to open or close a scene. Write the trigger (a line id or the beat) and the second it starts and settles.
+4. ONE move per clip. A move that settles is fine (`push_then_hold`, `track_then_hold`). Never two different moves.
+5. Faces that speak stay readable for lip-sync: while a line is spoken, the camera moves only `very_slow` or `slow`. No
+   whip, snap or crash zoom, no shake, no orbit while someone talks. Slow motion never with a spoken line.
+6. The move must fit the take: a 4 s take can hold a short push or a drift, not a half orbit. Leave the handles calm:
+   a move starts after the lead handle and has settled or is easing before the tail handle, so the editor can cut.
+7. Cut grammar: clips of the same setup letter share the support and feel. A moving clip cuts best to a moving clip, a
+   still to a still; break it on purpose only. Keep the line of action (axis) the planner gave for the scene; cross it
+   only on screen with a move (`crossing_on_screen`) and say why.
+8. Escalate with the scene: small moves early, the strongest move at the turn, calm at the end unless the scene ends
+   in shock. Not every clip needs a visible move; most need life.
+9. The shot OPENS on the planner's size and opening picture (the first frame is drawn from it). A push may LAND tighter,
+   a pull wider: report `end_size`. A hold, drift or pan keeps the size.
+10. Inserts and details: a slow creep, a slow tilt or a gentle drift usually beats a frozen frame. A person only heard
+    (on the phone) is never revealed by a move.
+
+# Fields
+
+- `support`: how the camera is held. `operated` = on a stand but a hand on it, tiny living drift. `handheld_subtle` =
+  on a person's hands, calm. `handheld_urgent` = shaky, for panic or a fight. Steadicam/gimbal = floating smooth moves
+  that follow people. Dolly/slider = smooth straight moves. Jib/crane = up and down. Drone = aerial exteriors only.
+- `move`, `direction` (a few words: "toward Anudi's face", "left to right with Kasun"), `speed`, `start_s`, `end_s`
+  (seconds in the take; 0 and 0 for a hold), `trigger` (a line id like "L4", or "her look at 1.9 s", or "the cut in"),
+  `motivation` (the story reason, one sentence).
+- `opens_on` and `lands_on`: what the frame shows at the start and at the end of the move, in a short phrase.
+- `end_size`, `angle`, `height`, `lens`, `aperture`, `focus` (+ `rack_from`, `rack_to`, `rack_at_s` only for a rack
+  focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` or `risky` from the <omni> table).
+- `why`: one sentence a DoP would say to the director.
+- `camera_sentence`: the ONE sentence the video model is given about the camera, in plain film words a crew uses:
+  the frame size and angle, how the camera moves (or that it is held still), its speed, and when (by what happens on
+  screen, never by a line id or a second count over 2 decimals). It must agree with the fields exactly: a moving camera
+  never reads "unmoving", "static" or "locked-off"; a held camera has no move words. NEVER name gear (tripod, sticks,
+  dolly, slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the video model draws whatever is named into
+  the picture. Say what the FRAME does: "the camera eases slowly closer to her face as she asks", "the frame floats
+  gently with a slight handheld breath", "the camera rises slowly to reveal the road". No Sinhala, no line ids, no
+  names of things not in the clip. At most 300 characters.
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: ANUDI ARRIVES. Anudi leaves the family car near an office building. Rain starts as she continues past Kasun's food vehicle.
+What it is for: Bring Anudi into Kasun's surroundings and establish the belongings involved in their encounter.
+Just before (the previous scene ends): He smiles and continues working.
+Next (the following scene opens): Anudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.
+Place: Family car. Mood of the scene: everyday, transitional, rainy.
+People:
+- Anudi (on screen): wants to Reach the nearby building; feels absorbed in her phone at the start, occupied with getting through the rain by the end.
+- driver (on screen): wants to Drop Anudi near her destination; feels attentive to driving at the start, task completed by the end.
+Between them: empty
+The production's direction: Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances. Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action. Kasun maintains the same facial appearance, hairstyle and body type throughout. Anudi maintains the same facial appearance, hairstyle and body type throughout.
+Script, in order (a line's id is the name you use for it; the words are Sinhala):
+action: A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone. | how (the reader's note): Keep her attention naturally on the screen. | intent: Introduce Anudi within her comfortable daily routine.
+action: The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building. | how (the reader's note): Treat her acknowledgment of the driver as a passing courtesy; no exact words are supplied. | intent: Move Anudi from the car onto the roadside.
+action: Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler. | how (the reader's note): Maintain a continuous walking action as she opens the umbrella. | intent: Use the weather to bring Anudi past the food vehicle with her hands occupied.
+</scene>
+
+<clips>
+In cut order. SIZE is fixed (the clip opens on it).
+<clip slate="2A-1" n="1">
+Setup A; role master; SIZE WIDE (WIDE with the driver in left foreground profile and Anudi visible in the rear right; exclude mirrors); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Secure cabin mount, 28mm, f/5.6; angle Eye level, diagonally across the cabin from the front passenger side; movement: Locked-off relative to the cabin throughout; depth: Deep, both occupants legible and exterior traffic indistinct through the windows.
+Why the planner made it: A stable cabin composition makes the moving street incidental to Anudi's protected routine and establishes both occupants without extra coverage.
+What happens: From the front passenger side, a wide cabin view shows the driver at the wheel and Anudi in the rear studying her smartphone as the car travels; subdued engine and road ambience.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Rear seat, screen right, seated facing forward with phone in right hand, handbag on left forearm and folded umbrella in left hand resting across her lap. Does: Remains seated looking down at the smartphone in her right hand, with her handbag on her left forearm and the folded umbrella held in her left hand.
+In frame: An adult Sri Lankan man with short black hair, wearing a pale grey shirt and dark trousers. Where: Driver's seat in the left foreground, seated facing the road, both hands on the wheel. Does: Remains seated at the wheel, keeping his eyes on the road and making only small steering adjustments.
+Opening picture: Driver in the left foreground and Anudi in the rear right, framed within the cabin with windows showing passing road texture.
+Beats: 0-1s: Both remain seated as the car travels; Anudi holds the phone low in her right hand. | 1-5s: Anudi continues looking at the phone without changing hands while the driver makes small steering adjustments. | 5-6s: Travel continues with all belongings in the same positions.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="2G-1" n="2">
+Setup G; role insert; SIZE INSERT (INSERT of smartphone and right hand against a small area of navy trousers; face and other belongings excluded); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; secured cabin rig, 85mm, f/2.8; angle oblique downward view from beside the rear seat; movement: fixed close framing with shallow isolation as the car travels; depth: Shallow; phone edge and fingers sharp, cabin falls into soft bokeh.
+Why the planner made it: Gives the phone absorbed routine a tactile detail and a sheltered visual contrast to the later umbrella rain.
+What happens: A close view beside Anudi's rear seat isolates the smartphone resting in her right hand as the moving car produces small natural vibrations; subdued cabin traffic is audible.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Seated in the rear seat, smartphone in her right hand over her lap; only hand and part of trousers visible. Does: Keeps the smartphone steady in her right hand without tapping.
+Opening picture: The smartphone crosses the frame diagonally above navy trousers, cradled in the right hand; screen too oblique to read.
+Beats: 0-1s: Her right hand supports the smartphone above her lap. | 1-3s: The handset moves subtly with the travelling car; its oblique screen remains unreadable. | 3-4s: The smartphone remains in her right hand above her lap.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="2B-1" n="3">
+Setup B; role master; SIZE WIDE (WIDE covering the arriving car, the rear doorway and several steps of pavement toward screen right); take 8 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off tripod, 32mm, f/5.6; angle Eye level from the pavement opposite the curbside rear door; movement: Locked-off on sticks throughout; depth: Deep, door and pavement path clearly legible.
+Why the planner made it: A continuous held view makes the stop, exit and courtesy readable without repeating the action or requiring a difficult door match.
+What happens: A fixed pavement-wide view shows the car stop near the office, Anudi step out with her belongings, nod toward the seated driver and head right toward the building; road and door sounds only.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Initially seated inside the rear curbside doorway, moving onto the pavement; phone in right hand, handbag on left forearm and folded umbrella in left hand. Does: Exits onto the pavement with smartphone in right hand, handbag on left forearm and folded umbrella in left hand, closes the door with her left forearm, nods toward the front seat and walks right.
+In frame: An adult Sri Lankan man with short black hair, wearing a pale grey shirt and dark trousers. Where: Driver's seat, visible through the side window toward frame left, facing forward with hands on the wheel. Does: Brings the car to a stop and remains seated with hands on the wheel.
+Opening picture: The slowly arriving car fills the left and centre, with clear pavement extending toward the office at right.
+Beats: 0-1s: The car rolls slowly toward its stopping position, with Anudi still seated. | 1-2s: The driver stops the car and Anudi pushes the rear curbside door outward with her left forearm. | 2-5s: Anudi steps onto the pavement with the phone in her right hand, handbag on her left forearm and folded umbrella in her left hand, then presses the door closed with her left forearm. | 5-7s: Anudi gives a brief nod toward the front seat and starts walking screen right toward the office approach. | 7-8s: Anudi continues right with all belongings in their established hands; the driver stays seated.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="2C-1" n="4">
+Setup C; role single; SIZE MWS (MWS, Anudi from head to below knees with room above for the full umbrella and street behind); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique tracking; Side-tracking dolly, 35mm, f/4; angle Eye level, three-quarter front from the pavement side; movement: A single gentle lateral track screen right at her walking pace; depth: Medium, Anudi and her belongings clear against softly legible roadside.
+Why the planner made it: A gentle lateral track stays with Anudi while the rain and umbrella opening change the practical rhythm of her walk.
+What happens: Walking right along the pavement, Anudi feels the first rain and opens her umbrella with her left hand while retaining her phone in her right and handbag on her left forearm; a moving medium-wide view stays with her.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Centre frame on the pavement, facing and walking screen right; smartphone in right hand, handbag on left forearm, folded umbrella in left hand. Does: Walks right with smartphone in right hand, handbag on left forearm and folded umbrella in left hand; as rain begins she lifts and opens the umbrella one-handed and keeps walking.
+Opening picture: Anudi centred in a medium-wide moving frame, with open headroom and pavement stretching toward screen right.
+Beats: 0-1s: Anudi walks right with the folded umbrella down at her left side and phone in her right hand. | 1-2s: Rain begins to fall around Anudi as she keeps walking and begins lifting the folded umbrella with her left hand. | 2-5s: She raises and opens the umbrella one-handed with her left hand while continuing right; the handbag stays on her left forearm and the phone stays in her right hand. | 5-6s: Anudi continues right under the fully open umbrella as rain falls.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="2D-1" n="5">
+Setup D; role master; SIZE WIDE (WIDE, the food three-wheeler on the curb and Anudi's full figure visible approaching and passing it); take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; Locked-off tripod, 35mm, f/5.6; angle Eye level from across the pavement, looking along the curb; movement: Locked-off on sticks throughout; depth: Deep, Anudi and the food vehicle both clearly legible.
+Why the planner made it: The held frame makes the food vehicle's position beside her route unmistakable and lets her walk into the next scene without an invented encounter.
+What happens: In a fixed wide roadside view, Anudi continues under her open umbrella and passes the small food three-wheeler, still carrying her phone and handbag as rain falls.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: Left side of frame on the pavement, facing right toward the food three-wheeler; open umbrella in left hand, handbag on left forearm and phone in right hand. Does: Continues walking screen right under her open umbrella, passing the small food three-wheeler with smartphone in right hand and handbag on left forearm.
+Opening picture: Anudi at frame left approaching the small food three-wheeler near the curb, with walking space to frame right.
+Beats: 0-0.5s: Anudi walks right under the open umbrella toward the food three-wheeler as rain falls. | 0.5-3.5s: Anudi continues right past the food three-wheeler, phone in right hand and handbag on left forearm. | 3.5-4s: Anudi continues right with the open umbrella overhead as rain falls.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="2E-1" n="6">
+Setup E; role insert; SIZE INSERT (INSERT of the fully extended canopy edge; all people outside frame); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; stabilized tracking rig, 85mm macro, f/2.8; angle slightly below canopy edge; movement: gentle parallel tracking holds the canopy edge at a constant scale with the distant pavement moving left; depth: Shallow; roadside dissolves into unobtrusive bokeh.
+Why the planner made it: Makes the onset of rain tangible after the full opening, without repeating the occupied-hand choreography.
+What happens: A tight view beneath the open umbrella isolates raindrops gathering at its edge as the roadside drifts behind; rain and street ambience continue.
+No person in frame.
+Opening picture: The open canopy rim crosses the upper half diagonally, with soft roadside colour beneath.
+Beats: 0-1s: The canopy travels steadily screen right, held open throughout. | 1-5s: Raindrops strike the fabric and gather at its edge. | 5-6s: A bead slips off the rim as the canopy continues right.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="2F-1" n="7">
+Setup F; role reaction; SIZE CU (CU of Anudi's face and shoulders beneath the open canopy; hands and belongings below frame); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique lead; stabilized walking rig, 85mm, f/2.8; angle eye level from the curbside ahead of Anudi; movement: retreat smoothly ahead of Anudi at her walking pace, keeping her face at constant scale; depth: Shallow; food vehicle and frontage remain soft background shapes.
+Why the planner made it: Provides the face-level shift from phone absorption to navigating the wet pavement, absent from the wide passage coverage.
+What happens: The camera retreats ahead of Anudi beneath her open umbrella as she raises her gaze toward the office and continues walking; light rain and traffic remain audible.
+In frame: A young adult Sri Lankan woman with dark hair in a low ponytail, wearing a cream blouse and navy trousers. Where: On the roadside pavement continuing screen right past the food three-wheeler; smartphone, handbag and open umbrella remain carried, with hands below the close framing. Does: Walks continuously toward screen right beneath her already open umbrella, lifting her gaze ahead with lips closed.
+Opening picture: Anudi's face sits just left of centre beneath the open canopy, with room toward screen right and the food vehicle soft behind.
+Beats: 0-1s: Anudi continues walking with her gaze slightly lowered. | 1-5s: She lifts her gaze toward the office direction while keeping her walking pace. | 5-6s: She continues beneath the fully open canopy.
+Nobody speaks on camera in this clip.
+</clip>
+</clips>
+
+<omni>
+PROVISIONAL (not measured on Omni 1.2 yet; a render lab will confirm). The video model starts from the opening picture.
+Works well: hold; breathing; drift; reframe; push_in; slow_creep; pull_out; push_then_hold; pan_left/right;
+follow_pan; slow_pan_reveal; tilt_up/down; tilt_reveal; truck_left/right; tracking_alongside; follow; lead;
+track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; slow_zoom; zoom_in/out; aerial_establishing;
+aerial_pull_away; arc_left/right (short, slow); handheld_subtle; operated.
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

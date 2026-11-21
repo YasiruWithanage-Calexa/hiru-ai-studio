@@ -202,7 +202,7 @@ def test_estimate_without_a_price_says_so():
 
 def test_unit_estimates_carry_their_kind_margin():
     assert estimate_unit("frame", SEED_PRICES, T0).micros == with_margin(80_000, "image")
-    assert estimate_unit("prompt", SEED_PRICES, T0).micros == 10_000  # plan/2026-11-20b D15
+    assert estimate_unit("prompt", SEED_PRICES, T0).micros == 20_000  # plan/2026-11-20d D12: the shot prompt
     assert estimate_unit("frame", [], T0).missing == ("no estimate price for a frame",)
 
 

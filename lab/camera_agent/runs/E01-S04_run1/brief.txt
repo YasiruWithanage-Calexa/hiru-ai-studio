@@ -1,0 +1,312 @@
+You are the Camera agent of Hiru AI Studio, the director of photography for Sri Lankan television drama made with an AI
+video model (Omni 1.2). A shot planner has already decided the STORY of every clip: who is in it, what happens, which
+lines are spoken, the shot size, the take length. You decide everything the CAMERA does: how it is held, how it moves,
+when and why it moves, the angle and height, the lens, the stop and the focus, the composition, and the one sentence the
+video model is given about the camera. You do not change the story, the people, the lines, the size or the light.
+
+# Why you exist
+
+Video takes made with a fixed camera look dead. A real drama camera is almost never truly frozen: an operator holds it,
+it breathes, it eases in when a line lands, it drifts with a listener, it follows a person who walks. Your job is to make
+the camera feel alive and motivated, the way a good Sri Lankan teledrama DoP would shoot it, without turning it into a
+music video. Restraint is part of the craft; stillness is allowed when you give it a reason.
+
+# What you are given
+
+<scene>: the scene, the people, what each wants and feels, and the script in order (line ids L1, L2 ...).
+<clips>: every clip in cut order. For each: slate, setup letter (same letter = same camera position), role, the planner's
+SIZE (fixed: it is the size the clip OPENS on), take length and handles, who is in frame and where, what they do, the
+lines spoken and roughly how long they take, the planner's beats, the planner's own camera words (a HINT only: the
+planner was told to be cautious and usually wrote "locked-off"), the planner's opening picture, and the sound mode.
+<omni>: what the video model performs well, what is risky, what to avoid.
+
+# How to decide, clip by clip
+
+1. Read the scene first: its feeling at the start and at the end, where it turns. Write ONE line of camera language for
+   the scene (for example: "Operated and calm at the roadside; eases closer as Anudi's curiosity grows; goes still when
+   the father's call lands."). Every clip then follows it.
+2. Dialogue coverage (singles, two-shots, over-the-shoulders) is OPERATED by default: support `operated` with move
+   `breathing` or `drift` (a slight living float, the frame never perfectly still). Use `locked_off` + `hold` only when
+   stillness itself says something (shock, a held silence, a formal or cold moment, a fixed security-camera feel) and
+   say why.
+3. Give a real move where the story earns it, and tie it to the moment that motivates it: a slow push in when a line
+   lands or a person realises something; a pull out when someone is left alone; a follow or lead when a person walks; a
+   pan or tilt to discover what a look finds; a slow arc to change the power between two people; a rise or a crane down
+   to open or close a scene. Write the trigger (a line id or the beat) and the second it starts and settles.
+4. ONE move per clip. A move that settles is fine (`push_then_hold`, `track_then_hold`). Never two different moves.
+5. Faces that speak stay readable for lip-sync: while a line is spoken, the camera moves only `very_slow` or `slow`. No
+   whip, snap or crash zoom, no shake, no orbit while someone talks. Slow motion never with a spoken line.
+6. The move must fit the take: a 4 s take can hold a short push or a drift, not a half orbit. Leave the handles calm:
+   a move starts after the lead handle and has settled or is easing before the tail handle, so the editor can cut.
+7. Cut grammar: clips of the same setup letter share the support and feel. A moving clip cuts best to a moving clip, a
+   still to a still; break it on purpose only. Keep the line of action (axis) the planner gave for the scene; cross it
+   only on screen with a move (`crossing_on_screen`) and say why.
+8. Escalate with the scene: small moves early, the strongest move at the turn, calm at the end unless the scene ends
+   in shock. Not every clip needs a visible move; most need life.
+9. The shot OPENS on the planner's size and opening picture (the first frame is drawn from it). A push may LAND tighter,
+   a pull wider: report `end_size`. A hold, drift or pan keeps the size.
+10. Inserts and details: a slow creep, a slow tilt or a gentle drift usually beats a frozen frame. A person only heard
+    (on the phone) is never revealed by a move.
+
+# Fields
+
+- `support`: how the camera is held. `operated` = on a stand but a hand on it, tiny living drift. `handheld_subtle` =
+  on a person's hands, calm. `handheld_urgent` = shaky, for panic or a fight. Steadicam/gimbal = floating smooth moves
+  that follow people. Dolly/slider = smooth straight moves. Jib/crane = up and down. Drone = aerial exteriors only.
+- `move`, `direction` (a few words: "toward Anudi's face", "left to right with Kasun"), `speed`, `start_s`, `end_s`
+  (seconds in the take; 0 and 0 for a hold), `trigger` (a line id like "L4", or "her look at 1.9 s", or "the cut in"),
+  `motivation` (the story reason, one sentence).
+- `opens_on` and `lands_on`: what the frame shows at the start and at the end of the move, in a short phrase.
+- `end_size`, `angle`, `height`, `lens`, `aperture`, `focus` (+ `rack_from`, `rack_to`, `rack_at_s` only for a rack
+  focus), `composition` (+ `composition_note`), `time`, `axis`, `omni` (`works` or `risky` from the <omni> table).
+- `why`: one sentence a DoP would say to the director.
+- `camera_sentence`: the ONE sentence the video model is given about the camera, in plain film words a crew uses:
+  the frame size and angle, how the camera moves (or that it is held still), its speed, and when (by what happens on
+  screen, never by a line id or a second count over 2 decimals). It must agree with the fields exactly: a moving camera
+  never reads "unmoving", "static" or "locked-off"; a held camera has no move words. NEVER name gear (tripod, sticks,
+  dolly, slider, crane, jib, gimbal, steadicam, rig, drone, track, rails): the video model draws whatever is named into
+  the picture. Say what the FRAME does: "the camera eases slowly closer to her face as she asks", "the frame floats
+  gently with a slight handheld breath", "the camera rises slowly to reveal the road". No Sinhala, no line ids, no
+  names of things not in the clip. At most 300 characters.
+
+Answer for EVERY clip in <clips>, in the same order, with its slate.
+
+
+=== user ===
+<scene>
+Scene: A CONVERSATION THAT CHANGES EVERYTHING. Returning the phone leads to a warm exchange about Kasun's business. Her father's call about marriage changes Anudi's mood and ends the meeting.
+What it is for: Establish mutual interest and Kasun's ambition while introducing the family pressure that interrupts their connection.
+Just before (the previous scene ends): Anudi hears him and turns around. Kasun approaches her, holding out the phone.
+Next (the following scene opens): A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar voice interrupts him.
+Place: Colombo roadside. Mood of the scene: warm, curious, interrupted, reflective.
+People:
+- Anudi (on screen): wants to Thank Kasun and learn about him, then respond to her father's demand; feels grateful and receptive at the start, subdued but open to meeting kasun again by the end.
+- Kasun (on screen): wants to Return her phone and answer her interest in his work; feels friendly and helpful at the start, distracted by the encounter and her change in mood by the end.
+- Father (heard on the phone only, never seen): wants to Have Anudi return home for a discussion about her marriage; feels urgent and directive at the start, expecting her return by the end.
+Between Kasun and Anudi: New acquaintances with mutual interest following smartphone's return.
+The production's direction: Visual Style: Realistic Sri Lankan cinematic drama, natural lighting, authentic environments and emotionally grounded performances. Scene Structure: Fewer, longer scenes with multiple camera shots and continuous dramatic action. Kasun maintains the same facial appearance, hairstyle and body type throughout. Anudi maintains the same facial appearance, hairstyle and body type throughout.
+Script, in order (a line's id is the name you use for it; the words are Sinhala):
+action: Anudi takes her phone from Kasun. | how (the reader's note): Keep the handover simple and clearly visible. | intent: Complete the return that initiates their conversation.
+L1 Anudi to Kasun: "අනේ, Thank you! මම දැක්කෙවත් නෑ." | how (the reader's note): Genuine gratitude with mild surprise. | intent: Thank him and acknowledge that she missed the accident.
+L2 Kasun to Anudi: "වැස්ස නිසා වෙන්න ඇති." | how (the reader's note): Gentle and matter-of-fact. | intent: Put her at ease by attributing the mishap to the weather.
+action: Anudi smiles and looks at his small food business. | how (the reader's note): Let the smile lead into an interested look toward the stall. | intent: Shift her attention from the returned phone to Kasun's livelihood.
+L4 Anudi to Kasun: "මේ ඔයාගේ බිස්නස් එකද?" | how (the reader's note): Open curiosity without condescension. | intent: Find out whether the business belongs to him.
+L5 Kasun to Anudi: "ඔව්. පොඩියට පටන් ගත්තේ." | how (the reader's note): Unembarrassed and modest. | intent: Confirm ownership while acknowledging the modest beginning.
+L6 Anudi to Kasun: "තනියමද මේ හැමදේම කරන්නේ?" | how (the reader's note): Interest deepens rather than becoming an interrogation. | intent: Learn whether he manages all the work himself.
+L7 Kasun to Anudi: "ඔව්. රුපියල් පන්දහසකින් පටන් ගත්තේ. තව ඉස්සරහට යන්න තමයි බලාපොරොත්තුව." | how (the reader's note): Honest pride, with hope stronger than self-promotion. | intent: Explain his independent start with five thousand rupees and his wish to grow.
+action: Anudi looks impressed. | how (the reader's note): A restrained reaction rather than an emphatic display. | intent: Register her admiration before the interruption.
+action: Before she can continue the conversation, her phone suddenly rings. She checks the screen. It's her father. | how (the reader's note): The already established phone rings; give its caller display a readable moment. | intent: Interrupt the growing connection with family demands.
+L10 Anudi to Father: "හෙලෝ තාත්තේ." | how (the reader's note): An ordinary greeting before she knows the reason for the call. | intent: Answer her father.
+L11 Father (through the phone) to Anudi: "අනුදි, ඔයා කොහෙද ඉන්නේ? ඉක්මනට ගෙදර එන්න. අපිට ඔයාගේ කසාදෙ ගැන කතා කරන්න තියෙනවා." | how (the reader's note): Direct and authoritative without shouting. | intent: Locate Anudi and summon her home to discuss her marriage.
+action: Anudi's smile slowly disappears. | how (the reader's note): Let the warmth drain gradually from her expression. | intent: Show the emotional cost of the call.
+L13 Anudi to Father: "හරි තාත්තේ. මම එන්නම්." | how (the reader's note): Subdued compliance, contrasting with her earlier ease. | intent: Agree to return.
+action: She ends the call. Kasun notices her changed expression. Anudi looks at him again. | how (the reader's note): Allow a brief, observant pause without suggesting Kasun knows the unheard details. | intent: Return to their shared space with the interruption still affecting her.
+L15 Anudi to Kasun: "එහෙනම් මම යන්නම්. ආයෙත් හම්බවෙමු." | how (the reader's note): Retain a little warmth beneath the changed mood. | intent: Take her leave while keeping open the possibility of another meeting.
+L16 Kasun to Anudi: "හරි. පරිස්සමින් යන්න." | how (the reader's note): Simple, considerate warmth. | intent: Accept her departure and wish her well.
+action: Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else. | how (the reader's note): Let Kasun linger before returning to work; avoid specifying the content of his thoughts. | intent: Leave the encounter resonating after Anudi departs.
+</scene>
+
+<clips>
+In cut order. SIZE is fixed (the clip opens on it).
+<clip slate="4A-1" n="1">
+Setup A; role two_shot; SIZE TWO (TWO, both from waist up with phone visible between them); take 6 s, handles 0.9 s in / 0.9 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 40mm, f/4; angle eye level from road side; movement: locked-off on sticks; depth: Medium, softly legible vehicle background.
+Why the planner made it: Hold the return and her gratitude in a shared space without exaggerating the contact.
+What happens: From the road side, Kasun returns the phone to Anudi, who thanks him for noticing its loss (L1); rain continues around them.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; open umbrella in left hand, handbag on left forearm, right hand initially empty. Does: Receives the phone in her right hand, then lips move to L1.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Frame right facing left, standing, phone initially in right hand. Does: Offers the phone in his right hand and releases it into her right hand.
+Opening picture: Anudi left and Kasun right, phone extended centrally, vehicle behind right.
+Beats: 0-0.9s: Both hold their established positions with the phone extended. | 0.9-2.4s: Kasun's right hand gives the phone to Anudi's right hand; the phone obscures their fingertips. | 2.4-5.1s: Anudi's lips move to L1, phone held at her right waist. | 5.1-6s: Both remain still in their new hand positions.
+Spoken here: L1 Anudi (~4.1 s)
+</clip>
+<clip slate="4K-1" n="2">
+Setup K; role insert; SIZE INSERT (INSERT of the handset between a cream sleeve on left and faded blue sleeve on right); take 4 s, handles 1.0 s in / 1.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 85mm macro, f/4; angle road-side waist-height oblique; movement: locked-off on the phone's short horizontal path; depth: Shallow, phone edges and receiving hand sharp, background dissolved.
+Why the planner made it: Gives the shared object a tactile introduction that can rhyme with the later caller display; the master retains the faces and gratitude.
+What happens: At waist height, the returned phone moves from Kasun's right hand into Anudi's right hand, with the handset obscuring the transfer point.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Standing roadside frame right facing left, right hand extended with the phone at the receipt instant; face outside the crop. Does: Supports the phone with his right hand from frame right, then withdraws that hand after Anudi has secured it; the handset hides the transfer point.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Standing roadside frame left facing right at the receipt instant, right hand beneath the phone; umbrella left and handbag on left forearm outside frame. Does: Receives her phone with her right hand and draws it toward frame left; her left hand retains the umbrella with handbag on left forearm outside the crop.
+Opening picture: Phone centered between Kasun's right hand from frame right and Anudi's right hand from frame left; both faces excluded.
+Beats: 0-1s: Kasun's right hand supports the phone as Anudi's right hand comes beneath it. | 1-2.5s: Anudi secures the phone in her right hand; Kasun releases it and withdraws his right hand to frame right without visible hand contact. | 2.5-4s: Anudi draws the phone slightly toward her body; Kasun's hand clears the frame.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="4B-1" n="3">
+Setup B; role single; SIZE MCU (MCU, Kasun chest and head); take 4 s, handles 0.6 s in / 0.6 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm, f/2.8; angle eye level toward frame right; movement: locked-off on sticks; depth: Shallow, vehicle softly resolved.
+Why the planner made it: His unforced stillness keeps the reassurance modest.
+What happens: Kasun gently attributes the mishap to the rain (L2), framed from the road side with his business behind him.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Frame right facing left, standing, both hands empty at his sides. Does: Lips move to L2.
+Opening picture: Kasun on right third, looking left, vehicle softly behind.
+Beats: 0-1.1s: Kasun holds his eyeline left. | 1.1-2.9s: Kasun's lips move to L2. | 2.9-4s: Kasun holds position.
+Spoken here: L2 Kasun (~2.5 s)
+</clip>
+<clip slate="4C-1" n="4">
+Setup C; role single; SIZE MS (MS, Anudi waist up with vehicle edge in right depth); take 4 s, handles 0.35 s in / 0.35 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 50mm, f/4; angle eye level from road side; movement: locked-off on sticks; depth: Medium, vehicle edge recognizable.
+Why the planner made it: Let her gaze, not a camera move, turn the practical exchange toward his life.
+What happens: Anudi smiles toward the food three-wheeler and enquires whether it belongs to Kasun (L4), with rain audible.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; phone at right waist, open umbrella in left hand, handbag on left forearm. Does: Smiles toward the business, then lips move to L4.
+Opening picture: Anudi left, phone low, umbrella above, vehicle edge right depth.
+Beats: 0-0.35s: Anudi holds position. | 0.35-1.85s: Anudi smiles and looks toward the food three-wheeler. | 1.85-3.65s: Anudi's lips move to L4. | 3.65-4s: Anudi holds position.
+Spoken here: L4 Anudi (~2.5 s)
+</clip>
+<clip slate="4L-1" n="5">
+Setup L; role pov; SIZE MS (MS detail of the food three-wheeler, near vehicle frame edge enclosing one side, no people visible); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique foreground_framing; locked-off sticks, 50mm, f/4; angle Anudi's road-side eyeline toward the business; movement: locked-off foreground framing through the vehicle's near edge; depth: Medium, vehicle body legible with soft near edge.
+Why the planner made it: Makes the modest scale of the business the object of her attention instead of repeating her enquiring face, grounding the connection in a real place.
+What happens: From Anudi's road-side eyeline, a fixed medium view studies the small food three-wheeler through its own near frame edge while L4 continues offscreen.
+Only heard, never seen: Anudi
+No person in frame.
+Opening picture: Small food three-wheeler seen from Anudi's road-side eyeline, its own near frame edge soft in foreground, no people or added items.
+Beats: 0-1s: Light rain falls beyond the stationary vehicle. | 1-3s: The food three-wheeler remains still in the shaded right side of the roadside. | 3-4s: Rain continues along the exposed edge of the vehicle.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="4A-2" n="6">
+Setup A; role two_shot; SIZE TWO (TWO, both waist up with business behind Kasun); take 6 s, handles 0.5 s in / 0.5 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 40mm, f/4; angle eye level from road side; movement: locked-off on sticks; depth: Medium, softly legible vehicle background.
+Why the planner made it: A shared frame preserves equality while two short lines deepen the exchange.
+What happens: Kasun confirms ownership and a small beginning (L5); Anudi enquires whether he runs it alone (L6), in their original shared frame.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; phone at right waist, open umbrella in left hand, handbag on left forearm. Does: Listens to L5, then lips move to L6.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Frame right facing left, standing, empty hands at sides. Does: Lips move to L5, then listens.
+Opening picture: Anudi left and Kasun right, vehicle behind right.
+Beats: 0-1s: Both hold their established positions. | 1-2.8s: Kasun's lips move to L5. | 2.8-3.2s: Both remain standing. | 3.2-5s: Anudi's lips move to L6. | 5-6s: Both hold their positions.
+Spoken here: L5 Kasun (~3.3 s); L6 Anudi (~2.5 s)
+</clip>
+<clip slate="4B-2" n="7">
+Setup B; role single; SIZE MCU (MCU, Kasun chest and head); take 6 s, handles 0.25 s in / 0.25 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm, f/2.8; angle eye level from road side; movement: locked-off on sticks; depth: Shallow, vehicle softly resolved.
+Why the planner made it: Give his complete account a dignified uninterrupted portrait.
+What happens: Kasun explains working alone, starting with five thousand rupees and hoping to expand (L7); the small business stays softly behind his shoulder.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Frame right facing left, standing, empty hands at sides. Does: Lips move to L7.
+Opening picture: Kasun right third with vehicle behind.
+Beats: 0-0.75s: Kasun holds his eyeline left. | 0.75-5.25s: Kasun's lips move to L7. | 5.25-6s: Kasun holds position.
+Spoken here: L7 Kasun (~6.4 s)
+</clip>
+<clip slate="4D-1" n="8">
+Setup D; role reaction; SIZE CU (CU, Anudi's face upper left and right hand with phone screen foreground right); take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 50mm, f/5.6; angle slightly three-quarter from road side; movement: locked-off on sticks; depth: Medium, face and phone screen both legible.
+Why the planner made it: A single close frame captures admiration and makes the phone's caller ID legible when it interrupts.
+What happens: Anudi is impressed, then the phone rings and she sees Father on its caller ID; her face and the screen share the close frame.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; phone in right hand at waist, open umbrella in left hand, handbag on left forearm. Does: Shows restrained appreciation, then raises and checks the ringing phone.
+Opening picture: Anudi's face upper left, her right hand and phone low right; umbrella edge overhead.
+Beats: 0-0.5s: Anudi holds the phone low in her right hand. | 0.5-2s: Anudi maintains her gaze to the right. | 2-3.5s: The phone rings; Anudi raises and angles its screen toward herself, with the caller ID Father readable in the foreground. | 3.5-4s: Anudi holds the phone steady.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="4J-1" n="9">
+Setup J; role insert; SIZE ECU (ECU of the phone and Anudi's right hand only, display filling most of frame); take 4 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off macro rig, 100mm macro, f/4; angle road-side high oblique onto the phone; movement: locked-off on the readable display; depth: Shallow, entire display readable against dissolved roadside.
+Why the planner made it: Turns the readable caller display into the visual hinge, contrasting the phone's earlier return without repeating the face-and-screen composition.
+What happens: An extreme close-up shows Anudi's phone in her right hand with the English caller ID Father readable while the incoming ring continues.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Standing roadside frame left facing right, phone in right hand below face; umbrella in left hand and handbag on left forearm remain outside the crop. Does: Holds her smartphone steady in her right hand for the screen check; only her hand and a cream sleeve edge enter frame.
+Opening picture: Phone screen dominates the image, right hand supporting it from below and side; English text Father is readable.
+Beats: 0-1s: The incoming-call display shows the English text Father. | 1-3s: The display stays lit as the incoming ring continues. | 3-4s: The phone remains below her face with the incoming-call display visible.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="4E-1" n="10">
+Setup E; role single; SIZE MCU (MCU, Anudi head and shoulders with phone visible); take 4 s, handles 0.6 s in / 0.6 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm, f/2.8; angle eye level from road side; movement: locked-off on sticks; depth: Shallow, soft rainy background.
+Why the planner made it: The familiar greeting contrasts with the interruption to come.
+What happens: Anudi brings the phone to her right ear and greets her father (L10); Kasun remains off camera.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; phone raised in right hand, open umbrella in left hand, handbag on left forearm. Does: Brings phone to right ear and lips move to L10.
+Opening picture: Anudi left third, phone raised in right hand, umbrella edge above.
+Beats: 0-0.6s: Anudi holds the phone raised in her right hand. | 0.6-1.6s: Anudi lifts the phone to her right ear. | 1.6-2.5s: Anudi's lips move to L10. | 2.5-4s: Anudi holds the phone at her right ear.
+Spoken here: L10 Anudi (~1.8 s)
+</clip>
+<clip slate="4E-2" n="11">
+Setup E; role reaction; SIZE CU (CU, Anudi's face and phone fill the frame); take 8 s, handles 0.3 s in / 0.3 s out; sound voiceover.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm, f/2.8; angle eye level from road side; movement: locked-off on sticks; depth: Shallow, soft rainy background.
+Why the planner made it: The pressure is visible on the listener, never pictured as the remote caller.
+What happens: Anudi listens with the phone at her ear while her father urgently summons her home for a discussion about marriage (L11); he is heard only through the phone.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm. Does: Holds the phone to her right ear and listens, lips closed.
+Only heard, never seen: Father
+Opening picture: Anudi left third, face and phone close, umbrella edge overhead.
+Beats: 0-0.8s: Anudi holds the phone at her right ear. | 0.8-7.2s: Anudi listens to L11 without moving her lips. | 7.2-8s: Anudi keeps the phone at her right ear.
+Spoken here: L11 Father (~8.0 s)
+</clip>
+<clip slate="4G-1" n="12">
+Setup G; role reaction; SIZE MCU (MCU of Anudi, umbrella edge soft at upper left, open negative space to her right); take 8 s, handles 0.8 s in / 0.8 s out; sound voiceover.
+Planner's camera words (a hint): technique slow_creep; precision slider, 75mm, f/2.8; angle road-side three-quarter eye level; movement: very slow continuous creep toward Anudi, remaining within MCU; depth: Shallow, umbrella edge and vehicle softly dissolved.
+Why the planner made it: Umbrella-edge foreground separates Anudi from the shared roadside without changing the weather; a restrained approach makes the outside pressure visible.
+What happens: From a new road-side three-quarter position, the camera inches toward Anudi behind the umbrella edge while L11 remains on the soundtrack; her lips stay closed and her attention settles.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Standing roadside frame left facing right, phone at right ear, umbrella in left hand and handbag on left forearm. Does: Holds the phone against her right ear with her right hand; her left hand keeps the umbrella steady with the handbag on her left forearm; her gaze becomes still and her lips remain closed.
+Only heard, never seen: Father
+Opening picture: Anudi occupies the left half in three-quarter MCU, umbrella edge above, shaded vehicle dissolved at far right.
+Beats: 0-0.8s: Anudi holds the phone at her right ear. | 0.8-7.2s: Her eyes settle ahead and her right fingers rest against the phone casing. | 7.2-8s: She maintains her posture beneath the umbrella.
+Spoken here: L11 Father (~8.0 s)
+</clip>
+<clip slate="4E-3" n="13">
+Setup E; role single; SIZE CU (CU, Anudi's face and phone fill the frame); take 4 s, handles 0.35 s in / 0.35 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm, f/2.8; angle eye level from road side; movement: locked-off on sticks; depth: Shallow, soft rainy background.
+Why the planner made it: The held close-up gives the change of expression its full duration before her response.
+What happens: Anudi's smile gradually disappears; holding the phone at her ear, she agrees to come home (L13).
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm. Does: Her smile slowly fades, then lips move to L13.
+Opening picture: Anudi left third, face and phone close, umbrella edge overhead.
+Beats: 0-0.35s: Anudi holds the phone to her right ear. | 0.35-1.85s: Anudi's smile gradually disappears. | 1.85-3.65s: Anudi's lips move to L13. | 3.65-4s: Anudi stays still.
+Spoken here: L13 Anudi (~3.3 s)
+</clip>
+<clip slate="4A-3" n="14">
+Setup A; role two_shot; SIZE TWO (TWO, both waist up with business behind Kasun); take 6 s, handles 0.35 s in / 0.35 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 40mm, f/4; angle eye level from road side; movement: locked-off on sticks; depth: Medium, softly legible vehicle background.
+Why the planner made it: The original shared frame lets Kasun see her changed expression as she returns to their conversation.
+What happens: Anudi ends the call, looks back at Kasun as he notices her expression, and takes leave while suggesting they meet again (L15).
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right, standing; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm. Does: Ends the call, looks at Kasun and lips move to L15.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Frame right facing left, standing, empty hands at sides. Does: Watches Anudi and notices her changed expression.
+Opening picture: Anudi left with phone at ear, Kasun right with vehicle behind.
+Beats: 0-0.35s: Anudi holds the phone at her right ear; Kasun stands opposite. | 0.35-3.35s: Anudi lowers the phone, ends the call with one simple touch and looks back at Kasun; Kasun looks at her face. | 3.35-5.65s: Anudi's lips move to L15, phone held in her right hand. | 5.65-6s: Both hold their positions.
+Spoken here: L15 Anudi (~3.7 s)
+</clip>
+<clip slate="4H-1" n="15">
+Setup H; role reaction; SIZE CU (CU of Kasun on frame right, looking into left negative space); take 4 s, handles 0.8 s in / 0.9 s out; sound ambient.
+Planner's camera words (a hint): technique shallow_isolation; locked-off sticks, 100mm, f/2.0; angle road-side oblique view of Kasun; movement: locked-off shallow isolation; depth: Shallow, three-wheeler dissolving into soft blocks.
+Why the planner made it: Gives the editor a private registration of her changed manner while the shared master preserves geography; he has no knowledge of the remote conversation.
+What happens: A road-side close-up isolates Kasun as he studies Anudi's changed expression, then steadies his gaze during L15.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Standing roadside frame right facing left; hands empty below frame, food three-wheeler behind him to the right. Does: Looks toward Anudi off frame left, briefly lowers his gaze, then meets her eyeline again with lips closed.
+Opening picture: Kasun's face fills frame right with negative space left and the vehicle softly behind.
+Beats: 0-0.8s: Kasun holds his gaze off frame left. | 0.8-3.1s: His eyes dip briefly and return toward Anudi. | 3.1-4s: He stays facing left with his hands below frame.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="4B-3" n="16">
+Setup B; role single; SIZE MCU (MCU, Kasun chest and head); take 4 s, handles 0.7 s in / 0.7 s out; sound dialogue.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 65mm, f/2.8; angle eye level from road side; movement: locked-off on sticks; depth: Shallow, vehicle softly resolved.
+Why the planner made it: His direct farewell stays considerate without implying that he heard the remote conversation.
+What happens: Kasun accepts Anudi's departure and wishes her well (L16), looking toward her from beside his business.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Frame right facing left, standing, empty hands at sides. Does: Lips move to L16.
+Opening picture: Kasun right third, looking left, vehicle softly behind.
+Beats: 0-1.2s: Kasun holds his eyeline left. | 1.2-2.6s: Kasun's lips move to L16. | 2.6-4s: Kasun stands still.
+Spoken here: L16 Kasun (~3.0 s)
+</clip>
+<clip slate="4F-1" n="17">
+Setup F; role master; SIZE WIDE (WIDE, both full figures and their diverging paths visible); take 6 s, handles 1.0 s in / 1.0 s out; sound ambient.
+Planner's camera words (a hint): technique locked_off; locked-off sticks, 35mm, f/5.6; angle eye level from road side; movement: locked-off on sticks; depth: Deep, vehicle and both paths legible.
+Why the planner made it: The wide holds their diverging paths and his hesitation within the same geography.
+What happens: In a wide rainy roadside view, Anudi walks away with her phone, handbag and umbrella. Kasun watches her, then returns toward the food three-wheeler.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Frame left facing right at opening, standing; phone in right hand, open umbrella in left hand, handbag on left forearm. Does: Turns and walks away into left roadside depth, carrying phone, umbrella and handbag.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Frame right facing left at opening, standing, empty hands at sides. Does: Watches Anudi leave, pauses, then turns and walks toward the three-wheeler.
+Opening picture: Anudi full figure left, Kasun full figure right, three-wheeler behind right.
+Beats: 0-1s: Anudi and Kasun remain in their established positions. | 1-4s: Anudi turns and walks into left depth with phone in right hand, umbrella in left hand and handbag on left forearm; Kasun watches her. | 4-5s: Kasun turns away and walks into right depth toward the food three-wheeler. | 5-6s: Anudi continues away at left depth while Kasun holds near the vehicle at right depth.
+Nobody speaks on camera in this clip.
+</clip>
+<clip slate="4I-1" n="18">
+Setup I; role clean_exit; SIZE WIDE (WIDE with both full figures small on opposite depth paths and wet roadside between); take 4 s, handles 0.5 s in / 0.5 s out; sound ambient.
+Planner's camera words (a hint): technique dolly_out; dolly on short road-side track, 32mm, f/5.6; angle road-side eye level; movement: single slow dolly backward, expanding the foreground space; depth: Deep, both paths and the vehicle legible.
+Why the planner made it: The widening empty space between their diverging paths gives the encounter an afterimage beyond the static geography of the master.
+What happens: A road-side camera pulls away as Anudi continues into left depth and Kasun returns toward the three-wheeler in right depth; rain remains after the exchange.
+In frame: Anudi, consistent face, hairstyle and build, wearing a plain cream blouse and muted teal skirt. Where: Roadside left depth facing away, walking; phone in right hand, umbrella in left hand, handbag on left forearm. Does: Continues walking away into left depth with the phone lowered in her right hand and umbrella in her left.
+In frame: Kasun, consistent face, hairstyle and build, wearing a plain faded blue short-sleeved shirt and dark trousers. Where: Right side facing away toward the food business, walking, hands empty. Does: Continues the return already begun toward the food three-wheeler without starting a new task.
+Opening picture: Wet roadside spans the foreground; Anudi is small in left depth and Kasun in right depth beside the vehicle.
+Beats: 0-0.5s: Both continue away on opposite sides of the composition. | 0.5-3.5s: Anudi recedes into left depth while Kasun approaches the vehicle in right depth. | 3.5-4s: Their figures remain separated at the edges of the depth composition.
+Nobody speaks on camera in this clip.
+</clip>
+</clips>
+
+<omni>
+PROVISIONAL (not measured on Omni 1.2 yet; a render lab will confirm). The video model starts from the opening picture.
+Works well: hold; breathing; drift; reframe; push_in; slow_creep; pull_out; push_then_hold; pan_left/right;
+follow_pan; slow_pan_reveal; tilt_up/down; tilt_reveal; truck_left/right; tracking_alongside; follow; lead;
+track_then_hold; pedestal_up/down; crane_up/down; rising_reveal; slow_zoom; zoom_in/out; aerial_establishing;
+aerial_pull_away; arc_left/right (short, slow); handheld_subtle; operated.
+Risky (may be ignored or warp faces; use only with a strong reason, never on a speaking face): half_orbit; orbit;
+circle_two; whip_pan; whip_out; whip_in; snap_zoom; crash_zoom; dolly_zoom; dutch_roll; rack_focus (the model often
+ignores a timed focus change); focus_out; focus_in; push_past_foreground; pull_back_reveal through a doorway; flyover;
+top_down; aerial_reveal; shake; handheld_urgent; slow_motion; timelapse; hyperlapse.
+</omni>

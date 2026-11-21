@@ -81,7 +81,7 @@ def test_model_designs_the_scene_in_one_call(scene0):
     assert s2["design"]["planner"] == "model"
     rec = s2["design"]["recommended"]
     assert rec["framing"] == "Medium close-up", "the director's size, not the model's"
-    assert rec["movement"] == "Dolly in" and rec["speed"] == "Slow", "a moving camera needs a speed"
+    assert rec["movement"] == "Push in" and rec["speed"] == "Slow", "a moving camera needs a speed"
     ir = s2["ir"]
     assert "Kamala" in ir["setting"] and "C01" not in json.dumps(ir["beats"]), "names, never codes, in prose"
     assert [x["id"] for x in ir["subjects"]] == [""], "Kamala is not in S02; the invented C09 is anonymous"
@@ -193,7 +193,8 @@ def test_a_persons_camera_wins_in_the_prompt(scene0):
     run(store, mode="prompt", shot_ids=[sid])
     p = store.prompts[0]
     cam = _sections(p)["camera"]["segments"][0]["text"]
-    assert "85mm lens" in cam and "Static: a steady, locked-off frame" in cam and "slow push in" not in cam
+    assert "85mm lens" in cam and "The camera holds still: a steady, unmoving frame." in cam
+    assert "slow push in" not in cam
     assert "Camera on side A of the line of action" in cam, "every field of the panel, the axis too"
     assert "push arrives" not in p["prose"], "the beats' own camera notes go when the move changed"
     assert p["camera"]["lens"] == "85mm"
@@ -263,7 +264,7 @@ def test_prompt_wording_has_no_doubled_stops_or_empty_identity_tags(scene0):
     prose = store.prompts[0]["prose"]
     assert ".." not in prose and ". —" not in prose
     assert "(the person)" not in prose and "Nimal says (quietly)" in prose
-    assert "85mm lens at f/2.8" in prose and "Slow dolly in, one smooth move." in prose
+    assert "85mm lens at f/2.8" in prose and "The camera slowly pushes in, one smooth move." in prose
 
 
 def test_a_persons_cast_edits_change_who_is_in_the_shot_and_what_it_is_pinned_to(scene0):

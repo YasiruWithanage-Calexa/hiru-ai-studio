@@ -8,16 +8,26 @@ coverage plan; the DoP designs the scene in one call; a REVIEW reads the drafts 
 checks, and at most ONE revision is kept where it fixes more than it breaks. The job opens by naming the scenes' CRAFT
 PROBLEMS, which steer the technique lookup.
 
-    state.mode        "design" (default) | "prompt" | "frame_prompt" (plan/2026-11-11c: the prompt writer rewords the
-                      first frame's prompt and stores it on the shot). "prompt" writes each wanted shot's video prompt
-                      with the `video_prompter` agent (plan/2026-11-20b): the scene packet and the clip's facts in,
-                      direction out, every fact and spoken word put in by the `video_prompt` step. No fallback: an
-                      answer that fails its checks twice, a missing packet or no model writes NO new version, and the
-                      job says why (a WARNING, and `warnings` in its result).
+    state.mode        "design" (default) | "prompt" | "shot_prompt" | "camera_ask" (plan/2026-11-20c D11 d: the Camera
+                      agent redesigns the wanted shots' camera, `state.note` the person's words).
+                      "shot_prompt" (plan/2026-11-20d D4 c, "Rewrite prompts"): the `shot_prompter` agent writes each
+                      wanted shot's first frame and video together and stores them on the shot
+                      (`design.shot_prompt`); a frame drawn from the old one is then out of date, never redrawn here.
+                      "prompt" ("Generate video prompt", D4 b) writes each wanted shot's video prompt from its stored
+                      shot prompt: no call while it is current, ONE video-only call when only the video is out of
+                      date, a full call when there is none; every fact and spoken word is put in by the
+                      `video_prompt` step. No fallback: an answer that fails its checks twice, a missing packet or no
+                      model writes NO new version, and the job says why (a WARNING, and `warnings` in its result).
+    state.shot_prompts  shots whose first frame is about to be drawn ("Draw first frame", D4 a): each one with no
+                      current shot prompt gets one before the frame job (the next hop) paints it
     state.scene_ids   scenes to work on, or
     state.shot_ids    shots to work on (their scenes are read whole: a scene is designed as one)
     state.force       re-design shots whose design is still current
     state.*           anything else is handed on to the next hop (frame_render's `frame_ids`)
+
+With a model to call (plan/2026-11-20c D11 c), a scene whose shots have a planner's IR
+(Raphael's, Zora's, Sable's) is designed by the Camera agent instead of the DoP: the IR is kept (refitted to the shot's
+beats), the camera is the agent's, one call for the scene.
 
 A design is redone only when it is missing, out of date (its pins moved) or forced; a person's camera changes live in
 `shots.camera_overrides`, which this system never writes. A prompt is a NEW version every time: earlier versions stay
@@ -28,7 +38,6 @@ already current, and at worst adds one more prompt version.
 """
 from __future__ import annotations
 
-import json
 import logging
 from dataclasses import dataclass, field
 from typing import Any
@@ -36,25 +45,26 @@ from typing import Any
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
+from contracts import picture_pins
 from contracts.canon import wardrobe_by_code
+from contracts.frame_brief import agent_camera
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
 from contracts.producer import CameraSettings
 from contracts.staging import AUTHORED
-from hiru_ai.core import agents, llm, memory, parts
+from hiru_ai.core import agents, camera, llm, memory, parts
+from hiru_ai.core import shot_prompts as prompter
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.registry import Registry
 from hiru_ai.rag.embeddings import embed_texts
 from hiru_ai.systems.shot_producer import drafts as drafts_mod
-from hiru_ai.systems.shot_producer import polish as polish_mod
 from hiru_ai.systems.shot_producer.state import State
 
 _log = logging.getLogger(__name__)
 AGENT_DP = "director_of_photography"
 AGENT_INTENT = "first_assistant_director"
 AGENT_REVIEW = "design_review"
-AGENT_PROMPT = "prompt_writer"  # the job's events about prompts (the first-frame polish and the video prompt)
-VIDEO_AGENT = "video_prompter"
+AGENT_PROMPT = "shot_prompter"  # the job's events about prompts (plan/2026-11-20d: one agent writes both)
 WARNINGS_KEPT = 10  # the job's result carries its first warnings, for the screen that started it (plan §7)
 Row = dict[str, Any]
 
@@ -85,8 +95,10 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
     state_in = payload.state
     mode = str(state_in.get("mode") or "design")
     force = bool(state_in.get("force"))
+    ask_note = " ".join(str(state_in.get("note") or "").split())[:600]  # mode "camera_ask": the person's words
     shot_ids = [str(s) for s in state_in.get("shot_ids") or []]
     targets = set(shot_ids) or None
+    before_frames = {str(s) for s in state_in.get("shot_prompts") or []}  # D4 a: "Draw first frame" is next
     ledger_box: list[Any] = []  # built when the scenes are read (it needs the production's cast)
 
     # ── asking the agents ──────────────────────────────────────────────────────────────────────────────────────────
@@ -234,6 +246,46 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             result.append((shot, ir, row))
         return result
 
+    # ── the Camera agent (plan/2026-11-20c D11 c, d) ────────────────────────────────────────────────────────────────
+
+    def camera_scene(row: Row, scene: Any, group: list[Any], prod: Any, canon: list[Row], skipped: list[str], *,
+                     ask: str = "") -> int:
+        """The Camera agent on `group` (the scene's other shots are its context): one call, the IR kept and refitted,
+        the design re-pinned for a stale shot. `ask`: the person's note ("Ask Camera"), one-shot mode. -> designed."""
+        packet = camera.packet_of(ctx, row)
+        whole = not ask and {s.id for s in group} == {s.id for s in scene.shots}
+        for shot in group:  # the IR refitted to the shot's beats, the pins of the shot as it is now (D5)
+            ir, _, why = shots_mod.finish({**(shot.row.get("ir") or {}),
+                                             "rationale": (shot.row.get("design") or {}).get("rationale") or ""},
+                                            shot, scene, prod)
+            old = dict(shot.row.get("design") or {})
+            planner = str(old.get("planner") or "rules")
+            on = list(old.get("on_screen") or shot.staged.on_screen)
+            fresh = sz.design_row(shot, ir, shot.recommended(scene), why, planner, on, str(job_id))
+            shot.row = {**shot.row, "ir": ir, "design": {**old, **fresh}}
+        got = camera.design(ctx, scene, prod, packet=packet, line_rows=env["raw"].get(scene.id, ([], []))[1],
+                            focus=None if whole else [s.id for s in group], note=ask, job_id=str(job_id))
+        skipped.extend(got.warnings)
+        done = 0
+        for shot in group:
+            design = got.designs.get(shot.id, shot.row["design"])
+            scenes_port.save_design(shot.id, shot.row["ir"], design)
+            shot.row = {**shot.row, "design": design}
+            model_mod.restage(shot, scene, canon, prod)
+            done += 1
+            block = design.get("camera") or {}
+            jobs.event(job_id, JobEventType.PROGRESS,
+                       {"text": f"{shot.code}: {design['recommended']['lens']} · "
+                                f"{design['recommended']['movement'].lower()}"
+                                + (" (the rule camera: the agent could not design it)"
+                                   if block.get("state") == "not designed" else ""),
+                        "shot_id": shot.id, "planner": design.get("planner")}, agent=camera.AGENT)
+        return done
+
+    def by_camera(group: list[Any]) -> bool:
+        """The Camera agent designs these shots: it is on and each has a planner's IR to keep."""
+        return camera.on() and bool(group) and all(s.row.get("ir") for s in group)
+
     # ── the graph ──────────────────────────────────────────────────────────────────────────────────────────────────
 
     env: dict[str, Any] = {}  # what the read step hands to the work step: rows turned into the producer's inputs
@@ -276,66 +328,126 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         return {"production": production, "canon": canon, "scene": row, "lines": line_rows, "looks": looks,
                 "shots": list(live.values()), "accepted": accepted}
 
-    def video_prompts(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str]) -> int:
-        """Mode "prompt" (plan/2026-11-20b §5): each wanted shot's video prompt by the agent, in number order, the
-        scene's part first and the same for every call (it caches, D11). -> how many versions were written."""
+    def prompt_context(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str]) -> Row | None:
+        """What every shot prompt of a scene needs (plan/2026-11-20d): the scene part of the brief (the same for every
+        shot: it caches), the line ids, the frame world, the looks; None and a warning when the scene's packet is not
+        usable (plan/2026-11-20b D5: no packet, no prompt)."""
         step = parts.step("video_prompt", "step")
         facts = parts.step("video_prompt", "facts")
-        wanted = sorted((s for s in scene.shots if targets is None or s.id in targets), key=lambda s: s.number)
-        if not wanted:
-            return 0
-        if not enabled:  # D4: no code-only prompt
-            skipped.append(f"Scene {scene.number}: the video prompt agent needs a model; no prompt was written")
-            return 0
         packet, why = facts.usable_packet(ctx.ports.breakdown, row)  # D5
         lids = facts.line_ids_for(packet, env["raw"].get(scene.id, ([], []))[1]) if packet is not None else None
         if packet is None or lids is None:
-            skipped.append(f"Scene {scene.number}: no video prompt written: "
+            skipped.append(f"Scene {scene.number}: no shot prompt written: "
                            + (why or "the packet's spoken lines do not match the scene's lines: refresh the scene's "
                                      "breakdown"))
+            return None
+        world = frame_world(row, canon)
+        world_rows = {str(s["id"]): s for s in world["shots"]}
+        return {"scene_part": step.run({"op": "brief", "scene": {"packet": packet, "genre": prod.genre,
+                                                                  "style_note": prod.style_note}})["scene"],
+                "lids": lids, "world": parts.module("step", "frame_compose").World.of(world), "rows": world_rows,
+                # plan/2026-11-18: each person dressed in the look the scene uses (the look sheet the take attaches)
+                "wardrobe": wardrobe_by_code(world["looks"], canon)}
+
+    def live(shot: Any, pc: Row) -> Row:
+        """The shot's row as the frame world reads it, with what this job has written to it."""
+        return {**pc["rows"].get(shot.id, {}), **shot.row}
+
+    def save_shot_prompt(shot: Any, record: Row) -> None:
+        design = {**(shot.row.get("design") or {}), "shot_prompt": record}
+        scenes_port.save_design(shot.id, shot.row["ir"], design)
+        shot.row = {**shot.row, "design": design}
+
+    def write_shot_prompt(shot: Any, scene: Any, prod: Any, pc: Row, frame: Row | None, skipped: list[str], *,
+                          mode: str = "both") -> Row | None:
+        """One shot's prompts by the agent (D4), stored on the shot. -> the record, or None (and a warning)."""
+        facts = prompter.facts_for(shot, scene, prod, frame, lids=pc["lids"], wardrobe=pc["wardrobe"])
+        row = live(shot, pc)
+        stored = (row.get("design") or {}).get("shot_prompt")
+        got = prompter.write(ctx, facts, scene_part=pc["scene_part"], pins=pc["world"].pins_now(row), mode=mode,
+                             stored=stored if isinstance(stored, dict) else None, job_id=str(job_id))
+        if got.record is None:
+            skipped.append(f"{shot.code}: shot prompt not written: {got.failed}")
+            return None
+        save_shot_prompt(shot, got.record)
+        jobs.event(job_id, JobEventType.PROGRESS,
+                   {"text": f"{shot.code}: " + ("video prompt rewritten from the drawn frame" if mode == "video_only"
+                                                else "first frame and video prompt written")
+                            + (" (repaired once)" if got.repaired else ""), "shot_id": shot.id}, agent=AGENT_PROMPT)
+        return got.record
+
+    def shot_prompts(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str], wanted: list[Any], *,
+                     rewrite: bool) -> int:
+        """D4 a / c: a shot prompt for each wanted shot ("Rewrite prompts": every one; before a frame: only those with
+        none current). -> how many were written."""
+        if not wanted:
             return 0
-        scene_part = step.run({"op": "brief", "scene": {"packet": packet, "genre": prod.genre,
-                                                        "style_note": prod.style_note}})["scene"]
+        pc = prompt_context(row, scene, prod, canon, skipped)
+        if pc is None:
+            return 0
+        need = [s for s in wanted if rewrite or pc["world"].shot_prompt_reasons(live(s, pc))]
+        if need and not prompter.on():
+            skipped.append(f"Scene {scene.number}: {prompter.NEEDS_MODEL}: "
+                           + ("the first frame keeps the code's words" if not rewrite else "nothing was rewritten"))
+            return 0
+        frames = producer.accepted_frames([s.id for s in need]) if need else {}
+        written = 0
+        for shot in sorted(need, key=lambda s: s.number):
+            if not shot.row.get("ir"):
+                skipped.append(f"{shot.code}: no camera design yet: design the scene first")
+                continue
+            if write_shot_prompt(shot, scene, prod, pc, frames.get(shot.id), skipped) is not None:
+                written += 1
+        return written
+
+    def video_prompts(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str]) -> int:
+        """Mode "prompt" (plan/2026-11-20d D4 b): each wanted shot's video prompt, in number order, from its stored shot
+        prompt: no call while it is current; ONE video-only call (the stored opening and frame kept) when only the
+        video is out of date; a full call when there is none or the picture moved. -> how many versions were written."""
+        step = parts.step("video_prompt", "step")
+        facts_mod = parts.step("video_prompt", "facts")
+        wanted = sorted((s for s in scene.shots if targets is None or s.id in targets), key=lambda s: s.number)
+        if not wanted:
+            return 0
+        pc = prompt_context(row, scene, prod, canon, skipped)
+        if pc is None:
+            return 0
         frames = producer.accepted_frames([s.id for s in wanted])
-        # plan/2026-11-18: each person dressed in the look the scene uses (the look sheet the take attaches)
-        wardrobe = wardrobe_by_code(frame_world(row, canon)["looks"], canon)
-        agent = agents.build(VIDEO_AGENT)
+        sp_step = parts.module("step", "shot_prompt", "step")
         written = 0
         for shot in wanted:
             frame = frames.get(shot.id)
             if shot.frame_strategy != "carry_last_frame" and frame is None:
                 skipped.append(f"{shot.code}: no accepted first frame")
                 continue
-            clip = facts.clip_facts(shot, scene, prod, frame, lids=lids, wardrobe=wardrobe)
-            brief = step.run({"op": "brief", "clip": clip})
-            inp = {"scene": scene_part, "clip": brief["clip"], "cards": brief["cards"]}
-            try:
-                answer = agent.run(inp, ctx).model_dump(mode="json")
-                faults = step.run({"op": "check", "direction": answer, "clip": clip})["faults"]
-                repaired = bool(faults)
-                if faults:  # D3: ONE repair, shown its first answer and exactly what code found
-                    first = json.dumps(answer, ensure_ascii=False)
-                    answer = agent.run({**inp, "repair": faults, "previous": first}, ctx).model_dump(mode="json")
-                    faults = step.run({"op": "check", "direction": answer, "clip": clip})["faults"]
-            except Exception:  # the model failed or is down: no prompt, and the job says so (D3)
-                _log.warning("the video prompt agent failed for %s", shot.id, exc_info=True)
-                skipped.append(f"{shot.code}: video prompt not written: the model call failed")
-                continue
-            if faults:
-                skipped.append(f"{shot.code}: video prompt not written: " + "; ".join(faults)[:400])
-                continue
-            made = step.run({"op": "assemble", "direction": answer, "clip": clip, "repaired": repaired})
+            need = prompter.needs(pc["world"], live(shot, pc))
+            record: Row | None = (live(shot, pc).get("design") or {}).get("shot_prompt") if need == "current" \
+                else None
+            if record is None:
+                if not prompter.on():  # D4: no code-only video prompt
+                    skipped.append(f"{shot.code}: video prompt not written: {prompter.NEEDS_MODEL}")
+                    continue
+                record = write_shot_prompt(shot, scene, prod, pc, frame, skipped, mode=need)
+                if record is None:
+                    continue
+            clip = facts_mod.clip_facts(shot, scene, prod, frame, lids=pc["lids"], wardrobe=pc["wardrobe"])
+            direction = sp_step.run({"op": "direction", "answer": record})["direction"]
+            made = step.run({"op": "assemble", "direction": direction, "clip": clip,
+                             "repaired": bool(record.get("repaired"))})
+            camera_now = shot.camera(scene)
             prompt = {"production_id": prod.id, "shot_id": shot.id, "sections": made["sections"],
                       "prose": made["prose"], "model": f"{sz.VIDEO_MODEL} · {shot.duration_s} s · {prod.aspect_ratio}",
-                      "ir": dict(shot.row.get("ir") or {}), "camera": shot.camera(scene).model_dump(),
+                      "ir": dict(shot.row.get("ir") or {}), "camera": camera_now.model_dump(),
                       "checks": made["checks"], "frame_id": str(frame["id"]) if frame else None,
-                      "pins": shot.pins.model_dump(), "job_id": str(job_id),
-                      "created_by": str(payload.actor_user_id)}
+                      "pins": picture_pins.pinned(shot.pins, camera_now, shot.recommended(scene),
+                                                  agent_camera(shot.row)),
+                      "job_id": str(job_id), "created_by": str(payload.actor_user_id)}
             prompt["version"] = producer.last_prompt_version(shot.id) + 1
             scenes_port.add_prompt(prompt)
             written += 1
             jobs.event(job_id, JobEventType.PROGRESS, {"text": f"{shot.code}: video prompt v{prompt['version']} "
-                                                               "written" + (" (repaired once)" if repaired else ""),
+                                                               "written" + (" from its shot prompt" if need == "current"
+                                                                            else ""),
                                                        "shot_id": shot.id}, agent=AGENT_PROMPT)
         return written
 
@@ -345,13 +457,23 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         prefix: str | None = None
         designed = prompts = intents = framed = 0
         skipped: list[str] = []
-        writer = polish_mod.writer_on()
-        if mode == "frame_prompt" and not writer:
-            skipped.append("The prompt writer is off (PROMPT_WRITER__ENABLED) or no model is set up: the first-frame "
-                           "prompt stays as code wrote it")
         for row, scene in built:
             label = f"Scene {scene.number}"
             wanted_design = [s for s in scene.shots if (targets is None or s.id in targets)]
+            if mode == "camera_ask":  # D11 d: "Ask Camera" redoes the wanted shots' camera only
+                if not camera.on():
+                    skipped.append(camera.NEEDS_MODEL)
+                    continue
+                asked = [s for s in wanted_design if s.row.get("ir")]
+                skipped.extend(f"{s.code}: no camera design yet: design the scene first" for s in wanted_design
+                               if not s.row.get("ir"))
+                if asked:
+                    jobs.event(job_id, JobEventType.PROGRESS, {"text": f"{label}: the Camera agent redesigns "
+                                                                       f"{', '.join(s.code for s in asked)}",
+                                                               "scene_id": scene.id}, agent=camera.AGENT)
+                    designed += camera_scene(row, scene, asked, prod, canon, skipped,
+                                             ask=ask_note or "Design it again.")
+                continue
             if any(force or model_mod.design_stale(s, prod) for s in wanted_design):
                 written = write_intents(scene, wanted_design, prod, canon)
                 if written:
@@ -360,6 +482,11 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
                                {"text": f"{label}: what each shot is for, for {written} shots", "scene_id": scene.id},
                                agent=AGENT_INTENT)
             group = [s for s in wanted_design if force or model_mod.design_stale(s, prod)]
+            if group and by_camera(group):  # D11 c: the planner's IR is kept, the Camera agent designs the camera
+                jobs.event(job_id, JobEventType.PROGRESS, {"text": f"{label}: the Camera agent designs {len(group)} "
+                                                                   "shots", "scene_id": scene.id}, agent=camera.AGENT)
+                designed += camera_scene(row, scene, group, prod, canon, skipped)
+                group = []
             if group:
                 if prefix is None and enabled:
                     prod.techniques = palette([sc for _, sc in built], prod)
@@ -385,43 +512,30 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             for shot in scene.shots:
                 ledger.observe(scene.id, shot, shot.row.get("ir") or {})
 
-            if mode == "frame_prompt" and writer:
-                world = frame_world(row, canon)
-                for shot in [s for s in scene.shots if targets is None or s.id in targets]:
-                    if not shot.row.get("ir"):
-                        skipped.append(f"{shot.code}: no camera design yet")
-                        continue
-                    merged = polish_mod.polish_frame(ctx, world, shot.row)
-                    if merged is None:
-                        continue
-                    design = {**(shot.row.get("design") or {}), "frame_polish": merged["record"]}
-                    scenes_port.save_design(shot.id, shot.row["ir"], design)
-                    shot.row = {**shot.row, "design": design}
-                    framed += 1
-                    jobs.event(job_id, JobEventType.PROGRESS,
-                               {"text": f"{shot.code}: first-frame prompt reworded ({len(merged['texts'])} sections)",
-                                "shot_id": shot.id}, agent=AGENT_PROMPT)
-                    for check in merged["checks"]:
-                        if check["tone"] != "pass":
-                            jobs.event(job_id, JobEventType.WARNING, {"text": f"{shot.code}: {check['label']}",
-                                                                      "shot_id": shot.id}, agent=AGENT_PROMPT)
+            if mode == "shot_prompt":  # D4 c: "Rewrite prompts"
+                framed += shot_prompts(row, scene, prod, canon, skipped,
+                                       [s for s in scene.shots if targets is None or s.id in targets], rewrite=True)
+            elif before_frames:  # D4 a: the frames job is next; a shot with no current shot prompt gets one first
+                framed += shot_prompts(row, scene, prod, canon, skipped,
+                                       [s for s in scene.shots if s.id in before_frames], rewrite=False)
             if mode != "prompt":
                 continue
             prompts += video_prompts(row, scene, prod, canon, skipped)
         for note in skipped:
             jobs.event(job_id, JobEventType.WARNING, {"text": note}, agent=AGENT_PROMPT)
         result: Row = {"designed": designed, "prompts": prompts, "skipped": len(skipped)}
-        if mode == "prompt" and skipped:  # why a shot got no prompt, for the screen that asked (plan/2026-11-20b §7)
+        if mode in ("prompt", "shot_prompt") and skipped:  # why a shot got no prompt, for the screen that asked
             result["warnings"] = skipped[:WARNINGS_KEPT]
         if framed:
-            result["frame_prompts"] = framed
+            result["shot_prompts"] = framed
         if intents:
             result["intents"] = intents
         if designed or prompts or framed:
             producer.audit({"production_id": str(production_id), "actor_user_id": str(payload.actor_user_id),
                             "actor_agent": "shot_producer", "action": f"shots.{mode}", "entity": "job",
                             "entity_id": str(job_id), "diff": result})
-        hand_on = {k: v for k, v in state_in.items() if k not in ("mode", "force", "previous")}
+        hand_on = {k: v for k, v in state_in.items() if k not in ("mode", "force", "previous", "note",
+                                                                  "shot_prompts")}
         jobs.finish(payload, result, hand_on)
         return {"result": result}
 

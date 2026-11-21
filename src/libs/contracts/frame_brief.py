@@ -7,10 +7,12 @@ the rain was painted from "Cab interior moving through wet streets". Now, in a f
   lead · references (each with what to take from it) · shot · composition · people · place and time · light ·
   colour and grade · mood · who is only heard · the fixed close
 
-The fuller IR field wins over the short frame line; a person's own camera change wins over both. Lens and stop are
-written as what they look like, never as numbers (a number in an image prompt is what models letter onto the
-picture). The scene's treatment (the colour script of the shot's sequence, the moment's feeling) is read from the
-planner's stored plan on the scene row, for a Raphael scene; any other scene simply has no such section.
+The fuller IR field wins over the short frame line; a person's own camera change wins over both. A shot with a current
+shot prompt (plan/2026-11-20d D5, `shots.design.shot_prompt`, the `shot_prompter` agent's) is painted from ITS words for
+the shot and composition, the people, the background and the light: one opening state the video starts from too.
+Lens and stop are written as what they look like, never as numbers (a number in an image prompt is what models letter
+onto the picture). The scene's treatment (the colour script of the shot's sequence, the moment's feeling) is read from
+the planner's stored plan on the scene row, for a Raphael scene; any other scene simply has no such section.
 
 One function, `frame_brief`, for every caller: the shot screen shows exactly what the renderer will send.
 """
@@ -36,7 +38,6 @@ from contracts.producer import (
     identity_line,
     shot_canon_ids,
 )
-from contracts.prompt_polish import POLISHABLE, usable
 from contracts.staging import ShotIntent
 
 Row = dict[str, Any]
@@ -48,6 +49,7 @@ PROMPT_CAP = 2600
 MAX_REFERENCES = 6
 # The label of a same-setup frame (§4.4). The prompt keys on its start, as it does for sheets and the draft.
 SETUP_LABEL = "the accepted frame of shot"
+AGENT_SOURCE = "shot_prompter"  # plan/2026-11-20d D5: words from the shot's shot prompt
 
 LEAD = ("Photorealistic still frame from a Sri Lankan television drama, shot on a cinema camera with real optics and "
         "natural imperfections.")
@@ -146,10 +148,22 @@ def _frame(ir: Mapping[str, Any]) -> Mapping[str, Any]:
     return raw if isinstance(raw, Mapping) else {}
 
 
-def shot_section(ir: Mapping[str, Any], camera: CameraSettings, recommended: CameraSettings | None) -> str:
-    """Every field of the camera panel as it stands (`contracts.camera_words`), for a still: size, angle, lens and stop
-    with what they look like, focus, the move it opens, the side of the line of action."""
-    out = f"Shot: {camera_words(camera, recommended, ir, still=True)}"
+def agent_camera(shot: Mapping[str, Any] | None) -> Mapping[str, Any] | None:
+    """The Camera agent's design of the shot (`design.camera`, plan/2026-11-20c D5) when it designed it; else None."""
+    raw = ((shot or {}).get("design") or {}).get("camera")
+    return raw if isinstance(raw, Mapping) and raw.get("state") == "designed" else None
+
+
+def shot_section(ir: Mapping[str, Any], camera: CameraSettings, recommended: CameraSettings | None,
+                 design: Mapping[str, Any] | None = None) -> str:
+    """Every field of the camera panel as it stands (`contracts.camera_words`), for a still: size, angle, height, lens
+    and stop with what they look like, focus, composition, the move it opens, the side of the line of action. With the
+    Camera agent's `design` (D14): the frame is drawn at the move's OPENING (`opens_on`), on the planner's size and the
+    design's lens, angle, height and composition."""
+    out = f"Shot: {camera_words(camera, recommended, ir, still=True, design=design)}"
+    note = str((design or {}).get("composition_note") or "").strip().rstrip(".")
+    if note and camera.composition:
+        out += f" Composition: {note}."
     if recommended is not None and camera.framing != recommended.framing:
         out += f" Compose it as a {camera.framing.lower()}."
     return out
@@ -238,6 +252,7 @@ def _label_name(label: str, prefix: str) -> str:
 
 
 FACE_LABEL = "the face sheet for "
+PERSON_LABELS = (FACE_LABEL, "the look sheet", "the character sheet", DRAFT_LABEL, SETUP_LABEL)
 
 
 def reference_job(label: str, labels: Sequence[str] = (), hair_from_look: Iterable[str] = ()) -> str:
@@ -391,16 +406,23 @@ def missing_references(planned: Sequence[PlannedReference]) -> list[str]:
     return out
 
 
-def references_block(labels: Sequence[str], hair_from_look: Iterable[str] = ()) -> list[str]:
+def references_block(labels: Sequence[str], hair_from_look: Iterable[str] = (), people: bool | None = None
+                     ) -> list[str]:
     """The sentences that name every attached picture, in order, and say what each is for. Built from the same list
     that is attached, so an attached picture is never left unnamed (it would still steer the frame, with no
-    instruction). `hair_from_look`: the people whose look sets their hair (D6 of plan/2026-11-14)."""
+    instruction). `hair_from_look`: the people whose look sets their hair (D6 of plan/2026-11-14). `people`: anyone
+    in frame (None: read from the pictures)."""
     hair = list(hair_from_look)
     if not labels:
         return []
     named = "; ".join(f"image {n} is {label}" for n, label in enumerate(labels, start=1))
+    # plan/2026-11-20d D7: a frame with nobody in it (an insert, a place) names no faces (lab/shot_prompts 2D-1).
+    # `people`: whether anyone is in frame, when the caller knows; else read from the pictures attached
+    if people is None:
+        people = any(label.startswith(PERSON_LABELS) for label in labels)
     parts = [f"Reference images, in order: {named}. Match them exactly: the same faces, hair, skin tone and build, "
-             "the same place. Do not redesign anyone."]
+             "the same place. Do not redesign anyone." if people else
+             f"Reference images, in order: {named}. Match them exactly: the same place and the same things."]
     jobs = [f"image {n}: {job}" for n, label in enumerate(labels, start=1)
             if (job := reference_job(label, labels, hair))]
     if jobs:
@@ -507,16 +529,19 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
                 references: list[str] | None = None, recommended: CameraSettings | None = None,
                 recommended_framing: str = "", unseen: str = "", hands: str = "",
                 scene: Mapping[str, Any] | None = None, shot: Mapping[str, Any] | None = None,
-                cap: int = PROMPT_CAP, polished: bool = True, genre: str = "",
-                board: Sequence[str] = ()) -> FrameBrief:
+                cap: int = PROMPT_CAP, genre: str = "", board: Sequence[str] = (),
+                shot_prompt: Mapping[str, Any] | None = None) -> FrameBrief:
     """The first frame's brief, from the shot's IR, the camera as it stands, the people the camera SEES (`cast`), the
     labels of the pictures attached IN ORDER (`references`), who is only heard (`unseen`,
     `contracts.staging.unseen_sentence`), who holds what (`hands`), and the scene row (heading, time of day, the
     planner's stored treatment). `recommended` lets a person's own camera change win over the planner's words;
     `recommended_framing` is the older way of saying the same for the size alone.
 
-    `polished`: use the `prompt_writer`'s wording stored on the shot (`design.frame_polish`) for each section whose code
-    text is still the one it was written from (`contracts.prompt_polish.usable`); False = the code's words only.
+    `shot_prompt` (plan/2026-11-20d D5): the frame part of the shot's CURRENT shot prompt (`composition`, `people`,
+    `background`, `light`; the caller passes it only while its pins match the shot). Its words replace the shot and
+    composition, the people's poses and places, the setting and the light; code keeps the lead, the references, each
+    person's identity (card + look) and condition, the hands, the time and weather, the colour, the mood, who is only
+    heard and the close. None: the code's words only.
 
     `board` (plan/2026-11-14 §3.5): the paragraphs of a frame painted from its Scene board panel
     (`contracts.board.frame_sections`: the mannequins, the planned state, the scene's world, the panel), right after the
@@ -529,14 +554,17 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
 
     sections["lead"].add(lead_line(genre), "fixed")
     hair = [c.name for c in cast if re.search(r"(^|; )hair ", c.look or "")]  # D6: the look sets their hair
-    for line in references_block(list(references or []), hair):
+    for line in references_block(list(references or []), hair, people=any(c.kind == "character" for c in cast)):
         sections["references"].add(line, "attached images")
     for line in board:
         sections["board"].add(line, "scene board")
-    sections["shot"].add(shot_section(ir, camera, recommended), "camera + ir.cinematography")
-
-    composition = sections["composition"]
-    composition.add(_clean(frame.get("composition")), "ir.first_frame.composition")
+    sp = {k: _clean((shot_prompt or {}).get(k)) for k in ("composition", "people", "background", "light")}
+    agent = bool(sp["composition"])  # D5: the shot prompt's frame words
+    if agent:
+        sections["shot"].add(f"This shot: {sp['composition']}", AGENT_SOURCE)
+    else:
+        sections["shot"].add(shot_section(ir, camera, recommended, agent_camera(shot)), "camera + ir.cinematography")
+        sections["composition"].add(_clean(frame.get("composition")), "ir.first_frame.composition")
 
     people = sections["people"]
     seen = [c for c in cast if c.kind == "character"]
@@ -552,7 +580,7 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
         if description and not dressed and not _has(head, description):
             # the planner's own description (its dress only where no card or look dresses them)
             bits = [f"{head}: {description}" if head == c.name else f"{head}; {description}"]
-        position = _clean(subject.get("position"))
+        position = "" if agent else _clean(subject.get("position"))  # D5: the shot prompt places them
         if position:
             bits.append(position.rstrip("."))
         condition = _clean(c.condition).rstrip(".")
@@ -560,19 +588,25 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
             bits.append(f"in this scene: {condition}")
         lines.append("; ".join(bits))
     if lines:
-        people.add("People: " + " | ".join(lines), "cast cards + ir.subjects")
-    raw = frame.get("subjects")
-    subject_text = "; ".join(_clean(s) for s in raw) if isinstance(raw, list) else _clean(raw)
-    people.add(subject_text, "ir.first_frame.subjects")
+        people.add(("Who they are: " if agent else "People: ") + " | ".join(lines),
+                   "cast cards" if agent else "cast cards + ir.subjects")
+    if agent:
+        people.add(sp["people"], AGENT_SOURCE)
+    else:
+        raw = frame.get("subjects")
+        subject_text = "; ".join(_clean(s) for s in raw) if isinstance(raw, list) else _clean(raw)
+        people.add(subject_text, "ir.first_frame.subjects")
     if hands:
         people.add(hands, "scene state ledger")
 
     place = sections["place"]
     setting, frame_setting = _clean(ir.get("setting")), _clean(frame.get("setting"))
     main = setting or frame_setting
-    if main:
+    if agent and sp["background"]:
+        place.add(f"Background: {sp['background'].rstrip('.')}", AGENT_SOURCE)
+    elif main:
         place.add(f"Setting: {main.rstrip('.')}", "ir.setting" if setting else "ir.first_frame.setting")
-    if setting and frame_setting and not _has(setting, frame_setting):
+    if not agent and setting and frame_setting and not _has(setting, frame_setting):
         place.add(f"In this frame: {frame_setting}", "ir.first_frame.setting")
     when = time_phrase(scene)
     if when:
@@ -588,6 +622,8 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
     light = sections["light"]  # the panel's lighting always leads; the planner's light follows while it is not changed
     if _changed(camera, recommended, CameraField.LIGHTING):
         light.add(f"Lighting: {camera.lighting}", "camera (a person's choice)")
+    elif agent and sp["light"]:
+        light.add(f"Lighting: {sp['light']}", AGENT_SOURCE)
     elif lighting or frame_light:
         light.add(f"Lighting: {lighting_words(camera, recommended, lighting or frame_light)}",
                   "camera + ir.lighting" if lighting else "camera + ir.first_frame.lighting")
@@ -619,24 +655,18 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
     sections["close"].add(CLOSE_PLACE, "fixed")
     sections["close"].add("9:16 vertical framing." if aspect_ratio == "9:16" else f"{aspect_ratio} framing.", "fixed")
     sections["close"].add(CLOSE_SINGLE, "fixed")
-    brief = FrameBrief(sections=list(sections.values())).fit(cap)
-    record = ((shot or {}).get("design") or {}).get("frame_polish") if polished else None
-    if isinstance(record, Mapping) and record:
-        for s in brief.sections:
-            text = usable(record, s.key, s.text) if s.key in POLISHABLE["first_frame"] else ""
-            if text:
-                s.parts = [BriefPart(text=text, source="prompt_writer")]
-    return brief
+    return FrameBrief(sections=list(sections.values())).fit(cap)
 
 
 def frame_prompt(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: str, cast: list[CastMember],
                  references: list[str] | None = None, recommended_framing: str = "", unseen: str = "",
                  hands: str = "", recommended: CameraSettings | None = None, scene: Mapping[str, Any] | None = None,
-                 shot: Mapping[str, Any] | None = None, genre: str = "") -> str:
+                 shot: Mapping[str, Any] | None = None, genre: str = "",
+                 shot_prompt: Mapping[str, Any] | None = None) -> str:
     """The image prompt for a shot's first frame: `frame_brief(...).text()`."""
     return frame_brief(ir=ir, camera=camera, aspect_ratio=aspect_ratio, cast=cast, references=references,
                        recommended=recommended, recommended_framing=recommended_framing, unseen=unseen, hands=hands,
-                       scene=scene, shot=shot, genre=genre).text()
+                       scene=scene, shot=shot, genre=genre, shot_prompt=shot_prompt).text()
 
 
 def expected_frame(ir: Mapping[str, Any], scene: Mapping[str, Any] | None) -> str:

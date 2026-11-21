@@ -542,7 +542,7 @@ class SupabaseFrames:
             return {}
         rows = self.rest.select("first_frames", {"shot_id": f"in.({','.join(shot_ids)})", "accepted_at": "not.is.null",
                                                  "stage": "neq.draft", "status": "eq.done",
-                                                 "select": "id,shot_id,storage_path"})
+                                                 "select": "id,shot_id,storage_path,pins"})
         return {str(r["shot_id"]): r for r in rows if r.get("storage_path")}
 
     def frame_status(self, production_id: UUID, shot_ids: list[str] | None = None,

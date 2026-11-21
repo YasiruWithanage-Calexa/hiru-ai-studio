@@ -92,7 +92,7 @@ def test_a_persons_camera_override_still_wins_over_the_authors_camera(planned: W
 
 def test_the_authors_camera_reaches_the_panels_words_where_there_is_an_exact_equivalent(planned: World):
     _, _, scene = producer_inputs(planned)
-    assert scene.shots[0].recommended(scene).movement == "Static"  # "locked-off" in the IR
+    assert scene.shots[0].recommended(scene).movement == "Hold"  # "locked-off" in the IR (2026-11-20c: "Hold")
     assert scene.shots[0].recommended(scene).framing == "Wide shot"  # the size is the author's, never the DoP's
 
 

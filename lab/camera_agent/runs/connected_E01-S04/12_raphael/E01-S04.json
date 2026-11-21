@@ -1,0 +1,2407 @@
+{
+ "scene": "E01-S04",
+ "status": "done",
+ "seconds": 425.4,
+ "calls": 8,
+ "dollars": 0.3061,
+ "log": [
+  "stage 1: finished after 6 turns",
+  "stage 2: cap after 3 turns"
+ ],
+ "warnings": [],
+ "ids": {
+  "b0": "E01-S04-B01",
+  "b1": "E01-S04-B02",
+  "L1": "E01-S04-B02",
+  "b2": "E01-S04-B03",
+  "L2": "E01-S04-B03",
+  "b3": "E01-S04-B04",
+  "b4": "E01-S04-B05",
+  "L4": "E01-S04-B05",
+  "b5": "E01-S04-B06",
+  "L5": "E01-S04-B06",
+  "b6": "E01-S04-B07",
+  "L6": "E01-S04-B07",
+  "b7": "E01-S04-B08",
+  "L7": "E01-S04-B08",
+  "b8": "E01-S04-B09",
+  "b9": "E01-S04-B10",
+  "b10": "E01-S04-B11",
+  "L10": "E01-S04-B11",
+  "b11": "E01-S04-B12",
+  "L11": "E01-S04-B12",
+  "b12": "E01-S04-B13",
+  "b13": "E01-S04-B14",
+  "L13": "E01-S04-B14",
+  "b14": "E01-S04-B15",
+  "b15": "E01-S04-B16",
+  "L15": "E01-S04-B16",
+  "b16": "E01-S04-B17",
+  "L16": "E01-S04-B17",
+  "b17": "E01-S04-B18"
+ },
+ "result": {
+  "version": 1,
+  "planner": "raphael",
+  "job_id": "local-E01-S04",
+  "input_hash": "ed82063f5a60f3c8",
+  "stage1": "finished",
+  "stage2": "stopped",
+  "stopped": "The planning run reached its limit before it finished.",
+  "cap": 2.0,
+  "breakdown": null,
+  "mood": [],
+  "takes": [],
+  "line_parts": false,
+  "edit": {
+   "treatment": {
+    "logline": "A returned phone opens a tentative connection beside a humble food business, until a family summons changes the encounter's rhythm.",
+    "arc": [
+     {
+      "beat": "Gratitude becomes curiosity",
+      "blocks": {
+       "first": 0,
+       "last": 6
+      },
+      "feeling": "Unforced warmth and growing attention"
+     },
+     {
+      "beat": "Ambition earns admiration",
+      "blocks": {
+       "first": 7,
+       "last": 8
+      },
+      "feeling": "Respect with a suggestion of attraction"
+     },
+     {
+      "beat": "The phone interrupts and changes her expression",
+      "blocks": {
+       "first": 9,
+       "last": 14
+      },
+      "feeling": "Private pressure enters a public encounter"
+     },
+     {
+      "beat": "A farewell leaves the possibility open",
+      "blocks": {
+       "first": 15,
+       "last": 17
+      },
+      "feeling": "Restrained warmth and lingering distraction"
+     }
+    ],
+    "approach": "Grounded romantic social drama, not thriller suspense: visible reciprocal attention gives way to a restrained facial change. Natural rain-softened daylight and controlled contrast preserve the ordinary Colombo setting. Use a readable opening two-shot, clean alternating faces, the necessary caller-display detail, then listening coverage. No added street performers or business activity. The scripted material already exceeds 45 seconds; preserve every line and event rather than accelerating performance.",
+    "colour_script": [
+     {
+      "sequence": "S1",
+      "palette": "Muted roadside greys, natural skin and humble vehicle colours",
+      "light": "Overcast daylight from the road side, falling off toward the food vehicle",
+      "grade": "Naturalistic, restrained saturation and gentle warm skin"
+     },
+     {
+      "sequence": "S2",
+      "palette": "The same roadside colours",
+      "light": "Identical continuous overcast daylight",
+      "grade": "Maintain the same grade; let performance, not a colour effect, create the interruption"
+     }
+    ],
+    "geography": "Anudi stands frame left facing right; Kasun stands frame right facing left, with his food three-wheeler behind and to his right. All coverage stays on the road side of their axis. Anudi's left hand holds an already open umbrella with her handbag on her left forearm; her right hand receives and retains the smartphone. Kasun initially offers it in his right hand. At the end she leaves toward deep left and he returns toward deep right.",
+    "key_image": "The phone that brings them together remains in Anudi's right hand as its call separates their attention.",
+    "advice": [
+     "Record L11 once as a continuous eight-second phone performance; lay it across the two listening pictures, never trim or repeat it.",
+     "The 80-second bin includes handles, the indivisible take durations and essential action coverage; remove handles in the assembly, not words.",
+     "Wardrobe and exact physical features are unspecified: preserve the incoming scene's identity and wardrobe references, without advancing Kasun's later polished look."
+    ]
+   },
+   "sequences": [
+    {
+     "id": "S1",
+     "title": "The returned phone and the business",
+     "purpose": "Build interest through gratitude, questions and modest ambition.",
+     "shots": {
+      "first": 0,
+      "last": 8
+     }
+    },
+    {
+     "id": "S2",
+     "title": "The interruption and departure",
+     "purpose": "Show the source of the interruption, its effect and the unfinished connection.",
+     "shots": {
+      "first": 9,
+      "last": 17
+     }
+    }
+   ],
+   "moments": [
+    {
+     "n": 1,
+     "sequence": "S1",
+     "blocks": [
+      0,
+      1
+     ],
+     "what": "Anudi receives the phone and thanks Kasun.",
+     "feeling": "Gratitude starts a connection.",
+     "cut_uses": "Road-side medium two-shot keeps the transfer visible and her face readable for L1."
+    },
+    {
+     "n": 2,
+     "sequence": "S1",
+     "blocks": [
+      2,
+      3
+     ],
+     "what": "Kasun gives a gentle explanation; Anudi smiles and looks toward the business.",
+     "feeling": "Ease gives way to curiosity.",
+     "cut_uses": "A tighter oblique medium-wide shows his L2 and her change of attention together, avoiding a jump from the opening setup."
+    },
+    {
+     "n": 3,
+     "sequence": "S1",
+     "blocks": [
+      4
+     ],
+     "what": "Anudi inquires about ownership.",
+     "feeling": "Personal interest.",
+     "cut_uses": "Anudi MCU, facing right, for L4."
+    },
+    {
+     "n": 4,
+     "sequence": "S1",
+     "blocks": [
+      5
+     ],
+     "what": "Kasun confirms his modest beginning.",
+     "feeling": "Unembarrassed pride.",
+     "cut_uses": "Kasun MCU, facing left, for L5."
+    },
+    {
+     "n": 5,
+     "sequence": "S1",
+     "blocks": [
+      6
+     ],
+     "what": "Anudi inquires about his workload.",
+     "feeling": "Deepening attention.",
+     "cut_uses": "Return to Anudi MCU for L6."
+    },
+    {
+     "n": 6,
+     "sequence": "S1",
+     "blocks": [
+      7
+     ],
+     "what": "Kasun describes his resources and ambition.",
+     "feeling": "Honest hope.",
+     "cut_uses": "Kasun MCU for the entire L7; no illustrative business montage."
+    },
+    {
+     "n": 7,
+     "sequence": "S1",
+     "blocks": [
+      8
+     ],
+     "what": "Anudi registers admiration.",
+     "feeling": "A connection almost develops further.",
+     "cut_uses": "Anudi reaction close-up gives the admission a landing."
+    },
+    {
+     "n": 8,
+     "sequence": "S2",
+     "blocks": [
+      9
+     ],
+     "what": "The smartphone rings, she checks the caller display and accepts.",
+     "feeling": "Abrupt interruption.",
+     "cut_uses": "Required phone insert shows Father as caller ID and her accepting the connection before any remote audio."
+    },
+    {
+     "n": 9,
+     "sequence": "S2",
+     "blocks": [
+      10
+     ],
+     "what": "Anudi raises the connected phone and greets the caller.",
+     "feeling": "Ordinary attention before the news.",
+     "cut_uses": "Anudi MCU with phone raised to her right ear for L10."
+    },
+    {
+     "n": 10,
+     "sequence": "S2",
+     "blocks": [
+      11,
+      12
+     ],
+     "what": "She listens to the complete summons, and her smile disappears.",
+     "feeling": "The private cost becomes visible.",
+     "cut_uses": "Two consecutive listening views, CU then MCU, cover the eight-second L11 uninterrupted; the second view also carries the gradual loss of her smile."
+    },
+    {
+     "n": 11,
+     "sequence": "S2",
+     "blocks": [
+      13
+     ],
+     "what": "Anudi agrees to return.",
+     "feeling": "Subdued compliance.",
+     "cut_uses": "Anudi CU for L13, with no dramatic camera movement."
+    },
+    {
+     "n": 12,
+     "sequence": "S2",
+     "blocks": [
+      14
+     ],
+     "what": "She disconnects and looks back; Kasun registers her changed expression.",
+     "feeling": "A gap opens between them.",
+     "cut_uses": "Medium two-shot reconnects their eyelines and shows only what Kasun can observe."
+    },
+    {
+     "n": 13,
+     "sequence": "S2",
+     "blocks": [
+      15
+     ],
+     "what": "Anudi takes leave while leaving another meeting possible.",
+     "feeling": "A little warmth survives.",
+     "cut_uses": "Anudi MCU for L15."
+    },
+    {
+     "n": 14,
+     "sequence": "S2",
+     "blocks": [
+      16
+     ],
+     "what": "Kasun responds with care.",
+     "feeling": "Simple consideration.",
+     "cut_uses": "Kasun MCU for L16."
+    },
+    {
+     "n": 15,
+     "sequence": "S2",
+     "blocks": [
+      17
+     ],
+     "what": "Anudi leaves; Kasun lingers and returns toward his business.",
+     "feeling": "The encounter remains with him.",
+     "cut_uses": "Wide two-person frame lets her exit deep left before he turns and walks toward the vehicle deep right."
+    }
+   ],
+   "editor_notes": [
+    "The must bin has 16 clips totalling 80 seconds of raw takes, under the 81-second cap. The 53-second script and minimum take sizes make the raw bin longer than the 54-second target; trim handles and overlap audio in the assembly, never compress or omit dialogue.",
+    "Use c01 for the return and L1, c02 for L2 and the look toward the business, the B/C singles for the exchange, and c07 for admiration. Keep the screen direction and the prop hands matched.",
+    "Use c08 to show the readable caller ID and the acceptance before the remote voice. Add the ring, rain, traffic and end tone in post where silent-source generation suppresses sound.",
+    "L11 is one uninterrupted eight-second phone performance, recorded separately in full and laid across c10 and c11: use three seconds over c10 and five seconds over c11, with their handles outside those picture intervals. The checker still reports the full line against each short picture take; do not treat either report as permission to trim, repeat or reword the line. Match Anudi's gradually fading smile across the cut.",
+    "Match the right-hand phone from c08 through the ear position in c09-c12 and the lowered position in c13. Kasun can observe Anudi's expression but does not hear the remote words.",
+    "In the handover, keep the performers' hands on separate ends of the phone and avoid visible body contact. Maintain the same open umbrella in Anudi's left hand and handbag on her left forearm.",
+    "c16 starts with Anudi already facing away; use the preceding reverse to bridge the skipped turn. She exits left before Kasun turns toward the vehicle. Do not add an invented work action or explain his thoughts.",
+    "No speed ramp, freeze frame, digital punch-in or split screen is requested; if editorially desired, create it in post from the clean source and preserve dialogue timing. Avoid mirrors, fast finger work, contact between bodies and sharply staged crowds."
+   ]
+  },
+  "clips": [
+   {
+    "moment": 1,
+    "role": "two_shot",
+    "setup": "A",
+    "blocks": [
+     0,
+     1
+    ],
+    "lines": [
+     "L1"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "TWO",
+    "angle": "eye level, road side of axis",
+    "lens": "40mm",
+    "technique": "locked_off",
+    "why": "The uncomplicated shared frame makes the return and gratitude one social gesture.",
+    "take_s": 6,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Transfer occupies 0.5-2s; L1 occupies 2-5.5s. Use continuous incoming identity references.",
+    "summary": "In a road-side two-shot, Anudi receives the smartphone in her right hand from Kasun's right hand, then thanks him for recovering it (L1). Light rain and traffic remain underneath.",
+    "id": "c01",
+    "slate": "4A-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 40mm, f/4",
+      "angle": "eye level on road side of the pair",
+      "framing": "TWO, both faces and the handover at waist height visible",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Medium, vehicle recognizable behind them",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Receives the smartphone in her right hand, then lips move to L1.",
+       "position": "Frame left, standing facing right in readable three-quarter view; open umbrella in left hand, handbag on left forearm; right hand initially empty."
+      },
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "Gives the smartphone from his right hand to her right hand.",
+       "position": "Frame right, standing facing left, phone extended in right hand; food vehicle behind him."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "TWO, both faces and offered phone",
+       "director_line": "The offered phone bridges the space between them.",
+       "action": "Kasun keeps the smartphone extended in his right hand.",
+       "performance": "Anudi meets his eyes with a small receptive smile."
+      },
+      {
+       "time": "0.5-2s",
+       "camera": "TWO, transfer clearly visible",
+       "director_line": "A simple transfer completes the encounter's first gesture.",
+       "action": "Kasun gives the smartphone from his right hand into Anudi's right hand.",
+       "performance": "Anudi watches his hand with her smile sustained."
+      },
+      {
+       "time": "2-5.5s",
+       "camera": "TWO, favour Anudi's readable face",
+       "director_line": "Gratitude settles into reciprocal attention.",
+       "action": "Anudi's lips move to L1.",
+       "performance": "Anudi lifts her eyes to him and smiles with a brief widening of her eyes."
+      },
+      {
+       "time": "5.5-6s",
+       "camera": "TWO, settled shared frame",
+       "director_line": "The space remains open between them.",
+       "action": "Anudi keeps the smartphone in her right hand.",
+       "performance": "Kasun meets her gaze with a small smile."
+      }
+     ],
+     "audio": "L1 with close natural presence; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi left and Kasun right, offered smartphone between them, vehicle behind right.",
+      "subjects": [
+       "Anudi with umbrella in left hand and handbag on left forearm, right hand empty.",
+       "Kasun extending the smartphone in his right hand."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Subtle clothing movement",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 2,
+    "role": "two_shot",
+    "setup": "G",
+    "blocks": [
+     2,
+     3
+    ],
+    "lines": [
+     "L2"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MWS",
+    "angle": "eye level, road side of axis, tighter oblique",
+    "lens": "55mm",
+    "technique": "locked_off",
+    "why": "A tighter shared frame avoids an opening jump cut while his explanation leads directly to her glance.",
+    "take_s": 6,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "L2 1-2.8s; her smile and glance 2.8-4.3s.",
+    "summary": "Kasun attributes the mishap to the rain (L2); Anudi then smiles and looks toward his small business.",
+    "id": "c02",
+    "slate": "4G-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 55mm, f/4",
+      "angle": "eye level on road side, slightly oblique to the pair",
+      "framing": "MWS, both faces and the vehicle behind right",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Medium, vehicle recognizable behind them",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Smiles and looks toward the food vehicle.",
+       "position": "Frame left, standing facing right; smartphone in right hand, open umbrella in left hand, handbag on left forearm."
+      },
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "Lips move to L2.",
+       "position": "Frame right, standing facing left in readable three-quarter view, hands empty."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MWS, shared eyeline",
+       "director_line": "Their attention remains reciprocal.",
+       "action": "Kasun keeps his eyes on Anudi.",
+       "performance": "His mouth rests in a small smile."
+      },
+      {
+       "time": "1-2.8s",
+       "camera": "MWS, Kasun's face clear",
+       "director_line": "His explanation makes no demand on her.",
+       "action": "Kasun's lips move to L2.",
+       "performance": "He gives a slight friendly lift of his brows."
+      },
+      {
+       "time": "2.8-4.3s",
+       "camera": "MWS, her glance and vehicle visible",
+       "director_line": "Her attention moves beyond the returned phone.",
+       "action": "Anudi smiles and looks toward the food vehicle.",
+       "performance": "Her eyes linger on the small business as the corners of her mouth rise."
+      },
+      {
+       "time": "4.3-6s",
+       "camera": "MWS, same framing",
+       "director_line": "Her curiosity has a visible destination.",
+       "action": "Anudi keeps her gaze toward the vehicle.",
+       "performance": "Kasun keeps his eyes on her."
+      }
+     ],
+     "audio": "L2; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi left, Kasun right, vehicle over his outer shoulder.",
+      "subjects": [
+       "Anudi holding smartphone right, umbrella left and handbag on left forearm.",
+       "Kasun facing her with empty hands."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Rain on umbrella",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 3,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     4
+    ],
+    "lines": [
+     "L4"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, facing screen right",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "A clean face makes her curiosity personal.",
+    "take_s": 4,
+    "handle_in_s": 0.3,
+    "handle_out_s": 0.3,
+    "priority": "must",
+    "editor_note": "Already facing Kasun; preserve rightward eyeline.",
+    "summary": "Anudi inquires whether the business belongs to Kasun (L4).",
+    "id": "c03",
+    "slate": "4B-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "MCU of Anudi, face in three-quarter view",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Lips move to L4.",
+       "position": "Frame left facing right toward Kasun offscreen; smartphone in right hand below crop, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "MCU on Anudi's eyes",
+       "director_line": "Her interest rests on him.",
+       "action": "Anudi keeps her gaze on Kasun.",
+       "performance": "Her brows lift slightly over a small smile."
+      },
+      {
+       "time": "0.8-2.6s",
+       "camera": "MCU on Anudi's face",
+       "director_line": "Her curiosity invites an answer.",
+       "action": "Anudi's lips move to L4.",
+       "performance": "She inclines her chin a fraction, eyes steady on him."
+      },
+      {
+       "time": "2.6-4s",
+       "camera": "MCU on Anudi's face",
+       "director_line": "She leaves room for him.",
+       "action": "Anudi keeps the phone in her right hand.",
+       "performance": "Her lips settle and her eyes remain on him."
+      }
+     ],
+     "audio": "L4; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi left of centre, looking screen right beneath umbrella edge.",
+      "subjects": [
+       "Anudi in readable three-quarter view, umbrella in left hand, phone right below crop, handbag on left forearm."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Rain on umbrella",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 4,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     5
+    ],
+    "lines": [
+     "L5"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, facing screen left",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "Stable framing gives his modest beginning dignity.",
+    "take_s": 6,
+    "handle_in_s": 0.8,
+    "handle_out_s": 0.8,
+    "priority": "must",
+    "editor_note": "L5 1-3.6s; tail may be trimmed.",
+    "summary": "Kasun confirms ownership and his small beginning (L5).",
+    "id": "c04",
+    "slate": "4C-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, leftward eyeline",
+      "framing": "MCU of Kasun, face in three-quarter view",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft vehicle background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "Lips move to L5.",
+       "position": "Frame right facing left toward Anudi offscreen; standing, both hands empty."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on Kasun",
+       "director_line": "He meets her interest directly.",
+       "action": "Kasun keeps his eyes on Anudi.",
+       "performance": "His jaw stays relaxed and his gaze steady."
+      },
+      {
+       "time": "1-3.6s",
+       "camera": "MCU on Kasun",
+       "director_line": "The modest enterprise carries no embarrassment.",
+       "action": "Kasun's lips move to L5.",
+       "performance": "A small smile appears without a broad gesture."
+      },
+      {
+       "time": "3.6-6s",
+       "camera": "MCU on Kasun",
+       "director_line": "His answer leaves space for her.",
+       "action": "Kasun remains facing Anudi.",
+       "performance": "His smile rests lightly as he watches her."
+      }
+     ],
+     "audio": "L5; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Kasun right of centre with look room left, vehicle softly behind.",
+      "subjects": [
+       "Kasun standing in three-quarter view with empty hands."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "none",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 5,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     6
+    ],
+    "lines": [
+     "L6"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, facing screen right",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "Matching her earlier size lets deepening attention come from performance.",
+    "take_s": 4,
+    "handle_in_s": 0.3,
+    "handle_out_s": 0.3,
+    "priority": "must",
+    "editor_note": "Match B framing and prop hands.",
+    "summary": "Anudi inquires whether Kasun manages the operation alone (L6).",
+    "id": "c05",
+    "slate": "4B-2",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "MCU of Anudi, face in three-quarter view",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Lips move to L6.",
+       "position": "Frame left facing right toward Kasun offscreen; smartphone in right hand below crop, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.8s",
+       "camera": "MCU on Anudi",
+       "director_line": "She remains engaged with him.",
+       "action": "Anudi keeps her eyes on Kasun.",
+       "performance": "Her lips part slightly beneath raised brows."
+      },
+      {
+       "time": "0.8-2.6s",
+       "camera": "MCU on Anudi",
+       "director_line": "Her attention reaches the work behind the business.",
+       "action": "Anudi's lips move to L6.",
+       "performance": "Her eyes remain steady, her chin slightly inclined."
+      },
+      {
+       "time": "2.6-4s",
+       "camera": "MCU on Anudi",
+       "director_line": "She waits for the fuller account.",
+       "action": "Anudi keeps her gaze on Kasun.",
+       "performance": "Her lips close into a small receptive smile."
+      }
+     ],
+     "audio": "L6; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi left of centre, looking screen right beneath umbrella edge.",
+      "subjects": [
+       "Anudi in three-quarter view, smartphone right below crop, umbrella left, handbag on left forearm."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Rain on umbrella",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 6,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     7
+    ],
+    "lines": [
+     "L7"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, facing screen left",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "An uninterrupted face lets ambition emerge without a promotional montage.",
+    "take_s": 8,
+    "handle_in_s": 0.2,
+    "handle_out_s": 0.2,
+    "priority": "must",
+    "editor_note": "Full L7 0.7-6.8s, with settled picture before and after.",
+    "summary": "Kasun describes working alone, starting with five thousand rupees and hoping to expand (L7).",
+    "id": "c06",
+    "slate": "4C-2",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, leftward eyeline",
+      "framing": "MCU of Kasun, face in three-quarter view",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft vehicle background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "Lips move to L7.",
+       "position": "Frame right facing left toward Anudi offscreen; standing, both hands empty."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.7s",
+       "camera": "MCU on Kasun",
+       "director_line": "He accepts her sustained interest.",
+       "action": "Kasun keeps his gaze on Anudi.",
+       "performance": "His mouth rests in a slight smile."
+      },
+      {
+       "time": "0.7-6.8s",
+       "camera": "MCU on Kasun",
+       "director_line": "A small beginning opens toward a larger hope.",
+       "action": "Kasun's lips move to L7.",
+       "performance": "His chin rises a fraction and his smile becomes more visible near the end."
+      },
+      {
+       "time": "6.8-8s",
+       "camera": "MCU on Kasun",
+       "director_line": "The account rests between them.",
+       "action": "Kasun remains facing Anudi.",
+       "performance": "His lips settle while his eyes stay on her."
+      }
+     ],
+     "audio": "Full L7; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Kasun right of centre, look room left, vehicle softly behind.",
+      "subjects": [
+       "Kasun standing in three-quarter view, hands empty."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "none",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 7,
+    "role": "reaction",
+    "setup": "D",
+    "blocks": [
+     8
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "eye level, facing screen right",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "A restrained close reaction is the landing of his ambition.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.5,
+    "priority": "must",
+    "editor_note": "Admiration develops 1-2.5s; trim the settled tail if needed.",
+    "summary": "Anudi's close-up shows a restrained, impressed response to Kasun's ambition. Rain and traffic continue.",
+    "id": "c07",
+    "slate": "4D-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 85mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "CU of Anudi's face beneath umbrella",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Her smile grows slightly.",
+       "position": "Frame left facing right; smartphone right below crop, open umbrella left, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU on Anudi's face",
+       "director_line": "His account has her complete attention.",
+       "action": "Anudi keeps her eyes on Kasun.",
+       "performance": "Her lips remain closed with a faint smile."
+      },
+      {
+       "time": "1-2.5s",
+       "camera": "CU on Anudi's eyes and mouth",
+       "director_line": "Admiration appears in small visible changes.",
+       "action": "Anudi's smile grows slightly.",
+       "performance": "Her brows lift and her eyes soften while she keeps his eyeline."
+      },
+      {
+       "time": "2.5-4s",
+       "camera": "CU on Anudi's face",
+       "director_line": "The connection almost continues.",
+       "action": "Anudi keeps the phone in her right hand.",
+       "performance": "Her small smile remains, lips closed."
+      }
+     ],
+     "audio": "Light rain and distant traffic; no vocal sounds.",
+     "first_frame": {
+      "composition": "Anudi's face left of centre, umbrella edge above, look room right.",
+      "subjects": [
+       "Anudi with a faint closed-mouth smile; phone right below crop, umbrella left and handbag on left forearm."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Rain on umbrella",
+     "music": "none",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 8,
+    "role": "insert",
+    "setup": "E",
+    "blocks": [
+     9
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "INSERT",
+    "angle": "slightly above phone screen",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "The caller display and acceptance establish the source before remote audio.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Readable incoming-call screen first, then right thumb accepts it; cut to the phone being raised.",
+    "summary": "The smartphone rings in Anudi's right hand, displays Father as the caller, and she accepts the incoming call.",
+    "id": "c08",
+    "slate": "4E-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 85mm, f/4",
+      "angle": "slightly above the screen",
+      "framing": "INSERT, smartphone display large and fully readable in Anudi's right hand",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, screen crisp against soft roadside",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Accepts the incoming call with her right thumb.",
+       "position": "Only her right hand in frame, holding the smartphone; umbrella left and handbag on left forearm outside frame."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "INSERT on screen",
+       "director_line": "The returned object fills the frame.",
+       "action": "Anudi keeps the smartphone in her right hand.",
+       "performance": "Her fingers rest around the phone's edges."
+      },
+      {
+       "time": "1-2.5s",
+       "camera": "INSERT on readable display",
+       "director_line": "The identification interrupts the exchange.",
+       "action": "The smartphone screen displays the exact text Father.",
+       "performance": "Her right hand steadies the device."
+      },
+      {
+       "time": "2.5-3.5s",
+       "camera": "INSERT on screen",
+       "director_line": "The incoming connection is accepted.",
+       "action": "Anudi taps the answer control with her right thumb.",
+       "performance": "Her other fingers keep the device steady."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "INSERT on screen",
+       "director_line": "The connection is established.",
+       "action": "Anudi keeps the phone in her right hand.",
+       "performance": "Her thumb rests on the edge."
+      }
+     ],
+     "audio": "A phone ring stops on acceptance over light rain and distant traffic; no vocal sounds.",
+     "first_frame": {
+      "composition": "Smartphone fills the frame in Anudi's right hand; screen already displays the incoming-call name Father.",
+      "subjects": [
+       "Anudi's right hand holding the smartphone with its readable incoming-call screen."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Incoming phone ring stops when accepted",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 9,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     10
+    ],
+    "lines": [
+     "L10"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, facing screen right",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "Her readable face and phone carry the start of the call without introducing the remote person.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Phone is already answered at the cut; she lifts it to her right ear, then performs L10. Its state remains in her right hand.",
+    "summary": "Anudi raises her phone to her right ear and greets her father (L10), before knowing the call's purpose.",
+    "id": "c09",
+    "slate": "4B-3",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "MCU of Anudi, readable three-quarter face and phone",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Raises the already connected phone to her right ear; lips move to L10.",
+       "position": "Frame left, standing facing right in three-quarter view; connected smartphone in right hand at chest height, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MCU on Anudi and phone",
+       "director_line": "Her attention rests on the device.",
+       "action": "Anudi keeps the phone in her right hand.",
+       "performance": "Her eyes rest on its screen and her face remains open."
+      },
+      {
+       "time": "0.5-1.8s",
+       "camera": "MCU on Anudi",
+       "director_line": "The phone becomes the centre of her attention.",
+       "action": "Anudi raises the phone to her right ear.",
+       "performance": "Her eyes lift slightly as her smile remains."
+      },
+      {
+       "time": "1.8-2.7s",
+       "camera": "MCU on Anudi's readable face",
+       "director_line": "Her greeting is still ordinary and warm.",
+       "action": "Anudi's lips move to L10.",
+       "performance": "Her mouth retains a small relaxed smile."
+      },
+      {
+       "time": "2.7-4s",
+       "camera": "MCU on Anudi",
+       "director_line": "She waits on the line.",
+       "action": "Anudi keeps the phone at her right ear.",
+       "performance": "Her eyes remain gently focused and her lips close."
+      }
+     ],
+     "audio": "L10; the ring has stopped; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi left of centre in three-quarter view, connected phone at chest height.",
+      "subjects": [
+       "Anudi holding phone right, umbrella left, handbag on left forearm."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Ring cuts off at connection",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 10,
+    "role": "reaction",
+    "setup": "D",
+    "blocks": [
+     11
+    ],
+    "lines": [
+     "L11"
+    ],
+    "speaks": false,
+    "over": "Anudi listens on the phone; first three seconds of continuous L11 audio",
+    "size": "CU",
+    "angle": "eye level, facing screen right",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "A closer view isolates her initial response and changes scale after the greeting.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Use the first three seconds of the continuous eight-second L11 audio; remaining five seconds run on the next shot. Do not repeat or trim the audio.",
+    "summary": "Anudi listens in close-up as her father begins his urgent summons (L11), which continues uninterrupted over the next picture.",
+    "id": "c10",
+    "slate": "4D-2",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 85mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "CU of Anudi's face and phone at right ear",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Listens with lips closed and phone at right ear.",
+       "position": "Frame left facing right; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "CU on Anudi's face",
+       "director_line": "Her greeting leaves a trace of warmth.",
+       "action": "Anudi keeps the phone at her right ear.",
+       "performance": "A small closed-mouth smile remains."
+      },
+      {
+       "time": "0.5-3.5s",
+       "camera": "CU on Anudi's face",
+       "director_line": "The connection claims her attention.",
+       "action": "Anudi listens with the phone at her right ear.",
+       "performance": "Her eyes settle and her small smile remains for a moment."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "CU on Anudi's face",
+       "director_line": "Her expression begins to change.",
+       "action": "Anudi keeps the phone at her right ear.",
+       "performance": "The corners of her closed mouth begin to lower."
+      }
+     ],
+     "audio": "First three seconds of continuous L11 phone audio, carried across the cut; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi in CU with phone at right ear and look room right.",
+      "subjects": [
+       "Anudi listening with a small closed-mouth smile, umbrella left and handbag left forearm."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Faint telephone filtering on L11",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 10,
+    "role": "reaction",
+    "setup": "B",
+    "blocks": [
+     11,
+     12
+    ],
+    "lines": [
+     "L11"
+    ],
+    "speaks": false,
+    "over": "Anudi listens on the phone; final five seconds of continuous L11 audio",
+    "size": "MCU",
+    "angle": "eye level, facing screen right",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "A wider second view maintains uninterrupted audio while her smile disappears, and permits a fresh close angle for her answer.",
+    "take_s": 6,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Use the final five seconds of continuous L11 after the three-second first view; match the gradually lowering smile.",
+    "summary": "Anudi hears the remainder of her father's L11, including the demand to discuss marriage, and her smile slowly disappears.",
+    "id": "c11",
+    "slate": "4B-4",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "MCU of Anudi's face and phone at right ear",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Listens with lips closed as her smile gradually disappears.",
+       "position": "Frame left facing right; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MCU on Anudi's face",
+       "director_line": "The trace of her smile remains visible.",
+       "action": "Anudi keeps the phone at her right ear.",
+       "performance": "The corners of her closed mouth begin to lower."
+      },
+      {
+       "time": "0.5-5.5s",
+       "camera": "MCU on Anudi's face",
+       "director_line": "Her expression gradually loses its earlier warmth.",
+       "action": "Anudi's smile gradually disappears.",
+       "performance": "The corners of her mouth settle while her eyes lower slightly."
+      },
+      {
+       "time": "5.5-6s",
+       "camera": "MCU on Anudi's face",
+       "director_line": "The change remains contained.",
+       "action": "Anudi keeps the phone at her right ear.",
+       "performance": "Her lips remain closed and her gaze stays lowered."
+      }
+     ],
+     "audio": "Final five seconds of continuous L11 phone audio, carried across the cut; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi's face and phone in MCU, with look room right.",
+      "subjects": [
+       "Anudi listening with the corners of her closed mouth beginning to lower, phone at right ear."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Faint telephone filtering on L11",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 11,
+    "role": "single",
+    "setup": "D",
+    "blocks": [
+     13
+    ],
+    "lines": [
+     "L13"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "CU",
+    "angle": "eye level, facing screen right",
+    "lens": "85mm",
+    "technique": "locked_off",
+    "why": "The same close scale carries the change from listening to subdued compliance.",
+    "take_s": 6,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "L13 remains whole. Match the lowered gaze and phone at right ear.",
+    "summary": "Anudi quietly agrees to return home (L13), her phone still at her right ear.",
+    "id": "c12",
+    "slate": "4D-3",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 85mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "CU of Anudi's face and phone at right ear",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Lips move to L13.",
+       "position": "Frame left facing right in readable three-quarter view; phone at right ear in right hand, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU on Anudi",
+       "director_line": "The earlier smile is gone.",
+       "action": "Anudi keeps the phone at her right ear.",
+       "performance": "Her gaze remains lowered and her lips closed."
+      },
+      {
+       "time": "1-3.6s",
+       "camera": "CU on Anudi",
+       "director_line": "Her answer is a quiet acceptance.",
+       "action": "Anudi's lips move to L13.",
+       "performance": "Her jaw stays still between the small movements of her mouth."
+      },
+      {
+       "time": "3.6-6s",
+       "camera": "CU on Anudi",
+       "director_line": "The call has changed the encounter.",
+       "action": "Anudi keeps the phone at her right ear.",
+       "performance": "Her lips close and her gaze remains low."
+      }
+     ],
+     "audio": "L13; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi's face fills the frame, phone at right ear, gaze low.",
+      "subjects": [
+       "Anudi holding phone to her right ear, umbrella left and handbag left forearm."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "none",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 12,
+    "role": "two_shot",
+    "setup": "A",
+    "blocks": [
+     14
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "TWO",
+    "angle": "eye level, road side of axis",
+    "lens": "40mm",
+    "technique": "locked_off",
+    "why": "The shared frame makes his observation and her return to eye contact legible without implying he heard the call.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Phone opens held in front of her after leaving her ear; end-call touch, his observation and her look occupy 0.5-3.5s.",
+    "summary": "Anudi ends the call on the phone in her right hand; Kasun registers her changed expression, and she looks back at him.",
+    "id": "c13",
+    "slate": "4A-2",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 40mm, f/4",
+      "angle": "eye level on road side of the pair",
+      "framing": "TWO, both faces visible and phone at her chest",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Medium, vehicle recognizable behind them",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Ends the call with her right thumb and looks back at Kasun.",
+       "position": "Frame left facing right, looking at phone in right hand at chest height; open umbrella in left hand, handbag on left forearm."
+      },
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "Watches Anudi's face.",
+       "position": "Frame right standing facing left, hands empty; food vehicle behind him."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "TWO on pair and phone",
+       "director_line": "Their shared space returns around her.",
+       "action": "Anudi keeps the phone in her right hand.",
+       "performance": "Her eyes remain on the screen and her mouth is level."
+      },
+      {
+       "time": "0.5-1.5s",
+       "camera": "TWO, phone visible",
+       "director_line": "The phone connection ends.",
+       "action": "Anudi presses the end-call control with her right thumb.",
+       "performance": "Her gaze stays lowered on the screen."
+      },
+      {
+       "time": "1.5-2.5s",
+       "camera": "TWO, Kasun's face visible",
+       "director_line": "He registers a visible change in her expression.",
+       "action": "Kasun watches Anudi's face.",
+       "performance": "His smile recedes slightly as his eyes remain on her."
+      },
+      {
+       "time": "2.5-3.5s",
+       "camera": "TWO, shared eyeline",
+       "director_line": "She returns her attention to him.",
+       "action": "Anudi looks at Kasun.",
+       "performance": "Her mouth stays level as her eyes meet his."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "TWO on pair",
+       "director_line": "The space between them has changed.",
+       "action": "Anudi keeps the phone in her right hand.",
+       "performance": "Kasun keeps his eyes on her face."
+      }
+     ],
+     "audio": "Light rain and distant traffic; no vocal sounds.",
+     "first_frame": {
+      "composition": "Anudi left with phone in front of her, Kasun right watching her.",
+      "subjects": [
+       "Anudi with phone at chest height in right hand, umbrella left and handbag left forearm.",
+       "Kasun facing her with empty hands."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Subtle phone end tone",
+     "music": "none",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 13,
+    "role": "single",
+    "setup": "B",
+    "blocks": [
+     15
+    ],
+    "lines": [
+     "L15"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, facing screen right",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "Her face retains a trace of warmth while she takes leave.",
+    "take_s": 6,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Full L15, rightward eyeline and phone still in right hand.",
+    "summary": "Anudi says she must leave but leaves open the possibility of meeting Kasun again (L15).",
+    "id": "c14",
+    "slate": "4B-5",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, rightward eyeline",
+      "framing": "MCU of Anudi, face in three-quarter view",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft roadside bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Lips move to L15.",
+       "position": "Frame left facing right toward Kasun offscreen; smartphone in right hand below crop, open umbrella in left hand, handbag on left forearm."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "MCU on Anudi",
+       "director_line": "She meets his eyes again.",
+       "action": "Anudi keeps her eyes on Kasun.",
+       "performance": "Her lips remain closed and her gaze is steady."
+      },
+      {
+       "time": "1-4.1s",
+       "camera": "MCU on Anudi",
+       "director_line": "Her farewell leaves a small opening.",
+       "action": "Anudi's lips move to L15.",
+       "performance": "A restrained smile returns only at the end."
+      },
+      {
+       "time": "4.1-6s",
+       "camera": "MCU on Anudi",
+       "director_line": "The warmth is present but diminished.",
+       "action": "Anudi keeps the smartphone in her right hand.",
+       "performance": "Her faint smile settles as she watches him."
+      }
+     ],
+     "audio": "L15; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Anudi left of centre, looking right beneath umbrella edge.",
+      "subjects": [
+       "Anudi with phone right below crop, umbrella left and handbag on left forearm."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Rain on umbrella",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 14,
+    "role": "single",
+    "setup": "C",
+    "blocks": [
+     16
+    ],
+    "lines": [
+     "L16"
+    ],
+    "speaks": true,
+    "over": "",
+    "size": "MCU",
+    "angle": "eye level, facing screen left",
+    "lens": "65mm",
+    "technique": "locked_off",
+    "why": "His simple concern needs no camera emphasis.",
+    "take_s": 4,
+    "handle_in_s": 0.1,
+    "handle_out_s": 0.1,
+    "priority": "must",
+    "editor_note": "L16 is whole; trim handles as necessary.",
+    "summary": "Kasun accepts her departure and wishes her well (L16) in a medium close-up.",
+    "id": "c15",
+    "slate": "4C-3",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 65mm, f/2.8",
+      "angle": "eye level, road side, leftward eyeline",
+      "framing": "MCU of Kasun, face in three-quarter view",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Shallow, soft vehicle background",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "Lips move to L16.",
+       "position": "Frame right facing left toward Anudi offscreen; standing, hands empty."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "MCU on Kasun",
+       "director_line": "He receives her farewell.",
+       "action": "Kasun keeps his eyes on Anudi.",
+       "performance": "His expression rests in a small gentle smile."
+      },
+      {
+       "time": "0.5-2.7s",
+       "camera": "MCU on Kasun",
+       "director_line": "His response is uncomplicated.",
+       "action": "Kasun's lips move to L16.",
+       "performance": "His eyes stay on her and his smile remains slight."
+      },
+      {
+       "time": "2.7-4s",
+       "camera": "MCU on Kasun",
+       "director_line": "He lets the exchange end.",
+       "action": "Kasun remains facing Anudi.",
+       "performance": "His lips settle and his gaze stays on her."
+      }
+     ],
+     "audio": "L16; light rain and distant traffic.",
+     "first_frame": {
+      "composition": "Kasun right of centre with look room left, vehicle softly behind.",
+      "subjects": [
+       "Kasun standing in three-quarter view, hands empty."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "none",
+     "music": "none",
+     "silence": false
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 15,
+    "role": "master",
+    "setup": "F",
+    "blocks": [
+     17
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "eye level, road side of axis",
+    "lens": "35mm",
+    "technique": "locked_off",
+    "why": "One shared wide makes their separation and his return to the business spatially clear.",
+    "take_s": 4,
+    "handle_in_s": 0.5,
+    "handle_out_s": 0.5,
+    "priority": "must",
+    "editor_note": "Anudi exits deep left first; Kasun watches then walks deep right toward the vehicle. No business routine is invented.",
+    "summary": "In a wide view Anudi walks away with the phone, handbag and umbrella; Kasun watches, then turns and walks toward his food three-wheeler.",
+    "id": "c16",
+    "slate": "4F-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "tripod, 35mm, f/5.6",
+      "angle": "eye level on road side of the pair",
+      "framing": "WIDE, both full figures and the food three-wheeler",
+      "movement": "locked-off on sticks",
+      "white_balance": "5600K overcast daylight",
+      "color_tone": "Naturalistic muted street colours, warm skin and restrained contrast",
+      "depth_of_field": "Deep, both figures and vehicle clear",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Walks away toward deep left and exits frame.",
+       "position": "Frame left, already facing away toward the road; smartphone in right hand, open umbrella in left hand, handbag on left forearm."
+      },
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "Watches Anudi, then turns and walks toward the food vehicle.",
+       "position": "Frame right, standing facing left toward Anudi, hands empty; food vehicle deep right."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-0.5s",
+       "camera": "WIDE on both figures and vehicle",
+       "director_line": "The distance between them begins to open.",
+       "action": "Kasun watches Anudi.",
+       "performance": "His gaze follows her and his mouth stays closed."
+      },
+      {
+       "time": "0.5-2s",
+       "camera": "WIDE, Anudi crossing deep left",
+       "director_line": "She leaves with the phone she came back for.",
+       "action": "Anudi walks away and exits frame left at 2s.",
+       "performance": "Kasun watches her path with his head slightly inclined."
+      },
+      {
+       "time": "2-3.5s",
+       "camera": "WIDE, Kasun and vehicle",
+       "director_line": "After a moment he returns toward the business.",
+       "action": "Kasun turns and walks toward the food vehicle.",
+       "performance": "His gaze lingers toward the left before he turns away."
+      },
+      {
+       "time": "3.5-4s",
+       "camera": "WIDE, vehicle and Kasun",
+       "director_line": "The encounter remains present in his pause.",
+       "action": "Kasun continues toward the food vehicle.",
+       "performance": "His head remains slightly inclined as he faces away."
+      }
+     ],
+     "audio": "Light rain and distant traffic; no vocal sounds.",
+     "first_frame": {
+      "composition": "Anudi left already facing away, Kasun right facing her, food vehicle deep right.",
+      "subjects": [
+       "Anudi with smartphone right, open umbrella left and handbag on left forearm.",
+       "Kasun watching her, hands empty."
+      ],
+      "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+      "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker."
+     }
+    },
+    "sound": {
+     "ambience": "Light rain and distant Colombo traffic",
+     "effects": "Footsteps on wet roadside",
+     "music": "none",
+     "silence": true
+    },
+    "stage": 1,
+    "anchor": [],
+    "blend": ""
+   },
+   {
+    "moment": 10,
+    "role": "insert",
+    "setup": "H",
+    "blocks": [
+     11
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "A brief interior portion of L11 from the locked listening coverage.",
+    "size": "ECU",
+    "angle": "road-side oblique at ear height",
+    "lens": "100mm macro",
+    "technique": "shallow_isolation",
+    "why": "The existing views carry the facial change; an isolated grip makes the same interruption physical, linking this phone to the object that began the encounter.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Use only a brief section within the continuous L11 audio; do not restart or extend the line.",
+    "summary": "An extreme close-up isolates Anudi's right hand around the phone at her right ear. Her fingertips press closer against its edge while a brief portion of L11 continues from the anchor.",
+    "id": "c17",
+    "slate": "4H-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "locked-off sticks, 100mm macro, f/2.8",
+      "angle": "road-side oblique at right-ear height",
+      "framing": "ECU of right fingertips, handset edge and a narrow strip of cheek; screen turned away",
+      "movement": "fixed shallow isolation throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic rain-muted colour, controlled contrast and gentle skin warmth",
+      "depth_of_field": "Shallow; roadside dissolves into soft grey-green bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "Her right fingertips press slightly closer against the handset edge.",
+       "position": "Standing roadside frame left facing right, smartphone already at her right ear in her right hand; left hand holds the open umbrella, handbag on left forearm outside the crop."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "ECU on handset edge and right fingertips",
+       "director_line": "The edge of the phone divides cheek from the blurred roadside.",
+       "action": "Her right hand keeps the phone at her right ear.",
+       "performance": "Her visible cheek stays still beside the handset."
+      },
+      {
+       "time": "1-3s",
+       "camera": "ECU with focus on the fingertip pads",
+       "director_line": "A small pressure of the fingers carries the interruption into the body.",
+       "action": "Her right fingertips press slightly closer against the handset edge.",
+       "performance": "Her fingertips flatten lightly against the phone."
+      },
+      {
+       "time": "3-4s",
+       "camera": "ECU, same isolated detail",
+       "director_line": "The grip remains after the small movement ends.",
+       "action": "Her fingers retain their position against the handset.",
+       "performance": "Her hand stays close to her cheek."
+      }
+     ],
+     "audio": "Wet roadside ambience only; remote audio supplied from the anchor in the edit.",
+     "first_frame": {
+      "composition": "Phone edge vertical through the right third, fingertips central and cheek at left; no screen visible.",
+      "subjects": [
+       "Anudi's right hand and a narrow portion of her right cheek beside the phone"
+      ],
+      "setting": "Wet roadside reduced to soft background colour beneath the umbrella.",
+      "lighting": "Overcast road-side light traces the fingertips and handset edge."
+     }
+    },
+    "sound": {
+     "ambience": "Low wet-road ambience matching the anchors.",
+     "effects": "None added.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c10",
+     "c11"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 12,
+    "role": "reaction",
+    "setup": "I",
+    "blocks": [
+     14
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "road-side three-quarter on Kasun facing left",
+    "lens": "85mm",
+    "technique": "slow_creep",
+    "why": "The two-shot reconnects their geography; this isolated face lets the editor register the exact instant Kasun notices the distance in her expression without implying knowledge of the remote conversation.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "should",
+    "editor_note": "Insert after her return glance in c13, with phone already lowered; keep his eyeline to frame left.",
+    "summary": "A very slow creep frames Kasun looking toward Anudi after she lowers her phone. His faint smile settles and he keeps his attention on her.",
+    "id": "c18",
+    "slate": "4I-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "short dolly, 85mm, f/2.8",
+      "angle": "eye-level road-side three-quarter",
+      "framing": "CU of Kasun, face to frame left, vehicle softly behind his right shoulder",
+      "movement": "a very slow straight creep inward within close-up",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic rain-muted colour with gentle skin warmth and controlled contrast",
+      "depth_of_field": "Shallow; vehicle falls into soft bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "His faint smile settles as he keeps his gaze toward Anudi.",
+       "position": "Standing roadside frame right facing left toward Anudi off frame, hands empty below crop; food three-wheeler behind and to his right."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU at the beginning of the gentle creep",
+       "director_line": "His eyes stay on the space her face occupies.",
+       "action": "Kasun looks toward Anudi off frame left.",
+       "performance": "A faint smile remains at the corners of his mouth."
+      },
+      {
+       "time": "1-5s",
+       "camera": "CU marginally closer along the same path",
+       "director_line": "The small smile yields before either of them moves away.",
+       "action": "His mouth relaxes.",
+       "performance": "His lips settle together while his eyes remain directed left."
+      },
+      {
+       "time": "5-6s",
+       "camera": "CU at the end of the creep",
+       "director_line": "He gives her room rather than filling the pause.",
+       "action": "He remains facing Anudi.",
+       "performance": "His mouth stays closed and his gaze steady."
+      }
+     ],
+     "audio": "Continuous wet-road ambience; no new foreground sound.",
+     "first_frame": {
+      "composition": "Kasun at right with negative space left along his eyeline, dark vehicle blur behind.",
+      "subjects": [
+       "Kasun in three-quarter close-up, looking frame left"
+      ],
+      "setting": "Roadside beside the food three-wheeler.",
+      "lighting": "Soft road-side daylight falls across his near cheek with the vehicle side darker."
+     }
+    },
+    "sound": {
+     "ambience": "Wet-road ambience continuous with c13.",
+     "effects": "None added.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c13"
+    ],
+    "blend": "cut_in"
+   },
+   {
+    "moment": 15,
+    "role": "clean_exit",
+    "setup": "J",
+    "blocks": [
+     17
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "road-side eye-level wide",
+    "lens": "35mm",
+    "technique": "dolly_out",
+    "why": "The locked master supplies the departure and return; retreating after those movements leaves the roadside space between them visible and gives the scene a restrained visual release.",
+    "take_s": 6,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Continue after c16 with Anudi already beyond deep left and Kasun already at the vehicle; do not repeat either walk or add business activity.",
+    "summary": "After Anudi has left, the camera withdraws from Kasun standing beside the food three-wheeler. He remains oriented toward the vehicle while empty wet roadside expands to his left.",
+    "id": "c19",
+    "slate": "4J-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "dolly on straight track, 35mm, f/5.6",
+      "angle": "eye-level from the road side of the established axis",
+      "framing": "WIDE with Kasun and food three-wheeler at deep right, empty departure space at left",
+      "movement": "one slow straight dolly backward throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic rain-muted colour, controlled contrast, understated warm skin",
+      "depth_of_field": "Deep; Kasun, vehicle and wet foreground remain legible",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "He remains beside the vehicle with his hands quiet.",
+       "position": "At the food business deep right after completing his return, facing away toward the vehicle, hands empty; Anudi has already exited deep left."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE at the start of the retreat",
+       "director_line": "The vehicle has him back, but the left side of the road is empty.",
+       "action": "Kasun stands facing the food three-wheeler.",
+       "performance": "His head stays slightly lowered toward the vehicle."
+      },
+      {
+       "time": "1-5s",
+       "camera": "WIDE receding along one straight path",
+       "director_line": "Wet roadside gradually occupies more space around his still figure.",
+       "action": "Kasun remains beside the vehicle.",
+       "performance": "His hands remain quiet at his sides."
+      },
+      {
+       "time": "5-6s",
+       "camera": "WIDE at the far end of the backward path",
+       "director_line": "The emptied distance remains the final image of the encounter.",
+       "action": "Kasun stays oriented toward the food three-wheeler.",
+       "performance": "His head remains lowered and his shoulders still."
+      }
+     ],
+     "audio": "Wet-road ambience continues without additional activity.",
+     "first_frame": {
+      "composition": "Kasun and the food three-wheeler deep right, left two-thirds open wet roadside; Anudi absent.",
+      "subjects": [
+       "Kasun beside the food three-wheeler, back in three-quarter view"
+      ],
+      "setting": "Roadside departure path extends toward deep left.",
+      "lighting": "Overcast road-side daylight catches wet ground; vehicle side remains darker."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous low wet-road ambience.",
+     "effects": "None added.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c16"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 13,
+    "role": "reaction",
+    "setup": "K",
+    "blocks": [
+     15
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "CU",
+    "angle": "road-side three-quarter facing right",
+    "lens": "85mm",
+    "technique": "shallow_isolation",
+    "why": "The farewell coverage carries L15; a silent close gives its surviving warmth a visible afterbeat before Kasun's response, without enlarging the performance into a promise.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Use a short tail after L15 and before L16; do not repeat the farewell or turn this into another line performance.",
+    "summary": "After L15, Anudi keeps her gaze on Kasun with a small closed-mouth smile. A close view isolates her beneath the umbrella, with her phone still lowered in her right hand.",
+    "id": "c20",
+    "slate": "4K-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "locked-off sticks, 85mm, f/2.0",
+      "angle": "eye-level road-side three-quarter",
+      "framing": "CU beneath the open umbrella, Anudi looking frame right",
+      "movement": "fixed shallow isolation throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic rain-muted colour with restrained skin warmth and controlled contrast",
+      "depth_of_field": "Shallow; roadside softened to unobtrusive bokeh",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "She maintains a small closed-mouth smile toward Kasun.",
+       "position": "Standing roadside frame left facing right toward Kasun off frame; phone lowered in right hand, left hand holds the open umbrella with handbag on left forearm, all below the face crop."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "CU, focus on the eyes beneath the umbrella",
+       "director_line": "The farewell ends on a face still directed toward him.",
+       "action": "Anudi keeps her gaze toward Kasun.",
+       "performance": "Her lips are closed with their corners faintly lifted."
+      },
+      {
+       "time": "1-3s",
+       "camera": "CU with shallow isolation sustained",
+       "director_line": "A small remnant of their earlier ease survives the interruption.",
+       "action": "She maintains the small smile.",
+       "performance": "Her eyes stay on him while her mouth remains closed."
+      },
+      {
+       "time": "3-4s",
+       "camera": "CU with the same framing",
+       "director_line": "The beat ends before she turns away.",
+       "action": "She remains facing right.",
+       "performance": "Her expression stays small and her chin level."
+      }
+     ],
+     "audio": "Continuous roadside ambience.",
+     "first_frame": {
+      "composition": "Anudi's face left of centre with room toward her rightward eyeline, umbrella edge above.",
+      "subjects": [
+       "Anudi beneath the open umbrella, lips closed in a small smile"
+      ],
+      "setting": "Wet roadside softly out of focus.",
+      "lighting": "Overcast road-side light shapes her cheek with gentle falloff."
+     }
+    },
+    "sound": {
+     "ambience": "Low wet-road ambience matching c14.",
+     "effects": "None added.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c14"
+    ],
+    "blend": "close"
+   },
+   {
+    "moment": 1,
+    "role": "establishing",
+    "setup": "L",
+    "blocks": [],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "WIDE",
+    "angle": "road-side eye-level wide",
+    "lens": "28mm",
+    "technique": "locked_off",
+    "why": "The opening medium two-shot makes the transfer clear but cannot situate its modest scale within the wet Colombo roadside; this short geographic opening does so without adding street activity.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Open before c01. Phone is still extended from Kasun's right hand here; the actual transfer belongs exclusively to c01.",
+    "summary": "A wide roadside view establishes Anudi beneath her umbrella at left and Kasun beside his food three-wheeler at right. His right hand already extends the phone toward her; the shot ends before she receives it.",
+    "id": "c21",
+    "slate": "4L-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "locked-off sticks, 28mm, f/5.6",
+      "angle": "eye-level from the road side of the established axis",
+      "framing": "WIDE full figures, Anudi left and Kasun right with the vehicle behind his right shoulder",
+      "movement": "locked-off on sticks throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic rain-muted colour, controlled contrast and gentle skin warmth",
+      "depth_of_field": "Deep; both figures and the food three-wheeler remain readable",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [
+      {
+       "id": "C01",
+       "description": "Kasun, matching the incoming scene's face, hairstyle, body type and modest early-business wardrobe.",
+       "action": "He keeps his right hand extended with the smartphone.",
+       "position": "Standing roadside frame right facing left, smartphone in extended right hand before the transfer, food three-wheeler behind and to his right."
+      },
+      {
+       "id": "C02",
+       "description": "Anudi, matching the incoming scene's face, hairstyle, body type and wardrobe.",
+       "action": "She faces Kasun with her right hand free to receive the phone.",
+       "position": "Standing roadside frame left facing right; left hand holds the already open umbrella, handbag on left forearm; right hand free before the transfer."
+      }
+     ],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "WIDE with both figures and vehicle readable",
+       "director_line": "Two figures occupy a small pocket of the wet roadside.",
+       "action": "Both remain facing one another.",
+       "performance": "Anudi's gaze rests on Kasun; his gaze stays toward her."
+      },
+      {
+       "time": "1-3s",
+       "camera": "WIDE, same composition",
+       "director_line": "The offered phone bridges the space before the closer coverage begins.",
+       "action": "Kasun keeps the phone extended in his right hand.",
+       "performance": "Both keep their mouths closed and attention on one another."
+      },
+      {
+       "time": "3-4s",
+       "camera": "WIDE, same composition",
+       "director_line": "The geography is complete before the exchange moves closer.",
+       "action": "Anudi remains beneath her open umbrella.",
+       "performance": "She stays oriented toward Kasun with her chin level."
+      }
+     ],
+     "audio": "Wet roadside ambience without added activity.",
+     "first_frame": {
+      "composition": "Anudi at left beneath the umbrella, Kasun at right with phone already extended, food three-wheeler behind right; wet foreground visible.",
+      "subjects": [
+       "Anudi with open umbrella in left hand and handbag on left forearm",
+       "Kasun with smartphone extended in right hand"
+      ],
+      "setting": "Wet Colombo roadside beside the modest food three-wheeler.",
+      "lighting": "Overcast road-side light with gentle facial falloff and darker vehicle side."
+     }
+    },
+    "sound": {
+     "ambience": "Low wet-road ambience matching the opening.",
+     "effects": "None added.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c01"
+    ],
+    "blend": "open"
+   },
+   {
+    "moment": 2,
+    "role": "pov",
+    "setup": "M",
+    "blocks": [
+     3
+    ],
+    "lines": [],
+    "speaks": false,
+    "over": "",
+    "size": "POV",
+    "angle": "Anudi's oblique view toward deep right",
+    "lens": "50mm",
+    "technique": "foreground_framing",
+    "why": "The locked two-shot records her glance; a single subjective view lets the audience share her new attention to the modest business without inventing products, customers or a montage.",
+    "take_s": 4,
+    "handle_in_s": 1.0,
+    "handle_out_s": 1.0,
+    "priority": "nice",
+    "editor_note": "Cut from her glance at the end of c02 to the vehicle, then to c03. No extra business action and no added signage or product detail.",
+    "summary": "From Anudi's viewing direction, the food three-wheeler fills the picture beyond a soft edge of her open umbrella. The vehicle remains still during a brief subjective view.",
+    "id": "c22",
+    "slate": "4M-1",
+    "ir": {
+     "setting": "A wet Colombo roadside beside Kasun's humble food three-wheeler.",
+     "cinematography": {
+      "camera": "locked-off sticks, 50mm, f/4",
+      "angle": "eye-level oblique toward the vehicle from Anudi's roadside position",
+      "framing": "POV of the food three-wheeler beyond a small soft umbrella edge; neither face visible",
+      "movement": "fixed foreground framing throughout",
+      "white_balance": "neutral overcast daylight, 6000K",
+      "color_tone": "naturalistic rain-muted colour and controlled contrast",
+      "depth_of_field": "Medium; vehicle clear, near umbrella edge soft",
+      "lens_artifacts": "none"
+     },
+     "lighting": "Overcast daylight enters from the road side, with gentle facial falloff and the vehicle side held darker.",
+     "subjects": [],
+     "beats": [
+      {
+       "time": "0-1s",
+       "camera": "POV centred on the food three-wheeler",
+       "director_line": "Her new attention finds the modest vehicle beyond the umbrella edge.",
+       "action": "The food three-wheeler remains stationary.",
+       "performance": ""
+      },
+      {
+       "time": "1-3s",
+       "camera": "POV with the same foreground framing",
+       "director_line": "The business appears at its ordinary scale, without embellishment.",
+       "action": "The open umbrella edge remains at the near left border.",
+       "performance": ""
+      },
+      {
+       "time": "3-4s",
+       "camera": "POV, focus remains on the vehicle",
+       "director_line": "The brief view returns its meaning to her next question.",
+       "action": "The food three-wheeler remains stationary.",
+       "performance": ""
+      }
+     ],
+     "audio": "Continuous wet roadside ambience.",
+     "first_frame": {
+      "composition": "Food three-wheeler centre-right with a small out-of-focus umbrella edge at near left; no readable text or people in frame.",
+      "subjects": [
+       "Kasun's food three-wheeler",
+       "Soft edge of Anudi's already open umbrella"
+      ],
+      "setting": "Wet roadside immediately around the food three-wheeler.",
+      "lighting": "Overcast road-side light catches the vehicle's exposed edges while its side stays darker."
+     }
+    },
+    "sound": {
+     "ambience": "Continuous wet-road ambience.",
+     "effects": "None added.",
+     "music": "None added.",
+     "silence": false
+    },
+    "stage": 2,
+    "anchor": [
+     "c02"
+    ],
+    "blend": "cut_in"
+   }
+  ],
+  "line_ids": {
+   "L1": "E01-S04-B02",
+   "L2": "E01-S04-B03",
+   "L4": "E01-S04-B05",
+   "L5": "E01-S04-B06",
+   "L6": "E01-S04-B07",
+   "L7": "E01-S04-B08",
+   "L10": "E01-S04-B11",
+   "L11": "E01-S04-B12",
+   "L13": "E01-S04-B14",
+   "L15": "E01-S04-B16",
+   "L16": "E01-S04-B17"
+  },
+  "editor_notes": [
+   "The must bin has 16 clips totalling 80 seconds of raw takes, under the 81-second cap. The 53-second script and minimum take sizes make the raw bin longer than the 54-second target; trim handles and overlap audio in the assembly, never compress or omit dialogue.",
+   "Use c01 for the return and L1, c02 for L2 and the look toward the business, the B/C singles for the exchange, and c07 for admiration. Keep the screen direction and the prop hands matched.",
+   "Use c08 to show the readable caller ID and the acceptance before the remote voice. Add the ring, rain, traffic and end tone in post where silent-source generation suppresses sound.",
+   "L11 is one uninterrupted eight-second phone performance, recorded separately in full and laid across c10 and c11: use three seconds over c10 and five seconds over c11, with their handles outside those picture intervals. The checker still reports the full line against each short picture take; do not treat either report as permission to trim, repeat or reword the line. Match Anudi's gradually fading smile across the cut.",
+   "Match the right-hand phone from c08 through the ear position in c09-c12 and the lowered position in c13. Kasun can observe Anudi's expression but does not hear the remote words.",
+   "In the handover, keep the performers' hands on separate ends of the phone and avoid visible body contact. Maintain the same open umbrella in Anudi's left hand and handbag on her left forearm.",
+   "c16 starts with Anudi already facing away; use the preceding reverse to bridge the skipped turn. She exits left before Kasun turns toward the vehicle. Do not add an invented work action or explain his thoughts.",
+   "No speed ramp, freeze frame, digital punch-in or split screen is requested; if editorially desired, create it in post from the clean source and preserve dialogue timing. Avoid mirrors, fast finger work, contact between bodies and sharply staged crowds."
+  ],
+  "blend_notes": [
+   "c17: cut_in with c10, c11 (the cinematic pass stopped before it wrote a note)",
+   "c18: cut_in with c13 (the cinematic pass stopped before it wrote a note)",
+   "c19: close with c16 (the cinematic pass stopped before it wrote a note)",
+   "c20: close with c14 (the cinematic pass stopped before it wrote a note)",
+   "c21: open with c01 (the cinematic pass stopped before it wrote a note)",
+   "c22: cut_in with c02 (the cinematic pass stopped before it wrote a note)"
+  ],
+  "review": [],
+  "seconds": {
+   "target_s": 45.0,
+   "cap_s": 108.0,
+   "take_s": 108,
+   "must_s": 80,
+   "cinematic_s": 28
+  },
+  "left": [
+   {
+    "code": "clock",
+    "sentence": "c10 needs 9.5 s for what it carries and the take is 4 s: one line longer than any take here (8 s). Reported; it is never trimmed.",
+    "clips": [
+     "c10"
+    ],
+    "fix": "report",
+    "key": "clock:overrun:c10"
+   },
+   {
+    "code": "clock",
+    "sentence": "c11 needs 10.5 s for what it carries and the take is 6 s: one line longer than any take here (8 s). Reported; it is never trimmed.",
+    "clips": [
+     "c11"
+    ],
+    "fix": "report",
+    "key": "clock:overrun:c11"
+   }
+  ],
+  "report": {
+   "turns": {
+    "stage1": 6,
+    "stage2": 3
+   },
+   "calls": 8,
+   "log": [
+    "stage 1: finished after 6 turns",
+    "stage 2: cap after 3 turns"
+   ],
+   "model": "gpt-6.1-sol"
+  },
+  "previous": {}
+ }
+}
