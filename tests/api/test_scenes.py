@@ -45,7 +45,8 @@ def seed_scene(world: World, n: int = 0, *, settings: dict | None = None) -> dic
     proposal = [ProposedShot(i, i + 1, "MS") for i in range(len(items))]
     shots, line_rows, _ = sceneplan.rows_after_fit(scene, [{"start": p.start} for p in proposal],
                                                    fit(items, proposal, envelope_s=60), lines)
-    for s in shots:
+    for s in shots:  # each shot with a planner's plan (an IR), as Raphael leaves it: the only planner (2026-11-21)
+        s["ir"] = {"setting": "the kitchen", "first_frame": {"composition": "Kamala at the stove"}, "beats": [{}]}
         r.shots.rows[s["id"]] = {**s, "created_at": "2026-10-23T00:00:00+00:00"}  # type: ignore[attr-defined]
     for ln in line_rows:
         r.lines.rows[ln["id"]] = ln  # type: ignore[attr-defined]
@@ -169,7 +170,7 @@ def test_approve_locks_the_scene_and_unapprove_releases_it(world: World):
                               headers=h).status_code == 409
     assert world.client.put(url(world, f"/scenes/{sid}/script"), json={"blocks": [], "script_version": 1},
                             headers=h).status_code == 409
-    assert world.client.post(url(world, f"/scenes/{sid}/resplit"), headers=h).status_code == 409
+    assert world.client.post(url(world, f"/scenes/{sid}/resplit"), headers=h).status_code == 410  # retired
     v = world.client.post(url(world, f"/scenes/{sid}/unapprove"), headers=h).json()
     assert v["status"] == "split" and v["locked_at"] is None
     draft = next(x for x in world.repos.scenes.rows.values() if x["status"] == "draft")  # type: ignore[attr-defined]
@@ -193,12 +194,12 @@ def fired(monkeypatch: pytest.MonkeyPatch) -> list[dict]:
     return calls
 
 
-def test_resplit_sends_one_scene_to_script_split(world: World, fired: list[dict]):
+def test_resplit_is_retired_and_points_to_raphael(world: World, fired: list[dict]):
+    """2026-11-21: the classic splitter makes no new shot lists; Raphael plans the scene."""
     s = seed_scene(world)
     r = world.client.post(url(world, f"/scenes/{s['scene']['id']}/resplit"), headers=world.headers(world.director))
-    assert r.status_code == 202, r.text
-    assert fired[0]["kind"] == "script_split" and fired[0]["state"] == {"scene_ids": [s["scene"]["id"]]}
-    assert fired[0]["url"].endswith(":8203/")
+    assert r.status_code == 410 and "Raphael" in r.json()["detail"]
+    assert not fired
     assert world.client.post(url(world, f"/scenes/{s['scene']['id']}/resplit"),
                              headers=world.headers(world.writer)).status_code == 403
 
@@ -549,3 +550,14 @@ def test_a_scene_read_from_page_images_waits_for_a_person_to_check_it(world: Wor
     assert v["read_from"] == "pages" and v["read_confirmed_at"]
     row = world.repos.scenes.rows[sid]  # type: ignore[attr-defined]
     assert row["read_confirmed_by"] == str(world.director)
+
+
+@pytest.mark.parametrize("path", ["adam/plan", "adam/moments/m1/remove", "david/plan", "david/added/1/remove",
+                                  "jonathan/plan", "jonathan/added/1/remove"])
+def test_the_retired_planners_start_nothing_and_point_to_raphael(world: World, fired: list[dict], path: str):
+    """2026-11-21: Raphael is the only planner; the others' stored plans stay readable but they plan nothing new."""
+    s = seed_scene(world)
+    r = world.client.post(url(world, f"/scenes/{s['scene']['id']}/{path}"), json={},
+                          headers=world.headers(world.director))
+    assert r.status_code == 410 and "Plan the scene with Raphael" in r.json()["detail"]
+    assert not fired

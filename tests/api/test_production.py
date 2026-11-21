@@ -155,7 +155,8 @@ def test_a_locked_scene_closes_the_picture_work_but_not_the_video_prompt(world: 
     assert not fired, "nothing was started"
     r = world.client.post(shot_url(world, s, 0, "/prompt"), json={}, headers=crew)
     assert r.status_code == 202, r.text
-    assert fired[-1]["kind"] == "shot_produce" and fired[-1]["state"]["mode"] == "prompt"
+    assert fired[-1]["kind"] == "shot_prompts" and fired[-1]["state"]["mode"] == "video"  # 2026-11-21
+    assert fired[-1]["url"].endswith(":8207/"), "served by the shot producer's function"
     r = world.client.post(url(world, f"/scenes/{sid}/prompts"), json={}, headers=crew)
     assert r.status_code == 202, r.text
 
@@ -169,8 +170,8 @@ def test_frames_chain_a_design_when_one_is_missing(world: World, fired: list[dic
     assert r.status_code == 202, r.text
     body = r.json()
     assert len(body["frame_ids"]) == 2
-    sent = fired[0]
-    assert sent["kind"] == "shot_produce" and sent["pipeline"] == ["shot_produce", "frame_render"]
+    sent = fired[0]  # 2026-11-21: the design, then the prompts (their own system), then the painter
+    assert sent["kind"] == "shot_produce" and sent["pipeline"] == ["shot_produce", "shot_prompts", "frame_render"]
     assert sent["state"] == {"frame_ids": body["frame_ids"], "mode": "design", "shot_ids": [s["shots"][1]["id"]],
                              "shot_prompts": [s["shots"][1]["id"]],  # plan/2026-11-20d D4 a
                              "from_board": True}, "plan/2026-11-14: painted from the scene board's panel"
@@ -182,9 +183,9 @@ def test_frames_chain_a_design_when_one_is_missing(world: World, fired: list[dic
 
     design(world, s)
     r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=world.headers(world.crew))
-    sent = fired[1]  # plan/2026-11-20d D4 a: designed, but no shot prompt yet: the agent writes it first
-    assert sent["pipeline"] == ["shot_produce", "frame_render"]
-    assert sent["state"]["shot_prompts"] == [s["shots"][1]["id"]] and sent["state"]["mode"] == "design"
+    sent = fired[1]  # plan/2026-11-20d D4 a: designed, but no shot prompt yet: the agent writes it first, no design
+    assert sent["kind"] == "shot_prompts" and sent["pipeline"] == ["shot_prompts", "frame_render"]
+    assert sent["state"]["shot_prompts"] == [s["shots"][1]["id"]] and sent["state"]["mode"] == "frames"
     shot_prompts(world, s)
     r = world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=world.headers(world.crew))
     assert fired[2]["kind"] == "frame_render" and fired[2]["pipeline"] == ["frame_render"], "current: frames only"
@@ -240,7 +241,8 @@ def test_accepting_a_frame_unlocks_the_prompt(world: World, fired: list[dict]):
 
     r = world.client.post(shot_url(world, s, 1, "/prompt"), headers=crew)
     assert r.status_code == 202
-    assert fired[-1]["state"] == {"mode": "prompt", "shot_ids": [s["shots"][1]["id"]]}
+    assert fired[-1]["kind"] == "shot_prompts"
+    assert fired[-1]["state"] == {"mode": "video", "shot_ids": [s["shots"][1]["id"]]}
     assert world.client.post(shot_url(world, s, 1, "/prompt"), headers=world.headers(world.writer)).status_code == 403
 
     v = world.client.post(url(world, f"/frames/{ids[1]}/reject"), json={"reason": "wrong saree"}, headers=crew).json()
@@ -599,11 +601,13 @@ def test_a_later_shot_of_a_setup_shows_the_first_ones_accepted_frame_and_a_perso
 def test_rewrite_prompts_for_one_shot(world: World, fired: list[dict]):
     s = open_scene(world)
     crew = world.headers(world.crew)
-    assert world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew).status_code == 409, "no design"
+    r = world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew)
+    assert r.status_code == 409 and r.json()["detail"].startswith("Recommend settings first"), "no design"
     design(world, s)
     r = world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew)
     assert r.status_code == 202, r.text
-    assert fired[-1]["state"] == {"mode": "shot_prompt", "shot_ids": [s["shots"][1]["id"]]}
+    assert fired[-1]["kind"] == "shot_prompts"  # 2026-11-21: its own system; it never designs
+    assert fired[-1]["state"] == {"mode": "write", "shot_ids": [s["shots"][1]["id"]]}
     assert world.client.post(shot_url(world, s, 1, "/shot-prompt"),
                              headers=world.headers(world.reviewer)).status_code == 403
     assert world.client.get(shot_url(world, s, 1), headers=crew).json()["shot_prompt"] is None
@@ -617,7 +621,7 @@ def test_write_prompts_for_all_shots_skips_the_current_ones(world: World, fired:
     design(world, s)
     r = world.client.post(to, json={}, headers=crew)
     assert r.status_code == 202, r.text
-    assert fired[-1]["state"] == {"mode": "shot_prompt", "shot_ids": [shot["id"] for shot in s["shots"]]}
+    assert fired[-1]["state"] == {"mode": "write", "shot_ids": [shot["id"] for shot in s["shots"]]}
     shot_prompts(world, s)
     assert world.client.post(to, json={}, headers=crew).status_code == 409, "every one is current"
     assert world.client.post(to, json={"only_missing": False}, headers=crew).status_code == 202
@@ -677,8 +681,9 @@ def test_a_move_only_change_keeps_the_frame(world: World, fired: list[dict]):
 def test_ask_camera_starts_a_one_shot_job_with_the_note(world: World, fired: list[dict]):
     s = open_scene(world)
     crew = world.headers(world.crew)
+    world.repos.shots.rows[s["shots"][0]["id"]]["ir"] = {}  # type: ignore[attr-defined]
     r = world.client.post(shot_url(world, s, 0, "/camera/ask"), json={"note": "x"}, headers=crew)
-    assert r.status_code == 409 and "Design the scene first" in r.json()["detail"]  # no IR yet
+    assert r.status_code == 409 and "Plan this scene with Raphael first" in r.json()["detail"]  # no plan
     design(world, s)
     r = world.client.post(shot_url(world, s, 0, "/camera/ask"), json={"note": "  a visible   slow push "},
                           headers=crew)
@@ -719,3 +724,31 @@ def test_an_old_dolly_in_override_still_applies(world: World):
                            headers=world.headers(world.crew))
     assert r.status_code == 200, r.text
     assert r.json()["camera"]["current"]["movement"] == "Pull out"
+
+
+# ── 2026-11-21: Raphael plans, the shot producer designs, the shot_prompts system writes ──────────────────────────
+
+
+def test_write_prompts_refuses_a_stale_design_and_starts_no_design(world: World, fired: list[dict]):
+    s = open_scene(world)
+    crew = world.headers(world.crew)
+    design(world, s)
+    row = world.repos.shots.rows[s["shots"][1]["id"]]  # type: ignore[attr-defined]
+    row["version"] = int(row.get("version") or 1) + 1  # the shot changed after its design
+    fired.clear()
+    r = world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew)
+    assert r.status_code == 409 and r.json()["detail"].startswith("Recommend settings first")
+    assert not fired, "no design and no prompt job was started"
+
+
+def test_a_scene_without_a_plan_is_not_designed_or_painted(world: World, fired: list[dict]):
+    s = open_scene(world)
+    crew = world.headers(world.crew)
+    for shot in s["shots"]:
+        world.repos.shots.rows[shot["id"]]["ir"] = {}  # type: ignore[attr-defined]
+    sid = s["scene"]["id"]
+    for call in (world.client.post(url(world, f"/scenes/{sid}/design"), json={}, headers=crew),
+                 world.client.post(shot_url(world, s, 1, "/frames"), json={}, headers=crew),
+                 world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew)):
+        assert call.status_code == 409 and call.json()["detail"].startswith("Plan this scene with Raphael first")
+    assert not fired

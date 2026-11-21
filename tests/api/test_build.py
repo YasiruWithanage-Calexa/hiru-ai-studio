@@ -44,10 +44,10 @@ def test_build_starts_one_job_through_three_functions(world: World, fired: list[
     assert len(fired) == 1
     hop = fired[0]
     assert hop["kind"] == "canon_extract" and hop["cursor"] == 0
-    assert hop["pipeline"] == ["canon_extract", "structure_build", "script_split"]
+    assert hop["pipeline"] == ["canon_extract", "structure_build", "plan_scene_raphael"]  # 2026-11-21: Raphael only
     assert hop["state"] == {"build": True} and hop["url"].endswith(":8205/")
     job = world.repos.jobs.rows[body["job_id"]]  # type: ignore[attr-defined]
-    assert job["kind"] == "structure_build" and job["request"]["pipeline"][2] == "script_split"
+    assert job["kind"] == "structure_build" and job["request"]["pipeline"][2] == "plan_scene_raphael"
 
 
 def test_build_needs_ready_documents_and_only_one_at_a_time(world: World, fired: list[dict]):
@@ -205,8 +205,8 @@ def test_courier_can_send_the_same_function_again(world: World, fired: list[dict
     fired.clear()
     r = advance(world, {"job_id": job_id, "cursor": 2, "again": True, "state": {"scene_ids": ["a"]}})
     assert r.json() == {"advanced": True}
-    assert fired[0]["kind"] == "script_split" and fired[0]["cursor"] == 3
-    assert fired[0]["pipeline"] == ["canon_extract", "structure_build", "script_split", "script_split"]
-    assert jobs.rows[job_id]["request"]["pipeline"][-1] == "script_split"
+    assert fired[0]["kind"] == "plan_scene_raphael" and fired[0]["cursor"] == 3
+    assert fired[0]["pipeline"] == ["canon_extract", "structure_build", "plan_scene_raphael", "plan_scene_raphael"]
+    assert jobs.rows[job_id]["request"]["pipeline"][-1] == "plan_scene_raphael"
     dup = advance(world, {"job_id": job_id, "cursor": 2, "again": True, "state": {}})
     assert dup.json() == {"advanced": False} and len(fired) == 1

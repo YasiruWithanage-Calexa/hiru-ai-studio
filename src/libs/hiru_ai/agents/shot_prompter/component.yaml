@@ -3,7 +3,7 @@ kind: agent
 version: 1
 summary: "Writes a shot's first frame and its video from ONE opening state (the still's composition, people, background and light; the video's situation, people, flow by line id and sound); the shot_prompt step keeps every fact, checks both and assembles them."
 status: active
-owner: shot_producer
+owner: shot_prompts
 model: shot_prompter
 shape: structured
 phase: shot_prompter.write

@@ -179,10 +179,22 @@ def test_ask_camera_with_no_model_says_so_and_changes_nothing():
     assert any("needs a model" in w for w in warnings(jobs))
 
 
-def test_shots_without_a_planners_ir_go_to_the_dop():
+def test_shots_without_a_planners_ir_are_not_designed_and_say_plan_with_raphael():
+    """2026-11-21: the old DoP panel is retired; a shot with no plan is left as it is and the job says why."""
     store = world(ir=False)
-    _, _, phases, _ = run(store, replies=answer(), mode="design", force=True)
-    assert CAMERA not in phases and DOP in phases
+    result, _, phases, _ = run(store, replies=answer(), mode="design", force=True)
+    assert CAMERA not in phases and DOP not in phases and result["designed"] == 0
+    assert all(not row.get("design") for row in store.shot_rows.values())
+    assert any("Plan this scene with Raphael first" in w for w in result["warnings"])
+
+
+def test_with_no_model_a_planned_shot_gets_the_rule_camera_and_the_reason():
+    store = world()
+    with patch.object(camera.llm, "models_enabled", lambda: False):
+        result, _, phases, _ = run(store, replies=answer(), mode="design", force=True)
+    assert CAMERA not in phases and result["designed"] == len(store.shot_rows)
+    assert all(row["design"]["pins"] for row in store.shot_rows.values())
+    assert camera.NEEDS_MODEL in result["warnings"]
 
 
 def test_no_model_no_call():

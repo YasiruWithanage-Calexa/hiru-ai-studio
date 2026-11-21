@@ -1,0 +1,11 @@
+id: shot_prompts
+kind: system
+version: 1
+summary: "Writes the prompts of shots whose camera design is current: the Shot prompt agent writes each shot's first frame and video from one opening state (code keeps every fact), and each video prompt is assembled from it. Never designs: a stale or missing design is skipped with 'Recommend settings first'."
+status: active
+owner: shot_prompts
+job_kind: shot_prompts
+panels: []
+agents: [shot_prompter]
+steps: [serialize, frame_compose, video_prompt, shot_prompt]
+tools: []

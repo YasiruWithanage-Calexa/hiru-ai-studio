@@ -176,3 +176,34 @@ prompts" in the shot workspace's header (beside the status chip). Uncommitted, b
   prompts". The older Production panel keeps the same one action inside its video pane (it has no shot header).
 - Tests: the system test for the write-then-assemble and for the timecode-less record (video only, opening kept); the
   workspace's request budget for the header button; the dialog and pane tests updated.
+
+## 2026-11-21: prompts are their own system; Raphael is the only planner
+
+Agreed with the person in chat: (1) "Write prompts" only writes prompts, (2) a separate `shot_prompts` system,
+(3) every planner but Raphael is retired, with the classic splitter and the old DoP panel.
+
+- New system `hiru_ai/systems/shot_prompts` (job kind `shot_prompts`, served by the `hiru-shot-producer` function: one
+  function, two kinds, as Raphael and canon). Modes: `write` (the header button: agent call per shot, then the video
+  prompt assembled by code where a first frame is accepted), `video` ("Generate video prompt"), `frames` (a hop before
+  frame_render; inferred when `shot_prompts` is in the state and no mode is, i.e. after a design hop). It never designs:
+  a shot with no IR or a stale design is skipped with "Recommend settings first". The handler always runs it as a graph.
+- `shot_producer` is design only: `shot_intent` + the Camera agent (no model: the rule camera and NEEDS_MODEL). A shot
+  with no IR is not designed ("Plan this scene with Raphael first"). The DoP panel (`shot_writer`, `shot_review`,
+  `craft_articulator`, `shot_critic`), the technique palette and the continuity ledger are no longer called; their code
+  stays for a later cleanup. Modes `prompt` / `shot_prompt` raise. The design hop hands `shot_prompts` on.
+- API: design / camera-ask / frames refuse a scene or shot with no IR (409 PLAN_FIRST); `/shot-prompt` and
+  `/scenes/{id}/shot-prompts` refuse a missing or stale design (409 DESIGN_FIRST); frames run
+  `[shot_produce?] → [shot_prompts?] → frame_render`; prompts go to `shot_prompts`. `resplit`, Adam/David/Jonathan plan
+  and their remove routes answer 410 ("… is retired. Plan the scene with Raphael."); their GET views stay.
+- `contracts.build.build_pipeline` is always Raphael's; `ProductionSettings.shot_planner` defaults to `raphael` (old
+  names still read). Zora's "Re-plan the scene" follows (it uses the build's last hop).
+- Interface: "Re-split" is "Plan with Raphael"; the planner choice lists Raphael only and any stored name reads as
+  Raphael; the director page always reads Raphael and a retired planner only while it holds a plan; the header's
+  "Write prompts" is disabled unless the design is current (title says "Recommend settings first"); activity names
+  `shot_prompts` "Shot prompt agent".
+- Tests: `test_shot_prompt_system.py` runs the new system over planned, designed fixture shots (new: stale design
+  refused, no plan refused, mode inferred after the design hop); the camera system test's "no IR goes to the DoP" is now
+  "not designed, says Plan with Raphael", plus the rule camera with no model; parity marks the shot_producer cases
+  diverged (RETIRED_DOP); API tests seed planned shots and check the new kinds, the 409s and the 410.
+- Not done: no deploy step is needed (same function), but the local function must be restarted
+  (`scripts/start-functions.ps1 -Only hiru-shot-producer`); deleting the retired code; no browser check.

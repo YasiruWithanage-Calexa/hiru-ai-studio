@@ -10,7 +10,7 @@ from typing import Any
 import httpx
 from pydantic import ValidationError
 
-from contracts.jobs import DispatchPayload
+from contracts.jobs import DispatchPayload, JobKind
 from shot_producer.engine import pipeline
 from shot_producer.runtime.config import get_config
 from shot_producer.runtime.jobs import Jobs
@@ -36,11 +36,18 @@ def build(payload: DispatchPayload) -> tuple[Store, Jobs, LLM]:
 
 def run_graph(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
     """The same job through the `hiru_ai` shot_producer system (AI_ENGINE=graph): the thin handler builds the run's
-    context with real adapters and hands over."""
+    context with real adapters and hands over. A `shot_prompts` job (2026-11-21) is the shot_prompts system, which
+    exists only as a graph."""
     from hiru_ai.adapters import supabase_rest
+
+    ctx = supabase_rest.build_context(payload, jobs=jobs)
+    if payload.kind is JobKind.SHOT_PROMPTS:
+        from hiru_ai.systems.shot_prompts import graph as prompts_graph
+
+        return prompts_graph.run(payload, ctx)
     from hiru_ai.systems.shot_producer import graph
 
-    return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs))
+    return graph.run(payload, ctx)
 
 
 def handle(request: Any) -> tuple[dict[str, Any], int]:
@@ -53,7 +60,7 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
 
     store, jobs, llm = build(payload)
     try:
-        if os.environ.get("AI_ENGINE", "legacy") == "graph":
+        if os.environ.get("AI_ENGINE", "legacy") == "graph" or payload.kind is JobKind.SHOT_PROMPTS:
             return run_graph(payload, jobs), 200
         return pipeline.run(payload, store, jobs, llm), 200
     except httpx.TransportError:
@@ -61,5 +68,6 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
         return {"error": "retry"}, 500
     except Exception:
         _logger.exception("shot_producer failed job=%s", payload.job_id)
-        jobs.fail(payload.job_id, "Designing the shots failed.")
+        jobs.fail(payload.job_id, "Writing the prompts failed." if payload.kind is JobKind.SHOT_PROMPTS
+                  else "Designing the shots failed.")
         return {"error": "failed"}, 200

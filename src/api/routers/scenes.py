@@ -675,10 +675,17 @@ async def update_shot(production_id: UUID, shot_id: UUID, body: ShotUpdate, acce
     return await view(repos, access, UUID(str(shot["scene_id"])))
 
 
+def _retired(who: str) -> None:
+    """2026-11-21: Raphael is the shot planner. The classic splitter and the planners before Raphael make no new
+    plans (their stored plans stay readable); every future planner is built like Raphael."""
+    raise HTTPException(status.HTTP_410_GONE, f"{who} is retired. Plan the scene with Raphael.")
+
+
 @router.post("/scenes/{scene_id}/resplit", response_model=ResplitStarted, status_code=status.HTTP_202_ACCEPTED)
 async def resplit_scene(production_id: UUID, scene_id: UUID, access: CanDirect, repos: ReposDep) -> ResplitStarted:
     """Plan the scene's shots again from its script (`script_split`). Replaces the shot list:
     lengths people set and the director's beat notes go with it."""
+    _retired("The classic script splitter")
     ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     if not ld.scene.get("script"):
@@ -726,6 +733,7 @@ async def plan_with_adam(production_id: UUID, scene_id: UUID, body: AdamPlanRequ
                          repos: ReposDep) -> ResplitStarted:
     """Plan the scene's shots with Shot Planner Adam ("Plan with Adam"), or, with a treatment, plan its cards again
     under another one. Replaces the shot list; an approved scene is refused."""
+    _retired("Shot Planner Adam")
     ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     if not ld.scene.get("script"):
@@ -742,6 +750,7 @@ async def remove_adam_moment(production_id: UUID, scene_id: UUID, moment_id: str
     """Take out something the director added ("Added by director"). The moment and any card left with nothing go, and
     the same addition is never added back when the scene is planned again. A moment that presents the script cannot be
     removed. No model is called."""
+    _retired("Shot Planner Adam")
     ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     stored = _adam_plan(ld.scene)
@@ -793,6 +802,7 @@ async def plan_with_david(production_id: UUID, scene_id: UUID, body: DavidPlanRe
     """Plan the scene's shots with Shot Planner David ("Plan with David"), or, with a note, change the plan David made.
     Replaces the shot list; an approved scene is refused. The scenes after it that carry on from it and that David
     planned are planned again in order until one's end state comes out the same."""
+    _retired("Shot Planner David")
     ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     if not ld.scene.get("script"):
@@ -815,6 +825,7 @@ async def remove_david_addition(production_id: UUID, scene_id: UUID, number: int
     it goes, and the same addition is never added back when the scene is planned again. A shot that shows the script
     cannot
     be removed this way. No model is called."""
+    _retired("Shot Planner David")
     ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     stored = _david_plan(ld.scene)
@@ -869,6 +880,7 @@ async def plan_with_jonathan(production_id: UUID, scene_id: UUID, body: Jonathan
     Jonathan made.
     Replaces the shot list; an approved scene is refused. The scenes after it that carry on from it and that Jonathan
     planned are planned again in order until one's end state comes out the same."""
+    _retired("Shot Planner Jonathan")
     ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     if not ld.scene.get("script"):
@@ -892,6 +904,7 @@ async def remove_jonathan_addition(production_id: UUID, scene_id: UUID, number: 
     it goes, and the same addition is never added back when the scene is planned again. A shot that shows the script
     cannot
     be removed this way. No model is called."""
+    _retired("Shot Planner Jonathan")
     ld = await load(repos, access, scene_id)
     _editable(ld.scene)
     stored = _jonathan_plan(ld.scene)

@@ -31,6 +31,7 @@ def post(world: World, path: str, user=None, **body):
     return world.client.post(url(world, path), json=body, headers=world.headers(user or world.director))
 
 
+@pytest.mark.skip(reason="2026-11-21: the planner is retired; its start routes answer 410 (tests/api/test_scenes.py)")
 def test_plan_with_david_sends_one_scene_to_the_david_function(world: World, fired: list[dict]):
     s = seed_scene(world)
     r = post(world, f"/scenes/{s['scene']['id']}/david/plan")
@@ -40,6 +41,7 @@ def test_plan_with_david_sends_one_scene_to_the_david_function(world: World, fir
     assert world.repos.jobs.rows[str(r.json()["job_id"])]["kind"] == "plan_scene_david"  # type: ignore[attr-defined]
 
 
+@pytest.mark.skip(reason="2026-11-21: the planner is retired; its start routes answer 410 (tests/api/test_scenes.py)")
 def test_a_note_travels_in_the_state_and_only_on_a_scene_david_planned(world: World, fired: list[dict]):
     s = seed_scene(world)
     sid = s["scene"]["id"]
@@ -50,6 +52,7 @@ def test_a_note_travels_in_the_state_and_only_on_a_scene_david_planned(world: Wo
     assert post(world, f"/scenes/{sid}/david/plan", note="x" * 1001).status_code == 422
 
 
+@pytest.mark.skip(reason="2026-11-21: the planner is retired; its start routes answer 410 (tests/api/test_scenes.py)")
 def test_only_someone_who_directs_may_plan_and_an_approved_scene_or_one_with_no_script_is_refused(
         world: World, fired: list[dict]):
     s = seed_scene(world)
@@ -83,6 +86,7 @@ def test_the_scene_view_names_the_planner_of_each_shot(world: World):
     assert view["planner"] == "david" and {sh["planner"] for sh in view["shots"]} == {"david"}
 
 
+@pytest.mark.skip(reason="2026-11-21: the planner is retired; its start routes answer 410 (tests/api/test_scenes.py)")
 def test_taking_an_addition_out_starts_a_job_with_no_model_and_a_shot_of_the_script_is_protected(
         world: World, fired: list[dict]):
     s = david_scene(world)
@@ -98,13 +102,15 @@ def test_taking_an_addition_out_starts_a_job_with_no_model_and_a_shot_of_the_scr
     assert post(world, f"/scenes/{sid}/david/added/1/remove").status_code == 422 and len(fired) == 1
 
 
+@pytest.mark.skip(reason="2026-11-21: the planner is retired; its start routes answer 410 (tests/api/test_scenes.py)")
 def test_a_scene_david_did_not_plan_has_nothing_to_take_an_addition_out_of(world: World, fired: list[dict]):
     s = seed_scene(world)
     assert post(world, f"/scenes/{s['scene']['id']}/david/added/1/remove").status_code == 409 and not fired
 
 
-@pytest.mark.parametrize(("setting", "last"), [(None, "script_split"), ("classic", "script_split"),
-                                               ("david", "plan_scene_david")])
+# 2026-11-21: every build ends with Raphael, whatever the setting says (the other planners are retired)
+@pytest.mark.parametrize(("setting", "last"), [(None, "plan_scene_raphael"), ("classic", "plan_scene_raphael"),
+                                               ("david", "plan_scene_raphael")])
 def test_the_build_plans_shots_with_the_planner_the_production_chose(
         world: World, build_fired: list[dict], setting: str | None, last: str):
     if setting:

@@ -45,6 +45,8 @@ FUNCTIONS: dict[JobKind, FunctionSpec] = {
     # plan/2026-11-12c: the canon refine is served by the same function (two kinds, as Raphael's two)
     JobKind.CANON_REFINE: FunctionSpec("hiru-canon-extract", 8205, 600),
     JobKind.SHOT_PRODUCE: FunctionSpec("hiru-shot-producer", 8207, 900),
+    # 2026-11-21: the prompts are their own system (`shot_prompts`), served by the same function (two kinds)
+    JobKind.SHOT_PROMPTS: FunctionSpec("hiru-shot-producer", 8207, 900),
     JobKind.FRAME_RENDER: FunctionSpec("hiru-frame-render", 8208, 600),
     JobKind.PLAN_SCENE_ADAM: FunctionSpec("hiru-shot-planner-adam", 8209, 1800),
     JobKind.PLAN_SCENE_DAVID: FunctionSpec("hiru-shot-planner-david", 8210, 1800),

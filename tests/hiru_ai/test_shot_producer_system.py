@@ -22,9 +22,14 @@ from tests.parity.harness import outcome
 from tests.services.production_fixture import PHONE_CANON  # noqa: F401  (a canon with a phone call, used below)
 from tests.services.shot_producer.conftest import dp_answer, fixture_scene
 
+RETIRED_DOP = ("2026-11-21: the graph no longer designs classic shots (the DoP panel is retired; it designs planned "
+               "shots with the Camera agent and writes no prompts): tests/hiru_ai/test_camera_agent_system.py, "
+               "tests/hiru_ai/test_shot_prompt_system.py")
+
 
 def same(inp: dict[str, Any], model: dict[str, Any]) -> dict[str, Any]:
     """Run one case on both engines; they must agree. -> the (graph) outcome."""
+    pytest.skip(RETIRED_DOP)
     got = {engine: outcome(run_case("shot_producer", copy.deepcopy(inp), copy.deepcopy(model), engine))
            for engine in ("legacy", "graph")}
     assert got["graph"] == got["legacy"]

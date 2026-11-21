@@ -1,11 +1,11 @@
 id: shot_producer
 kind: system
 version: 1
-summary: "Designs each shot of a scene together (intent, camera, review); the Shot prompt agent writes each shot's first frame and video from one opening state (code keeps every fact), and each video prompt is assembled from it."
+summary: "Designs the shots of a scene that need it: what each shot is for (shot_intent) and the camera (the Camera agent, keeping the planner's IR). Design only: the prompts are the shot_prompts system's. A shot with no planner's IR is not designed (2026-11-21: the DoP panel is retired)."
 status: active
 owner: shot_producer
 job_kind: shot_produce
-panels: [shot_review]
-agents: [shot_intent, craft_articulator, shot_writer, shot_critic, shot_prompter]
-steps: [serialize, feeling, frame_compose, video_prompt, shot_prompt]
+panels: []
+agents: [shot_intent, camera_agent]
+steps: [serialize, camera_design]
 tools: []

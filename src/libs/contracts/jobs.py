@@ -35,7 +35,8 @@ class JobKind(StrEnum):
     CANON_EXTRACT = "canon_extract"
     CANON_REFINE = "canon_refine"  # plan/2026-11-12c: real canon cards and scene looks from the finished breakdown
     SCRIPT_SPLIT = "script_split"
-    SHOT_PRODUCE = "shot_produce"
+    SHOT_PRODUCE = "shot_produce"  # design only: what each shot is for and its camera (the Camera agent)
+    SHOT_PROMPTS = "shot_prompts"  # 2026-11-21: the Shot prompt agent writes the prompts of designed shots
     FRAME_RENDER = "frame_render"
     PLAN_SCENE_ADAM = "plan_scene_adam"  # Shot Planner Adam: one scene, a few, or the last hop of the build
     PLAN_SCENE_DAVID = "plan_scene_david"  # Shot Planner David (plan/2026-11-05e): the same, in one call per scene

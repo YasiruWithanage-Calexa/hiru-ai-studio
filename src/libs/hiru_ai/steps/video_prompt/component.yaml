@@ -3,6 +3,6 @@ kind: step
 version: 1
 summary: "The video prompt's code: the scene brief from the packet, the clip's facts from the shot's rows, and the prompt assembled from the shot_prompter's video part with every fact code's own (the spoken words, the camera sentence, the rules)."
 status: active
-owner: shot_producer
+owner: shot_prompts
 entry: step:run
 uses: [serialize, feeling]

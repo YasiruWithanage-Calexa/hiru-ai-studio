@@ -702,6 +702,10 @@ async def list_prompts(production_id: UUID, shot_id: UUID, access: CanView, repo
 
 # ── design and camera ──────────────────────────────────────────────────────────────────────
 
+# 2026-11-21: Raphael plans every scene (the classic splitter and the old DoP panel are retired); prompts never design
+PLAN_FIRST = "Plan this scene with Raphael first. The shot has no plan to design from."
+DESIGN_FIRST = "Recommend settings first. The shot's camera design is missing or out of date."
+
 
 @router.post("/scenes/{scene_id}/design", response_model=Started, status_code=status.HTTP_202_ACCEPTED)
 async def design_scene(production_id: UUID, scene_id: UUID, body: DesignRequest, access: CanGenerate,
@@ -710,6 +714,8 @@ async def design_scene(production_id: UUID, scene_id: UUID, body: DesignRequest,
     _require_unlocked(ld)
     if not ld.states:
         raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no shots yet.")
+    if not any(st.row.get("ir") for st in ld.states):
+        raise HTTPException(status.HTTP_409_CONFLICT, PLAN_FIRST)
     job_id = await task_manager.dispatch(JobKind.SHOT_PRODUCE, repos, actor_user_id=access.user.id,
                                          production_id=production_id, request={"scene_id": str(scene_id)},
                                          state={"mode": "design", "scene_ids": [str(scene_id)], "force": body.force})
@@ -747,7 +753,7 @@ async def ask_camera(production_id: UUID, shot_id: UUID, body: CameraAskRequest,
     ld, st = await load_shot(repos, access, shot_id)
     _require_unlocked(ld)
     if not st.row.get("ir"):
-        raise HTTPException(status.HTTP_409_CONFLICT, "This shot has no camera design yet. Design the scene first.")
+        raise HTTPException(status.HTTP_409_CONFLICT, PLAN_FIRST)
     note = " ".join(body.note.split())
     job_id = await task_manager.dispatch(JobKind.SHOT_PRODUCE, repos, actor_user_id=access.user.id,
                                          production_id=production_id,
@@ -896,6 +902,8 @@ async def _start_frames(repos: Repos, access: ProductionAccess, ld: Loaded, targ
     `from_draft` carries the shot's accepted draft, which the job attaches as
     a reference (`draft_id` names it on the row, so a re-delivered job paints the same thing). `board`: shot id → the
     approved Scene board part whose panel the frame is painted from (plan/2026-11-14 §3.5, `board_id` on the row)."""
+    if any(not st.row.get("ir") for st in targets):
+        raise HTTPException(status.HTTP_409_CONFLICT, PLAN_FIRST)
     pid = access.production_id
     board = board or {}
     rows = [{"id": str(uuid4()), "production_id": str(pid), "shot_id": st.id, "status": "queued",
@@ -907,16 +915,18 @@ async def _start_frames(repos: Repos, access: ProductionAccess, ld: Loaded, targ
     frame_ids = [r["id"] for r in rows]
     needs_design = [st.id for st in targets if st.design_reasons]
     # plan/2026-11-20d D4 a: "Draw first frame" is the click: a shot with no current shot prompt gets one first (the
-    # shot producer writes it, the frame job paints from it); a black plate needs none
+    # shot_prompts system writes it, the frame job paints from it); a black plate needs none
     needs_prompt = [st.id for st in targets if (st.design_reasons or st.shot_prompt_reasons)
                     and not ld.panel(st).plate]
     state: dict[str, Any] = {"frame_ids": frame_ids, **({"from_board": True} if board else {}),
                              **({"quality": quality} if quality else {})}
     pipeline = [JobKind.FRAME_RENDER]
-    if needs_design or needs_prompt:
-        state.update(mode="design", shot_ids=list(dict.fromkeys([*needs_design, *needs_prompt])),
-                     **({"shot_prompts": needs_prompt} if needs_prompt else {}))
-        pipeline = [JobKind.SHOT_PRODUCE, JobKind.FRAME_RENDER]
+    if needs_prompt:  # 2026-11-21: its own system, a hop of its own (after the design when there is one)
+        state.update(mode="frames", shot_prompts=needs_prompt)
+        pipeline = [JobKind.SHOT_PROMPTS, *pipeline]
+    if needs_design:  # the shot producer keeps no mode of its own on the hops after it
+        state.update(mode="design", shot_ids=list(dict.fromkeys([*needs_design, *needs_prompt])))
+        pipeline = [JobKind.SHOT_PRODUCE, *pipeline]
     try:
         job_id = await task_manager.dispatch(JobKind.FRAME_RENDER, repos, actor_user_id=access.user.id,
                                              production_id=pid, request={"scene_id": str(ld.scene["id"]),
@@ -1034,10 +1044,10 @@ async def reject_frame(production_id: UUID, frame_id: UUID, body: RejectRequest,
 
 
 async def _start_prompts(repos: Repos, access: ProductionAccess, ld: Loaded, targets: list[ShotState]) -> Started:
-    job_id = await task_manager.dispatch(JobKind.SHOT_PRODUCE, repos, actor_user_id=access.user.id,
+    job_id = await task_manager.dispatch(JobKind.SHOT_PROMPTS, repos, actor_user_id=access.user.id,
                                          production_id=access.production_id,
                                          request={"scene_id": str(ld.scene["id"]), "prompts": len(targets)},
-                                         state={"mode": "prompt", "shot_ids": [st.id for st in targets]})
+                                         state={"mode": "video", "shot_ids": [st.id for st in targets]})
     await _audit(repos, access, "prompts.request", "scene", str(ld.scene["id"]),
                  {"job_id": str(job_id), "shots": [st.code for st in targets]})
     return Started(job_id=job_id)
@@ -1053,22 +1063,25 @@ async def request_prompt(production_id: UUID, shot_id: UUID, access: CanGenerate
 
 @router.post("/shots/{shot_id}/shot-prompt", response_model=Started, status_code=status.HTTP_202_ACCEPTED)
 async def request_shot_prompt(production_id: UUID, shot_id: UUID, access: CanGenerate, repos: ReposDep) -> Started:
-    """"Rewrite prompts" (plan/2026-11-20d D4 c): the Shot prompt agent writes this shot's first frame and video again,
-    from one opening state, and stores them on the shot. A frame drawn from the old ones is then marked out of date;
-    nothing is redrawn. Picture work: refused on an approved scene, and before the shot has a camera design."""
+    """"Write prompts" (plan/2026-11-20d D4 c; 2026-11-21 the shot header's one button): the Shot prompt agent writes
+    this shot's first frame and video from one opening state, and stores them on the shot. A frame drawn from the old
+    ones is then marked out of date; nothing is redrawn. It only writes prompts: a shot whose camera design is missing
+    or out of date is refused with "Recommend settings first" (no design is run). Refused on an approved scene."""
     ld, st = await load_shot(repos, access, shot_id)
     _require_unlocked(ld)
-    if not st.has_design:
-        raise HTTPException(status.HTTP_409_CONFLICT, "This shot has no camera design yet. Design the scene first.")
+    if not st.row.get("ir"):
+        raise HTTPException(status.HTTP_409_CONFLICT, PLAN_FIRST)
+    if not st.has_design or st.design_reasons:
+        raise HTTPException(status.HTTP_409_CONFLICT, DESIGN_FIRST)
     return await _start_shot_prompts(repos, access, ld, [st])
 
 
 async def _start_shot_prompts(repos: Repos, access: ProductionAccess, ld: Loaded,
                               targets: list[ShotState]) -> Started:
-    job_id = await task_manager.dispatch(JobKind.SHOT_PRODUCE, repos, actor_user_id=access.user.id,
+    job_id = await task_manager.dispatch(JobKind.SHOT_PROMPTS, repos, actor_user_id=access.user.id,
                                          production_id=access.production_id,
                                          request={"scene_id": str(ld.scene["id"]), "shot_prompts": len(targets)},
-                                         state={"mode": "shot_prompt", "shot_ids": [st.id for st in targets]})
+                                         state={"mode": "write", "shot_ids": [st.id for st in targets]})
     if len(targets) == 1:
         await _audit(repos, access, "shot_prompt.request", "shot", targets[0].id, {"job_id": str(job_id)})
     else:
@@ -1089,11 +1102,14 @@ async def request_scene_shot_prompts(production_id: UUID, scene_id: UUID, body: 
     unless `only_missing` is off. Refused on an approved scene."""
     ld = await load(repos, access, scene_id)
     _require_unlocked(ld)
-    targets = [st for st in ld.states if st.has_design and not ld.panel(st).plate
+    designed = [st for st in ld.states if st.has_design and not st.design_reasons]  # current designs only
+    targets = [st for st in designed if not ld.panel(st).plate
                and not (body.only_missing and not st.shot_prompt_reasons)]
     if not targets:
-        if not any(st.has_design for st in ld.states):
-            raise HTTPException(status.HTTP_409_CONFLICT, "No shot has a camera design yet. Design the scene first.")
+        if not any(st.row.get("ir") for st in ld.states):
+            raise HTTPException(status.HTTP_409_CONFLICT, PLAN_FIRST)
+        if not designed:
+            raise HTTPException(status.HTTP_409_CONFLICT, DESIGN_FIRST)
         raise HTTPException(status.HTTP_409_CONFLICT, "Every designed shot's prompts are already written and current.")
     return await _start_shot_prompts(repos, access, ld, targets)
 

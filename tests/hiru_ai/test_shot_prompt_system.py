@@ -1,10 +1,13 @@
-"""The Shot prompt agent in shot_producer (plan/2026-11-20d D4), with a scripted model:
+"""The Shot prompt agent in the shot_prompts system (plan/2026-11-20d D4; its own system since 2026-11-21), with a
+scripted model. The fixture shots carry a planner's IR and are designed first by the shot producer (the rule camera).
 
-* "Generate video prompt" (mode "prompt"): a shot with no shot prompt gets ONE full call and the prompt is stored on the
+* "Generate video prompt" (mode "video"): a shot with no shot prompt gets ONE full call and the prompt is stored on the
   shot; asked again while it is current, NO call; after a move-only change, ONE video-only call that keeps the opening
   and the frame; after an angle change, a full call.
-* "Rewrite prompts" (mode "shot_prompt"): one call a shot, stored, no video version.
-* Before a frame is drawn (`state.shot_prompts`): a shot with no current shot prompt gets one; a current one is kept.
+* "Write prompts" (mode "write"): one call a shot, stored; never a design: a stale design says "Recommend settings
+  first".
+* Before a frame is drawn (mode "frames", `state.shot_prompts`): a shot with no current shot prompt gets one; a current
+  one is kept.
 * A failed answer is repaired ONCE; failing twice stores nothing and says why. No packet or no model: no call.
 """
 from __future__ import annotations
@@ -14,17 +17,20 @@ from contextlib import ExitStack
 from dataclasses import dataclass, field, replace
 from typing import Any
 from unittest.mock import patch
+from uuid import uuid4
 
 from langchain_core.embeddings import Embeddings
 from langchain_core.messages import BaseMessage
 
+from contracts.jobs import DispatchPayload, JobKind
+from hiru_ai.core import llm as door
 from hiru_ai.core import shot_prompts
 from hiru_ai.core.context import Ports, RunContext
-from hiru_ai.systems.shot_producer import graph
+from hiru_ai.systems.shot_producer import graph as producer_graph
+from hiru_ai.systems.shot_prompts import graph
 from tests.parity.graph_support import Endless, environment, scripted_models, usage_row_filter
 from tests.services.fakes import FakeJobs
-from tests.services.shot_producer.conftest import FakeStore, dp_answer, fixture_scene
-from tests.services.shot_producer.test_shot_producer import payload
+from tests.services.shot_producer.conftest import PID, FakeStore, dp_answer, fixture_scene
 
 AGENT = "shot_prompter.write"
 SPOKEN = re.compile(r"^- (L[\d.]+): ", re.M)
@@ -114,7 +120,22 @@ def answer(bad: str = "", seen: list[str] | None = None) -> Any:
     return reply
 
 
-def run(store: FakeStore, *, replies: Any, models: bool = True, packet: bool = True, mode: str = "prompt",
+def payload(kind: JobKind = JobKind.SHOT_PROMPTS, **state: Any) -> DispatchPayload:
+    pipe = [kind, JobKind.FRAME_RENDER] if state.pop("chain", False) else [kind]
+    return DispatchPayload(job_id=uuid4(), kind=kind, actor_user_id=uuid4(), production_id=PID, pipeline=pipe,
+                           state=state)
+
+
+def design(store: FakeStore) -> dict[str, Any]:
+    """"Recommend settings" with no model: the shot producer keeps each planner's IR and gives the rule camera."""
+    p = payload(JobKind.SHOT_PRODUCE, scene_ids=[store.scene_row["id"]])
+    with patch.object(door, "models_enabled", lambda: False):
+        return producer_graph.run(p, RunContext(production_id=p.production_id, actor_user_id=p.actor_user_id,
+                                                job_id=p.job_id, ports=replace(Ports(), jobs=FakeJobs(), scenes=store,
+                                                                               producer=store, search=store)))
+
+
+def run(store: FakeStore, *, replies: Any, models: bool = True, packet: bool = True, mode: str = "video",
         **state: Any) -> tuple[dict[str, Any], FakeJobs, list[str]]:
     jobs = FakeJobs()
     breakdown = FakeBreakdown()
@@ -125,13 +146,9 @@ def run(store: FakeStore, *, replies: Any, models: bool = True, packet: bool = T
         stack.enter_context(environment(OPENAI__API_KEY="test-key", OPENAI__MODEL_HIGH="m-high",
                                         OPENAI__MODEL_MEDIUM="m-medium", OPENAI__MODEL_SHOT_PROMPTER="m-shot"))
         seen = stack.enter_context(scripted_models(
-            {"shot_producer.scene": Endless([lambda messages: dp_answer([1, 2, 3, 4])]), AGENT: replies},
-            {"high": "m-high", "medium": "m-medium", "shot_prompter": "m-shot"}))
-        from hiru_ai.core import llm as door
-
+            {AGENT: replies}, {"high": "m-high", "medium": "m-medium", "shot_prompter": "m-shot"}))
         stack.enter_context(door.use_embeddings(lambda phase, sink: Vectors()))
-        if not models:  # no key: the job knows before it designs anything
-            stack.enter_context(patch.object(graph.llm, "models_enabled", lambda: False))
+        if not models:  # no key
             stack.enter_context(patch.object(shot_prompts.llm, "models_enabled", lambda: False))
         p = payload(scene_ids=[store.scene_row["id"]], mode=mode, **state)
         ctx = RunContext(production_id=p.production_id, actor_user_id=p.actor_user_id, job_id=p.job_id,
@@ -143,11 +160,17 @@ def run(store: FakeStore, *, replies: Any, models: bool = True, packet: bool = T
 
 
 def world() -> tuple[FakeStore, list[dict[str, Any]]]:
+    """The fixture scene planned (a planner's IR on every shot, as Raphael leaves it) and designed, each shot with an
+    accepted first frame."""
     scene, lines, rows = fixture_scene(0)
+    for r in rows:
+        r["ir"] = dp_answer([int(r["number"])])["shots"][0] | {"beats": []}
+        r["ir"].pop("number", None)
     store = FakeStore(scene, lines, rows)
+    design(store)
     for r in rows:
         store.frames[r["id"]] = {"id": f"f-{r['id']}", "shot_id": r["id"], "pins": {}}
-    return store, rows
+    return store, list(store.shot_rows.values())
 
 
 def stored(store: FakeStore, shot_id: str) -> dict[str, Any] | None:
@@ -216,7 +239,7 @@ def test_write_prompts_rewrites_each_shot_prompt_then_assembles_its_video_with_n
     run(store, replies=Endless([answer()]))
     before = {r["id"]: stored(store, r["id"])["written_at"] for r in rows}
     versions = len(store.prompts)
-    result, _, phases = run(store, replies=Endless([answer()]), mode="shot_prompt")
+    result, _, phases = run(store, replies=Endless([answer()]), mode="write")
     assert phases.count(AGENT) == len(rows) and result["shot_prompts"] == len(rows)
     assert len(store.prompts) == versions + len(rows) and result["prompts"] == len(rows)
     assert all("[0-" in p["prose"] for p in store.prompts[versions:])
@@ -234,7 +257,7 @@ def test_a_shot_prompt_written_before_timecodes_gets_its_video_rewritten_and_kee
             step.pop("start_s", None)
             step.pop("end_s", None)
     kept = {r["id"]: stored(store, r["id"])["opening"] for r in rows}
-    run(store, replies=Endless([answer()]), mode="shot_prompt")
+    run(store, replies=Endless([answer()]), mode="write")
     for r in rows:
         rec = stored(store, r["id"])
         assert rec["mode"] == "video_only" and rec["opening"] == kept[r["id"]]
@@ -244,16 +267,16 @@ def test_a_shot_prompt_written_before_timecodes_gets_its_video_rewritten_and_kee
 def test_before_a_frame_only_a_shot_without_a_current_shot_prompt_is_written():
     store, rows = world()
     ids = [r["id"] for r in rows]
-    result, _, phases = run(store, replies=Endless([answer()]), mode="design", shot_prompts=ids, frame_ids=["f1"])
+    result, _, phases = run(store, replies=Endless([answer()]), mode="frames", shot_prompts=ids, frame_ids=["f1"])
     assert phases.count(AGENT) == len(rows) and result["shot_prompts"] == len(rows)
     assert all(stored(store, i) for i in ids)
-    result, _, phases = run(store, replies=Endless([answer()]), mode="design", shot_prompts=ids, frame_ids=["f1"])
+    result, _, phases = run(store, replies=Endless([answer()]), mode="frames", shot_prompts=ids, frame_ids=["f1"])
     assert AGENT not in phases and "shot_prompts" not in result
 
 
 def test_the_frames_hop_gets_the_frame_ids_but_not_the_shot_prompt_list():
     store, rows = world()
-    _, jobs, _ = run(store, replies=Endless([answer()]), mode="design", shot_prompts=[rows[0]["id"]],
+    _, jobs, _ = run(store, replies=Endless([answer()]), mode="frames", shot_prompts=[rows[0]["id"]],
                      frame_ids=["f1"], chain=True)
     assert jobs.advanced and jobs.advanced[-1]["state"]["frame_ids"] == ["f1"]
     assert "shot_prompts" not in jobs.advanced[-1]["state"]
@@ -289,3 +312,29 @@ def test_no_model_no_call():
     result, _, phases = run(store, replies=Endless([answer()]), models=False, shot_ids=[rows[0]["id"]])
     assert result["prompts"] == 0 and AGENT not in phases and not store.prompts
     assert "needs a model" in result["warnings"][0]
+
+
+def test_write_prompts_never_designs_a_stale_shot_it_says_recommend_settings_first():
+    """2026-11-21: "Write prompts" only writes prompts. A shot whose design is out of date gets no call, no record."""
+    store, rows = world()
+    store.shot_rows[rows[0]["id"]]["design"] = {**store.shot_rows[rows[0]["id"]]["design"], "pins": {}}
+    before = dict(store.shot_rows[rows[0]["id"]]["design"])
+    result, _, phases = run(store, replies=Endless([answer()]), mode="write", shot_ids=[rows[0]["id"]])
+    assert AGENT not in phases and "shot_prompts" not in result
+    assert any("Recommend settings first" in w for w in result["warnings"])
+    assert store.shot_rows[rows[0]["id"]]["design"] == before, "no design was run"
+
+
+def test_a_shot_without_a_plan_gets_no_prompt():
+    store, rows = world()
+    store.shot_rows[rows[0]["id"]]["ir"] = {}
+    result, _, phases = run(store, replies=Endless([answer()]), mode="write", shot_ids=[rows[0]["id"]])
+    assert AGENT not in phases and any("Recommend settings first" in w for w in result["warnings"])
+
+
+def test_after_the_design_hop_the_mode_is_frames():
+    """"Draw first frame": the shot producer's hop hands on no mode; the shot_prompts list makes it the frames mode."""
+    store, rows = world()
+    ids = [r["id"] for r in rows]
+    result, _, _ = run(store, replies=Endless([answer()]), mode="", shot_prompts=ids, frame_ids=["f1"])
+    assert result["shot_prompts"] == len(rows) and result["prompts"] == 0

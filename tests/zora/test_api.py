@@ -169,7 +169,8 @@ def test_undo_redo_and_locks_need_the_direct_permission_and_go_to_the_function(w
                                                        "can_edit": True}
 
 
-@pytest.mark.parametrize(("planner", "kind"), [("raphael", "plan_scene_raphael"), ("classic", "script_split")])
+@pytest.mark.parametrize(("planner", "kind"), [("raphael", "plan_scene_raphael"),
+                                               ("classic", "plan_scene_raphael")])  # 2026-11-21
 def test_replan_dispatches_the_productions_own_planner(world: World, fn: Function,  # noqa: F811
                                                        monkeypatch: pytest.MonkeyPatch, planner: str, kind: str):
     from api.workers import task_manager

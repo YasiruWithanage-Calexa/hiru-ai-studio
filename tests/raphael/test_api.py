@@ -134,7 +134,7 @@ def test_the_scene_view_names_the_planner_and_the_clip_of_each_shot(world: World
 
 @pytest.mark.parametrize(
     ("setting", "last"),
-    [(None, "script_split"), ("classic", "script_split"), ("raphael", "plan_scene_raphael")],
+    [(None, "plan_scene_raphael"), ("classic", "plan_scene_raphael"), ("raphael", "plan_scene_raphael")],
 )
 def test_the_build_plans_shots_with_the_planner_the_production_chose(
     world: World, build_fired: list[dict], setting: str | None, last: str

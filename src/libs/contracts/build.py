@@ -31,13 +31,9 @@ BUILD_PIPELINE_RAPHAEL: tuple[JobKind, ...] = (JobKind.CANON_EXTRACT, JobKind.ST
 
 
 def build_pipeline(shot_planner: str) -> tuple[JobKind, ...]:
-    if shot_planner == "raphael":
-        return BUILD_PIPELINE_RAPHAEL
-    if shot_planner == "jonathan":
-        return BUILD_PIPELINE_JONATHAN
-    if shot_planner == "david":
-        return BUILD_PIPELINE_DAVID
-    return BUILD_PIPELINE_ADAM if shot_planner == "adam" else BUILD_PIPELINE
+    """2026-11-21: every build ends with Shot Planner Raphael, whatever the setting says. The classic splitter and the
+    planners before Raphael are retired (their pipelines above stay for the records that name them)."""
+    return BUILD_PIPELINE_RAPHAEL
 
 
 class Stage(StrEnum):

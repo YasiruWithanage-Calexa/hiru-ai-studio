@@ -20,8 +20,13 @@ MIGRATED = {"echo", "doc_ingest", "canon_extract", "structure_build", "frame_ren
             "director_chat"}
 # Cases where the graph engine was meant to change and the legacy engine was not (it is not deployed): the recording is
 # the legacy engine's, and the graph's behaviour is held by its own tests.
+RETIRED_DOP = ("2026-11-21: the graph designs only planned shots (the Camera agent) and writes no prompts (the "
+               "shot_prompts system); the classic shots these cases use went to the retired DoP panel "
+               "(tests/hiru_ai/test_camera_agent_system.py, tests/hiru_ai/test_shot_prompt_system.py)")
 DIVERGED = {("shot_producer", "prompts"): "plan/2026-11-20b D13/D14: the graph's video prompts are the video prompt "
-                                          "agent's (tests/hiru_ai/test_video_prompt_system.py)"}
+                                          "agent's (tests/hiru_ai/test_video_prompt_system.py)",
+            ("shot_producer", "rules_design"): RETIRED_DOP, ("shot_producer", "model_design"): RETIRED_DOP,
+            ("shot_producer", "chain"): RETIRED_DOP}
 
 
 @pytest.mark.parametrize("engine", ENGINES)

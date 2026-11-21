@@ -75,10 +75,9 @@ class ProductionSettings(_Model):
     # brands, and the public figures this production must not depict.
     banned_terms: list[Annotated[str, Field(min_length=1, max_length=80)]] = Field(default_factory=list,
                                                                                     max_length=200)
-    # Which planner makes the shot lists (plan/2026-11-04b D5): the classic `script_split`, Shot Planner Adam, or Shot
-    # Planner David (plan/2026-11-05e). A scene can also be planned with either on its own ("Plan with Adam"), whatever
-    # this says.
-    shot_planner: Literal["classic", "adam", "david", "jonathan", "raphael"] = "classic"
+    # Which planner makes the shot lists (plan/2026-11-04b D5). 2026-11-21: Raphael only; the other names are kept so
+    # older settings still read, and the build runs Raphael whatever this says (`contracts.build.build_pipeline`).
+    shot_planner: Literal["classic", "adam", "david", "jonathan", "raphael"] = "raphael"
     # How David orders the scenes of an episode (plan/2026-11-05e D5): `linked` runs CONTINUOUS chains in order and the
     # rest at once; `episode` runs every scene after the one before it (strict continuity, same calls and cost, slower).
     david_order: Literal["linked", "episode"] = "linked"
