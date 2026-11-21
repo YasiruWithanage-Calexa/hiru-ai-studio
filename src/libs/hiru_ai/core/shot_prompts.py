@@ -72,14 +72,21 @@ def facts_for(shot: Any, scene: Any, prod: Any, frame: Row | None, *, lids: Mapp
     return facts
 
 
+def timed(record: Mapping[str, Any] | None) -> bool:
+    """The stored shot prompt gives every step of its video a range (lab/timecodes, 2026-11-21)."""
+    flow = (((record or {}).get("video") or {}).get("flow") or []) if isinstance(record, Mapping) else []
+    return bool(flow) and all(isinstance(s, Mapping) and s.get("start_s") is not None and s.get("end_s") is not None
+                              for s in flow)
+
+
 def needs(world: Any, shot_row: Row) -> str:
-    """What "Generate video prompt" needs for this shot (D4 b): "current" (assemble from the stored prompt, no call),
-    "video_only" (only the video is out of date: the motion, the script or the shot moved; the picture, the people
-    and their looks did not) or "both" (no stored prompt, or the picture moved)."""
+    """What this shot's prompts need (D4 b): "current" (assemble from the stored prompt, no call), "video_only" (only
+    the video is out of date: the motion, the script or the shot moved, or it was written before timecodes; the
+    picture, the people and their looks did not) or "both" (no stored prompt, or the picture moved)."""
     reasons = world.shot_prompt_reasons(shot_row)
-    if not reasons:
-        return "current"
     record = (shot_row.get("design") or {}).get("shot_prompt")
+    if not reasons:
+        return "current" if timed(record) else "video_only"
     made = (record or {}).get("pins") if isinstance(record, Mapping) else None
     if not made:
         return "both"

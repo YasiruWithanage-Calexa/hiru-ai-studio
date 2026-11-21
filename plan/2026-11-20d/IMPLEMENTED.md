@@ -159,3 +159,20 @@ time, no duplicate phone; no cuts). Ported, uncommitted:
   assembled exactly as before.
 - Tests: timing good/bad pairs, assembly with/without ranges, the prompt, the system test's scripted model.
 Live check (~$1: 2-3 shots at 360p) is the person's.
+
+## One prompts button (2026-11-21, the person's decision)
+
+The first frame and the video come from one agent call, so the screen has ONE button: "Write prompts" / "Rewrite
+prompts" in the shot workspace's header (beside the status chip). Uncommitted, both repos:
+
+- Mode `shot_prompt` ("Write prompts"): per shot, `prompter.needs()` decides: only the video when only the video is
+  out of date (a camera move, the script, or a shot prompt written before timecodes: `shot_prompts.timed`), keeping the
+  opening and the drawn frame; else both. Then the video prompt of each shot with an accepted first frame is assembled
+  from the new shot prompt (`video_prompts(..., assemble_only=True)`: code only, never a second call).
+- API `ShotPromptView.timed`.
+- Interface: the header button (+ an amber "Prompts out of date" chip, also when written before timecodes); accepting a
+  first frame assembles the video prompt by itself while the shot prompt is current and timed (code only, no spend);
+  the video prompt pane is read-only (no Generate / Regenerate); the first-frame prompt dialog lost its "Rewrite
+  prompts". The older Production panel keeps the same one action inside its video pane (it has no shot header).
+- Tests: the system test for the write-then-assemble and for the timecode-less record (video only, opening kept); the
+  workspace's request budget for the header button; the dialog and pane tests updated.

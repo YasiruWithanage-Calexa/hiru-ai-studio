@@ -209,15 +209,36 @@ def test_an_angle_change_rewrites_both():
     assert stored(store, rows[0]["id"])["mode"] == "both"
 
 
-def test_rewrite_prompts_stores_a_new_shot_prompt_for_each_shot_and_writes_no_video():
+def test_write_prompts_rewrites_each_shot_prompt_then_assembles_its_video_with_no_second_call():
+    """The shot header's one button (2026-11-21): the agent writes the prompts (one call a shot), then each shot with
+    an accepted first frame gets its video prompt assembled from them by code, with no further call."""
     store, rows = world()
     run(store, replies=Endless([answer()]))
     before = {r["id"]: stored(store, r["id"])["written_at"] for r in rows}
     versions = len(store.prompts)
     result, _, phases = run(store, replies=Endless([answer()]), mode="shot_prompt")
     assert phases.count(AGENT) == len(rows) and result["shot_prompts"] == len(rows)
-    assert len(store.prompts) == versions
+    assert len(store.prompts) == versions + len(rows) and result["prompts"] == len(rows)
+    assert all("[0-" in p["prose"] for p in store.prompts[versions:])
     assert all(stored(store, r["id"])["written_at"] >= before[r["id"]] for r in rows)
+
+
+def test_a_shot_prompt_written_before_timecodes_gets_its_video_rewritten_and_keeps_its_opening():
+    """A stored shot prompt with no ranges: "Write prompts" rewrites the video only; the opening and the frame words
+    (and so the drawn frame) stay."""
+    store, rows = world()
+    run(store, replies=Endless([answer()]))
+    for r in rows:
+        rec = stored(store, r["id"])
+        for step in rec["video"]["flow"]:
+            step.pop("start_s", None)
+            step.pop("end_s", None)
+    kept = {r["id"]: stored(store, r["id"])["opening"] for r in rows}
+    run(store, replies=Endless([answer()]), mode="shot_prompt")
+    for r in rows:
+        rec = stored(store, r["id"])
+        assert rec["mode"] == "video_only" and rec["opening"] == kept[r["id"]]
+        assert all(s.get("start_s") is not None for s in rec["video"]["flow"])
 
 
 def test_before_a_frame_only_a_shot_without_a_current_shot_prompt_is_written():

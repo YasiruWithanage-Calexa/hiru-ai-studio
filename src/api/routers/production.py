@@ -219,6 +219,7 @@ class ShotPromptView(BaseModel):
     frame_background: str
     frame_light: str
     mode: str  # both | video_only (the video was rewritten from the drawn frame)
+    timed: bool = False  # every step of its video has a range ("[a-bs]", 2026-11-21); False: written before them
     written_at: str | None
     stale: bool
     stale_reasons: list[str]
@@ -538,6 +539,12 @@ def frame_plan(ld: Loaded, st: ShotState) -> tuple[FrameBrief, list[PlannedRefer
     return brief, planned
 
 
+def _timed(rec: Row) -> bool:
+    flow = (rec.get("video") or {}).get("flow") or []
+    return bool(flow) and all(isinstance(s, dict) and s.get("start_s") is not None and s.get("end_s") is not None
+                              for s in flow)
+
+
 def shot_prompt_view(st: ShotState) -> ShotPromptView | None:
     rec = st.shot_prompt
     if not rec:
@@ -551,6 +558,7 @@ def shot_prompt_view(st: ShotState) -> ShotPromptView | None:
                           frame_people=str(frame.get("people") or ""),
                           frame_background=str(frame.get("background") or ""),
                           frame_light=str(frame.get("light") or ""), mode=str(rec.get("mode") or "both"),
+                          timed=_timed(rec),
                           written_at=rec.get("written_at"), stale=bool(st.shot_prompt_reasons),
                           stale_reasons=list(st.shot_prompt_reasons))
 

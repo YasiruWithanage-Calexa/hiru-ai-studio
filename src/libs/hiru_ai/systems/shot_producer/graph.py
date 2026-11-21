@@ -396,11 +396,16 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             if not shot.row.get("ir"):
                 skipped.append(f"{shot.code}: no camera design yet: design the scene first")
                 continue
-            if write_shot_prompt(shot, scene, prod, pc, frames.get(shot.id), skipped) is not None:
+            # "Write prompts" (2026-11-21): only the video when only the video is out of date (a camera move, the
+            # script, no timecodes yet): the opening and the drawn frame are kept; else both
+            need_now = prompter.needs(pc["world"], live(shot, pc)) if rewrite else "both"
+            mode_now = "video_only" if need_now == "video_only" else "both"
+            if write_shot_prompt(shot, scene, prod, pc, frames.get(shot.id), skipped, mode=mode_now) is not None:
                 written += 1
         return written
 
-    def video_prompts(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str]) -> int:
+    def video_prompts(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str], *,
+                      assemble_only: bool = False) -> int:
         """Mode "prompt" (plan/2026-11-20d D4 b): each wanted shot's video prompt, in number order, from its stored shot
         prompt: no call while it is current; ONE video-only call (the stored opening and frame kept) when only the
         video is out of date; a full call when there is none or the picture moved. -> how many versions were written."""
@@ -423,6 +428,8 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             need = prompter.needs(pc["world"], live(shot, pc))
             record: Row | None = (live(shot, pc).get("design") or {}).get("shot_prompt") if need == "current" \
                 else None
+            if record is None and assemble_only:  # after "Write prompts": never a second call for a shot that failed
+                continue
             if record is None:
                 if not prompter.on():  # D4: no code-only video prompt
                     skipped.append(f"{shot.code}: video prompt not written: {prompter.NEEDS_MODEL}")
@@ -512,9 +519,14 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             for shot in scene.shots:
                 ledger.observe(scene.id, shot, shot.row.get("ir") or {})
 
-            if mode == "shot_prompt":  # D4 c: "Rewrite prompts"
+            if mode == "shot_prompt":  # D4 c: "Write prompts", the shot header's one button
                 framed += shot_prompts(row, scene, prod, canon, skipped,
                                        [s for s in scene.shots if targets is None or s.id in targets], rewrite=True)
+                # ...then the video prompt of each shot with an accepted first frame: its shot prompt is current now,
+                # so it is assembled by code with no call (a shot with no frame gets it when one is accepted)
+                quiet: list[str] = []
+                prompts += video_prompts(row, scene, prod, canon, quiet, assemble_only=True)
+                skipped.extend(n for n in quiet if not n.endswith("no accepted first frame"))
             elif before_frames:  # D4 a: the frames job is next; a shot with no current shot prompt gets one first
                 framed += shot_prompts(row, scene, prod, canon, skipped,
                                        [s for s in scene.shots if s.id in before_frames], rewrite=False)
