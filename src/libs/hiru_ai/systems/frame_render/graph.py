@@ -13,8 +13,10 @@ agent, both found by id.
                                 absent = the configured final quality
 
 A frame whose row names a `board_id` is painted from its shot's panel of that approved board: the panel goes in LAST as
-the approved draft, the prompt gains the mannequin paragraph, the planned state and the panel's words, and every person
-the camera sees gets a face sheet first (D4), made by this job when missing.
+the approved draft, the prompt gains the mannequin paragraph, the planned state and the panel's words. A person the
+camera sees attaches their face sheet when they have one; this job never paints one (2026-11-22, was D4: parallel jobs
+each painted the same person's sheet). It warns for each person without one, and the frame is painted from their base
+or look sheet.
 
 Each frame is claim -> paint -> store -> record:
 
@@ -45,7 +47,7 @@ from langgraph.graph.state import CompiledStateGraph
 
 from contracts import board as kit
 from contracts import safe_depiction
-from contracts.canon import face_sheet_path, keep_assets, scene_conditions
+from contracts.canon import face_sheet_path, keep_assets, missing_faces, scene_conditions
 from contracts.frame_brief import BLACK_PLATE
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
@@ -56,7 +58,7 @@ from hiru_ai.core.ports import ImageRefused, Reference
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
 from hiru_ai.systems.frame_render import board as boards
-from hiru_ai.systems.frame_render.faces import ensure_faces, render_face
+from hiru_ai.systems.frame_render.faces import render_face
 from hiru_ai.systems.frame_render.state import State
 
 _log = logging.getLogger(__name__)
@@ -394,8 +396,7 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         quality = frame_quality(payload.state)  # the person's pick: low or medium ("" = the configured one)
         job = loaded()
         counts = {"done": 0, "failed": 0, "refused": 0, "skipped": 0}
-        # D4 (plan/2026-11-14): the face sheet of every person a board frame shows, made once, before the frames are
-        # painted in parallel (two threads must not pay for the same person's sheet)
+        # A person a board frame shows without a face sheet is named, never painted one (2026-11-22): a person makes it
         seen: list[str] = []
         for f in rows:
             shot = frames.shot(str(f["shot_id"])) if f.get("board_id") and f.get("status") == "queued" else None
@@ -405,8 +406,9 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
                     seen += [c for c in world.seen_names(shot) if c not in seen]
                 except Exception:
                     _log.warning("who shot %s shows could not be read", shot.get("id"), exc_info=True)
-        if seen and ctx.ports.images is not None:
-            ensure_faces(ctx, production, job.canon, seen, str(job_id), warn)
+        for row in missing_faces(job.canon, seen):
+            warn(f"{row['name']} has no face sheet: their frames use the base or look sheet. Make the face sheet in "
+                 "the canon for the next frames.")
 
         def one(frame: Row) -> tuple[Row, str]:
             try:

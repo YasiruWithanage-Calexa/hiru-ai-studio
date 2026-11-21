@@ -43,8 +43,9 @@ Get-Content (Join-Path $root ".env") | Where-Object { $_ -match '^\s*[A-Z_]+=' }
 $defaultEngine = if ($env:AI_ENGINE) { $env:AI_ENGINE } else { "legacy" }
 if ($Only.Count) {
     $Only = @($Only | ForEach-Object { $_ -split "," } | Where-Object { $_ })
-    $unknown = @($Only | Where-Object { $_ -notin $functions.Name })
-    if ($unknown.Count) { throw "No such function: $($unknown -join ', '). Known: $($functions.Name -join ', ')" }
+    $known = @($functions.Name) + "hiru-assemble"
+    $unknown = @($Only | Where-Object { $_ -notin $known })
+    if ($unknown.Count) { throw "No such function: $($unknown -join ', '). Known: $($known -join ', ')" }
 }
 # `contracts` is importable from the editable install; the service folder goes on PYTHONPATH.
 foreach ($f in $functions) {
@@ -61,4 +62,21 @@ foreach ($f in $functions) {
         "-m", "functions_framework", "--target", "handle", "--source", "`"$(Join-Path $src "main.py")`"",
         "--port", $f.Port) -WorkingDirectory $src
     Write-Host "$($f.Name) on http://localhost:$($f.Port) (engine: $env:AI_ENGINE)"
+}
+
+# infra/assemble (ffmpeg; plan/2026-11-21): a FastAPI service, not a function. The API and hiru-video-render call it at
+# ASSEMBLE__URL (http://localhost:8220) with ASSEMBLE__SECRET, both from .env. Needs ffmpeg and ffprobe on the PATH.
+$assemblePort = 8220
+if ((-not $Only.Count -or "hiru-assemble" -in $Only) -and $env:ASSEMBLE__SECRET) {
+    if ($Only.Count) {
+        Get-NetTCPConnection -LocalPort $assemblePort -State Listen -ErrorAction SilentlyContinue |
+            ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }
+        Start-Sleep -Milliseconds 500
+    }
+    $assembleDir = Join-Path (Join-Path $root "infra") "assemble"
+    Start-Process -FilePath $python -ArgumentList @("-m", "uvicorn", "app:app", "--port", $assemblePort) `
+        -WorkingDirectory $assembleDir
+    Write-Host "hiru-assemble on http://localhost:$assemblePort"
+} elseif (-not $env:ASSEMBLE__SECRET) {
+    Write-Host "hiru-assemble not started: ASSEMBLE__SECRET is not set in .env"
 }

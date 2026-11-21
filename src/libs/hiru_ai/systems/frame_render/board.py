@@ -8,7 +8,6 @@
                         of whose cells changed)
 
   claim     queued -> running, so a re-delivery never pays twice
-  faces     D4: a face sheet for every on-screen person who lacks one (MEDIUM), for the frames that follow
   writer    `board_writer` reads the scene and every painted shot's PLAN, writes the world, the geography and a
             mannequin panel per shot (`contracts.board`)
   image     per part (D5): `board_prompt` → `safe_depiction.blocking` → `images.edit` at the row's quality (LOW by
@@ -22,6 +21,10 @@
 
 A board is never repainted by itself when a shot changes (the person, 2026-11-13): the API reports it out of date and
 a person presses Update board.
+
+A board never paints a face sheet (2026-11-22, was D4): the board picture has no faces, and parallel boards of
+different scenes each painted the same person's sheet. The API names who on the board has none (`missing_faces`), and
+a person makes it from the canon.
 """
 from __future__ import annotations
 
@@ -42,7 +45,6 @@ from hiru_ai.core.context import RunContext
 from hiru_ai.core.errors import ModelUnavailable
 from hiru_ai.core.ports import ImageRefused, Reference
 from hiru_ai.systems.frame_render import pictures as pics
-from hiru_ai.systems.frame_render.faces import ensure_faces
 
 _log = logging.getLogger(__name__)
 Row = dict[str, Any]
@@ -236,7 +238,6 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
     if not b.painted:
         frames.save_board(board_id, {"status": "failed", "error": NOTHING})
         return {"status": "failed", "error": NOTHING}
-    ensure_faces(ctx, production, world["canon"], b.people, job_id, warn)  # D4
     carry = [frames.board(str(i)) for i in state.get("carry") or []]
     old: dict[str, Row] = {}
     for prev in (r for r in carry if r):
@@ -482,8 +483,6 @@ def update(ctx: RunContext, production: Row, world: Row, rows: list[Row], state:
     changed: set[int] = set()
     updated: list[int] = []
     failed: dict[int, str] = {}
-    if any(b.shot(sid).painted for sid in to_paint):
-        ensure_faces(ctx, production, world["canon"], b.people, job_id, warn)  # D4, for the frames that follow
 
     def put(sid: str, fields: Row, new: Row | None = None) -> None:
         """Write `fields` into every cell of this shot (the overlap panel is in two parts), or insert `new`."""

@@ -9,7 +9,7 @@ from uuid import UUID
 
 import pytest
 
-from api.services.assemble import Probe, get_assembler
+from api.services.assemble import Inspection, Probe, get_assembler
 from api.workers import task_manager
 from tests.api.conftest import World
 from tests.api.test_production import (
@@ -35,6 +35,10 @@ class FakeAssembler:
 
     async def poster(self, bucket: str, path: str, out_path: str) -> str:
         return out_path
+
+    async def inspect(self, bucket: str, path: str, out_path: str) -> Inspection | None:
+        self.calls.append(("inspect", bucket, path, out_path))
+        return Inspection(duration_s=self.duration, width=1920, height=1080, has_audio=True, poster_path=out_path)
 
     async def last_frame(self, bucket: str, path: str, out_bucket: str, out_path: str) -> str:
         self.calls.append(("last_frame", bucket, path, out_bucket, out_path))

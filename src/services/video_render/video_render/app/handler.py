@@ -12,6 +12,7 @@ import httpx
 from pydantic import ValidationError
 
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
+from hiru_ai.core.file_store import storage_summary
 from video_render.engine import render
 from video_render.runtime.config import Config, get_config
 from video_render.runtime.jobs import Jobs
@@ -72,7 +73,11 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
     store = Store(rest)
     jobs = Jobs(rest, cfg.api_internal_url, cfg.internal_secret)
     try:
-        return run(payload, store, jobs, cfg), 200
+        try:
+            return run(payload, store, jobs, cfg), 200
+        finally:  # plan/2026-11-21 D6: one line per job, the proof and the regression signal
+            if line := storage_summary(getattr(store, "files", None)):
+                _logger.info("%s job=%s", line, payload.job_id)
     except httpx.TransportError:
         _logger.warning("transient network error job=%s", payload.job_id, exc_info=True)
         return {"error": "retry"}, 500

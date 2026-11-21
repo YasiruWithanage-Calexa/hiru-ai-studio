@@ -24,8 +24,8 @@ class ShotPanel(BaseModel):
 
 
 @router.get("/shots/{shot_id}/panel", response_model=ShotPanel)
-async def get_panel(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep, settings: SettingsDep,
-                    assembler: handoff.AssemblerDep) -> ShotPanel:
+async def get_panel(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep,
+                    settings: SettingsDep) -> ShotPanel:
     ld, st = await load_shot(repos, access, shot_id)
     plans = await renders.plans_for(repos, settings, ld, st)
-    return ShotPanel(plans=plans, handoff=await handoff.view_of(repos, ld, st, assembler))
+    return ShotPanel(plans=plans, handoff=await handoff.view_of(repos, ld, st))

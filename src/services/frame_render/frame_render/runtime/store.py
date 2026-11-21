@@ -9,6 +9,7 @@ import httpx
 
 from frame_render.runtime import thumbs
 from frame_render.runtime.rest import Rest, Row
+from hiru_ai.core.file_store import CachedFiles
 
 _logger = logging.getLogger(__name__)
 FRAMES_BUCKET = "frames"
@@ -21,6 +22,9 @@ _CANON = ("id,kind,code,name,aliases,"
 class Store:
     def __init__(self, rest: Rest) -> None:
         self.rest = rest
+        # plan/2026-11-21 D2: references and frames are read from this machine's copy after their first download,
+        # and a picture stored here is kept (write-through), so a same-setup frame is never downloaded again.
+        self.files = CachedFiles(rest)
 
     # ── reading ──────────────────────────────────────────────────────────────────────────
     def production(self, production_id: UUID) -> Row | None:
@@ -74,11 +78,11 @@ class Store:
         return int(row["number"]) if row else None
 
     def download_reference(self, path: str) -> bytes:
-        return self.rest.download(REFERENCES_BUCKET, path)
+        return self.files.download(REFERENCES_BUCKET, path)
 
     def download_frame(self, path: str) -> bytes:
         """A painted frame (a draft a final is painted from)."""
-        return self.rest.download(FRAMES_BUCKET, path)
+        return self.files.download(FRAMES_BUCKET, path)
 
     # ── writing ──────────────────────────────────────────────────────────────────────────
     def claim_frame(self, frame_id: str) -> bool:
@@ -100,7 +104,7 @@ class Store:
             self.rest.patch("first_frames", {"id": f"eq.{frame_id}"}, rest)
 
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
-        self.rest.upload(bucket, path, data, mime)
+        self.files.upload(bucket, path, data, mime)
         if thumbs.wants_thumb(bucket, path, mime):  # the small copy beside the picture (plan/2026-11-08c 1c)
             small = thumbs.make(data)
             if small is not None:

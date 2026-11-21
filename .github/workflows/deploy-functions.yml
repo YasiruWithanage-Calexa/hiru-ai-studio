@@ -41,6 +41,7 @@ jobs:
           set -euo pipefail
           # name | source folder | memory | timeout(s)  — timeout must equal task_manager.FunctionSpec.deadline_s
           # "ai":true = the zip also holds hiru_ai (AI_ENGINE=graph); set it when the function's system is migrated
+          # "assemble":true = the function calls infra/assemble (ASSEMBLE__URL + ASSEMBLE__SECRET; plan/2026-11-21 D8)
           ALL='[
             {"name":"hiru-echo","src":"src/services/echo","memory":"256Mi","timeout":60,"ai":true},
             {"name":"hiru-doc-ingest","src":"src/services/doc_ingest","memory":"1Gi","timeout":1800,"ai":true},
@@ -54,7 +55,7 @@ jobs:
             {"name":"hiru-shot-planner-david","src":"src/services/shot_planner_david","memory":"1Gi","timeout":1800,"ai":true},
             {"name":"hiru-shot-planner-jonathan","src":"src/services/shot_planner_jonathan","memory":"1Gi","timeout":1800,"ai":true},
             {"name":"hiru-shot-planner-raphael","src":"src/services/shot_planner_raphael","memory":"1Gi","timeout":1800,"ai":true},
-            {"name":"hiru-video-render","src":"src/services/video_render","memory":"1Gi","timeout":1800},
+            {"name":"hiru-video-render","src":"src/services/video_render","memory":"1Gi","timeout":1800,"ai":true,"assemble":true},
             {"name":"hiru-zora-chat","src":"src/services/zora_chat","memory":"1Gi","timeout":300,"ai":true},
             {"name":"hiru-sable-chat","src":"src/services/sable_chat","memory":"1Gi","timeout":300,"ai":true}
           ]'
@@ -105,12 +106,19 @@ jobs:
 
       - name: Deploy
         run: |
+          env_vars="SUPABASE__URL=${{ vars.SUPABASE_URL }},API__INTERNAL_URL=${{ vars.API_URL }}"
+          secrets="SUPABASE__SERVICE_ROLE_KEY=${{ vars.SECRET_PREFIX }}-supabase-service-role-key:latest,OPENAI__API_KEY=${{ vars.SECRET_PREFIX }}-openai-api-key:latest,API__INTERNAL_SECRET=${{ vars.SECRET_PREFIX }}-api-internal-secret:latest,SUPABASE__DB_URL=${{ vars.SECRET_PREFIX }}-supabase-db-url:latest"
+          if [[ "${{ matrix.fn.assemble }}" == "true" ]]; then
+            # Only the functions that call assemble get its address and its secret.
+            env_vars="$env_vars,ASSEMBLE__URL=${{ vars.ASSEMBLE_URL }}"
+            secrets="$secrets,ASSEMBLE__SECRET=${{ vars.SECRET_PREFIX }}-assemble-secret:latest"
+          fi
           gcloud functions deploy "${{ matrix.fn.name }}" \
             --gen2 --runtime python312 --region "${{ vars.GCP_REGION }}" \
             --source build --entry-point handle --trigger-http \
             --no-allow-unauthenticated --ingress-settings internal-only \
             --service-account "${{ vars.GCP_FUNCTIONS_SA }}" \
             --memory "${{ matrix.fn.memory }}" --timeout "${{ matrix.fn.timeout }}s" \
-            --set-env-vars "SUPABASE__URL=${{ vars.SUPABASE_URL }},API__INTERNAL_URL=${{ vars.API_URL }}" \
-            --set-secrets "SUPABASE__SERVICE_ROLE_KEY=${{ vars.SECRET_PREFIX }}-supabase-service-role-key:latest,OPENAI__API_KEY=${{ vars.SECRET_PREFIX }}-openai-api-key:latest,API__INTERNAL_SECRET=${{ vars.SECRET_PREFIX }}-api-internal-secret:latest,SUPABASE__DB_URL=${{ vars.SECRET_PREFIX }}-supabase-db-url:latest" \
+            --set-env-vars "$env_vars" \
+            --set-secrets "$secrets" \
             --quiet

@@ -32,6 +32,7 @@ from api.services import boards, media_links
 from api.services.production import LOCKED
 from api.workers import task_manager
 from contracts import board as kit
+from contracts.canon import missing_faces
 from contracts.jobs import JobKind
 from contracts.production import SceneStatus
 from contracts.roles import Permission
@@ -83,6 +84,11 @@ class BoardUpdateItem(BaseModel):
     what: Literal["changed", "added", "removed", "moved", "locked"]
 
 
+class MissingFace(BaseModel):
+    entity_id: UUID
+    name: str
+
+
 class SceneBoardView(BaseModel):
     scene_id: UUID
     # none | painting | failed | ready (painted, waiting for approval) | approved | stale
@@ -103,6 +109,9 @@ class SceneBoardView(BaseModel):
     # `wrong_shape` says so (advice: its panels still work, a whole repaint gives the production's shape).
     aspect: str = "16:9"
     wrong_shape: bool = False
+    # The people on the board with no face sheet (2026-11-22): nothing paints one by itself any more. Their frames use
+    # the base or look sheet until a person makes it from the canon. Advice, not a block.
+    missing_faces: list[MissingFace] = Field(default_factory=list)
 
 
 class BoardStarted(BaseModel):
@@ -146,8 +155,13 @@ def _part_view(row: Row, stale_numbers: set[int]) -> BoardPartView:
         cells=[_cell_view(c, stale_numbers) for c in row.get("cells") or []], created_at=str(row.get("created_at")))
 
 
-def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_aspect: str = "16:9") -> SceneBoardView:
+def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_aspect: str = "16:9",
+               canon: list[Row] | None = None) -> SceneBoardView:
     parts = boards.current(rows)
+    # who is on the board: every part's `colours` (canon id → mannequin colour, written by the board job)
+    people = [str(k) for p in parts for k in (p.get("colours") or {})]
+    missing = [MissingFace(entity_id=r["id"], name=str(r.get("name") or ""))
+               for r in missing_faces(canon or [], people)]
     wanted = kit.board_aspect(production_aspect)
     painted = [p for p in parts if p.get("prompt")]
     aspect = kit.aspect_of_board(painted[0]) if painted else wanted
@@ -176,7 +190,7 @@ def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_asp
                           conflicts=conflicts, stale_reasons=st.reasons(), changed=sorted(st.changed),
                           update=[BoardUpdateItem(number=n, what=w) for n, w in st.items()],  # type: ignore[arg-type]
                           whole=whole, approved=bool(parts) and all(p.get("approved_at") for p in parts),
-                          job_id=job, aspect=aspect, wrong_shape=wrong_shape)
+                          job_id=job, aspect=aspect, wrong_shape=wrong_shape, missing_faces=missing)
 
 
 # ── helpers ────────────────────────────────────────────────────────────────────────────────
@@ -214,9 +228,10 @@ async def _audit(repos: Repos, access: ProductionAccess, action: str, entity_id:
 
 
 async def _view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneBoardView:
-    _, shots, rows = await _scene(repos, access, scene_id)
+    (_, shots, rows), canon = await asyncio.gather(_scene(repos, access, scene_id),
+                                                   repos.canon.list(access.production_id))
     orientation = Orientation(access.production.get("orientation") or "horizontal")
-    return board_view(scene_id, rows, shots, ASPECT_RATIO[orientation])
+    return board_view(scene_id, rows, shots, ASPECT_RATIO[orientation], canon)
 
 
 # ── routes ─────────────────────────────────────────────────────────────────────────────────
@@ -230,8 +245,9 @@ async def get_board(production_id: UUID, scene_id: UUID, access: CanView, repos:
 @router.post("/scenes/{scene_id}/board", response_model=BoardStarted, status_code=status.HTTP_202_ACCEPTED)
 async def paint_board(production_id: UUID, scene_id: UUID, body: PaintRequest, access: CanGenerate,
                       repos: ReposDep) -> BoardStarted:
-    """A whole board for the scene, as a new version. The job makes the missing face sheets first (D4), writes the
-    board, paints it at `quality` and cuts it into panels; a scene of more than 16 painted shots becomes parts (D5)."""
+    """A whole board for the scene, as a new version. The job writes the board, paints it at `quality` and cuts it into
+    panels; a scene of more than 16 painted shots becomes parts (D5). It paints no face sheet (2026-11-22): the view's
+    `missing_faces` names who has none."""
     scene, shots, rows = await _scene(repos, access, scene_id)
     _unlocked(scene)
     if not shots:

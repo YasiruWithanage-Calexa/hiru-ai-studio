@@ -3,6 +3,7 @@
     POST /last-frame   the last frame of a take → the frames bucket (opens a shot that carries on)
     POST /probe        a take's duration, size and whether it has audio
     POST /poster       a take's first frame as a 640 px WebP beside it (a card shows it before any video loads)
+    POST /inspect      /probe and /poster in one call (plan/2026-11-21 D7: video_render calls it once per stored take)
     POST /cut          takes → one cut: each trimmed to the part its card keeps, its sound laid across the cuts
     GET  /health       whether ffmpeg is on the PATH
 
@@ -15,12 +16,16 @@ WHAT IS LOAD-BEARING (kept from upstream):
   * KEEP DECODING AND KEEP THE LAST FRAME (`-sseof -1 -update 1`, NO `-frames:v 1`). With
     `-frames:v 1` "the last frame" is the first frame after the seek, a second early, and every
     carried shot starts a second back in the previous take's action.
-  * PATHS, NEVER SIGNED URLS. It reads and writes the private buckets itself.
+  * PATHS, NEVER SIGNED URLS ON THE WIRE. Callers send paths; it reads and writes the private buckets itself. To read
+    only the bytes ffmpeg needs (plan/2026-11-21 D7) it mints its OWN 300 s signed URL and hands that to ffprobe/ffmpeg,
+    which read with Range: the header for a probe, a moment for a poster, the last second for a last frame. The URL
+    never leaves this process. `/cut` needs whole files, so it keeps a small disk copy of each take it read.
   * ONE SHARED SECRET (`X-Assemble-Secret`) is the whole auth story; the API is the only caller.
     With no secret configured it REFUSES every request rather than running open.
 """
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
 import secrets
@@ -81,6 +86,15 @@ class Clip(BaseModel):
     tail_s: float = 0.0  # its sound runs this much past its picture (an L cut)
 
 
+class InspectResult(BaseModel):
+    duration_s: float = 0.0
+    width: int = 0
+    height: int = 0
+    has_audio: bool = False
+    poster_path: str = ""
+    error: str = ""
+
+
 class CutRequest(BaseModel):
     clips: list[Clip]
     out_bucket: str = "takes"
@@ -106,6 +120,89 @@ def _download(bucket: str, path: str) -> bytes:
     return r.content
 
 
+SIGNED_URL_S = 300  # long enough for one ffmpeg call; a URL that leaks dies in five minutes
+
+
+def _signed_url(bucket: str, path: str) -> str:
+    """A short-lived signed URL for one object, which ffmpeg reads with Range requests. Raises when it cannot sign."""
+    url, headers = _storage()
+    r = httpx.post(f"{url}/sign/{bucket}/{path}", json={"expiresIn": SIGNED_URL_S}, headers=headers, timeout=30.0)
+    r.raise_for_status()
+    answer = r.json()
+    signed = str(answer.get("signedURL") or answer.get("signedUrl") or "")
+    if not signed:
+        raise httpx.HTTPError("no signed URL in the answer")
+    if signed.startswith("http"):
+        return signed
+    return f"{url.removesuffix('/object')}{signed if signed.startswith('/') else '/' + signed}"
+
+
+def _input(bucket: str, path: str, tmp: Path) -> str:
+    """What ffmpeg reads: the signed URL (only the bytes it needs cross the internet), or, when signing fails, the whole
+    file downloaded into `tmp` as before. Raises httpx.HTTPError when neither works."""
+    try:
+        return _signed_url(bucket, path)
+    except (httpx.HTTPError, ValueError) as exc:
+        _logger.warning("signing failed (%s); downloading the whole file", exc)
+    src = tmp / "in"
+    src.write_bytes(_download(bucket, path))
+    return str(src)
+
+
+# /cut's disk copy (D7): a cut needs whole files; a take re-cut after a card's trim changes is read from this disk.
+_CACHE_SUFFIX = ".take"
+
+
+def _cache_dir() -> Path:
+    base = os.environ.get("FILES__CACHE_DIR", "").strip()
+    return Path(base) / "assemble" if base else Path(tempfile.gettempdir()) / "hiru-assemble"
+
+
+def _cache_cap() -> int:
+    try:
+        return int(float(os.environ.get("ASSEMBLE__CACHE_MAX_MB", "512")) * 1024**2)
+    except ValueError:
+        return 512 * 1024**2
+
+
+def _cached_take(bucket: str, path: str) -> Path:
+    """The whole take on this instance's disk, downloaded on first use. Takes are written once (a path names one file
+    forever), which is what makes a copy keyed by path correct."""
+    folder = _cache_dir()
+    file = folder / (hashlib.sha256(f"{bucket}/{path}".encode()).hexdigest() + _CACHE_SUFFIX)
+    if file.is_file():
+        os.utime(file)  # least recently used goes first
+        return file
+    folder.mkdir(parents=True, exist_ok=True)
+    data = _download(bucket, path)
+    part = file.with_name(f"{file.name}.{os.getpid()}.part")
+    part.write_bytes(data)
+    os.replace(part, file)
+    _trim_cache(folder, _cache_cap(), keep=file)
+    return file
+
+
+def _trim_cache(folder: Path, cap: int, keep: Path) -> None:
+    entries: list[tuple[float, int, Path]] = []
+    for item in folder.glob(f"*{_CACHE_SUFFIX}"):
+        try:
+            stat = item.stat()
+        except OSError:
+            continue
+        entries.append((stat.st_mtime, stat.st_size, item))
+    total = sum(size for _m, size, _i in entries)
+    for _mtime, size, item in sorted(entries):
+        if total <= cap:
+            break
+        if item == keep:
+            continue
+        try:
+            item.unlink()
+            total -= size
+        except OSError:
+            continue
+
+
 def _upload(bucket: str, path: str, data: bytes, content_type: str) -> None:
     url, headers = _storage()
     r = httpx.post(f"{url}/{bucket}/{path}", content=data, timeout=120.0,
@@ -129,7 +226,8 @@ def _run(args: list[str], timeout: int = 120) -> None:
         raise RuntimeError(" / ".join(tail) or f"{args[0]} exited {proc.returncode}")
 
 
-def probe_file(path: Path) -> ProbeResult:
+def probe_file(path: Path | str) -> ProbeResult:
+    """ffprobe on a file or a URL (over a URL it reads the header with Range requests, never the whole take)."""
     out = subprocess.run(  # noqa: S603
         ["ffprobe", "-v", "error", "-show_entries", "stream=codec_type,width,height:format=duration",  # noqa: S607
          "-of", "default=noprint_wrappers=1", str(path)], capture_output=True, timeout=60, check=False)
@@ -191,10 +289,9 @@ def cut(body: CutRequest, x_assemble_secret: str | None = Header(default=None)) 
     with tempfile.TemporaryDirectory() as tmp:
         sources, has_audio = [], []
         for i, clip in enumerate(body.clips):
-            src = Path(tmp) / f"in{i}"
             try:
-                src.write_bytes(_download(clip.bucket, clip.path))
-            except httpx.HTTPError as exc:
+                src = _cached_take(clip.bucket, clip.path)
+            except (httpx.HTTPError, OSError) as exc:
                 _logger.warning("download failed: %s", exc)
                 return CutResult(error="could not read a take")
             info = probe_file(src)
@@ -228,12 +325,29 @@ def probe(body: ProbeRequest, x_assemble_secret: str | None = Header(default=Non
     if not body.path:
         raise HTTPException(status_code=400, detail="path is required")
     with tempfile.TemporaryDirectory() as tmp:
-        src = Path(tmp) / "in"
         try:
-            src.write_bytes(_download(body.bucket, body.path))
+            src = _input(body.bucket, body.path, Path(tmp))
         except httpx.HTTPError:
             return ProbeResult(error="could not read the take")
         return probe_file(src)
+
+
+def _poster(bucket: str, src: str, out_path: str, tmp: Path) -> LastFrameResult:
+    dst = tmp / "out.webp"
+    try:
+        # 0.1 s in, not 0: the very first frame of a generated clip is often a black fade-in. `-ss` before `-i` seeks in
+        # the input, so over a URL only the bytes around that point are read.
+        _run(["ffmpeg", "-nostdin", "-y", "-ss", "0.1", "-i", src, "-frames:v", "1",
+              "-vf", "scale='min(640,iw)':-2", "-c:v", "libwebp", "-quality", "75", str(dst)])
+    except Exception as exc:
+        _logger.warning("poster failed: %s", exc)
+        return LastFrameResult(error="could not make a still of the take")
+    try:
+        _upload(bucket, out_path, dst.read_bytes(), "image/webp")
+    except httpx.HTTPError as exc:
+        _logger.warning("upload failed: %s", exc)
+        return LastFrameResult(error="could not store the still")
+    return LastFrameResult(path=out_path)
 
 
 @app.post("/poster", response_model=LastFrameResult)
@@ -243,26 +357,33 @@ def poster(body: PosterRequest, x_assemble_secret: str | None = Header(default=N
     if not body.path or not body.out_path:
         raise HTTPException(status_code=400, detail="path and out_path are required")
     with tempfile.TemporaryDirectory() as tmp:
-        src = Path(tmp) / "in"
-        dst = Path(tmp) / "out.webp"
         try:
-            src.write_bytes(_download(body.bucket, body.path))
+            src = _input(body.bucket, body.path, Path(tmp))
         except httpx.HTTPError as exc:
             _logger.warning("download failed: %s", exc)
             return LastFrameResult(error="could not read the take")
+        return _poster(body.bucket, src, body.out_path, Path(tmp))
+
+
+@app.post("/inspect", response_model=InspectResult)
+def inspect(body: PosterRequest, x_assemble_secret: str | None = Header(default=None)) -> InspectResult:
+    """plan/2026-11-21 D7/D8: the probe and the poster of one stored take in ONE call over ONE signed URL, so a take
+    costs its header and a moment of video, once, when it is stored. `out_path` empty = probe only."""
+    _authorize(x_assemble_secret)
+    if not body.path:
+        raise HTTPException(status_code=400, detail="path is required")
+    with tempfile.TemporaryDirectory() as tmp:
         try:
-            # 0.1 s in, not 0: the very first frame of a generated clip is often a black fade-in.
-            _run(["ffmpeg", "-nostdin", "-y", "-ss", "0.1", "-i", str(src), "-frames:v", "1",
-                  "-vf", "scale='min(640,iw)':-2", "-c:v", "libwebp", "-quality", "75", str(dst)])
-        except Exception as exc:
-            _logger.warning("poster failed: %s", exc)
-            return LastFrameResult(error="could not make a still of the take")
-        try:
-            _upload(body.bucket, body.out_path, dst.read_bytes(), "image/webp")
-        except httpx.HTTPError as exc:
-            _logger.warning("upload failed: %s", exc)
-            return LastFrameResult(error="could not store the still")
-    return LastFrameResult(path=body.out_path)
+            src = _input(body.bucket, body.path, Path(tmp))
+        except httpx.HTTPError:
+            return InspectResult(error="could not read the take")
+        info = probe_file(src)
+        result = InspectResult(**info.model_dump())
+        if body.out_path and not info.error:
+            still = _poster(body.bucket, src, body.out_path, Path(tmp))
+            result.poster_path = still.path
+            result.error = still.error
+        return result
 
 
 @app.post("/last-frame", response_model=LastFrameResult)
@@ -273,15 +394,15 @@ def last_frame(body: LastFrameRequest,
     if not body.path or not body.out_path:
         raise HTTPException(status_code=400, detail="path and out_path are required")
     with tempfile.TemporaryDirectory() as tmp:
-        src = Path(tmp) / "in"
         dst = Path(tmp) / "out.png"
         try:
-            src.write_bytes(_download(body.bucket, body.path))
+            src = _input(body.bucket, body.path, Path(tmp))
         except httpx.HTTPError as exc:
             _logger.warning("download failed: %s", exc)
             return LastFrameResult(error="could not read the take")
         try:
-            _run(["ffmpeg", "-nostdin", "-y", "-sseof", "-1", "-i", str(src), "-update", "1", str(dst)])
+            # Over a URL `-sseof -1` reads only the last second (and the index); `-update 1` keeps the TRUE last frame.
+            _run(["ffmpeg", "-nostdin", "-y", "-sseof", "-1", "-i", src, "-update", "1", str(dst)])
         except Exception as exc:
             _logger.warning("last-frame failed: %s", exc)
             return LastFrameResult(error="could not read the last frame of the take")

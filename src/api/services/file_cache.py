@@ -14,11 +14,8 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
-import hashlib
 import logging
-import mimetypes
 import os
-import sys
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -28,13 +25,19 @@ import httpx
 
 from api.cache import clear_after_job
 from api.config import Settings
+from hiru_ai.core import file_store
 
 _logger = logging.getLogger(__name__)
 _TIMEOUT = httpx.Timeout(30.0, read=300.0)
 _CHUNK = 256 * 1024
-_TYPE_SUFFIX = ".type"
-_PART_SUFFIX = ".part"
-_STALE_PART_S = 3600
+IMMUTABLE_BUCKETS = file_store.IMMUTABLE_BUCKETS
+_TYPE_SUFFIX = file_store.TYPE_SUFFIX
+_PART_SUFFIX = file_store.PART_SUFFIX
+# The folder and its naming are shared with the render workers (plan/2026-11-21 D1): same hash, same folder.
+root = file_store.root
+_file_for = file_store._file_for
+bucket_dir = file_store.bucket_dir
+_media_type = file_store.media_type
 
 # Counters for the traffic log (plan §4 phase 0): how many requests the disk answered and how many went to Supabase.
 STATS = {"hits": 0, "misses": 0, "upstream_bytes": 0}
@@ -58,38 +61,6 @@ class TooLarge(Exception):
 class Cached:
     path: Path
     media_type: str
-
-
-def root(settings: Settings) -> Path | None:
-    """The cache folder, or None when the cache is turned off (`FILES__CACHE_MAX_GB=0`)."""
-    if settings.files.cache_max_gb <= 0:
-        return None
-    if settings.files.cache_dir:
-        return Path(settings.files.cache_dir)
-    if sys.platform == "win32":
-        return Path(os.environ.get("LOCALAPPDATA") or Path.home() / "AppData" / "Local") / "hiru-ai" / "files"
-    return Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "hiru-ai" / "files"
-
-
-def _file_for(base: Path, bucket: str, path: str) -> Path:
-    """Where one object lives. Hashed, so no stored path (spaces, unicode, `..`) can ever name a file outside `base`
-    or collide with another; the extension is kept so the folder is still readable."""
-    digest = hashlib.sha256(f"{bucket}/{path}".encode()).hexdigest()
-    suffix = Path(path).suffix.lower()
-    suffix = suffix if suffix.isascii() and suffix[1:].isalnum() and len(suffix) <= 8 else ""
-    return base / bucket_dir(bucket) / digest[:2] / f"{digest}{suffix}"
-
-
-def bucket_dir(bucket: str) -> str:
-    return "".join(c for c in bucket if c.isalnum() or c in "-_") or "bucket"
-
-
-def _media_type(file: Path, path: str) -> str:
-    with contextlib.suppress(OSError):
-        text = file.with_name(file.name + _TYPE_SUFFIX).read_text(encoding="ascii").strip()
-        if text:
-            return text
-    return mimetypes.guess_type(path)[0] or "application/octet-stream"
 
 
 # plan/2026-11-13b phase 9: a file Supabase does not have (a take's still that was never made) is not asked for again on
@@ -219,34 +190,7 @@ class FileCache:
 
     def _trim(self, base: Path, cap: int) -> None:
         """Delete the least recently used files until the folder fits, and any `.part` left by a crash."""
-        entries: list[tuple[float, int, Path]] = []
-        total = 0
-        now = time.time()
-        for item in base.rglob("*"):
-            try:
-                if not item.is_file():
-                    continue
-                stat = item.stat()
-            except OSError:
-                continue
-            if item.name.endswith(_PART_SUFFIX):
-                if now - stat.st_mtime > _STALE_PART_S:
-                    with contextlib.suppress(OSError):
-                        item.unlink()
-                continue
-            if item.name.endswith(_TYPE_SUFFIX):
-                continue
-            entries.append((stat.st_mtime, stat.st_size, item))
-            total += stat.st_size
-        if total <= cap:
-            return
-        for _mtime, size, item in sorted(entries):
-            with contextlib.suppress(OSError):
-                item.unlink()
-                item.with_name(item.name + _TYPE_SUFFIX).unlink(missing_ok=True)
-                total -= size
-            if total <= cap:
-                break
+        file_store.trim(base, cap)
 
 
 _cache: FileCache | None = None

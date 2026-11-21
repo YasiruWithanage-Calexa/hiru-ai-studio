@@ -19,7 +19,7 @@ import hashlib
 import json
 import re
 import unicodedata
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from datetime import datetime
 from enum import StrEnum
 from typing import Any, Literal
@@ -525,6 +525,18 @@ def face_sheet_path(row: Mapping[str, Any]) -> str:
     """The newest face sheet of a character's current card ("" when none is made)."""
     assets = (row.get("current") or {}).get("reference_assets") or []
     return next((_asset_path(a) for a in assets if _asset_kind(a) == FACE_SHEET_KIND and _asset_path(a)), "")
+
+
+def missing_faces(canon: Sequence[Mapping[str, Any]], entity_ids: Iterable[str]) -> list[Mapping[str, Any]]:
+    """The characters among `entity_ids` (in that order, once each) whose current card has no face sheet. Nothing
+    paints one by itself (2026-11-22): the board and its frames name these people, and a person makes the sheet."""
+    by_id = {str(c["id"]): c for c in canon}
+    out = []
+    for cid in dict.fromkeys(str(i) for i in entity_ids):
+        row = by_id.get(cid)
+        if row and row.get("kind") == "character" and not face_sheet_path(row):
+            out.append(row)
+    return out
 
 
 def keep_assets(assets: Sequence[Any], sheets: int = 5, faces: int = 2) -> list[Any]:

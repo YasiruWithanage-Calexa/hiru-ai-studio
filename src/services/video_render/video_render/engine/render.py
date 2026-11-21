@@ -28,6 +28,7 @@ from pydantic import ValidationError
 from contracts.video_gen import RenderSpec, build_request, capability, request_hash, validate_render
 from video_render.engine import fake, omni, veo
 from video_render.engine.transport import ProviderError, RefusedError
+from video_render.runtime import assemble
 from video_render.runtime.config import Config
 from video_render.runtime.rest import Row
 from video_render.runtime.store import TAKES_BUCKET
@@ -235,4 +236,16 @@ def _render(store: Any, cfg: Config, row: Row, *, job_id: str, actor: str, resum
                         "phase": f"video_render.{spec.engine}", "model": built["model"],
                         "input_tokens": usage["prompt_tokens"], "cached_input_tokens": 0,
                         "output_tokens": output_tokens})
+    _inspect(store, cfg, take_id, path)
     return "done"
+
+
+def _inspect(store: Any, cfg: Config, take_id: str, path: str) -> None:
+    """plan/2026-11-21 D8: the take's length and still, read once now that it is recorded, so no view ever probes it.
+    Last, after the money is recorded, and never raises: a take without a length is still a take."""
+    try:
+        found = assemble.inspect(cfg, TAKES_BUCKET, path)
+        if found:
+            store.set_take(take_id, found)
+    except Exception:
+        _logger.warning("take %s stored without its length or still", take_id, exc_info=True)

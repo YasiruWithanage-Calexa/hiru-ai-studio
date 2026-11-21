@@ -2,8 +2,9 @@
 cut out of their base sheet, stored as `kind: "face"` on the current card's `reference_assets`. Every frame of a person
 the camera sees attaches it FIRST (`contracts.frame_brief.plan_references`), board or not.
 
-Made on request (`state.reference_kind = "face"`), and automatically for every on-screen person who lacks one when a
-Scene board or a frame from a board is painted (D4).
+Made only on request (`state.reference_kind = "face"`). A Scene board or a frame from a board no longer makes the
+missing ones (2026-11-22, was D4): boards of different scenes painted in parallel each paid for the same person's
+sheet. They name who has none (`contracts.canon.missing_faces`) and a person makes it.
 """
 from __future__ import annotations
 
@@ -16,7 +17,6 @@ from contracts.canon import (
     FACE_SHEET_KIND,
     FACE_SHEET_QUALITY,
     SHEET_ASPECT,
-    face_sheet_path,
     face_sheet_prompt,
     keep_assets,
 )
@@ -70,20 +70,3 @@ def render_face(ctx: RunContext, production: Row, canon: list[Row], entity_id: s
     frames.add_reference_asset(str(current["id"]), assets)
     current["reference_assets"] = assets
     return {"status": "done", "entity_id": entity_id, "kind": FACE_SHEET_KIND, "version": current.get("version")}
-
-
-def ensure_faces(ctx: RunContext, production: Row, canon: list[Row], entity_ids: list[str], job_id: str,
-                 warn: Any = None) -> list[str]:
-    """D4: a face sheet for each of `entity_ids` (the people on screen) that has a base sheet and no face sheet yet.
-    → the ids made. A failure is reported through `warn(text)` and never stops the board or the frame."""
-    made = []
-    for cid in dict.fromkeys(entity_ids):
-        row = next((c for c in canon if str(c["id"]) == cid), None)
-        if not row or row.get("kind") != "character" or face_sheet_path(row) or not sheet_path(row):
-            continue
-        result = render_face(ctx, production, canon, cid, job_id)
-        if result["status"] == "done":
-            made.append(cid)
-        elif warn is not None:
-            warn(f"No face sheet for {row['name']}: {result['error']}")
-    return made

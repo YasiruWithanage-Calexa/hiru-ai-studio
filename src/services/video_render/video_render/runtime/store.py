@@ -1,9 +1,14 @@
 """Supabase access for video_render: renders, the takes they make, and the private buckets."""
 from __future__ import annotations
 
+import logging
+
 import httpx
 
+from hiru_ai.core.file_store import CachedFiles
 from video_render.runtime.rest import Rest, Row
+
+_logger = logging.getLogger(__name__)
 
 TAKES_BUCKET = "takes"
 
@@ -11,6 +16,9 @@ TAKES_BUCKET = "takes"
 class Store:
     def __init__(self, rest: Rest) -> None:
         self.rest = rest
+        # plan/2026-11-21 D2: a reference picture crosses the internet once per machine, and the take stored here is
+        # kept too (write-through).
+        self.files = CachedFiles(rest)
 
     # ── reading ──────────────────────────────────────────────────────────────────────────
     def renders(self, render_ids: list[str]) -> list[Row]:
@@ -23,7 +31,7 @@ class Store:
         return self.rest.first("video_renders", {"id": f"eq.{render_id}", "select": "*"})
 
     def download(self, bucket: str, path: str) -> bytes:
-        return self.rest.download(bucket, path)
+        return self.files.download(bucket, path)
 
     # ── writing ──────────────────────────────────────────────────────────────────────────
     def claim_render(self, render_id: str) -> bool:
@@ -50,7 +58,21 @@ class Store:
         self.rest.insert("takes", [row])
 
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
-        self.rest.upload(bucket, path, data, mime)
+        self.files.upload(bucket, path, data, mime)
+
+    def set_take(self, take_id: str, fields: Row) -> None:
+        """The take's length and still, read once at write time (D8). `poster_path` is a schema v24 column: a database
+        without it refuses the field (400), so the length is saved alone and the still waits for the upgrade."""
+        try:
+            self.rest.patch("takes", {"id": f"eq.{take_id}"}, fields)
+        except httpx.HTTPStatusError as exc:
+            if "poster_path" not in fields or exc.response.status_code != 400:
+                raise
+            _logger.warning("takes.poster_path missing (schema v24 not applied?); take %s saved without its still",
+                            take_id)
+            rest = {k: v for k, v in fields.items() if k != "poster_path"}
+            if rest:
+                self.rest.patch("takes", {"id": f"eq.{take_id}"}, rest)
 
     def audit(self, row: Row) -> None:
         try:

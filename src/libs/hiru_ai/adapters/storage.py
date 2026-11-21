@@ -17,9 +17,10 @@ import httpx
 
 from hiru_ai.adapters.supabase_rest import Rest, _ok
 from hiru_ai.core import thumbs
+from hiru_ai.core.file_store import IMMUTABLE_BUCKETS  # a path here is written once, ever
 
 _log = logging.getLogger("hiru_ai.adapters.storage")
-IMMUTABLE_BUCKETS = frozenset({"frames", "references", "takes"})  # a path here is written once, ever
+__all__ = ["IMMUTABLE_BUCKETS", "SupabaseFiles", "already_exists"]
 ATTEMPTS = 4
 BACKOFF_S = 1.0  # doubles each retry
 

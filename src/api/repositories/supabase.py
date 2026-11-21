@@ -397,6 +397,14 @@ class SupabaseStorage(_Base):
         file_cache.evict(get_settings(), bucket, path)  # the API's disk copy goes with the object
 
     async def download(self, bucket: str, path: str) -> bytes:
+        # plan/2026-11-21: a write-once file (the scene bundle's frames and sheets) is read from the API's disk copy,
+        # fetched once; anything else, or a cache that cannot help, goes to Storage as before.
+        if bucket in file_cache.IMMUTABLE_BUCKETS:
+            try:
+                kept = await file_cache.get_cache(get_settings()).fetch(bucket, path)
+                return await asyncio.to_thread(kept.path.read_bytes)
+            except (file_cache.NotFound, file_cache.Unreachable, file_cache.TooLarge, OSError):
+                pass
         return bytes(await self.db.storage.from_(bucket).download(path))
 
 

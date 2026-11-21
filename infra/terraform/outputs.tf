@@ -20,6 +20,7 @@ output "github_variables" {
     GCP_FUNCTIONS_SA = google_service_account.functions.email
     API_SERVICE      = google_cloud_run_v2_service.api.name
     ASSEMBLE_SERVICE = google_cloud_run_v2_service.assemble.name
+    ASSEMBLE_URL     = google_cloud_run_v2_service.assemble.uri # hiru-video-render's ASSEMBLE__URL (plan/2026-11-21)
     SECRET_PREFIX    = local.name
   }
 }

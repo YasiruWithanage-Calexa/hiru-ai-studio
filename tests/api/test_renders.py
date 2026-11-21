@@ -647,10 +647,15 @@ def test_the_handoff_screen_lists_queued_renders_and_generated_takes_with_their_
     assert v["renders"] == [], "a finished render is shown as its take"
     assert take["origin"] == "generated" and take["engine"] == "omni_flash" and take["seed"] is None
     assert take["settings_text"].startswith("Omni Flash 1.2") and take["render_id"] == first["id"]
-    assert take["duration_s"] == 7.5 and take["duration_note"] == "7.5 s; the shot is 4 s", "probed on first sight"
-    assert assembler.calls.count(("probe", "takes", "p/t.mp4")) == 1
-    world.client.get(shot_url(world, s, 1, "/handoff"), headers=reviewer)
-    assert assembler.calls.count(("probe", "takes", "p/t.mp4")) == 1, "probed once"
+    # plan/2026-11-21 D8: a READ never probes; video_render reads the length when it stores the take
+    assert take["duration_s"] is None and take["duration_note"] == ""
+    for _ in range(3):
+        world.client.get(shot_url(world, s, 1, "/handoff"), headers=reviewer)
+        world.client.get(shot_url(world, s, 1, "/panel"), headers=reviewer)
+    assert assembler.calls == [], "opening the shot N times makes zero assemble calls"
+    world.repos.takes.rows[take_id]["duration_s"] = 7.5  # type: ignore[attr-defined]  # what video_render saves
+    (take,) = world.client.get(shot_url(world, s, 1, "/handoff"), headers=reviewer).json()["takes"]
+    assert take["duration_s"] == 7.5 and take["duration_note"] == "7.5 s; the shot is 4 s"
 
     # accepting it is today's flow
     crew = world.headers(world.crew)

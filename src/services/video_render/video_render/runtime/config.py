@@ -47,6 +47,9 @@ class Config:
     # D3 (plan/2026-11-06c): Veo reports seconds, not tokens. A hidden per-second token equivalent per engine keeps the
     # one usage percentage honest (`VIDEO__TOKENS_PER_SECOND='{"veo_3_1":12000}'`). 0 = counts nothing until it is set.
     tokens_per_second: dict[str, int] = field(default_factory=dict)
+    # plan/2026-11-21 D8: `infra/assemble` reads the stored take's length and makes its still once. Empty = skipped.
+    assemble_url: str = ""
+    assemble_secret: str = ""
 
     @property
     def can_render(self) -> bool:
@@ -71,4 +74,6 @@ def get_config() -> Config:
         poll_interval_s=float(env("VIDEO__POLL_INTERVAL_S", "5")),
         download_attempts=int(env("VIDEO__DOWNLOAD_ATTEMPTS", "5")),
         tokens_per_second=_int_dict(env("VIDEO__TOKENS_PER_SECOND", "")),
+        assemble_url=env("ASSEMBLE__URL", ""),
+        assemble_secret=env("ASSEMBLE__SECRET", ""),
     )

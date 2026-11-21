@@ -130,6 +130,9 @@ class FakeStore:
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
         self.uploads[(bucket, path)] = data
 
+    def set_take(self, take_id: str, fields: dict[str, Any]) -> None:
+        next(t for t in self.takes if t["id"] == take_id).update(fields)
+
     def audit(self, row: dict[str, Any]) -> None:
         self.audits.append(row)
 

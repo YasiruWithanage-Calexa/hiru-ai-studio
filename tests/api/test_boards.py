@@ -288,3 +288,20 @@ def test_the_board_view_says_its_shape_and_when_it_is_not_the_productions():
     new = board_view(sid, [tall], [], "9:16")
     assert new.aspect == "9:16" and not new.wrong_shape
     assert not board_view(sid, [wide], []).wrong_shape, "a wide production's board is right"
+
+
+def test_the_board_view_names_the_people_on_it_without_a_face_sheet():
+    """2026-11-22: nothing paints a face sheet by itself; the board card names who has none, a person makes it."""
+    from api.routers.boards import board_view
+
+    ama, nimal, house = (str(uuid4()) for _ in range(3))
+    canon = [{"id": ama, "kind": "character", "name": "Ama",
+              "current": {"reference_assets": [{"path": "p/a/face.png", "kind": "face"}, {"path": "p/a/base.png"}]}},
+             {"id": nimal, "kind": "character", "name": "Nimal",
+              "current": {"reference_assets": [{"path": "p/n.png"}]}},
+             {"id": house, "kind": "location", "name": "House", "current": {"reference_assets": []}}]
+    part = {"id": str(uuid4()), "version": 1, "part": 1, "parts": 1, "status": "done", "cells": [],
+            "colours": {ama: "red", nimal: "blue", house: "green"}}
+    view = board_view(uuid4(), [part], [], "16:9", canon)
+    assert [(str(m.entity_id), m.name) for m in view.missing_faces] == [(nimal, "Nimal")]
+    assert board_view(uuid4(), [], [], "16:9", canon).missing_faces == [], "no board: nobody on it yet"

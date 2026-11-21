@@ -1,4 +1,4 @@
-"""The API's side of `infra/assemble` (ffmpeg): probe a take, pull its last frame.
+"""The API's side of `infra/assemble` (ffmpeg): inspect a take (length + still), pull its last frame.
 
 Both are best effort: a take that cannot be probed is still kept (its duration is unknown), and
 a last frame that cannot be made is reported so a person can upload that frame by hand. Locally
@@ -26,8 +26,20 @@ class Probe:
     has_audio: bool
 
 
+@dataclass
+class Inspection:
+    """A take's probe and its still, read in one call (plan/2026-11-21 D7)."""
+
+    duration_s: float
+    width: int
+    height: int
+    has_audio: bool
+    poster_path: str  # "" when no still could be made
+
+
 class Assembler(Protocol):
     async def probe(self, bucket: str, path: str) -> Probe | None: ...
+    async def inspect(self, bucket: str, path: str, out_path: str) -> Inspection | None: ...
     async def last_frame(self, bucket: str, path: str, out_bucket: str, out_path: str) -> str: ...
     async def poster(self, bucket: str, path: str, out_path: str) -> str: ...
 
@@ -63,6 +75,16 @@ class HttpAssembler:
             return None
         return Probe(duration_s=float(data.get("duration_s") or 0), width=int(data.get("width") or 0),
                      height=int(data.get("height") or 0), has_audio=bool(data.get("has_audio")))
+
+    async def inspect(self, bucket: str, path: str, out_path: str) -> Inspection | None:
+        """The probe and the still of a stored take in ONE call over one signed URL (plan/2026-11-21 D7): assemble
+        reads the take's header and a moment of it, never the whole file. None when it could not be read."""
+        data = await self._post("/inspect", {"bucket": bucket, "path": path, "out_path": out_path})
+        if not data or (float(data.get("duration_s") or 0) <= 0 and not data.get("poster_path")):
+            return None
+        return Inspection(duration_s=float(data.get("duration_s") or 0), width=int(data.get("width") or 0),
+                          height=int(data.get("height") or 0), has_audio=bool(data.get("has_audio")),
+                          poster_path=str(data.get("poster_path") or ""))
 
     async def last_frame(self, bucket: str, path: str, out_bucket: str, out_path: str) -> str:
         """The stored frame's path, or "" when it could not be made."""

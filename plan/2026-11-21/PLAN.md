@@ -1,6 +1,7 @@
 # Storage egress: a stored file crosses the internet once (plan/2026-11-21)
 
-Revision 1 (2026-11-21). Agreed with the person in chat on 2026-11-20/21. Building status: not started (no IMPLEMENTED.md).
+Revision 1 (2026-11-21). Agreed with the person in chat on 2026-11-20/21. Building status: phases 0-4, 6-8 built offline
+2026-11-22 (see IMPLEMENTED.md); 5 and 9 are the person's.
 Builds on plan/2026-11-08c ("Quiet by default": the API's disk cache 1b, write-once media paths 1d, thumbnails 1c).
 
 Why: Supabase **cached egress** reached 3.31 GB of the free plan's 5 GB this period, ~430 MB a day, while everything

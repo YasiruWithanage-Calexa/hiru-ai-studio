@@ -810,8 +810,10 @@ def build_knowledge_store(settings: AISettings | None = None, *,
 
 def _ports(rest: Rest, jobs: Any = None) -> Ports:
     from hiru_ai.adapters.storage import SupabaseFiles
+    from hiru_ai.core.file_store import CachedFiles
 
-    files = SupabaseFiles(rest)
+    # plan/2026-11-21 D2: a write-once file crosses the internet once per machine (the API's folder, shared).
+    files = CachedFiles(SupabaseFiles(rest))
     return Ports(scenes=SupabaseScenes(rest), canon=SupabaseCanon(rest), structure=SupabaseStructure(rest),
                  frames=SupabaseFrames(rest), split=SupabaseSplit(rest), producer=SupabaseProducer(rest),
                  director=SupabaseDirector(rest), revisions=SupabaseRevisions(rest),

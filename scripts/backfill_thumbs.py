@@ -1,7 +1,8 @@
-"""Make the small copies for pictures stored before thumbnails existed (plan/2026-11-08c 1c, once).
+"""Make the small copies for pictures stored before thumbnails existed (plan/2026-11-08c 1c; plan/2026-11-21 phase 6).
 
-    python scripts/backfill_thumbs.py            # count what is missing; downloads nothing
-    python scripts/backfill_thumbs.py --apply    # download each missing one ONCE, write <path>.thumb.webp beside it
+    python scripts/backfill_thumbs.py            # DRY RUN: list what is missing and its size; downloads nothing
+    python scripts/backfill_thumbs.py --apply    # write <path>.thumb.webp beside each; sources read through the
+                                                 # shared file cache (plan/2026-11-21 D9): one on disk costs nothing
     python scripts/backfill_thumbs.py --apply --posters   # also take stills, recorded on the takes (schema v24)
 
 A picture that already has its small copy is skipped, so a second run costs only the existence checks. About 0.18 GB
@@ -23,6 +24,25 @@ _common.load_env()
 import httpx  # noqa: E402
 
 from hiru_ai.core import thumbs  # noqa: E402
+from hiru_ai.core.file_store import CachedFiles  # noqa: E402
+
+
+class RestFiles:
+    """`_common.Rest` as the `Files` port, so the sources go through `CachedFiles` (the API's own disk copy)."""
+
+    def __init__(self, rest: _common.Rest) -> None:
+        self.rest = rest
+
+    def download(self, bucket: str, path: str) -> bytes:
+        r = self.rest.c.get(f"{self.rest.storage}/object/{bucket}/{path}", headers=self.rest.h)
+        r.raise_for_status()
+        return r.content
+
+    def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
+        # a thumbnail path is a NEW path: writing it never overwrites anything
+        r = self.rest.c.post(f"{self.rest.storage}/object/{bucket}/{path}", content=data,
+                             headers={**self.rest.h, "Content-Type": mime, "x-upsert": "false"})
+        r.raise_for_status()
 
 
 def _asset_paths(assets: object) -> list[str]:
@@ -53,6 +73,12 @@ def exists(rest: _common.Rest, bucket: str, path: str) -> bool:
     return r.status_code == 200
 
 
+def size(rest: _common.Rest, bucket: str, path: str) -> int:
+    """The object's size from a HEAD (no body crosses the internet); 0 when unknown."""
+    r = rest.c.head(f"{rest.storage}/object/{bucket}/{path}", headers=rest.h)
+    return int(r.headers.get("content-length") or 0) if r.status_code == 200 else 0
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--apply", action="store_true", help="make the missing copies (default: only count them)")
@@ -61,25 +87,28 @@ def main() -> None:
     rest = _common.Rest()
 
     missing = [(b, p) for b, p in wanted(rest) if not exists(rest, b, thumbs.thumb_path(p))]
-    print(f"{len(missing)} picture(s) have no small copy.")
+    total = 0
+    for bucket, path in missing:
+        n = size(rest, bucket, path)
+        total += n
+        print(f"  {bucket}/{path}  {n / 1024**2:.2f} MB")
+    print(f"{len(missing)} picture(s) have no small copy ({total / 1024**2:.1f} MB of sources).")
     made = failed = 0
     if args.apply:
+        files = CachedFiles(RestFiles(rest))
         for bucket, path in missing:
             try:
-                r = rest.c.get(f"{rest.storage}/object/{bucket}/{path}", headers=rest.h)
-                r.raise_for_status()
-                small = thumbs.make(r.content)
+                small = thumbs.make(files.download(bucket, path))
                 if small is None:
                     raise ValueError("not a picture Pillow can read")
-                # a thumbnail path is a NEW path: writing it never overwrites anything
-                up = rest.c.post(f"{rest.storage}/object/{bucket}/{thumbs.thumb_path(path)}", content=small,
-                                 headers={**rest.h, "Content-Type": thumbs.MIME, "x-upsert": "false"})
-                up.raise_for_status()
+                files.inner.upload(bucket, thumbs.thumb_path(path), small, thumbs.MIME)
                 made += 1
             except (httpx.HTTPError, ValueError) as exc:
                 failed += 1
                 print(f"  skipped {bucket}/{path}: {exc}")
-        print(f"made {made}, failed {failed}.")
+        print(f"made {made}, failed {failed}. {files.summary()}")
+    else:
+        print("Dry run: nothing downloaded or written. Run again with --apply to make them.")
 
     if args.posters:
         _posters(rest, args.apply)
@@ -106,8 +135,11 @@ def _posters(rest: _common.Rest, apply: bool) -> None:
         if r.status_code == 200 and not r.json().get("error"):
             made += 1
             # Record it (schema v24): the card shows a still only when the row says it exists.
-            rest.c.patch(f"{rest.rest}/takes", headers=rest.h, params={"storage_path": f"eq.{path}"},
-                         json={"poster_path": poster}).raise_for_status()
+            saved = rest.c.patch(f"{rest.rest}/takes", headers=rest.h, params={"storage_path": f"eq.{path}"},
+                                 json={"poster_path": poster})
+            if saved.status_code == 400 and "poster_path" in saved.text:
+                sys.exit("takes.poster_path is missing: apply Database/upgrade_v23_to_v24.sql first.")
+            saved.raise_for_status()
         else:
             print(f"  skipped {path}: {r.text[:120]}")
     print(f"made {made} still(s).")

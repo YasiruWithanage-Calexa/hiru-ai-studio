@@ -19,6 +19,7 @@ from frame_render.runtime.config import Config, get_config
 from frame_render.runtime.jobs import Jobs
 from frame_render.runtime.rest import Rest
 from frame_render.runtime.store import Store
+from hiru_ai.core.file_store import storage_summary
 
 _logger = logging.getLogger(__name__)
 
@@ -83,7 +84,12 @@ def run_graph(payload: DispatchPayload, jobs: Jobs) -> dict[str, Any]:
     from hiru_ai.adapters import supabase_rest
     from hiru_ai.systems.frame_render import graph
 
-    return graph.run(payload, supabase_rest.build_context(payload, jobs=jobs, images=True))
+    ctx = supabase_rest.build_context(payload, jobs=jobs, images=True)
+    try:
+        return graph.run(payload, ctx)
+    finally:  # plan/2026-11-21 D6: one line per job, the proof and the regression signal
+        if line := storage_summary(ctx.ports.files):
+            _logger.info("%s job=%s", line, payload.job_id)
 
 
 def graph_only(payload: DispatchPayload) -> bool:
@@ -111,8 +117,12 @@ def handle(request: Any) -> tuple[dict[str, Any], int]:
     try:
         if os.environ.get("AI_ENGINE", "legacy") == "graph" or graph_only(payload):
             return run_graph(payload, jobs), 200
-        return pipeline.run(payload, store, jobs, painter(config, payload, store),
-                            inspector(config, payload, store)), 200
+        try:
+            return pipeline.run(payload, store, jobs, painter(config, payload, store),
+                                inspector(config, payload, store)), 200
+        finally:  # plan/2026-11-21 D6
+            if line := storage_summary(getattr(store, "files", None)):
+                _logger.info("%s job=%s", line, payload.job_id)
     except httpx.TransportError:
         _logger.warning("transient network error job=%s", payload.job_id, exc_info=True)
         return {"error": "retry"}, 500

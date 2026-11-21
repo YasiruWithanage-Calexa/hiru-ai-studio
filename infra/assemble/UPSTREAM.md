@@ -17,3 +17,6 @@ describes.
    carries no SDK. Buckets are Hiru's: `takes` in, `frames` out.
 3. **PNG out**, not JPEG: the carried frame is the next shot's first frame, handed to Flow.
 4. No `at_seconds` trim: Hiru takes are not trimmed before the join (there is no join yet).
+5. **Signed URLs inside the service** (plan/2026-11-21 D7). Upstream reads whole files by path. Here callers still send
+   paths, but for `/probe`, `/poster`, `/last-frame` and the new `/inspect` the service mints its own 300 s signed URL
+   and hands it to ffmpeg, which reads with Range. The URL never leaves the process. `-sseof -1 -update 1` is kept.

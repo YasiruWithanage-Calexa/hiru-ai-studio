@@ -131,17 +131,24 @@ def test_a_board_is_written_painted_cut_and_stored():
     assert row["writer"]["conflicts"], "the writer's conflicts are kept for the person"
 
 
-def test_a_board_makes_the_missing_face_sheets_first_d4():
+def with_face(store: BoardStore, entity_id: str = KAMALA) -> None:
+    """The person made this character's face sheet from the canon (nothing else makes one, 2026-11-22)."""
+    row = next(c for c in store.canon_rows if c["id"] == entity_id)
+    row["current"]["reference_assets"] = [{"path": "p/kamala-face.png", "kind": "face"},
+                                          *row["current"]["reference_assets"]]
+
+
+def test_a_board_paints_no_face_sheet():
+    """2026-11-22: boards of different scenes painted in parallel each paid for the same person's face sheet. The
+    board never paints one now; the person makes it from the canon."""
     store = BoardStore()
     bid = store.add_board()
     painter = FakeImages()
     painter.picture = board_png(2, 2)
     run(store, {"board_id": bid}, [reply(numbers(store))], painter)
-    assert painter.qualities[0] == "medium" and painter.sheets[0], "the face sheet first, at MEDIUM"
+    assert len(painter.calls) == 1 and not painter.sheets[0], "the board picture only"
     kamala = next(c for c in store.canon_rows if c["id"] == KAMALA)
-    assert face_sheet_path(kamala).endswith(".png")
-    assert store.asset_writes and store.asset_writes[-1][1][0]["kind"] == "face"
-    assert any(a.get("path") == "p/kamala.png" for a in store.asset_writes[-1][1]), "the base sheet is kept"
+    assert not face_sheet_path(kamala) and not store.asset_writes
 
 
 def test_a_writer_that_leaves_out_a_shot_paints_nothing():
@@ -150,7 +157,7 @@ def test_a_writer_that_leaves_out_a_shot_paints_nothing():
     painter = FakeImages()
     result, _ = run(store, {"board_id": bid}, [reply(numbers(store)[:-1])], painter)
     assert result["status"] == "failed" and "left out" in result["error"]
-    assert all(not q or q == "medium" for q in painter.qualities), "only the face sheet was painted"
+    assert not painter.calls, "nothing painted"
 
 
 def test_a_board_without_a_painter_or_twice_delivered_is_not_paid_for():
@@ -165,6 +172,7 @@ def test_a_board_without_a_painter_or_twice_delivered_is_not_paid_for():
 
 def test_a_frame_from_the_board_attaches_the_panel_last_and_says_the_mannequins():
     store = BoardStore()
+    with_face(store)
     bid = store.add_board()
     painter = FakeImages()
     painter.picture = board_png(2, 2)
@@ -188,12 +196,13 @@ def test_a_shot_with_a_current_shot_prompt_is_painted_from_it_not_from_the_panel
     from hiru_ai.steps.frame_compose import logic
 
     store = BoardStore()
+    with_face(store)
     bid = store.add_board()
     painter = FakeImages()
     painter.picture = board_png(2, 2)
     run(store, {"board_id": bid}, [reply(numbers(store))], painter)
     store.board_rows[bid]["approved_at"] = "2026-11-14T10:00:00Z"
-    record = {"frame": {"composition": "The camera is low at hip height, looking up at Kamala, waist up.",
+    record ={"frame": {"composition": "The camera is low at hip height, looking up at Kamala, waist up.",
                         "people": "Kamala stands at the stove, facing left.", "background": "The kitchen.",
                         "light": "Morning light."}, "opening": {"people": [], "background": "", "light": ""}}
     monkeypatch.setattr(logic.World, "shot_prompt_reasons", lambda self, shot: [])
@@ -234,7 +243,24 @@ def test_a_frame_whose_board_cannot_be_read_fails_and_is_not_painted():
     painter = FakeImages()
     result, _ = run(store, {"frame_ids": [fid], "from_board": True}, [], painter)
     assert result["failed"] == 1 and store.frame_rows[fid]["error"] == graph.NO_PANEL
-    assert not [q for q in painter.qualities if q != "medium"], "no frame painted (a face sheet may be)"
+    assert not painter.calls, "nothing painted"
+
+
+def test_a_frame_from_the_board_names_a_person_without_a_face_sheet_and_paints_none():
+    store = BoardStore()
+    bid = store.add_board()
+    painter = FakeImages()
+    painter.picture = board_png(2, 2)
+    run(store, {"board_id": bid}, [reply(numbers(store))], painter)
+    store.board_rows[bid]["approved_at"] = "2026-11-14T10:00:00Z"
+    fid = store.add_frame(shots(store)[0]["id"], stage="final", board_id=bid)
+    painter.picture = png()
+    calls = len(painter.calls)
+    result, (jobs, _) = run(store, {"frame_ids": [fid], "from_board": True}, [], painter)
+    assert result["done"] == 1, store.frame_rows[fid].get("error")
+    assert len(painter.calls) == calls + 1 and not any(painter.sheets[calls:]), "the frame only, no face sheet"
+    assert "the face sheet for Kamala" not in [r.label for r in painter.calls[-1][2]]
+    assert any("Kamala has no face sheet" in str(e.get("text")) for e in jobs.events)
 
 
 def test_a_face_sheet_on_request_is_painted_from_the_portrait():

@@ -160,30 +160,20 @@ def _take_view(take: Row, index: int, shot_seconds: int, render: Row | None = No
                     seed=render.get("seed") if render else None)
 
 
-async def _probe_generated(repos: Repos, assembler: Assembler, takes: list[Row]) -> None:
-    """A generated take is stored without its length (the function has no ffmpeg): probe it once, on first sight."""
-    for take in takes:
-        if take.get("origin") == "generated" and take.get("duration_s") is None:
-            probe = await assembler.probe("takes", str(take["storage_path"]))
-            if probe is not None and probe.duration_s > 0:
-                take["duration_s"] = probe.duration_s
-                await repos.takes.update(UUID(str(take["id"])), {"duration_s": probe.duration_s})
-
-
-async def _view(repos: Repos, access: ProductionAccess, shot_id: UUID,
-                assembler: Assembler | None = None) -> HandoffView:
+async def _view(repos: Repos, access: ProductionAccess, shot_id: UUID) -> HandoffView:
     ld, st = await load_shot(repos, access, shot_id)
-    return await view_of(repos, ld, st, assembler)
+    return await view_of(repos, ld, st)
 
 
-async def view_of(repos: Repos, ld: Loaded, st: ShotState, assembler: Assembler | None = None) -> HandoffView:
-    """The handoff view of a shot already loaded (also `GET .../shots/{id}/panel`, plan/2026-11-13d phase 4)."""
+async def view_of(repos: Repos, ld: Loaded, st: ShotState) -> HandoffView:
+    """The handoff view of a shot already loaded (also `GET .../shots/{id}/panel`, plan/2026-11-13d phase 4).
+
+    A READ NEVER PROBES (plan/2026-11-21 D8): a take's length and still are read once, when it is stored (`upload_take`
+    here, `video_render` for a generated take). A take whose length is unknown simply shows none."""
     view = shot_view(ld, st, camera_checks(ld.states)[st.id])
     takes = await repos.takes.list_for_shots([st.id])
     settings = get_settings()
     renders = await expire_stale(repos, settings, await repos.renders.list_for_shots([st.id]))
-    if assembler is not None:
-        await _probe_generated(repos, assembler, takes)
     by_render = {str(r["id"]): r for r in renders}
     checks = handoff_checks(ld, st)
     previous, following = _neighbour(ld, st, -1), _neighbour(ld, st, 1)
@@ -212,9 +202,8 @@ async def _audit(repos: Repos, access: ProductionAccess, action: str, entity_id:
 
 
 @router.get("/shots/{shot_id}/handoff", response_model=HandoffView)
-async def get_handoff(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep,
-                      assembler: AssemblerDep) -> HandoffView:
-    return await _view(repos, access, shot_id, assembler)
+async def get_handoff(production_id: UUID, shot_id: UUID, access: CanView, repos: ReposDep) -> HandoffView:
+    return await _view(repos, access, shot_id)
 
 
 # ── takes ──────────────────────────────────────────────────────────────────────────────────
@@ -238,13 +227,15 @@ async def upload_take(production_id: UUID, shot_id: UUID, file: Annotated[Upload
     take_id = str(uuid4())
     path = f"{production_id}/{shot_id}/{take_id}.{ext}"
     await repos.storage.upload("takes", path, bytes(data), mime)
-    probe = await assembler.probe("takes", path)
-    poster = await assembler.poster("takes", path, poster_path(path))  # best effort: no still just means no poster
+    # ONE call reads the length and makes the still (plan/2026-11-21 D7); best effort: none just means no length/poster
+    seen = await assembler.inspect("takes", path, poster_path(path))
+    duration = seen.duration_s if seen and seen.duration_s > 0 else None
+    poster = seen.poster_path if seen else ""
     await repos.takes.create({
         "id": take_id, "production_id": str(production_id), "shot_id": str(shot_id),
         "prompt_id": str(st.prompt["id"]) if st.prompt else None,
         "prompt_version": int(st.prompt["version"]) if st.prompt else None, "storage_path": path, "mime": mime,
-        "bytes": len(data), "duration_s": probe.duration_s if probe else None, "uploaded_by": str(access.user.id),
+        "bytes": len(data), "duration_s": duration, "uploaded_by": str(access.user.id),
         **({"poster_path": poster} if poster else {})})  # a column from schema v24: sent only when there is a still
     await _audit(repos, access, "take.upload", take_id, {"shot_id": str(shot_id), "bytes": len(data)})
     return await _view(repos, access, shot_id)
