@@ -28,6 +28,9 @@ Operations (flat objects, unused fields null):
     line        line, to_shot           the clip that performs a line
     note        shot, value             the DoP note (`person_edits.dop_note`): what the shot shows that its fields
                                         cannot say, plain words, at most 600 characters ("" clears it)
+    video_note  shot, value             the video note (`person_edits.video_note`, plan/2026-11-22c): how the shot
+                                        PLAYS in its video (voice, delivery, pace, mood, motion), never what it shows;
+                                        at most 600 characters ("" clears it). The first frame is kept
 
 Ported from `lab/zora_rows/kernel.py`; `sound_mode` and the voicing of a moved line are new (§3.7); `note` is Sable's
 (plan/2026-11-13 phase 8: Sable's change cards go through this kernel).
@@ -56,7 +59,7 @@ from contracts.take_lengths import describe
 
 Row = dict[str, Any]
 OPS = ("set", "retime", "sound", "sound_mode", "role", "insert", "remove", "split", "merge", "move", "line",
-       "note")
+       "note", "video_note")
 NOTE_MAX = 600  # `contracts.producer.PersonEdits.dop_note`
 SET_FIELDS = ("size", "link", "why", "sees", *CINE, *IR_TEXT, *IR_JSON)
 SOUND_FIELDS = ("ambience", "effects", "music", "silence")
@@ -168,6 +171,14 @@ class Kernel:
                 raise Unchanged(f"{code}'s DoP note is already that")
             old, c.note = c.note, note
             return f"{code} · DoP note: {_short(old)} → {_short(note)}"
+        if name == "video_note":
+            note = " ".join(str(o.get("value") or "").split())
+            if len(note) > NOTE_MAX:
+                raise Refused(f"a video note is at most {NOTE_MAX} characters, not {len(note)}")
+            if note == c.video_note:
+                raise Unchanged(f"{code}'s video note is already that")
+            old, c.video_note = c.video_note, note
+            return f"{code} · video note: {_short(old)} → {_short(note)}"
         if name == "retime":
             t = int(o.get("take_s") or 0)
             if t not in self.cov.takes:

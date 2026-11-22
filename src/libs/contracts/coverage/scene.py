@@ -126,6 +126,9 @@ class Clip:
     locks: set[str] = field(default_factory=set)  # "take_s", "size", "angle" ...
     new: bool = False
     note: str = ""  # the DoP note (`person_edits.dop_note`): what the shot shows that its fields cannot say
+    # plan/2026-11-22c: the video note (`person_edits.video_note`): how the shot plays in its video, never what it
+    # shows. Saved without a version bump, so the drawn first frame stays current (`core.coverage_rows.rows_for`)
+    video_note: str = ""
 
     @property
     def blocks(self) -> list[int]:
@@ -140,7 +143,11 @@ class Clip:
         return (self.size, self.take_s, self.link, self.sound_mode, self.first, self.last, self.role, self.priority,
                 self.why, self.sees, tuple(self.on_screen), json.dumps(self.ir, sort_keys=True, default=str),
                 json.dumps(self.sound, sort_keys=True, default=str), tuple(self.heard), tuple(sorted(self.locks)),
-                tuple(self.anchor), self.note)
+                tuple(self.anchor), self.note, self.video_note)
+
+    def picture_content(self) -> tuple[Any, ...]:
+        """`content` without the video note: what a shot's version stands for (its frame is drawn from it)."""
+        return self.content()[:-1]
 
 
 def _obj(value: Any) -> Row:
@@ -250,7 +257,8 @@ class Coverage:
                 sound=_obj(card.get("sound")), ir=_obj(r.get("ir")),
                 heard=[str(x.get("line_id")) for x in card.get("lines") or []
                        if isinstance(x, dict) and x.get("line_id")], locks=locks,
-                note=str(edits.get("dop_note") or "") if isinstance(edits.get("dop_note"), str) else ""))
+                note=str(edits.get("dop_note") or "") if isinstance(edits.get("dop_note"), str) else "",
+                video_note=str(edits.get("video_note") or "") if isinstance(edits.get("video_note"), str) else ""))
         cov = cls(heading=str(scene.get("heading") or ""), target_s=int(float(scene.get("envelope_s") or 0)),
                   blocks=blocks, lines=out_lines, clips=clips, names=names,
                   rows={str(r["id"]): dict(r) for r in ordered}, line_rows={str(r["id"]): dict(r) for r in line_rows},
@@ -423,6 +431,10 @@ class Coverage:
             edits["dop_note"] = c.note
         else:
             edits.pop("dop_note", None)
+        if c.video_note:
+            edits["video_note"] = c.video_note
+        else:
+            edits.pop("video_note", None)
         try:
             target = word_target(SoundMode(c.sound_mode), c.take_s)
         except ValueError:

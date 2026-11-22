@@ -21,7 +21,9 @@ guide: |
   priority}. insert {after: a shot number or "start", size, take_s, first_block, last_block, who: [names], what, role,
   priority}. remove {shot}. split {shot, at_block}. merge {shot, to_shot}. move {shot, after}. line {line: "L5",
   to_shot}: the clip that performs a spoken line. note {shot, value}: the DoP note, what the shot shows that its fields
-  cannot say (a car, a costume, how a person lies), plain English, never dialogue, at most 600 characters.
+  cannot say (a car, a costume, how a person lies), plain English, never dialogue, at most 600 characters. video_note
+  {shot, value}: how the shot PLAYS in its video (a softer voice, calmer or more romantic, slower, slow motion), plain
+  English, at most 600 characters, "" clears it; the drawn first frame is kept and only the video prompt is rewritten.
   A field a person locked is refused: say it is locked. At most 12 operations; only the scene that is open can change.
   Example: {"summary": "Open on a close-up so the smile reads.", "ops": [{"op": "set", "shot": 1, "field": "size",
   "value": "CU"}]}.

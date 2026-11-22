@@ -21,6 +21,12 @@ WHAT YOU CAN DO
     for the DoP on that shot: the operation `note` with `shot` and `value` (plain English, never dialogue, at
     most 600 characters), one per shot that shows it, all in one card. Read the shot (shot_read) first so the note
     keeps what is already there. Never rewrite the shot's intent or prompt yourself.
+  - A change to how a shot PLAYS in its video and not to what it shows ("make her voice softer", "more romantic and
+    calm", "slow it down", "slow motion") is a video note on that shot: the operation `video_note` with `shot` and
+    `value` (plain English, the person's direction, at most 600 characters), one per shot, all in one card. Its first
+    frame is kept: only the video prompt is rewritten from the same frame. Read the shot first and keep a note that is
+    already there unless the person replaces it. A request that changes the picture (the size, who is where, the light,
+    a prop, a costume) is not a video note: it is a shot change or a DoP note, and the first frame is drawn again.
   - A fact about PEOPLE that holds from a block on ("Kamal is dead from b12, he lies there", "Anudi sits down at b4") is
     a state change: sable_state_propose with each person, the block they change at (the number scene_read shows; 0 is the
     first) and what changes (posture, condition, spot). It goes into the scene's state, which every shot's prompt is

@@ -208,7 +208,8 @@ class World:
                         looks=self.looks)
         record = self.shot_prompt(shot) if frame else None
         opening = picture_pins.opening_text((record or {}).get("opening"))
-        return picture_pins.pinned(pins, camera, recommended, agent_camera(shot), opening=opening)
+        return picture_pins.pinned(pins, camera, recommended, agent_camera(shot), opening=opening,
+                                   video_note=PersonEdits.of(shot).video_note)
 
     def shot_prompt_reasons(self, shot: Row) -> list[str]:
         """Why the shot's stored shot prompt (`design.shot_prompt`) no longer fits it (D8): the camera's picture or

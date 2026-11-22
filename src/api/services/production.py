@@ -136,7 +136,7 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
 
         worn = look_pins(shot_canon_ids(scene, cast_ids, edits), looks or {})
         block = agent_camera(shot)
-        motion_now = picture_pins.motion(st.camera, recommended, block)
+        motion_now = picture_pins.motion(st.camera, recommended, block, edits.video_note)
 
         def reasons(made: Any, st: ShotState = st, version: int = version, frame: bool = False,
                     worn: Any = worn, picture: Any = None, motion: Any = None, block: Any = block) -> list[str]:

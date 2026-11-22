@@ -309,6 +309,10 @@ class PersonEdits(BaseModel):
     # plan/2026-11-13 §3.5 (D-A): the fields a person set through Zora ("size", "lens", "sees" ...): no model may write
     # them. The take is `shots.duration_locked`, not here.
     zora_locks: list[str] = Field(default_factory=list)
+    # plan/2026-11-22c: how the shot PLAYS in its video (a softer voice, a calmer mood, slower), never what it shows.
+    # Pinned with the prompts' motion only (`contracts.picture_pins.motion`): a change rewrites the video prompt and
+    # keeps the drawn first frame, and it never bumps the shot's version.
+    video_note: str = Field(default="", max_length=600)
 
     @classmethod
     def of(cls, shot: Mapping[str, Any] | None) -> PersonEdits:
@@ -331,6 +335,8 @@ class PersonEdits(BaseModel):
             out["setup_frame_off"] = True
         if self.zora_locks:
             out["zora_locks"] = list(self.zora_locks)
+        if self.video_note:
+            out["video_note"] = self.video_note
         return out
 
 
@@ -496,6 +502,9 @@ PIN_LABELS = {"framing": "size", "angle": "angle", "height": "height", "lens": "
 HASHED_PINS = ("opens_on", "lands_on", "sentence", "opening")
 OPENING_REWRITTEN = "The shot's prompts were rewritten: a new opening state."
 BEFORE_CAMERA = "Made before the Camera agent designed this shot: it shows the old camera."
+# plan/2026-11-22c: the motion pin's key for the person's video note (`PersonEdits.video_note`), named on its own
+VIDEO_NOTE_PIN = "video_note"
+VIDEO_NOTE_CHANGED = "The video note changed: rewrite the prompts (the first frame is kept)."
 
 
 def camera_changes(was: Mapping[str, str] | None, now: Mapping[str, str] | None, *, head: str) -> list[str]:
@@ -542,7 +551,12 @@ def stale_reasons(pins: Pins | Mapping[str, Any] | None, *, shot_version: int, s
         if picture is not None:
             reasons += camera_changes(p.picture, picture, head="The camera changed")
         if motion is not None:
-            reasons += camera_changes(p.motion, motion, head="The camera move changed")
+            reasons += camera_changes({k: v for k, v in p.motion.items() if k != VIDEO_NOTE_PIN},
+                                      {k: v for k, v in motion.items() if k != VIDEO_NOTE_PIN},
+                                      head="The camera move changed")
+    # plan/2026-11-22c: the video note is its own reason; a pin made before it existed had no note ("")
+    if motion is not None and str(p.motion.get(VIDEO_NOTE_PIN) or "") != str(motion.get(VIDEO_NOTE_PIN) or ""):
+        reasons.append(VIDEO_NOTE_CHANGED)
     if p.shot_version != shot_version:
         reasons.append("The shot changed (its length, size, sound or join).")
     if p.script_hash != script_hash:

@@ -121,7 +121,7 @@ def quick(message: str, cov: Coverage) -> Row | None:
 def invented(op: Row, message: str) -> bool:
     """Prose the conductor wrote that the person did not say (most of its words are not in the message)."""
     prose = kernel_mod().PROSE
-    if op.get("op") not in ("set", "insert") or (op.get("op") == "set" and op.get("field") not in prose):
+    if op.get("op") not in ("set", "insert", "video_note") or (op.get("op") == "set" and op.get("field") not in prose):
         return False
     said = set(re.findall(r"\w+", message.lower()))
     words = re.findall(r"\w+", str(op.get("value") or op.get("what") or "").lower())
@@ -844,7 +844,8 @@ def _kind(op: Row) -> str:
     name = op.get("op")
     if name == "set":
         return KIND_OF.get(str(op.get("field")), "picture")
-    return {"retime": "timing", "sound": "sound", "sound_mode": "sound"}.get(str(name), "order")
+    kinds = {"retime": "timing", "sound": "sound", "sound_mode": "sound", "video_note": "performance"}
+    return kinds.get(str(name), "order")
 
 
 def fence(ops: list[Row], tasks: list[Row], work: Coverage) -> tuple[list[Row], list[str]]:

@@ -7,8 +7,9 @@ video's situation, people, flow (lines by id) and sound. It never sees a line it
 puts each line's exact words in.
 
 The message: the scene first, as its OWN message (`shared_message`), byte for byte the same for every shot of the
-scene, so it caches; then the shot's facts, the camera design and the cards code picked. In video-only mode (D4 b) the
-stored opening and frame follow as <fixed>. On a repair the first answer and the faults follow. No `fallback`: with no
+scene, so it caches; then the shot's facts, the camera design and the cards code picked; a person's video note
+(plan/2026-11-22c: how the shot plays, never what it shows) as <video_note>. In video-only mode (D4 b) the stored
+opening and frame follow as <fixed>. On a repair the first answer and the faults follow. No `fallback`: with no
 model the agent is not called, and a failed call is the caller's to report.
 """
 from __future__ import annotations
@@ -38,6 +39,11 @@ def shared_message(inp: Input) -> str:
 def user_message(inp: Input) -> str:
     cards = "\n".join(t for t in (card(n) for n in inp.cards) if t)
     parts = [inp.shot, inp.camera, f"<cards>\n{cards}\n</cards>" if cards else ""]
+    if inp.video_note:
+        parts += [f"<video_note>\n{inp.video_note}\n</video_note>",
+                  "VIDEO NOTE: a person's direction for how this shot plays in its video (the voice, the delivery, "
+                  "the pace, the mood, the motion). Follow it in the video's people, flow and sound. It never changes "
+                  "the opening or the frame, a spoken line's words or the timecodes the shot's facts set."]
     if inp.mode == "video_only":
         parts += [f"<fixed>\n{inp.fixed}\n</fixed>",
                   "VIDEO ONLY: the first frame is already drawn from the opening and frame in <fixed>. Return them "

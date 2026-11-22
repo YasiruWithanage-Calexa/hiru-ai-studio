@@ -36,6 +36,7 @@ from contracts.canon import wardrobe_by_code
 from contracts.frame_brief import agent_camera
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
+from contracts.producer import PersonEdits
 from hiru_ai.core import memory, parts
 from hiru_ai.core import shot_prompts as prompter
 from hiru_ai.core.context import RunContext
@@ -140,6 +141,13 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         facts = prompter.facts_for(shot, scene, prod, frame, lids=pc["lids"], wardrobe=pc["wardrobe"])
         row = live(shot, pc)
         stored = (row.get("design") or {}).get("shot_prompt")
+        record = stored if isinstance(stored, dict) else None
+        # plan/2026-11-22c (option 1): the video is written from the stored words only while the frame was drawn
+        # from them; otherwise it is said, never guessed
+        if how == "video_only" and frame is not None and shot.frame_strategy != "carry_last_frame" \
+                and not prompter.drawn_from(record, frame):
+            skipped.append(f"{shot.code}: video prompt not rewritten: {prompter.FRAME_NOT_FROM_PROMPT}")
+            return None
         got = prompter.write(ctx, facts, scene_part=pc["scene_part"], pins=pc["world"].pins_now(row), mode=how,
                              stored=stored if isinstance(stored, dict) else None, job_id=str(job_id))
         if got.record is None:
@@ -231,7 +239,8 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
                       "ir": dict(shot.row.get("ir") or {}), "camera": camera_now.model_dump(),
                       "checks": made["checks"], "frame_id": str(frame["id"]) if frame else None,
                       "pins": picture_pins.pinned(shot.pins, camera_now, shot.recommended(scene),
-                                                  agent_camera(shot.row)),
+                                                  agent_camera(shot.row),
+                                                  video_note=PersonEdits.of(shot.row).video_note),
                       "job_id": str(job_id), "created_by": str(payload.actor_user_id)}
             prompt["version"] = producer.last_prompt_version(shot.id) + 1
             scenes_port.add_prompt(prompt)

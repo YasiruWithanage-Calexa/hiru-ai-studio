@@ -46,7 +46,8 @@ def changes(before: Coverage, after: Coverage) -> list[str]:
             ("sound mode", o.sound_mode, c.sound_mode),
             ("role", f"{o.priority or '-'} {o.role or '-'}", f"{c.priority or '-'} {c.role or '-'}"),
             ("blocks", f"b{o.first}-b{o.last - 1}", f"b{c.first}-b{c.last - 1}"),
-            ("why", o.why, c.why), ("what we see", o.sees, c.sees), ("DoP note", o.note, c.note)]
+            ("why", o.why, c.why), ("what we see", o.sees, c.sees), ("DoP note", o.note, c.note),
+            ("video note", o.video_note, c.video_note)]
         pairs += [(k, o.cine(k), c.cine(k)) for k in CINE]
         pairs += [(k, o.ir.get(k), c.ir.get(k)) for k in (*IR_TEXT, *IR_JSON)]
         pairs += [(f"sound {k}", o.sound.get(k), c.sound.get(k)) for k in ("ambience", "effects", "music", "silence")]

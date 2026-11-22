@@ -131,6 +131,12 @@ def rows_print(rows: list[Row], lines: list[Row]) -> str:
     return hashlib.sha256(json.dumps(state, default=str).encode()).hexdigest()[:16]
 
 
+def _video_note(row: Row) -> str:
+    """A row's video note (`person_edits.video_note`, plan/2026-11-22c): saved without a version bump."""
+    edits = row.get("person_edits")
+    return str(edits.get("video_note") or "") if isinstance(edits, dict) else ""
+
+
 def _has_rows(row: Row) -> bool:
     stored = row.get("stored")
     return isinstance(stored, dict) and isinstance(stored.get("rows"), list)
@@ -236,7 +242,7 @@ def rows_for(before: Coverage, after: Coverage, *, planner: str, now: str = "") 
     for n, c in enumerate(after.clips, start=1):
         old = before.clip(c.h)
         moved = old is not None and ({ln.lid for ln in before.performs(c.h)} != {ln.lid for ln in after.performs(c.h)})
-        if old is None or old.content() != c.content() or moved:
+        if old is None or old.picture_content() != c.picture_content() or moved:
             row = after.row_of(c, number=n, row_id=c.row_id, planner=planner, now=now)
             row["version"] = int(row.get("version") or 0) + 1
             row["updated_at"] = now
@@ -246,6 +252,13 @@ def rows_for(before: Coverage, after: Coverage, *, planner: str, now: str = "") 
                                                                                          default=str):
                 if c.ir:
                     designs.append(c.row_id)
+        elif old.video_note != c.video_note:
+            # plan/2026-11-22c: only the video note moved: saved with the SAME version, so the shot's first frame stays
+            # current; its prompts read the note from their motion pin and go out of date by themselves
+            row = after.row_of(c, number=n, row_id=c.row_id, planner=planner, now=now)
+            row["updated_at"] = now
+            upsert.append(row)
+            touched.append(c.row_id)
         else:
             row = dict(after.rows[c.row_id])
             if _num(row.get("number")) != n:
@@ -474,6 +487,10 @@ class Saver:
             cur = now_rows.get(str(row["id"]))
             if cur is None or rows_print([cur], []) != rows_print([row], []):
                 row["version"] = int((cur or row).get("version") or 0) + 1
+                row["updated_at"] = now
+                upsert.append(row)
+            elif _video_note(cur) != _video_note(row):  # plan/2026-11-22c: the note alone, the version kept
+                row["version"] = cur.get("version")
                 row["updated_at"] = now
                 upsert.append(row)
             rows.append(row)

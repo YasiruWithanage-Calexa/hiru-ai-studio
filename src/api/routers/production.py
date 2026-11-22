@@ -316,6 +316,8 @@ class ShotProductionView(BaseModel):
     frame_references: list[FrameReferenceView] = Field(default_factory=list)  # the pictures it is painted against
     frame_missing: list[str] = Field(default_factory=list)  # pictures it wants but has none for, in words
     setup_frame_off: bool = False  # a person turned off the same-setup frame for this shot
+    # plan/2026-11-22c: how the shot plays in its video, set through Zora or Sable; the first frame is kept
+    video_note: str = ""
     # plan/2026-11-20d: the Shot prompt agent's opening + frame words (None until it wrote them)
     shot_prompt: ShotPromptView | None = None
     frames: list[FrameView]  # the finals (uploads and carried frames too)
@@ -632,6 +634,7 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
                           for p in planned],
         frame_missing=missing_references(planned),
         setup_frame_off=st.edits.setup_frame_off,
+        video_note=st.edits.video_note,
         shot_prompt=shot_prompt_view(st),
         frames=frames, accepted_frame_id=st.accepted["id"] if st.accepted else None,
         drafts=frame_views(st.drafts, "Draft"),

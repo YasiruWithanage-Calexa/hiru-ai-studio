@@ -28,7 +28,7 @@ MAX_OPS = 12
 SET_FIELDS = ("size", "link", "why", "sees", *CINE, *IR_TEXT, *IR_JSON)  # the kernel's `set` fields
 SOUND_FIELDS = ("ambience", "effects", "music", "silence")
 OpName = Literal["set", "retime", "sound", "sound_mode", "role", "insert", "remove", "split", "merge", "move", "line",
-                 "note"]
+                 "note", "video_note"]
 
 
 class RowOp(BaseModel):
@@ -38,7 +38,7 @@ class RowOp(BaseModel):
     shot: int | None = Field(None, description="The shot's number as the scene shows it now (2 for S02)")
     field: str | None = Field(None, description="set: size, link, why, sees, angle, lens, movement, setting, "
                                                 "lighting, audio; sound: ambience, effects, music, silence")
-    value: str | None = Field(None, description="The new value (set, sound, sound_mode, note)")
+    value: str | None = Field(None, description="The new value (set, sound, sound_mode, note, video_note)")
     take_s: int | None = Field(None, description="retime / insert: one of the production's take lengths")
     role: str | None = Field(None, description="role / insert: master, two_shot, single, ots, wide, reaction, insert")
     priority: str | None = Field(None, description="role / insert: must, should or nice")

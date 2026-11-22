@@ -75,5 +75,7 @@ class Input(BaseModel):
     cards: list[str] = Field(default_factory=list)  # the craft cards code picked for this shot, by name
     mode: Literal["both", "video_only"] = "both"
     fixed: str = ""  # video_only: the stored opening and frame, as JSON, to be returned unchanged
+    # plan/2026-11-22c: a person's direction for how the shot PLAYS (a softer voice, calmer, slower), for the video only
+    video_note: str = ""
     repair: list[str] = Field(default_factory=list)  # the first answer's faults, on the repair call only
     previous: str = ""  # the first answer as JSON, on the repair call only

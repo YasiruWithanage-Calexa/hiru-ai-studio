@@ -32,10 +32,12 @@ Lane = Literal["chat", "clarify", "edit", "craft", "options", "board", "cannot"]
 LANES: tuple[str, ...] = ("chat", "clarify", "edit", "craft", "options", "board", "cannot")
 WRITING_LANES: frozenset[str] = frozenset({"edit", "craft", "options"})
 OP_NAMES: tuple[str, ...] = ("set", "retime", "sound", "sound_mode", "role", "insert", "remove", "split", "merge",
-                             "move", "line")
+                             "move", "line", "video_note")
 # `framing` is a shot's size: its own kind, so a task about feeling never changes a CU to an MCU unasked (findings
 # 2026-11-17 C9). `camera` is angle, lens, movement and the join.
-KINDS: tuple[str, ...] = ("picture", "camera", "framing", "timing", "sound", "light", "order")
+# `performance` (plan/2026-11-22c): how a shot plays in its video (voice, delivery, pace, mood), the `video_note`
+# op; the drawn first frame is kept
+KINDS: tuple[str, ...] = ("picture", "camera", "framing", "timing", "sound", "light", "order", "performance")
 SET_FIELDS: tuple[str, ...] = ("size", "link", "why", "sees", *CINE, *IR_TEXT, *IR_JSON)  # the kernel's `set`
 CONDUCTOR_SET_FIELDS: tuple[str, ...] = ("size", "link", *CINE)  # what the person's own words name
 SOUND_FIELDS: tuple[str, ...] = ("ambience", "effects", "music", "silence")
@@ -128,6 +130,7 @@ def op_shapes(set_fields: tuple[str, ...] = SET_FIELDS) -> dict[str, dict[str, A
         "merge": {"shot": shot, "to_shot": {"type": "string"}},
         "move": {"shot": shot, "after": {"type": "string"}},
         "line": {"line": {"type": "string"}, "to_shot": {"type": "string"}},
+        "video_note": {"shot": shot, "value": {"type": "string"}},
     }
 
 

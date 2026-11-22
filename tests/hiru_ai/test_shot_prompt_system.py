@@ -22,6 +22,7 @@ from uuid import uuid4
 from langchain_core.embeddings import Embeddings
 from langchain_core.messages import BaseMessage
 
+from contracts import picture_pins
 from contracts.jobs import DispatchPayload, JobKind
 from hiru_ai.core import llm as door
 from hiru_ai.core import shot_prompts
@@ -177,6 +178,20 @@ def stored(store: FakeStore, shot_id: str) -> dict[str, Any] | None:
     return (store.shot_rows[shot_id].get("design") or {}).get("shot_prompt")
 
 
+def drawn_from_prompts(store: FakeStore, rows: list[dict[str, Any]]) -> None:
+    """Each accepted frame painted from its stored shot prompt, as the graph engine pins it (plan/2026-11-22c D6)."""
+    for r in rows:
+        opening = picture_pins.opening_text(stored(store, r["id"])["opening"])
+        store.frames[r["id"]]["pins"] = {"picture": {"opening": picture_pins.short(opening)}}
+
+
+def without_timecodes(store: FakeStore, rows: list[dict[str, Any]]) -> None:
+    for r in rows:
+        for step in stored(store, r["id"])["video"]["flow"]:
+            step.pop("start_s", None)
+            step.pop("end_s", None)
+
+
 def test_generate_video_prompt_writes_and_stores_the_shot_prompt_then_assembles_the_video():
     store, rows = world()
     result, _, phases = run(store, replies=Endless([answer()]))
@@ -211,6 +226,7 @@ def test_a_current_shot_prompt_needs_no_model_for_the_video():
 def test_a_move_only_change_rewrites_the_video_only_and_keeps_the_frame():
     store, rows = world()
     run(store, replies=Endless([answer()]))
+    drawn_from_prompts(store, rows)
     first = stored(store, rows[0]["id"])
     store.shot_rows[rows[0]["id"]]["camera_overrides"] = {"movement": "Pull out", "speed": "Slow"}
     seen: list[str] = []
@@ -251,17 +267,27 @@ def test_a_shot_prompt_written_before_timecodes_gets_its_video_rewritten_and_kee
     (and so the drawn frame) stay."""
     store, rows = world()
     run(store, replies=Endless([answer()]))
-    for r in rows:
-        rec = stored(store, r["id"])
-        for step in rec["video"]["flow"]:
-            step.pop("start_s", None)
-            step.pop("end_s", None)
+    drawn_from_prompts(store, rows)
+    without_timecodes(store, rows)
     kept = {r["id"]: stored(store, r["id"])["opening"] for r in rows}
     run(store, replies=Endless([answer()]), mode="write")
     for r in rows:
         rec = stored(store, r["id"])
         assert rec["mode"] == "video_only" and rec["opening"] == kept[r["id"]]
         assert all(s.get("start_s") is not None for s in rec["video"]["flow"])
+
+
+def test_a_video_only_rewrite_is_refused_when_the_frame_was_not_drawn_from_the_stored_words():
+    """plan/2026-11-22c D6: a frame drawn from code's words, by the legacy engine or uploaded pins no opening, so the
+    video is not rewritten from words that may describe another picture; the job says so and nothing is stored."""
+    store, rows = world()
+    run(store, replies=Endless([answer()]))
+    without_timecodes(store, rows)
+    before = {r["id"]: stored(store, r["id"])["written_at"] for r in rows}
+    result, _, phases = run(store, replies=Endless([answer()]), mode="write")
+    assert AGENT not in phases
+    assert all(stored(store, r["id"])["written_at"] == before[r["id"]] for r in rows)
+    assert any(shot_prompts.FRAME_NOT_FROM_PROMPT in w for w in result.get("warnings") or [])
 
 
 def test_before_a_frame_only_a_shot_without_a_current_shot_prompt_is_written():

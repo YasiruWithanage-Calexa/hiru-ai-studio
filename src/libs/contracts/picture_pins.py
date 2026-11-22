@@ -3,13 +3,16 @@
     picture(camera, design, opening="")          -> the fields that shape the still: size, angle, height, lens, stop,
                                                     focus, composition, the side of the line, the lighting, the Camera
                                                     agent's opening picture; on a frame, the shot prompt's opening
-    motion(camera, recommended, design)          -> the fields that shape the motion: move, speed, timing, trigger,
-                                                    where it lands, the end size, the camera sentence
+    motion(camera, recommended, design, video_note="")
+                                                 -> the fields that shape the motion: move, speed, timing, trigger,
+                                                    where it lands, the end size, the camera sentence; and the
+                                                    person's video note (plan/2026-11-22c)
     pinned(pins, camera, recommended, design)    -> `pins` with both set (a dict, as stored)
 
 A FRAME is out of date when `picture` moved; a VIDEO PROMPT when `picture` or `motion` moved; a SHOT PROMPT when either
 moved or the script, the cast or the looks did (`contracts.producer.stale_reasons`, which names each field that moved,
-before → after). A move-only change keeps the frame. Nothing is redrawn or rewritten here: the reasons are shown, a
+before → after). A move-only change keeps the frame, and so does a video note (`PersonEdits.video_note`: how the shot
+plays, pinned in `motion` as a hash, plan/2026-11-22c). Nothing is redrawn or rewritten here: the reasons are shown, a
 person clicks.
 
 `design` is the Camera agent's block on the shot (`contracts.frame_brief.agent_camera`), None for a shot it did not
@@ -22,7 +25,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from contracts.camera_words import camera_line
-from contracts.producer import CameraSettings, Pins
+from contracts.producer import VIDEO_NOTE_PIN, CameraSettings, Pins
 
 PICTURE_FIELDS = ("framing", "angle", "height", "lens", "aperture", "focus", "composition", "axis", "lighting")
 MOTION_FIELDS = ("movement", "speed")
@@ -44,15 +47,18 @@ def picture(camera: CameraSettings, design: Mapping[str, Any] | None, opening: s
     return out
 
 
-def motion(camera: CameraSettings, recommended: CameraSettings | None, design: Mapping[str, Any] | None
-           ) -> dict[str, str]:
-    """The motion pin: the panel's move and speed, the design's timing, trigger, landing and end size, and the camera
-    sentence the video prompt gets (the agent's while no camera field changed, else code's)."""
+def motion(camera: CameraSettings, recommended: CameraSettings | None, design: Mapping[str, Any] | None,
+           video_note: str = "") -> dict[str, str]:
+    """The motion pin: the panel's move and speed, the design's timing, trigger, landing and end size, the camera
+    sentence the video prompt gets (the agent's while no camera field changed, else code's), and the person's video
+    note as a hash ("" for none)."""
     block = design or {}
     out = {f: str(getattr(camera, f) or "") for f in MOTION_FIELDS}
     out |= {k: str(block.get(k) if block.get(k) is not None else "") for k in MOTION_BLOCK}
     out["lands_on"] = short(block.get("lands_on"))
     out["sentence"] = short(camera_line(camera, recommended, design))
+    if short(video_note):  # only when there is one: a pin with no note reads the same as one made before notes
+        out[VIDEO_NOTE_PIN] = short(video_note)
     return out
 
 
@@ -67,10 +73,11 @@ def opening_text(opening: Any) -> str:
 
 
 def pinned(pins: Pins | Mapping[str, Any], camera: CameraSettings, recommended: CameraSettings | None,
-           design: Mapping[str, Any] | None, *, opening: str = "") -> dict[str, Any]:
-    """`pins` (as stored) with the picture and motion pins of the camera as it stands."""
+           design: Mapping[str, Any] | None, *, opening: str = "", video_note: str = "") -> dict[str, Any]:
+    """`pins` (as stored) with the picture and motion pins of the camera as it stands (and the video note)."""
     base = pins.model_dump() if isinstance(pins, Pins) else dict(pins)
-    return {**base, "picture": picture(camera, design, opening), "motion": motion(camera, recommended, design)}
+    return {**base, "picture": picture(camera, design, opening),
+            "motion": motion(camera, recommended, design, video_note)}
 
 
 __all__ = ["MOTION_FIELDS", "PICTURE_FIELDS", "motion", "opening_text", "picture", "pinned", "short"]
