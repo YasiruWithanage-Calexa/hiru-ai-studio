@@ -23,7 +23,7 @@ sys.path[:0] = [str(ROOT / "src" / "libs")]
 from contracts.board import OVERLAP_LABEL  # noqa: E402
 from contracts.frame_brief import sheet_path  # noqa: E402
 
-FIELDS = "id,scene_id,production_id,version,part,parts,status,quality,prompt,cells,storage_path,created_at"
+FIELDS = "id,scene_id,production_id,version,part,parts,status,quality,prompt,cells,storage_path,created_at,writer,colours"
 
 
 def env() -> dict[str, str]:

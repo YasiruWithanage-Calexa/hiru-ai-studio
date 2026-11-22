@@ -33,6 +33,12 @@ def test_the_prompt_is_static_text_and_carries_safe_depiction():
     assert " ".join(PROMPT_LINE.split()).lstrip("- ") in " ".join(text.split())
 
 
+def test_the_writer_is_told_never_to_describe_the_sheet_layout():
+    """plan/2026-11-22 §3.3: code lays out the sheet; a grid in `world` contradicted each part's own grid."""
+    text = " ".join(Prompt.load(HERE / "prompts" / "system.md").text.split())
+    assert "Never describe the sheet's layout (grid, rows, columns, cells, panel count, gutters)" in text
+
+
 def test_the_hooks_use_the_agents_own_types():
     inp = Input.model_validate({"message": "hello", "pictures": [{"b64": "iVBORw0KGgo="}]})
     assert agent.user_message(inp) == "hello"

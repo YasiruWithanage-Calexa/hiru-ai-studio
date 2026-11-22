@@ -291,7 +291,10 @@ boards paint at LOW, MEDIUM as a setting, **never HIGH** (the person's image rul
 board is **never repainted by itself** (out of date is reported; a person presses Update board); **an edited shot
 repaints only its own panel** (plan/2026-11-17: a changed or added shot's panel is painted ALONE with its neighbours
 attached, removed and moved shots only tidy the cells, cells and writer panels are renumbered together; no mask, the
-image model does not honour one); a locked panel is never repainted; each frame gets only its own panel (D8). Schema
+image model does not honour one); a locked panel is never repainted; each frame gets only its own panel (D8); **a
+board is cut along the grid that was painted, and a cut that still holds two panels or an empty cell fails the part**
+(plan/2026-11-22, `pictures.cell_boxes` / `cut_problems`, ported unchanged from `lab/board_grid`); the board writer
+never names a grid (code lays out the sheet). Schema
 v25 is not applied; the paid phases 0 and 7 are the person's (`plan/2026-11-14/IMPLEMENTED.md`), and plan/2026-11-17
 phase 6 (`plan/2026-11-17/IMPLEMENTED.md`).
 

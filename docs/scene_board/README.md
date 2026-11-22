@@ -21,6 +21,18 @@ light, the props, the camera positions and where everyone stands
 4. **After**: the picture is cut along its painted gutters into one PNG per shot; a numbered sheet is drawn by code
    (the image model never draws numbers), with black plates as black cells carrying their script line. Everything is in
    the private `frames` bucket under `<production>/boards/<board>/`.
+   **The cut reads the grid that was PAINTED** (plan/2026-11-22, `lab/board_grid`): the image model sometimes paints
+   another grid than the one asked for (asked 3 across and 2 down, painted 3 and 3 with a row of empty cells).
+   `pictures.cell_boxes` finds every thin white gutter on the sheet, takes the grid that explains them over the painted
+   extent (white left under the grid is not part of it), cuts at the gutters (at the even split where panels touch)
+   and skips empty cells. `pictures.cut_problems` then checks each crop: a crop that is empty, holds two panels (a
+   gutter runs through it) or holds an empty cell **fails the part** ("Part 2 of the board came out in a different
+   layout than was asked. Paint the board again."); nothing is stored as a cell and nothing repaints by itself (D1 of
+   plan/2026-11-22). The board writer never names a grid: `writer_message` gives it none, its prompt forbids it, and
+   `board_prompt` drops any layout sentence from `world` (`board_layout_free`), so the head sentence alone decides the
+   grid. Boards cut wrongly before this are mended with no model call by `scripts/recut_boards.py` (dry run by
+   default; `--apply` stores new crops at fresh paths, keeps each cell's pin, note, lock and undo history, clears an
+   approval, and lists first frames painted from the part without touching them).
 5. **Parts** (D5): up to 16 painted shots on one picture; above that, parts of at most 12, the last panel of one part
    repeated as the first of the next (painted with that panel attached). A tall board holds up to 9, then parts of 9.
 6. **Shape** (2026-11-16, `lab/portrait_board` run_001): the board has the production's shape. A horizontal production

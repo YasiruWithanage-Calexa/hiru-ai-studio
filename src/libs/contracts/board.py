@@ -221,9 +221,10 @@ def writer_message(bundle: Mapping[str, Any], colours: Mapping[str, str], *,
     if edit is not None:
         return _edit_message(edit, colours)
     n = len(bundle["shots"])
-    cols, rows = grid_for(n)
+    # No grid here (plan/2026-11-22): the board may be painted in parts, each with a grid of its own, and code writes
+    # every panel's row and column into the image prompt.
     text = (f"<scene>\n{json.dumps(bundle, ensure_ascii=False, indent=1)}\n</scene>\n\n"
-            f"Write the storyboard: {n} panels, one per shot in shot order, laid out {cols} across and {rows} down. "
+            f"Write the storyboard: {n} panels, one per shot in shot order. "
             "The reference pictures follow, in the same order as `reference_pictures`.\n\n" + mannequin_note(colours))
     if repaint:
         notes = "\n".join(f"- shot {k}: {v}" if v else f"- shot {k}" for k, v in sorted(repaint.items()))
@@ -421,6 +422,20 @@ def board_world(world: str, names: Iterable[str]) -> str:
     return " ".join(keep)
 
 
+# plan/2026-11-22 (lab/board_grid run.py `no_leak`, unchanged): the writer used to name a grid of its own in `world`
+# ("a four-column, four-row grid ... fill the first fourteen cells"), told the whole scene's layout, and every part's
+# prompt then asked for two grids. A sentence that names a layout AND the sheet is dropped; the head sentence alone
+# decides the grid.
+_LAYOUT = re.compile(r"grid|columns?\b|across|\bdown\b|cells?\b|panels? in shot order", re.I)
+_SHEETY = re.compile(r"storyboard|panel|cell|grid", re.I)
+
+
+def board_layout_free(world: str) -> str:
+    """The World paragraph without the writer's sentences about the sheet's layout."""
+    kept = [s for s in re.split(r"(?<=\.)\s+", world) if not (_LAYOUT.search(s) and _SHEETY.search(s))]
+    return " ".join(kept)
+
+
 def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], colours: Mapping[str, str],
                  aspect: str = BOARD_ASPECT) -> str:
     """The image prompt for one board (or one part): the panels of `numbers`, in order (lab `board_prompt` with
@@ -449,7 +464,7 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
     refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
     return "\n\n".join(x for x in [
         head, refs, mannequin_line(colours),
-        "World (every panel): " + board_world(writer.world, colours),
+        "World (every panel): " + board_layout_free(board_world(writer.world, colours)),
         "Geography: " + writer.geography,
         "\n".join(pos), BODIES, NO_TEXT,
     ] if x)

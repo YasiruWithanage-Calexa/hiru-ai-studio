@@ -52,6 +52,12 @@ FAILED = "The scene board could not be made. Try again in a moment."
 NOT_CONFIGURED = "Image generation is not set up on this server."
 NO_WRITER = "The board writer is not set up on this server."
 NOTHING = "Every shot of this scene is a black plate: there is nothing to paint."
+
+
+def bad_cut(part: int, parts: int) -> str:
+    """plan/2026-11-22 §3.2: the part's picture could not be cut into one panel per shot."""
+    what = f"Part {part} of the board" if parts > 1 else "The board"
+    return f"{what} came out in a different layout than was asked. Paint the board again."
 # the place, up to four props, and on a later part the panel it repeats; a panel painted alone: the place, its props
 # and its two neighbours
 MAX_IMAGE_REFS = 6
@@ -298,6 +304,12 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
             image = picture.data
             cells_shots = _cells_of(b, group, i, len(groups))
             boxes = pics.cell_boxes(image, len(numbers))
+            problems = pics.cut_problems(image, boxes)
+            if problems:  # plan/2026-11-22: never a crop with two panels or an empty cell; a person paints again
+                _log.warning("board %s part %s came out in another layout: %s", board_id, i + 1, "; ".join(problems))
+                frames.save_board(rid, {**fields, "status": "failed", "error": bad_cut(i + 1, len(groups))})
+                previous_last = None
+                continue
             kept = {s.id: old[s.id] for s in cells_shots
                     if s.painted and s.id in old and old[s.id].get("locked") and old[s.id].get("path")}
             if kept:  # a locked panel is never repainted: its old picture is put back where its cell now is

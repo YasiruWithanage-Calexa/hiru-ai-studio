@@ -90,6 +90,9 @@ Rules:
 - If two parts of the input disagree (for example a clothing colour in a shot plan against the look), the look and the
   reference pictures win; report the disagreement in `conflicts`.
 - No text of any kind is drawn: no panel numbers, no captions, no titles, no timestamps, no arrows.
+- `world` is the place, light and people for every panel. Never describe the sheet's layout (grid, rows, columns,
+  cells, panel count, gutters): code lays out the sheet, and a board is often painted in parts with a grid of their
+  own.
 - SAFE DEPICTION (plan/2026-11-10b). Death, crime and injury are shown, never graphic, and the video model refuses the
   words for them. Write only what the camera sees: "lies still on the floor, eyes closed", "a white sheet over a
   shape", "a hand pressed to his side". Never write dead, corpse, death, blood, wound, stab, kill, murder or suicide in

@@ -197,6 +197,21 @@ def test_update_needs_a_finished_board_in_the_right_shape(world: World, fired: l
     assert world.client.post(update_url(world, s), json={}, headers=crew).json()["detail"] == boards.WRONG_SHAPE
 
 
+def test_a_part_that_could_not_be_cut_shows_why_and_asks_for_a_whole_repaint(world: World):
+    """plan/2026-11-22 §3.4: the card shows a failed part's error as it is; nothing new in the interface."""
+    from hiru_ai.systems.frame_render.board import bad_cut
+
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    rows(world)[bid].update(status="failed", error=bad_cut(1, 1), approved_at=None, approved_by=None)
+    view = world.client.get(board_url(world, s), headers=crew).json()
+    assert view["whole"] and view["state"] == "failed"
+    assert view["parts"][0]["error"] == ("The board came out in a different layout than was asked. "
+                                         "Paint the board again.")
+
+
 def test_update_waits_while_the_scene_is_planned_and_a_failed_dispatch_keeps_the_approval(
         world: World, fired: list[dict], monkeypatch: pytest.MonkeyPatch):  # noqa: F811
     s = open_scene(world)
