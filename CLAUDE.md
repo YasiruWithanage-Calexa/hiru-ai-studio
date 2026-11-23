@@ -13,8 +13,10 @@ in a new `plan/<date>/` folder.
 - Supabase for auth, DB, storage, realtime and pgvector. **Hiru only** (single tenant).
 - Proven PromptMotion engines are **forked**, not imported (PLAN.md §2.1). Each fork gets an
   `UPSTREAM.md` with the source path, commit (`1d748dc` at plan time) and every divergence.
-- The UI shows **no credits or costs**, with ONE exception: a scene's total cost, for people who hold `VIEW_COSTS`
-  (producer, director, admin; plan/2026-11-06d, below). `/v1/usage` returns a percentage only.
+- The UI shows **no credits or costs**, with two exceptions: a scene's total cost, for people who hold `VIEW_COSTS`
+  (producer, director, admin; plan/2026-11-06d, below), and Settings → Usage, a month's spending for admins
+  (plan/2026-11-23, below). Both are FINAL prices; **the margins are secret** (`src/api/margins.yaml`) and never leave
+  the API. `/v1/usage` returns a percentage only.
 - Nothing is deployed until the user says so; everything is tested on localhost first.
 
 ## The AI package (`src/libs/hiru_ai`, plan/2026-11-03)
@@ -200,12 +202,45 @@ The scene panel's header shows ONE figure, "Scene ≈ $20.86": what the scene ha
 rules are `contracts/costs.py` (pure; money in integer micro-dollars; margins in basis points); the arithmetic's inputs are
 gathered by `api/services/costs.py` and served by `routers/costs.py` (`GET .../scenes/{id}/cost`, `VIEW_COSTS`; the admin
 price list `GET|PUT /v1/prices`); storage is `prices` and `token_usage.scene_id` (schema v17: `Database/schema_v17.sql`,
-`upgrade_v16_to_v17.sql`). Rules that must not drift: **each margin is applied once**, in `with_margin` / `with_retry` only
-(video +10%, images +5%, text 0, then +20% retry on the TO-FINISH part only); **a missing price is a note, never zero and
+`upgrade_v16_to_v17.sql`). Since plan/2026-11-23b it is **scene work only** (design, Camera, prompts, frames, video, chat)
+and has **no retry margin** (spent + what is left). Rules that must not drift: **each margin is applied once**, in
+`with_margin` only (the bucket margins from `src/api/margins.yaml`); **a missing price is a note, never zero and
 never a guess** (`complete: false`); **the response is the total and two flags and nothing else**, so no breakdown, rate
 or margin can leak through the network tab; **nothing stores a money figure**: a cost is metered usage x the price valid
 when the work was made, and prices are added with a `valid_from`, never edited; a model name is priced only if it is a listed
 name or a dated snapshot of it (a bare prefix once billed gpt-5.5 as gpt-5). Read `plan/2026-11-06d/IMPLEMENTED.md` first.
+
+## Setup apart from scene cost (plan/2026-11-23b)
+
+Every `token_usage` row is one of three parts (`contracts/cost_parts.py`, a closed table by phase; a test fails on a
+phase it does not place): **production setup** (canon extract and refine, the breakdown's canon / looks / series passes,
+character and look sheets, questions about the production), **episode setup** (reading documents, the breakdown, script
+split, structure build, ALL of Shot Planner Raphael: the upload plan and every re-plan) and **scene** (the rest). The job
+decides what a phase cannot: a `canon_refine` job is production setup, a `frame_render` job naming `entity_id` / `look_id`
+is a sheet. Episode setup finds its episode by the row's scene, its job's scene, then the episode built from its job's
+document (`episodes.source_document_ids`); production-wide build work is shared by dialogue lines. Figures:
+`GET /v1/productions/{pid}/setup-cost` and `.../episodes/{eid}/setup-cost` (`VIEW_COSTS`; dated entries: upload, each
+re-plan, each re-read; labels and final totals only), and Settings → Usage "by purpose" (schema v30:
+`token_usage_totals` groups by phase and job; with the v29 function the API sums the rows itself). `token_usage.scene_id` is ALWAYS
+written now: the `USAGE_SCENE` switch is gone (it was off, so Raphael and chat rows never named their scene). Read
+`plan/2026-11-23b/PLAN.md` and `IMPLEMENTED.md` first.
+
+## Usage in USD and the margins (plan/2026-11-23)
+
+Settings → Usage (`GET /v1/admin/usage?month=2026-11`, admin only) shows a month's spending: the total and each production,
+in three buckets (Chat & decisions = text calls, Image generation, Video generation). **Every money figure anyone sees is a
+FINAL price**: provider cost + the bucket's margin, from `src/api/margins.yaml` (llm 10 %, image 20 %, video 30 %,
+dated entries, so a change never re-prices past work; no retry margin since plan/2026-11-23b; a missing or broken file stops the API, never 0 %;
+`api/margins.py` reads it, `contracts.costs.parse_margins` checks it, so `contracts` stays free of YAML).
+**The margins are secret**: no response field, page or log above DEBUG carries a margin or a provider cost
+(`tests/api/test_admin_usage.py` scans every response schema). The admin price list stays the providers' rates (D6).
+Prices: OpenAI and Google list prices read 2026-11-23 (`contracts/costs.SEED_PRICES`, schema v29); Gemini Omni 1.2 is
+priced by the tokens it reports (`video_tokens`: in 1.50, video 12.00, thinking 9.00), else per second; gpt-image-2 bills
+pictures sent in (8.00) apart from text (5.00) (`token_usage.image_input_tokens`); gpt-5.5 / gpt-6.1 have long-context
+rates above 272K input. A month is summed by the database (`token_usage_totals`, v29; before it, the API sums rows) per
+production, model, kind, price/margin interval and long/short, with every non-linear part split row by row first, so the
+sums price as the rows do. Code: `contracts/costs.py`, `contracts/usage_totals.py`, `api/services/usage_totals.py`,
+`api/routers/admin_usage.py`. Read `plan/2026-11-23/PLAN.md` and `IMPLEMENTED.md` first.
 
 ## Safe depiction (plan/2026-11-10b)
 

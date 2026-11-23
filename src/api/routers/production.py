@@ -268,11 +268,12 @@ class ShotLine(BaseModel):
     parts: int = 0
 
 
-# The audit of 2026-11-21 (lab/shot_prompts): a first frame is painted from the shot's shot prompt (the Camera agent's
-# angle, height and opening) and the face, look and place sheets. The Scene board's panel ("keep its composition
-# exactly", painted before the camera design) is no longer a gate; it is attached only when no current shot prompt can
-# be had and its panel is ready (`systems/frame_render`).
-PROMPT_STATE = "prompt"
+# The audit of 2026-11-21 (lab/shot_prompts) made the board's panel no gate: a first frame was painted from the shot
+# prompt alone, and the approved board never reached it. plan/2026-11-23d (the person, 2026-11-23): "first frame
+# generation should be disabled if the scene board is not approved". The panel is the gate again: a first frame is
+# drawn only when its shot's panel is ready (painted, current, its part approved) or the shot is a black plate; the
+# panel then gives the blocking and the shot prompt the camera (`systems/frame_render`).
+PROMPT_STATE = "prompt"  # kept for views stored before 2026-11-23d
 
 
 class ShotBoardView(BaseModel):
@@ -433,7 +434,7 @@ async def load(repos: Repos, access: ProductionAccess, scene_id: UUID) -> Loaded
                        repos.direction.series(production_id)),
         repos.scene_boards.list(scene_id))
     looks = looks_in_force(all_looks, picks, int(episode["number"]) if episode else None)
-    states = scene_states(scene, shots, lines, canon, frames, prompts, looks)
+    states = scene_states(scene, shots, lines, canon, frames, prompts, looks, board)
     return Loaded(access.production, scene, states, lines, canon, looks, genre_of(series), boards.current(board))
 
 
@@ -638,7 +639,8 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
         shot_prompt=shot_prompt_view(st),
         frames=frames, accepted_frame_id=st.accepted["id"] if st.accepted else None,
         drafts=frame_views(st.drafts, "Draft"),
-        frame_board=ShotBoardView(state="plate" if panel.plate else PROMPT_STATE, ready=True, reason="",
+        frame_board=ShotBoardView(state="plate" if panel.plate else panel.state, ready=panel.ready or panel.plate,
+                                  reason="" if panel.ready or panel.plate else panel.reason,
                                   board_id=UUID(panel.board_id) if panel.board_id else None,
                                   number=int((panel.cell or {}).get("number") or row["number"]),
                                   panel_url=media_links.url("frames", cell_path) or None,
@@ -960,7 +962,9 @@ async def request_frames(production_id: UUID, shot_id: UUID, body: FramesRequest
         raise HTTPException(status.HTTP_409_CONFLICT, _carried(st, ld))
     if body.from_draft or body.stage == FrameStage.DRAFT:  # plan/2026-11-14 D3: the board panel replaces the draft
         raise HTTPException(status.HTTP_409_CONFLICT, DRAFTS_GONE)
-    panel = ld.panel(st)  # no longer a gate: the frame is painted from the shot prompt (PROMPT_STATE)
+    panel = ld.panel(st)  # plan/2026-11-23d: the gate again, an unapproved board draws no first frame
+    if not (panel.ready or panel.plate):
+        raise HTTPException(status.HTTP_409_CONFLICT, panel.reason or "Approve the scene board first.")
     return await _start_frames(repos, access, ld, [st], body.count, body.stage,
                                board={st.id: panel.board_id} if panel.ready and panel.board_id and not panel.plate
                                else None,
@@ -992,7 +996,11 @@ async def request_scene_frames(production_id: UUID, scene_id: UUID, body: SceneF
                             else "Every shot that needs a draft has one." if drafting
                             else "Every shot that needs a first frame has one.")
     panels = {st.id: ld.panel(st) for st in wanted}
-    targets = wanted  # PROMPT_STATE: a board panel is a fallback, never a gate (the audit of 2026-11-21)
+    # plan/2026-11-23d: only shots whose panel is ready (or black plates); the rest wait for the approved board
+    targets = [st for st in wanted if panels[st.id].ready or panels[st.id].plate]
+    if not targets:
+        raise HTTPException(status.HTTP_409_CONFLICT, next((p.reason for p in panels.values() if p.reason),
+                                                           "Approve the scene board first."))
     return await _start_frames(repos, access, ld, targets, body.count, body.stage,
                                board={st.id: panels[st.id].board_id for st in targets
                                       if panels[st.id].ready and panels[st.id].board_id and not panels[st.id].plate},

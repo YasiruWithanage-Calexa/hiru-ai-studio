@@ -209,3 +209,9 @@ def test_the_fake_provider_makes_a_playable_video():
     data = fake.generate({"config": {"duration_seconds": 4}}, {})["data"]
     assert data[4:8] == b"ftyp" and b"moov" in data and b"mdat" in data and b"avc1" in data
     assert 1_000 < len(data) < 50_000, "small enough to keep in the repo"
+
+
+def test_omni_thinking_is_counted_apart_from_the_video():
+    usage = {"total_input_tokens": 120, "total_output_tokens": 900, "total_thought_tokens": 5}
+    assert omni.thought_tokens(usage) == 5
+    assert omni.thought_tokens({"candidatesTokenCount": 900, "thoughtsTokenCount": 5}) == 0  # not in that completion

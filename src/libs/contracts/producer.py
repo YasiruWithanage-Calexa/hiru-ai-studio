@@ -627,6 +627,9 @@ def frame_quality(state: Mapping[str, Any]) -> str:
 
 # The label the draft goes by when it is attached to a final. The prompt keys on its start, as it does for sheets.
 DRAFT_LABEL = "the approved draft of this frame"
+# plan/2026-11-23d §2.2: the shot's approved Scene board panel attached to a frame written from its shot prompt: it
+# gives where everyone stands, faces and holds what, the props and the place; never the camera.
+BLOCKING_LABEL = "the approved scene board panel of this shot"
 
 
 # The first frame's prompt is `contracts.frame_brief.frame_prompt` (plan/2026-11-11b).

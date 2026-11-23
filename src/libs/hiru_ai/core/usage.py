@@ -30,9 +30,25 @@ _log = logger("usage")
 
 
 def row(phase: str, model: str, input_tokens: int = 0, cached_input_tokens: int = 0,
-        output_tokens: int = 0) -> UsageRow:
-    return {"phase": phase, "model": model, "input_tokens": int(input_tokens),
-            "cached_input_tokens": int(cached_input_tokens), "output_tokens": int(output_tokens)}
+        output_tokens: int = 0, *, image_input_tokens: int | None = None) -> UsageRow:
+    """`image_input_tokens` (schema v29, plan/2026-11-23): of the input, the pictures sent to an image model. Only
+    named when known; a writer whose table lacks the column writes the row without it (`without_new_columns`)."""
+    out: UsageRow = {"phase": phase, "model": model, "input_tokens": int(input_tokens),
+                     "cached_input_tokens": int(cached_input_tokens), "output_tokens": int(output_tokens)}
+    if image_input_tokens is not None:
+        out["image_input_tokens"] = int(image_input_tokens)
+    return out
+
+
+# Columns newer than the oldest database a writer may meet (schema v29). A row naming one is retried without it.
+NEW_COLUMNS: tuple[str, ...] = ("image_input_tokens",)
+
+
+def without_new_columns(usage: UsageRow) -> UsageRow | None:
+    """The row without the columns an older table lacks, or None when it names none (nothing to retry)."""
+    if not any(c in usage for c in NEW_COLUMNS):
+        return None
+    return {k: v for k, v in usage.items() if k not in NEW_COLUMNS}
 
 
 @dataclass(frozen=True)

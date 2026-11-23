@@ -50,6 +50,7 @@ __all__ = [
     "generate",
     "read_outcome",
     "submit",
+    "thought_tokens",
     "usage_tokens",
     "wait",
 ]
@@ -245,6 +246,15 @@ def usage_tokens(usage: dict) -> tuple[int, int]:
     return int(prompt), int(completion)
 
 
+def thought_tokens(usage: dict) -> int:
+    """Of `usage_tokens`' completion, the thinking (plan/2026-11-23): Google bills it at the text output rate, not the
+    video rate. Only the Interactions spelling counts it inside the completion; the generateContent fallback's
+    completion leaves thinking out, so it is 0 there."""
+    if not usage.get("total_output_tokens"):
+        return 0
+    return int(usage.get("total_thought_tokens") or 0)
+
+
 def generate(built: dict, ref_bytes: dict[str, tuple[bytes, str]], *, api_key: str,
              base_url: str, deadline: float, poll_interval: float,
              download_attempts: int, **_ignored: object) -> dict:
@@ -264,4 +274,5 @@ def generate(built: dict, ref_bytes: dict[str, tuple[bytes, str]], *, api_key: s
                         attempts=download_attempts)
     prompt_tokens, completion_tokens = usage_tokens(outcome["usage"])
     return {"data": data, "mime": outcome["mime"] or "video/mp4", "provider_id": outcome["interaction_id"],
-            "prompt_tokens": prompt_tokens, "completion_tokens": completion_tokens, "provider_seconds": 0}
+            "prompt_tokens": prompt_tokens, "completion_tokens": completion_tokens,
+            "thought_tokens": min(thought_tokens(outcome["usage"]), completion_tokens), "provider_seconds": 0}

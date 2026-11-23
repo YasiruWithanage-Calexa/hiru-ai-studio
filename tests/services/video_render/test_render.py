@@ -312,3 +312,30 @@ def test_a_spec_that_does_not_parse_is_refused(provider):
     store = FakeStore(row)
     assert run(store, row, fake_provider=False) == "failed"
     assert store.rows[row["id"]]["error"] == render.CHANGED
+
+
+# ── plan/2026-11-23: the video and the thinking are billed at different rates ──────────────────
+
+
+def test_a_render_records_its_video_and_thinking_tokens_apart(monkeypatch):
+    inner = Provider()
+
+    class Omni:
+        def generate(self, built: dict, ref_bytes: dict, **kw: Any) -> dict:
+            return inner.generate(built, ref_bytes, **kw) | {"prompt_tokens": 2_000, "completion_tokens": 47_336,
+                                                             "thought_tokens": 1_000}
+
+    monkeypatch.setitem(render.PROVIDERS, "omni_flash", Omni())
+    row = render_row()
+    store = FakeStore(row)
+    assert run(store, row, fake_provider=False) == "done"
+    usage = store.rows[row["id"]]["usage"]
+    assert (usage["completion_tokens"], usage["video_tokens"], usage["thought_tokens"]) == (47_336, 46_336, 1_000)
+
+
+def test_a_render_without_token_counts_names_no_split():
+    row = render_row()
+    store = FakeStore(row)
+    assert run(store, row) == "done"  # the fake provider reports tokens; this checks the split follows them
+    usage = store.rows[row["id"]]["usage"]
+    assert usage["video_tokens"] + usage["thought_tokens"] == usage["completion_tokens"]

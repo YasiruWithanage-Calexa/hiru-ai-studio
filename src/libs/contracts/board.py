@@ -27,8 +27,10 @@ import json
 import math
 import re
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
+
+from contracts import holding, picture_pins
 
 Row = dict[str, Any]
 
@@ -43,10 +45,10 @@ DEFAULT_QUALITY = "low"
 ONE_IMAGE = 16  # D5: up to 16 painted shots on one wide board (4x4 measured clean, run_004)
 PART_SIZE = 12  # D5: above 16, parts of at most 12 ...
 OVERLAP = 1  # ... the last panel of one part repeated as the first of the next
-# A tall sheet holds narrower panels: up to 9 on one image (6 measured clean, lab/portrait_board run_001; 16 never
-# tried), above that parts of at most 9.
-ONE_IMAGE_TALL = 9
-PART_SIZE_TALL = 9
+# A tall sheet holds narrower panels: up to 6 on one image, the size measured clean (lab/portrait_board run_001), above
+# that parts of at most 6 (plan/2026-11-23c D6: 9 panels of about 340x765 px floated an umbrella and added an arm).
+ONE_IMAGE_TALL = 6
+PART_SIZE_TALL = 6
 _PANEL_SHAPE = {BOARD_ASPECT: "a landscape 16:9 still", TALL: "a tall portrait 9:16 still"}
 
 
@@ -129,18 +131,123 @@ def shot_plan(shot: Mapping[str, Any], script_lines: Sequence[str], spoken: Sequ
         "subjects": [{k: v for k, v in s.items() if k in ("id", "action", "position")}
                      for s in ir.get("subjects") or [] if isinstance(s, Mapping)],
         "cinematography": ir.get("cinematography") or {}, "lighting": ir.get("lighting", ""),
-        "beats": [b.get("action", "") for b in ir.get("beats") or [] if isinstance(b, Mapping)],
+        # plan/2026-11-23c §3.1: what the face and hands do and the camera sentence, not the action alone
+        "beats": [{k: str(b[k]) for k in ("action", "performance", "camera") if b.get(k)}
+                  for b in ir.get("beats") or [] if isinstance(b, Mapping)],
+        "opening_state": str(intent.get("opens") or ""),  # the ledger's state as the shot opens ("" without one)
+        # plan/2026-11-23d §2.2: the camera the shot prompt and the first frame are written from
+        "camera_design": camera_of(shot),
     }
+
+
+def camera_of(shot: Mapping[str, Any]) -> Row:
+    """The Camera agent's camera of a shot (plan/2026-11-23d §2.2), the one its shot prompt and first frame are written
+    from: the picture fields of the recommendation with a person's changes on top (`picture_pins.PICTURE_FIELDS`),
+    what the frame opens on, the composition note and why the angle. {} when the Camera agent did not design it (the
+    planner's `ir.cinematography` is then the camera)."""
+    design = _mapping(shot.get("design"))
+    block = _mapping(design.get("camera"))
+    if block.get("state") != "designed":
+        return {}
+    settings = {**_mapping(design.get("recommended")), **_mapping(shot.get("camera_overrides"))}
+    out: Row = {f: str(settings[f]) for f in picture_pins.PICTURE_FIELDS if settings.get(f)}
+    out.update({k: str(block[k]) for k in ("opens_on", "composition_note", "angle_reason") if block.get(k)})
+    return out
 
 
 def _mapping(value: Any) -> Mapping[str, Any]:
     return value if isinstance(value, Mapping) else {}
 
 
+# ── what the plan knows about a shot beyond its own row (plan/2026-11-23c §3.1) ─────────────────────────────────
+
+MARK_KEYS = ("who", "zone", "facing", "frame_side", "posture", "holding", "left_hand", "right_hand", "condition",
+             "wearing")
+_BREAKDOWN_KEYS = ("blocking", "performance", "props", "light", "must_read")
+
+
+def marks_at(marks: Sequence[Mapping[str, Any]], block: int, people: Sequence[str] = ()) -> list[Row]:
+    """Each person's latest stager mark as `block` opens (every field the stager wrote), for `people` (their names;
+    empty = everyone). Read by block number, so a map whose `basis` is empty still answers."""
+    want = {p.casefold() for p in people if p}
+    latest: dict[str, Mapping[str, Any]] = {}
+    for m in sorted((m for m in marks if isinstance(m, Mapping)), key=lambda m: int(m.get("block") or 0)):
+        who = str(m.get("who") or "").strip()
+        if who and int(m.get("block") or 0) <= block and (not want or who.casefold() in want):
+            latest[who.casefold()] = m
+    return [{k: str(m[k]) for k in MARK_KEYS if m.get(k)} for m in latest.values()]
+
+
+def props_at(scene: Mapping[str, Any], block: int) -> list[Row]:
+    """The props in no hand as `block` opens (the stager's `props`, latest per prop), without one a person holds by
+    then (the holding ledger)."""
+    staging = _mapping(scene.get("staging"))
+    latest: dict[str, Mapping[str, Any]] = {}
+    for p in sorted((p for p in staging.get("props") or [] if isinstance(p, Mapping)),
+                    key=lambda p: int(p.get("block") or 0)):
+        if str(p.get("prop") or "").strip() and int(p.get("block") or 0) <= block:
+            latest[str(p["prop"]).casefold()] = p
+    held = set(holding.Ledger.of(staging.get("marks") or []).at(block))
+    out = []
+    for p in latest.values():
+        thing = holding.thing_of(str(p["prop"]))
+        if thing is None or thing.key not in held:
+            out.append({k: str(p[k]) for k in ("prop", "where", "state") if p.get(k)})
+    return out
+
+
+def clip_of(scene: Mapping[str, Any], shot: Mapping[str, Any]) -> Mapping[str, Any]:
+    """The Raphael clip this shot was written from (the same slate), {} for another planner or none."""
+    slate = str(shot.get("slate") or "")
+    clips = _mapping(scene.get("raphael")).get("clips") or []
+    return next((c for c in clips if isinstance(c, Mapping) and slate and str(c.get("slate") or "") == slate), {})
+
+
+def breakdown_of(scene: Mapping[str, Any], shot: Mapping[str, Any], clip: Mapping[str, Any]) -> Row:
+    """The director's breakdown shot (`raphael_breakdown`) this shot covers: the one sharing most script blocks with
+    the clip (the shot's own blocks without a clip). {} when the scene has no breakdown."""
+    shots = _mapping(_mapping(scene.get("raphael")).get("breakdown")).get("shots") or []
+    mine = {int(b) for b in clip.get("blocks") or [] if str(b).lstrip("-").isdigit()}
+    if not mine:
+        start, end = holding.window(int(shot.get("block_start") or 0), int(shot.get("block_end") or 0))
+        mine = set(range(start, end))
+    best, overlap = None, 0
+    for b in shots:
+        if not isinstance(b, Mapping):
+            continue
+        n = len(mine & {int(x) for x in b.get("blocks") or [] if str(x).lstrip("-").isdigit()})
+        if n > overlap:
+            best, overlap = b, n
+    return {k: str(best[k]) for k in _BREAKDOWN_KEYS if best.get(k)} if best else {}
+
+
+def shot_context(scene: Mapping[str, Any], shot: Mapping[str, Any], seen: Sequence[str],
+                 names: Mapping[str, str]) -> Row:
+    """What the board writer reads about a painted shot beyond its row (plan/2026-11-23c §3.1): who holds what as it
+    opens (`contracts.holding`, the same words a frame gets), each seen person's stager mark, the props set down, who
+    is only heard, the Raphael clip's summary and the breakdown shot it covers. `seen`: the names the camera sees;
+    `names`: canon id → name. Empty fields are left out."""
+    start = int(shot.get("block_start") or 0)
+    marks = _mapping(scene.get("staging")).get("marks") or []
+    clip = clip_of(scene, shot)
+    out: Row = {
+        "hands": holding.hands_for(scene, shot, list(seen)).sentence,
+        "marks": marks_at(marks, start, seen),
+        "props_down": props_at(scene, start),
+        "heard_only": [names[str(i)] for i in _mapping(shot.get("intent")).get("heard_only") or []
+                       if str(i) in names],
+        "clip": {k: str(clip[k]) for k in ("summary", "over", "angle") if clip.get(k)},
+        "breakdown": breakdown_of(scene, shot, clip),
+    }
+    return {k: v for k, v in out.items() if v}
+
+
 def board_shots(scene: Mapping[str, Any], shots: Sequence[Mapping[str, Any]], lines: Sequence[Mapping[str, Any]],
-                seen: Mapping[str, Sequence[str]], plates: Iterable[str]) -> list[BoardShot]:
+                seen: Mapping[str, Sequence[str]], plates: Iterable[str],
+                names: Mapping[str, str] | None = None) -> list[BoardShot]:
     """Every shot of the scene in order. `seen`: shot id → the names the camera sees; `plates`: the ids of the shots
-    that are black plates (the engine's `frame_compose` decides, as it does for a frame)."""
+    that are black plates (the engine's `frame_compose` decides, as it does for a frame); `names`: canon id → name,
+    for who is only heard. Each painted shot's plan carries its `shot_context` (plan/2026-11-23c §3.1)."""
     script = scene.get("script") or []
     plates = {str(p) for p in plates}
     spoken: dict[str, list[Mapping[str, Any]]] = {}
@@ -153,9 +260,13 @@ def board_shots(scene: Mapping[str, Any], shots: Sequence[Mapping[str, Any]], li
         texts = [str((script[b] or {}).get("text") or "") for b in blocks if b < len(script)]
         sid = str(s["id"])
         painted = sid not in plates
+        plan: Row = {}
+        if painted:
+            plan = {**shot_plan(s, texts, spoken.get(sid, []), seen.get(sid, [])),
+                    **shot_context(scene, s, seen.get(sid, []), names or {})}
+            plan = {k: v for k, v in plan.items() if v not in ("", [], {})} | {"number": plan["number"]}
         out.append(BoardShot(id=sid, number=int(s.get("number") or 0), slate=str(s.get("slate") or ""),
-                             painted=painted, text=" ".join(t for t in texts if t),
-                             plan=shot_plan(s, texts, spoken.get(sid, []), seen.get(sid, [])) if painted else {}))
+                             painted=painted, text=" ".join(t for t in texts if t), plan=plan))
     return out
 
 
@@ -179,19 +290,31 @@ def keep_colours(saved: Mapping[str, str], people: Sequence[str]) -> dict[str, s
 
 def writer_bundle(scene: Mapping[str, Any], shots: Sequence[BoardShot], people: Sequence[Row], place: Row,
                   props: Sequence[Row], reference_labels: Sequence[str]) -> Row:
-    """What the board writer reads about the scene (lab `fetch.py` bundle, without file paths)."""
+    """What the board writer reads about the scene (lab `fetch.py` bundle, without file paths). plan/2026-11-23c §3.1:
+    every field the stager wrote (facing, side of frame, both hands, condition, wearing), the props it set down, its
+    zones, and Raphael's whole treatment geography, colour script and key image (the axis was its first 300 letters)."""
     script = scene.get("script") or []
-    staging = (scene.get("staging") or {}) if isinstance(scene.get("staging"), Mapping) else {}
+    staging = _mapping(scene.get("staging"))
+    raphael = _mapping(scene.get("raphael"))
+    treatment = _mapping(_mapping(raphael.get("edit")).get("treatment"))
+    geography = str(treatment.get("geography") or "")
+    out: Row = {
+        "heading": scene.get("heading"), "title": scene.get("title"), "time_of_day": scene.get("time_of_day"),
+        "script": [b.get("text") for b in script if isinstance(b, Mapping) and b.get("text")],
+        "mood": raphael.get("mood", []),
+        "geography": geography,
+        "axis": "" if geography else _mapping(scene.get("coverage")).get("axis", ""),
+        "colour_script": [{k: str(c[k]) for k in ("palette", "light", "grade") if c.get(k)}
+                          for c in treatment.get("colour_script") or [] if isinstance(c, Mapping)],
+        "key_image": str(treatment.get("key_image") or ""),
+        "zones": [str(z) for z in staging.get("zones") or []],
+        "staging": [{"block": int(m.get("block") or 0), **{k: str(m[k]) for k in MARK_KEYS if m.get(k)}}
+                    for m in staging.get("marks") or [] if isinstance(m, Mapping)],
+        "props_set_down": [{k: p[k] for k in ("block", "prop", "where", "state") if p.get(k) not in (None, "")}
+                           for p in staging.get("props") or [] if isinstance(p, Mapping)],
+    }
     return {
-        "scene": {"heading": scene.get("heading"), "title": scene.get("title"),
-                  "time_of_day": scene.get("time_of_day"),
-                  "script": [b.get("text") for b in script if isinstance(b, Mapping) and b.get("text")],
-                  "mood": ((scene.get("raphael") or {}) if isinstance(scene.get("raphael"), Mapping) else {}
-                           ).get("mood", []),
-                  "axis": ((scene.get("coverage") or {}) if isinstance(scene.get("coverage"), Mapping) else {}
-                           ).get("axis", ""),
-                  "staging": [{k: m[k] for k in ("who", "zone", "block", "posture", "holding") if m.get(k)}
-                              for m in staging.get("marks") or [] if isinstance(m, Mapping)]},
+        "scene": {k: v for k, v in out.items() if v not in ("", [], None)},
         "people": list(people), "place": place, "props": list(props),
         "shots": [s.plan for s in shots if s.painted],
         "reference_pictures": [f"image {i}: {label}" for i, label in enumerate(reference_labels, 1)],
@@ -204,12 +327,19 @@ def mannequin_note(colours: Mapping[str, str]) -> str:
     return ("MANNEQUIN BOARD. Every person is painted as a smooth, faceless, colour-coded artist's mannequin, at the "
             f"person's height and build: {named}. So describe each person ONLY by their mannequin's pose: where the "
             "body sits or stands, which way the chest faces, which way the head turns, where each hand is, what it "
-            "holds or touches. Never describe a face, expression, mouth, eyes, hair, skin or clothes. Props, the place "
-            "and the light are described and painted for real. A person shown INSIDE a photograph, poster or screen "
-            "in the scene is not a mannequin: describe that picture as a real photograph. For each panel also list, "
-            "in `people`, every person the panel shows with their STATE at the opening of the shot (eyes open or "
-            "closed, still, asleep, crying, breathing hard; empty when nothing is notable): the state is never drawn "
-            "on the board, it is carried to the first frame.")
+            "holds or touches. Never describe a face, expression, mouth, eyes, hair, skin or clothes. The place and "
+            "the light are described and painted for real. PROPS ARE STAND-INS too (plan/2026-11-23c): every prop (a "
+            "phone, a bag, an umbrella, a car) is painted as a plain matte white clay stand-in of its real size and "
+            "outline, so write it as \"the clay <its name>\" (the clay phone, the clay umbrella, the clay car) with "
+            "the hand that grips it or the surface it rests on; never its colour, screen, brand or lettering. The "
+            "place and its spots stay real, even a vehicle the place is built around (a food cart). A "
+            "person shown INSIDE a photograph, poster or screen in the scene is not a mannequin: describe that "
+            "picture as a real photograph. For each panel also list, in `people`, every person the panel shows with "
+            "their STATE at the opening of the shot (eyes open or closed, still, asleep, crying, breathing hard; empty "
+            "when nothing is notable; the state is never drawn on the board, it is carried to the first frame) and "
+            "what their `left_hand` and `right_hand` hold or do (\"the clay phone\", \"empty, at her side\"); and in "
+            "`props` every prop the panel shows: who holds it and in which hand, or what it rests on, and its side "
+            "of the picture.")
 
 
 def writer_message(bundle: Mapping[str, Any], colours: Mapping[str, str], *,
@@ -308,8 +438,7 @@ def panel_answer(raw: Mapping[str, Any], number: int) -> Panel | None:
     if not panels:
         return None
     p = next((x for x in panels if x.shot == number), panels[0])
-    return Panel(shot=number, zone=p.zone, camera=p.camera, background=p.background, picture=p.picture,
-                 people=p.people)
+    return replace(p, shot=number)
 
 
 # ── the writer's answer ─────────────────────────────────────────────────────────────────────
@@ -319,6 +448,20 @@ def panel_answer(raw: Mapping[str, Any], number: int) -> Panel | None:
 class PanelPerson:
     name: str
     state: str = ""
+    left_hand: str = ""  # plan/2026-11-23c: what the left hand holds or does ("the clay phone", "empty, at her side")
+    right_hand: str = ""
+
+
+@dataclass
+class PanelProp:
+    """A prop a panel shows (plan/2026-11-23c), painted as a white clay stand-in: who holds it and in which hand, or
+    what it rests on."""
+
+    name: str
+    held_by: str = ""  # a person's name, "" when it rests
+    hand: str = ""  # left | right | both | "" (worn, or resting)
+    rests_on: str = ""  # the surface, when nobody holds it
+    frame_side: str = ""  # left | right | centre
 
 
 @dataclass
@@ -329,6 +472,38 @@ class Panel:
     background: str
     picture: str
     people: list[PanelPerson] = field(default_factory=list)
+    props: list[PanelProp] = field(default_factory=list)
+
+
+def _person_dump(x: PanelPerson) -> Row:
+    out: Row = {"name": x.name, "state": x.state}
+    if x.left_hand or x.right_hand:
+        out.update(left_hand=x.left_hand, right_hand=x.right_hand)
+    return out
+
+
+def _prop_dump(x: PanelProp) -> Row:
+    return {"name": x.name, "held_by": x.held_by, "hand": x.hand, "rests_on": x.rests_on, "frame_side": x.frame_side}
+
+
+def panel_dump(p: Panel) -> Row:
+    out: Row = {"shot": p.shot, "zone": p.zone, "camera": p.camera, "background": p.background,
+                "picture": p.picture, "people": [_person_dump(x) for x in p.people]}
+    if p.props:  # a board painted before plan/2026-11-23c is stored as it was
+        out["props"] = [_prop_dump(x) for x in p.props]
+    return out
+
+
+def _panel_of(p: Mapping[str, Any]) -> Panel:
+    return Panel(shot=int(p.get("shot") or 0), zone=_clean(p.get("zone")), camera=_clean(p.get("camera")),
+                 background=_clean(p.get("background")), picture=_clean(p.get("picture")),
+                 people=[PanelPerson(name=_clean(x.get("name")), state=_clean(x.get("state")),
+                                     left_hand=_clean(x.get("left_hand")), right_hand=_clean(x.get("right_hand")))
+                         for x in p.get("people") or [] if isinstance(x, Mapping)],
+                 props=[PanelProp(name=_clean(x.get("name")), held_by=_clean(x.get("held_by")),
+                                  hand=_clean(x.get("hand")).lower(), rests_on=_clean(x.get("rests_on")),
+                                  frame_side=_clean(x.get("frame_side")).lower())
+                        for x in p.get("props") or [] if isinstance(x, Mapping) and _clean(x.get("name"))])
 
 
 @dataclass
@@ -340,19 +515,13 @@ class Writer:
 
     @classmethod
     def of(cls, raw: Mapping[str, Any]) -> Writer:
-        panels = [Panel(shot=int(p.get("shot") or 0), zone=_clean(p.get("zone")), camera=_clean(p.get("camera")),
-                        background=_clean(p.get("background")), picture=_clean(p.get("picture")),
-                        people=[PanelPerson(name=_clean(x.get("name")), state=_clean(x.get("state")))
-                                for x in p.get("people") or [] if isinstance(x, Mapping)])
-                  for p in raw.get("panels") or [] if isinstance(p, Mapping)]
+        panels = [_panel_of(p) for p in raw.get("panels") or [] if isinstance(p, Mapping)]
         return cls(world=_clean(raw.get("world")), geography=_clean(raw.get("geography")), panels=panels,
                    conflicts=[_clean(c) for c in raw.get("conflicts") or [] if _clean(c)])
 
     def dump(self) -> Row:
         return {"world": self.world, "geography": self.geography, "conflicts": self.conflicts,
-                "panels": [{"shot": p.shot, "zone": p.zone, "camera": p.camera, "background": p.background,
-                            "picture": p.picture, "people": [{"name": x.name, "state": x.state} for x in p.people]}
-                           for p in self.panels]}
+                "panels": [panel_dump(p) for p in self.panels]}
 
     def panel(self, number: int) -> Panel | None:
         return next((p for p in self.panels if p.shot == number), None)
@@ -394,8 +563,50 @@ def mannequin_line(colours: Mapping[str, str]) -> str:
             f"with jointed limbs and simple hands: {named}. A small raised ridge on the front of the head, where a "
             "nose would be, shows which way the head faces. Each mannequin has the person's real height and build and "
             "sits, stands and holds things exactly as a real person would. No faces, no hair, no clothes, no skin: "
-            "only the mannequin colour. Everything else (the place, the props, the light, the weather) is a real, "
-            "photorealistic film still.")
+            "only the mannequin colour. The place, the light and the weather are a real, photorealistic film still.")
+
+
+# plan/2026-11-23c D2, D4, D5: props are stand-ins as people are mannequins. White, never grey: an unnamed grey figure
+# is a background person (`STAND_INS`).
+def prop_line(props: Sequence[str], places: Sequence[str] = ()) -> str:
+    """What the image model is told about the props: plain white clay stand-ins of their real size and outline.
+    `places`: the canon places the panels show (the location, its spots, a place built around a vehicle such as a food
+    three-wheeler), which stay real (2026-11-23: the food three-wheeler came out as a white clay van)."""
+    named = f" ({', '.join(dict.fromkeys(p for p in props if p))})" if any(props) else ""
+    real = ", ".join(dict.fromkeys(p for p in places if p))
+    return ("Props (every panel): every prop" + named + " and every small thing a person holds or carries is a plain, "
+            "smooth, matte white clay stand-in of the real object: its real size and outline, and nothing else: no "
+            "screen, buttons, logo, lettering, pattern or colour. A vehicle that is a prop is a full-size white clay "
+            "vehicle with its doors, windows and seats as shapes. Each stand-in is held, carried or set down exactly "
+            "as the real thing would be. The place itself is real: its ground, walls, water, plants, what is built "
+            "into it" + (f", and {real}" if real else "") + ", painted as a real photograph, never as clay.")
+
+
+# plan/2026-11-23c §3.2: the faults of the board of 2026-11-23 (an umbrella held by nothing, a third arm, a foot over a
+# drain), as a rule for every panel.
+SUPPORT = ("Bodies and things (every panel): every mannequin has exactly two arms and two hands, each hand where the "
+           "panel says. A held stand-in is gripped by the hand the panel names, its handle or edge inside the closed "
+           "fingers; nothing hangs or floats in the air. Feet stand flat on the ground the panel names. A bag hangs "
+           "from the shoulder or forearm the panel names.")
+
+
+def _bare(name: str) -> str:
+    """A prop's name without "the" or "clay" in front."""
+    return re.sub(r"^(?:the |a |an )?(?:white )?(?:clay )?", "", name.strip(), flags=re.IGNORECASE)
+
+
+def hands_text(panel: Panel, colours: Mapping[str, str]) -> str:
+    """The panel's hands and set-down props in the image model's words (the mannequin colours): "Hands: the blue
+    mannequin: left hand the clay umbrella's handle; right hand empty. The clay bag rests on the bench." "" when the
+    writer gave none (a board painted before plan/2026-11-23c)."""
+    def who(name: str) -> str:
+        return f"the {colours[name]} mannequin" if name in colours else name
+
+    bits = [f"{who(x.name)}: left hand {x.left_hand.rstrip('.') or 'empty'}; right hand "
+            f"{x.right_hand.rstrip('.') or 'empty'}" for x in panel.people if x.left_hand or x.right_hand]
+    bits += [f"the clay {_bare(x.name)} rests on {x.rests_on.rstrip('.')}" for x in panel.props
+             if not x.held_by and x.rests_on]
+    return ("Hands: " + ". ".join(bits) + ".") if bits else ""
 
 
 def board_job(label: str) -> str:
@@ -437,10 +648,11 @@ def board_layout_free(world: str) -> str:
 
 
 def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], colours: Mapping[str, str],
-                 aspect: str = BOARD_ASPECT) -> str:
+                 aspect: str = BOARD_ASPECT, props: Sequence[str] = (), places: Sequence[str] = ()) -> str:
     """The image prompt for one board (or one part): the panels of `numbers`, in order (lab `board_prompt` with
     mannequins). `labels` are the attached pictures in order; `colours`: name → colour; `aspect`: the board's shape
-    (`board_aspect`), which every panel takes."""
+    (`board_aspect`), which every panel takes; `props`: the canon props the panels show, painted as white clay
+    stand-ins (plan/2026-11-23c)."""
     n = len(numbers)
     cols, rows = grid_for(n)
     cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
@@ -452,8 +664,9 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
         if p is None:
             continue
         r, c = divmod(i, cols)
+        hands = hands_text(p, colours)
         pos.append(f"PANEL {i + 1} (row {r + 1}, column {c + 1}) — {p.camera.rstrip('.')}. Background: "
-                   f"{p.background.rstrip('.')}. {p.picture}")
+                   f"{p.background.rstrip('.')}. {p.picture}" + (f" {hands}" if hands else ""))
     head = (f"A cinematic storyboard sheet for a Sri Lankan television drama: {n} photorealistic film stills of ONE "
             f"scene, laid out in a grid {cols} panels across and {rows} down, read {order}. Every panel is "
             f"{_PANEL_SHAPE[board_aspect(aspect)]} of the same size, separated by thin, even, plain white gutters. "
@@ -463,10 +676,10 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
             "the scene, and a panel that says it is dry has no rain and no wet ground.")
     refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
     return "\n\n".join(x for x in [
-        head, refs, mannequin_line(colours),
+        head, refs, mannequin_line(colours), prop_line(props, places),
         "World (every panel): " + board_layout_free(board_world(writer.world, colours)),
         "Geography: " + writer.geography,
-        "\n".join(pos), BODIES, NO_TEXT,
+        "\n".join(pos), BODIES, SUPPORT, NO_TEXT,
     ] if x)
 
 
@@ -501,10 +714,14 @@ def panel_world(world: str) -> str:
 
 
 def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: Mapping[str, str],
-                 aspect: str = BOARD_ASPECT) -> str:
+                 aspect: str = BOARD_ASPECT, props: Sequence[str] = (), fix: str = "",
+                 places: Sequence[str] = ()) -> str:
     """The image prompt for ONE panel painted alone, filling the picture (lab `solo_prompt` + `CAMERA_RULE`).
-    `labels`: the attached pictures in order (the place, the props, then the neighbouring panels, `neighbour_label`);
-    `writer`: the approved board (its world and geography); `aspect`: the board's shape, so the panel matches."""
+    `labels`: the attached pictures in order (the place, then the neighbouring panels, `neighbour_label`);
+    `writer`: the approved board (its world and geography); `aspect`: the board's shape, so the panel matches;
+    `props`: the canon props, as white clay stand-ins; `fix`: `fix_line` when the panel is painted again after the
+    board check found a fault (plan/2026-11-23c F2)."""
+    hands = hands_text(panel, colours)
     cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
     jobs = "; ".join(f"image {i}: {job}" for i, label in enumerate(labels, 1) if (job := board_job(label)))
     refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
@@ -515,12 +732,77 @@ def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: M
         refs,
         NEIGHBOURS if any(is_neighbour(x) for x in labels) else "",
         CAMERA_RULE,
-        mannequin_line(colours),
+        mannequin_line(colours), prop_line(props, places),
         "World: " + panel_world(board_world(writer.world, colours)),
         "Geography: " + writer.geography,
-        f"THE PANEL — {panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. {panel.picture}",
-        BODIES, NO_TEXT.replace("no borders other than the gutters", "no borders, no gutters"),
+        f"THE PANEL — {panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. {panel.picture}"
+        + (f" {hands}" if hands else ""),
+        BODIES, SUPPORT, fix, NO_TEXT.replace("no borders other than the gutters", "no borders, no gutters"),
     ] if x)
+
+
+def fix_line(problems: Sequence[str]) -> str:
+    """What a panel painted again is told about its first painting's faults (plan/2026-11-23c F2)."""
+    said = "; ".join(" ".join(str(p).split()).rstrip(".") for p in problems if str(p).strip())
+    return ("A first painting of this panel was wrong" + (f": {said}." if said else ".") + " Paint it again "
+            "without that fault: two arms and two hands on every mannequin, every held thing gripped by its hand, "
+            "both feet on the ground.") if said else ""
+
+
+# ── the free check of the writer's answer (plan/2026-11-23c §3.4) ──────────────────────────────────────────────
+
+
+_CLAY_THING = re.compile(r"\bclay\s+([a-z][a-z-]*)", re.IGNORECASE)  # one word: it is looked up in the plan text
+_NOT_A_THING = re.compile(r"\b(?:stand-ins?|shapes?|objects?)\b", re.IGNORECASE)
+
+
+def _held(text: str) -> str:
+    """The thing a hand holds, read only from the writer's stand-in words ("grips the clay phone around its lower
+    edges" → "phone"; 2026-11-23: the whole sentence was read and "edges" came out as a thing). "" when the hand holds
+    no clay thing (empty, at a side, on a counter)."""
+    m = _CLAY_THING.search(str(text or ""))
+    if m is None:
+        return ""
+    words = _NOT_A_THING.sub("", re.split(r"['’]s\b", m.group(1))[0]).strip()
+    thing = holding.thing_of(words)
+    return thing.key if thing is not None else ""
+
+
+def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping[str, str] | None = None
+                    ) -> list[str]:
+    """What code finds wrong in the writer's panels before anything is painted, as conflict lines: more than two
+    things in a person's hands (a worn bag is not in a hand), a prop neither held nor resting on anything, someone
+    only heard on the board, and a held thing that neither the shot's plan nor what the person carries through the
+    scene gives them. `carried`: person name → their scene condition and look accessories (an open umbrella in the
+    rain continues from the scene before). Never a model call."""
+    plans = {s.number: s.plan for s in shots if s.painted}
+    out: list[str] = []
+    for p in writer.panels:
+        plan = plans.get(p.shot)
+        if plan is None:
+            continue
+        said = json.dumps(plan, ensure_ascii=False).lower()
+        for x in p.people:
+            hands = [h for h in (_held(x.left_hand), _held(x.right_hand)) if h]
+            more = {_held(f"clay {pr.name}") for pr in p.props
+                    if pr.held_by.casefold() == x.name.casefold() and pr.hand in ("left", "right", "both")}
+            things = list(dict.fromkeys([*hands, *(m for m in more if m)]))
+            if len(things) > 2:
+                out.append(f"Shot {p.shot}: {x.name} is given {len(things)} things to hold ({', '.join(things)}); "
+                           "a person has two hands.")
+            mine = f"{said} {str((carried or {}).get(x.name) or '').lower()}"
+            for key in things:
+                if key not in mine:
+                    out.append(f"Shot {p.shot}: {x.name} holds the {key}, which neither the plan of this shot nor "
+                               "what they carry through the scene gives them.")
+        for pr in p.props:
+            if not pr.held_by and not pr.rests_on:
+                out.append(f"Shot {p.shot}: the {_bare(pr.name)} is neither held nor resting on anything.")
+        heard = {h.casefold() for h in plan.get("heard_only") or []}
+        for x in p.people:
+            if x.name.casefold() in heard:
+                out.append(f"Shot {p.shot}: {x.name} is only heard in this shot but is on the board.")
+    return list(dict.fromkeys(out))
 
 
 # ── cells, pins and out of date ─────────────────────────────────────────────────────────────
@@ -530,14 +812,41 @@ _PIN_IR = ("setting", "first_frame", "subjects", "cinematography", "lighting", "
 _PIN_INTENT = ("story", "purpose", "on_screen")
 
 
+# plan/2026-11-23c D7: the writer now also reads the opening state and who is only heard ("v2:"); plan/2026-11-23d
+# §2.2: and the Camera agent's camera ("v3:"). A cell is compared in the version it was pinned in, so a painted board
+# stays current until its shot really changes; a cell pinned before versions has no prefix.
+PIN_VERSION = "v3"
+_PIN_INTENT_V2 = (*_PIN_INTENT, "opens", "heard_only")
+
+
+def _pin_hash(shot: Mapping[str, Any], intent_keys: Sequence[str], camera: bool = False) -> str:
+    ir, intent = _mapping(shot.get("ir")), _mapping(shot.get("intent"))
+    body: Row = {"framing": shot.get("framing") or "", "blocks": [shot.get("block_start"), shot.get("block_end")],
+                 "ir": {k: ir.get(k) for k in _PIN_IR}, "intent": {k: intent.get(k) for k in intent_keys}}
+    if camera:
+        body["camera"] = camera_of(shot)
+    return hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True, default=str).encode()).hexdigest()[:16]
+
+
 def plan_pin(shot: Mapping[str, Any]) -> str:
     """What a panel was painted against: a hash of the shot's plan fields the writer read (its size, its blocks, the
-    IR's picture fields and the intent's story, purpose and who is seen). Its number is not in it: a move is a change
-    of the board's order (`Stale.order`), not of the panel."""
-    ir, intent = _mapping(shot.get("ir")), _mapping(shot.get("intent"))
-    body = {"framing": shot.get("framing") or "", "blocks": [shot.get("block_start"), shot.get("block_end")],
-            "ir": {k: ir.get(k) for k in _PIN_IR}, "intent": {k: intent.get(k) for k in _PIN_INTENT}}
-    return hashlib.sha256(json.dumps(body, ensure_ascii=False, sort_keys=True, default=str).encode()).hexdigest()[:16]
+    IR's picture fields, the intent's story, purpose, who is seen and heard, the opening state, and the Camera agent's
+    camera). Its number is not in it: a move is a change of the board's order (`Stale.order`), not of the panel."""
+    return f"{PIN_VERSION}:{_pin_hash(shot, _PIN_INTENT_V2, camera=True)}"
+
+
+def legacy_pin(shot: Mapping[str, Any]) -> str:
+    """The pin a cell painted before plan/2026-11-23c carries."""
+    return _pin_hash(shot, _PIN_INTENT)
+
+
+def pin_matches(pin: str, shot: Mapping[str, Any]) -> bool:
+    """The cell's pin still shows the shot: compared in the version it was made in."""
+    if pin.startswith(f"{PIN_VERSION}:"):
+        return pin == plan_pin(shot)
+    if pin.startswith("v2:"):
+        return pin == f"v2:{_pin_hash(shot, _PIN_INTENT_V2)}"
+    return pin == legacy_pin(shot)
 
 
 def new_cell(shot: BoardShot, shot_row: Mapping[str, Any], panel: int | None, source: str = "sheet") -> Row:
@@ -624,7 +933,7 @@ def stale_cells(cells: Sequence[Mapping[str, Any]], shots: Sequence[Mapping[str,
         if s is None:
             out.removed.append(int(c.get("number") or 0))
             out.tidy.append(sid)
-        elif c.get("pin") and c.get("pin") != plan_pin(s):
+        elif c.get("pin") and not pin_matches(str(c["pin"]), s):
             out.changed.append(int(s.get("number") or 0))
             if sid in locked:
                 out.locked.append(int(s.get("number") or 0))
@@ -666,8 +975,7 @@ def renumber(cells: Sequence[Mapping[str, Any]], writer: Writer, shots: Sequence
     for p in writer.panels:
         owner = by_old.get(p.shot)
         if owner is not None and owner in now:
-            panels.append(Panel(shot=now[owner], zone=p.zone, camera=p.camera, background=p.background,
-                                picture=p.picture, people=list(p.people)))
+            panels.append(replace(p, shot=now[owner], people=list(p.people), props=list(p.props)))
     panels.sort(key=lambda p: p.shot)
     return out, Writer(world=writer.world, geography=writer.geography, panels=panels,
                        conflicts=list(writer.conflicts))
@@ -706,8 +1014,7 @@ def remember(cell: Mapping[str, Any], panel: Panel | None) -> list[Row]:
 
 
 def _panel_dump(p: Panel) -> Row:
-    return {"shot": p.shot, "zone": p.zone, "camera": p.camera, "background": p.background, "picture": p.picture,
-            "people": [{"name": x.name, "state": x.state} for x in p.people]}
+    return panel_dump(p)
 
 
 def panel_of(raw: Mapping[str, Any] | None, number: int) -> Panel | None:
@@ -789,7 +1096,28 @@ def unmannequin(text: str, colours: Mapping[str, str]) -> str:
     return _UNNAMED.sub(_person, text)
 
 
-_BOARD_WORDS = re.compile(r"\b(panels?|storyboard|grid|gutters?|mannequins?)\b", re.IGNORECASE)
+# plan/2026-11-23d (shot 1 of scene 4, 2026-11-23): the writer's World also says how the board is painted ("Render
+# them without human surface details or clothing", "every portable object is its actual size and outline, without
+# marking"); such a sentence must never reach a real frame.
+_BOARD_WORDS = re.compile(r"\b(panels?|storyboard|grid|gutters?|mannequins?|clay|stand-ins?|faceless|surface details|"
+                          r"clothing details|without (?:human|clothing|facial|faces|hair|markings?|lettering)|"
+                          r"outlines?)\b", re.IGNORECASE)
+
+
+# plan/2026-11-23c D2: the props' twin of `STAND_INS`.
+PROP_STAND_INS = ("The approved draft shows the props as plain white clay stand-ins: they mark where each prop is, its "
+                  "size, its angle and the hand that holds it, nothing more. Paint every one as the real prop from "
+                  "its reference sheet, in exactly that place and hand. No white clay shape, blank object or "
+                  "unfinished prop remains in the frame.")
+_CLAY_OF = re.compile(r"\b(?:an? |the )?(?:(?:plain|smooth|matte|white),? )*clay stand-ins? (?:of|for) ",
+                      re.IGNORECASE)
+_CLAY = re.compile(r"\b(?:(?:plain|smooth|matte|white),? )*clay (?=[a-z])", re.IGNORECASE)
+
+
+def unprop(text: str) -> str:
+    """The writer's stand-in words turned back into the props: "the clay umbrella" → "the umbrella", "a white clay
+    stand-in of the phone" → "the phone"."""
+    return _CLAY.sub("", _CLAY_OF.sub("", text))
 
 
 def frame_world(world: str) -> str:
@@ -800,17 +1128,123 @@ def frame_world(world: str) -> str:
 
 def panel_text(panel: Panel, colours: Mapping[str, str]) -> str:
     """"This shot: <camera>. Background: <background>. <picture>" in people's names."""
-    return unmannequin(f"This shot: {panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. "
-                       f"{panel.picture}", colours)
+    return unprop(unmannequin(f"This shot: {panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. "
+                              f"{panel.picture}", colours))
 
 
 def frame_sections(writer: Writer, number: int, colours: Mapping[str, str], opening: Sequence[str],
-                   faced: Iterable[str] = ()) -> list[str]:
+                   faced: Iterable[str] = (), *, blocking: bool = False) -> list[str]:
     """The paragraphs a frame painted from its panel adds to its brief, in order: the stand-in rule, the mannequins,
-    the state, the scene's world and this panel. `colours`: name → colour of the people this frame shows."""
+    the state, the scene's world and this panel. `colours`: name → colour of the people this frame shows.
+    `blocking` (plan/2026-11-23d §2.2): the frame is written from its shot prompt, so the panel gives only where
+    everyone stands and faces, what each hand holds, the props and the place; never its camera."""
     panel = writer.panel(number)
     if panel is None:
         return []
-    return [x for x in (STAND_INS, mannequin_paragraph(colours, faced), state_line(opening, panel.people),
-                        ("The scene: " + unmannequin(frame_world(writer.world), colours)) if writer.world else "",
-                        panel_text(panel, colours)) if x]
+    clay = bool(panel.props) or "clay" in f"{writer.world} {panel.picture}".lower()
+    stand_ins = STAND_INS.replace("The approved draft", "The approved scene board panel") if blocking else STAND_INS
+    props = PROP_STAND_INS.replace("The approved draft", "The approved scene board panel") if blocking \
+        else PROP_STAND_INS
+    people = mannequin_paragraph(colours, faced)
+    if blocking:
+        people = people.replace("The approved draft", "The approved scene board panel").replace(
+            "keeping exactly the mannequin's place in the frame, size, seated or standing pose",
+            "keeping the mannequin's place among the others, which way they face, their seated or standing pose")
+    hands = held_text(panel, colours)
+    return [x for x in (stand_ins, props if clay else "", people,
+                        state_line(opening, panel.people),
+                        ("The scene: " + unprop(unmannequin(frame_world(writer.world), colours))) if writer.world
+                        else "",
+                        blocking_text(panel, colours) if blocking else panel_text(panel, colours),
+                        hands) if x]
+
+
+def blocking_text(panel: Panel, colours: Mapping[str, str]) -> str:
+    """The panel without its camera, in people's names: what the frame takes when its shot prompt sets the camera."""
+    return unprop(unmannequin(f"On the approved board: {panel.picture} Behind them: "
+                              f"{panel.background.rstrip('.')}.", colours))
+
+
+def held_text(panel: Panel, colours: Mapping[str, str]) -> str:
+    """Each person's two hands as approved on the board, in people's names and real props: "Hands as approved on
+    the scene board: Anudi: left hand grips the umbrella's shaft; right hand holds the phone at chest height." "" for a
+    board painted before plan/2026-11-23c (no hands)."""
+    bits = [f"{x.name}: left hand {x.left_hand.rstrip('.') or 'empty'}; "
+            f"right hand {x.right_hand.rstrip('.') or 'empty'}" for x in panel.people if x.left_hand or x.right_hand]
+    bits += [f"the {_bare(x.name)} rests on {x.rests_on.rstrip('.')}" for x in panel.props
+             if not x.held_by and x.rests_on]
+    return unprop(unmannequin("Hands as approved on the scene board: " + ". ".join(bits) + ".", colours)) \
+        if bits else ""
+
+
+# ── the approved panel of a shot, for its shot prompt and first frame (plan/2026-11-23d §2.2) ────────────────
+
+
+BOARD_CHANGED = "The approved scene board changed since this shot prompt was written."
+# What `writer_findings` and the board check write about a shot: a panel that breaks a fact is not attached (D2).
+_FAULT_MARKS = ("things to hold", "neither the plan of this shot", "only heard in this shot",
+                "neither held nor resting", "the board check still sees")
+
+
+def current_parts(rows: Sequence[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
+    """The scene's current board: every part of the newest version, in part order (the API's `boards.current`)."""
+    if not rows:
+        return []
+    top = max(int(r.get("version") or 1) for r in rows)
+    return sorted((r for r in rows if int(r.get("version") or 1) == top), key=lambda r: int(r.get("part") or 1))
+
+
+@dataclass
+class ApprovedPanel:
+    """A shot's panel on the current, approved board, still showing the shot (its pin matches)."""
+
+    stamp: str  # "<part id>:<cell path>": what a shot prompt records it was written from
+    part: Mapping[str, Any]
+    cell: Mapping[str, Any]
+    panel: Panel
+
+
+def approved_panel(rows: Sequence[Mapping[str, Any]], shot: Mapping[str, Any]) -> ApprovedPanel | None:
+    """The shot's panel when the current board's part is done and approved and the panel still shows the shot (the
+    API's `shot_panel` "ready"); None otherwise (no board, painting, failed, unapproved, out of date, a black plate)."""
+    owner = owner_cell(current_parts(rows), str(shot.get("id")))
+    if owner is None:
+        return None
+    part, cell = owner
+    if part.get("status") != "done" or not part.get("approved_at") or cell.get("kind") != "painted" \
+            or not cell.get("path") or (cell.get("pin") and not pin_matches(str(cell["pin"]), shot)):
+        return None
+    panel = Writer.of(_mapping(part.get("writer"))).panel(int(cell.get("number") or 0))
+    if panel is None:
+        return None
+    return ApprovedPanel(stamp=f"{part.get('id')}:{cell.get('path')}", part=part, cell=cell, panel=panel)
+
+
+def board_reason(record: Mapping[str, Any] | None, rows: Sequence[Mapping[str, Any]],
+                 shot: Mapping[str, Any]) -> str:
+    """D2 (plan/2026-11-23d): a shot prompt written before the board was approved, or before its panel changed, is
+    out of date: the approved panel wins and the prompt is written again from it. "" when there is no approved
+    panel (the prompt stands) or it was written from this one."""
+    found = approved_panel(rows, shot)
+    if found is None or not isinstance(record, Mapping):
+        return ""
+    return "" if str(record.get("board") or "") == found.stamp else BOARD_CHANGED
+
+
+def panel_faults(writer: Writer, number: int) -> list[str]:
+    """The board's conflict lines that code wrote about this shot's panel breaking a fact (D2): such a panel is not
+    attached to the frame."""
+    head = f"Shot {number}:"
+    return [c for c in writer.conflicts if c.startswith(head) and any(m in c for m in _FAULT_MARKS)]
+
+
+def panel_facts(panel: Panel, colours: Mapping[str, str]) -> Row:
+    """What the shot prompter is told the approved board shows (plan/2026-11-23d §2.2), in people's names and real
+    props: where everyone stands and faces, each person's two hands, the props resting somewhere. Never its camera."""
+    people = [{"name": x.name, "left_hand": unprop(unmannequin(x.left_hand, colours)) or "empty",
+               "right_hand": unprop(unmannequin(x.right_hand, colours)) or "empty"}
+              for x in panel.people if x.left_hand or x.right_hand]
+    return {"blocking": blocking_text(panel, colours), "hands": people,
+            "props": [{"name": _bare(x.name), **({"held_by": x.held_by, "hand": x.hand} if x.held_by else {}),
+                       **({"rests_on": x.rests_on} if x.rests_on else {}),
+                       **({"frame_side": x.frame_side} if x.frame_side else {})} for x in panel.props]}

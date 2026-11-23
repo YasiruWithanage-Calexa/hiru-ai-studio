@@ -346,13 +346,26 @@ class CostsRepo(Protocol):
     # request
     # named exactly that scene.
     async def scene_usage(self, production_id: UUID, scene_id: UUID) -> list[Row]: ...
-    # Rows of a production tied to no scene whose phase starts with one of `prefixes`: whole-episode work that every
-    # scene shares (a job that named a scene is not here).
-    async def unassigned_usage(self, production_id: UUID, prefixes: tuple[str, ...]) -> list[Row]: ...
     # The newest rows of a phase prefix, newest first; `production_id` None = across productions.
     async def recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]: ...
     # Dialogue lines per scene of the production (scene id -> count).
     async def lines_by_scene(self, production_id: UUID) -> dict[str, int]: ...
+    # plan/2026-11-23b: the jobs behind usage rows (id, kind, request, created_at): they decide a row's part.
+    async def jobs_of(self, job_ids: Sequence[str]) -> list[Row]: ...
+    # Every `token_usage` row of a production, all time (job_id, scene_id, phase, model, tokens, created_at): what its
+    # setup figures are worked out from.
+    async def production_usage(self, production_id: UUID) -> list[Row]: ...
+    # plan/2026-11-23 (Settings → Usage). A month's `token_usage` summed by `public.token_usage_totals` (schema v29):
+    # one row per production, model, kind, slot, long. None when the database has no such function yet: the service
+    # then sums `usage_between` itself.
+    async def token_totals(self, since: datetime, until: datetime, boundaries: Sequence[datetime],
+                           image_phases: Sequence[str], metered_prefixes: Sequence[str],
+                           long_from: int) -> list[Row] | None: ...
+    # Every `token_usage` row made in [since, until), with the columns pricing reads.
+    async def usage_between(self, since: datetime, until: datetime) -> list[Row]: ...
+    # Every `video_renders` row made in [since, until): id, production_id, status, engine, model, created_at, usage,
+    # spec (resolution and duration_s only).
+    async def renders_between(self, since: datetime, until: datetime) -> list[Row]: ...
 
 
 class PacketsRepo(Protocol):

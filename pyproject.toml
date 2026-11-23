@@ -22,6 +22,7 @@ dependencies = [
     "python-multipart==0.0.32",
     "openai>=1.60,<3",
     "Pillow>=11,<13",  # thumbnails (plan/2026-11-08c 1c)
+    "PyYAML>=6.0,<7",  # api/margins.yaml (plan/2026-11-23)
 ]
 
 [project.optional-dependencies]
@@ -59,6 +60,7 @@ include = ["api*", "contracts*", "hiru_ai*"]
 
 [tool.setuptools.package-data]
 hiru_ai = ["**/*.yaml", "**/*.md", "**/*.tmpl", "**/*.csv"]
+api = ["margins.yaml"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

@@ -94,7 +94,7 @@ def shot_panel(parts: Sequence[Row], shot: Row, *, plate: bool) -> ShotPanel:
         return ShotPanel(ready=False, reason=PAINTING, state="painting", board_id=str(part["id"]), cell=dict(cell))
     if part.get("status") != "done" or not cell.get("path"):
         return ShotPanel(ready=False, reason=FAILED, state="failed", board_id=str(part["id"]), cell=dict(cell))
-    if cell.get("pin") and cell.get("pin") != kit.plan_pin(shot):
+    if cell.get("pin") and not kit.pin_matches(str(cell["pin"]), shot):
         return ShotPanel(ready=False, reason=STALE, state="stale", board_id=str(part["id"]), cell=dict(cell))
     if not part.get("approved_at"):
         return ShotPanel(ready=False, reason=NOT_APPROVED, state="unapproved", board_id=str(part["id"]),

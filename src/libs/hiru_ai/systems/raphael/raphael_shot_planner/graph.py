@@ -244,7 +244,7 @@ def build(
         )
         episode = episode_rows.get(str(sc.get("episode_id"))) or {}
         reading = SceneReading.of(sc)
-        # The scene's id on every usage row of its calls (plan/2026-11-08f §6; written once `usage_scene` is on).
+        # The scene's id on every usage row of its calls (plan/2026-11-08f §6; always written since plan/2026-11-23b).
         scene_ctx = replace(ctx, scene_id=UUID(sid))
         if from_packet is not None:  # the packet carries the state ledger already (its `stage`): no stager call here
             opening, script, line_ids = from_packet

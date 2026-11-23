@@ -190,9 +190,11 @@ def test_a_frame_from_the_board_attaches_the_panel_last_and_says_the_mannequins(
     assert "Kamala stirs a pot." in frame["prompt"]
 
 
-def test_a_shot_with_a_current_shot_prompt_is_painted_from_it_not_from_the_panel(monkeypatch: Any):
-    """The audit of 2026-11-21: the panel says "keep its composition exactly" and was painted before the Camera agent's
-    angle and opening; a shot with a current shot prompt is painted from its words and the sheets (lab/shot_prompts)."""
+def test_a_shot_with_a_current_shot_prompt_takes_the_camera_from_it_and_the_blocking_from_the_panel(monkeypatch: Any):
+    """The audit of 2026-11-21: the panel said "keep its composition exactly" and was painted before the Camera
+    agent's angle and opening, so a shot with a current shot prompt was painted without it. plan/2026-11-23d §2.2: the
+    frame then ignored the approved board; now the panel is attached for the blocking only (`BLOCKING_LABEL`): where
+    everyone stands and what each hand holds; the camera stays the shot prompt's words."""
     from hiru_ai.steps.frame_compose import logic
 
     store = BoardStore()
@@ -215,8 +217,11 @@ def test_a_shot_with_a_current_shot_prompt_is_painted_from_it_not_from_the_panel
     assert result["done"] == 1, frame.get("error")
     labels = [r.label for r in painter.calls[-1][2]]
     assert "the approved draft of this frame" not in labels and labels[0] == "the face sheet for Kamala"
-    assert "This shot: The camera is low at hip height" in frame["prompt"]
-    assert "mannequin" not in frame["prompt"] and "keep its composition" not in frame["prompt"]
+    assert labels[-1] == "the approved scene board panel of this shot", "the panel, last, for the blocking"
+    assert "This shot: The camera is low at hip height" in frame["prompt"], "the camera is the shot prompt's"
+    assert "keep its composition" not in frame["prompt"], "never the full-draft rule"
+    assert "this shot's words decide the camera" in frame["prompt"]
+    assert "On the approved board:" in frame["prompt"] and "Camera 1." not in frame["prompt"], "no panel camera"
 
 
 def test_a_frame_is_painted_at_the_quality_the_person_picked():

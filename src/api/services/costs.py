@@ -1,15 +1,17 @@
-"""A scene's production cost (plan/2026-11-06d §6): what it has cost, plus what it will cost to finish, as ONE figure.
+"""A scene's production cost (plan/2026-11-06d §6, plan/2026-11-23b): what it has cost, plus what it will cost to
+finish, as ONE figure. Scene work only: setup (reading, breakdown, the build, all of Raphael, canon, sheets) is its own
+figure (`api/services/setup_costs.py`).
 
 Everything is worked out at read time from metered usage and the dated price list (`contracts.costs` does the money;
 this file only gathers rows and decides what is left to do). Nothing here stores a figure, and no breakdown leaves the
 server: the router returns `SceneCost` (the total, `designed`, `complete`) and the parts go to a debug log.
 
-  spent      text calls at actual cost + pictures x 1.05 + videos x 1.10, over what the scene's jobs and chat used,
-             plus the scene's share of whole-episode work (by its share of the production's dialogue lines, D-A)
+  spent      the scene's rows whose part is `scene` (`contracts.cost_parts`: design, Camera, prompts, frames, video,
+             chat) + its renders, each at its final price (the margin of its bucket)
   to finish  for each shot without an accepted take: its next video (`video_gen.resolve`, the settings a render would
              use) + a first frame if it has no current accepted one + a prompt if it has no current one;
              frames and prompts at the median of what this production's last ones cost
-  total      spent + to finish x 1.20 (the retry margin, to-finish only, D-B)
+  total      spent + to finish (no retry margin, plan/2026-11-23b)
 """
 from __future__ import annotations
 
@@ -22,7 +24,7 @@ from uuid import UUID
 
 from api.repositories import Repos, Row
 from api.services.renders import shot_state
-from contracts import costs
+from contracts import cost_parts, costs
 from contracts.costs import Costed, Price, SceneTotal
 from contracts.production import ProductionSettings
 from contracts.veo import FrameStrategy
@@ -33,9 +35,6 @@ if TYPE_CHECKING:
 
 _logger = logging.getLogger(__name__)
 
-# Whole-episode planning that no single scene made: shared by the scenes by their lines of dialogue. The structure
-# build and the shot planners write these before a scene is picked out.
-EPISODE_PHASES = ("script_split.", "structure_build.", "adam.", "david.", "jonathan.")
 FRAME_PHASE = "frame_render."
 FRAME_IMAGE_PHASE = "frame_render.image"
 PROMPT_PHASE = "shot_prompter.write"  # plan/2026-11-20d: one call writes one shot's first frame + video
@@ -54,11 +53,14 @@ def price_list(rows: Sequence[Mapping[str, Any]]) -> list[Price]:
     return out
 
 
-def per_frame(rows: Sequence[Row], prices: Sequence[Price]) -> int | None:
+def per_frame(rows: Sequence[Row], prices: Sequence[Price], sheet_jobs: frozenset[str] = frozenset()) -> int | None:
     """What one first frame cost, from `frame_render.*` rows: each job's cost (pictures and checks, margins in) over the
-    pictures it painted; the median of the newest `HISTORY_JOBS` jobs. None without a painted picture."""
+    pictures it painted; the median of the newest `HISTORY_JOBS` jobs. None without a painted picture. A character or
+    look sheet job (`sheet_jobs`) is not a first frame and is left out."""
     jobs: dict[str, list[Row]] = defaultdict(list)
     for r in rows:
+        if str(r.get("job_id") or "") in sheet_jobs:
+            continue
         jobs[str(r.get("job_id") or "")].append(r)
     newest = sorted(jobs.values(), key=lambda rs: max(str(r.get("created_at")) for r in rs), reverse=True)
     each: list[int] = []
@@ -91,13 +93,13 @@ async def scene_cost(repos: Repos, ld: Loaded, prices_override: Sequence[Price] 
     scene_id = UUID(str(ld.scene["id"]))
     shot_ids = [st.id for st in ld.states]
 
-    price_rows, usage, pool, lines, renders, takes = await asyncio.gather(
+    price_rows, usage, renders, takes = await asyncio.gather(
         repos.costs.prices(), repos.costs.scene_usage(production_id, scene_id),
-        repos.costs.unassigned_usage(production_id, EPISODE_PHASES), repos.costs.lines_by_scene(production_id),
         repos.renders.list_for_shots(shot_ids), repos.takes.list_for_shots(shot_ids))
     frame_hist, prompt_hist = await asyncio.gather(
         repos.costs.recent_usage(production_id, FRAME_PHASE, HISTORY_ROWS),
         repos.costs.recent_usage(production_id, PROMPT_PHASE, HISTORY_ROWS))
+    jobs = await _jobs(repos, [*usage, *frame_hist])
     # A database before schema v17 has no price table: the prices in code are the same seed it would hold.
     prices = list(prices_override) if prices_override is not None else (price_list(price_rows) or
                                                                          list(costs.SEED_PRICES))
@@ -106,16 +108,12 @@ async def scene_cost(repos: Repos, ld: Loaded, prices_override: Sequence[Price] 
     spent: list[Costed] = []
     parts: dict[str, int] = defaultdict(int)
     for r in usage:
+        phase = str(r.get("phase") or "")
+        if cost_parts.part_of(phase, jobs.get(str(r.get("job_id") or ""))) != "scene":
+            continue  # setup: reading, the build, Raphael, canon, sheets (plan/2026-11-23b)
         c = costs.cost_tokens(r, prices)
         spent.append(c)
-        parts["frames" if str(r.get("phase", "")).startswith(FRAME_PHASE) else "breakdown"] += c.micros
-    total_lines = sum(lines.values())
-    mine = lines.get(str(scene_id), 0)
-    if pool and total_lines and mine:
-        share = costs.Tally().extend(costs.cost_tokens(r, prices) for r in pool)
-        shared = share.micros * mine // total_lines
-        spent.append(Costed(shared, tuple(share.missing)))
-        parts["episode_share"] += shared
+        parts["frames" if phase.startswith(FRAME_PHASE) else "work"] += c.micros
     for rd in renders:
         c = costs.cost_render(rd, prices)
         spent.append(c)
@@ -124,10 +122,14 @@ async def scene_cost(repos: Repos, ld: Loaded, prices_override: Sequence[Price] 
     # ── to finish ───────────────────────────────────────────────────────────────────────────────────
     finished = {str(t["shot_id"]) for t in takes if t.get("status") == "accepted"}
     video = ProductionSettings.model_validate(ld.production.get("settings") or {}).video
-    frame_unit = per_frame(frame_hist, prices)
+    sheets = frozenset(jid for jid, job in jobs.items() if cost_parts.sheet_kind(job))
+    frame_unit = per_frame(frame_hist, prices, sheets)
     prompt_unit = per_prompt(prompt_hist, prices)
     if frame_unit is None:  # nothing made here yet: what frames cost across productions, else the seeded flat price
-        frame_unit = per_frame(await repos.costs.recent_usage(None, FRAME_PHASE, HISTORY_ROWS), prices)
+        across = await repos.costs.recent_usage(None, FRAME_PHASE, HISTORY_ROWS)
+        across_jobs = await _jobs(repos, across)
+        frame_unit = per_frame(across, prices,
+                               frozenset(jid for jid, job in across_jobs.items() if cost_parts.sheet_kind(job)))
     if prompt_unit is None:
         prompt_unit = per_prompt(await repos.costs.recent_usage(None, PROMPT_PHASE, HISTORY_ROWS), prices)
     frame_seed = Costed(frame_unit) if frame_unit is not None else costs.estimate_unit("frame", prices)
@@ -154,6 +156,12 @@ async def scene_cost(repos: Repos, ld: Loaded, prices_override: Sequence[Price] 
                   scene_id, result.total_micros, result.spent_micros, result.to_finish_micros, result.complete,
                   dict(result.parts), result.missing)
     return result
+
+
+async def _jobs(repos: Repos, rows: Sequence[Row]) -> dict[str, Row]:
+    """The jobs behind these rows (kind and request), by id: they decide a row's part (`contracts.cost_parts`)."""
+    ids = sorted({str(r["job_id"]) for r in rows if r.get("job_id")})
+    return {str(j["id"]): j for j in await repos.costs.jobs_of(ids)} if ids else {}
 
 
 def designed(ld: Loaded) -> bool:

@@ -38,10 +38,13 @@ def painter(config: Config, payload: DispatchPayload, store: Store, client: Any 
         quality = config.image_quality_sheet if sheet else config.image_quality_draft if draft else config.image_quality
         picture = image.generate(client, model=config.image_model, quality=quality, prompt=prompt,
                                  aspect_ratio=aspect, references=references)
-        store.record_usage({"job_id": str(payload.job_id), "production_id": str(payload.production_id),
-                            "actor_user_id": str(payload.actor_user_id), "phase": "frame_render.image",
-                            "model": config.image_model, "input_tokens": picture.input_tokens,
-                            "cached_input_tokens": 0, "output_tokens": picture.output_tokens})
+        row = {"job_id": str(payload.job_id), "production_id": str(payload.production_id),
+               "actor_user_id": str(payload.actor_user_id), "phase": "frame_render.image",
+               "model": config.image_model, "input_tokens": picture.input_tokens,
+               "cached_input_tokens": picture.cached_input_tokens, "output_tokens": picture.output_tokens}
+        if picture.image_input_tokens is not None:  # schema v29 (plan/2026-11-23)
+            row["image_input_tokens"] = picture.image_input_tokens
+        store.record_usage(row)
         return picture
 
     return paint

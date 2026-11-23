@@ -29,6 +29,7 @@ from contracts.camera_words import changed as _changed
 from contracts.canon import face_sheet_path, look_sheet_path, sheet_assets
 from contracts.holding import references_for
 from contracts.producer import (
+    BLOCKING_LABEL,
     CAMERA_OPTIONS,
     DRAFT_LABEL,
     CameraField,
@@ -252,7 +253,13 @@ def _label_name(label: str, prefix: str) -> str:
 
 
 FACE_LABEL = "the face sheet for "
-PERSON_LABELS = (FACE_LABEL, "the look sheet", "the character sheet", DRAFT_LABEL, SETUP_LABEL)
+PERSON_LABELS = (FACE_LABEL, "the look sheet", "the character sheet", DRAFT_LABEL, SETUP_LABEL, BLOCKING_LABEL)
+
+
+# plan/2026-11-23d §2.2: a look sheet showed a handbag and a folded umbrella, and the frame put both in her hand
+# while the board had the umbrella open in the rain and the bag on her shoulder.
+CARRIED = (" A carried thing on the look sheet (a bag, an umbrella) is held or worn as this shot's words and hands "
+           "say, never simply as the sheet shows it.")
 
 
 def reference_job(label: str, labels: Sequence[str] = (), hair_from_look: Iterable[str] = ()) -> str:
@@ -432,17 +439,23 @@ def references_block(labels: Sequence[str], hair_from_look: Iterable[str] = (), 
         parts.append("The approved draft is a rough, low-quality version of this very frame: keep its composition, "
                      "framing, pose, expression, props and light exactly, and paint it again as the finished frame "
                      "with full detail and sharpness. The sheets still decide faces, hair and the place.")
+    if any(label.startswith(BLOCKING_LABEL) for label in labels):
+        # plan/2026-11-23d §2.2: the board settles the blocking; this shot's words settle the camera.
+        parts.append("The approved scene board panel shows this moment with the people as coloured mannequins and the "
+                     "props as white clay stand-ins: take from it where each person stands and which way they face, "
+                     "their posture, what each hand holds and where each prop is, and the place behind them. Its "
+                     "camera, lens and framing are only a sketch: this shot's words decide the camera.")
     faced = any(label.startswith(FACE_LABEL) for label in labels)
     if faced:  # plan/2026-11-14 §3.1: the face sheet owns the face; the look sheet only dresses the person
         parts.append("A face sheet shows that person's face at every angle: paint their face, age and features ONLY "
                      "from it, at this shot's angle and expression, never from a look or character sheet.")
     if any(label.startswith("the look sheet") for label in labels) and faced:
         parts.append("A look sheet shows what that person wears in this shot: dress them exactly as their look sheet "
-                     "shows, the same clothes and accessories.")
+                     "shows, the same clothes and accessories." + CARRIED)
     elif any(label.startswith("the look sheet") for label in labels):
         # A look sheet IS the costume of this shot: clothes, hair, makeup and accessories.
         parts.append("A look sheet shows what that person wears in this shot: dress them exactly as their look sheet "
-                     "shows, the same clothes, hair, makeup and accessories.")
+                     "shows, the same clothes, hair, makeup and accessories." + CARRIED)
     if any(label.startswith("the character sheet") for label in labels):
         # A sheet shows a plain reference outfit; the clothes of this shot come from the card.
         parts.append("A character sheet shows a plain reference outfit: take clothes from the People line, never "

@@ -101,6 +101,21 @@ def test_the_run_context_stamps_ids_on_usage_rows_and_keys_threads_by_job():
     assert ctx.thread_id == str(job) and RunContext().thread_id == "adhoc" and RunContext().sink() is None
 
 
+def test_a_run_scoped_to_a_scene_names_it_on_every_usage_row_with_no_switch():
+    """plan/2026-11-23b: the scene's cost needs it; `USAGE_SCENE` is gone."""
+    scene = uuid4()
+    seen: list[dict[str, object]] = []
+    sink = RunContext(scene_id=scene, usage_sink=seen.append).sink()
+    assert sink is not None
+    sink(row("raphael.plan", "m"))
+    assert seen[0]["scene_id"] == str(scene)
+    unscoped: list[dict[str, object]] = []
+    sink = RunContext(usage_sink=unscoped.append).sink()
+    assert sink is not None
+    sink(row("structure_build.x", "m"))
+    assert "scene_id" not in unscoped[0]
+
+
 def test_usage_rows_have_exactly_the_token_usage_columns():
     assert set(row("p", "m")) == {"phase", "model", "input_tokens", "cached_input_tokens", "output_tokens"}
 

@@ -133,9 +133,12 @@ def test_a_tall_production_paints_a_tall_board_in_smaller_parts():
     assert "Every panel is a landscape 16:9 still" in wide, "a wide board keeps its words"
     assert kit.aspect_of_board({"prompt": tall}) == "9:16"
     assert kit.aspect_of_board({"prompt": wide}) == kit.aspect_of_board({}) == "16:9", "older boards are wide"
-    assert kit.parts_of(list(range(9)), "9:16") == [list(range(9))]
+    # plan/2026-11-23c D6: a tall picture holds the 6 panels measured clean, not 9
+    assert kit.parts_of(list(range(6)), "9:16") == [list(range(6))]
+    nine = kit.parts_of(list(range(9)), "9:16")
+    assert [len(p) for p in nine] == [6, 4] and nine[0][-1] == nine[1][0], "one overlap panel"
     parts = kit.parts_of(list(range(16)), "9:16")
-    assert [len(p) for p in parts] == [9, 8] and parts[0][-1] == parts[1][0], "one overlap panel"
+    assert [len(p) for p in parts] == [6, 6, 6]
     assert kit.parts_of(list(range(16))) == [list(range(16))], "a wide board still holds 16"
 
 

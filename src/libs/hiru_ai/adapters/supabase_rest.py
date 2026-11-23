@@ -23,7 +23,7 @@ from hiru_ai.core.ports import Row
 from hiru_ai.core.settings import AISettings, get_settings
 from hiru_ai.core.staging import StagedCards
 from hiru_ai.core.telemetry import enable_tracing
-from hiru_ai.core.usage import UsageSink
+from hiru_ai.core.usage import UsageSink, without_new_columns
 
 _log = logging.getLogger("hiru_ai.adapters.supabase")
 INSERT_BATCH = 100
@@ -796,6 +796,14 @@ def usage_sink(rest: Rest) -> UsageSink:
     def write(row: Row) -> None:
         try:
             rest.insert("token_usage", [row])
+            return
+        except httpx.HTTPError:
+            older = without_new_columns(row)  # a database before schema v29 lacks `image_input_tokens`
+            if older is None:
+                _log.warning("token_usage row not written", exc_info=True)
+                return
+        try:
+            rest.insert("token_usage", [older])
         except httpx.HTTPError:
             _log.warning("token_usage row not written", exc_info=True)
 
@@ -841,8 +849,7 @@ def build_context(payload: Any, *, jobs: Any, settings: AISettings | None = None
     rest = Rest(settings.supabase.url, settings.supabase.service_role_key.get_secret_value(), client)
     ctx = RunContext(production_id=payload.production_id, actor_user_id=payload.actor_user_id,
                      job_id=getattr(payload, "job_id", None),
-                     usage_sink=usage_sink(rest), ports=_ports(rest, jobs), usage_detail=settings.usage_detail,
-                     usage_scene=settings.usage_scene)
+                     usage_sink=usage_sink(rest), ports=_ports(rest, jobs), usage_detail=settings.usage_detail)
     if not images:
         return ctx
     from hiru_ai.adapters import images as painter

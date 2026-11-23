@@ -204,3 +204,22 @@ def test_a_step_with_no_time_and_too_many_steps_are_faults():
     answer["video"]["flow"] = [dict(flow[0]), dict(flow[0]), dict(flow[1]), dict(flow[1])]
     _times(answer, (0, 1), (1, 2), (2, 3), (3, 4))
     assert any("4 steps in 4 s" in f for f in faults_of(answer, facts))
+
+
+def test_the_approved_board_is_in_the_brief_and_a_held_thing_it_gives_must_be_in_the_frame():
+    """plan/2026-11-23d §2.2: the shot prompter writes from the approved panel's blocking, hands and props, never its
+    camera; a thing the board puts in a hand and the frame never names is a fault (D2)."""
+    answer, facts = case("2A-1")
+    board = {"blocking": "On the approved board: Anudi holds the umbrella open.",
+             "hands": [{"name": "Anudi", "left_hand": "grips the umbrella's shaft", "right_hand": "the phone"}],
+             "props": [{"name": "umbrella", "held_by": "Anudi", "hand": "left"}]}
+    with_board = {**facts, "board": board}
+    brief = logic.shot_brief(with_board)
+    assert "The approved scene board (a person approved it" in brief and "never its camera" in brief
+    assert "- Anudi: left hand grips the umbrella's shaft; right hand the phone" in brief
+    assert "- the umbrella: in Anudi's left hand" in brief
+    assert "The approved scene board" not in logic.shot_brief(facts), "no board, nothing said"
+    assert any("the approved scene board has the umbrella in a hand" in f for f in faults_of(answer, with_board))
+    named = copy.deepcopy(answer)
+    named["frame"]["people"] = f"{named['frame']['people']} She holds an open umbrella in her left hand."
+    assert not any("approved scene board" in f for f in faults_of(named, with_board))

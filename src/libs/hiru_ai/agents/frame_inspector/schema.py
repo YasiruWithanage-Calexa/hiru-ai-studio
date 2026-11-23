@@ -26,8 +26,9 @@ class Output(BaseModel):
         "when that part is absent."))
     hands_problem: str = Field(default="", description="When hands_match is false: who holds what wrongly, short.")
     mannequin: bool = Field(default=False, description=(
-        "A mannequin, a plastic figure or a person-shaped figure in one solid colour is visible. False when the "
-        "LOOK FOR A LEFTOVER MANNEQUIN part is absent."))
+        "A mannequin, a plastic figure, a person-shaped figure in one solid colour, or a blank white clay object "
+        "standing in for a prop (plan/2026-11-23c) is visible. False when the LOOK FOR A LEFTOVER MANNEQUIN part is "
+        "absent."))
     state_match: bool = Field(default=True, description=(
         "Each person's eyes, posture and condition match PLANNED STATE. True when that part is absent."))
     state_problem: str = Field(default="", description="When state_match is false: who differs and how, short.")

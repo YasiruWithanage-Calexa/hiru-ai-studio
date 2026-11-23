@@ -46,6 +46,23 @@ class Picture:
     mime: str
     input_tokens: int
     output_tokens: int
+    # Of `input_tokens`, the pictures sent in and the cached ones (plan/2026-11-23). None = the provider did not say.
+    image_input_tokens: int | None = None
+    cached_input_tokens: int = 0
+
+
+def _get(obj: Any, name: str) -> Any:
+    return obj.get(name) if isinstance(obj, dict) else getattr(obj, name, None)
+
+
+def input_detail(usage: Any) -> tuple[int | None, int]:
+    """(picture input tokens, cached input tokens) from `usage.input_tokens_details` (plan/2026-11-23: OpenAI bills
+    pictures sent in at a higher rate than text). None when the provider did not say."""
+    details = _get(usage, "input_tokens_details") if usage is not None else None
+    if details is None:
+        return None, 0
+    pictures = _get(details, "image_tokens")
+    return (int(pictures) if pictures is not None else None), int(_get(details, "cached_tokens") or 0)
 
 
 def _refused(exc: Exception) -> bool:
@@ -80,6 +97,8 @@ def generate(client: Any, *, model: str, quality: str, prompt: str, aspect_ratio
     if not data:
         raise ProviderError("the image model returned no image")
     usage = getattr(resp, "usage", None)
+    pictures, cached = input_detail(usage)
     return Picture(data=base64.b64decode(data), mime="image/png",
                    input_tokens=int(getattr(usage, "input_tokens", 0) or 0),
-                   output_tokens=int(getattr(usage, "output_tokens", 0) or 0))
+                   output_tokens=int(getattr(usage, "output_tokens", 0) or 0),
+                   image_input_tokens=pictures, cached_input_tokens=cached)

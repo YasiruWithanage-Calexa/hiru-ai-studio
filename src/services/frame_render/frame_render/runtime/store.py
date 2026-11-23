@@ -129,5 +129,11 @@ class Store:
     def record_usage(self, row: Row) -> None:
         try:
             self.rest.insert("token_usage", [row])
+            return
+        except httpx.HTTPError:
+            if "image_input_tokens" not in row:
+                return
+        try:  # a database before schema v29 lacks the column (plan/2026-11-23): the row without it
+            self.rest.insert("token_usage", [{k: v for k, v in row.items() if k != "image_input_tokens"}])
         except httpx.HTTPError:
             pass

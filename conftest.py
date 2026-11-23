@@ -17,3 +17,21 @@ def _own_file_cache(monkeypatch: Any, tmp_path: Path) -> Iterator[None]:
     file_store.MEMORY.clear()
     yield
     file_store.MEMORY.clear()
+
+
+def pytest_configure(config: Any) -> None:
+    """The margins are installed before collection too: some test modules work out expected prices at import."""
+    from api.margins import install
+
+    install()
+
+
+@pytest.fixture(autouse=True)
+def _studio_margins() -> Iterator[None]:
+    """Every test prices with the real margins file (plan/2026-11-23), as the API does after start-up; a test that
+    installs its own gets the file's back afterwards."""
+    from api.margins import install
+
+    install()
+    yield
+    install()

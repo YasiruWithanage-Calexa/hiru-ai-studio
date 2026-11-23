@@ -20,6 +20,7 @@ from api.observability import RequestLogMiddleware
 from api.repositories import Repos
 from api.routers import (
     activity,
+    admin_usage,
     ask,
     boards,
     breakdown,
@@ -71,6 +72,10 @@ def create_app(repos: Repos | None = None) -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        # plan/2026-11-23: a missing or broken margins file stops the API here, never prices at 0 %.
+        from api.margins import install
+
+        install()
         if repos is not None:
             app.state.repos = repos
         else:
@@ -140,7 +145,7 @@ def create_app(repos: Repos | None = None) -> FastAPI:
     for module in (me, members, productions, overview, documents, search, build, structure, canon, looks, scene_looks,
                    scene_canon, scenes, production, boards, page, home, handoff, renders, shot_panel, costs,
                    director, zora, sable, activity, live, breakdown,
-                   ask, jobs, usage, files, internal):
+                   ask, jobs, usage, admin_usage, files, internal):
         app.include_router(module.router)
     app.include_router(looks.drafts)  # production-wide: /productions/{id}/looks/draft
     return app

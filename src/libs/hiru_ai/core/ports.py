@@ -316,6 +316,10 @@ class Picture:
     mime: str
     input_tokens: int
     output_tokens: int
+    # Of `input_tokens`, the pictures sent in (billed at the image-input rate) and the cached ones (plan/2026-11-23).
+    # None = the provider did not say.
+    image_input_tokens: int | None = None
+    cached_input_tokens: int = 0
 
 
 class ImageRefused(Exception):

@@ -393,3 +393,42 @@ def test_board_work_goes_to_the_graph_whatever_the_engine_says() -> None:
     assert graph_only(payload({"update": True, "scene_id": "s", "board_ids": ["b"], "shots": []}))
     assert graph_only(payload({"board_id": "b"}))
     assert not graph_only(payload({"frame_ids": ["f"]}))
+
+
+def test_the_openai_painter_records_the_picture_input_apart():
+    """plan/2026-11-23: pictures sent in are billed at a higher rate than text, so the row says how many there were."""
+    def respond(**kw):
+        return SimpleNamespace(data=[SimpleNamespace(b64_json="iVBORw==")],
+                               usage=SimpleNamespace(input_tokens=1_000, output_tokens=9, input_tokens_details=
+                                                     SimpleNamespace(text_tokens=100, image_tokens=900)))
+
+    client = SimpleNamespace(images=SimpleNamespace(edit=respond, generate=respond))
+    usage: list[dict] = []
+    paint = painter(Config("u", "k", "sk", "gpt-image-2", "high", "", ""), payload(),
+                    SimpleNamespace(record_usage=usage.append), client)  # type: ignore[arg-type]
+    assert paint is not None
+    paint("p", "9:16", [image.Reference("a", b"x")])
+    assert usage[0]["image_input_tokens"] == 900 and usage[0]["input_tokens"] == 1_000
+    usage.clear()
+    client.images.generate = lambda **kw: SimpleNamespace(data=[SimpleNamespace(b64_json="iVBORw==")],
+                                                           usage=SimpleNamespace(input_tokens=5, output_tokens=9))
+    paint("p", "9:16", [])
+    assert "image_input_tokens" not in usage[0]  # the provider did not say: the row names no split
+
+
+def test_a_usage_row_an_older_table_refuses_is_written_without_the_new_column():
+    import httpx
+    from frame_render.runtime.store import Store
+
+    sent: list[dict] = []
+
+    class Rest:
+        def insert(self, table: str, rows: list[dict]) -> None:
+            sent.append(rows[0])
+            if "image_input_tokens" in rows[0]:
+                raise httpx.HTTPStatusError("no column", request=httpx.Request("POST", "http://x"),
+                                            response=httpx.Response(400))
+
+    Store(Rest()).record_usage({"phase": "frame_render.image", "input_tokens": 5, "image_input_tokens": 4})  # type: ignore[arg-type]
+    assert sent == [{"phase": "frame_render.image", "input_tokens": 5, "image_input_tokens": 4},
+                    {"phase": "frame_render.image", "input_tokens": 5}]

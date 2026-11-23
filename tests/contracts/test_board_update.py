@@ -177,4 +177,11 @@ def test_the_panel_prompt_matches_the_labs_run_002_add():
                       "panel so it sits beside them unnoticed: the same mannequins in the same colours and finish, the "
                       "same place, props, light, weather, colour grade and level of detail. Do not copy their framing: "
                       "this panel has its own camera, described below.")
-    assert prompt == golden.read_text(encoding="utf-8").replace(lab_neighbours, kit.NEIGHBOURS)
+    # plan/2026-11-23c: props are white clay stand-ins (the mannequin line no longer calls them real, the prop line
+    # follows it) and the support rule follows the bodies rule. Nothing else differs.
+    lab_real = "Everything else (the place, the props, the light, the weather) is a real, photorealistic film still."
+    now_real = "The place, the light and the weather are a real, photorealistic film still."
+    expected = (golden.read_text(encoding="utf-8").replace(lab_neighbours, kit.NEIGHBOURS)
+                .replace(lab_real, f"{now_real}\n\n{kit.prop_line(())}")
+                .replace(kit.BODIES, f"{kit.BODIES}\n\n{kit.SUPPORT}"))
+    assert prompt == expected

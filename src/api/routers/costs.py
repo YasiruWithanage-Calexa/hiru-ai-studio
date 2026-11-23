@@ -1,7 +1,9 @@
 """A scene's production cost, and the price list behind it (plan/2026-11-06d §6).
 
     GET  /v1/productions/{pid}/scenes/{sid}/cost   ONE figure: the scene's total in USD (VIEW_COSTS only)
-    GET  /v1/prices                                 admin: the dated price list
+    GET  /v1/productions/{pid}/setup-cost          the production's setup: canon, sheets (plan/2026-11-23b)
+    GET  /v1/productions/{pid}/episodes/{eid}/setup-cost   the episode's setup: upload, re-plans, re-reads
+    GET  /v1/prices                                 admin: the dated price list (provider rates, no margins)
     PUT  /v1/prices                                 admin: add a price that applies from a date (never edits a row)
 
 The scene cost answers with the total and two flags, nothing else: no lines, no rates, no margins, so a breakdown
@@ -22,6 +24,8 @@ from api.deps.db import get_repos
 from api.repositories import Repos
 from api.routers.production import load
 from api.services import costs as svc
+from api.services import setup_costs
+from contracts import cost_parts
 from contracts.costs import CURRENCY, Price
 from contracts.roles import Permission
 
@@ -48,7 +52,54 @@ async def get_scene_cost(production_id: UUID, scene_id: UUID, access: CanSeeCost
     return SceneCost(total_micros=total.total_micros, designed=svc.designed(ld), complete=total.complete)
 
 
+# ── setup (plan/2026-11-23b) ──────────────────────────────────────────────────────────────────
+
+
+class SetupEntry(BaseModel):
+    """One dated line of a setup figure: what it was and its final price. No rate, margin or provider cost."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    label: str  # "Upload and first plan", "Re-plan, scene 4", "Character sheets"
+    at: str  # when it was first spent (ISO)
+    total_micros: int
+    complete: bool
+
+
+class SetupCost(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    currency: str = CURRENCY
+    total_micros: int
+    complete: bool  # false = a price is missing, so the figure leaves that item out
+    entries: list[SetupEntry]
+
+
+def _setup(found: cost_parts.Setup) -> SetupCost:
+    return SetupCost(total_micros=found.micros, complete=found.complete,
+                     entries=[SetupEntry(label=e.label, at=e.at, total_micros=e.micros, complete=not e.missing)
+                              for e in found.entries])
+
+
+@router.get("/v1/productions/{production_id}/setup-cost", response_model=SetupCost)
+async def get_production_setup_cost(production_id: UUID, access: CanSeeCosts, repos: ReposDep) -> SetupCost:
+    return _setup((await setup_costs.figures(repos, access.production_id)).production)
+
+
+@router.get("/v1/productions/{production_id}/episodes/{episode_id}/setup-cost", response_model=SetupCost)
+async def get_episode_setup_cost(production_id: UUID, episode_id: UUID, access: CanSeeCosts,
+                                 repos: ReposDep) -> SetupCost:
+    if await repos.episodes.get(access.production_id, episode_id) is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Episode not found.")
+    found = (await setup_costs.figures(repos, access.production_id)).episodes.get(str(episode_id))
+    return _setup(found or cost_parts.Setup())
+
+
 # ── the price list (admin) ────────────────────────────────────────────────────────────────────
+
+
+V29_COLUMNS = frozenset({"image_input_micros", "cached_image_input_micros", "text_output_micros", "long_context_from",
+                         "long_input_micros", "long_cached_input_micros", "long_output_micros"})
 
 
 class PriceOut(Price):
@@ -77,13 +128,15 @@ async def add_price(body: PriceIn, admin: Admin, repos: ReposDep) -> PriceOut:
     if when < now - timedelta(minutes=5):
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT,
                             "A price applies from now on. Work already made keeps the price it was made at.")
-    if body.kind == "tokens" and not body.model_prefix:
+    if body.kind in ("tokens", "video_tokens") and not body.model_prefix:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "Name the model this price is for.")
     if body.kind == "video_second" and not (body.engine and body.resolution):
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "Name the video model and the size.")
     if body.kind == "estimate" and body.model_prefix not in ("frame", "prompt"):
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "An estimate is for a frame or a prompt.")
-    row = {**body.model_dump(mode="json"), "valid_from": when.isoformat(), "set_by": str(admin.id)}
+    # A price column added by schema v29 is sent only when it is set, so a price still saves on an older database.
+    dumped = {k: v for k, v in body.model_dump(mode="json").items() if v or k not in V29_COLUMNS}
+    row = {**dumped, "valid_from": when.isoformat(), "set_by": str(admin.id)}
     saved = await repos.costs.add_price(row)
     await repos.audit.record(action="prices.add", entity="prices", entity_id=str(saved["id"]), actor_user_id=admin.id,
                              diff={"kind": body.kind, "model_prefix": body.model_prefix, "engine": body.engine,

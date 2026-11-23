@@ -1,0 +1,16 @@
+id: board_inspector
+kind: agent
+version: 1
+summary: "Looks at one painted Scene board panel for a third arm, a held thing with no hand on it, feet on nothing or a thing in the wrong hand; the board job paints a failed panel again alone, once."
+status: active
+owner: frame_render
+model: vision
+shape: structured
+phase: frame_render.board_check
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

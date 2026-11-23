@@ -11,7 +11,11 @@
   writer    `board_writer` reads the scene and every painted shot's PLAN, writes the world, the geography and a
             mannequin panel per shot (`contracts.board`)
   image     per part (D5): `board_prompt` → `safe_depiction.blocking` → `images.edit` at the row's quality (LOW by
-            default, D2); a later part gets the previous part's last panel to repeat
+            default, D2); a later part gets the previous part's last panel to repeat. Props are white clay stand-ins
+            (plan/2026-11-23c D2): the picture gets the place plate only, the writer still reads the prop sheets
+  check     plan/2026-11-23c: the writer's answer is checked in code first (`kit.writer_findings`, into conflicts);
+            each painted panel is then looked at (`board_inspector`: extra limbs, a held thing with no hand on it,
+            feet on nothing) and a failed one is painted again ALONE, once, told what was wrong
   after     cells cut along the painted gutters, one PNG per shot, the numbered sheet drawn by code; all in the
             private `frames` bucket under `<production>/boards/<board>/`
 
@@ -31,19 +35,21 @@ from __future__ import annotations
 import base64
 import json
 import logging
+import re
 from collections.abc import Callable
 from typing import Any
 from uuid import uuid4
 
 from contracts import board as kit
-from contracts import safe_depiction
+from contracts import holding, safe_depiction
 from contracts.canon import look_sheet_path, named_in
 from contracts.frame_brief import sheet_path
 from contracts.veo import ASPECT_RATIO, Orientation
-from hiru_ai.core import agents, parts
+from hiru_ai.core import agents, llm, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.errors import ModelUnavailable
 from hiru_ai.core.ports import ImageRefused, Reference
+from hiru_ai.core.settings import get_settings
 from hiru_ai.systems.frame_render import pictures as pics
 
 _log = logging.getLogger(__name__)
@@ -83,9 +89,10 @@ class Board:
             except Exception:  # a shot the staging cannot read is painted with nobody named, never dropped
                 _log.warning("shot %s could not be staged for the board", s.get("id"), exc_info=True)
                 self.seen[str(s["id"])] = {}
-        self.shots = kit.board_shots(self.scene, self.shot_rows, world.get("lines") or [],
-                                     {k: list(v.values()) for k, v in self.seen.items()}, plates)
         self.by_id = {str(c["id"]): c for c in world["canon"]}
+        names = {cid: str(c.get("name") or "") for cid, c in self.by_id.items() if c.get("kind") == "character"}
+        self.shots = kit.board_shots(self.scene, self.shot_rows, world.get("lines") or [],
+                                     {k: list(v.values()) for k, v in self.seen.items()}, plates, names)
         order: list[str] = []
         for shot in self.shots:
             if shot.painted:
@@ -108,6 +115,9 @@ class Board:
     def shot(self, shot_id: str) -> kit.BoardShot:
         return next(s for s in self.shots if s.id == shot_id)
 
+    def shot_by_number(self, number: int) -> kit.BoardShot:
+        return next(s for s in self.shots if s.number == number)
+
     # ── what the writer reads ──────────────────────────────────────────────────────────────
 
     def _card(self, cid: str) -> Row:
@@ -126,23 +136,55 @@ class Board:
         return {"name": row["name"], "look": self._card(loc).get("look", ""), "spots": spots}, row
 
     def props(self, shots: list[kit.BoardShot]) -> list[Row]:
-        """The props these shots' plans name, as canon rows."""
+        """The props these shots' plans name, as canon rows: by name or alias, or as the end of a word the plan uses
+        ("smartphone" is the canon "phone", plan/2026-11-23c §3.3; the frame refs audit of 2026-11-18)."""
         text = self._plan_text(shots)
-        return [c for c in self.world["canon"] if c.get("kind") == "prop" and named_in(str(c.get("name") or ""), text)]
+        words = {w.lower() for w in re.findall(r"[A-Za-z]+", text)}
+        out = []
+        for c in self.world["canon"]:
+            if c.get("kind") != "prop":
+                continue
+            names = [str(c.get("name") or ""), *(str(a) for a in c.get("aliases") or [])]
+            if any(n and named_in(n, text) for n in names) or any(
+                    holding.canon_match(w, [c]) is not None for w in words if len(w) >= 4):
+                out.append(c)
+        return out
+
+    def prop_names(self, shots: list[kit.BoardShot]) -> list[str]:
+        return [str(p["name"]) for p in self.props(shots)]
+
+    def place_names(self, shots: list[kit.BoardShot]) -> list[str]:
+        """The canon places these panels show, which stay real (never clay): the scene's location, its spots, and
+        any other place the plans name (a food three-wheeler is a place, 2026-11-23)."""
+        text = self._plan_text(shots)
+        place, _ = self.place()
+        out = [str(place.get("name") or ""), *(str(s["name"]) for s in place.get("spots") or [])]
+        out += [str(c["name"]) for c in self.world["canon"]
+                if c.get("kind") == "location" and c.get("name") and named_in(str(c["name"]), text)]
+        return list(dict.fromkeys(n for n in out if n))
+
+    def carried(self) -> dict[str, str]:
+        """Person name → what they carry through the scene (their scene condition and look accessories), which the
+        free check allows in a hand (2026-11-23: Anudi's open umbrella continues from scene 3)."""
+        return {str(r["name"]): " ".join(str(r.get(k) or "") for k in ("scene_condition", "accessories")).strip()
+                for r in self.people_rows()}
 
     def people_rows(self) -> list[Row]:
+        """Each person as the writer reads them: never a face for the board, but the age and gender that give the
+        mannequin its height and build (plan/2026-11-23c §3.1)."""
         looks, conditions = self.world.get("looks") or {}, self.world.get("conditions") or {}
         out = []
         for cid in self.people:
-            look = looks.get(cid) or {}
-            out.append({"name": self.by_id[cid]["name"], "appearance": self._card(cid).get("appearance", ""),
+            look, card = looks.get(cid) or {}, self._card(cid)
+            out.append({"name": self.by_id[cid]["name"], "gender": card.get("gender", ""), "age": card.get("age", ""),
+                        "appearance": card.get("appearance", ""),
                         "outfit": look.get("outfit", ""), "hair": look.get("hair", ""),
                         "accessories": look.get("accessories", ""), "scene_condition": conditions.get(cid, "")})
         return out
 
     def writer_pictures(self) -> list[tuple[str, str]]:
         """(label, references-bucket path) the writer reads: each person's look sheet (else base sheet), the place, the
-        props. The board IMAGE gets only the place and the props (it has no faces)."""
+        props. The board IMAGE gets only the place (no faces; the props are clay stand-ins, plan/2026-11-23c)."""
         looks = self.world.get("looks") or {}
         out: list[tuple[str, str]] = []
         for cid in self.people:
@@ -153,13 +195,15 @@ class Board:
             elif sheet_path(row):
                 out.append((f"the character sheet for {row['name']}", sheet_path(row)))
         out += self.image_pictures(self.painted)
+        out += [(f"the reference sheet for {p['name']}", sheet_path(p)) for p in self.props(self.painted)
+                if sheet_path(p)]
         return out[: kit.MAX_WRITER_PICTURES]
 
     def image_pictures(self, shots: list[kit.BoardShot]) -> list[tuple[str, str]]:
+        """What the board picture is painted against: the location plate only. The props are white clay stand-ins
+        (plan/2026-11-23c D2), so their sheets would only invite the real thing."""
         _, loc = self.place()
-        out = [(f"the location plate for {loc['name']}", sheet_path(loc))] if loc and sheet_path(loc) else []
-        out += [(f"the reference sheet for {p['name']}", sheet_path(p)) for p in self.props(shots) if sheet_path(p)]
-        return out[: MAX_IMAGE_REFS - 1]
+        return [(f"the location plate for {loc['name']}", sheet_path(loc))] if loc and sheet_path(loc) else []
 
     def bundle(self, labels: list[str]) -> Row:
         place, _ = self.place()
@@ -190,7 +234,75 @@ def write(ctx: RunContext, b: Board, repaint: dict[int, str] | None = None) -> k
         {"message": message, "pictures": [{"mime": p.mime, "b64": base64.b64encode(p.data).decode()}
                                           for p in pictures]},
         ctx, max_output=kit.WRITER_MAX_OUTPUT)
-    return kit.Writer.of(out.model_dump())
+    writer = kit.Writer.of(out.model_dump())
+    writer.conflicts = list(dict.fromkeys([*writer.conflicts, *kit.writer_findings(writer, b.shots, b.carried())]))
+    return writer
+
+
+# ── the board check (plan/2026-11-23c F2) ────────────────────────────────────────────────────
+
+
+def _check_panel(ctx: RunContext, b: Board, panel: kit.Panel, data: bytes) -> Row | None:
+    """What the vision model sees wrong in one painted panel, or None: no key, the vision model switched off
+    (`OPENAI__MODEL_VISION=""`), or a failed call (the panel is kept as it is)."""
+    if not (llm.models_enabled() and get_settings().openai.model_vision):
+        return None
+    try:
+        out = agents.build("board_inspector").run(
+            {"image_b64": base64.b64encode(data).decode(), "mime": "image/png",
+             "people": [f"{n} is the {c} mannequin" for n, c in b.colours.items()
+                        if any(x.name == n for x in panel.people)],
+             "panel": f"{panel.camera.rstrip('.')}. {panel.picture}", "hands": kit.hands_text(panel, b.colours)},
+            ctx)
+    except Exception:
+        _log.warning("panel of shot %s could not be checked", panel.shot, exc_info=True)
+        return None
+    return dict(out.model_dump())
+
+
+def _faults(answer: Row) -> list[str]:
+    """The faults that send a panel back; [] when it is fine."""
+    out = [str(p) for p in answer.get("problems") or [] if str(p).strip()][:3]
+    named = [w for flag, w in (("extra_limbs", "a mannequin with more or fewer than two arms"),
+                               ("floating", "a held thing with no hand on it, floating"),
+                               ("ungrounded", "feet not standing on the ground"),
+                               ("hands_mismatch", "a hand holding something other than the panel says"))
+             if (answer.get(flag) is True if flag != "hands_mismatch" else answer.get("hands_match") is False)]
+    return (out or named) if named else []
+
+
+def _mend(ctx: RunContext, b: Board, writer: kit.Writer, panel: kit.Panel, data: bytes, refs: list[Reference],
+          aspect: str, quality: str) -> tuple[bytes, Row | None]:
+    """The panel checked, and painted again ALONE once when the check finds a fault, told what was wrong. →
+    (the picture to keep, the cell's `check`: `{ok, problems, fixed?, repainted?}`; None when nothing could
+    look)."""
+    answer = _check_panel(ctx, b, panel, data)
+    if answer is None:
+        return data, None
+    faults = _faults(answer)
+    if not faults:
+        return data, {"ok": True, "problems": []}
+    painter = ctx.ports.images
+    shot = b.shot_by_number(panel.shot)
+    prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect, props=b.prop_names([shot]),
+                              fix=kit.fix_line(faults), places=b.place_names([shot]))
+    if painter is None or safe_depiction.blocking(prompt):
+        return data, {"ok": False, "problems": faults}
+    try:
+        picture = painter(prompt, aspect, refs, quality=quality)
+    except Exception:
+        _log.warning("the panel of shot %s could not be painted again", panel.shot, exc_info=True)
+        return data, {"ok": False, "problems": faults}
+    again = _check_panel(ctx, b, panel, picture.data)
+    left = _faults(again) if again is not None else faults  # not looked at again: the faults are not known gone
+    return picture.data, {"ok": again is not None and not left, "problems": left, "fixed": faults, "repainted": True}
+
+
+def _still_wrong(number: int, check: Row | None) -> str:
+    """The conflict line for a panel the check still finds wrong after its one repaint."""
+    if not check or check.get("ok") or not check.get("repainted"):
+        return ""
+    return f"Shot {number}: the board check still sees {'; '.join(check.get('problems') or ['a fault'])}."
 
 
 def _cells_of(b: Board, part: list[kit.BoardShot], index: int, count: int) -> list[kit.BoardShot]:
@@ -285,7 +397,8 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
         refs = _pictures(ctx, b.image_pictures(group))
         if previous_last is not None:
             refs.append(Reference(label=kit.OVERLAP_LABEL, data=previous_last))
-        prompt = kit.board_prompt(writer, numbers, [r.label for r in refs], b.colours, aspect)
+        prompt = kit.board_prompt(writer, numbers, [r.label for r in refs], b.colours, aspect,
+                                  props=b.prop_names(group), places=b.place_names(group))
         fields: Row = {"parts": len(groups), "writer": writer.dump(), "colours": colours, "prompt": prompt}
         found = safe_depiction.blocking(prompt)
         if found:
@@ -325,6 +438,28 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
             for c in cells:  # a kept panel keeps its old pin: it still shows what it was painted against
                 if c["shot_id"] in kept and kept[c["shot_id"]].get("pin"):
                     c["pin"] = kept[c["shot_id"]]["pin"]
+            places = _pictures(ctx, b.image_pictures(group))
+            mended = False
+            for c in cells:  # plan/2026-11-23c F2: every new panel is looked at; a wrong one is painted again alone
+                p = writer.panel(int(c["number"]))
+                if p is None or not c.get("box") or c["shot_id"] in kept:
+                    continue
+                data, check = _mend(ctx, b, writer, p, pics.crop(image, c["box"]), places, aspect,
+                                    str(row.get("quality") or kit.DEFAULT_QUALITY))
+                if check is None:
+                    continue
+                c["check"] = check
+                if check.get("repainted"):
+                    fix = f"{production['id']}/boards/{rid}/cell_{int(c['number']):03d}-fix.png"
+                    ctx.need("files").upload("frames", fix, data, "image/png")
+                    c.update(path=fix, source="panel", box=None)
+                    mended = True
+                line = _still_wrong(int(c["number"]), check)
+                if line and line not in writer.conflicts:
+                    writer.conflicts.append(line)
+            if mended:
+                sheet = _sheet(ctx, b, cells, f"{production['id']}/boards/{rid}", "checked")
+            fields["writer"] = writer.dump()
             last = next((c for c in reversed(cells) if c.get("path")), None)
             previous_last = pics.crop(image, last["box"]) if last else None
         except Exception:
@@ -402,10 +537,10 @@ def _neighbours(parts_cells: list[list[Row]], shot_id: str, number: int) -> list
 
 
 def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: list[list[Row]], shot: kit.BoardShot,
-                 note: str, aspect: str, quality: str) -> tuple[bytes, kit.Panel, list[str]]:
+                 note: str, aspect: str, quality: str) -> tuple[bytes, kit.Panel, list[str], Row | None]:
     """ONE panel painted alone (plan/2026-11-17 §3.2): the one-panel writer, then `panel_prompt` → safe depiction →
-    one picture, the place, the shot's props and its neighbouring panels attached. → (picture, panel, conflicts).
-    Raises `_Failed` with the reason."""
+    one picture, the place and its neighbouring panels attached (the props are clay stand-ins, plan/2026-11-23c),
+    then the board check (F2). → (picture, panel, conflicts, check). Raises `_Failed` with the reason."""
     painter = ctx.ports.images
     if painter is None:
         raise _Failed(NOT_CONFIGURED)
@@ -415,7 +550,7 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
             near.append((side, int(cell["number"]), _download(ctx, "frames", str(cell["path"]))))
         except Exception:
             _log.warning("the panel of shot %s could not be read as a neighbour", cell.get("number"), exc_info=True)
-    places = _pictures(ctx, b.image_pictures([shot])[: MAX_IMAGE_REFS - len(near)])
+    places = _pictures(ctx, b.image_pictures([shot])[: max(MAX_IMAGE_REFS - len(near), 0)])
     edit = kit.Edit(kind="change" if writer.panel(shot.number) else "add", number=shot.number, plan=shot.plan,
                     board=writer, before=next((n for s, n, _ in near if s == "before"), None),
                     after=next((n for s, n, _ in near if s == "after"), None), note=note,
@@ -438,7 +573,8 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
     if panel is None:
         raise _Failed(f"The board writer gave no panel for shot {shot.number}.")
     refs = [*places, *(Reference(label=kit.neighbour_label(s, n), data=d) for s, n, d in near)]
-    prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect)
+    prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect, props=b.prop_names([shot]),
+                              places=b.place_names([shot]))
     found = safe_depiction.blocking(prompt)
     if found:
         raise _Failed(safe_depiction.frame_error(found))
@@ -449,7 +585,11 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
     except Exception:
         _log.warning("the panel of shot %s could not be painted", shot.number, exc_info=True)
         raise _Failed(FAILED) from None
-    return picture.data, panel, kit.Writer.of(raw).conflicts
+    conflicts = [*kit.Writer.of(raw).conflicts,
+                 *kit.writer_findings(kit.Writer(world="", geography="", panels=[panel]), [shot], b.carried())]
+    data, check = _mend(ctx, b, writer, panel, picture.data, refs, aspect, quality)
+    line = _still_wrong(shot.number, check)
+    return data, panel, [*conflicts, *([line] if line else [])], check
 
 
 def _sheet(ctx: RunContext, b: Board, cells: list[Row], base: str, tag: str) -> str:
@@ -523,7 +663,9 @@ def update(ctx: RunContext, production: Row, world: Row, rows: list[Row], state:
             continue
         old_panel = writer.panel(shot.number) if cell is not None and cell.get("kind") == "painted" else None
         history = kit.remember(cell, old_panel) if cell is not None else []
-        prev = kit.previous_for(cell, pin) if cell is not None else None
+        prev = None
+        if cell is not None:  # a picture painted before plan/2026-11-23c carries the old pin
+            prev = kit.previous_for(cell, pin) or kit.previous_for(cell, kit.legacy_pin(row))
         back = kit.panel_of(prev.get("panel"), shot.number) if prev else None
         if prev and back is not None:  # §3.6: an undo put this plan back; its picture comes back for free
             put(sid, {"kind": "painted", "path": prev["path"], "pin": pin, "source": "panel", "box": None,
@@ -533,7 +675,7 @@ def update(ctx: RunContext, production: Row, world: Row, rows: list[Row], state:
             continue
         note = str((cell or {}).get("note") or "")
         try:
-            data, panel, conflicts = _paint_panel(ctx, b, writer, parts_cells, shot, note, aspect, quality)
+            data, panel, conflicts, check = _paint_panel(ctx, b, writer, parts_cells, shot, note, aspect, quality)
         except _Failed as exc:
             failed[shot.number] = str(exc)
             continue
@@ -548,7 +690,7 @@ def update(ctx: RunContext, production: Row, world: Row, rows: list[Row], state:
             failed[shot.number] = FAILED
             continue
         put(sid, {"kind": "painted", "path": path, "pin": pin, "source": "panel", "box": None, "panel": 1,
-                  "text": "", "previous": history}, fresh)
+                  "text": "", "previous": history, **({"check": check} if check else {})}, fresh)
         writer = _with_panel(writer, panel, conflicts)
         updated.append(shot.number)
 

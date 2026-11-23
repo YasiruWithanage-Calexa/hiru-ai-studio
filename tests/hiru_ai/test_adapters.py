@@ -392,3 +392,46 @@ def test_a_canon_or_look_sheet_is_painted_at_the_sheet_quality():
     paint("Kamala in a saree", "16:9", [Reference("base", b"1")], sheet=True)
     paint("a harbour", "16:9", [])
     assert [kw["quality"] for _, kw in sdk.calls] == ["low", "low", "medium"]
+
+
+# ── plan/2026-11-23: picture input apart, and a row an older table refuses ─────────────────────
+
+
+class DetailedImages(Images):
+    """An images response that says how much of the input were pictures."""
+
+    def _answer(self, kind: str, **kw: Any) -> Any:
+        resp = super()._answer(kind, **kw)
+        resp.usage = SimpleNamespace(input_tokens=1_000, output_tokens=4_000,
+                                     input_tokens_details=SimpleNamespace(text_tokens=100, image_tokens=900,
+                                                                          cached_tokens=50))
+        return resp
+
+
+def test_a_picture_row_says_how_much_input_were_pictures():
+    rows: list[dict[str, Any]] = []
+    picture = painter(DetailedImages(), rows)("a harbour", "16:9", [Reference("one", b"1")])
+    assert (picture.image_input_tokens, picture.cached_input_tokens) == (900, 50)
+    assert rows == [{"phase": "frame_render.image", "model": "gpt-image-2", "input_tokens": 1_000,
+                     "cached_input_tokens": 50, "output_tokens": 4_000, "image_input_tokens": 900}]
+
+
+def test_input_detail_reads_objects_and_dicts_and_says_none_when_absent():
+    assert images.input_detail(None) == (None, 0)
+    assert images.input_detail(SimpleNamespace(input_tokens=5)) == (None, 0)
+    assert images.input_detail({"input_tokens_details": {"image_tokens": 7}}) == (7, 0)
+
+
+def test_a_row_an_older_table_refuses_is_written_again_without_the_new_column():
+    rec = Recorder(httpx.Response(400, json={"code": "PGRST204", "message": "column image_input_tokens"}),
+                   httpx.Response(201, json=[]))
+    supabase_rest.usage_sink(rest(rec))({"phase": "frame_render.image", "model": "m", "image_input_tokens": 9})
+    sent = [body for method, _, _, body in rec.seen() if method == "POST"]
+    assert sent == [[{"phase": "frame_render.image", "model": "m", "image_input_tokens": 9}],
+                    [{"phase": "frame_render.image", "model": "m"}]]
+
+
+def test_a_row_without_new_columns_is_not_retried():
+    rec = Recorder(httpx.Response(500, text="down"))
+    supabase_rest.usage_sink(rest(rec))({"phase": "x", "model": "m"})
+    assert len(rec.requests) == 1

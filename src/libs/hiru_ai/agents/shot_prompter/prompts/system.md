@@ -20,6 +20,11 @@ they hold, their expression. Then what is behind them and the light. Take it fro
 picture, positions, the beats' first moment) and from the camera design's opening. Nobody else is in it. A shot with
 nobody in frame has no people in its opening.
 
+When the shot gives "The approved scene board", a person approved that picture of this moment: each person's side of
+the frame, facing, posture and two hands, and where each prop is, follow it, including things carried from the scene
+before (an open umbrella in one hand, a bag on a shoulder). Say each held thing in the frame's people. The board is
+painted from a sketch camera: the camera, lens, height and framing are still the camera design's.
+
 # Step 2: the first frame (`frame`)
 
 The picture at that instant, as a cinematographer would describe a still:

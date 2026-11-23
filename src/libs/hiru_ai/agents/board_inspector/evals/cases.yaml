@@ -1,0 +1,18 @@
+# Recorded answers in the shape of the board of 2026-11-23 (plan/2026-11-23c): the faults it showed, and a clean panel.
+- name: an umbrella held by nothing and a third arm
+  input:
+    image_b64: "iVBORw0KGgo="
+    people: [ "Kasun is the red mannequin", "Anudi is the blue mannequin" ]
+    panel: "Chest-up two-shot. The blue mannequin holds the clay phone at her waist."
+    hands: "Hands: the blue mannequin: left hand empty, at her side; right hand the clay phone."
+  reply:
+    extra_limbs: true
+    floating: true
+    ungrounded: false
+    hands_match: false
+    problems: [ "blue: a third arm carries the bag", "blue: an umbrella above her with no hand on its shaft" ]
+  expect: { extra_limbs: true, floating: true }
+- name: a clean panel
+  input: { image_b64: "iVBORw0KGgo=", people: [ "Anudi is the blue mannequin" ], panel: "Anudi stands on the pavement" }
+  reply: { extra_limbs: false, floating: false, ungrounded: false, hands_match: true, problems: [] }
+  expect: { extra_limbs: false, floating: false, ungrounded: false }

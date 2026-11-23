@@ -1,6 +1,7 @@
 """In-memory repositories with the same behaviour the API relies on from Supabase."""
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
 from datetime import UTC, datetime
 from typing import Any
 from uuid import NAMESPACE_URL, UUID, uuid4, uuid5
@@ -798,8 +799,12 @@ class FakeCosts:
         self.price_rows: list[Row] = []
         self.usage: list[Row] = []
         self.jobs: dict[str, Row] = {}  # job id -> its request
+        self.job_kinds: dict[str, str] = {}  # job id -> its kind (plan/2026-11-23b); "" when a test does not say
         self.lines: dict[str, int] = {}
         self.queries = 0
+        self.renders: FakeRenders | None = None  # wired by build_fake_repos: renders_between reads its rows
+        self.has_totals = True  # False = a database before schema v29 (no token_usage_totals)
+        self.totals_calls = 0
 
     async def prices(self) -> list[Row]:
         return sorted((dict(r) for r in self.price_rows), key=lambda r: str(r.get("valid_from")), reverse=True)
@@ -815,11 +820,6 @@ class FakeCosts:
         return [dict(r) for r in self.usage if r.get("scene_id") == sid or (
             not r.get("scene_id") and (self.jobs.get(str(r.get("job_id"))) or {}).get("scene_id") == sid)]
 
-    async def unassigned_usage(self, production_id: UUID, prefixes: tuple[str, ...]) -> list[Row]:
-        return [dict(r) for r in self.usage if r.get("production_id") == str(production_id) and not r.get("scene_id")
-                and str(r["phase"]).startswith(prefixes)
-                and not (self.jobs.get(str(r.get("job_id"))) or {}).get("scene_id")]
-
     async def recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]:
         rows = [dict(r) for r in self.usage if str(r["phase"]).startswith(prefix)
                 and (production_id is None or r.get("production_id") == str(production_id))]
@@ -827,6 +827,56 @@ class FakeCosts:
 
     async def lines_by_scene(self, production_id: UUID) -> dict[str, int]:
         return dict(self.lines)
+
+    async def jobs_of(self, job_ids: Sequence[str]) -> list[Row]:
+        return [{"id": j, "kind": self.job_kinds.get(j, ""), "request": dict(self.jobs[j]),
+                 "created_at": self.jobs[j].get("_created_at", "")} for j in job_ids if j in self.jobs]
+
+    async def production_usage(self, production_id: UUID) -> list[Row]:
+        return [dict(r) for r in self.usage if r.get("production_id") == str(production_id)]
+
+    def _between(self, rows: Iterable[Row], since: datetime, until: datetime) -> list[Row]:
+        return [dict(r) for r in rows if since <= _when(r["created_at"]) < until]
+
+    async def token_totals(self, since: datetime, until: datetime, boundaries: Sequence[datetime],
+                           image_phases: Sequence[str], metered_prefixes: Sequence[str],
+                           long_from: int) -> list[Row] | None:
+        """What `public.token_usage_totals` answers, computed the way the SQL does (its own code, not
+        `usage_totals.group_rows`, so the two are checked against each other)."""
+        if not self.has_totals:
+            return None
+        self.totals_calls += 1
+        out: dict[tuple[Any, ...], Row] = {}
+        bounds = sorted(boundaries)
+        for r in self._between(self.usage, since, until):
+            phase = str(r["phase"])
+            if any(phase.startswith(p) for p in metered_prefixes):
+                continue
+            kind = "image" if phase in image_phases else "text"
+            slot = sum(1 for b in bounds if b <= _when(r["created_at"]))
+            long = long_from > 0 and int(r.get("input_tokens") or 0) > long_from
+            key = (r.get("production_id"), r["model"], kind, slot, long, phase, r.get("job_id"))
+            g = out.setdefault(key, {"production_id": key[0], "model": key[1], "kind": kind, "slot": slot,
+                                     "long": long, "phase": phase, "job_id": r.get("job_id"), "calls": 0,
+                                     "input_tokens": 0, "image_input_tokens": 0,
+                                     "cached_input_tokens": 0, "cached_image_input_tokens": 0, "output_tokens": 0})
+            prompt = int(r.get("input_tokens") or 0)
+            raw = r.get("image_input_tokens")
+            pictures = min(prompt if raw is None else int(raw), prompt)
+            cached = min(int(r.get("cached_input_tokens") or 0), prompt)
+            g["calls"] += 1
+            g["input_tokens"] += prompt
+            g["image_input_tokens"] += pictures
+            g["cached_input_tokens"] += cached
+            g["cached_image_input_tokens"] += min(max(cached - (prompt - pictures), 0), pictures)
+            g["output_tokens"] += int(r.get("output_tokens") or 0)
+        return list(out.values())
+
+    async def usage_between(self, since: datetime, until: datetime) -> list[Row]:
+        return self._between(self.usage, since, until)
+
+    async def renders_between(self, since: datetime, until: datetime) -> list[Row]:
+        return self._between(self.renders.rows.values() if self.renders else [], since, until)
 
 
 class FakePackets:
@@ -845,6 +895,8 @@ def build_fake_repos() -> Repos:
     threads, messages = FakeThreads(), FakeMessages()
     episodes, scenes, shots = FakeEpisodes(), FakeScenes(), FakeShots()
     episodes.structure = (scenes, shots)
+    renders, costs = FakeRenders(), FakeCosts()
+    costs.renders = renders
     return Repos(
         profiles=profiles,
         productions=FakeProductions(members),
@@ -874,9 +926,9 @@ def build_fake_repos() -> Repos:
         frames=FakeFrames(),
         prompts=FakePrompts(),
         takes=FakeTakes(),
-        renders=FakeRenders(),
+        renders=renders,
         revisions=FakeRevisions(),
-        costs=FakeCosts(),
+        costs=costs,
         sable=FakeSable(threads, messages),
         packets=FakePackets(),
         scene_boards=FakeSceneBoards(shots),

@@ -1115,6 +1115,14 @@ class SupabaseRenders(_Base):
 
 
 _USAGE_COLUMNS = "id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at"
+# plan/2026-11-23: what a month's spending reads (Settings → Usage), a page at a time.
+_MONTH_USAGE_COLUMNS = "production_id,job_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at"
+_MONTH_RENDER_COLUMNS = ("id,production_id,status,engine,model,created_at,usage,"
+                         "resolution:spec->>resolution,duration_s:spec->>duration_s")
+_PAGE = 1000
+# plan/2026-11-23b: a production's rows for its setup figures, and the jobs behind them a chunk at a time.
+_SETUP_USAGE_COLUMNS = "id,job_id,scene_id,phase,model,input_tokens,cached_input_tokens,output_tokens,created_at"
+_JOB_CHUNK = 200
 
 
 class SupabasePackets(_Base):
@@ -1178,23 +1186,6 @@ class SupabaseCosts(_Base):
             found.update({r["id"]: r for r in _rows(res.data)})
         return list(found.values())
 
-    async def unassigned_usage(self, production_id: UUID, prefixes: tuple[str, ...]) -> list[Row]:
-        phases = ",".join(f"phase.like.{p}*" for p in prefixes)
-        try:
-            res = await (self.db.table("token_usage").select(_USAGE_COLUMNS).eq("production_id", str(production_id))
-                         .is_("scene_id", "null").or_(phases).execute())
-        except Exception:
-            _logger.warning("token_usage.scene_id unavailable", exc_info=True)
-            res = await (self.db.table("token_usage").select(_USAGE_COLUMNS)
-                         .eq("production_id", str(production_id)).or_(phases).execute())
-        rows = _rows(res.data)
-        job_ids = sorted({str(r["job_id"]) for r in rows if r.get("job_id")})
-        if not job_ids:
-            return rows
-        jobs = await (self.db.table("jobs").select("id,request").in_("id", job_ids).execute())
-        scoped = {str(j["id"]) for j in _rows(jobs.data) if (j.get("request") or {}).get("scene_id")}
-        return [r for r in rows if str(r.get("job_id") or "") not in scoped]
-
     async def recent_usage(self, production_id: UUID | None, prefix: str, limit: int) -> list[Row]:
         if production_id is not None:
             return await self._recent_usage(production_id, prefix, limit)
@@ -1215,6 +1206,73 @@ class SupabaseCosts(_Base):
         for r in _rows(res.data):
             counts[str(r["scene_id"])] = counts.get(str(r["scene_id"]), 0) + 1
         return counts
+
+    async def jobs_of(self, job_ids: Sequence[str]) -> list[Row]:
+        out: list[Row] = []
+        ids = list(dict.fromkeys(job_ids))
+        for start in range(0, len(ids), _JOB_CHUNK):
+            res = await (self.db.table("jobs").select("id,kind,request,created_at")
+                         .in_("id", ids[start:start + _JOB_CHUNK]).execute())
+            out.extend(_rows(res.data))
+        return out
+
+    async def production_usage(self, production_id: UUID) -> list[Row]:
+        try:
+            return await self._paged_by("token_usage", _SETUP_USAGE_COLUMNS + ",image_input_tokens",
+                                        "production_id", str(production_id))
+        except Exception:  # no image_input_tokens before schema v29
+            _logger.warning("token_usage.image_input_tokens unavailable", exc_info=True)
+            return await self._paged_by("token_usage", _SETUP_USAGE_COLUMNS, "production_id", str(production_id))
+
+    async def _paged_by(self, table: str, columns: str, column: str, value: str) -> list[Row]:
+        out: list[Row] = []
+        start = 0
+        while True:
+            res = await (self.db.table(table).select(columns).eq(column, value).order("id")
+                         .range(start, start + _PAGE - 1).execute())
+            page = _rows(res.data)
+            out.extend(page)
+            if len(page) < _PAGE:
+                return out
+            start += _PAGE
+
+    async def token_totals(self, since: datetime, until: datetime, boundaries: Sequence[datetime],
+                           image_phases: Sequence[str], metered_prefixes: Sequence[str],
+                           long_from: int) -> list[Row] | None:
+        try:
+            res = await self.db.rpc("token_usage_totals", {
+                "since": since.isoformat(), "until": until.isoformat(),
+                "boundaries": [b.isoformat() for b in boundaries], "image_phases": list(image_phases),
+                "metered_prefixes": list(metered_prefixes), "long_from": long_from}).execute()
+        except Exception:  # the function arrives with schema v29: until then the service sums the rows itself
+            _logger.warning("token_usage_totals unavailable; summing rows in the API", exc_info=True)
+            return None
+        return _rows(res.data)
+
+    async def usage_between(self, since: datetime, until: datetime) -> list[Row]:
+        try:
+            return await self._paged("token_usage", _MONTH_USAGE_COLUMNS + ",image_input_tokens", since, until)
+        except Exception:  # no image_input_tokens before schema v29
+            _logger.warning("token_usage.image_input_tokens unavailable", exc_info=True)
+            return await self._paged("token_usage", _MONTH_USAGE_COLUMNS, since, until)
+
+    async def renders_between(self, since: datetime, until: datetime) -> list[Row]:
+        rows = await self._paged("video_renders", _MONTH_RENDER_COLUMNS, since, until)
+        for r in rows:
+            r["spec"] = {"resolution": r.pop("resolution", None), "duration_s": r.pop("duration_s", None)}
+        return rows
+
+    async def _paged(self, table: str, columns: str, since: datetime, until: datetime) -> list[Row]:
+        out: list[Row] = []
+        start = 0
+        while True:
+            res = await (self.db.table(table).select(columns).gte("created_at", since.isoformat())
+                         .lt("created_at", until.isoformat()).order("id").range(start, start + _PAGE - 1).execute())
+            page = _rows(res.data)
+            out.extend(page)
+            if len(page) < _PAGE:
+                return out
+            start += _PAGE
 
 
 async def build_supabase_repos(url: str, service_role_key: str) -> Repos:

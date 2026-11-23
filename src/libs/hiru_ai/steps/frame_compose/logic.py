@@ -11,6 +11,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
+from contracts import board as board_kit
 from contracts import picture_pins, sceneplan
 from contracts.canon import (
     SHEET_ASPECT,
@@ -111,6 +112,9 @@ class World:
     accepted: dict[str, Row] = field(default_factory=dict)
     genre: str = ""  # plan/2026-11-12b: the production's genre phrase (`contracts.memory.genre_of`); "" = general
     conditions: dict[str, str] = field(default_factory=dict)  # plan/2026-11-12c: character id -> the scene's condition
+    # plan/2026-11-23d §2.2: the scene's Scene board rows (every version; the current one is read). Empty: no board,
+    # and a shot prompt is never out of date because of one.
+    boards: list[Row] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         self.aspect = production_aspect(self.production)
@@ -122,7 +126,13 @@ class World:
         return cls(production=payload["production"], canon=payload["canon"], scene=payload["scene"],
                    lines=payload.get("lines") or [], looks=payload.get("looks") or {},
                    shots=payload.get("shots") or [], accepted=payload.get("accepted") or {},
-                   genre=str(payload.get("genre") or ""), conditions=dict(payload.get("conditions") or {}))
+                   genre=str(payload.get("genre") or ""), conditions=dict(payload.get("conditions") or {}),
+                   boards=list(payload.get("boards") or []))
+
+    def approved_panel(self, shot: Row) -> Any:
+        """The shot's panel on the current approved board, still showing the shot (`contracts.board.approved_panel`),
+        or None."""
+        return board_kit.approved_panel(self.boards, shot)
 
     def _own(self, shot: Row) -> tuple[list[Any], list[str], Staging]:
         items = sceneplan.scene_items(self.scene, self.lines)
@@ -228,6 +238,9 @@ class World:
                                 designed=bool(agent_camera(shot)))
         if set(made.get("canon") or {}) != set(now["canon"]) and not reasons:
             reasons.append("Different people or place in the shot.")
+        board = board_kit.board_reason(record, self.boards, shot)  # D2: the approved panel wins over an older prompt
+        if board:
+            reasons.append(board)
         return reasons
 
     def shot_prompt(self, shot: Row) -> Mapping[str, Any] | None:
@@ -311,7 +324,7 @@ def vision_checks(answer: Row | None, expected: Row) -> list[Row]:
         what = " ".join(str(answer.get("hands_problem") or "").split())[:120]
         checks.append({"label": f"Hands · {what or 'not holding what the shot says'}", "tone": "advisory"})
     if expected.get("board") and answer.get("mannequin") is True:  # plan/2026-11-14 §3.5
-        checks.append({"label": "A mannequin or solid-colour figure is left in the frame", "tone": "advisory"})
+        checks.append({"label": "A mannequin or clay stand-in is left in the frame", "tone": "advisory"})
     if expected.get("state") and answer.get("state_match") is False:
         what = " ".join(str(answer.get("state_problem") or "").split())[:120]
         checks.append({"label": f"State · {what or 'not as planned'}", "tone": "advisory"})

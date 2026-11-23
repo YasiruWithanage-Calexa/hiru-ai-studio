@@ -26,6 +26,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any
 
+from contracts import board as board_kit
 from contracts import picture_pins
 from contracts.frame_brief import agent_camera
 from contracts.producer import PersonEdits, camera_changes
@@ -79,6 +80,14 @@ def facts_for(shot: Any, scene: Any, prod: Any, frame: Row | None, *, lids: Mapp
     facts["opens_state"] = " ".join((intent.opens if intent else "").split())
     facts["video_note"] = " ".join(PersonEdits.of(shot.row).video_note.split())  # plan/2026-11-22c
     return facts
+
+
+def board_facts(approved: Any, canon_by_id: Mapping[str, Mapping[str, Any]]) -> Row:
+    """What the shot prompter is told the approved board shows (plan/2026-11-23d §2.2): the blocking, each person's two
+    hands and the props, in people's names (the board's colours are canon id → colour)."""
+    colours = {str(canon_by_id[cid]["name"]): str(colour)
+               for cid, colour in (approved.part.get("colours") or {}).items() if cid in canon_by_id}
+    return board_kit.panel_facts(approved.panel, colours)
 
 
 def drawn_from(record: Mapping[str, Any] | None, frame: Mapping[str, Any] | None) -> bool:

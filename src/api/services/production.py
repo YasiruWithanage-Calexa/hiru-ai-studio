@@ -15,10 +15,11 @@
 """
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
+from contracts import board as board_kit
 from contracts import picture_pins, sceneplan
 from contracts.frame_brief import agent_camera
 from contracts.producer import (
@@ -106,9 +107,11 @@ class ShotState:
 
 
 def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row], frames: list[Row],
-                 prompts: dict[str, Row], looks: Mapping[str, Mapping[str, Any]] | None = None) -> list[ShotState]:
+                 prompts: dict[str, Row], looks: Mapping[str, Mapping[str, Any]] | None = None,
+                 board: Sequence[Row] = ()) -> list[ShotState]:
     """`looks`: character id → the look the scene uses now (`contracts.canon.looks_in_force`). A
-    frame painted with another look, or before its look changed, is out of date."""
+    frame painted with another look, or before its look changed, is out of date. `board`: the scene's Scene board
+    rows: a shot prompt written before its approved panel is out of date (plan/2026-11-23d D2)."""
     items = sceneplan.scene_items(scene, lines)
     characters = [c for c in canon if c["kind"] == "character"]
     members = {str(c["id"]): cast_member(c) for c in canon}
@@ -154,6 +157,9 @@ def scene_states(scene: Row, shots: list[Row], lines: list[Row], canon: list[Row
             st.shot_prompt = record
             st.shot_prompt_reasons = reasons(record["pins"], frame=True,
                                              picture=picture_pins.picture(st.camera, block), motion=motion_now)
+            changed = board_kit.board_reason(record, board, shot)  # the same rule the frame_compose world keeps
+            if changed:
+                st.shot_prompt_reasons.append(changed)
         else:
             st.shot_prompt_reasons = [NO_SHOT_PROMPT]
         # a frame drawn from the shot prompt pinned its opening: a rewritten one marks the frame (D8)

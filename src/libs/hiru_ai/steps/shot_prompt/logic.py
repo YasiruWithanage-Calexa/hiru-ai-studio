@@ -117,6 +117,18 @@ def shot_brief(facts: Mapping[str, Any]) -> str:
         out.append(f"Planner's opening picture: {ff.get('composition', '')}" + (f" | {said}" if said else ""))
     if facts.get("opens_state"):
         out.append(f"The state it opens in (people, hands, props): {facts['opens_state']}")
+    board = facts.get("board") or {}
+    if board:  # plan/2026-11-23d §2.2: a person approved this blocking; the camera stays the <camera> part's
+        out.append("The approved scene board (a person approved it; keep its blocking, hands and props; never its "
+                   "camera):")
+        if board.get("blocking"):
+            out.append(f"- Blocking: {board['blocking']}")
+        for p in board.get("hands") or []:
+            out.append(f"- {p['name']}: left hand {p['left_hand']}; right hand {p['right_hand']}")
+        for pr in board.get("props") or []:
+            where = (f"in {pr['held_by']}'s {pr.get('hand') or ''} hand".replace("  ", " ") if pr.get("held_by")
+                     else f"resting on {pr['rests_on']}" if pr.get("rests_on") else "")
+            out.append(f"- the {pr['name']}" + (f": {where}" if where else ""))
     if facts.get("opening_note"):
         out.append(f"Opens: {facts['opening_note']}")
     if facts.get("join_note"):
@@ -272,6 +284,13 @@ def check(a: Mapping[str, Any], facts: Mapping[str, Any], *, mode: str = "both")
         if named and not re.search(r"heard|never in frame|never seen|phone|voice|off[- ]screen", named.group(0), re.I):
             faults.append(f"people: {name} is only heard and never in frame")
     faults += timing_faults(flow, facts)
+    if mode == "both":  # plan/2026-11-23d D2: what the approved board puts in a hand is in the frame
+        held = {str(pr.get("name") or "").lower() for pr in (facts.get("board") or {}).get("props") or []
+                if pr.get("held_by")}
+        for thing in sorted(h for h in held if h):
+            if not re.search(rf"\b{re.escape(thing.split()[-1])}", frame_text, re.I):
+                faults.append(f"frame: the approved scene board has the {thing} in a hand, but the frame never "
+                              "names it")
     declined = sorted({f.said for f in safe_depiction.blocking(f"{frame_text} {every}")})
     if declined:
         faults.append("words the image and video models decline: " + ", ".join(declined))

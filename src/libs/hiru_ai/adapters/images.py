@@ -30,6 +30,20 @@ REFUSAL_TEXT = ("The image model declined to make this frame. Try changing the s
 PHASE = "frame_render.image"  # the `token_usage.phase` the frame function records today
 
 
+def _get(obj: Any, name: str) -> Any:
+    return obj.get(name) if isinstance(obj, dict) else getattr(obj, name, None)
+
+
+def input_detail(usage: Any) -> tuple[int | None, int]:
+    """(picture input tokens, cached input tokens) from an images response's `usage.input_tokens_details`
+    (plan/2026-11-23: OpenAI bills pictures sent in at a higher rate than text). None when the provider did not say."""
+    details = _get(usage, "input_tokens_details") if usage is not None else None
+    if details is None:
+        return None, 0
+    pictures = _get(details, "image_tokens")
+    return (int(pictures) if pictures is not None else None), int(_get(details, "cached_tokens") or 0)
+
+
 def _refused(exc: Exception) -> bool:
     code = str(getattr(exc, "code", "") or "")
     body = getattr(exc, "body", None)
@@ -69,10 +83,13 @@ class OpenAIImages:
         if not data:
             raise ImageFailed("the image model returned no image")
         usage = getattr(resp, "usage", None)
+        pictures, cached = input_detail(usage)
         picture = Picture(data=base64.b64decode(data), mime="image/png",
                           input_tokens=int(getattr(usage, "input_tokens", 0) or 0),
-                          output_tokens=int(getattr(usage, "output_tokens", 0) or 0))
-        safely(self.sink, row(self.phase, self.model, picture.input_tokens, 0, picture.output_tokens))
+                          output_tokens=int(getattr(usage, "output_tokens", 0) or 0),
+                          image_input_tokens=pictures, cached_input_tokens=cached)
+        safely(self.sink, row(self.phase, self.model, picture.input_tokens, picture.cached_input_tokens,
+                              picture.output_tokens, image_input_tokens=picture.image_input_tokens))
         return picture
 
 

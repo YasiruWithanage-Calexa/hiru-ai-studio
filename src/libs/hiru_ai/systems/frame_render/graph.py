@@ -51,7 +51,7 @@ from contracts.canon import face_sheet_path, keep_assets, missing_faces, scene_c
 from contracts.frame_brief import BLACK_PLATE
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
-from contracts.producer import DRAFT_LABEL, FrameStage, frame_quality, frame_stage
+from contracts.producer import BLOCKING_LABEL, DRAFT_LABEL, FrameStage, frame_quality, frame_stage
 from hiru_ai.core import agents, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.ports import ImageRefused, Reference
@@ -127,7 +127,8 @@ class Scenes:
         accepted = frames.accepted_finals([str(s["id"]) for s in shots]) if any(s.get("slate") for s in shots) else {}
         world = {"production": self.production, "canon": self.canon, "scene": scene, "lines": scenes.lines(scene_id),
                  "looks": looks, "shots": shots, "accepted": accepted, "genre": self.genre,
-                 "conditions": scene_conditions(picks)}
+                 "conditions": scene_conditions(picks),
+                 "boards": frames.boards(scene_id)}  # plan/2026-11-23d: the approved panel, for a shot prompt's frame
         with self._lock:
             self._worlds[scene_id] = world
         return world
@@ -164,10 +165,12 @@ def _draft_picture(ctx: RunContext, scenes: Scenes, draft_id: str, shot_id: str)
     return Reference(label=DRAFT_LABEL, data=bytes(ctx.need("files").download("frames", str(row["storage_path"]))))
 
 
-def _board_panel(ctx: RunContext, scenes: Scenes, board_id: str, shot: Row) -> tuple[Reference, Row]:
+def _board_panel(ctx: RunContext, scenes: Scenes, board_id: str, shot: Row,
+                 blocking: bool = False) -> tuple[Reference, Row]:
     """(the shot's panel of the board, as the approved draft; what the frame's prompt adds from the board). Raises
     when the board or its panel cannot be read: a frame the person asked to paint from the board is never painted
-    without it."""
+    without it. `blocking` (plan/2026-11-23d §2.2): the frame is written from its shot prompt, so the panel gives the
+    blocking, the hands, the props and the place, and the shot prompt the camera (`BLOCKING_LABEL`)."""
     row = ctx.need("frames").board(board_id)
     if row is None:
         raise LookupError(board_id)
@@ -186,8 +189,19 @@ def _board_panel(ctx: RunContext, scenes: Scenes, board_id: str, shot: Row) -> t
     raw = (first or {}).get("subjects")
     opening = [str(x) for x in raw] if isinstance(raw, list) else ([str(raw)] if raw else [])
     sections = kit.frame_sections(kit.Writer.of(row.get("writer") or {}), int(cell.get("number") or 0), colours,
-                                  opening, faced)
-    return Reference(label=DRAFT_LABEL, data=data), {"sections": sections, "board_id": board_id}
+                                  opening, faced, blocking=blocking)
+    return (Reference(label=BLOCKING_LABEL if blocking else DRAFT_LABEL, data=data),
+            {"sections": sections, "board_id": board_id})
+
+
+def _panel_breaks_a_fact(ctx: RunContext, board_id: str, shot: Row) -> list[str]:
+    """D2 (plan/2026-11-23d): the board's own check found this shot's panel breaking a fact (a hand holding what no
+    one gives it, someone only heard on it, a fault the board check still saw): such a panel is not attached."""
+    row = ctx.need("frames").board(board_id) or {}
+    cell = next((c for c in row.get("cells") or [] if str(c.get("shot_id")) == str(shot["id"])), None)
+    if cell is None:
+        return []
+    return kit.panel_faults(kit.Writer.of(row.get("writer") or {}), int(cell.get("number") or 0))
 
 
 def _vision_enabled() -> bool:
@@ -241,9 +255,15 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "")
     # proved: the board's panel says "keep its composition, framing, pose ... exactly" and was painted before the Camera
     # agent's angle, height and opening, so it would win over them (the audit of 2026-11-21).
     from_prompt = not _compose("shot_prompt", **world, shot=shot)["reasons"]
-    if frame.get("board_id") and not draft and not from_prompt:  # plan/2026-11-14 §3.5: the board's panel, LAST
+    # plan/2026-11-14 §3.5: the board's panel, LAST. plan/2026-11-23d §2.2: with a current shot prompt too, as the
+    # blocking (where everyone stands and what each hand holds), the shot prompt keeping the camera; a panel the board's
+    # own check found breaking a fact is left off and the frame is painted from its words (D2)
+    faults = _panel_breaks_a_fact(ctx, str(frame["board_id"]), shot) if frame.get("board_id") and not draft else []
+    if faults:
+        _log.warning("frame %s: the board panel is not attached: %s", fid, "; ".join(faults))
+    if frame.get("board_id") and not draft and not faults:
         try:
-            panel, board = _board_panel(ctx, scenes, str(frame["board_id"]), shot)
+            panel, board = _board_panel(ctx, scenes, str(frame["board_id"]), shot, blocking=from_prompt)
             pictures.append(panel)
         except Exception:
             _log.warning("board %s of frame %s could not be read", frame["board_id"], fid, exc_info=True)

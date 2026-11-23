@@ -1,0 +1,16 @@
+# INTERNAL AND SECRET (plan/2026-11-23). Never shown in the interface, never sent by the API, never logged above DEBUG.
+#
+# Percent added on top of what the provider charges:
+#   final price = provider cost x (1 + percent / 100)
+# Every money figure the studio shows (Settings -> Usage, "Scene ≈ $X") is a final price.
+#
+# To change a margin, ADD an entry with a later `from` date (UTC midnight); never edit or delete an old one. Work is
+# priced with the entry in force when it was made, so a change never re-prices past spending. Then redeploy the API.
+# Percent: 0 to 500, at most two decimals (12.5 is fine). Every entry names all three buckets.
+# A missing or broken file stops the API from starting: it never falls back to 0 %. Read by api/margins.py.
+
+margins:
+  - from: 2026-01-01
+    llm: 10      # Chat & decisions: every model call that is not a picture (chats, planners, readers, checks, embeddings)
+    image: 20    # Image generation: first frames, boards, face and look sheets
+    video: 30    # Video generation: every billed render

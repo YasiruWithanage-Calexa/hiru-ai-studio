@@ -94,6 +94,10 @@ class FakeStore:
     def scene_looks(self, scene_id: str) -> list[dict]:
         return self.scene_look_rows
 
+    def boards(self, scene_id: str) -> list[dict]:
+        """The scene's Scene board rows (plan/2026-11-23d: the frame world reads the approved panel); none here."""
+        return []
+
     def episode_number(self, episode_id: str) -> int | None:
         return self.episode
 

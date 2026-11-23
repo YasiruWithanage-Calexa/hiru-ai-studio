@@ -229,6 +229,10 @@ def _render(store: Any, cfg: Config, row: Row, *, job_id: str, actor: str, resum
              # failed or refused render carries `billed` only once the Phase 0 probe has shown the provider bills it.
              "seconds_rendered": seconds or spec.duration_s, "takes_made": 1,
              "resumed": bool(resume_id), "mime": mime}
+    completion = int(outcome.get("completion_tokens") or 0)
+    if completion:  # plan/2026-11-23: the video and the thinking are billed at different rates
+        thought = min(int(outcome.get("thought_tokens") or 0), completion)
+        usage |= {"video_tokens": completion - thought, "thought_tokens": thought}
     store.finish_render(rid, {"status": "done", "take_id": take_id, "provider_id": outcome.get("provider_id") or None,
                               "usage": usage, "error": None, "refusal": None,
                               "spec": spec.model_dump(mode="json")})

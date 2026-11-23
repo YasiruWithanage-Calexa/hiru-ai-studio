@@ -102,8 +102,10 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             if any(s.get("slate") for s in shot_rows):
                 accepted = frames.accepted_finals([str(s["id"]) for s in shot_rows])
         live_rows = {str(s["id"]): s for s in shot_rows}
+        # plan/2026-11-23d §2.2: the scene's board, so a shot prompt is written from its approved panel
+        boards = frames.boards(sid) if frames is not None else []
         return {"production": production, "canon": canon, "scene": row, "lines": line_rows, "looks": looks,
-                "shots": list(live_rows.values()), "accepted": accepted}
+                "shots": list(live_rows.values()), "accepted": accepted, "boards": boards}
 
     def prompt_context(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str]) -> Row | None:
         """What every shot prompt of a scene needs (plan/2026-11-20d): the scene part of the brief (the same for every
@@ -140,6 +142,9 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         """One shot's prompts by the agent (D4), stored on the shot. -> the record, or None (and a warning)."""
         facts = prompter.facts_for(shot, scene, prod, frame, lids=pc["lids"], wardrobe=pc["wardrobe"])
         row = live(shot, pc)
+        approved = pc["world"].approved_panel(row)  # plan/2026-11-23d §2.2: written from the approved panel
+        if approved is not None:
+            facts["board"] = prompter.board_facts(approved, pc["world"].by_id)
         stored = (row.get("design") or {}).get("shot_prompt")
         record = stored if isinstance(stored, dict) else None
         # plan/2026-11-22c (option 1): the video is written from the stored words only while the frame was drawn
@@ -153,6 +158,8 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         if got.record is None:
             skipped.append(f"{shot.code}: shot prompt not written: {got.failed}")
             return None
+        if approved is not None:  # D2: a later approved panel marks this prompt out of date (`board_reason`)
+            got.record["board"] = approved.stamp
         save_shot_prompt(shot, got.record)
         jobs.event(job_id, JobEventType.PROGRESS,
                    {"text": f"{shot.code}: " + ("video prompt rewritten from the drawn frame" if how == "video_only"
