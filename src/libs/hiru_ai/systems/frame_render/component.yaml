@@ -6,6 +6,6 @@ status: active
 owner: frame_render
 job_kind: frame_render
 panels: []
-agents: [frame_inspector, board_writer, board_inspector]
+agents: [frame_inspector, board_writer, board_inspector, views_writer]
 steps: [frame_compose]
 tools: []

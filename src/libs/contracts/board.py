@@ -31,6 +31,7 @@ from dataclasses import dataclass, field, replace
 from typing import Any
 
 from contracts import holding, picture_pins
+from contracts.canon import VIEWS_LABEL_HEAD
 
 Row = dict[str, Any]
 
@@ -473,6 +474,7 @@ class Panel:
     picture: str
     people: list[PanelPerson] = field(default_factory=list)
     props: list[PanelProp] = field(default_factory=list)
+    view: int = 0  # plan/2026-11-24: the location sheet's view its background comes from; 0 = none named
 
 
 def _person_dump(x: PanelPerson) -> Row:
@@ -491,6 +493,8 @@ def panel_dump(p: Panel) -> Row:
                 "picture": p.picture, "people": [_person_dump(x) for x in p.people]}
     if p.props:  # a board painted before plan/2026-11-23c is stored as it was
         out["props"] = [_prop_dump(x) for x in p.props]
+    if p.view:  # plan/2026-11-24
+        out["view"] = p.view
     return out
 
 
@@ -503,7 +507,15 @@ def _panel_of(p: Mapping[str, Any]) -> Panel:
                  props=[PanelProp(name=_clean(x.get("name")), held_by=_clean(x.get("held_by")),
                                   hand=_clean(x.get("hand")).lower(), rests_on=_clean(x.get("rests_on")),
                                   frame_side=_clean(x.get("frame_side")).lower())
-                        for x in p.get("props") or [] if isinstance(x, Mapping) and _clean(x.get("name"))])
+                        for x in p.get("props") or [] if isinstance(x, Mapping) and _clean(x.get("name"))],
+                 view=_int(p.get("view")))
+
+
+def _int(value: Any) -> int:
+    try:
+        return max(int(value or 0), 0)
+    except (TypeError, ValueError):
+        return 0
 
 
 @dataclass
@@ -609,6 +621,32 @@ def hands_text(panel: Panel, colours: Mapping[str, str]) -> str:
     return ("Hands: " + ". ".join(bits) + ".") if bits else ""
 
 
+def views_paragraph(labels: Sequence[str], views: Sequence[Mapping[str, Any]]) -> str:
+    """The references paragraph of a board painted against a location's views sheet (lab/location_views run_002,
+    `board_prompt`). The sheet's label carries its views' names, numbered left to right, then top to bottom. Changed
+    from the lab, said: "its buildings, the food three-wheeler, the wall, the pavement and the drain" is "its
+    buildings, its fixed things and every place that stands in it" (the lab's words named one place)."""
+    names = "; ".join(f"view {v['n']} {v['name']}" for v in views)
+    cite = []
+    for i, label in enumerate(labels, 1):
+        cite.append(f"image {i} is {label}, numbered left to right, then top to bottom: {names}"
+                    if label.startswith(VIEWS_LABEL_HEAD) else f"image {i} is {label}")
+    sheet = next(i for i, label in enumerate(labels, 1) if label.startswith(VIEWS_LABEL_HEAD))
+    jobs = "; ".join(f"image {i}: {job}" for i, label in enumerate(labels, 1)
+                     if not label.startswith(VIEWS_LABEL_HEAD) and (job := board_job(label)))
+    return (f"Reference images, in order: {'; '.join(cite)}. Take from image {sheet} the place itself: its buildings, "
+            "its fixed things and every place that stands in it, their materials and where each one stands. Every "
+            "panel below names the view its background comes from: paint that view's background, the same things on "
+            "the same sides, seen from the panel's own camera (closer or tighter as the panel says). Never copy the "
+            "sheet's gutters or layout." + (f" Take from {jobs}." if jobs else ""))
+
+
+def view_line(panel: Panel, views: Sequence[Mapping[str, Any]]) -> str:
+    """ " Background view: view 1 Front wide." (lab `board_prompt`), "" when the panel names no view of the sheet."""
+    view = next((v for v in views if int(v.get("n") or 0) == panel.view), None) if panel.view else None
+    return f" Background view: view {view['n']} {view['name']}." if view else ""
+
+
 def board_job(label: str) -> str:
     """What the board takes from one attached picture. The board has only the place plate, prop sheets and, on a
     later part, the overlap panel: never a face or a look sheet (it has no faces)."""
@@ -648,7 +686,8 @@ def board_layout_free(world: str) -> str:
 
 
 def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], colours: Mapping[str, str],
-                 aspect: str = BOARD_ASPECT, props: Sequence[str] = (), places: Sequence[str] = ()) -> str:
+                 aspect: str = BOARD_ASPECT, props: Sequence[str] = (), places: Sequence[str] = (),
+                 views: Sequence[Mapping[str, Any]] = ()) -> str:
     """The image prompt for one board (or one part): the panels of `numbers`, in order (lab `board_prompt` with
     mannequins). `labels` are the attached pictures in order; `colours`: name → colour; `aspect`: the board's shape
     (`board_aspect`), which every panel takes; `props`: the canon props the panels show, painted as white clay
@@ -666,7 +705,8 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
         r, c = divmod(i, cols)
         hands = hands_text(p, colours)
         pos.append(f"PANEL {i + 1} (row {r + 1}, column {c + 1}) — {p.camera.rstrip('.')}. Background: "
-                   f"{p.background.rstrip('.')}. {p.picture}" + (f" {hands}" if hands else ""))
+                   f"{p.background.rstrip('.')}. {p.picture}" + (f" {hands}" if hands else "")
+                   + view_line(p, views))
     head = (f"A cinematic storyboard sheet for a Sri Lankan television drama: {n} photorealistic film stills of ONE "
             f"scene, laid out in a grid {cols} panels across and {rows} down, read {order}. Every panel is "
             f"{_PANEL_SHAPE[board_aspect(aspect)]} of the same size, separated by thin, even, plain white gutters. "
@@ -675,6 +715,8 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
             "weather and the ground (dry or wet, rain falling or not) are as each panel says: they can change during "
             "the scene, and a panel that says it is dry has no rain and no wet ground.")
     refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
+    if views and any(label.startswith(VIEWS_LABEL_HEAD) for label in labels):  # plan/2026-11-24
+        refs = views_paragraph(labels, views)
     return "\n\n".join(x for x in [
         head, refs, mannequin_line(colours), prop_line(props, places),
         "World (every panel): " + board_layout_free(board_world(writer.world, colours)),
@@ -715,7 +757,7 @@ def panel_world(world: str) -> str:
 
 def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: Mapping[str, str],
                  aspect: str = BOARD_ASPECT, props: Sequence[str] = (), fix: str = "",
-                 places: Sequence[str] = ()) -> str:
+                 places: Sequence[str] = (), views: Sequence[Mapping[str, Any]] = ()) -> str:
     """The image prompt for ONE panel painted alone, filling the picture (lab `solo_prompt` + `CAMERA_RULE`).
     `labels`: the attached pictures in order (the place, then the neighbouring panels, `neighbour_label`);
     `writer`: the approved board (its world and geography); `aspect`: the board's shape, so the panel matches;
@@ -725,6 +767,8 @@ def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: M
     cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
     jobs = "; ".join(f"image {i}: {job}" for i, label in enumerate(labels, 1) if (job := board_job(label)))
     refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
+    if views and any(label.startswith(VIEWS_LABEL_HEAD) for label in labels):  # plan/2026-11-24
+        refs = views_paragraph(labels, views)
     return "\n\n".join(x for x in [
         "ONE photorealistic film still for the storyboard of a Sri Lankan television drama: a single "
         f"{_ONE_SHAPE[board_aspect(aspect)]} panel filling the whole picture, with no gutters, no border and no other "
@@ -736,7 +780,7 @@ def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: M
         "World: " + panel_world(board_world(writer.world, colours)),
         "Geography: " + writer.geography,
         f"THE PANEL — {panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. {panel.picture}"
-        + (f" {hands}" if hands else ""),
+        + (f" {hands}" if hands else "") + view_line(panel, views),
         BODIES, SUPPORT, fix, NO_TEXT.replace("no borders other than the gutters", "no borders, no gutters"),
     ] if x)
 
@@ -768,8 +812,8 @@ def _held(text: str) -> str:
     return thing.key if thing is not None else ""
 
 
-def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping[str, str] | None = None
-                    ) -> list[str]:
+def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping[str, str] | None = None,
+                    views: Sequence[Mapping[str, Any]] = ()) -> list[str]:
     """What code finds wrong in the writer's panels before anything is painted, as conflict lines: more than two
     things in a person's hands (a worn bag is not in a hand), a prop neither held nor resting on anything, someone
     only heard on the board, and a held thing that neither the shot's plan nor what the person carries through the
@@ -795,6 +839,8 @@ def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping
                 if key not in mine:
                     out.append(f"Shot {p.shot}: {x.name} holds the {key}, which neither the plan of this shot nor "
                                "what they carry through the scene gives them.")
+        if views and p.view and not any(int(v.get("n") or 0) == p.view for v in views):  # plan/2026-11-24
+            out.append(f"Shot {p.shot}: names view {p.view}, which the location sheet does not have.")
         for pr in p.props:
             if not pr.held_by and not pr.rests_on:
                 out.append(f"Shot {p.shot}: the {_bare(pr.name)} is neither held nor resting on anything.")

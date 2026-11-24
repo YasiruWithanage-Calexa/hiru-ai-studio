@@ -24,21 +24,26 @@ from pydantic import BaseModel, ConfigDict, Field
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.repositories import Repos, Row
+from api.services import boards as boards_svc
 from api.services import media_links, retrieval
 from api.services.ai import AI, get_ai
 from api.workers import task_manager
 from contracts.canon import (
+    VIEWS_COUNT,
     CanonCard,
     CanonEntity,
     CanonEntityUpdate,
     CanonKind,
     CanonVersion,
     CanonVersionCreate,
+    LocationView,
     face_sheet_path,
     name_key,
+    named_in,
     next_code,
     reference_sheet_prompt,
     sheet_assets,
+    views_asset,
     voice_pin,
     wardrobe_anchor,
 )
@@ -183,7 +188,21 @@ def _entity(row: Row) -> CanonEntity:
                                        "reference_sheet_key": media_links.key("references", path) if path else "",
                                        "face_sheet_url": media_links.url("references", face),
                                        "face_sheet_thumb_url": media_links.thumb_url("references", face),
-                                       "face_sheet_key": media_links.key("references", face) if face else ""})
+                                       "face_sheet_key": media_links.key("references", face) if face else "",
+                                       **_views(row)})
+
+
+def _views(row: Row) -> Row:
+    """plan/2026-11-24: the location's views sheet and its six views, for the canon page."""
+    asset = views_asset(row)
+    if asset is None:
+        return {}
+    path = str(asset["path"])
+    return {"views_sheet_url": media_links.url("references", path),
+            "views_sheet_thumb_url": media_links.thumb_url("references", path),
+            "views_sheet_key": media_links.key("references", path),
+            "views": [{k: v[k] for k in ("n", "name", "what")} for v in asset.get("views") or []],
+            "views_layout": str(asset.get("layout") or ""), "views_light": str(asset.get("light") or "")}
 
 
 async def _get(repos: Repos, production_id: UUID, entity_id: UUID) -> Row:
@@ -448,6 +467,63 @@ async def make_reference_sheet(production_id: UUID, entity_id: UUID, access: Can
                              actor_user_id=access.user.id, production_id=production_id,
                              diff={"job_id": str(job_id)})
     return SheetStarted(job_id=job_id)
+
+
+class ViewsRequest(BaseModel):
+    """A person's six views (edited on the canon page), or none: the views writer writes them (plan/2026-11-24 Q2)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    views: list[LocationView] | None = Field(default=None, min_length=VIEWS_COUNT, max_length=VIEWS_COUNT)
+
+
+@router.post("/{entity_id}/views-sheet", response_model=SheetStarted, status_code=status.HTTP_202_ACCEPTED)
+async def make_views_sheet(production_id: UUID, entity_id: UUID, body: ViewsRequest, access: CanEdit,
+                           repos: ReposDep) -> SheetStarted:
+    """Paint a location's views sheet (plan/2026-11-24; the person's method, lab/location_views): six named views of
+    the one place, so every board panel and first frame paints the same place. With `views` (edited by a person) they
+    are painted as given; without, the views writer writes them from the place, what stands in it and how the scenes'
+    boards laid it out."""
+    row = await _get(repos, production_id, entity_id)
+    if CanonKind(row["kind"]) is not CanonKind.LOCATION:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Only a place has location views.")
+    if not _sheet_path(row.get("current")):
+        raise HTTPException(status.HTTP_409_CONFLICT, f"Paint {row['name']}'s location plate first: the views are "
+                                                      "painted from it.")
+    state: Row = {"reference_entity_id": str(entity_id), "reference_kind": "views",
+                  "views_context": await _views_context(repos, production_id, row)}
+    if body.views:
+        state["views"] = [v.model_dump(exclude={"n"}) for v in sorted(body.views, key=lambda v: v.n)]
+        kept = views_asset(row) or {}
+        state["views_layout"] = {"layout": str(kept.get("layout") or ""), "light": str(kept.get("light") or "")}
+    job_id = await task_manager.dispatch(JobKind.FRAME_RENDER, repos, actor_user_id=access.user.id,
+                                         production_id=production_id, request={"entity_id": str(entity_id),
+                                                                               "views": True},
+                                         state=state)
+    await repos.audit.record(action="canon.views_sheet", entity="canon_entity", entity_id=str(entity_id),
+                             actor_user_id=access.user.id, production_id=production_id,
+                             diff={"job_id": str(job_id), "edited": bool(body.views)})
+    return SheetStarted(job_id=job_id)
+
+
+async def _views_context(repos: Repos, production_id: UUID, row: Row) -> Row:
+    """What the views writer reads about the scenes set at this place: their headings, how their current boards laid
+    the place out, and the other places that stand in it (a canon place named in those words or scripts)."""
+    scenes = [s for s in await repos.scenes.list(production_id) if str(s.get("location_id") or "") == str(row["id"])]
+    geographies, said = [], []
+    for s in scenes[:12]:
+        current = boards_svc.current(await repos.scene_boards.list(UUID(str(s["id"]))))
+        geo = str(((current[0].get("writer") or {}) if current else {}).get("geography") or "")
+        if geo:
+            geographies.append(geo)
+        said.append(" ".join([str(s.get("heading") or ""), geo,
+                              *(str((b or {}).get("text") or "") for b in s.get("script") or [])]))
+    text = " ".join(said)
+    canon = await repos.canon.list(production_id)
+    within = [str(c["id"]) for c in canon if c["kind"] == "location" and str(c["id"]) != str(row["id"])
+              and str(c.get("parent_id") or "") != str(row["id"]) and named_in(str(c["name"]), text)]
+    return {"within": within, "geographies": geographies,
+            "scenes": [f"{s.get('heading') or ''} ({s.get('time_of_day') or ''})".strip() for s in scenes[:12]]}
 
 
 @router.post("/{entity_id}/face-sheet", response_model=SheetStarted, status_code=status.HTTP_202_ACCEPTED)

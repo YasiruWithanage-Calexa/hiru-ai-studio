@@ -121,6 +121,13 @@ Rules:
   spots and everything that is part of the place stay real and are described for real, even a vehicle when the place
   is built around it (a food cart, a parked bus used as a shop, a boat at a jetty). Fill `props` with each prop the
   panel shows: who holds it and in which hand, or what it rests on, and its side of the picture.
+- THE PLACE HAS NAMED VIEWS. When the place gives `views` (a location sheet: the same place photographed from a few
+  named positions), every panel names in `view` the number of the view its background comes from: the one whose
+  camera looks the same way as the panel's, from the same side. The panel's `background` then says what of that view
+  is behind the people, on the same sides as the view shows it. Panels from one camera setup name the same view. An
+  insert against a surface names the detail view of that surface, or 0 when no view shows it. Example from another
+  place: a corridor sheet's "Looking left" is the background of every panel filmed from the nurses' station toward
+  the fire door.
 - Close-ups and inserts are panels too: describe them at their size (a face filling the panel, a hand and object
   filling the panel). Lettering on an object is described as present but never spelled out, because the board is small.
 - Each panel describes only what is in that frame: no camera-move instructions, no sound, no story explanation.

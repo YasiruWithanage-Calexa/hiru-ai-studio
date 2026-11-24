@@ -144,7 +144,7 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         row = live(shot, pc)
         approved = pc["world"].approved_panel(row)  # plan/2026-11-23d §2.2: written from the approved panel
         if approved is not None:
-            facts["board"] = prompter.board_facts(approved, pc["world"].by_id)
+            facts["board"] = prompter.board_facts(approved, pc["world"].by_id, pc["world"].scene)
         stored = (row.get("design") or {}).get("shot_prompt")
         record = stored if isinstance(stored, dict) else None
         # plan/2026-11-22c (option 1): the video is written from the stored words only while the frame was drawn

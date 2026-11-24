@@ -42,7 +42,7 @@ from uuid import uuid4
 
 from contracts import board as kit
 from contracts import holding, safe_depiction
-from contracts.canon import look_sheet_path, named_in
+from contracts.canon import look_sheet_path, named_in, views_asset, views_label
 from contracts.frame_brief import sheet_path
 from contracts.veo import ASPECT_RATIO, Orientation
 from hiru_ai.core import agents, llm, parts
@@ -133,7 +133,17 @@ class Board:
             return {"name": "", "look": "", "spots": []}, None
         spots = [{"name": c["name"], "look": self._card(str(c["id"])).get("look", "")}
                  for c in self.world["canon"] if str(c.get("parent_id") or "") == loc and c.get("class") == "spot"]
-        return {"name": row["name"], "look": self._card(loc).get("look", ""), "spots": spots}, row
+        place: Row = {"name": row["name"], "look": self._card(loc).get("look", ""), "spots": spots}
+        if self.views:  # plan/2026-11-24: the writer names each panel's view
+            place["views"] = [{k: v[k] for k in ("n", "name", "what")} for v in self.views]
+        return place, row
+
+    @property
+    def views(self) -> list[Row]:
+        """The views of the scene's location sheet (plan/2026-11-24), [] when it has none."""
+        row = self.by_id.get(str(self.scene.get("location_id") or ""))
+        asset = views_asset(row) if row else None
+        return [dict(v) for v in (asset or {}).get("views") or []]
 
     def props(self, shots: list[kit.BoardShot]) -> list[Row]:
         """The props these shots' plans name, as canon rows: by name or alias, or as the end of a word the plan uses
@@ -200,10 +210,15 @@ class Board:
         return out[: kit.MAX_WRITER_PICTURES]
 
     def image_pictures(self, shots: list[kit.BoardShot]) -> list[tuple[str, str]]:
-        """What the board picture is painted against: the location plate only. The props are white clay stand-ins
-        (plan/2026-11-23c D2), so their sheets would only invite the real thing."""
+        """What the board picture is painted against: the location's views sheet (plan/2026-11-24), else its plate. The
+        props are white clay stand-ins (plan/2026-11-23c D2), so their sheets would only invite the real thing."""
         _, loc = self.place()
-        return [(f"the location plate for {loc['name']}", sheet_path(loc))] if loc and sheet_path(loc) else []
+        if not loc:
+            return []
+        asset = views_asset(loc)
+        if asset is not None:
+            return [(views_label(str(loc["name"])), str(asset["path"]))]
+        return [(f"the location plate for {loc['name']}", sheet_path(loc))] if sheet_path(loc) else []
 
     def bundle(self, labels: list[str]) -> Row:
         place, _ = self.place()
@@ -235,7 +250,8 @@ def write(ctx: RunContext, b: Board, repaint: dict[int, str] | None = None) -> k
                                           for p in pictures]},
         ctx, max_output=kit.WRITER_MAX_OUTPUT)
     writer = kit.Writer.of(out.model_dump())
-    writer.conflicts = list(dict.fromkeys([*writer.conflicts, *kit.writer_findings(writer, b.shots, b.carried())]))
+    writer.conflicts = list(dict.fromkeys([*writer.conflicts, *kit.writer_findings(writer, b.shots, b.carried(),
+                                                                                    b.views)]))
     return writer
 
 
@@ -285,7 +301,7 @@ def _mend(ctx: RunContext, b: Board, writer: kit.Writer, panel: kit.Panel, data:
     painter = ctx.ports.images
     shot = b.shot_by_number(panel.shot)
     prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect, props=b.prop_names([shot]),
-                              fix=kit.fix_line(faults), places=b.place_names([shot]))
+                              fix=kit.fix_line(faults), places=b.place_names([shot]), views=b.views)
     if painter is None or safe_depiction.blocking(prompt):
         return data, {"ok": False, "problems": faults}
     try:
@@ -398,7 +414,7 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
         if previous_last is not None:
             refs.append(Reference(label=kit.OVERLAP_LABEL, data=previous_last))
         prompt = kit.board_prompt(writer, numbers, [r.label for r in refs], b.colours, aspect,
-                                  props=b.prop_names(group), places=b.place_names(group))
+                                  props=b.prop_names(group), places=b.place_names(group), views=b.views)
         fields: Row = {"parts": len(groups), "writer": writer.dump(), "colours": colours, "prompt": prompt}
         found = safe_depiction.blocking(prompt)
         if found:
@@ -574,7 +590,7 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
         raise _Failed(f"The board writer gave no panel for shot {shot.number}.")
     refs = [*places, *(Reference(label=kit.neighbour_label(s, n), data=d) for s, n, d in near)]
     prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect, props=b.prop_names([shot]),
-                              places=b.place_names([shot]))
+                              places=b.place_names([shot]), views=b.views)
     found = safe_depiction.blocking(prompt)
     if found:
         raise _Failed(safe_depiction.frame_error(found))
@@ -586,7 +602,8 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
         _log.warning("the panel of shot %s could not be painted", shot.number, exc_info=True)
         raise _Failed(FAILED) from None
     conflicts = [*kit.Writer.of(raw).conflicts,
-                 *kit.writer_findings(kit.Writer(world="", geography="", panels=[panel]), [shot], b.carried())]
+                 *kit.writer_findings(kit.Writer(world="", geography="", panels=[panel]), [shot], b.carried(),
+                                      b.views)]
     data, check = _mend(ctx, b, writer, panel, picture.data, refs, aspect, quality)
     line = _still_wrong(shot.number, check)
     return data, panel, [*conflicts, *([line] if line else [])], check

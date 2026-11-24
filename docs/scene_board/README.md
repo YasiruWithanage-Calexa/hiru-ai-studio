@@ -77,6 +77,16 @@ only part of the plan, and the umbrella came from a look's scene condition that 
   state and who is only heard; a cell pinned before is compared with the old hash (`pin_matches`), so painted boards
   stay current until their shot really changes.
 
+## Location views (plan/2026-11-24)
+
+The person's method (lab/location_views): ONE sheet of six named views of a place (front wide, looking left, looking
+right, reverse, two details), made once per location on the canon page ("Make location views"; the `views_writer`
+agent writes the views, or a person edits them), stored on the location's card as a `views` asset with each view's box.
+When the scene's place has one, the board picture gets the sheet instead of the plate, the writer names each panel's
+`view`, and each PANEL line says "Background view: view n Name". A first frame painted from its approved panel gets
+that view, cut from the sheet, instead of the plate, and the shot prompter is told it. No gate: without views the board
+paints from the plate, and the card says "No location views yet".
+
 ## The first frame follows the board (plan/2026-11-23d part 4)
 
 **No approved board, no first frame** (D4, the person 2026-11-23): "Paint first frame" is refused (409) and its button

@@ -28,6 +28,7 @@ from typing import Any
 
 from contracts import board as board_kit
 from contracts import picture_pins
+from contracts.canon import view_of
 from contracts.frame_brief import agent_camera
 from contracts.producer import PersonEdits, camera_changes
 from contracts.staging import ShotIntent
@@ -82,12 +83,19 @@ def facts_for(shot: Any, scene: Any, prod: Any, frame: Row | None, *, lids: Mapp
     return facts
 
 
-def board_facts(approved: Any, canon_by_id: Mapping[str, Mapping[str, Any]]) -> Row:
+def board_facts(approved: Any, canon_by_id: Mapping[str, Mapping[str, Any]],
+                scene: Mapping[str, Any] | None = None) -> Row:
     """What the shot prompter is told the approved board shows (plan/2026-11-23d §2.2): the blocking, each person's two
-    hands and the props, in people's names (the board's colours are canon id → colour)."""
+    hands and the props, in people's names (the board's colours are canon id → colour); and (plan/2026-11-24) the view
+    of the location sheet the panel's background comes from."""
     colours = {str(canon_by_id[cid]["name"]): str(colour)
                for cid, colour in (approved.part.get("colours") or {}).items() if cid in canon_by_id}
-    return board_kit.panel_facts(approved.panel, colours)
+    facts = board_kit.panel_facts(approved.panel, colours)
+    place = canon_by_id.get(str((scene or {}).get("location_id") or ""))
+    view = view_of(place, approved.panel.view) if place and approved.panel.view else None
+    if view is not None:
+        facts["background_view"] = f"{view['name']}: {view['what']}"
+    return facts
 
 
 def drawn_from(record: Mapping[str, Any] | None, frame: Mapping[str, Any] | None) -> bool:

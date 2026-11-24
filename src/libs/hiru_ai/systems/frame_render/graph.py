@@ -5,7 +5,8 @@ agent, both found by id.
     state.frame_ids             frames the API created `queued` (one row per picture asked for)
     state.reference_entity_id   instead: a reference sheet for this canon entity's current card
     state.look_id               instead: a look sheet for this look
-    state.reference_kind        "face" with reference_entity_id: a face sheet for that character (plan/2026-11-14)
+    state.reference_kind        "face" with reference_entity_id: a face sheet for that character (plan/2026-11-14);
+                                "views": a location's views sheet (plan/2026-11-24, `views.py`)
     state.board_id              instead: a Scene board for a scene (plan/2026-11-14, `board.py`)
     state.update                instead: an update of the scene's current board, one panel at a time
                                 (plan/2026-11-17, `board.update`)
@@ -47,7 +48,7 @@ from langgraph.graph.state import CompiledStateGraph
 
 from contracts import board as kit
 from contracts import safe_depiction
-from contracts.canon import face_sheet_path, keep_assets, missing_faces, scene_conditions
+from contracts.canon import face_sheet_path, keep_assets, missing_faces, scene_conditions, view_label, views_asset
 from contracts.frame_brief import BLACK_PLATE
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
@@ -58,6 +59,8 @@ from hiru_ai.core.ports import ImageRefused, Reference
 from hiru_ai.core.registry import Registry
 from hiru_ai.core.settings import get_settings
 from hiru_ai.systems.frame_render import board as boards
+from hiru_ai.systems.frame_render import pictures as pics
+from hiru_ai.systems.frame_render import views as locations
 from hiru_ai.systems.frame_render.faces import render_face
 from hiru_ai.systems.frame_render.state import State
 
@@ -190,8 +193,32 @@ def _board_panel(ctx: RunContext, scenes: Scenes, board_id: str, shot: Row,
     opening = [str(x) for x in raw] if isinstance(raw, list) else ([str(raw)] if raw else [])
     sections = kit.frame_sections(kit.Writer.of(row.get("writer") or {}), int(cell.get("number") or 0), colours,
                                   opening, faced, blocking=blocking)
+    panel = kit.Writer.of(row.get("writer") or {}).panel(int(cell.get("number") or 0))
     return (Reference(label=BLOCKING_LABEL if blocking else DRAFT_LABEL, data=data),
-            {"sections": sections, "board_id": board_id})
+            {"sections": sections, "board_id": board_id, "view": panel.view if panel else 0})
+
+
+def _view_picture(ctx: RunContext, world: Row, n: int) -> tuple[str, Reference, str] | None:
+    """plan/2026-11-24 (lab/location_views run_003): view `n` of the scene's location sheet, cut from the stored sheet,
+    as (the location plate's label it replaces, the view's picture, a line saying what the view shows); None when the
+    location has no sheet or no such view, or it cannot be read (the plate then stays)."""
+    loc = next((c for c in world.get("canon") or [] if str(c["id"]) == str((world.get("scene") or {})
+                                                                            .get("location_id") or "")), None)
+    asset = views_asset(loc) if loc else None
+    view = next((v for v in (asset or {}).get("views") or [] if int(v.get("n") or 0) == n), None) if n else None
+    if loc is None or asset is None or view is None or not view.get("box"):
+        return None
+    try:
+        sheet = _download(ctx, str(asset["path"]))
+    except Exception:
+        _log.warning("the views sheet of %s could not be read", loc.get("name"), exc_info=True)
+        return None
+    name = str(loc["name"])
+    label = view_label(name, view)
+    return (f"the location plate for {name}", Reference(label=label, data=pics.crop(sheet, [int(x) for x in
+                                                                                             view["box"]])),
+            f"The background is view {view['n']} ({str(view['name']).lower()}) of the location sheet: "
+            f"{str(view['what']).rstrip('.')}.")
 
 
 def _panel_breaks_a_fact(ctx: RunContext, board_id: str, shot: Row) -> list[str]:
@@ -265,6 +292,13 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "")
         try:
             panel, board = _board_panel(ctx, scenes, str(frame["board_id"]), shot, blocking=from_prompt)
             pictures.append(panel)
+            swap = _view_picture(ctx, world, int(board.get("view") or 0))
+            if swap is not None:  # plan/2026-11-24: the panel's view instead of the location plate
+                plate, view_pic, said = swap
+                at = next((i for i, p in enumerate(pictures) if p.label == plate), None)
+                if at is not None:
+                    pictures[at] = view_pic
+                    board["sections"] = [*board["sections"], said]
         except Exception:
             _log.warning("board %s of frame %s could not be read", frame["board_id"], fid, exc_info=True)
             frames.finish_frame(fid, {"status": "failed", "error": NO_PANEL})
@@ -461,6 +495,16 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
             audit("canon.face_sheet", "canon", entity, {"job_id": str(job_id)})
         return {"result": result}
 
+    def views(state: State) -> State:
+        """plan/2026-11-24: a location's views sheet."""
+        entity = str(payload.state["reference_entity_id"])
+        result = locations.render_views(ctx, production, loaded().canon, entity, dict(payload.state), str(job_id))
+        jobs.event(job_id, JobEventType.PROGRESS if result["status"] == "done" else JobEventType.WARNING,
+                   {"text": "Location views ready" if result["status"] == "done" else result["error"]}, agent=AGENT)
+        if result["status"] == "done":
+            audit("canon.views_sheet", "canon", entity, {"job_id": str(job_id)})
+        return {"result": result}
+
     def board(state: State) -> State:
         job = loaded()
         result = boards.run(ctx, production, job.world, dict(payload.state), str(job_id), warn)
@@ -481,7 +525,8 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         if payload.state.get("board_id") or payload.state.get("update"):
             return "board"
         if payload.state.get("reference_entity_id"):
-            return "face" if payload.state.get("reference_kind") == "face" else "reference"
+            kind = payload.state.get("reference_kind")
+            return "face" if kind == "face" else "views" if kind == "views" else "reference"
         return "look" if payload.state.get("look_id") else "frames"
 
     g: Any = StateGraph(State)
@@ -490,9 +535,10 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
                                   render_reference))
     g.add_node("look", sheet("Look sheet ready", "canon.look_sheet_made", "canon_look", "look_id", render_look))
     g.add_node("face", face)
+    g.add_node("views", views)
     g.add_node("board", board)
-    g.add_conditional_edges(START, route, ["frames", "reference", "look", "face", "board"])
-    for node in ("frames", "reference", "look", "face", "board"):
+    g.add_conditional_edges(START, route, ["frames", "reference", "look", "face", "views", "board"])
+    for node in ("frames", "reference", "look", "face", "views", "board"):
         g.add_edge(node, END)
     return g.compile()
 

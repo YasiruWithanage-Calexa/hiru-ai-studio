@@ -125,6 +125,8 @@ def shot_brief(facts: Mapping[str, Any]) -> str:
             out.append(f"- Blocking: {board['blocking']}")
         for p in board.get("hands") or []:
             out.append(f"- {p['name']}: left hand {p['left_hand']}; right hand {p['right_hand']}")
+        if board.get("background_view"):  # plan/2026-11-24: the location sheet's view behind them
+            out.append(f"- Background view: {board['background_view']}")
         for pr in board.get("props") or []:
             where = (f"in {pr['held_by']}'s {pr.get('hand') or ''} hand".replace("  ", " ") if pr.get("held_by")
                      else f"resting on {pr['rests_on']}" if pr.get("rests_on") else "")

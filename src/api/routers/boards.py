@@ -32,7 +32,8 @@ from api.services import boards, media_links
 from api.services.production import LOCKED
 from api.workers import task_manager
 from contracts import board as kit
-from contracts.canon import missing_faces
+from contracts.canon import missing_faces, views_asset
+from contracts.frame_brief import sheet_path
 from contracts.jobs import JobKind
 from contracts.production import SceneStatus
 from contracts.roles import Permission
@@ -112,6 +113,9 @@ class SceneBoardView(BaseModel):
     # The people on the board with no face sheet (2026-11-22): nothing paints one by itself any more. Their frames use
     # the base or look sheet until a person makes it from the canon. Advice, not a block.
     missing_faces: list[MissingFace] = Field(default_factory=list)
+    # plan/2026-11-24 (Q3, no gate): the scene's place when it has a plate but no views sheet, so the card can offer
+    # "Make location views"; None when it has one, or no plate to paint them from
+    missing_views: MissingFace | None = None
 
 
 class BoardStarted(BaseModel):
@@ -156,7 +160,7 @@ def _part_view(row: Row, stale_numbers: set[int]) -> BoardPartView:
 
 
 def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_aspect: str = "16:9",
-               canon: list[Row] | None = None) -> SceneBoardView:
+               canon: list[Row] | None = None, location_id: str = "") -> SceneBoardView:
     parts = boards.current(rows)
     # who is on the board: every part's `colours` (canon id → mannequin colour, written by the board job)
     people = [str(k) for p in parts for k in (p.get("colours") or {})]
@@ -190,7 +194,16 @@ def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_asp
                           conflicts=conflicts, stale_reasons=st.reasons(), changed=sorted(st.changed),
                           update=[BoardUpdateItem(number=n, what=w) for n, w in st.items()],  # type: ignore[arg-type]
                           whole=whole, approved=bool(parts) and all(p.get("approved_at") for p in parts),
-                          job_id=job, aspect=aspect, wrong_shape=wrong_shape, missing_faces=missing)
+                          job_id=job, aspect=aspect, wrong_shape=wrong_shape, missing_faces=missing,
+                          missing_views=_missing_views(canon or [], location_id))
+
+
+def _missing_views(canon: list[Row], location_id: str) -> MissingFace | None:
+    """The scene's place, when it has a plate to paint views from but no views sheet yet (plan/2026-11-24)."""
+    place = next((c for c in canon if str(c["id"]) == location_id), None)
+    if place is None or views_asset(place) is not None or not sheet_path(place):
+        return None
+    return MissingFace(entity_id=place["id"], name=str(place.get("name") or ""))
 
 
 # ── helpers ────────────────────────────────────────────────────────────────────────────────
@@ -228,10 +241,11 @@ async def _audit(repos: Repos, access: ProductionAccess, action: str, entity_id:
 
 
 async def _view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneBoardView:
-    (_, shots, rows), canon = await asyncio.gather(_scene(repos, access, scene_id),
-                                                   repos.canon.list(access.production_id))
+    (scene, shots, rows), canon = await asyncio.gather(_scene(repos, access, scene_id),
+                                                       repos.canon.list(access.production_id))
     orientation = Orientation(access.production.get("orientation") or "horizontal")
-    return board_view(scene_id, rows, shots, ASPECT_RATIO[orientation], canon)
+    return board_view(scene_id, rows, shots, ASPECT_RATIO[orientation], canon,
+                      str((scene or {}).get("location_id") or ""))
 
 
 # ── routes ─────────────────────────────────────────────────────────────────────────────────

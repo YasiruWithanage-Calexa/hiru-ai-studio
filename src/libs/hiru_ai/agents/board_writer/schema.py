@@ -43,6 +43,8 @@ class Panel(BaseModel):
     people: list[Person] = Field(description="Every person the panel shows, with their state and both hands.")
     props: list[Prop] = Field(default_factory=list, description="Every prop the panel shows: who holds it in which "
                                                                 "hand, or what it rests on.")
+    view: int = Field(default=0, description="The number of the place's view its background comes from (the "
+                                             "place's `views`); 0 when the place has no views or none fits.")
 
 
 class Output(BaseModel):

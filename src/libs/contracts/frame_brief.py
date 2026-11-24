@@ -26,7 +26,7 @@ from typing import Any
 from contracts import on_screen_text
 from contracts.camera_words import camera_words, lens_look, lighting_words
 from contracts.camera_words import changed as _changed
-from contracts.canon import face_sheet_path, look_sheet_path, sheet_assets
+from contracts.canon import VIEW_JOB, face_sheet_path, look_sheet_path, sheet_assets
 from contracts.holding import references_for
 from contracts.producer import (
     BLOCKING_LABEL,
@@ -283,6 +283,8 @@ def reference_job(label: str, labels: Sequence[str] = (), hair_from_look: Iterab
                 return f"{n}'s build and body, not the face, clothes, light or backdrop"
             extra = " and hair" if n in hair else ""
             return f"{n}'s clothes, shoes and accessories{extra} in this scene, not the face, light or backdrop"
+    if label.startswith("view ") and " of the location sheet for " in label:  # plan/2026-11-24
+        return VIEW_JOB
     for prefix, job in (
         ("the look sheet for ", "{n}'s face, body and clothes, not its light or backdrop"),
         ("the character sheet for ", "{n}'s face and body, not its light or backdrop"),

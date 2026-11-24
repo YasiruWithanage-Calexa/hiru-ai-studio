@@ -1,0 +1,16 @@
+id: views_writer
+kind: agent
+version: 1
+summary: "Writes the six named views of a location's views sheet (front wide, looking left, looking right, reverse, two details) and its layout and light, so every board panel and first frame paints the same place."
+status: active
+owner: frame_render
+model: medium
+shape: structured
+phase: frame_render.views
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage]
+writes_dialogue: false

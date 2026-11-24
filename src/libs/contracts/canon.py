@@ -93,6 +93,14 @@ class CanonVersion(BaseModel):
     created_at: datetime
 
 
+class LocationView(BaseModel):
+    """One named view of a location's views sheet (plan/2026-11-24)."""
+
+    n: int = Field(ge=1, le=6)
+    name: str = Field(min_length=1, max_length=60)
+    what: str = Field(min_length=1, max_length=600)
+
+
 class CanonEntity(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
@@ -119,6 +127,13 @@ class CanonEntity(BaseModel):
     face_sheet_url: str = ""
     face_sheet_thumb_url: str = ""
     face_sheet_key: str = ""
+    # plan/2026-11-24: a location's views sheet, through /files/{ticket}, and its six views ([] when there is none)
+    views_sheet_url: str = ""
+    views_sheet_thumb_url: str = ""
+    views_sheet_key: str = ""
+    views: list[LocationView] = Field(default_factory=list)
+    views_layout: str = ""
+    views_light: str = ""
     created_at: datetime
     updated_at: datetime
 
@@ -517,8 +532,82 @@ def _asset_path(asset: Any) -> str:
 
 
 def sheet_assets(assets: Any) -> list[Any]:
-    """A version's `reference_assets` without its face sheets: the base sheets (or plates), newest first."""
-    return [a for a in (assets if isinstance(assets, list) else []) if _asset_kind(a) != FACE_SHEET_KIND]
+    """A version's `reference_assets` without its face sheets and location views: the base sheets (or plates), newest
+    first."""
+    return [a for a in (assets if isinstance(assets, list) else [])
+            if _asset_kind(a) not in (FACE_SHEET_KIND, VIEWS_SHEET_KIND)]
+
+
+# ── location views (plan/2026-11-24; lab/location_views run_001, the person's method) ───────────────────────────
+
+# ONE picture of a place in six named views (a front wide, looking left, looking right, the reverse, two details), so
+# every board panel and first frame paints the same place: the person's method, proven in lab/location_views. Stored
+# as a `reference_assets` entry of this kind on the location's current card, with its views and their boxes.
+VIEWS_SHEET_KIND = "views"
+VIEWS_SHEET_QUALITY = "medium"  # the person's image rule: never high; the lab painted it at medium
+VIEWS_COUNT = 6
+VIEWS_ASPECT = "16:9"  # 1536x1024: six landscape views, 3 across and 2 down
+VIEWS_LABEL_HEAD = "the location sheet for "
+
+
+def views_asset(row: Mapping[str, Any]) -> Mapping[str, Any] | None:
+    """The newest location views sheet of a location's current card, or None."""
+    assets = (row.get("current") or {}).get("reference_assets") or []
+    return next((a for a in assets if isinstance(a, Mapping) and _asset_kind(a) == VIEWS_SHEET_KIND
+                 and _asset_path(a) and a.get("views")), None)
+
+
+def view_of(row: Mapping[str, Any], n: int) -> Mapping[str, Any] | None:
+    """View `n` (1-based) of a location's views sheet, or None."""
+    asset = views_asset(row)
+    return next((v for v in (asset or {}).get("views") or [] if int(v.get("n") or 0) == n), None)
+
+
+def views_label(name: str) -> str:
+    """How the board names the attached sheet (lab `SHEET_LABEL`)."""
+    return f"{VIEWS_LABEL_HEAD}{name}: six named views of the one place"
+
+
+def view_label(name: str, view: Mapping[str, Any]) -> str:
+    """How a first frame names the one view it is painted against (lab `frame_prompt`)."""
+    return f"view {view['n']} ({str(view['name']).lower()}) of the location sheet for {name}"
+
+
+VIEW_JOB = ("the background exactly as this view shows it, the same things on the same sides, seen from this shot's "
+            "own camera")
+
+
+def views_sheet_prompt(place: str, plates: Sequence[str], layout: str, light: str,
+                       views: Sequence[Mapping[str, Any]]) -> str:
+    """The image prompt of a location views sheet (lab `sheet_prompt`). `plates`: the attached pictures' labels, in
+    order (the location plate first, then the plates of the places that stand in it); `layout`: the place as one
+    connected layout (the views writer's, from the board writers' geography); `light`: the light and weather every
+    view shares; `views`: six `{name, what}`. Changes from the lab, said: its "take from" sentences named the roadside
+    and the three-wheeler; here they come from the labels."""
+    cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(plates, 1))
+    takes = []
+    for i, label in enumerate(plates, 1):
+        if i == 1:
+            takes.append("Take from image 1 the place itself: its ground, walls, buildings, plants, poles and fixed "
+                         "things, their materials and colours.")
+        else:
+            what = label.split(" for ", 1)[-1]
+            takes.append(f"Take from image {i} the {what} exactly as shown; it stands in this place.")
+    lines = "\n".join(f"VIEW {i} (row {(i - 1) // 3 + 1}, column {(i - 1) % 3 + 1}) — {v['name']}: {v['what']}"
+                      for i, v in enumerate(views, 1))
+    return "\n\n".join(x for x in [
+        "A location reference sheet for a Sri Lankan television drama: six photorealistic film stills of ONE real "
+        "place, laid out in a grid 3 across and 2 down, read left to right, then top to bottom. Every still is a "
+        "landscape 3:2 picture of the same size, separated by thin, even, plain white gutters. Nobody is in any "
+        "view: no people, no figures.",
+        (f"Reference images, in order: {cite}. " + " ".join(takes)) if plates else "",
+        f"The place, one connected layout seen from six positions: {layout}" if layout else "",
+        f"Light and weather (every view): {light}" if light else "",
+        lines,
+        f"Every view shows the SAME place ({place}): the same buildings, walls and fixed things, each where the layout "
+        "puts it. Draw NO text of any kind: no labels, no numbers, no captions, no arrows, no borders other than the "
+        "gutters.",
+    ] if x)
 
 
 def face_sheet_path(row: Mapping[str, Any]) -> str:
@@ -539,19 +628,17 @@ def missing_faces(canon: Sequence[Mapping[str, Any]], entity_ids: Iterable[str])
     return out
 
 
-def keep_assets(assets: Sequence[Any], sheets: int = 5, faces: int = 2) -> list[Any]:
-    """The `reference_assets` a version keeps, newest first: up to `sheets` sheets and `faces` face sheets, so a new
-    base sheet never pushes the face sheet out (and the reverse)."""
-    out, n_sheets, n_faces = [], 0, 0
+def keep_assets(assets: Sequence[Any], sheets: int = 5, faces: int = 2, views: int = 2) -> list[Any]:
+    """The `reference_assets` a version keeps, newest first: up to `sheets` sheets, `faces` face sheets and `views`
+    location views sheets, so a new sheet of one kind never pushes another kind out."""
+    cap = {FACE_SHEET_KIND: faces, VIEWS_SHEET_KIND: views}
+    out: list[Any] = []
+    seen: dict[str, int] = {}
     for a in assets:
-        if _asset_kind(a) == FACE_SHEET_KIND:
-            n_faces += 1
-            if n_faces <= faces:
-                out.append(a)
-        else:
-            n_sheets += 1
-            if n_sheets <= sheets:
-                out.append(a)
+        kind = _asset_kind(a) if _asset_kind(a) in cap else "sheet"
+        seen[kind] = seen.get(kind, 0) + 1
+        if seen[kind] <= cap.get(kind, sheets):
+            out.append(a)
     return out
 
 

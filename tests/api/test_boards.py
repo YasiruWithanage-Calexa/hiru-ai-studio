@@ -321,3 +321,34 @@ def test_the_board_view_names_the_people_on_it_without_a_face_sheet():
     view = board_view(uuid4(), [part], [], "16:9", canon)
     assert [(str(m.entity_id), m.name) for m in view.missing_faces] == [(nimal, "Nimal")]
     assert board_view(uuid4(), [], [], "16:9", canon).missing_faces == [], "no board: nobody on it yet"
+
+
+def test_location_views_are_asked_for_on_a_place_with_a_plate_and_shown_with_their_names(world: World,
+                                                                                       fired: list[dict]):  # noqa: F811
+    """plan/2026-11-24: "Make location views" (the views writer writes them) or a person's six edited views."""
+    from tests.api.test_canon import add_entity
+    from tests.api.test_canon import url as canon_url
+
+    kamala = add_entity(world)
+    harbour = add_entity(world, "L01", "Harbour", "location")
+    editor = world.headers(world.director)
+    assert world.client.post(canon_url(world, kamala, "/views-sheet"), json={}, headers=editor).status_code == 409
+    r = world.client.post(canon_url(world, harbour, "/views-sheet"), json={}, headers=editor)
+    assert r.status_code == 409 and "location plate first" in r.json()["detail"]
+    version = world.repos.canon.version_rows[world.repos.canon.rows[harbour]["current_version_id"]]  # type: ignore
+    version["reference_assets"] = [{"path": "p/h/plate.png"}]
+    r = world.client.post(canon_url(world, harbour, "/views-sheet"), json={}, headers=editor)
+    assert r.status_code == 202, r.text
+    state = fired[-1]["state"]
+    assert state["reference_kind"] == "views" and "views" not in state and "views_context" in state
+    edited = [{"n": i, "name": f"View {i}", "what": f"What {i}."} for i in range(1, 7)]
+    r = world.client.post(canon_url(world, harbour, "/views-sheet"), json={"views": edited}, headers=editor)
+    assert r.status_code == 202 and fired[-1]["state"]["views"][0] == {"name": "View 1", "what": "What 1."}
+    assert world.client.post(canon_url(world, harbour, "/views-sheet"), json={"views": edited[:3]},
+                             headers=editor).status_code == 422, "six views, never fewer"
+    version["reference_assets"] = [{"kind": "views", "path": "p/h/views.png", "views": edited, "light": "Rain."},
+                                   {"path": "p/h/plate.png"}]
+    entity = next(e for e in world.client.get(canon_url(world), headers=editor).json() if e["id"] == harbour)
+    assert entity["views_sheet_url"] and entity["reference_sheet_url"] != entity["views_sheet_url"], \
+        "the views sheet is never taken for the plate"
+    assert [v["name"] for v in entity["views"]][:2] == ["View 1", "View 2"] and entity["views_light"] == "Rain."

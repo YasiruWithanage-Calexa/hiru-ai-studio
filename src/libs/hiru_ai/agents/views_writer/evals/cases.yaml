@@ -1,0 +1,32 @@
+# Recorded answers in the shape of lab/location_views run_001 (Love Hour, "Colombo roadside" with the food three-wheeler).
+- name: a roadside with a food cart in it
+  input:
+    place: { name: "Colombo roadside", look: "Patched dark asphalt, a narrow concrete pavement, open kerb drainage, weathered low-rise frontages." }
+    within: [ { name: "Food three-wheeler", look: "A compact older maroon three-wheeler with a black vinyl roof and a side hatch food counter." } ]
+    geographies: [ "The food three-wheeler occupies the vending bay at frame left; a pale boundary wall with a leaf-green building surface continues to frame right. An open kerb drain separates pavement from road." ]
+    scenes: [ "SCENE 04 - A CONVERSATION THAT CHANGES EVERYTHING" ]
+  reply:
+    layout: "The pavement runs between the road and the frontages; the food three-wheeler stands side-on in its vending bay, the pale wall and green building to its right, the kerb drain along the road edge."
+    light: "Soft early-morning overcast daylight with fine rain; the pavement and asphalt are wet."
+    views:
+      - { name: "Front wide", what: "From the road side, looking across the pavement: the three-wheeler at frame left with its hatch open, the pale wall and green building at frame right, the drain along the bottom." }
+      - { name: "Looking left", what: "From beside the three-wheeler, looking left along the pavement past its back toward the shuttered shopfronts; the road on frame left." }
+      - { name: "Looking right", what: "From the same spot, looking right along the pale wall to the onward pavement; the drain on frame right." }
+      - { name: "Reverse", what: "From the wall, looking out across the pavement and the drain to the road and the buildings opposite." }
+      - { name: "Hatch detail", what: "Close on the three-wheeler's open hatch: the steel serving ledge, trays and the tea flask." }
+      - { name: "Ground detail", what: "Looking down at the wet pavement edge and the kerb drain grate." }
+  expect: { light: "Soft early-morning overcast daylight with fine rain; the pavement and asphalt are wet." }
+- name: a room with no storyboard yet
+  input:
+    place: { name: "Hospital corridor", look: "A long pale-green corridor with ward doors and a window wall." }
+  reply:
+    layout: "A straight corridor: ward doors along one side, the window wall along the other, the nurses' station halfway, a fire door at the far end."
+    light: "Cool even ceiling light by day, grey daylight through the windows."
+    views:
+      - { name: "Front wide", what: "From the corridor's middle, looking at the nurses' station: ward doors at frame left, the window wall at frame right." }
+      - { name: "Looking left", what: "From the nurses' station, looking left along the corridor: the ward doors on frame right, the windows on frame left, the fire door at the end." }
+      - { name: "Looking right", what: "From the nurses' station, looking right toward the lifts: the windows on frame right." }
+      - { name: "Reverse", what: "From the window wall, looking back at the nurses' station and a ward door." }
+      - { name: "Counter detail", what: "Close on the nurses' station counter: a chart rack and a desk lamp." }
+      - { name: "Door detail", what: "Close on a ward door with its small window and handle." }
+  expect: { light: "Cool even ceiling light by day, grey daylight through the windows." }
