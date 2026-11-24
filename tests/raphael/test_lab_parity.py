@@ -33,6 +33,7 @@ ADDED_2026_11_08F = (
     "- FLOOR (plan/2026-11-08f).",
     "- COVERAGE (plan/2026-11-08f).",
     "- LONG ACTIONS (plan/2026-11-08f).",
+    "- VEHICLES (plan/2026-11-24b).",  # ir.vehicles: the vehicles a clip shows and the role of each
     "- STATE (plan/2026-11-09).",
     "- SUMMARY (plan/2026-11-11).",  # each clip's `summary`: the shot told as one person explains it to another
     *("- BREAKDOWN (plan/2026-11-10).",) * 3,  # the director's breakdown: three lines
@@ -55,13 +56,14 @@ def test_stage_1_prompt_is_the_labs_must_only_prompt_plus_the_length_lines_and_n
 def test_stage_2_prompt_is_the_labs_plus_the_variety_lines_and_nothing_else():
     lab, product = lab_text("cinematic"), product_text("raphael_cinematic")
     added = [line for line in product.splitlines() if line not in lab.splitlines()]
-    assert len(added) == 7 and added[0].startswith("- VARIETY (D-V).")
-    assert added[1].startswith("- STATE (plan/2026-11-09).")
-    assert added[2].startswith("- SUMMARY (plan/2026-11-11).")  # each clip's `summary`
-    assert added[3].startswith("- BREAKDOWN (plan/2026-11-10).")  # one line: the breakdown's shots are in the bin
-    assert added[4].startswith("- PHONE (plan/2026-11-10).")  # the name on a phone screen
-    assert added[5].startswith("- SAFE DEPICTION (plan/2026-11-10b).")  # contracts.safe_depiction
-    assert added[6].startswith("- TAKE LENGTHS (plan/2026-11-19).")  # the production's lengths
+    assert len(added) == 8 and added[0].startswith("- VARIETY (D-V).")
+    assert added[1].startswith("- VEHICLES (plan/2026-11-24b).")  # ir.vehicles
+    assert added[2].startswith("- STATE (plan/2026-11-09).")
+    assert added[3].startswith("- SUMMARY (plan/2026-11-11).")  # each clip's `summary`
+    assert added[4].startswith("- BREAKDOWN (plan/2026-11-10).")  # one line: the breakdown's shots are in the bin
+    assert added[5].startswith("- PHONE (plan/2026-11-10).")  # the name on a phone screen
+    assert added[6].startswith("- SAFE DEPICTION (plan/2026-11-10b).")  # contracts.safe_depiction
+    assert added[7].startswith("- TAKE LENGTHS (plan/2026-11-19).")  # the production's lengths
     assert [line for line in product.splitlines() if line not in added] == lab.splitlines()
 
 
@@ -78,9 +80,15 @@ def lab_schema():
 
 def with_summary(schema):
     """The lab's schema plus the one field added on 2026-11-11: every clip's `summary`, a required string written
-    after `editor_note` (the only departure from the lab's clip; `contracts.raphael.wire.MenuW`)."""
+    after `editor_note` (the only departure from the lab's clip; `contracts.raphael.wire.MenuW`); and, since
+    plan/2026-11-24b, `vehicles` as the last field of every clip's design `ir` (`wire_schema.VEHICLES_SCHEMA`)."""
     if isinstance(schema, dict):
         out = {k: with_summary(v) for k, v in schema.items()}
+        ir = (out.get("properties") or {}).get("ir") if isinstance(out.get("properties"), dict) else None
+        if isinstance(ir, dict) and isinstance(ir.get("properties"), dict) and "vehicles" not in ir["properties"]:
+            out["properties"]["ir"] = {**ir, "properties": {**ir["properties"],
+                                                            "vehicles": wire_schema.VEHICLES_SCHEMA},
+                                       "required": [*ir.get("required", []), "vehicles"]}
         props = out.get("properties")
         if isinstance(props, dict) and "editor_note" in props and "summary" not in props:
             keys = list(props)

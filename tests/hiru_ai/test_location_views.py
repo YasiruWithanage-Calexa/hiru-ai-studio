@@ -17,9 +17,16 @@ from tests.services.fakes import FakeJobs
 from tests.services.frame_render.test_frame_render import payload
 from tests.services.production_fixture import HOUSE
 
-ANSWER = {"layout": "The kitchen door at left, the hearth at right.", "light": "Smoky morning light.",
-          "views": [{"name": n, "what": f"{n} of the kitchen."} for n in
-                    ("Front wide", "Looking left", "Looking right", "Reverse", "Hearth detail", "Door detail")]}
+SLOTS = ("Wide from the door", "Opposite wall", "Left wall", "Right wall", "Detail 1", "Detail 2")
+ANSWER: dict[str, Any] = {"answers": {"sides": "inside", "moves": False, "size": "room", "why": "a kitchen"},
+          "layout": "The kitchen door at left, the hearth at right.", "light": "Smoky morning light.", "empty": [],
+          "views": [{"slot": s, "camera": f"From the {s.lower()} spot.", "sees": f"{s} of the kitchen."}
+                    for s in SLOTS[:4]]
+          + [{"slot": "Detail 1", "camera": "Close on the smoky kitchen hearth.", "sees": "The hearth stones."},
+             {"slot": "Detail 2", "camera": "Close on the tiled roof edge.", "sees": "The roof tiles."}]}
+# The same answer with a plain table no scene uses as its second detail (lab/place_views r2's restaurant fault).
+TABLE: dict[str, Any] = {**ANSWER, "views": [*ANSWER["views"][:5], {
+    "slot": "Detail 2", "camera": "Close on a wooden table.", "sees": "A plain table."}]}
 
 
 def store_with_plate() -> BoardStore:
@@ -58,12 +65,18 @@ def test_the_views_are_written_painted_cut_and_stored_on_the_location():
     prompt, aspect, refs = painter.calls[0]
     assert aspect == "16:9" and painter.qualities[-1] == "medium", "the lab's 1536x1024 at medium"
     assert [r.label for r in refs] == ["the location plate for Kamala's house"]
-    assert "VIEW 5 (row 2, column 2) — Hearth detail: Hearth detail of the kitchen." in prompt
+    assert "VIEW 5 (row 2, column 2) — Detail 1: Close on the smoky kitchen hearth. The hearth stones." in prompt
+    assert "Light (every view): soft, even, dry daylight" in prompt and "Smoky morning light" not in prompt, \
+        "§2.4: the writer's light is kept, never painted"
     version, assets = store.asset_writes[-1]
     sheet = assets[0]
     assert version == "house-v1" and sheet["kind"] == "views" and f"/{HOUSE}/views/house-v1-" in sheet["path"]
-    assert [v["name"] for v in sheet["views"]][:2] == ["Front wide", "Looking left"] and len(sheet["views"]) == 6
+    assert [v["name"] for v in sheet["views"]] == list(SLOTS)
+    assert sheet["views"][4]["sees"] == "The hearth stones." and sheet["views"][4]["camera"].startswith("Close on")
+    assert sheet["views"][4]["what"] == "Close on the smoky kitchen hearth. The hearth stones."
     assert all(len(v["box"]) == 4 for v in sheet["views"]) and sheet["light"] == "Smoky morning light."
+    assert sheet["template"] == "inside" and sheet["answers"]["sides"] == "inside" and sheet["findings"] == []
+    assert out["_calls"] == 1, "no findings: no re-ask"
     assert assets[1]["path"] == "p/house/plate.png", "the plate is kept"
 
 
@@ -87,12 +100,47 @@ def test_a_sheet_that_does_not_cut_into_six_is_never_stored():
     assert store.asset_writes == []
 
 
-def test_no_plate_no_views():
+def no_plate() -> BoardStore:
     store = BoardStore()
     house = next(c for c in store.canon_rows if c["id"] == HOUSE)
     house["current"] = {**house["current"], "id": "house-v1", "reference_assets": []}
-    out = run(store, {}, [ANSWER], FakeImages())
-    assert out["status"] == "failed" and "plate" in out["error"]
+    return store
+
+
+def test_a_place_without_a_plate_is_painted_from_its_cards_words():
+    """plan/2026-11-24c §2.4 (the lab's restaurant and prep room)."""
+    store = no_plate()
+    painter = FakeImages()
+    painter.picture = board_png(3, 2)
+    out = run(store, {}, [ANSWER], painter)
+    assert out["status"] == "done", out
+    prompt, _, refs = painter.calls[0]
+    assert refs == [] and "There is no picture of this place: paint it from these words: a small tiled-roof" in prompt
+
+
+def test_findings_ask_the_writer_once_more_then_store_what_is_left():
+    """§2.3 D2: one re-ask with the findings as a list; still failing, stored with the findings shown."""
+    store, painter = no_plate(), FakeImages()
+    painter.picture = board_png(3, 2)
+    out = run(store, {}, [TABLE, ANSWER], painter)
+    assert out["status"] == "done" and out["_calls"] == 2 and out["findings"] == [], out
+    assert "Close on the tiled roof edge." in painter.calls[0][0], "the second answer is painted"
+    store, painter = no_plate(), FakeImages()
+    painter.picture = board_png(3, 2)
+    out = run(store, {}, [TABLE, TABLE], painter)
+    assert out["status"] == "done" and out["_calls"] == 2, out
+    assert store.asset_writes[-1][1][0]["findings"] == out["findings"]
+    assert out["findings"][0].startswith("Detail 2 (Close on a wooden table) shows nothing the card names")
+
+
+def test_a_persons_answers_win():
+    store, painter = no_plate(), FakeImages()
+    painter.picture = board_png(3, 2)
+    out = run(store, {"views_answers": {"sides": "inside", "moves": False, "size": "small"}},
+              [{**ANSWER, "answers": {"sides": "outside", "moves": False, "size": "long", "why": "w"}}], painter)
+    sheet = store.asset_writes[-1][1][0]
+    assert sheet["answers"] == {"sides": "inside", "moves": False, "size": "small", "why": "w"}
+    assert sheet["template"] == "inside" and out["findings"] == [], "the inside slots match the person's template"
 
 
 def test_the_views_label_is_what_the_board_attaches():

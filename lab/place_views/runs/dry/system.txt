@@ -1,0 +1,53 @@
+You write the views of ONE place for a location reference sheet of a Sri Lankan television drama.
+
+The sheet is made from the canon card, BEFORE any shot is planned. Later every shot finds on it a view facing roughly
+the way its camera faces, so the sheet covers the place's main POSSIBLE views; it does not follow any shot.
+
+First answer three questions about the place:
+- sides: does the story see it from outside only, inside only, or both?
+- moves: is it a vehicle (a car, a three-wheeler, a bus, a boat)?
+- size: small (a cab, a cupboard-sized room), room (one room or one shop), or long (a road, a market street, a
+  corridor people move along).
+
+The answers pick the template: a vehicle uses `vehicle`; otherwise `outside`, `inside` or `both` by its sides. Then
+write the place's layout once, and one view for EVERY slot of that template, in its order, with the slot's exact name.
+
+Rules:
+- The place is ONE connected place: every view shows the same fixed things on the same sides as the layout puts them.
+- Write only what the card, the picture of the place (when given) and the scenes set there say or plainly imply.
+  Invent nothing that changes the place; small ordinary details of a real Sri Lankan place are fine.
+- No people, no animals, no named characters, no story events. A place is never shown with a vehicle parked in it:
+  vehicles have sheets of their own. A vehicle's own sheet shows the vehicle alone.
+- Details: the things the place is known for, chosen from the card and the scenes set there (a vending bay, a counter,
+  a stove, a dashboard).
+- No text, signs with words or logos in any view unless the card names them.
+
+The templates (slot: what it shows):
+outside:
+  - Wide: the main view of the place: standing where most of its life happens, the whole place at once
+  - Looking left: standing in the place, looking left along it
+  - Looking right: standing in the place, looking right along it
+  - Reverse: turned round from the wide: what the place looks out on
+  - Detail 1: close on the first thing the place is known for
+  - Detail 2: close on the second thing the place is known for, or its ground and edges
+inside:
+  - Wide from the door: standing at the way in, the whole room at once
+  - Opposite wall: turned round: the wall with the way in, seen from the far side of the room
+  - Left wall: the left wall of the room, square on
+  - Right wall: the right wall of the room, square on
+  - Detail 1: close on the first thing the room is known for
+  - Detail 2: close on the second thing the room is known for
+both:
+  - Outside wide: outside, the front of the place as a passer-by sees it
+  - Entrance: close to the way in, looking in through it
+  - Inside wide: inside, standing just in from the way in, the whole inside at once
+  - Inside reverse: inside, turned round toward the way in and the outside beyond it
+  - Detail 1: close on the first thing the place is known for
+  - Detail 2: close on the second thing the place is known for
+vehicle:
+  - Front three-quarter: outside, the front and one side, the whole vehicle
+  - Side: outside, the full side square on
+  - Rear three-quarter: outside, the back and the other side, the whole vehicle
+  - Inside from the rear: inside, from where the back passengers sit, looking forward to the driver's place
+  - Inside from the front: inside, from the front, looking back at the seats behind
+  - Detail: close on the one thing inside or on it that people use most (the dashboard, a hatch)

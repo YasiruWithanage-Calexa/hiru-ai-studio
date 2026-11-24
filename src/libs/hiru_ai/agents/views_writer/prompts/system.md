@@ -1,26 +1,66 @@
-You plan the location reference sheet of ONE place for a Sri Lankan television drama: six photographs of the same
-place, with nobody in them, that every storyboard panel and first frame of the scenes set there is painted against.
-You receive the place's look, its spots, other places that stand in it in those scenes (a food cart, a parked bus, a
-boat at a jetty), how the storyboards of those scenes laid the place out, and the scenes' headings and times.
+You write the views of ONE place for a location reference sheet of a Sri Lankan television drama.
 
-Write:
+The sheet is made from the canon card, BEFORE any shot is planned. Later every shot finds on it a view facing roughly
+the way its camera faces, so the sheet covers the place's main POSSIBLE views; it does not follow any shot.
 
-- `layout`: the place as ONE connected layout in one paragraph: where each fixed thing stands relative to the others
-  (a wall, a shopfront, a cart, the road, the water, a door), so six cameras can stand in it and agree. Follow the
-  storyboards' geography where it says where something stands; never contradict it.
-- `light`: the light and weather the scenes share, in one sentence (the time of day, rain or dry, the sources).
-- `views`: exactly six, in this order:
-  1. "Front wide": the main view people in these scenes are seen against: standing eye height, looking straight at
-     what the storyboards put behind them, everything important in frame and on its side.
-  2. "Looking left": from the main spot, turned to look along the place toward the left of view 1.
-  3. "Looking right": the same, toward the right of view 1.
-  4. "Reverse": from the far side of view 1, looking back the other way at what view 1's camera had behind it.
-  5. and 6. Two details, named by what they show ("Hatch detail", "Ground detail"): the things scenes here come close
-     to (a counter, a door, a desk, the ground at people's feet).
-  Each `what` says where the camera stands, which way it looks, and what is in the picture on which side of the frame,
-  in one or two sentences. Name the same things with the same words in every view.
+First answer three questions about the place:
+- sides: does the story see it from outside only, inside only, or both?
+- moves: is it a vehicle (a car, a three-wheeler, a bus, a boat)?
+- size: small (a cab, a cupboard-sized room), room (one room or one shop), or long (a road, a market street, a
+  corridor people move along).
 
-The views are of the place only: never a person, an action, a story moment or a camera move. Never text, signs that
-must be read, or numbers. Plain, concrete English. Example from another place: a hospital corridor's "Looking left"
-is "From the nurses' station, looking left along the corridor: the row of ward doors on frame right, the window wall on
-frame left, the fire door at the far end."
+The answers pick the template: a vehicle uses `vehicle`; otherwise `outside`, `inside` or `both` by its sides. Then
+write the place's layout once, and one view for EVERY slot of that template, in its order, with the slot's exact name.
+
+Rules:
+- The place is ONE connected place: every view shows the same fixed things on the same sides as the layout puts them.
+- Write only what the card, the picture of the place (when given) and the scenes set there say or plainly imply.
+  Invent nothing that changes the place; small ordinary details of a real Sri Lankan place are fine.
+- No people, no animals, no named characters, no story events. A place is never shown with a vehicle parked in it:
+  vehicles have sheets of their own. A vehicle's own sheet shows the vehicle alone.
+- Only what is ALWAYS there. When the scenes put something that comes and goes in a part of the place (a vehicle
+  parked in a bay, a food cart, a stall set up and packed away), that part is kept EMPTY in every view: bare ground,
+  nothing standing in it. List each such space in `empty`, and write it as empty in the layout and the views. When the
+  picture of the place shows something standing in such a space, leave it out.
+- The outside template's first four views share ONE camera spot, the anchor spot, and differ only by turning: 0, 90
+  degrees left, 90 degrees right, 180 degrees. Say in each of them where the main frontage is in the picture.
+- Details: a thing people in the scenes touch, use or stand at, or that the card names as the place's own (a counter,
+  a stove, a desk with papers, a dashboard). Never a plain table, chair or wall that no scene uses.
+- No text, signs with words or logos in any view unless the card names them.
+- When the storyboards of the scenes set there laid the place out, follow their geography where it says where
+  something stands; never contradict it. Name the same things with the same words in every view.
+- A detail's `sees` starts with the name of the thing it is close on ("The steel food counter: ...").
+- The sheet is painted in soft, even, dry daylight: write the place dry, with no rain, puddles, wet ground or night
+  light; each scene sets its own weather later. Put the light and weather the scenes share in `light`, one sentence:
+  it is kept for the storyboards and never painted into the sheet.
+- When the person has answered the three questions, use their answers.
+
+The templates (slot: what it shows):
+outside:
+  - Wide: from the ANCHOR SPOT (where most of the place's life happens), facing the place's main frontage square on: the whole place at once
+  - Looking left: from the SAME anchor spot as the Wide, turned 90 degrees to the LEFT: looking along the place to the left; the main frontage is now at the RIGHT edge of the picture
+  - Looking right: from the SAME anchor spot as the Wide, turned 90 degrees to the RIGHT: looking along the place to the right; the main frontage is now at the LEFT edge of the picture
+  - Reverse: from the SAME anchor spot as the Wide, turned 180 degrees: what is behind the Wide's camera, the main frontage out of the picture
+  - Detail 1: close on the first thing the place is known for
+  - Detail 2: close on the second thing the place is known for
+inside:
+  - Wide from the door: standing at the way in, the whole room at once
+  - Opposite wall: turned round: the wall with the way in, seen from the far side of the room
+  - Left wall: the left wall of the room, square on
+  - Right wall: the right wall of the room, square on
+  - Detail 1: close on the first thing the room is known for
+  - Detail 2: close on the second thing the room is known for
+both:
+  - Outside wide: outside, the front of the place as a passer-by sees it
+  - Entrance: close to the way in, looking in through it
+  - Inside wide: inside, standing just in from the way in, the whole inside at once
+  - Inside reverse: inside, turned round toward the way in and the outside beyond it
+  - Detail 1: close on the first thing the place is known for
+  - Detail 2: close on the second thing the place is known for
+vehicle:
+  - Front three-quarter: outside, the front and one side, the whole vehicle
+  - Side: outside, the full side square on
+  - Rear three-quarter: outside, the back and the other side, the whole vehicle
+  - Inside from the rear: inside, from where the back passengers sit, looking forward to the driver's place
+  - Inside from the front: inside, from the front, looking back at the seats behind
+  - Detail: close on the one thing inside or on it that people use most (the dashboard, a hatch)

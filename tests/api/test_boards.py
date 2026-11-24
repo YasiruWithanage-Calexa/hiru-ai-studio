@@ -323,9 +323,10 @@ def test_the_board_view_names_the_people_on_it_without_a_face_sheet():
     assert board_view(uuid4(), [], [], "16:9", canon).missing_faces == [], "no board: nobody on it yet"
 
 
-def test_location_views_are_asked_for_on_a_place_with_a_plate_and_shown_with_their_names(world: World,
+def test_location_views_are_asked_for_on_any_place_and_shown_with_their_names(world: World,
                                                                                        fired: list[dict]):  # noqa: F811
-    """plan/2026-11-24: "Make location views" (the views writer writes them) or a person's six edited views."""
+    """plan/2026-11-24: "Make location views" (the views writer writes them) or a person's six edited views;
+    plan/2026-11-24c: no plate needed, a person's answers, the template, empty spaces and findings shown."""
     from tests.api.test_canon import add_entity
     from tests.api.test_canon import url as canon_url
 
@@ -333,17 +334,21 @@ def test_location_views_are_asked_for_on_a_place_with_a_plate_and_shown_with_the
     harbour = add_entity(world, "L01", "Harbour", "location")
     editor = world.headers(world.director)
     assert world.client.post(canon_url(world, kamala, "/views-sheet"), json={}, headers=editor).status_code == 409
-    r = world.client.post(canon_url(world, harbour, "/views-sheet"), json={}, headers=editor)
-    assert r.status_code == 409 and "location plate first" in r.json()["detail"]
     version = world.repos.canon.version_rows[world.repos.canon.rows[harbour]["current_version_id"]]  # type: ignore
-    version["reference_assets"] = [{"path": "p/h/plate.png"}]
     r = world.client.post(canon_url(world, harbour, "/views-sheet"), json={}, headers=editor)
-    assert r.status_code == 202, r.text
+    assert r.status_code == 202, "plan/2026-11-24c §2.4: no plate needed, painted from the card's words"
     state = fired[-1]["state"]
-    assert state["reference_kind"] == "views" and "views" not in state and "views_context" in state
+    assert state["reference_kind"] == "views" and "views" not in state and "views_answers" not in state
+    assert set(state["views_context"]) == {"within", "comes_and_goes", "geographies", "scenes"}
+    answers = {"sides": "both", "moves": False, "size": "room"}
+    r = world.client.post(canon_url(world, harbour, "/views-sheet"), json={"answers": answers}, headers=editor)
+    assert r.status_code == 202 and fired[-1]["state"]["views_answers"] == answers, "D1: a person's answers"
+    assert world.client.post(canon_url(world, harbour, "/views-sheet"), json={"answers": {"sides": "up"}},
+                             headers=editor).status_code == 422
     edited = [{"n": i, "name": f"View {i}", "what": f"What {i}."} for i in range(1, 7)]
     r = world.client.post(canon_url(world, harbour, "/views-sheet"), json={"views": edited}, headers=editor)
-    assert r.status_code == 202 and fired[-1]["state"]["views"][0] == {"name": "View 1", "what": "What 1."}
+    assert r.status_code == 202 and fired[-1]["state"]["views"][0] == {"name": "View 1", "what": "What 1.",
+                                                                       "camera": "", "sees": ""}
     assert world.client.post(canon_url(world, harbour, "/views-sheet"), json={"views": edited[:3]},
                              headers=editor).status_code == 422, "six views, never fewer"
     version["reference_assets"] = [{"kind": "views", "path": "p/h/views.png", "views": edited, "light": "Rain."},
@@ -352,3 +357,40 @@ def test_location_views_are_asked_for_on_a_place_with_a_plate_and_shown_with_the
     assert entity["views_sheet_url"] and entity["reference_sheet_url"] != entity["views_sheet_url"], \
         "the views sheet is never taken for the plate"
     assert [v["name"] for v in entity["views"]][:2] == ["View 1", "View 2"] and entity["views_light"] == "Rain."
+    assert entity["views_template"] == "" and entity["views_answers"] is None, "a built sheet has neither"
+    version["reference_assets"] = [{"kind": "views", "path": "p/h/views2.png", "template": "both",
+                                    "answers": {**answers, "why": "a shop"}, "empty": ["the bay at left, bare"],
+                                    "findings": ["Detail 2 is close on a plain table that no scene uses."],
+                                    "views": [{"n": 1, "name": "Outside wide", "camera": "From the road.",
+                                               "sees": "The front.", "what": "From the road. The front."}]}]
+    entity = next(e for e in world.client.get(canon_url(world), headers=editor).json() if e["id"] == harbour)
+    assert entity["views_template"] == "both" and entity["views_answers"]["why"] == "a shop"
+    assert entity["views_empty"] == ["the bay at left, bare"] and entity["views_findings"][0].startswith("Detail 2")
+    assert entity["views"][0] == {"n": 1, "name": "Outside wide", "what": "From the road. The front.",
+                                  "camera": "From the road.", "sees": "The front."}
+
+
+def test_the_views_context_splits_vehicles_out_and_gives_the_scenes_text(world: World):
+    """plan/2026-11-24c §2.2: a vehicle named in the place's scenes comes and goes (its space kept empty, never painted
+    in); another place named there stands in it; a vehicle's own scenes are those whose words name it."""
+    import asyncio
+    from uuid import UUID
+
+    from api.routers import canon as canon_router
+    from tests.api.test_canon import add_entity
+
+    harbour = add_entity(world, "L01", "Harbour", "location")
+    kiosk = add_entity(world, "L02", "Tea kiosk", "location")
+    car = add_entity(world, "L03", "Family car", "location")
+    rows = world.repos.canon.rows  # type: ignore[attr-defined]
+    rows[kiosk]["class"], rows[car]["class"] = "set", "vehicle"
+    scene = open_scene(world)["scene"]
+    scene["location_id"] = harbour
+    scene["script"] = [{"text": "The family car stops beside the tea kiosk."}]
+    production = UUID(str(world.production))
+    got = asyncio.run(canon_router._views_context(world.repos, production, rows[harbour]))
+    assert kiosk in got["within"] and car not in got["within"] and got["comes_and_goes"] == [car]
+    assert got["scenes"] == [f"Scene {scene['number']} — {scene.get('heading') or ''}: The family car stops beside "
+                             "the tea kiosk."]
+    mine = asyncio.run(canon_router._views_context(world.repos, production, rows[car]))
+    assert mine["within"] == [] and mine["comes_and_goes"] == [] and len(mine["scenes"]) == 1

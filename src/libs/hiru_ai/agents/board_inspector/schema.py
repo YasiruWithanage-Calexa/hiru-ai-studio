@@ -10,6 +10,10 @@ class Input(BaseModel):
     people: list[str] = []  # "Anudi is the blue mannequin": who the panel shows, by colour
     panel: str = ""  # what the panel should show: its camera and picture
     hands: str = ""  # `contracts.board.hands_text`: each mannequin's left and right hand, "" = no hand check
+    # plan/2026-11-24c §2.7: the view of the place's sheet the panel names (`contracts.board.view_named`) and that
+    # view cut from the sheet, base64 PNG; "" = no view check
+    view: str = ""
+    view_b64: str = ""
 
 
 class Output(BaseModel):
@@ -21,5 +25,8 @@ class Output(BaseModel):
                                          "over a drain, a step, an edge or empty space.")
     hands_match: bool = Field(default=True, description=(
         "Each mannequin's hands hold what HANDS says, in the hand it says. True when HANDS is absent."))
+    view_match: bool = Field(default=True, description=(
+        "The panel's background shows the VIEW's things on the view's sides (it may be closer or tighter). True when "
+        "VIEW is absent."))
     problems: list[str] = Field(description="At most three short faults, each naming the mannequin by colour and "
                                             "what is wrong; empty when the panel is fine.")

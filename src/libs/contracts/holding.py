@@ -543,8 +543,10 @@ def references_for(scene: Mapping[str, Any], shot: Mapping[str, Any], canon: Seq
     at = ids.index(place) + 1 if place in ids else people
     where = " \n ".join([words, *zones_at(scene_marks(scene, str(shot.get("planner") or "")), start, names)])
     have = {cid for cid, _ in out}
+    # plan/2026-11-24b §2.4: a vehicle is never found here by its name: `frame_brief.plan_references` adds it with its
+    # role (`contracts.vehicles.shot_vehicles`)
     extra = [(str(r["id"]), "") for r in canon if r.get("kind") == "location" and str(r["id"]) not in have
-             and str(r["id"]) not in removed and str(r["id"]) != place and sheet(r)
+             and str(r["id"]) not in removed and str(r["id"]) != place and sheet(r) and r.get("class") != "vehicle"
              and names_place(str(r.get("name") or ""), where)]
     out[at:at] = extra
     have |= {cid for cid, _ in extra}

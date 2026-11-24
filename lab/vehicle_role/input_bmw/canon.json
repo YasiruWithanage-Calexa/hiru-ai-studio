@@ -1,0 +1,1879 @@
+[
+ {
+  "id": "aa21ee79-92c9-4ff7-9b03-60f5b489282a",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P16",
+  "name": "umbrella",
+  "aliases": [
+   "folding umbrella"
+  ],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-23T14:05:56.458856+00:00",
+  "current_version_id": "6f1710a3-a5e7-40f8-9082-68374c63ad61",
+  "created_at": "2026-11-23T13:52:07.621151+00:00",
+  "updated_at": "2026-11-23T14:06:01.145523+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "6f1710a3-a5e7-40f8-9082-68374c63ad61",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A navy folding umbrella with a short curved handle. Anudi carries it closed and opens it when the rain begins (scene 2); she holds it open over herself in the rain.",
+    "summary": "Anudi's umbrella, from her office-day look.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "user",
+   "version": 1,
+   "card_hash": "d7aeb41e1ef114804fd8484fb679379d9a32a1742524f631e9e35a4e8e620d2d",
+   "entity_id": "aa21ee79-92c9-4ff7-9b03-60f5b489282a",
+   "voice_pin": "",
+   "created_at": "2026-11-23T13:52:08.241469+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {},
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/aa21ee79-92c9-4ff7-9b03-60f5b489282a/6f1710a3-a5e7-40f8-9082-68374c63ad61-340b8544.png",
+     "job_id": "340b8544-f9a7-49f2-8085-caabb0ff8f21",
+     "version": 1,
+     "created_at": "2026-11-23T14:05:16.301957+00:00"
+    }
+   ],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: umbrella\nDetails: A navy folding umbrella with a short curved handle. Anudi carries it closed and opens it when the rain begins (scene 2); she holds it open over herself in the rain"
+  }
+ },
+ {
+  "id": "dd3ae58b-6c8c-4159-81db-02f988f5f883",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "character",
+  "code": "C03",
+  "name": "Father",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "61b1c1ae-e04b-40b9-bec1-e1bcd6c335c8",
+  "created_at": "2026-11-15T10:34:44.570611+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": null,
+  "parent_id": null,
+  "current": {
+   "id": "61b1c1ae-e04b-40b9-bec1-e1bcd6c335c8",
+   "card": {
+    "age": "57",
+    "look": "",
+    "notes": "",
+    "voice": "Low resonant Sinhala voice with firm articulation and short pauses; clipped declarative phrasing, restrained volume and a slower, gentler cadence in apology.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "",
+    "wardrobe": "Crisply pressed pale-cream long-sleeved shirt tucked into dark-brown tailored trousers, brown leather belt, polished brown leather shoes and a restrained steel wristwatch.",
+    "appearance": "Above-average height, broad stocky build, medium warm-brown skin, a square face, heavy eyebrows and a broad rounded nose shared with Anudi. Deep-set dark-brown eyes, a neatly trimmed salt-and-pepper moustache and short straight salt-and-pepper hair combed back from a receding hairline."
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "d7a610cdf1c82003e0d9f87d7ff8f0c7952dc1cdfc333ec7887a87a24cfddc8a",
+   "entity_id": "dd3ae58b-6c8c-4159-81db-02f988f5f883",
+   "voice_pin": "Low resonant Sinhala voice with firm articulation and short pauses; clipped declarative phrasing, restrained volume and a slower, gentler cadence in apology man voice (57), a Sri Lankan (Colombo) accent",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "age": {
+     "line": 0,
+     "reason": "Father has an adult working daughter and the financial means to offer a substantial cheque.",
+     "source": "inferred"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Father's commands, conditions and eventual apology call for controlled authority rather than constant raised volume.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 63,
+     "reason": "",
+     "source": "script"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Father's comfortable Colombo household, car travel and formal financial visit inform conservative, well-maintained daywear.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Father's established household and authoritative presence inform an older, substantial silhouette distinct from Kasun.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "Crisply pressed pale-cream long-sleeved shirt tucked into dark-brown tailored trousers, brown leather belt, polished brown leather shoes and a restrained steel wristwatch",
+   "reference_assets": [],
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Father\nSubject: one adult man\nAge: 57\nAppearance: Above-average height, broad stocky build, medium warm-brown skin, a square face, heavy eyebrows and a broad rounded nose shared with Anudi. Deep-set dark-brown eyes, a neatly trimmed salt-and-pepper moustache and short straight salt-and-pepper hair combed back from a receding hairline\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt"
+  }
+ },
+ {
+  "id": "d63c10e4-8239-426b-a478-2890065af653",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "character",
+  "code": "C04",
+  "name": "office worker",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "fd976fb6-f3bd-4367-8f29-da2ca11291f3",
+  "created_at": "2026-11-15T10:34:44.833827+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": null,
+  "parent_id": null,
+  "current": {
+   "id": "fd976fb6-f3bd-4367-8f29-da2ca11291f3",
+   "card": {
+    "age": "38",
+    "look": "",
+    "notes": "details: An office worker approaches and orders tea.",
+    "voice": "Light mid-register Sinhala voice with brisk, polite, economical phrasing.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "An office worker approaches and orders tea. Kasun smiles and serves him. After the customer leaves, Kasun looks at his small business. He notices the limited space",
+    "wardrobe": "Pale-blue short-sleeved office shirt tucked into black trousers, narrow black belt and practical black lace-up shoes.",
+    "appearance": "Short-to-average height, compact rounded build, medium-brown skin, a round face, full cheeks and a clean-shaven jaw. Close-cropped straight black hair with a high forehead; rectangular black-rimmed spectacles."
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "b7826b7fcf55d69b4e282e6d9e9bf6212007eadd5b1def0fe483a9fd1a4bf18b",
+   "entity_id": "d63c10e4-8239-426b-a478-2890065af653",
+   "voice_pin": "Light mid-register Sinhala voice with brisk, polite, economical phrasing man voice (38), a Sri Lankan (Colombo) accent",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "age": {
+     "line": 0,
+     "reason": "The office worker is an established commuter buying morning tea on the way to work.",
+     "source": "inferred"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "The office worker's brief morning tea order informs a practical commuter delivery.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 20,
+     "reason": "",
+     "source": "script"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "The stated office job and morning commute call for ordinary present-day Colombo office dress under H-14.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "A rounded silhouette, spectacles and clean-shaven face distinguish the office worker from Kasun and Father.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "Pale-blue short-sleeved office shirt tucked into black trousers, narrow black belt and practical black lace-up shoes",
+   "reference_assets": [],
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: office worker\nSubject: one adult man\nAge: 38\nAppearance: Short-to-average height, compact rounded build, medium-brown skin, a round face, full cheeks and a clean-shaven jaw. Close-cropped straight black hair with a high forehead; rectangular black-rimmed spectacles\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt"
+  }
+ },
+ {
+  "id": "c46427f9-ca0b-4107-8435-b7e109672472",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "character",
+  "code": "C06",
+  "name": "representative",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "856d9a09-3415-4656-9174-67a86eb0e512",
+  "created_at": "2026-11-15T10:34:45.25764+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": null,
+  "parent_id": null,
+  "current": {
+   "id": "856d9a09-3415-4656-9174-67a86eb0e512",
+   "card": {
+    "age": "40",
+    "look": "",
+    "notes": "details: A representative from a major supermarket chain is on the other end.",
+    "voice": "Clear mid-register male voice with a smooth telephone timbre, fluent Sinhala-English business code-switching and a courteous, efficient pace.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "A representative from a major supermarket chain is on the other end. Representative (over the phone): \"ඔයාලගේ food products අපේ branches කිහිපයකට supply කරන්න අපි කැමතියි. ඒ ගැන කතා කරන්න පුළුවන්ද?\"",
+    "wardrobe": "Pale-lavender long-sleeved business shirt, charcoal tailored trousers, black belt and black leather shoes.",
+    "appearance": "Average height, medium build, medium-brown skin, a long oval face, straight eyebrows and a clean-shaven jaw. Short straight black hair with a precise left part."
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "420704de52b5cdb6133d43c5b871c1eae7c5986594b4dec2cc9f3d9eb2d95803",
+   "entity_id": "c46427f9-ca0b-4107-8435-b7e109672472",
+   "voice_pin": "Clear mid-register male voice with a smooth telephone timbre, fluent Sinhala-English business code-switching and a courteous, efficient pace man voice (40), a Sri Lankan (Colombo) accent",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "age": {
+     "line": 0,
+     "reason": "The representative speaks with authority about supplying several supermarket branches.",
+     "source": "inferred"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "The representative's concise supermarket supply proposal uses both Sinhala and English business terms.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 0,
+     "reason": "Kasun addresses the representative as sir during the business call.",
+     "source": "inferred"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "The supermarket representative's procurement work informs ordinary Colombo corporate working dress under H-14; it remains off camera in the call.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "The supermarket representative receives a restrained corporate casting baseline, although the scripted appearance is voice-only.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "Pale-lavender long-sleeved business shirt, charcoal tailored trousers, black belt and black leather shoes",
+   "reference_assets": [],
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: representative\nSubject: one adult man\nAge: 40\nAppearance: Average height, medium build, medium-brown skin, a long oval face, straight eyebrows and a clean-shaven jaw. Short straight black hair with a precise left part\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt"
+  }
+ },
+ {
+  "id": "fec7b3fb-ed9d-4e31-be33-3bc81733fd44",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L08",
+  "name": "Kasun's small food preparation workspace",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "5e7b3df5-326c-4107-ad83-a8d0f9a03c95",
+  "created_at": "2026-11-15T10:34:47.25243+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "set",
+  "parent_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "current": {
+   "id": "5e7b3df5-326c-4107-ad83-a8d0f9a03c95",
+   "card": {
+    "age": "",
+    "look": "A cramped rectangular food-preparation room with off-white plaster walls, a grey cement floor and a small high ventilation window. Scratched stainless-steel cooking equipment, a compact hob, metal shelves and stacked food containers occupy most of the room. A small wooden table doubles as a desk, with receipts, business papers and a notebook; two plain chairs fit tightly beside it. Cool overhead tube light and a warmer desk bulb illuminate late-night interiors, with subdued grey daylight at the window in daytime.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "d74fdad52b996db708a301c473443097e9322e8e09021cf77979a0ed148267be",
+   "entity_id": "fec7b3fb-ed9d-4e31-be33-3bc81733fd44",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The small rented workspace explicitly contains steel cooking equipment, containers, receipts and a small table; late-night work and seated visits determine lighting and clearances.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Kasun's small food preparation workspace\nLook: A cramped rectangular food-preparation room with off-white plaster walls, a grey cement floor and a small high ventilation window. Scratched stainless-steel cooking equipment, a compact hob, metal shelves and stacked food containers occupy most of the room. A small wooden table doubles as a desk, with receipts, business papers and a notebook; two plain chairs fit tightly beside it. Cool overhead tube light and a warmer desk bulb illuminate late-night interiors, with subdued grey daylight at the window in daytime"
+  }
+ },
+ {
+  "id": "cd12dbb6-b350-4a00-bc7a-19b730fb19b9",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L09",
+  "name": "bank",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "82acf6e1-ac93-4e5c-9e84-f563c1944256",
+  "created_at": "2026-11-15T10:34:47.4491+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "set",
+  "parent_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "current": {
+   "id": "82acf6e1-ac93-4e5c-9e84-f563c1944256",
+   "card": {
+    "age": "",
+    "look": "A modest contemporary Colombo bank branch interior with pale-grey floor tiles, cream walls, a glass-fronted entrance and a laminate consultation desk opposite two visitor chairs. Frosted glass partitions, orderly paper trays and restrained Sinhala, Tamil and English service notices; cool white ceiling panels balanced by diffuse daytime window light.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "He visits a bank and discusses a business loan. He sits with a potential investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required support.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "43474f267395d3c3956f8f915a822134fcdf4fbe28e26927e935998db7c48b4a",
+   "entity_id": "cd12dbb6-b350-4a00-bc7a-19b730fb19b9",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The in-person business-loan discussion requires a realistic local branch consultation area.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: bank\nLook: A modest contemporary Colombo bank branch interior with pale-grey floor tiles, cream walls, a glass-fronted entrance and a laminate consultation desk opposite two visitor chairs. Frosted glass partitions, orderly paper trays and restrained Sinhala, Tamil and English service notices; cool white ceiling panels balanced by diffuse daytime window light"
+  }
+ },
+ {
+  "id": "c5a4188c-0a82-45de-b943-8bc8039c92a4",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P02",
+  "name": "tea",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "8a43335a-cc2b-417c-be38-cdee9515985b",
+  "created_at": "2026-11-15T10:34:48.052041+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "8a43335a-cc2b-417c-be38-cdee9515985b",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "Hot caramel-brown Sri Lankan milk tea with a thin creamy surface and a faint rising wisp of steam.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "6fd6d849d166b0ec4ad60c83ac0b3dfa463b6b599e847ae89c4e43902e837fab",
+   "entity_id": "c5a4188c-0a82-45de-b943-8bc8039c92a4",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "Morning roadside service and Anudi's regular favourite tea inform a consistent local milk-tea preparation.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: tea\nDetails: Hot caramel-brown Sri Lankan milk tea with a thin creamy surface and a faint rising wisp of steam"
+  }
+ },
+ {
+  "id": "56315d5f-37ab-41a2-873a-6c05611bdf88",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L02",
+  "name": "Colombo roadside",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-15T17:55:15.31104+00:00",
+  "current_version_id": "35edfaf0-5b4c-43fe-82f6-04c778546a9b",
+  "created_at": "2026-11-15T10:34:45.943436+00:00",
+  "updated_at": "2026-11-15T17:55:17.734855+00:00",
+  "class": "set",
+  "parent_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "current": {
+   "id": "35edfaf0-5b4c-43fe-82f6-04c778546a9b",
+   "card": {
+    "age": "",
+    "look": "An urban Colombo roadside with patched dark asphalt, a narrow concrete pavement, open kerb drainage and weathered low-rise commercial frontages beside a modest concrete building. Concrete boundary walls, utility poles and overhead cables frame a compact vending bay. Muted grey, dusty beige and leaf-green surfaces; soft early-morning daylight, rain-wet pavement and subdued amber evening shop light.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "77e21a9e96bb382e0f0d10a86a02409461a481568cd640a7e9661401e450b648",
+   "entity_id": "56315d5f-37ab-41a2-873a-6c05611bdf88",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The roadside vending, nearby building destination, rain and repeated evening visits establish the layout and lighting.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/56315d5f-37ab-41a2-873a-6c05611bdf88/35edfaf0-5b4c-43fe-82f6-04c778546a9b-5c012c92.png",
+     "job_id": "5c012c92-2e25-4957-af42-fbb8f6ebbb2b",
+     "version": 2,
+     "created_at": "2026-11-15T17:54:10.585061+00:00"
+    }
+   ],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Colombo roadside\nLook: An urban Colombo roadside with patched dark asphalt, a narrow concrete pavement, open kerb drainage and weathered low-rise commercial frontages beside a modest concrete building. Concrete boundary walls, utility poles and overhead cables frame a compact vending bay. Muted grey, dusty beige and leaf-green surfaces; soft early-morning daylight, rain-wet pavement and subdued amber evening shop light"
+  }
+ },
+ {
+  "id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L01",
+  "name": "Colombo, Sri Lanka",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "b01c8cfd-409d-4124-807c-d374edf2f464",
+  "created_at": "2026-11-15T10:34:45.726848+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "region",
+  "parent_id": null,
+  "current": {
+   "id": "b01c8cfd-409d-4124-807c-d374edf2f464",
+   "card": {
+    "age": "",
+    "look": "Contemporary tropical Colombo in naturalistic concrete greys, dusty earth tones and leafy greens, with humid soft daylight, rain-darkened surfaces and warm evening practical light.",
+    "notes": "details: The city is waking up.",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "1c18d357d0222101fc81fe3418d015cadc437875c4b6b391c01e4d28acf71526",
+   "entity_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The modern Colombo setting, rain, morning and evening scenes, and natural-light direction establish this regional palette.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Colombo, Sri Lanka\nLook: Contemporary tropical Colombo in naturalistic concrete greys, dusty earth tones and leafy greens, with humid soft daylight, rain-darkened surfaces and warm evening practical light"
+  }
+ },
+ {
+  "id": "2e0005ef-b158-4c6a-b75f-9dc49f1fd9cc",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P07",
+  "name": "phone",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-23T17:13:19.455781+00:00",
+  "current_version_id": "e1dc3160-7162-48f1-b506-2858374c76fe",
+  "created_at": "2026-11-15T10:34:49.145051+00:00",
+  "updated_at": "2026-11-23T17:13:24.038474+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "e1dc3160-7162-48f1-b506-2858374c76fe",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "iPhone 17 pro max - orange with transparent back cover. back view and front view. ",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "user",
+   "version": 4,
+   "card_hash": "2d3e49d87d459866917e8d6c3fd8da2fa97305f5e69f63d434093ff05398c007",
+   "entity_id": "2e0005ef-b158-4c6a-b75f-9dc49f1fd9cc",
+   "voice_pin": "",
+   "created_at": "2026-11-23T17:12:21.844946+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {},
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2e0005ef-b158-4c6a-b75f-9dc49f1fd9cc/e1dc3160-7162-48f1-b506-2858374c76fe-00c91146.png",
+     "job_id": "00c91146-a507-4291-a9c0-29195b2f85f1",
+     "version": 4,
+     "created_at": "2026-11-23T17:12:33.768565+00:00"
+    }
+   ],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: phone\nDetails: iPhone 17 pro max - orange with transparent back cover. back view and front view"
+  }
+ },
+ {
+  "id": "92eb59ef-6fe0-407a-a36d-49e54a5072a4",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P10",
+  "name": "envelope",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "ff55ca57-4565-47df-bee4-93a39948a3f5",
+  "created_at": "2026-11-15T10:34:49.729827+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "ff55ca57-4565-47df-bee4-93a39948a3f5",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A clean cream paper business envelope, approximately twenty-two by eleven centimetres, unmarked on the visible face, with a plain fold-over flap and a slight central crease.",
+    "summary": "He takes an envelope from his bag and places it on the table. Kasun looks at it. Father: \"මේකේ රුපියල් මිලියන දෙකක් තියෙනවා.\" Kasun looks surprised. He opens the envelope and sees the cheque.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "b15c4ab654a0e6556e4f379cbde6dc848113d2cf807004425dbbb07f26390d2b",
+   "entity_id": "92eb59ef-6fe0-407a-a36d-49e54a5072a4",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "Father brings a cheque inside an envelope that can be placed flat and opened at the small table.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: envelope\nDetails: A clean cream paper business envelope, approximately twenty-two by eleven centimetres, unmarked on the visible face, with a plain fold-over flap and a slight central crease"
+  }
+ },
+ {
+  "id": "4dd33579-13a3-4d84-a65a-7127b3a32cee",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P13",
+  "name": "restaurant sign",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "84507c98-de97-4715-9bff-3328317d3e2e",
+  "created_at": "2026-11-15T10:34:50.396804+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "84507c98-de97-4715-9bff-3328317d3e2e",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "KASUN'S — SRI LANKAN FOOD & COFFEE",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "626b60b6ca1db6a4c814e38b1e3285c03845dcff3a5aea27277810489ece3bd0",
+   "entity_id": "4dd33579-13a3-4d84-a65a-7127b3a32cee",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 255,
+     "reason": "",
+     "source": "script"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: restaurant sign\nDetails: KASUN'S — SRI LANKAN FOOD & COFFEE"
+  }
+ },
+ {
+  "id": "3b89a659-c6cd-4423-b821-985a0734fdab",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P01",
+  "name": "flask",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "02508461-2e9b-4c64-8400-4af4d318b763",
+  "created_at": "2026-11-15T10:34:47.84918+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "02508461-2e9b-4c64-8400-4af4d318b763",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A scuffed two-litre stainless-steel vacuum flask with a dark-brown plastic handle, screw lid and narrow pouring spout; dull silver body with shallow dents.",
+    "summary": "Kasun prepares his small three-wheeler food business. He arranges short eats, fills his tea flask and cleans his small counter.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "a91d7bf486ec795bfa0ba9fd2a61199678b4ee1b874945235eb597f00a6447a3",
+   "entity_id": "3b89a659-c6cd-4423-b821-985a0734fdab",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The repeatedly used tea flask belongs to the three-wheeler's explicitly old, limited equipment.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: flask\nDetails: A scuffed two-litre stainless-steel vacuum flask with a dark-brown plastic handle, screw lid and narrow pouring spout; dull silver body with shallow dents"
+  }
+ },
+ {
+  "id": "9960ffb0-3241-487f-b3de-acd0b11223e3",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P09",
+  "name": "photograph",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "0a64267d-dc27-446f-91f0-ab2ffdca353b",
+  "created_at": "2026-11-15T10:34:49.538931+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "0a64267d-dc27-446f-91f0-ab2ffdca353b",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A glossy fifteen-by-ten-centimetre colour photograph of Anudi and Kasun standing close together and smiling, with a softly blurred roadside background; a narrow white border and gently handled edges.",
+    "summary": "She looks at a photograph of herself and Kasun.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "fdb795040ddc63a47ef1060d3adde674a406d7d4b80c5099f0e32eb2ca39e7db",
+   "entity_id": "9960ffb0-3241-487f-b3de-acd0b11223e3",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The script specifies a photograph of Anudi and Kasun; their recurring roadside meetings inform the background and informal composition.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: photograph\nDetails: A glossy fifteen-by-ten-centimetre colour photograph of Anudi and Kasun standing close together and smiling, with a softly blurred roadside background; a narrow white border and gently handled edges"
+  }
+ },
+ {
+  "id": "8beb7d4d-e8cf-43d4-9609-fde10800fa50",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P15",
+  "name": "pen",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "89943311-8b86-409f-826c-d81e61a26992",
+  "created_at": "2026-11-15T10:34:50.752661+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "89943311-8b86-409f-826c-d81e61a26992",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "An inexpensive blue plastic ballpoint pen with a translucent barrel, blue cap and a slightly worn pocket clip.",
+    "summary": "Pen: Kasun records figures and later works through expansion costs in his notebook.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "53066f3b5f97780c6f376d814a6423c74bd200901d41a23bc56978820cc2d398",
+   "entity_id": "8beb7d4d-e8cf-43d4-9609-fde10800fa50",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "Kasun's handwritten notebook figures require a practical writing instrument, as identified in the breakdown.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: pen\nDetails: An inexpensive blue plastic ballpoint pen with a translucent barrel, blue cap and a slightly worn pocket clip"
+  }
+ },
+ {
+  "id": "b473fab6-7916-4cb3-b2cc-bd3a53a21522",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L03",
+  "name": "Food three-wheeler",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-15T17:55:23.072379+00:00",
+  "current_version_id": "e0226e09-c528-4cea-82c5-f65dc4ccb44e",
+  "created_at": "2026-11-15T10:34:46.146108+00:00",
+  "updated_at": "2026-11-15T17:55:25.487656+00:00",
+  "class": "vehicle",
+  "parent_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "current": {
+   "id": "e0226e09-c528-4cea-82c5-f65dc4ccb44e",
+   "card": {
+    "age": "",
+    "look": "A compact older maroon three-wheeler with a black vinyl roof, small front cab and rear compartment converted into a roadside food counter. A hinged side hatch shelters a narrow scratched stainless-steel serving ledge, shallow food trays and a scuffed insulated tea flask. Faded paint, small dents and neatly maintained fittings; dark-brown trim and worn silver metal under soft morning light or warm evening shop spill.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "7908a8ca740d820a66a74b697bea78d80ebe66e0fed218663f817003a2008377",
+   "entity_id": "b473fab6-7916-4cb3-b2cc-bd3a53a21522",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The small food business, limited space, old equipment and vehicle continuity notes inform one fixed modest conversion and colour scheme.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/b473fab6-7916-4cb3-b2cc-bd3a53a21522/e0226e09-c528-4cea-82c5-f65dc4ccb44e-6da15efd.png",
+     "job_id": "6da15efd-c67b-4f02-bae1-d469741579b7",
+     "version": 2,
+     "created_at": "2026-11-15T17:54:10.446978+00:00"
+    }
+   ],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Food three-wheeler\nLook: A compact older maroon three-wheeler with a black vinyl roof, small front cab and rear compartment converted into a roadside food counter. A hinged side hatch shelters a narrow scratched stainless-steel serving ledge, shallow food trays and a scuffed insulated tea flask. Faded paint, small dents and neatly maintained fittings; dark-brown trim and worn silver metal under soft morning light or warm evening shop spill"
+  }
+ },
+ {
+  "id": "346fc805-532b-4bf3-8c28-945509850728",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P03",
+  "name": "short eats",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "2a9919ae-7f38-4ade-bcf6-c8a6845f6d71",
+  "created_at": "2026-11-15T10:34:48.350418+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "2a9919ae-7f38-4ade-bcf6-c8a6845f6d71",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "Small golden-brown triangular vegetable pastries, oval breaded rolls and round cutlets, arranged in compact rows with crisp, slightly uneven surfaces.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "6a4c64fae5770052690a1beabaf2634ad4b7b9e2265bc28e4eae7cf28f5c1c03",
+   "entity_id": "346fc805-532b-4bf3-8c28-945509850728",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The Colombo short-eats business calls for recognisable locally sold savouries in a modest display.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: short eats\nDetails: Small golden-brown triangular vegetable pastries, oval breaded rolls and round cutlets, arranged in compact rows with crisp, slightly uneven surfaces"
+  }
+ },
+ {
+  "id": "57560783-c183-4253-b27a-2eb76ce2a25a",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L04",
+  "name": "Family car",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-15T17:58:21.333699+00:00",
+  "current_version_id": "3fa15088-52c3-4319-a70a-609abf721177",
+  "created_at": "2026-11-15T10:34:46.38973+00:00",
+  "updated_at": "2026-11-15T17:58:23.766606+00:00",
+  "class": "vehicle",
+  "parent_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "current": {
+   "id": "3fa15088-52c3-4319-a70a-609abf721177",
+   "card": {
+    "age": "",
+    "look": "BMW 520d. 2019 version,  A well-kept pearl-silver midsize four-door sedan with a roomy beige fabric rear bench, charcoal dashboard, right-hand-drive steering wheel, black floor mats and lightly tinted windows. Clean upholstery and restrained fittings; soft morning daylight through rain-speckled glass and muted evening reflections.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "user",
+   "version": 3,
+   "card_hash": "ae881e8c18bfcf917984602aa6731aab5bcd18c061f2167ae3b0f51a609bc5f6",
+   "entity_id": "57560783-c183-4253-b27a-2eb76ce2a25a",
+   "voice_pin": "",
+   "created_at": "2026-11-15T17:57:25.676842+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {},
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/57560783-c183-4253-b27a-2eb76ce2a25a/3fa15088-52c3-4319-a70a-609abf721177-35ef5d80.png",
+     "job_id": "35ef5d80-021e-4b48-9bcc-05cd91b092df",
+     "version": 3,
+     "created_at": "2026-11-15T17:57:40.689722+00:00"
+    }
+   ],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Family car\nLook: BMW 520d. 2019 version, A well-kept pearl-silver midsize four-door sedan with a roomy beige fabric rear bench, charcoal dashboard, right-hand-drive steering wheel, black floor mats and lightly tinted windows. Clean upholstery and restrained fittings; soft morning daylight through rain-speckled glass and muted evening reflections"
+  }
+ },
+ {
+  "id": "f54a1c98-96e7-43e3-94b5-3e7802a7a62c",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P11",
+  "name": "bag",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-23T14:05:50.539316+00:00",
+  "current_version_id": "7b05c1fc-8c20-4bd2-89fc-3e5f735b7ce7",
+  "created_at": "2026-11-15T10:34:49.949277+00:00",
+  "updated_at": "2026-11-23T14:05:55.226614+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "7b05c1fc-8c20-4bd2-89fc-3e5f735b7ce7",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A structured dark-brown leather document bag, approximately forty centimetres wide, with short handles, a zip closure, restrained brass-coloured fittings and a smooth well-kept finish.",
+    "summary": "He takes an envelope from his bag and places it on the table.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "656d42935d0e037eb2466eae6700bc489efb659e48ed25f5fb3685ae3ab090f5",
+   "entity_id": "f54a1c98-96e7-43e3-94b5-3e7802a7a62c",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "Father's formal visit and extraction of a cheque envelope inform a compact document-carrying bag.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/f54a1c98-96e7-43e3-94b5-3e7802a7a62c/7b05c1fc-8c20-4bd2-89fc-3e5f735b7ce7-ac1c92f9.png",
+     "job_id": "ac1c92f9-823c-45a5-bd23-f031462abe33",
+     "version": 2,
+     "created_at": "2026-11-23T14:05:16.010349+00:00"
+    }
+   ],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: bag\nDetails: A structured dark-brown leather document bag, approximately forty centimetres wide, with short handles, a zip closure, restrained brass-coloured fittings and a smooth well-kept finish"
+  }
+ },
+ {
+  "id": "399d6e3e-fa62-4a80-b277-eb0868db2970",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P05",
+  "name": "food containers",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "5170db45-5d50-498c-ab55-3d5fb79f5477",
+  "created_at": "2026-11-15T10:34:48.736785+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "5170db45-5d50-498c-ab55-3d5fb79f5477",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A matching assortment of shallow rectangular stainless-steel food containers, approximately twenty to thirty centimetres wide, with close-fitting lids, rolled rims and fine surface scratches.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "21e80d3e0a57ea06d361263a3687698c91d2d262aef2b2e003f548d1a0915e5f",
+   "entity_id": "399d6e3e-fa62-4a80-b277-eb0868db2970",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "Food arrangement at the three-wheeler and preparation for shop supply call for durable reusable catering containers.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: food containers\nDetails: A matching assortment of shallow rectangular stainless-steel food containers, approximately twenty to thirty centimetres wide, with close-fitting lids, rolled rims and fine surface scratches"
+  }
+ },
+ {
+  "id": "be9021f5-9fee-4f74-9f3f-8cc892ae3956",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P06",
+  "name": "notebook",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "e4de0783-607e-447b-8ddd-ab6640532550",
+  "created_at": "2026-11-15T10:34:48.927644+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "e4de0783-607e-447b-8ddd-ab6640532550",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "An A5 ruled notebook with a faded dark-blue card cover, softened corners and densely handwritten blue-ink columns of quantities, expenses and totals in Sinhala and Arabic numerals.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "28772e481dacd81cd42436d9cb9c4c896441e4e560b5946ca430e895e67c4428",
+   "entity_id": "be9021f5-9fee-4f74-9f3f-8cc892ae3956",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "Kasun writes figures and repeatedly calculates expansion costs in a working notebook.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: notebook\nDetails: An A5 ruled notebook with a faded dark-blue card cover, softened corners and densely handwritten blue-ink columns of quantities, expenses and totals in Sinhala and Arabic numerals"
+  }
+ },
+ {
+  "id": "eefd10ee-fcac-4de5-8e9d-08f2f40874f3",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P12",
+  "name": "cheque",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "2af83199-dfaf-419e-9588-49e751a798d8",
+  "created_at": "2026-11-15T10:34:50.126703+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "2af83199-dfaf-419e-9588-49e751a798d8",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A clean pale-blue rectangular bank cheque, approximately twenty by nine centimetres, with fine security patterning, printed banking fields, blue-ink handwriting and an amount box reading \"2,000,000.00\".",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "f88dc6217141d31bd01df874bd9261f8a35961bf16b8c8fbbf7c431cb3c525cc",
+   "entity_id": "eefd10ee-fcac-4de5-8e9d-08f2f40874f3",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The cheque inside Father's envelope represents the explicitly stated two-million-rupee offer; colour, dimensions and numeral layout are design choices.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: cheque\nDetails: A clean pale-blue rectangular bank cheque, approximately twenty by nine centimetres, with fine security patterning, printed banking fields, blue-ink handwriting and an amount box reading \"2,000,000.00\""
+  }
+ },
+ {
+  "id": "812b71ad-7d58-43fe-8e3d-6b7aa8eb5988",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L05",
+  "name": "Anudi's family home",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "b745a0d4-9208-40bc-92d2-685e436c6348",
+  "created_at": "2026-11-15T10:34:46.571703+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "set",
+  "parent_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "current": {
+   "id": "b745a0d4-9208-40bc-92d2-685e436c6348",
+   "card": {
+    "age": "",
+    "look": "A spacious contemporary Colombo house interior with cream plaster walls, polished pale-beige tiled floors, dark timber doorframes and broad curtained windows. Coordinated teak furniture and restrained neutral furnishings connect the sitting and sleeping rooms. Warm shaded lamps and soft ceiling lighting at night; filtered tropical daylight through cream curtains.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "0b31cd9d1cde85bffb6c8671e8bbb8d7b721f6ff6eb6160cd2221ba3fafea31a",
+   "entity_id": "812b71ad-7d58-43fe-8e3d-6b7aa8eb5988",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The comfortable family circumstances and scenes in the living room and bedroom inform a cohesive, well-maintained urban home.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Anudi's family home\nLook: A spacious contemporary Colombo house interior with cream plaster walls, polished pale-beige tiled floors, dark timber doorframes and broad curtained windows. Coordinated teak furniture and restrained neutral furnishings connect the sitting and sleeping rooms. Warm shaded lamps and soft ceiling lighting at night; filtered tropical daylight through cream curtains"
+  }
+ },
+ {
+  "id": "6ee9965b-5450-49aa-9f04-6bb262fec764",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L10",
+  "name": "KASUN'S Restaurant",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "ad413a32-ecba-47f4-983d-f1c930c49fdd",
+  "created_at": "2026-11-15T10:34:47.656372+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "set",
+  "parent_id": "247db956-d947-4d5a-9d8b-d0ccd49fd636",
+  "current": {
+   "id": "ad413a32-ecba-47f4-983d-f1c930c49fdd",
+   "card": {
+    "age": "",
+    "look": "A modest-sized modern Sri Lankan restaurant with an open glazed entrance, a broad signboard above it and a clear view into the dining room. Honey-toned wooden tables, dark-brown chairs, woven cane pendant shades, terracotta accents and restrained timber lattice panels surround a polished stainless-steel food counter. Maroon trim repeats across the counter and entrance. Warm interior lighting mixes with natural daytime light on cream walls and pale floor tiles.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "abd7035829c5e651b38ae87e18ebc4c9517661e887c3778cafad68fce6acaade",
+   "entity_id": "6ee9965b-5450-49aa-9f04-6bb262fec764",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The script specifies a modern welcoming restaurant, warm lighting, wooden tables and Sri Lankan design; maroon and steel carry forward the original food three-wheeler's visual identity.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: KASUN'S Restaurant\nLook: A modest-sized modern Sri Lankan restaurant with an open glazed entrance, a broad signboard above it and a clear view into the dining room. Honey-toned wooden tables, dark-brown chairs, woven cane pendant shades, terracotta accents and restrained timber lattice panels surround a polished stainless-steel food counter. Maroon trim repeats across the counter and entrance. Warm interior lighting mixes with natural daytime light on cream walls and pale floor tiles"
+  }
+ },
+ {
+  "id": "93a92ae2-17ec-42e2-9146-ca6e1d18f3a7",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P08",
+  "name": "business documents",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "d3006738-ff1b-4521-be16-63f8cfc66553",
+  "created_at": "2026-11-15T10:34:49.351047+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "d3006738-ff1b-4521-be16-63f8cfc66553",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A small stack of slightly curled white A4 business papers with black printed order tables, receipts and blue-ink handwritten calculations, held together with a plain metal paper clip.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "149581c5b7b4e06dd103947f78e9f152706f499b5f4e8e4a85a371ff06357bda",
+   "entity_id": "93a92ae2-17ec-42e2-9146-ca6e1d18f3a7",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The supermarket order, business documents and repeatedly reviewed calculations establish modest working paperwork rather than a polished presentation pack.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: business documents\nDetails: A small stack of slightly curled white A4 business papers with black printed order tables, receipts and blue-ink handwritten calculations, held together with a plain metal paper clip"
+  }
+ },
+ {
+  "id": "7b6ce28f-6790-4ace-b1c0-a1f01d159e6d",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P14",
+  "name": "tea cup",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "cd747b73-efb6-4f02-ae61-72645dcd4492",
+  "created_at": "2026-11-15T10:34:50.564749+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "cd747b73-efb6-4f02-ae61-72645dcd4492",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A small clear thick-walled tea glass, approximately nine centimetres tall, with a slightly flared rim, heavy circular base and faint surface scratches.",
+    "summary": "Tea cup: Serving the ordered tea requires a drinking vessel; show it during the handover.",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "b01e6608f2b70d13368706d647858fe1872855f3ef883fa419cdd99e54ec7cda",
+   "entity_id": "7b6ce28f-6790-4ace-b1c0-a1f01d159e6d",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The breakdown requires a visible drinking vessel for the morning tea handover; a sturdy glass suits a modest Colombo roadside stall.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: tea cup\nDetails: A small clear thick-walled tea glass, approximately nine centimetres tall, with a slightly flared rim, heavy circular base and faint surface scratches"
+  }
+ },
+ {
+  "id": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "character",
+  "code": "C01",
+  "name": "Kasun",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-15T17:53:45.771477+00:00",
+  "current_version_id": "cc610a95-c3f6-4f20-b504-20c8fb162a0c",
+  "created_at": "2026-11-15T10:34:44.020423+00:00",
+  "updated_at": "2026-11-15T17:53:48.18404+00:00",
+  "class": null,
+  "parent_id": null,
+  "current": {
+   "id": "cc610a95-c3f6-4f20-b504-20c8fb162a0c",
+   "card": {
+    "age": "28",
+    "look": "",
+    "notes": "",
+    "voice": "Warm mid-low Sinhala voice with a slightly textured edge; conversational, quick and friendly with customers, softer with Anudi, measured and respectful in formal exchanges.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "",
+    "wardrobe": "Faded teal short-sleeved cotton shirt, charcoal trousers, plain dark sandals and a clean dark-brown waist apron at the food counter; the shirt and trousers are worn but carefully washed.",
+    "appearance": "Medium height, lean wiry build, deep warm-brown skin, a narrow oval face with pronounced cheekbones, dark-brown eyes and a small rounded chin. Short black wavy hair with close-cut sides and a consistent side sweep; neat short stubble and a faint moustache."
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "9acd824cd3fe6e187e2f8e1b661ef0b8f5f3fc2de97b04c8ecc0fa3c44c5da16",
+   "entity_id": "2a0c6095-28fe-4a8d-ab78-58272c84ff0f",
+   "voice_pin": "Warm mid-low Sinhala voice with a slightly textured edge; conversational, quick and friendly with customers, softer with Anudi, measured and respectful in formal exchanges man voice (28), a Sri Lankan (Colombo) accent",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "age": {
+     "line": 0,
+     "reason": "Kasun is a young independent business owner building his livelihood and considering a shared future with Anudi.",
+     "source": "inferred"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Kasun's customer service, affectionate exchanges and respectful refusal establish a warm but increasingly steady delivery.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 119,
+     "reason": "",
+     "source": "script"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Kasun's small Colombo food business calls for practical vendor workwear under H-14; the production's gradual polishing and final smart-casual direction take precedence over retaining this early workwear throughout.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Kasun's hands-on food business informs his lean physicality; the continuity notes require fixed facial features, hair and body type.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "Faded teal short-sleeved cotton shirt, charcoal trousers, plain dark sandals and a clean dark-brown waist apron at the food counter; the shirt and trousers are worn but carefully washed",
+   "reference_assets": [
+    {
+     "kind": "face",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/cc610a95-c3f6-4f20-b504-20c8fb162a0c-face-621eab5f.png",
+     "job_id": "621eab5f-3c89-4911-8147-041f991d7567",
+     "version": 2,
+     "created_at": "2026-11-15T18:05:54.323046+00:00"
+    },
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/2a0c6095-28fe-4a8d-ab78-58272c84ff0f/cc610a95-c3f6-4f20-b504-20c8fb162a0c-96049cbe.png",
+     "job_id": "96049cbe-0e0c-4943-b962-848dc2b401d0",
+     "version": 2,
+     "created_at": "2026-11-15T17:51:10.668804+00:00"
+    }
+   ],
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Kasun\nSubject: one adult man\nAge: 28\nAppearance: Medium height, lean wiry build, deep warm-brown skin, a narrow oval face with pronounced cheekbones, dark-brown eyes and a small rounded chin. Short black wavy hair with close-cut sides and a consistent side sweep; neat short stubble and a faint moustache\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt"
+  }
+ },
+ {
+  "id": "5ce500bd-28ee-414e-94fa-0e69fb1f7789",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "prop",
+  "code": "P04",
+  "name": "handbag",
+  "aliases": [
+   "hand bag"
+  ],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-23T14:05:44.616788+00:00",
+  "current_version_id": "d06182c2-ddb5-4fda-8530-56b6060692d6",
+  "created_at": "2026-11-15T10:34:48.545906+00:00",
+  "updated_at": "2026-11-23T14:05:49.300373+00:00",
+  "class": "prop",
+  "parent_id": null,
+  "current": {
+   "id": "d06182c2-ddb5-4fda-8530-56b6060692d6",
+   "card": {
+    "age": "",
+    "look": "",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "A medium tan faux-leather handbag with two short handles, a shoulder strap, brass-coloured fittings and an open exterior side pocket wide enough for a smartphone.",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "c0e64ba915de09ea9e8457cb7182becca61fb7bfb77ec5a842daf7eeaa84d6fb",
+   "entity_id": "5ce500bd-28ee-414e-94fa-0e69fb1f7789",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "details": {
+     "line": 0,
+     "reason": "The supplied lines identify Anudi's handbag and its functional side pocket despite the incomplete breakdown label.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/5ce500bd-28ee-414e-94fa-0e69fb1f7789/d06182c2-ddb5-4fda-8530-56b6060692d6-0a040655.png",
+     "job_id": "0a040655-8259-4cad-be64-dc2d65dbb077",
+     "version": 2,
+     "created_at": "2026-11-23T14:05:29.383031+00:00"
+    }
+   ],
+   "reference_prompt": "Prop reference sheet for a Sri Lankan television drama. Photorealistic, the object alone on a neutral background, two angles, soft even light, no text, no logos.\nAspect ratio 9:16.\nProp: and\nDetails: A medium tan faux-leather handbag with two short handles, a shoulder strap, brass-coloured fittings and an open exterior side pocket wide enough for a smartphone"
+  }
+ },
+ {
+  "id": "b3b533b8-e5e5-4bff-91e3-65963c29b8d7",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "character",
+  "code": "C07",
+  "name": "potential investor",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "d96566c0-5a2b-4857-a709-9565cc5b7d43",
+  "created_at": "2026-11-15T10:34:45.514783+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": null,
+  "parent_id": null,
+  "current": {
+   "id": "d96566c0-5a2b-4857-a709-9565cc5b7d43",
+   "card": {
+    "age": "44",
+    "look": "",
+    "notes": "",
+    "voice": "Low clear Sinhala voice with deliberate pacing, precise consonants and brief, matter-of-fact English business terms.",
+    "accent": "",
+    "gender": "woman",
+    "details": "",
+    "summary": "He sits with a potential investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required support. The investor doesn't believe the small business can handle such a large order.",
+    "wardrobe": "Muted olive linen blouse, dark-charcoal straight-leg trousers, black low-heeled pumps and small silver earrings.",
+    "appearance": "Tall, medium solid build, deep-brown skin, an angular diamond-shaped face, narrow dark-brown eyes and a prominent straight nose. Chin-length straight black bob with a blunt side part and a few silver strands at the front."
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "90d21e5a0cc415097938755a7b8bad7c9078f839a6505190424ff5ac98b1a71e",
+   "entity_id": "b3b533b8-e5e5-4bff-91e3-65963c29b8d7",
+   "voice_pin": "Low clear Sinhala voice with deliberate pacing, precise consonants and brief, matter-of-fact English business terms woman voice (44), a Sri Lankan (Colombo) accent",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "age": {
+     "line": 0,
+     "reason": "The potential investor assesses business capacity and access to substantial expansion funding.",
+     "source": "inferred"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "The potential investor's assessment of the proposed expansion informs a measured businesslike delivery.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 0,
+     "reason": "The potential investor's gender is unspecified; a woman is selected as a distinct casting choice.",
+     "source": "inferred"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "A business funding meeting in present-day Colombo informs understated professional clothing under H-14.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "The potential investor's evaluative role informs a composed presence visibly distinct from Anudi.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "Muted olive linen blouse, dark-charcoal straight-leg trousers, black low-heeled pumps and small silver earrings",
+   "reference_assets": [],
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: potential investor\nSubject: one adult woman\nAge: 44\nAppearance: Tall, medium solid build, deep-brown skin, an angular diamond-shaped face, narrow dark-brown eyes and a prominent straight nose. Chin-length straight black bob with a blunt side part and a few silver strands at the front\nOutfit in every panel: a plain solid-color fitted sports bra and fitted gym shorts, navy"
+  }
+ },
+ {
+  "id": "e810f809-b9ae-49ae-97cd-190a51f706e0",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L06",
+  "name": "Living room",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "3b2c0442-1ca6-4e71-80bc-7c4f4af23248",
+  "created_at": "2026-11-15T10:34:46.742511+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "spot",
+  "parent_id": "812b71ad-7d58-43fe-8e3d-6b7aa8eb5988",
+  "current": {
+   "id": "3b2c0442-1ca6-4e71-80bc-7c4f4af23248",
+   "card": {
+    "age": "",
+    "look": "A cream-upholstered sofa facing a matching armchair across a low teak coffee table, on pale tile beneath warm shaded lamps and closed cream curtains.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "f1b93733b3f283dae3aca3e005960c1602d322ef98c3269058be6aff6a10b088",
+   "entity_id": "e810f809-b9ae-49ae-97cd-190a51f706e0",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The night conversation places two seated positions opposite each other within the family's comfortable living room.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Living room\nLook: A cream-upholstered sofa facing a matching armchair across a low teak coffee table, on pale tile beneath warm shaded lamps and closed cream curtains"
+  }
+ },
+ {
+  "id": "03ceed45-fc33-49e6-93c0-e016336e9f2f",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "location",
+  "code": "L07",
+  "name": "Bedroom",
+  "aliases": [],
+  "core": false,
+  "locked": false,
+  "locked_by": null,
+  "locked_at": null,
+  "current_version_id": "0d10e9ab-3991-49cf-a23e-fe86810d0490",
+  "created_at": "2026-11-15T10:34:47.082144+00:00",
+  "updated_at": "2026-11-15T10:37:45.136408+00:00",
+  "class": "spot",
+  "parent_id": "812b71ad-7d58-43fe-8e3d-6b7aa8eb5988",
+  "current": {
+   "id": "0d10e9ab-3991-49cf-a23e-fe86810d0490",
+   "card": {
+    "age": "",
+    "look": "A quiet bedroom with a teak bed, white cotton bedding, muted dusty-rose cushions, a small bedside table and cream curtains, lit by a warm bedside lamp and soft window light.",
+    "notes": "",
+    "voice": "",
+    "accent": "",
+    "gender": "",
+    "details": "",
+    "summary": "",
+    "wardrobe": "",
+    "appearance": ""
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "541f3b52c0fcf6573d67092f98a646af231b08cc18d8051b8e6f1fcc191ac7dd",
+   "entity_id": "03ceed45-fc33-49e6-93c0-e016336e9f2f",
+   "voice_pin": "",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "look": {
+     "line": 0,
+     "reason": "The private photograph and phone scene informs a restrained personal bedroom consistent with the family home's materials.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "",
+   "reference_assets": [],
+   "reference_prompt": "Location reference plate for a Sri Lankan television drama. Photorealistic, wide establishing view at eye level, natural light, no people, no text, no logos.\nAspect ratio 9:16.\nLocation: Bedroom\nLook: A quiet bedroom with a teak bed, white cotton bedding, muted dusty-rose cushions, a small bedside table and cream curtains, lit by a warm bedside lamp and soft window light"
+  }
+ },
+ {
+  "id": "e6491510-5110-4ecb-8119-5b5e14f96498",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "character",
+  "code": "C05",
+  "name": "driver",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-15T17:56:31.193453+00:00",
+  "current_version_id": "44a8d0df-4137-45f4-89c6-aaecf5eddb65",
+  "created_at": "2026-11-15T10:34:45.049505+00:00",
+  "updated_at": "2026-11-15T17:56:33.612309+00:00",
+  "class": null,
+  "parent_id": null,
+  "current": {
+   "id": "44a8d0df-4137-45f4-89c6-aaecf5eddb65",
+   "card": {
+    "age": "46",
+    "look": "",
+    "notes": "details: The driver stops near an office building.",
+    "voice": "Soft mid-low Sinhala voice, unhurried and deferential, with brief clear responses.",
+    "accent": "",
+    "gender": "man",
+    "details": "",
+    "summary": "",
+    "wardrobe": "Plain pale-grey short-sleeved collared shirt, neatly pressed dark-navy trousers and black slip-on shoes.",
+    "appearance": "Average height, slim straight-backed build, dark-brown skin, a long rectangular face, narrow eyes and a clean-shaven chin. Short tightly curled black hair, lightly silvered at the temples."
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "0b236616975e02ed585bde35cc1aea9ccf80ff2f46f90f8fd6e34b0bb40ea3a8",
+   "entity_id": "e6491510-5110-4ecb-8119-5b5e14f96498",
+   "voice_pin": "Soft mid-low Sinhala voice, unhurried and deferential, with brief clear responses man voice (46), a Sri Lankan (Colombo) accent",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "age": {
+     "line": 0,
+     "reason": "The driver's regular responsibility for the family car informs an experienced middle-aged casting choice.",
+     "source": "inferred"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "The driver's quiet service role and response to family instructions inform a restrained vocal baseline.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 0,
+     "reason": "A male casting choice is made for the otherwise unspecified family driver.",
+     "source": "inferred"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Private family driving in modern Colombo calls for neat practical working clothes under H-14, without an invented official uniform.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "The driver's seated profile needs a clear distinction from Father's broader face and combed-back hair.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "Plain pale-grey short-sleeved collared shirt, neatly pressed dark-navy trousers and black slip-on shoes",
+   "reference_assets": [
+    {
+     "kind": "face",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/e6491510-5110-4ecb-8119-5b5e14f96498/44a8d0df-4137-45f4-89c6-aaecf5eddb65-face-44ab3d2a.png",
+     "job_id": "44ab3d2a-2c70-4ad7-b1be-4e0b5a844aea",
+     "version": 2,
+     "created_at": "2026-11-15T18:06:09.399279+00:00"
+    },
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/e6491510-5110-4ecb-8119-5b5e14f96498/44a8d0df-4137-45f4-89c6-aaecf5eddb65-cd809918.png",
+     "job_id": "cd809918-d20f-4efa-917c-2edd20b32745",
+     "version": 2,
+     "created_at": "2026-11-15T17:54:05.147000+00:00"
+    }
+   ],
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: driver\nSubject: one adult man\nAge: 46\nAppearance: Average height, slim straight-backed build, dark-brown skin, a long rectangular face, narrow eyes and a clean-shaven chin. Short tightly curled black hair, lightly silvered at the temples\nOutfit in every panel: plain solid-color gym shorts, navy, no shirt"
+  }
+ },
+ {
+  "id": "4fc68836-b389-4c0b-9127-77a236c10571",
+  "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+  "kind": "character",
+  "code": "C02",
+  "name": "Anudi",
+  "aliases": [],
+  "core": false,
+  "locked": true,
+  "locked_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+  "locked_at": "2026-11-15T17:57:57.828336+00:00",
+  "current_version_id": "12fa0112-2810-4136-be28-6c444ea38867",
+  "created_at": "2026-11-15T10:34:44.303595+00:00",
+  "updated_at": "2026-11-15T17:58:00.25787+00:00",
+  "class": null,
+  "parent_id": null,
+  "current": {
+   "id": "12fa0112-2810-4136-be28-6c444ea38867",
+   "card": {
+    "age": "25",
+    "look": "",
+    "notes": "",
+    "voice": "Clear medium-high Sinhala voice, lightly musical and conversational, with easy English code-switching; bright teasing rhythms soften into quiet, deliberate reassurance.",
+    "accent": "",
+    "gender": "woman",
+    "details": "",
+    "summary": "",
+    "wardrobe": "Dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers, tan low-heeled closed shoes and small gold stud earrings.",
+    "appearance": "Average height, slender build, medium warm-brown skin, a heart-shaped face, wide dark-brown eyes, gently arched eyebrows and a broad, softly rounded nose shared with Father. Long thick black hair, lightly wavy, consistently side-parted and gathered into a low ponytail."
+   },
+   "source": "refine",
+   "version": 2,
+   "card_hash": "304affa2f726342e58430e5820dae0b86d87a4be7b0015a73e1af7d36dfb3c0e",
+   "entity_id": "4fc68836-b389-4c0b-9127-77a236c10571",
+   "voice_pin": "Clear medium-high Sinhala voice, lightly musical and conversational, with easy English code-switching; bright teasing rhythms soften into quiet, deliberate reassurance woman voice (25), a Sri Lankan (Colombo) accent",
+   "created_at": "2026-11-15T10:37:45.136408+00:00",
+   "created_by": "db44b34e-965f-468f-9111-6ef8d4e26ca1",
+   "provenance": {
+    "age": {
+     "line": 0,
+     "reason": "Anudi works, travels independently and faces family discussions about marriage.",
+     "source": "inferred"
+    },
+    "voice": {
+     "line": 0,
+     "reason": "Anudi's thanks, playful tea orders and supportive phone conversation establish her vocal manner.",
+     "source": "inferred"
+    },
+    "gender": {
+     "line": 32,
+     "reason": "",
+     "source": "script"
+    },
+    "wardrobe": {
+     "line": 0,
+     "reason": "Anudi's after-work visits and comfortable family circumstances inform contemporary Colombo office clothes under H-14.",
+     "source": "inferred"
+    },
+    "appearance": {
+     "line": 0,
+     "reason": "Anudi's office routine informs a tidy everyday hairstyle; a shared nose connects her visually to Father while preserving a distinct silhouette.",
+     "source": "inferred"
+    }
+   },
+   "production_id": "b89f79a3-3ce6-4123-aee5-759f35c09d69",
+   "wardrobe_anchor": "Dusty-rose three-quarter-sleeved blouse tucked into navy ankle-length tailored trousers, tan low-heeled closed shoes and small gold stud earrings",
+   "reference_assets": [
+    {
+     "kind": "face",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/4fc68836-b389-4c0b-9127-77a236c10571/12fa0112-2810-4136-be28-6c444ea38867-face-621eab5f.png",
+     "job_id": "621eab5f-3c89-4911-8147-041f991d7567",
+     "version": 2,
+     "created_at": "2026-11-15T18:06:21.850589+00:00"
+    },
+    {
+     "kind": "sheet",
+     "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/4fc68836-b389-4c0b-9127-77a236c10571/12fa0112-2810-4136-be28-6c444ea38867-9125ab23.png",
+     "job_id": "9125ab23-7a44-48ff-a07e-34a76889afe6",
+     "version": 2,
+     "created_at": "2026-11-15T17:51:10.802993+00:00"
+    }
+   ],
+   "reference_prompt": "Character reference sheet for a Sri Lankan television drama. Photorealistic, catalog-style reference photo, high resolution, sharp focus. Plain neutral grey seamless studio background, even soft studio lighting, no shadows on the background.\nLayout: a clean grid of five panels on a single image. Left three panels: full-body views of the same person cropped at the neck so no head or face is visible. Views: front, three-quarter, side. Neutral standing pose, arms relaxed at sides, empty hands, feet visible. Fourth panel: full-body back view with the head included, seen from behind, so the full hairstyle is visible (length, parting, texture, how it falls over the shoulders and back). No face visible in this panel. Right panel: a close-up portrait of the face and shoulders, smiling naturally with teeth visible, looking at the camera.\nThe same outfit, cut and color in every panel, no accessories, no jewelry. Identical skin tone, body proportions, moles or marks, and hair color, length and style in every panel. No text, no labels, no watermark, no logos, no props, no background objects, no other people, not a cartoon. Avoid: extra limbs, a different body, outfit or hairstyle between panels, a head on the front, three-quarter or side panels.\nAspect ratio 16:9.\nName: Anudi\nSubject: one adult woman\nAge: 25\nAppearance: Average height, slender build, medium warm-brown skin, a heart-shaped face, wide dark-brown eyes, gently arched eyebrows and a broad, softly rounded nose shared with Father. Long thick black hair, lightly wavy, consistently side-parted and gathered into a low ponytail\nOutfit in every panel: a plain solid-color fitted sports bra and fitted gym shorts, navy"
+  }
+ }
+]

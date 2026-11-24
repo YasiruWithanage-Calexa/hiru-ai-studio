@@ -48,7 +48,7 @@ from contracts import safe_depiction  # noqa: E402
 from hiru_ai.core.ports import Reference  # noqa: E402
 from hiru_ai.systems.frame_render import pictures as pics  # noqa: E402
 
-LAB_BUDGET_USD = 0.60  # asked of the person (2026-11-24); every call stops past it
+LAB_BUDGET_USD = 1.00  # $0.60 asked first, raised to $1.00 with the person's yes (2026-11-24)
 MODEL = "gpt-image-2"
 PRICES = (10.00, 40.00)  # USD per 1M input / output image tokens, above list on purpose (as the other board labs)
 LEDGER = HERE / "runs" / "ledger.csv"

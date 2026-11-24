@@ -1,7 +1,7 @@
 id: views_writer
 kind: agent
-version: 1
-summary: "Writes the six named views of a location's views sheet (front wide, looking left, looking right, reverse, two details) and its layout and light, so every board panel and first frame paints the same place."
+version: 2
+summary: "Answers three questions about a place (sides, moves, size) that pick one of four fixed six-view templates (outside, inside, both, vehicle), and writes its layout, its empty spaces and each view, so every board panel and first frame paints the same place."
 status: active
 owner: frame_render
 model: medium

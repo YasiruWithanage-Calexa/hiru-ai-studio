@@ -1,0 +1,41 @@
+{
+ "answers": {
+  "sides": "inside",
+  "moves": false,
+  "size": "room",
+  "why": "The canon card describes a single cramped interior food-preparation room with no exterior or vehicle elements."
+ },
+ "layout": "A cramped rectangular food-preparation room entered from a short wall; the doorway sits on the near short wall. Along the right long wall, scratched stainless-steel cooking equipment, a compact hob and metal shelving with stacked food containers occupy most of the room, pushed close to the wall. The left long wall holds a small wooden table used as a desk, two plain chairs squeezed beside it and business papers, receipts and a notebook on the table. The far short wall has a small high ventilation window near the ceiling. The floor is grey cement; off-white plaster covers the walls. A cool overhead tube light hangs centrally and a warmer desk bulb sits on the table for late-night work.",
+ "views": [
+  {
+   "slot": "Wide from the door",
+   "camera": "Standing in the doorway, looking straight into the room.",
+   "sees": "The whole cramped rectangle: to the right the stainless-steel cooking equipment and metal shelves filling most of the space, to the left the small wooden table with two tight chairs and papers, the far wall with the small high ventilation window, the grey cement floor below and the overhead tube light above."
+  },
+  {
+   "slot": "Opposite wall",
+   "camera": "Standing at the far short wall, looking back toward the door and the way in.",
+   "sees": "The doorway centered on the near short wall, the table and chairs seen at the left of frame (from this side), the strip of floor running toward the door and the underside of the overhead tube light; edges of the stainless-steel equipment are visible to the right."
+  },
+  {
+   "slot": "Left wall",
+   "camera": "Square on to the left long wall, camera mid-height and centred on the table area.",
+   "sees": "The small wooden table pressed against the left wall, two plain chairs fitted tightly beside it, a desk bulb on the table, receipts, business papers and a notebook spread across the surface, the off-white plaster wall behind and the grey floor below."
+  },
+  {
+   "slot": "Right wall",
+   "camera": "Square on to the right long wall, camera at chest height facing the cooking run.",
+   "sees": "Scratched stainless-steel cooking equipment and the compact hob front and centre, metal shelving with stacked food containers above and beside it, worn surfaces and tight clearances to the wall, with the high ventilation window visible over toward the far wall near the top of the frame."
+  },
+  {
+   "slot": "Detail 1",
+   "camera": "Close, low to the stainless-steel workline, focused on the hob and its immediate surround.",
+   "sees": "The compact hob's control knobs and scratched stainless-steel surface, small wear marks and a narrow working ledge beside it where utensils or containers are kept."
+  },
+  {
+   "slot": "Detail 2",
+   "camera": "Close on the wooden table surface, slightly above table level.",
+   "sees": "Receipts, business papers and a notebook spread on the table, a small desk bulb at one edge, and the two plain chairs pushed tight under or beside the table; the tabletop shows ordinary scuffs from use."
+  }
+ ]
+}

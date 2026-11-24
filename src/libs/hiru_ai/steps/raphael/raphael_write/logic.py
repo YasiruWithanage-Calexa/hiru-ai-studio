@@ -28,7 +28,7 @@ import re
 from typing import Any
 from uuid import uuid4
 
-from contracts import sceneplan
+from contracts import sceneplan, vehicles
 from contracts.frame_brief import nearest_option
 from contracts.producer import CameraField
 from contracts.raphael import state as ledger_state
@@ -516,6 +516,9 @@ def design_all(
         if hint:  # no model to call the Camera agent: the planner's hint seeds the rule camera
             entry["recommendation"] = camera_hint(clip.ir or {})
         ir, rec, why = shots_mod.finish(entry, shot_in, scene_in, prod)
+        # plan/2026-11-24b §2.2: the clip's vehicles by canon id (a name that is no vehicle card dropped), kept beside
+        # the clip schema's fields; the design's pins read the stored IR, so it goes in before them
+        ir["vehicles"] = vehicles.from_wire((clip.ir or {}).get("vehicles"), canon)
         row["ir"] = ir
         row["design"] = design.design_row(shot_in, ir, rec, why, "raphael", on_screen, job_id)
 

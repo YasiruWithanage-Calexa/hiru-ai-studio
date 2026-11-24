@@ -111,11 +111,23 @@ class PlaceS(_Model):
     objects: list[str] = []  # what the place card has: an insert may show these
 
 
+class VehicleS(_Model):
+    """A vehicle card the scene names (plan/2026-11-24b): the clips name it in `ir.vehicles` with its role."""
+
+    name: str
+    make: str = ""
+    look: str = ""
+
+
 class SceneS(_Model):
     blocks: list[BlockS]
     cast: list[str] = []  # the people PRESENT
     others: list[str] = []  # names (and nicknames) of the production's other people
     place: PlaceS = PlaceS()
+    # plan/2026-11-24b: the vehicle cards the scene names, and the spaces the place's views sheet keeps empty (where a
+    # vehicle that comes and goes stands); both [] dump as before (`scene_dump`)
+    vehicles: list[VehicleS] = []
+    empty: list[str] = []
     envelope_s: float | None = Field(None, gt=0)  # the length the script gives: the TARGET (§2.1)
     # plan/2026-11-09: the state ledger, pinned to these blocks by code (`contracts.raphael.state.attach`)
     staging: SceneStaging | None = None
@@ -161,7 +173,7 @@ def scene_dump(scene: SceneS) -> dict[str, Any]:
     """The scene as data for a hash: a scene with no ledger dumps exactly as it did before the ledger was added (its
     stored result is still current), a scene with one dumps its map too (a changed map plans again)."""
     data = scene.model_dump(mode="json")
-    for key in LEDGER_FIELDS:
+    for key in (*LEDGER_FIELDS, "vehicles", "empty"):  # plan/2026-11-24b: a scene with no vehicle hashes as before
         if not data.get(key):
             data.pop(key, None)
     if data.get("takes") == LEGACY_TAKES:  # plan/2026-11-19: 4/6/8 dumps as before, other lengths plan again
@@ -349,6 +361,10 @@ def listing(scene: SceneS) -> str:
         f"Place: {scene.place.name}" + (f" (objects: {', '.join(scene.place.objects)})" if scene.place.objects else "")
         if scene.place.name
         else "",
+        # plan/2026-11-24b: the vehicles the clips may show (`ir.vehicles`), and where the place keeps a space empty
+        "Vehicles: " + "; ".join(f"{v.name}" + (f" ({v.make})" if v.make else "") + (f": {v.look}" if v.look else "")
+                                 for v in scene.vehicles) if scene.vehicles else "",
+        f"Kept empty: {'; '.join(scene.empty)}" if scene.empty else "",
     ]
     rows: list[str] = []
     for b in sorted(scene.blocks, key=lambda x: x.index):

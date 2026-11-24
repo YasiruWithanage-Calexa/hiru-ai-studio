@@ -9,6 +9,7 @@ graph TD;
 	reference(reference)
 	look(look)
 	face(face)
+	views(views)
 	board(board)
 	__end__([<p>__end__</p>]):::last
 	__start__ -.-> board;
@@ -16,11 +17,13 @@ graph TD;
 	__start__ -.-> frames;
 	__start__ -.-> look;
 	__start__ -.-> reference;
+	__start__ -.-> views;
 	board --> __end__;
 	face --> __end__;
 	frames --> __end__;
 	look --> __end__;
 	reference --> __end__;
+	views --> __end__;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0
 	classDef last fill:#bfb6fc

@@ -87,6 +87,57 @@ When the scene's place has one, the board picture gets the sheet instead of the 
 that view, cut from the sheet, instead of the plate, and the shot prompter is told it. No gate: without views the board
 paints from the plate, and the card says "No location views yet".
 
+### Place views by type (plan/2026-11-24c, lab/place_views + lab/final_views)
+
+The sheet is made at CANON time, so it covers a place's main POSSIBLE views. The views writer first answers three
+questions (`sides` outside | inside | both, `moves`, `size`); code picks one of four fixed six-slot templates
+(`contracts.canon.VIEW_TEMPLATES`: outside = Wide, Looking left, Looking right, Reverse from ONE anchor spot + two
+details; inside = Wide from the door, Opposite wall, Left wall, Right wall + two details; both = Outside wide,
+Entrance, Inside wide, Inside reverse + two details; vehicle = Front three-quarter, Side, Rear three-quarter, Inside
+from the rear, Inside from the front, Detail). A person may set the three answers on the canon page first; theirs win.
+
+- **The writer reads** the card, its spots, the plate as a picture when there is one, the scenes set there as text, the
+  boards' geographies, the fixed places in it (`within`) and the vehicles named there (`comes_and_goes`), whose spaces
+  it lists in `empty` and keeps bare. A vehicle card's scenes are those whose words name it.
+- **Code checks** (`view_findings`): the slots are the template's in order; no quoted text or sign wording the card has
+  not; each detail names a thing from the card or a scene, and a plain table, chair or wall only when a scene uses it
+  ("on the table"); each empty space says where it is. On findings, ONE re-ask with them as a list; still failing, the
+  views are stored with the findings, shown on the canon page.
+- **The sheet** (`views_sheet_prompt`, the lab's words) is painted in soft, even, DRY light whatever the plate or the
+  scenes show (the writer's `light` is kept, never painted); no vehicle is parked in a place; a vehicle stands alone on
+  a grey covered-parking floor. A place without a plate is painted from its card's words; vehicles' plates are never
+  attached to a place's sheet. The `views` asset gains `answers`, `template`, `empty`, `findings`, and each view's
+  `camera` and `sees` (`what` = both). A built sheet stays; "Remake" makes the new kind.
+- **The board keeps each panel's view** (lab/final_views fault 1): the writer names the view its camera FACES (it reads
+  each view's `camera` and `sees`); each PANEL line says "Background view: view 4 (Reverse): <the view's first
+  sentence>"; the board inspector gets the view's words and its crop beside the panel and answers `view_match`. A
+  mismatch is repainted once with the view named; still wrong, it is a board conflict line.
+- A frame's view job adds "not its light, weather or wet ground".
+
+## Vehicles (plan/2026-11-24b, lab/vehicle_role + lab/final_views)
+
+A vehicle is a canon place of class `vehicle`. Its card has a `make` ("BMW 520d, 2019, pearl silver"), and it is named
+with it to every model. Each shot says which vehicles it shows and the ROLE of each, which can change inside one scene
+(`contracts.vehicles`):
+
+- `inside`: the vehicle IS the place of the shot; `at`: it stands in the scene's place, `where` saying where, which way
+  it faces and what it stands on (the line always ends "all its wheels on <that surface>").
+- Written by Raphael per clip (`ir.vehicles`, by name from the scene's vehicle cards; code maps names to ids, drops a
+  stranger, keeps one `inside`); report-only checks tell it of an unknown name, two `inside`, or a `where` with no
+  surface. A person changes a role on the shot screen (`PersonEdits.vehicles`, PUT/DELETE
+  `.../shots/{id}/vehicles/{vehicle}`), which wins. An older shot with no `ir.vehicles` finds a named vehicle as `at`.
+- **Board:** each vehicle's views sheet (else its plate) is attached after the place's, with the vehicle-only job; a
+  vehicle is never clay (`CLAY_NEW`); one "Vehicles (every panel):" line before Geography says panel by panel where
+  each is, with the seat-side sentence for a car a panel is inside (right-hand drive unless the card says otherwise).
+  The writer reads each vehicle's card and each shot's role. A panel inside a vehicle that has a views sheet names
+  that sheet's view.
+- **First frame:** `inside`: the vehicle's plate is THE place (its label ends ", the place of this shot"; the location
+  plate is not attached), or the inside view its panel names when the vehicle has a views sheet; `at`: the location
+  (or its view) leads and the vehicle plate follows. The brief gains the lab's place sentence or "Vehicles in this
+  shot", and the shot prompter gets each vehicle as a fact.
+- `scripts/vehicle_make.py` moves a make out of an older look into `make` (dry by default; `--apply` writes a new
+  version that keeps the plate).
+
 ## The first frame follows the board (plan/2026-11-23d part 4)
 
 **No approved board, no first frame** (D4, the person 2026-11-23): "Paint first frame" is refused (409) and its button

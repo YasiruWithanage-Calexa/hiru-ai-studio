@@ -464,6 +464,12 @@ def check(answer: Answer, bd: Breakdown, lines: list[str], ids: list[str] | None
             out.append(Finding(pl.id, "people", f"{pl.id} look names {', '.join(named)}: a place look shows no people"))
         if pl.kind in PLATED and len(words(look)) < 8:
             out.append(Finding(pl.id, "people", f"{pl.id} is a {pl.kind} but its look is too thin to paint"))
+        if pl.kind == "vehicle" and pl.parent:  # plan/2026-11-24b §2.1: a vehicle moves; it is never part of a set
+            owner = places.get(pl.parent)
+            parent_kind = owner.kind if owner else (ents[pl.parent].place_kind if pl.parent in ents else None)
+            if parent_kind in ("set", "spot", "vehicle"):
+                out.append(Finding(pl.id, "parent", f"{pl.id} is a vehicle but its parent {pl.parent!r} is a "
+                                                    f"{parent_kind}: a vehicle's parent is a region or nothing"))
         if pl.kind == "spot":
             owner = places.get(pl.parent)
             parent_kind = owner.kind if owner else (ents[pl.parent].place_kind if pl.parent in ents else None)

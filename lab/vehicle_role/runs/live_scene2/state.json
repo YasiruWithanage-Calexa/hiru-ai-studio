@@ -1,0 +1,101 @@
+{
+ "spent": 0.29992399999999997,
+ "steps": [
+  {
+   "step": "roles",
+   "at": "2026-11-24T07:40:01.082385+00:00"
+  },
+  {
+   "step": "board",
+   "board_id": "ccfec6be-0487-40c7-a7bd-76574a9a2456",
+   "version": 4,
+   "result": {
+    "status": "done",
+    "parts": 2,
+    "painted": 2,
+    "conflicts": 5
+   },
+   "seconds": 311,
+   "calls": [
+    {
+     "phase": "frame_render.board_writer",
+     "model": "gpt-6.1-sol",
+     "in": 14039,
+     "out": 8374,
+     "dollars": 0.1118
+    },
+    {
+     "phase": "frame_render.image",
+     "model": "gpt-image-2",
+     "in": 4382,
+     "out": 158,
+     "dollars": 0.0501
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 1483,
+     "out": 746,
+     "dollars": 0.0104
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 1475,
+     "out": 810,
+     "dollars": 0.011
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 1418,
+     "out": 1898,
+     "dollars": 0.0218
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 1411,
+     "out": 490,
+     "dollars": 0.0077
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 1409,
+     "out": 810,
+     "dollars": 0.0109
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 1405,
+     "out": 810,
+     "dollars": 0.0109
+    },
+    {
+     "phase": "frame_render.image",
+     "model": "gpt-image-2",
+     "in": 3695,
+     "out": 158,
+     "dollars": 0.0433
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 1953,
+     "out": 746,
+     "dollars": 0.0114
+    },
+    {
+     "phase": "frame_render.board_check",
+     "model": "gpt-5-mini-2025-08-07",
+     "in": 2154,
+     "out": 618,
+     "dollars": 0.0105
+    }
+   ],
+   "at": "2026-11-24T07:45:31.113219+00:00"
+  }
+ ]
+}

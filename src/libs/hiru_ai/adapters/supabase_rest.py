@@ -31,7 +31,9 @@ _BATCH = 200
 # Picture-sized bodies on a slow link need a long read/write; a dead host should still fail fast.
 TIMEOUT = httpx.Timeout(60.0, connect=10.0, write=120.0)
 
-CANON_FULL = ("id,kind,code,name,aliases,core,locked,current_version_id,"
+# `class` and `parent_id` (schema v23): a vehicle (plan/2026-11-24b) and a set's spots are found by them; without them
+# a job read no card as a vehicle and no spot of a place (the live check of 2026-11-24 found it)
+CANON_FULL = ("id,kind,code,name,aliases,core,locked,current_version_id,class,parent_id,"
               "current:canon_versions!canon_entities_current_version_fkey"
               "(id,version,card,card_hash,source,wardrobe_anchor,voice_pin,reference_prompt,reference_assets)")
 SCENE_WITH_EPISODE = "*,episode:episodes(number,title,synopsis)"

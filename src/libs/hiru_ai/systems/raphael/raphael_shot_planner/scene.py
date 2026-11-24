@@ -29,7 +29,9 @@ from typing import Any
 from langchain_core.messages import AIMessage
 
 from contracts import sceneplan
-from contracts.canon import props_in
+from contracts import vehicles as vh
+from contracts.canon import props_in, views_asset
+from contracts.holding import names_place
 from contracts.raphael import checks, pack
 from contracts.raphael.bin import Bin
 from contracts.raphael.money import CapReached, Meter, Unpriced, price_of
@@ -39,6 +41,7 @@ from contracts.raphael.scene import (
     Brief,
     PlaceS,
     SceneS,
+    VehicleS,
     mark_recorded,
     norm,
     plain_name,
@@ -139,6 +142,20 @@ def script_of(
         ),
         line_ids,
     )
+
+
+def vehicles_of(scene: Row, canon: list[Row], location: Row | None, blocks: list[BlockS]) -> dict[str, Any]:
+    """plan/2026-11-24b §2.2: the vehicle cards the scene names (its heading or blocks, by name or alias), with their
+    make and look, and the spaces the place's views sheet keeps empty (plan/2026-11-24c), as `SceneS` fields."""
+    text = " ".join([str(scene.get("heading") or ""), *(b.text for b in blocks)])
+    found = []
+    for row in vh.vehicle_cards(canon):
+        names = [str(row.get("name") or ""), *(str(a) for a in row.get("aliases") or [])]
+        if any(n and names_place(n, text) for n in names):
+            found.append(VehicleS(name=str(row["name"]), make=vh.make_of(row),
+                                  look=str(vh.card_of(row).get("look") or "")))
+    empty = [str(e) for e in ((views_asset(location) or {}).get("empty") or [])] if location else []
+    return {"vehicles": found, "empty": empty}
 
 
 def present(characters: list[Row], blocks: list[BlockS]) -> list[str]:

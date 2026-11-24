@@ -37,12 +37,14 @@ from contracts.canon import (
     CanonVersion,
     CanonVersionCreate,
     LocationView,
+    ViewAnswers,
     face_sheet_path,
     name_key,
     named_in,
     next_code,
     reference_sheet_prompt,
     sheet_assets,
+    view_words,
     views_asset,
     voice_pin,
     wardrobe_anchor,
@@ -201,8 +203,13 @@ def _views(row: Row) -> Row:
     return {"views_sheet_url": media_links.url("references", path),
             "views_sheet_thumb_url": media_links.thumb_url("references", path),
             "views_sheet_key": media_links.key("references", path),
-            "views": [{k: v[k] for k in ("n", "name", "what")} for v in asset.get("views") or []],
-            "views_layout": str(asset.get("layout") or ""), "views_light": str(asset.get("light") or "")}
+            "views": [{"n": v["n"], "name": v["name"], "what": view_words(v), "camera": str(v.get("camera") or ""),
+                       "sees": str(v.get("sees") or "")} for v in asset.get("views") or []],
+            "views_layout": str(asset.get("layout") or ""), "views_light": str(asset.get("light") or ""),
+            # plan/2026-11-24c
+            "views_answers": asset.get("answers") or None, "views_template": str(asset.get("template") or ""),
+            "views_empty": [str(e) for e in asset.get("empty") or []],
+            "views_findings": [str(f) for f in asset.get("findings") or []]}
 
 
 async def _get(repos: Repos, production_id: UUID, entity_id: UUID) -> Row:
@@ -470,46 +477,66 @@ async def make_reference_sheet(production_id: UUID, entity_id: UUID, access: Can
 
 
 class ViewsRequest(BaseModel):
-    """A person's six views (edited on the canon page), or none: the views writer writes them (plan/2026-11-24 Q2)."""
+    """A person's six views (edited on the canon page), or none: the views writer writes them (plan/2026-11-24 Q2).
+    `answers`: the person's three answers, set before writing (plan/2026-11-24c D1); they pick the template."""
 
     model_config = ConfigDict(extra="forbid")
 
     views: list[LocationView] | None = Field(default=None, min_length=VIEWS_COUNT, max_length=VIEWS_COUNT)
+    answers: ViewAnswers | None = None
 
 
 @router.post("/{entity_id}/views-sheet", response_model=SheetStarted, status_code=status.HTTP_202_ACCEPTED)
 async def make_views_sheet(production_id: UUID, entity_id: UUID, body: ViewsRequest, access: CanEdit,
                            repos: ReposDep) -> SheetStarted:
-    """Paint a location's views sheet (plan/2026-11-24; the person's method, lab/location_views): six named views of
-    the one place, so every board panel and first frame paints the same place. With `views` (edited by a person) they
-    are painted as given; without, the views writer writes them from the place, what stands in it and how the scenes'
-    boards laid it out."""
+    """Paint a place's views sheet (plan/2026-11-24; plan/2026-11-24c, lab/place_views): six views of the one place
+    from one of four fixed templates (outside, inside, both, vehicle), so every board panel and first frame paints the
+    same place. With `views` (edited by a person) they are painted as given; without, the views writer writes them from
+    the card, the plate when there is one, the scenes set there and how their boards laid it out. A place without a
+    plate is painted from its card's words."""
     row = await _get(repos, production_id, entity_id)
     if CanonKind(row["kind"]) is not CanonKind.LOCATION:
-        raise HTTPException(status.HTTP_409_CONFLICT, "Only a place has location views.")
-    if not _sheet_path(row.get("current")):
-        raise HTTPException(status.HTTP_409_CONFLICT, f"Paint {row['name']}'s location plate first: the views are "
-                                                      "painted from it.")
+        raise HTTPException(status.HTTP_409_CONFLICT, "Only a place or a vehicle has views.")
+    if not row.get("current"):
+        raise HTTPException(status.HTTP_409_CONFLICT, f"{row['name']} has no card yet: write its card first.")
     state: Row = {"reference_entity_id": str(entity_id), "reference_kind": "views",
                   "views_context": await _views_context(repos, production_id, row)}
+    if body.answers:
+        state["views_answers"] = body.answers.model_dump(exclude={"why"})
     if body.views:
         state["views"] = [v.model_dump(exclude={"n"}) for v in sorted(body.views, key=lambda v: v.n)]
         kept = views_asset(row) or {}
-        state["views_layout"] = {"layout": str(kept.get("layout") or ""), "light": str(kept.get("light") or "")}
+        state["views_layout"] = {"layout": str(kept.get("layout") or ""), "light": str(kept.get("light") or ""),
+                                 "empty": list(kept.get("empty") or []), "answers": kept.get("answers") or None}
     job_id = await task_manager.dispatch(JobKind.FRAME_RENDER, repos, actor_user_id=access.user.id,
                                          production_id=production_id, request={"entity_id": str(entity_id),
                                                                                "views": True},
                                          state=state)
     await repos.audit.record(action="canon.views_sheet", entity="canon_entity", entity_id=str(entity_id),
                              actor_user_id=access.user.id, production_id=production_id,
-                             diff={"job_id": str(job_id), "edited": bool(body.views)})
+                             diff={"job_id": str(job_id), "edited": bool(body.views),
+                                   "answers": bool(body.answers)})
     return SheetStarted(job_id=job_id)
 
 
+def _scene_text(scene: Row) -> str:
+    """A scene as the views writer reads it (lab/place_views `scene_text`)."""
+    lines = [str(i.get("text") or "") for i in scene.get("script") or [] if isinstance(i, dict)]
+    return f"Scene {scene.get('number')} — {scene.get('heading') or ''}: " + " ".join(lines)[:1500]
+
+
 async def _views_context(repos: Repos, production_id: UUID, row: Row) -> Row:
-    """What the views writer reads about the scenes set at this place: their headings, how their current boards laid
-    the place out, and the other places that stand in it (a canon place named in those words or scripts)."""
-    scenes = [s for s in await repos.scenes.list(production_id) if str(s.get("location_id") or "") == str(row["id"])]
+    """What the views writer reads about the scenes set at this place (plan/2026-11-24c §2.2): their text, how their
+    current boards laid the place out, the other fixed places that stand in it (`within`), and the vehicles named in
+    them, which come and go and have sheets of their own (`comes_and_goes`: their spaces are kept empty, never painted
+    in). A vehicle has no scene of its own: its scenes are the ones whose words name it."""
+    all_scenes = await repos.scenes.list(production_id)
+    vehicle = row.get("class") == "vehicle"
+    if vehicle:
+        names = [str(row["name"]), *(str(a) for a in row.get("aliases") or [])]
+        scenes = [s for s in all_scenes if any(named_in(n, _scene_text(s)) for n in names if n)]
+    else:
+        scenes = [s for s in all_scenes if str(s.get("location_id") or "") == str(row["id"])]
     geographies, said = [], []
     for s in scenes[:12]:
         current = boards_svc.current(await repos.scene_boards.list(UUID(str(s["id"]))))
@@ -519,11 +546,16 @@ async def _views_context(repos: Repos, production_id: UUID, row: Row) -> Row:
         said.append(" ".join([str(s.get("heading") or ""), geo,
                               *(str((b or {}).get("text") or "") for b in s.get("script") or [])]))
     text = " ".join(said)
-    canon = await repos.canon.list(production_id)
-    within = [str(c["id"]) for c in canon if c["kind"] == "location" and str(c["id"]) != str(row["id"])
-              and str(c.get("parent_id") or "") != str(row["id"]) and named_in(str(c["name"]), text)]
-    return {"within": within, "geographies": geographies,
-            "scenes": [f"{s.get('heading') or ''} ({s.get('time_of_day') or ''})".strip() for s in scenes[:12]]}
+    within: list[str] = []
+    comes: list[str] = []
+    if not vehicle:
+        for c in await repos.canon.list(production_id):
+            if (c["kind"] != "location" or str(c["id"]) == str(row["id"])
+                    or str(c.get("parent_id") or "") == str(row["id"]) or not named_in(str(c["name"]), text)):
+                continue
+            (comes if c.get("class") == "vehicle" else within).append(str(c["id"]))
+    return {"within": within, "comes_and_goes": comes, "geographies": geographies,
+            "scenes": [_scene_text(s) for s in scenes[:12]]}
 
 
 @router.post("/{entity_id}/face-sheet", response_model=SheetStarted, status_code=status.HTTP_202_ACCEPTED)

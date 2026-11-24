@@ -752,3 +752,37 @@ def test_a_scene_without_a_plan_is_not_designed_or_painted(world: World, fired: 
                  world.client.post(shot_url(world, s, 1, "/shot-prompt"), headers=crew)):
         assert call.status_code == 409 and call.json()["detail"].startswith("Plan this scene with Raphael first")
     assert not fired
+
+
+def test_a_person_sets_a_vehicles_role_in_a_shot(world: World):
+    """plan/2026-11-24b §2.5: the shot view lists its vehicles; a person sets one INSIDE (the vehicle is the place), at
+    a place with `where`, or out; a second INSIDE moves the first to `at`; DELETE gives Raphael's role back."""
+    from tests.api.test_canon import add_entity
+
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    car = add_entity(world, "L08", "Family car", "location")
+    tuk = add_entity(world, "L09", "Food three-wheeler", "location")
+    rows = world.repos.canon.rows  # type: ignore[attr-defined]
+    rows[car]["class"] = rows[tuk]["class"] = "vehicle"
+    v = world.client.get(shot_url(world, s, 1), headers=crew).json()
+    assert v["vehicles"] == [] and {c["name"] for c in v["vehicle_choices"]} == {"Family car", "Food three-wheeler"}
+    r = world.client.put(shot_url(world, s, 1, f"/vehicles/{car}"), json={"role": "inside"}, headers=crew)
+    assert r.status_code == 200, r.text
+    v = r.json()
+    assert v["vehicles"] == [{"id": car, "name": "Family car", "make": "", "role": "inside", "where": "",
+                              "by_person": True}]
+    car_ref = next(x for x in v["frame_references"] if x["name"] == "Family car")
+    assert car_ref["role"] == "place" and car_ref["missing"], "inside: the car is the place (no plate yet)"
+    v = world.client.put(shot_url(world, s, 1, f"/vehicles/{tuk}"), json={"role": "inside"}, headers=crew).json()
+    assert [(x["name"], x["role"]) for x in v["vehicles"]] == [("Family car", "at"), ("Food three-wheeler", "inside")]
+    v = world.client.put(shot_url(world, s, 1, f"/vehicles/{car}"), json={"role": "none"}, headers=crew).json()
+    assert [x["name"] for x in v["vehicles"]] == ["Food three-wheeler"]
+    v = world.client.delete(shot_url(world, s, 1, f"/vehicles/{tuk}"), headers=crew).json()
+    assert [x["name"] for x in v["vehicles"]] == []
+    kamala = add_entity(world)
+    assert world.client.put(shot_url(world, s, 1, f"/vehicles/{kamala}"), json={"role": "at"},
+                            headers=crew).status_code == 404
+    assert world.client.put(shot_url(world, s, 1, f"/vehicles/{car}"), json={"role": "at"},
+                            headers=world.headers(world.reviewer)).status_code == 403

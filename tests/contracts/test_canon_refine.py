@@ -169,3 +169,13 @@ def test_only_sets_vehicles_and_props_get_a_plate() -> None:
 def test_a_place_plate_never_falls_back_to_the_summary() -> None:
     text = reference_sheet_prompt(CanonKind.LOCATION, "Garage", CanonCard(summary="Nimal and Dinu argue."))
     assert "Nimal" not in text and "Look:" not in text
+
+
+def test_a_vehicles_parent_is_a_region_or_nothing(ekama: dict[str, Any]) -> None:
+    """plan/2026-11-24b §2.1: a vehicle moves, so it is never part of a set or a spot."""
+    a = _answer("run2.json")
+    owner = next(p for p in a.places if p.kind == "set")
+    car = next(p for p in a.places if p.kind != "spot" and p.id != owner.id)
+    car.kind, car.parent = "vehicle", owner.id
+    found = [f for f in cr.check(a, ekama["bd"], ekama["lines"]) if f.code == "parent" and f.id == car.id]
+    assert found and f"is a vehicle but its parent {owner.id!r} is a set" in found[0].message

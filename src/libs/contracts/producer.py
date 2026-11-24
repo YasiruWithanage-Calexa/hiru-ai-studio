@@ -33,6 +33,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_serializer, model_valid
 from contracts import camera as cam
 from contracts.canon import look_stamp, name_key
 from contracts.shotplan import Item
+from contracts.vehicles import VehicleEdit
 
 # ── camera ─────────────────────────────────────────────────────────────────────────────────
 
@@ -313,6 +314,9 @@ class PersonEdits(BaseModel):
     # Pinned with the prompts' motion only (`contracts.picture_pins.motion`): a change rewrites the video prompt and
     # keeps the drawn first frame, and it never bumps the shot's version.
     video_note: str = Field(default="", max_length=600)
+    # plan/2026-11-24b §2.2: a person's change to the shot's vehicles (role inside | at | none, where); it wins over
+    # Raphael's `ir.vehicles` (`contracts.vehicles.shot_vehicles`)
+    vehicles: list[VehicleEdit] = Field(default_factory=list)
 
     @classmethod
     def of(cls, shot: Mapping[str, Any] | None) -> PersonEdits:
@@ -337,6 +341,8 @@ class PersonEdits(BaseModel):
             out["zora_locks"] = list(self.zora_locks)
         if self.video_note:
             out["video_note"] = self.video_note
+        if self.vehicles:
+            out["vehicles"] = [v.model_dump() for v in self.vehicles]
         return out
 
 

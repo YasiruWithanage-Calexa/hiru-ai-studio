@@ -121,6 +121,12 @@ Rules:
   spots and everything that is part of the place stay real and are described for real, even a vehicle when the place
   is built around it (a food cart, a parked bus used as a shop, a boat at a jetty). Fill `props` with each prop the
   panel shows: who holds it and in which hand, or what it rests on, and its side of the picture.
+- VEHICLES ARE REAL (plan/2026-11-24b). A vehicle in `vehicles` (its name, make and look) is never a prop and never
+  clay: describe it by its make and colour as its vehicle picture and card show it, never a colour or model of your
+  own. Each shot's plan says in `vehicles` which ones it shows and the role of each. `inside`: the panel happens inside
+  it; the vehicle is the place, the panel's `background` is its inside and the street is seen only through its
+  windows; when the vehicle has `views`, the panel's `view` is that vehicle's view, not the place's. `at`: it stands in
+  the place where its `where` says, all its wheels on what `where` says it stands on.
 - THE PLACE HAS NAMED VIEWS. When the place gives `views` (a location sheet: the same place photographed from a few
   named positions), every panel names in `view` the number of the view its background comes from: the one whose
   camera looks the same way as the panel's, from the same side. The panel's `background` then says what of that view
@@ -128,6 +134,10 @@ Rules:
   insert against a surface names the detail view of that surface, or 0 when no view shows it. Example from another
   place: a corridor sheet's "Looking left" is the background of every panel filmed from the nurses' station toward
   the fire door.
+  A panel names the view its camera FACES, read from its camera line and each view's `camera` and `sees`: never the
+  place's most striking side by habit. On a jetty, a camera on the boards looking out to sea faces the sheet's
+  "Reverse" (the water and the far shore, the boat sheds out of frame); one on the water looking at the sheds faces
+  its "Wide". When the camera faces away from a frontage, the frontage is not in the panel's `background`.
 - Close-ups and inserts are panels too: describe them at their size (a face filling the panel, a hand and object
   filling the panel). Lettering on an object is described as present but never spelled out, because the board is small.
 - Each panel describes only what is in that frame: no camera-move instructions, no sound, no story explanation.

@@ -32,12 +32,32 @@ def inline(node: Any, defs: dict[str, Any]) -> Any:
     return node
 
 
+# plan/2026-11-24b §2.2: the vehicles a clip shows and the role of each, beside `setting`. Raphael's own field: it is
+# not part of the clip schema the DoP fills or Veo reads; `raphael_write` maps the names to canon ids on the shot.
+VEHICLES_SCHEMA: dict[str, Any] = {
+    "type": "array",
+    "description": "Every vehicle this clip SHOWS, by its name from the listing's Vehicles line; [] for none.",
+    "items": {
+        "type": "object",
+        "additionalProperties": False,
+        "required": ["name", "role", "where"],
+        "properties": {
+            "name": {"type": "string"},
+            "role": {"type": "string", "enum": ["inside", "at"]},
+            "where": {"type": "string", "description": "For `at`: where in the place, which way it faces and what "
+                                                       "it stands on. \"\" for `inside`."},
+        },
+    },
+}
+
+
 def ir_schema() -> dict[str, Any]:
     """One clip's camera design: the clip schema's own fields (setting, cinematography, lighting, subjects, beats,
     audio,
-    first_frame), the same ones the DoP fills."""
+    first_frame), the same ones the DoP fills, and Raphael's `vehicles` (plan/2026-11-24b)."""
     clip = get_schema()
     props = {k: v for k, v in clip.shot_schema()["properties"].items() if k in clip.required_structure}
+    props = {**props, "vehicles": VEHICLES_SCHEMA}
     return {"type": "object", "additionalProperties": False, "required": list(props), "properties": props}
 
 

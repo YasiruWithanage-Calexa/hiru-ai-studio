@@ -1,32 +1,307 @@
-# Recorded answers in the shape of lab/location_views run_001 (Love Hour, "Colombo roadside" with the food three-wheeler).
-- name: a roadside with a food cart in it
+# The four lab places (lab/place_views, Love Hour) as offline fixtures: each input as the product builds it
+# (the plate picture left out), the lab's recorded answer as the reply, and what code makes of it:
+# the template the answers pick and how many findings `contracts.canon.view_findings` reports.
+- name: 'Colombo roadside (plate), r2: one anchor spot, the three-wheeler bay empty'
   input:
-    place: { name: "Colombo roadside", look: "Patched dark asphalt, a narrow concrete pavement, open kerb drainage, weathered low-rise frontages." }
-    within: [ { name: "Food three-wheeler", look: "A compact older maroon three-wheeler with a black vinyl roof and a side hatch food counter." } ]
-    geographies: [ "The food three-wheeler occupies the vending bay at frame left; a pale boundary wall with a leaf-green building surface continues to frame right. An open kerb drain separates pavement from road." ]
-    scenes: [ "SCENE 04 - A CONVERSATION THAT CHANGES EVERYTHING" ]
+    place:
+      name: Colombo roadside
+      look: An urban Colombo roadside with patched dark asphalt, a narrow concrete pavement, open kerb drainage and weathered
+        low-rise commercial frontages beside a modest concrete building. Concrete boundary walls, utility poles and overhead
+        cables frame a compact vending bay. Muted grey, dusty beige and leaf-green surfaces; soft early-morning daylight,
+        rain-wet pavement and subdued amber evening shop light.
+    vehicle: false
+    scenes:
+    - 'Scene 2 — SCENE 02 — ANUDI ARRIVES: A comfortable family car moves through Colombo traffic. Anudi sits in the back
+      seat, looking at her smartphone. The driver stops near an office building. Anudi gets out, carrying her handbag and
+      umbrella. She thanks the driver and walks toward the building. Rain begins to fall. She opens her umbrella and continues
+      walking along the roadside, passing Kasun''s small food three-wheeler.'
+    - 'Scene 2 — SCENE 02 — THE FATHER NOTICES: One evening, Anudi is talking and laughing with Kasun beside his three-wheeler.
+      Her father''s car passes by. He notices Anudi standing beside the small roadside business. He asks the driver to slow
+      down.From inside the car, he observes them for a moment. His expression changes when he sees the condition of Kasun''s
+      business. He doesn''t confront them immediately. He continues driving, but his mind is troubled.'
+    - 'Scene 3 — SCENE 03 — THE UNEXPECTED ENCOUNTER: minutesAnudi walks past Kasun''s three-wheeler while holding her umbrella.
+      She tries to put her smartphone into the side pocket of her handbag. As she slips the phone into the bag, it accidentally
+      slips from her hand and falls onto the roadside. Anudi doesn''t notice and continues walking. Kasun notices the phone
+      lying on the ground. He quickly picks it up and runs after her.  Anudi hears him and turns around. Kasun approaches
+      her, holding out the phone.'
+    - 'Scene 4 — SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING: Anudi takes her phone from Kasun.   Anudi smiles and looks
+      at his small food business.     Anudi looks impressed. Before she can continue the conversation, her phone suddenly
+      rings. She checks the screen. It''s her father.   Anudi''s smile slowly disappears.  She ends the call.Kasun notices
+      her changed expression. Anudi looks at him again.   Anudi walks toward her destination. Kasun watches her leave. After
+      a moment, he returns to his small business, but his thoughts are somewhere else.'
+    comes_and_goes:
+    - name: Family car
+      look: BMW 520d. 2019 version,  A well-kept pearl-silver midsize four-door sedan with a roomy beige fabric rear bench,
+        charcoal dashboard, right-hand-drive steering wheel, black floor mats and lightly tinted windows. Clean upholstery
+        and restrained fittings; soft morning daylight through rain-speckled glass and muted evening reflections.
   reply:
-    layout: "The pavement runs between the road and the frontages; the food three-wheeler stands side-on in its vending bay, the pale wall and green building to its right, the kerb drain along the road edge."
-    light: "Soft early-morning overcast daylight with fine rain; the pavement and asphalt are wet."
+    answers:
+      sides: outside
+      moves: false
+      size: long
+      why: All scenes occur along an urban Colombo roadside exterior with passing vehicles and a vending three-wheeler.
+    layout: A narrow stretch of patched dark asphalt road runs down the left side of the place with a shallow open kerb drainage
+      running beside it and a narrow concrete pavement alongside the frontages. A run of weathered low-rise commercial shutters
+      and one modest two-storey concrete building with a balcony form the frontage on the right; the building has a small
+      lit shop under a blue awning and a compact vending/three-wheeler bay beside it. Concrete boundary walls, regularly spaced
+      utility poles and overhead cables line the pavement and visually frame the vending bay. Surfaces are rain-wet and muted
+      (grey tarmac, dusty beige walls, leaf-green paint) with soft early-morning or subdued amber shop light.
+    empty:
+    - compact vending/three-wheeler bay (kept empty for a three-wheeler)
     views:
-      - { name: "Front wide", what: "From the road side, looking across the pavement: the three-wheeler at frame left with its hatch open, the pale wall and green building at frame right, the drain along the bottom." }
-      - { name: "Looking left", what: "From beside the three-wheeler, looking left along the pavement past its back toward the shuttered shopfronts; the road on frame left." }
-      - { name: "Looking right", what: "From the same spot, looking right along the pale wall to the onward pavement; the drain on frame right." }
-      - { name: "Reverse", what: "From the wall, looking out across the pavement and the drain to the road and the buildings opposite." }
-      - { name: "Hatch detail", what: "Close on the three-wheeler's open hatch: the steel serving ledge, trays and the tea flask." }
-      - { name: "Ground detail", what: "Looking down at the wet pavement edge and the kerb drain grate." }
-  expect: { light: "Soft early-morning overcast daylight with fine rain; the pavement and asphalt are wet." }
-- name: a room with no storyboard yet
+    - slot: Wide
+      camera: 'Anchor spot: standing on the wet road a little out from the pavement, facing the main frontage square on.'
+      sees: 'The whole roadside at once: patched dark asphalt on the left, the open kerb drainage and narrow pavement running
+        near the picture centre, and the row of shuttered commercial frontages across the right half. The modest two-storey
+        concrete building with balcony and its lit shop under a blue awning sit near the near-right; the compact vending/three-wheeler
+        bay beside that shop is shown empty. Utility poles and overhead cables run up the right edge and across the sky; overall
+        palette is muted grey, beige and leaf-green with rain-wet reflections and a subdued amber shop light.'
+    - slot: Looking left
+      camera: Same anchor spot as Wide, turned 90 degrees to the left, looking along the road away from the frontage.
+      sees: The road receding into the distance toward the left edge (now the far left), the open kerb drainage and pavement
+        running centrally toward the near-left, and the frontages now at the RIGHT edge of the picture. Utility poles step
+        away along the pavement and tree canopy appears farther down the street; the vending bay and lit shop sit at the RIGHT
+        edge, the vending bay empty.
+    - slot: Looking right
+      camera: Same anchor spot as Wide, turned 90 degrees to the right, looking along the length of the frontage to the right.
+      sees: The row of low-rise commercial frontages and pavement stretching to the near-right and far-right, the open kerb
+        drainage and road occupying the left of the picture. The modest two-storey building with balcony and the lit shop
+        come into the LEFT edge of the picture; the compact vending/three-wheeler bay beside it is visible and empty. Overhead
+        cables run diagonally across the frame.
+    - slot: Reverse
+      camera: Same anchor spot as Wide, turned 180 degrees from the Wide, looking back toward what is behind the anchor camera.
+      sees: 'What lies behind the anchor spot: the wet road surface extending back toward the far side, more utility poles
+        and distant shopfront lights, with the main frontage completely out of frame. Reflections of the subdued evening light
+        and vehicle taillights are visible on the tarmac; the pavement and drainage are behind the camera.'
+    - slot: Detail 1
+      camera: Close, low camera near the pavement edge, looking down the open kerb drainage and wet pavement.
+      sees: A close view of the open kerb drainage runs near the lower edge of the frame with rain-slick concrete pavement
+        beside it; patched asphalt of the road is visible at the top-left of the picture. Water reflections and worn concrete
+        textures are prominent; no vehicle is in the drainage or on the pavement.
+    - slot: Detail 2
+      camera: Close on the shop under the blue awning, standing on the pavement facing the shopfront square on.
+      sees: The modest lit shop doorway and display table beneath the awning at the near-right, shelves and a single bare
+        table of goods visible and lit by subdued amber light. The concrete boundary wall and a nearby utility pole frame
+        the right edge; the compact vending/three-wheeler bay beside the shop is visible and kept empty.
+  lab:
+    template: outside
+    findings: 0
+- name: 'KASUN''S Restaurant (words only), r2: invented sign text and a plain-table detail'
   input:
-    place: { name: "Hospital corridor", look: "A long pale-green corridor with ward doors and a window wall." }
+    place:
+      name: KASUN'S Restaurant
+      look: A modest-sized modern Sri Lankan restaurant with an open glazed entrance, a broad signboard above it and a clear
+        view into the dining room. Honey-toned wooden tables, dark-brown chairs, woven cane pendant shades, terracotta accents
+        and restrained timber lattice panels surround a polished stainless-steel food counter. Maroon trim repeats across
+        the counter and entrance. Warm interior lighting mixes with natural daytime light on cream walls and pale floor tiles.
+    vehicle: false
+    scenes:
+    - 'Scene 5 — SCENE 05 — A DREAM COMES TRUE: Several months later. A modern but welcoming Sri Lankan restaurant is ready
+      to open. The restaurant sign reads: KASUN''S — SRI LANKAN FOOD & COFFEE The restaurant is busy. Staff members are serving
+      customers. The interior has warm lighting, wooden tables and Sri Lankan-inspired design. Kasun, now dressed in smart-casual
+      clothing, stands proudly near the entrance. Anudi stands beside him.She looks around the restaurant and smiles.  Kasun
+      smiles.  Suddenly, Kasun notices someone approaching. It is Anudi''s father. He slowly walks toward them. He looks around
+      the successful restaurant and then at Kasun.  Kasun listens respectfully.  He extends his hand. Kasun shakes it. Anudi
+      smiles emotionally. The three of them stand together beneath the restaurant sign. The camera slowly pulls back, revealing
+      the restaurant and its customers. FINAL TEXT ON SCREEN: "සමහර ආදර කතාවලට සල්ලි ඕනේ නෑ. තමන්ගේ හීන විශ්වාස කරන කෙනෙක්
+      හිටියම ඇති."'
   reply:
-    layout: "A straight corridor: ward doors along one side, the window wall along the other, the nurses' station halfway, a fire door at the far end."
-    light: "Cool even ceiling light by day, grey daylight through the windows."
+    answers:
+      sides: both
+      moves: false
+      size: room
+      why: The card describes a street-front restaurant with an open glazed entrance and an interior dining room, so it is
+        seen both outside and inside and occupies a single shop-sized room.
+    layout: Street-facing single-room restaurant with a broad signboard above a maroon-trimmed glazed entrance; the glass
+      gives a clear view straight into the dining room. Inside, pale floor tiles and cream walls form the background; honey-toned
+      wooden tables and dark-brown chairs are arranged across the dining floor under woven cane pendant shades. A polished
+      stainless-steel food counter with a maroon trim band sits against the far wall and is framed on three sides by restrained
+      timber lattice panels; terracotta accents (low planters and a narrow feature band) tie the counter and the entrance
+      visually. Warm interior lighting mixes with natural daylight through the glass entrance.
+    empty: []
     views:
-      - { name: "Front wide", what: "From the corridor's middle, looking at the nurses' station: ward doors at frame left, the window wall at frame right." }
-      - { name: "Looking left", what: "From the nurses' station, looking left along the corridor: the ward doors on frame right, the windows on frame left, the fire door at the end." }
-      - { name: "Looking right", what: "From the nurses' station, looking right toward the lifts: the windows on frame right." }
-      - { name: "Reverse", what: "From the window wall, looking back at the nurses' station and a ward door." }
-      - { name: "Counter detail", what: "Close on the nurses' station counter: a chart rack and a desk lamp." }
-      - { name: "Door detail", what: "Close on a ward door with its small window and handle." }
-  expect: { light: "Cool even ceiling light by day, grey daylight through the windows." }
+    - slot: Outside wide
+      camera: On the pavement a little way from the door, facing the glazed entrance square on.
+      sees: 'The whole frontage fills the frame: the broad signboard reading "KASUN''S — SRI LANKAN FOOD & COFFEE" across
+        the top (high, centre), the maroon-trimmed glazed entrance central, and through the glass a clear view into the dining
+        room beyond; terracotta accents and a low planter sit at the base of the entrance (near edge).'
+    - slot: Entrance
+      camera: Standing just outside the open glazed entrance, looking in through the doorway.
+      sees: The maroon-trimmed door frame and threshold in the near foreground and a direct view into the nearest dining tables
+        and the pendant shades; across the room the stainless-steel food counter with its maroon trim and surrounding timber
+        lattice panels is visible at the far wall (far centre).
+    - slot: Inside wide
+      camera: From just inside the entrance, a few steps in, looking toward the far wall.
+      sees: 'The whole dining room: honey-toned wooden tables arranged across the centre and right, dark-brown chairs around
+        them, woven cane pendant shades overhead, pale tiled floor and cream walls; the polished stainless-steel food counter
+        with maroon trim sits against the far wall and is framed by restrained timber lattice panels (far centre). Warm interior
+        lights mix with daylight from the entrance.'
+    - slot: Inside reverse
+      camera: From the far side of the dining room, turned to look back toward the entrance and the street beyond.
+      sees: Nearest tables and chairs in the foreground (near), the glazed entrance with maroon trim centered in the midground,
+        and beyond the glass a glimpse of the signboard and the outside street above the door (far).
+    - slot: Detail 1
+      camera: Close on the polished stainless-steel food counter, camera square to its front at standing height.
+      sees: The polished stainless-steel face with a horizontal maroon trim band across it (centre), the counter top clear,
+        timber lattice panels rising directly behind and at the sides, and terracotta accents (a low planter or band) at the
+        counter base.
+    - slot: Detail 2
+      camera: Close at table height on a honey-toned wooden table beneath a woven cane pendant, camera looking slightly up
+        toward the shade.
+      sees: One wooden table and dark-brown chairs under a woven cane pendant shade (near centre), the cream wall and pale
+        floor tiles forming the background and a soft pool of warm light from the pendant above.
+  lab:
+    template: both
+    findings: 2
+- name: 'Kasun''s prep room (words only), r1: the four walls fit'
+  input:
+    place:
+      name: Kasun's small food preparation workspace
+      look: A cramped rectangular food-preparation room with off-white plaster walls, a grey cement floor and a small high
+        ventilation window. Scratched stainless-steel cooking equipment, a compact hob, metal shelves and stacked food containers
+        occupy most of the room. A small wooden table doubles as a desk, with receipts, business papers and a notebook; two
+        plain chairs fit tightly beside it. Cool overhead tube light and a warmer desk bulb illuminate late-night interiors,
+        with subdued grey daylight at the window in daytime.
+    vehicle: false
+    scenes:
+    - 'Scene 1 — SCENE 01 — THE STRUGGLE: Kasun is determined to secure the Rs. 2 million needed to expand his business. A
+      sequence of connected moments shows his struggle. He visits a bank and discusses a business loan. He sits with a potential
+      investor and explains his business plan. He makes phone calls to friends asking for financial support. He reviews his
+      business documents and calculations late at night. Each attempt ends in disappointment. The bank cannot offer the required
+      support. The investor doesn''t believe the small business can handle such a large order. His friends are unable to help.
+      Finally, Kasun returns to his small workspace. He sits alone at the desk, looking at the supermarket order and the financial
+      calculations. He realizes that his biggest opportunity may disappear because he cannot find the money.'
+    - 'Scene 3 — SCENE 03 — AN UNEXPECTED OFFER: Kasun is reviewing business documents at his small desk. Someone arrives.
+      It is Anudi''s father. Kasun stands up respectfully.  The father sits down. He looks around the small workspace. He
+      notices the business documents, food containers and calculations on the table. He takes an envelope from his bag and
+      places it on the table. Kasun looks at it.  Kasun looks surprised. He opens the envelope and sees the cheque.  The father
+      looks directly at him.  Kasun looks up.  Silence. Kasun''s smile disappears. He looks at the cheque and then at Anudi''s
+      father.'
+    - 'Scene 4 — SCENE 04 — KASUN''S DETERMINATION AND THE BIG OPPORTUNITY: Late at night. Kasun is working in his small rented
+      workspace. The room contains stainless-steel cooking equipment, food containers, business receipts and a small table.
+      He checks his orders, calculates expenses and writes figures in a notebook. His business has started growing. He is
+      now supplying food to three small shops. Anudi arrives and notices how tired he looks. She looks around the workspace.  Kasun
+      looks at her.  Anudi gently holds his hand.  Kasun smiles.  Suddenly, Kasun''s phone rings. He checks the number and
+      answers.  A representative from a major supermarket chain is on the other end.  Kasun is surprised.  The call ends.
+      Anudi looks excited.  Kasun smiles.  looks at her with excitement. But as he returns to his notebook and calculates
+      the expansion costs, his expression slowly changes. The supermarket order requires a major investment. He needs Rs.
+      2 million. He looks at the numbers again. He doesn''t have enough money. Anudi notices his silence.'
+    - 'Scene 4 — SCENE 04 — THE CHOICE: Kasun remains silent for a moment. He looks at the cheque. He knows how much his business
+      needs this money. He looks at the business documents on the table. Then he slowly pushes the cheque back toward Anudi''s
+      father.  The father looks surprised. Kasun takes a breath.  He stands up.  Kasun respectfully walks away. The father
+      remains seated. He looks at the cheque and then around the small workspace. For the first time, he begins to question
+      his judgment about Kasun.'
+  reply:
+    answers:
+      sides: inside
+      moves: false
+      size: room
+      why: The canon card describes a single cramped interior food-preparation room with no exterior or vehicle elements.
+    layout: A cramped rectangular food-preparation room entered from a short wall; the doorway sits on the near short wall.
+      Along the right long wall, scratched stainless-steel cooking equipment, a compact hob and metal shelving with stacked
+      food containers occupy most of the room, pushed close to the wall. The left long wall holds a small wooden table used
+      as a desk, two plain chairs squeezed beside it and business papers, receipts and a notebook on the table. The far short
+      wall has a small high ventilation window near the ceiling. The floor is grey cement; off-white plaster covers the walls.
+      A cool overhead tube light hangs centrally and a warmer desk bulb sits on the table for late-night work.
+    empty: []
+    views:
+    - slot: Wide from the door
+      camera: Standing in the doorway, looking straight into the room.
+      sees: 'The whole cramped rectangle: to the right the stainless-steel cooking equipment and metal shelves filling most
+        of the space, to the left the small wooden table with two tight chairs and papers, the far wall with the small high
+        ventilation window, the grey cement floor below and the overhead tube light above.'
+    - slot: Opposite wall
+      camera: Standing at the far short wall, looking back toward the door and the way in.
+      sees: The doorway centered on the near short wall, the table and chairs seen at the left of frame (from this side),
+        the strip of floor running toward the door and the underside of the overhead tube light; edges of the stainless-steel
+        equipment are visible to the right.
+    - slot: Left wall
+      camera: Square on to the left long wall, camera mid-height and centred on the table area.
+      sees: The small wooden table pressed against the left wall, two plain chairs fitted tightly beside it, a desk bulb on
+        the table, receipts, business papers and a notebook spread across the surface, the off-white plaster wall behind and
+        the grey floor below.
+    - slot: Right wall
+      camera: Square on to the right long wall, camera at chest height facing the cooking run.
+      sees: Scratched stainless-steel cooking equipment and the compact hob front and centre, metal shelving with stacked
+        food containers above and beside it, worn surfaces and tight clearances to the wall, with the high ventilation window
+        visible over toward the far wall near the top of the frame.
+    - slot: Detail 1
+      camera: Close, low to the stainless-steel workline, focused on the hob and its immediate surround.
+      sees: The compact hob's control knobs and scratched stainless-steel surface, small wear marks and a narrow working ledge
+        beside it where utensils or containers are kept.
+    - slot: Detail 2
+      camera: Close on the wooden table surface, slightly above table level.
+      sees: Receipts, business papers and a notebook spread on the table, a small desk bulb at one edge, and the two plain
+        chairs pushed tight under or beside the table; the tabletop shows ordinary scuffs from use.
+  lab:
+    template: inside
+    findings: 0
+- name: 'Family car BMW 520d (plate), r1: the vehicle template'
+  input:
+    place:
+      name: Family car
+      look: BMW 520d. 2019 version,  A well-kept pearl-silver midsize four-door sedan with a roomy beige fabric rear bench,
+        charcoal dashboard, right-hand-drive steering wheel, black floor mats and lightly tinted windows. Clean upholstery
+        and restrained fittings; soft morning daylight through rain-speckled glass and muted evening reflections.
+    vehicle: true
+    scenes:
+    - 'Scene 1 — SCENE 01 — A FAMILIAR FACE: A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar
+      voice interrupts him.  Kasun looks up and smiles.  They laugh. Anudi takes a seat beside the three-wheeler. This becomes
+      a regular routine. A romantic montage follows: Anudi visits Kasun after work. Kasun prepares her favourite tea. They
+      spend time talking and laughing. Anudi helps him arrange food containers. Kasun walks with her to her car. They exchange
+      smiles before saying goodbye. Over these repeated meetings, their friendship gradually develops into love.'
+    - 'Scene 2 — SCENE 02 — ANUDI ARRIVES: A comfortable family car moves through Colombo traffic. Anudi sits in the back
+      seat, looking at her smartphone. The driver stops near an office building. Anudi gets out, carrying her handbag and
+      umbrella. She thanks the driver and walks toward the building. Rain begins to fall. She opens her umbrella and continues
+      walking along the roadside, passing Kasun''s small food three-wheeler.'
+    - 'Scene 2 — SCENE 02 — THE FATHER NOTICES: One evening, Anudi is talking and laughing with Kasun beside his three-wheeler.
+      Her father''s car passes by. He notices Anudi standing beside the small roadside business. He asks the driver to slow
+      down.From inside the car, he observes them for a moment. His expression changes when he sees the condition of Kasun''s
+      business. He doesn''t confront them immediately. He continues driving, but his mind is troubled.'
+  reply:
+    answers:
+      sides: both
+      moves: true
+      size: small
+      why: The car appears both from outside (driving past, seen from the road) and from inside (back-seat and driver viewpoints)
+        and it is a small family sedan.
+    layout: 'A pearl-silver, four-door midsize BMW sedan (2019 520d) seen as one connected object: a bonnet and twin kidney
+      grille at the front, a passenger side and driver side each with two doors, and a boot at the rear. Inside, a charcoal
+      dashboard runs across the front with a flush infotainment screen, a right-hand‑drive steering wheel, and a central console
+      with gear selector and rotary controller between the front seats. Front and rear seats are beige fabric (roomy rear
+      bench) with black floor mats; rear air vents sit on the back of the centre console. All windows are lightly tinted and
+      often rain-speckled in the picture.'
+    empty: []
+    views:
+    - slot: Front three-quarter
+      camera: Outside, low at the front-left of the car, looking across the bonnet toward the front and the near side.
+      sees: The whole car at a three-quarter angle filling centre and right of frame; the BMW kidney grille and bonnet are
+        centre-left, the near-side front headlamp and bumper are centre, and the passenger-side doors run off to the right.
+        Wet road and rain-speckled glass are visible near the lower and upper edges.
+    - slot: Side
+      camera: Outside, mid-height, square on to the car's nearside (the full side of the body).
+      sees: 'The full length of the nearside across centre of frame: two doors, the beltline, the alloy wheels near the lower
+        edge and the lightly tinted windows along the top. Pearl-silver paint and restrained body creases run left-to-right.'
+    - slot: Rear three-quarter
+      camera: Outside, slightly to the rear-right of the car, looking across the boot and the far side.
+      sees: The rear and far-side profile filling centre and left of frame; the boot lid and rear bumper are roughly centre,
+        a taillight is near the right edge, and the far-side rear door and wheel sit toward the left. The wet road and reflections
+        appear beneath the car.
+    - slot: Inside from the rear
+      camera: Inside, standing just behind the rear bench, looking forward toward the dashboard and driver's place.
+      sees: Beige front seat backs left and right of frame, the central console running forward through the lower centre,
+        the charcoal dashboard across the top, the infotainment screen centre-left, and the right-hand steering wheel visible
+        on the right of the dash. Rain-speckled windscreen reflections are visible beyond the dash.
+    - slot: Inside from the front
+      camera: Inside, between the front seats or just behind the centre console, looking back at the rear bench.
+      sees: The roomy beige rear bench filling the centre, three headrests across the top, rear door trims left and right,
+        and the rear air vents at the back of the centre console near the lower centre; black floor mats are visible at the
+        bottom.
+    - slot: Detail
+      camera: Close, inside the cabin at driver-seat level, looking at the primary controls.
+      sees: A tight view of the right-hand steering wheel and the instrument pod near the right of frame, the centre infotainment
+        screen and nearby climate/gear controls just left of centre, and the charcoal dash texture with rain-speckled windscreen
+        beyond.
+  lab:
+    template: vehicle
+    findings: 0

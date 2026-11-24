@@ -47,12 +47,12 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
 from contracts import board as kit
-from contracts import safe_depiction
+from contracts import safe_depiction, vehicles
 from contracts.canon import face_sheet_path, keep_assets, missing_faces, scene_conditions, view_label, views_asset
-from contracts.frame_brief import BLACK_PLATE
+from contracts.frame_brief import BLACK_PLATE, INSIDE_NOTE
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
 from contracts.memory import genre_of
-from contracts.producer import BLOCKING_LABEL, DRAFT_LABEL, FrameStage, frame_quality, frame_stage
+from contracts.producer import BLOCKING_LABEL, DRAFT_LABEL, FrameStage, PersonEdits, frame_quality, frame_stage
 from hiru_ai.core import agents, parts
 from hiru_ai.core.context import RunContext
 from hiru_ai.core.ports import ImageRefused, Reference
@@ -221,6 +221,30 @@ def _view_picture(ctx: RunContext, world: Row, n: int) -> tuple[str, Reference, 
             f"{str(view['what']).rstrip('.')}.")
 
 
+def _vehicle_view_picture(ctx: RunContext, world: Row, shot: Row, n: int) -> tuple[str, Reference, str] | None:
+    """plan/2026-11-24b §5 (lab/final_views shot 1): a shot INSIDE a vehicle with a views sheet takes the inside view
+    its panel names as the place, cut from the sheet, instead of the vehicle's plate; None otherwise (the plate stays).
+    -> (the plate's label it replaces, the view's picture, a line saying what the view shows)."""
+    canon = world.get("canon") or []
+    inside = vehicles.inside_of(vehicles.shot_vehicles(shot, canon, PersonEdits.of(shot).vehicles))
+    row = next((c for c in canon if str(c["id"]) == inside.id), None) if inside else None
+    asset = views_asset(row) if row else None
+    view = next((v for v in (asset or {}).get("views") or [] if int(v.get("n") or 0) == n), None) if n else None
+    if row is None or asset is None or view is None or not view.get("box"):
+        return None
+    try:
+        sheet = _download(ctx, str(asset["path"]))
+    except Exception:
+        _log.warning("the views sheet of %s could not be read", row.get("name"), exc_info=True)
+        return None
+    name = vehicles.named(str(row["name"]), vehicles.make_of(row))
+    label = f"view {view['n']} ({str(view['name']).lower()}) of the vehicle sheet for {name}"
+    return (vehicles.plate_label(str(row["name"]), vehicles.make_of(row)) + INSIDE_NOTE,
+            Reference(label=label, data=pics.crop(sheet, [int(x) for x in view["box"]])),
+            f"The place is view {view['n']} ({str(view['name']).lower()}) of the vehicle sheet: "
+            f"{str(view.get('sees') or view.get('what') or '').rstrip('.')}.")
+
+
 def _panel_breaks_a_fact(ctx: RunContext, board_id: str, shot: Row) -> list[str]:
     """D2 (plan/2026-11-23d): the board's own check found this shot's panel breaking a fact (a hand holding what no
     one gives it, someone only heard on it, a fault the board check still saw): such a panel is not attached."""
@@ -292,13 +316,16 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "")
         try:
             panel, board = _board_panel(ctx, scenes, str(frame["board_id"]), shot, blocking=from_prompt)
             pictures.append(panel)
-            swap = _view_picture(ctx, world, int(board.get("view") or 0))
-            if swap is not None:  # plan/2026-11-24: the panel's view instead of the location plate
+            for swap in (_view_picture(ctx, world, int(board.get("view") or 0)),
+                         _vehicle_view_picture(ctx, world, shot, int(board.get("view") or 0))):
+                if swap is None:  # plan/2026-11-24: the panel's view instead of the location plate; 2026-11-24b §5:
+                    continue      # the vehicle's inside view instead of its plate
                 plate, view_pic, said = swap
                 at = next((i for i, p in enumerate(pictures) if p.label == plate), None)
                 if at is not None:
                     pictures[at] = view_pic
                     board["sections"] = [*board["sections"], said]
+                    break
         except Exception:
             _log.warning("board %s of frame %s could not be read", frame["board_id"], fid, exc_info=True)
             frames.finish_frame(fid, {"status": "failed", "error": NO_PANEL})

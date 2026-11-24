@@ -31,7 +31,7 @@ from typing import Any
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
-from contracts import picture_pins
+from contracts import picture_pins, vehicles
 from contracts.canon import wardrobe_by_code
 from contracts.frame_brief import agent_camera
 from contracts.jobs import DispatchPayload, JobEventType, JobStatus
@@ -143,6 +143,10 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
         facts = prompter.facts_for(shot, scene, prod, frame, lids=pc["lids"], wardrobe=pc["wardrobe"])
         row = live(shot, pc)
         approved = pc["world"].approved_panel(row)  # plan/2026-11-23d §2.2: written from the approved panel
+        # plan/2026-11-24b §2.4: the shot's vehicles and their roles, so the prompt's words and the pictures agree
+        canon_rows = list(pc["world"].by_id.values())
+        facts["vehicles"] = vehicles.prompter_facts(vehicles.shot_vehicles(row, canon_rows,
+                                                                           PersonEdits.of(row).vehicles))
         if approved is not None:
             facts["board"] = prompter.board_facts(approved, pc["world"].by_id, pc["world"].scene)
         stored = (row.get("design") or {}).get("shot_prompt")

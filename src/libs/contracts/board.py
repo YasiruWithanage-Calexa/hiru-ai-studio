@@ -31,7 +31,8 @@ from dataclasses import dataclass, field, replace
 from typing import Any
 
 from contracts import holding, picture_pins
-from contracts.canon import VIEWS_LABEL_HEAD
+from contracts import vehicles as vehicles_kit
+from contracts.canon import VIEWS_LABEL_HEAD, view_key_words
 
 Row = dict[str, Any]
 
@@ -63,8 +64,12 @@ def aspect_of_board(row: Mapping[str, Any]) -> str:
     before 2026-11-16 are all wide and say so)."""
     return TALL if _PANEL_SHAPE[TALL] in str(row.get("prompt") or "") else BOARD_ASPECT
 MAX_WRITER_PICTURES = 8  # the writer reads the reference pictures at detail low
-WRITER_MAX_OUTPUT = 10000  # run_001 used 4,341 output tokens (1,931 reasoning): over 2x headroom
-PANEL_WRITER_MAX_OUTPUT = 6000  # one panel: ~1,100-1,250 output tokens (lab/panel_edit run_001, run_002)
+# The whole-board writer's output budget, reasoning included. run_001 used 4,341; with the opening state, views and
+# vehicles (plan/2026-11-23c, 2026-11-24c, 2026-11-24b) Love Hour 4 scene 2 (7 shots) used 8,374, and scene 4 (14
+# shots, a 22,400-token message) spent all of 10,000 on reasoning and wrote nothing (2026-11-24). A budget only caps the
+# spend: a board that needs less pays for less.
+WRITER_MAX_OUTPUT = 32000
+PANEL_WRITER_MAX_OUTPUT = 12000  # one panel: ~1,100-1,250 in lab/panel_edit; the same message parts as a whole board
 PREVIOUS_KEPT = 3  # a cell keeps its last three pictures, so an undo is repainted for free (plan/2026-11-17 §3.6)
 # Colours in person order (plan §3.2). Over six people the colours repeat (the lab never needed a seventh).
 COLOURS = ("red", "blue", "yellow", "green", "purple", "orange")
@@ -290,7 +295,7 @@ def keep_colours(saved: Mapping[str, str], people: Sequence[str]) -> dict[str, s
 
 
 def writer_bundle(scene: Mapping[str, Any], shots: Sequence[BoardShot], people: Sequence[Row], place: Row,
-                  props: Sequence[Row], reference_labels: Sequence[str]) -> Row:
+                  props: Sequence[Row], reference_labels: Sequence[str], vehicles: Sequence[Row] = ()) -> Row:
     """What the board writer reads about the scene (lab `fetch.py` bundle, without file paths). plan/2026-11-23c §3.1:
     every field the stager wrote (facing, side of frame, both hands, condition, wearing), the props it set down, its
     zones, and Raphael's whole treatment geography, colour script and key image (the axis was its first 300 letters)."""
@@ -317,6 +322,8 @@ def writer_bundle(scene: Mapping[str, Any], shots: Sequence[BoardShot], people: 
     return {
         "scene": {k: v for k, v in out.items() if v not in ("", [], None)},
         "people": list(people), "place": place, "props": list(props),
+        # plan/2026-11-24b §2.3: each vehicle's name, make, look and its role and `where` per shot
+        **({"vehicles": list(vehicles)} if vehicles else {}),
         "shots": [s.plan for s in shots if s.painted],
         "reference_pictures": [f"image {i}: {label}" for i, label in enumerate(reference_labels, 1)],
     }
@@ -330,10 +337,13 @@ def mannequin_note(colours: Mapping[str, str]) -> str:
             "body sits or stands, which way the chest faces, which way the head turns, where each hand is, what it "
             "holds or touches. Never describe a face, expression, mouth, eyes, hair, skin or clothes. The place and "
             "the light are described and painted for real. PROPS ARE STAND-INS too (plan/2026-11-23c): every prop (a "
-            "phone, a bag, an umbrella, a car) is painted as a plain matte white clay stand-in of its real size and "
-            "outline, so write it as \"the clay <its name>\" (the clay phone, the clay umbrella, the clay car) with "
+            "phone, a bag, an umbrella) is painted as a plain matte white clay stand-in of its real size and "
+            "outline, so write it as \"the clay <its name>\" (the clay phone, the clay umbrella) with "
             "the hand that grips it or the surface it rests on; never its colour, screen, brand or lettering. The "
-            "place and its spots stay real, even a vehicle the place is built around (a food cart). A "
+            "place and its spots stay real, even a vehicle the place is built around (a food cart). A VEHICLE IS "
+            "NEVER CLAY (plan/2026-11-24b): every vehicle in `vehicles` is painted real, exactly as its vehicle "
+            "picture shows it; describe it by its make and colour as that picture and its card show them: in a "
+            "panel whose shot is INSIDE it, it is the place; in the others it stands where its `where` says. A "
             "person shown INSIDE a photograph, poster or screen in the scene is not a mannequin: describe that "
             "picture as a real photograph. For each panel also list, in `people`, every person the panel shows with "
             "their STATE at the opening of the shot (eyes open or closed, still, asleep, crying, breathing hard; empty "
@@ -586,10 +596,11 @@ def prop_line(props: Sequence[str], places: Sequence[str] = ()) -> str:
     three-wheeler), which stay real (2026-11-23: the food three-wheeler came out as a white clay van)."""
     named = f" ({', '.join(dict.fromkeys(p for p in props if p))})" if any(props) else ""
     real = ", ".join(dict.fromkeys(p for p in places if p))
+    # plan/2026-11-24b: the clay-vehicle sentence is the lab's `CLAY_NEW` (lab/vehicle_role: scene 4's white van)
     return ("Props (every panel): every prop" + named + " and every small thing a person holds or carries is a plain, "
             "smooth, matte white clay stand-in of the real object: its real size and outline, and nothing else: no "
-            "screen, buttons, logo, lettering, pattern or colour. A vehicle that is a prop is a full-size white clay "
-            "vehicle with its doors, windows and seats as shapes. Each stand-in is held, carried or set down exactly "
+            "screen, buttons, logo, lettering, pattern or colour. " + vehicles_kit.CLAY_NEW + " Each stand-in is "
+            "held, carried or set down exactly "
             "as the real thing would be. The place itself is real: its ground, walls, water, plants, what is built "
             "into it" + (f", and {real}" if real else "") + ", painted as a real photograph, never as clay.")
 
@@ -641,10 +652,31 @@ def views_paragraph(labels: Sequence[str], views: Sequence[Mapping[str, Any]]) -
             "sheet's gutters or layout." + (f" Take from {jobs}." if jobs else ""))
 
 
+def panel_view(panel: Panel, views: Sequence[Mapping[str, Any]]) -> Mapping[str, Any] | None:
+    """The view of the sheet the panel names, or None."""
+    return next((v for v in views if int(v.get("n") or 0) == panel.view), None) if panel.view else None
+
+
+def view_named(view: Mapping[str, Any]) -> str:
+    """A view with its key words (plan/2026-11-24c §2.7): "view 4 (Reverse): the road and the far side, the frontage
+    out of frame", so the painter knows what the view shows and what it does not."""
+    said = view_key_words(view)
+    return f"view {view['n']} ({view['name']})" + (f": {said}" if said else "")
+
+
+def views_of(panel: Panel, views: Sequence[Mapping[str, Any]],
+             panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None) -> Sequence[Mapping[str, Any]]:
+    """The views a panel's `view` counts in: its own sheet's (plan/2026-11-24b §5: a panel INSIDE a vehicle with a
+    views sheet names that vehicle's view), else the place's."""
+    return (panel_views or {}).get(panel.shot, views)
+
+
 def view_line(panel: Panel, views: Sequence[Mapping[str, Any]]) -> str:
-    """ " Background view: view 1 Front wide." (lab `board_prompt`), "" when the panel names no view of the sheet."""
-    view = next((v for v in views if int(v.get("n") or 0) == panel.view), None) if panel.view else None
-    return f" Background view: view {view['n']} {view['name']}." if view else ""
+    """ " Background view: view 4 (Reverse): the road and the far side, the frontage out of frame." (lab
+    `board_prompt`, with the view's key words of plan/2026-11-24c §2.7), "" when the panel names no view of the
+    sheet."""
+    view = panel_view(panel, views)
+    return f" Background view: {view_named(view)}." if view else ""
 
 
 def board_job(label: str) -> str:
@@ -652,6 +684,8 @@ def board_job(label: str) -> str:
     later part, the overlap panel: never a face or a look sheet (it has no faces)."""
     if label.startswith("the location plate for "):
         return _PLACE_JOB
+    if label.startswith((vehicles_kit.PLATE_HEAD, vehicles_kit.SHEET_HEAD)):  # plan/2026-11-24b §2.3
+        return vehicles_kit.job("at", board=True)
     if label.startswith("the reference sheet for "):
         return f"{label[len('the reference sheet for '):]} exactly as shown"
     if label == OVERLAP_LABEL:
@@ -687,7 +721,8 @@ def board_layout_free(world: str) -> str:
 
 def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], colours: Mapping[str, str],
                  aspect: str = BOARD_ASPECT, props: Sequence[str] = (), places: Sequence[str] = (),
-                 views: Sequence[Mapping[str, Any]] = ()) -> str:
+                 views: Sequence[Mapping[str, Any]] = (), vehicles: str = "",
+                 panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None) -> str:
     """The image prompt for one board (or one part): the panels of `numbers`, in order (lab `board_prompt` with
     mannequins). `labels` are the attached pictures in order; `colours`: name → colour; `aspect`: the board's shape
     (`board_aspect`), which every panel takes; `props`: the canon props the panels show, painted as white clay
@@ -706,7 +741,7 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
         hands = hands_text(p, colours)
         pos.append(f"PANEL {i + 1} (row {r + 1}, column {c + 1}) — {p.camera.rstrip('.')}. Background: "
                    f"{p.background.rstrip('.')}. {p.picture}" + (f" {hands}" if hands else "")
-                   + view_line(p, views))
+                   + view_line(p, views_of(p, views, panel_views)))
     head = (f"A cinematic storyboard sheet for a Sri Lankan television drama: {n} photorealistic film stills of ONE "
             f"scene, laid out in a grid {cols} panels across and {rows} down, read {order}. Every panel is "
             f"{_PANEL_SHAPE[board_aspect(aspect)]} of the same size, separated by thin, even, plain white gutters. "
@@ -720,6 +755,7 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
     return "\n\n".join(x for x in [
         head, refs, mannequin_line(colours), prop_line(props, places),
         "World (every panel): " + board_layout_free(board_world(writer.world, colours)),
+        vehicles,  # plan/2026-11-24b §2.3: the lab's vehicles line, before Geography
         "Geography: " + writer.geography,
         "\n".join(pos), BODIES, SUPPORT, NO_TEXT,
     ] if x)
@@ -757,7 +793,8 @@ def panel_world(world: str) -> str:
 
 def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: Mapping[str, str],
                  aspect: str = BOARD_ASPECT, props: Sequence[str] = (), fix: str = "",
-                 places: Sequence[str] = (), views: Sequence[Mapping[str, Any]] = ()) -> str:
+                 places: Sequence[str] = (), views: Sequence[Mapping[str, Any]] = (), vehicles: str = "",
+                 panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None) -> str:
     """The image prompt for ONE panel painted alone, filling the picture (lab `solo_prompt` + `CAMERA_RULE`).
     `labels`: the attached pictures in order (the place, then the neighbouring panels, `neighbour_label`);
     `writer`: the approved board (its world and geography); `aspect`: the board's shape, so the panel matches;
@@ -778,19 +815,22 @@ def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: M
         CAMERA_RULE,
         mannequin_line(colours), prop_line(props, places),
         "World: " + panel_world(board_world(writer.world, colours)),
+        vehicles,  # plan/2026-11-24b §2.3
         "Geography: " + writer.geography,
         f"THE PANEL — {panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. {panel.picture}"
-        + (f" {hands}" if hands else "") + view_line(panel, views),
+        + (f" {hands}" if hands else "") + view_line(panel, views_of(panel, views, panel_views)),
         BODIES, SUPPORT, fix, NO_TEXT.replace("no borders other than the gutters", "no borders, no gutters"),
     ] if x)
 
 
-def fix_line(problems: Sequence[str]) -> str:
-    """What a panel painted again is told about its first painting's faults (plan/2026-11-23c F2)."""
+def fix_line(problems: Sequence[str], view: str = "") -> str:
+    """What a panel painted again is told about its first painting's faults (plan/2026-11-23c F2). `view`: the
+    panel's view (`view_named`) when the check found its background showing another view (plan/2026-11-24c §2.7)."""
     said = "; ".join(" ".join(str(p).split()).rstrip(".") for p in problems if str(p).strip())
     return ("A first painting of this panel was wrong" + (f": {said}." if said else ".") + " Paint it again "
             "without that fault: two arms and two hands on every mannequin, every held thing gripped by its hand, "
-            "both feet on the ground.") if said else ""
+            "both feet on the ground"
+            + (f"; the background is {view}, its things on its sides" if view else "") + ".") if said else ""
 
 
 # ── the free check of the writer's answer (plan/2026-11-23c §3.4) ──────────────────────────────────────────────
@@ -813,7 +853,8 @@ def _held(text: str) -> str:
 
 
 def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping[str, str] | None = None,
-                    views: Sequence[Mapping[str, Any]] = ()) -> list[str]:
+                    views: Sequence[Mapping[str, Any]] = (),
+                    panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None) -> list[str]:
     """What code finds wrong in the writer's panels before anything is painted, as conflict lines: more than two
     things in a person's hands (a worn bag is not in a hand), a prop neither held nor resting on anything, someone
     only heard on the board, and a held thing that neither the shot's plan nor what the person carries through the
@@ -839,7 +880,8 @@ def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping
                 if key not in mine:
                     out.append(f"Shot {p.shot}: {x.name} holds the {key}, which neither the plan of this shot nor "
                                "what they carry through the scene gives them.")
-        if views and p.view and not any(int(v.get("n") or 0) == p.view for v in views):  # plan/2026-11-24
+        sheet = views_of(p, views, panel_views)
+        if sheet and p.view and not any(int(v.get("n") or 0) == p.view for v in sheet):  # plan/2026-11-24
             out.append(f"Shot {p.shot}: names view {p.view}, which the location sheet does not have.")
         for pr in p.props:
             if not pr.held_by and not pr.rests_on:

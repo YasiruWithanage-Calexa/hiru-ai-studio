@@ -33,7 +33,6 @@ from api.services.production import LOCKED
 from api.workers import task_manager
 from contracts import board as kit
 from contracts.canon import missing_faces, views_asset
-from contracts.frame_brief import sheet_path
 from contracts.jobs import JobKind
 from contracts.production import SceneStatus
 from contracts.roles import Permission
@@ -199,9 +198,10 @@ def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_asp
 
 
 def _missing_views(canon: list[Row], location_id: str) -> MissingFace | None:
-    """The scene's place, when it has a plate to paint views from but no views sheet yet (plan/2026-11-24)."""
+    """The scene's place, when it has no views sheet yet (plan/2026-11-24; plan/2026-11-24c: a place without a plate
+    is painted from its card's words, so any place with a card can have one)."""
     place = next((c for c in canon if str(c["id"]) == location_id), None)
-    if place is None or views_asset(place) is not None or not sheet_path(place):
+    if place is None or views_asset(place) is not None or not place.get("current"):
         return None
     return MissingFace(entity_id=place["id"], name=str(place.get("name") or ""))
 

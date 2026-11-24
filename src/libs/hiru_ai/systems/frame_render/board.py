@@ -42,8 +42,10 @@ from uuid import uuid4
 
 from contracts import board as kit
 from contracts import holding, safe_depiction
+from contracts import vehicles as vh
 from contracts.canon import look_sheet_path, named_in, views_asset, views_label
 from contracts.frame_brief import sheet_path
+from contracts.producer import PersonEdits
 from contracts.veo import ASPECT_RATIO, Orientation
 from hiru_ai.core import agents, llm, parts
 from hiru_ai.core.context import RunContext
@@ -90,9 +92,17 @@ class Board:
                 _log.warning("shot %s could not be staged for the board", s.get("id"), exc_info=True)
                 self.seen[str(s["id"])] = {}
         self.by_id = {str(c["id"]): c for c in world["canon"]}
+        self._sheets: dict[str, bytes] = {}  # views sheets read once for the view check (§2.7), by path
         names = {cid: str(c.get("name") or "") for cid, c in self.by_id.items() if c.get("kind") == "character"}
         self.shots = kit.board_shots(self.scene, self.shot_rows, world.get("lines") or [],
                                      {k: list(v.values()) for k, v in self.seen.items()}, plates, names)
+        # plan/2026-11-24b §2.2: each shot's vehicles and their role; the writer reads them in each shot's plan
+        self.vehicles: dict[str, list[vh.ShotVehicle]] = {
+            str(r["id"]): vh.shot_vehicles(r, world["canon"], PersonEdits.of(r).vehicles) for r in self.shot_rows}
+        for bs in self.shots:
+            if bs.painted and self.vehicles.get(bs.id):
+                bs.plan["vehicles"] = [{"name": v.name, "role": v.role, **({"where": v.where} if v.where else {})}
+                                       for v in self.vehicles[bs.id]]
         order: list[str] = []
         for shot in self.shots:
             if shot.painted:
@@ -135,7 +145,9 @@ class Board:
                  for c in self.world["canon"] if str(c.get("parent_id") or "") == loc and c.get("class") == "spot"]
         place: Row = {"name": row["name"], "look": self._card(loc).get("look", ""), "spots": spots}
         if self.views:  # plan/2026-11-24: the writer names each panel's view
-            place["views"] = [{k: v[k] for k in ("n", "name", "what")} for v in self.views]
+            place["views"] = [{"n": v["n"], "name": v["name"], **({"camera": v["camera"], "sees": v["sees"]}
+                                                                  if v.get("sees") else {"what": v.get("what", "")})}
+                              for v in self.views]  # plan/2026-11-24c §2.7: each view's camera and sees words
         return place, row
 
     @property
@@ -144,6 +156,89 @@ class Board:
         row = self.by_id.get(str(self.scene.get("location_id") or ""))
         asset = views_asset(row) if row else None
         return [dict(v) for v in (asset or {}).get("views") or []]
+
+    def view_crop(self, n: int, shot: int = 0) -> bytes | None:
+        """View `n` cut from the panel's views sheet (plan/2026-11-24c §2.7): the location's, or the vehicle's a panel
+        is INSIDE (plan/2026-11-24b §5); for the board check. None when there is no such view or the sheet cannot be
+        read (then the view is not checked)."""
+        row = self.sheet_row(shot)
+        asset = views_asset(row) if row else None
+        views = [dict(v) for v in (asset or {}).get("views") or []]
+        view = next((v for v in views if int(v.get("n") or 0) == n), None) if n else None
+        if row is None or asset is None or view is None or not view.get("box"):
+            return None
+        try:
+            if str(asset["path"]) not in self._sheets:
+                self._sheets[str(asset["path"])] = _download(self.ctx, "references", str(asset["path"]))
+            return pics.crop(self._sheets[str(asset["path"])], [int(x) for x in view["box"]])
+        except Exception:
+            _log.warning("the views sheet could not be read for the board check", exc_info=True)
+            return None
+
+    # ── vehicles (plan/2026-11-24b) ──────────────────────────────────────────────────────────────
+
+    def shot_vehicles(self, number: int) -> list[vh.ShotVehicle]:
+        s = next((x for x in self.shots if x.number == number), None)
+        return list(self.vehicles.get(s.id, [])) if s else []
+
+    def inside_sheet(self, number: int) -> Row | None:
+        """The vehicle a shot is INSIDE, when that vehicle has a views sheet (§5): its panel names that sheet's view."""
+        inside = vh.inside_of(self.shot_vehicles(number))
+        row = self.by_id.get(inside.id) if inside else None
+        return row if row is not None and views_asset(row) is not None else None
+
+    def sheet_row(self, number: int = 0) -> Row | None:
+        """The row whose views sheet a panel's `view` counts in: the vehicle it is inside (when it has one), else the
+        scene's location."""
+        return self.inside_sheet(number) if number and self.inside_sheet(number) else \
+            self.by_id.get(str(self.scene.get("location_id") or ""))
+
+    def panel_views(self) -> dict[int, list[Row]]:
+        """Shot number → the views of the vehicle sheet a panel INSIDE a vehicle names (§5); other panels: none."""
+        out = {}
+        for s in self.painted:
+            row = self.inside_sheet(s.number)
+            if row is not None:
+                out[s.number] = [dict(v) for v in (views_asset(row) or {}).get("views") or []]
+        return out
+
+    def vehicle_pictures(self, shots: list[kit.BoardShot]) -> list[tuple[str, str]]:
+        """(label, path) of every vehicle these panels show (§2.3): its views sheet when it has one, else its plate."""
+        out: list[tuple[str, str]] = []
+        for vid in dict.fromkeys(v.id for s in shots for v in self.vehicles.get(s.id, [])):
+            row = self.by_id.get(vid)
+            if row is None:
+                continue
+            asset = views_asset(row)
+            if asset is not None:
+                out.append((vh.sheet_label(str(row["name"]), vh.make_of(row)), str(asset["path"])))
+            elif sheet_path(row):
+                out.append((vh.plate_label(str(row["name"]), vh.make_of(row)), sheet_path(row)))
+        return out
+
+    def vehicle_line(self, numbers: list[int], labels: list[str]) -> str:
+        """The board's "Vehicles (every panel):" line for the panels of `numbers` (in their order on this sheet), the
+        pictures named by `labels`."""
+        images: dict[str, int] = {}
+        for vid in dict.fromkeys(v.id for n in numbers for v in self.shot_vehicles(n)):
+            row = self.by_id.get(vid) or {}
+            heads = (vh.plate_label(str(row.get("name") or ""), vh.make_of(row)),
+                     vh.sheet_label(str(row.get("name") or ""), vh.make_of(row)))
+            at = next((i for i, label in enumerate(labels, 1) if label in heads), None)
+            if at is not None:
+                images[vid] = at
+        panels = [(i, self.shot_vehicles(n)) for i, n in enumerate(numbers, 1)]
+        return vh.board_line(panels, images, self.by_id)
+
+    def vehicle_cards(self) -> list[Row]:
+        """What the writer reads about each vehicle the painted panels show: name, make, look (§2.3)."""
+        ids = dict.fromkeys(v.id for s in self.painted for v in self.vehicles.get(s.id, []))
+        return [{"name": str(self.by_id[i]["name"]), "make": vh.make_of(self.by_id[i]),
+                 "look": str(vh.card_of(self.by_id[i]).get("look") or ""),
+                 **({"views": [{k: v.get(k, "") for k in ("n", "name", "camera", "sees")}
+                               for v in (views_asset(self.by_id[i]) or {}).get("views") or []]}
+                    if views_asset(self.by_id[i]) is not None else {})}
+                for i in ids if i in self.by_id]
 
     def props(self, shots: list[kit.BoardShot]) -> list[Row]:
         """The props these shots' plans name, as canon rows: by name or alias, or as the end of a word the plan uses
@@ -216,15 +311,16 @@ class Board:
         if not loc:
             return []
         asset = views_asset(loc)
-        if asset is not None:
-            return [(views_label(str(loc["name"])), str(asset["path"]))]
-        return [(f"the location plate for {loc['name']}", sheet_path(loc))] if sheet_path(loc) else []
+        place = ([(views_label(str(loc["name"])), str(asset["path"]))] if asset is not None else
+                 [(f"the location plate for {loc['name']}", sheet_path(loc))] if sheet_path(loc) else [])
+        return place + self.vehicle_pictures(shots)  # plan/2026-11-24b §2.3/§5: after the sheet or the plate
 
     def bundle(self, labels: list[str]) -> Row:
         place, _ = self.place()
         props = [{"name": p["name"], "details": self._card(str(p["id"])).get("details", "")}
                  for p in self.props(self.painted)]
-        return kit.writer_bundle(self.scene, self.shots, self.people_rows(), place, props, labels)
+        return kit.writer_bundle(self.scene, self.shots, self.people_rows(), place, props, labels,
+                                 vehicles=self.vehicle_cards())
 
 
 def _download(ctx: RunContext, bucket: str, path: str) -> bytes:
@@ -251,7 +347,7 @@ def write(ctx: RunContext, b: Board, repaint: dict[int, str] | None = None) -> k
         ctx, max_output=kit.WRITER_MAX_OUTPUT)
     writer = kit.Writer.of(out.model_dump())
     writer.conflicts = list(dict.fromkeys([*writer.conflicts, *kit.writer_findings(writer, b.shots, b.carried(),
-                                                                                    b.views)]))
+                                                                                    b.views, b.panel_views())]))
     return writer
 
 
@@ -263,12 +359,17 @@ def _check_panel(ctx: RunContext, b: Board, panel: kit.Panel, data: bytes) -> Ro
     (`OPENAI__MODEL_VISION=""`), or a failed call (the panel is kept as it is)."""
     if not (llm.models_enabled() and get_settings().openai.model_vision):
         return None
+    view = kit.panel_view(panel, kit.views_of(panel, b.views, b.panel_views()))
+    crop = b.view_crop(panel.view, panel.shot) if view is not None else None
     try:
         out = agents.build("board_inspector").run(
             {"image_b64": base64.b64encode(data).decode(), "mime": "image/png",
              "people": [f"{n} is the {c} mannequin" for n, c in b.colours.items()
                         if any(x.name == n for x in panel.people)],
-             "panel": f"{panel.camera.rstrip('.')}. {panel.picture}", "hands": kit.hands_text(panel, b.colours)},
+             "panel": f"{panel.camera.rstrip('.')}. {panel.picture}", "hands": kit.hands_text(panel, b.colours),
+             # plan/2026-11-24c §2.7: the panel's view, its words and its crop beside the panel
+             **({"view": kit.view_named(view), "view_b64": base64.b64encode(crop).decode()}
+                if view is not None and crop is not None else {})},
             ctx)
     except Exception:
         _log.warning("panel of shot %s could not be checked", panel.shot, exc_info=True)
@@ -282,8 +383,10 @@ def _faults(answer: Row) -> list[str]:
     named = [w for flag, w in (("extra_limbs", "a mannequin with more or fewer than two arms"),
                                ("floating", "a held thing with no hand on it, floating"),
                                ("ungrounded", "feet not standing on the ground"),
-                               ("hands_mismatch", "a hand holding something other than the panel says"))
-             if (answer.get(flag) is True if flag != "hands_mismatch" else answer.get("hands_match") is False)]
+                               ("hands_mismatch", "a hand holding something other than the panel says"),
+                               ("view_mismatch", "the background shows another view of the place than the panel's"))
+             if (answer.get("hands_match") is False if flag == "hands_mismatch" else
+                 answer.get("view_match") is False if flag == "view_mismatch" else answer.get(flag) is True)]
     return (out or named) if named else []
 
 
@@ -300,8 +403,12 @@ def _mend(ctx: RunContext, b: Board, writer: kit.Writer, panel: kit.Panel, data:
         return data, {"ok": True, "problems": []}
     painter = ctx.ports.images
     shot = b.shot_by_number(panel.shot)
-    prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect, props=b.prop_names([shot]),
-                              fix=kit.fix_line(faults), places=b.place_names([shot]), views=b.views)
+    view = kit.panel_view(panel, kit.views_of(panel, b.views, b.panel_views()))
+    fix = kit.fix_line(faults, kit.view_named(view) if view is not None and answer.get("view_match") is False else "")
+    labels = [r.label for r in refs]
+    prompt = kit.panel_prompt(writer, panel, labels, b.colours, aspect, props=b.prop_names([shot]),
+                              fix=fix, places=b.place_names([shot]), views=b.views,
+                              vehicles=b.vehicle_line([panel.shot], labels), panel_views=b.panel_views())
     if painter is None or safe_depiction.blocking(prompt):
         return data, {"ok": False, "problems": faults}
     try:
@@ -413,8 +520,10 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
         refs = _pictures(ctx, b.image_pictures(group))
         if previous_last is not None:
             refs.append(Reference(label=kit.OVERLAP_LABEL, data=previous_last))
-        prompt = kit.board_prompt(writer, numbers, [r.label for r in refs], b.colours, aspect,
-                                  props=b.prop_names(group), places=b.place_names(group), views=b.views)
+        labels = [r.label for r in refs]
+        prompt = kit.board_prompt(writer, numbers, labels, b.colours, aspect,
+                                  props=b.prop_names(group), places=b.place_names(group), views=b.views,
+                                  vehicles=b.vehicle_line(numbers, labels), panel_views=b.panel_views())
         fields: Row = {"parts": len(groups), "writer": writer.dump(), "colours": colours, "prompt": prompt}
         found = safe_depiction.blocking(prompt)
         if found:
@@ -477,7 +586,10 @@ def paint(ctx: RunContext, production: Row, world: Row, board: Row, state: Row, 
                 sheet = _sheet(ctx, b, cells, f"{production['id']}/boards/{rid}", "checked")
             fields["writer"] = writer.dump()
             last = next((c for c in reversed(cells) if c.get("path")), None)
-            previous_last = pics.crop(image, last["box"]) if last else None
+            # the next part repeats this part's last panel; a panel the board check painted again has its own picture
+            # and no box on the sheet (2026-11-24: cropping box None failed a part that was painted and stored)
+            previous_last = (None if last is None else pics.crop(image, last["box"]) if last.get("box") else
+                             _download(ctx, "frames", str(last["path"])))
         except Exception:
             _log.exception("board %s part %s could not be cut or stored", board_id, i + 1)
             frames.save_board(rid, {**fields, "status": "failed", "error": FAILED})
@@ -589,8 +701,10 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
     if panel is None:
         raise _Failed(f"The board writer gave no panel for shot {shot.number}.")
     refs = [*places, *(Reference(label=kit.neighbour_label(s, n), data=d) for s, n, d in near)]
-    prompt = kit.panel_prompt(writer, panel, [r.label for r in refs], b.colours, aspect, props=b.prop_names([shot]),
-                              places=b.place_names([shot]), views=b.views)
+    labels = [r.label for r in refs]
+    prompt = kit.panel_prompt(writer, panel, labels, b.colours, aspect, props=b.prop_names([shot]),
+                              places=b.place_names([shot]), views=b.views,
+                              vehicles=b.vehicle_line([shot.number], labels), panel_views=b.panel_views())
     found = safe_depiction.blocking(prompt)
     if found:
         raise _Failed(safe_depiction.frame_error(found))
@@ -603,7 +717,7 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
         raise _Failed(FAILED) from None
     conflicts = [*kit.Writer.of(raw).conflicts,
                  *kit.writer_findings(kit.Writer(world="", geography="", panels=[panel]), [shot], b.carried(),
-                                      b.views)]
+                                      b.views, b.panel_views())]
     data, check = _mend(ctx, b, writer, panel, picture.data, refs, aspect, quality)
     line = _still_wrong(shot.number, check)
     return data, panel, [*conflicts, *([line] if line else [])], check

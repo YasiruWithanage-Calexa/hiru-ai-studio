@@ -108,6 +108,8 @@ def shot_brief(facts: Mapping[str, Any]) -> str:
                                                       else ""))
     if not facts.get("in_frame"):
         out.append("Nobody is in frame.")
+    for v in facts.get("vehicles") or []:  # plan/2026-11-24b §2.4: where each vehicle is, a fact
+        out.append(f"Vehicle (a fact, keep it): {v}")
     if facts.get("hands"):
         out.append(f"Hands (a fact, keep it): {facts['hands']}")
     ff = facts.get("first_frame") or {}

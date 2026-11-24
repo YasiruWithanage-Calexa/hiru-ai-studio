@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from contracts import board as board_kit
-from contracts import picture_pins, sceneplan
+from contracts import picture_pins, sceneplan, vehicles
 from contracts.canon import (
     SHEET_ASPECT,
     CanonCard,
@@ -260,7 +260,14 @@ class World:
                            unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
                            hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p),
                            scene=self.scene, shot=shot, genre=self.genre, board=board or (),
-                           shot_prompt=(record or {}).get("frame"))
+                           shot_prompt=(record or {}).get("frame"), vehicles=self.vehicle_lines(shot))
+
+    def vehicle_lines(self, shot: Row) -> list[str]:
+        """The frame's words for the shot's vehicles (plan/2026-11-24b §2.4): the place sentence of a shot INSIDE one,
+        with its seat sides, and where the others stand."""
+        found = vehicles.shot_vehicles(shot, self.canon, PersonEdits.of(shot).vehicles)
+        place = str((self.by_id.get(str(self.scene.get("location_id") or "")) or {}).get("name") or "")
+        return vehicles.frame_lines(found, self.by_id, place)
 
     def preview_labels(self, shot: Row) -> list[str]:
         """The labels the renderer will attach, when every first choice can be read (what the shot screen shows)."""

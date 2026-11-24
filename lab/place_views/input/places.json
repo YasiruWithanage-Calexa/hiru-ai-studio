@@ -1,0 +1,619 @@
+{
+ "roadside": {
+  "code": "L02",
+  "name": "Colombo roadside",
+  "class": "set",
+  "look": "An urban Colombo roadside with patched dark asphalt, a narrow concrete pavement, open kerb drainage and weathered low-rise commercial frontages beside a modest concrete building. Concrete boundary walls, utility poles and overhead cables frame a compact vending bay. Muted grey, dusty beige and leaf-green surfaces; soft early-morning daylight, rain-wet pavement and subdued amber evening shop light.",
+  "spots": [],
+  "plate": "roadside_plate.png",
+  "scenes": [
+   {
+    "number": 2,
+    "heading": "SCENE 02 — ANUDI ARRIVES",
+    "script": [
+     {
+      "kind": "action",
+      "text": "A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 2,
+    "heading": "SCENE 02 — THE FATHER NOTICES",
+    "script": [
+     {
+      "kind": "action",
+      "text": "One evening, Anudi is talking and laughing with Kasun beside his three-wheeler. Her father's car passes by. He notices Anudi standing beside the small roadside business.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "He asks the driver to slow down.From inside the car, he observes them for a moment. His expression changes when he sees the condition of Kasun's business. He doesn't confront them immediately. He continues driving, but his mind is troubled.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 3,
+    "heading": "SCENE 03 — THE UNEXPECTED ENCOUNTER",
+    "script": [
+     {
+      "kind": "action",
+      "text": "minutesAnudi walks past Kasun's three-wheeler while holding her umbrella. She tries to put her smartphone into the side pocket of her handbag.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "As she slips the phone into the bag, it accidentally slips from her hand and falls onto the roadside. Anudi doesn't notice and continues walking.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Kasun notices the phone lying on the ground. He quickly picks it up and runs after her.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "acbe8acb-29af-4442-bef7-894d2d1c499b"
+     },
+     {
+      "kind": "action",
+      "text": "Anudi hears him and turns around. Kasun approaches her, holding out the phone.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 4,
+    "heading": "SCENE 04 — A CONVERSATION THAT CHANGES EVERYTHING",
+    "script": [
+     {
+      "kind": "action",
+      "text": "Anudi takes her phone from Kasun.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "33190052-a3cf-4de7-84a5-9dea3398f8c4"
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "b36fdd1c-bf01-4a89-881b-4c433016f345"
+     },
+     {
+      "kind": "action",
+      "text": "Anudi smiles and looks at his small food business.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "d9b0ae30-cc02-408b-aee2-d6597e383a1a"
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "18c80995-e36e-49c4-bde0-6f1107e08558"
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "2256c767-cb90-48b3-ae46-c0631d5b02c7"
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "94896f20-a112-44aa-9429-1e0ced623ca7"
+     },
+     {
+      "kind": "action",
+      "text": "Anudi looks impressed.",
+      "line_id": null
+     },
+     {
+      "kind": "sound",
+      "text": "Before she can continue the conversation, her phone suddenly rings.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "She checks the screen. It's her father.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "36232aa2-eab7-4b10-85a3-4598ca3fda5d"
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "3c1570ee-0fa5-41a4-b241-18120c2e85e0"
+     },
+     {
+      "kind": "action",
+      "text": "Anudi's smile slowly disappears.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "361a549f-68c4-45cb-88ec-91fcc78f4bfd"
+     },
+     {
+      "kind": "action",
+      "text": "She ends the call.Kasun notices her changed expression. Anudi looks at him again.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "8ec39c7e-0c43-4305-89cd-2ac3b86d4dd7"
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "b0bd4fa0-323d-48f3-9019-bb9f0d79bcb1"
+     },
+     {
+      "kind": "action",
+      "text": "Anudi walks toward her destination. Kasun watches her leave. After a moment, he returns to his small business, but his thoughts are somewhere else.",
+      "line_id": null
+     }
+    ]
+   }
+  ]
+ },
+ "restaurant": {
+  "code": "L10",
+  "name": "KASUN'S Restaurant",
+  "class": "set",
+  "look": "A modest-sized modern Sri Lankan restaurant with an open glazed entrance, a broad signboard above it and a clear view into the dining room. Honey-toned wooden tables, dark-brown chairs, woven cane pendant shades, terracotta accents and restrained timber lattice panels surround a polished stainless-steel food counter. Maroon trim repeats across the counter and entrance. Warm interior lighting mixes with natural daytime light on cream walls and pale floor tiles.",
+  "spots": [],
+  "plate": "",
+  "scenes": [
+   {
+    "number": 5,
+    "heading": "SCENE 05 — A DREAM COMES TRUE",
+    "script": [
+     {
+      "kind": "cut",
+      "text": "Several months later.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "A modern but welcoming Sri Lankan restaurant is ready to open. The restaurant sign reads:",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "KASUN'S — SRI LANKAN FOOD & COFFEE",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "The restaurant is busy. Staff members are serving customers. The interior has warm lighting, wooden tables and Sri Lankan-inspired design. Kasun, now dressed in smart-casual clothing, stands proudly near the entrance. Anudi stands beside him.She looks around the restaurant and smiles.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "20f35c2e-4116-404f-80ef-500ef7b13403"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun smiles.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "26a20f16-c7d7-40e0-9ee6-ce65f772ec89"
+     },
+     {
+      "kind": "action",
+      "text": "Suddenly, Kasun notices someone approaching. It is Anudi's father. He slowly walks toward them. He looks around the successful restaurant and then at Kasun.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "0010017a-afa2-4b44-8f4c-d3cfc2114b68"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun listens respectfully.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "566d4ecd-5a76-4ee7-b254-c80b5c8e36d9"
+     },
+     {
+      "kind": "action",
+      "text": "He extends his hand. Kasun shakes it. Anudi smiles emotionally. The three of them stand together beneath the restaurant sign. The camera slowly pulls back, revealing the restaurant and its customers.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "FINAL TEXT ON SCREEN: \"සමහර ආදර කතාවලට සල්ලි ඕනේ නෑ. තමන්ගේ හීන විශ්වාස කරන කෙනෙක් හිටියම ඇති.\"",
+      "line_id": null
+     }
+    ]
+   }
+  ]
+ },
+ "prep_room": {
+  "code": "L08",
+  "name": "Kasun's small food preparation workspace",
+  "class": "set",
+  "look": "A cramped rectangular food-preparation room with off-white plaster walls, a grey cement floor and a small high ventilation window. Scratched stainless-steel cooking equipment, a compact hob, metal shelves and stacked food containers occupy most of the room. A small wooden table doubles as a desk, with receipts, business papers and a notebook; two plain chairs fit tightly beside it. Cool overhead tube light and a warmer desk bulb illuminate late-night interiors, with subdued grey daylight at the window in daytime.",
+  "spots": [],
+  "plate": "",
+  "scenes": [
+   {
+    "number": 1,
+    "heading": "SCENE 01 — THE STRUGGLE",
+    "script": [
+     {
+      "kind": "action",
+      "text": "Kasun is determined to secure the Rs. 2 million needed to expand his business. A sequence of connected moments shows his struggle.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "He visits a bank and discusses a business loan.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "He sits with a potential investor and explains his business plan.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "He makes phone calls to friends asking for financial support.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "He reviews his business documents and calculations late at night.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Each attempt ends in disappointment. The bank cannot offer the required support. The investor doesn't believe the small business can handle such a large order. His friends are unable to help.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Finally, Kasun returns to his small workspace. He sits alone at the desk, looking at the supermarket order and the financial calculations. He realizes that his biggest opportunity may disappear because he cannot find the money.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 3,
+    "heading": "SCENE 03 — AN UNEXPECTED OFFER",
+    "script": [
+     {
+      "kind": "action",
+      "text": "Kasun is reviewing business documents at his small desk. Someone arrives. It is Anudi's father. Kasun stands up respectfully.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "0b0caf33-f0a1-4e7d-92fd-a9f537084120"
+     },
+     {
+      "kind": "action",
+      "text": "The father sits down. He looks around the small workspace. He notices the business documents, food containers and calculations on the table.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "He takes an envelope from his bag and places it on the table. Kasun looks at it.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "de99732c-38c0-412d-87ff-5665ba2b270a"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun looks surprised. He opens the envelope and sees the cheque.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "19d4afa7-c9cd-4c8c-a2cd-9a97124494f5"
+     },
+     {
+      "kind": "action",
+      "text": "The father looks directly at him.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "1ab9470e-231a-4fec-b671-84bf6a4ca962"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun looks up.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "04bde496-6eba-4614-92c3-bb4ae35aabfb"
+     },
+     {
+      "kind": "sound",
+      "text": "Silence.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Kasun's smile disappears. He looks at the cheque and then at Anudi's father.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 4,
+    "heading": "SCENE 04 — KASUN'S DETERMINATION AND THE BIG OPPORTUNITY",
+    "script": [
+     {
+      "kind": "action",
+      "text": "Late at night. Kasun is working in his small rented workspace. The room contains stainless-steel cooking equipment, food containers, business receipts and a small table. He checks his orders, calculates expenses and writes figures in a notebook. His business has started growing. He is now supplying food to three small shops.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Anudi arrives and notices how tired he looks. She looks around the workspace.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "4bc8d503-2a02-4710-85a6-dac9bc1a2d2b"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun looks at her.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "1f10d9fe-d578-43e2-9cd2-b3bf906ce3c3"
+     },
+     {
+      "kind": "action",
+      "text": "Anudi gently holds his hand.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "2ed264f7-cf22-40c1-b663-e69cd53ca6b2"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun smiles.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "a34c48aa-76db-40c7-a840-b3da334fb3f4"
+     },
+     {
+      "kind": "action",
+      "text": "Suddenly, Kasun's phone rings. He checks the number and answers.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "c6f222a2-9075-475a-9944-ec9dc56c6c68"
+     },
+     {
+      "kind": "action",
+      "text": "A representative from a major supermarket chain is on the other end.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "3c5efe8c-195f-4cc9-9dbe-d8aecb943010"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun is surprised.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "21fd3953-d467-4357-a25b-ed59d0015768"
+     },
+     {
+      "kind": "action",
+      "text": "The call ends. Anudi looks excited.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "f57ef492-53c4-4846-9ac4-762ab849d8af"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun smiles.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "a7783132-c002-4267-9a1f-733de89c4c5c"
+     },
+     {
+      "kind": "action",
+      "text": "looks at her with excitement.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "But as he returns to his notebook and calculates the expansion costs, his expression slowly changes. The supermarket order requires a major investment. He needs Rs. 2 million. He looks at the numbers again. He doesn't have enough money. Anudi notices his silence.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 4,
+    "heading": "SCENE 04 — THE CHOICE",
+    "script": [
+     {
+      "kind": "action",
+      "text": "Kasun remains silent for a moment. He looks at the cheque. He knows how much his business needs this money. He looks at the business documents on the table.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Then he slowly pushes the cheque back toward Anudi's father.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "86dd33a3-e3eb-4bb1-958e-933216c1d635"
+     },
+     {
+      "kind": "action",
+      "text": "The father looks surprised. Kasun takes a breath.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "a337d59b-aef4-4f0d-842c-ea76bfe7053b"
+     },
+     {
+      "kind": "action",
+      "text": "He stands up.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "81621a27-a4bb-4e12-aee6-421d39dffe96"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun respectfully walks away. The father remains seated. He looks at the cheque and then around the small workspace. For the first time, he begins to question his judgment about Kasun.",
+      "line_id": null
+     }
+    ]
+   }
+  ]
+ },
+ "car": {
+  "code": "L04",
+  "name": "Family car",
+  "class": "vehicle",
+  "look": "BMW 520d. 2019 version,  A well-kept pearl-silver midsize four-door sedan with a roomy beige fabric rear bench, charcoal dashboard, right-hand-drive steering wheel, black floor mats and lightly tinted windows. Clean upholstery and restrained fittings; soft morning daylight through rain-speckled glass and muted evening reflections.",
+  "spots": [],
+  "plate": "car_plate.png",
+  "scenes": [
+   {
+    "number": 1,
+    "heading": "SCENE 01 — A FAMILIAR FACE",
+    "script": [
+     {
+      "kind": "action",
+      "text": "A few weeks have passed. Kasun is serving customers as usual. Suddenly, a familiar voice interrupts him.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "ec9e57d7-1d4e-4054-b591-6c749d19a4be"
+     },
+     {
+      "kind": "action",
+      "text": "Kasun looks up and smiles.",
+      "line_id": null
+     },
+     {
+      "kind": "dialogue",
+      "text": "",
+      "line_id": "0652b634-a06c-406c-a5f1-30015fa3987d"
+     },
+     {
+      "kind": "action",
+      "text": "They laugh. Anudi takes a seat beside the three-wheeler. This becomes a regular routine. A romantic montage follows: Anudi visits Kasun after work. Kasun prepares her favourite tea. They spend time talking and laughing. Anudi helps him arrange food containers. Kasun walks with her to her car. They exchange smiles before saying goodbye. Over these repeated meetings, their friendship gradually develops into love.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 2,
+    "heading": "SCENE 02 — ANUDI ARRIVES",
+    "script": [
+     {
+      "kind": "action",
+      "text": "A comfortable family car moves through Colombo traffic. Anudi sits in the back seat, looking at her smartphone.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "The driver stops near an office building. Anudi gets out, carrying her handbag and umbrella. She thanks the driver and walks toward the building.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "Rain begins to fall. She opens her umbrella and continues walking along the roadside, passing Kasun's small food three-wheeler.",
+      "line_id": null
+     }
+    ]
+   },
+   {
+    "number": 2,
+    "heading": "SCENE 02 — THE FATHER NOTICES",
+    "script": [
+     {
+      "kind": "action",
+      "text": "One evening, Anudi is talking and laughing with Kasun beside his three-wheeler. Her father's car passes by. He notices Anudi standing beside the small roadside business.",
+      "line_id": null
+     },
+     {
+      "kind": "action",
+      "text": "He asks the driver to slow down.From inside the car, he observes them for a moment. His expression changes when he sees the condition of Kasun's business. He doesn't confront them immediately. He continues driving, but his mind is troubled.",
+      "line_id": null
+     }
+    ]
+   }
+  ]
+ }
+}

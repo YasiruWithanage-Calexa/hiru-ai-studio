@@ -17,6 +17,11 @@ Look for these faults, and only these:
   fault.
 - HANDS. When HANDS is given, each mannequin's hands hold what it says, in the hand it says: `hands_match` is false
   when a hand holds something else, a listed thing is missing, or two things are in one hand.
+- VIEW. When VIEW is given, the second picture is that view of the place, cut from the place's reference sheet. The
+  panel's background must show that view's things on that view's sides; the panel may be closer, tighter or a little
+  turned. `view_match` is false when the background shows another side of the place instead (a frontage the view has
+  out of frame, the far side where the view shows the near one). People and props are not part of this check.
 
 Name each fault in `problems` in a few words, with the mannequin's colour ("blue: an umbrella above her with no hand
-on its shaft"). When nothing is wrong, every flag is false, `hands_match` is true and `problems` is empty.
+on its shaft"); a view fault by the view ("the background shows the shopfront, not view 4 (Reverse)"). When nothing is
+wrong, every flag is false, `hands_match` and `view_match` are true and `problems` is empty.

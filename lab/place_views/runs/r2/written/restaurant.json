@@ -1,0 +1,42 @@
+{
+ "answers": {
+  "sides": "both",
+  "moves": false,
+  "size": "room",
+  "why": "The card describes a street-front restaurant with an open glazed entrance and an interior dining room, so it is seen both outside and inside and occupies a single shop-sized room."
+ },
+ "layout": "Street-facing single-room restaurant with a broad signboard above a maroon-trimmed glazed entrance; the glass gives a clear view straight into the dining room. Inside, pale floor tiles and cream walls form the background; honey-toned wooden tables and dark-brown chairs are arranged across the dining floor under woven cane pendant shades. A polished stainless-steel food counter with a maroon trim band sits against the far wall and is framed on three sides by restrained timber lattice panels; terracotta accents (low planters and a narrow feature band) tie the counter and the entrance visually. Warm interior lighting mixes with natural daylight through the glass entrance.",
+ "empty": [],
+ "views": [
+  {
+   "slot": "Outside wide",
+   "camera": "On the pavement a little way from the door, facing the glazed entrance square on.",
+   "sees": "The whole frontage fills the frame: the broad signboard reading \"KASUN'S — SRI LANKAN FOOD & COFFEE\" across the top (high, centre), the maroon-trimmed glazed entrance central, and through the glass a clear view into the dining room beyond; terracotta accents and a low planter sit at the base of the entrance (near edge)."
+  },
+  {
+   "slot": "Entrance",
+   "camera": "Standing just outside the open glazed entrance, looking in through the doorway.",
+   "sees": "The maroon-trimmed door frame and threshold in the near foreground and a direct view into the nearest dining tables and the pendant shades; across the room the stainless-steel food counter with its maroon trim and surrounding timber lattice panels is visible at the far wall (far centre)."
+  },
+  {
+   "slot": "Inside wide",
+   "camera": "From just inside the entrance, a few steps in, looking toward the far wall.",
+   "sees": "The whole dining room: honey-toned wooden tables arranged across the centre and right, dark-brown chairs around them, woven cane pendant shades overhead, pale tiled floor and cream walls; the polished stainless-steel food counter with maroon trim sits against the far wall and is framed by restrained timber lattice panels (far centre). Warm interior lights mix with daylight from the entrance."
+  },
+  {
+   "slot": "Inside reverse",
+   "camera": "From the far side of the dining room, turned to look back toward the entrance and the street beyond.",
+   "sees": "Nearest tables and chairs in the foreground (near), the glazed entrance with maroon trim centered in the midground, and beyond the glass a glimpse of the signboard and the outside street above the door (far)."
+  },
+  {
+   "slot": "Detail 1",
+   "camera": "Close on the polished stainless-steel food counter, camera square to its front at standing height.",
+   "sees": "The polished stainless-steel face with a horizontal maroon trim band across it (centre), the counter top clear, timber lattice panels rising directly behind and at the sides, and terracotta accents (a low planter or band) at the counter base."
+  },
+  {
+   "slot": "Detail 2",
+   "camera": "Close at table height on a honey-toned wooden table beneath a woven cane pendant, camera looking slightly up toward the shade.",
+   "sees": "One wooden table and dark-brown chairs under a woven cane pendant shade (near centre), the cream wall and pale floor tiles forming the background and a soft pool of warm light from the pendant above."
+  }
+ ]
+}

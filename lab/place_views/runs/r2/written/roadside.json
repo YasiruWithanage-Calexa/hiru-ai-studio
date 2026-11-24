@@ -1,0 +1,44 @@
+{
+ "answers": {
+  "sides": "outside",
+  "moves": false,
+  "size": "long",
+  "why": "All scenes occur along an urban Colombo roadside exterior with passing vehicles and a vending three-wheeler."
+ },
+ "layout": "A narrow stretch of patched dark asphalt road runs down the left side of the place with a shallow open kerb drainage running beside it and a narrow concrete pavement alongside the frontages. A run of weathered low-rise commercial shutters and one modest two-storey concrete building with a balcony form the frontage on the right; the building has a small lit shop under a blue awning and a compact vending/three-wheeler bay beside it. Concrete boundary walls, regularly spaced utility poles and overhead cables line the pavement and visually frame the vending bay. Surfaces are rain-wet and muted (grey tarmac, dusty beige walls, leaf-green paint) with soft early-morning or subdued amber shop light.",
+ "empty": [
+  "compact vending/three-wheeler bay (kept empty for a three-wheeler)"
+ ],
+ "views": [
+  {
+   "slot": "Wide",
+   "camera": "Anchor spot: standing on the wet road a little out from the pavement, facing the main frontage square on.",
+   "sees": "The whole roadside at once: patched dark asphalt on the left, the open kerb drainage and narrow pavement running near the picture centre, and the row of shuttered commercial frontages across the right half. The modest two-storey concrete building with balcony and its lit shop under a blue awning sit near the near-right; the compact vending/three-wheeler bay beside that shop is shown empty. Utility poles and overhead cables run up the right edge and across the sky; overall palette is muted grey, beige and leaf-green with rain-wet reflections and a subdued amber shop light."
+  },
+  {
+   "slot": "Looking left",
+   "camera": "Same anchor spot as Wide, turned 90 degrees to the left, looking along the road away from the frontage.",
+   "sees": "The road receding into the distance toward the left edge (now the far left), the open kerb drainage and pavement running centrally toward the near-left, and the frontages now at the RIGHT edge of the picture. Utility poles step away along the pavement and tree canopy appears farther down the street; the vending bay and lit shop sit at the RIGHT edge, the vending bay empty."
+  },
+  {
+   "slot": "Looking right",
+   "camera": "Same anchor spot as Wide, turned 90 degrees to the right, looking along the length of the frontage to the right.",
+   "sees": "The row of low-rise commercial frontages and pavement stretching to the near-right and far-right, the open kerb drainage and road occupying the left of the picture. The modest two-storey building with balcony and the lit shop come into the LEFT edge of the picture; the compact vending/three-wheeler bay beside it is visible and empty. Overhead cables run diagonally across the frame."
+  },
+  {
+   "slot": "Reverse",
+   "camera": "Same anchor spot as Wide, turned 180 degrees from the Wide, looking back toward what is behind the anchor camera.",
+   "sees": "What lies behind the anchor spot: the wet road surface extending back toward the far side, more utility poles and distant shopfront lights, with the main frontage completely out of frame. Reflections of the subdued evening light and vehicle taillights are visible on the tarmac; the pavement and drainage are behind the camera."
+  },
+  {
+   "slot": "Detail 1",
+   "camera": "Close, low camera near the pavement edge, looking down the open kerb drainage and wet pavement.",
+   "sees": "A close view of the open kerb drainage runs near the lower edge of the frame with rain-slick concrete pavement beside it; patched asphalt of the road is visible at the top-left of the picture. Water reflections and worn concrete textures are prominent; no vehicle is in the drainage or on the pavement."
+  },
+  {
+   "slot": "Detail 2",
+   "camera": "Close on the shop under the blue awning, standing on the pavement facing the shopfront square on.",
+   "sees": "The modest lit shop doorway and display table beneath the awning at the near-right, shelves and a single bare table of goods visible and lit by subdued amber light. The concrete boundary wall and a nearby utility pole frame the right edge; the compact vending/three-wheeler bay beside the shop is visible and kept empty."
+  }
+ ]
+}

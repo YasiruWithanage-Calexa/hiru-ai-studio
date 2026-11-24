@@ -30,11 +30,11 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Mapping
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
@@ -42,6 +42,7 @@ from api.repositories import Repos, Row
 from api.services import boards, media_links, media_thumbs
 from api.services.production import LOCKED, ShotState, camera_checks, scene_states
 from api.workers import task_manager
+from contracts import vehicles as vehicles_kit
 from contracts.canon import look_wardrobe, looks_in_force
 from contracts.frame_brief import (
     FrameBrief,
@@ -73,6 +74,7 @@ from contracts.producer import (
 from contracts.production import Framing, SceneStatus, ShotStatus
 from contracts.roles import Permission
 from contracts.staging import CoverageUpdate, IntentUpdate, ScenePlan, ShotIntent, unseen_sentence
+from contracts.vehicles import VehicleEdit
 from contracts.veo import ASPECT_RATIO, CameraLink, FrameStrategy, Orientation, SoundMode
 
 router = APIRouter(prefix="/v1/productions/{production_id}", tags=["production"])
@@ -248,6 +250,31 @@ class SetupFrameUpdate(BaseModel):
     off: bool  # true: never attach the same-setup frame to this shot
 
 
+class VehicleUpdate(BaseModel):
+    """A person's change to one vehicle of a shot (plan/2026-11-24b §2.5): its role here, or "none" to take it out."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    role: Literal["inside", "at", "none"]
+    where: str = Field(default="", max_length=400)
+
+
+class ShotVehicleView(BaseModel):
+    """One vehicle of a shot and its role (plan/2026-11-24b): `by_person` when a person set it."""
+
+    id: UUID
+    name: str
+    make: str = ""
+    role: Literal["inside", "at"]
+    where: str = ""
+    by_person: bool = False
+
+
+class VehicleChoice(BaseModel):
+    id: UUID
+    name: str
+
+
 class LockView(BaseModel):
     locked: bool
     reason: str
@@ -319,6 +346,9 @@ class ShotProductionView(BaseModel):
     setup_frame_off: bool = False  # a person turned off the same-setup frame for this shot
     # plan/2026-11-22c: how the shot plays in its video, set through Zora or Sable; the first frame is kept
     video_note: str = ""
+    # plan/2026-11-24b §2.5: the shot's vehicles and their roles, and the production's vehicle cards to add from
+    vehicles: list[ShotVehicleView] = Field(default_factory=list)
+    vehicle_choices: list[VehicleChoice] = Field(default_factory=list)
     # plan/2026-11-20d: the Shot prompt agent's opening + frame words (None until it wrote them)
     shot_prompt: ShotPromptView | None = None
     frames: list[FrameView]  # the finals (uploads and carried frames too)
@@ -636,6 +666,11 @@ def shot_view(ld: Loaded, st: ShotState, checks: list[CameraCheck]) -> ShotProdu
         frame_missing=missing_references(planned),
         setup_frame_off=st.edits.setup_frame_off,
         video_note=st.edits.video_note,
+        vehicles=[ShotVehicleView(id=UUID(v.id), name=v.name, make=v.make, role=v.role, where=v.where,
+                                  by_person=any(e.id == v.id for e in st.edits.vehicles))
+                  for v in vehicles_kit.shot_vehicles(row, ld.canon, st.edits.vehicles)],
+        vehicle_choices=[VehicleChoice(id=UUID(str(c["id"])), name=str(c.get("name") or ""))
+                         for c in vehicles_kit.vehicle_cards(ld.canon)],
         shot_prompt=shot_prompt_view(st),
         frames=frames, accepted_frame_id=st.accepted["id"] if st.accepted else None,
         drafts=frame_views(st.drafts, "Draft"),
@@ -855,6 +890,45 @@ async def set_setup_frame(production_id: UUID, shot_id: UUID, body: SetupFrameUp
         edits.setup_frame_off = body.off
         await repos.shots.update(shot_id, {"person_edits": edits.dump()})
         await _audit(repos, access, "shot.setup_frame", "shot", str(shot_id), {"off": body.off})
+        ld, st = await load_shot(repos, access, shot_id)
+    return shot_view(ld, st, camera_checks(ld.states)[st.id])
+
+
+@router.put("/shots/{shot_id}/vehicles/{entity_id}", response_model=ShotProductionView)
+async def set_shot_vehicle(production_id: UUID, shot_id: UUID, entity_id: UUID, body: VehicleUpdate,
+                           access: CanGenerate, repos: ReposDep) -> ShotProductionView:
+    """A person sets one vehicle's role in this shot (plan/2026-11-24b §2.5): `inside` (the vehicle is the place), `at`
+    with `where` (where it stands, which way it faces, what it stands on), or `none` (not in this shot). It wins over
+    Raphael's and a re-plan keeps it."""
+    ld, st = await load_shot(repos, access, shot_id)
+    _require_unlocked(ld)
+    if not vehicles_kit.is_vehicle(next((c for c in ld.canon if str(c["id"]) == str(entity_id)), None)):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "No such vehicle in this production.")
+    edits = PersonEdits.of(st.row)
+    mine = VehicleEdit(id=str(entity_id), role=body.role, where=" ".join(body.where.split()))
+    if body.role == "inside":  # at most one: another vehicle the shot was inside now stands at the place
+        others = [v for v in vehicles_kit.shot_vehicles(st.row, ld.canon, edits.vehicles)
+                  if v.role == "inside" and v.id != str(entity_id)]
+        edits.vehicles = [e for e in edits.vehicles if e.id not in {o.id for o in others}]
+        edits.vehicles += [VehicleEdit(id=o.id, role="at", where=o.where) for o in others]
+    edits.vehicles = [*(e for e in edits.vehicles if e.id != str(entity_id)), mine]
+    await repos.shots.update(shot_id, {"person_edits": edits.dump()})
+    await _audit(repos, access, "shot.vehicle", "shot", str(shot_id), {"vehicle": str(entity_id), "role": body.role})
+    ld, st = await load_shot(repos, access, shot_id)
+    return shot_view(ld, st, camera_checks(ld.states)[st.id])
+
+
+@router.delete("/shots/{shot_id}/vehicles/{entity_id}", response_model=ShotProductionView)
+async def reset_shot_vehicle(production_id: UUID, shot_id: UUID, entity_id: UUID, access: CanGenerate,
+                             repos: ReposDep) -> ShotProductionView:
+    """Take a person's change to this vehicle back: the shot reads Raphael's role again (plan/2026-11-24b)."""
+    ld, st = await load_shot(repos, access, shot_id)
+    _require_unlocked(ld)
+    edits = PersonEdits.of(st.row)
+    if any(e.id == str(entity_id) for e in edits.vehicles):
+        edits.vehicles = [e for e in edits.vehicles if e.id != str(entity_id)]
+        await repos.shots.update(shot_id, {"person_edits": edits.dump()})
+        await _audit(repos, access, "shot.vehicle_reset", "shot", str(shot_id), {"vehicle": str(entity_id)})
         ld, st = await load_shot(repos, access, shot_id)
     return shot_view(ld, st, camera_checks(ld.states)[st.id])
 

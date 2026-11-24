@@ -71,6 +71,9 @@ class CanonCard(BaseModel):
     accent: str = Field(default="", max_length=120)  # "a Sri Lankan (southern) accent"
     # locations
     look: str = Field(default="", max_length=800)  # architecture, materials, light
+    # plan/2026-11-24b §2.1: a vehicle's make ("BMW 520d, 2019, pearl silver"); empty for every other class. Left out
+    # of a dump when empty, so every card without one dumps and hashes (`card_hash`) exactly as before
+    make: str = Field(default="", max_length=120, exclude_if=lambda v: not v)
     # props
     details: str = Field(default="", max_length=800)  # colour, size, states
     notes: str = Field(default="", max_length=2000)  # continuity rules from the bible
@@ -94,11 +97,32 @@ class CanonVersion(BaseModel):
 
 
 class LocationView(BaseModel):
-    """One named view of a location's views sheet (plan/2026-11-24)."""
+    """One named view of a place's views sheet (plan/2026-11-24). A sheet of plan/2026-11-24c names its template's slot
+    and says where the camera stands (`camera`) and what it sees (`sees`); `what` is both as one text (a built sheet
+    has only `what`)."""
 
     n: int = Field(ge=1, le=6)
     name: str = Field(min_length=1, max_length=60)
-    what: str = Field(min_length=1, max_length=600)
+    what: str = Field(default="", max_length=1400)
+    camera: str = Field(default="", max_length=400)
+    sees: str = Field(default="", max_length=1000)
+
+    @model_validator(mode="after")
+    def _said(self) -> LocationView:
+        if not (self.what.strip() or self.sees.strip()):
+            raise ValueError("a view says what it shows")
+        return self
+
+
+class ViewAnswers(BaseModel):
+    """The three answers about a place that pick its views template (plan/2026-11-24c §2.1)."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    sides: Literal["outside", "inside", "both"]
+    moves: bool
+    size: Literal["small", "room", "long"]
+    why: str = ""
 
 
 class CanonEntity(BaseModel):
@@ -134,6 +158,12 @@ class CanonEntity(BaseModel):
     views: list[LocationView] = Field(default_factory=list)
     views_layout: str = ""
     views_light: str = ""
+    # plan/2026-11-24c: the answers and template the sheet was made with (None / "" for a built sheet), its empty
+    # spaces, and what the code checks still found in the views
+    views_answers: ViewAnswers | None = None
+    views_template: str = ""
+    views_empty: list[str] = Field(default_factory=list)
+    views_findings: list[str] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
 
@@ -573,41 +603,230 @@ def view_label(name: str, view: Mapping[str, Any]) -> str:
     return f"view {view['n']} ({str(view['name']).lower()}) of the location sheet for {name}"
 
 
+# plan/2026-11-24c §2.4 (lab/final_views fault 3): a wet sheet made dry shots damp, so the frame is told to leave the
+# view's light and weather (the final lab's words).
 VIEW_JOB = ("the background exactly as this view shows it, the same things on the same sides, seen from this shot's "
-            "own camera")
+            "own camera; not its light, weather or wet ground")
 
 
-def views_sheet_prompt(place: str, plates: Sequence[str], layout: str, light: str,
+# ── place views by type (plan/2026-11-24c; lab/place_views r2, lab/final_views) ──────────────────────────────────
+#
+# The sheet is made at CANON time, before shots exist, so it covers a place's main POSSIBLE views. The kinds of place
+# never end, so three answers about the place pick one of four FIXED templates (always six slots, one 3x2 sheet) and the
+# views writer writes each slot. The templates are the lab's `TEMPLATES`, word for word: (slot name, what it shows).
+VIEW_TEMPLATES: dict[str, tuple[tuple[str, str], ...]] = {
+    "outside": (
+        ("Wide", "from the ANCHOR SPOT (where most of the place's life happens), facing the place's main frontage "
+                 "square on: the whole place at once"),
+        ("Looking left", "from the SAME anchor spot as the Wide, turned 90 degrees to the LEFT: looking along the "
+                         "place to the left; the main frontage is now at the RIGHT edge of the picture"),
+        ("Looking right", "from the SAME anchor spot as the Wide, turned 90 degrees to the RIGHT: looking along the "
+                          "place to the right; the main frontage is now at the LEFT edge of the picture"),
+        ("Reverse", "from the SAME anchor spot as the Wide, turned 180 degrees: what is behind the Wide's camera, "
+                    "the main frontage out of the picture"),
+        ("Detail 1", "close on the first thing the place is known for"),
+        ("Detail 2", "close on the second thing the place is known for"),
+    ),
+    "inside": (
+        ("Wide from the door", "standing at the way in, the whole room at once"),
+        ("Opposite wall", "turned round: the wall with the way in, seen from the far side of the room"),
+        ("Left wall", "the left wall of the room, square on"),
+        ("Right wall", "the right wall of the room, square on"),
+        ("Detail 1", "close on the first thing the room is known for"),
+        ("Detail 2", "close on the second thing the room is known for"),
+    ),
+    "both": (
+        ("Outside wide", "outside, the front of the place as a passer-by sees it"),
+        ("Entrance", "close to the way in, looking in through it"),
+        ("Inside wide", "inside, standing just in from the way in, the whole inside at once"),
+        ("Inside reverse", "inside, turned round toward the way in and the outside beyond it"),
+        ("Detail 1", "close on the first thing the place is known for"),
+        ("Detail 2", "close on the second thing the place is known for"),
+    ),
+    "vehicle": (
+        ("Front three-quarter", "outside, the front and one side, the whole vehicle"),
+        ("Side", "outside, the full side square on"),
+        ("Rear three-quarter", "outside, the back and the other side, the whole vehicle"),
+        ("Inside from the rear", "inside, from where the back passengers sit, looking forward to the driver's place"),
+        ("Inside from the front", "inside, from the front, looking back at the seats behind"),
+        ("Detail", "close on the one thing inside or on it that people use most (the dashboard, a hatch)"),
+    ),
+}
+VIEW_SIDES = ("outside", "inside", "both")
+VIEW_SIZES = ("small", "room", "long")
+
+
+def view_template(answers: Mapping[str, Any] | None) -> str:
+    """The template the three answers pick (lab `template_of`): `vehicle` when the place moves, else its sides."""
+    a = answers or {}
+    if a.get("moves") is True:
+        return "vehicle"
+    sides = str(a.get("sides") or "")
+    return sides if sides in VIEW_SIDES else "outside"
+
+
+def template_slots(template: str) -> list[str]:
+    return [s for s, _ in VIEW_TEMPLATES.get(template, VIEW_TEMPLATES["outside"])]
+
+
+def view_words(view: Mapping[str, Any]) -> str:
+    """A view's words as one text: its camera and what it sees (plan/2026-11-24c), or a built sheet's `what`."""
+    said = " ".join(str(view.get(k) or "").strip() for k in ("camera", "sees")).strip()
+    return said or str(view.get("what") or "").strip()
+
+
+def view_key_words(view: Mapping[str, Any], limit: int = 220) -> str:
+    """What a view shows in a few words, for a board panel's line (plan/2026-11-24c §2.7): the first sentence of what
+    it sees (a built sheet's `what`), cut at `limit` characters."""
+    text = str(view.get("sees") or view.get("what") or "").strip()
+    first = re.split(r"(?<=[.!?])\s+", text, maxsplit=1)[0].rstrip(".") if text else ""
+    return first if len(first) <= limit else first[: limit].rsplit(" ", 1)[0] + " …"
+
+
+# ── the code checks after the writer (plan/2026-11-24c §2.3): the lab's writer broke soft rules ──────────────────
+
+_QUOTED = re.compile(r"\"([^\"]{2,})\"|“([^”]{2,})”")
+_SIGN_WORDS = re.compile(r"\b(?:sign\w*|board|banner|plaque|badge|logo|lettering|name)\b[^.]{0,40}?\b(?:reading|reads|"
+                         r"lettered|inscribed|spelling out|spells out|with the words|printed with)\b\s*:?\s*"
+                         r"([^.;,\"“]{2,60})", re.IGNORECASE)
+# The lab's rule: "Never a plain table, chair or wall that no scene uses."
+PLAIN_THINGS = ("table", "chair", "stool", "wall", "floor", "ceiling")
+_USED_AT = (r"\b(?:on|at|to|from|beside|under|by|near|behind|against|across|onto|over)\s+"
+            r"(?:the|a|an|his|her|their|its)\s+(?:[a-z-]+\s+)?{thing}s?\b")
+_CAMERA_WORDS = frozenset((
+    "close closer closely camera looking look looks down level height standing stands square front slightly above "
+    "below near edge side sides from with into onto toward towards inside outside focused tight view shot frame "
+    "picture eye high just little angle centre center left right detail first second thing things place surface "
+    "surround immediate small large area seen part beside behind across facing faces turned short distance "
+    "standing-height table-height eye-level waist chest knee").split())
+_WHERE = re.compile(r"\b(?:left|right|beside|between|next to|behind|across|in front of|opposite|near|along|by the|"
+                    r"corner|end of|far side|edge|against|under|outside|inside|front of|back of)\b", re.IGNORECASE)
+
+
+def _fold(word: str) -> str:
+    """A word in the form the checks compare: lower case, a plural folded to its singular ("shades" → "shade")."""
+    w = word.lower()
+    if len(w) > 4 and w.endswith("ies"):
+        return w[:-3] + "y"
+    if len(w) > 3 and w.endswith("s") and not w.endswith("ss"):
+        return w[:-1]
+    return w
+
+
+def _content(text: str) -> list[str]:
+    """The words that name things ("driver-seat" gives "driver" and "seat"), without the camera's own words."""
+    words = [p for w in re.findall(r"[A-Za-z][A-Za-z-]+", text) for p in w.split("-")]
+    return [_fold(w) for w in words if len(w) >= 4 and _fold(w) not in _CAMERA_WORDS and w.lower() not in _CAMERA_WORDS]
+
+
+def _vocabulary(texts: Iterable[str]) -> set[str]:
+    out: set[str] = set()
+    for t in texts:
+        for w in re.findall(r"[A-Za-z][A-Za-z-]+", t):
+            out.add(_fold(w))
+            out.update(_fold(p) for p in w.split("-") if len(p) >= 3)
+    return out
+
+
+def _norm(text: str) -> str:
+    return " ".join(re.sub(r"[^\w']+", " ", text.casefold()).split())
+
+
+def view_findings(written: Mapping[str, Any], card: str, scenes: Sequence[str]) -> list[str]:
+    """What code finds wrong in the views writer's answer (plan/2026-11-24c §2.3), as lines for a re-ask and for the
+    canon page; [] when it is fine. `written`: `{answers, layout, empty, views: [{slot, camera, sees}]}`; `card`: the
+    card's look; `scenes`: the scenes set there, as text. The lab showed the prompt alone is not enough: its writer
+    invented sign text and chose a plain table as a detail. Never a model call."""
+    out: list[str] = []
+    template = view_template(written.get("answers"))
+    want = template_slots(template)
+    views = [v for v in written.get("views") or [] if isinstance(v, Mapping)]
+    got = [str(v.get("slot") or v.get("name") or "") for v in views]
+    if got != want:  # the lab's `check`
+        out.append(f"The views are {got}; the {template} template's slots, in order, are {want}.")
+    # 2. no quoted text or sign wording unless the card's look has those words
+    look = _norm(card)
+    pieces = [("The layout", str(written.get("layout") or ""))]
+    pieces += [(f"{name or 'A view'}", view_words(v)) for name, v in zip(got, views, strict=False)]
+    for where, text in pieces:
+        quoted = [q for pair in _QUOTED.findall(text) for q in pair if q]
+        bad = [q for q in quoted if _norm(q) and _norm(q) not in look]
+        if not quoted:
+            bad += [m.strip() for m in _SIGN_WORDS.findall(text) if _norm(m) and _norm(m) not in look]
+        for q in dict.fromkeys(bad):
+            out.append(f"{where} gives words to read (\"{q}\") that the card does not have: write no text, sign "
+                       "wording or logo.")
+    # 3. a detail is a thing from the card or a scene; a plain table, chair or wall only when a scene uses it
+    vocab = _vocabulary([card, *scenes])
+    scene_text = " ".join(scenes).lower()
+    for name, v in zip(got, views, strict=False):
+        if not name.startswith("Detail"):
+            continue
+        camera = str(v.get("camera") or "") or view_words(v)
+        words = _content(camera) or _content(view_words(v))
+        if words and not any(w in vocab for w in words):
+            out.append(f"{name} ({camera.strip().rstrip('.')}) shows nothing the card names or a scene set here "
+                       "uses: choose a thing from them.")
+            continue
+        plain = [p for p in PLAIN_THINGS if re.search(rf"\b{p}s?\b", camera, re.IGNORECASE)]
+        unused = [p for p in plain if not re.search(_USED_AT.format(thing=p), scene_text)]
+        if unused:
+            out.append(f"{name} is close on a plain {unused[0]} that no scene uses: choose a thing people in the "
+                       "scenes touch, use or stand at, or that the card names as the place's own.")
+    # 4. each empty space says where it is (a side or a neighbour); the layout sentence that names it counts
+    layout_sentences = re.split(r"(?<=[.;])\s+", str(written.get("layout") or ""))
+    for space in written.get("empty") or []:
+        text = str(space)
+        mine = set(_content(text))
+        near = [s for s in layout_sentences if len(mine & set(_content(s))) >= min(2, len(mine))] if mine else []
+        if not _WHERE.search(" ".join([text, *near])):
+            out.append(f"The empty space \"{text}\" does not say where it is: name its side or what it is beside, "
+                       "and what its bare ground looks like.")
+    return list(dict.fromkeys(out))
+
+
+# The lab's `sheet_prompt` words (lab/place_views r2), with plan/2026-11-24c §2.4's dry light.
+DRY_LIGHT = ("soft, even, dry daylight that shows the {what} clearly; dry ground, no rain, no puddles, no "
+             "reflections; the same light in every view.")
+
+
+def views_sheet_prompt(name: str, look: str, plate: str, template: str, layout: str, empty: Sequence[str],
                        views: Sequence[Mapping[str, Any]]) -> str:
-    """The image prompt of a location views sheet (lab `sheet_prompt`). `plates`: the attached pictures' labels, in
-    order (the location plate first, then the plates of the places that stand in it); `layout`: the place as one
-    connected layout (the views writer's, from the board writers' geography); `light`: the light and weather every
-    view shares; `views`: six `{name, what}`. Changes from the lab, said: its "take from" sentences named the roadside
-    and the three-wheeler; here they come from the labels."""
-    cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(plates, 1))
-    takes = []
-    for i, label in enumerate(plates, 1):
-        if i == 1:
-            takes.append("Take from image 1 the place itself: its ground, walls, buildings, plants, poles and fixed "
-                         "things, their materials and colours.")
-        else:
-            what = label.split(" for ", 1)[-1]
-            takes.append(f"Take from image {i} the {what} exactly as shown; it stands in this place.")
-    lines = "\n".join(f"VIEW {i} (row {(i - 1) // 3 + 1}, column {(i - 1) % 3 + 1}) — {v['name']}: {v['what']}"
-                      for i, v in enumerate(views, 1))
-    return "\n\n".join(x for x in [
-        "A location reference sheet for a Sri Lankan television drama: six photorealistic film stills of ONE real "
-        "place, laid out in a grid 3 across and 2 down, read left to right, then top to bottom. Every still is a "
-        "landscape 3:2 picture of the same size, separated by thin, even, plain white gutters. Nobody is in any "
-        "view: no people, no figures.",
-        (f"Reference images, in order: {cite}. " + " ".join(takes)) if plates else "",
-        f"The place, one connected layout seen from six positions: {layout}" if layout else "",
-        f"Light and weather (every view): {light}" if light else "",
+    """The image prompt of a place's views sheet (plan/2026-11-24c; lab/place_views `sheet_prompt`, r2). `plate`: the
+    label of the one attached picture, the place's own plate ("" when it has none: the sheet is painted from `look`);
+    `template`: `view_template` of the answers; `views`: six `{slot or name, camera, sees}` (or a built sheet's
+    `what`). Changes from the lab, said: the light line is §2.4's dry light (the lab: "soft, even daylight that shows
+    the {what} clearly; the same light in every view"), and its "image 1 is {label}" reads the label given."""
+    vehicle = template == "vehicle"
+    what = "vehicle" if vehicle else "place"
+    head = (f"A {'vehicle' if vehicle else 'location'} reference sheet for a Sri Lankan television drama: six "
+            f"photorealistic film stills of ONE real {what}, laid out in a grid 3 across and 2 down, read left to "
+            "right, then top to bottom. Every still is a landscape 3:2 picture of the same size, separated by thin, "
+            "even, plain white gutters. Nobody is in any view: no people, no figures.")
+    if plate:
+        take = (f"Reference images, in order: image 1 is {plate}. Take from image 1 the {what} itself: "
+                + ("its make and model, body, colour, wheels, lights, windows and its inside: dashboard, steering "
+                   "wheel and seats. Ignore everything around the vehicle in that picture." if vehicle else
+                   "its ground, walls, buildings and fixtures, their materials and colours, and where each stands."))
+    else:
+        take = f"There is no picture of this {what}: paint it from these words: {look}"
+    ground = ("The vehicle stands alone on a plain, empty, light-grey concrete floor of a large covered parking area "
+              "for every outside view; nothing else is near it." if vehicle else
+              "No vehicle is parked anywhere in the place.")
+    spaces = [str(s) for s in empty if str(s).strip()]
+    if spaces:
+        ground += (" These spaces are EMPTY in every view, bare, with nothing standing in them: "
+                   + "; ".join(spaces) + "." + (" Leave out anything image 1 shows standing in them." if plate else ""))
+    lines = "\n".join(f"VIEW {i} (row {(i - 1) // 3 + 1}, column {(i - 1) % 3 + 1}) — "
+                      f"{v.get('slot') or v.get('name')}: {view_words(v)}" for i, v in enumerate(views, 1))
+    return "\n\n".join([
+        head, take, f"The {what}, one connected layout seen from six positions: {layout}",
+        "Light (every view): " + DRY_LIGHT.format(what=what) + " " + ground,
         lines,
-        f"Every view shows the SAME place ({place}): the same buildings, walls and fixed things, each where the layout "
-        "puts it. Draw NO text of any kind: no labels, no numbers, no captions, no arrows, no borders other than the "
-        "gutters.",
-    ] if x)
+        f"Every view shows the SAME {what}: the same things, each where the layout puts it. The people, place and "
+        "everyday details are Sri Lankan. Draw NO text of any kind: no labels, no numbers, no captions, no arrows, "
+        "no borders other than the gutters.",
+    ])
 
 
 def face_sheet_path(row: Mapping[str, Any]) -> str:

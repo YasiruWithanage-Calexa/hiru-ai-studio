@@ -31,6 +31,7 @@ from pydantic import BaseModel
 from contracts import action_budget as ab
 from contracts import holding as hd
 from contracts import stagemap as sm
+from contracts import vehicles as vh
 from contracts.raphael.bin import Bin
 from contracts.raphael.scene import (
     Brief,
@@ -816,7 +817,32 @@ def check_stage1(
         *long_take(scene, work),  # plan/2026-11-19 D5: report only
         *line_parts(scene, work),  # plan/2026-11-20 D11: blocking
         *cut_jump(work),  # plan/2026-11-20 D11: report only
+        *vehicles(scene, work),  # plan/2026-11-24b: report only
     ]
+
+
+def vehicles(scene: SceneS, work: Bin) -> list[Fault]:
+    """plan/2026-11-24b §2.2, report only: a vehicle name the scene has no card for (code drops it), two vehicles a clip
+    is INSIDE (code keeps the first), and an `at` vehicle whose `where` names nothing it stands on (lab/final_views: the
+    car straddled the kerb drain)."""
+    known = {norm(v.name) for v in scene.vehicles}
+
+    def name(v: dict[str, object]) -> str:  # "Family car (BMW 520d)" is the Family car
+        return norm(re.sub(r"\s*\(.*\)\s*$", "", str(v.get("name") or "")))
+
+    out: list[Fault] = []
+    for c in work.clips:
+        raw = (c.ir or {}).get("vehicles")
+        given = [v for v in raw if isinstance(v, dict)] if isinstance(raw, list) else []
+        for v in given:
+            if name(v) not in known:
+                out.append(_fault("vehicle:name", f"{v.get('name')!r} is not a vehicle of this scene: use a name from "
+                                  "the Vehicles line, or leave it out.", [c.id], fix="report"))
+        if sum(1 for v in given if v.get("role") == "inside") > 1:
+            out.append(_fault("vehicle:inside", "a clip happens INSIDE at most one vehicle.", [c.id], fix="report"))
+        for line in vh.where_findings([v for v in given if name(v) in known]):
+            out.append(_fault("vehicle:where", line, [c.id], fix="report"))
+    return out
 
 
 def _beats(clip: Clip) -> list[dict[str, object]]:

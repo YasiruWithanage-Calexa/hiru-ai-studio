@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from contracts import on_screen_text
+from contracts import vehicles as vehicles_kit
 from contracts.camera_words import camera_words, lens_look, lighting_words
 from contracts.camera_words import changed as _changed
 from contracts.canon import VIEW_JOB, face_sheet_path, look_sheet_path, sheet_assets
@@ -285,6 +286,10 @@ def reference_job(label: str, labels: Sequence[str] = (), hair_from_look: Iterab
             return f"{n}'s clothes, shoes and accessories{extra} in this scene, not the face, light or backdrop"
     if label.startswith("view ") and " of the location sheet for " in label:  # plan/2026-11-24
         return VIEW_JOB
+    if label.startswith("view ") and " of the vehicle sheet for " in label:  # plan/2026-11-24b §5: inside it
+        return vehicles_kit.INSIDE_JOB
+    if label.startswith(vehicles_kit.PLATE_HEAD):  # plan/2026-11-24b §2.4
+        return vehicles_kit.job("inside" if label.endswith(INSIDE_NOTE) else "at")
     for prefix, job in (
         ("the look sheet for ", "{n}'s face, body and clothes, not its light or backdrop"),
         ("the character sheet for ", "{n}'s face and body, not its light or backdrop"),
@@ -369,6 +374,7 @@ def plan_references(scene: Mapping[str, Any], shot: Mapping[str, Any], canon: Se
     seen = {c: names[c] for c in on_screen if c in names}
     planned = references_for(scene, shot, canon, shot_canon_ids(scene, list(on_screen), edits), seen,
                              removed=edits.cast.remove, has_sheet=lambda r: bool(sheet_path(r)))
+    planned = _with_vehicles(scene, planned, vehicles_kit.shot_vehicles(shot, canon, edits.vehicles), by_id)
     out: list[PlannedReference] = []
     for cid, note in planned:
         row = by_id.get(cid)
@@ -379,6 +385,10 @@ def plan_references(scene: Mapping[str, Any], shot: Mapping[str, Any], canon: Se
             kind, "the character sheet for")
         choices = [(f"{what} {row['name']}" + (f" ({note})" if note else ""), sheet_path(row))]
         role = {"location": "place", "prop": "prop"}.get(kind, "character")
+        if note in ("inside", "at") and vehicles_kit.is_vehicle(row):  # plan/2026-11-24b §2.4
+            label = vehicles_kit.plate_label(str(row["name"]), vehicles_kit.make_of(row))
+            choices = [(label + (INSIDE_NOTE if note == "inside" else ""), sheet_path(row))]
+            role = "place" if note == "inside" else "vehicle"
         look = looks.get(cid) if kind == "character" else None
         if look is not None:
             choices.insert(0, (f"the look sheet for {row['name']}", look_sheet_path(look)))
@@ -400,6 +410,40 @@ def plan_references(scene: Mapping[str, Any], shot: Mapping[str, Any], canon: Se
     return face_refs + out
 
 
+# plan/2026-11-24b §2.4: the label of the vehicle plate a shot happens INSIDE ends with this note, so its job is the
+# inside (lab run_bmw `FRAME`: "the car this shot happens in") and not the vehicle-only one
+INSIDE_NOTE = ", the place of this shot"
+
+
+def _with_vehicles(scene: Mapping[str, Any], planned: list[tuple[str, str]],
+                   vehicles: Sequence[vehicles_kit.ShotVehicle],
+                   by_id: Mapping[str, Mapping[str, Any]]) -> list[tuple[str, str]]:
+    """The planned (id, note) with the shot's vehicles (§2.4): a vehicle the shot is INSIDE replaces the scene's place
+    (its plate is THE place; the location plate is not attached); one that stands `at` the place follows it. A vehicle
+    found another way is put in its role's spot."""
+    ids = {v.id for v in vehicles}
+    out = [(cid, note) for cid, note in planned if cid not in ids]
+    place = str(scene.get("location_id") or "")
+    inside = vehicles_kit.inside_of(vehicles)
+    at = [(v.id, "at") for v in vehicles if v.role == "at"]
+    where = next((i for i, (cid, _) in enumerate(out) if cid == place), None)
+    if inside is not None:
+        if where is not None:
+            out[where] = (inside.id, "inside")
+        else:
+            out.insert(_after_people(out, by_id), (inside.id, "inside"))
+        where = next(i for i, (cid, _) in enumerate(out) if cid == inside.id)
+    at_index = (where + 1) if where is not None else _after_people(out, by_id)
+    out[at_index:at_index] = at
+    return out
+
+
+def _after_people(planned: list[tuple[str, str]], by_id: Mapping[str, Mapping[str, Any]]) -> int:
+    """Where a place goes when the scene's own is not planned: right after the last person."""
+    people = [i for i, (cid, _) in enumerate(planned) if (by_id.get(cid) or {}).get("kind") == "character"]
+    return people[-1] + 1 if people else 0
+
+
 def missing_references(planned: Sequence[PlannedReference]) -> list[str]:
     """What a frame wanted but has no picture for, in words for the shot screen."""
     out = []
@@ -410,6 +454,8 @@ def missing_references(planned: Sequence[PlannedReference]) -> list[str]:
             out.append(f"No sheet for {p.name}: their face is painted from words only.")
         elif p.role == "place":
             out.append(f"No location plate for {p.name}: the place is painted from words only.")
+        elif p.role == "vehicle":  # plan/2026-11-24b
+            out.append(f"No vehicle plate for {p.name}: it is painted from words only.")
         else:
             out.append(f"No reference sheet for {p.name}: it is painted from words only.")
     return out
@@ -545,7 +591,7 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
                 recommended_framing: str = "", unseen: str = "", hands: str = "",
                 scene: Mapping[str, Any] | None = None, shot: Mapping[str, Any] | None = None,
                 cap: int = PROMPT_CAP, genre: str = "", board: Sequence[str] = (),
-                shot_prompt: Mapping[str, Any] | None = None) -> FrameBrief:
+                shot_prompt: Mapping[str, Any] | None = None, vehicles: Sequence[str] = ()) -> FrameBrief:
     """The first frame's brief, from the shot's IR, the camera as it stands, the people the camera SEES (`cast`), the
     labels of the pictures attached IN ORDER (`references`), who is only heard (`unseen`,
     `contracts.staging.unseen_sentence`), who holds what (`hands`), and the scene row (heading, time of day, the
@@ -623,6 +669,8 @@ def frame_brief(*, ir: Mapping[str, Any], camera: CameraSettings, aspect_ratio: 
         place.add(f"Setting: {main.rstrip('.')}", "ir.setting" if setting else "ir.first_frame.setting")
     if not agent and setting and frame_setting and not _has(setting, frame_setting):
         place.add(f"In this frame: {frame_setting}", "ir.first_frame.setting")
+    for line in vehicles:  # plan/2026-11-24b §2.4: `contracts.vehicles.frame_lines`, never cut
+        place.add(line, "shot vehicles")
     when = time_phrase(scene)
     if when:
         place.add(f"Time: {when}", "scene heading")

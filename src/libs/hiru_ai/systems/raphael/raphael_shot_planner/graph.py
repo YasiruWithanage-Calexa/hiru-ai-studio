@@ -261,6 +261,8 @@ def build(
             script = ledger_state.attach(
                 script, ledger.staging, sceneplan.items_for(sc.get("script") or [], lines, parts=cut), codes
             )
+        # plan/2026-11-24b: the vehicles the scene names and the place's empty spaces (none hashes as before)
+        script = script.model_copy(update=raphael.vehicles_of(sc, canon, location, bare.blocks))
         note = " ".join(p for p in (str(sc.get("note") or ""), str(edit.get("note") or "")) if p)
         context = {
             "heading": str(sc.get("heading") or ""),
