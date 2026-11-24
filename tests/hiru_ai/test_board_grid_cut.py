@@ -33,14 +33,40 @@ def test_a_board_that_cannot_be_cut_fails_its_part_and_stores_no_cell():
     result, _ = run(store, {"board_id": bid}, [reply(numbers(store))], painter)
     row = store.board_rows[bid]
     assert result["status"] == "failed" and row["status"] == "failed"
-    assert row["error"] == graph_board.bad_cut(1, 1)
-    assert row["error"] == "The board came out in a different layout than was asked. Paint the board again."
+    assert row["error"] == graph_board.bad_cut(numbers(store))
+    assert row["error"] == ("Shots 1, 2, 3 and 4 came out in a different layout than was asked. "
+                            "Paint the board again.")
     assert not row.get("cells"), "no crop of a bad cut becomes a cell"
     assert not any("/cell_" in path for _bucket, path in store.uploads), "no crop is stored"
     assert row["prompt"] and row["writer"], "the prompt and the writer are kept, as for any failed part"
     assert len(painter.calls) == 1, "D1: a bad cut is never repainted by itself"
 
 
-def test_the_bad_cut_words_name_the_part():
-    assert graph_board.bad_cut(2, 2) == ("Part 2 of the board came out in a different layout than was asked. "
-                                         "Paint the board again.")
+def test_a_bad_cut_keeps_the_rejected_picture_and_the_cut_drawn_on_it():
+    """2026-11-24: the picture of a rejected part is stored (never as a cell) so a person can see why it failed."""
+    store = BoardStore()
+    bid = store.add_board()
+    painter = FakeImages()
+    painter.picture = board_png(3, 1)
+    run(store, {"board_id": bid}, [reply(numbers(store))], painter)
+    row = store.board_rows[bid]
+    [entry] = row["checks"]
+    assert entry["kind"] == graph_board.REJECTED_CUT and entry["problems"] and len(entry["boxes"]) == 4
+    assert entry["path"].endswith(f"/boards/{bid}/rejected.png")
+    assert entry["cut_path"].endswith(f"/boards/{bid}/rejected-cut.png")
+    stored = {path for _bucket, path in store.uploads}
+    assert {entry["path"], entry["cut_path"]} <= stored
+
+
+def test_the_cut_is_drawn_on_the_picture():
+    from hiru_ai.systems.frame_render import pictures as pics
+
+    png = board_png(2, 1)
+    boxes = pics.cell_boxes(png, 2)
+    drawn = pics.draw_cut(png, boxes, ["panel 2: two panels in one crop (a gutter across it, columns)"])
+    assert pics.image_size(drawn) == pics.image_size(png) and drawn != png
+
+
+def test_the_bad_cut_words_name_the_shots():
+    assert graph_board.bad_cut([6, 7, 8]) == ("Shots 6, 7 and 8 came out in a different layout than was asked. "
+                                              "Paint the board again."), "named by its shots, never its part"

@@ -132,3 +132,18 @@ def test_with_schema_v25_it_is_one_query(world: World) -> None:
     repos = world.repos
     assert (repos.frames.live_queries, repos.renders.live_queries, repos.documents.live_queries,  # type: ignore[attr-defined]
             repos.jobs.live_queries, repos.jobs.seq_queries) == (0, 0, 0, 0, 0)  # type: ignore[attr-defined]
+
+
+def test_a_running_picture_job_carries_its_newest_event_number(world: World) -> None:
+    """2026-11-24: a Scene board's job (frame_render) moves `seq` with each step, so the board card reads its step."""
+    job_id = str(uuid4())
+
+    async def go() -> None:
+        await world.repos.jobs.create({"id": job_id, "kind": "frame_render", "status": "running",  # type: ignore[attr-defined]
+                                       "production_id": str(world.production)})
+
+    asyncio.run(go())
+    world.repos.jobs.add_event(job_id, "stage", {"stage": "board", "state": "running", "text": "Writing the panels"})  # type: ignore[attr-defined]
+    world.repos.jobs.add_event(job_id, "stage", {"stage": "board", "state": "running", "text": "Painting part 1 of 3"})  # type: ignore[attr-defined]
+    item = next(i for i in _get(world, world.producer).json()["items"] if i["id"] == job_id)
+    assert (item["job_kind"], item["seq"]) == ("frame_render", 2)

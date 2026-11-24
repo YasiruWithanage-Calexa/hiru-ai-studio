@@ -344,6 +344,12 @@ class SupabaseJobs(_Base):
             return None
         return _rows(res.data)
 
+    async def last_stage(self, job_id: UUID) -> str:
+        res = (await self.db.table("job_events").select("payload").eq("job_id", str(job_id)).eq("type", "stage")
+               .order("seq", desc=True).limit(1).execute())
+        row = _first(res.data)
+        return str(((row or {}).get("payload") or {}).get("text") or "")
+
     async def last_seq(self, job_id: UUID) -> int | None:
         res = (await self.db.table("job_events").select("seq").eq("job_id", str(job_id))
                .order("seq", desc=True).limit(1).execute())

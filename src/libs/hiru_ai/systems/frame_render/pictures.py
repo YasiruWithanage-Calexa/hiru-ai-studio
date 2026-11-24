@@ -5,6 +5,7 @@ lab (`lab/storyboard/run.py`, `faces.py`)."""
 from __future__ import annotations
 
 import io
+import re
 from collections.abc import Mapping, Sequence
 from typing import Any
 
@@ -253,6 +254,28 @@ def cell_boxes(board_png: bytes, n: int) -> list[Box]:
     if len(found["panels"]) >= n:
         return list(found["panels"][:n])
     return _even_boxes(board_png, n)
+
+
+def draw_cut(board_png: bytes, boxes: Sequence[Sequence[int]], problems: Sequence[str]) -> bytes:
+    """The board with the cut drawn on it (2026-11-24, to see why a part was rejected): each box outlined and
+    numbered, red when a problem names its panel ("panel 3: ..."), green when it was fine."""
+    from PIL import ImageDraw, ImageFont
+
+    im = _image(board_png)
+    draw = ImageDraw.Draw(im)
+    bad = {int(m.group(1)) for p in problems if (m := re.match(r"panel (\d+)", p))}
+    width = max(round(max(im.size) / 300), 3)
+    try:
+        font: Any = ImageFont.load_default(size=max(im.size) // 30)
+    except TypeError:  # an older Pillow: no sized default font
+        font = ImageFont.load_default()
+    for i, b in enumerate(boxes, 1):
+        x0, y0, x1, y1 = (int(v) for v in b)
+        colour = "#e00000" if i in bad else "#00b050"
+        draw.rectangle((x0, y0, x1 - 1, y1 - 1), outline=colour, width=width)
+        draw.text((x0 + 2 * width, y0 + 2 * width), str(i), fill=colour, font=font, stroke_width=2,
+                  stroke_fill="white")
+    return _png(im)
 
 
 def crop(board_png: bytes, box: Sequence[int]) -> bytes:

@@ -4,6 +4,7 @@
     POST   .../scenes/{id}/board                    paint the whole board (job): a new version; notes and locked
                                                     panels of the current one carry over
     POST   .../scene-boards/{id}/approve            approve one part (only an approved, current board feeds frames, D3)
+    POST   .../scenes/{id}/board/approve            approve the whole board: every finished part (2026-11-24)
     PATCH  .../scene-boards/{id}/cells/{shot_id}    a panel's note or lock
     POST   .../scenes/{id}/board/update             Update board (job, plan/2026-11-17): each changed or added shot's
                                                     panel painted ALONE, removed and moved shots tidied, every other
@@ -19,7 +20,8 @@ The scene LOCK (approval) closes this picture work, as it closes frames. Picture
 from __future__ import annotations
 
 import asyncio
-from typing import Annotated, Literal
+from collections.abc import Mapping, Sequence
+from typing import Annotated, Any, Literal
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -32,6 +34,8 @@ from api.services import boards, media_links
 from api.services.production import LOCKED
 from api.workers import task_manager
 from contracts import board as kit
+from contracts import marks as mk
+from contracts import sceneplan
 from contracts.canon import missing_faces, views_asset
 from contracts.jobs import JobKind
 from contracts.production import SceneStatus
@@ -77,6 +81,11 @@ class BoardPartView(BaseModel):
     sheet_key: str | None
     cells: list[BoardCellView]
     created_at: str
+    # A part whose picture could not be cut (2026-11-24): the picture as painted, the same with the cut drawn on it
+    # (red boxes = the panels that failed), and why. None / [] for any other part.
+    rejected_url: str | None = None
+    rejected_cut_url: str | None = None
+    rejected_problems: list[str] = Field(default_factory=list)
 
 
 class BoardUpdateItem(BaseModel):
@@ -115,6 +124,18 @@ class SceneBoardView(BaseModel):
     # plan/2026-11-24 (Q3, no gate): the scene's place when it has a plate but no views sheet, so the card can offer
     # "Make location views"; None when it has one, or no plate to paint them from
     missing_views: MissingFace | None = None
+    # 2026-11-24 (the person): Repaint whole board paints the pictures again from the panel words already written.
+    # `written`: there are saved words to paint from. `rewrite`: the shots whose words must be written again first
+    # (their shot changed since, e.g. in a chat, or a note on the panel asks for it); while it is not empty only
+    # "Rewrite and repaint" (`rewrite: true`) or Update board can paint them.
+    written: bool = False
+    rewrite: list[int] = Field(default_factory=list)
+    # 2026-11-24: what the painting job is doing now ("Painting part 2 of 3"), its newest step; "" when not painting
+    progress: str = ""
+    # plan/2026-11-24d (the person, 2026-11-24): the board's words were written without ground spots (before fixed
+    # marks, or the writer gave none) while the scene has still shots to hold, so only "Rewrite and repaint" gives it
+    # spots and plates. A plain repaint stays allowed: it paints the old words again.
+    marks_needed: bool = False
 
 
 class BoardStarted(BaseModel):
@@ -124,6 +145,9 @@ class BoardStarted(BaseModel):
 
 class PaintRequest(BaseModel):
     quality: Literal["low", "medium"] = "low"  # D2: LOW by default, MEDIUM a setting, never HIGH
+    # 2026-11-24: false = paint from the words already written (the board writer does not run); true = write every
+    # panel's words again first. A first board is always written.
+    rewrite: bool = False
 
 
 class UpdateRequest(BaseModel):
@@ -133,6 +157,46 @@ class UpdateRequest(BaseModel):
 class CellUpdate(BaseModel):
     note: str | None = Field(default=None, max_length=300)
     locked: bool | None = None
+
+
+def _blocking(scene: Row, shots: list[Row], lines: list[Row]) -> mk.Blocking:
+    """The scene's stretches as they stand now, the way the board job finds them (plan/2026-11-24d §3.1)."""
+    try:
+        whole = sceneplan.scene_items(scene, lines, parts=False)
+        to_whole = (mk.whole_index(sceneplan.scene_items(scene, lines, parts=True))
+                    if sceneplan.line_parts_of(scene) else None)
+        return mk.stretches(scene.get("staging"), whole, shots, to_whole=to_whole)
+    except Exception:
+        return mk.Blocking()
+
+
+def plate_reasons(parts: list[Row], scene: Row, shots: list[Row], lines: list[Row]) -> list[str]:
+    """A stale reason for each blocking plate of the current board whose stretch changed: other shots, or other people
+    still in it (plan/2026-11-24d §3.6). Nothing is repainted by itself. The plate itself is internal (the person,
+    2026-11-25): the board job paints it and attaches it to the parts, and no response carries it, its ticket or its
+    words."""
+    writer = next((p.get("writer") for p in parts if (p.get("writer") or {}).get("plates")), None) or {}
+    plates = [x for x in writer.get("plates") or [] if isinstance(x, dict)]
+    if not plates:
+        return []
+    now = _blocking(scene, shots, lines)
+    reasons = []
+    for x in plates:
+        ids = [str(i) for i in x.get("shot_ids") or []]
+        stretch = now.stretch_of(ids[0]) if ids else None
+        if (stretch is None or set(stretch.shot_ids) != set(ids)
+                or {w.casefold() for w in stretch.people} != {str(w).casefold() for w in x.get("people") or []}):
+            reasons.append(f"The marks of {mk.shots_label(int(v) for v in x.get('shots') or [])} changed: "
+                           "Rewrite and repaint.")
+    return reasons
+
+
+def marks_missing(saved: Sequence[Mapping[str, Any]], scene: Row, shots: list[Row], lines: list[Row]) -> bool:
+    """The saved words hold no ground spot while the staging map has a stretch of two or more shots with someone
+    still in it (plan/2026-11-24d)."""
+    if kit.saved_writer(saved).marks:
+        return False
+    return any(s.people and len(s.numbers) >= 2 for s in _blocking(scene, shots, lines).stretches)
 
 
 def _cell_view(cell: Row, stale_numbers: set[int]) -> BoardCellView:
@@ -149,7 +213,12 @@ def _cell_view(cell: Row, stale_numbers: set[int]) -> BoardCellView:
 
 def _part_view(row: Row, stale_numbers: set[int]) -> BoardPartView:
     sheet = str(row.get("sheet_path") or "")
+    rejected = next((c for c in row.get("checks") or [] if isinstance(c, dict) and c.get("kind") == "rejected_cut"),
+                    None) if row.get("status") == "failed" else None
     return BoardPartView(
+        rejected_url=media_links.url("frames", str(rejected.get("path") or "")) or None if rejected else None,
+        rejected_cut_url=media_links.url("frames", str(rejected.get("cut_path") or "")) or None if rejected else None,
+        rejected_problems=[str(p) for p in rejected.get("problems") or []] if rejected else [],
         id=row["id"], version=int(row.get("version") or 1), part=int(row.get("part") or 1),
         parts=int(row.get("parts") or 1), status=str(row.get("status") or "queued"),
         quality=str(row.get("quality") or "low"), error=row.get("error"), approved=bool(row.get("approved_at")),
@@ -159,7 +228,8 @@ def _part_view(row: Row, stale_numbers: set[int]) -> BoardPartView:
 
 
 def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_aspect: str = "16:9",
-               canon: list[Row] | None = None, location_id: str = "") -> SceneBoardView:
+               canon: list[Row] | None = None, location_id: str = "", scene: Row | None = None,
+               lines: list[Row] | None = None) -> SceneBoardView:
     parts = boards.current(rows)
     # who is on the board: every part's `colours` (canon id → mannequin colour, written by the board job)
     people = [str(k) for p in parts for k in (p.get("colours") or {})]
@@ -185,16 +255,21 @@ def board_view(scene_id: UUID, rows: list[Row], shots: list[Row], production_asp
         state = "approved"
     else:
         state = "ready"
+    saved = kit.saved_board(rows)
     conflicts: list[str] = []
     for p in parts:
         conflicts += [c for c in (p.get("writer") or {}).get("conflicts") or [] if c not in conflicts]
     job = next((p.get("job_id") for p in painting if p.get("job_id")), None)
+    stale_plates = plate_reasons(parts, scene, shots, lines or []) if scene is not None else []
+    marks_needed = bool(saved) and scene is not None and marks_missing(saved, scene, shots, lines or [])
     return SceneBoardView(scene_id=scene_id, state=state, parts=[_part_view(p, stale_numbers) for p in parts],
-                          conflicts=conflicts, stale_reasons=st.reasons(), changed=sorted(st.changed),
+                          conflicts=conflicts, stale_reasons=[*st.reasons(), *stale_plates],
+                          changed=sorted(st.changed),
                           update=[BoardUpdateItem(number=n, what=w) for n, w in st.items()],  # type: ignore[arg-type]
                           whole=whole, approved=bool(parts) and all(p.get("approved_at") for p in parts),
                           job_id=job, aspect=aspect, wrong_shape=wrong_shape, missing_faces=missing,
-                          missing_views=_missing_views(canon or [], location_id))
+                          missing_views=_missing_views(canon or [], location_id), written=bool(saved),
+                          rewrite=kit.rewrite_needed(saved, shots) if saved else [], marks_needed=marks_needed)
 
 
 def _missing_views(canon: list[Row], location_id: str) -> MissingFace | None:
@@ -241,11 +316,15 @@ async def _audit(repos: Repos, access: ProductionAccess, action: str, entity_id:
 
 
 async def _view(repos: Repos, access: ProductionAccess, scene_id: UUID) -> SceneBoardView:
-    (scene, shots, rows), canon = await asyncio.gather(_scene(repos, access, scene_id),
-                                                       repos.canon.list(access.production_id))
+    (scene, shots, rows), canon, lines = await asyncio.gather(_scene(repos, access, scene_id),
+                                                              repos.canon.list(access.production_id),
+                                                              repos.lines.list(scene_id))
     orientation = Orientation(access.production.get("orientation") or "horizontal")
-    return board_view(scene_id, rows, shots, ASPECT_RATIO[orientation], canon,
-                      str((scene or {}).get("location_id") or ""))
+    view = board_view(scene_id, rows, shots, ASPECT_RATIO[orientation], canon,
+                      str((scene or {}).get("location_id") or ""), scene=scene, lines=lines)
+    if view.state == "painting" and view.job_id is not None:
+        view.progress = await repos.jobs.last_stage(view.job_id)
+    return view
 
 
 # ── routes ─────────────────────────────────────────────────────────────────────────────────
@@ -263,32 +342,70 @@ async def paint_board(production_id: UUID, scene_id: UUID, body: PaintRequest, a
     panels; a scene of more than 16 painted shots becomes parts (D5). It paints no face sheet (2026-11-22): the view's
     `missing_faces` names who has none."""
     scene, shots, rows = await _scene(repos, access, scene_id)
+    return await _start(repos, access, scene_id, scene, shots, rows, body.quality, body.rewrite, [])
+
+
+async def _start(repos: Repos, access: ProductionAccess, scene_id: UUID, scene: Row, shots: list[Row],
+                 rows: list[Row], quality: str, rewrite_asked: bool, plates: list[int]) -> BoardStarted:
+    """A whole board as a new version (Paint, Repaint whole board, Rewrite and repaint, Repaint marks). `plates`:
+    the blocking plates to paint again before the parts (plan/2026-11-24d §3.6); the others are kept."""
     _unlocked(scene)
     if not shots:
         raise HTTPException(status.HTTP_409_CONFLICT, "This scene has no shots yet. Plan the scene first.")
     parts = boards.current(rows)
     if any(p.get("status") in ("queued", "running") for p in parts):
         raise HTTPException(status.HTTP_409_CONFLICT, "The scene board is already being painted.")
+    saved = kit.saved_board(rows)
+    rewrite = rewrite_asked or not saved
+    if not rewrite:
+        need = kit.rewrite_needed(saved, shots)
+        if need:
+            phrase = kit.shots_phrase(need)
+            since = "its panel was" if len(need) == 1 else "their panels were"
+            raise HTTPException(status.HTTP_409_CONFLICT, f"{phrase[0].upper()}{phrase[1:]} changed since {since} "
+                                "written. Rewrite and repaint, or Update board.")
     board_id = str(uuid4())
     row = {"id": board_id, "production_id": str(access.production_id), "scene_id": str(scene_id),
-           "version": boards.next_version(rows), "part": 1, "parts": 1, "status": "queued", "quality": body.quality,
+           "version": boards.next_version(rows), "part": 1, "parts": 1, "status": "queued", "quality": quality,
            "created_by": str(access.user.id)}
     try:
         await repos.scene_boards.create(row)
     except Exception:
         raise HTTPException(status.HTTP_409_CONFLICT, NO_TABLE) from None
-    state: Row = {"board_id": board_id, "carry": [str(p["id"]) for p in parts if p.get("status") == "done"]}
+    state: Row = {"board_id": board_id, "carry": [str(p["id"]) for p in parts if p.get("status") == "done"],
+                  "saved": [str(p["id"]) for p in saved], "rewrite": rewrite}
+    if plates:
+        state["repaint_plates"] = list(plates)
     try:
         job_id = await task_manager.dispatch(JobKind.FRAME_RENDER, repos, actor_user_id=access.user.id,
                                              production_id=access.production_id,
-                                             request={"scene_id": str(scene_id), "board": body.quality}, state=state)
+                                             request={"scene_id": str(scene_id), "board": quality}, state=state)
     except RuntimeError:
         await repos.scene_boards.update(UUID(board_id), {"status": "failed", "error": "The job could not be started."})
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "The board could not be started. Try again.") from None
     await repos.scene_boards.update(UUID(board_id), {"job_id": str(job_id)})
-    await _audit(repos, access, "board.request", board_id, {"job_id": str(job_id), "quality": body.quality,
-                                                            "version": row["version"]})
+    await _audit(repos, access, "board.request", board_id, {"job_id": str(job_id), "quality": quality,
+                                                            "rewrite": rewrite, "version": row["version"],
+                                                            **({"plates": plates} if plates else {})})
     return BoardStarted(job_id=job_id, board_id=UUID(board_id))
+
+
+@router.post("/scenes/{scene_id}/board/plates/{n}/repaint", response_model=BoardStarted,
+             status_code=status.HTTP_202_ACCEPTED)
+async def repaint_plate(production_id: UUID, scene_id: UUID, n: int, access: CanGenerate,
+                        repos: ReposDep) -> BoardStarted:
+    """Repaint marks (plan/2026-11-24d §3.6, D3): the blocking plate `n` painted again from its saved words, then the
+    board's parts with it, as a new version at the board's quality. The board writer does not run (a repaint); a shot
+    changed since its words were written asks for Rewrite and repaint first. The plate is internal (2026-11-25): no
+    screen shows it or offers this; it stays for a script or a later decision."""
+    scene, shots, rows = await _scene(repos, access, scene_id)
+    parts = boards.current(rows)
+    written = kit.saved_board(rows)
+    saved = kit.saved_writer(written) if written else None
+    if saved is None or not any(int(x.get("n") or 0) == n for x in saved.plates):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "This board has no such blocking plate.")
+    quality = str((parts[0] if parts else {}).get("quality") or kit.DEFAULT_QUALITY)
+    return await _start(repos, access, scene_id, scene, shots, rows, quality, False, [n])
 
 
 @router.post("/scene-boards/{board_id}/approve", response_model=SceneBoardView)
@@ -304,6 +421,26 @@ async def approve_board(production_id: UUID, board_id: UUID, access: CanGenerate
         raise HTTPException(status.HTTP_409_CONFLICT, "Someone changed the board meanwhile. Reload the scene.")
     await _audit(repos, access, "board.approve", str(board_id), {"part": int(row.get("part") or 1)})
     return await _view(repos, access, UUID(str(row["scene_id"])))
+
+
+@router.post("/scenes/{scene_id}/board/approve", response_model=SceneBoardView)
+async def approve_whole_board(production_id: UUID, scene_id: UUID, access: CanGenerate,
+                              repos: ReposDep) -> SceneBoardView:
+    """Approve the board (2026-11-24): every finished part of the current board at once. A person sees one board of
+    shots 1 to N; its parts are how the picture is made. A part that failed stays unapproved (its shots have no
+    panel yet)."""
+    scene, _, rows = await _scene(repos, access, scene_id)
+    _unlocked(scene)
+    parts = boards.current(rows)
+    todo = [p for p in parts if p.get("status") == "done" and not p.get("approved_at")]
+    if not todo:
+        raise HTTPException(status.HTTP_409_CONFLICT, "There is no finished board to approve.")
+    for row in todo:
+        if not await repos.scene_boards.approve(scene_id, int(row.get("part") or 1), UUID(str(row["id"])),
+                                                access.user.id):
+            raise HTTPException(status.HTTP_409_CONFLICT, "Someone changed the board meanwhile. Reload the scene.")
+        await _audit(repos, access, "board.approve", str(row["id"]), {"part": int(row.get("part") or 1)})
+    return await _view(repos, access, scene_id)
 
 
 @router.patch("/scene-boards/{board_id}/cells/{shot_id}", response_model=SceneBoardView)

@@ -16,6 +16,8 @@ the API reads `stale_cells` to say a board is out of date.
               `renumber`, `insert_position`, `previous_for` are the pure steps. No mask: the image model does not
               honour one (lab/panel_edit run_001, D3)
   first frame `mannequin_paragraph`, `state_line`, `panel_text`, `frame_world`, `unmannequin` (§3.5)
+  marks       plan/2026-11-24d: `board_prompt` / `panel_prompt` take the stretches' "Ground marks" paragraphs and each
+              panel's marks line (`contracts.marks`); `plate_prompt` is the blocking plate's picture, painted first
 
 People on the board are faceless, colour-coded mannequins: the board fixes WHERE everyone is and HOW they sit or stand,
 never their faces, so no face drifts from the board into every frame (run_009, run_010).
@@ -31,6 +33,7 @@ from dataclasses import dataclass, field, replace
 from typing import Any
 
 from contracts import holding, picture_pins
+from contracts import marks as marks_kit
 from contracts import vehicles as vehicles_kit
 from contracts.canon import VIEWS_LABEL_HEAD, view_key_words
 
@@ -295,7 +298,8 @@ def keep_colours(saved: Mapping[str, str], people: Sequence[str]) -> dict[str, s
 
 
 def writer_bundle(scene: Mapping[str, Any], shots: Sequence[BoardShot], people: Sequence[Row], place: Row,
-                  props: Sequence[Row], reference_labels: Sequence[str], vehicles: Sequence[Row] = ()) -> Row:
+                  props: Sequence[Row], reference_labels: Sequence[str], vehicles: Sequence[Row] = (),
+                  stretches: Sequence[Row] = ()) -> Row:
     """What the board writer reads about the scene (lab `fetch.py` bundle, without file paths). plan/2026-11-23c §3.1:
     every field the stager wrote (facing, side of frame, both hands, condition, wearing), the props it set down, its
     zones, and Raphael's whole treatment geography, colour script and key image (the axis was its first 300 letters)."""
@@ -324,6 +328,8 @@ def writer_bundle(scene: Mapping[str, Any], shots: Sequence[BoardShot], people: 
         "people": list(people), "place": place, "props": list(props),
         # plan/2026-11-24b §2.3: each vehicle's name, make, look and its role and `where` per shot
         **({"vehicles": list(vehicles)} if vehicles else {}),
+        # plan/2026-11-24d §3.2: the runs of shots in which nobody moves (`marks.stretch_rows`); one spot each
+        **({"stretches": list(stretches)} if stretches else {}),
         "shots": [s.plan for s in shots if s.painted],
         "reference_pictures": [f"image {i}: {label}" for i, label in enumerate(reference_labels, 1)],
     }
@@ -418,7 +424,7 @@ def writer_neighbour_label(side: str, number: int) -> str:
 
 
 def _edit_message(edit: Edit, colours: Mapping[str, str]) -> str:
-    board = edit.board.dump()
+    board = edit.board.dump(stamps=False)  # the model reads the words only, byte for byte as before
     board.pop("conflicts", None)
     n = edit.number
     if edit.kind == "add":
@@ -485,6 +491,10 @@ class Panel:
     people: list[PanelPerson] = field(default_factory=list)
     props: list[PanelProp] = field(default_factory=list)
     view: int = 0  # plan/2026-11-24: the location sheet's view its background comes from; 0 = none named
+    # 2026-11-24 (the person: Repaint paints, it never writes again): the shot these words were written for and its
+    # plan pin then, set by code, never by the model. A repaint reuses the panel while the pin still matches.
+    shot_id: str = ""
+    pin: str = ""
 
 
 def _person_dump(x: PanelPerson) -> Row:
@@ -498,13 +508,16 @@ def _prop_dump(x: PanelProp) -> Row:
     return {"name": x.name, "held_by": x.held_by, "hand": x.hand, "rests_on": x.rests_on, "frame_side": x.frame_side}
 
 
-def panel_dump(p: Panel) -> Row:
+def panel_dump(p: Panel, stamps: bool = True) -> Row:
+    """A panel as stored. `stamps=False` leaves out the code's `shot_id` / `pin` (what a model is shown)."""
     out: Row = {"shot": p.shot, "zone": p.zone, "camera": p.camera, "background": p.background,
                 "picture": p.picture, "people": [_person_dump(x) for x in p.people]}
     if p.props:  # a board painted before plan/2026-11-23c is stored as it was
         out["props"] = [_prop_dump(x) for x in p.props]
     if p.view:  # plan/2026-11-24
         out["view"] = p.view
+    if stamps and p.shot_id:
+        out.update(shot_id=p.shot_id, pin=p.pin)
     return out
 
 
@@ -518,7 +531,7 @@ def _panel_of(p: Mapping[str, Any]) -> Panel:
                                   hand=_clean(x.get("hand")).lower(), rests_on=_clean(x.get("rests_on")),
                                   frame_side=_clean(x.get("frame_side")).lower())
                         for x in p.get("props") or [] if isinstance(x, Mapping) and _clean(x.get("name"))],
-                 view=_int(p.get("view")))
+                 view=_int(p.get("view")), shot_id=str(p.get("shot_id") or ""), pin=str(p.get("pin") or ""))
 
 
 def _int(value: Any) -> int:
@@ -534,16 +547,28 @@ class Writer:
     geography: str
     panels: list[Panel]
     conflicts: list[str] = field(default_factory=list)
+    # plan/2026-11-24d: the writer's ground spots (`contracts.marks.GroundMark` rows, kept by `marks.check`) and the
+    # blocking plates painted from them (`{n, shots, shot_ids, people, view, path, pin, check, prompt}`). Both belong to
+    # the version, as the words do: every part stores the same; a repaint from the saved words keeps them.
+    marks: list[Row] = field(default_factory=list)
+    plates: list[Row] = field(default_factory=list)
 
     @classmethod
     def of(cls, raw: Mapping[str, Any]) -> Writer:
         panels = [_panel_of(p) for p in raw.get("panels") or [] if isinstance(p, Mapping)]
         return cls(world=_clean(raw.get("world")), geography=_clean(raw.get("geography")), panels=panels,
-                   conflicts=[_clean(c) for c in raw.get("conflicts") or [] if _clean(c)])
+                   conflicts=[_clean(c) for c in raw.get("conflicts") or [] if _clean(c)],
+                   marks=[dict(m) for m in raw.get("marks") or [] if isinstance(m, Mapping)],
+                   plates=[dict(x) for x in raw.get("plates") or [] if isinstance(x, Mapping)])
 
-    def dump(self) -> Row:
-        return {"world": self.world, "geography": self.geography, "conflicts": self.conflicts,
-                "panels": [panel_dump(p) for p in self.panels]}
+    def dump(self, stamps: bool = True) -> Row:
+        out: Row = {"world": self.world, "geography": self.geography, "conflicts": self.conflicts,
+                    "panels": [panel_dump(p, stamps) for p in self.panels]}
+        if self.marks:  # a board written before plan/2026-11-24d dumps as it always did
+            out["marks"] = [dict(m) for m in self.marks]
+        if self.plates:
+            out["plates"] = [dict(x) for x in self.plates]
+        return out
 
     def panel(self, number: int) -> Panel | None:
         return next((p for p in self.panels if p.shot == number), None)
@@ -554,7 +579,8 @@ class Writer:
         take = set(numbers)
         panels = [fresh.panel(p.shot) or p if p.shot in take else p for p in self.panels]
         return Writer(world=self.world, geography=self.geography, panels=panels,
-                      conflicts=list(dict.fromkeys([*self.conflicts, *fresh.conflicts])))
+                      conflicts=list(dict.fromkeys([*self.conflicts, *fresh.conflicts])),
+                      marks=list(self.marks), plates=list(self.plates))
 
 
 def missing_panels(writer: Writer, numbers: Iterable[int]) -> list[int]:
@@ -690,6 +716,8 @@ def board_job(label: str) -> str:
         return f"{label[len('the reference sheet for '):]} exactly as shown"
     if label == OVERLAP_LABEL:
         return "panel 1 of this sheet, repeated exactly: the same camera, place, light and mannequins"
+    if label.startswith(marks_kit.PLATE_HEAD):  # plan/2026-11-24d §3.4
+        return marks_kit.plate_job(label)
     return ""
 
 
@@ -722,11 +750,14 @@ def board_layout_free(world: str) -> str:
 def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], colours: Mapping[str, str],
                  aspect: str = BOARD_ASPECT, props: Sequence[str] = (), places: Sequence[str] = (),
                  views: Sequence[Mapping[str, Any]] = (), vehicles: str = "",
-                 panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None) -> str:
+                 panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
+                 marks: Sequence[str] = (), panel_marks: Mapping[int, str] | None = None) -> str:
     """The image prompt for one board (or one part): the panels of `numbers`, in order (lab `board_prompt` with
     mannequins). `labels` are the attached pictures in order; `colours`: name → colour; `aspect`: the board's shape
     (`board_aspect`), which every panel takes; `props`: the canon props the panels show, painted as white clay
-    stand-ins (plan/2026-11-23c)."""
+    stand-ins (plan/2026-11-23c). plan/2026-11-24d: `marks` the "Ground marks" paragraph of each stretch the part
+    holds (`contracts.marks.paragraph`), after Geography; `panel_marks`: shot number → its marks line
+    (`marks.panel_line`), at the head of its panel. Without them the prompt is as before, byte for byte."""
     n = len(numbers)
     cols, rows = grid_for(n)
     cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
@@ -739,7 +770,9 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
             continue
         r, c = divmod(i, cols)
         hands = hands_text(p, colours)
-        pos.append(f"PANEL {i + 1} (row {r + 1}, column {c + 1}) — {p.camera.rstrip('.')}. Background: "
+        line = (panel_marks or {}).get(number, "")
+        pos.append(f"PANEL {i + 1} (row {r + 1}, column {c + 1}) — " + (f"{line} " if line else "")
+                   + f"{p.camera.rstrip('.')}. Background: "
                    f"{p.background.rstrip('.')}. {p.picture}" + (f" {hands}" if hands else "")
                    + view_line(p, views_of(p, views, panel_views)))
     head = (f"A cinematic storyboard sheet for a Sri Lankan television drama: {n} photorealistic film stills of ONE "
@@ -757,6 +790,7 @@ def board_prompt(writer: Writer, numbers: Sequence[int], labels: Sequence[str], 
         "World (every panel): " + board_layout_free(board_world(writer.world, colours)),
         vehicles,  # plan/2026-11-24b §2.3: the lab's vehicles line, before Geography
         "Geography: " + writer.geography,
+        *marks,  # plan/2026-11-24d §3.3
         "\n".join(pos), BODIES, SUPPORT, NO_TEXT,
     ] if x)
 
@@ -794,12 +828,14 @@ def panel_world(world: str) -> str:
 def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: Mapping[str, str],
                  aspect: str = BOARD_ASPECT, props: Sequence[str] = (), fix: str = "",
                  places: Sequence[str] = (), views: Sequence[Mapping[str, Any]] = (), vehicles: str = "",
-                 panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None) -> str:
+                 panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
+                 marks: str = "", panel_mark: str = "") -> str:
     """The image prompt for ONE panel painted alone, filling the picture (lab `solo_prompt` + `CAMERA_RULE`).
     `labels`: the attached pictures in order (the place, then the neighbouring panels, `neighbour_label`);
     `writer`: the approved board (its world and geography); `aspect`: the board's shape, so the panel matches;
     `props`: the canon props, as white clay stand-ins; `fix`: `fix_line` when the panel is painted again after the
-    board check found a fault (plan/2026-11-23c F2)."""
+    board check found a fault (plan/2026-11-23c F2). plan/2026-11-24d: `marks` its stretch's "Ground marks"
+    paragraph, `panel_mark` its marks line (as `board_prompt`); empty, the prompt is as before."""
     hands = hands_text(panel, colours)
     cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
     jobs = "; ".join(f"image {i}: {job}" for i, label in enumerate(labels, 1) if (job := board_job(label)))
@@ -817,9 +853,57 @@ def panel_prompt(writer: Writer, panel: Panel, labels: Sequence[str], colours: M
         "World: " + panel_world(board_world(writer.world, colours)),
         vehicles,  # plan/2026-11-24b §2.3
         "Geography: " + writer.geography,
-        f"THE PANEL — {panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. {panel.picture}"
+        marks,  # plan/2026-11-24d §3.3
+        "THE PANEL — " + (f"{panel_mark} " if panel_mark else "")
+        + f"{panel.camera.rstrip('.')}. Background: {panel.background.rstrip('.')}. {panel.picture}"
         + (f" {hands}" if hands else "") + view_line(panel, views_of(panel, views, panel_views)),
         BODIES, SUPPORT, fix, NO_TEXT.replace("no borders other than the gutters", "no borders, no gutters"),
+    ] if x)
+
+
+# ── the blocking plate (plan/2026-11-24d §3.4, lab/fixed_marks `plate_prompt(tall=True)`) ──────────────────────
+
+_PLATE_SHAPE = {BOARD_ASPECT: "a wide 16:9 frame", TALL: "a tall portrait 9:16 frame"}
+
+
+def plate_prompt(writer: Writer, stretch: marks_kit.Stretch, ground: str, labels: Sequence[str],
+                 colours: Mapping[str, str], view: Mapping[str, Any] | None, first: Panel | None,
+                 aspect: str = BOARD_ASPECT, props: Sequence[str] = (), places: Sequence[str] = (),
+                 views: Sequence[Mapping[str, Any]] = (), vehicles: str = "") -> str:
+    """The prompt of ONE stretch's blocking plate: one still of the place from `view`'s camera (`marks.plate_view`;
+    None: the location plate's own), every still person on their spot. `ground`: the stretch's `marks.paragraph`;
+    `first`: the stretch's first panel, whose hands the plate shows (lab T: the plate's own bag on the forearm went
+    into every panel). The board's own paragraphs, "(every panel)" taken out. Changed from the lab, said: the camera
+    sentence is the view's own `camera` words, and the hands are `hands_text`."""
+    shape = _PLATE_SHAPE[board_aspect(aspect)]
+    cite = "; ".join(f"image {i} is {label}" for i, label in enumerate(labels, 1))
+    jobs = "; ".join(f"image {i}: {job}" for i, label in enumerate(labels, 1) if (job := board_job(label)))
+    refs = (f"Reference images, in order: {cite}." + (f" Take from {jobs}." if jobs else "")) if labels else ""
+    if views and any(label.startswith(VIEWS_LABEL_HEAD) for label in labels):
+        name = f"view {view['n']} ({view['name']})" if view else "view 1"
+        refs = views_paragraph(labels, views).replace(
+            "Every panel below names the view its background comes from: paint that view's background, the same things "
+            "on the same sides, seen from the panel's own camera (closer or tighter as the panel says). Never copy the "
+            "sheet's gutters or layout.",
+            f"This still is painted from {name}'s camera: paint that view's place, the same things on the same "
+            "sides. Never copy the sheet's gutters or layout.")
+    camera = (str(view.get("camera") or "").rstrip(".") if view else "") or "the location plate's own camera"
+    hands = hands_text(first, colours) if first is not None else ""
+    ground = re.sub(r"^Ground marks \([^)]*\): (?:nobody walks in these shots, so each person stands on ONE spot on "
+                    r"the ground for all of them, and every panel of them shows them on that same spot, seen from its "
+                    r"own camera\. )?", "Ground marks: ", ground)
+    every = " (every panel)"
+    return "\n\n".join(x for x in [
+        f"One photorealistic film still for a Sri Lankan television drama, {shape}: the blocking plate of a scene, "
+        "which shows where each person stands. A single picture, no panels, no gutters.",
+        refs,
+        mannequin_line(colours).replace(every, ""), prop_line(props, places).replace(every, ""),
+        "World: " + panel_world(board_world(writer.world, colours)),
+        vehicles.replace(every, ""),
+        ground,
+        f"The camera: {camera}, at standing eye height; a 28mm wide, every mannequin full length with their feet on "
+        "the ground, and the landmarks their marks name in frame." + (f" {hands}" if hands else ""),
+        "Draw NO text of any kind. The people, place and everyday details are Sri Lankan.",
     ] if x)
 
 
@@ -1066,7 +1150,7 @@ def renumber(cells: Sequence[Mapping[str, Any]], writer: Writer, shots: Sequence
             panels.append(replace(p, shot=now[owner], people=list(p.people), props=list(p.props)))
     panels.sort(key=lambda p: p.shot)
     return out, Writer(world=writer.world, geography=writer.geography, panels=panels,
-                       conflicts=list(writer.conflicts))
+                       conflicts=list(writer.conflicts), marks=list(writer.marks), plates=list(writer.plates))
 
 
 def insert_position(parts: Sequence[Sequence[Mapping[str, Any]]], shots: Sequence[Mapping[str, Any]],
@@ -1110,6 +1194,106 @@ def panel_of(raw: Mapping[str, Any] | None, number: int) -> Panel | None:
     if not isinstance(raw, Mapping):
         return None
     return panel_answer({"panels": [raw]}, number)
+
+
+# ── Repaint paints, it does not write again (the person, 2026-11-24) ────────────────────────────────────────────
+# A whole repaint paints the board's pictures again from the panel words already written. The words are written
+# again only for a shot that changed since (a chat or a planner moved its plan pin) or whose panel carries a
+# person's note, and then only when a person asks for it (`rewrite`).
+
+
+def saved_writer(parts: Sequence[Mapping[str, Any]]) -> Writer:
+    """The panel words a board's parts stored (every part stores the same answer; a panel only a later part has is
+    added)."""
+    writer = Writer.of(_mapping(parts[0].get("writer"))) if parts else Writer(world="", geography="", panels=[])
+    have = {p.shot for p in writer.panels}
+    for r in parts[1:]:
+        for p in Writer.of(_mapping(r.get("writer"))).panels:
+            if p.shot not in have:
+                writer.panels.append(p)
+                have.add(p.shot)
+    writer.panels.sort(key=lambda p: p.shot)
+    return writer
+
+
+def saved_board(rows: Sequence[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
+    """The parts of the newest version whose words were written (a failed part keeps them too); [] when none was."""
+    versions = sorted({int(r.get("version") or 1) for r in rows}, reverse=True)
+    for v in versions:
+        parts = sorted((r for r in rows if int(r.get("version") or 1) == v), key=lambda r: int(r.get("part") or 1))
+        if saved_writer(parts).panels:
+            return parts
+    return []
+
+
+def stamp(writer: Writer, shots: Mapping[int, Mapping[str, Any]]) -> Writer:
+    """Each panel marked with the shot it was written for and that shot's plan pin now. `shots`: number → shot row."""
+    for i, p in enumerate(writer.panels):
+        row = shots.get(p.shot)
+        if row is not None:
+            writer.panels[i] = replace(p, shot_id=str(row["id"]), pin=plan_pin(row))
+    return writer
+
+
+def _panels_by_shot(parts: Sequence[Mapping[str, Any]]) -> tuple[dict[str, Panel], dict[str, Mapping[str, Any]]]:
+    """(shot id → its saved panel with the pin it was written against, shot id → its cell). A panel written before
+    the stamps takes its shot and pin from the cell painted with it (same number, same board)."""
+    cells: dict[str, Mapping[str, Any]] = {}
+    by_number: dict[int, Mapping[str, Any]] = {}
+    for part in parts:
+        for c in part.get("cells") or []:
+            cells.setdefault(str(c.get("shot_id")), c)
+            by_number.setdefault(int(c.get("number") or 0), c)
+    out: dict[str, Panel] = {}
+    for p in saved_writer(parts).panels:
+        if p.shot_id:
+            out[p.shot_id] = p
+            continue
+        c = by_number.get(p.shot)
+        if c is not None and c.get("kind") == "painted" and c.get("pin"):
+            out[str(c.get("shot_id"))] = replace(p, shot_id=str(c.get("shot_id")), pin=str(c["pin"]))
+    return out, cells
+
+
+def rewrite_needed(parts: Sequence[Mapping[str, Any]], shots: Sequence[Mapping[str, Any]],
+                   painted: Iterable[str] | None = None) -> list[int]:
+    """The numbers of the shots whose panel words must be written again before the board can be painted from the
+    saved ones: no saved panel, its shot changed since (pin), or a person's note on an unlocked panel asks for new
+    words. `painted`: the shot ids that are painted (a black plate needs no words); None = judge by the saved cells
+    (a black plate whose shot has not changed needs none). Every shot when nothing was written."""
+    ordered = sorted(shots, key=lambda r: int(r.get("number") or 0))
+    if not parts:
+        return [int(s.get("number") or 0) for s in ordered]
+    panels, cells = _panels_by_shot(parts)
+    keep = None if painted is None else {str(x) for x in painted}
+    out = []
+    for s in ordered:
+        sid, c = str(s["id"]), cells.get(str(s["id"]))
+        if keep is not None and sid not in keep:
+            continue
+        if keep is None and c is not None and c.get("kind") == "black" and c.get("pin") and pin_matches(str(c["pin"]),
+                                                                                                         s):
+            continue
+        p = panels.get(sid)
+        if p is None or not p.pin or not pin_matches(p.pin, s) or (c is not None and str(c.get("note") or "").strip()
+                                                                    and not c.get("locked")):
+            out.append(int(s.get("number") or 0))
+    return out
+
+
+def reuse_writer(parts: Sequence[Mapping[str, Any]], shots: Sequence[Mapping[str, Any]],
+                 painted: Iterable[str]) -> Writer | None:
+    """The saved words for a repaint: every painted shot's saved panel, numbered as the shots stand now, the world,
+    geography and conflicts as written. None when any painted shot needs its words written again."""
+    painted = [str(x) for x in painted]
+    if not parts or rewrite_needed(parts, shots, painted):
+        return None
+    panels, _ = _panels_by_shot(parts)
+    number = {str(s["id"]): int(s.get("number") or 0) for s in shots}
+    saved = saved_writer(parts)
+    return Writer(world=saved.world, geography=saved.geography, conflicts=list(saved.conflicts),
+                  panels=sorted((replace(panels[sid], shot=number[sid]) for sid in painted), key=lambda p: p.shot),
+                  marks=list(saved.marks), plates=list(saved.plates))
 
 
 def owner_cell(boards: Sequence[Mapping[str, Any]], shot_id: str) -> tuple[Mapping[str, Any], Mapping[str, Any]] | None:

@@ -138,6 +138,42 @@ with it to every model. Each shot says which vehicles it shows and the ROLE of e
 - `scripts/vehicle_make.py` moves a make out of an older look into `make` (dry by default; `--apply` writes a new
   version that keeps the plate).
 
+## Fixed marks and the blocking plate (plan/2026-11-24d, lab/fixed_marks)
+
+The person's rule: a person who does not walk or travel stays on ONE ground spot for every shot; only a walk, a run,
+an entrance or an exit moves them. Small moves (a turn, a lean, half a step, sitting down on the spot, D1) stay within
+0.5 m. Words hold a spot within one picture but not between the parts of a board (lab A_001 / A_002); a picture does
+(C, T, R, W): so each run of still shots gets a **blocking plate**.
+
+- **Stretches** (`contracts/marks.py` `stretches`): code finds them in the staging map, never a model. A shot belongs
+  to the stretch of its opening block; a scene planned with line parts is mapped to the map's whole blocks
+  (`whole_index`). No map: the board paints as before, with "No staging map" in its conflicts.
+- **Spots**: the board writer reads `stretches` in its bundle and writes `marks` (one `GroundMark` per stretch and still
+  person: what they stand on, beside which landmark, which side, how far; `apart` the gap). `marks.check` keeps one
+  each; a missing one is a conflict and its stretch gets no words and no plate.
+- **Words**: each part gets the "Ground marks" paragraph of its stretches after Geography (`marks.paragraph`) and a
+  marks line at the head of each panel (`marks.panel_line`: still / someone leaves the mark in this shot / a new
+  stretch begins); a panel painted alone (the check's repaint, Update board) gets them too.
+- **The plate** (`kit.plate_prompt`): one still per stretch of two or more shots with someone still, painted BEFORE the
+  parts at the panels' shape and the board's quality, from the view most of its panels face (else view 1 of an
+  `outside` / `inside` sheet; a `both` or vehicle sheet without a named view gets the words only), with the stretch's
+  first panel's hands. `board_inspector` looks at it like a panel and it is painted again once on a fault. It is
+  attached to every part (after the place and vehicles, before the overlap panel) and every panel painted alone in its
+  stretch. A plate that cannot be painted never fails the board.
+- **Storage**: no schema change. The spots and plates live in the version's `writer` (`writer.marks`,
+  `writer.plates`: `{n, shots, shot_ids, people, view, path, pin, check, prompt}`), which every part stores and no
+  browser receives; plate files are `<production>/boards/<board>/plate_<n>-<id>.png`, written once.
+- **Repaint whole board** keeps a plate whose pin (shots, people, spots, colours, pictures) is unchanged; **Repaint
+  marks** (`state.repaint_plates`) paints the named plate again, then the board (a new version, D3). Rewrite and
+  repaint writes new spots and new plates.
+- **Internal** (the person, 2026-11-25): the plate is generated and kept on the backend, never shown. No API response
+  carries it, its ticket, its spots or its prompt; the board card has no Marks row. Repaint marks stays as a route
+  with no button.
+- **Out of date**: the board view compares each plate's shots and people with the stretches as the staging map gives
+  them now; a changed one is `stale` with "The marks of shots 1 to 14 changed: Rewrite and repaint." Never repainted by
+  itself.
+- First frames still get only their own panel (D4); a per-panel marks check waits for the live check (D5).
+
 ## The first frame follows the board (plan/2026-11-23d part 4)
 
 **No approved board, no first frame** (D4, the person 2026-11-23): "Paint first frame" is refused (409) and its button
@@ -196,7 +232,7 @@ approved board never reached its first frame. Now:
   by number), and redraws each touched part's numbered sheet from its cells (grid cuts and panels side by side, each
   fit, never stretched).
 - **Colours stay** (§3.4): an update keeps the row's `colours`; a new person gets the first colour no one uses
-  (`keep_colours`). A whole repaint takes fresh colours.
+  (`keep_colours`). A whole repaint keeps them too when it paints from the saved words; a rewrite takes fresh colours.
 - **Approval** (§3.3): per part, as before. The API queues every part with its approval cleared (the schema allows an
   approval only on a done part) and carries the approval in the job; a part whose cells got a new picture is left
   unapproved ("Updated: shot 5. Look at the board and approve it again."), a part with no new picture gets the
@@ -208,6 +244,25 @@ approved board never reached its first frame. Now:
   it"). A **note** on a panel goes to the writer when that panel is painted again.
 - **Repaint whole board** makes a new version: for a fresh look, a board in the wrong shape, or a board with a failed
   part; notes and locked panels carry over (a locked panel's old picture is pasted back).
+- **Repaint paints, it never writes again** (the person, 2026-11-24). A whole repaint paints the pictures again from the
+  panel words already written (`contracts.board.saved_board` → `reuse_writer`: the newest version with words, a failed
+  part's included; the saved colours kept); the board writer does not run. Each panel is stamped by code with the shot
+  it was written for and that shot's `plan_pin` (`Panel.shot_id` / `pin`, never shown to a model; older panels take
+  them from their cells). A panel needs its words **written again** (`rewrite_needed`) only when its shot changed since
+  (a chat or a planner moved the pin), it has none, or an unlocked panel carries a note. Then the view's `rewrite`
+  names those shots, Repaint is refused (409) and the card offers **Rewrite and repaint** (`POST .../board` with
+  `rewrite: true`), beside Update board. A first board is always written.
+- **One board of shots 1 to N** (the person, 2026-11-24): parts are how the picture is made and are never shown. The
+  card draws every part's cells as one grid in shot order, the overlap shot once (its first part's, as
+  `owner_cell`); **Approve board** (`POST .../scenes/{id}/board/approve`) approves every finished part at once; a
+  failed part is named by its shots ("Shots 1, 2, 3, 4, 5 and 6 came out in a different layout…", `bad_cut`).
+- **The job says what it starts** (2026-11-24): a board job is a `frame_render` job, which the sweeper ends after 10
+  minutes with no job event; the board writes a `stage` event before the writer, each part, each panel check, each
+  single-panel repaint and each updated panel (`board._beat`). A job the sweeper ended that then finishes is `done`
+  with its error cleared (`runtime/jobs.finish`).
+- **A part whose picture fails the cut keeps it** (2026-11-24): `rejected.png` and `rejected-cut.png` (the cut drawn,
+  red boxes the failed panels) in the part's folder, `checks[{kind: "rejected_cut", problems, boxes, path, cut_path}]`,
+  shown under the part's error (`rejected_url`, `rejected_cut_url`, `rejected_problems`).
 
 ## The first frame from its panel (§3.5)
 
@@ -237,6 +292,7 @@ Measured in the lab: a face sheet ≈ $0.06; a board ≈ $0.15-0.18 (writer + LO
 | `POST .../scene-boards/{id}/approve` | approve one part |
 | `PATCH .../scene-boards/{id}/cells/{shot_id}` `{note?, locked?}` | a panel's note or lock |
 | `POST .../scenes/{id}/board/update` `{shots?}` | Update board (job): shot ids, none = everything out of date; 409 with no finished board, a wrong shape, nothing out of date, or while a plan runs |
+| `POST .../scenes/{id}/board/plates/{n}/repaint` | Repaint marks (job, plan/2026-11-24d): plate `n` painted again, then the board, as a new version from the saved words; 404 with no such plate |
 | `POST .../canon/{id}/face-sheet` | a character's face sheet (job) |
 
 Schema v26 (`Database/upgrade_v25_to_v26.sql`): `scene_boards`, `first_frames.board_id`.

@@ -64,7 +64,8 @@ def test_paint_approve_then_frames_are_painted_from_the_panel(world: World, fire
     r = world.client.post(board_url(world, s), json={"quality": "medium"}, headers=crew)
     assert r.status_code == 202, r.text
     bid = r.json()["board_id"]
-    assert fired[-1]["kind"] == "frame_render" and fired[-1]["state"] == {"board_id": bid, "carry": []}
+    assert fired[-1]["kind"] == "frame_render" and fired[-1]["state"] == {"board_id": bid, "carry": [], "saved": [],
+                                                                          "rewrite": True}, "a first board is written"
     assert rows(world)[bid]["quality"] == "medium" and rows(world)[bid]["status"] == "queued"
     again = world.client.post(board_url(world, s), json={}, headers=crew)
     assert again.status_code == 409, "one board at a time"
@@ -206,10 +207,10 @@ def test_a_part_that_could_not_be_cut_shows_why_and_asks_for_a_whole_repaint(wor
     design(world, s)
     crew = world.headers(world.crew)
     bid = approved_board(world, s)
-    rows(world)[bid].update(status="failed", error=bad_cut(1, 1), approved_at=None, approved_by=None)
+    rows(world)[bid].update(status="failed", error=bad_cut([1, 2, 3, 4]), approved_at=None, approved_by=None)
     view = world.client.get(board_url(world, s), headers=crew).json()
     assert view["whole"] and view["state"] == "failed"
-    assert view["parts"][0]["error"] == ("The board came out in a different layout than was asked. "
+    assert view["parts"][0]["error"] == ("Shots 1, 2, 3 and 4 came out in a different layout than was asked. "
                                          "Paint the board again.")
 
 
@@ -394,3 +395,151 @@ def test_the_views_context_splits_vehicles_out_and_gives_the_scenes_text(world: 
                              "the tea kiosk."]
     mine = asyncio.run(canon_router._views_context(world.repos, production, rows[car]))
     assert mine["within"] == [] and mine["comes_and_goes"] == [] and len(mine["scenes"]) == 1
+
+
+def test_a_rejected_part_shows_its_picture_and_why():
+    """2026-11-24: a part that failed the cut links its stored picture and the cut drawn on it; never a path."""
+    from api.routers.boards import _part_view
+
+    row = {"id": str(uuid4()), "status": "failed", "error": "Part 1 ...", "cells": [], "created_at": "x",
+           "checks": [{"kind": "rejected_cut", "problems": ["panel 3: two panels in one crop"],
+                       "path": "p/boards/b/rejected.png", "cut_path": "p/boards/b/rejected-cut.png"}]}
+    view = _part_view(row, set())
+    assert view.rejected_url and "/files/" in view.rejected_url and "rejected" not in view.rejected_url
+    assert view.rejected_cut_url and view.rejected_cut_url != view.rejected_url
+    assert view.rejected_problems == ["panel 3: two panels in one crop"]
+    done = _part_view({**row, "status": "done"}, set())
+    assert done.rejected_url is None and done.rejected_problems == []
+
+
+def test_a_whole_repaint_paints_from_the_saved_words_and_a_changed_shot_asks_for_a_rewrite(
+        world: World, fired: list[dict]):  # noqa: F811
+    """2026-11-24 (the person): Repaint whole board does not run the board writer; a shot changed since (e.g. in a
+    chat) makes "Rewrite and repaint" needed, and a repaint without it is refused."""
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    numbers = [c["number"] for c in rows(world)[bid]["cells"]]
+    rows(world)[bid]["writer"] = {"world": "w", "geography": "g", "conflicts": [],
+                                  "panels": [{"shot": n, "zone": "z", "camera": "c", "background": "b",
+                                              "picture": "p", "people": []} for n in numbers]}
+    view = world.client.get(board_url(world, s), headers=crew).json()
+    assert view["written"] and view["rewrite"] == []
+    r = world.client.post(board_url(world, s), json={}, headers=crew)
+    assert r.status_code == 202, r.text
+    assert fired[-1]["state"]["saved"] == [bid] and fired[-1]["state"]["rewrite"] is False
+    rows(world)[r.json()["board_id"]]["status"] = "failed"  # that repaint ended; the words are still bid's
+
+    shot = world.repos.shots.rows[s["shots"][2]["id"]]  # type: ignore[attr-defined]
+    shot["ir"] = {**shot["ir"], "setting": "the kitchen at night"}
+    assert world.client.get(board_url(world, s), headers=crew).json()["rewrite"] == [3]
+    r = world.client.post(board_url(world, s), json={}, headers=crew)
+    assert r.status_code == 409 and r.json()["detail"] == ("Shot 3 changed since its panel was written. "
+                                                           "Rewrite and repaint, or Update board.")
+    r = world.client.post(board_url(world, s), json={"rewrite": True}, headers=crew)
+    assert r.status_code == 202 and fired[-1]["state"]["rewrite"] is True
+
+
+def test_a_painting_board_says_what_its_job_is_doing(world: World, fired: list[dict]):  # noqa: F811
+    """2026-11-24: the card shows the job's newest step beside "Painting…"."""
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    r = world.client.post(board_url(world, s), json={}, headers=crew)
+    job = r.json()["job_id"]
+    assert world.client.get(board_url(world, s), headers=crew).json()["progress"] == ""
+    world.repos.jobs.add_event(job, "stage", {"stage": "board", "state": "running", "text": "Writing the panels"})  # type: ignore[attr-defined]
+    world.repos.jobs.add_event(job, "stage", {"stage": "board", "state": "running", "text": "Painting part 2 of 3"})  # type: ignore[attr-defined]
+    view = world.client.get(board_url(world, s), headers=crew).json()
+    assert view["state"] == "painting" and view["progress"] == "Painting part 2 of 3"
+
+
+def test_approve_board_approves_every_finished_part_at_once(world: World, fired: list[dict]):  # noqa: F811
+    """2026-11-24: a person sees one board of shots 1 to N; Approve board approves all its finished parts."""
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = world.client.post(board_url(world, s), json={}, headers=crew).json()["board_id"]
+    paint_done(world, s, bid)
+    second = {**rows(world)[bid], "id": str(uuid4()), "part": 2, "parts": 2, "approved_at": None}
+    rows(world)[bid]["parts"] = 2
+    rows(world)[second["id"]] = second
+    r = world.client.post(f"{board_url(world, s)}/approve", headers=crew)
+    assert r.status_code == 200, r.text
+    assert r.json()["approved"] and all(p["approved"] for p in r.json()["parts"])
+    assert world.client.post(f"{board_url(world, s)}/approve", headers=crew).status_code == 409, "nothing left"
+
+
+def with_plate(world: World, s: dict, bid: str) -> None:
+    """What the board job writes with fixed marks (plan/2026-11-24d): the spots and one plate over every shot, and the
+    scene's staging map holding Kamala still from block 0."""
+    shots = sorted((world.repos.shots.rows[x["id"]] for x in s["shots"]),  # type: ignore[attr-defined]
+                   key=lambda r: r["number"])
+    numbers = [r["number"] for r in shots]
+    rows(world)[bid]["writer"] = {
+        "world": "w", "geography": "g", "conflicts": [],
+        "panels": [{"shot": n, "zone": "z", "camera": "c", "background": "b", "picture": "p", "people": []}
+                   for n in numbers],
+        "marks": [{"stretch": 1, "who": "Kamala", "spot": "on the kitchen floor, one step right of the stove",
+                   "apart": ""}],
+        "plates": [{"n": 1, "shots": numbers, "shot_ids": [r["id"] for r in shots], "people": ["Kamala"],
+                    "path": f"p/boards/{bid}/plate_1-abcd1234.png", "pin": "x", "prompt": "secret words",
+                    "check": {"ok": False, "problems": ["red: a held thing with no hand on it"]}}]}
+    world.repos.scenes.rows[s["scene"]["id"]]["staging"] = {  # type: ignore[attr-defined]
+        "by": "model", "marks": [{"block": 0, "who": "Kamala", "zone": "kitchen", "posture": "standing"}]}
+
+
+def test_the_plate_is_internal_and_only_its_changed_marks_are_said(world: World,
+                                                                  fired: list[dict]):  # noqa: F811
+    """The person, 2026-11-25: the blocking plate is generated and kept on the backend, never shown."""
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    with_plate(world, s, bid)
+    view = world.client.get(board_url(world, s), headers=crew).json()
+    assert "plates" not in view and view["state"] == "approved" and view["stale_reasons"] == []
+    text = str(view)
+    assert "plate_1" not in text and "secret words" not in text and "kitchen floor" not in text, \
+        "no plate, ticket, prompt or spot reaches a browser"
+
+    world.repos.scenes.rows[s["scene"]["id"]]["staging"]["marks"].append(  # type: ignore[attr-defined]
+        {"block": 2, "who": "Kamala", "zone": "kitchen", "posture": "walking"})
+    view = world.client.get(board_url(world, s), headers=crew).json()
+    assert any(r.startswith("The marks of shots 1") for r in view["stale_reasons"])
+
+
+def test_repaint_marks_paints_the_plate_again_as_a_repaint(world: World, fired: list[dict]):  # noqa: F811
+    """D3: the plate and then the parts, from the saved words (no board writer), at the board's quality."""
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    with_plate(world, s, bid)
+    plate_url = url(world, f"/scenes/{s['scene']['id']}/board/plates/1/repaint")
+    r = world.client.post(plate_url, headers=crew)
+    assert r.status_code == 202, r.text
+    state = fired[-1]["state"]
+    assert state["repaint_plates"] == [1] and state["rewrite"] is False and state["saved"] == [bid]
+    assert rows(world)[r.json()["board_id"]]["version"] == 2
+    rows(world)[r.json()["board_id"]]["status"] = "failed"
+    missing = url(world, f"/scenes/{s['scene']['id']}/board/plates/9/repaint")
+    assert world.client.post(missing, headers=crew).status_code == 404
+    assert world.client.post(plate_url, headers=world.headers(world.reviewer)).status_code == 403
+
+
+def test_a_board_written_before_fixed_marks_asks_for_a_rewrite(world: World, fired: list[dict]):  # noqa: F811
+    """plan/2026-11-24d: the words have no spots while the staging map holds someone still over two shots."""
+    s = open_scene(world)
+    design(world, s)
+    crew = world.headers(world.crew)
+    bid = approved_board(world, s)
+    with_plate(world, s, bid)
+    assert not world.client.get(board_url(world, s), headers=crew).json()["marks_needed"]
+    rows(world)[bid]["writer"].pop("marks")
+    rows(world)[bid]["writer"].pop("plates")
+    assert world.client.get(board_url(world, s), headers=crew).json()["marks_needed"]
+    world.repos.scenes.rows[s["scene"]["id"]]["staging"] = {}  # type: ignore[attr-defined]
+    assert not world.client.get(board_url(world, s), headers=crew).json()["marks_needed"], "no map, nothing to hold"
+
