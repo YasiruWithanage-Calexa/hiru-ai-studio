@@ -212,6 +212,10 @@ class FakeJobs:
     async def live_items(self, production_id: UUID, since: datetime | None) -> list[Row] | None:
         return None if self.live_items_from is None else await self.live_items_from(production_id, since)
 
+    async def last_stage(self, job_id: UUID) -> str:
+        stages = [e for e in self.event_rows if e["job_id"] == str(job_id) and e["type"] == "stage"]
+        return str((stages[-1]["payload"] or {}).get("text") or "") if stages else ""
+
     async def last_seq(self, job_id: UUID) -> int | None:
         self.seq_queries += 1
         seqs = [int(e["seq"]) for e in self.event_rows if e["job_id"] == str(job_id)]

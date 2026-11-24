@@ -19,11 +19,14 @@ from typing import Any, Protocol
 from uuid import UUID
 
 from api.repositories import Repos, Row
+from contracts.jobs import JobKind
 from contracts.live import BUILD, LiveItem, LiveNotice
 
 _logger = logging.getLogger(__name__)
 
 # The tables a stream needs (each is in the `supabase_realtime` publication).
+# Jobs whose events move their `seq`: the structure build's page, and a Scene board's steps (frame_render, 2026-11-24).
+STEPPED = frozenset({BUILD, JobKind.FRAME_RENDER.value})
 TABLES = ("first_frames", "video_renders", "documents", "jobs", "job_events", "chat_messages",
           "production_director_board")
 _KIND = {"first_frames": "frame", "video_renders": "render", "documents": "document", "jobs": "job"}
@@ -159,17 +162,17 @@ class LiveHub:
             if table == "jobs":
                 item.job_kind = str(record.get("kind"))
                 self._remember(item.id, str(production_id), item.job_kind, item.status)
-                if item.job_kind == BUILD:
+                if item.job_kind in STEPPED:
                     item.seq = self._seq.get(item.id)
             return str(production_id), item, None
         if table == "job_events":
             job_id = str(record.get("job_id"))
             known = await self._job(job_id)
-            if known is None or known[1] != BUILD:
+            if known is None or known[1] not in STEPPED:
                 return None
             seq = int(record.get("seq") or 0)
             self._seq[job_id] = max(seq, self._seq.get(job_id, 0))
-            return known[0], LiveItem(kind="job", id=job_id, status=known[2], job_kind=BUILD,
+            return known[0], LiveItem(kind="job", id=job_id, status=known[2], job_kind=known[1],
                                       updated_at=_when(record.get("created_at") or at), seq=self._seq[job_id]), None
         if table == "chat_messages" and record.get("production_id"):
             author = record.get("author_user_id")

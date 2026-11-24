@@ -138,6 +138,20 @@ Rules:
   place's most striking side by habit. On a jetty, a camera on the boards looking out to sea faces the sheet's
   "Reverse" (the water and the far shore, the boat sheds out of frame); one on the water looking at the sheds faces
   its "Wide". When the camera faces away from a frontage, the frontage is not in the panel's `background`.
+- GROUND MARKS (plan/2026-11-24d). The scene's `stretches` are runs of shots in which nobody walks or travels (code
+  found them in the staging map). In a stretch, every person in its `still` stands, sits or kneels on ONE spot on the
+  ground for all its shots. Write that spot once in `marks`: one entry per stretch and per person in `still`, EVERY
+  name in `still` including the first (whose `apart` is empty), never for a person `on_the_move`. A `spot` says what they stand on, beside which landmark of the place, on which side of
+  it and how far from it, the landmarks named as the place's `views`, its pictures and the vehicle pictures show them,
+  never as you imagine them (a hatch on the side of a vehicle is on its side, not at its back). `apart` says the gap
+  to the person before them in `still`, and on which side. Small movements (a turn, a lean, half a step) stay within
+  half a metre of the spot. Every panel of a stretch keeps each person on their spot: a closer or turned camera makes
+  them larger or shows them from another side, never moves them, and the panel's `background` is what stands behind
+  each of them from that camera. When a shot's plan shows someone walking or travelling inside a stretch, keep the
+  spot and say so in `conflicts` (the staging map missed a move). Examples from other stories: a fisherman mending a
+  net "sits on the upturned crate at the seaward end of the jetty, one stride left of the mooring post", and his
+  daughter "stands on the jetty boards", apart "about two metres to his right, at the top of the ladder"; a
+  shopkeeper "stands behind the counter, a hand's width left of the till".
 - Close-ups and inserts are panels too: describe them at their size (a face filling the panel, a hand and object
   filling the panel). Lettering on an object is described as present but never spelled out, because the board is small.
 - Each panel describes only what is in that frame: no camera-move instructions, no sound, no story explanation.
@@ -158,3 +172,4 @@ shares (time, light, grade, the people's build and condition, the props as clay 
 does not change during the scene). `world` never says who holds what "throughout": hands change from shot to shot and
 belong to each panel. `geography` is ONE paragraph that
 lays out the place as a path: where each zone sits relative to the others and which way the story moves through it.
+`marks` holds the ground spots of the scene's `stretches`, and is empty when the scene gives none.

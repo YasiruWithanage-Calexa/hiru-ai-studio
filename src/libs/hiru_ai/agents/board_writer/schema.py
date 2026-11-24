@@ -47,8 +47,23 @@ class Panel(BaseModel):
                                              "place's `views`); 0 when the place has no views or none fits.")
 
 
+class GroundMark(BaseModel):
+    """plan/2026-11-24d: one still person's spot on one stretch (`contracts.marks.GroundMark`, checked in code)."""
+
+    stretch: int = Field(description="The stretch's number, from the scene's `stretches`.")
+    who: str = Field(description="The person's name, one of the stretch's `still`.")
+    spot: str = Field(description=("What they stand (or sit) on, beside which landmark of the place, on which side "
+                                   "of it and how far from it, the landmarks named as the place's pictures show "
+                                   "them."))
+    apart: str = Field(default="", description="The gap to the person before them in `still`, and on which side; "
+                                               "empty for the first.")
+
+
 class Output(BaseModel):
     world: str
     geography: str
     panels: list[Panel]
     conflicts: list[str]
+    marks: list[GroundMark] = Field(default_factory=list, description=(
+        "One ground spot per stretch and per still person (plan/2026-11-24d); empty when the scene has no "
+        "`stretches`."))

@@ -55,3 +55,30 @@
         people: [ { name: "Kasun", state: "" }, { name: "office worker", state: "" } ]
     conflicts: []
   expect: { world: "" }
+# plan/2026-11-24d: a board with ground marks. The scene gives one stretch (shots 1 and 2, both still); the answer names
+# one spot per person, the landmarks as the place's pictures show them (a jetty from another story, not a scene's words).
+- name: ground marks for a stretch of two still people
+  input:
+    message: "<scene>{\"stretches\": [{\"stretch\": 1, \"shots\": [1, 2], \"still\": [\"Sunil\", \"Malini\"]}]}</scene> Write the storyboard: 2 panels."
+    pictures: []
+  reply:
+    world: "Late afternoon on a wooden fishing jetty; low sun from the sea side, salt-greyed boards."
+    geography: "The jetty runs out from the beach at screen left to the mooring post at screen right."
+    panels:
+      - shot: 1
+        zone: "Jetty end"
+        camera: "Wide, standing height on the beach side, looking along the jetty."
+        background: "The mooring post behind the red mannequin; open sea behind the blue mannequin."
+        picture: "The red mannequin sits on an upturned crate mending a net; the blue mannequin stands to its right at the ladder."
+        people: [ { name: "Sunil", state: "" }, { name: "Malini", state: "" } ]
+      - shot: 2
+        zone: "Jetty end"
+        camera: "Medium, closer on the same side."
+        background: "The mooring post behind the red mannequin."
+        picture: "The red mannequin looks up from the net at the blue mannequin."
+        people: [ { name: "Sunil", state: "" }, { name: "Malini", state: "" } ]
+    conflicts: []
+    marks:
+      - { stretch: 1, who: "Sunil", spot: "on the upturned crate at the seaward end of the jetty, one stride left of the mooring post" }
+      - { stretch: 1, who: "Malini", spot: "on the jetty boards at the top of the ladder", apart: "about two metres to his right" }
+  expect: { geography: "The jetty runs out from the beach at screen left to the mooring post at screen right." }

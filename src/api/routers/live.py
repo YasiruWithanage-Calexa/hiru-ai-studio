@@ -3,7 +3,8 @@
 It answers one small question for one production: what is still queued or running, and what changed since the
 caller last asked. It reads named columns of four tables (one query with schema v25's `live_items()`, plan/2026-11-13d
 phase 3), mints no ticket, and loads no canon, looks or prompts, so a poll every three seconds costs almost nothing. The
-structure build's item carries its newest event number (`seq`), so the build page reads only what is new.
+structure build's item carries its newest event number (`seq`), so the build page reads only what is new; so does a
+running frame_render job (a Scene board's steps, 2026-11-24).
 (`/activity` is the audit log; this is `/live`.)
 """
 from __future__ import annotations
@@ -25,6 +26,7 @@ from api.deps.authz import ProductionAccess, require_permission
 from api.deps.db import get_repos
 from api.live.hub import CLOSE, LiveHub, Subscriber
 from api.repositories import Repos, Row
+from contracts.jobs import JobKind
 from contracts.live import ACTIVE, BUILD, Live, LiveItem, LiveNotice
 from contracts.roles import Permission
 
@@ -49,6 +51,15 @@ async def _read_tables(repos: Repos, production_id: UUID, since: datetime | None
     return items
 
 
+async def _with_steps(repos: Repos, items: list[LiveItem]) -> None:
+    """2026-11-24: a running picture job (a Scene board) also carries its newest event number, so the board card
+    reads its step ("Painting part 2 of 3") when it moves. Filled here, not in `live_items()`: no schema change."""
+    steps = [i for i in items if i.kind == "job" and i.job_kind == JobKind.FRAME_RENDER.value and i.seq is None
+             and i.status in ACTIVE]
+    for item, seq in zip(steps, await asyncio.gather(*(repos.jobs.last_seq(UUID(i.id)) for i in steps)), strict=True):
+        item.seq = seq
+
+
 async def read_live(repos: Repos, production_id: UUID, since: datetime | None) -> Live:
     """What `/live` answers; also the stream's catch-up (plan/2026-11-13d phase 5)."""
     rows = await repos.jobs.live_items(production_id, since)  # schema v25: one query (plan/2026-11-13d phase 3)
@@ -58,6 +69,7 @@ async def read_live(repos: Repos, production_id: UUID, since: datetime | None) -
                           seq=r.get("seq")) for r in rows]
     else:
         items = await _read_tables(repos, production_id, since)
+    await _with_steps(repos, items)
     items.sort(key=lambda i: i.updated_at)
     if any(i.status not in ACTIVE for i in items):
         job_ended()  # something finished: workers wrote rows this process may still hold a copy of

@@ -6,6 +6,7 @@ from pathlib import Path
 
 import yaml
 
+from contracts import marks as mk
 from contracts.board import (
     ONE_PANEL,
     Edit,
@@ -19,6 +20,7 @@ from contracts.board import (
     writer_message,
 )
 from contracts.safe_depiction import PROMPT_LINE, blocking
+from contracts.shotplan import Item
 from hiru_ai.agents.board_writer import agent
 from hiru_ai.agents.board_writer.schema import Input, Output
 from hiru_ai.core.prompts import Prompt
@@ -88,3 +90,25 @@ def test_the_lab_answer_still_reads():
         return
     out = Writer.of(json.loads(lab.read_text(encoding="utf-8")))
     assert len(out.panels) == 9 and out.world and out.geography
+
+
+def test_the_writer_is_told_to_hold_ground_marks():
+    """plan/2026-11-24d §3.2: one spot per stretch and still person, landmarks as the pictures show them."""
+    text = " ".join(Prompt.load(HERE / "prompts" / "system.md").text.split())
+    assert "GROUND MARKS (plan/2026-11-24d)" in text and "never as you imagine them" in text
+    assert "keep the spot and say so in `conflicts`" in text
+
+
+def test_a_recorded_answer_with_marks_passes_the_code_check():
+    case = next(c for c in CASES if c["name"] == "ground marks for a stretch of two still people")
+    out = Writer.of(Output.model_validate(case["reply"]).model_dump())
+    staging = {"marks": [{"block": 0, "who": "Sunil", "zone": "jetty", "posture": "sitting"},
+                         {"block": 0, "who": "Malini", "zone": "jetty", "posture": "standing"}]}
+    blocking_ = mk.stretches(staging, [Item(index=i, kind="action") for i in range(2)],
+                            [{"id": "a", "number": 1, "block_start": 0, "block_end": 1},
+                             {"id": "b", "number": 2, "block_start": 1, "block_end": 2}],
+                            seen={"a": ["Sunil", "Malini"], "b": ["Sunil", "Malini"]})
+    kept, problems = mk.check(out.marks, blocking_)
+    assert len(kept) == 2 and not problems and blocking_.stretches[0].plate
+    words = mk.paragraph(blocking_.stretches[0], kept, {"Sunil": "red", "Malini": "blue"})
+    assert "Sunil (the red mannequin) sits on the upturned crate" in words and not blocking(words)

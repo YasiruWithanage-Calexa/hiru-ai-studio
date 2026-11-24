@@ -55,7 +55,9 @@ class Jobs:
                *, again: bool = False) -> None:
         """`again`: work is left; the same function runs once more with `next_state`."""
         if payload.is_last_hop and not again:
-            self.set(payload.job_id, JobStatus.DONE, result=result)
+            # error=None: a job the sweeper ended while it was still working, that then finished, is done with no
+            # "Stopped" left on it (2026-11-24)
+            self.set(payload.job_id, JobStatus.DONE, result=result, error=None)
             return
         body = AdvanceRequest(job_id=payload.job_id, cursor=payload.cursor, again=again,
                               state={**(next_state or {}), "previous": result})
