@@ -129,7 +129,7 @@ class Agent:
             version=self.manifest.version, static=self.prompt, timeout_s=self.manifest.timeout_s,
             tools=self.tool_block() if self.manifest.tools else "",
             documents=tuple(docs(inp)) if docs else (),
-            images=tuple(images(inp)) if images else (),
+            images=tuple(images(inp)) if images else (), image_detail=self.manifest.image_detail,
             files=tuple(files(inp)) if files else (),
             lines_before=before(inp) if before else None, lines_after=after,
             fallback=MISSING if answer is None else answer,
@@ -303,10 +303,12 @@ class Agent:
         runnable = llm.get_structured(call.tier, self.wire_schema(), timeout_s=call.timeout_s,
                                       max_tokens=call.max_output)
         user: Any = call.user
-        if call.images or call.files:  # the text, then each picture at low detail, then each PDF (its pages' text and
-            # images reach the model: OpenAI's file input)
+        if call.images or call.files:  # the text, then each picture at the manifest's detail (`low` unless it says
+            # otherwise: plan/2026-11-25), then each PDF (its pages' text and images reach the model: OpenAI's file
+            # input)
             user = [{"type": "text", "text": call.user},
-                    *({"type": "image_url", "image_url": {"url": f"data:{mime};base64,{data}", "detail": "low"}}
+                    *({"type": "image_url",
+                       "image_url": {"url": f"data:{mime};base64,{data}", "detail": call.image_detail}}
                       for mime, data in call.images),
                     *({"type": "file", "file": {"filename": name, "file_data": f"data:application/pdf;base64,{data}"}}
                       for name, data in call.files)]

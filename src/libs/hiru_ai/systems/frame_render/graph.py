@@ -141,12 +141,12 @@ def _download(ctx: RunContext, path: str, bucket: str = "references") -> bytes:
     return bytes(ctx.need("files").download(bucket, path))
 
 
-def _references(ctx: RunContext, world: Row, shot: Row) -> list[tuple[str, str, Reference]]:
+def _references(ctx: RunContext, world: Row, shot: Row, panel: Row | None = None) -> list[tuple[str, str, Reference]]:
     """(id, role, picture) for the sheets of the people the camera SEES, the place, what they hold and the same-setup
     frame, that exist and can be read, in the order they are attached. One that cannot be read is left out, not guessed
-    at."""
+    at. `panel` (plan/2026-11-25b): the frame's board panel, whose props' sheets are taken instead of the ledger's."""
     out: list[tuple[str, str, Reference]] = []
-    for want in _compose("references", **world, shot=shot)["references"]:
+    for want in _compose("references", **world, shot=shot, panel=panel)["references"]:
         for choice in want["choices"]:
             try:
                 data = _download(ctx, choice["path"], str(choice.get("bucket") or "references"))
@@ -194,8 +194,12 @@ def _board_panel(ctx: RunContext, scenes: Scenes, board_id: str, shot: Row,
     sections = kit.frame_sections(kit.Writer.of(row.get("writer") or {}), int(cell.get("number") or 0), colours,
                                   opening, faced, blocking=blocking)
     panel = kit.Writer.of(row.get("writer") or {}).panel(int(cell.get("number") or 0))
+    # plan/2026-11-25b: the panel's stand-ins, for the frame's compose to bind to the scene's props and their sheets
+    said = {"props": list(kit.panel_dump(panel).get("props") or []), "colours": colours,
+            "words": [panel.picture, *(h for x in panel.people for h in (x.left_hand, x.right_hand) if h)]} \
+        if panel is not None and panel.props else None
     return (Reference(label=BLOCKING_LABEL if blocking else DRAFT_LABEL, data=data),
-            {"sections": sections, "board_id": board_id, "view": panel.view if panel else 0})
+            {"sections": sections, "board_id": board_id, "view": panel.view if panel else 0, "panel": said})
 
 
 def _view_picture(ctx: RunContext, world: Row, n: int) -> tuple[str, Reference, str] | None:
@@ -297,9 +301,6 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "")
     world = scenes.world(str(shot["scene_id"]))
     if _compose("plate", **world, shot=shot)["plate"]:  # plan/2026-11-12b: a cut to black or a title card
         return black_plate(ctx, scenes, frame, shot)
-    refs = _references(ctx, world, shot)
-    pictures = [r for _, _, r in refs]
-    sheets = [cid for cid, role, _ in refs if role != "setup"]  # `reference_ids` holds canon ids only
     draft = frame_stage(frame) == FrameStage.DRAFT
     board: Row | None = None
     # A shot with a CURRENT shot prompt (plan/2026-11-20d) is painted from its words and the sheets, as lab/shot_prompts
@@ -312,9 +313,19 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "")
     faults = _panel_breaks_a_fact(ctx, str(frame["board_id"]), shot) if frame.get("board_id") and not draft else []
     if faults:
         _log.warning("frame %s: the board panel is not attached: %s", fid, "; ".join(faults))
+    panel: Reference | None = None
     if frame.get("board_id") and not draft and not faults:
-        try:
+        try:  # read before the references (plan/2026-11-25b): the panel's props decide which prop sheets go in
             panel, board = _board_panel(ctx, scenes, str(frame["board_id"]), shot, blocking=from_prompt)
+        except Exception:
+            _log.warning("board %s of frame %s could not be read", frame["board_id"], fid, exc_info=True)
+            frames.finish_frame(fid, {"status": "failed", "error": NO_PANEL})
+            return "failed"
+    refs = _references(ctx, world, shot, board.get("panel") if board else None)
+    pictures = [r for _, _, r in refs]
+    sheets = [cid for cid, role, _ in refs if role != "setup"]  # `reference_ids` holds canon ids only
+    if panel is not None and board is not None:
+        try:
             pictures.append(panel)
             for swap in (_view_picture(ctx, world, int(board.get("view") or 0)),
                          _vehicle_view_picture(ctx, world, shot, int(board.get("view") or 0))):
@@ -337,7 +348,7 @@ def render_frame(ctx: RunContext, scenes: Scenes, frame: Row, quality: str = "")
             _log.warning("draft %s of frame %s could not be read", frame["draft_id"], fid, exc_info=True)
             frames.finish_frame(fid, {"status": "failed", "error": NO_DRAFT})
             return "failed"
-    extra: Row = {"board": board["sections"]} if board else {}
+    extra: Row = {"board": board["sections"], "panel": board.get("panel")} if board else {}
     composed = _compose("compose", **world, shot=shot, labels=[r.label for r in pictures], **extra)
     prompt, pins = composed["prompt"], composed["pins"]
     found = safe_depiction.blocking(prompt)

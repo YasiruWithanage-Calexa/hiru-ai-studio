@@ -1,0 +1,24 @@
+# Recorded answers in the shape lab/board_hands R5 gave on board v21 (plan/2026-11-25): shot 8 (a third hand, the
+# umbrella in the air) and a clean two-person panel.
+- name: a third hand and an umbrella in the air
+  input:
+    image_b64: "iVBORw0KGgo="
+    mannequins: [ "blue" ]
+  reply:
+    counts:
+      - { mannequin: "blue", arms: 3, hands: 3, hands_hold: [ "the phone at the ear", "a fist at the elbow", "flat on the chest" ] }
+    things:
+      - { thing: "umbrella", mannequin: "blue", where: "air" }
+      - { thing: "bag", mannequin: "blue", where: "hand" }
+      - { thing: "phone", mannequin: "blue", where: "hand" }
+  expect: { counts: [ { mannequin: "blue", arms: 3, hands: 3, hands_hold: [ "the phone at the ear", "a fist at the elbow", "flat on the chest" ] } ] }
+- name: a clean two-person panel
+  input: { image_b64: "iVBORw0KGgo=", mannequins: [ "red", "blue" ] }
+  reply:
+    counts:
+      - { mannequin: "red", arms: 2, hands: 2, hands_hold: [ "empty, at the hip", "empty, at the hip" ] }
+      - { mannequin: "blue", arms: 2, hands: 2, hands_hold: [ "the umbrella shaft, the bag over the same wrist", "the phone" ] }
+    things:
+      - { thing: "umbrella", mannequin: "blue", where: "hand" }
+      - { thing: "phone", mannequin: "blue", where: "hand" }
+  expect: { things: [ { thing: "umbrella", mannequin: "blue", where: "hand" }, { thing: "phone", mannequin: "blue", where: "hand" } ] }

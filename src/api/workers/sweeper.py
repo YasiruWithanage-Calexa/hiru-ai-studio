@@ -12,9 +12,10 @@ import asyncio
 import contextlib
 import logging
 from datetime import UTC, datetime, timedelta
+from uuid import UUID
 
 from api.repositories import Repos, Row
-from contracts.jobs import JobKind
+from contracts.jobs import JobKind, JobStatus
 
 _logger = logging.getLogger(__name__)
 
@@ -31,6 +32,9 @@ JOB_LIMITS: dict[str, timedelta] = {
     JobKind.VIDEO_RENDER.value: RENDER_LIMIT,
     JobKind.DOC_INGEST.value: DOCUMENT_LIMIT,
 }
+
+
+_LIVE_JOB = frozenset({JobStatus.PENDING.value, JobStatus.RUNNING.value, JobStatus.WAITING_INPUT.value})
 
 
 def reason(limit: timedelta) -> str:
@@ -64,8 +68,23 @@ async def sweep(repos: Repos, now: datetime | None = None) -> int:
 
     # Frames and renders: those of a job just failed, and any other that has gone quiet for its own limit.
     frames = await repos.frames.active_before(now)  # the busy set is small; each row is judged below
+    # 2026-11-25: a QUEUED frame of a job that is still alive is only waiting its turn (the job writes its shot prompts
+    # first and paints a few frames at a time), so its own row is not touched until a worker claims it. Such a frame is
+    # judged by its job: the job above is failed after its own quiet limit, and its frames end with it.
+    alive: dict[str, bool] = {}
+
+    async def waiting_on_live_job(frame: Row) -> bool:
+        jid = str(frame.get("job_id") or "")
+        if frame.get("status") != "queued" or not jid or jid in failed_jobs:
+            return False
+        if jid not in alive:
+            job = await repos.jobs.get(UUID(jid))
+            alive[jid] = bool(job) and str(job["status"]) in _LIVE_JOB  # type: ignore[index]
+        return alive[jid]
+
     stuck = [str(f["id"]) for f in frames
-             if str(f.get("job_id")) in failed_jobs or now - _when(f["updated_at"]) >= FRAME_LIMIT]
+             if str(f.get("job_id")) in failed_jobs
+             or (now - _when(f["updated_at"]) >= FRAME_LIMIT and not await waiting_on_live_job(f))]
     if stuck:
         await repos.frames.update_many(stuck, {"status": "failed", "error": reason(FRAME_LIMIT)})
         ended += len(stuck)

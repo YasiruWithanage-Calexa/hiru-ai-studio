@@ -47,8 +47,9 @@ from typing import Any
 from uuid import uuid4
 
 from contracts import board as kit
-from contracts import holding, safe_depiction
 from contracts import marks as mk
+from contracts import props as props_kit
+from contracts import safe_depiction
 from contracts import vehicles as vh
 from contracts.canon import look_sheet_path, named_in, views_asset, views_label
 from contracts.frame_brief import sheet_path
@@ -306,20 +307,21 @@ class Board:
                     if views_asset(self.by_id[i]) is not None else {})}
                 for i in ids if i in self.by_id]
 
+    def roster(self, shots: list[kit.BoardShot] | None = None) -> list[props_kit.RosterProp]:
+        """The scene's props (plan/2026-11-25b, `contracts.props.scene_props`), the list the first frame binds the
+        panel's stand-ins against: the props these shots' plans name, the ledger's, and what each person carries in
+        their look or the scene's condition (Anudi's umbrella and handbag were clay on the board and had no sheet in
+        the frame)."""
+        return self.w.roster([self._plan_text(self.painted if shots is None else shots)])
+
+    def other_props(self) -> list[props_kit.RosterProp]:
+        """Every prop of the production, which a stand-in the roster does not know may still be by its exact name."""
+        return props_kit.canon_props(self.world["canon"])
+
     def props(self, shots: list[kit.BoardShot]) -> list[Row]:
-        """The props these shots' plans name, as canon rows: by name or alias, or as the end of a word the plan uses
-        ("smartphone" is the canon "phone", plan/2026-11-23c §3.3; the frame refs audit of 2026-11-18)."""
-        text = self._plan_text(shots)
-        words = {w.lower() for w in re.findall(r"[A-Za-z]+", text)}
-        out = []
-        for c in self.world["canon"]:
-            if c.get("kind") != "prop":
-                continue
-            names = [str(c.get("name") or ""), *(str(a) for a in c.get("aliases") or [])]
-            if any(n and named_in(n, text) for n in names) or any(
-                    holding.canon_match(w, [c]) is not None for w in words if len(w) >= 4):
-                out.append(c)
-        return out
+        """The roster's canon props, as canon rows: by name or alias, or as the end of a word the plan uses
+        ("smartphone" is the canon "phone", plan/2026-11-23c §3.3), the ledger's, and the carried ones."""
+        return [self.by_id[p.canon_id] for p in self.roster(shots) if p.canon_id in self.by_id]
 
     def prop_names(self, shots: list[kit.BoardShot]) -> list[str]:
         return [str(p["name"]) for p in self.props(shots)]
@@ -425,7 +427,8 @@ def write(ctx: RunContext, b: Board, repaint: dict[int, str] | None = None) -> k
         ctx, max_output=kit.WRITER_MAX_OUTPUT)
     writer = kit.Writer.of(out.model_dump())
     writer.conflicts = list(dict.fromkeys([*writer.conflicts, *kit.writer_findings(writer, b.shots, b.carried(),
-                                                                                    b.views, b.panel_views())]))
+                                                                                    b.views, b.panel_views(),
+                                                                                    b.roster(), b.other_props())]))
     return kit.stamp(writer, {s.number: b.row(s.id) for s in b.painted})  # a repaint reuses these words
 
 
@@ -434,29 +437,44 @@ def write(ctx: RunContext, b: Board, repaint: dict[int, str] | None = None) -> k
 
 def _check_panel(ctx: RunContext, b: Board, panel: kit.Panel, data: bytes) -> Row | None:
     """What the vision model sees wrong in one painted panel, or None: no key, the vision model switched off
-    (`OPENAI__MODEL_VISION=""`), or a failed call (the panel is kept as it is)."""
+    (`OPENAI__MODEL_VISION=""`), or both looks failed (the panel is kept as it is).
+
+    Two looks (plan/2026-11-25 B): `board_inspector` with the expected words (the hands, the view), and the BLIND count
+    (`board_counter`, told only the colours: lab/board_hands found the inspector copies the expected hands back and
+    misses a third arm). The answer is the inspector's flags plus the counter's `counts` and `things`; either look may
+    be missing when its call failed."""
     if not (llm.models_enabled() and get_settings().openai.model_vision):
         return None
     view = kit.panel_view(panel, kit.views_of(panel, b.views, b.panel_views()))
     crop = b.view_crop(panel.view, panel.shot) if view is not None else None
+    picture = base64.b64encode(data).decode()
+    seen = [(n, c) for n, c in b.colours.items() if any(x.name == n for x in panel.people)]
+    answer: Row = {}
     try:
         out = agents.build("board_inspector").run(
-            {"image_b64": base64.b64encode(data).decode(), "mime": "image/png",
-             "people": [f"{n} is the {c} mannequin" for n, c in b.colours.items()
-                        if any(x.name == n for x in panel.people)],
+            {"image_b64": picture, "mime": "image/png",
+             "people": [f"{n} is the {c} mannequin" for n, c in seen],
              "panel": f"{panel.camera.rstrip('.')}. {panel.picture}", "hands": kit.hands_text(panel, b.colours),
              # plan/2026-11-24c §2.7: the panel's view, its words and its crop beside the panel
              **({"view": kit.view_named(view), "view_b64": base64.b64encode(crop).decode()}
                 if view is not None and crop is not None else {})},
             ctx)
+        answer.update(out.model_dump())
     except Exception:
         _log.warning("panel of shot %s could not be checked", panel.shot, exc_info=True)
-        return None
-    return dict(out.model_dump())
+    if seen:  # an insert or a place with no mannequin has nothing to count
+        try:
+            counted = agents.build("board_counter").run(
+                {"image_b64": picture, "mime": "image/png", "mannequins": [c for _, c in seen]}, ctx)
+            answer.update(counted.model_dump())
+        except Exception:
+            _log.warning("the mannequins of shot %s could not be counted", panel.shot, exc_info=True)
+    return answer or None
 
 
 def _faults(answer: Row) -> list[str]:
-    """The faults that send a panel back; [] when it is fine."""
+    """The faults that send a panel back; [] when it is fine: the inspector's flags (named by its problems), then the
+    blind count's, called by code (`kit.count_faults`, plan/2026-11-25)."""
     out = [str(p) for p in answer.get("problems") or [] if str(p).strip()][:3]
     named = [w for flag, w in (("extra_limbs", "a mannequin with more or fewer than two arms"),
                                ("floating", "a held thing with no hand on it, floating"),
@@ -465,7 +483,8 @@ def _faults(answer: Row) -> list[str]:
                                ("view_mismatch", "the background shows another view of the place than the panel's"))
              if (answer.get("hands_match") is False if flag == "hands_mismatch" else
                  answer.get("view_match") is False if flag == "view_mismatch" else answer.get(flag) is True)]
-    return (out or named) if named else []
+    flagged = (out or named) if named else []
+    return flagged + [f for f in kit.count_faults(answer) if f not in flagged]
 
 
 def _mend(ctx: RunContext, b: Board, writer: kit.Writer, panel: kit.Panel, data: bytes, refs: list[Reference],
@@ -974,7 +993,7 @@ def _paint_panel(ctx: RunContext, b: Board, writer: kit.Writer, parts_cells: lis
         raise _Failed(FAILED) from None
     conflicts = [*kit.Writer.of(raw).conflicts,
                  *kit.writer_findings(kit.Writer(world="", geography="", panels=[panel]), [shot], b.carried(),
-                                      b.views, b.panel_views())]
+                                      b.views, b.panel_views(), b.roster(), b.other_props())]
     data, check = _mend(ctx, b, writer, panel, picture.data, refs, aspect, quality)
     line = _still_wrong(shot.number, check)
     return data, panel, [*conflicts, *([line] if line else [])], check

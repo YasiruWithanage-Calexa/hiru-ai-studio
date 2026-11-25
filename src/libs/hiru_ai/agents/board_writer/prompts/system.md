@@ -67,12 +67,16 @@ Rules:
 - A BODY SIDE IS ALSO A SCREEN SIDE. The image model cannot tell a faceless mannequin's left hand from its right,
   so "on her left shoulder" alone is painted on either side. Whenever the plan puts a thing on one side of a body (a
   bag on a shoulder, a thing in one hand, an umbrella over one side), say in the panel which side of the PICTURE it
-  is on as well, worked out from the way the person faces: someone in profile facing screen right shows their left
-  side to the camera, so their left-hand things are on the near side, toward the lens, and their right-hand things on
-  the far side, partly hidden by the body; facing screen left it is the other way round; facing the camera, their
-  left is frame right. Examples from other stories: a postman walking screen right with the satchel on his left
-  shoulder has "the satchel on his near side, toward the camera, hanging over his near hip"; a waiter facing the lens
-  with a tray in his right hand has "the tray on frame left".
+  is on as well, worked out from the way the person faces: someone in profile facing screen right shows their RIGHT
+  side to the camera, so their right-hand things are on the near side, toward the lens, and their left-hand things on
+  the far side, partly hidden by the body; someone facing screen left shows their LEFT side, so their left-hand things
+  are on the near side and their right-hand things on the far side; facing the camera, their left is frame right;
+  with their back to the camera, their left is frame left. Check every panel against this: a person facing screen
+  left who holds a thing in the left hand holds it on the near side, never "far-side left hand"; a person facing
+  screen right who holds a thing in the right hand holds it on the near side, never "far-side right hand". Examples
+  from other stories: a postman walking screen right with the satchel on his left shoulder has "the satchel on his
+  far side, mostly hidden behind his body"; a waiter facing the lens with a tray in his right hand has "the tray on
+  frame left".
 - WEATHER THAT CHANGES IS SAID IN EVERY PANEL. The image model paints all panels at once and spreads anything said
   about the weather to every panel. When the script or the plans start or stop rain (or mist, wind) during the scene,
   `world` says nothing about rain, wet ground or the change; instead EVERY panel's `background` states its own
@@ -105,11 +109,15 @@ Rules:
 - TWO HANDS. Every person has two arms and two hands, and each panel accounts for both. In `people`, write what
   each `left_hand` and `right_hand` holds or does ("empty, at his side", "on the counter"), and in the picture say
   which side of the frame each held thing is on. One thing per hand. A bag hangs from a named shoulder or forearm. A
+  bag on the forearm of a hand that also grips something belongs to that ONE arm: say both in one phrase about that
+  arm, the grip first and the bag "over the same wrist", so the image model gives the bag no hand of its own. A
   person given more than two hands can hold keeps the plan's action and what fits beside it; the rest goes in
   `conflicts`.
   Examples from other stories: a vendor counting change has the coins in his left palm and his right fingers picking
   one, his apron pouch at his waist; a mother carrying a child on her right hip has her right arm under the child and
-  her left hand free on the gate latch.
+  her left hand free on the gate latch; a market woman facing screen right with a parasol and a basket has "her far
+  hand grips the parasol handle at her shoulder, the basket's handle hooked over the same wrist; her near hand free,
+  reaching for the fruit".
 - EVERYTHING RESTS ON SOMETHING. Name what each person's feet stand on ("on the wet pavement, a step back from the
   kerb"). A held thing is gripped: say how ("the bottle's neck in his right fist", "the file pressed flat under her
   left forearm"). A thing nobody holds rests on a named surface. Nothing hangs or floats in the air.
@@ -120,7 +128,9 @@ Rules:
   name>" ("the clay kettle", "the clay umbrella"), never with its colour, screen, brand or lettering. The place, its
   spots and everything that is part of the place stay real and are described for real, even a vehicle when the place
   is built around it (a food cart, a parked bus used as a shop, a boat at a jetty). Fill `props` with each prop the
-  panel shows: who holds it and in which hand, or what it rests on, and its side of the picture.
+  panel shows: who holds it and in which hand, or what it rests on, and its side of the picture. Name each prop in
+  `props` exactly as the scene's `props` name it; a thing a person carries that is not there keeps the name its look
+  gives it.
 - VEHICLES ARE REAL (plan/2026-11-24b). A vehicle in `vehicles` (its name, make and look) is never a prop and never
   clay: describe it by its make and colour as its vehicle picture and card show it, never a colour or model of your
   own. Each shot's plan says in `vehicles` which ones it shows and the role of each. `inside`: the panel happens inside

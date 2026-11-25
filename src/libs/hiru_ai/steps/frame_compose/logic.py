@@ -12,7 +12,8 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from contracts import board as board_kit
-from contracts import picture_pins, sceneplan, vehicles
+from contracts import holding, picture_pins, sceneplan, vehicles
+from contracts import props as props_kit
 from contracts.canon import (
     SHEET_ASPECT,
     CanonCard,
@@ -42,6 +43,7 @@ from contracts.frame_brief import OPENS_LINE as OPENS_LINE
 from contracts.frame_brief import sheet_path as sheet_path
 from contracts.holding import Hands, hands_for
 from contracts.producer import (
+    BLOCKING_LABEL,
     CameraSettings,
     CastMember,
     PersonEdits,
@@ -129,6 +131,44 @@ class World:
                    genre=str(payload.get("genre") or ""), conditions=dict(payload.get("conditions") or {}),
                    boards=list(payload.get("boards") or []))
 
+    # ── props (plan/2026-11-25b) ──────────────────────────────────────────────────────────────────
+
+    def carried(self) -> dict[str, str]:
+        """Person name → what they carry through the scene: their look's accessories and the scene's condition."""
+        out: dict[str, str] = {}
+        for cid in dict.fromkeys([*self.looks, *self.conditions]):
+            name = str((self.by_id.get(cid) or {}).get("name") or "")
+            said = " ".join(x for x in (str((self.looks.get(cid) or {}).get("accessories") or ""),
+                                        str(self.conditions.get(cid) or "")) if x)
+            if name and said:
+                out[name] = said
+        return out
+
+    def _ledger(self) -> holding.Ledger:
+        planner = next((str(s.get("planner")) for s in self.shots if s.get("planner")), "")
+        return holding.Ledger.of(holding.scene_marks(self.scene, planner))
+
+    def roster(self, texts: list[str]) -> list[props_kit.RosterProp]:
+        """The scene's props (`contracts.props.scene_props`): ONE list for the board and the frame. `texts`: the words
+        that name props (the board's plans; a frame's shots and panel)."""
+        return props_kit.scene_props(self.canon, texts, self._ledger().things, self.carried().values())
+
+    def bound(self, shot: Row, panel: Mapping[str, Any] | None) -> props_kit.Bound:
+        """The stand-ins of the frame's panel bound to the scene's roster (`contracts.props.bind`); empty without a
+        panel, or for a panel of a board painted before plan/2026-11-23c (no `props`). `panel`: `{props, colours,
+        words}` as `frame_render.graph` reads it from the frame's own board."""
+        if not panel or not panel.get("props"):
+            return props_kit.Bound()
+        words = [str(w) for w in panel.get("words") or []]
+        shown = [holding.shown_text(s) for s in self.shots if str(s.get("id")) != str(shot.get("id"))]
+        roster = self.roster([*shown, holding.shown_text(shot), *words])
+        ledger = [t.text for t in self._ledger().things.values()]
+        # a prop's state, last word wins: what people carry through the scene ("Holding the open umbrella"), the
+        # ledger, the shot, then the panel
+        return props_kit.bind(list(panel["props"]), roster, dict(panel.get("colours") or {}),
+                              texts=[*self.carried().values(), *ledger, holding.shown_text(shot), *words],
+                              others=props_kit.canon_props(self.canon))
+
     def approved_panel(self, shot: Row) -> Any:
         """The shot's panel on the current approved board, still showing the shot (`contracts.board.approved_panel`),
         or None."""
@@ -168,13 +208,14 @@ class World:
             out[sid] = f
         return out
 
-    def planned(self, shot: Row) -> list[PlannedReference]:
-        """The pictures this frame wants, in their fixed order (`contracts.frame_brief.plan_references`)."""
+    def planned(self, shot: Row, panel: Mapping[str, Any] | None = None) -> list[PlannedReference]:
+        """The pictures this frame wants, in their fixed order (`contracts.frame_brief.plan_references`). `panel`
+        (plan/2026-11-25b): the frame's board panel (`bound`), whose props' sheets it then takes."""
         staged = self._own(shot)[2]
         return plan_references(self.scene, shot, self.canon, staged.on_screen, self.looks, setup=self.setup(shot),
-                               limit=MAX_REFERENCES)
+                               limit=MAX_REFERENCES, panel_props=self.bound(shot, panel) or None)
 
-    def reference_choices(self, shot: Row) -> list[Row]:
+    def reference_choices(self, shot: Row, panel: Mapping[str, Any] | None = None) -> list[Row]:
         """For each picture the frame wants: `{id, role, choices: [{label, path, bucket}]}`, in the order they are
         attached: the people the camera SEES, the place, another place, what they hold, then the same-setup frame. A
         person wearing a look is offered the look sheet first and the base sheet next; the system takes the first that
@@ -183,7 +224,7 @@ class World:
         return [{"id": p.id, "role": p.role,
                  "choices": [{"label": label, "path": path, "bucket": "frames" if p.role == "setup" else "references"}
                              for label, path in p.choices]}
-                for p in self.planned(shot)]
+                for p in self.planned(shot, panel)]
 
     def missing(self, shot: Row) -> list[str]:
         return missing_references(self.planned(shot))
@@ -249,18 +290,43 @@ class World:
         record = (shot.get("design") or {}).get("shot_prompt")
         return record if isinstance(record, Mapping) and not self.shot_prompt_reasons(shot) else None
 
-    def brief(self, shot: Row, labels: list[str], *, board: list[str] | None = None) -> FrameBrief:
+    def brief(self, shot: Row, labels: list[str], *, board: list[str] | None = None,
+              panel: Mapping[str, Any] | None = None) -> FrameBrief:
         """The first frame's brief naming exactly `labels` as its attached images (`contracts.frame_brief`), in the
-        shot prompt's words for the picture while it is current (plan/2026-11-20d D5)."""
+        shot prompt's words for the picture while it is current (plan/2026-11-20d D5).
+
+        plan/2026-11-25b: a frame painted from a panel that lists its props (`panel`) gets the lab's binding paragraph
+        in the board's props slot, numbered from `labels`, and the board's hands as its ONE hands sentence (the
+        ledger's contradicted it, F6)."""
         staged = self._own(shot)[2]
         recommended, camera = self.camera(shot)
         record = self.shot_prompt(shot)
+        lines, bound = list(board or []), self.bound(shot, panel)
+        if props_kit.PROPS_SLOT in lines:
+            blocking = BLOCKING_LABEL in labels
+            said = props_kit.binding_text(
+                bound, props_kit.image_numbers(labels, bound), props_kit.once_line(bound, self._look_carries(labels)),
+                subject=props_kit.PANEL if blocking else props_kit.DRAFT) if bound else ""
+            lines = board_kit.fill_props(lines, said, blocking)
+        ledger = "" if board_kit.board_hands(lines) else self.hands(shot).sentence
         return frame_brief(ir=shot.get("ir") or {}, camera=camera, aspect_ratio=self.aspect,
                            cast=self.cast(shot, staged.on_screen), references=labels, recommended=recommended,
                            unseen=unseen_sentence(staged, {k: m.name for k, m in self.members.items()}),
-                           hands=" ".join(p for p in (self.hands(shot).sentence, opens_line(shot)) if p),
-                           scene=self.scene, shot=shot, genre=self.genre, board=board or (),
-                           shot_prompt=(record or {}).get("frame"), vehicles=self.vehicle_lines(shot))
+                           hands=" ".join(p for p in (ledger, opens_line(shot)) if p),
+                           scene=self.scene, shot=shot, genre=self.genre, board=lines,
+                           shot_prompt=(record or {}).get("frame"), vehicles=self.vehicle_lines(shot),
+                           prop_looks=props_kit.prop_looks(bound) if bound else None)
+
+    def _look_carries(self, labels: list[str]) -> dict[str, str]:
+        """Person name → what their look carries, for each person whose look sheet is attached (C2: "the umbrella and
+        the handbag on Anudi's look sheet are these same things")."""
+        out: dict[str, str] = {}
+        for cid, look in self.looks.items():
+            name = str((self.by_id.get(cid) or {}).get("name") or "")
+            said = str((look or {}).get("accessories") or "")
+            if name and said and f"the look sheet for {name}" in labels:
+                out[name] = said
+        return out
 
     def vehicle_lines(self, shot: Row) -> list[str]:
         """The frame's words for the shot's vehicles (plan/2026-11-24b §2.4): the place sentence of a shot INSIDE one,
@@ -277,12 +343,13 @@ class World:
         """Every person's and place's name in the production: what a rewrite of a section must still name."""
         return [str(c["name"]) for c in self.canon if c.get("kind") in ("character", "location") and c.get("name")]
 
-    def compose(self, shot: Row, labels: list[str], board: list[str] | None = None) -> tuple[str, Row]:
+    def compose(self, shot: Row, labels: list[str], board: list[str] | None = None,
+                panel: Mapping[str, Any] | None = None) -> tuple[str, Row]:
         """→ (the frame prompt naming exactly `labels` as its attached images, the pins). The pins cover everyone in
         the shot, heard too (a voice's card is still part of the shot); the People line names only who is seen. The
         picture pin (plan/2026-11-20d D8) marks the frame out of date when the camera's picture changes, or when the
         shot prompt it was drawn from is rewritten."""
-        return self.brief(shot, labels, board=board).text(), self.pins_now(shot, frame=True)
+        return self.brief(shot, labels, board=board, panel=panel).text(), self.pins_now(shot, frame=True)
 
     def hands(self, shot: Row) -> Hands:
         """Who holds what as the shot opens (`contracts.holding`), for the people the camera sees."""
@@ -291,7 +358,8 @@ class World:
 
     def expected(self, shot: Row, board: list[str] | None = None) -> Row:
         """What the vision check compares the picture with: `{seen, unseen, frame}`. A frame painted from its Scene
-        board panel (`board`, plan/2026-11-14 §3.5) is also checked for a leftover mannequin and the planned state."""
+        board panel (`board`, plan/2026-11-14 §3.5) is also checked for a leftover mannequin and the planned state,
+        and (plan/2026-11-25b) against the board's hands when it has them: the frame follows the board's."""
         staged = self._own(shot)[2]
         record = self.shot_prompt(shot)  # D5: a frame painted from the shot prompt is checked against the same words
         words = (record or {}).get("frame") or {}
@@ -301,7 +369,8 @@ class World:
         return {"seen": [identity_line(m) for m in self.cast(shot, staged.on_screen)],
                 "unseen": [f"{self.members[c].name} (heard {source_phrase(staged.voice_source)}, not in the place)"
                            for c in staged.heard_only if c in self.members],
-                "frame": text, "hands": self.hands(shot).expect, "board": bool(board), "state": state}
+                "frame": text, "hands": board_kit.board_hands(board or []) or self.hands(shot).expect,
+                "board": bool(board), "state": state}
 
     def seen_names(self, shot: Row) -> dict[str, str]:
         staged = self.staged(shot)

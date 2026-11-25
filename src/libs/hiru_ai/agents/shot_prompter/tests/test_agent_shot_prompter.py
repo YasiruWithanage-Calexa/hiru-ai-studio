@@ -26,6 +26,21 @@ def test_the_prompt_is_static_and_carries_the_hard_rules():
     assert "never write\nclock or edit words" in text or "clock or edit words" in " ".join(text.split())
 
 
+def test_the_prompt_gives_the_lengths_code_checks_and_the_boards_word_for_a_held_thing():
+    """2026-11-25: 13 of 14 first answers of a scene failed a check the prompt never stated (`video.people` 700-1000
+    characters against 650) or named the board's phone a "handset", and each paid a repair call."""
+    from hiru_ai.core import parts
+
+    limits = parts.step("shot_prompt", "logic").LIMITS
+    text = " ".join(Prompt.load(HERE / "prompts" / "system.md").text.split())
+    assert f"`situation` at most {limits['situation']}" in text
+    assert f"`people` at most {limits['people']}" in text
+    assert f"`sound` at most {limits['sound']}" in text
+    assert f"`listener` at most {limits['step']} each" in text
+    assert f"together at most {limits['frame']}" in text
+    assert "in the board's own word for it" in text
+
+
 def test_the_scene_goes_first_as_its_own_message_then_the_shot_the_camera_and_the_cards():
     inp = Input.model_validate(CASES[0]["input"])
     assert agent.shared_message(inp) == inp.scene  # the same bytes for every shot of the scene: it caches

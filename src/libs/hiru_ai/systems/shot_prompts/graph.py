@@ -25,7 +25,9 @@ says why (a WARNING, and `warnings` in its result). A video prompt is a NEW vers
 """
 from __future__ import annotations
 
+import contextvars
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from langgraph.graph import END, START, StateGraph
@@ -49,6 +51,7 @@ WARNINGS_KEPT = 10  # the job's result carries its first warnings, for the scree
 DESIGN_FIRST = "Recommend settings first: its camera design is missing or out of date"
 NO_ACCEPTED_FRAME = "no accepted first frame"
 MODES = ("write", "video", "frames")
+WORKERS = 4  # shot prompts written at once (2026-11-25), as frame_render paints its frames
 Row = dict[str, Any]
 
 
@@ -197,14 +200,29 @@ def build(ctx: RunContext, payload: DispatchPayload, production: Row) -> Compile
                            + ("the first frame keeps the code's words" if not rewrite else "nothing was rewritten"))
             return 0
         frames = producer.accepted_frames([s.id for s in need]) if need else {}
-        written = 0
-        for shot in sorted(need, key=lambda s: s.number):
+
+        def one(shot: Any) -> tuple[bool, list[str]]:
             # "Write prompts" (2026-11-21): only the video when only the video is out of date (a camera move, the
             # script, no timecodes yet): the opening and the drawn frame are kept; else both
-            need_now = prompter.needs(pc["world"], live(shot, pc)) if rewrite else "both"
-            how = "video_only" if need_now == "video_only" else "both"
-            if write_shot_prompt(shot, scene, prod, pc, frames.get(shot.id), skipped, how=how) is not None:
-                written += 1
+            notes: list[str] = []
+            try:
+                need_now = prompter.needs(pc["world"], live(shot, pc)) if rewrite else "both"
+                how = "video_only" if need_now == "video_only" else "both"
+                return write_shot_prompt(shot, scene, prod, pc, frames.get(shot.id), notes, how=how) is not None, notes
+            except Exception:
+                _log.exception("shot prompt of %s crashed", shot.code)
+                return False, [*notes, f"{shot.code}: shot prompt not written: it could not be written"]
+
+        # 2026-11-25: each shot's prompt reads only its own row, so they are written WORKERS at a time (one at a time a
+        # 14-shot scene took 9.5 minutes before its first frame was painted). Each runs in its own copy of this
+        # context (a pool thread does not inherit it); the notes are kept in shot order.
+        ordered = sorted(need, key=lambda s: s.number)
+        copies = [contextvars.copy_context() for _ in ordered]
+        written = 0
+        with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+            for ok, notes in pool.map(lambda pair: pair[0].run(one, pair[1]), zip(copies, ordered, strict=True)):
+                written += int(ok)
+                skipped.extend(notes)
         return written
 
     def video_prompts(row: Row, scene: Any, prod: Any, canon: list[Row], skipped: list[str], wanted: list[Any], *,

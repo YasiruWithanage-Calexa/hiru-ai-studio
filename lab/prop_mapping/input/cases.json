@@ -1,0 +1,176 @@
+{
+ "1": {
+  "shot_id": "f121e389-49f5-46ae-8911-39db44462e49",
+  "board_id": "31b47723-34c4-4318-a12e-a7645d11c8b1",
+  "board_version": 22,
+  "cell": {
+   "number": 1,
+   "box": [
+    0,
+    0,
+    351,
+    768
+   ],
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/31b47723-34c4-4318-a12e-a7645d11c8b1/cell_001.png",
+   "source": "sheet"
+  },
+  "panel": {
+   "shot": 1,
+   "zone": "roadside",
+   "camera": "Standing eye height on the road-facing side of the axis, looking across the drain toward the vending bay and frontage; 40mm waist-up two-shot, medium depth.",
+   "background": "The real maroon three-wheeler and raised serving hatch occupy frame left behind Kasun, with the blue awning above left. The pale boundary wall and recessed shutters extend across frame right; the clay tea flask stands on the right end of the vehicle's stainless serving ledge at lower left.",
+   "picture": "The red mannequin stands left with chest facing screen right, and the blue mannequin stands right with chest facing screen left; both have their feet planted on their fixed concrete landing spots below the crop. Red's far-side right hand extends the clay phone into the centre, while blue's near-side right palm waits separately beneath it and both heads tip toward the object. Red's near-side left hand hangs empty beside the left hip. Blue's far-side left hand grips the clay umbrella shaft at upper-chest height, with its canopy above frame right and the clay handbag hanging by its handles from the same left forearm, partly visible at lower right.",
+   "people": [
+    {
+     "name": "Kasun",
+     "state": "",
+     "left_hand": "Empty, hanging beside the near-side left hip.",
+     "right_hand": "Far-side hand gripping the clay phone by its edges, extended toward frame centre."
+    },
+    {
+     "name": "Anudi",
+     "state": "",
+     "left_hand": "Far-side hand gripping the clay umbrella shaft; the clay handbag handles hang over the left forearm.",
+     "right_hand": "Near-side palm open beneath the clay phone, not yet gripping it."
+    }
+   ],
+   "props": [
+    {
+     "name": "phone",
+     "held_by": "Kasun",
+     "hand": "right",
+     "rests_on": "",
+     "frame_side": "centre"
+    },
+    {
+     "name": "umbrella",
+     "held_by": "Anudi",
+     "hand": "left",
+     "rests_on": "",
+     "frame_side": "right"
+    },
+    {
+     "name": "handbag",
+     "held_by": "Anudi",
+     "hand": "",
+     "rests_on": "Anudi's left forearm, through its handles",
+     "frame_side": "right"
+    },
+    {
+     "name": "tea flask",
+     "held_by": "",
+     "hand": "",
+     "rests_on": "The rear/right end of the three-wheeler's stainless-steel side serving ledge",
+     "frame_side": "left"
+    }
+   ],
+   "view": 1,
+   "shot_id": "f121e389-49f5-46ae-8911-39db44462e49",
+   "pin": "v3:7af82f164ced4c44"
+  },
+  "colours": {
+   "Kasun": "red",
+   "Anudi": "blue"
+  },
+  "view": 1,
+  "checks": [
+   {
+    "tone": "advisory",
+    "label": "Hands · Kasun holds the phone; Anudi's right hand is open and does not hold it."
+   },
+   {
+    "tone": "advisory",
+    "label": "Differs · Phone is held by Kasun instead of by Anudi"
+   }
+  ]
+ },
+ "11": {
+  "shot_id": "7dec3cf5-b579-4850-b574-f8801be628c0",
+  "board_id": "9db1ba1d-5433-4b09-9187-b6392c1f7eac",
+  "board_version": 22,
+  "cell": {
+   "number": 11,
+   "box": [
+    686,
+    771,
+    1024,
+    1536
+   ],
+   "path": "b89f79a3-3ce6-4123-aee5-759f35c09d69/boards/9db1ba1d-5433-4b09-9187-b6392c1f7eac/cell_011.png",
+   "source": "sheet"
+  },
+  "panel": {
+   "shot": 11,
+   "zone": "roadside",
+   "camera": "Return to the original road-facing shared setup at standing eye height; 40mm waist-up two-shot with both hands and the phone clearly separated.",
+   "background": "The real maroon three-wheeler and blue awning return at frame left behind red. The stainless serving ledge and upright clay tea flask occupy lower left; the pale boundary wall and shutters extend right.",
+   "picture": "Red stands left, chest facing screen right and head turned toward blue, with both hands empty beside its hips. Blue stands right, chest facing screen left and head tipped down toward the clay phone, which its near-side right hand holds at chest height just right of centre. Its far-side left hand grips the clay umbrella shaft on picture right, with the clay handbag suspended from that forearm below it. Both remain on their original concrete landing marks.",
+   "people": [
+    {
+     "name": "Kasun",
+     "state": "",
+     "left_hand": "Empty, beside the near-side left hip.",
+     "right_hand": "Empty, beside the far-side right hip."
+    },
+    {
+     "name": "Anudi",
+     "state": "",
+     "left_hand": "Gripping the clay umbrella shaft; the clay handbag hangs from the left forearm.",
+     "right_hand": "Near-side hand gripping the clay phone at chest height, broad side upward."
+    }
+   ],
+   "props": [
+    {
+     "name": "phone",
+     "held_by": "Anudi",
+     "hand": "right",
+     "rests_on": "",
+     "frame_side": "right"
+    },
+    {
+     "name": "umbrella",
+     "held_by": "Anudi",
+     "hand": "left",
+     "rests_on": "",
+     "frame_side": "right"
+    },
+    {
+     "name": "handbag",
+     "held_by": "Anudi",
+     "hand": "",
+     "rests_on": "Anudi's left forearm",
+     "frame_side": "right"
+    },
+    {
+     "name": "tea flask",
+     "held_by": "",
+     "hand": "",
+     "rests_on": "The rear/right end of the stainless-steel side serving ledge",
+     "frame_side": "left"
+    }
+   ],
+   "view": 1,
+   "shot_id": "7dec3cf5-b579-4850-b574-f8801be628c0",
+   "pin": "v3:2d6dee2a886592b7"
+  },
+  "colours": {
+   "Kasun": "red",
+   "Anudi": "blue"
+  },
+  "view": 1,
+  "checks": [
+   {
+    "tone": "advisory",
+    "label": "Hands · Anudi holds an extra large open umbrella (not listed); the phone is present as required."
+   },
+   {
+    "tone": "advisory",
+    "label": "Differs · Anudi is holding a large open light-coloured umbrella (and a folded navy umbrella hangs from her bag) instead of only gr"
+   },
+   {
+    "tone": "advisory",
+    "label": "Differs · Kasun shows noticeable stubble rather than being clean-shaven as specified in the first-frame description"
+   }
+  ]
+ }
+}

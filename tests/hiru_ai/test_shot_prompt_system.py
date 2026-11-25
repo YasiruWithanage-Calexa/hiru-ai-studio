@@ -300,6 +300,18 @@ def test_before_a_frame_only_a_shot_without_a_current_shot_prompt_is_written():
     assert AGENT not in phases and "shot_prompts" not in result
 
 
+def test_shot_prompts_are_written_side_by_side_and_their_warnings_stay_in_shot_order():
+    """2026-11-25: one at a time, 14 prompts took 9.5 minutes before a frame was painted; now WORKERS at a time."""
+    assert graph.WORKERS > 1
+    store, rows = world()
+    ids = [r["id"] for r in rows]
+    bad = answer(bad="A wide frame. She begins to turn.")
+    result, _, phases = run(store, replies=Endless([bad]), mode="frames", shot_prompts=ids, frame_ids=["f1"])
+    assert phases.count(AGENT) == 2 * len(rows)  # each shot: its answer and its one repair
+    codes = [w.split(":")[0] for w in result["warnings"]]
+    assert codes == sorted(codes) and len(codes) == min(len(rows), graph.WARNINGS_KEPT)
+
+
 def test_the_frames_hop_gets_the_frame_ids_but_not_the_shot_prompt_list():
     store, rows = world()
     _, jobs, _ = run(store, replies=Endless([answer()]), mode="frames", shot_prompts=[rows[0]["id"]],

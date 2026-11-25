@@ -27,7 +27,7 @@ class Person(BaseModel):
 class Prop(BaseModel):
     """plan/2026-11-23c: a prop the panel shows, painted as a white clay stand-in."""
 
-    name: str = Field(description="The prop's name, as the scene's props name it.")
+    name: str = Field(description="The prop's name, exactly as the scene's `props` name it.")
     held_by: str = Field(default="", description="Who holds or carries it; empty when it rests on something.")
     hand: str = Field(default="", description="left, right or both; empty when it is worn or resting.")
     rests_on: str = Field(default="", description="The surface it rests on when nobody holds it.")

@@ -92,3 +92,40 @@ async def test_a_board_part_left_running_by_a_crash_ends() -> None:
     assert repos.scene_boards.rows["b2"]["status"] == "failed"
     assert repos.scene_boards.rows["b2"]["error"] == "Stopped: no progress for 15 minutes."
     assert repos.scene_boards.rows["b3"]["status"] == "running"
+
+
+async def test_a_queued_frame_waiting_on_a_live_job_is_kept() -> None:
+    """2026-11-25: a bulk job wrote 14 shot prompts for 9.5 min, then painted 4 at a time; the 10 frames still waiting
+    their turn were stopped although the job was sending progress. A queued frame is judged by its job."""
+    repos = _Repos()
+    live = await _job(repos, "frame_render", 12)
+    repos.jobs.event_rows.append({"job_id": live, "seq": 1, "type": "progress", "agent": None, "payload": {},
+                                  "created_at": ago(1)})
+    finished = await _job(repos, "frame_render", 12, status="done")
+    pid = str(uuid4())
+    await repos.frames.create_many([
+        {"id": "waiting", "production_id": pid, "shot_id": "s", "status": "queued", "job_id": live},
+        {"id": "painting", "production_id": pid, "shot_id": "s", "status": "running", "job_id": live},
+        {"id": "orphan", "production_id": pid, "shot_id": "s", "status": "queued", "job_id": finished},
+        {"id": "no-job", "production_id": pid, "shot_id": "s", "status": "queued", "job_id": None},
+    ])
+    for fid in ("waiting", "painting", "orphan", "no-job"):
+        repos.frames.rows[fid]["updated_at"] = ago(11)
+    await sweep(repos, NOW)  # type: ignore[arg-type]
+    assert repos.jobs.rows[live]["status"] == "running"
+    assert repos.frames.rows["waiting"]["status"] == "queued"
+    assert repos.frames.rows["painting"]["status"] == "failed"  # a claimed frame keeps its own clock
+    assert repos.frames.rows["orphan"]["status"] == "failed"
+    assert repos.frames.rows["no-job"]["status"] == "failed"
+
+
+async def test_queued_frames_end_with_their_job_once_it_goes_quiet() -> None:
+    repos = _Repos()
+    quiet = await _job(repos, "frame_render", 11)
+    await repos.frames.create_many([{"id": "f", "production_id": "p", "shot_id": "s", "status": "queued",
+                                     "job_id": quiet}])
+    repos.frames.rows["f"]["updated_at"] = ago(30)
+    await sweep(repos, NOW)  # type: ignore[arg-type]
+    assert repos.jobs.rows[quiet]["status"] == "failed"
+    assert repos.frames.rows["f"]["status"] == "failed"
+    assert repos.frames.rows["f"]["error"] == "Stopped: no progress for 10 minutes."

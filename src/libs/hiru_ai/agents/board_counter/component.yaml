@@ -1,0 +1,17 @@
+id: board_counter
+kind: agent
+version: 1
+summary: "Counts each mannequin's arms and hands in one painted Scene board panel, told only their colours, and says where each held thing is (hand, surface or air); code calls more than two arms or hands, or a thing in the air, a fault and the board job paints the panel again alone, once."
+status: active
+owner: frame_render
+model: vision
+image_detail: high
+shape: structured
+phase: frame_render.board_count
+input: schema:Input
+output: schema:Output
+prompts: { system: prompts/system.md }
+tools: []
+knowledge: []
+middleware: [static_first, usage, absent_safe]
+writes_dialogue: false

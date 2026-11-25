@@ -34,6 +34,7 @@ from typing import Any
 
 from contracts import holding, picture_pins
 from contracts import marks as marks_kit
+from contracts import props as props_kit
 from contracts import vehicles as vehicles_kit
 from contracts.canon import VIEWS_LABEL_HEAD, view_key_words
 
@@ -907,6 +908,18 @@ def plate_prompt(writer: Writer, stretch: marks_kit.Stretch, ground: str, labels
     ] if x)
 
 
+def count_faults(answer: Mapping[str, Any]) -> list[str]:
+    """The faults of the blind count (`board_counter`, plan/2026-11-25, lab/board_hands R5), called by code, never by
+    the model: a mannequin with more than two arms or hands ("blue: 3 arms, 3 hands"), a held thing nothing holds
+    ("blue: the umbrella in the air"). Fewer than two is not a fault (an arm cut by the frame or hidden by the body).
+    [] for an answer without counts (no counter, or a check from before it)."""
+    out = [f"{c.get('mannequin')}: {c.get('arms')} arms, {c.get('hands')} hands" for c in answer.get("counts") or []
+           if int(c.get("arms") or 0) > 2 or int(c.get("hands") or 0) > 2]
+    out += [f"{t.get('mannequin')}: the {t.get('thing')} in the air" for t in answer.get("things") or []
+            if str(t.get("where") or "").strip().lower() == "air"]
+    return out
+
+
 def fix_line(problems: Sequence[str], view: str = "") -> str:
     """What a panel painted again is told about its first painting's faults (plan/2026-11-23c F2). `view`: the
     panel's view (`view_named`) when the check found its background showing another view (plan/2026-11-24c §2.7)."""
@@ -938,7 +951,9 @@ def _held(text: str) -> str:
 
 def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping[str, str] | None = None,
                     views: Sequence[Mapping[str, Any]] = (),
-                    panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None) -> list[str]:
+                    panel_views: Mapping[int, Sequence[Mapping[str, Any]]] | None = None,
+                    roster: Sequence[props_kit.RosterProp] = (),
+                    others: Sequence[props_kit.RosterProp] = ()) -> list[str]:
     """What code finds wrong in the writer's panels before anything is painted, as conflict lines: more than two
     things in a person's hands (a worn bag is not in a hand), a prop neither held nor resting on anything, someone
     only heard on the board, and a held thing that neither the shot's plan nor what the person carries through the
@@ -970,6 +985,12 @@ def writer_findings(writer: Writer, shots: Sequence[BoardShot], carried: Mapping
         for pr in p.props:
             if not pr.held_by and not pr.rests_on:
                 out.append(f"Shot {p.shot}: the {_bare(pr.name)} is neither held nor resting on anything.")
+            # plan/2026-11-25b: a name that is none of the scene's props (`roster`) nor, by its exact name, any other
+            # prop of the production (`others`) is painted from words only in the first frame; a report, never a
+            # fault mark (`_FAULT_MARKS`), so the panel is still attached
+            if roster and _bare(pr.name) and props_kit.resolve(pr.name, roster, others) is None:
+                out.append(f"Shot {p.shot}: the {_bare(pr.name)} is not one of the scene's props; its first frame "
+                           "paints it from words only.")
         heard = {h.casefold() for h in plan.get("heard_only") or []}
         for x in p.people:
             if x.name.casefold() in heard:
@@ -1415,8 +1436,9 @@ def frame_sections(writer: Writer, number: int, colours: Mapping[str, str], open
         return []
     clay = bool(panel.props) or "clay" in f"{writer.world} {panel.picture}".lower()
     stand_ins = STAND_INS.replace("The approved draft", "The approved scene board panel") if blocking else STAND_INS
-    props = PROP_STAND_INS.replace("The approved draft", "The approved scene board panel") if blocking \
-        else PROP_STAND_INS
+    # plan/2026-11-25b: a panel that lists its props gets the lab's binding paragraph, each stand-in tied to its
+    # sheet's image number; the frame's compose fills the slot once the pictures are numbered (`fill_props`)
+    props = props_kit.PROPS_SLOT if panel.props else prop_stand_ins(blocking)
     people = mannequin_paragraph(colours, faced)
     if blocking:
         people = people.replace("The approved draft", "The approved scene board panel").replace(
@@ -1437,6 +1459,9 @@ def blocking_text(panel: Panel, colours: Mapping[str, str]) -> str:
                               f"{panel.background.rstrip('.')}.", colours))
 
 
+HELD_HEAD = "Hands as approved on the scene board: "
+
+
 def held_text(panel: Panel, colours: Mapping[str, str]) -> str:
     """Each person's two hands as approved on the board, in people's names and real props: "Hands as approved on
     the scene board: Anudi: left hand grips the umbrella's shaft; right hand holds the phone at chest height." "" for a
@@ -1445,8 +1470,25 @@ def held_text(panel: Panel, colours: Mapping[str, str]) -> str:
             f"right hand {x.right_hand.rstrip('.') or 'empty'}" for x in panel.people if x.left_hand or x.right_hand]
     bits += [f"the {_bare(x.name)} rests on {x.rests_on.rstrip('.')}" for x in panel.props
              if not x.held_by and x.rests_on]
-    return unprop(unmannequin("Hands as approved on the scene board: " + ". ".join(bits) + ".", colours)) \
-        if bits else ""
+    return unprop(unmannequin(HELD_HEAD + ". ".join(bits) + ".", colours)) if bits else ""
+
+
+def board_hands(board: Sequence[str]) -> str:
+    """plan/2026-11-25b F6: the board's hands line among a frame's board paragraphs, "" when it has none. While it is
+    there it is the frame's ONE hands sentence: the ledger's ("Kasun is not holding the phone") contradicted it."""
+    return next((x for x in board if x.startswith(HELD_HEAD)), "")
+
+
+def prop_stand_ins(blocking: bool) -> str:
+    """`PROP_STAND_INS` for a frame with the panel as its draft or, `blocking`, as the blocking of its shot prompt."""
+    return PROP_STAND_INS.replace("The approved draft", "The approved scene board panel") if blocking \
+        else PROP_STAND_INS
+
+
+def fill_props(board: Sequence[str], paragraph: str, blocking: bool) -> list[str]:
+    """The frame's board paragraphs with the props slot (`contracts.props.PROPS_SLOT`) filled: the binding paragraph
+    when the panel's stand-ins were bound (`paragraph`), else today's `PROP_STAND_INS`."""
+    return [(paragraph or prop_stand_ins(blocking)) if x == props_kit.PROPS_SLOT else x for x in board]
 
 
 # ── the approved panel of a shot, for its shot prompt and first frame (plan/2026-11-23d §2.2) ────────────────

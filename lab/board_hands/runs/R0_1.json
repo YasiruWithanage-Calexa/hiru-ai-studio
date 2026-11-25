@@ -1,0 +1,327 @@
+{
+ "run": "R0",
+ "repeat": 1,
+ "detail": "low",
+ "count": false,
+ "model": "gpt-5-mini",
+ "effort": null,
+ "usd": 0.0303755,
+ "results": [
+  {
+   "shot": 4,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1786,
+    "output_tokens": 1130,
+    "total_tokens": 2916,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1088
+    }
+   },
+   "usd": 0.0027064999999999997,
+   "seconds": 15.6,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 5,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1795,
+    "output_tokens": 1706,
+    "total_tokens": 3501,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1664
+    }
+   },
+   "usd": 0.00386075,
+   "seconds": 22.7,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 7,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1734,
+    "output_tokens": 746,
+    "total_tokens": 2480,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 704
+    }
+   },
+   "usd": 0.0019255000000000001,
+   "seconds": 12.3,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 8,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": true,
+    "ungrounded": false,
+    "hands_match": false,
+    "view_match": true,
+    "problems": [
+     "blue: an umbrella above her with no hand on its shaft",
+     "blue: left hand not gripping the umbrella as specified"
+    ]
+   },
+   "usage": {
+    "input_tokens": 1751,
+    "output_tokens": 2178,
+    "total_tokens": 3929,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 2112
+    }
+   },
+   "usd": 0.004793749999999999,
+   "seconds": 29.5,
+   "product_faults": [
+    "blue: an umbrella above her with no hand on its shaft",
+    "blue: left hand not gripping the umbrella as specified"
+   ],
+   "count_faults": [],
+   "repaint": true,
+   "limb_fault": true
+  },
+  {
+   "shot": 1,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1856,
+    "output_tokens": 874,
+    "total_tokens": 2730,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 832
+    }
+   },
+   "usd": 0.002212,
+   "seconds": 13.6,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 3,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1804,
+    "output_tokens": 938,
+    "total_tokens": 2742,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 896
+    }
+   },
+   "usd": 0.002327,
+   "seconds": 13.2,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 10,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 3248,
+    "output_tokens": 874,
+    "total_tokens": 4122,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 832
+    }
+   },
+   "usd": 0.0025599999999999998,
+   "seconds": 15.2,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 11,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 3324,
+    "output_tokens": 1194,
+    "total_tokens": 4518,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1152
+    }
+   },
+   "usd": 0.003219,
+   "seconds": 20.0,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 12,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1948,
+    "output_tokens": 1770,
+    "total_tokens": 3718,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1728
+    }
+   },
+   "usd": 0.004027,
+   "seconds": 25.7,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 13,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1936,
+    "output_tokens": 1130,
+    "total_tokens": 3066,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1088
+    }
+   },
+   "usd": 0.002744,
+   "seconds": 17.1,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  }
+ ]
+}

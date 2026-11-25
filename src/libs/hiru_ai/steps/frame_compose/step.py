@@ -1,9 +1,12 @@
 """frame_compose: rows in, what a frame is made of out. JSON in, JSON out.
 
     {"op": "looks", "all_looks": [...], "scene_looks": [...], "episode": 1}
-    {"op": "references", <world>, "shot": row}            -> {"references": [{"id", "role", "choices": [{"label",
+    {"op": "references", <world>, "shot": row, "panel": {..}?} -> {"references": [{"id", "role", "choices": [{"label",
                                                               "path", "bucket"}]}]}
-    {"op": "compose", <world>, "shot": row, "labels": [], "board": [..]?} -> {"prompt", "pins"}
+    {"op": "compose", <world>, "shot": row, "labels": [], "board": [..]?, "panel": {..}?} -> {"prompt", "pins"}
+
+`panel` (plan/2026-11-25b): the frame's board panel, `{props, colours, words}` (`frame_render.graph._board_panel`);
+its props' sheets are attached and its stand-ins bound to them in the prompt.
     {"op": "expected", <world>, "shot": row}              -> {"seen", "unseen", "frame", "hands", "names"}
     {"op": "brief", <world>, "shot": row}                -> {"sections": [{key, title, text, sources}], "names"}
     {"op": "shot_prompt", <world>, "shot": row}          -> {"reasons": [...], "pins": {...}} (plan/2026-11-20d D8:
@@ -37,11 +40,12 @@ def run(payload: dict[str, Any]) -> dict[str, Any]:
     world = logic.World.of(payload)
     shot = payload["shot"]
     if op == "references":
-        return {"references": world.reference_choices(shot)}
+        return {"references": world.reference_choices(shot, payload.get("panel"))}
     if op == "plate":  # plan/2026-11-12b: a black plate is made by code, never painted
         return {"plate": world.plate(shot)}
     if op == "compose":
-        prompt, pins = world.compose(shot, list(payload["labels"]), list(payload.get("board") or []) or None)
+        prompt, pins = world.compose(shot, list(payload["labels"]), list(payload.get("board") or []) or None,
+                                    payload.get("panel"))
         return {"prompt": prompt, "pins": pins}
     if op == "brief":  # the prompt as the shot screen shows it, by section
         brief = world.brief(shot, world.preview_labels(shot))

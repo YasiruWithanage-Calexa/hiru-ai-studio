@@ -205,3 +205,77 @@ def test_a_repainted_last_panel_still_carries_into_the_next_part(monkeypatch):
     assert last["check"]["repainted"] and last["box"] is None
     overlap = [r for r in painter.calls[2:] if any(x.label == kit.OVERLAP_LABEL for x in r[2])]
     assert overlap, "part 2 is painted with the repainted last panel of part 1"
+
+
+# ── plan/2026-11-25 B: the blind count (lab/board_hands R5) ──────────────────────────────────────────────────────────
+
+CLEAN = {"counts": [{"mannequin": "red", "arms": 2, "hands": 2, "hands_hold": ["empty", "empty"]}], "things": []}
+THREE = {"counts": [{"mannequin": "red", "arms": 3, "hands": 3, "hands_hold": ["the pot", "empty", "empty"]}],
+         "things": [{"thing": "umbrella", "mannequin": "red", "where": "air"}]}
+
+
+def counted_run(store: BoardStore, bid: str, checks: list[Any], counts: list[Any], painter: FakeImages) -> Any:
+    class Files:
+        def download(self, bucket: str, path: str) -> bytes:
+            return store.download_frame(path) if bucket == "frames" else store.download_reference(path)
+
+        def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
+            store.upload(bucket, path, data, mime)
+
+    p = payload(board_id=bid)
+    ctx = RunContext(production_id=p.production_id, job_id=p.job_id,
+                     ports=replace(Ports(), jobs=FakeJobs(), scenes=store, frames=store, files=Files(),
+                                   images=painter))
+    with environment(OPENAI__API_KEY="test-key", OPENAI__MODEL_VISION="m-vision"), \
+            scripted_models({"frame_render.board_writer": [reply(numbers(store))],
+                             "frame_render.board_check": checks, "frame_render.board_count": counts},
+                            {"board": "m-board", "vision": "m-vision"}) as recorded:
+        graph.run(p, ctx)
+    return recorded
+
+
+def test_a_third_arm_the_inspector_passes_is_found_by_the_blind_count_and_painted_again():
+    """Board v21: the inspector passed shot 4's third arm; the blind count's numbers send it back, named by code."""
+    store = BoardStore()
+    bid = store.add_board()
+    painter = FakeImages()
+    painter.picture = board_png(2, 2)
+    shots = numbers(store)
+    recorded = counted_run(store, bid, [FINE] * 20, [THREE, CLEAN, *([CLEAN] * 20)], painter)
+    assert len(painter.calls) == 2, "the board, then the one panel again"
+    again = painter.calls[1][0]
+    assert "A first painting of this panel was wrong: red: 3 arms, 3 hands; red: the umbrella in the air." in again
+    first = next(c for c in store.board_rows[bid]["cells"] if c["number"] == shots[0])
+    assert first["check"] == {"ok": True, "problems": [], "fixed": ["red: 3 arms, 3 hands",
+                                                                    "red: the umbrella in the air"], "repainted": True}
+    count = [c for c, ph in zip(recorded.calls, recorded.phases, strict=True) if ph == "frame_render.board_count"]
+    content = count[0][-1].content
+    text = " ".join(str(x.get("text") or "") for x in content if isinstance(x, dict))
+    assert text.startswith("MANNEQUINS IN THIS PANEL:\n- the ") and "HANDS" not in text and "SHOULD" not in text
+    pictures = [x for x in content if isinstance(x, dict) and x.get("type") == "image_url"]
+    assert len(pictures) == 1 and pictures[0]["image_url"]["detail"] == "high", "the panel only, at high detail"
+    inspect = [c for c, ph in zip(recorded.calls, recorded.phases, strict=True) if ph == "frame_render.board_check"]
+    assert all(x["image_url"]["detail"] == "low" for x in inspect[0][-1].content
+               if isinstance(x, dict) and x.get("type") == "image_url"), "the inspector is unchanged"
+
+
+def test_a_clean_count_and_a_clean_inspection_keep_the_panel():
+    store = BoardStore()
+    bid = store.add_board()
+    painter = FakeImages()
+    painter.picture = board_png(2, 2)
+    counted_run(store, bid, [FINE] * 20, [CLEAN] * 20, painter)
+    assert len(painter.calls) == 1
+    cells = [c for c in store.board_rows[bid]["cells"] if c.get("kind") == "painted"]
+    assert all(c["check"] == {"ok": True, "problems": []} for c in cells)
+
+
+def test_the_count_faults_add_to_the_inspector_faults_and_old_answers_are_unchanged():
+    from hiru_ai.systems.frame_render.board import _faults
+
+    assert _faults({**FINE, **CLEAN}) == []
+    assert _faults({**FINE, **THREE}) == ["red: 3 arms, 3 hands", "red: the umbrella in the air"]
+    assert _faults({**ARM, **THREE}) == ["red: a third arm holds the pot", "red: 3 arms, 3 hands",
+                                         "red: the umbrella in the air"]
+    assert _faults(THREE) == ["red: 3 arms, 3 hands", "red: the umbrella in the air"], "the inspector failed"
+    assert _faults(ARM) == ["red: a third arm holds the pot"] and _faults(FINE) == [], "no count: as before"

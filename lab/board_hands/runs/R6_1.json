@@ -1,0 +1,616 @@
+{
+ "run": "R6",
+ "repeat": 1,
+ "detail": "high",
+ "blind": true,
+ "model": "gpt-5",
+ "effort": null,
+ "usd": 0.22948125,
+ "results": [
+  {
+   "shot": 4,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, hanging at the side",
+       "empty, hanging at the side"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "the phone on an upturned left palm",
+       "empty, in front of the body; the bag hangs from the forearm; umbrella shaft nearby not gripped"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "air"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "hand"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1036,
+    "output_tokens": 2322,
+    "total_tokens": 3358,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 2176
+    }
+   },
+   "usd": 0.024515000000000002,
+   "seconds": 19.1,
+   "product_faults": [],
+   "count_faults": [
+    "blue: the umbrella in the air"
+   ],
+   "repaint": true,
+   "limb_fault": true
+  },
+  {
+   "shot": 5,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, hanging at the side",
+       "empty, hanging at the side"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "gripping the umbrella shaft near the chest",
+       "holding a phone, palm up in front"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1036,
+    "output_tokens": 1604,
+    "total_tokens": 2640,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1472
+    }
+   },
+   "usd": 0.017335,
+   "seconds": 13.5,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 7,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "the white phone",
+       "pinching a small folded paper; not holding the umbrella"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "paper",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "air"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1031,
+    "output_tokens": 1904,
+    "total_tokens": 2935,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1792
+    }
+   },
+   "usd": 0.02032875,
+   "seconds": 15.1,
+   "product_faults": [],
+   "count_faults": [
+    "blue: the umbrella in the air"
+   ],
+   "repaint": true,
+   "limb_fault": true
+  },
+  {
+   "shot": 8,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "the phone at the face",
+       "empty, index finger raised near the face"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "air"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "hand"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1031,
+    "output_tokens": 3105,
+    "total_tokens": 4136,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 3008
+    }
+   },
+   "usd": 0.03233875,
+   "seconds": 23.2,
+   "product_faults": [],
+   "count_faults": [
+    "blue: the umbrella in the air"
+   ],
+   "repaint": true,
+   "limb_fault": true
+  },
+  {
+   "shot": 1,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, extended toward the blue hand",
+       "empty, hanging by the side"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "the umbrella shaft",
+       "empty, extended toward the red hand; a white bag hangs on the forearm"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1036,
+    "output_tokens": 1466,
+    "total_tokens": 2502,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1344
+    }
+   },
+   "usd": 0.015955,
+   "seconds": 12.3,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 3,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, hanging at the side",
+       "empty, hanging at the side"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "palm up, under a small piece of paper that floats above the palm",
+       "empty near the chest; the forearm carries a white handbag; the umbrella shaft does not reach this hand"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "air"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "paper",
+      "mannequin": "blue",
+      "where": "air"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1036,
+    "output_tokens": 3160,
+    "total_tokens": 4196,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 3008
+    }
+   },
+   "usd": 0.032895,
+   "seconds": 24.0,
+   "product_faults": [],
+   "count_faults": [
+    "blue: the umbrella in the air",
+    "blue: the paper in the air"
+   ],
+   "repaint": true,
+   "limb_fault": true
+  },
+  {
+   "shot": 10,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "the phone at the ear",
+       "the umbrella shaft"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1591,
+    "output_tokens": 1692,
+    "total_tokens": 3283,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1600
+    }
+   },
+   "usd": 0.018908750000000002,
+   "seconds": 15.0,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 11,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, hanging at the side",
+       "empty, hanging at the side"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "the phone held out in front",
+       "empty, near torso with a bag hanging on the forearm"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "air"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1596,
+    "output_tokens": 2054,
+    "total_tokens": 3650,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1920
+    }
+   },
+   "usd": 0.022535,
+   "seconds": 17.7,
+   "product_faults": [],
+   "count_faults": [
+    "blue: the umbrella in the air"
+   ],
+   "repaint": true,
+   "limb_fault": true
+  },
+  {
+   "shot": 12,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 1,
+      "hands": 1,
+      "hands_hold": [
+       "empty, at the hip"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "the umbrella shaft",
+       "the phone"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1036,
+    "output_tokens": 2353,
+    "total_tokens": 3389,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 2240
+    }
+   },
+   "usd": 0.024825,
+   "seconds": 17.8,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 13,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, hanging at the side",
+       "empty, hanging at the side"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "grips the umbrella shaft",
+       "empty, down by the side"
+      ]
+     }
+    ],
+    "things": [
+     {
+      "thing": "umbrella",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "bag",
+      "mannequin": "blue",
+      "where": "hand"
+     },
+     {
+      "thing": "phone",
+      "mannequin": "blue",
+      "where": "air"
+     }
+    ]
+   },
+   "usage": {
+    "input_tokens": 1036,
+    "output_tokens": 1855,
+    "total_tokens": 2891,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1728
+    }
+   },
+   "usd": 0.019845,
+   "seconds": 14.1,
+   "product_faults": [],
+   "count_faults": [
+    "blue: the phone in the air"
+   ],
+   "repaint": true,
+   "limb_fault": true
+  }
+ ]
+}

@@ -1,0 +1,503 @@
+{
+ "run": "R3",
+ "repeat": 1,
+ "detail": "high",
+ "count": true,
+ "model": "gpt-5-mini",
+ "effort": "high",
+ "usd": 0.105574,
+ "results": [
+  {
+   "shot": 4,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: empty, beside the near-side hip",
+       "right hand: empty, beside the far-side hip"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: gripping the umbrella shaft; handbag hanging from the left forearm",
+       "right hand: gripping the phone at waist height"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2083,
+    "output_tokens": 3773,
+    "total_tokens": 5856,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1152
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 3584
+    }
+   },
+   "usd": 0.00806675,
+   "seconds": 76.8,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 5,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: empty, hanging beside the near-side hip",
+       "right hand: empty, hanging beside the far-side hip"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: gripping the umbrella shaft; handbag hangs from the left forearm (handle enters lower-right edge)",
+       "right hand: gripping the phone at waist height"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2092,
+    "output_tokens": 6085,
+    "total_tokens": 8177,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 5888
+    }
+   },
+   "usd": 0.012693,
+   "seconds": 119.4,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 7,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "near-side right hand gripping the clay phone at chest height, thumb against the slab",
+       "far-side left hand gripping the clay umbrella shaft; clay handbag handles looped over the left forearm"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2031,
+    "output_tokens": 3916,
+    "total_tokens": 5947,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1152
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 3776
+    }
+   },
+   "usd": 0.00833975,
+   "seconds": 79.4,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 8,
+   "label": "bad",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "near-side right hand gripping the clay phone against the right side of the head",
+       "far-side left hand gripping the clay umbrella shaft; clay handbag hanging from the left forearm"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2048,
+    "output_tokens": 6180,
+    "total_tokens": 8228,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1024
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 6080
+    }
+   },
+   "usd": 0.012872,
+   "seconds": 121.3,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 1,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: empty, hanging beside the left hip",
+       "right hand: gripping the clay phone, extended toward frame centre"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: gripping the clay umbrella shaft; handbag handles hang from the left forearm",
+       "right hand: open palm beneath the clay phone, not touching it"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2153,
+    "output_tokens": 4427,
+    "total_tokens": 6580,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1152
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 4288
+    }
+   },
+   "usd": 0.009392250000000001,
+   "seconds": 88.7,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 3,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, beside the near-side left hip",
+       "empty, beside the far-side right hip"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "gripping the umbrella shaft; handbag handles rest over the left forearm beneath the canopy",
+       "gripping the clay phone at waist height, just right of centre"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2101,
+    "output_tokens": 4735,
+    "total_tokens": 6836,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 4544
+    }
+   },
+   "usd": 0.009995249999999999,
+   "seconds": 81.0,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 10,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "phone against the right side of the head",
+       "gripping the umbrella shaft; handbag handles looped on the left forearm"
+      ]
+     },
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, by the right hip",
+       "empty, by the left hip"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 3545,
+    "output_tokens": 4154,
+    "total_tokens": 7699,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 4032
+    }
+   },
+   "usd": 0.00919425,
+   "seconds": 73.7,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 11,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: empty, beside left hip",
+       "right hand: empty, beside right hip"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left hand: gripping the umbrella shaft; handbag strap hangs from the left forearm below the hand",
+       "right hand: gripping the phone at chest height"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 3621,
+    "output_tokens": 4931,
+    "total_tokens": 8552,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 4800
+    }
+   },
+   "usd": 0.010767249999999999,
+   "seconds": 83.2,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 12,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "empty, at near-side hip",
+       "empty, at far-side hip"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "gripping the umbrella shaft; handbag handles rest over the left forearm",
+       "gripping the clay phone at waist height"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2245,
+    "output_tokens": 6201,
+    "total_tokens": 8446,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 6080
+    }
+   },
+   "usd": 0.012963249999999999,
+   "seconds": 94.3,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 13,
+   "label": "good",
+   "answer": {
+    "counts": [
+     {
+      "mannequin": "red",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left: empty, at the hip",
+       "right: empty, at the hip"
+      ]
+     },
+     {
+      "mannequin": "blue",
+      "arms": 2,
+      "hands": 2,
+      "hands_hold": [
+       "left: gripping the umbrella shaft; handbag handles hang on the left forearm",
+       "right: gripping the phone at waist height"
+      ]
+     }
+    ],
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 2233,
+    "output_tokens": 5366,
+    "total_tokens": 7599,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 0
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 5184
+    }
+   },
+   "usd": 0.01129025,
+   "seconds": 82.5,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  }
+ ]
+}

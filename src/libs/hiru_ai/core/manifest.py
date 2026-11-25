@@ -85,6 +85,9 @@ class AgentManifest(_Base):
     # House rule topics the agent is given (plan/2026-11-12); `*` = every rule. Needs `house_rules` in `middleware`.
     house_rules: list[str] = []
     writes_dialogue: bool = False  # only approved parts may change a spoken line (language_guard)
+    # How closely the model sees the call's pictures (plan/2026-11-25 B1): `low` shrinks each to fit 512 px (cheap, the
+    # default); `high` keeps enough detail to count a mannequin's arms (`board_counter`, lab/board_hands R5).
+    image_detail: Literal["low", "high"] = "low"
     # react: the loop is capped (plan/2026-11-04 D2); `limits` in `middleware` turns the caps on
     max_tool_calls: int = Field(6, ge=1, le=20)  # tool calls in one run
     max_model_calls: int = Field(4, ge=1, le=10)  # model rounds in one run

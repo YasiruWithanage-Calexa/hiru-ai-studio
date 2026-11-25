@@ -224,6 +224,42 @@ def test_a_shot_with_a_current_shot_prompt_takes_the_camera_from_it_and_the_bloc
     assert "On the approved board:" in frame["prompt"] and "Camera 1." not in frame["prompt"], "no panel camera"
 
 
+def test_a_frame_from_a_panel_with_props_takes_their_sheets_and_binds_each_stand_in():
+    """plan/2026-11-25b (lab/prop_mapping A): the panel shows the clay pot on the stove; the frame gets the pot's sheet
+    before the panel and one sentence tying the stand-in to that image number, and the board's hands are its one
+    hands sentence."""
+    store = BoardStore()
+    card = {"details": "A dented aluminium cooking pot. Kept by the stove."}
+    store.canon_rows.append({"id": "prop-pot", "kind": "prop", "code": "P01", "name": "pot", "aliases": [],
+                             "locked": False, "current": {"version": 1, "id": str(uuid4()), "card": card,
+                                                          "reference_assets": ["p/pot.png"]}})
+    bid = store.add_board()
+    painter = FakeImages()
+    painter.picture = board_png(2, 2)
+    answer = reply(numbers(store))
+    for p in answer["panels"]:
+        p["people"] = [{"name": "Kamala", "state": "", "left_hand": "empty", "right_hand": "stirring with a spoon"}]
+        p["props"] = [{"name": "pot", "rests_on": "the stove", "frame_side": "left"}]
+    run(store, {"board_id": bid}, [answer], painter)
+    store.board_rows[bid]["approved_at"] = "2026-11-14T10:00:00Z"
+    fid = store.add_frame(shots(store)[0]["id"], stage="final", board_id=bid)
+    painter.picture = png()
+    result, _ = run(store, {"frame_ids": [fid], "from_board": True}, [], painter)
+    frame = store.frame_rows[fid]
+    assert result["done"] == 1, frame.get("error")
+    labels = [r.label for r in painter.calls[-1][2]]
+    n = labels.index("the reference sheet for pot") + 1
+    assert labels[-1] == "the approved draft of this frame" and n < len(labels)
+    assert (f"the clay pot resting on the stove, at frame left is the pot: paint it exactly as image {n} shows it (a "
+            "dented aluminium cooking pot)") in frame["prompt"]
+    assert (f"image {n}: pot exactly as shown (a dented aluminium cooking pot), not its backdrop or light"
+            in frame["prompt"])
+    assert "White is never a prop's colour" in frame["prompt"] and kit.PROP_STAND_INS not in frame["prompt"]
+    assert ("Hands as approved on the scene board: Kamala: left hand empty; right hand stirring with a spoon."
+            in frame["prompt"])
+    assert "prop-pot" in frame["reference_ids"]
+
+
 def test_a_frame_is_painted_at_the_quality_the_person_picked():
     store = BoardStore()
     bid = store.add_board()

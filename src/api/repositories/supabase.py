@@ -931,8 +931,8 @@ class SupabaseFrames(_Base):
                            ("queued", "running"))
 
     async def active_before(self, before: datetime) -> list[Row]:
-        res = (await self.db.table("first_frames").select("id,job_id,updated_at").in_("status", ["queued", "running"])
-               .lt("updated_at", before.isoformat()).execute())
+        res = (await self.db.table("first_frames").select("id,job_id,status,updated_at")
+               .in_("status", ["queued", "running"]).lt("updated_at", before.isoformat()).execute())
         return _rows(res.data)
 
     async def unaccept(self, frame_id: UUID) -> None:

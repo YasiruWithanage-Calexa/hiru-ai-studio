@@ -41,6 +41,14 @@ def test_the_writer_is_told_never_to_describe_the_sheet_layout():
     assert "Never describe the sheet's layout (grid, rows, columns, cells, panel count, gutters)" in text
 
 
+def test_the_writer_names_each_prop_as_the_scene_does():
+    """plan/2026-11-25b: the first frame binds a stand-in by its name to the scene's prop and its sheet."""
+    text = " ".join(Prompt.load(HERE / "prompts" / "system.md").text.split())
+    assert "Name each prop in `props` exactly as the scene's `props` name it" in text
+    case = next(c for c in CASES if c["name"] == "props carry the scene's exact names")
+    assert [p["name"] for p in case["reply"]["panels"][0]["props"]] == ["phone", "umbrella", "handbag"]
+
+
 def test_the_hooks_use_the_agents_own_types():
     inp = Input.model_validate({"message": "hello", "pictures": [{"b64": "iVBORw0KGgo="}]})
     assert agent.user_message(inp) == "hello"
@@ -97,6 +105,29 @@ def test_the_writer_is_told_to_hold_ground_marks():
     text = " ".join(Prompt.load(HERE / "prompts" / "system.md").text.split())
     assert "GROUND MARKS (plan/2026-11-24d)" in text and "never as you imagine them" in text
     assert "keep the spot and say so in `conflicts`" in text
+
+
+def test_a_body_side_is_turned_the_right_way():
+    """plan/2026-11-25 A1: facing screen right shows the RIGHT side to the lens. The old rule said the left, and board
+    v21 wrote "far-side left hand" for a person facing screen left; it must never come back."""
+    text = " ".join(Prompt.load(HERE / "prompts" / "system.md").text.split())
+    assert "facing screen right shows their left side" not in text
+    assert "facing screen right shows their RIGHT side to the camera" in text
+    assert "facing screen left shows their LEFT side" in text
+    assert 'never "far-side left hand"' in text and 'never "far-side right hand"' in text
+    assert '"the satchel on his far side' in text and '"the satchel on his near side' not in text
+    assert "over the same wrist" in text  # a bag on the gripping hand's wrist is one arm, not a hand of its own
+
+
+def test_the_recorded_side_answers_put_the_facing_hand_near():
+    """The two recorded answers of plan/2026-11-25: facing screen left, the left hand is near; facing screen right,
+    the right hand is."""
+    for name, near in (("a left-hand thing faces the lens when the person faces screen left", "left_hand"),
+                       ("a right-hand thing faces the lens when the person faces screen right", "right_hand")):
+        case = next(c for c in CASES if c["name"] == name)
+        person = Output.model_validate(case["reply"]).panels[0].people[0]
+        far = "right_hand" if near == "left_hand" else "left_hand"
+        assert getattr(person, near).startswith("near-side") and getattr(person, far).startswith("far-side")
 
 
 def test_a_recorded_answer_with_marks_passes_the_code_check():

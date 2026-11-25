@@ -22,7 +22,9 @@ nobody in frame has no people in its opening.
 
 When the shot gives "The approved scene board", a person approved that picture of this moment: each person's side of
 the frame, facing, posture and two hands, and where each prop is, follow it, including things carried from the scene
-before (an open umbrella in one hand, a bag on a shoulder). Say each held thing in the frame's people. The board is
+before (an open umbrella in one hand, a bag on a shoulder). Say each held thing in the frame's people, in the board's
+own word for it: the board's "phone" is "phone" in the frame, never "handset" or "mobile" (code looks for that word,
+and the reference picture carries that name). The board is
 painted from a sketch camera: the camera, lens, height and framing are still the camera design's.
 
 # Step 2: the first frame (`frame`)
@@ -98,6 +100,9 @@ step its range:
 - Never write notes to us ("the planner", "the brief", "in the edit"): every word goes to a model.
 - SAFE DEPICTION (plan/2026-11-10b). Death, crime and injury are shown, never graphic, and the video model refuses the words for them. Write only what the camera sees: "lies still on the floor, eyes closed", "a white sheet over a shape", "a hand pressed to his side". Never write dead, corpse, death, blood, wound, stab, kill, murder or suicide in a description, not even negated ("no blood"): code stops a prompt that has them. Let reactions and what is left behind carry the moment. A spoken line is never changed.
 - English, plain present tense, short sentences, specific to THIS shot.
+- Lengths, counted by code in characters: the video's `situation` at most 450, its `people` at most 650 (a short look
+  for each person, never the frame's full pose and hands again), `sound` at most 250, and each step's `text`, `to`,
+  `how` and `listener` at most 450 each; the frame's four parts together at most 2400.
 
 # Video only
 

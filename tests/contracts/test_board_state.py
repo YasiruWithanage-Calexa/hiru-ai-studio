@@ -8,6 +8,7 @@ from __future__ import annotations
 from typing import Any
 
 from contracts import board as kit
+from contracts.props import PROPS_SLOT, RosterProp
 
 KASUN, ANUDI = "c-kasun", "c-anudi"
 NAMES = {KASUN: "Kasun", ANUDI: "Anudi"}
@@ -209,7 +210,33 @@ def test_a_frame_from_the_panel_turns_the_clay_back_into_the_props():
         "Anudi holds the phone; the umbrella leans on the wall.")
     w = kit.Writer.of(answer())
     sections = kit.frame_sections(w, 1, {"Kasun": "red"}, [], ())
-    assert kit.PROP_STAND_INS in sections and "clay" not in sections[-1]
+    # plan/2026-11-25b: a panel that lists its props leaves the slot for the bound paragraph; with nothing bound the
+    # frame keeps today's stand-in rule
+    assert PROPS_SLOT in sections and kit.PROP_STAND_INS not in sections and "clay" not in sections[-1]
+    assert kit.PROP_STAND_INS in kit.fill_props(sections, "", blocking=False)
+    assert "bound words" in kit.fill_props(sections, "bound words", blocking=False)
+    old = kit.Writer.of(answer(props=[], picture="Kasun holds the clay phone out."))
+    assert kit.PROP_STAND_INS in kit.frame_sections(old, 1, {"Kasun": "red"}, [], ()), "a board before 23c"
+
+
+def test_a_name_that_is_none_of_the_scenes_props_is_reported_not_a_fault():
+    """plan/2026-11-25b: a stand-in the roster does not know is painted from words only in the frame; the panel is
+    still attached (no `_FAULT_MARKS` word)."""
+    roster = [RosterProp(key="p", name="phone"), RosterProp(key="h", name="handbag")]
+    w = kit.Writer.of(answer(props=[{"name": "phone", "held_by": "Kasun", "hand": "right"},
+                                    {"name": "bag", "held_by": "Anudi", "rests_on": "her left forearm"},
+                                    {"name": "kettle", "rests_on": "the counter"}]))
+    found = kit.writer_findings(w, board_shots([shot()]), roster=roster)
+    assert found == ["Shot 1: the kettle is not one of the scene's props; its first frame paints it from words only."]
+    assert not kit.panel_faults(kit.Writer.of({**answer(), "conflicts": found}), 1)
+    assert kit.writer_findings(w, board_shots([shot()])) == [], "no roster, no line (as before)"
+
+
+def test_the_boards_hands_are_the_frames_one_hands_sentence():
+    w = kit.Writer.of(answer())
+    held = kit.board_hands(kit.frame_sections(w, 1, {"Kasun": "red"}, [], ()))
+    assert held.startswith(kit.HELD_HEAD) and "Kasun: left hand empty" in held
+    assert kit.board_hands(["The scene: rain."]) == ""
 
 
 # ── D7 pins ────────────────────────────────────────────────────────────────────────────────────────────────────

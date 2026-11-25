@@ -66,6 +66,16 @@ only part of the plan, and the umbrella came from a look's scene condition that 
   sentence (`hands_text`, in mannequin colours) go into the image prompt. A frame painted from its panel gets
   `PROP_STAND_INS` and `unprop` ("the clay phone" → "the phone"); its vision check also looks for a leftover clay
   object.
+- **Props bound to their sheets** (plan/2026-11-25b, lab/prop_mapping A): one roster per scene
+  (`contracts.props.scene_props`: the props the plans name, the ledger's, and what each person carries in their look or
+  condition) feeds the writer and the frame. A frame painted from a panel that lists its `props` takes the sheet of
+  EVERY prop the panel shows (on top of `MAX_REFERENCES`, up to `MAX_PANEL_PROPS` = 4, before the panel) and, in place
+  of `PROP_STAND_INS`, the lab's paragraph: each stand-in tied to its image number by holder, hand and side ("the clay
+  umbrella in Anudi's left hand (the blue mannequin's), at frame right is the umbrella: paint it exactly as image 8 shows
+  it (…), open"), "white is never a prop's colour", "each prop appears once". The panel's names resolve against the
+  roster only ("bag" is the handbag she carries, never a document bag). The board's hands are the frame's ONE hands
+  sentence and the frame check's hands; the ledger's are dropped while they are there. A name that is no prop of the
+  production is reported in `conflicts` (not a fault: the panel is still attached) and painted from words.
 - **The free check** (`writer_findings`, code, before painting): more than two things in a person's hands, a held thing
   no plan of the shot gives, a prop neither held nor resting, someone only heard on the board. Into `conflicts`.
 - **The board check** (`board_inspector`, tier `vision`): each new panel is looked at for a third arm, a held thing with
@@ -73,6 +83,11 @@ only part of the plan, and the umbrella came from a look's scene condition that 
   (`fix_line`); the cell keeps `check: {ok, problems, fixed?, repainted?}`, a panel still wrong is named in
   `conflicts`. Without the vision model (`OPENAI__MODEL_VISION=""`) nothing is checked. The same check runs on a
   panel painted by Update board.
+- **The blind count** (`board_counter`, tier `vision`, pictures at `detail: high`; plan/2026-11-25): beside the board
+  check, each panel with mannequins is looked at again, told ONLY their colours (lab/board_hands: told the expected
+  hands, the check copies them back and passes a third arm). It counts each mannequin's arms and hands and says
+  where each held thing is; code (`count_faults`) calls more than two arms or hands, or a thing in the air, a fault,
+  which goes the same way (one repaint alone). In the lab it caught about half the bad panels, with no false alarm.
 - **Tall parts of 6** (D6), not 9. **Pins carry a version** (D7): a new pin is `v2:<hash>` and also reads the opening
   state and who is only heard; a cell pinned before is compared with the old hash (`pin_matches`), so painted boards
   stay current until their shot really changes.

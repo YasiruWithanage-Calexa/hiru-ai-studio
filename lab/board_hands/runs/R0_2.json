@@ -1,0 +1,321 @@
+{
+ "run": "R0",
+ "repeat": 2,
+ "detail": "low",
+ "count": false,
+ "model": "gpt-5-mini",
+ "effort": null,
+ "usd": 0.0262315,
+ "results": [
+  {
+   "shot": 4,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1786,
+    "output_tokens": 938,
+    "total_tokens": 2724,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1536
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 896
+    }
+   },
+   "usd": 0.0023225,
+   "seconds": 13.8,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 5,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1795,
+    "output_tokens": 1578,
+    "total_tokens": 3373,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1664
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1536
+    }
+   },
+   "usd": 0.00360475,
+   "seconds": 23.8,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 7,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1734,
+    "output_tokens": 554,
+    "total_tokens": 2288,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1536
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 512
+    }
+   },
+   "usd": 0.0015415000000000001,
+   "seconds": 9.7,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 8,
+   "label": "bad",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1751,
+    "output_tokens": 1450,
+    "total_tokens": 3201,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1536
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1408
+    }
+   },
+   "usd": 0.0033377499999999996,
+   "seconds": 21.7,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 1,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1856,
+    "output_tokens": 938,
+    "total_tokens": 2794,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1664
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 896
+    }
+   },
+   "usd": 0.00234,
+   "seconds": 14.8,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 3,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1804,
+    "output_tokens": 1002,
+    "total_tokens": 2806,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1664
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 960
+    }
+   },
+   "usd": 0.002455,
+   "seconds": 15.4,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 10,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 3248,
+    "output_tokens": 618,
+    "total_tokens": 3866,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 3072
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 576
+    }
+   },
+   "usd": 0.002048,
+   "seconds": 13.0,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 11,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 3324,
+    "output_tokens": 1450,
+    "total_tokens": 4774,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 3200
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1408
+    }
+   },
+   "usd": 0.003731,
+   "seconds": 22.6,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 12,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1948,
+    "output_tokens": 1386,
+    "total_tokens": 3334,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1792
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 1344
+    }
+   },
+   "usd": 0.003259,
+   "seconds": 20.1,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  },
+  {
+   "shot": 13,
+   "label": "good",
+   "answer": {
+    "extra_limbs": false,
+    "floating": false,
+    "ungrounded": false,
+    "hands_match": true,
+    "view_match": true,
+    "problems": []
+   },
+   "usage": {
+    "input_tokens": 1936,
+    "output_tokens": 554,
+    "total_tokens": 2490,
+    "input_token_details": {
+     "audio": 0,
+     "cache_read": 1664
+    },
+    "output_token_details": {
+     "audio": 0,
+     "reasoning": 512
+    }
+   },
+   "usd": 0.001592,
+   "seconds": 8.6,
+   "product_faults": [],
+   "count_faults": [],
+   "repaint": false,
+   "limb_fault": false
+  }
+ ]
+}

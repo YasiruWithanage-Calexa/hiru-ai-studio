@@ -82,3 +82,63 @@
       - { stretch: 1, who: "Sunil", spot: "on the upturned crate at the seaward end of the jetty, one stride left of the mooring post" }
       - { stretch: 1, who: "Malini", spot: "on the jetty boards at the top of the ladder", apart: "about two metres to his right" }
   expect: { geography: "The jetty runs out from the beach at screen left to the mooring post at screen right." }
+# plan/2026-11-25 A1: a body side is a picture side, turned the right way. Facing screen left, the LEFT side is toward
+# the lens; facing screen right, the RIGHT side is (board v21 said "far-side left hand" for a person facing screen
+# left). One hand that grips a thing and carries a bag on the same wrist is one phrase about that one arm.
+- name: a left-hand thing faces the lens when the person faces screen left
+  input:
+    message: "<scene>{\"shots\": [{\"number\": 1, \"opening_picture\": \"Dilani faces screen left, the umbrella in her left hand, the basket on the same forearm, the letter in her right hand.\"}]}</scene> Write the storyboard: 1 panels."
+    pictures: []
+  reply:
+    world: "Overcast noon at a village post office veranda; fine rain, wet red tiles."
+    geography: "The veranda runs from the post box at screen left to the door at screen right."
+    panels:
+      - shot: 1
+        zone: "Veranda"
+        camera: "Medium, standing eye height, side-on from the yard."
+        background: "The red post box at frame left; the veranda posts behind."
+        picture: "The blue mannequin stands in profile, chest facing screen left toward the post box. Its near hand grips the clay umbrella shaft at its chest, the clay basket's handle over the same wrist. Its far hand holds the clay letter toward the slot, partly hidden by its body."
+        people:
+          - { name: "Dilani", state: "", left_hand: "near-side hand gripping the clay umbrella shaft at chest height, the clay basket's handle over the same wrist", right_hand: "far-side hand holding the clay letter toward the slot" }
+    conflicts: []
+  expect: { geography: "The veranda runs from the post box at screen left to the door at screen right." }
+- name: a right-hand thing faces the lens when the person faces screen right
+  input:
+    message: "<scene>{\"shots\": [{\"number\": 1, \"opening_picture\": \"Ruwan walks screen right, the satchel on his left shoulder, a newspaper in his right hand.\"}]}</scene> Write the storyboard: 1 panels."
+    pictures: []
+  reply:
+    world: "Early morning on a town street; dry pavement, low sun from screen left."
+    geography: "The street runs from the bus halt at screen left to the newsagent at screen right."
+    panels:
+      - shot: 1
+        zone: "Street"
+        camera: "Wide, standing eye height, side-on from across the street."
+        background: "Shop shutters behind; the newsagent's awning at frame right."
+        picture: "The red mannequin walks side-on toward screen right. Its near hand carries the clay newspaper at its hip; the clay satchel hangs on its far side, mostly hidden behind its body."
+        people:
+          - { name: "Ruwan", state: "", left_hand: "far-side hand empty, swinging; the clay satchel's strap on the far shoulder", right_hand: "near-side hand holding the clay newspaper at the hip" }
+    conflicts: []
+  expect: { geography: "The street runs from the bus halt at screen left to the newsagent at screen right." }
+# plan/2026-11-25b: each prop in `props` carries the scene's own name ("handbag", never "bag"), so the first frame binds
+# it to that prop's sheet; a carried thing that is not a scene prop keeps its look's name.
+- name: props carry the scene's exact names
+  input:
+    message: "<scene>{\"props\": [{\"name\": \"phone\"}, {\"name\": \"umbrella\"}, {\"name\": \"handbag\"}], \"shots\": [{\"number\": 1, \"opening_picture\": \"Anudi reads her phone under her umbrella, her bag on her arm.\"}]}</scene> Write the storyboard: 1 panels."
+    pictures: []
+  reply:
+    world: "Light rain on a roadside; wet concrete, grey light."
+    geography: "The road runs across the picture; the stall at screen left, the wall at screen right."
+    panels:
+      - shot: 1
+        zone: "Roadside"
+        camera: "Waist-up, standing eye height, from the road side."
+        background: "The pale boundary wall behind her at frame right."
+        picture: "The blue mannequin stands at frame right, chest facing screen left. Its far hand grips the clay umbrella shaft, the clay handbag's handles over the same forearm; its near hand holds the clay phone at chest height."
+        people:
+          - { name: "Anudi", state: "", left_hand: "far-side hand gripping the clay umbrella shaft; the clay handbag hangs from the forearm", right_hand: "near-side hand holding the clay phone at chest height" }
+        props:
+          - { name: "phone", held_by: "Anudi", hand: "right", rests_on: "", frame_side: "right" }
+          - { name: "umbrella", held_by: "Anudi", hand: "left", rests_on: "", frame_side: "right" }
+          - { name: "handbag", held_by: "Anudi", hand: "", rests_on: "Anudi's left forearm", frame_side: "right" }
+    conflicts: []
+  expect: { geography: "The road runs across the picture; the stall at screen left, the wall at screen right." }
