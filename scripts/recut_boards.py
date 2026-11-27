@@ -149,9 +149,7 @@ class RestStore:
         return self.rest.get(table, **params)
 
     def file(self, bucket: str, path: str) -> bytes:
-        r = self.rest.c.get(f"{self.rest.storage}/object/{bucket}/{path}", headers=self.rest.h)
-        r.raise_for_status()
-        return r.content
+        return self.rest.download(bucket, path)
 
     def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None:
         self.rest.upload(bucket, path, data, content_type)

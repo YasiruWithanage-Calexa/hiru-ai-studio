@@ -22,6 +22,8 @@ if hasattr(sys.stdout, "reconfigure"):
 
 import logging  # noqa: E402
 
+from hiru_ai.core import media  # noqa: E402
+
 # Engines report degraded steps (a failed embedding batch, a skipped header) as warnings.
 logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
 
@@ -42,7 +44,8 @@ class Rest:
     def __init__(self) -> None:
         url = os.environ.get("SUPABASE__URL", "http://127.0.0.1:54321").rstrip("/")
         key = os.environ["SUPABASE__SERVICE_ROLE_KEY"]
-        self.rest, self.storage = f"{url}/rest/v1", f"{url}/storage/v1"
+        self.rest = f"{url}/rest/v1"
+        self.media = media.Media(url, key)  # Supabase Storage or Cloud Storage (FILES__BACKEND)
         self.h = {"apikey": key, "Authorization": f"Bearer {key}", "Content-Type": "application/json"}
         self.c = httpx.Client(timeout=120.0)
 
@@ -65,10 +68,27 @@ class Rest:
         r.raise_for_status()
         return r.json()
 
-    def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None:
-        r = self.c.post(f"{self.storage}/object/{bucket}/{path}", content=data,
-                        headers={**self.h, "Content-Type": content_type, "x-upsert": "true"})
+    def download(self, bucket: str, path: str) -> bytes:
+        r = media.get(self.c, self.media, bucket, path)
         r.raise_for_status()
+        return r.content
+
+    def upload(self, bucket: str, path: str, data: bytes, content_type: str, *, once: bool = False) -> None:
+        r = media.put(self.c, self.media, bucket, path, data, content_type, once=once)
+        r.raise_for_status()
+
+    def size(self, bucket: str, path: str) -> int | None:
+        """The stored file's size without its bytes; None when it is nowhere."""
+        for request in self.media.reads(bucket, path):
+            if request.url.endswith("?alt=media"):  # Cloud Storage: the object's metadata
+                r = self.c.get(request.url.removesuffix("?alt=media"), headers=request.headers)
+                if r.status_code == 200:
+                    return int(r.json().get("size") or 0)
+            else:
+                r = self.c.head(request.url, headers=request.headers)
+                if r.status_code == 200:
+                    return int(r.headers.get("content-length") or 0)
+        return None
 
 
 def vector(values: list[float] | None) -> str | None:

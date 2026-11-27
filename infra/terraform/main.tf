@@ -1,6 +1,12 @@
 locals {
   name = "hiru-${var.environment}"
   apis = [
+    "serviceusage.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
+    "iap.googleapis.com",
+    "storage.googleapis.com",
+    "monitoring.googleapis.com",
     "run.googleapis.com",
     "cloudfunctions.googleapis.com",
     "cloudbuild.googleapis.com",
@@ -16,7 +22,10 @@ locals {
   # Secret values are added by hand (`gcloud secrets versions add`), never through Terraform,
   # so they never enter Terraform state.
   secrets = ["supabase-service-role-key", "api-internal-secret", "openai-api-key", "supabase-db-url",
-  "assemble-secret"]
+  "assemble-secret", "google-api-key"]
+  # What the API itself reads. The Google key only tells it whether video can be made (plan/2026-11-06c).
+  api_secrets = ["supabase-service-role-key", "api-internal-secret", "assemble-secret", "openai-api-key",
+  "google-api-key"]
 }
 
 resource "google_project_service" "apis" {
@@ -42,23 +51,35 @@ resource "google_artifact_registry_repository" "images" {
 
 resource "google_service_account" "api" {
   account_id   = "${local.name}-api"
-  display_name = "Hiru API (Cloud Run)"
+  display_name = "Hiru API (VM)"
+  depends_on   = [google_project_service.apis]
 }
 
 resource "google_service_account" "functions" {
   account_id   = "${local.name}-functions"
   display_name = "Hiru functions runtime"
+  depends_on   = [google_project_service.apis]
+}
+
+# Functions are built by Cloud Build as this account, not the project's default one (which a new project may leave
+# without rights).
+resource "google_service_account" "build" {
+  account_id   = "${local.name}-build"
+  display_name = "Hiru function builds"
+  depends_on   = [google_project_service.apis]
+}
+
+resource "google_project_iam_member" "build" {
+  project = var.project_id
+  role    = "roles/cloudbuild.builds.builder"
+  member  = "serviceAccount:${google_service_account.build.email}"
 }
 
 # Cloud Tasks signs OIDC tokens as this account; it may only invoke Cloud Run.
 resource "google_service_account" "tasks_invoker" {
   account_id   = "${local.name}-tasks"
   display_name = "Hiru Cloud Tasks invoker"
-}
-
-resource "google_service_account" "deployer" {
-  account_id   = "${local.name}-deployer"
-  display_name = "Hiru GitHub Actions deployer"
+  depends_on   = [google_project_service.apis]
 }
 
 # ── secrets ──────────────────────────────────────────────────────────────────────────────
@@ -73,7 +94,7 @@ resource "google_secret_manager_secret" "secrets" {
 }
 
 resource "google_secret_manager_secret_iam_member" "api_reads" {
-  for_each  = toset(["supabase-service-role-key", "api-internal-secret", "assemble-secret"])
+  for_each  = toset(local.api_secrets)
   secret_id = google_secret_manager_secret.secrets[each.value].id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.api.email}"
@@ -91,9 +112,11 @@ resource "google_secret_manager_secret_iam_member" "functions_read" {
 resource "google_cloud_tasks_queue" "jobs" {
   name     = "${local.name}-jobs"
   location = var.region
+  # At most ten jobs at once, and each function may run ten instances (scripts/deploy_functions.ps1): a burst waits in
+  # the queue instead of being refused until its retries run out, and AI spending has a ceiling (plan F11).
   rate_limits {
-    max_dispatches_per_second = 20
-    max_concurrent_dispatches = 50
+    max_dispatches_per_second = 5
+    max_concurrent_dispatches = 10
   }
   retry_config {
     max_attempts       = 5
@@ -144,4 +167,22 @@ resource "google_project_iam_member" "observability" {
   project = var.project_id
   role    = "roles/cloudtrace.agent"
   member  = each.value
+}
+
+data "google_project" "this" {}
+
+# What the API's VM does besides: write its logs and metrics, and pull its own image.
+resource "google_project_iam_member" "api_vm" {
+  for_each = toset(["roles/logging.logWriter", "roles/monitoring.metricWriter"])
+  project  = var.project_id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.api.email}"
+}
+
+resource "google_artifact_registry_repository_iam_member" "api_pulls" {
+  project    = var.project_id
+  location   = var.region
+  repository = google_artifact_registry_repository.images.name
+  role       = "roles/artifactregistry.reader"
+  member     = "serviceAccount:${google_service_account.api.email}"
 }

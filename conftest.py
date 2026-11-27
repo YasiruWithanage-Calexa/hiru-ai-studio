@@ -10,6 +10,15 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
+def _supabase_storage(monkeypatch: Any) -> None:
+    """Tests never reach Cloud Storage, whatever the developer's `.env` or shell says (plan/2026-11-27 §4); a test of
+    the `gcs` backend sets it itself, with a stand-in for the network and the token."""
+    monkeypatch.setenv("FILES__BACKEND", "supabase")
+    monkeypatch.setenv("FILES__GCS_BUCKET", "")
+    monkeypatch.setenv("FILES__READ_FALLBACK", "false")
+
+
+@pytest.fixture(autouse=True)
 def _own_file_cache(monkeypatch: Any, tmp_path: Path) -> Iterator[None]:
     from hiru_ai.core import file_store
 

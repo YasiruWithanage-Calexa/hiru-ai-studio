@@ -10,7 +10,8 @@ in a new `plan/<date>/` folder.
 - **LLMs are OpenAI only.** Ask the user before using Gemini or any other Google model. The one exception is RENDERING A TAKE
   with Gemini Omni Flash or Veo 3.1 (plan/2026-11-06c, PLAN.md Q1): the key is read by `video_render` alone and no Google model
   writes a prompt, a check or text.
-- Supabase for auth, DB, storage, realtime and pgvector. **Hiru only** (single tenant).
+- Supabase for auth, DB, realtime and pgvector. **Hiru only** (single tenant). Media goes to **Cloud Storage** in the
+  cloud (`FILES__BACKEND`, plan/2026-11-27, below); the default is still Supabase Storage until the move is done.
 - Proven PromptMotion engines are **forked**, not imported (PLAN.md §2.1). Each fork gets an
   `UPSTREAM.md` with the source path, commit (`1d748dc` at plan time) and every divergence.
 - The UI shows **no credits or costs**, with two exceptions: a scene's total cost, for people who hold `VIEW_COSTS`
@@ -299,9 +300,21 @@ timestamps, `seq`; never a row, cost, model, prompt or path); **no screen runs i
 memo knows (`repositories/memo.py` `_READ_PREFIXES`), or it clears the memo. Default `poll` until the person's check
 (D4); `live_items()` is schema v25, not applied. Read `plan/2026-11-13d/IMPLEMENTED.md`.
 
+## Google Cloud deployment (plan/2026-11-27)
+
+The test environment: the API on one `e2-small` VM (`infra/vm`: Docker Compose + Caddy), the functions on Cloud Run
+functions, `assemble` on Cloud Run, the interface on Firebase App Hosting, media in one Cloud Storage bucket, all in
+`asia-southeast1`; Terraform in `infra/terraform`, settings in `infra/env/staging.env`, deploys by hand
+(`scripts/deploy_{api,functions,assemble}.ps1`). Rules that must not drift: **every stored file goes through
+`hiru_ai/core/media.py`** (`infra/assemble` keeps a copy, held equal by a test); **everything that shares the database
+uses the same `FILES__BACKEND`** (a row does not say where its file is); **secrets live in Secret Manager only** and are
+read on the machine that uses them; the bucket stays private (browsers read through `/files`). Never run the disabled
+`migrate.yml`. Read `plan/2026-11-27/IMPLEMENTED.md`.
+
 ## Boundaries (tested in `tests/test_isolation.py`)
 - `contracts` imports only pydantic + stdlib. Every function bundles it.
-- A function under `src/services/<name>/` imports only its own package and `contracts`.
+- A function under `src/services/<name>/` imports only its own package and `contracts` (and, for stored files,
+  `hiru_ai.core`, which every bundle ships).
   Never `api`, never another service. It vendors what it needs (e.g. its own `runtime/store.py`).
   Scripts in `scripts/` may import a service's engine (one chunker, one embedding path).
 - Routers never query Supabase; all DB access goes through `api/repositories` (the `Repos`
@@ -413,7 +426,7 @@ phase 6 (`plan/2026-11-17/IMPLEMENTED.md`).
 
 ## Conventions
 - Settings via `get_settings()` only (`lru_cache`); nested env vars use `__`.
-- **The hosted project `dwivfkavmtjzhypqswze` is the ONE dev database** (the user's decision,
+- **The hosted project `gzvtzarhcwrtzyzvgymp` is the ONE dev database** (confirmed 2026-11-27; the user's decision,
   2026-10-24): the API, functions, frontend and scripts point at it. The local Supabase stack is
   only a throwaway database for `supabase test db`, schema verification and CI; never treat it as
   where dev data lives, and stop it after use. Smoke scripts write test data to the hosted

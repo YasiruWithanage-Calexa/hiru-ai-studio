@@ -1,0 +1,41 @@
+# What runs on the API VM (plan/2026-11-27 §2). scripts/deploy_api.ps1 copies this file, the Caddyfile and the env
+# files to /opt/hiru and runs `docker compose up -d` there. `.env` (beside this file) holds API_IMAGE and API_HOST;
+# `api.env` holds the API's settings and secrets, readable by root only.
+services:
+  api:
+    image: ${API_IMAGE}
+    restart: unless-stopped
+    env_file: api.env
+    volumes:
+      - /var/hiru/files:/var/hiru/files
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    logging: &logs
+      driver: gcplogs # Cloud Logging, as the VM's service account
+
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      API_HOST: ${API_HOST}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data # the certificates: kept across deploys, or the issuer's limits are hit
+      - caddy_config:/config
+    depends_on:
+      - api
+    logging: *logs
+
+volumes:
+  caddy_data:
+  caddy_config:

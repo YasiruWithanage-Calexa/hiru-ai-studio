@@ -67,3 +67,9 @@ since that commit in the files below.
     the kernel's windows by TIME, not by position, and a heard line's beat in the video prompt says
     what the picture does first ("Anudi answers the phone; then the voice: ..."). The rules intent
     leaves out what is not filmed and frames a heard voice on the person the last actions are about.
+
+## Cloud Storage (plan/2026-11-27)
+
+`runtime/rest.py` reads and writes stored files through `hiru_ai.core.media` (Supabase Storage, or Cloud Storage with
+`FILES__BACKEND=gcs`) instead of its own `/storage/v1` address. With the default backend the requests are as before;
+retries and the write-once rule are unchanged.

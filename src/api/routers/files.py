@@ -21,7 +21,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from fastapi.responses import FileResponse, Response, StreamingResponse
 
 from api.config import Settings, get_settings
-from api.services import file_cache, media_links
+from api.services import file_cache, media_links, media_store
 
 _logger = logging.getLogger(__name__)
 router = APIRouter(tags=["files"])
@@ -66,18 +66,20 @@ async def _stream_through(claims: dict[str, str], request: Request, settings: Se
                           out: dict[str, str]) -> StreamingResponse:
     """The old path, kept for a file bigger than the whole disk cache (or with the cache switched off): nothing is kept,
     Range is forwarded, bytes are streamed."""
-    upstream = (f"{settings.supabase.url.rstrip('/')}/storage/v1/object/"
-                f"{claims['bucket']}/{claims['path']}")
-    headers = {"Authorization": f"Bearer {settings.supabase.service_role_key.get_secret_value()}"}
-    if range_:
-        headers["Range"] = range_
+    forward = {"Range": range_} if range_ else {}
     for name in ("if-none-match", "if-modified-since"):
         if name in request.headers:
-            headers[name] = request.headers[name]
+            forward[name] = request.headers[name]
 
     client = httpx.AsyncClient(timeout=_TIMEOUT)
     try:
-        resp = await client.send(client.build_request("GET", upstream, headers=headers), stream=True)
+        places = await media_store.reads(settings, claims["bucket"], claims["path"])
+        for i, place in enumerate(places):
+            upstream = client.build_request("GET", place.url, headers={**place.headers, **forward})
+            resp = await client.send(upstream, stream=True)
+            if resp.status_code != 404 or i == len(places) - 1:
+                break
+            await resp.aclose()
     except httpx.HTTPError:
         await client.aclose()
         _logger.warning("storage unreachable bucket=%s", claims["bucket"], exc_info=True)

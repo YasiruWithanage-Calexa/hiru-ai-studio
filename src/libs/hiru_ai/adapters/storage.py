@@ -1,4 +1,4 @@
-"""Supabase Storage over HTTP: the adapter behind the `Files` port.
+"""Stored files over HTTP (Supabase Storage or Cloud Storage, `core/media.py`): the adapter behind the `Files` port.
 
 Downloads and uploads retry a dropped connection or a 5xx with a doubling pause; a 4xx is never retried.
 
@@ -16,8 +16,9 @@ from collections.abc import Callable
 import httpx
 
 from hiru_ai.adapters.supabase_rest import Rest, _ok
-from hiru_ai.core import thumbs
+from hiru_ai.core import media, thumbs
 from hiru_ai.core.file_store import IMMUTABLE_BUCKETS  # a path here is written once, ever
+from hiru_ai.core.media import already_exists
 
 _log = logging.getLogger("hiru_ai.adapters.storage")
 __all__ = ["IMMUTABLE_BUCKETS", "SupabaseFiles", "already_exists"]
@@ -51,7 +52,7 @@ class SupabaseFiles:
 
     def download(self, bucket: str, path: str) -> bytes:
         def get() -> bytes:
-            r = self.rest.client.get(f"{self.rest.storage}/object/{bucket}/{path}", headers=self.rest.headers)
+            r = media.get(self.rest.client, self.rest.media, bucket, path)
             _ok(r)
             return r.content
 
@@ -69,22 +70,14 @@ class SupabaseFiles:
 
     def _put(self, bucket: str, path: str, data: bytes, mime: str) -> None:
         once = bucket in IMMUTABLE_BUCKETS
-        headers = {"apikey": self.rest.headers["apikey"], "Authorization": self.rest.headers["Authorization"],
-                   "Content-Type": mime, "x-upsert": "false" if once else "true"}
         tries = 0
 
         def post() -> None:
             nonlocal tries
             tries += 1
-            r = self.rest.client.post(f"{self.rest.storage}/object/{bucket}/{path}", headers=headers, content=data)
+            r = media.put(self.rest.client, self.rest.media, bucket, path, data, mime, once=once)
             if once and tries > 1 and already_exists(r):
                 return  # our own earlier attempt landed; only its answer was lost
             _ok(r)
 
         _retrying(post, self._sleep)
-
-
-def already_exists(response: httpx.Response) -> bool:
-    """Storage answers a write to an existing path with 400/409 and "Duplicate"/"already exists" in the body."""
-    return response.status_code in (400, 409) and any(
-        word in response.text.lower() for word in ("duplicate", "already exists"))

@@ -1,0 +1,4 @@
+# Files read by Linux machines keep LF line ends on every checkout (plan/2026-11-27).
+*.sh text eol=lf
+infra/vm/** text eol=lf
+infra/env/*.env text eol=lf

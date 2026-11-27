@@ -45,3 +45,9 @@ lists what changed upstream since that commit in the files below.
     makes the task `reference_to_video`, a start frame included (image-to-video takes at most 2 images), and the
     pictures are named in plain words by position ("Image 1 is the opening frame…") instead of the deprecated
     `<FIRST_FRAME>` / `<IMAGE_REF_n>` control strings. Evidence: `lab/omni_refs` runs 001-003.
+
+## Cloud Storage (plan/2026-11-27)
+
+`runtime/rest.py` reads and writes stored files through `hiru_ai.core.media` (Supabase Storage, or Cloud Storage with
+`FILES__BACKEND=gcs`) instead of its own `/storage/v1` address. With the default backend the requests are as before;
+retries and the write-once rule are unchanged.

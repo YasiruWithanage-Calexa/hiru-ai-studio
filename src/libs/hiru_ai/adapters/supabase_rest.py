@@ -18,6 +18,7 @@ from uuid import UUID
 
 import httpx
 
+from hiru_ai.core import media
 from hiru_ai.core.context import Ports, RunContext
 from hiru_ai.core.ports import Row
 from hiru_ai.core.settings import AISettings, get_settings
@@ -64,7 +65,7 @@ class Rest:
     def __init__(self, url: str, service_role_key: str, client: httpx.Client | None = None) -> None:
         base = url.rstrip("/")
         self.rest = f"{base}/rest/v1"
-        self.storage = f"{base}/storage/v1"
+        self.media = media.Media(base, service_role_key)
         self.client = client or httpx.Client(timeout=TIMEOUT)
         self.headers = {"apikey": service_role_key, "Authorization": f"Bearer {service_role_key}",
                         "Content-Type": "application/json"}

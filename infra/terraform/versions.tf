@@ -8,7 +8,7 @@ terraform {
   }
 
   # State lives in a GCS bucket in the Hiru project. Create it once, by hand, before `init`:
-  #   gcloud storage buckets create gs://<project_id>-tfstate --location=asia-south1 \
+  #   gcloud storage buckets create gs://<project_id>-tfstate --location=asia-southeast1 \
   #     --uniform-bucket-level-access --public-access-prevention
   #   gcloud storage buckets update gs://<project_id>-tfstate --versioning
   # then: terraform init -backend-config="bucket=<project_id>-tfstate"

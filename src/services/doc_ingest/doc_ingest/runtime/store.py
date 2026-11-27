@@ -1,6 +1,7 @@
 """Supabase access for doc_ingest: jobs, documents, chunks, storage, token usage.
 
-Vendored per service (PLAN.md §4). PostgREST + Storage over HTTP with the service role.
+Vendored per service (PLAN.md §4). PostgREST over HTTP with the service role; stored files through
+`hiru_ai.core.media`.
 """
 from __future__ import annotations
 
@@ -11,6 +12,7 @@ from uuid import UUID
 import httpx
 
 from contracts.jobs import JobEventType, JobStatus
+from hiru_ai.core import media
 
 Row = dict[str, Any]
 _INSERT_BATCH = 100
@@ -20,7 +22,7 @@ class Store:
     def __init__(self, url: str, service_role_key: str, client: httpx.Client | None = None) -> None:
         base = url.rstrip("/")
         self._rest = f"{base}/rest/v1"
-        self._storage = f"{base}/storage/v1"
+        self._media = media.Media(base, service_role_key)
         self._client = client or httpx.Client(timeout=60.0)
         self._headers = {"apikey": service_role_key, "Authorization": f"Bearer {service_role_key}",
                          "Content-Type": "application/json"}
@@ -45,15 +47,14 @@ class Store:
         self._patch("documents", {"id": f"eq.{document_id}"}, fields)
 
     def download(self, bucket: str, path: str) -> bytes:
-        r = self._client.get(f"{self._storage}/object/{bucket}/{path}", headers=self._headers)
+        r = media.get(self._client, self._media, bucket, path)
         r.raise_for_status()
         return r.content
 
     def upload_text(self, bucket: str, path: str, text: str) -> None:
         """Write (or overwrite, on re-ingest) a UTF-8 text object."""
-        headers = {**self._headers, "Content-Type": "text/plain; charset=utf-8", "x-upsert": "true"}
-        r = self._client.post(f"{self._storage}/object/{bucket}/{path}", headers=headers,
-                              content=text.encode("utf-8"))
+        r = media.put(self._client, self._media, bucket, path, text.encode("utf-8"), "text/plain; charset=utf-8",
+                      once=False)
         r.raise_for_status()
 
     # ── chunks ───────────────────────────────────────────────────────────────────────────

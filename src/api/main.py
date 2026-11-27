@@ -53,7 +53,7 @@ from api.routers import (
     usage,
     zora,
 )
-from api.services import file_cache
+from api.services import file_cache, media_store
 from api.workers import sweeper, task_manager
 
 _logger = logging.getLogger(__name__)
@@ -76,6 +76,7 @@ def create_app(repos: Repos | None = None) -> FastAPI:
         from api.margins import install
 
         install()
+        media_store.media_for(settings)  # a storage backend that is not set up stops the API here (plan/2026-11-27)
         if repos is not None:
             app.state.repos = repos
         else:

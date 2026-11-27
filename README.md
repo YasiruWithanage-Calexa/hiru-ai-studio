@@ -1,6 +1,6 @@
 # Hiru AI Studio — backend
 
-Python backend for Hiru AI Studio: a FastAPI API on Cloud Run, Cloud Run functions for the AI
+Python backend for Hiru AI Studio: a FastAPI API (on one VM), Cloud Run functions for the AI
 engines, and Supabase for auth, database, storage, realtime and vector search.
 The frontend lives in `../hiru-ai-studio-interface`.
 
@@ -8,9 +8,9 @@ The frontend lives in `../hiru-ai-studio-interface`.
 - What is built so far: [plan/2026-10-23/IMPLEMENTED.md](plan/2026-10-23/IMPLEMENTED.md)
 
 **Status:** Phases 0–3 are built and verified locally (API and functions on this machine).
-Nothing is deployed yet.
+Nothing is deployed yet (the test deployment: [plan/2026-11-27](plan/2026-11-27/PLAN.md)).
 
-**The one dev database is the hosted Supabase project `dwivfkavmtjzhypqswze`** (schema
+**The one dev database is the hosted Supabase project `gzvtzarhcwrtzyzvgymp`** (schema
 `Database/schema_v2.sql`, managed by hand: [Database/README.md](Database/README.md)). The API,
 the functions, the frontend and the scripts all point at it. The local Supabase stack is only for
 the automated database tests (`npx supabase test db`), which need a throwaway database.
@@ -108,7 +108,8 @@ CI runs all of these (plus mypy per service and `terraform validate`), see `.git
 | `src/services/<name>/` | One Cloud Run function each; imports only itself + `contracts`. `echo` (template), `doc_ingest`, `script_split`, `structure_build`, `canon_extract`, `director_chat` (fork, `UPSTREAM.md`) |
 | `src/libs/hiru_ai/knowledge_bases/` | The knowledge bases (craft corpus copied from PromptMotion, `UPSTREAM.md`), one folder each |
 | `supabase/` | `config.toml`, `migrations/`, `tests/` (pgTAP) |
-| `infra/terraform/` | GCP project: Cloud Run, Cloud Tasks, IAM, Secret Manager, Workload Identity |
+| `infra/terraform/` | GCP project: the API VM, the media bucket, Cloud Run, Cloud Tasks, IAM, Secret Manager |
+| `infra/vm/`, `infra/env/` | What runs on the API VM (Compose, Caddy, deploy); each environment's settings |
 | `scripts/` | `create_admin`, `eval_retrieval`, `replay_director`, `upstream_diff`, `smoke_local`, `smoke_phase1`–`3`, `start-functions.ps1` |
 | `tests/fixtures/corpus/` | "Harbour Lights", an invented sample production for tests and evals |
 | `plan/` | Plans, one folder per planning date |
@@ -121,20 +122,26 @@ member is a **producer**, **director**, **writer**, **production** (crew) or **r
 full table is in `src/libs/contracts/roles.py` and PLAN.md §9. The browser reads through RLS
 and writes only through the API.
 
-## First deploy of an environment (one-time, by hand; not done yet)
+## Deploying the test environment
 
-1. Create the GCP project and the Supabase project (region `ap-south-1`). In Supabase Auth:
-   turn **off** "Allow new users to sign up" but keep the **e-mail provider enabled** (turning
-   off e-mail sign-up disables e-mail login too), and add the frontend's
-   `/auth/accept` URL to the redirect allow-list.
-2. Create the Terraform state bucket (see `infra/terraform/versions.tf`), copy
-   `staging.tfvars.example` to `staging.tfvars`, then `terraform init` and `terraform apply`.
-3. Add secret values: `gcloud secrets versions add hiru-staging-supabase-service-role-key --data-file=-`
-   (likewise `api-internal-secret`, `openai-api-key`).
-4. In GitHub, create the `staging` environment and set the variables printed by
-   `terraform output github_variables`, plus `SUPABASE_URL` and `SUPABASE_PROJECT_REF`; secrets
-   `SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD`.
-5. Run **Migrate database**, then push to `main` (or run **Deploy API** / **Deploy functions**).
-6. Set `api_public_url` in tfvars to the deployed URL and apply again; run
-   `scripts/create_admin.py` against the environment to invite the first admin; run
-   `hiru-ai ingest --all` against it.
+The plan, the order of the phases and what each needs from a person: [plan/2026-11-27/PLAN.md](plan/2026-11-27/PLAN.md);
+what is built: its [IMPLEMENTED.md](plan/2026-11-27/IMPLEMENTED.md). The API runs on one VM (`infra/vm`), the AI workers
+on Cloud Run functions, `assemble` on Cloud Run, the interface on Firebase App Hosting; Supabase keeps sign-in and the
+database. Deploys are run by a person:
+
+1. Create the Terraform state bucket (see `infra/terraform/versions.tf`), copy `staging.tfvars.example` to
+   `staging.tfvars` and fill it, then in `infra/terraform`:
+   `terraform init -backend-config="bucket=<project>-tfstate"`, `terraform workspace select -or-create staging`.
+   Terraform signs in with a short-lived token, so the machine's application default credentials stay as they are:
+   `$env:GOOGLE_OAUTH_ACCESS_TOKEN = gcloud auth print-access-token`.
+2. The secrets first, because `assemble` cannot be created while a secret it reads has no value:
+   `terraform apply -var-file=staging.tfvars -target=google_secret_manager_secret.secrets`, then
+   `scripts/load_secrets.ps1` (from `.env`; or `gcloud secrets versions add hiru-staging-<name> --data-file=-`), then
+   `terraform apply -var-file=staging.tfvars`.
+3. With Docker running: `scripts/deploy_assemble.ps1`, `scripts/deploy_functions.ps1`, then
+   `scripts/deploy_api.ps1 -FrontendUrl https://<interface>`.
+4. In Supabase Auth: keep "Allow new users to sign up" **off** and the **e-mail provider enabled** (turning off e-mail
+   sign-up disables e-mail login too), and add the interface's `/auth/accept` URL to the redirect allow-list.
+
+Settings of the environment are in `infra/env/staging.env` (the API and the functions get the same list). The
+**Deploy API** and **Migrate database** workflows are disabled: the database is managed by hand (`Database/README.md`).

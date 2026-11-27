@@ -1,10 +1,13 @@
-"""Supabase PostgREST + Storage over HTTP with the service role. Vendored per service
-(PLAN.md §4): identical in every function that needs it, imported by nothing outside it."""
+"""Supabase PostgREST over HTTP with the service role, and stored files through `hiru_ai.core.media`
+(Supabase Storage or Cloud Storage). Vendored per service (PLAN.md §4): identical in every function that needs it,
+imported by nothing outside it."""
 from __future__ import annotations
 
 from typing import Any
 
 import httpx
+
+from hiru_ai.core import media
 
 Row = dict[str, Any]
 _BATCH = 200
@@ -23,7 +26,7 @@ class Rest:
     def __init__(self, url: str, service_role_key: str, client: httpx.Client | None = None) -> None:
         base = url.rstrip("/")
         self.rest = f"{base}/rest/v1"
-        self.storage = f"{base}/storage/v1"
+        self.media = media.Media(base, service_role_key)
         self.client = client or httpx.Client(timeout=60.0)
         self.headers = {"apikey": service_role_key, "Authorization": f"Bearer {service_role_key}",
                         "Content-Type": "application/json"}
@@ -59,6 +62,6 @@ class Rest:
         _ok(r)
 
     def download(self, bucket: str, path: str) -> bytes:
-        r = self.client.get(f"{self.storage}/object/{bucket}/{path}", headers=self.headers)
+        r = media.get(self.client, self.media, bucket, path)
         _ok(r)
         return r.content

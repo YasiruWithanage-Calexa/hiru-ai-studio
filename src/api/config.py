@@ -105,12 +105,26 @@ class SableSettings(BaseModel):
 
 
 class FilesSettings(BaseModel):
-    """The API's own disk copy of every stored file (plan/2026-11-08c D3): a file crosses the internet from Supabase
+    """Where stored files live, and the API's disk copy of them.
+
+    `backend` (plan/2026-11-27 §4): `supabase` (Supabase Storage) or `gcs` (the Cloud Storage bucket `gcs_bucket`);
+    `read_fallback` reads from Supabase what the bucket does not have, while the existing files are being moved. The
+    functions read the same `FILES__*` variables, and everything that shares the database must use the same backend.
+
+    The API's own disk copy of every stored file (plan/2026-11-08c D3): a file crosses the internet from Supabase
     once, then every later request is served from here. `cache_dir` empty = the user's cache folder
     (`%LOCALAPPDATA%/hiru-ai/files` on Windows). `cache_max_gb` 0 turns the copy off (every request streams through)."""
 
     cache_dir: str = ""
     cache_max_gb: float = 5.0
+    backend: str = "supabase"
+    gcs_bucket: str = ""
+    read_fallback: bool = False
+
+    @field_validator("backend", mode="before")
+    @classmethod
+    def _plain(cls, v: object) -> object:
+        return (v.strip().lower() or "supabase") if isinstance(v, str) else v
 
 
 class LiveSettings(BaseModel):

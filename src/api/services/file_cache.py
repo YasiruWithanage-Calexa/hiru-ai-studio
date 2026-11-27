@@ -25,6 +25,7 @@ import httpx
 
 from api.cache import clear_after_job
 from api.config import Settings
+from api.services import media_store
 from hiru_ai.core import file_store
 
 _logger = logging.getLogger(__name__)
@@ -152,8 +153,6 @@ class FileCache:
             raise TooLarge
         file = _file_for(base, bucket, path)
         part = file.with_name(file.name + f".{os.getpid()}{_PART_SUFFIX}")
-        url = f"{self.settings.supabase.url.rstrip('/')}/storage/v1/object/{bucket}/{path}"
-        key = self.settings.supabase.service_role_key.get_secret_value()
         cap = int(self.settings.files.cache_max_gb * 1024**3)
         STATS["misses"] += 1
         if ON_UPSTREAM is not None:
@@ -162,19 +161,24 @@ class FileCache:
             part.parent.mkdir(parents=True, exist_ok=True)
             size = 0
             media_type = ""
-            async with httpx.AsyncClient(timeout=_TIMEOUT) as client, client.stream(
-                    "GET", url, headers={"Authorization": f"Bearer {key}"}) as resp:
-                if resp.status_code >= 400:
-                    if resp.status_code == 404:
-                        MISSES.add((bucket, path))
-                    raise NotFound
-                media_type = resp.headers.get("content-type", "").split(";")[0].strip()
-                if int(resp.headers.get("content-length") or 0) > cap:
-                    raise TooLarge
-                with part.open("wb") as out:
-                    async for chunk in resp.aiter_bytes(_CHUNK):
-                        out.write(chunk)
-                        size += len(chunk)
+            requests = await media_store.reads(self.settings, bucket, path)
+            async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
+                for i, request in enumerate(requests):
+                    async with client.stream("GET", request.url, headers=request.headers) as resp:
+                        if resp.status_code == 404 and i < len(requests) - 1:
+                            continue  # not in the bucket yet: the next place (plan/2026-11-27 §4)
+                        if resp.status_code >= 400:
+                            if resp.status_code == 404:
+                                MISSES.add((bucket, path))
+                            raise NotFound
+                        media_type = resp.headers.get("content-type", "").split(";")[0].strip()
+                        if int(resp.headers.get("content-length") or 0) > cap:
+                            raise TooLarge
+                        with part.open("wb") as out:
+                            async for chunk in resp.aiter_bytes(_CHUNK):
+                                out.write(chunk)
+                                size += len(chunk)
+                        break
             STATS["upstream_bytes"] += size
             if media_type:
                 file.with_name(file.name + _TYPE_SUFFIX).write_text(media_type, encoding="ascii", errors="ignore")

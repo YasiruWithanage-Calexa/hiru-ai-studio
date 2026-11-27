@@ -8,8 +8,10 @@
     GET  /health       whether ffmpeg is on the PATH
 
 Forked from PromptMotion `infra/assemble/app.py` (1d748dc; see UPSTREAM.md). A Cloud Run
-SERVICE, not a function: it needs ffmpeg in the image. Self-contained: it talks to Supabase
-Storage over HTTP with the service role and to ffmpeg, and imports nothing from this repo.
+SERVICE, not a function: it needs ffmpeg in the image. Self-contained: it talks to storage over
+HTTP (Supabase Storage with the service role, or Cloud Storage with the machine's account:
+`FILES__BACKEND`, plan/2026-11-27 §4, a copy of `hiru_ai/core/media.py`) and to ffmpeg, and
+imports nothing from this repo.
 
 WHAT IS LOAD-BEARING (kept from upstream):
 
@@ -20,6 +22,7 @@ WHAT IS LOAD-BEARING (kept from upstream):
     only the bytes ffmpeg needs (plan/2026-11-21 D7) it mints its OWN 300 s signed URL and hands that to ffprobe/ffmpeg,
     which read with Range: the header for a probe, a moment for a poster, the last second for a last frame. The URL
     never leaves this process. `/cut` needs whole files, so it keeps a small disk copy of each take it read.
+    On Cloud Storage nothing is signed: the whole take is read, inside the region.
   * ONE SHARED SECRET (`X-Assemble-Secret`) is the whole auth story; the API is the only caller.
     With no secret configured it REFUSES every request rather than running open.
 """
@@ -32,7 +35,9 @@ import secrets
 import shutil
 import subprocess
 import tempfile
+import time
 from pathlib import Path
+from urllib.parse import quote
 
 import httpx
 from fastapi import FastAPI, Header, HTTPException
@@ -113,7 +118,77 @@ def _storage() -> tuple[str, dict[str, str]]:
     return f"{base}/storage/v1/object", {"apikey": key, "Authorization": f"Bearer {key}"}
 
 
+# ── Cloud Storage: the same addresses as hiru_ai/core/media.py (tests/infra/test_assemble_gcs.py holds them equal) ──
+
+GCS = "https://storage.googleapis.com"
+SCOPE = "https://www.googleapis.com/auth/devstorage.read_write"
+METADATA_TOKEN = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"  # noqa: S105  an address, not a credential
+_token_kept: tuple[str, float] = ("", 0.0)
+
+
+def _env(name: str) -> str:
+    return os.environ.get(name, "").strip()
+
+
+def _gcs() -> str:
+    """The bucket when files live in Cloud Storage, else "" (Supabase Storage)."""
+    backend = _env("FILES__BACKEND").lower() or "supabase"
+    if backend == "supabase":
+        return ""
+    gcs_bucket = _env("FILES__GCS_BUCKET")
+    if backend != "gcs" or not gcs_bucket:
+        raise HTTPException(status_code=503, detail="storage is not set up")
+    return gcs_bucket
+
+
+def _fallback() -> bool:
+    return _env("FILES__READ_FALLBACK").lower() in ("1", "true", "yes", "on")
+
+
+def _fetch_token() -> tuple[str, float]:
+    """(token, the time it expires): `google-auth` when installed, else the metadata server."""
+    try:
+        import google.auth
+        from google.auth.transport.requests import Request as AuthRequest
+    except ImportError:
+        r = httpx.get(METADATA_TOKEN, headers={"Metadata-Flavor": "Google"}, timeout=10.0)
+        r.raise_for_status()
+        answer = r.json()
+        return str(answer["access_token"]), time.time() + float(answer["expires_in"])
+    credentials, _project = google.auth.default(scopes=[SCOPE])
+    credentials.refresh(AuthRequest())
+    return str(credentials.token), time.time() + 3000
+
+
+def _google_headers() -> dict[str, str]:
+    global _token_kept
+    token, until = _token_kept
+    if not token or time.time() >= until:
+        try:
+            token, expires = _fetch_token()
+        except httpx.HTTPError:
+            raise
+        except Exception as exc:
+            raise httpx.TransportError(f"no Google credentials ({type(exc).__name__})") from exc
+        _token_kept = (token, expires - 300)
+    return {"Authorization": f"Bearer {token}"}
+
+
+def _object_url(gcs_bucket: str, folder: str, path: str) -> str:
+    return f"{GCS}/storage/v1/b/{gcs_bucket}/o/{quote(f'{folder}/{path}', safe='')}"
+
+
+def _upload_url(gcs_bucket: str, folder: str, path: str) -> str:
+    return f"{GCS}/upload/storage/v1/b/{gcs_bucket}/o?uploadType=media&name={quote(f'{folder}/{path}', safe='')}"
+
+
 def _download(bucket: str, path: str) -> bytes:
+    gcs_bucket = _gcs()
+    if gcs_bucket:
+        r = httpx.get(f"{_object_url(gcs_bucket, bucket, path)}?alt=media", headers=_google_headers(), timeout=120.0)
+        if not (r.status_code == 404 and _fallback()):
+            r.raise_for_status()
+            return r.content
     url, headers = _storage()
     r = httpx.get(f"{url}/{bucket}/{path}", headers=headers, timeout=120.0)
     r.raise_for_status()
@@ -139,11 +214,12 @@ def _signed_url(bucket: str, path: str) -> str:
 
 def _input(bucket: str, path: str, tmp: Path) -> str:
     """What ffmpeg reads: the signed URL (only the bytes it needs cross the internet), or, when signing fails, the whole
-    file downloaded into `tmp` as before. Raises httpx.HTTPError when neither works."""
-    try:
-        return _signed_url(bucket, path)
-    except (httpx.HTTPError, ValueError) as exc:
-        _logger.warning("signing failed (%s); downloading the whole file", exc)
+    file downloaded into `tmp` as before (always so on Cloud Storage). Raises httpx.HTTPError when neither works."""
+    if not _gcs():
+        try:
+            return _signed_url(bucket, path)
+        except (httpx.HTTPError, ValueError) as exc:
+            _logger.warning("signing failed (%s); downloading the whole file", exc)
     src = tmp / "in"
     src.write_bytes(_download(bucket, path))
     return str(src)
@@ -204,6 +280,12 @@ def _trim_cache(folder: Path, cap: int, keep: Path) -> None:
 
 
 def _upload(bucket: str, path: str, data: bytes, content_type: str) -> None:
+    gcs_bucket = _gcs()
+    if gcs_bucket:  # overwrites, as below: a still's path is derived from its take
+        r = httpx.post(_upload_url(gcs_bucket, bucket, path), content=data, timeout=120.0,
+                       headers={**_google_headers(), "Content-Type": content_type})
+        r.raise_for_status()
+        return
     url, headers = _storage()
     r = httpx.post(f"{url}/{bucket}/{path}", content=data, timeout=120.0,
                    headers={**headers, "Content-Type": content_type, "x-upsert": "true"})

@@ -1,5 +1,5 @@
-"""Supabase PostgREST + Storage over HTTP with the service role. Vendored per service
-(PLAN.md §4). This copy adds `claim` (a conditional update that returns the rows it changed) and
+"""Supabase PostgREST over HTTP with the service role, and stored files through `hiru_ai.core.media`. Vendored
+per service (PLAN.md §4). This copy adds `claim` (a conditional update that returns the rows it changed) and
 `upload` (private buckets; media is written once and never overwritten)."""
 from __future__ import annotations
 
@@ -9,6 +9,8 @@ from collections.abc import Callable
 from typing import Any
 
 import httpx
+
+from hiru_ai.core import media
 
 Row = dict[str, Any]
 _BATCH = 200
@@ -43,7 +45,7 @@ class Rest:
     def __init__(self, url: str, service_role_key: str, client: httpx.Client | None = None) -> None:
         base = url.rstrip("/")
         self.rest = f"{base}/rest/v1"
-        self.storage = f"{base}/storage/v1"
+        self.media = media.Media(base, service_role_key)
         self.client = client or httpx.Client(timeout=_TIMEOUT)
         self.headers = {"apikey": service_role_key, "Authorization": f"Bearer {service_role_key}",
                         "Content-Type": "application/json"}
@@ -75,7 +77,7 @@ class Rest:
 
     def download(self, bucket: str, path: str) -> bytes:
         def get() -> bytes:
-            r = self.client.get(f"{self.storage}/object/{bucket}/{path}", headers=self.headers)
+            r = media.get(self.client, self.media, bucket, path)
             r.raise_for_status()
             return r.content
         return _retrying(get)
@@ -85,19 +87,13 @@ class Rest:
         a copy by path, so a path must name one file forever. A second write is a bug and fails loudly, except our
         own retry of a write that landed and whose answer was lost."""
         once = bucket in IMMUTABLE_BUCKETS
-        headers = {"apikey": self.headers["apikey"], "Authorization": self.headers["Authorization"],
-                   "Content-Type": content_type, "x-upsert": "false" if once else "true"}
         tries = 0
 
         def post() -> None:
             nonlocal tries
             tries += 1
-            r = self.client.post(f"{self.storage}/object/{bucket}/{path}", headers=headers, content=data)
-            if once and tries > 1 and _already_exists(r):
+            r = media.put(self.client, self.media, bucket, path, data, content_type, once=once)
+            if once and tries > 1 and media.already_exists(r):
                 return
             r.raise_for_status()
         _retrying(post)
-
-
-def _already_exists(r: httpx.Response) -> bool:
-    return r.status_code in (400, 409) and any(w in r.text.lower() for w in ("duplicate", "already exists"))

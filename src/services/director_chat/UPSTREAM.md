@@ -114,3 +114,9 @@ since that commit in the files below.
     `proposals.guard_reply` no longer treats a negated sentence ("nothing has been applied") as a claim.
     `scripts/replay_director.py` gained `--k` (pass@1 and pass^k), an honesty score and ten more
     conversations. The conductor prompt is 4.4k characters (budget 5k).
+
+## Cloud Storage (plan/2026-11-27)
+
+`runtime/rest.py` reads and writes stored files through `hiru_ai.core.media` (Supabase Storage, or Cloud Storage with
+`FILES__BACKEND=gcs`) instead of its own `/storage/v1` address. With the default backend the requests are as before;
+retries and the write-once rule are unchanged.

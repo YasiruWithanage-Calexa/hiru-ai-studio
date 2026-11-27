@@ -248,6 +248,8 @@ allow_indirect_imports = true  # its system may use them; the function itself ma
 name = "the api reaches hiru_ai only through the pure rag modules"
 type = "forbidden"
 source_modules = ["api"]
+# plan/2026-11-27: the one place that says where stored files live; stdlib and httpx only.
+ignore_imports = ["api.services.media_store -> hiru_ai.core.media"]
 forbidden_modules = [
     "hiru_ai.core", "hiru_ai.agents", "hiru_ai.tools", "hiru_ai.steps", "hiru_ai.panels", "hiru_ai.systems",
     "hiru_ai.knowledge_bases", "hiru_ai.adapters", "hiru_ai.cli", "hiru_ai.rag.retrievers", "hiru_ai.rag.rerankers",

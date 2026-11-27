@@ -34,15 +34,11 @@ class RestFiles:
         self.rest = rest
 
     def download(self, bucket: str, path: str) -> bytes:
-        r = self.rest.c.get(f"{self.rest.storage}/object/{bucket}/{path}", headers=self.rest.h)
-        r.raise_for_status()
-        return r.content
+        return self.rest.download(bucket, path)
 
     def upload(self, bucket: str, path: str, data: bytes, mime: str) -> None:
         # a thumbnail path is a NEW path: writing it never overwrites anything
-        r = self.rest.c.post(f"{self.rest.storage}/object/{bucket}/{path}", content=data,
-                             headers={**self.rest.h, "Content-Type": mime, "x-upsert": "false"})
-        r.raise_for_status()
+        self.rest.upload(bucket, path, data, mime, once=True)
 
 
 def _asset_paths(assets: object) -> list[str]:
@@ -69,14 +65,12 @@ def wanted(rest: _common.Rest) -> list[tuple[str, str]]:
 
 
 def exists(rest: _common.Rest, bucket: str, path: str) -> bool:
-    r = rest.c.head(f"{rest.storage}/object/{bucket}/{path}", headers=rest.h)
-    return r.status_code == 200
+    return rest.size(bucket, path) is not None
 
 
 def size(rest: _common.Rest, bucket: str, path: str) -> int:
     """The object's size from a HEAD (no body crosses the internet); 0 when unknown."""
-    r = rest.c.head(f"{rest.storage}/object/{bucket}/{path}", headers=rest.h)
-    return int(r.headers.get("content-length") or 0) if r.status_code == 200 else 0
+    return rest.size(bucket, path) or 0
 
 
 def main() -> None:

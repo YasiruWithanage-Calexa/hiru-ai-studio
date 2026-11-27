@@ -19,8 +19,10 @@ instance's disk (`FILES__CACHE_DIR/assemble`, else the temp folder; `ASSEMBLE__C
 downloads nothing. On Cloud Run that folder is memory: keep the cap well under the service's memory.
 
 Auth is one shared secret in `X-Assemble-Secret` (`ASSEMBLE__SECRET`); with none set it refuses
-every request. It reads and writes the same Supabase project as the API
-(`SUPABASE__URL`, `SUPABASE__SERVICE_ROLE_KEY`).
+every request. It reads and writes where the API does: the same Supabase project
+(`SUPABASE__URL`, `SUPABASE__SERVICE_ROLE_KEY`), or with `FILES__BACKEND=gcs` the media bucket
+(`FILES__GCS_BUCKET`, plan/2026-11-27), where nothing is signed and the whole take is read.
+Deploy: `scripts/deploy_assemble.ps1`.
 
 ## Run it locally
 

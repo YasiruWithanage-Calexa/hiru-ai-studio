@@ -1,6 +1,6 @@
 # Database
 
-The hosted Supabase project `dwivfkavmtjzhypqswze` is **the one dev database**: the API, the
+The hosted Supabase project `gzvtzarhcwrtzyzvgymp` is **the one dev database**: the API, the
 functions, the frontend and the scripts all use it. It is managed by hand through the
 dashboard's SQL Editor and Table Editor, using the files in this folder. It runs **schema v3**
 (v1 → v2 and v2 → v3 both on 2026-10-24); `upgrade_v3_to_v4.sql` (Phase 5) is ready and not run yet. The local Supabase stack is only a throwaway database for the
@@ -191,7 +191,7 @@ empty one, and of v2 + this upgrade are identical (buckets, Realtime tables, per
    ```sql
    update public.profiles set app_role = 'admin' where email = 'yasiru@calexa.io';
    ```
-5. **Point the backend at it:** in `.env`, set `SUPABASE__URL=https://dwivfkavmtjzhypqswze.supabase.co`
+5. **Point the backend at it:** in `.env`, set `SUPABASE__URL=https://gzvtzarhcwrtzyzvgymp.supabase.co`
    and `SUPABASE__SERVICE_ROLE_KEY=<the secret key from Settings → API Keys>`. Leave
    `SUPABASE__JWT_SECRET` empty: hosted sign-in tokens are checked against the project's
    published keys. Then run `hiru-ai ingest --all` to load the craft knowledge.

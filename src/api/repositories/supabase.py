@@ -18,7 +18,7 @@ from api.config import get_settings
 from api.observability import count_db_call, time_db_call
 from api.repositories import SCENE_LIGHT, SHOT_LIGHT, Repos, Row, Rows
 from api.repositories.memo import MemoRepo
-from api.services import file_cache
+from api.services import file_cache, media_store
 
 _logger = logging.getLogger(__name__)
 
@@ -394,13 +394,23 @@ class SupabaseDocuments(_Base):
 
 
 class SupabaseStorage(_Base):
+    """The `StorageRepo`: Supabase Storage, or Cloud Storage when `FILES__BACKEND=gcs` (`services/media_store.py`)."""
+
     async def upload(self, bucket: str, path: str, data: bytes, content_type: str) -> None:
-        await self.db.storage.from_(bucket).upload(path, data, {"content-type": content_type})
+        settings = get_settings()
+        if settings.files.backend == "gcs":
+            await media_store.upload(settings, bucket, path, data, content_type)
+        else:
+            await self.db.storage.from_(bucket).upload(path, data, {"content-type": content_type})
         file_cache.forget_missing(bucket, path)
 
     async def remove(self, bucket: str, path: str) -> None:
-        await self.db.storage.from_(bucket).remove([path])
-        file_cache.evict(get_settings(), bucket, path)  # the API's disk copy goes with the object
+        settings = get_settings()
+        if settings.files.backend == "gcs":
+            await media_store.remove(settings, bucket, path)
+        else:
+            await self.db.storage.from_(bucket).remove([path])
+        file_cache.evict(settings, bucket, path)  # the API's disk copy goes with the object
 
     async def download(self, bucket: str, path: str) -> bytes:
         # plan/2026-11-21: a write-once file (the scene bundle's frames and sheets) is read from the API's disk copy,
@@ -411,6 +421,9 @@ class SupabaseStorage(_Base):
                 return await asyncio.to_thread(kept.path.read_bytes)
             except (file_cache.NotFound, file_cache.Unreachable, file_cache.TooLarge, OSError):
                 pass
+        settings = get_settings()
+        if settings.files.backend == "gcs":
+            return await media_store.download(settings, bucket, path)
         return bytes(await self.db.storage.from_(bucket).download(path))
 
 
