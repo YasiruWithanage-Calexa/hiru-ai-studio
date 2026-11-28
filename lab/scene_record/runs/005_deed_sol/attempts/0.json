@@ -1,0 +1,892 @@
+{
+ "scene": "deed",
+ "dramatic_goal": "Nimal discovers the concealed deed and confronts Saman; Saman's cheerful evasion gives way to admitting that he sold the field to repay a debt.",
+ "pov": "N",
+ "objectives": [
+  "N: wants an honest exchange with Saman about the land / blocked by Saman's cheerful evasion and concealed transaction.",
+  "S: wants to preserve an easy conversation and conceal his shame / blocked by the exposed deed and Nimal's insistence."
+ ],
+ "subtext": "Saman's cheerfulness protects him from admitting financial shame. For Nimal, the concealed transaction turns an ordinary meeting into a breach of trust between brothers.",
+ "key_moment": {
+  "beat": 3,
+  "what": "Nimal brings the folded deed down onto the table, making Saman's evasion impossible.",
+  "shots": [
+   "5",
+   "6",
+   "7"
+  ]
+ },
+ "beats": [
+  {
+   "n": 1,
+   "blocks": [
+    0
+   ],
+   "what": "Saman sustains a cheerful conversation while Nimal listens across the tea table.",
+   "intensity": 3,
+   "dominant": "S"
+  },
+  {
+   "n": 2,
+   "blocks": [
+    1
+   ],
+   "what": "Nimal notices the folded deed protruding from Saman's chest pocket.",
+   "intensity": 5,
+   "dominant": "balanced"
+  },
+  {
+   "n": 3,
+   "blocks": [
+    2
+   ],
+   "what": "Nimal takes the deed, rises, and slams it onto the table.",
+   "intensity": 9,
+   "dominant": "N"
+  },
+  {
+   "n": 4,
+   "blocks": [
+    3
+   ],
+   "what": "Saman admits the sale and the debt he was too ashamed to disclose.",
+   "intensity": 6,
+   "dominant": "N"
+  }
+ ],
+ "landmarks": [
+  {
+   "id": "L1",
+   "name": "tea shop",
+   "kind": "area",
+   "points": [
+    {
+     "x": -3.0,
+     "y": -5.5
+    },
+    {
+     "x": 3.0,
+     "y": -5.5
+    },
+    {
+     "x": 3.0,
+     "y": 2.0
+    },
+    {
+     "x": -3.0,
+     "y": 2.0
+    }
+   ],
+   "width": 0.0
+  },
+  {
+   "id": "table",
+   "name": "wooden table",
+   "kind": "furniture",
+   "points": [
+    {
+     "x": 0.0,
+     "y": 0.0
+    }
+   ],
+   "width": 0.9
+  },
+  {
+   "id": "window",
+   "name": "west window",
+   "kind": "light",
+   "points": [
+    {
+     "x": -3.0,
+     "y": 0.3
+    }
+   ],
+   "width": 1.2
+  },
+  {
+   "id": "lamp",
+   "name": "oil lamp",
+   "kind": "light",
+   "points": [
+    {
+     "x": 0.0,
+     "y": 0.32
+    }
+   ],
+   "width": 0.12
+  }
+ ],
+ "marks": [
+  {
+   "id": "M1",
+   "who": "N",
+   "beat": 1,
+   "x": -0.75,
+   "y": 0.0,
+   "posture": "seated",
+   "facing": "S",
+   "moves_to": [],
+   "along": "",
+   "label": "listens across the table"
+  },
+  {
+   "id": "M2",
+   "who": "S",
+   "beat": 1,
+   "x": 0.75,
+   "y": 0.0,
+   "posture": "seated",
+   "facing": "N",
+   "moves_to": [],
+   "along": "",
+   "label": "keeps conversation cheerful"
+  },
+  {
+   "id": "M3",
+   "who": "N",
+   "beat": 2,
+   "x": -0.75,
+   "y": 0.0,
+   "posture": "leaning",
+   "facing": "S",
+   "moves_to": [],
+   "along": "",
+   "label": "notices the folded edge"
+  },
+  {
+   "id": "M4",
+   "who": "S",
+   "beat": 2,
+   "x": 0.75,
+   "y": 0.0,
+   "posture": "seated",
+   "facing": "N",
+   "moves_to": [],
+   "along": "",
+   "label": "continues his cheerful talk"
+  },
+  {
+   "id": "M5",
+   "who": "N",
+   "beat": 3,
+   "x": -0.75,
+   "y": 0.0,
+   "posture": "rising",
+   "facing": "S",
+   "moves_to": [],
+   "along": "",
+   "label": "takes deed and rises"
+  },
+  {
+   "id": "M6",
+   "who": "S",
+   "beat": 3,
+   "x": 0.75,
+   "y": 0.0,
+   "posture": "seated",
+   "facing": "N",
+   "moves_to": [],
+   "along": "",
+   "label": "recoils into silence"
+  },
+  {
+   "id": "M7",
+   "who": "N",
+   "beat": 4,
+   "x": -0.75,
+   "y": 0.0,
+   "posture": "standing",
+   "facing": "S",
+   "moves_to": [],
+   "along": "",
+   "label": "stands over the deed"
+  },
+  {
+   "id": "M8",
+   "who": "S",
+   "beat": 4,
+   "x": 0.75,
+   "y": 0.0,
+   "posture": "seated",
+   "facing": "N",
+   "moves_to": [],
+   "along": "",
+   "label": "admits the concealed debt"
+  }
+ ],
+ "axes": [
+  {
+   "from_beat": 1,
+   "a": "N",
+   "b": "S",
+   "camera_side": "south"
+  }
+ ],
+ "cameras": [
+  {
+   "id": "C1",
+   "name": "south room master",
+   "role": "master",
+   "covers": "table and brothers",
+   "x": 0.0,
+   "y": -4.7,
+   "height": "standing_eye",
+   "looks_at": "table",
+   "lens_mm": 28
+  },
+  {
+   "id": "C2",
+   "name": "Saman front oblique",
+   "role": "reverse",
+   "covers": "cheerfulness and admission",
+   "x": -1.8,
+   "y": -1.4,
+   "height": "seated_eye",
+   "looks_at": "S",
+   "lens_mm": 110
+  },
+  {
+   "id": "C3",
+   "name": "Nimal front oblique",
+   "role": "reaction",
+   "covers": "discovery and confrontation",
+   "x": 1.6,
+   "y": -1.8,
+   "height": "seated_eye",
+   "looks_at": "N",
+   "lens_mm": 100
+  },
+  {
+   "id": "C4",
+   "name": "deed detail position",
+   "role": "detail",
+   "covers": "pocket and tabletop",
+   "x": -0.6,
+   "y": -1.1,
+   "height": "seated_eye",
+   "looks_at": "deed",
+   "lens_mm": 85
+  }
+ ],
+ "light": {
+  "key": "window",
+  "style": "Soft, fading dusk enters from the west window. The lit oil lamp supplies a small amber fill across the table. Preserve the same source directions and exposure continuity throughout.",
+  "by_beat": [
+   "Cool dusk surrounds a restrained amber pool on the table; gentle facial contrast keeps the meeting ordinary.",
+   "The same cool window light catches Nimal's eyes and the exposed paper edge; the background remains subdued.",
+   "The tighter angles emphasize the contrast between cool faces, pale paper, and the amber tabletop without changing the practical light.",
+   "Maintain the dusk balance; allow soft shadow on Saman's lowered face while retaining detail in his eyes."
+  ]
+ },
+ "prop_states": [
+  {
+   "prop": "cups",
+   "from_cut": "K0",
+   "holder": "",
+   "hand": "",
+   "place": "The glass tea cups rest apart near the back half of the tabletop, leaving the near edge clear.",
+   "on": "table",
+   "seen": true
+  },
+  {
+   "prop": "deed",
+   "from_cut": "K0",
+   "holder": "S",
+   "hand": "",
+   "place": "Folded in Saman's chest pocket; the protruding edge is screened by his side-on torso in the master and cropped below his opening close coverage.",
+   "on": "",
+   "seen": false
+  },
+  {
+   "prop": "deed",
+   "from_cut": "K3",
+   "holder": "S",
+   "hand": "",
+   "place": "Folded in Saman's chest pocket with its upper edge exposed to Nimal and the detail camera.",
+   "on": "",
+   "seen": true
+  },
+  {
+   "prop": "deed",
+   "from_cut": "K4",
+   "holder": "N",
+   "hand": "right",
+   "place": "Pinched in Nimal's right fingertips at the opening of Saman's chest pocket.",
+   "on": "",
+   "seen": true
+  },
+  {
+   "prop": "deed",
+   "from_cut": "K6",
+   "holder": "",
+   "hand": "",
+   "place": "Folded flat near the front edge of the tabletop, beneath Nimal's open right palm.",
+   "on": "table",
+   "seen": true
+  }
+ ],
+ "cuts": [
+  {
+   "id": "K0",
+   "moment": "The brothers sit opposite each other with the tea between them.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M1",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "S",
+     "state": "Still and attentive, hands relaxed near his lap."
+    },
+    {
+     "who": "S",
+     "mark": "M2",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "N",
+     "state": "Smiling easily, shoulders loose."
+    }
+   ]
+  },
+  {
+   "id": "K1",
+   "moment": "Saman continues his cheerful conversation as Nimal listens.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M1",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "S",
+     "state": "Attentive, expression reserved."
+    },
+    {
+     "who": "S",
+     "mark": "M2",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "N",
+     "state": "Open smile, animated eyes."
+    }
+   ]
+  },
+  {
+   "id": "K2",
+   "moment": "Nimal's attention catches on something below Saman's face.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M3",
+     "progress": 0.0,
+     "posture": "leaning",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "deed",
+     "state": "Slightly forward, eyes lowered, brow beginning to tighten."
+    },
+    {
+     "who": "S",
+     "mark": "M4",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "N",
+     "state": "Still smiling and talking easily."
+    }
+   ]
+  },
+  {
+   "id": "K3",
+   "moment": "Nimal fixes his gaze on the exposed fold of paper.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M3",
+     "progress": 0.0,
+     "posture": "leaning",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "deed",
+     "state": "Eyes narrowed, jaw set, torso inclined across the table."
+    },
+    {
+     "who": "S",
+     "mark": "M4",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "N",
+     "state": "Easy expression, unaware of Nimal's next movement."
+    }
+   ]
+  },
+  {
+   "id": "K4",
+   "moment": "Nimal's right fingertips close on the exposed fold as he begins to rise.",
+   "under_way": "Nimal closes his right hand on the deed and starts lifting his torso.",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "rising",
+     "left_hand": "",
+     "right_hand": "deed",
+     "look_at": "deed",
+     "state": "Leaning far across the table, right arm extended, jaw clenched."
+    },
+    {
+     "who": "S",
+     "mark": "M6",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "N",
+     "state": "Smile checked, shoulders drawing back."
+    }
+   ]
+  },
+  {
+   "id": "K5",
+   "moment": "Fully upright, Nimal drives the folded deed toward the clear front edge of the table.",
+   "under_way": "Nimal's right forearm carries the deed downward toward the tabletop.",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "",
+     "right_hand": "deed",
+     "look_at": "deed",
+     "state": "Rigid torso, right elbow descending, mouth tight."
+    },
+    {
+     "who": "S",
+     "mark": "M6",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "deed",
+     "state": "Leaning back slightly, lips parted, eyes following Nimal's hand."
+    }
+   ]
+  },
+  {
+   "id": "K6",
+   "moment": "The folded deed lies flat beneath Nimal's open palm after the impact.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "S",
+     "state": "Right palm planted on the paper, shoulders squared, eyes fixed on Saman."
+    },
+    {
+     "who": "S",
+     "mark": "M6",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "deed",
+     "state": "Motionless, smile gone, eyes lowered to the table."
+    }
+   ]
+  },
+  {
+   "id": "K7",
+   "moment": "Saman raises his eyes to Nimal as his evasion gives way to admission.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M7",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "S",
+     "state": "Unblinking, jaw firm, right palm still on the deed."
+    },
+    {
+     "who": "S",
+     "mark": "M8",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "N",
+     "state": "Shoulders contracted, lips tense, eyes lifted toward his brother."
+    }
+   ]
+  },
+  {
+   "id": "K8",
+   "moment": "Saman finishes admitting the concealed debt and lowers his gaze.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M7",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "S",
+     "state": "Still upright and tense, right palm resting on the paper."
+    },
+    {
+     "who": "S",
+     "mark": "M8",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "deed",
+     "state": "Eyes lowered, mouth closed, shoulders drawn inward."
+    }
+   ]
+  },
+  {
+   "id": "K9",
+   "moment": "The brothers remain separated by the deed and the untouched tea.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "N",
+     "mark": "M7",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "S",
+     "state": "Rigid and silent, right palm still resting on the deed."
+    },
+    {
+     "who": "S",
+     "mark": "M8",
+     "progress": 0.0,
+     "posture": "seated",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "deed",
+     "state": "Small inward posture, eyes down, expression stripped of cheerfulness."
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "id": "1",
+   "beat": 1,
+   "blocks": [
+    0
+   ],
+   "purpose": "Establish the shop, the brothers, and the apparently ordinary tea meeting.",
+   "type": "master",
+   "camera": "C1",
+   "lens_mm": 0,
+   "looks_at": "",
+   "subject": "N",
+   "in_frame": [
+    "N",
+    "S",
+    "cups"
+   ],
+   "size": "WS",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 5.6,
+   "focus": "Both brothers and the tabletop remain legible, with the west window and oil lamp establishing the light sources.",
+   "start": "K0",
+   "end": "K1",
+   "cut_in": "first",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 4,
+   "action": "Nimal sits at the west end of the wooden table, facing Saman at the east end. Saman talks cheerfully while Nimal listens. The glass tea cups sit apart behind the clear front edge. The west window is on the left wall and the oil lamp glows at the back of the table. Saman is seen in strict side profile, his torso screening the folded paper from this angle.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "2",
+   "beat": 1,
+   "blocks": [
+    0
+   ],
+   "purpose": "Give Saman his own coverage and establish the cheerfulness that will disappear.",
+   "type": "single",
+   "camera": "C2",
+   "lens_mm": 0,
+   "looks_at": "",
+   "subject": "S",
+   "in_frame": [
+    "S"
+   ],
+   "size": "MCU",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 2.8,
+   "focus": "Saman's eyes and smiling mouth; the frame ends above the exposed pocket edge.",
+   "start": "K1",
+   "end": "K2",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 3,
+   "action": "Saman talks with an easy smile and animated eyes, keeping the conversation away from the land. His face and shoulders fill the frame. Nimal is outside the narrow frame to the west; the tabletop and Saman's chest pocket are cropped below.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "3",
+   "beat": 2,
+   "blocks": [
+    1
+   ],
+   "purpose": "Make the discovery begin with Nimal's look before revealing its object.",
+   "type": "single",
+   "camera": "C3",
+   "lens_mm": 0,
+   "looks_at": "",
+   "subject": "N",
+   "in_frame": [
+    "N"
+   ],
+   "size": "MCU",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 2.8,
+   "focus": "Nimal's eyes as they settle below Saman's face.",
+   "start": "K2",
+   "end": "K3",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 3,
+   "action": "Nimal's eyes drop toward Saman's chest. He leans forward slightly; his brow tightens and his jaw sets. Saman and the paper remain outside the narrow frame, preserving the discovery through Nimal's reaction first.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "4",
+   "beat": 2,
+   "blocks": [
+    1
+   ],
+   "purpose": "Reveal the folded deed from Nimal's side and bridge directly into his grasp.",
+   "type": "insert",
+   "camera": "C4",
+   "lens_mm": 0,
+   "looks_at": "",
+   "subject": "deed",
+   "in_frame": [
+    "N",
+    "S",
+    "deed"
+   ],
+   "size": "INSERT",
+   "angle": "high",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 4.0,
+   "focus": "The exposed folded edge and Nimal's approaching fingertips.",
+   "start": "K3",
+   "end": "K4",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.5,
+   "duration_s": 1,
+   "action": "The folded deed protrudes from Saman's chest pocket. Only Saman's torso and Nimal's entering right hand are visible; both faces and the tabletop are cropped out. The paper remains folded, with no readable writing exposed. Nimal's fingertips close on its upper edge at the cut.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "5",
+   "beat": 3,
+   "blocks": [
+    2
+   ],
+   "purpose": "Keep the seizure and rise physically continuous while Saman loses control of the meeting.",
+   "type": "two_shot",
+   "camera": "C3",
+   "lens_mm": 50,
+   "looks_at": "table",
+   "subject": "N",
+   "in_frame": [
+    "N",
+    "S",
+    "deed",
+    "cups"
+   ],
+   "size": "MS",
+   "angle": "low",
+   "move": "tilt",
+   "move_why": "Follow Nimal's sudden rise while retaining the deed and Saman's seated reaction.",
+   "f_stop": 5.6,
+   "focus": "Nimal's face and gripping hand, with Saman readable at the eastern edge.",
+   "start": "K4",
+   "end": "K5",
+   "cut_in": "match_on_action",
+   "overlap_in_s": 0.5,
+   "overlap_out_s": 0.5,
+   "duration_s": 3,
+   "action": "Repeat Nimal's fingers closing on the paper. He pulls the folded deed free with his right hand and stands at his place beside the table. The camera tilts up with his torso, keeping his face visible and Saman at the eastern edge. Saman draws back and stops smiling. Nimal begins driving the deed down toward the clear front edge of the table.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "6",
+   "beat": 3,
+   "blocks": [
+    2
+   ],
+   "purpose": "Deliver the confrontation through the strongest tactile image: the deed striking the table.",
+   "type": "insert",
+   "camera": "C4",
+   "lens_mm": 0,
+   "looks_at": "table",
+   "subject": "deed",
+   "in_frame": [
+    "N",
+    "deed"
+   ],
+   "size": "INSERT",
+   "angle": "high",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 4.0,
+   "focus": "The folded deed and Nimal's palm at the point of contact.",
+   "start": "K5",
+   "end": "K6",
+   "cut_in": "match_on_action",
+   "overlap_in_s": 0.5,
+   "overlap_out_s": 0.0,
+   "duration_s": 1,
+   "action": "Continue the downward movement of Nimal's right hand. The folded deed strikes the clear front edge of the wooden tabletop, and his hand opens flat over it. Only his hand and forearm enter the tight frame. The tea cups and oil lamp are beyond the crop at the back of the table. The paper stays folded.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "7",
+   "beat": 3,
+   "blocks": [
+    2
+   ],
+   "purpose": "Hold Nimal's accusation in his face rather than inventing dialogue.",
+   "type": "single",
+   "camera": "C3",
+   "lens_mm": 150,
+   "looks_at": "N",
+   "subject": "N",
+   "in_frame": [
+    "N"
+   ],
+   "size": "CU",
+   "angle": "low",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 2.8,
+   "focus": "Nimal's eyes and tightly held mouth.",
+   "start": "K6",
+   "end": "K7",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 3,
+   "action": "Nimal stands facing Saman, eyes fixed on him and jaw firm. The lower camera position makes the change in their relative height apparent. His planted hand, the deed, the cups, and Saman are outside the tight facial frame.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "8",
+   "beat": 4,
+   "blocks": [
+    3
+   ],
+   "purpose": "Give Saman's admission its own uninterrupted face shot and let shame replace the earlier cheerfulness.",
+   "type": "single",
+   "camera": "C2",
+   "lens_mm": 150,
+   "looks_at": "",
+   "subject": "S",
+   "in_frame": [
+    "S"
+   ],
+   "size": "CU",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 2.8,
+   "focus": "Saman's eyes, then his lowered gaze without changing focus distance.",
+   "start": "K7",
+   "end": "K8",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 5,
+   "action": "Saman looks up toward Nimal and admits that he sold the field to repay a debt he had been too ashamed to mention. His smile is entirely gone. His shoulders contract and his eyes lower toward the deed as he finishes. Nimal and the tabletop remain outside the facial frame.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "9",
+   "beat": 4,
+   "blocks": [
+    3
+   ],
+   "purpose": "Return to the shared space with the brothers' changed relationship plainly visible.",
+   "type": "two_shot",
+   "camera": "C1",
+   "lens_mm": 50,
+   "looks_at": "",
+   "subject": "S",
+   "in_frame": [
+    "N",
+    "S",
+    "deed",
+    "cups"
+   ],
+   "size": "FS",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 5.6,
+   "focus": "Both brothers and the folded deed on the tabletop.",
+   "start": "K8",
+   "end": "K9",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 3,
+   "action": "Nimal remains standing at the west end of the table, his right palm resting on the folded deed. Saman stays seated opposite him with his gaze lowered. The glass tea cups remain untouched behind the paper. Hold their unequal heights and the space between them without further movement.",
+   "lines": [],
+   "breaks": []
+  }
+ ]
+}

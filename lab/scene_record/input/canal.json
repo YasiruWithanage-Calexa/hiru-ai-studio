@@ -1,0 +1,133 @@
+{
+ "id": "canal",
+ "title": "Ekama Sakshiya E01-S01, The canal discovery",
+ "heading": "SCENE 01 - EXT. MAHAWEWA CANAL - DAWN - 1 MINUTE",
+ "time_of_day": "dawn",
+ "length_s": 60,
+ "blocks": [
+  {
+   "n": 0,
+   "kind": "action",
+   "text": "Heavy rain. Aruni walks beside a paddy field carrying a small medical bag."
+  },
+  {
+   "n": 1,
+   "kind": "action",
+   "text": "She notices something caught near the canal gate: a body. It is Nimal. She does not scream. She kneels and touches his hand. Inside his fist is a small metal key marked C-17."
+  },
+  {
+   "n": 2,
+   "kind": "dialogue",
+   "text": "",
+   "line_id": "L1",
+   "speaker": "Aruni",
+   "words": "Dinu... oyata meka ahenne nadda?"
+  },
+  {
+   "n": 3,
+   "kind": "action",
+   "text": "She calls Dinu. No answer."
+  },
+  {
+   "n": 4,
+   "kind": "sound",
+   "text": "A distant bus horn mixes with the rain."
+  },
+  {
+   "n": 5,
+   "kind": "cut",
+   "text": "Cut to black."
+  },
+  {
+   "n": 6,
+   "kind": "action",
+   "text": "TITLE: EKAMA SAKSHIYA."
+  }
+ ],
+ "people": [
+  {
+   "id": "C02",
+   "name": "Aruni",
+   "appearance": "Average height, with a sturdy, upright build and warm medium-brown skin. Oval face, broad cheekbones, dark almond-shaped eyes and full, level brows. Long, thick black hair, centre-parted and secured in a low bun. Her broad cheekbones and brows resemble Nimal's.",
+   "look": {
+    "name": "Aruni's white nursing dress",
+    "outfit": "A crisp white short-sleeved nurse's dress falling below the knee, with a fitted waist, white belt and plain white closed nursing shoes.",
+    "hair": "Long, thick black hair, centre-parted and secured in a low bun.",
+    "accessories": "A small medical bag."
+   },
+   "condition": "Dress and shoes soaked by heavy rain; hair wet against her head, with the low bun still secured. Kneels beside Nimal."
+  },
+  {
+   "id": "C03",
+   "name": "Nimal",
+   "appearance": "Average height and broad through the shoulders, with warm medium-brown skin, a broad oval face, full level brows and pronounced cheekbones like Aruni's. Wide nose, thick moustache and otherwise clean-shaven cheeks. Dense, wavy black hair, longer on top and loosely side-parted.",
+   "look": {
+    "name": "Nimal's brick-red shirt and charcoal trousers",
+    "outfit": "A faded brick-red long-sleeved cotton shirt, charcoal trousers and worn brown leather sandals.",
+    "hair": "Dense, wavy black hair, longer on top and loosely side-parted.",
+    "accessories": ""
+   },
+   "condition": "Shirt sleeves rolled to the forearms. Clothes and hair soaked, fabric clinging and hair flattened. Lies still beside the canal gate, eyes closed, with a small metal key marked C-17 held in his fist."
+  }
+ ],
+ "place": {
+  "id": "L03",
+  "name": "Mahawewa Canal",
+  "look": "An exterior rural irrigation canal beside a paddy field, with a narrow red-earth embankment path, grass-tufted banks and a low concrete sluice structure. Muddy water fills the channel beneath a weathered metal gate. Heavy dawn rain veils the distance; dim natural light catches wet earth in muted amber and earthy red, with subdued green rice beyond.",
+  "views": [
+   {
+    "n": 1,
+    "name": "Wide",
+    "camera": "Anchor spot: standing on the embankment path a few metres back from the sluice, camera faces the main frontage square on.",
+    "sees": "The whole place at once: the concrete sluice and rust-brown steel sluice plate centred in the frame, muddy water in the channel in the near centre, the red-earth embankment path running rightwards from the camera at the right edge, and the flooded paddy with short green rice to the left; the channel and path recede into rain-veiled distance."
+   },
+   {
+    "n": 2,
+    "name": "Looking left",
+    "camera": "Same anchor spot as Wide, turned 90 degrees to the LEFT so the camera looks along the canal toward the left.",
+    "sees": "Looking along the channel to the left: the sluice sits at the RIGHT edge of the picture (near foreground), the muddy channel stretching away toward the left distance, the paddy field running alongside the far side of the channel at centre-left, with rows of short rice and glossy earthen bunds visible."
+   },
+   {
+    "n": 3,
+    "name": "Looking right",
+    "camera": "Same anchor spot as Wide, turned 90 degrees to the RIGHT so the camera looks along the canal toward the right.",
+    "sees": "Looking along the channel to the right: the sluice is at the LEFT edge of the picture (near foreground), the red-earth embankment path runs prominently to the right and away into the rain, and the channel narrows into the misty distance beyond the path."
+   },
+   {
+    "n": 4,
+    "name": "Reverse",
+    "camera": "Same anchor spot as Wide, turned 180 degrees so the camera looks back from where the Wide's camera stood.",
+    "sees": "What lies behind the Wide's camera: the embankment path extending back toward the camera's origin and wet red earth underfoot, more paddy plots beyond the path and the rain-veiled landscape behind; the sluice and main frontage are out of the picture."
+   },
+   {
+    "n": 5,
+    "name": "Detail 1",
+    "camera": "Close on the first thing the place is known for: the canal gate, camera close and slightly above water level, looking square on.",
+    "sees": "The rust-brown steel sluice plate between stained concrete cheeks: vertical rust and weathering on the plate, the threaded lifting screw above, a wet concrete lip at waterline and clumps of grass caught along the waterline; muddy water lapping at the base of the concrete."
+   },
+   {
+    "n": 6,
+    "name": "Detail 2",
+    "camera": "Close on the second thing the place is known for: the embankment path and adjacent flooded paddy, camera at knee height on the path, looking along the path toward the distance.",
+    "sees": "The narrow red-earth embankment path glossy with rain at the right edge, tufts of grass on the bank, and just beyond it the flooded rice plot with short green rice in rows and narrow red-brown earthen bunds; surface sheen of rain on the bunds and mud is visible."
+   }
+  ]
+ },
+ "props": [
+  {
+   "id": "P02",
+   "name": "small metal key",
+   "details": "A small metal key marked C-17."
+  },
+  {
+   "id": "P09",
+   "name": "phone",
+   "details": "A palm-sized black touchscreen smartphone in a matte charcoal protective case, with lightly worn corners and a plain outgoing-call display with a red end-call button."
+  },
+  {
+   "id": "P01",
+   "name": "small medical bag",
+   "details": "A small rectangular navy-blue medical bag in water-resistant fabric, with black reinforced handles, a zipped top and lightly scuffed lower corners."
+  }
+ ]
+}

@@ -1,0 +1,1319 @@
+{
+ "scene": "canal",
+ "dramatic_goal": "Aruni's ordinary passage beside the paddy becomes a discovery: Nimal lies still at the canal gate, his fist contains a marked key, and her call to Dinu receives no answer.",
+ "pov": "C02",
+ "objectives": [
+  "C02: wants to understand what she has found and reach Dinu / blocked by Nimal's stillness, the heavy rain and an unanswered call.",
+  "C03: no observable active objective / lies still, eyes closed, with the key enclosed in his right fist."
+ ],
+ "subtext": "Aruni's restraint makes the small gestures carry the alarm. The legible key offers something definite; the unanswered call offers nothing.",
+ "key_moment": {
+  "beat": 2,
+  "what": "From Aruni's side, the inscription C-17 becomes readable inside Nimal's curled right hand.",
+  "shots": [
+   "6"
+  ]
+ },
+ "beats": [
+  {
+   "n": 1,
+   "blocks": [
+    0
+   ],
+   "what": "Aruni walks beside the paddy through heavy dawn rain.",
+   "intensity": 3,
+   "dominant": "C02"
+  },
+  {
+   "n": 2,
+   "blocks": [
+    1
+   ],
+   "what": "Aruni notices Nimal, approaches, kneels and touches his hand; the marked key is revealed.",
+   "intensity": 9,
+   "dominant": "C03"
+  },
+  {
+   "n": 3,
+   "blocks": [
+    2
+   ],
+   "what": "Aruni breaks her silence with a quiet appeal to Dinu.",
+   "intensity": 8,
+   "dominant": "C02"
+  },
+  {
+   "n": 4,
+   "blocks": [
+    3
+   ],
+   "what": "Aruni places the call and waits without receiving an answer.",
+   "intensity": 7,
+   "dominant": "balanced"
+  },
+  {
+   "n": 5,
+   "blocks": [
+    4
+   ],
+   "what": "A distant bus horn mixes with the rain while the wait continues.",
+   "intensity": 5,
+   "dominant": "balanced"
+  },
+  {
+   "n": 6,
+   "blocks": [
+    5
+   ],
+   "what": "The image cuts to black.",
+   "intensity": 2,
+   "dominant": "balanced"
+  },
+  {
+   "n": 7,
+   "blocks": [
+    6
+   ],
+   "what": "The title appears.",
+   "intensity": 3,
+   "dominant": "balanced"
+  }
+ ],
+ "landmarks": [
+  {
+   "id": "gate",
+   "name": "Weathered metal canal gate and lifting screw",
+   "kind": "fixed",
+   "points": [
+    {
+     "x": 0.0,
+     "y": 1.5
+    }
+   ],
+   "width": 0.0
+  },
+  {
+   "id": "cheek",
+   "name": "Low near concrete sluice cheek, screening the waterline from the distant southern view",
+   "kind": "fixed",
+   "points": [
+    {
+     "x": -0.2,
+     "y": -0.1
+    },
+    {
+     "x": 0.7,
+     "y": -0.1
+    },
+    {
+     "x": 0.7,
+     "y": 0.4
+    },
+    {
+     "x": -0.2,
+     "y": 0.4
+    }
+   ],
+   "width": 0.0
+  },
+  {
+   "id": "canal",
+   "name": "Muddy canal waterline beneath the sluice",
+   "kind": "water",
+   "points": [
+    {
+     "x": -8.0,
+     "y": 1.0
+    },
+    {
+     "x": 0.0,
+     "y": 0.6
+    },
+    {
+     "x": 8.0,
+     "y": 1.0
+    }
+   ],
+   "width": 0.0
+  },
+  {
+   "id": "path",
+   "name": "Narrow rain-glossed red-earth embankment path",
+   "kind": "path",
+   "points": [
+    {
+     "x": 8.0,
+     "y": -0.4
+    },
+    {
+     "x": 6.0,
+     "y": -0.4
+    },
+    {
+     "x": 2.0,
+     "y": -0.4
+    },
+    {
+     "x": 0.8,
+     "y": -0.4
+    },
+    {
+     "x": -2.0,
+     "y": -0.4
+    }
+   ],
+   "width": 0.0
+  },
+  {
+   "id": "paddy",
+   "name": "Flooded paddy plots beyond the canal",
+   "kind": "area",
+   "points": [
+    {
+     "x": -8.0,
+     "y": 3.0
+    },
+    {
+     "x": 8.0,
+     "y": 3.0
+    },
+    {
+     "x": 8.0,
+     "y": 14.0
+    },
+    {
+     "x": -8.0,
+     "y": 14.0
+    }
+   ],
+   "width": 0.0
+  },
+  {
+   "id": "sky",
+   "name": "Rain-clouded eastern dawn sky",
+   "kind": "light",
+   "points": [
+    {
+     "x": 20.0,
+     "y": 4.0
+    }
+   ],
+   "width": 0.0
+  }
+ ],
+ "marks": [
+  {
+   "id": "M1",
+   "who": "C02",
+   "beat": 1,
+   "x": 6.0,
+   "y": -0.4,
+   "posture": "walking",
+   "facing": "west",
+   "moves_to": [
+    {
+     "x": 2.0,
+     "y": -0.4
+    }
+   ],
+   "along": "path",
+   "label": ""
+  },
+  {
+   "id": "M2",
+   "who": "C03",
+   "beat": 1,
+   "x": 0.0,
+   "y": 0.8,
+   "posture": "lying",
+   "facing": "sky",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M3",
+   "who": "C02",
+   "beat": 2,
+   "x": 2.0,
+   "y": -0.4,
+   "posture": "walking",
+   "facing": "C03",
+   "moves_to": [
+    {
+     "x": 0.8,
+     "y": -0.4
+    }
+   ],
+   "along": "path",
+   "label": ""
+  },
+  {
+   "id": "M4",
+   "who": "C02",
+   "beat": 2,
+   "x": 0.8,
+   "y": -0.4,
+   "posture": "kneeling",
+   "facing": "C03",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M5",
+   "who": "C03",
+   "beat": 2,
+   "x": 0.0,
+   "y": 0.8,
+   "posture": "lying",
+   "facing": "sky",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M6",
+   "who": "C02",
+   "beat": 3,
+   "x": 0.8,
+   "y": -0.4,
+   "posture": "kneeling",
+   "facing": "C03",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M7",
+   "who": "C03",
+   "beat": 3,
+   "x": 0.0,
+   "y": 0.8,
+   "posture": "lying",
+   "facing": "sky",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M8",
+   "who": "C02",
+   "beat": 4,
+   "x": 0.8,
+   "y": -0.4,
+   "posture": "kneeling",
+   "facing": "C03",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M9",
+   "who": "C03",
+   "beat": 4,
+   "x": 0.0,
+   "y": 0.8,
+   "posture": "lying",
+   "facing": "sky",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M10",
+   "who": "C02",
+   "beat": 5,
+   "x": 0.8,
+   "y": -0.4,
+   "posture": "kneeling",
+   "facing": "C03",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M11",
+   "who": "C03",
+   "beat": 5,
+   "x": 0.0,
+   "y": 0.8,
+   "posture": "lying",
+   "facing": "sky",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M12",
+   "who": "C02",
+   "beat": 6,
+   "x": 0.8,
+   "y": -0.4,
+   "posture": "kneeling",
+   "facing": "C03",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M13",
+   "who": "C03",
+   "beat": 6,
+   "x": 0.0,
+   "y": 0.8,
+   "posture": "lying",
+   "facing": "sky",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M14",
+   "who": "C02",
+   "beat": 7,
+   "x": 0.8,
+   "y": -0.4,
+   "posture": "kneeling",
+   "facing": "C03",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  },
+  {
+   "id": "M15",
+   "who": "C03",
+   "beat": 7,
+   "x": 0.0,
+   "y": 0.8,
+   "posture": "lying",
+   "facing": "sky",
+   "moves_to": [],
+   "along": "",
+   "label": ""
+  }
+ ],
+ "axes": [
+  {
+   "from_beat": 1,
+   "a": "C03",
+   "b": "C02",
+   "camera_side": "south"
+  },
+  {
+   "from_beat": 2,
+   "a": "C03",
+   "b": "C02",
+   "camera_side": "south"
+  },
+  {
+   "from_beat": 3,
+   "a": "C03",
+   "b": "C02",
+   "camera_side": "south"
+  }
+ ],
+ "cameras": [
+  {
+   "id": "A",
+   "name": "Southern establishing view across path, sluice and paddy",
+   "x": 4.0,
+   "y": -11.0,
+   "height": "standing_eye",
+   "looks_at": "gate",
+   "lens_mm": 28
+  },
+  {
+   "id": "B",
+   "name": "Aruni notices from the path",
+   "x": 3.2,
+   "y": -2.3,
+   "height": "standing_eye",
+   "looks_at": "C02",
+   "lens_mm": 65
+  },
+  {
+   "id": "C",
+   "name": "Aruni-side view down to Nimal",
+   "x": 2.0,
+   "y": -0.6,
+   "height": "standing_eye",
+   "looks_at": "C03",
+   "lens_mm": 85
+  },
+  {
+   "id": "D",
+   "name": "Southern approach and kneel two-shot",
+   "x": 2.7,
+   "y": -3.6,
+   "height": "seated_eye",
+   "looks_at": "C03",
+   "lens_mm": 35
+  },
+  {
+   "id": "E",
+   "name": "Contact detail on the two right hands",
+   "x": 0.9,
+   "y": -1.25,
+   "height": "knee",
+   "looks_at": "P02",
+   "lens_mm": 180
+  },
+  {
+   "id": "F",
+   "name": "Macro angle into the curled fist",
+   "x": 0.0,
+   "y": -0.3,
+   "height": "ground",
+   "looks_at": "P02",
+   "lens_mm": 100
+  },
+  {
+   "id": "G",
+   "name": "Aruni kneeling close single",
+   "x": 0.85,
+   "y": -1.5,
+   "height": "seated_eye",
+   "looks_at": "C02",
+   "lens_mm": 85
+  },
+  {
+   "id": "H",
+   "name": "Phone held low in Aruni's right hand",
+   "x": 1.0,
+   "y": -1.15,
+   "height": "knee",
+   "looks_at": "P09",
+   "lens_mm": 55
+  },
+  {
+   "id": "I",
+   "name": "Upper sluice plate rain detail",
+   "x": 0.9,
+   "y": -1.5,
+   "height": "standing_eye",
+   "looks_at": "gate",
+   "lens_mm": 85
+  }
+ ],
+ "light": {
+  "key": "sky",
+  "style": "Soft eastern dawn skylight diffused through dense rain cloud. Cool ambient fill, faint directional sheen on wet surfaces, subdued green paddy and muted amber-red earth. Preserve natural low exposure without losing eyes or the key inscription.",
+  "by_beat": [
+   "Cool, low-contrast dawn; rain veils the distance and wet earth holds faint warm reflections.",
+   "Same dawn source and exposure continuity; tighter framing separates faces and hands from the dim canal. A small natural sky reflection makes C-17 readable.",
+   "Soft cool face light with gentle contrast under the brows; wet skin catches restrained highlights.",
+   "Unchanged cool dawn light; the phone display adds only a faint local glow to the right hand.",
+   "Diffuse sky reflections trace rain over the weathered sluice plate; background remains subdued.",
+   "Full black with no visible location light.",
+   "White title lettering on full black."
+  ]
+ },
+ "prop_states": [
+  {
+   "prop": "P01",
+   "from_cut": "K0",
+   "holder": "C02",
+   "hand": "left",
+   "place": "Carried by its handles at Aruni's left side",
+   "on": "",
+   "seen": true
+  },
+  {
+   "prop": "P02",
+   "from_cut": "K0",
+   "holder": "C03",
+   "hand": "right",
+   "place": "Inside Nimal's curled right fist, which rests near x 0.28, y 0.32; concealed from the opening angles",
+   "on": "",
+   "seen": false
+  },
+  {
+   "prop": "P09",
+   "from_cut": "K0",
+   "holder": "C02",
+   "hand": "",
+   "place": "Inside the small medical bag",
+   "on": "",
+   "seen": false
+  },
+  {
+   "prop": "P01",
+   "from_cut": "K4",
+   "holder": "",
+   "hand": "",
+   "place": "On the path at x 0.45, y -0.65, beside Aruni's left knee",
+   "on": "path",
+   "seen": true
+  },
+  {
+   "prop": "P09",
+   "from_cut": "K4",
+   "holder": "",
+   "hand": "",
+   "place": "Inside the small medical bag beside Aruni's left knee",
+   "on": "path",
+   "seen": false
+  },
+  {
+   "prop": "P02",
+   "from_cut": "K5",
+   "holder": "C03",
+   "hand": "right",
+   "place": "Still inside Nimal's curled right fist; the marked metal face is visible through the gap between his fingers",
+   "on": "",
+   "seen": true
+  },
+  {
+   "prop": "P09",
+   "from_cut": "K7",
+   "holder": "C02",
+   "hand": "right",
+   "place": "Held low in Aruni's right hand, screen facing her",
+   "on": "",
+   "seen": true
+  }
+ ],
+ "cuts": [
+  {
+   "id": "K0",
+   "moment": "Aruni is walking west along the embankment while Nimal remains screened by the low concrete cheek.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M1",
+     "progress": 0.0,
+     "posture": "walking",
+     "left_hand": "P01",
+     "right_hand": "",
+     "look_at": "path",
+     "state": "Steady steps, chin lowered against the rain"
+    },
+    {
+     "who": "C03",
+     "mark": "M2",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K1",
+   "moment": "Aruni has visibly arrived at the eastern stopping point and becomes still.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M3",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "P01",
+     "right_hand": "",
+     "look_at": "path",
+     "state": "Steps stopped, shoulders held steady"
+    },
+    {
+     "who": "C03",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K2",
+   "moment": "Aruni's gaze has settled down and left toward Nimal.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M3",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "P01",
+     "right_hand": "",
+     "look_at": "C03",
+     "state": "Eyes fixed, lips slightly parted, no outcry"
+    },
+    {
+     "who": "C03",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K3",
+   "moment": "After seeing Nimal clearly, Aruni remains at the stopping point just before approaching.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M3",
+     "progress": 0.0,
+     "posture": "standing",
+     "left_hand": "P01",
+     "right_hand": "",
+     "look_at": "C03",
+     "state": "Weight held forward, gaze fixed"
+    },
+    {
+     "who": "C03",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K4",
+   "moment": "Aruni has arrived, placed the bag beside her left knee and settled her right fingertips on Nimal's fist.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M4",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "C03",
+     "state": "Leaning slightly forward, right fingertips resting on his curled hand"
+    },
+    {
+     "who": "C03",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fist unchanged"
+    }
+   ]
+  },
+  {
+   "id": "K5",
+   "moment": "The hands remain still as the closer angle first exposes the key's marked face.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M4",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "P02",
+     "state": "Right fingertips resting lightly against his hand, gaze lowered"
+    },
+    {
+     "who": "C03",
+     "mark": "M5",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled around the key"
+    }
+   ]
+  },
+  {
+   "id": "K6",
+   "moment": "Aruni has read the marking and remains kneeling beside Nimal before speaking.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M6",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "",
+     "look_at": "P02",
+     "state": "Mouth held closed, gaze lowered, right fingertips still touching his hand"
+    },
+    {
+     "who": "C03",
+     "mark": "M7",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K7",
+   "moment": "After speaking, Aruni holds the phone still below her face, ready to place the call.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M8",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "P09",
+     "look_at": "P09",
+     "state": "Gaze lowered to the screen, jaw tight, left hand resting near her knee"
+    },
+    {
+     "who": "C03",
+     "mark": "M9",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K8",
+   "moment": "With the outgoing call started, Aruni is lifting the phone from chest level toward her right ear.",
+   "under_way": "Aruni raises the phone in her right hand toward her right ear.",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M8",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "P09",
+     "look_at": "P09",
+     "state": "Right elbow bending, phone rising, lips pressed together"
+    },
+    {
+     "who": "C03",
+     "mark": "M9",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K9",
+   "moment": "The phone is settled at Aruni's right ear and no answer has come.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M10",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "P09",
+     "look_at": "C03",
+     "state": "Phone held to right ear, gaze fixed on Nimal, breathing restrained"
+    },
+    {
+     "who": "C03",
+     "mark": "M11",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K10",
+   "moment": "The distant horn has mixed with the rain; Aruni is still waiting as the location image ends.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M12",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "P09",
+     "look_at": "C03",
+     "state": "Phone held to right ear, shoulders still"
+    },
+    {
+     "who": "C03",
+     "mark": "M13",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Still, eyes closed, right fingers curled"
+    }
+   ]
+  },
+  {
+   "id": "K11",
+   "moment": "The black hold ends and the title begins without a return to the location.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M14",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "P09",
+     "look_at": "C03",
+     "state": "Unseen; last established with phone at right ear"
+    },
+    {
+     "who": "C03",
+     "mark": "M15",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Unseen; last established still with eyes closed"
+    }
+   ]
+  },
+  {
+   "id": "K12",
+   "moment": "The title hold ends.",
+   "under_way": "",
+   "people": [
+    {
+     "who": "C02",
+     "mark": "M14",
+     "progress": 0.0,
+     "posture": "kneeling",
+     "left_hand": "",
+     "right_hand": "P09",
+     "look_at": "C03",
+     "state": "Unseen; last established with phone at right ear"
+    },
+    {
+     "who": "C03",
+     "mark": "M15",
+     "progress": 0.0,
+     "posture": "lying",
+     "left_hand": "",
+     "right_hand": "P02",
+     "look_at": "",
+     "state": "Unseen; last established still with eyes closed"
+    }
+   ]
+  }
+ ],
+ "shots": [
+  {
+   "id": "1",
+   "beat": 1,
+   "blocks": [
+    0
+   ],
+   "purpose": "Establish the canal, paddy, path and Aruni's approach before allowing her discovery.",
+   "type": "master",
+   "camera": "A",
+   "subject": "C02",
+   "in_frame": [
+    "C02",
+    "P01"
+   ],
+   "size": "EWS",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 8.0,
+   "focus": "Deep focus across Aruni, the wet path, concrete sluice and rain-veiled paddy.",
+   "start": "K0",
+   "end": "K1",
+   "cut_in": "first",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 8,
+   "action": "Heavy rain fills the canal landscape. Aruni walks west along the path with the small medical bag in her left hand and visibly arrives at her stopping point. The sluice anchors the frame, with flooded paddy beyond. Nimal lies at the near waterline but is fully occluded by the low concrete cheek from this distant angle.",
+   "lines": [],
+   "breaks": [
+    {
+     "rule": "establish",
+     "reason": "The opening establishes the occupied space but deliberately conceals Nimal behind existing concrete so that his first clear appearance follows Aruni's look."
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "beat": 2,
+   "blocks": [
+    1
+   ],
+   "purpose": "Give the discovery to Aruni before showing what she sees.",
+   "type": "single",
+   "camera": "B",
+   "subject": "C02",
+   "in_frame": [
+    "C02"
+   ],
+   "size": "MCU",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 4.0,
+   "focus": "Aruni's eyes; the canal background is soft.",
+   "start": "K1",
+   "end": "K2",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 5,
+   "action": "Aruni stands still in the rain. Her eyes shift down toward Nimal and settle. Her lips part slightly, but she makes no outcry. The medical bag remains in her left hand below the frame; Nimal is cropped below the frame.",
+   "lines": [],
+   "breaks": [
+    {
+     "rule": "frame_missing",
+     "reason": "C03 lies at waterline height and is cropped below the frame, which isolates standing Aruni's face and upper torso."
+    },
+    {
+     "rule": "progression",
+     "reason": "The intentional EWS-to-MCU leap marks the abrupt interruption of Aruni's passage and isolates her noticing before revealing what she sees."
+    }
+   ]
+  },
+  {
+   "id": "3",
+   "beat": 2,
+   "blocks": [
+    1
+   ],
+   "purpose": "Answer Aruni's look with the first clear view of Nimal.",
+   "type": "pov",
+   "camera": "C",
+   "subject": "C03",
+   "in_frame": [
+    "C03"
+   ],
+   "size": "MCU",
+   "angle": "high",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 5.6,
+   "focus": "Nimal's closed eyes and face, with wet concrete falling soft behind.",
+   "start": "K2",
+   "end": "K3",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 6,
+   "action": "From immediately beside Aruni's viewing position, Nimal lies still at the canal gate, eyes closed. Rain strikes the water and concrete around him. Frame only his face and upper torso; his curled right hand and the key remain below the crop. Aruni is behind the camera.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "4",
+   "beat": 2,
+   "blocks": [
+    1
+   ],
+   "purpose": "Show the complete approach, arrival and kneel so the following hand details have clear geography.",
+   "type": "two_shot",
+   "camera": "D",
+   "subject": "C02",
+   "in_frame": [
+    "C02",
+    "C03",
+    "P01"
+   ],
+   "size": "FS",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 5.6,
+   "focus": "Both Aruni and Nimal, including the path where she kneels.",
+   "start": "K3",
+   "end": "K4",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 6,
+   "action": "Aruni walks the remaining distance along the path and visibly arrives beside Nimal. She lowers the small medical bag onto the path beside her left knee, kneels and rests her right fingertips on his curled right hand. Nimal remains still with eyes closed. The key stays enclosed and unreadable inside his fist; the phone remains inside the bag.",
+   "lines": [],
+   "breaks": [
+    {
+     "rule": "size_intensity",
+     "reason": "Briefly widen during the high-intensity discovery to show the entire approach and kneel without hiding a change of position; the following inserts tighten to the peak."
+    },
+    {
+     "rule": "progression",
+     "reason": "The wider frame is a deliberate spatial reset before the hand and key details."
+    }
+   ]
+  },
+  {
+   "id": "5",
+   "beat": 2,
+   "blocks": [
+    1
+   ],
+   "purpose": "Make Aruni's restrained contact tangible before revealing the object.",
+   "type": "insert",
+   "camera": "E",
+   "subject": "C03",
+   "in_frame": [
+    "C03"
+   ],
+   "size": "INSERT",
+   "angle": "high",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 8.0,
+   "focus": "Nimal's curled right hand near x 0.28, y 0.32.",
+   "start": "K4",
+   "end": "K5",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 3,
+   "action": "Only Nimal's curled right hand fills the detail. Rain beads over his hand. Aruni maintains the light contact without opening his fist, but her touching fingertips remain outside the crop. From this angle, his fingers conceal the object inside. Both faces, the bag and the phone are outside the crop.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "6",
+   "beat": 2,
+   "blocks": [
+    1
+   ],
+   "purpose": "Deliver the key clue as the scene's strongest and tightest image.",
+   "type": "insert",
+   "camera": "F",
+   "subject": "P02",
+   "in_frame": [
+    "C03",
+    "P02"
+   ],
+   "size": "ECU",
+   "angle": "ground",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 8.0,
+   "focus": "The inscription C-17 on the exposed metal face inside Nimal's right fist.",
+   "start": "K5",
+   "end": "K6",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 3,
+   "action": "The lower macro angle looks through the existing gap between Nimal's curled right fingers. A small metal key remains inside his fist. Its exposed face carries the exact readable marking C-17. Aruni's touching fingertips remain outside the image. Nothing is removed or transferred; faces and all other props are outside the crop.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "7",
+   "beat": 3,
+   "blocks": [
+    2
+   ],
+   "purpose": "Give Aruni her own close frame for the scene's only spoken line.",
+   "type": "single",
+   "camera": "G",
+   "subject": "C02",
+   "in_frame": [
+    "C02"
+   ],
+   "size": "CU",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 2.8,
+   "focus": "Aruni's eyes and mouth; the canal dissolves behind her.",
+   "start": "K6",
+   "end": "K7",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 4,
+   "action": "Still kneeling, Aruni speaks quietly, her gaze initially lowered toward Nimal's hand. After the line, her eyes lower toward the bag. Her hands remain below this face-only crop; by the outgoing boundary she has taken the phone from the bag with her right hand and holds it still below frame. Nimal and every prop remain outside this image.",
+   "lines": [
+    "L1"
+   ],
+   "breaks": []
+  },
+  {
+   "id": "8",
+   "beat": 4,
+   "blocks": [
+    3
+   ],
+   "purpose": "Establish the outgoing call before returning to Aruni's unanswered listening.",
+   "type": "insert",
+   "camera": "H",
+   "subject": "P09",
+   "in_frame": [
+    "C02",
+    "P09"
+   ],
+   "size": "INSERT",
+   "angle": "high",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 5.6,
+   "focus": "The phone screen and Aruni's right thumb.",
+   "start": "K7",
+   "end": "K8",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.5,
+   "duration_s": 3,
+   "action": "Aruni holds the phone low in her right hand and starts the call with her right thumb. The screen shows a plain outgoing-call interface with a red end-call button and no readable text. She begins raising it toward her right ear; retain the first part of the lift within the frame for the action match. Only her hand and a small portion of her torso are visible. The bag and Nimal are cropped below the frame.",
+   "lines": [],
+   "breaks": [
+    {
+     "rule": "size_intensity",
+     "reason": "This functional insert is tight enough to establish the outgoing call, but its wider field and shorter lens remain less emphatic than the key macro."
+    },
+    {
+     "rule": "frame_missing",
+     "reason": "C03 is cropped below the frame; the phone-only composition includes Aruni's right hand and a small portion of her torso, not the lower waterline."
+    }
+   ]
+  },
+  {
+   "id": "9",
+   "beat": 4,
+   "blocks": [
+    3
+   ],
+   "purpose": "Hold with Aruni as the call receives no answer.",
+   "type": "single",
+   "camera": "G",
+   "subject": "C02",
+   "in_frame": [
+    "C02",
+    "P09"
+   ],
+   "size": "CU",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 2.8,
+   "focus": "Aruni's eyes, with the phone at her right ear inside the same focal region.",
+   "start": "K8",
+   "end": "K9",
+   "cut_in": "match_on_action",
+   "overlap_in_s": 0.5,
+   "overlap_out_s": 0.0,
+   "duration_s": 5,
+   "action": "Continue the same right-handed lift, repeating half a second of the motion as the phone reaches Aruni's right ear. She listens without receiving an answer, looking down toward Nimal. Her face stays restrained and her shoulders become still. Nimal, the bag and the key are below or outside the close crop.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "10",
+   "beat": 5,
+   "blocks": [
+    4
+   ],
+   "purpose": "Let the indifferent rain and distant horn carry the unanswered interval.",
+   "type": "cutaway",
+   "camera": "I",
+   "subject": "gate",
+   "in_frame": [],
+   "size": "MS",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 5.6,
+   "focus": "Rain striking the upper metal sluice plate and threaded lifting screw.",
+   "start": "K9",
+   "end": "K10",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 5,
+   "action": "Rain runs down the upper sluice plate and catches along the lifting screw. A distant bus horn mixes with the rain; its source is not shown. The elevated crop excludes both people and every portable prop below the frame. Aruni remains kneeling with the phone at her right ear.",
+   "lines": [],
+   "breaks": [
+    {
+     "rule": "frame_missing",
+     "reason": "C02 and C03 are both cropped below the frame. This elevated detail includes only the upper sluice plate and lifting screw, excluding kneeling Aruni and Nimal at the waterline."
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "beat": 6,
+   "blocks": [
+    5
+   ],
+   "purpose": "Separate the unresolved canal image from the title.",
+   "type": "black",
+   "camera": "",
+   "subject": "",
+   "in_frame": [],
+   "size": "WS",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 0.0,
+   "focus": "",
+   "start": "K10",
+   "end": "K11",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 5,
+   "action": "Cut to full black. No visible text or image.",
+   "lines": [],
+   "breaks": []
+  },
+  {
+   "id": "12",
+   "beat": 7,
+   "blocks": [
+    6
+   ],
+   "purpose": "Present the exact title after the black interval.",
+   "type": "title",
+   "camera": "",
+   "subject": "",
+   "in_frame": [],
+   "size": "WS",
+   "angle": "eye",
+   "move": "static",
+   "move_why": "",
+   "f_stop": 0.0,
+   "focus": "",
+   "start": "K11",
+   "end": "K12",
+   "cut_in": "cut",
+   "overlap_in_s": 0.0,
+   "overlap_out_s": 0.0,
+   "duration_s": 7,
+   "action": "On full black, centered white lettering reads exactly: EKAMA SAKSHIYA. Hold the title without movement.",
+   "lines": [],
+   "breaks": []
+  }
+ ]
+}

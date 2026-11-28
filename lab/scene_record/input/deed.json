@@ -1,0 +1,29 @@
+{
+ "id": "deed",
+ "title": "The Deed, Scene 3 (from 'Shot Breakdown: The Deed, Scene 3', Part 1)",
+ "heading": "SCENE 3 - INT. VILLAGE TEA SHOP - DUSK",
+ "time_of_day": "dusk",
+ "length_s": 26,
+ "note": "The PDF gives the story, not the script's words: the blocks are its Scene 3 sentences, and it has no dialogue text, so no line ids.",
+ "blocks": [
+  {"n": 0, "kind": "action", "text": "Nimal meets Saman for tea. Saman is cheerful and talks about everything except the land."},
+  {"n": 1, "kind": "action", "text": "Nimal notices a folded deed sticking out of Saman's shirt pocket."},
+  {"n": 2, "kind": "action", "text": "He grabs it, stands, and slams it on the table: Saman has secretly sold the field."},
+  {"n": 3, "kind": "action", "text": "Saman admits he did it to pay a debt he was too ashamed to mention."}
+ ],
+ "people": [
+  {"id": "N", "name": "Nimal", "appearance": "A village farmer in his forties, weathered hands.",
+   "look": {"name": "Nimal at the tea shop", "outfit": "A white sarong and a grey shirt.", "hair": "", "accessories": ""},
+   "condition": ""},
+  {"id": "S", "name": "Saman", "appearance": "Nimal's younger brother, quick to smile.",
+   "look": {"name": "Saman at the tea shop", "outfit": "A blue shirt with a breast pocket.", "hair": "", "accessories": ""},
+   "condition": ""}
+ ],
+ "place": {"id": "L1", "name": "Village tea shop",
+  "look": "A small village tea shop at dusk: one wooden table, a window on the left wall, an oil lamp.",
+  "views": []},
+ "props": [
+  {"id": "deed", "name": "land deed", "details": "A folded paper deed."},
+  {"id": "cups", "name": "two tea cups", "details": "Two glass tea cups on the table."}
+ ]
+}

@@ -1,0 +1,130 @@
+<!doctype html><html><head><meta charset='utf-8'><style>
+body{margin:0;background:#fff} #grid{display:grid;grid-template-columns:repeat(4,640px);gap:8px;padding:0}
+canvas{display:block;width:640px;height:360px}</style></head><body><div id='grid'></div>
+<script type='module'>
+import * as THREE from 'file:///D:/projects/Hiru%20AI%20Studio/source/hiru-ai-studio/lab/scene_record/vendor/three.module.js';
+const D = {"place": [{"type": "poly", "pts": [[-3.5, -10.0], [-0.8, -10.0], [-0.8, 8.0], [-3.5, 8.0]], "colour": "#3a87ab", "y": 0.012}, {"type": "poly", "pts": [[0.8, -10.0], [14.0, -10.0], [14.0, 8.0], [0.8, 8.0]], "colour": "#4f6b3e", "y": 0.004}, {"type": "poly", "pts": [[-0.8, -10.0], [0.8, -10.0], [0.8, 8.0], [-0.8, 8.0]], "colour": "#6e5a42", "y": 0.005}, {"type": "poly", "pts": [[-9.0, -10.0], [-3.5, -10.0], [-3.5, 8.0], [-9.0, 8.0]], "colour": "#6e5a42", "y": 0.006}, {"type": "path", "pts": [[0.0, -7.0], [0.0, -4.0], [0.0, -2.0], [0.0, -1.1]], "width": 1.2, "colour": "#9a7b55"}, {"type": "poly", "pts": [[-3.7, 0.4], [0.8, 0.4], [0.8, 1.4], [-3.7, 1.4]], "colour": "#8d8f8f", "y": 0.008}, {"type": "block", "at": [-2.1, 0.9], "w": 2.6, "d": 0.4, "h": 1.8, "colour": "#6b4b34", "table": false}], "key": [6.0, 9.0], "shots": [{"id": "1", "subject": "walking_path", "angle": "eye", "cam": [-7.0, 1.6, -4.0], "look": [0.0, 0.6, -3.525], "vfov": 45.74733038125343, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -7.0], "posture": "walking", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "holder": "C02", "hand": "left"}], "size": "WS", "camera": "C1"}, {"id": "2", "subject": "C02", "angle": "low", "cam": [-1.6, 1.1, 0.6], "look": [0.0, 1.3333925229439703, -2.0], "vfov": 17.70753523240482, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -2.0], "posture": "standing", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "holder": "C02", "hand": "left"}], "size": "MS", "camera": "C2"}, {"id": "3", "subject": "C03", "angle": "high", "cam": [-0.4, 1.6, -1.7], "look": [0.0, 0.007540550930352691, 0.0], "vfov": 32.26880217111643, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -2.0], "posture": "standing", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "holder": "C02", "hand": "left"}], "size": "FS", "camera": "C3"}, {"id": "4", "subject": "C02", "angle": "eye", "cam": [-1.6, 1.1, 0.6], "look": [0.0, 0.9075, -2.0], "vfov": 39.76070472928529, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -2.0], "posture": "standing", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "holder": "C02", "hand": "left"}], "size": "FS", "camera": "C2"}, {"id": "5", "subject": "C02", "angle": "eye", "cam": [-1.6, 1.1, 0.6], "look": [0.0, 1.08, -1.1], "vfov": 11.562989889073766, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -1.1], "posture": "kneeling_down", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "holder": "C02", "hand": "left"}], "size": "MCU", "camera": "C2"}, {"id": "6", "subject": "P02", "angle": "high", "cam": [-0.4, 1.6, -1.7], "look": [0.0, 0.0978762752142926, 0.0], "vfov": 5.796249337657642, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -1.1], "posture": "kneeling", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "at": [0.0, -3.525], "y": 0.02}, {"size": [0.05, 0.07, 0.01], "id": "P02", "holder": "C03", "hand": "right"}], "size": "INSERT", "camera": "C3"}, {"id": "7", "subject": "C02", "angle": "eye", "cam": [-1.6, 1.1, 0.6], "look": [0.0, 0.88, -1.1], "vfov": 8.578306657638036, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -1.1], "posture": "kneeling", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "at": [0.0, -3.525], "y": 0.02}, {"size": [0.05, 0.07, 0.01], "id": "P02", "holder": "C03", "hand": "right"}], "size": "CU", "camera": "C2"}, {"id": "8", "subject": "P09", "angle": "high", "cam": [-0.4, 1.6, -1.7], "look": [0.0, 0.43645277242747854, -1.1], "vfov": 8.578306657638036, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -1.1], "posture": "kneeling", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "at": [0.0, -3.525], "y": 0.02}, {"size": [0.05, 0.07, 0.01], "id": "P02", "holder": "C03", "hand": "right"}, {"size": [0.075, 0.15, 0.012], "id": "P09", "holder": "C02", "hand": "right"}], "size": "INSERT", "camera": "C3"}, {"id": "9", "subject": "C02", "angle": "eye", "cam": [-1.6, 1.1, 0.6], "look": [0.0, 0.88, -1.1], "vfov": 13.585861564471854, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -1.1], "posture": "kneeling", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "at": [0.0, -3.525], "y": 0.02}, {"size": [0.05, 0.07, 0.01], "id": "P02", "holder": "C03", "hand": "right"}, {"size": [0.075, 0.15, 0.012], "id": "P09", "holder": "C02", "hand": "right"}], "size": "MCU", "camera": "C2"}, {"id": "10", "subject": "C02", "angle": "eye", "cam": [-1.6, 1.1, 0.6], "look": [0.0, 0.88, -1.1], "vfov": 8.578306657638036, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -1.1], "posture": "kneeling", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "at": [0.0, -3.525], "y": 0.02}, {"size": [0.05, 0.07, 0.01], "id": "P02", "holder": "C03", "hand": "right"}, {"size": [0.075, 0.15, 0.012], "id": "P09", "holder": "C02", "hand": "right"}], "size": "CU", "camera": "C2"}, {"id": "11", "subject": "gate", "angle": "eye", "cam": [-7.0, 1.6, -4.0], "look": [-2.1, 0.6, 0.9], "vfov": 13.585861564471854, "people": [{"who": "C02", "colour": "#c8463b", "at": [0.0, -1.1], "posture": "kneeling", "yaw": 3.141592653589793, "head": 0.0}, {"who": "C03", "colour": "#2f6fc0", "at": [0.0, 0.0], "posture": "lying", "yaw": 2.5535900500422257, "head": 0.0}], "props": [{"size": [0.34, 0.24, 0.14], "id": "P01", "at": [0.0, -3.525], "y": 0.02}, {"size": [0.05, 0.07, 0.01], "id": "P02", "holder": "C03", "hand": "right"}, {"size": [0.075, 0.15, 0.012], "id": "P09", "holder": "C02", "hand": "right"}], "size": "WS", "camera": "C1"}], "night": false, "dusk": false};
+const W = 640, H = 360;
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setSize(W, H); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const P = (x, y, h = 0) => new THREE.Vector3(x, h, -y);            // plan (x east, y north) -> three
+const mat = c => new THREE.MeshStandardMaterial({color: c, roughness: 0.75});
+function world() {
+  const s = new THREE.Scene();
+  s.background = new THREE.Color(D.dusk ? '#9aa3b5' : '#c9d0d6');
+  s.fog = new THREE.Fog(s.background, 25, 90);
+  s.add(new THREE.HemisphereLight('#e8eef4', '#5a4a3a', 1.1));
+  const sun = new THREE.DirectionalLight('#fff4e0', D.dusk ? 0.9 : 1.4);
+  const k = P(D.key[0], D.key[1], 0);
+  sun.position.set(k.x, 12, k.z); sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024); Object.assign(sun.shadow.camera, {left: -15, right: 15, top: 15, bottom: -15});
+  s.add(sun);
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), mat('#7c6a50'));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; s.add(ground);
+  for (const it of D.place) {
+    if (it.type === 'poly') {
+      const sh = new THREE.Shape(it.pts.map(([x, y]) => new THREE.Vector2(x, y)));
+      const m = new THREE.Mesh(new THREE.ShapeGeometry(sh), mat(it.colour));
+      m.rotation.x = -Math.PI / 2; m.position.y = it.y; m.receiveShadow = true; s.add(m);
+    } else if (it.type === 'path' || it.type === 'wall') {
+      for (let i = 0; i + 1 < it.pts.length; i++) {
+        const a = P(...it.pts[i]), b = P(...it.pts[i + 1]); const len = a.distanceTo(b);
+        const hgt = it.type === 'wall' ? (it.h || 2.6) : 0.02, wid = it.type === 'wall' ? 0.15 : it.width;
+        const m = new THREE.Mesh(new THREE.BoxGeometry(wid, hgt, len + (it.type === 'path' ? wid : 0)), mat(it.colour));
+        m.position.set((a.x + b.x) / 2, hgt / 2 + 0.004, (a.z + b.z) / 2);
+        m.rotation.y = Math.atan2(b.x - a.x, b.z - a.z); m.castShadow = it.type === 'wall'; m.receiveShadow = true; s.add(m);
+      }
+    } else if (it.type === 'block') {
+      const g = new THREE.Group(); const c = P(it.at[0], it.at[1]);
+      if (it.table) {
+        const top = new THREE.Mesh(new THREE.BoxGeometry(it.w, 0.05, it.d), mat(it.colour)); top.position.y = it.h; g.add(top);
+        for (const [dx, dz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) {
+          const leg = new THREE.Mesh(new THREE.BoxGeometry(0.05, it.h, 0.05), mat(it.colour));
+          leg.position.set(dx * (it.w / 2 - 0.05), it.h / 2, dz * (it.d / 2 - 0.05)); g.add(leg);
+        }
+      } else {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(it.w, it.h, it.d), mat(it.colour)); b.position.y = it.h / 2; g.add(b);
+      }
+      g.position.copy(c); g.traverse(o => { o.castShadow = true; o.receiveShadow = true; }); s.add(g);
+    }
+  }
+  return s;
+}
+function cap(r, len, m) { const x = new THREE.Mesh(new THREE.CapsuleGeometry(r, len, 4, 10), m); x.castShadow = true; return x; }
+// a mannequin: a pelvis group at the hips; local +z is where it faces
+const POSE = {  // pelvis height, thigh pitch, knee bend, torso pitch (radians; + leans forward)
+  standing: [0.92, 0, 0, 0], walking: [0.9, 0, 0.15, 0.05], seated: [0.47, -1.57, 1.57, 0.05],
+  sitting_down: [0.6, -1.2, 1.3, 0.25], kneeling: [0.5, 0, 1.57, 0.05], kneeling_down: [0.62, -0.55, 1.75, 0.35],
+  crouching: [0.45, -1.9, 2.3, 0.45], leaning: [0.92, 0, 0, 0.5], rising: [0.7, -0.9, 0.95, 0.35], lying: [0.92, 0, 0, 0]};
+function mannequin(p) {
+  const m = mat(p.colour), root = new THREE.Group(), pelvis = new THREE.Group();
+  const [ph, thighP, knee, lean] = POSE[p.posture] || POSE.standing;
+  pelvis.position.y = ph; root.add(pelvis);
+  const torso = new THREE.Group(); torso.rotation.x = lean; pelvis.add(torso);
+  const body = cap(0.15, 0.4, m); body.position.y = 0.3; torso.add(body);
+  const headG = new THREE.Group(); headG.position.y = 0.68; headG.rotation.y = p.head; torso.add(headG);
+  root.userData.head = headG; root.userData.pelvis = pelvis; root.userData.chest = body;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 12), m); head.castShadow = true; headG.add(head);
+  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.025, 0.07, 8), m); nose.rotation.x = Math.PI / 2; nose.position.set(0, 0, 0.11); headG.add(nose);
+  for (const side of [-1, 1]) {
+    const hip = new THREE.Group(); hip.position.set(0.09 * side, 0, 0);
+    hip.rotation.x = thighP + (p.posture === 'walking' ? 0.35 * side : 0); pelvis.add(hip);
+    const th = cap(0.07, 0.32, m); th.position.y = -0.23; hip.add(th);
+    const kn = new THREE.Group(); kn.position.y = -0.45; kn.rotation.x = knee; hip.add(kn);
+    const sh = cap(0.055, 0.32, m); sh.position.y = -0.22; kn.add(sh);
+    const shoulder = new THREE.Group(); shoulder.position.set(0.21 * side, 0.52, 0); torso.add(shoulder);
+    shoulder.rotation.z = 0.1 * side; shoulder.rotation.x = -0.15;
+    const ua = cap(0.05, 0.22, m); ua.position.y = -0.16; shoulder.add(ua);
+    const el = new THREE.Group(); el.position.y = -0.3; el.rotation.x = -0.3; shoulder.add(el);
+    const fa = cap(0.045, 0.2, m); fa.position.y = -0.14; el.add(fa);
+    const hand = new THREE.Group(); hand.position.y = -0.28; el.add(hand);
+    root.userData[side < 0 ? 'right' : 'left'] = hand;   // the figure's right hand is on its -x side
+  }
+  if (p.posture === 'lying') { root.rotation.x = -Math.PI / 2; root.position.y = 0.16; }
+  const yawG = new THREE.Group(); yawG.add(root); yawG.rotation.y = p.yaw + (p.posture === 'lying' ? Math.PI : 0);
+  yawG.position.copy(P(p.at[0], p.at[1])); yawG.userData = root.userData;
+  return yawG;
+}
+const grid = document.getElementById('grid');
+const base = world();
+for (const shot of D.shots) {
+  const s = base.clone();
+  const figs = {};
+  for (const p of shot.people) { const f = mannequin(p); figs[p.who] = f; s.add(f); }
+  s.updateMatrixWorld(true);
+  const shotProps = {};
+  for (const it of shot.props) {
+    const box = new THREE.Mesh(new THREE.BoxGeometry(...it.size), mat('#f4f4f2')); box.castShadow = true;
+    shotProps[it.id] = box;
+    if (it.holder && figs[it.holder]) { const hand = figs[it.holder].userData[it.hand] || figs[it.holder].userData.right;
+      hand.getWorldPosition(box.position); }
+    else { box.position.copy(P(it.at[0], it.at[1], it.y + it.size[1] / 2)); }
+    s.add(box);
+  }
+  const cam = new THREE.PerspectiveCamera(shot.vfov, W / H, 0.05, 300);
+  cam.position.copy(P(shot.cam[0], shot.cam[2], shot.cam[1]));
+  // aim at the real thing: a person's head for a close frame, lower for a wider one; a prop where it is drawn
+  let aim = P(shot.look[0], shot.look[2], shot.look[1]);
+  const fig = figs[shot.subject];
+  if (fig) {
+    const head = new THREE.Vector3(), pelvis = new THREE.Vector3(), chest = new THREE.Vector3();
+    fig.userData.head.getWorldPosition(head); fig.userData.pelvis.getWorldPosition(pelvis);
+    fig.userData.chest.getWorldPosition(chest);
+    const sz = shot.size;
+    if (sz === 'ECU' || sz === 'CU') aim = head;
+    else if (sz === 'MCU') aim = head.clone().lerp(chest, 0.45);
+    else if (sz === 'MS') aim = chest;
+    else aim = head.clone().lerp(pelvis, 0.6);
+  } else if (shotProps[shot.subject]) {
+    aim = shotProps[shot.subject].position.clone();
+  }
+  const dist = cam.position.distanceTo(aim);
+  const tilt = Math.tan(THREE.MathUtils.degToRad(shot.vfov / 2)) * dist / 3;   // a third of the half frame
+  if (shot.angle === 'high') aim.y -= tilt; else if (shot.angle === 'low') aim.y += tilt;
+  cam.lookAt(aim);
+  renderer.render(s, cam);
+  const c = document.createElement('canvas'); c.width = W; c.height = H; c.id = 'shot_' + shot.id;
+  c.getContext('2d').drawImage(renderer.domElement, 0, 0); grid.appendChild(c);
+}
+document.title = 'done';
+</script></body></html>
